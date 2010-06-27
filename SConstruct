@@ -1,0 +1,3 @@
+env = DefaultEnvironment()
+
+Export('env')
