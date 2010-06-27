@@ -5,4 +5,5 @@ subdirs = [
 ]
 
 for subdir in subdirs:
-	SConscript('%s/%s/SConscript' % (env['srcroot'], x), build_dir=target_dir)
+	target_dir = env['mode'] + subdir
+	SConscript('%s/SConscript' % subdir)

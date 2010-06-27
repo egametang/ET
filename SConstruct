@@ -14,5 +14,5 @@ ParseOptions()
 
 Export('env')
 
-SConscript('src/SConscript' % x, build_dir=target_dir)
+SConscript('src/SConscript', build_dir=env['mode'])
 

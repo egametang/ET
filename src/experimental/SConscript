@@ -1,0 +1,11 @@
+Import('env')
+
+experimental_env = env.Clone()
+
+experimental_env.Append(LIBS=[
+	'gflags',
+	'glog',
+	'gtest',
+])
+
+experimental_env.Program('boost_function_test.cc')
