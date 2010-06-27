@@ -1,4 +1,3 @@
-env = DefaultEnvironment()
 
 def ParseOptions():
 	AddOption('--mode',
@@ -8,6 +7,8 @@ def ParseOptions():
 		action='store',
 		default='dbg',
 		help='build in dbg or opt mode')
+
+env = DefaultEnvironment()
 
 ParseOptions()
 env['mode'] = GetOption('mode')
