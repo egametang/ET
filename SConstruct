@@ -8,9 +8,14 @@ def ParseOptions():
 		action='store',
 		default='dbg',
 		help='build in dbg or opt mode')
-	env['mode'] = GetOption('mode')
 
 ParseOptions()
+env['mode'] = GetOption('mode')
+
+if env['mode'] == 'dbg':
+	env.Append(CCFLAGS='-g')
+else:
+	env.Append(CCFLAGS='-O2 -g')
 
 Export('env')
 

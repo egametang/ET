@@ -5,5 +5,4 @@ subdirs = [
 ]
 
 for subdir in subdirs:
-	target_dir = env['mode'] + subdir
 	SConscript('%s/SConscript' % subdir)
