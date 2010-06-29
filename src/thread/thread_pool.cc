@@ -1,49 +1,67 @@
+#include <boost/foreach.hpp>
 #include "thread/thread_pool.h"
 
 namespace hainan
 {
-	ThreadPool::ThreadPool(int32_t n):
-			num(n), running(false)
+	ThreadPool::ThreadPool():
+			num(0), work_num(0),
+			running(false)
 	{
+	}
+	ThreadPool::~ThreadPool()
+	{
+		Stop();
 	}
 
 	void ThreadPool::Start()
 	{
+		running = true;
 		for(int i = 0; i < num; ++i)
 		{
-			boost::thread t(boost::function(&ThreadPool::Loop, boost::ref(this)));
+			shared_ptr<thread> t(new thread(bind(&ThreadPool::Loop, ref(this))));
 			threads.push_back(t);
-			t.detach();
+			t->detach();
 		}
-		running = true;
+		work_num = num;
 	}
 
 	void ThreadPool::Stop()
 	{
+		mutex::scoped_lock lock(mtx);
 		running = false;
 		cond.notify_all();
+		while(work_num != 0)
+		{
+			done.wait(lock);
+		}
 	}
 
 	void ThreadPool::Loop()
 	{
 		while(running)
 		{
-			mutex.lock();
-			while(tasks.empty())
+			function<void (void)> task;
 			{
-				cond.wait(mutex);
+				mutex::scoped_lock lock(mtx);
+				while(tasks.empty())
+				{
+					cond.wait(lock);
+				}
+				task = tasks.front();
+				tasks.pop_front();
+				cond.notify_one();
 			}
-			boost::function& t = tasks.front();
-			tasks.pop_front();
-			cond.notify_one();
-			mutex.unlock();
-			t();
+			task();
+		}
+		if(__sync_sub_and_fetch(&work_num, 1) == 0)
+		{
+			done.notify_one();
 		}
 	}
 
-	bool ThreadPool::PushTask(boost::function<void(void)> task)
+	bool ThreadPool::PushTask(function<void (void)> task)
 	{
-		boost::mutex::scoped_lock(&mutex);
+		mutex::scoped_lock lock(mtx);
 		if(!running)
 		{
 			return false;
@@ -51,5 +69,10 @@ namespace hainan
 		tasks.push_back(task);
 		cond.notify_one();
 		return true;
+	}
+
+	void ThreadPool::SetNum(int32_t n)
+	{
+		num = n;
 	}
 }

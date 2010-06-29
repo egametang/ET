@@ -1,18 +1,28 @@
+#ifndef THREAD_THREAD_POOL_H
+#define THREAD_THREAD_POOL_H
+
+#include <vector>
+#include <list>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include <boost/smart_ptr.hpp>
 
 namespace hainan
 {
+	using namespace boost;
+	using namespace std;
 	class ThreadPool
 	{
 	private:
 		int32_t num;
+		volatile int32_t work_num;
 		volatile bool running;
-		boost::mutex mutex;
-		boost::condition_variable cond;
-		std::vector<boost::thread> threads;
-		std::list<boost::function<void(void)>> tasks;
+		mutex mtx;
+		condition_variable cond;
+		condition_variable done;
+		list<shared_ptr<thread> > threads;
+		list<function<void (void)> > tasks;
 
 		void Loop();
 
@@ -23,6 +33,8 @@ namespace hainan
 		~ThreadPool();
 		void Start();
 		void Stop();
-		bool PushTask(boost::function<void(void)> task);
+		void SetNum(int32_t n);
+		bool PushTask(function<void(void)> task);
 	};
 }
+#endif  // THREAD_THREAD_POOL_H

@@ -18,6 +18,8 @@ if env['mode'] == 'dbg':
 else:
 	env.Append(CCFLAGS='-O2 -g')
 
+env.Append(CPPPATH=Dir(env['mode']).abspath)
+
 Export('env')
 
 SConscript('src/SConscript', build_dir=env['mode'])

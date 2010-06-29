@@ -1,0 +1,16 @@
+Import('env')
+
+thread_env = env.Clone()
+
+thread_env.Append(LIBS=[
+	'gflags',
+	'glog',
+	'gtest',
+	'boost_thread',
+])
+
+thread_env.Program('thread_pool_test', 
+[
+	'thread_pool_test.cc',
+	'thread_pool.cc',
+])
