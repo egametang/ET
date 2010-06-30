@@ -1,16 +1,15 @@
 #include <boost/foreach.hpp>
+#include <glog/logging.h>
 #include "thread/thread_pool.h"
 
 namespace hainan
 {
 	ThreadPool::ThreadPool():
-			num(0), work_num(0),
-			running(false)
+			num(0), running(false), work_num(0)
 	{
 	}
 	ThreadPool::~ThreadPool()
 	{
-		Stop();
 	}
 
 	void ThreadPool::Start()
@@ -27,46 +26,65 @@ namespace hainan
 
 	void ThreadPool::Stop()
 	{
+		VLOG(2) << "Stop";
 		mutex::scoped_lock lock(mtx);
 		running = false;
 		cond.notify_all();
-		while(work_num != 0)
+		while(work_num > 0)
 		{
+			VLOG(2) << "done tasks size = " << tasks.size();
 			done.wait(lock);
 		}
 	}
 
 	void ThreadPool::Loop()
 	{
-		while(running)
+		VLOG(2) << "thread start";
+		bool continued = true;
+		while(continued)
 		{
-			function<void (void)> task;
+			function<void (void)> task(0);
 			{
 				mutex::scoped_lock lock(mtx);
-				while(tasks.empty())
+				if(running && tasks.empty())
 				{
 					cond.wait(lock);
+					VLOG(2) << "get cond";
 				}
-				task = tasks.front();
-				tasks.pop_front();
-				cond.notify_one();
+
+				if(!tasks.empty())
+				{
+					VLOG(2) << "fetch task";
+					task = tasks.front();
+					tasks.pop_front();
+				}
+				continued = running || !tasks.empty();
+				VLOG(2) << "running = " << running;
 			}
-			task();
+
+			if(task)
+			{
+				task();
+			}
 		}
 		if(__sync_sub_and_fetch(&work_num, 1) == 0)
 		{
+			VLOG(2) << "work_num = " << work_num;
 			done.notify_one();
 		}
 	}
 
 	bool ThreadPool::PushTask(function<void (void)> task)
 	{
-		mutex::scoped_lock lock(mtx);
-		if(!running)
+		VLOG(2) << "push task";
 		{
-			return false;
+			mutex::scoped_lock lock(mtx);
+			if(!running)
+			{
+				return false;
+			}
+			tasks.push_back(task);
 		}
-		tasks.push_back(task);
 		cond.notify_one();
 		return true;
 	}

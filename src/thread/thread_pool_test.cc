@@ -11,7 +11,7 @@ namespace hainan
 	{
 		void SetUp()
 		{
-			thread_pool.SetNum(4);
+			thread_pool.SetNum(2);
 			thread_pool.Start();
 		}
 		void TearDown()
@@ -19,30 +19,33 @@ namespace hainan
 		}
 	protected:
 		ThreadPool thread_pool;
-		boost::function<int(int)> func;
 	public:
+		ThreadPoolTest(): thread_pool()
+		{
+		}
 		void Max(int a, int b, int* z)
 		{
-			LOG(INFO) << a << " " << b;
 			*z = a > b? a : b;
 		}
 	};
 
 	TEST_F(ThreadPoolTest, Test1)
 	{
-		int x = 5;
-		int y = 6;
-		int z = 0;
-		int a = 7;
-		int b = 8;
-		int c = 0;
-		thread_pool.PushTask(
-				boost::bind(&ThreadPoolTest::Max, boost::ref(*this), x, y, &z));
-		thread_pool.PushTask(
-				boost::bind(&ThreadPoolTest::Max, boost::ref(*this), a, b, &c));
+		vector<int> x(100, 8);
+		vector<int> y(100, 9);
+		vector<int> z(100, 0);
+
+		for(int i = 0; i < 100; ++i)
+		{
+			thread_pool.PushTask(
+				boost::bind(&ThreadPoolTest::Max,
+					boost::ref(*this), x[i], y[i], &z[i]));
+		}
 		thread_pool.Stop();
-		ASSERT_EQ(6, z);
-		ASSERT_EQ(8, c);
+		for(int i = 0; i < 100; ++i)
+		{
+			ASSERT_EQ(9, z[i]) << "i = " << i;
+		}
 	}
 }
 

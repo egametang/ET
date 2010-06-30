@@ -15,8 +15,8 @@ namespace hainan
 	class ThreadPool
 	{
 	private:
-		int32_t num;
-		volatile int32_t work_num;
+		int num;
+		volatile int work_num;
 		volatile bool running;
 		mutex mtx;
 		condition_variable cond;
@@ -33,7 +33,7 @@ namespace hainan
 		~ThreadPool();
 		void Start();
 		void Stop();
-		void SetNum(int32_t n);
+		void SetNum(int n);
 		bool PushTask(function<void(void)> task);
 	};
 }
