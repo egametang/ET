@@ -24,7 +24,7 @@ namespace hainan
 		list<shared_ptr<thread> > threads;
 		list<function<void (void)> > tasks;
 
-		void Loop();
+		void Runner();
 
 		ThreadPool(ThreadPool const&);
 		ThreadPool operator=(ThreadPool const&);
@@ -34,7 +34,7 @@ namespace hainan
 		void Start();
 		void Stop();
 		void SetNum(int n);
-		bool PushTask(function<void(void)> task);
+		bool PushTask(function<void (void)> task);
 	};
 }
 #endif  // THREAD_THREAD_POOL_H

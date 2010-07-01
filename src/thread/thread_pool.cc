@@ -17,7 +17,7 @@ namespace hainan
 		running = true;
 		for(int i = 0; i < num; ++i)
 		{
-			shared_ptr<thread> t(new thread(bind(&ThreadPool::Loop, ref(this))));
+			shared_ptr<thread> t(new thread(bind(&ThreadPool::Runner, this)));
 			threads.push_back(t);
 			t->detach();
 		}
@@ -37,21 +37,22 @@ namespace hainan
 		}
 	}
 
-	void ThreadPool::Loop()
+	void ThreadPool::Runner()
 	{
 		VLOG(2) << "thread start";
 		bool continued = true;
 		while(continued)
 		{
-			function<void (void)> task(0);
+			function<void (void)> task;
 			{
+				VLOG(2) << "loop lock";
 				mutex::scoped_lock lock(mtx);
-				if(running && tasks.empty())
+				VLOG(2) << "loop lock ok";
+				while(running && tasks.empty())
 				{
 					cond.wait(lock);
-					VLOG(2) << "get cond";
+					VLOG(2) << "cond";
 				}
-
 				if(!tasks.empty())
 				{
 					VLOG(2) << "fetch task";
@@ -59,7 +60,10 @@ namespace hainan
 					tasks.pop_front();
 				}
 				continued = running || !tasks.empty();
-				VLOG(2) << "running = " << running;
+				VLOG(2) << "continued = " << continued
+						<< "running = " << running
+						<< " tasks size = " << tasks.size();
+				VLOG(2) << "loop unlock";
 			}
 
 			if(task)
@@ -85,11 +89,12 @@ namespace hainan
 			}
 			tasks.push_back(task);
 		}
+		VLOG(2) << "push task unlock";
 		cond.notify_one();
 		return true;
 	}
 
-	void ThreadPool::SetNum(int32_t n)
+	void ThreadPool::SetNum(int n)
 	{
 		num = n;
 	}

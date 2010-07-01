@@ -11,7 +11,7 @@ namespace hainan
 	{
 		void SetUp()
 		{
-			thread_pool.SetNum(2);
+			thread_pool.SetNum(10);
 			thread_pool.Start();
 		}
 		void TearDown()
@@ -34,12 +34,11 @@ namespace hainan
 		vector<int> x(100, 8);
 		vector<int> y(100, 9);
 		vector<int> z(100, 0);
-
 		for(int i = 0; i < 100; ++i)
 		{
 			thread_pool.PushTask(
-				boost::bind(&ThreadPoolTest::Max,
-					boost::ref(*this), x[i], y[i], &z[i]));
+				bind(&ThreadPoolTest::Max,
+					this, x[i], y[i], &z[i]));
 		}
 		thread_pool.Stop();
 		for(int i = 0; i < 100; ++i)
