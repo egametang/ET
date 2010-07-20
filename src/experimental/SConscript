@@ -6,6 +6,8 @@ experimental_env.Append(LIBS=[
 	'gflags',
 	'glog',
 	'gtest',
+	'boost_system'
 ])
 
 experimental_env.Program('boost_function_test.cc')
+experimental_env.Program('boost_asio_test.cc')
