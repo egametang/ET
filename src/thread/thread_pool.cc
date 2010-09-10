@@ -1,4 +1,3 @@
-#include <boost/foreach.hpp>
 #include <glog/logging.h>
 #include "thread/thread_pool.h"
 

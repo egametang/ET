@@ -21,8 +21,8 @@ namespace hainan
 		mutex mtx;
 		condition_variable cond;
 		condition_variable done;
-		list<shared_ptr<thread> > threads;
-		list<function<void (void)> > tasks;
+		list< shared_ptr<thread> > threads;
+		list< function<void (void)> > tasks;
 
 		void Runner();
 

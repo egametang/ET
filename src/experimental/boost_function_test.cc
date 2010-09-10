@@ -29,7 +29,7 @@ namespace hainan
 	TEST_F(BoostTest, Test1)
 	{
 		int x = 5;
-		func = boost::bind(&BoostTest::Max, boost::ref(*this), _1, x);
+		func = boost::bind(&BoostTest::Max, this, _1, x);
 		int b = func(a);
 		LOG(INFO) << b;
 	}
@@ -38,8 +38,8 @@ namespace hainan
 int main(int argc, char* argv[])
 {
 	FLAGS_logtostderr = true;
+	testing::InitGoogleTest(&argc, argv);
 	google::ParseCommandLineFlags(&argc, &argv, true);
 	google::InitGoogleLogging(argv[0]);
-	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
