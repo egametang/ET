@@ -6,8 +6,10 @@ experimental_env.Append(LIBS=[
 	'gflags',
 	'glog',
 	'gtest',
-	'boost_system'
+	'boost_system',
+	'boost_thread'
 ])
 
-experimental_env.Program('boost_function_test.cc')
-#experimental_env.Program('boost_asio_test.cc')
+#experimental_env.Program('boost_function_test.cc')
+experimental_env.Program('chat/chat_message.cc')
+experimental_env.Program('chat/chat_server.cc')
