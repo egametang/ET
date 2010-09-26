@@ -1,20 +1,14 @@
 
 def ParseOptions():
-	AddOption('--mode',
-		dest='mode',
-		type='string',
-		nargs=1,
-		action='store',
-		default='dbg',
-		help='build in dbg or opt mode')
+	AddOption('--opt',
+		dest='opt',
+		action='store_true',
+		default='false',
+		help='build in opt mode, or dbg mode')
 
 ParseOptions()
 
 env = DefaultEnvironment()
-
-env['mode'] = GetOption('mode')
-
-env.Append(CPPPATH=Dir(env['mode']).abspath)
 
 env.Append(LIBS=[
 	'gflags',
@@ -22,14 +16,18 @@ env.Append(LIBS=[
 	'gtest',
 ])
 
-if env['mode'] == 'dbg':
+if GetOption('opt') == True:
+	env['root'] = 'opt'
 	env.Append(CCFLAGS='-g')
 	env.Append(LIBS='tcmalloc_debug')
 else:
+	env['root'] = 'dbg'
 	env.Append(CCFLAGS='-O2 -g')
 	env.Append(LIBS='tcmalloc')
 
+env.Append(CPPPATH=Dir(env['root']).abspath)
+
 Export('env')
 
-SConscript('src/SConscript', build_dir=env['mode'])
+SConscript('src/SConscript', build_dir=env['root'], duplicate=0)
 
