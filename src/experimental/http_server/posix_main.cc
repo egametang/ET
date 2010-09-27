@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
 
 
 		// Run server in background thread.
-		http::server::server s(argv[1], argv[2], argv[3]);
-		boost::thread t(boost::bind(&http::server::server::run, &s));
+		http_server::server s(argv[1], argv[2], argv[3]);
+		boost::thread t(boost::bind(&http_server::server::run, &s));
 
 
 		// Restore previous signals.

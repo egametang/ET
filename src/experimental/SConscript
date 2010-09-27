@@ -13,3 +13,21 @@ experimental_env.Append(LIBS=[
 experimental_env.Program('chat/chat_message.cc')
 experimental_env.Program('chat/chat_server.cc')
 experimental_env.Program('chat/posix_chat_client.cc')
+
+http_server_srcs = [
+	"http_server/connection.cc",
+	"http_server/connection_manager.cc",
+	"http_server/mime_types.cc",
+	"http_server/posix_main.cc",
+	"http_server/reply.cc",
+	"http_server/request_handler.cc",
+	"http_server/request_parser.cc",
+	"http_server/server.cc",
+]
+
+http_server_objs = []
+
+for src in http_server_srcs:
+	http_server_objs += experimental_env.Object(src)
+	
+experimental_env.Program(http_server_objs)

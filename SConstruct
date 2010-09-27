@@ -29,5 +29,5 @@ env.Append(CPPPATH=Dir(env['root']).abspath)
 
 Export('env')
 
-SConscript('src/SConscript', build_dir=env['root'], duplicate=0)
+SConscript('src/SConscript', build_dir=env['root'])
 
