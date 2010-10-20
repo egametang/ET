@@ -16,7 +16,7 @@ void ThreadPool::Start()
 	running = true;
 	for(int i = 0; i < num; ++i)
 	{
-		shared_ptr<thread> t(new thread(bind(&ThreadPool::Runner, this)));
+		thread_ptr t(new thread(bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);
 		t->detach();
 	}

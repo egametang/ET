@@ -20,8 +20,7 @@ class ThreadPoolTest: public testing::Test
 protected:
 	ThreadPool thread_pool;
 public:
-	ThreadPoolTest() :
-		thread_pool()
+	ThreadPoolTest() : thread_pool()
 	{
 	}
 	void Max(int a, int b, int* z)

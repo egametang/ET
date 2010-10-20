@@ -10,9 +10,12 @@
 
 namespace hainan {
 
-using namespace boost;
 using namespace std;
-class ThreadPool
+using namespace boost;
+
+typedef shared_ptr<thread> thread_ptr;
+
+class ThreadPool: private noncopyable
 {
 private:
 	int num;
@@ -21,20 +24,17 @@ private:
 	mutex mtx;
 	condition_variable cond;
 	condition_variable done;
-	list<shared_ptr<thread> > threads;
-	list<function<void(void)> > tasks;
+	list<thread_ptr> threads;
+	list< function<void (void)> > tasks;
 
 	void Runner();
-
-	ThreadPool(ThreadPool const&);
-	ThreadPool operator=(ThreadPool const&);
 public:
 	ThreadPool();
 	~ThreadPool();
 	void Start();
 	void Stop();
 	void SetNum(int n);
-	bool PushTask(function<void(void)> task);
+	bool PushTask(function<void (void)> task);
 };
 } // namespace hainan
 #endif  // THREAD_THREAD_POOL_H

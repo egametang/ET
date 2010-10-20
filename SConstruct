@@ -1,14 +1,13 @@
+env = DefaultEnvironment()
 
 def ParseOptions():
 	AddOption('--opt',
 		dest='opt',
 		action='store_true',
 		default='false',
-		help='build in opt mode, or dbg mode')
+		help='build in opt mode, default dbg mode')
 
 ParseOptions()
-
-env = DefaultEnvironment()
 
 env.Append(LIBS=[
 	'gflags',
