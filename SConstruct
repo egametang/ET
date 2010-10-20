@@ -13,6 +13,7 @@ env.Append(LIBS=[
 	'gflags',
 	'glog',
 	'gtest',
+	'gmock',
 ])
 
 if GetOption('opt') == True:

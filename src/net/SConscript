@@ -1,0 +1,13 @@
+Import('env')
+
+net_env = env.Clone()
+
+net_src = [
+	'epoller.cc'
+]
+
+net_lib = net_env.StaticLibrary('net', net_src)
+
+net_env.Append(LIBS=net_lib)
+
+net_env.Program('epoller_test.cc')

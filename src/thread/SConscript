@@ -3,11 +3,15 @@ Import('env')
 thread_env = env.Clone()
 
 thread_env.Append(LIBS=[
-	'boost_thread',
+	'boost_thread'
 ])
 
-thread_env.Program('thread_pool_test', 
-[
-	'thread_pool_test.cc',
+thread_src = [
 	'thread_pool.cc',
-])
+]
+
+thread_lib = thread_env.StaticLibrary('thread', thread_src)
+
+thread_env.Append(LIBS=thread_lib)
+
+thread_env.Program('thread_pool_test.cc')
