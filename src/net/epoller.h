@@ -4,12 +4,16 @@
 #include <boost/unordered_map.hpp>
 
 namespace hainan {
-typedef boost::unordered_map< int, boost::function<void (void)> > HandlerMap;
-class Epoller: private boost::noncopyable
+
+using namespace boost;
+typedef unordered_map< int, function<void (void)> > HandlerMap;
+
+class Epoller: private noncopyable
 {
 private:
 	HandlerMap handlers;
 public:
-	void Add()
+	void Register();
+	void Add();
 };
 } // hainan
