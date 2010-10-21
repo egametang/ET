@@ -29,14 +29,14 @@ const std::string unauthorized = "HTTP/1.0 401 Unauthorized\r\n";
 const std::string forbidden = "HTTP/1.0 403 Forbidden\r\n";
 const std::string not_found = "HTTP/1.0 404 Not Found\r\n";
 const std::string internal_server_error =
-        "HTTP/1.0 500 Internal Server Error\r\n";
+		"HTTP/1.0 500 Internal Server Error\r\n";
 const std::string not_implemented = "HTTP/1.0 501 Not Implemented\r\n";
 const std::string bad_gateway = "HTTP/1.0 502 Bad Gateway\r\n";
 const std::string service_unavailable = "HTTP/1.0 503 Service Unavailable\r\n";
 
 boost::asio::const_buffer to_buffer(reply::status_type status)
 {
-	switch(status)
+	switch (status)
 	{
 		case reply::ok:
 			return boost::asio::buffer(ok);
@@ -79,21 +79,23 @@ boost::asio::const_buffer to_buffer(reply::status_type status)
 
 namespace misc_strings {
 
-const char name_value_separator[] = { ':', ' ' };
-const char crlf[] = { '\r', '\n' };
+const char name_value_separator[] =
+{':', ' '};
+const char crlf[] =
+{'\r', '\n'};
 
 } // namespace misc_strings
 
 std::vector<boost::asio::const_buffer> reply::to_buffers()
 {
-	std::vector < boost::asio::const_buffer > buffers;
+	std::vector<boost::asio::const_buffer> buffers;
 	buffers.push_back(status_strings::to_buffer(status));
-	for(std::size_t i = 0; i < headers.size(); ++i)
+	for (std::size_t i = 0; i < headers.size(); ++i)
 	{
 		header& h = headers[i];
 		buffers.push_back(boost::asio::buffer(h.name));
 		buffers.push_back(boost::asio::buffer(
-		        misc_strings::name_value_separator));
+				misc_strings::name_value_separator));
 		buffers.push_back(boost::asio::buffer(h.value));
 		buffers.push_back(boost::asio::buffer(misc_strings::crlf));
 	}
@@ -168,7 +170,7 @@ const char service_unavailable[] = "<html>"
 
 std::string to_string(reply::status_type status)
 {
-	switch(status)
+	switch (status)
 	{
 		case reply::ok:
 			return ok;

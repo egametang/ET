@@ -20,7 +20,8 @@ class ThreadPoolTest: public testing::Test
 protected:
 	ThreadPool thread_pool;
 public:
-	ThreadPoolTest() : thread_pool()
+	ThreadPoolTest() :
+		thread_pool()
 	{
 	}
 	void Max(int a, int b, int* z)
@@ -34,13 +35,13 @@ TEST_F(ThreadPoolTest, Test1)
 	vector<int> x(100, 8);
 	vector<int> y(100, 9);
 	vector<int> z(100, 0);
-	for(int i = 0; i < 100; ++i)
+	for (int i = 0; i < 100; ++i)
 	{
 		thread_pool.PushTask(
-		        bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
+				bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
 	}
 	thread_pool.Stop();
-	for(int i = 0; i < 100; ++i)
+	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i])<< "i = " << i;
 	}

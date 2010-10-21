@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		if(argc != 3)
+		if (argc != 3)
 		{
 			std::cout << "Usage: sync_client <server> <path>\n";
 			std::cout << "Example:\n";
@@ -41,12 +41,12 @@ int main(int argc, char* argv[])
 		// Try each endpoint until we successfully establish a connection.
 		tcp::socket socket(io_service);
 		boost::system::error_code error = boost::asio::error::host_not_found;
-		while(error && endpoint_iterator != end)
+		while (error && endpoint_iterator != end)
 		{
 			socket.close();
 			socket.connect(*endpoint_iterator++, error);
 		}
-		if(error)
+		if (error)
 			throw boost::system::system_error(error);
 
 
@@ -78,15 +78,15 @@ int main(int argc, char* argv[])
 		response_stream >> status_code;
 		std::string status_message;
 		std::getline(response_stream, status_message);
-		if(!response_stream || http_version.substr(0, 5) != "HTTP/")
+		if (!response_stream || http_version.substr(0, 5) != "HTTP/")
 		{
 			std::cout << "Invalid response\n";
 			return 1;
 		}
-		if(status_code != 200)
+		if (status_code != 200)
 		{
 			std::cout << "Response returned with status code " << status_code
-			        << "\n";
+					<< "\n";
 			return 1;
 		}
 
@@ -96,24 +96,24 @@ int main(int argc, char* argv[])
 
 		// Process the response headers.
 		std::string header;
-		while(std::getline(response_stream, header) && header != "\r")
+		while (std::getline(response_stream, header) && header != "\r")
 			std::cout << header << "\n";
 		std::cout << "\n";
 
 
 		// Write whatever content we already have to output.
-		if(response.size() > 0)
+		if (response.size() > 0)
 			std::cout << &response;
 
 
 		// Read until EOF, writing data to output as we go.
-		while(boost::asio::read(socket, response,
-		        boost::asio::transfer_at_least(1), error))
+		while (boost::asio::read(socket, response,
+				boost::asio::transfer_at_least(1), error))
 			std::cout << &response;
-		if(error != boost::asio::error::eof)
+		if (error != boost::asio::error::eof)
 			throw boost::system::system_error(error);
 	}
-	catch(std::exception& e)
+	catch (std::exception& e)
 	{
 		std::cout << "Exception: " << e.what() << "\n";
 	}

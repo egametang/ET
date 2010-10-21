@@ -14,10 +14,10 @@
 namespace http_server {
 
 server::server(const std::string& address, const std::string& port,
-        const std::string& doc_root) :
+		const std::string& doc_root) :
 	io_service_(), acceptor_(io_service_), connection_manager_(),
-	        new_connection_(new connection(io_service_, connection_manager_,
-	                request_handler_)), request_handler_(doc_root)
+			new_connection_(new connection(io_service_, connection_manager_,
+					request_handler_)), request_handler_(doc_root)
 {
 	// Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
 	boost::asio::ip::tcp::resolver resolver(io_service_);
@@ -28,7 +28,7 @@ server::server(const std::string& address, const std::string& port,
 	acceptor_.bind(endpoint);
 	acceptor_.listen();
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(
-	        &server::handle_accept, this, boost::asio::placeholders::error));
+			&server::handle_accept, this, boost::asio::placeholders::error));
 }
 
 void server::run()
@@ -49,13 +49,13 @@ void server::stop()
 
 void server::handle_accept(const boost::system::error_code& e)
 {
-	if(!e)
+	if (!e)
 	{
 		connection_manager_.start(new_connection_);
 		new_connection_.reset(new connection(io_service_, connection_manager_,
-		        request_handler_));
+				request_handler_));
 		acceptor_.async_accept(new_connection_->socket(), boost::bind(
-		        &server::handle_accept, this, boost::asio::placeholders::error));
+				&server::handle_accept, this, boost::asio::placeholders::error));
 	}
 }
 

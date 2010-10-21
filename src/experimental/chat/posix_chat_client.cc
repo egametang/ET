@@ -25,58 +25,58 @@ class posix_chat_client
 {
 public:
 	posix_chat_client(boost::asio::io_service& io_service,
-	        tcp::resolver::iterator endpoint_iterator) :
+			tcp::resolver::iterator endpoint_iterator) :
 		socket_(io_service), input_(io_service, ::dup(STDIN_FILENO)), output_(
-		        io_service, ::dup(STDOUT_FILENO)), input_buffer_(
-		        chat_message::max_body_length)
+				io_service, ::dup(STDOUT_FILENO)), input_buffer_(
+				chat_message::max_body_length)
 	{
 		// Try connecting to the first endpoint.
 		tcp::endpoint endpoint = *endpoint_iterator;
 		socket_.async_connect(endpoint, boost::bind(
-		        &posix_chat_client::handle_connect, this,
-		        boost::asio::placeholders::error, ++endpoint_iterator));
+				&posix_chat_client::handle_connect, this,
+				boost::asio::placeholders::error, ++endpoint_iterator));
 	}
 
 private:
 
 	void handle_connect(const boost::system::error_code& error,
-	        tcp::resolver::iterator endpoint_iterator)
+			tcp::resolver::iterator endpoint_iterator)
 	{
-		if(!error)
+		if (!error)
 		{
 			// Read the fixed-length header of the next message from the server.
 			boost::asio::async_read(socket_, boost::asio::buffer(
-			        read_msg_.data(), chat_message::header_length),
-			        boost::bind(&posix_chat_client::handle_read_header, this,
-			                boost::asio::placeholders::error));
+					read_msg_.data(), chat_message::header_length),
+					boost::bind(&posix_chat_client::handle_read_header, this,
+							boost::asio::placeholders::error));
 
 
 			// Read a line of input entered by the user.
 			boost::asio::async_read_until(input_, input_buffer_, '\n',
-			        boost::bind(&posix_chat_client::handle_read_input, this,
-			                boost::asio::placeholders::error,
-			                boost::asio::placeholders::bytes_transferred));
+					boost::bind(&posix_chat_client::handle_read_input, this,
+							boost::asio::placeholders::error,
+							boost::asio::placeholders::bytes_transferred));
 		}
-		else if(endpoint_iterator != tcp::resolver::iterator())
+		else if (endpoint_iterator != tcp::resolver::iterator())
 		{
 			// That endpoint didn't work, try the next one.
 			socket_.close();
 			tcp::endpoint endpoint = *endpoint_iterator;
 			socket_.async_connect(endpoint, boost::bind(
-			        &posix_chat_client::handle_connect, this,
-			        boost::asio::placeholders::error, ++endpoint_iterator));
+					&posix_chat_client::handle_connect, this,
+					boost::asio::placeholders::error, ++endpoint_iterator));
 		}
 	}
 
 	void handle_read_header(const boost::system::error_code& error)
 	{
-		if(!error && read_msg_.decode_header())
+		if (!error && read_msg_.decode_header())
 		{
 			// Read the variable-length body of the message from the server.
 			boost::asio::async_read(socket_, boost::asio::buffer(
-			        read_msg_.body(), read_msg_.body_length()), boost::bind(
-			        &posix_chat_client::handle_read_body, this,
-			        boost::asio::placeholders::error));
+					read_msg_.body(), read_msg_.body_length()), boost::bind(
+					&posix_chat_client::handle_read_body, this,
+					boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -86,18 +86,18 @@ private:
 
 	void handle_read_body(const boost::system::error_code& error)
 	{
-		if(!error)
+		if (!error)
 		{
 			// Write out the message we just received, terminated by a newline.
-			static char eol[] = { '\n' };
+			static char eol[] =
+			{'\n'};
 			boost::array<boost::asio::const_buffer, 2> buffers =
-			        {
-			                { boost::asio::buffer(read_msg_.body(),
-			                        read_msg_.body_length()),
-			                        boost::asio::buffer(eol) } };
+			{
+			{boost::asio::buffer(read_msg_.body(), read_msg_.body_length()),
+					boost::asio::buffer(eol)}};
 			boost::asio::async_write(output_, buffers, boost::bind(
-			        &posix_chat_client::handle_write_output, this,
-			        boost::asio::placeholders::error));
+					&posix_chat_client::handle_write_output, this,
+					boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -107,13 +107,13 @@ private:
 
 	void handle_write_output(const boost::system::error_code& error)
 	{
-		if(!error)
+		if (!error)
 		{
 			// Read the fixed-length header of the next message from the server.
 			boost::asio::async_read(socket_, boost::asio::buffer(
-			        read_msg_.data(), chat_message::header_length),
-			        boost::bind(&posix_chat_client::handle_read_header, this,
-			                boost::asio::placeholders::error));
+					read_msg_.data(), chat_message::header_length),
+					boost::bind(&posix_chat_client::handle_read_header, this,
+							boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -122,9 +122,9 @@ private:
 	}
 
 	void handle_read_input(const boost::system::error_code& error,
-	        std::size_t length)
+			std::size_t length)
 	{
-		if(!error)
+		if (!error)
 		{
 			// Write the message (minus the newline) to the server.
 			write_msg_.body_length(length - 1);
@@ -132,20 +132,20 @@ private:
 			input_buffer_.consume(1); // Remove newline from input.
 			write_msg_.encode_header();
 			boost::asio::async_write(socket_, boost::asio::buffer(
-			        write_msg_.data(), write_msg_.length()), boost::bind(
-			        &posix_chat_client::handle_write, this,
-			        boost::asio::placeholders::error));
+					write_msg_.data(), write_msg_.length()), boost::bind(
+					&posix_chat_client::handle_write, this,
+					boost::asio::placeholders::error));
 		}
-		else if(error == boost::asio::error::not_found)
+		else if (error == boost::asio::error::not_found)
 		{
 			// Didn't get a newline. Send whatever we have.
 			write_msg_.body_length(input_buffer_.size());
 			input_buffer_.sgetn(write_msg_.body(), input_buffer_.size());
 			write_msg_.encode_header();
 			boost::asio::async_write(socket_, boost::asio::buffer(
-			        write_msg_.data(), write_msg_.length()), boost::bind(
-			        &posix_chat_client::handle_write, this,
-			        boost::asio::placeholders::error));
+					write_msg_.data(), write_msg_.length()), boost::bind(
+					&posix_chat_client::handle_write, this,
+					boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -155,13 +155,13 @@ private:
 
 	void handle_write(const boost::system::error_code& error)
 	{
-		if(!error)
+		if (!error)
 		{
 			// Read a line of input entered by the user.
 			boost::asio::async_read_until(input_, input_buffer_, '\n',
-			        boost::bind(&posix_chat_client::handle_read_input, this,
-			                boost::asio::placeholders::error,
-			                boost::asio::placeholders::bytes_transferred));
+					boost::bind(&posix_chat_client::handle_read_input, this,
+							boost::asio::placeholders::error,
+							boost::asio::placeholders::bytes_transferred));
 		}
 		else
 		{
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		if(argc != 3)
+		if (argc != 3)
 		{
 			std::cerr << "Usage: posix_chat_client <host> <port>\n";
 			return 1;
@@ -206,7 +206,7 @@ int main(int argc, char* argv[])
 
 		io_service.run();
 	}
-	catch(std::exception& e)
+	catch (std::exception& e)
 	{
 		std::cerr << "Exception: " << e.what() << "\n";
 	}

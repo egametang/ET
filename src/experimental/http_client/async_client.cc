@@ -21,7 +21,7 @@ class client
 {
 public:
 	client(boost::asio::io_service& io_service, const std::string& server,
-	        const std::string& path) :
+			const std::string& path) :
 		resolver_(io_service), socket_(io_service)
 	{
 		// Form the request. We specify the "Connection: close" header so that the
@@ -38,22 +38,22 @@ public:
 		// into a list of endpoints.
 		tcp::resolver::query query(server, "http");
 		resolver_.async_resolve(query, boost::bind(&client::handle_resolve,
-		        this, boost::asio::placeholders::error,
-		        boost::asio::placeholders::iterator));
+				this, boost::asio::placeholders::error,
+				boost::asio::placeholders::iterator));
 	}
 
 private:
 	void handle_resolve(const boost::system::error_code& err,
-	        tcp::resolver::iterator endpoint_iterator)
+			tcp::resolver::iterator endpoint_iterator)
 	{
-		if(!err)
+		if (!err)
 		{
 			// Attempt a connection to the first endpoint in the list. Each endpoint
 			// will be tried until we successfully establish a connection.
 			tcp::endpoint endpoint = *endpoint_iterator;
 			socket_.async_connect(endpoint, boost::bind(
-			        &client::handle_connect, this,
-			        boost::asio::placeholders::error, ++endpoint_iterator));
+					&client::handle_connect, this,
+					boost::asio::placeholders::error, ++endpoint_iterator));
 		}
 		else
 		{
@@ -62,23 +62,23 @@ private:
 	}
 
 	void handle_connect(const boost::system::error_code& err,
-	        tcp::resolver::iterator endpoint_iterator)
+			tcp::resolver::iterator endpoint_iterator)
 	{
-		if(!err)
+		if (!err)
 		{
 			// The connection was successful. Send the request.
 			boost::asio::async_write(socket_, request_, boost::bind(
-			        &client::handle_write_request, this,
-			        boost::asio::placeholders::error));
+					&client::handle_write_request, this,
+					boost::asio::placeholders::error));
 		}
-		else if(endpoint_iterator != tcp::resolver::iterator())
+		else if (endpoint_iterator != tcp::resolver::iterator())
 		{
 			// The connection failed. Try the next endpoint in the list.
 			socket_.close();
 			tcp::endpoint endpoint = *endpoint_iterator;
 			socket_.async_connect(endpoint, boost::bind(
-			        &client::handle_connect, this,
-			        boost::asio::placeholders::error, ++endpoint_iterator));
+					&client::handle_connect, this,
+					boost::asio::placeholders::error, ++endpoint_iterator));
 		}
 		else
 		{
@@ -88,12 +88,12 @@ private:
 
 	void handle_write_request(const boost::system::error_code& err)
 	{
-		if(!err)
+		if (!err)
 		{
 			// Read the response status line.
 			boost::asio::async_read_until(socket_, response_, "\r\n",
-			        boost::bind(&client::handle_read_status_line, this,
-			                boost::asio::placeholders::error));
+					boost::bind(&client::handle_read_status_line, this,
+							boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -103,7 +103,7 @@ private:
 
 	void handle_read_status_line(const boost::system::error_code& err)
 	{
-		if(!err)
+		if (!err)
 		{
 			// Check that response is OK.
 			std::istream response_stream(&response_);
@@ -113,12 +113,12 @@ private:
 			response_stream >> status_code;
 			std::string status_message;
 			std::getline(response_stream, status_message);
-			if(!response_stream || http_version.substr(0, 5) != "HTTP/")
+			if (!response_stream || http_version.substr(0, 5) != "HTTP/")
 			{
 				std::cout << "Invalid response\n";
 				return;
 			}
-			if(status_code != 200)
+			if (status_code != 200)
 			{
 				std::cout << "Response returned with status code ";
 				std::cout << status_code << "\n";
@@ -128,8 +128,8 @@ private:
 
 			// Read the response headers, which are terminated by a blank line.
 			boost::asio::async_read_until(socket_, response_, "\r\n\r\n",
-			        boost::bind(&client::handle_read_headers, this,
-			                boost::asio::placeholders::error));
+					boost::bind(&client::handle_read_headers, this,
+							boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -139,26 +139,26 @@ private:
 
 	void handle_read_headers(const boost::system::error_code& err)
 	{
-		if(!err)
+		if (!err)
 		{
 			// Process the response headers.
 			std::istream response_stream(&response_);
 			std::string header;
-			while(std::getline(response_stream, header) && header != "\r")
+			while (std::getline(response_stream, header) && header != "\r")
 				std::cout << header << "\n";
 			std::cout << "\n";
 
 
 			// Write whatever content we already have to output.
-			if(response_.size() > 0)
+			if (response_.size() > 0)
 				std::cout << &response_;
 
 
 			// Start reading remaining data until EOF.
 			boost::asio::async_read(socket_, response_,
-			        boost::asio::transfer_at_least(1), boost::bind(
-			                &client::handle_read_content, this,
-			                boost::asio::placeholders::error));
+					boost::asio::transfer_at_least(1), boost::bind(
+							&client::handle_read_content, this,
+							boost::asio::placeholders::error));
 		}
 		else
 		{
@@ -168,7 +168,7 @@ private:
 
 	void handle_read_content(const boost::system::error_code& err)
 	{
-		if(!err)
+		if (!err)
 		{
 			// Write all of the data that has been read so far.
 			std::cout << &response_;
@@ -176,11 +176,11 @@ private:
 
 			// Continue reading remaining data until EOF.
 			boost::asio::async_read(socket_, response_,
-			        boost::asio::transfer_at_least(1), boost::bind(
-			                &client::handle_read_content, this,
-			                boost::asio::placeholders::error));
+					boost::asio::transfer_at_least(1), boost::bind(
+							&client::handle_read_content, this,
+							boost::asio::placeholders::error));
 		}
-		else if(err != boost::asio::error::eof)
+		else if (err != boost::asio::error::eof)
 		{
 			std::cout << "Error: " << err << "\n";
 		}
@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
 {
 	try
 	{
-		if(argc != 3)
+		if (argc != 3)
 		{
 			std::cout << "Usage: async_client <server> <path>\n";
 			std::cout << "Example:\n";
@@ -208,7 +208,7 @@ int main(int argc, char* argv[])
 		client c(io_service, argv[1], argv[2]);
 		io_service.run();
 	}
-	catch(std::exception& e)
+	catch (std::exception& e)
 	{
 		std::cout << "Exception: " << e.what() << "\n";
 	}

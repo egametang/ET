@@ -25,7 +25,7 @@ private:
 	condition_variable cond;
 	condition_variable done;
 	list<thread_ptr> threads;
-	list< function<void (void)> > tasks;
+	list<function<void(void)> > tasks;
 
 	void Runner();
 public:
@@ -34,7 +34,7 @@ public:
 	void Start();
 	void Stop();
 	void SetNum(int n);
-	bool PushTask(function<void (void)> task);
+	bool PushTask(function<void(void)> task);
 };
 } // namespace hainan
 #endif  // THREAD_THREAD_POOL_H

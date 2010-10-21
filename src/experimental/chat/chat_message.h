@@ -27,7 +27,7 @@ public:
 		max_body_length = 512
 	};
 
-	chat_message():
+	chat_message() :
 		body_length_(0)
 	{
 	}
@@ -65,7 +65,7 @@ public:
 	void body_length(size_t length)
 	{
 		body_length_ = length;
-		if(body_length_ > max_body_length)
+		if (body_length_ > max_body_length)
 			body_length_ = max_body_length;
 	}
 
@@ -76,7 +76,7 @@ public:
 		char header[header_length + 1] = "";
 		strncat(header, data_, header_length);
 		body_length_ = atoi(header);
-		if(body_length_ > max_body_length)
+		if (body_length_ > max_body_length)
 		{
 			body_length_ = 0;
 			return false;

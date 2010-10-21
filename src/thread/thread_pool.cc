@@ -14,7 +14,7 @@ ThreadPool::~ThreadPool()
 void ThreadPool::Start()
 {
 	running = true;
-	for(int i = 0; i < num; ++i)
+	for (int i = 0; i < num; ++i)
 	{
 		thread_ptr t(new thread(bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);

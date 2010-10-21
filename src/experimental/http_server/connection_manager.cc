@@ -29,7 +29,7 @@ void connection_manager::stop(connection_ptr c)
 void connection_manager::stop_all()
 {
 	std::for_each(connections_.begin(), connections_.end(), boost::bind(
-	        &connection::stop, _1));
+			&connection::stop, _1));
 	connections_.clear();
 }
 

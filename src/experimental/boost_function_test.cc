@@ -7,32 +7,31 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-namespace hainan
+namespace hainan {
+class BoostTest: public testing::Test
 {
-	class BoostTest: public testing::Test
+	void SetUp()
 	{
-		void SetUp()
-		{
-			a = 6;
-		}
-	protected:
-		int a;
-		boost::function<int(int)> func;
-	public:
-		int Max(int a, int b)
-		{
-			LOG(INFO) << a << " " << b;
-			return a > b? a : b;
-		}
-	};
-
-	TEST_F(BoostTest, Test1)
-	{
-		int x = 5;
-		func = boost::bind(&BoostTest::Max, this, _1, x);
-		int b = func(a);
-		LOG(INFO) << b;
+		a = 6;
 	}
+protected:
+	int a;
+	boost::function<int(int)> func;
+public:
+	int Max(int a, int b)
+	{
+		LOG(INFO) << a << " " << b;
+		return a > b? a : b;
+	}
+};
+
+TEST_F(BoostTest, Test1)
+{
+	int x = 5;
+	func = boost::bind(&BoostTest::Max, this, _1, x);
+	int b = func(a);
+	LOG(INFO) << b;
+}
 }
 
 int main(int argc, char* argv[])
