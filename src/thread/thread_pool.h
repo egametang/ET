@@ -15,7 +15,7 @@ using namespace boost;
 
 typedef shared_ptr<thread> thread_ptr;
 
-class ThreadPool: private noncopyable
+class thread_pool: private noncopyable
 {
 private:
 	int num;
@@ -27,14 +27,14 @@ private:
 	list<thread_ptr> threads;
 	list<function<void(void)> > tasks;
 
-	void Runner();
+	void runner();
 public:
-	ThreadPool();
-	~ThreadPool();
-	void Start();
-	void Stop();
-	void SetNum(int n);
-	bool PushTask(function<void(void)> task);
+	thread_pool();
+	~thread_pool();
+	void start();
+	void stop();
+	void set_num(int n);
+	bool push_task(function<void(void)> task);
 };
 } // namespace hainan
 #endif  // THREAD_THREAD_POOL_H

@@ -3,27 +3,27 @@
 
 namespace hainan {
 
-ThreadPool::ThreadPool() :
+thread_pool::thread_pool() :
 	num(0), running(false), work_num(0)
 {
 }
-ThreadPool::~ThreadPool()
+thread_pool::~thread_pool()
 {
 }
 
-void ThreadPool::Start()
+void thread_pool::start()
 {
 	running = true;
 	for (int i = 0; i < num; ++i)
 	{
-		thread_ptr t(new thread(bind(&ThreadPool::Runner, this)));
+		thread_ptr t(new thread(bind(&thread_pool::runner, this)));
 		threads.push_back(t);
 		t->detach();
 	}
 	work_num = num;
 }
 
-void ThreadPool::Stop()
+void thread_pool::stop()
 {
 	VLOG(3)<< "Stop";
 	mutex::scoped_lock lock(mtx);
@@ -36,7 +36,7 @@ void ThreadPool::Stop()
 	}
 }
 
-void ThreadPool::Runner()
+void thread_pool::runner()
 {
 	VLOG(3) << "thread start";
 	bool continued = true;
@@ -77,7 +77,7 @@ void ThreadPool::Runner()
 	}
 }
 
-bool ThreadPool::PushTask(function<void (void)> task)
+bool thread_pool::push_task(function<void (void)> task)
 {
 	VLOG(3) << "push task";
 	{
@@ -93,7 +93,7 @@ bool ThreadPool::PushTask(function<void (void)> task)
 	return true;
 }
 
-void ThreadPool::SetNum(int n)
+void thread_pool::set_num(int n)
 {
 	num = n;
 }
