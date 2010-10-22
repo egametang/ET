@@ -7,7 +7,7 @@
 
 namespace hainan {
 
-class ThreadPoolTest: public testing::Test
+class thread_pool_test: public testing::Test
 {
 	void SetUp()
 	{
@@ -20,17 +20,17 @@ class ThreadPoolTest: public testing::Test
 protected:
 	thread_pool pool;
 public:
-	ThreadPoolTest() :
+	thread_pool_test() :
 		pool()
 	{
 	}
-	void Max(int a, int b, int* z)
+	void max(int a, int b, int* z)
 	{
 		*z = a > b? a : b;
 	}
 };
 
-TEST_F(ThreadPoolTest, Test1)
+TEST_F(thread_pool_test, Test1)
 {
 	vector<int> x(100, 8);
 	vector<int> y(100, 9);
@@ -38,7 +38,7 @@ TEST_F(ThreadPoolTest, Test1)
 	for (int i = 0; i < 100; ++i)
 	{
 		pool.push_task(
-				bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
+				bind(&thread_pool_test::max, this, x[i], y[i], &z[i]));
 	}
 	pool.stop();
 	for (int i = 0; i < 100; ++i)
