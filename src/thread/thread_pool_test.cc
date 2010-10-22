@@ -11,17 +11,17 @@ class ThreadPoolTest: public testing::Test
 {
 	void SetUp()
 	{
-		thread_pool.set_num(10);
-		thread_pool.start();
+		pool.set_num(10);
+		pool.start();
 	}
 	void TearDown()
 	{
 	}
 protected:
-	thread_pool thread_pool;
+	thread_pool pool;
 public:
 	ThreadPoolTest() :
-		thread_pool()
+		pool()
 	{
 	}
 	void Max(int a, int b, int* z)
@@ -37,10 +37,10 @@ TEST_F(ThreadPoolTest, Test1)
 	vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
-		thread_pool.push_task(
+		pool.push_task(
 				bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
 	}
-	thread_pool.stop();
+	pool.stop();
 	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i])<< "i = " << i;

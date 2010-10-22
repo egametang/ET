@@ -4,5 +4,6 @@
 
 .sconsign.dblite
 
+.settings/
 dbg/
 opt/
