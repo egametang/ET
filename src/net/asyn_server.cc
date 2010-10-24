@@ -1,13 +1,13 @@
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 #include "base/base.h"
 #include "net/asyn_server.h"
-#include "net/connection.h"
 
 namespace hainan {
 
-explicit asyn_server::asyn_server(const string& address, const string& port) :
+asyn_server::asyn_server(const std::string& address, const std::string& port) :
 	io_service_(), acceptor_(io_service_),
-	new_connection_(new connection(io_service_, connections_))
+	connections_(), new_connection_(new connection(io_service_, connections_))
 {
 	boost::asio::ip::tcp::resolver resolver(io_service_);
 	boost::asio::ip::tcp::resolver::query query(address, port);
@@ -17,19 +17,19 @@ explicit asyn_server::asyn_server(const string& address, const string& port) :
 	acceptor_.bind(endpoint);
 	acceptor_.listen();
 	acceptor_.async_accept(new_connection_->socket(),
-			boost::bind(&server::handle_accept, this,
-					asio::placeholders::error));
+			boost::bind(&asyn_server::handle_accept, this,
+					boost::asio::placeholders::error));
 }
 
-void asyn_server::handle_accept(const system::error_code& e)
+void asyn_server::handle_accept(const boost::system::error_code& e)
 {
 	if (!e)
 	{
 		connections_.insert(new_connection_);
 		new_connection_.reset(new connection(io_service_, connections_));
 		acceptor_.async_accept(new_connection_->socket(),
-				boost::bind(&server::handle_accept, this,
-						asio::placeholders::error));
+				boost::bind(&asyn_server::handle_accept, this,
+						boost::asio::placeholders::error));
 	}
 }
 
@@ -50,7 +50,7 @@ void asyn_server::start()
 
 void asyn_server::stop()
 {
-	io_service_.post(boost::bind(&asyn_server::handle_stop(), this));
+	io_service_.post(boost::bind(&asyn_server::handle_stop, this));
 }
 
 } // namespace hainan

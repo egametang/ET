@@ -3,6 +3,7 @@ Import('env')
 subdirs = [
 	'experimental',
 	'thread',
+	'net',
 ]
 
 for subdir in subdirs:

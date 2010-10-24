@@ -8,7 +8,7 @@
 
 namespace hainan {
 
-class asyn_server: private noncopyable
+class asyn_server: private boost::noncopyable
 {
 private:
 	// hold all connection
@@ -17,13 +17,14 @@ private:
 	boost::asio::ip::tcp::acceptor acceptor_;
 	connection_ptr new_connection_;
 
-	void handle_accept(const system::error_code& e);
+	void handle_accept(const boost::system::error_code& e);
 	void handle_stop();
 public:
-	explicit asyn_server(const string& address, const string& port);
+	explicit asyn_server(const std::string& address, const std::string& port);
 	void start();
 	void stop();
 };
+
 } // hainan
 
 #endif // NET_ASYNSERVER_H

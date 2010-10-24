@@ -11,5 +11,5 @@ net_lib = net_env.StaticLibrary('net', net_src)
 
 net_env.Append(LIBS=net_lib)
 
-net_env.Program('asyn_server_test.cc')
+#net_env.Program('asyn_server_test.cc')
 net_env.Program('connection_test.cc')
