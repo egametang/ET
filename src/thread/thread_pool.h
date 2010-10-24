@@ -10,22 +10,19 @@
 
 namespace hainan {
 
-using namespace std;
-using namespace boost;
+typedef boost::shared_ptr<boost::thread> thread_ptr;
 
-typedef shared_ptr<thread> thread_ptr;
-
-class thread_pool: private noncopyable
+class thread_pool: private boost::noncopyable
 {
 private:
-	int num;
-	volatile int work_num;
-	volatile bool running;
-	mutex mtx;
-	condition_variable cond;
-	condition_variable done;
-	list<thread_ptr> threads;
-	list<function<void(void)> > tasks;
+	int num_;
+	volatile int work_num_;
+	volatile bool running_;
+	boost::mutex mutex_;
+	boost::condition_variable cond_;
+	boost::condition_variable done_;
+	std::list<thread_ptr> threads_;
+	std::list<boost::function<void(void)> > tasks_;
 
 	void runner();
 public:
@@ -34,7 +31,7 @@ public:
 	void start();
 	void stop();
 	void set_num(int n);
-	bool push_task(function<void(void)> task);
+	bool push_task(boost::function<void(void)> task);
 };
 } // namespace hainan
 #endif  // THREAD_THREAD_POOL_H

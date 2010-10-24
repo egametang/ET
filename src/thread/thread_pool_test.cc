@@ -32,9 +32,9 @@ public:
 
 TEST_F(thread_pool_test, Test1)
 {
-	vector<int> x(100, 8);
-	vector<int> y(100, 9);
-	vector<int> z(100, 0);
+	std::vector<int> x(100, 8);
+	std::vector<int> y(100, 9);
+	std::vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
 		pool.push_task(

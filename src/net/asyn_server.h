@@ -4,22 +4,18 @@
 #include <string>
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
+#include "net/connection.h"
 
 namespace hainan {
-
-using namespace std;
-using namespace boost;
 
 class asyn_server: private noncopyable
 {
 private:
-	typedef unordered_set<connection> connection_set;
-
 	// hold all connection
-	connectionSet all_connections;
-	asio::io_service io_service;
-	asio::ip::tcp::acceptor acceptor;
-	connection_ptr new_connection;
+	connection_set connections_;
+	boost::asio::io_service io_service_;
+	boost::asio::ip::tcp::acceptor acceptor_;
+	connection_ptr new_connection_;
 
 	void handle_accept(const system::error_code& e);
 	void handle_stop();
