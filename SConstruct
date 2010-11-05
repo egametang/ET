@@ -47,5 +47,5 @@ env.AddMethod(Test, 'Test')
 
 Export('env')
 
-SConscript('src/SConscript', variant_dir=env['MODE'])
+SConscript('src/SConscript', variant_dir=env['MODE'], duplicate=0)
 
