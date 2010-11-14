@@ -1,7 +1,6 @@
 #ifndef THREAD_THREAD_POOL_H
 #define THREAD_THREAD_POOL_H
 
-#include <vector>
 #include <list>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>

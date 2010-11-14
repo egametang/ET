@@ -30,7 +30,7 @@ void thread_pool::stop()
 	boost::mutex::scoped_lock lock(mutex_);
 	running_ = false;
 	cond_.notify_all();
-	while(work_num_ > 0)
+	while (work_num_ > 0)
 	{
 		VLOG(3) << "done tasks size = " << tasks_.size();
 		done_.wait(lock);
@@ -41,19 +41,19 @@ void thread_pool::runner()
 {
 	VLOG(3) << "thread start";
 	bool continued = true;
-	while(continued)
+	while (continued)
 	{
 		boost::function<void (void)> task;
 		{
 			VLOG(3) << "loop lock";
 			boost::mutex::scoped_lock lock(mutex_);
 			VLOG(3) << "loop lock ok";
-			while(running_ && tasks_.empty())
+			while (running_ && tasks_.empty())
 			{
 				cond_.wait(lock);
 				VLOG(3) << "cond";
 			}
-			if(!tasks_.empty())
+			if (!tasks_.empty())
 			{
 				VLOG(3) << "fetch task";
 				task = tasks_.front();
@@ -66,12 +66,12 @@ void thread_pool::runner()
 			VLOG(3) << "loop unlock";
 		}
 
-		if(task)
+		if (task)
 		{
 			task();
 		}
 	}
-	if(__sync_sub_and_fetch(&work_num_, 1) == 0)
+	if (__sync_sub_and_fetch(&work_num_, 1) == 0)
 	{
 		VLOG(3) << "work_num = " << work_num_;
 		done_.notify_one();
@@ -83,7 +83,7 @@ bool thread_pool::push_task(boost::function<void (void)> task)
 	VLOG(3) << "push task";
 	{
 		boost::mutex::scoped_lock lock(mutex_);
-		if(!running_)
+		if (!running_)
 		{
 			return false;
 		}

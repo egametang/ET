@@ -30,7 +30,7 @@ public:
 	void stop();
 	virtual void handle_read(const boost::system::error_code& e,
 			size_t bytes_transferred) = 0;
-	virtual void handle_writer(const boost::system::error_code& e) = 0;
+	virtual void handle_write(const boost::system::error_code& e) = 0;
 };
 
 } // namespace hainan
