@@ -5,11 +5,9 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-#include <boost/smart_ptr.hpp>
+#include "base/base.h"
 
 namespace hainan {
-
-typedef boost::shared_ptr<boost::thread> thread_ptr;
 
 class thread_pool: private boost::noncopyable
 {
@@ -21,7 +19,7 @@ private:
 	boost::condition_variable cond_;
 	boost::condition_variable done_;
 	std::list<thread_ptr> threads_;
-	std::list<boost::function<void(void)> > tasks_;
+	std::list<boost::function<void (void)> > tasks_;
 
 	void runner();
 public:
@@ -30,7 +28,9 @@ public:
 	void start();
 	void stop();
 	void set_num(int n);
-	bool push_task(boost::function<void(void)> task);
+	bool push_task(boost::function<void (void)> task);
 };
+
+typedef boost::shared_ptr<thread_pool> thread_pool_ptr;
 } // namespace hainan
-#endif  // THREAD_THREAD_POOL_H
+#endif // THREAD_THREAD_POOL_H

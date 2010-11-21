@@ -1,6 +1,7 @@
 #ifndef BASE_BASE_H
 #define BASE_BASE_H
 
-#define foreach BOOST_FOREACH
+#include "base/typedefs.h"
+#include "base/marcos.h"
 
-#endif  // BASE_BASE_H
+#endif // BASE_BASE_H
