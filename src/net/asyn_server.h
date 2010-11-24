@@ -25,6 +25,6 @@ public:
 	void stop();
 };
 
-} // hainan
+} // namespace hainan
 
 #endif // NET_ASYNSERVER_H
