@@ -12,14 +12,14 @@ namespace hainan {
 class thread_pool: private boost::noncopyable
 {
 private:
-	int num_;
-	volatile int work_num_;
-	volatile bool running_;
-	boost::mutex mutex_;
-	boost::condition_variable cond_;
-	boost::condition_variable done_;
-	std::list<thread_ptr> threads_;
-	std::list<boost::function<void (void)> > tasks_;
+	int num;
+	volatile int work_num;
+	volatile bool running;
+	boost::mutex mutex;
+	boost::condition_variable cond;
+	boost::condition_variable done;
+	std::list<thread_ptr> threads;
+	std::list<boost::function<void (void)> > tasks;
 
 	void runner();
 public:
@@ -27,7 +27,7 @@ public:
 	~thread_pool();
 	void start();
 	void stop();
-	void set_num(int n);
+	void set_num(int num);
 	bool push_task(boost::function<void (void)> task);
 };
 

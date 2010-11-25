@@ -6,7 +6,7 @@ namespace hainan {
 google::protobuf::Closure* to_closure();
 
 rpc_channel::rpc_channel(std::string& host, int port):
-		id_(0)
+		id(0)
 {
 }
 
@@ -29,11 +29,11 @@ void rpc_channel::CallMethod(
 		google::protobuf::Message* response,
 		google::protobuf::Closure* done) {
 	rpc_request req;
-	req.set_id(++id_);
+	req.set_id(++id);
 	req.set_method(method->full_name());
 	req.set_request(request->SerializeAsString());
 	rpc_callback callback(controller, response, done);
-	communicator_.send_message(req, callback);
+	communicator.send_message(req, callback);
 }
 
 } // namespace hainan

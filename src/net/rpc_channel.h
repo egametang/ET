@@ -12,8 +12,8 @@ namespace hainan {
 class rpc_channel: public google::protobuf::RpcChannel
 {
 private:
-	int32 id_;
-	rpc_communicator communicator_;
+	int32 id;
+	rpc_communicator communicator;
 public:
 	rpc_channel(std::string& host, int port);
 	~rpc_channel();

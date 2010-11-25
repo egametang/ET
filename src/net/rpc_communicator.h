@@ -11,7 +11,7 @@ class rpc_callback;
 class rpc_communicator
 {
 private:
-	boost::asio::ip::tcp::socket socket_;
+	boost::asio::ip::tcp::socket socket;
 public:
 	rpc_communicator(boost::asio::ip::tcp::endpoint& endpoint);
 	~rpc_communicator();
