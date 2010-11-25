@@ -1,7 +1,7 @@
 #include <google/protobuf/message.h>
 #include "net/rpc_channel.h"
 
-namespace hainan {
+namespace Hainan {
 
 google::protobuf::Closure* to_closure();
 
@@ -36,4 +36,4 @@ void rpc_channel::CallMethod(
 	communicator.send_message(req, callback);
 }
 
-} // namespace hainan
+} // namespace Hainan

@@ -1,30 +1,30 @@
 #include <glog/logging.h>
-#include "thread/thread_pool.h"
+#include "Thread/ThreadPool.h"
 
-namespace hainan {
+namespace Hainan {
 
-thread_pool::thread_pool() :
+ThreadPool::ThreadPool() :
 	num(0), running(false), work_num(0)
 {
 }
-thread_pool::~thread_pool()
+ThreadPool::~ThreadPool()
 {
 }
 
-void thread_pool::start()
+void ThreadPool::Start()
 {
 	running = true;
 	for (int i = 0; i < num; ++i)
 	{
 		thread_ptr t(new boost::thread(
-				boost::bind(&thread_pool::runner, this)));
+				boost::bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);
 		t->detach();
 	}
 	work_num = num;
 }
 
-void thread_pool::stop()
+void ThreadPool::Stop()
 {
 	VLOG(3)<< "Stop";
 	boost::mutex::scoped_lock lock(mutex);
@@ -37,7 +37,7 @@ void thread_pool::stop()
 	}
 }
 
-void thread_pool::runner()
+void ThreadPool::Runner()
 {
 	VLOG(3) << "thread start";
 	bool continued = true;
@@ -78,7 +78,7 @@ void thread_pool::runner()
 	}
 }
 
-bool thread_pool::push_task(boost::function<void (void)> task)
+bool ThreadPool::PushTask(boost::function<void (void)> task)
 {
 	VLOG(3) << "push task";
 	{
@@ -94,9 +94,9 @@ bool thread_pool::push_task(boost::function<void (void)> task)
 	return true;
 }
 
-void thread_pool::set_num(int num)
+void ThreadPool::SetNum(int num)
 {
 	this->num = num;
 }
 
-} // namespace hainan
+} // namespace Hainan

@@ -3,7 +3,7 @@
 
 #include <google/protobuf/service.h>
 
-namespace hainan {
+namespace Hainan {
 
 class rpc_controller: public google::protobuf::RpcController
 {
@@ -11,6 +11,6 @@ public:
 
 };
 
-} // namespace hainan
+} // namespace Hainan
 
 #endif // NET_RPC_CONTROLLER_H

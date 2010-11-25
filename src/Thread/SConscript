@@ -7,11 +7,11 @@ thread_env.Append(LIBS=[
 ])
 
 thread_src = [
-	'thread_pool.cc',
+	'ThreadPool.cc',
 ]
 
 thread_lib = thread_env.StaticLibrary('thread', thread_src)
 
 thread_env.Append(LIBS=thread_lib)
 
-thread_env.Test('thread_pool_test', 'thread_pool_test.cc')
+thread_env.Test('ThreadPoolTest', 'ThreadPoolTest.cc')

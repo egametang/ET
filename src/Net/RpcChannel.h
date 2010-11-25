@@ -7,7 +7,7 @@
 #include "base/base.h"
 #include "net/rpc_communicator.h"
 
-namespace hainan {
+namespace Hainan {
 
 class rpc_channel: public google::protobuf::RpcChannel
 {
@@ -25,6 +25,6 @@ public:
 			google::protobuf::Closure* done);
 };
 
-} // namespace hainan
+} // namespace Hainan
 
 #endif // NET_RPC_CHANNEL_H

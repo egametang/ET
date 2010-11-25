@@ -3,7 +3,7 @@
 
 #include <boost/asio.hpp>
 
-namespace hainan {
+namespace Hainan {
 
 class rpc_request;
 class rpc_callback;

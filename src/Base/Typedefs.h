@@ -12,7 +12,7 @@ typedef boost::uint32_t uint32;
 typedef boost::uint64_t uint64;
 
 // smart_ptr typedef
-typedef boost::shared_ptr<boost::thread> thread_ptr;
-typedef boost::shared_ptr<google::protobuf::Service> protobuf_service_ptr;
+typedef boost::shared_ptr<boost::thread> ThreadPtr;
+typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
 
 #endif // BASE_TYPEDEFS_H

@@ -7,9 +7,9 @@
 #include <boost/bind.hpp>
 #include "base/base.h"
 
-namespace hainan {
+namespace Hainan {
 
-class thread_pool: private boost::noncopyable
+class ThreadPool: private boost::noncopyable
 {
 private:
 	int num;
@@ -18,19 +18,19 @@ private:
 	boost::mutex mutex;
 	boost::condition_variable cond;
 	boost::condition_variable done;
-	std::list<thread_ptr> threads;
+	std::list<ThreadPtr> threads;
 	std::list<boost::function<void (void)> > tasks;
 
-	void runner();
+	void Runner();
 public:
-	thread_pool();
-	~thread_pool();
-	void start();
-	void stop();
-	void set_num(int num);
-	bool push_task(boost::function<void (void)> task);
+	ThreadPool();
+	~ThreadPool();
+	void Start();
+	void Stop();
+	void SetNum(int num);
+	bool PushTask(boost::function<void (void)> task);
 };
 
-typedef boost::shared_ptr<thread_pool> thread_pool_ptr;
-} // namespace hainan
+typedef boost::shared_ptr<ThreadPool> ThreadPoolPtr;
+} // namespace Hainan
 #endif // THREAD_THREAD_POOL_H

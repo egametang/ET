@@ -3,22 +3,22 @@
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include "thread/thread_pool.h"
+#include "Thread/ThreadPool.h"
 
-namespace hainan {
+namespace Hainan {
 
 class thread_pool_test: public testing::Test
 {
 	void SetUp()
 	{
-		pool.set_num(10);
-		pool.start();
+		pool.SetNum(10);
+		pool.Start();
 	}
 	void TearDown()
 	{
 	}
 protected:
-	thread_pool pool;
+	ThreadPool pool;
 public:
 	thread_pool_test() :
 		pool()
@@ -40,13 +40,13 @@ TEST_F(thread_pool_test, Test1)
 		pool.push_task(
 				bind(&thread_pool_test::max, this, x[i], y[i], &z[i]));
 	}
-	pool.stop();
+	pool.Stop();
 	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i])<< "i = " << i;
 	}
 }
-} // namespace hainan
+} // namespace Hainan
 
 int main(int argc, char* argv[])
 {

@@ -1,6 +1,6 @@
 #include "net/rpc_communicator.h"
 
-namespace hainan {
+namespace Hainan {
 
 void rpc_communicator::send_message(
 		const rpc_request& req, rpc_callback& callback)
@@ -8,4 +8,4 @@ void rpc_communicator::send_message(
 
 }
 
-} // namespace hainan
+} // namespace Hainan

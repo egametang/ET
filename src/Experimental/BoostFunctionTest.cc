@@ -7,7 +7,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-namespace hainan {
+namespace Hainan {
 class BoostTest: public testing::Test
 {
 	void SetUp()
