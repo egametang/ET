@@ -4,19 +4,27 @@
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
-#include "base/base.h"
-#include "net/rpc_communicator.h"
+#include "Base/Base.h"
+#include "Net/RpcCommunicator.h"
 
 namespace Hainan {
 
-class rpc_channel: public google::protobuf::RpcChannel
+class RpcHandler;
+
+class RpcChannel: public google::protobuf::RpcChannel
 {
+	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
 private:
 	int32 id;
-	rpc_communicator communicator;
+	RpcCallbackMap handlers;
+	RpcCommunicator communicator;
+
+	void SendRequestHandler(int32 id, RpcHandlerPtr handler,
+			const boost::system::error_code& err);
+	void SendRequest(const RpcRequest& request, RpcHandlerPtr handler);
 public:
-	rpc_channel(std::string& host, int port);
-	~rpc_channel();
+	RpcChannel(std::string& host, int port);
+	~RpcChannel();
 	virtual void CallMethod(
 			const google::protobuf::MethodDescriptor* method,
 			google::protobuf::RpcController* controller,

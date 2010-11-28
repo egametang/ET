@@ -5,7 +5,7 @@
 
 namespace Hainan {
 
-class rpc_controller: public google::protobuf::RpcController
+class RpcController: public google::protobuf::RpcController
 {
 public:
 

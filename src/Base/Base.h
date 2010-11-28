@@ -1,7 +1,7 @@
 #ifndef BASE_BASE_H
 #define BASE_BASE_H
 
-#include "base/typedefs.h"
-#include "base/marcos.h"
+#include "Base/Typedefs.h"
+#include "Base/Marcos.h"
 
 #endif // BASE_BASE_H

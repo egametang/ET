@@ -1,21 +1,21 @@
-package hainan;
+package Hainan;
 
-enum response_type
+enum ResponseType
 {
 	RESPONSE_TYPE_OK = 1;
 	RESPONSE_TYPE_ERROR = 2;
 }
 
-message rpc_request
+message RpcRequest
 {
-	required uint32 id = 1;
+	required int32 id = 1;
 	required string method = 2;
 	optional bytes request = 3;
 }
 
-message rpc_response
+message RpcResponse
 {
-	required uint32 id = 1;
-	required response_type type = 2;
+	required int32 id = 1;
+	required ResponseType type = 2;
 	optional bytes response = 3;
 }

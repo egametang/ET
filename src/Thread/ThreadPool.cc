@@ -3,10 +3,15 @@
 
 namespace Hainan {
 
-ThreadPool::ThreadPool() :
-	num(0), running(false), work_num(0)
+ThreadPool::ThreadPool(int num) :
+	thread_num(num), running(false), work_num(0)
 {
+	if (thread_num == 0)
+	{
+		thread_num = boost::thread::hardware_concurrency();
+	}
 }
+
 ThreadPool::~ThreadPool()
 {
 }
@@ -14,14 +19,14 @@ ThreadPool::~ThreadPool()
 void ThreadPool::Start()
 {
 	running = true;
-	for (int i = 0; i < num; ++i)
+	for (int i = 0; i < thread_num; ++i)
 	{
 		thread_ptr t(new boost::thread(
 				boost::bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);
 		t->detach();
 	}
-	work_num = num;
+	work_num = thread_num;
 }
 
 void ThreadPool::Stop()
@@ -71,7 +76,7 @@ void ThreadPool::Runner()
 			task();
 		}
 	}
-	if (__sync_sub_and_fetch(&work_num, 1) == 0)
+	if (boost::detail::atomic_increment(&work_num) == 0)
 	{
 		VLOG(3) << "work_num = " << work_num;
 		done.notify_one();
@@ -92,11 +97,6 @@ bool ThreadPool::PushTask(boost::function<void (void)> task)
 	VLOG(3) << "push task unlock";
 	cond.notify_one();
 	return true;
-}
-
-void ThreadPool::SetNum(int num)
-{
-	this->num = num;
 }
 
 } // namespace Hainan

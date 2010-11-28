@@ -5,14 +5,14 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
-#include "base/base.h"
+#include "Base/Base.h"
 
 namespace Hainan {
 
 class ThreadPool: private boost::noncopyable
 {
 private:
-	int num;
+	int thread_num;
 	volatile int work_num;
 	volatile bool running;
 	boost::mutex mutex;
@@ -23,11 +23,10 @@ private:
 
 	void Runner();
 public:
-	ThreadPool();
+	ThreadPool(int num = 0);
 	~ThreadPool();
 	void Start();
 	void Stop();
-	void SetNum(int num);
 	bool PushTask(boost::function<void (void)> task);
 };
 

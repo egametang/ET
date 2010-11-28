@@ -5,17 +5,18 @@
 
 namespace Hainan {
 
-class rpc_request;
-class rpc_callback;
+class RpcRequest;
 
-class rpc_communicator
+class RpcCommunicator
 {
 private:
+	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::socket socket;
 public:
-	rpc_communicator(boost::asio::ip::tcp::endpoint& endpoint);
-	~rpc_communicator();
-	void send_message(const rpc_request& req, rpc_callback& callback);
+	RpcCommunicator(std::string& host, int port);
+	~RpcCommunicator();
+	void AsyncWrite(boost::asio::buffer buffer,
+			boost::function<void (const boost::asio::error_code&)> handler);
 };
 
 }
