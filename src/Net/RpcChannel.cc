@@ -7,13 +7,34 @@
 namespace Hainan {
 
 RpcChannel::RpcChannel(std::string& host, int port):
-		id(0)
+		id(0), communicator(host, port)
 {
-	// socket.async_connect(endpoint, );
+	RecvResponse();
 }
 
-void RpcCommunicator::SendRequestHandler(int32 id, RpcHandlerPtr handler,
+void RpcChannel::RecvResponseHandler(IOStreamPtr input, RpcRequestPtr request,
 		const boost::system::error_code& err)
+{
+	if (err)
+	{
+		LOG(FATAL) << "receive response failed";
+	}
+	int32 id = request->id();
+	RpcHandlerPtr handler = handlers[id];
+	handler->GetResponse()->ParsePartialFromIstream(input.get());
+	RecvResponse();
+}
+
+void RpcChannel::RecvResponse()
+{
+	std::stringstream ss;
+	communicator.AsyncRead(boost::asio::buffer(ss),
+			boost::bind(&RpcChannel::RecvResponseHandler, this,
+					boost::asio::placeholders::error));
+}
+
+void RpcChannel::SendRequestHandler(int32 id, RpcHandlerPtr handler,
+		const boost::asio::error_code err)
 {
 	if (err)
 	{
@@ -25,14 +46,36 @@ void RpcCommunicator::SendRequestHandler(int32 id, RpcHandlerPtr handler,
 	}
 }
 
-void RpcChannel::SendRequest(const RpcRequest& request, RpcHandlerPtr handler)
+void RpcChannel::SendRequestHandler(int32 id, RpcHandlerPtr handler,
+		const boost::asio::error_code& err)
 {
-	int size = request.ByteSize();
-	std::stringstream ss;
-	ss << size;
-	ss << request.SerializeAsString();
-	communicator.AsyncWrite(boost::asio::buffer(ss),
+	if (err)
+	{
+		LOG(ERROR) << "SendRequestHandler error:" << e.what();
+		return;
+	}
+}
+
+void RpcChannel::SendSizeHandler(int32 id, RpcHandlerPtr handler,
+		const boost::asio::error_code& err)
+{
+	if (err)
+	{
+		LOG(ERROR) << "SendSizeHandler error:" << e.what();
+		return;
+	}
+	string ss = request.SerializeAsString();
+	boost::asio::async_write(boost::asio::buffer(ss),
 			boost::bind(&RpcChannel::SendRequestHandler, this, request.id(),
+					handler, boost::asio::placeholders::error));
+}
+
+void RpcChannel::SendMessage(const RpcRequestPtr request, RpcHandlerPtr handler)
+{
+	int size = request->ByteSize();
+	string ss = boost::lexical_cast(size);
+	boost::asio::async_write(boost::asio::buffer(ss),
+			boost::bind(&RpcChannel::SendSizeHandler, this, request->id(),
 					handler, boost::asio::placeholders::error));
 }
 
@@ -41,14 +84,14 @@ void RpcChannel::CallMethod(
 		google::protobuf::RpcController* controller,
 		const google::protobuf::Message* request,
 		google::protobuf::Message* response,
-		google::protobuf::Closure* done) {
-	RpcRequest req;
-	req.set_id(++id);
-	req.set_method(method->full_name());
-	req.set_request(request->SerializeAsString());
-	RpcHandlerPtr handler = boost::make_shared<RpcHandler>(
-			controller, response, done);
-	SendRequest(req, handler);
+		google::protobuf::Closure* done)
+{
+	RpcRequestPtr req(new RpcRequest);
+	req->set_id(++id);
+	req->set_method(method->full_name());
+	req->set_request(request->SerializeAsString());
+	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
+	SendMessage(req, handler);
 }
 
 } // namespace Hainan

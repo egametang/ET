@@ -15,7 +15,7 @@ private:
 public:
 	RpcCommunicator(std::string& host, int port);
 	~RpcCommunicator();
-	void AsyncWrite(boost::asio::buffer buffer,
+	void AsyncWrite(boost::asio::buffer& buffer,
 			boost::function<void (const boost::asio::error_code&)> handler);
 };
 

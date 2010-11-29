@@ -8,7 +8,16 @@ namespace Hainan {
 class RpcController: public google::protobuf::RpcController
 {
 public:
+	RpcController();
+	~RpcController();
 
+	virtual void Reset();
+	virtual bool Failed() const;
+	virtual std::string ErrorText() const;
+	virtual void StartCancel();
+	virtual void SetFailed(const string& reason);
+	virtual bool IsCanceled() const;
+	virtual void NotifyOnCancel(Closure* callback);
 };
 
 } // namespace Hainan

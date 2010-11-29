@@ -19,9 +19,13 @@ private:
 	RpcCallbackMap handlers;
 	RpcCommunicator communicator;
 
+	boost::asio::io_service io_service;
+	boost::asio::ip::tcp::socket socket;
+
 	void SendRequestHandler(int32 id, RpcHandlerPtr handler,
 			const boost::system::error_code& err);
 	void SendRequest(const RpcRequest& request, RpcHandlerPtr handler);
+	void RecvResponse();
 public:
 	RpcChannel(std::string& host, int port);
 	~RpcChannel();

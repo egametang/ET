@@ -17,7 +17,7 @@ RpcCommunicator::~RpcCommunicator()
 {
 }
 
-void RpcCommunicator::AsyncWrite(boost::asio::buffer buffer,
+void RpcCommunicator::AsyncWrite(boost::asio::buffer& buffer,
 		boost::function<void (const boost::asio::error_code&)> handler)
 {
 	boost::asio::async_write(socket, buffer, handler);
