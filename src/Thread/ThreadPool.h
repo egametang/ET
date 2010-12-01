@@ -13,7 +13,7 @@ class ThreadPool: private boost::noncopyable
 {
 private:
 	int thread_num;
-	volatile int work_num;
+	boost::detail::atomic_count work_num;
 	volatile bool running;
 	boost::mutex mutex;
 	boost::condition_variable cond;

@@ -1,15 +1,13 @@
+#include <boost/detail/atomic_count.hpp>
 #include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 
 namespace Hainan {
 
 ThreadPool::ThreadPool(int num) :
-	thread_num(num), running(false), work_num(0)
+	thread_num(num? num : boost::thread::hardware_concurrency()),
+	work_num(thread_num), running(false), work_num(0)
 {
-	if (thread_num == 0)
-	{
-		thread_num = boost::thread::hardware_concurrency();
-	}
 }
 
 ThreadPool::~ThreadPool()
@@ -26,7 +24,6 @@ void ThreadPool::Start()
 		threads.push_back(t);
 		t->detach();
 	}
-	work_num = thread_num;
 }
 
 void ThreadPool::Stop()
@@ -76,7 +73,7 @@ void ThreadPool::Runner()
 			task();
 		}
 	}
-	if (boost::detail::atomic_increment(&work_num) == 0)
+	if (--work_num == 0)
 	{
 		VLOG(3) << "work_num = " << work_num;
 		done.notify_one();
