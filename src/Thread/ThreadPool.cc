@@ -5,9 +5,12 @@
 namespace Hainan {
 
 ThreadPool::ThreadPool(int num) :
-	thread_num(num? num : boost::thread::hardware_concurrency()),
-	work_num(thread_num), running(false), work_num(0)
+	thread_num(num), running(false), work_num(0)
 {
+	if (num == 0)
+	{
+		thread_num = boost::thread::hardware_concurrency();
+	}
 }
 
 ThreadPool::~ThreadPool()
@@ -19,10 +22,11 @@ void ThreadPool::Start()
 	running = true;
 	for (int i = 0; i < thread_num; ++i)
 	{
-		thread_ptr t(new boost::thread(
+		ThreadPtr t(new boost::thread(
 				boost::bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);
 		t->detach();
+		++work_num;
 	}
 }
 

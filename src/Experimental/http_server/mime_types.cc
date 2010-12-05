@@ -8,7 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "experimental/http_server/mime_types.h"
+#include "Experimental/http_server/mime_types.h"
 
 namespace http_server {
 namespace mime_types {

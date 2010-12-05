@@ -16,10 +16,10 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "experimental/http_server/reply.h"
-#include "experimental/http_server/request.h"
-#include "experimental/http_server/request_handler.h"
-#include "experimental/http_server/request_parser.h"
+#include "Experimental/http_server/reply.h"
+#include "Experimental/http_server/request.h"
+#include "Experimental/http_server/request_handler.h"
+#include "Experimental/http_server/request_parser.h"
 
 namespace http_server {
 

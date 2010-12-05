@@ -14,7 +14,7 @@
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "experimental/chat/chat_message.h"
+#include "Experimental/chat/chat_message.h"
 
 #if defined(BOOST_ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
 

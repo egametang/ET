@@ -12,10 +12,10 @@
 #include <sstream>
 #include <string>
 #include <boost/lexical_cast.hpp>
-#include "experimental/http_server/request_handler.h"
-#include "experimental/http_server/mime_types.h"
-#include "experimental/http_server/reply.h"
-#include "experimental/http_server/request.h"
+#include "Experimental/http_server/request_handler.h"
+#include "Experimental/http_server/mime_types.h"
+#include "Experimental/http_server/reply.h"
+#include "Experimental/http_server/request.h"
 
 namespace http_server {
 
