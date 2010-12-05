@@ -6,8 +6,14 @@ namespace Hainan {
 class RpcServer
 {
 private:
-	struct RpcServerFeild;
-	boost::scoped_ptr<RpcServerFeild> rpc_server;
+	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
+
+	boost::asio::io_service io_service;
+	boost::asio::ip::tcp::acceptor acceptor;
+	RpcSessionSet sessions;
+
+	void HandleAsyncAccept(RpcSessionSet session,
+			const boost::system::error_code& err);
 public:
 	RpcServer();
 	~RpcServer();

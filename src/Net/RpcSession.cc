@@ -2,33 +2,13 @@
 
 namespace Hainan {
 
-typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
-
-struct RpcSession::RpcSessionFeild
-{
-	boost::array<char, 8192> buffer;
-	boost::asio::ip::tcp::socket socket;
-	RpcSessionSet& sessions;
-
-	RpcSessionFeild();
-	~RpcSessionFeild();
-};
-
-RpcSession::RpcSession(): rpc_session(new RpcSessionFeild())
+RpcSession::RpcSession()
 {
 }
 
 boost::asio::ip::tcp::socket& RpcSession::Socket()
 {
-	return rpc_session->socket;
-}
-
-void RpcSession::Start()
-{
-	boost::asio::async_read(boost::asio::buffer(rpc_session->buffer),
-			boost::bind(&RpcSession::HandleAsyncRead, shared_from_this(),
-					boost::asio::placeholders::bytes_transferred,
-					boost::asio::placeholders::error));
+	return socket;
 }
 
 void RpcSession::HandleAsyncRead(std::size_t bytes_transferred,
@@ -53,13 +33,21 @@ void RpcSession::HandleAsyncRead(std::size_t bytes_transferred,
 	}
 	else if (err != boost::asio::error::operation_aborted)
 	{
-		rpc_session->sessions.erase(shared_from_this());
+		sessions.erase(shared_from_this());
 	}
+}
+
+void RpcSession::Start()
+{
+	boost::asio::async_read(boost::asio::buffer(buffer),
+			boost::bind(&RpcSession::HandleAsyncRead, shared_from_this(),
+					boost::asio::placeholders::bytes_transferred,
+					boost::asio::placeholders::error));
 }
 
 void RpcSession::Stop()
 {
-	rpc_session->socket.close();
+	socket.close();
 }
 
 }

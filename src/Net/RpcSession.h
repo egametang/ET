@@ -9,13 +9,15 @@
 
 namespace Hainan {
 
-class RpcSession:
-		public boost::enable_shared_from_this<RpcSession>,
-		private boost::noncopyable
+class RpcSession: private boost::noncopyable,
+		public boost::enable_shared_from_this<RpcSession>
 {
 private:
-	struct RpcSessionFeild;
-	boost::scoped_ptr<RpcSessionFeild> rpc_session;
+	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
+
+	boost::array<char, 8192> buffer;
+	boost::asio::ip::tcp::socket socket;
+	RpcSessionSet& sessions;
 
 public:
 	RpcSession();
