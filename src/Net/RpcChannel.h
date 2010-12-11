@@ -5,7 +5,6 @@
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
 #include "Base/Base.h"
-#include "Net/RpcCommunicator.h"
 
 namespace Hainan {
 
@@ -13,19 +12,28 @@ class RpcHandler;
 
 class RpcChannel: public google::protobuf::RpcChannel
 {
-	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
 private:
+	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
+
 	int32 id;
 	RpcCallbackMap handlers;
-	RpcCommunicator communicator;
-
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::socket socket;
 
-	void SendRequestHandler(int32 id, RpcHandlerPtr handler,
+	void AsyncConnectHandler(const boost::system::error_code& err);
+
+	// recieve response
+	void RecvRequestSize();
+	void RecvMessage(IntPtr size, const boost::system::error_code& err);
+	void RecvMessageHandler(StringPtr ss, const boost::system::error_code& err);
+
+	// send request
+	void SendRequestSize(const RpcRequestPtr request, RpcHandlerPtr handler);
+	void SendMessage(const RpcRequestPtr request,
+			RpcHandlerPtr handler, const boost::system::error_code& err);
+	void SendMessageHandler(int32 id, RpcHandlerPtr handler,
 			const boost::system::error_code& err);
-	void SendRequest(const RpcRequest& request, RpcHandlerPtr handler);
-	void RecvResponse();
+
 public:
 	RpcChannel(std::string& host, int port);
 	~RpcChannel();

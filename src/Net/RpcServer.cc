@@ -6,8 +6,7 @@
 
 namespace Hainan {
 
-RpcServer::RpcServer(std::string& host, int port):
-		rpc_server(new RpcServer::RpcServerInternal())
+RpcServer::RpcServer(std::string& host, int port)
 {
 	boost::asio::ip::address address;
 	address.from_string(host);
@@ -17,6 +16,10 @@ RpcServer::RpcServer(std::string& host, int port):
 			boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
+	RpcSessionPtr new_session(new RpcSession(io_service, sessions));
+	acceptor.async_accept(new_session->socket(),
+			boost::bind(&RpcServer::HandleAsyncAccept, this,
+					boost::asio::placeholders::error));
 }
 
 void RpcServer::HandleAsyncAccept(
@@ -36,10 +39,7 @@ void RpcServer::HandleAsyncAccept(
 
 void RpcServer::Start()
 {
-	RpcSessionPtr new_session(new RpcSession(io_service, sessions));
-	acceptor.async_accept(new_session->socket(),
-			boost::bind(&RpcServer::HandleAsyncAccept, this,
-					boost::asio::placeholders::error));
+	io_service.run();
 }
 
 void RpcServer::Stop()
