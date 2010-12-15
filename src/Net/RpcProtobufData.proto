@@ -17,5 +17,6 @@ message RpcResponse
 {
 	required int32 id = 1;
 	required ResponseType type = 2;
-	optional bytes response = 3;
+	optional bytes error = 3;
+	optional bytes response = 4;
 }

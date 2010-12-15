@@ -15,12 +15,12 @@ class RpcSession: private boost::noncopyable,
 private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 
-	boost::array<char, 8192> buffer;
 	boost::asio::ip::tcp::socket socket;
 	RpcSessionSet& sessions;
+	ThreadPool& thread_pool;
 
 public:
-	RpcSession();
+	RpcSession(RpcSessionSet& rpc_sessions);
 	~RpcSession();
 	boost::asio::ip::tcp::socket& Socket();
 	void Start();
