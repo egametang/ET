@@ -3,13 +3,15 @@
 #include "Base/Base.h"
 #include "Net/RpcServer.h"
 #include "Net/RpcSession.h"
+#include "Thread/ThreadPool.h"
 
 namespace Hainan {
 
-RpcServer::RpcServer(std::string& host, int port): thread_pool()
+RpcServer::RpcServer(google::protobuf::Service& pservice, int port):
+		service(pservice), io_service()
 {
 	boost::asio::ip::address address;
-	address.from_string(host);
+	address.from_string("localhost");
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	acceptor.open(endpoint.protocol());
 	acceptor.set_option(

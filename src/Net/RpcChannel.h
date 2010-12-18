@@ -17,18 +17,18 @@ private:
 
 	int32 id;
 	RpcCallbackMap handlers;
-	boost::asio::io_service io_service;
+	boost::asio::io_service& io_service;
 	boost::asio::ip::tcp::socket socket;
 
 	void AsyncConnectHandler(const boost::system::error_code& err);
 
 	// recieve response
-	void RecvRequestSize();
+	void RecvMessegeSize();
 	void RecvMessage(IntPtr size, const boost::system::error_code& err);
 	void RecvMessageHandler(StringPtr ss, const boost::system::error_code& err);
 
 	// send request
-	void SendRequestSize(const RpcRequestPtr request, RpcHandlerPtr handler);
+	void SendMessageSize(const RpcRequestPtr request, RpcHandlerPtr handler);
 	void SendMessage(const RpcRequestPtr request,
 			RpcHandlerPtr handler, const boost::system::error_code& err);
 	void SendMessageHandler(int32 id, RpcHandlerPtr handler,
@@ -44,6 +44,8 @@ public:
 			google::protobuf::Message* response,
 			google::protobuf::Closure* done);
 };
+
+typedef boost::shared_ptr<RpcChannel> RpcChannelPtr;
 
 } // namespace Hainan
 

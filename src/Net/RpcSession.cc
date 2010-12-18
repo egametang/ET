@@ -11,7 +11,7 @@ boost::asio::ip::tcp::socket& RpcSession::Socket()
 	return socket;
 }
 
-void RpcSession::RecvRequestSize()
+void RpcSession::RecvMessegeSize()
 {
 	IntPtr size(new int);
 	boost::asio::async_read(socket,
@@ -49,12 +49,12 @@ void RpcSession::RecvMessageHandler(StringPtr ss,
 
 
 	// read size
-	RecvRequestSize();
+	RecvMessegeSize();
 }
 
 void RpcSession::Start()
 {
-	RecvRequestSize();
+	RecvMessegeSize();
 }
 
 void RpcSession::Stop()

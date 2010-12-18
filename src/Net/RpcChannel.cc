@@ -5,8 +5,9 @@
 
 namespace Hainan {
 
-RpcChannel::RpcChannel(std::string& host, int port):
-		id(0), io_service()
+RpcChannel::RpcChannel(
+		boost::asio::io_service& service, std::string& host, int port):
+		io_service(service)
 {
 	// another thread?
 	boost::asio::ip::address address;
@@ -17,16 +18,17 @@ RpcChannel::RpcChannel(std::string& host, int port):
 					boost::asio::placeholders::error));
 }
 
-void RpcChannel::AsyncConnectHandler(const boost::system::error_code& err) {
+void RpcChannel::AsyncConnectHandler(const boost::system::error_code& err)
+{
 	if (err)
 	{
 		LOG(ERROR) << "async connect failed";
 		return;
 	}
-	RecvRequestSize();
+	RecvMessegeSize();
 }
 
-void RpcChannel::RecvRequestSize()
+void RpcChannel::RecvMessegeSize()
 {
 	IntPtr size(new int);
 	boost::asio::async_read(socket,
@@ -50,8 +52,8 @@ void RpcChannel::RecvMessage(IntPtr size, const boost::system::error_code& err)
 					boost::asio::placeholders::error));
 }
 
-void RpcChannel::RecvMessageHandler(StringPtr ss,
-		const boost::system::error_code& err)
+void RpcChannel::RecvMessageHandler(
+		StringPtr ss, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -63,10 +65,12 @@ void RpcChannel::RecvMessageHandler(StringPtr ss,
 	Response->ParseFromString(*ss);
 	RpcHandlerPtr handler = handlers[response.id()];
 	handler->GetResponse()->ParseFromString(response.response());
+
+
 	handlers.erase(response.id());
 
 	// read size
-	RecvRequestSize();
+	RecvMessegeSize();
 }
 
 void RpcChannel::SendMessageHandler(int32 id, RpcHandlerPtr handler,
@@ -94,8 +98,8 @@ void RpcChannel::SendMessage(const RpcRequestPtr request,
 					handler, boost::asio::placeholders::error));
 }
 
-void RpcChannel::SendRequestSize(const RpcRequestPtr request,
-		RpcHandlerPtr handler)
+void RpcChannel::SendMessageSize(
+		const RpcRequestPtr request, RpcHandlerPtr handler)
 {
 	int size = request->ByteSize();
 	std::string ss = boost::lexical_cast(size);
@@ -116,7 +120,7 @@ void RpcChannel::CallMethod(
 	req->set_method(method->full_name());
 	req->set_request(request->SerializeAsString());
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
-	SendRequestSize(req, handler);
+	SendMessageSize(req, handler);
 }
 
 } // namespace Hainan

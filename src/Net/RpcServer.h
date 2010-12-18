@@ -6,17 +6,15 @@ namespace Hainan {
 class RpcServer
 {
 private:
-	typedef boost::unordered_map<std::string, RpcHandlerPtr> RpcServiceMap;
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 
-	RpcServiceMap services;
+	google::protobuf::Service& service;
 	boost::asio::io_service io_service;
 	boost::asio::ip::tcp::acceptor acceptor;
-	ThreadPool thread_pool;
 	RpcSessionSet sessions;
 
 public:
-	RpcServer();
+	RpcServer(google::protobuf::Service& pservice, int port);
 	~RpcServer();
 	void Start();
 	void Stop();

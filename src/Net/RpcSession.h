@@ -1,6 +1,7 @@
 #ifndef NET_RPC_SESSION_H
 #define NET_RPC_SESSION_H
 
+#include <list>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <boost/noncopyable.hpp>
@@ -16,11 +17,12 @@ private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 
 	boost::asio::ip::tcp::socket socket;
+	std::list<RpcResponsePtr> responses;
 	RpcSessionSet& sessions;
 	ThreadPool& thread_pool;
 
 public:
-	RpcSession(RpcSessionSet& rpc_sessions);
+	RpcSession(RpcSessionSet& rpc_sessions, ThreadPool& pool);
 	~RpcSession();
 	boost::asio::ip::tcp::socket& Socket();
 	void Start();
