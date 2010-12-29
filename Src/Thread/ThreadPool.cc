@@ -1,4 +1,3 @@
-#include <boost/detail/atomic_count.hpp>
 #include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 

@@ -20,15 +20,16 @@ env.Append(LIBS=[
 	'glog',
 ])
 
-env['MODE'] = GetOption('mode')
-env['NTEST'] = GetOption('ntest')
-
-if env['MODE'] == 'opt':
+if GetOption('mode') == 'opt':
+	env['MODE'] = 'Opt'
 	env.Append(CCFLAGS='-O2 -g')
 	env.Append(LIBS='tcmalloc')
 else:
+	env['MODE'] = 'Dbg'
 	env.Append(CCFLAGS='-g')
 	env.Append(LIBS='tcmalloc_debug')
+
+env['NTEST'] = GetOption('ntest')
 
 env.Append(CPPPATH=Dir(env['MODE']).abspath)
 

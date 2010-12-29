@@ -1,8 +1,7 @@
 Import('env')
 
 subdirs = [
-	'experimental',
-	'thread',
+	'Thread',
 ]
 
 for subdir in subdirs:

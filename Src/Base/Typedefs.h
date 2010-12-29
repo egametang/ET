@@ -14,7 +14,18 @@ typedef boost::uint64_t uint64;
 // smart_ptr typedef
 typedef boost::shared_ptr<int> IntPtr;
 typedef boost::shared_ptr<std::string> StringPtr;
+
+namespace boost {
+class thread;
+}
 typedef boost::shared_ptr<boost::thread> ThreadPtr;
+
+namespace google {
+namespace protobuf {
+class Service;
+class Message;
+}
+}
 typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
 typedef boost::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
 

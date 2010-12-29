@@ -9,13 +9,6 @@ namespace Hainan {
 
 class ThreadPoolTest: public testing::Test
 {
-	void SetUp()
-	{
-		pool.Start();
-	}
-	void TearDown()
-	{
-	}
 protected:
 	ThreadPool pool;
 public:
@@ -30,12 +23,13 @@ public:
 
 TEST_F(ThreadPoolTest, Test1)
 {
+	pool.Start();
 	std::vector<int> x(100, 8);
 	std::vector<int> y(100, 9);
 	std::vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
-		pool.push_task(
+		pool.PushTask(
 				boost::bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
 	}
 	pool.Stop();

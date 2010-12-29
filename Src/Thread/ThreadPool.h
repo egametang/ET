@@ -5,6 +5,7 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#include <boost/detail/atomic_count.hpp>
 #include "Base/Base.h"
 
 namespace Hainan {
