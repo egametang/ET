@@ -8,14 +8,13 @@
 namespace Hainan {
 
 RpcServer::RpcServer(google::protobuf::Service& pservice, int port):
-		service(pservice), io_service()
+		service(pservice), io_service(), thread_pool()
 {
 	boost::asio::ip::address address;
 	address.from_string("localhost");
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	acceptor.open(endpoint.protocol());
-	acceptor.set_option(
-			boost::asio::ip::tcp::acceptor::reuse_address(true));
+	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
 	RpcSessionPtr new_session(new RpcSession(sessions));
@@ -24,8 +23,7 @@ RpcServer::RpcServer(google::protobuf::Service& pservice, int port):
 					boost::asio::placeholders::error));
 }
 
-void RpcServer::HandleAsyncAccept(
-		RpcSessionPtr session, const boost::system::error_code& err)
+void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -37,6 +35,11 @@ void RpcServer::HandleAsyncAccept(
 	acceptor.async_accept(new_session->socket(),
 			boost::bind(&RpcServer::HandleAsyncAccept, this,
 					boost::asio::placeholders::error));
+}
+
+void RpcServer::RunService(boost::asio::ip::tcp::socket& socket, RpcRequestPtr request)
+{
+
 }
 
 void RpcServer::Start()

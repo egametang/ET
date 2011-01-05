@@ -35,7 +35,7 @@ private:
 			const boost::system::error_code& err);
 
 public:
-	RpcChannel(std::string& host, int port);
+	RpcChannel(boost::asio::io_service& service, std::string& host, int port);
 	~RpcChannel();
 	virtual void CallMethod(
 			const google::protobuf::MethodDescriptor* method,

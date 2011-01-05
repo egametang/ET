@@ -66,6 +66,10 @@ void RpcChannel::RecvMessageHandler(
 	RpcHandlerPtr handler = handlers[response.id()];
 	handler->GetResponse()->ParseFromString(response.response());
 
+	if (handler->done != NULL)
+	{
+		handler->done->Run();
+	}
 
 	handlers.erase(response.id());
 

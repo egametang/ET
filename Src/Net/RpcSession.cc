@@ -11,6 +11,11 @@ boost::asio::ip::tcp::socket& RpcSession::Socket()
 	return socket;
 }
 
+void RpcSession::SendMessegeSize()
+{
+
+}
+
 void RpcSession::RecvMessegeSize()
 {
 	IntPtr size(new int);
@@ -28,15 +33,19 @@ void RpcSession::RecvMessage(IntPtr size, const boost::system::error_code& err)
 		LOG(ERROR) << "receive request size failed";
 		return;
 	}
-	StringPtr ss;
+	StringPtr ss(new std::string);
 	boost::asio::async_read(socket,
 			boost::asio::buffer(*ss, *size),
 			boost::bind(&RpcSession::RecvMessageHandler, this, ss,
 					boost::asio::placeholders::error));
 }
 
-void RpcSession::RecvMessageHandler(StringPtr ss,
-		const boost::system::error_code& err)
+ThreadPool& RpcSession::GetThreadPool()
+{
+	return rpc_server.thread_pool;
+}
+
+void RpcSession::RecvMessageHandler(StringPtr ss, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -44,9 +53,12 @@ void RpcSession::RecvMessageHandler(StringPtr ss,
 		return;
 	}
 
-	RpcRequest request;
+	RpcRequestPtr request;
 	request->ParseFromString(*ss);
 
+	GetThreadPool().PushTask(
+			boost::bind(&RpcServer::RunService, rpc_server.shared_from_this(),
+					shared_from_this(), request));
 
 	// read size
 	RecvMessegeSize();
