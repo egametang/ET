@@ -8,10 +8,10 @@ def ParseOptions():
 		default='dbg',
 		help='build in opt mode, default dbg mode')
 	AddOption("--ntest",
-	    action="store_true",
-	    dest="ntest",
-	    default=False,
-	    help="dont build test")
+		action="store_true",
+		dest="ntest",
+		default=False,
+		help="dont build test")
 
 ParseOptions()
 
