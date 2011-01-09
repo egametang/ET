@@ -6,19 +6,16 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "Net/RpcServer.h"
 
 namespace Hainan {
+
+class RpcServer;
 
 class RpcSession: private boost::noncopyable, public boost::enable_shared_from_this<RpcSession>
 {
 private:
-	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
-
 	boost::asio::ip::tcp::socket socket;
 	RpcServer& rpc_server;
-
-	ThreadPool& GetThreadPool();
 
 public:
 	RpcSession(RpcServer& server);
@@ -28,8 +25,6 @@ public:
 	void Stop();
 };
 
-typedef boost::shared_ptr<RpcSession> RpcSessionPtr;
-
-}
+} // namespace Hainan
 
 #endif // NET_RPC_SESSION_H

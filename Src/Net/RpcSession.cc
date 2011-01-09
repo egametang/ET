@@ -11,10 +11,38 @@ boost::asio::ip::tcp::socket& RpcSession::Socket()
 	return socket;
 }
 
-void RpcSession::SendMessegeSize()
+void RpcSession::SendMessageHandler(int32 id, RpcHandlerPtr handler,
+		const boost::system::error_code& err)
 {
-
+	if (err)
+	{
+		LOG(ERROR) << "SendMessage error:";
+		return;
+	}
+	handlers[id] = handler;
 }
+
+void RpcSession::SendMessage(const RpcResponsePtr response, const boost::system::error_code& err)
+{
+	if (err)
+	{
+		return;
+	}
+	std::string ss = response->SerializeAsString();
+	boost::asio::async_write(socket, boost::asio::buffer(ss),
+			boost::bind(&RpcSession::SendMessageHandler, this,
+					response->id(), boost::asio::placeholders::error));
+}
+
+void RpcSession::SendMessageSize(RpcResponsePtr response)
+{
+	int size = response->ByteSize();
+	std::string ss = boost::lexical_cast(size);
+	boost::asio::async_write(socket, boost::asio::buffer(ss),
+			boost::bind(&RpcSession::SendMessage, this,
+					response, boost::asio::placeholders::error));
+}
+///////////////////////////
 
 void RpcSession::RecvMessegeSize()
 {
@@ -40,11 +68,6 @@ void RpcSession::RecvMessage(IntPtr size, const boost::system::error_code& err)
 					boost::asio::placeholders::error));
 }
 
-ThreadPool& RpcSession::GetThreadPool()
-{
-	return rpc_server.thread_pool;
-}
-
 void RpcSession::RecvMessageHandler(StringPtr ss, const boost::system::error_code& err)
 {
 	if (err)
@@ -53,12 +76,14 @@ void RpcSession::RecvMessageHandler(StringPtr ss, const boost::system::error_cod
 		return;
 	}
 
-	RpcRequestPtr request;
+	RpcRequestPtr request(new RpcRequest);
 	request->ParseFromString(*ss);
 
-	GetThreadPool().PushTask(
-			boost::bind(&RpcServer::RunService, rpc_server.shared_from_this(),
-					shared_from_this(), request));
+	RpcResponsePtr response(new RpcResponse);
+	response->set_id(request->id());
+
+	rpc_server.RunService(shared_from_this(), request,
+			boost::bind(&RpcSession::SendMessegeSize, shared_from_this(), response));
 
 	// read size
 	RecvMessegeSize();

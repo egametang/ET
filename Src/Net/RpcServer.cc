@@ -1,5 +1,6 @@
 #include <boost/asio.hpp>
 #include <boost/foreach.hpp>
+#include <google/protobuf/service.h>
 #include "Base/Base.h"
 #include "Net/RpcServer.h"
 #include "Net/RpcSession.h"
@@ -37,9 +38,20 @@ void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::er
 					boost::asio::placeholders::error));
 }
 
-void RpcServer::RunService(boost::asio::ip::tcp::socket& socket, RpcRequestPtr request)
+void RpcServer::Callback(RpcSessionPtr session,
+		boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler)
 {
+	session->socket.get_io_service().post(handler);
+}
 
+void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
+		boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler)
+{
+	google::protobuf::Closure* done = google::protobuf::NewCallback(
+			&RpcServer::Callback, shared_from_this(), session, handler);
+	thread_pool.PushTask(
+			boost::bind(&google::protobuf::Service::CallMethod, &service,
+					method, NULL, request.get(), done));
 }
 
 void RpcServer::Start()
