@@ -4,7 +4,6 @@
 #include <list>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
-#include <boost/bind.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include "Base/Base.h"
 
@@ -31,6 +30,5 @@ public:
 	bool PushTask(boost::function<void (void)> task);
 };
 
-typedef boost::shared_ptr<ThreadPool> ThreadPoolPtr;
 } // namespace Hainan
 #endif // THREAD_THREAD_POOL_H

@@ -45,8 +45,6 @@ public:
 			google::protobuf::Closure* done);
 };
 
-typedef boost::shared_ptr<RpcChannel> RpcChannelPtr;
-
 } // namespace Hainan
 
 #endif // NET_RPC_CHANNEL_H

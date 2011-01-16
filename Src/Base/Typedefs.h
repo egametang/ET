@@ -1,6 +1,9 @@
 #ifndef BASE_TYPEDEFS_H
 #define BASE_TYPEDEFS_H
-#include <boost/smart_ptr.hpp>
+#include <boost/cstdint.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
+#include <google/protobuf/service.h>
 
 namespace Hainan {
 
@@ -19,26 +22,21 @@ typedef boost::shared_ptr<int> IntPtr;
 typedef boost::shared_ptr<std::string> StringPtr;
 
 // boost
-namespace boost {
-class thread;
-}
 typedef boost::shared_ptr<boost::thread> ThreadPtr;
 
 // google
-namespace google {
-namespace protobuf {
-class Service;
-class Message;
-}
-}
 typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
 typedef boost::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
 
 // Hainan
 class RpcSession;
 class RpcRequest;
+class RpcChannel;
+class ThreadPool;
 typedef boost::shared_ptr<RpcSession> RpcSessionPtr;
 typedef boost::shared_ptr<RpcRequest> RpcRequestPtr;
+typedef boost::shared_ptr<RpcChannel> RpcChannelPtr;
+typedef boost::shared_ptr<ThreadPool> ThreadPoolPtr;
 
 } // namespace Hainan
 
