@@ -1,1 +1,1 @@
-D:\cygwin\bin\ssh.exe 192.168.10.246 -p 32200 "~/debug.py '%*'"
+ssh.exe 192.168.1.11 -p 22 "~/dbg.py '%*'"

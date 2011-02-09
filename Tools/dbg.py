@@ -1,13 +1,10 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
 
-# Copyright 2009 Netease Inc. All Rights Reserved.
-# Author: tanghai@corp.netease.com (Tang Hai)
-
 import sys, os
 
 def main(argv):
-  os.chdir("/home/tanghai/source/hainan")
+  os.chdir("~/source/hainan")
   cmd = "gdb " + ' '.join(argv[1:])
   cmd = cmd.replace("\\", "/")
   cmd = cmd.replace(r"Z:/source/hainan", ".")
