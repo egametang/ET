@@ -33,15 +33,15 @@ env['NTEST'] = GetOption('ntest')
 
 env.Append(CPPPATH=Dir(env['MODE']).abspath)
 
-def Test(env, target, source):
-	if env['NTEST']:
+def Test(test_env, target, source):
+	if test_env['NTEST']:
 		return
-	test_env = env.Clone()
-	test_env.Append(LIBS=[
+	local_env = test_env.Clone()
+	local_env.Append(LIBS=[
 		'gtest',
 		'gmock',
 	])
-	test_target = test_env.Program(target, source)
+	test_target = local_env.Program(target, source)
 	return test_target
 
 env.AddMethod(Test, 'Test')
