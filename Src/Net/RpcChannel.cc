@@ -6,14 +6,14 @@
 namespace Hainan {
 
 RpcChannel::RpcChannel(
-		boost::asio::io_service& service, std::string& host, int port):
-		io_service(service)
+		boost::asio::io_service& io_service, std::string& host, int port):
+		io_service_(io_service)
 {
 	// another thread?
 	boost::asio::ip::address address;
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
-	socket.async_connect(endpoint,
+	socket_.async_connect(endpoint,
 			boost::bind(&RpcChannel::AsyncConnectHandler, this,
 					boost::asio::placeholders::error));
 }
@@ -31,7 +31,7 @@ void RpcChannel::AsyncConnectHandler(const boost::system::error_code& err)
 void RpcChannel::RecvMessegeSize()
 {
 	IntPtr size(new int);
-	boost::asio::async_read(socket,
+	boost::asio::async_read(socket_,
 			boost::asio::buffer(
 					reinterpret_cast<char*>(size.get()), sizeof(int)),
 			boost::bind(&RpcChannel::RecvMessage, this, size,
@@ -46,7 +46,7 @@ void RpcChannel::RecvMessage(IntPtr size, const boost::system::error_code& err)
 		return;
 	}
 	StringPtr ss;
-	boost::asio::async_read(socket,
+	boost::asio::async_read(socket_,
 			boost::asio::buffer(*ss, *size),
 			boost::bind(&RpcChannel::RecvMessageHandler, this, ss,
 					boost::asio::placeholders::error));
@@ -63,15 +63,15 @@ void RpcChannel::RecvMessageHandler(
 
 	RpcResponse response;
 	Response->ParseFromString(*ss);
-	RpcHandlerPtr handler = handlers[response.id()];
+	RpcHandlerPtr handler = handlers_[response.id()];
 	handler->GetResponse()->ParseFromString(response.response());
 
-	if (handler->done != NULL)
+	if (handler->done_ != NULL)
 	{
-		handler->done->Run();
+		handler->done_->Run();
 	}
 
-	handlers.erase(response.id());
+	handlers_.erase(response.id());
 
 	// read size
 	RecvMessegeSize();
@@ -85,7 +85,7 @@ void RpcChannel::SendMessageHandler(int32 id, RpcHandlerPtr handler,
 		LOG(ERROR) << "SendMessage error:";
 		return;
 	}
-	handlers[id] = handler;
+	handlers_[id] = handler;
 }
 
 void RpcChannel::SendMessage(const RpcRequestPtr request,
@@ -97,7 +97,7 @@ void RpcChannel::SendMessage(const RpcRequestPtr request,
 		return;
 	}
 	std::string ss = request->SerializeAsString();
-	boost::asio::async_write(socket, boost::asio::buffer(ss),
+	boost::asio::async_write(socket_, boost::asio::buffer(ss),
 			boost::bind(&RpcChannel::SendMessageHandler, this, request->id(),
 					handler, boost::asio::placeholders::error));
 }
@@ -107,7 +107,7 @@ void RpcChannel::SendMessageSize(
 {
 	int size = request->ByteSize();
 	std::string ss = boost::lexical_cast(size);
-	boost::asio::async_write(socket, boost::asio::buffer(ss),
+	boost::asio::async_write(socket_, boost::asio::buffer(ss),
 			boost::bind(&RpcChannel::SendMessage, this, request,
 					handler, boost::asio::placeholders::error));
 }
@@ -120,7 +120,7 @@ void RpcChannel::CallMethod(
 		google::protobuf::Closure* done)
 {
 	RpcRequestPtr req(new RpcRequest);
-	req->set_id(++id);
+	req->set_id(++id_);
 	req->set_method(method->full_name());
 	req->set_request(request->SerializeAsString());
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));

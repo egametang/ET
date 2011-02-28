@@ -12,13 +12,13 @@ class google::protobuf::Closure;
 class RpcHandler
 {
 private:
-	google::protobuf::RpcController* controller;
-	google::protobuf::Message* response;
-	google::protobuf::Closure* done;
+	google::protobuf::RpcController* controller_;
+	google::protobuf::Message* response_;
+	google::protobuf::Closure* done_;
 public:
-	RpcHandler(google::protobuf::RpcController* p_controller,
-			google::protobuf::Message* p_response,
-			google::protobuf::Closure* p_done);
+	RpcHandler(google::protobuf::RpcController* controller,
+			google::protobuf::Message* response,
+			google::protobuf::Closure* done);
     google::protobuf::RpcController *GetController() const;
     google::protobuf::Closure *GetDone() const;
     google::protobuf::Message *GetResponse() const;

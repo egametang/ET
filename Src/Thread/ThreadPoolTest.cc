@@ -10,9 +10,9 @@ namespace Hainan {
 class ThreadPoolTest: public testing::Test
 {
 protected:
-	ThreadPool pool;
+	ThreadPool pool_;
 public:
-	ThreadPoolTest() : pool(10)
+	ThreadPoolTest() : pool_(10)
 	{
 	}
 	void Max(int a, int b, int* z)
@@ -23,16 +23,16 @@ public:
 
 TEST_F(ThreadPoolTest, Test1)
 {
-	pool.Start();
+	pool_.Start();
 	std::vector<int> x(100, 8);
 	std::vector<int> y(100, 9);
 	std::vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
-		pool.PushTask(
+		pool_.PushTask(
 				boost::bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
 	}
-	pool.Stop();
+	pool_.Stop();
 	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i])<< "i = " << i;

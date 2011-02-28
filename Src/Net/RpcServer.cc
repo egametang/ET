@@ -9,17 +9,17 @@
 namespace Hainan {
 
 RpcServer::RpcServer(boost::asio::io_service& io_service, int port):
-		io_service(io_service), thread_pool()
+		io_service_(io_service), thread_pool_()
 {
 	boost::asio::ip::address address;
 	address.from_string("localhost");
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
-	acceptor.open(endpoint.protocol());
-	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-	acceptor.bind(endpoint);
-	acceptor.listen();
-	RpcSessionPtr new_session(new RpcSession(sessions));
-	acceptor.async_accept(new_session->socket(),
+	acceptor_.open(endpoint.protocol());
+	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+	acceptor_.bind(endpoint);
+	acceptor_.listen();
+	RpcSessionPtr new_session(new RpcSession(sessions_));
+	acceptor_.async_accept(new_session->socket(),
 			boost::bind(&RpcServer::HandleAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
@@ -31,9 +31,9 @@ void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::er
 		return;
 	}
 	session->Start();
-	sessions.insert(session);
-	RpcSessionPtr new_session(new RpcSession(io_service, sessions));
-	acceptor.async_accept(new_session->socket(),
+	sessions_.insert(session);
+	RpcSessionPtr new_session(new RpcSession(io_service_, sessions_));
+	acceptor_.async_accept(new_session->socket(),
 			boost::bind(&RpcServer::HandleAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
@@ -46,12 +46,12 @@ void RpcServer::Callback(RpcSessionPtr session,
 
 void RpcServer::Stop()
 {
-	acceptor.close();
-	foreach(RpcSessionPtr session, rpc_server->sessions)
+	acceptor_.close();
+	foreach(RpcSessionPtr session, rpc_server->sessions_)
 	{
 		session->Stop();
 	}
-	sessions.clear();
+	sessions_.clear();
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
@@ -59,8 +59,8 @@ void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
 {
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::Callback, session, handler);
-	thread_pool.PushTask(
-			boost::bind(&google::protobuf::Service::CallMethod, &service,
+	thread_pool_.PushTask(
+			boost::bind(&google::protobuf::Service::CallMethod, &service_,
 					method, NULL, request.get(), done));
 }
 
@@ -71,7 +71,7 @@ void RpcServer::RegisterService(ProtobufServicePtr service)
 
 void RpcServer::Start()
 {
-	io_service.run();
+	io_service_.run();
 }
 
 } // namespace Hainan

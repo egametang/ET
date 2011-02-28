@@ -2,7 +2,7 @@
 
 namespace Hainan {
 
-RpcSession::RpcSession(RpcSessionSet& rpc_sessions): sessions(rpc_sessions)
+RpcSession::RpcSession(RpcSessionSet& rpc_sessions): sessions_(rpc_sessions)
 {
 }
 
@@ -19,7 +19,7 @@ void RpcSession::SendMessageHandler(int32 id, RpcHandlerPtr handler,
 		LOG(ERROR) << "SendMessage error:";
 		return;
 	}
-	handlers[id] = handler;
+	handlers_[id] = handler;
 }
 
 void RpcSession::SendMessage(const RpcResponsePtr response, const boost::system::error_code& err)
@@ -31,7 +31,7 @@ void RpcSession::SendMessage(const RpcResponsePtr response, const boost::system:
 	std::string ss = response->SerializeAsString();
 	boost::asio::async_write(socket, boost::asio::buffer(ss),
 			boost::bind(&RpcSession::SendMessageHandler, this,
-					response->id(), boost::asio::placeholders::error));
+					response->id_(), boost::asio::placeholders::error));
 }
 
 void RpcSession::SendMessageSize(RpcResponsePtr response)
@@ -80,7 +80,7 @@ void RpcSession::RecvMessageHandler(StringPtr ss, const boost::system::error_cod
 	request->ParseFromString(*ss);
 
 	RpcResponsePtr response(new RpcResponse);
-	response->set_id(request->id());
+	response->set_id(request->id_());
 
 	rpc_server.RunService(shared_from_this(), request,
 			boost::bind(&RpcSession::SendMessegeSize, shared_from_this(), response));
@@ -97,7 +97,7 @@ void RpcSession::Start()
 void RpcSession::Stop()
 {
 	socket.close();
-	sessions.erase(shared_from_this());
+	sessions_.erase(shared_from_this());
 }
 
 }

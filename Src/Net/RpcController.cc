@@ -2,44 +2,44 @@
 
 namespace Hainan {
 
-Hainan::RpcController::RpcController()
+RpcController::RpcController()
 {
 }
 
-Hainan::RpcController::~RpcController()
+RpcController::~RpcController()
 {
 }
 
-void Hainan::RpcController::Reset()
+void RpcController::Reset()
 {
-	failed = false;
-	reason = "";
-	canceled = false;
+	failed_ = false;
+	reason_ = "";
+	canceled_ = false;
 }
 
-bool Hainan::RpcController::Failed() const
+bool RpcController::Failed() const
 {
-	return failed;
+	return failed_;
 }
 
-std::string Hainan::RpcController::ErrorText() const
+std::string RpcController::ErrorText() const
 {
-	return reason;
+	return reason_;
 }
 
-void Hainan::RpcController::StartCancel()
-{
-}
-
-void Hainan::RpcController::SetFailed(const string & reason)
+void RpcController::StartCancel()
 {
 }
 
-bool Hainan::RpcController::IsCanceled() const
+void RpcController::SetFailed(const string & reason)
 {
 }
 
-void Hainan::RpcController::NotifyOnCancel(Closure *callback)
+bool RpcController::IsCanceled() const
+{
+}
+
+void RpcController::NotifyOnCancel(Closure *callback)
 {
 }
 

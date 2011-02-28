@@ -10,11 +10,11 @@ class RpcServer: public boost::enable_shared_from_this<RpcServer>
 private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 
-	google::protobuf::Service& service;
-	boost::asio::io_service& io_service;
-	boost::asio::ip::tcp::acceptor acceptor;
-	ThreadPool thread_pool;
-	RpcSessionSet sessions;
+	google::protobuf::Service& service_;
+	boost::asio::io_service& io_service_;
+	boost::asio::ip::tcp::acceptor acceptor_;
+	ThreadPool thread_pool_;
+	RpcSessionSet sessions_;
 
 	void HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
 	void Callback(RpcSessionPtr session,

@@ -2,26 +2,26 @@
 
 namespace Hainan {
 
-RpcHandler::RpcHandler(google::protobuf::RpcController* p_controller,
-		google::protobuf::Message* p_response,
-		google::protobuf::Closure* p_done):
-		controller(p_controller), response(p_response), done(p_done)
+RpcHandler::RpcHandler(google::protobuf::RpcController* controller,
+		google::protobuf::Message* response,
+		google::protobuf::Closure* done):
+		controller_(controller), response_(response), done_(done)
 {
 }
 
 google::protobuf::RpcController *RpcHandler::GetController() const
 {
-    return controller;
+    return controller_;
 }
 
 google::protobuf::Closure *RpcHandler::GetDone() const
 {
-    return done;
+    return done_;
 }
 
 google::protobuf::Message *RpcHandler::GetResponse() const
 {
-    return response;
+    return response_;
 }
 
 } // namespace Hainan

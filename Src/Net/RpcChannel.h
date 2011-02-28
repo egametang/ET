@@ -15,10 +15,10 @@ class RpcChannel: public google::protobuf::RpcChannel
 private:
 	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
 
-	int32 id;
-	RpcCallbackMap handlers;
-	boost::asio::io_service& io_service;
-	boost::asio::ip::tcp::socket socket;
+	int32 id_;
+	RpcCallbackMap handlers_;
+	boost::asio::io_service& io_service_;
+	boost::asio::ip::tcp::socket socket_;
 
 	void AsyncConnectHandler(const boost::system::error_code& err);
 

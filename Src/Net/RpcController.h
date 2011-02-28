@@ -8,9 +8,9 @@ namespace Hainan {
 class RpcController: public google::protobuf::RpcController
 {
 private:
-	bool failed;
-	std::string reason;
-	bool canceled;
+	bool failed_;
+	std::string reason_;
+	bool canceled_;
 
 public:
 	RpcController();
