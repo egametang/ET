@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight.Threading;
 using System.ComponentModel;
 
-namespace Editor
+namespace Egametang
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

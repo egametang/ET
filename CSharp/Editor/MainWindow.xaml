@@ -1,9 +1,9 @@
-﻿<Window x:Class="Editor.MainWindow"
+﻿<Window x:Class="Egametang.MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:v="clr-namespace:Editor.View"
+		xmlns:v="clr-namespace:Egametang"
 		mc:Ignorable="d" Height="600" Width="800" Title="MVVM Light Application"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 	<Grid x:Name="LayoutRoot">

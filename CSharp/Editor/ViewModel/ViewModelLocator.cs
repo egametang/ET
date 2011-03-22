@@ -1,9 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using Editor.Model;
 
-namespace Editor.ViewModel
+namespace Egametang
 {
 	public class ViewModelLocator
 	{

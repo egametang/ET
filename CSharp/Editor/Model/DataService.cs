@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Editor.Model
+namespace Egametang
 {
 	public class DataService : IDataService
 	{

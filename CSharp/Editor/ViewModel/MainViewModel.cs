@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Schedulers;
 using System.Windows.Threading;
-using Editor.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
 
-namespace Editor.ViewModel
+namespace Egametang
 {
 	public class MainViewModel : ViewModelBase
 	{
 		private readonly IDataService dataService;
 		private string loginResult = "";
+		private OrderedTaskScheduler orderedTaskScheduler = new OrderedTaskScheduler();
 
 		public MainViewModel(IDataService dataService)
 		{
@@ -43,21 +45,19 @@ namespace Editor.ViewModel
 
 		private void AsyncLogin()
 		{
-			Action showLoginResult = () =>
-				{
-					LoginResult = "Login OK!";
-				};
-			AsyncCallback callback = (obj) =>
-				{
-					DispatcherHelper.UIDispatcher.BeginInvoke(
-						DispatcherPriority.Normal, showLoginResult);
-				};
+			var task = new Task(() =>
+			{
 
-			Action asynLogin = () =>
-				{
-					
-				};
-			asynLogin.BeginInvoke(callback, null);
+			});
+			task.ContinueWith(_ =>
+			{
+				DispatcherHelper.UIDispatcher.BeginInvoke(DispatcherPriority.Normal,
+					new Action(() =>
+					{
+						LoginResult = "Login OK!";
+					}));
+			}, orderedTaskScheduler);
+			task.Start();
 		}
 
 		public override void Cleanup()

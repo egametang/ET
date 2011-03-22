@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using Editor.ViewModel;
 
-namespace Editor
+namespace Egametang
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
