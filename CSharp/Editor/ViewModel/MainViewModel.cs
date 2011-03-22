@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Schedulers;
 using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,7 +11,6 @@ namespace Egametang
 	{
 		private readonly IDataService dataService;
 		private string loginResult = "";
-		private OrderedTaskScheduler orderedTaskScheduler = new OrderedTaskScheduler();
 
 		public MainViewModel(IDataService dataService)
 		{
@@ -56,7 +54,7 @@ namespace Egametang
 					{
 						LoginResult = "Login OK!";
 					}));
-			}, orderedTaskScheduler);
+			}, App.OrderedTaskScheduler);
 			task.Start();
 		}
 

@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks.Schedulers;
+using System.Windows;
 using GalaSoft.MvvmLight.Threading;
-using System.ComponentModel;
 
 namespace Egametang
 {
@@ -12,6 +12,13 @@ namespace Egametang
 		static App()
 		{
 			DispatcherHelper.Initialize();
+			OrderedTaskScheduler = new OrderedTaskScheduler();
+		}
+
+		public static OrderedTaskScheduler OrderedTaskScheduler
+		{
+			get;
+			private set;
 		}
 	}
 }
