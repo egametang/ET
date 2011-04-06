@@ -2,13 +2,13 @@
 
 namespace Hainan {
 
-RpcSession::RpcSession(RpcSessionSet& rpc_sessions): sessions_(rpc_sessions)
+RpcSession::RpcSession(RpcServer& rpc_server): rpc_server_(rpc_server)
 {
 }
 
 boost::asio::ip::tcp::socket& RpcSession::Socket()
 {
-	return socket;
+	return socket_;
 }
 
 void RpcSession::SendMessageHandler(int32 id, RpcHandlerPtr handler,
@@ -19,7 +19,6 @@ void RpcSession::SendMessageHandler(int32 id, RpcHandlerPtr handler,
 		LOG(ERROR) << "SendMessage error:";
 		return;
 	}
-	handlers_[id] = handler;
 }
 
 void RpcSession::SendMessage(const RpcResponsePtr response, const boost::system::error_code& err)
@@ -29,16 +28,16 @@ void RpcSession::SendMessage(const RpcResponsePtr response, const boost::system:
 		return;
 	}
 	std::string ss = response->SerializeAsString();
-	boost::asio::async_write(socket, boost::asio::buffer(ss),
+	boost::asio::async_write(socket_, boost::asio::buffer(ss),
 			boost::bind(&RpcSession::SendMessageHandler, this,
-					response->id_(), boost::asio::placeholders::error));
+					response->id(), boost::asio::placeholders::error));
 }
 
 void RpcSession::SendMessageSize(RpcResponsePtr response)
 {
 	int size = response->ByteSize();
 	std::string ss = boost::lexical_cast(size);
-	boost::asio::async_write(socket, boost::asio::buffer(ss),
+	boost::asio::async_write(socket_, boost::asio::buffer(ss),
 			boost::bind(&RpcSession::SendMessage, this,
 					response, boost::asio::placeholders::error));
 }
@@ -47,10 +46,10 @@ void RpcSession::SendMessageSize(RpcResponsePtr response)
 void RpcSession::RecvMessegeSize()
 {
 	IntPtr size(new int);
-	boost::asio::async_read(socket,
+	boost::asio::async_read(socket_,
 			boost::asio::buffer(
 					reinterpret_cast<char*>(size.get()), sizeof(int)),
-			boost::bind(&RpcChannel::RecvMessage, this, size,
+			boost::bind(&RpcSession::RecvMessage, this, size,
 					boost::asio::placeholders::error));
 }
 
@@ -62,7 +61,7 @@ void RpcSession::RecvMessage(IntPtr size, const boost::system::error_code& err)
 		return;
 	}
 	StringPtr ss(new std::string);
-	boost::asio::async_read(socket,
+	boost::asio::async_read(socket_,
 			boost::asio::buffer(*ss, *size),
 			boost::bind(&RpcSession::RecvMessageHandler, this, ss,
 					boost::asio::placeholders::error));
@@ -82,7 +81,7 @@ void RpcSession::RecvMessageHandler(StringPtr ss, const boost::system::error_cod
 	RpcResponsePtr response(new RpcResponse);
 	response->set_id(request->id_());
 
-	rpc_server.RunService(shared_from_this(), request,
+	rpc_server_.RunService(shared_from_this(), request,
 			boost::bind(&RpcSession::SendMessegeSize, shared_from_this(), response));
 
 	// read size
@@ -96,7 +95,7 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
-	socket.close();
+	socket_.close();
 	sessions_.erase(shared_from_this());
 }
 

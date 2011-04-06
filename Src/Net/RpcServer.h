@@ -13,7 +13,7 @@ private:
 	google::protobuf::Service& service_;
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::acceptor acceptor_;
-	ThreadPool thread_pool_;
+	ThreadPoolIf& thread_pool_;
 	RpcSessionSet sessions_;
 
 	void HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
@@ -21,7 +21,7 @@ private:
 			boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler);
 
 public:
-	RpcServer(boost::asio::io_service& io_service, int port);
+	RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& thread_pool);
 	~RpcServer();
 	void Start();
 	void Stop();

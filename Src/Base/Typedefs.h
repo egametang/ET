@@ -33,10 +33,12 @@ class RpcSession;
 class RpcRequest;
 class RpcChannel;
 class ThreadPool;
+class ThreadPoolIf;
 typedef boost::shared_ptr<RpcSession> RpcSessionPtr;
 typedef boost::shared_ptr<RpcRequest> RpcRequestPtr;
 typedef boost::shared_ptr<RpcChannel> RpcChannelPtr;
 typedef boost::shared_ptr<ThreadPool> ThreadPoolPtr;
+typedef boost::shared_ptr<ThreadPoolIf> ThreadPoolIfPtr;
 
 } // namespace Hainan
 

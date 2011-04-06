@@ -8,8 +8,8 @@
 
 namespace Hainan {
 
-RpcServer::RpcServer(boost::asio::io_service& io_service, int port):
-		io_service_(io_service), thread_pool_()
+RpcServer::RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& thread_pool):
+		io_service_(io_service), thread_pool_(thread_pool)
 {
 	boost::asio::ip::address address;
 	address.from_string("localhost");
@@ -32,7 +32,7 @@ void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::er
 	}
 	session->Start();
 	sessions_.insert(session);
-	RpcSessionPtr new_session(new RpcSession(io_service_, sessions_));
+	RpcSessionPtr new_session(new RpcSession(*this));
 	acceptor_.async_accept(new_session->socket(),
 			boost::bind(&RpcServer::HandleAsyncAccept, this,
 					boost::asio::placeholders::error));
@@ -47,7 +47,7 @@ void RpcServer::Callback(RpcSessionPtr session,
 void RpcServer::Stop()
 {
 	acceptor_.close();
-	foreach(RpcSessionPtr session, rpc_server->sessions_)
+	foreach(RpcSessionPtr session, sessions_)
 	{
 		session->Stop();
 	}
