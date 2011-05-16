@@ -6,11 +6,10 @@
 #include <boost/function.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include "Base/Base.h"
-#include "Thread/ThreadPoolIf.h"
 
 namespace Egametang {
 
-class ThreadPool: public ThreadPoolIf, private boost::noncopyable
+class ThreadPool: private boost::noncopyable
 {
 private:
 	int thread_num_;
@@ -27,9 +26,9 @@ public:
 	ThreadPool(int num = 0);
 	~ThreadPool();
 
-	void Start();
-	void Stop();
-	bool PushTask(boost::function<void (void)> task);
+	virtual void Start();
+	virtual void Stop();
+	virtual bool PushTask(boost::function<void (void)> task);
 };
 
 } // namespace Egametang

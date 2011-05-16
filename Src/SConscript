@@ -1,9 +1,0 @@
-Import('env')
-
-subdirs = [
-	"Thread",
-	"Python",
-]
-
-for subdir in subdirs:
-	SConscript('%s/SConscript' % subdir)
