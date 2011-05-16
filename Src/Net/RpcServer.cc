@@ -6,7 +6,7 @@
 #include "Net/RpcSession.h"
 #include "Thread/ThreadPool.h"
 
-namespace Hainan {
+namespace Egametang {
 
 RpcServer::RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& thread_pool):
 		io_service_(io_service), thread_pool_(thread_pool)
@@ -74,4 +74,4 @@ void RpcServer::Start()
 	io_service_.run();
 }
 
-} // namespace Hainan
+} // namespace Egametang

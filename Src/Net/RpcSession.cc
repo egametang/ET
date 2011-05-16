@@ -1,6 +1,6 @@
 #include "Net/RpcSession.h"
 
-namespace Hainan {
+namespace Egametang {
 
 RpcSession::RpcSession(RpcServer& rpc_server): rpc_server_(rpc_server)
 {

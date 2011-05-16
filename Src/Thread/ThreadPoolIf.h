@@ -1,7 +1,7 @@
 #ifndef THREAD_THREAD_POOL_IF_H
 #define THREAD_THREAD_POOL_IF_H
 
-namespace Hainan {
+namespace Egametang {
 
 class ThreadPoolIf
 {
@@ -14,6 +14,6 @@ public:
     {};
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // THREAD_THREAD_POOL_IF_H

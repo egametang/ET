@@ -3,7 +3,7 @@
 #include <glog/logging.h>
 #include "Python/PythonInit.h"
 
-namespace Hainan {
+namespace Egametang {
 
 class PythonInitTest: public testing::Test
 {
@@ -29,7 +29,7 @@ TEST_F(PythonInitTest, String)
 	ASSERT_EQ("ababababab", str);
 }
 
-} // namespace Hainan
+} // namespace Egametang
 
 int main(int argc, char* argv[])
 {

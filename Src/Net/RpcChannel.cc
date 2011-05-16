@@ -3,7 +3,7 @@
 #include <google/protobuf/message.h>
 #include "Net/RpcChannel.h"
 
-namespace Hainan {
+namespace Egametang {
 
 RpcChannel::RpcChannel(
 		boost::asio::io_service& io_service, std::string& host, int port):
@@ -127,4 +127,4 @@ void RpcChannel::CallMethod(
 	SendMessageSize(req, handler);
 }
 
-} // namespace Hainan
+} // namespace Egametang

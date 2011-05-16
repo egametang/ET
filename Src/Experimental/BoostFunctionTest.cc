@@ -7,7 +7,7 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-namespace Hainan {
+namespace Egametang {
 class BoostTest: public testing::Test
 {
 	void SetUp()

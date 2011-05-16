@@ -5,7 +5,7 @@
 #include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 
-namespace Hainan {
+namespace Egametang {
 
 class ThreadPoolTest: public testing::Test
 {
@@ -38,7 +38,7 @@ TEST_F(ThreadPoolTest, Test1)
 		ASSERT_EQ(9, z[i]) << "i = " << i;
 	}
 }
-} // namespace Hainan
+} // namespace Egametang
 
 int main(int argc, char* argv[])
 {

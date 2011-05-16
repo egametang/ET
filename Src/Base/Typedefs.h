@@ -5,7 +5,7 @@
 #include <boost/thread.hpp>
 #include <google/protobuf/service.h>
 
-namespace Hainan {
+namespace Egametang {
 
 typedef boost::int8_t   int8;
 typedef boost::int16_t  int16;
@@ -28,7 +28,7 @@ typedef boost::shared_ptr<boost::thread> ThreadPtr;
 typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
 typedef boost::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
 
-// Hainan
+// Egametang
 class RpcSession;
 class RpcRequest;
 class RpcChannel;
@@ -40,6 +40,6 @@ typedef boost::shared_ptr<RpcChannel> RpcChannelPtr;
 typedef boost::shared_ptr<ThreadPool> ThreadPoolPtr;
 typedef boost::shared_ptr<ThreadPoolIf> ThreadPoolIfPtr;
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // BASE_TYPEDEFS_H

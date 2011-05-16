@@ -3,7 +3,7 @@
 #include <glog/logging.h>
 #include "Net/RpcChannel.h"
 
-namespace Hainan {
+namespace Egametang {
 
 static int port = 10001;
 
@@ -69,4 +69,4 @@ TEST_F(RpcChannelTest, CallMethod)
 	ASSERT_EQ(request.ByteSize(), server.size);
 }
 
-} // namespace Hainan
+} // namespace Egametang

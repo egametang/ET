@@ -1,6 +1,6 @@
 #include "Net/RpcHandler.h"
 
-namespace Hainan {
+namespace Egametang {
 
 RpcHandler::RpcHandler(google::protobuf::RpcController* controller,
 		google::protobuf::Message* response,
@@ -24,4 +24,4 @@ google::protobuf::Message *RpcHandler::GetResponse() const
     return response_;
 }
 
-} // namespace Hainan
+} // namespace Egametang

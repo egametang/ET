@@ -7,7 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-namespace Hainan {
+namespace Egametang {
 
 class RpcServer;
 
@@ -33,6 +33,6 @@ public:
 	void Stop();
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // NET_RPC_SESSION_H

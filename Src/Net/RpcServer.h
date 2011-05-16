@@ -3,7 +3,7 @@
 #include <boost/asio.hpp>
 #include "base/base.h"
 
-namespace Hainan {
+namespace Egametang {
 
 class RpcServer: public boost::enable_shared_from_this<RpcServer>
 {
@@ -31,6 +31,6 @@ public:
 	void RegisterService(ProtobufServicePtr service);
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // NET_RPC_SERVER_H

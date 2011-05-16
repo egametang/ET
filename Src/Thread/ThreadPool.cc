@@ -1,7 +1,7 @@
 #include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 
-namespace Hainan {
+namespace Egametang {
 
 ThreadPool::ThreadPool(int num) :
 	thread_num_(num), running_(false), work_num_(0)
@@ -99,4 +99,4 @@ bool ThreadPool::PushTask(boost::function<void (void)> task)
 	return true;
 }
 
-} // namespace Hainan
+} // namespace Egametang

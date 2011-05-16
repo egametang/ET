@@ -6,7 +6,7 @@
 #include <boost/asio.hpp>
 #include "Base/Base.h"
 
-namespace Hainan {
+namespace Egametang {
 
 class RpcHandler;
 
@@ -45,6 +45,6 @@ public:
 			google::protobuf::Closure* done);
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // NET_RPC_CHANNEL_H

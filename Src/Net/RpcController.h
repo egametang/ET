@@ -3,7 +3,7 @@
 
 #include <google/protobuf/service.h>
 
-namespace Hainan {
+namespace Egametang {
 
 class RpcController: public google::protobuf::RpcController
 {
@@ -28,6 +28,6 @@ public:
 	virtual void NotifyOnCancel(Closure* callback);
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // NET_RPC_CONTROLLER_H

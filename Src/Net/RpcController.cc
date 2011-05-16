@@ -1,6 +1,6 @@
 #include "Net/RpcController.h"
 
-namespace Hainan {
+namespace Egametang {
 
 RpcController::RpcController()
 {
@@ -43,4 +43,4 @@ void RpcController::NotifyOnCancel(Closure *callback)
 {
 }
 
-} // namespace Hainan
+} // namespace Egametang

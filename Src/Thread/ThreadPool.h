@@ -8,7 +8,7 @@
 #include "Base/Base.h"
 #include "Thread/ThreadPoolIf.h"
 
-namespace Hainan {
+namespace Egametang {
 
 class ThreadPool: public ThreadPoolIf, private boost::noncopyable
 {
@@ -32,5 +32,5 @@ public:
 	bool PushTask(boost::function<void (void)> task);
 };
 
-} // namespace Hainan
+} // namespace Egametang
 #endif // THREAD_THREAD_POOL_H

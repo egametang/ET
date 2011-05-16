@@ -3,7 +3,7 @@
 
 #include "boost/shared_ptr.hpp"
 
-namespace Hainan {
+namespace Egametang {
 
 class google::protobuf::RpcController;
 class google::protobuf::Message;
@@ -26,6 +26,6 @@ public:
 
 typedef boost::shared_ptr<RpcHandler> RpcHandlerPtr;
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // NET_RPC_HANDLER_H

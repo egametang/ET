@@ -4,7 +4,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/python.hpp>
 
-namespace Hainan {
+namespace Egametang {
 
 class PythonInit: private boost::noncopyable
 {
@@ -25,6 +25,6 @@ public:
 	}
 };
 
-} // namespace Hainan
+} // namespace Egametang
 
 #endif // PYTHON_PYTHON_INIT_H
