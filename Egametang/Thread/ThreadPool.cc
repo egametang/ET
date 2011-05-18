@@ -66,8 +66,8 @@ void ThreadPool::Runner()
 			}
 			continued = running_ || !tasks_.empty();
 			VLOG(3) << "continued = " << continued
-			<< "running = " << running_
-			<< " tasks size = " << tasks_.size();
+					<< "running = " << running_
+					<< " tasks size = " << tasks_.size();
 			VLOG(3) << "loop unlock";
 		}
 
