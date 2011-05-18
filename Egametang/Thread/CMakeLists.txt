@@ -11,3 +11,5 @@ target_link_libraries(ThreadPoolTest
     gtest
     gmock
 )
+
+add_test(ThreadPoolTest ThreadPoolTest)

@@ -9,3 +9,5 @@ target_link_libraries(PythonInitTest
     gtest
     gmock
 )
+
+add_test(PythonInitTest PythonInitTest)
