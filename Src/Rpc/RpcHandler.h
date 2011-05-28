@@ -1,8 +1,6 @@
 #ifndef RPC_RPC_HANDLER_H
 #define RPC_RPC_HANDLER_H
 
-#include "boost/shared_ptr.hpp"
-
 namespace Egametang {
 
 class google::protobuf::RpcController;

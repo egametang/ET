@@ -5,6 +5,7 @@
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
 #include "Base/Typedef.h"
+#include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
 
