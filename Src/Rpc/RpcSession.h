@@ -1,10 +1,8 @@
-#ifndef NET_RPC_SESSION_H
-#define NET_RPC_SESSION_H
+#ifndef RPC_RPC_SESSION_H
+#define RPC_RPC_SESSION_H
 
 #include <boost/asio.hpp>
-#include <boost/array.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
 namespace Egametang {
@@ -35,4 +33,4 @@ public:
 
 } // namespace Egametang
 
-#endif // NET_RPC_SESSION_H
+#endif // RPC_RPC_SESSION_H

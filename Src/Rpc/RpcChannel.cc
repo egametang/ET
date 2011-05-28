@@ -1,7 +1,7 @@
 #include <boost/asio.hpp>
 #include <boost/make_shared.hpp>
 #include <google/protobuf/message.h>
-#include "Net/RpcChannel.h"
+#include "Rpc/RpcChannel.h"
 
 namespace Egametang {
 

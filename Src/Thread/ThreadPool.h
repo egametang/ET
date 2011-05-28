@@ -5,7 +5,7 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/detail/atomic_count.hpp>
-#include "Base/Base.h"
+#include "Thread/ThreadTypedef.h"
 
 namespace Egametang {
 

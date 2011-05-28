@@ -1,10 +1,11 @@
 #include <boost/asio.hpp>
 #include <boost/foreach.hpp>
 #include <google/protobuf/service.h>
-#include "Base/Base.h"
-#include "Net/RpcServer.h"
-#include "Net/RpcSession.h"
+#include "Rpc/RpcTypedef.h"
+#include "Rpc/RpcServer.h"
+#include "Rpc/RpcSession.h"
 #include "Thread/ThreadPool.h"
+#include "Base/Marcos.h"
 
 namespace Egametang {
 

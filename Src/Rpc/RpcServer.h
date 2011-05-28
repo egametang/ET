@@ -1,7 +1,7 @@
-#ifndef NET_RPC_SERVER_H
-#define NET_RPC_SERVER_H
+#ifndef RPC_RPC_SERVER_H
+#define RPC_RPC_SERVER_H
 #include <boost/asio.hpp>
-#include "base/base.h"
+#include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
 
@@ -13,7 +13,7 @@ private:
 	google::protobuf::Service& service_;
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::acceptor acceptor_;
-	ThreadPoolIf& thread_pool_;
+	ThreadPool& thread_pool_;
 	RpcSessionSet sessions_;
 
 	void HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
@@ -33,4 +33,4 @@ public:
 
 } // namespace Egametang
 
-#endif // NET_RPC_SERVER_H
+#endif // RPC_RPC_SERVER_H

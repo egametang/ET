@@ -1,5 +1,5 @@
-#ifndef NET_RPC_HANDLER_H
-#define NET_RPC_HANDLER_H
+#ifndef RPC_RPC_HANDLER_H
+#define RPC_RPC_HANDLER_H
 
 #include "boost/shared_ptr.hpp"
 
@@ -24,8 +24,6 @@ public:
     google::protobuf::Message *GetResponse() const;
 };
 
-typedef boost::shared_ptr<RpcHandler> RpcHandlerPtr;
-
 } // namespace Egametang
 
-#endif // NET_RPC_HANDLER_H
+#endif // RPC_RPC_HANDLER_H

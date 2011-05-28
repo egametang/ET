@@ -1,5 +1,5 @@
-#ifndef NET_RPC_CONTROLLER_H
-#define NET_RPC_CONTROLLER_H
+#ifndef RPC_RPC_CONTROLLER_H
+#define RPC_RPC_CONTROLLER_H
 
 #include <google/protobuf/service.h>
 
@@ -30,4 +30,4 @@ public:
 
 } // namespace Egametang
 
-#endif // NET_RPC_CONTROLLER_H
+#endif // RPC_RPC_CONTROLLER_H

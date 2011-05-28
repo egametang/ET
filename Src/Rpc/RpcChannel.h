@@ -1,10 +1,10 @@
-#ifndef NET_RPC_CHANNEL_H
-#define NET_RPC_CHANNEL_H
+#ifndef RPC_RPC_CHANNEL_H
+#define RPC_RPC_CHANNEL_H
 
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
-#include "Base/Base.h"
+#include "Base/Typedef.h"
 
 namespace Egametang {
 
@@ -47,4 +47,4 @@ public:
 
 } // namespace Egametang
 
-#endif // NET_RPC_CHANNEL_H
+#endif // RPC_RPC_CHANNEL_H

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include "Net/RpcChannel.h"
+#include "Rpc/RpcChannel.h"
 
 namespace Egametang {
 
