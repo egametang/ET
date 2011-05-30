@@ -23,6 +23,11 @@ public:
 	{
 		return Py_IsInitialized();
 	}
+
+	const char* Version()
+	{
+		return Py_GetVersion();
+	}
 };
 
 } // namespace Egametang

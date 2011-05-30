@@ -29,6 +29,32 @@ TEST_F(PythonInitTest, String)
 	ASSERT_EQ("ababababab", str);
 }
 
+TEST_F(PythonInitTest, List)
+{
+	boost::python::list list;
+	list.append("zelda");
+	list.append(2.236);
+	ASSERT_EQ(2, boost::python::len(list));
+	ASSERT_EQ(1, list.count("zelda"));
+	ASSERT_FLOAT_EQ(2.236, boost::python::extract<double>(list[1]));
+}
+
+TEST_F(PythonInitTest, Tuple)
+{
+	boost::python::tuple tuple = boost::python::make_tuple("metroid", "samus", "ridley");
+	ASSERT_EQ(3, boost::python::len(tuple));
+	ASSERT_EQ("samus", std::string(boost::python::extract<std::string>(tuple[-2])));
+}
+
+TEST_F(PythonInitTest, Dict)
+{
+	boost::python::dict dict;
+	dict["mario"] = "peach";
+	dict[0] = "killer7";
+	ASSERT_TRUE(dict.has_key(0));
+	ASSERT_EQ(2, boost::python::len(dict));
+}
+
 } // namespace Egametang
 
 int main(int argc, char* argv[])
