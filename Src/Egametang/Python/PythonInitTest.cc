@@ -112,7 +112,6 @@ TEST_F(PythonInitTest, EnterPythonScript)
 		main_namespace["person"] = person;
 		std::string str = "import sys\n"
 				"sys.path.append('../../../Src/Egametang/Python/')\n"
-				"import PersonTest\n"
 				"import PythonInitTest\n"
 				"PythonInitTest.fun(person)\n";
 		ASSERT_EQ(0, person->Guid());
