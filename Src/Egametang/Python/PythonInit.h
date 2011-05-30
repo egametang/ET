@@ -28,6 +28,11 @@ public:
 	{
 		return Py_GetVersion();
 	}
+
+	void PrintError()
+	{
+		PyErr_Print();
+	}
 };
 
 } // namespace Egametang

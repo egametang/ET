@@ -5,6 +5,8 @@
 
 namespace Egametang {
 
+using namespace boost::python;
+
 class PythonInitTest: public testing::Test
 {
 public:
@@ -53,6 +55,75 @@ TEST_F(PythonInitTest, Dict)
 	dict[0] = "killer7";
 	ASSERT_TRUE(dict.has_key(0));
 	ASSERT_EQ(2, boost::python::len(dict));
+}
+
+class Person
+{
+private:
+	int guid_;
+	std::string name_;
+
+public:
+	Person(): guid_(0)
+	{
+	}
+	void SetGuid(int guid)
+	{
+		guid_ = guid;
+	}
+
+	int Guid() const
+	{
+		return guid_;
+	}
+
+	void SetName(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string Name() const
+	{
+		return name_;
+	}
+};
+
+typedef boost::shared_ptr<Person> PersonPtr;
+
+BOOST_PYTHON_MODULE(Person)
+{
+	boost::python::class_<Person>("Person")
+		.def("SetGuid", &Person::SetGuid)
+		.def("Guid", &Person::Guid)
+	;
+	boost::python::register_ptr_to_python<PersonPtr>();
+}
+
+TEST_F(PythonInitTest, EnterPythonScript)
+{
+	try
+	{
+		initPerson();
+		boost::python::object main_module = boost::python::import("__main__");
+		boost::python::object main_namespace = main_module.attr("__dict__");
+		PersonPtr person(new Person);
+		main_namespace["person"] = person;
+		std::string str = "import sys\n"
+				"sys.path.append('../../../Src/Egametang/Python/')\n"
+				"import Person\n"
+				"import PythonInitTest\n"
+				"PythonInitTest.fun(person)\n";
+		ASSERT_EQ(0, person->Guid());
+
+		// 进到python脚本层设置person的值为2
+		boost::python::exec(str.c_str(), main_namespace);
+		ASSERT_EQ(2, person->Guid());
+	}
+	catch (boost::python::error_already_set& err)
+	{
+		python_init.PrintError();
+		throw err;
+	}
 }
 
 } // namespace Egametang
