@@ -1,8 +1,9 @@
 .cproject
 .project
 .pydevproject
-
 .sconsign.dblite
+
+*.pyc
 
 .settings/
 Dbg/

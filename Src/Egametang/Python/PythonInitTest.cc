@@ -57,14 +57,14 @@ TEST_F(PythonInitTest, Dict)
 	ASSERT_EQ(2, boost::python::len(dict));
 }
 
-class Person
+class PersonTest
 {
 private:
 	int guid_;
 	std::string name_;
 
 public:
-	Person(): guid_(0)
+	PersonTest(): guid_(0)
 	{
 	}
 	void SetGuid(int guid)
@@ -88,31 +88,31 @@ public:
 	}
 };
 
-typedef boost::shared_ptr<Person> PersonPtr;
+typedef boost::shared_ptr<PersonTest> PersonTestPtr;
 
-BOOST_PYTHON_MODULE(Person)
+BOOST_PYTHON_MODULE(PersonTest)
 {
-	boost::python::class_<Person>("Person")
-		.def("SetGuid", &Person::SetGuid)
-		.def("Guid", &Person::Guid)
-		.def("SetName", &Person::SetName)
-		.def("Name", &Person::Name)
+	boost::python::class_<PersonTest>("Person")
+		.def("SetGuid", &PersonTest::SetGuid)
+		.def("Guid", &PersonTest::Guid)
+		.def("SetName", &PersonTest::SetName)
+		.def("Name", &PersonTest::Name)
 	;
-	boost::python::register_ptr_to_python<PersonPtr>();
+	boost::python::register_ptr_to_python<PersonTestPtr>();
 }
 
 TEST_F(PythonInitTest, EnterPythonScript)
 {
 	try
 	{
-		initPerson();
+		initPersonTest();
 		boost::python::object main_module = boost::python::import("__main__");
 		boost::python::object main_namespace = main_module.attr("__dict__");
-		PersonPtr person(new Person);
+		PersonTestPtr person(new PersonTest);
 		main_namespace["person"] = person;
 		std::string str = "import sys\n"
 				"sys.path.append('../../../Src/Egametang/Python/')\n"
-				"import Person\n"
+				"import PersonTest\n"
 				"import PythonInitTest\n"
 				"PythonInitTest.fun(person)\n";
 		ASSERT_EQ(0, person->Guid());
