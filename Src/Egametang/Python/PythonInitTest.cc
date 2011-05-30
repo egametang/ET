@@ -95,6 +95,8 @@ BOOST_PYTHON_MODULE(Person)
 	boost::python::class_<Person>("Person")
 		.def("SetGuid", &Person::SetGuid)
 		.def("Guid", &Person::Guid)
+		.def("SetName", &Person::SetName)
+		.def("Name", &Person::Name)
 	;
 	boost::python::register_ptr_to_python<PersonPtr>();
 }
@@ -118,6 +120,7 @@ TEST_F(PythonInitTest, EnterPythonScript)
 		// 进到python脚本层设置person的值为2
 		boost::python::exec(str.c_str(), main_namespace);
 		ASSERT_EQ(2, person->Guid());
+		ASSERT_EQ(std::string("tanghai"), person->Name());
 	}
 	catch (boost::python::error_already_set& err)
 	{

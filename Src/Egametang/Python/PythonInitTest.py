@@ -3,3 +3,4 @@
 
 def fun(person):
 	person.SetGuid(2)
+	person.SetName("tanghai")
