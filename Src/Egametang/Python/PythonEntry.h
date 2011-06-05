@@ -2,7 +2,7 @@
 #define PYTHON_PYTHON_ENTRY_H
 
 #include <boost/noncopyable.hpp>
-#include <boost/python.hpp>
+#include "Base/Marcos.h"
 #include "Python/PythonInit.h"
 
 namespace Egametang {
@@ -18,7 +18,7 @@ private:
 
 	boost::unordered_set<std::string> python_modules_;
 
-public:  // private
+private:
 	bool PythonEntry::GetExecString(const std::string& main_fun, std::string& exec_string);
 
 public:
@@ -31,7 +31,7 @@ public:
 	template <typename T>
 	void RegisterObjectPtr(std::string& name, T object_ptr);
 
-	void Exec();
+	void Execute(std::string& main_fun);
 };
 
 } // namespace Egametang

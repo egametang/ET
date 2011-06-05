@@ -3,4 +3,6 @@
 
 #define foreach BOOST_FOREACH
 
+#define private public
+
 #endif // BASE_MARCOS_H

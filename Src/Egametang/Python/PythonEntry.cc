@@ -1,6 +1,6 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-#include "base/Marcos.h"
+#include <boost/python.hpp>
 #include "Python/PythonEntry.h"
 
 namespace Egametang {
@@ -55,11 +55,12 @@ bool PythonEntry::GetExecString(const std::string& main_fun, std::string& exec_s
 	return true;
 }
 
-void PythonEntry::Exec(std::string& main_fun)
+void PythonEntry::Execute(std::string& main_fun)
 {
 	std::string exec_string;
 	if (!GetExecString(main_fun, exec_string))
 	{
+		LOG(WARNNING) << "no python exec string!";
 		return;
 	}
 
@@ -67,10 +68,10 @@ void PythonEntry::Exec(std::string& main_fun)
 	{
 		boost::python::exec(exec_string.c_str(), main_ns_);
 	}
-	catch
+	catch (...)
 	{
-		LOG(ERROR) << "run python exec error";
-		python_init.PrintError();
+		LOG(ERROR) << "python execute error";
+		python_init_.PrintError();
 	}
 }
 

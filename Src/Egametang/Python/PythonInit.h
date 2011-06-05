@@ -2,37 +2,21 @@
 #define PYTHON_PYTHON_INIT_H
 
 #include <boost/noncopyable.hpp>
-#include <boost/python.hpp>
 
 namespace Egametang {
 
 class PythonInit: private boost::noncopyable
 {
 public:
-	PythonInit()
-	{
-		Py_InitializeEx(0);
-	}
+	PythonInit();
 
-	~PythonInit()
-	{
-		Py_Finalize();
-	}
+	~PythonInit();
 
-	bool IsInitialized()
-	{
-		return Py_IsInitialized();
-	}
+	bool IsInitialized();
 
-	const char* Version()
-	{
-		return Py_GetVersion();
-	}
+	const char* Version();
 
-	void PrintError()
-	{
-		PyErr_Print();
-	}
+	void PrintError();
 };
 
 } // namespace Egametang
