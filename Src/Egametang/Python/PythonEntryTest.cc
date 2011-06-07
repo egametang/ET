@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+#include <boost/python.hpp>
 #include "Python/PythonEntry.h"
 
 namespace Egametang {
@@ -61,28 +62,20 @@ BOOST_PYTHON_MODULE(PersonTest)
 
 TEST_F(PythonEntryTest, EnterPythonScript)
 {
-	try
-	{
-		initPersonTest();
-		python_entry_.ImportPath("../../../Src/Egametang/Python/");
-		python_entry_.ImportModule("PythonEntryTest");
+	initPersonTest();
+	python_entry_.ImportPath("../../../Src/Egametang/Python/");
+	python_entry_.ImportModule("PythonEntryTest");
 
-		PersonTestPtr person(new PersonTest);
-		python_entry_.RegisterObjectPtr("person", person);
+	PersonTestPtr person(new PersonTest);
+	python_entry_.RegisterObjectPtr("person", person);
 
-		ASSERT_EQ(0, person->Guid());
+	ASSERT_EQ(0, person->Guid());
 
-		// 进到python脚本层设置person的值为2
-		python_entry_.Execute("PythonEntryTest.fun(person)");
+	// 进到python脚本层设置person的值为2
+	python_entry_.Execute("PythonEntryTest.fun(person)");
 
-		ASSERT_EQ(2, person->Guid());
-		ASSERT_EQ(std::string("tanghai"), person->Name());
-	}
-	catch (boost::python::error_already_set& err)
-	{
-		python_init.PrintError();
-		throw err;
-	}
+	ASSERT_EQ(2, person->Guid());
+	ASSERT_EQ(std::string("tanghai"), person->Name());
 }
 
 } // namespace Egametang

@@ -1,6 +1,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/python.hpp>
+#include <glog/logging.h>
 #include "Python/PythonEntry.h"
 
 namespace Egametang {
@@ -8,59 +9,52 @@ namespace Egametang {
 PythonEntry::PythonEntry():
 		python_init_()
 {
-	main_ns_ = import("__main__").attr("__dict__");
+	main_ns_ = boost::python::import("__main__").attr("__dict__");
 }
 
-void PythonEntry::ImportPath(std::string& path)
+void PythonEntry::ImportPath(std::string path)
 {
 	python_paths_.insert(path);
 }
 
-void PythonEntry::ImportModule(std::string& module)
+void PythonEntry::ImportModule(std::string module)
 {
 	python_modules_.insert(module);
-}
-
-template <typename T>
-void PythonEntry::RegisterObjectPtr(std::string& name, T object_ptr)
-{
-	main_ns_[name.c_str()] = object_ptr;
 }
 
 bool PythonEntry::GetExecString(const std::string& main_fun, std::string& exec_string)
 {
 	exec_string = "import sys\n";
-	boost::format format;
 	if (python_paths_.size() == 0)
 	{
-		LOG(WARNNING) << "no python path";
+		LOG(WARNING) << "no python path";
 		return false;
 	}
-	foreach(std::string& path, python_paths_)
+	foreach(std::string path, python_paths_)
 	{
-		exec_string += format("sys.path.append('%1%')\n") % path;
+		exec_string += boost::str(boost::format("sys.path.append('%1%')\n") % path);
 	}
 
 	if (python_modules_.size() == 0)
 	{
-		LOG(WARNNING) << "no python module";
+		LOG(WARNING) << "no python module";
 		return false;
 	}
-	foreach(std::string& module, python_modules_)
+	foreach(std::string module, python_modules_)
 	{
-		exec_string += format("import %1%\n") % module;
+		exec_string += boost::str(boost::format("import %1%\n") % module);
 	}
 	exec_string += main_fun;
 
 	return true;
 }
 
-void PythonEntry::Execute(std::string& main_fun)
+void PythonEntry::Execute(std::string main_fun)
 {
 	std::string exec_string;
 	if (!GetExecString(main_fun, exec_string))
 	{
-		LOG(WARNNING) << "no python exec string!";
+		LOG(WARNING) << "no python exec string!";
 		return;
 	}
 

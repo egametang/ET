@@ -1,3 +1,4 @@
+#include <boost/python.hpp>
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
