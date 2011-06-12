@@ -4,7 +4,7 @@ set(PythonSrc
 )
 add_library(PythonEntry ${PythonSrc})
 
-include_directories(/usr/include/python2.5)
+include_directories(/usr/include/python2.6)
 
 add_executable(PythonInitTest PythonInitTest.cc)
 add_executable(PythonEntryTest PythonEntryTest.cc)
@@ -18,7 +18,7 @@ foreach(Excute ${Excutes})
 	target_link_libraries(${Excute}
 		PythonEntry
 		boost_python
-		python2.5
+		python2.6
 		glog
 		gtest
 		gmock

@@ -1,15 +1,24 @@
-set(ThreadSrc ThreadPool.cc)
+set(ThreadSrc 
+	ThreadPool.cc
+	CountBarrier.cc)
 
 add_library(Thread ${ThreadSrc})
 
 add_executable(ThreadPoolTest ThreadPoolTest.cc)
+add_executable(CountBarrierTest CountBarrierTest.cc)
 
-target_link_libraries(ThreadPoolTest
-	Thread
-	boost_thread
-	glog
-	gtest
-	gmock
+set(Excutes 
+	ThreadPoolTest 
+	CountBarrierTest
 )
 
-add_test(ThreadPoolTest ThreadPoolTest)
+foreach(Excute ${Excutes})
+	target_link_libraries(${Excute}
+		Thread
+		boost_thread
+		glog
+		gtest
+		gmock
+	)
+	add_test(${Excute} ${Excute})
+endforeach()

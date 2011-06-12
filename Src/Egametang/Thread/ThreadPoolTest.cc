@@ -30,7 +30,8 @@ TEST_F(ThreadPoolTest, Test1)
 	for (int i = 0; i < 100; ++i)
 	{
 		pool_.PushTask(
-				boost::bind(&ThreadPoolTest::Max, this, x[i], y[i], &z[i]));
+				boost::bind(&ThreadPoolTest::Max,
+						this, x[i], y[i], &z[i]));
 	}
 	pool_.Stop();
 	for (int i = 0; i < 100; ++i)
@@ -38,6 +39,7 @@ TEST_F(ThreadPoolTest, Test1)
 		ASSERT_EQ(9, z[i]) << "i = " << i;
 	}
 }
+
 } // namespace Egametang
 
 int main(int argc, char* argv[])
