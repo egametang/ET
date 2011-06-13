@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
 #include <boost/detail/atomic_count.hpp>
+#include <boost/date_time.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
@@ -21,11 +22,14 @@ public:
 	void Wait(CountBarrier& barrier)
 	{
 		barrier.Wait();
-		++count_;
-		VLOG(3) << "count barrier test wait end";
 	}
 	void Signal(CountBarrier& barrier)
 	{
+		boost::xtime xt;
+		boost::xtime_get(&xt, boost::TIME_UTC);
+		xt.sec += 2;
+		boost::thread::sleep(xt);
+		++count_;
 		barrier.Signal();
 	}
 };
@@ -39,22 +43,18 @@ TEST_F(CountBarrierTest, Count)
 TEST_F(CountBarrierTest, WaitAndSignal)
 {
 	CountBarrier barrier(10);
-	ThreadPool pool(11);
-	for (int i = 0; i < 10; ++i)
-	{
-		pool.PushTask(
-				boost::bind(&CountBarrierTest::Wait,
-						this, boost::ref(barrier)));
-	}
-	ASSERT_EQ(0, this->count_);
+	ThreadPool pool(10);
+	pool.Start();
 	for (int i = 0; i < 10; ++i)
 	{
 		pool.PushTask(
 				boost::bind(&CountBarrierTest::Signal,
 						this, boost::ref(barrier)));
 	}
-	pool.Stop();
+	ASSERT_EQ(0, this->count_);
+	barrier.Wait();
 	ASSERT_EQ(10, this->count_);
+	pool.Stop();
 }
 
 } // namespace Egametang
