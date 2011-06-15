@@ -21,11 +21,11 @@ RpcServer::RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& 
 	acceptor_.listen();
 	RpcSessionPtr new_session(new RpcSession(sessions_));
 	acceptor_.async_accept(new_session->socket(),
-			boost::bind(&RpcServer::HandleAsyncAccept, this,
+			boost::bind(&RpcServer::OnAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
 
-void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
+void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -35,7 +35,7 @@ void RpcServer::HandleAsyncAccept(RpcSessionPtr session, const boost::system::er
 	sessions_.insert(session);
 	RpcSessionPtr new_session(new RpcSession(*this));
 	acceptor_.async_accept(new_session->socket(),
-			boost::bind(&RpcServer::HandleAsyncAccept, this,
+			boost::bind(&RpcServer::OnAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
 
@@ -73,6 +73,11 @@ void RpcServer::RegisterService(ProtobufServicePtr service)
 void RpcServer::Start()
 {
 	io_service_.run();
+}
+
+void RpcServer::RemoveSession(RpcSessionPtr& session)
+{
+	sessions_.erase(session);
 }
 
 } // namespace Egametang

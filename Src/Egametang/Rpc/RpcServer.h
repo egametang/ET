@@ -16,7 +16,7 @@ private:
 	ThreadPool& thread_pool_;
 	RpcSessionSet sessions_;
 
-	void HandleAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
+	void OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
 	void Callback(RpcSessionPtr session,
 			boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler);
 
@@ -29,6 +29,7 @@ public:
 	void RunService(RpcSessionPtr session, RpcRequestPtr request,
 			boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler);
 	void RegisterService(ProtobufServicePtr service);
+	void RemoveSession(RpcSessionPtr& session);
 };
 
 } // namespace Egametang

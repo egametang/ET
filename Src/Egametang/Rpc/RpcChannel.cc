@@ -28,31 +28,7 @@ void RpcChannel::AsyncConnectHandler(const boost::system::error_code& err)
 	RecvMessegeSize();
 }
 
-void RpcChannel::RecvMessegeSize()
-{
-	IntPtr size(new int);
-	boost::asio::async_read(socket_,
-			boost::asio::buffer(
-					reinterpret_cast<char*>(size.get()), sizeof(int)),
-			boost::bind(&RpcChannel::RecvMessage, this, size,
-					boost::asio::placeholders::error));
-}
-
-void RpcChannel::RecvMessage(IntPtr size, const boost::system::error_code& err)
-{
-	if (err)
-	{
-		LOG(ERROR) << "receive response size failed";
-		return;
-	}
-	StringPtr ss;
-	boost::asio::async_read(socket_,
-			boost::asio::buffer(*ss, *size),
-			boost::bind(&RpcChannel::RecvMessageHandler, this, ss,
-					boost::asio::placeholders::error));
-}
-
-void RpcChannel::RecvMessageHandler(
+void RpcChannel::OnRecvMessage(
 		StringPtr ss, const boost::system::error_code& err)
 {
 	if (err)
@@ -77,7 +53,7 @@ void RpcChannel::RecvMessageHandler(
 	RecvMessegeSize();
 }
 
-void RpcChannel::SendMessageHandler(int32 id, RpcHandlerPtr handler,
+void RpcChannel::OnSendMessage(int32 id, RpcHandlerPtr handler,
 		const boost::system::error_code& err)
 {
 	if (err)
@@ -86,30 +62,6 @@ void RpcChannel::SendMessageHandler(int32 id, RpcHandlerPtr handler,
 		return;
 	}
 	handlers_[id] = handler;
-}
-
-void RpcChannel::SendMessage(const RpcRequestPtr request,
-		RpcHandlerPtr handler, const boost::system::error_code& err)
-{
-	if (err)
-	{
-		LOG(ERROR) << "SendRequestSize error:";
-		return;
-	}
-	std::string ss = request->SerializeAsString();
-	boost::asio::async_write(socket_, boost::asio::buffer(ss),
-			boost::bind(&RpcChannel::SendMessageHandler, this, request->id(),
-					handler, boost::asio::placeholders::error));
-}
-
-void RpcChannel::SendMessageSize(
-		const RpcRequestPtr request, RpcHandlerPtr handler)
-{
-	int size = request->ByteSize();
-	std::string ss = boost::lexical_cast(size);
-	boost::asio::async_write(socket_, boost::asio::buffer(ss),
-			boost::bind(&RpcChannel::SendMessage, this, request,
-					handler, boost::asio::placeholders::error));
 }
 
 void RpcChannel::CallMethod(

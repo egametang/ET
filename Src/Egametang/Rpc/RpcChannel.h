@@ -6,12 +6,15 @@
 #include <boost/asio.hpp>
 #include "Base/Typedef.h"
 #include "Rpc/RpcTypedef.h"
+#include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {
 
 class RpcHandler;
 
-class RpcChannel: public google::protobuf::RpcChannel
+class RpcChannel:
+		public google::protobuf::RpcChannel,
+		public RPCCommunicator
 {
 private:
 	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
@@ -19,20 +22,14 @@ private:
 	int32 id_;
 	RpcCallbackMap handlers_;
 	boost::asio::io_service& io_service_;
-	boost::asio::ip::tcp::socket socket_;
 
 	void AsyncConnectHandler(const boost::system::error_code& err);
 
 	// recieve response
-	void RecvMessegeSize();
-	void RecvMessage(IntPtr size, const boost::system::error_code& err);
-	void RecvMessageHandler(StringPtr ss, const boost::system::error_code& err);
+	virtual void OnRecvMessage(StringPtr ss, const boost::system::error_code& err);
 
 	// send request
-	void SendMessageSize(const RpcRequestPtr request, RpcHandlerPtr handler);
-	void SendMessage(const RpcRequestPtr request,
-			RpcHandlerPtr handler, const boost::system::error_code& err);
-	void SendMessageHandler(int32 id, RpcHandlerPtr handler,
+	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler,
 			const boost::system::error_code& err);
 
 public:
