@@ -22,13 +22,14 @@ RpcServer::RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& 
 	RpcSessionPtr new_session(new RpcSession(sessions_));
 	acceptor_.async_accept(new_session->socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
-					boost::asio::placeholders::error));
+					new_session, boost::asio::placeholders::error));
 }
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
 	if (err)
 	{
+		LOG(ERROR) << "accept fail: " << err.message();
 		return;
 	}
 	session->Start();

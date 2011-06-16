@@ -23,14 +23,11 @@ private:
 	RpcCallbackMap handlers_;
 	boost::asio::io_service& io_service_;
 
-	void AsyncConnectHandler(const boost::system::error_code& err);
-
+	void OnAsyncConnect(const boost::system::error_code& err);
+	void SendRequest(RpcRequestPtr request);
 	// recieve response
-	virtual void OnRecvMessage(StringPtr ss, const boost::system::error_code& err);
-
-	// send request
-	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler,
-			const boost::system::error_code& err);
+	virtual void OnRecvMessage(StringPtr ss);
+	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler);
 
 public:
 	RpcChannel(boost::asio::io_service& service, std::string& host, int port);

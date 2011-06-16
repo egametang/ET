@@ -5,8 +5,7 @@
 
 namespace Egametang {
 
-RpcChannel::RpcChannel(
-		boost::asio::io_service& io_service, std::string& host, int port):
+RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string& host, int port):
 		io_service_(io_service)
 {
 	// another thread?
@@ -14,29 +13,22 @@ RpcChannel::RpcChannel(
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	socket_.async_connect(endpoint,
-			boost::bind(&RpcChannel::AsyncConnectHandler, this,
+			boost::bind(&RpcChannel::OnAsyncConnect, this,
 					boost::asio::placeholders::error));
 }
 
-void RpcChannel::AsyncConnectHandler(const boost::system::error_code& err)
+void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 {
 	if (err)
 	{
-		LOG(ERROR) << "async connect failed";
+		LOG(ERROR) << "async connect failed: " << err.message();
 		return;
 	}
-	RecvMessegeSize();
+	RecvSize();
 }
 
-void RpcChannel::OnRecvMessage(
-		StringPtr ss, const boost::system::error_code& err)
+void RpcChannel::OnRecvMessage(StringPtr ss)
 {
-	if (err)
-	{
-		LOG(ERROR) << "receive response failed";
-		return;
-	}
-
 	RpcResponse response;
 	Response->ParseFromString(*ss);
 	RpcHandlerPtr handler = handlers_[response.id()];
@@ -50,18 +42,18 @@ void RpcChannel::OnRecvMessage(
 	handlers_.erase(response.id());
 
 	// read size
-	RecvMessegeSize();
+	RecvSize();
 }
 
-void RpcChannel::OnSendMessage(int32 id, RpcHandlerPtr handler,
-		const boost::system::error_code& err)
+void RpcChannel::OnSendMessage()
 {
-	if (err)
-	{
-		LOG(ERROR) << "SendMessage error:";
-		return;
-	}
-	handlers_[id] = handler;
+}
+
+void RpcChannel::SendRequest(RpcRequestPtr request)
+{
+	int size = request->ByteSize();
+	std::string message = request->SerializeAsString();
+	SendSize(size, message);
 }
 
 void RpcChannel::CallMethod(
@@ -76,7 +68,9 @@ void RpcChannel::CallMethod(
 	req->set_method(method->full_name());
 	req->set_request(request->SerializeAsString());
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
-	SendMessageSize(req, handler);
+	handlers_[id_] = handler;
+
+	SendRequest(request);
 }
 
 } // namespace Egametang

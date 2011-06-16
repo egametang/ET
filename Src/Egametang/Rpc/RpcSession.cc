@@ -6,45 +6,39 @@ RpcSession::RpcSession(RpcServer& rpc_server): rpc_server_(rpc_server)
 {
 }
 
-boost::asio::ip::tcp::socket& RpcSession::Socket()
+void RpcSession::OnSendMessage(int32 id, RpcHandlerPtr handler)
 {
-	return socket_;
 }
 
-void RpcSession::OnSendMessage(int32 id, RpcHandlerPtr handler,
-		const boost::system::error_code& err)
+void RpcSession::OnRecvMessage(StringPtr ss)
 {
-	if (err)
-	{
-		LOG(ERROR) << "SendMessage error:";
-		return;
-	}
-}
-
-void RpcSession::OnRecvMessage(StringPtr ss, const boost::system::error_code& err)
-{
-	if (err)
-	{
-		LOG(ERROR) << "receive request message failed";
-		return;
-	}
-
 	RpcRequestPtr request(new RpcRequest);
 	request->ParseFromString(*ss);
 
+	int size = request->ByteSize();
+	std::string message = request->SerializeAsString();
+
 	RpcResponsePtr response(new RpcResponse);
-	response->set_id(request->id_());
+	response->set_id(request->id());
 
 	rpc_server_.RunService(shared_from_this(), request,
-			boost::bind(&RPCCommunicator::SendMessegeSize, shared_from_this(), response));
+			boost::bind(&RpcSession::SendResponse,
+					shared_from_this(), response));
 
 	// read size
-	RecvMessegeSize();
+	RecvSize();
+}
+
+void RpcSession::SendResponse(RpcResponsePtr response)
+{
+	int size = response->ByteSize();
+	std::string message = response->SerializeAsString();
+	SendSize(size, message);
 }
 
 void RpcSession::Start()
 {
-	RecvMessegeSize();
+	RecvSize();
 }
 
 void RpcSession::Stop()

@@ -18,6 +18,7 @@ class RpcSession:
 private:
 	RpcServer& rpc_server_;
 
+	void SendResponse(RpcResponsePtr response);
 	virtual void OnRecvMessage(StringPtr ss, const boost::system::error_code& err);
 	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler,
 			const boost::system::error_code& err);
@@ -25,7 +26,6 @@ private:
 public:
 	RpcSession(RpcServer& server);
 	~RpcSession();
-	boost::asio::ip::tcp::socket& Socket();
 	void Start();
 	void Stop();
 };

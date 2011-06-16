@@ -4,6 +4,7 @@
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
+#include "Base/Marcos.h"
 #include "Base/Typedef.h"
 #include "Rpc/RpcTypedef.h"
 
@@ -16,18 +17,21 @@ protected:
 
 public:
 	RPCCommunicator();
+
+	boost::asio::ip::tcp::socket& Socket();
+
 	// recieve response
-	void RecvMessegeSize();
+	void RecvSize();
 	void RecvMessage(IntPtr size, const boost::system::error_code& err);
+	void RecvDone(StringPtr ss, const boost::system::error_code& err);
 
 	// send request
-	void SendMessageSize(const RpcRequestPtr request, RpcHandlerPtr handler);
-	void SendMessage(const RpcRequestPtr request, RpcHandlerPtr handler,
-			const boost::system::error_code& err);
+	void SendSize(int size, std::string message);
+	void SendMessage(std::string message, const boost::system::error_code& err);
+	void SendDone(const boost::system::error_code& err);
 
-	virtual void OnRecvMessage(StringPtr ss, const boost::system::error_code& err) = 0;
-	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler,
-			const boost::system::error_code& err) = 0;
+	virtual void OnRecvMessage(StringPtr ss) = 0;
+	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler) = 0;
 };
 
 } // namespace Egametang
