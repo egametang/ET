@@ -31,7 +31,7 @@ public:
 	void SendDone(const boost::system::error_code& err);
 
 	virtual void OnRecvMessage(StringPtr ss) = 0;
-	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler) = 0;
+	virtual void OnSendMessage() = 0;
 };
 
 } // namespace Egametang
