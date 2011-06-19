@@ -16,7 +16,7 @@ protected:
 	boost::asio::ip::tcp::socket socket_;
 
 public:
-	RPCCommunicator();
+	RPCCommunicator(boost::asio::io_service&);
 
 	boost::asio::ip::tcp::socket& Socket();
 
@@ -30,8 +30,8 @@ public:
 	void SendMessage(std::string message, const boost::system::error_code& err);
 	void SendDone(const boost::system::error_code& err);
 
-	virtual void OnRecvMessage(StringPtr ss) = 0;
-	virtual void OnSendMessage() = 0;
+	virtual void OnRecvMessage(StringPtr ss);
+	virtual void OnSendMessage();
 };
 
 } // namespace Egametang

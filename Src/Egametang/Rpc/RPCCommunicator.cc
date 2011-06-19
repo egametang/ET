@@ -1,10 +1,13 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
-#include "Rpc/RpcCommunicator.h"
+#include <boost/lexical_cast.hpp>
+#include <glog/logging.h>
+#include "Rpc/RPCCommunicator.h"
 
 namespace Egametang {
 
-RPCCommunicator::RPCCommunicator()
+RPCCommunicator::RPCCommunicator(boost::asio::io_service& io_service):
+		socket_(io_service)
 {
 }
 
@@ -29,9 +32,9 @@ void RPCCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& 
 		LOG(ERROR) << "receive message size failed: " << err.message();
 		return;
 	}
-	StringPtr ss;
+	StringPtr ss(new std::string(*size, '\0'));
 	boost::asio::async_read(socket_,
-			boost::asio::buffer(*ss, *size),
+			boost::asio::buffer(reinterpret_cast<char*>(ss->at(0)), *size),
 			boost::bind(&RPCCommunicator::RecvDone, this, ss,
 					boost::asio::placeholders::error));
 }
@@ -48,10 +51,10 @@ void RPCCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& er
 
 void RPCCommunicator::SendSize(int size, std::string message)
 {
-	std::string ssize = boost::lexical_cast(size);
+	std::string ssize = boost::lexical_cast<std::string>(size);
 	boost::asio::async_write(socket_, boost::asio::buffer(ssize),
 			boost::bind(&RPCCommunicator::SendMessage, this, message,
-					handler, boost::asio::placeholders::error));
+					boost::asio::placeholders::error));
 }
 
 void RPCCommunicator::SendMessage(std::string message, const boost::system::error_code& err)
@@ -73,6 +76,14 @@ void RPCCommunicator::SendDone(const boost::system::error_code& err)
 		return;
 	}
 	OnSendMessage();
+}
+
+void RPCCommunicator::OnRecvMessage(StringPtr ss)
+{
+}
+
+void RPCCommunicator::OnSendMessage()
+{
 }
 
 } // namespace Egametang

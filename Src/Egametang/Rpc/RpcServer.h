@@ -8,6 +8,7 @@ namespace Egametang {
 class RpcServer: public boost::enable_shared_from_this<RpcServer>
 {
 private:
+	friend class RpcSession;
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 
 	google::protobuf::Service& service_;
@@ -26,6 +27,7 @@ public:
 	void Start();
 	void Stop();
 
+	boost::asio::io_service& IOService();
 	void RunService(RpcSessionPtr session, RpcRequestPtr request,
 			boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler);
 	void RegisterService(ProtobufServicePtr service);

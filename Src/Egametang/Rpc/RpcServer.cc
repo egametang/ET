@@ -56,6 +56,11 @@ void RpcServer::Stop()
 	sessions_.clear();
 }
 
+boost::asio::io_service& RpcServer::IOService()
+{
+	return io_service_;
+}
+
 void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
 		boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler)
 {
