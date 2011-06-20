@@ -28,6 +28,7 @@ public:
 		acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 		acceptor_.bind(endpoint);
 		acceptor_.listen();
+		VLOG(3) << "server start accept";
 		acceptor_.async_accept(socket_,
 				boost::bind(&RPCServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
@@ -35,11 +36,23 @@ public:
 
 	void OnAsyncAccept(const boost::system::error_code& err)
 	{
+		if (err)
+		{
+			LOG(ERROR) << "async accept failed: " << err.message();
+			return;
+		}
+		RecvSize();
 	}
 
 	void Start()
 	{
-		RecvSize();
+		io_service_.run();
+	}
+
+	void Stop()
+	{
+		socket_.close();
+		acceptor_.close();
 	}
 
 	virtual void OnRecvMessage(StringPtr ss)
@@ -74,6 +87,11 @@ public:
 		io_service_.run();
 	}
 
+	void Stop()
+	{
+		socket_.close();
+	}
+
 	void OnAsyncConnect(const boost::system::error_code& err)
 	{
 		if (err)
@@ -98,14 +116,16 @@ public:
 class RPCCommunicatorTest: public testing::Test
 {
 protected:
-	boost::asio::io_service io_service_;
+	boost::asio::io_service server_io_;
+	boost::asio::io_service client_io_;
 	RPCServerTest rpc_server_;
 	RPCClientTest rpc_client_;
 
 public:
 	RPCCommunicatorTest():
-		io_service_(), rpc_server_(io_service_, global_port),
-		rpc_client_(io_service_, "localhost", global_port)
+		server_io_(), client_io_(),
+		rpc_server_(server_io_, global_port),
+		rpc_client_(client_io_, "localhost", global_port)
 	{
 	}
 };
@@ -113,7 +133,9 @@ public:
 
 TEST_F(RPCCommunicatorTest, ClientSendString)
 {
-	int a = 2;
+	VLOG(3) << "ClientSendString Test Start!";
+	rpc_server_.Start();
+	rpc_client_.Start();
 }
 
 } // namespace Egametang
@@ -121,7 +143,6 @@ TEST_F(RPCCommunicatorTest, ClientSendString)
 
 int main(int argc, char* argv[])
 {
-	FLAGS_logtostderr = true;
 	testing::InitGoogleTest(&argc, argv);
 	google::ParseCommandLineFlags(&argc, &argv, true);
 	google::InitGoogleLogging(argv[0]);

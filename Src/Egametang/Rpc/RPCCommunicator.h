@@ -16,7 +16,7 @@ protected:
 	boost::asio::ip::tcp::socket socket_;
 
 public:
-	RPCCommunicator(boost::asio::io_service&);
+	explicit RPCCommunicator(boost::asio::io_service& io_service);
 
 	boost::asio::ip::tcp::socket& Socket();
 
