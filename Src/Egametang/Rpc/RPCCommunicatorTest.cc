@@ -4,6 +4,8 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include "Rpc/RPCCommunicator.h"
+#include "Thread/ThreadPool.h"
+#include "Thread/CountBarrier.h"
 
 namespace Egametang {
 
@@ -12,14 +14,15 @@ static int global_port = 10001;
 class RPCServerTest: public RPCCommunicator
 {
 public:
+	CountBarrier& barrier_;
 	std::string recv_string_;
 	boost::asio::ip::tcp::acceptor acceptor_;
-	boost::asio::io_service& io_service_;
+	boost::asio::io_service io_service_;
 
 public:
-	RPCServerTest(boost::asio::io_service& io_service, int port):
-		io_service_(io_service), acceptor_(io_service_),
-		RPCCommunicator(io_service_)
+	RPCServerTest(int port, CountBarrier& barrier):
+		barrier_(barrier), io_service_(),
+		acceptor_(io_service_), RPCCommunicator(io_service_)
 	{
 		boost::asio::ip::address address;
 		address.from_string("localhost");
@@ -58,6 +61,7 @@ public:
 	virtual void OnRecvMessage(StringPtr ss)
 	{
 		recv_string_ = *ss;
+		barrier_.Signal();
 	}
 	virtual void OnSendMessage()
 	{
@@ -67,12 +71,14 @@ public:
 class RPCClientTest: public RPCCommunicator
 {
 public:
+	CountBarrier& barrier_;
 	std::string recv_string_;
-	boost::asio::io_service& io_service_;
+	boost::asio::io_service io_service_;
 
 public:
-	RPCClientTest(boost::asio::io_service& io_service, std::string host, int port):
-		io_service_(io_service), RPCCommunicator(io_service_)
+	RPCClientTest(std::string host, int port, CountBarrier& barrier):
+		barrier_(barrier), io_service_(),
+		RPCCommunicator(io_service_)
 	{
 		boost::asio::ip::address address;
 		address.from_string(host);
@@ -106,6 +112,7 @@ public:
 	virtual void OnRecvMessage(StringPtr ss)
 	{
 		recv_string_ = *ss;
+		barrier_.Signal();
 	}
 
 	virtual void OnSendMessage()
@@ -116,16 +123,15 @@ public:
 class RPCCommunicatorTest: public testing::Test
 {
 protected:
-	boost::asio::io_service server_io_;
-	boost::asio::io_service client_io_;
+	CountBarrier barrier_;
 	RPCServerTest rpc_server_;
 	RPCClientTest rpc_client_;
 
 public:
 	RPCCommunicatorTest():
-		server_io_(), client_io_(),
-		rpc_server_(server_io_, global_port),
-		rpc_client_(client_io_, "localhost", global_port)
+		barrier_(2),
+		rpc_server_(global_port, barrier_),
+		rpc_client_("localhost", global_port, barrier_)
 	{
 	}
 };
@@ -134,8 +140,14 @@ public:
 TEST_F(RPCCommunicatorTest, ClientSendString)
 {
 	VLOG(3) << "ClientSendString Test Start!";
-	rpc_server_.Start();
-	rpc_client_.Start();
+	ThreadPool thread_pool(3);
+	thread_pool.PushTask(boost::bind(&RPCServerTest::Start, &rpc_server_));
+	thread_pool.PushTask(boost::bind(&RPCClientTest::Start, &rpc_client_));
+	barrier_.Wait();
+	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
+	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_client_.recv_string_);
+	rpc_server_.Stop();
+	rpc_client_.Stop();
 }
 
 } // namespace Egametang

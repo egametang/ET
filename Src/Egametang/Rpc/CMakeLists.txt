@@ -4,15 +4,17 @@ set(RpcSrc
 
 add_library(Rpc ${RpcSrc})
 
-add_executable(RPCCommunicatorTest RPCCommunicatorTest.cc)
+add_executable(RpcCommunicatorTest RPCCommunicatorTest.cc)
 
 set(Excutes 
-	RPCCommunicatorTest
+	RpcCommunicatorTest
 )
 
 foreach(Excute ${Excutes})
 	target_link_libraries(${Excute}
 		Rpc
+		Thread
+		boost_thread
 		boost_system
 		protobuf
 		glog
