@@ -20,6 +20,7 @@ foreach(Excute ${Excutes})
 		boost_python
 		python2.6
 		glog
+		gflags
 		gtest
 		gmock
 	)

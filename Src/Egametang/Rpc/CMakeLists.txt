@@ -18,6 +18,7 @@ foreach(Excute ${Excutes})
 		boost_system
 		protobuf
 		glog
+		gflags
 		gtest
 		gmock
 	)

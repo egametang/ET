@@ -17,6 +17,7 @@ foreach(Excute ${Excutes})
 		Thread
 		boost_thread
 		glog
+		gflags
 		gtest
 		gmock
 	)

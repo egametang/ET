@@ -129,8 +129,7 @@ protected:
 
 public:
 	RPCCommunicatorTest():
-		barrier_(2),
-		rpc_server_(global_port, barrier_),
+		barrier_(2), rpc_server_(global_port, barrier_),
 		rpc_client_("localhost", global_port, barrier_)
 	{
 	}
