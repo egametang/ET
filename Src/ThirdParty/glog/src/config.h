@@ -131,7 +131,7 @@
 #define PACKAGE_VERSION "0.3.1"
 
 /* How to access the PC from a struct ucontext */
-#ifdef X86_64
+#ifdef __x86_64__
 #  define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_RIP]
 #else
 #  define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_EIP]
@@ -142,7 +142,7 @@
 /* #undef PTHREAD_CREATE_JOINABLE */
 
 /* The size of `void *', as computed by sizeof. */
-#ifdef X86_64
+#ifdef __x86_64__
 #  define SIZEOF_VOID_P 8
 #else
 #  define SIZEOF_VOID_P 4

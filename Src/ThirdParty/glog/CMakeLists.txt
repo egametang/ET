@@ -10,8 +10,4 @@ set(GLog
 
 include_directories(./src)
 
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	add_definitions(-DX86_64)
-endif()
-
 add_library(glog ${GLog})
