@@ -7,7 +7,7 @@
 namespace Egametang {
 
 RPCCommunicator::RPCCommunicator(boost::asio::io_service& io_service):
-		socket_(io_service)
+		io_service_(io_service), socket_(io_service)
 {
 }
 
@@ -18,7 +18,7 @@ boost::asio::ip::tcp::socket& RPCCommunicator::Socket()
 
 void RPCCommunicator::RecvSize()
 {
-	IntPtr size(new int);
+	IntPtr size(new int(0));
 	boost::asio::async_read(socket_,
 			boost::asio::buffer(reinterpret_cast<char*>(size.get()), sizeof(int)),
 			boost::bind(&RPCCommunicator::RecvMessage, this, size,
@@ -34,7 +34,7 @@ void RPCCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& 
 	}
 	StringPtr ss(new std::string(*size, '\0'));
 	boost::asio::async_read(socket_,
-			boost::asio::buffer(reinterpret_cast<char*>(ss->at(0)), *size),
+			boost::asio::buffer(reinterpret_cast<char*>(&ss->at(0)), *size),
 			boost::bind(&RPCCommunicator::RecvDone, this, ss,
 					boost::asio::placeholders::error));
 }
@@ -51,8 +51,8 @@ void RPCCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& er
 
 void RPCCommunicator::SendSize(int size, std::string message)
 {
-	std::string ssize = boost::lexical_cast<std::string>(size);
-	boost::asio::async_write(socket_, boost::asio::buffer(ssize),
+	boost::asio::async_write(socket_,
+			boost::asio::buffer(reinterpret_cast<char*>(&size), sizeof(int)),
 			boost::bind(&RPCCommunicator::SendMessage, this, message,
 					boost::asio::placeholders::error));
 }

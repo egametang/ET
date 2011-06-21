@@ -13,6 +13,7 @@ namespace Egametang {
 class RPCCommunicator
 {
 protected:
+	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::socket socket_;
 
 public:

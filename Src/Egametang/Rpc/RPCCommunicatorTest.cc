@@ -17,21 +17,19 @@ public:
 	CountBarrier& barrier_;
 	std::string recv_string_;
 	boost::asio::ip::tcp::acceptor acceptor_;
-	boost::asio::io_service io_service_;
 
 public:
-	RPCServerTest(int port, CountBarrier& barrier):
-		barrier_(barrier), io_service_(),
-		acceptor_(io_service_), RPCCommunicator(io_service_)
+	RPCServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
+		RPCCommunicator(io_service), acceptor_(io_service),
+		barrier_(barrier)
 	{
 		boost::asio::ip::address address;
-		address.from_string("localhost");
+		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
 		acceptor_.open(endpoint.protocol());
 		acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 		acceptor_.bind(endpoint);
 		acceptor_.listen();
-		VLOG(3) << "server start accept";
 		acceptor_.async_accept(socket_,
 				boost::bind(&RPCServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
@@ -49,17 +47,19 @@ public:
 
 	void Start()
 	{
+		VLOG(2) << "Start Server";
 		io_service_.run();
 	}
 
 	void Stop()
 	{
-		socket_.close();
 		acceptor_.close();
+		socket_.close();
 	}
 
 	virtual void OnRecvMessage(StringPtr ss)
 	{
+		VLOG(2) << "Server Recv string: " << *ss;
 		recv_string_ = *ss;
 		barrier_.Signal();
 	}
@@ -73,23 +73,25 @@ class RPCClientTest: public RPCCommunicator
 public:
 	CountBarrier& barrier_;
 	std::string recv_string_;
-	boost::asio::io_service io_service_;
 
 public:
-	RPCClientTest(std::string host, int port, CountBarrier& barrier):
-		barrier_(barrier), io_service_(),
-		RPCCommunicator(io_service_)
+	RPCClientTest(boost::asio::io_service& io_service, int port,
+			CountBarrier& barrier):
+		RPCCommunicator(io_service), barrier_(barrier)
 	{
+		VLOG(2) << __FUNCTION__;
 		boost::asio::ip::address address;
-		address.from_string(host);
+		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
 		socket_.async_connect(endpoint,
 				boost::bind(&RPCClientTest::OnAsyncConnect, this,
 						boost::asio::placeholders::error));
+		VLOG(2) << __FUNCTION__ << " End";
 	}
 
 	void Start()
 	{
+		VLOG(2) << "Start Client";
 		io_service_.run();
 	}
 
@@ -111,8 +113,9 @@ public:
 
 	virtual void OnRecvMessage(StringPtr ss)
 	{
-		recv_string_ = *ss;
-		barrier_.Signal();
+		// VLOG(2) << "Recv string: " << *ss;
+		// recv_string_ = *ss;
+		// barrier_.Signal();
 	}
 
 	virtual void OnSendMessage()
@@ -123,14 +126,17 @@ public:
 class RPCCommunicatorTest: public testing::Test
 {
 protected:
+	boost::asio::io_service io_server_;
+	boost::asio::io_service io_client_;
 	CountBarrier barrier_;
 	RPCServerTest rpc_server_;
 	RPCClientTest rpc_client_;
 
 public:
 	RPCCommunicatorTest():
-		barrier_(2), rpc_server_(global_port, barrier_),
-		rpc_client_("localhost", global_port, barrier_)
+		io_server_(), io_client_(),
+		barrier_(1), rpc_server_(io_server_, global_port, barrier_),
+		rpc_client_(io_client_, global_port, barrier_)
 	{
 	}
 };
@@ -138,13 +144,13 @@ public:
 
 TEST_F(RPCCommunicatorTest, ClientSendString)
 {
-	VLOG(3) << "ClientSendString Test Start!";
-	ThreadPool thread_pool(3);
+	ThreadPool thread_pool(2);
+	thread_pool.Start();
 	thread_pool.PushTask(boost::bind(&RPCServerTest::Start, &rpc_server_));
 	thread_pool.PushTask(boost::bind(&RPCClientTest::Start, &rpc_client_));
 	barrier_.Wait();
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
-	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_client_.recv_string_);
+	thread_pool.Stop();
 	rpc_server_.Stop();
 	rpc_client_.Stop();
 }
