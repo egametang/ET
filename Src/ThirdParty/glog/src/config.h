@@ -131,14 +131,22 @@
 #define PACKAGE_VERSION "0.3.1"
 
 /* How to access the PC from a struct ucontext */
-#define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_EIP]
+#ifdef X86_64
+#  define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_RIP]
+#else
+#  define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_EIP]
+#endif
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */
 /* #undef PTHREAD_CREATE_JOINABLE */
 
 /* The size of `void *', as computed by sizeof. */
-#define SIZEOF_VOID_P 4
+#ifdef X86_64
+#  define SIZEOF_VOID_P 8
+#else
+#  define SIZEOF_VOID_P 4
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 /* #undef STDC_HEADERS */
