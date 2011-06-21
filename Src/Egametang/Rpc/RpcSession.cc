@@ -7,10 +7,6 @@ RpcSession::RpcSession(RpcServer& rpc_server):
 {
 }
 
-void RpcSession::OnSendMessage(int32 id, RpcHandlerPtr handler)
-{
-}
-
 void RpcSession::OnRecvMessage(StringPtr ss)
 {
 	RpcRequestPtr request(new RpcRequest);
@@ -25,9 +21,12 @@ void RpcSession::OnRecvMessage(StringPtr ss)
 	rpc_server_.RunService(shared_from_this(), request,
 			boost::bind(&RpcSession::SendResponse,
 					shared_from_this(), response));
-
 	// read size
 	RecvSize();
+}
+
+void RpcSession::OnSendMessage()
+{
 }
 
 void RpcSession::SendResponse(RpcResponsePtr response)
@@ -48,4 +47,4 @@ void RpcSession::Stop()
 	rpc_server_.RemoveSession(shared_from_this());
 }
 
-}
+} // namespace Egametang

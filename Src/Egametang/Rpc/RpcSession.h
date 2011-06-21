@@ -19,9 +19,9 @@ private:
 	RpcServer& rpc_server_;
 
 	void SendResponse(RpcResponsePtr response);
-	virtual void OnRecvMessage(StringPtr ss, const boost::system::error_code& err);
-	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler,
-			const boost::system::error_code& err);
+
+	virtual void OnRecvMessage(StringPtr ss);
+	virtual void OnSendMessage();
 
 public:
 	RpcSession(RpcServer& server);

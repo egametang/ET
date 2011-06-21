@@ -25,9 +25,9 @@ private:
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 	void SendRequest(RpcRequestPtr request);
-	// recieve response
+
 	virtual void OnRecvMessage(StringPtr ss);
-	virtual void OnSendMessage(int32 id, RpcHandlerPtr handler);
+	virtual void OnSendMessage();
 
 public:
 	RpcChannel(boost::asio::io_service& service, std::string& host, int port);
