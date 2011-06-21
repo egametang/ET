@@ -2,6 +2,7 @@
 # gtest-1.6.0
 # gmock-1.6.0
 
+add_subdirectory(glog)
 add_subdirectory(gmock)
 add_subdirectory(gtest)
-add_subdirectory(glog)
+add_subdirectory(gflags)
