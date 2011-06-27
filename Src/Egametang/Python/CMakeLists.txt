@@ -15,12 +15,12 @@ SET(Excutes
 FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
 		PythonEntry
-		boost_python
-		${PYTHON_LIBRARIES}
 		Glog
 		Gflags
 		Gtest
 		Gmock
+		${Boost_LIBRARIES}
+		${PYTHON_LIBRARY}
 	)
 	ADD_TEST(${Excute} ${Excute})
 ENDFOREACH()

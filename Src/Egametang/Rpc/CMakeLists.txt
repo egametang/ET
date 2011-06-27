@@ -1,29 +1,29 @@
-protobuf_generate_cpp(proto_srcs proto_hdrs RpcProtobufData.proto)
+PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs RpcProtobufData.proto)
 
-set(RpcSrc 
+SET(RpcSrc 
 	RPCCommunicator.cc
 	${proto_srcs}
 	)
 
-add_library(Rpc ${RpcSrc})
+ADD_LIBRARY(Rpc ${RpcSrc})
 
-add_executable(RpcCommunicatorTest RPCCommunicatorTest.cc)
+ADD_EXECUTABLE(RpcCommunicatorTest RPCCommunicatorTest.cc)
 
-set(Excutes 
+SET(Excutes 
 	RpcCommunicatorTest
 )
 
-foreach(Excute ${Excutes})
-	target_link_libraries(${Excute}
+FOREACH(Excute ${Excutes})
+	TARGET_LINK_LIBRARIES(${Excute}
 		Rpc
 		Thread
-		${protobuf_library}
-		boost_thread
-		boost_system
 		Glog
 		Gflags
 		Gtest
 		Gmock
+		${Boost_LIBRARIES}
+		${PYTHON_LIBRARY}
+		${PROTOBUF_LIBRARY}
 	)
-	add_test(${Excute} ${Excute})
-endforeach()
+	ADD_TEST(${Excute} ${Excute})
+ENDFOREACH()

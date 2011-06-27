@@ -1,25 +1,26 @@
-set(ThreadSrc 
+SET(ThreadSrc 
 	ThreadPool.cc
 	CountBarrier.cc)
 
-add_library(Thread ${ThreadSrc})
+ADD_LIBRARY(Thread ${ThreadSrc})
 
-add_executable(ThreadPoolTest ThreadPoolTest.cc)
-add_executable(CountBarrierTest CountBarrierTest.cc)
+ADD_EXECUTABLE(ThreadPoolTest ThreadPoolTest.cc)
+ADD_EXECUTABLE(CountBarrierTest CountBarrierTest.cc)
 
-set(Excutes 
+SET(Excutes 
 	ThreadPoolTest 
 	CountBarrierTest
 )
 
-foreach(Excute ${Excutes})
-	target_link_libraries(${Excute}
+FOREACH(Excute ${Excutes})
+	TARGET_LINK_LIBRARIES(${Excute}
 		Thread
-		boost_thread
 		Glog
 		Gflags
 		Gtest
 		Gmock
+		${Boost_LIBRARIES}
+		${PYTHON_LIBRARY}
 	)
-	add_test(${Excute} ${Excute})
-endforeach()
+	ADD_TEST(${Excute} ${Excute})
+ENDFOREACH()

@@ -1,3 +1,3 @@
-add_subdirectory(Python)
-add_subdirectory(Thread)
-add_subdirectory(Rpc)
+ADD_SUBDIRECTORY(Python)
+ADD_SUBDIRECTORY(Thread)
+ADD_SUBDIRECTORY(Rpc)
