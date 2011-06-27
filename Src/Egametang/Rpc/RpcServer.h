@@ -24,14 +24,12 @@ private:
 public:
 	RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& thread_pool);
 	~RpcServer();
-	void Start();
-	void Stop();
 
-	boost::asio::io_service& IOService();
 	void RunService(RpcSessionPtr session, RpcRequestPtr request,
 			boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler);
 	void RegisterService(ProtobufServicePtr service);
 	void RemoveSession(RpcSessionPtr& session);
+	void Stop();
 };
 
 } // namespace Egametang

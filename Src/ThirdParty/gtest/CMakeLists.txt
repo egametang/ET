@@ -1,5 +1,5 @@
-set(GTest src/gtest-all.cc)
+set(Gtest src/gtest-all.cc)
 
 include_directories(.)
 
-add_library(gtest ${GTest})
+add_library(Gtest ${Gtest})

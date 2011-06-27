@@ -23,7 +23,6 @@ public:
 
 TEST_F(ThreadPoolTest, Test1)
 {
-	pool_.Start();
 	std::vector<int> x(100, 8);
 	std::vector<int> y(100, 9);
 	std::vector<int> z(100, 0);
@@ -33,7 +32,7 @@ TEST_F(ThreadPoolTest, Test1)
 				boost::bind(&ThreadPoolTest::Max,
 						this, x[i], y[i], &z[i]));
 	}
-	pool_.Stop();
+	pool_.Wait();
 	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i]) << "i = " << i;

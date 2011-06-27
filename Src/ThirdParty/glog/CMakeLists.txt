@@ -1,4 +1,4 @@
-set(GLog
+set(Glog
 	src/demangle.cc
 	src/logging.cc
 	src/raw_logging.cc
@@ -10,4 +10,4 @@ set(GLog
 
 include_directories(./src)
 
-add_library(glog ${GLog})
+add_library(Glog ${Glog})

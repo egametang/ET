@@ -1,12 +1,28 @@
-project(Cpp)
-cmake_minimum_required(VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-enable_testing()
+SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Cmake)
+SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 
-include_directories(Egametang)
-include_directories(ThirdParty)
+PROJECT(Cpp)
 
-link_directories(/usr/local/lib)
+OPTION(BUILD_TESTS "Decide if the test suite shall be built or not" ON)
 
-add_subdirectory(Egametang)
-add_subdirectory(ThirdParty)
+IF(BUILD_TESTS)
+	ENABLE_TESTING()
+ENDIF()
+
+INCLUDE_DIRECTORIES(Egametang)
+INCLUDE_DIRECTORIES(ThirdParty)
+
+FIND_PACKAGE(Protobuf REQUIRED)
+INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIRS})
+LINK_DIRECTORIES(${PROTOBUF_LIBRARIES})
+
+FIND_PACKAGE(PythonLibs REQUIRED)
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+LINK_DIRECTORIES(${PYTHON_LIBRARIES})
+
+ADD_SUBDIRECTORY(Egametang)
+ADD_SUBDIRECTORY(ThirdParty)
+
+

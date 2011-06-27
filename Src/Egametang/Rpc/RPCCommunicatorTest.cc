@@ -146,13 +146,12 @@ public:
 TEST_F(RPCCommunicatorTest, ClientSendString)
 {
 	ThreadPool thread_pool(2);
-	thread_pool.Start();
 	thread_pool.PushTask(boost::bind(&RPCServerTest::Start, &rpc_server_));
 	thread_pool.PushTask(boost::bind(&RPCClientTest::Start, &rpc_client_));
 	barrier_.Wait();
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
 	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client_.recv_string_);
-	thread_pool.Stop();
+	thread_pool.Wait();
 	rpc_server_.Stop();
 	rpc_client_.Stop();
 }

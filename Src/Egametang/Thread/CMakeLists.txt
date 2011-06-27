@@ -16,10 +16,10 @@ foreach(Excute ${Excutes})
 	target_link_libraries(${Excute}
 		Thread
 		boost_thread
-		glog
-		gflags
-		gtest
-		gmock
+		Glog
+		Gflags
+		Gtest
+		Gmock
 	)
 	add_test(${Excute} ${Excute})
 endforeach()

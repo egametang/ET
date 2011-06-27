@@ -19,8 +19,8 @@ RpcServer::RpcServer(boost::asio::io_service& io_service, int port, ThreadPool& 
 	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor_.bind(endpoint);
 	acceptor_.listen();
-	RpcSessionPtr new_session(new RpcSession(sessions_));
-	acceptor_.async_accept(new_session->socket(),
+	RpcSessionPtr new_session(new RpcSession(*this));
+	acceptor_.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
 }
@@ -35,7 +35,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	session->Start();
 	sessions_.insert(session);
 	RpcSessionPtr new_session(new RpcSession(*this));
-	acceptor_.async_accept(new_session->socket(),
+	acceptor_.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
@@ -43,7 +43,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 void RpcServer::Callback(RpcSessionPtr session,
 		boost::function<void (RpcSessionPtr, RpcResponsePtr)> handler)
 {
-	session->socket.get_io_service().post(handler);
+	session->Socket().get_io_service().post(handler);
 }
 
 void RpcServer::Stop()
@@ -69,11 +69,6 @@ void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
 void RpcServer::RegisterService(ProtobufServicePtr service)
 {
 
-}
-
-void RpcServer::Start()
-{
-	io_service_.run();
 }
 
 void RpcServer::RemoveSession(RpcSessionPtr& session)

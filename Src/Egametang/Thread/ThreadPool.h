@@ -1,11 +1,12 @@
-#ifndef THREAD_THREAD_POOL_H
-#define THREAD_THREAD_POOL_H
+#ifndef THREAD_THREADPOOL_H
+#define THREAD_THREADPOOL_H
 
 #include <list>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include "Thread/ThreadTypedef.h"
+#include "Base/Marcos.h"
 
 namespace Egametang {
 
@@ -26,10 +27,9 @@ public:
 	ThreadPool(int num = 0);
 	~ThreadPool();
 
-	virtual void Start();
-	virtual void Stop();
+	virtual void Wait();
 	virtual bool PushTask(boost::function<void (void)> task);
 };
 
 } // namespace Egametang
-#endif // THREAD_THREAD_POOL_H
+#endif // THREAD_THREADPOOL_H

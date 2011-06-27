@@ -1,28 +1,26 @@
-set(PythonSrc 
+SET(PythonSrc 
 	PythonInit.cc 
 	PythonEntry.cc
 )
-add_library(PythonEntry ${PythonSrc})
+ADD_LIBRARY(PythonEntry ${PythonSrc})
 
-include_directories(/usr/include/python2.6)
+ADD_EXECUTABLE(PythonInitTest PythonInitTest.cc)
+ADD_EXECUTABLE(PythonEntryTest PythonEntryTest.cc)
 
-add_executable(PythonInitTest PythonInitTest.cc)
-add_executable(PythonEntryTest PythonEntryTest.cc)
-
-set(Excutes 
+SET(Excutes 
 	PythonInitTest 
 	PythonEntryTest
 )
 
-foreach(Excute ${Excutes})
-	target_link_libraries(${Excute}
+FOREACH(Excute ${Excutes})
+	TARGET_LINK_LIBRARIES(${Excute}
 		PythonEntry
 		boost_python
-		python2.6
-		glog
-		gflags
-		gtest
-		gmock
+		${PYTHON_LIBRARIES}
+		Glog
+		Gflags
+		Gtest
+		Gmock
 	)
-	add_test(${Excute} ${Excute})
-endforeach()
+	ADD_TEST(${Excute} ${Excute})
+ENDFOREACH()

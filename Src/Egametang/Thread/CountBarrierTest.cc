@@ -44,7 +44,6 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 {
 	CountBarrier barrier(10);
 	ThreadPool pool(10);
-	pool.Start();
 	for (int i = 0; i < 10; ++i)
 	{
 		pool.PushTask(
@@ -54,7 +53,7 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 	ASSERT_EQ(0, this->count_);
 	barrier.Wait();
 	ASSERT_EQ(10, this->count_);
-	pool.Stop();
+	pool.Wait();
 }
 
 } // namespace Egametang
