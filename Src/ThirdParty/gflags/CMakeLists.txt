@@ -1,10 +1,10 @@
-set(Gflags 
+SET(Gflags 
 	src/gflags_completions.cc
 	src/gflags_nc.cc
 	src/gflags_reporting.cc
 	src/gflags.cc
 )
 
-include_directories(./src)
+INCLUDE_DIRECTORIES(./src)
 
-add_library(Gflags ${Gflags})
+ADD_LIBRARY(Gflags ${Gflags})

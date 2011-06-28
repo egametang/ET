@@ -1,5 +1,5 @@
-set(Gmock src/gmock-all.cc)
+SET(Gmock src/gmock-all.cc)
 
-include_directories(.)
+INCLUDE_DIRECTORIES(.)
 
-add_library(Gmock ${Gmock})
+ADD_LIBRARY(Gmock ${Gmock})
