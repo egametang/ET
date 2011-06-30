@@ -2,8 +2,10 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include "Rpc/RpcChannel.h"
-#include "Rpc/RpcProtobufData.pb.h"
-#include "Rpc/RpcChannelTest.pb.h"
+#include "Thread/CountBarrier.h"
+#include "Rpc/RpcController.h"
+#include "Rpc/RpcData.pb.h"
+#include "Rpc/Echo.pb.h"
 
 namespace Egametang {
 
@@ -56,7 +58,7 @@ public:
 		// 接收消息
 		RpcRequest rpc_request;
 		rpc_request.ParseFromString(*ss);
-		RpcChannelTestRequest request;
+		EchoRequest request;
 		request.ParseFromString(rpc_request.request());
 
 		num_ = request.num();
@@ -64,9 +66,9 @@ public:
 		// 回一个消息
 		RpcResponse rpc_response;
 		rpc_response.set_id(rpc_request.id());
-		rpc_response.set_type(ResponseType::RESPONSE_TYPE_OK);
+		rpc_response.set_type(RESPONSE_TYPE_OK);
 
-		RpcChannelTestResponse response;
+		EchoResponse response;
 		response.set_num(num_);
 		rpc_response.set_response(response.SerializeAsString());
 
@@ -88,7 +90,7 @@ private:
 
 public:
 	RpcChannelTest():
-		rpc_server_(io_service_, global_port, barrier_)
+		barrier_(2), rpc_server_(io_service_, global_port, barrier_)
 	{
 	}
 };
@@ -98,11 +100,11 @@ TEST_F(RpcChannelTest, CallMethod)
 {
 	RpcChannel rpc_channel(io_service_, "127.0.0.1", global_port);
 
-	RpcChannelTestService service(rpc_channel);
+	EchoService_Stub service(&rpc_channel);
 
-	RpcChannelTestRequest request;
+	EchoRequest request;
 	request.set_num(100);
-	RpcChannelTestResponse response;
+	EchoResponse response;
 	RpcController controller;
 
 	ASSERT_EQ(0, response.num());
@@ -116,3 +118,12 @@ TEST_F(RpcChannelTest, CallMethod)
 }
 
 } // namespace Egametang
+
+
+int main(int argc, char* argv[])
+{
+	testing::InitGoogleTest(&argc, argv);
+	google::ParseCommandLineFlags(&argc, &argv, true);
+	google::InitGoogleLogging(argv[0]);
+	return RUN_ALL_TESTS();
+}

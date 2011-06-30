@@ -1,0 +1,13 @@
+package Egametang;
+
+message EchoRequest {
+	required int32 num = 1;
+};
+
+message EchoResponse {
+	required int32 num = 1;
+};
+
+service EchoService {
+  rpc Echo(EchoRequest) returns (EchoResponse);
+};

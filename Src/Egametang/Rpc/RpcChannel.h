@@ -1,5 +1,5 @@
-#ifndef RPC_RPC_CHANNEL_H
-#define RPC_RPC_CHANNEL_H
+#ifndef RPC_RPCCHANNEL_H
+#define RPC_RPCCHANNEL_H
 
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
@@ -41,4 +41,4 @@ public:
 
 } // namespace Egametang
 
-#endif // RPC_RPC_CHANNEL_H
+#endif // RPC_RPCCHANNEL_H

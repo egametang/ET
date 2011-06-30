@@ -2,10 +2,11 @@
 #include <boost/bind.hpp>
 #include <glog/logging.h>
 #include <google/protobuf/message.h>
+#include <google/protobuf/descriptor.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcChannel.h"
 #include "Rpc/RpcHandler.h"
-#include "Rpc/RpcProtobufData.pb.h"
+#include "Rpc/RpcData.pb.h"
 
 namespace Egametang {
 
@@ -21,6 +22,10 @@ RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, in
 					boost::asio::placeholders::error));
 }
 
+RpcChannel::~RpcChannel()
+{
+}
+
 void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 {
 	if (err)
@@ -34,7 +39,7 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 void RpcChannel::OnRecvMessage(StringPtr ss)
 {
 	RpcResponse response;
-	Response->ParseFromString(*ss);
+	response.ParseFromString(*ss);
 	RpcHandlerPtr handler = handlers_[response.id()];
 	handler->GetResponse()->ParseFromString(response.response());
 

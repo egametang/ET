@@ -1,5 +1,5 @@
-#ifndef RPC_RPC_CONTROLLER_H
-#define RPC_RPC_CONTROLLER_H
+#ifndef RPC_RPCCONTROLLER_H
+#define RPC_RPCCONTROLLER_H
 
 #include <google/protobuf/service.h>
 
@@ -23,11 +23,11 @@ public:
 	virtual void StartCancel();
 
 	// server
-	virtual void SetFailed(const string& reason);
+	virtual void SetFailed(const std::string& reason);
 	virtual bool IsCanceled() const;
-	virtual void NotifyOnCancel(Closure* callback);
+	virtual void NotifyOnCancel(google::protobuf::Closure* callback);
 };
 
 } // namespace Egametang
 
-#endif // RPC_RPC_CONTROLLER_H
+#endif // RPC_RPCCONTROLLER_H

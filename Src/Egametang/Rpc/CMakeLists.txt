@@ -1,13 +1,16 @@
 PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs 
-	RpcProtobufData.proto 
-	RpcChannelTest.proto
+	RpcData.proto 
+	Echo.proto
 	)
 
 SET(RpcSrc 
 	RpcCommunicator.cc
+	RpcController.cc
+	RpcHandler.cc
 	RpcChannel.cc
 	${proto_srcs}
 	)
+
 
 ADD_LIBRARY(Rpc ${RpcSrc})
 
