@@ -2,17 +2,17 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <boost/python.hpp>
-#include "Python/PythonEntry.h"
+#include "Python/PythonInterpreter.h"
 
 namespace Egametang {
 
-class PythonEntryTest: public testing::Test
+class PythonInterpreterTest: public testing::Test
 {
 protected:
-	PythonEntry python_entry_;
+	PythonInterpreter python_interpreter_;
 
 public:
-	PythonEntryTest(): python_entry_()
+	PythonInterpreterTest(): python_interpreter_()
 	{}
 };
 
@@ -60,19 +60,19 @@ BOOST_PYTHON_MODULE(PersonTest)
 	boost::python::register_ptr_to_python<PersonTestPtr>();
 }
 
-TEST_F(PythonEntryTest, EnterPythonScript)
+TEST_F(PythonInterpreterTest, EnterPythonScript)
 {
 	initPersonTest();
-	python_entry_.ImportPath("../../../Src/Egametang/Python/");
-	python_entry_.ImportModule("PythonEntryTest");
+	python_interpreter_.ImportPath("../../../Src/Egametang/Python/");
+	python_interpreter_.ImportModule("PythonInterpreterTest");
 
 	PersonTestPtr person(new PersonTest);
-	python_entry_.RegisterObjectPtr("person", person);
+	python_interpreter_.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());
 
 	// 进到python脚本层设置person的值为2
-	python_entry_.Execute("PythonEntryTest.fun(person)");
+	python_interpreter_.Execute("PythonInterpreterTest.fun(person)");
 
 	ASSERT_EQ(2, person->Guid());
 	ASSERT_EQ(std::string("tanghai"), person->Name());

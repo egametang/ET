@@ -1,5 +1,5 @@
-#ifndef PYTHON_PYTHON_ENTRY_H
-#define PYTHON_PYTHON_ENTRY_H
+#ifndef PYTHON_PYTHONINTERPRETER_H
+#define PYTHON_PYTHONINTERPRETER_H
 
 #include <boost/noncopyable.hpp>
 #include <boost/unordered_set.hpp>
@@ -9,7 +9,7 @@
 
 namespace Egametang {
 
-class PythonEntry: private boost::noncopyable
+class PythonInterpreter: private boost::noncopyable
 {
 private:
 	PythonInit python_init_;
@@ -24,7 +24,7 @@ private:
 	bool GetExecString(const std::string& main_fun, std::string& exec_string);
 
 public:
-	PythonEntry();
+	PythonInterpreter();
 
 	void ImportPath(std::string path);
 
@@ -41,4 +41,4 @@ public:
 
 } // namespace Egametang
 
-#endif // PYTHON_PYTHON_ENTRY_H
+#endif // PYTHON_PYTHONINTERPRETER_H

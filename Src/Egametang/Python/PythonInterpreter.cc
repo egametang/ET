@@ -2,27 +2,27 @@
 #include <boost/format.hpp>
 #include <boost/python.hpp>
 #include <glog/logging.h>
-#include "Python/PythonEntry.h"
+#include "Python/PythonInterpreter.h"
 
 namespace Egametang {
 
-PythonEntry::PythonEntry():
+PythonInterpreter::PythonInterpreter():
 		python_init_()
 {
 	main_ns_ = boost::python::import("__main__").attr("__dict__");
 }
 
-void PythonEntry::ImportPath(std::string path)
+void PythonInterpreter::ImportPath(std::string path)
 {
 	python_paths_.insert(path);
 }
 
-void PythonEntry::ImportModule(std::string module)
+void PythonInterpreter::ImportModule(std::string module)
 {
 	python_modules_.insert(module);
 }
 
-bool PythonEntry::GetExecString(const std::string& main_fun, std::string& exec_string)
+bool PythonInterpreter::GetExecString(const std::string& main_fun, std::string& exec_string)
 {
 	exec_string = "import sys\n";
 	if (python_paths_.size() == 0)
@@ -49,7 +49,7 @@ bool PythonEntry::GetExecString(const std::string& main_fun, std::string& exec_s
 	return true;
 }
 
-void PythonEntry::Execute(std::string main_fun)
+void PythonInterpreter::Execute(std::string main_fun)
 {
 	std::string exec_string;
 	if (!GetExecString(main_fun, exec_string))

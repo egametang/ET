@@ -1,20 +1,20 @@
 SET(PythonSrc 
 	PythonInit.cc 
-	PythonEntry.cc
+	PythonInterpreter.cc
 )
-ADD_LIBRARY(PythonEntry ${PythonSrc})
+ADD_LIBRARY(PythonInterpreter ${PythonSrc})
 
 ADD_EXECUTABLE(PythonInitTest PythonInitTest.cc)
-ADD_EXECUTABLE(PythonEntryTest PythonEntryTest.cc)
+ADD_EXECUTABLE(PythonInterpreterTest PythonInterpreterTest.cc)
 
 SET(Excutes 
 	PythonInitTest 
-	PythonEntryTest
+	PythonInterpreterTest
 )
 
 FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
-		PythonEntry
+		PythonInterpreter
 		Glog
 		Gflags
 		Gtest
