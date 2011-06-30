@@ -5,7 +5,7 @@
 
 namespace Egametang {
 
-RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string& host, int port):
+RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, int port):
 		io_service_(io_service)
 {
 	// another thread?
@@ -34,12 +34,12 @@ void RpcChannel::OnRecvMessage(StringPtr ss)
 	RpcHandlerPtr handler = handlers_[response.id()];
 	handler->GetResponse()->ParseFromString(response.response());
 
+	handlers_.erase(response.id());
+
 	if (handler->GetDone() != NULL)
 	{
 		handler->GetDone()->Run();
 	}
-
-	handlers_.erase(response.id());
 
 	// read size
 	RecvSize();

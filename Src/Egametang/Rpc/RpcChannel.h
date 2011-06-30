@@ -14,7 +14,7 @@ class RpcHandler;
 
 class RpcChannel:
 		public google::protobuf::RpcChannel,
-		public RPCCommunicator
+		public RpcCommunicator
 {
 private:
 	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
@@ -30,7 +30,7 @@ private:
 	virtual void OnSendMessage();
 
 public:
-	RpcChannel(boost::asio::io_service& service, std::string& host, int port);
+	RpcChannel(boost::asio::io_service& service, std::string host, int port);
 	~RpcChannel();
 	virtual void CallMethod(
 			const google::protobuf::MethodDescriptor* method,

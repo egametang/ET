@@ -12,7 +12,7 @@ class RpcServer;
 
 class RpcSession:
 		private boost::noncopyable,
-		public RPCCommunicator,
+		public RpcCommunicator,
 		public boost::enable_shared_from_this<RpcSession>
 {
 private:

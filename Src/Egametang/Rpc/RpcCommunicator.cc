@@ -2,30 +2,30 @@
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include <glog/logging.h>
-#include "Rpc/RPCCommunicator.h"
+#include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {
 
-RPCCommunicator::RPCCommunicator(boost::asio::io_service& io_service):
+RpcCommunicator::RpcCommunicator(boost::asio::io_service& io_service):
 		io_service_(io_service), socket_(io_service)
 {
 }
 
-boost::asio::ip::tcp::socket& RPCCommunicator::Socket()
+boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 {
 	return socket_;
 }
 
-void RPCCommunicator::RecvSize()
+void RpcCommunicator::RecvSize()
 {
 	IntPtr size(new int(0));
 	boost::asio::async_read(socket_,
 			boost::asio::buffer(reinterpret_cast<char*>(size.get()), sizeof(int)),
-			boost::bind(&RPCCommunicator::RecvMessage, this, size,
+			boost::bind(&RpcCommunicator::RecvMessage, this, size,
 					boost::asio::placeholders::error));
 }
 
-void RPCCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& err)
+void RpcCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -35,11 +35,11 @@ void RPCCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& 
 	StringPtr ss(new std::string(*size, '\0'));
 	boost::asio::async_read(socket_,
 			boost::asio::buffer(reinterpret_cast<char*>(&ss->at(0)), *size),
-			boost::bind(&RPCCommunicator::RecvDone, this, ss,
+			boost::bind(&RpcCommunicator::RecvDone, this, ss,
 					boost::asio::placeholders::error));
 }
 
-void RPCCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& err)
+void RpcCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -49,15 +49,15 @@ void RPCCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& er
 	OnRecvMessage(ss);
 }
 
-void RPCCommunicator::SendSize(int size, std::string message)
+void RpcCommunicator::SendSize(int size, std::string message)
 {
 	boost::asio::async_write(socket_,
 			boost::asio::buffer(reinterpret_cast<char*>(&size), sizeof(int)),
-			boost::bind(&RPCCommunicator::SendMessage, this, message,
+			boost::bind(&RpcCommunicator::SendMessage, this, message,
 					boost::asio::placeholders::error));
 }
 
-void RPCCommunicator::SendMessage(std::string message, const boost::system::error_code& err)
+void RpcCommunicator::SendMessage(std::string message, const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -65,10 +65,10 @@ void RPCCommunicator::SendMessage(std::string message, const boost::system::erro
 		return;
 	}
 	boost::asio::async_write(socket_, boost::asio::buffer(message),
-			boost::bind(&RPCCommunicator::SendDone, this, boost::asio::placeholders::error));
+			boost::bind(&RpcCommunicator::SendDone, this, boost::asio::placeholders::error));
 }
 
-void RPCCommunicator::SendDone(const boost::system::error_code& err)
+void RpcCommunicator::SendDone(const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -78,11 +78,11 @@ void RPCCommunicator::SendDone(const boost::system::error_code& err)
 	OnSendMessage();
 }
 
-void RPCCommunicator::OnRecvMessage(StringPtr ss)
+void RpcCommunicator::OnRecvMessage(StringPtr ss)
 {
 }
 
-void RPCCommunicator::OnSendMessage()
+void RpcCommunicator::OnSendMessage()
 {
 }
 

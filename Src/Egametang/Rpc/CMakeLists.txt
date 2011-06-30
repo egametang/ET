@@ -1,16 +1,22 @@
-PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs RpcProtobufData.proto)
+PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs 
+	RpcProtobufData.proto 
+	RpcChannelTest.proto
+	)
 
 SET(RpcSrc 
-	RPCCommunicator.cc
+	RpcCommunicator.cc
+	RpcChannel.cc
 	${proto_srcs}
 	)
 
 ADD_LIBRARY(Rpc ${RpcSrc})
 
-ADD_EXECUTABLE(RpcCommunicatorTest RPCCommunicatorTest.cc)
+ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
+ADD_EXECUTABLE(RpcChannelTest RpcChannelTest.cc)
 
 SET(Excutes 
 	RpcCommunicatorTest
+	RpcChannelTest
 )
 
 FOREACH(Excute ${Excutes})

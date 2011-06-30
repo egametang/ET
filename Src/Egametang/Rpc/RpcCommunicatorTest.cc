@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include "Rpc/RPCCommunicator.h"
+#include "Rpc/RpcCommunicator.h"
 #include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
 
@@ -11,7 +11,7 @@ namespace Egametang {
 
 static int global_port = 10001;
 
-class RPCServerTest: public RPCCommunicator
+class RpcServerTest: public RpcCommunicator
 {
 public:
 	CountBarrier& barrier_;
@@ -19,8 +19,8 @@ public:
 	boost::asio::ip::tcp::acceptor acceptor_;
 
 public:
-	RPCServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
-		RPCCommunicator(io_service), acceptor_(io_service),
+	RpcServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
+		RpcCommunicator(io_service), acceptor_(io_service),
 		barrier_(barrier)
 	{
 		boost::asio::ip::address address;
@@ -31,7 +31,7 @@ public:
 		acceptor_.bind(endpoint);
 		acceptor_.listen();
 		acceptor_.async_accept(socket_,
-				boost::bind(&RPCServerTest::OnAsyncAccept, this,
+				boost::bind(&RpcServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
 	}
 
@@ -70,22 +70,22 @@ public:
 	}
 };
 
-class RPCClientTest: public RPCCommunicator
+class RpcClientTest: public RpcCommunicator
 {
 public:
 	CountBarrier& barrier_;
 	std::string recv_string_;
 
 public:
-	RPCClientTest(boost::asio::io_service& io_service, int port,
+	RpcClientTest(boost::asio::io_service& io_service, int port,
 			CountBarrier& barrier):
-		RPCCommunicator(io_service), barrier_(barrier)
+		RpcCommunicator(io_service), barrier_(barrier)
 	{
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
 		socket_.async_connect(endpoint,
-				boost::bind(&RPCClientTest::OnAsyncConnect, this,
+				boost::bind(&RpcClientTest::OnAsyncConnect, this,
 						boost::asio::placeholders::error));
 	}
 
@@ -124,17 +124,17 @@ public:
 	}
 };
 
-class RPCCommunicatorTest: public testing::Test
+class RpcCommunicatorTest: public testing::Test
 {
 protected:
 	boost::asio::io_service io_server_;
 	boost::asio::io_service io_client_;
 	CountBarrier barrier_;
-	RPCServerTest rpc_server_;
-	RPCClientTest rpc_client_;
+	RpcServerTest rpc_server_;
+	RpcClientTest rpc_client_;
 
 public:
-	RPCCommunicatorTest():
+	RpcCommunicatorTest():
 		io_server_(), io_client_(),
 		barrier_(2), rpc_server_(io_server_, global_port, barrier_),
 		rpc_client_(io_client_, global_port, barrier_)
@@ -143,11 +143,11 @@ public:
 };
 
 
-TEST_F(RPCCommunicatorTest, ClientSendString)
+TEST_F(RpcCommunicatorTest, ClientSendString)
 {
 	ThreadPool thread_pool(2);
-	thread_pool.PushTask(boost::bind(&RPCServerTest::Start, &rpc_server_));
-	thread_pool.PushTask(boost::bind(&RPCClientTest::Start, &rpc_client_));
+	thread_pool.PushTask(boost::bind(&RpcServerTest::Start, &rpc_server_));
+	thread_pool.PushTask(boost::bind(&RpcClientTest::Start, &rpc_client_));
 	barrier_.Wait();
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
 	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client_.recv_string_);

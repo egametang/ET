@@ -1,5 +1,5 @@
-#ifndef RPC_RPC_COMMUNICATOR_H
-#define RPC_RPC_COMMUNICATOR_H
+#ifndef RPC_RPCCOMMUNICATOR_H
+#define RPC_RPCCOMMUNICATOR_H
 
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
@@ -10,14 +10,14 @@
 
 namespace Egametang {
 
-class RPCCommunicator
+class RpcCommunicator
 {
 protected:
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::socket socket_;
 
 public:
-	explicit RPCCommunicator(boost::asio::io_service& io_service);
+	explicit RpcCommunicator(boost::asio::io_service& io_service);
 
 	boost::asio::ip::tcp::socket& Socket();
 
@@ -37,4 +37,4 @@ public:
 
 } // namespace Egametang
 
-#endif // RPC_RPC_COMMUNICATOR_H
+#endif // RPC_RPCCOMMUNICATOR_H
