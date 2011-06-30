@@ -1,12 +1,16 @@
 #include <boost/asio.hpp>
-#include <boost/make_shared.hpp>
+#include <boost/bind.hpp>
+#include <glog/logging.h>
 #include <google/protobuf/message.h>
+#include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcChannel.h"
+#include "Rpc/RpcHandler.h"
+#include "Rpc/RpcProtobufData.pb.h"
 
 namespace Egametang {
 
 RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, int port):
-		io_service_(io_service)
+		RpcCommunicator(io_service)
 {
 	// another thread?
 	boost::asio::ip::address address;
@@ -70,7 +74,7 @@ void RpcChannel::CallMethod(
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
 	handlers_[id_] = handler;
 
-	SendRequest(request);
+	SendRequest(req);
 }
 
 } // namespace Egametang

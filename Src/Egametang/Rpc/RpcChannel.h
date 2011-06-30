@@ -21,7 +21,6 @@ private:
 
 	int32 id_;
 	RpcCallbackMap handlers_;
-	boost::asio::io_service& io_service_;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 	void SendRequest(RpcRequestPtr request);

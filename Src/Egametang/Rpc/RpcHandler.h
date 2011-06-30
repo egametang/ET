@@ -1,11 +1,10 @@
-#ifndef RPC_RPC_HANDLER_H
-#define RPC_RPC_HANDLER_H
+#ifndef RPC_RPCHANDLER_H
+#define RPC_RPCHANDLER_H
+
+#include <google/protobuf/service.h>
+#include <google/protobuf/message.h>
 
 namespace Egametang {
-
-class google::protobuf::RpcController;
-class google::protobuf::Message;
-class google::protobuf::Closure;
 
 class RpcHandler
 {
@@ -24,4 +23,4 @@ public:
 
 } // namespace Egametang
 
-#endif // RPC_RPC_HANDLER_H
+#endif // RPC_RPCHANDLER_H

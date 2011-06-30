@@ -2,6 +2,8 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include "Rpc/RpcChannel.h"
+#include "Rpc/RpcProtobufData.pb.h"
+#include "Rpc/RpcChannelTest.pb.h"
 
 namespace Egametang {
 
