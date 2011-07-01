@@ -11,7 +11,7 @@
 namespace Egametang {
 
 RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, int port):
-		RpcCommunicator(io_service)
+		RpcCommunicator(io_service), id_(0)
 {
 	// another thread?
 	boost::asio::ip::address address;
@@ -63,6 +63,11 @@ void RpcChannel::SendRequest(RpcRequestPtr request)
 	int size = request->ByteSize();
 	std::string message = request->SerializeAsString();
 	SendSize(size, message);
+}
+
+void RpcChannel::Stop()
+{
+	RpcCommunicator::Stop();
 }
 
 void RpcChannel::CallMethod(

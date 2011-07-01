@@ -33,6 +33,7 @@ public:
 
 	virtual void OnRecvMessage(StringPtr ss);
 	virtual void OnSendMessage();
+	virtual void Stop();
 };
 
 } // namespace Egametang

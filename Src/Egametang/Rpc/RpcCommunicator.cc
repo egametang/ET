@@ -86,4 +86,9 @@ void RpcCommunicator::OnSendMessage()
 {
 }
 
+void RpcCommunicator::Stop()
+{
+	socket_.close();
+}
+
 } // namespace Egametang

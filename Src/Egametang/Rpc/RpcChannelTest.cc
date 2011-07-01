@@ -3,6 +3,7 @@
 #include <glog/logging.h>
 #include "Rpc/RpcChannel.h"
 #include "Thread/CountBarrier.h"
+#include "Thread/ThreadPool.h"
 #include "Rpc/RpcController.h"
 #include "Rpc/RpcData.pb.h"
 #include "Rpc/Echo.pb.h"
@@ -53,8 +54,6 @@ public:
 
 	virtual void OnRecvMessage(StringPtr ss)
 	{
-		VLOG(2) << "Server Recv string: " << *ss;
-
 		// 接收消息
 		RpcRequest rpc_request;
 		rpc_request.ParseFromString(*ss);
@@ -62,6 +61,7 @@ public:
 		request.ParseFromString(rpc_request.request());
 
 		num_ = request.num();
+		VLOG(2) << "num: " << num_;
 
 		// 回一个消息
 		RpcResponse rpc_response;
@@ -85,12 +85,9 @@ class RpcChannelTest: public testing::Test
 {
 private:
 	CountBarrier barrier_;
-	boost::asio::io_service io_service_;
-	RpcServerTest rpc_server_;
 
 public:
-	RpcChannelTest():
-		barrier_(2), rpc_server_(io_service_, global_port, barrier_)
+	RpcChannelTest(): barrier_(2)
 	{
 	}
 };
@@ -98,21 +95,28 @@ public:
 
 TEST_F(RpcChannelTest, CallMethod)
 {
-	RpcChannel rpc_channel(io_service_, "127.0.0.1", global_port);
+	boost::asio::io_service io_service;
+	RpcServerTest rpc_server(io_service, global_port, barrier_);
 
+	RpcChannel rpc_channel(io_service, "127.0.0.1", global_port);
 	EchoService_Stub service(&rpc_channel);
+
+	ThreadPool thread_pool(2);
+	thread_pool.PushTask(boost::bind(&boost::asio::io_service::run, &io_service));
 
 	EchoRequest request;
 	request.set_num(100);
 	EchoResponse response;
-	RpcController controller;
 
 	ASSERT_EQ(0, response.num());
-	service.Echo(&controller, &request, &response,
+	service.Echo(NULL, &request, &response,
 			google::protobuf::NewCallback(&barrier_, &CountBarrier::Signal));
 
-	io_service_.run();
 	barrier_.Wait();
+	rpc_channel.Stop();
+	rpc_server.Stop();
+	io_service.stop();
+	thread_pool.Wait();
 
 	ASSERT_EQ(100, response.num());
 }
