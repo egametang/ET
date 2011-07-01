@@ -15,11 +15,13 @@ class RpcRequest;
 class RpcChannel;
 class RpcHandler;
 class RpcResponse;
+class RpcMeta;
 typedef boost::shared_ptr<RpcSession>  RpcSessionPtr;
 typedef boost::shared_ptr<RpcRequest>  RpcRequestPtr;
 typedef boost::shared_ptr<RpcChannel>  RpcChannelPtr;
 typedef boost::shared_ptr<RpcHandler>  RpcHandlerPtr;
 typedef boost::shared_ptr<RpcResponse> RpcResponsePtr;
+typedef boost::shared_ptr<RpcMeta> 	   RpcMetaPtr;
 
 } // namespace Egametang
 

@@ -16,43 +16,45 @@ boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 	return socket_;
 }
 
-void RpcCommunicator::RecvSize()
+void RpcCommunicator::RecvMeta()
 {
-	IntPtr size(new int(0));
+	RpcMetaPtr meta(new RpcMeta());
 	boost::asio::async_read(socket_,
-			boost::asio::buffer(reinterpret_cast<char*>(size.get()), sizeof(int)),
-			boost::bind(&RpcCommunicator::RecvMessage, this, size,
+			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
+			boost::bind(&RpcCommunicator::RecvMessage, this, meta,
 					boost::asio::placeholders::error));
 }
 
-void RpcCommunicator::RecvMessage(IntPtr size, const boost::system::error_code& err)
+void RpcCommunicator::RecvMessage(RpcMetaPtr meta, const boost::system::error_code& err)
 {
 	if (err)
 	{
 		LOG(ERROR) << "receive message size failed: " << err.message();
 		return;
 	}
-	StringPtr ss(new std::string(*size, '\0'));
+	StringPtr message(new std::string(meta->size, '\0'));
 	boost::asio::async_read(socket_,
-			boost::asio::buffer(reinterpret_cast<char*>(&ss->at(0)), *size),
-			boost::bind(&RpcCommunicator::RecvDone, this, ss,
+			boost::asio::buffer(reinterpret_cast<char*>(&message->at(0)), meta->size),
+			boost::bind(&RpcCommunicator::RecvDone, this,
+					meta, message,
 					boost::asio::placeholders::error));
 }
 
-void RpcCommunicator::RecvDone(StringPtr ss, const boost::system::error_code& err)
+void RpcCommunicator::RecvDone(RpcMetaPtr meta, StringPtr message,
+		const boost::system::error_code& err)
 {
 	if (err)
 	{
 		LOG(ERROR) << "receive message failed: " << err.message();
 		return;
 	}
-	OnRecvMessage(ss);
+	OnRecvMessage(meta, message);
 }
 
-void RpcCommunicator::SendSize(int size, std::string message)
+void RpcCommunicator::SendMeta(RpcMeta& meta, std::string message)
 {
 	boost::asio::async_write(socket_,
-			boost::asio::buffer(reinterpret_cast<char*>(&size), sizeof(int)),
+			boost::asio::buffer(reinterpret_cast<char*>(&meta), sizeof(meta)),
 			boost::bind(&RpcCommunicator::SendMessage, this, message,
 					boost::asio::placeholders::error));
 }
@@ -78,7 +80,7 @@ void RpcCommunicator::SendDone(const boost::system::error_code& err)
 	OnSendMessage();
 }
 
-void RpcCommunicator::OnRecvMessage(StringPtr ss)
+void RpcCommunicator::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
 }
 

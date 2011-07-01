@@ -23,7 +23,6 @@ private:
 	RpcCallbackMap handlers_;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
-	void SendRequest(RpcRequestPtr request);
 
 	virtual void OnRecvMessage(StringPtr ss);
 	virtual void OnSendMessage();

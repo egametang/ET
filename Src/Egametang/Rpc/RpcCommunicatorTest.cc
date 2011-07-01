@@ -16,6 +16,7 @@ class RpcServerTest: public RpcCommunicator
 public:
 	CountBarrier& barrier_;
 	std::string recv_string_;
+	RpcMetaPtr meta_;
 	boost::asio::ip::tcp::acceptor acceptor_;
 
 public:
@@ -42,7 +43,7 @@ public:
 			LOG(ERROR) << "async accept failed: " << err.message();
 			return;
 		}
-		RecvSize();
+		RecvMeta();
 	}
 
 	void Start()
@@ -57,12 +58,20 @@ public:
 		socket_.close();
 	}
 
-	virtual void OnRecvMessage(StringPtr ss)
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		VLOG(2) << "Server Recv string: " << *ss;
-		recv_string_ = *ss;
-		std::string send_string("response test rpc communicator string");
-		SendSize(send_string.size(), send_string);
+		VLOG(2) << "Server Recv string: " << *message;
+		recv_string_ = *message;
+		meta_ = meta;
+
+		boost::hash<std::string> string_hash;
+
+		std::string response_string("response test rpc communicator string");
+		RpcMeta response_meta;
+		response_meta.size = response_string.size();
+		response_meta.checksum = string_hash(response_string);
+		response_meta.opcode = 123456;
+		SendMeta(response_meta, response_string);
 		barrier_.Signal();
 	}
 	virtual void OnSendMessage()
@@ -75,6 +84,7 @@ class RpcClientTest: public RpcCommunicator
 public:
 	CountBarrier& barrier_;
 	std::string recv_string_;
+	RpcMetaPtr meta_;
 
 public:
 	RpcClientTest(boost::asio::io_service& io_service, int port,
@@ -107,15 +117,22 @@ public:
 			LOG(ERROR) << "async connect failed: " << err.message();
 			return;
 		}
+		boost::hash<std::string> string_hash;
+
 		std::string send_string("send test rpc communicator string");
-		SendSize(send_string.size(), send_string);
-		RecvSize();
+		RpcMeta meta;
+		meta.size = send_string.size();
+		meta.checksum = string_hash(send_string);
+		meta.opcode = 654321;
+		SendMeta(meta, send_string);
+		RecvMeta();
 	}
 
-	virtual void OnRecvMessage(StringPtr ss)
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		VLOG(2) << "Client Recv string: " << *ss;
-		recv_string_ = *ss;
+		VLOG(2) << "Client Recv string: " << *message;
+		recv_string_ = *message;
+		meta_ = meta;
 		barrier_.Signal();
 	}
 
@@ -143,17 +160,26 @@ public:
 };
 
 
-TEST_F(RpcCommunicatorTest, ClientSendString)
+TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
 	ThreadPool thread_pool(2);
 	thread_pool.PushTask(boost::bind(&RpcServerTest::Start, &rpc_server_));
 	thread_pool.PushTask(boost::bind(&RpcClientTest::Start, &rpc_client_));
 	barrier_.Wait();
-	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
-	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client_.recv_string_);
 	thread_pool.Wait();
 	rpc_server_.Stop();
 	rpc_client_.Stop();
+
+	boost::hash<std::string> string_hash;
+	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
+	ASSERT_EQ(rpc_server_.meta_->size, rpc_server_.recv_string_.size());
+	ASSERT_EQ(rpc_server_.meta_->checksum, string_hash(rpc_server_.recv_string_));
+	ASSERT_EQ(654321U, rpc_server_.meta_->opcode);
+
+	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client_.recv_string_);
+	ASSERT_EQ(rpc_client_.meta_->size, rpc_client_.recv_string_.size());
+	ASSERT_EQ(rpc_client_.meta_->checksum, string_hash(rpc_client_.recv_string_));
+	ASSERT_EQ(123456U, rpc_client_.meta_->opcode);
 }
 
 } // namespace Egametang

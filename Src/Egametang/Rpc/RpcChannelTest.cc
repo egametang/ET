@@ -5,7 +5,6 @@
 #include "Thread/CountBarrier.h"
 #include "Thread/ThreadPool.h"
 #include "Rpc/RpcController.h"
-#include "Rpc/RpcData.pb.h"
 #include "Rpc/Echo.pb.h"
 
 namespace Egametang {

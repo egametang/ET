@@ -6,7 +6,6 @@
 #include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcChannel.h"
 #include "Rpc/RpcHandler.h"
-#include "Rpc/RpcData.pb.h"
 
 namespace Egametang {
 
@@ -33,7 +32,7 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 		LOG(ERROR) << "async connect failed: " << err.message();
 		return;
 	}
-	RecvSize();
+	RecvMeta();
 }
 
 void RpcChannel::OnRecvMessage(StringPtr ss)
@@ -51,18 +50,11 @@ void RpcChannel::OnRecvMessage(StringPtr ss)
 	}
 
 	// read size
-	RecvSize();
+	RecvMeta();
 }
 
 void RpcChannel::OnSendMessage()
 {
-}
-
-void RpcChannel::SendRequest(RpcRequestPtr request)
-{
-	int size = request->ByteSize();
-	std::string message = request->SerializeAsString();
-	SendSize(size, message);
 }
 
 void RpcChannel::Stop()
@@ -77,14 +69,19 @@ void RpcChannel::CallMethod(
 		google::protobuf::Message* response,
 		google::protobuf::Closure* done)
 {
-	RpcRequestPtr req(new RpcRequest);
-	req->set_id(++id_);
-	req->set_method(method->full_name());
-	req->set_request(request->SerializeAsString());
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
 	handlers_[id_] = handler;
 
-	SendRequest(req);
+	boost::hash<std::string> string_hash;
+
+	std::string message = request->SerializeAsString();
+	RpcMeta meta;
+	meta.size = message.size();
+	meta.id = ++id_;
+	meta.opcode = string_hash(method->full_name());
+	meta.checksum = string_hash(message);
+
+	SendMeta(meta, message);
 }
 
 } // namespace Egametang

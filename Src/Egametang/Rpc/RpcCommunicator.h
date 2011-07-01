@@ -10,6 +10,39 @@
 
 namespace Egametang {
 
+struct RpcMeta
+{
+	// message长度
+	std::size_t size;
+
+	// 消息id, 用于处理异步回调
+	std::size_t id;
+
+	// 消息opcode, 是proto的full_path哈希值
+	std::size_t opcode;
+
+	// 校验值, 整个message的哈希值
+	std::size_t checksum;
+
+	RpcMeta(): size(0), id(0), opcode(0), checksum(0)
+	{
+	}
+
+	bool Verify(std::string message)
+	{
+		boost::hash<std::string> string_hash;
+		if (checksum == string_hash(message))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	std::string ToString()
+	{
+	}
+};
+
 class RpcCommunicator
 {
 protected:
@@ -22,17 +55,18 @@ public:
 	boost::asio::ip::tcp::socket& Socket();
 
 	// recieve response
-	void RecvSize();
-	void RecvMessage(IntPtr size, const boost::system::error_code& err);
-	void RecvDone(StringPtr ss, const boost::system::error_code& err);
+	void RecvMeta();
+	void RecvMessage(RpcMetaPtr meta, const boost::system::error_code& err);
+	void RecvDone(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
 
 	// send request
-	void SendSize(int size, std::string message);
+	void SendMeta(RpcMeta& meta, std::string message);
 	void SendMessage(std::string message, const boost::system::error_code& err);
 	void SendDone(const boost::system::error_code& err);
 
-	virtual void OnRecvMessage(StringPtr ss);
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage();
+
 	virtual void Stop();
 };
 
