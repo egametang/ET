@@ -69,8 +69,7 @@ public:
 		std::string response_string("response test rpc communicator string");
 		RpcMeta response_meta;
 		response_meta.size = response_string.size();
-		response_meta.checksum = string_hash(response_string);
-		response_meta.opcode = 123456;
+		response_meta.method = 123456;
 		SendMeta(response_meta, response_string);
 		barrier_.Signal();
 	}
@@ -122,8 +121,7 @@ public:
 		std::string send_string("send test rpc communicator string");
 		RpcMeta meta;
 		meta.size = send_string.size();
-		meta.checksum = string_hash(send_string);
-		meta.opcode = 654321;
+		meta.method = 654321;
 		SendMeta(meta, send_string);
 		RecvMeta();
 	}
@@ -173,13 +171,11 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 	boost::hash<std::string> string_hash;
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
 	ASSERT_EQ(rpc_server_.meta_->size, rpc_server_.recv_string_.size());
-	ASSERT_EQ(rpc_server_.meta_->checksum, string_hash(rpc_server_.recv_string_));
-	ASSERT_EQ(654321U, rpc_server_.meta_->opcode);
+	ASSERT_EQ(654321U, rpc_server_.meta_->method);
 
 	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client_.recv_string_);
 	ASSERT_EQ(rpc_client_.meta_->size, rpc_client_.recv_string_.size());
-	ASSERT_EQ(rpc_client_.meta_->checksum, string_hash(rpc_client_.recv_string_));
-	ASSERT_EQ(123456U, rpc_client_.meta_->opcode);
+	ASSERT_EQ(123456U, rpc_client_.meta_->method);
 }
 
 } // namespace Egametang

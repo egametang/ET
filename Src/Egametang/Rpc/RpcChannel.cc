@@ -78,8 +78,7 @@ void RpcChannel::CallMethod(
 	RpcMeta meta;
 	meta.size = message.size();
 	meta.id = ++id_;
-	meta.opcode = string_hash(method->full_name());
-	meta.checksum = string_hash(message);
+	meta.method = string_hash(method->full_name());
 
 	SendMeta(meta, message);
 }

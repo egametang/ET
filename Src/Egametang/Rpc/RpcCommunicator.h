@@ -19,27 +19,15 @@ struct RpcMeta
 	std::size_t id;
 
 	// 消息opcode, 是proto的full_path哈希值
-	std::size_t opcode;
+	std::size_t method;
 
-	// 校验值, 整个message的哈希值
-	std::size_t checksum;
-
-	RpcMeta(): size(0), id(0), opcode(0), checksum(0)
+	RpcMeta(): size(0), id(0), method(0)
 	{
-	}
-
-	bool Verify(std::string message)
-	{
-		boost::hash<std::string> string_hash;
-		if (checksum == string_hash(message))
-		{
-			return true;
-		}
-		return false;
 	}
 
 	std::string ToString()
 	{
+		return "";
 	}
 };
 
