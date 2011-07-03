@@ -168,7 +168,6 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 	rpc_server_.Stop();
 	rpc_client_.Stop();
 
-	boost::hash<std::string> string_hash;
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server_.recv_string_);
 	ASSERT_EQ(rpc_server_.meta_->size, rpc_server_.recv_string_.size());
 	ASSERT_EQ(654321U, rpc_server_.meta_->method);

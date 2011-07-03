@@ -35,19 +35,16 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 	RecvMeta();
 }
 
-void RpcChannel::OnRecvMessage(StringPtr ss)
+void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RpcResponse response;
-	response.ParseFromString(*ss);
-	RpcHandlerPtr handler = handlers_[response.id()];
-	handler->GetResponse()->ParseFromString(response.response());
-
-	handlers_.erase(response.id());
-
+	VLOG(2) << "RpcChannel::OnRecvMessage";
+	RpcHandlerPtr handler = handlers_[meta->id];
+	handler->GetResponse()->ParseFromString(*message);
 	if (handler->GetDone() != NULL)
 	{
 		handler->GetDone()->Run();
 	}
+	handlers_.erase(meta->id);
 
 	// read size
 	RecvMeta();
@@ -70,16 +67,18 @@ void RpcChannel::CallMethod(
 		google::protobuf::Closure* done)
 {
 	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
-	handlers_[id_] = handler;
+	handlers_[++id_] = handler;
 
 	boost::hash<std::string> string_hash;
 
 	std::string message = request->SerializeAsString();
 	RpcMeta meta;
 	meta.size = message.size();
-	meta.id = ++id_;
+	VLOG(3) << "send size: " << meta.size;
+	meta.id = id_;
 	meta.method = string_hash(method->full_name());
-
+	VLOG(3) << "send meta1: " << meta.size << " "
+					<< meta.id << " " << meta.method;
 	SendMeta(meta, message);
 }
 

@@ -13,10 +13,15 @@ private:
 	boost::condition_variable condition_;
 
 public:
-	explicit CountBarrier(int count);
+	explicit CountBarrier(int count = 1);
+
 	void Wait();
+
 	void Signal();
+
 	int Count() const;
+
+	void Reset(int count = 1);
 };
 
 } // namespace Egametang

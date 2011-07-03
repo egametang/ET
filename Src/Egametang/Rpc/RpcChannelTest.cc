@@ -42,7 +42,7 @@ public:
 			LOG(ERROR) << "async accept failed: " << err.message();
 			return;
 		}
-		RecvSize();
+		RecvMeta();
 	}
 
 	void Stop()
@@ -51,28 +51,26 @@ public:
 		socket_.close();
 	}
 
-	virtual void OnRecvMessage(StringPtr ss)
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
 		// 接收消息
-		RpcRequest rpc_request;
-		rpc_request.ParseFromString(*ss);
 		EchoRequest request;
-		request.ParseFromString(rpc_request.request());
+		request.ParseFromString(*message);
 
 		num_ = request.num();
 		VLOG(2) << "num: " << num_;
 
 		// 回一个消息
-		RpcResponse rpc_response;
-		rpc_response.set_id(rpc_request.id());
-		rpc_response.set_type(RESPONSE_TYPE_OK);
-
 		EchoResponse response;
 		response.set_num(num_);
-		rpc_response.set_response(response.SerializeAsString());
+		std::string send_string = response.SerializeAsString();
 
-		std::string send_string = rpc_response.SerializeAsString();
-		SendSize(send_string.size(), send_string);
+		RpcMeta response_meta;
+		response_meta.id = meta->id;
+		response_meta.size = send_string.size();
+		VLOG(3) << "send meta: " << response_meta.size << " "
+				<< response_meta.id << " " << response_meta.method;
+		SendMeta(response_meta, send_string);
 		barrier_.Signal();
 	}
 	virtual void OnSendMessage()
@@ -82,39 +80,42 @@ public:
 
 class RpcChannelTest: public testing::Test
 {
-private:
-	CountBarrier barrier_;
-
-public:
-	RpcChannelTest(): barrier_(2)
-	{
-	}
 };
 
-
-TEST_F(RpcChannelTest, CallMethod)
+static void IOServiceRun(boost::asio::io_service& io_service)
 {
-	boost::asio::io_service io_service;
-	RpcServerTest rpc_server(io_service, global_port, barrier_);
+	io_service.run();
+}
 
-	RpcChannel rpc_channel(io_service, "127.0.0.1", global_port);
+TEST_F(RpcChannelTest, Echo)
+{
+	boost::asio::io_service io_server;
+	boost::asio::io_service io_client;
+
+	CountBarrier barrier(2);
+	RpcServerTest rpc_server(io_server, global_port, barrier);
+
+	RpcChannel rpc_channel(io_client, "127.0.0.1", global_port);
 	EchoService_Stub service(&rpc_channel);
 
 	ThreadPool thread_pool(2);
-	thread_pool.PushTask(boost::bind(&boost::asio::io_service::run, &io_service));
+	thread_pool.PushTask(boost::bind(&IOServiceRun, boost::ref(io_server)));
+	thread_pool.PushTask(boost::bind(&IOServiceRun, boost::ref(io_client)));
 
 	EchoRequest request;
 	request.set_num(100);
+
 	EchoResponse response;
 
 	ASSERT_EQ(0, response.num());
 	service.Echo(NULL, &request, &response,
-			google::protobuf::NewCallback(&barrier_, &CountBarrier::Signal));
-
-	barrier_.Wait();
+			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
+	barrier.Wait();
 	rpc_channel.Stop();
 	rpc_server.Stop();
-	io_service.stop();
+	io_server.stop();
+	io_client.stop();
+	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
 	thread_pool.Wait();
 
 	ASSERT_EQ(100, response.num());

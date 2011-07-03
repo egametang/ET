@@ -51,8 +51,9 @@ void RpcCommunicator::RecvDone(RpcMetaPtr meta, StringPtr message,
 	OnRecvMessage(meta, message);
 }
 
-void RpcCommunicator::SendMeta(RpcMeta& meta, std::string message)
+void RpcCommunicator::SendMeta(RpcMeta meta, std::string message)
 {
+	CHECK_EQ(meta.size, message.size()) << "meta and message size not match!";
 	boost::asio::async_write(socket_,
 			boost::asio::buffer(reinterpret_cast<char*>(&meta), sizeof(meta)),
 			boost::bind(&RpcCommunicator::SendMessage, this, message,
@@ -67,7 +68,8 @@ void RpcCommunicator::SendMessage(std::string message, const boost::system::erro
 		return;
 	}
 	boost::asio::async_write(socket_, boost::asio::buffer(message),
-			boost::bind(&RpcCommunicator::SendDone, this, boost::asio::placeholders::error));
+			boost::bind(&RpcCommunicator::SendDone, this,
+					boost::asio::placeholders::error));
 }
 
 void RpcCommunicator::SendDone(const boost::system::error_code& err)

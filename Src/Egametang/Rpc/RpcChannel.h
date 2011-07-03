@@ -17,14 +17,14 @@ class RpcChannel:
 		public RpcCommunicator
 {
 private:
-	typedef boost::unordered_map<int32, RpcHandlerPtr> RpcCallbackMap;
+	typedef boost::unordered_map<std::size_t, RpcHandlerPtr> RpcCallbackMap;
 
 	int32 id_;
 	RpcCallbackMap handlers_;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 
-	virtual void OnRecvMessage(StringPtr ss);
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage();
 
 public:

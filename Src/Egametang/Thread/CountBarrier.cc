@@ -32,4 +32,9 @@ int CountBarrier::Count() const
 	return count_;
 }
 
+void CountBarrier::Reset(int count)
+{
+	count_ = count;
+}
+
 } // namespace Egametang

@@ -48,7 +48,7 @@ public:
 	void RecvDone(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
 
 	// send request
-	void SendMeta(RpcMeta& meta, std::string message);
+	void SendMeta(RpcMeta meta, std::string message);
 	void SendMessage(std::string message, const boost::system::error_code& err);
 	void SendDone(const boost::system::error_code& err);
 
