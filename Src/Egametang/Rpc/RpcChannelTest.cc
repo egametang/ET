@@ -58,7 +58,6 @@ public:
 		request.ParseFromString(*message);
 
 		num_ = request.num();
-		VLOG(2) << "num: " << num_;
 
 		// 回一个消息
 		EchoResponse response;
@@ -68,13 +67,11 @@ public:
 		RpcMeta response_meta;
 		response_meta.id = meta->id;
 		response_meta.size = send_string.size();
-		VLOG(3) << "send meta: " << response_meta.size << " "
-				<< response_meta.id << " " << response_meta.method;
 		SendMeta(response_meta, send_string);
-		barrier_.Signal();
 	}
 	virtual void OnSendMessage()
 	{
+		barrier_.Signal();
 	}
 };
 

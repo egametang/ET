@@ -4,6 +4,7 @@
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
+#include <boost/format.hpp>
 #include "Base/Marcos.h"
 #include "Base/Typedef.h"
 #include "Rpc/RpcTypedef.h"
@@ -27,7 +28,8 @@ struct RpcMeta
 
 	std::string ToString()
 	{
-		return "";
+		boost::format format("size: %1%, id: %2%, method: %3%\n");
+		return boost::str(format % size % id % method);
 	}
 };
 

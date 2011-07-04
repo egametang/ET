@@ -19,7 +19,7 @@ class RpcChannel:
 private:
 	typedef boost::unordered_map<std::size_t, RpcHandlerPtr> RpcCallbackMap;
 
-	int32 id_;
+	std::size_t id_;
 	RpcCallbackMap handlers_;
 
 	void OnAsyncConnect(const boost::system::error_code& err);

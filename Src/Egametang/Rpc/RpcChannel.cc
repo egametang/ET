@@ -37,17 +37,21 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 
 void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	VLOG(2) << "RpcChannel::OnRecvMessage";
 	RpcHandlerPtr handler = handlers_[meta->id];
 	handler->GetResponse()->ParseFromString(*message);
-	if (handler->GetDone() != NULL)
-	{
-		handler->GetDone()->Run();
-	}
+
 	handlers_.erase(meta->id);
 
 	// read size
 	RecvMeta();
+
+	// 回调放在函数最后.如果RecvMeta()放在回调之后,
+	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
+	// 网络就终止了
+	if (handler->GetDone() != NULL)
+	{
+		handler->GetDone()->Run();
+	}
 }
 
 void RpcChannel::OnSendMessage()
@@ -77,8 +81,6 @@ void RpcChannel::CallMethod(
 	VLOG(3) << "send size: " << meta.size;
 	meta.id = id_;
 	meta.method = string_hash(method->full_name());
-	VLOG(3) << "send meta1: " << meta.size << " "
-					<< meta.id << " " << meta.method;
 	SendMeta(meta, message);
 }
 
