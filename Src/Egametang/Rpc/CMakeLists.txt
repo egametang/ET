@@ -25,13 +25,7 @@ FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
 		Rpc
 		Thread
-		Glog
-		Gflags
-		Gtest
-		Gmock
-		${Boost_LIBRARIES}
-		${PYTHON_LIBRARY}
-		${PROTOBUF_LIBRARY}
+		${LinkLibs}
 	)
 	ADD_TEST(${Excute} ${Excute})
 ENDFOREACH()
