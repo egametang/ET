@@ -1,60 +1,27 @@
-function(_glog_append_debugs _endvar _library)
-    if(${_library} AND ${_library}_DEBUG)
-        set(_output optimized ${${_library}} debug ${${_library}_DEBUG})
-    else()
-        set(_output ${${_library}})
-    endif()
-    set(${_endvar} ${_output} PARENT_SCOPE)
-endfunction()
+FIND_PATH(GLOG_INCLUDE_DIR glog/logging.h)
 
-function(_glog_find_library _name)
-    find_library(${_name}
-        NAMES ${ARGN}
-        HINTS
-            $ENV{GLOG_ROOT}
-            ${GLOG_ROOT}
-        PATH_SUFFIXES ${_glog_libpath_suffixes}
-    )
-    mark_as_advanced(${_name})
-endfunction()
+# Google's provided vcproj files generate libraries with a "lib"
+# prefix on Windows
+IF(WIN32)
+    set(GLOG_ORIG_FIND_LIBRARY_PREFIXES "${CMAKE_FIND_LIBRARY_PREFIXES}")
+    set(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
+ENDIF()
 
-if(NOT DEFINED GLOG_MSVC_SEARCH)
-    set(GLOG_MSVC_SEARCH MD)
-endif()
+FIND_LIBRARY(GLOG_LIBRARY NAMES glog
+             DOC "The Google Glog Library"
+             )
 
-set(_glog_libpath_suffixes lib)
-if(MSVC)
-    if(GLOG_MSVC_SEARCH STREQUAL "MD")
-        list(APPEND _glog_libpath_suffixes
-            msvc/glog-md/Debug
-            msvc/glog-md/Release)
-    elseif(GLOG_MSVC_SEARCH STREQUAL "MT")
-        list(APPEND _glog_libpath_suffixes
-            msvc/glog/Debug
-            msvc/glog/Release)
-    endif()
-endif()
+MARK_AS_ADVANCED(GLOG_INCLUDE_DIR GLOG_LIBRARY)
 
-
-find_path(GLOG_INCLUDE_DIR glog/logging.h
-    HINTS
-        $ENV{GLOG_ROOT}/include
-        ${GLOG_ROOT}/include
-)
-mark_as_advanced(GLOG_INCLUDE_DIR)
-
-if(MSVC AND GLOG_MSVC_SEARCH STREQUAL "MD")
-    # The provided /MD project files for Google Log add -md suffixes to the
-    # library names.
-    _glog_find_library(GLOG_LIBRARY            glog-md  glog)
-else()
-    _glog_find_library(GLOG_LIBRARY            glog)
-endif()
+# Restore original find library prefixes
+IF(WIN32)
+    SET(CMAKE_FIND_LIBRARY_PREFIXES "${GLOG_ORIG_FIND_LIBRARY_PREFIXES}")
+ENDIF()
 
 INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(GLog DEFAULT_MSG GLOG_LIBRARY)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(GLOG DEFAULT_MSG GLOG_LIBRARY GLOG_INCLUDE_DIR)
 
-if(GLOG_FOUND)
-    set(GLOG_INCLUDE_DIRS ${GLOG_INCLUDE_DIR})
-    _glog_append_debugs(GLOG_LIBRARIES      GLOG_LIBRARY)
-endif()
+IF(GLOG_FOUND)
+    SET(GLOG_INCLUDE_DIRS ${GLOG_INCLUDE_DIR})
+    SET(GLOG_LIBRARIES    ${GLOG_LIBRARY})
+ENDIF()
