@@ -39,25 +39,23 @@ protected:
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::socket socket_;
 
-public:
 	explicit RpcCommunicator(boost::asio::io_service& io_service);
 
 	boost::asio::ip::tcp::socket& Socket();
 
+	virtual void Stop();
+
 	// recieve response
-	void RecvMeta();
-	void RecvMessage(RpcMetaPtr meta, const boost::system::error_code& err);
+	void RecvMeta(RpcMetaPtr meta, StringPtr message);
+	void RecvMessage(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
 	void RecvDone(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 
 	// send request
-	void SendMeta(RpcMeta meta, std::string message);
-	void SendMessage(std::string message, const boost::system::error_code& err);
-	void SendDone(const boost::system::error_code& err);
-
-	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
-	virtual void OnSendMessage();
-
-	virtual void Stop();
+	void SendMeta(RpcMetaPtr meta, StringPtr message);
+	void SendMessage(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
+	void SendDone(RpcMetaPtr meta, StringPtr message, const boost::system::error_code& err);
+	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 };
 
 } // namespace Egametang
