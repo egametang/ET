@@ -162,6 +162,10 @@ public:
 		rpc_client_(io_client_, global_port, barrier_)
 	{
 	}
+
+	virtual ~RpcCommunicatorTest()
+	{
+	}
 };
 
 

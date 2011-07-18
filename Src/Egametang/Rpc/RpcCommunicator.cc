@@ -11,6 +11,10 @@ RpcCommunicator::RpcCommunicator(boost::asio::io_service& io_service):
 {
 }
 
+RpcCommunicator::~RpcCommunicator()
+{
+}
+
 boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 {
 	return socket_;

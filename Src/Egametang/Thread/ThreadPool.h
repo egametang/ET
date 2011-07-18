@@ -25,7 +25,7 @@ private:
 	void Runner();
 public:
 	ThreadPool(int num = 0);
-	~ThreadPool();
+	virtual ~ThreadPool();
 
 	virtual void Wait();
 	virtual bool PushTask(boost::function<void (void)> task);

@@ -81,6 +81,13 @@ public:
 
 class RpcChannelTest: public testing::Test
 {
+public:
+	RpcChannelTest()
+	{
+	}
+	virtual ~RpcChannelTest()
+	{
+	}
 };
 
 static void IOServiceRun(boost::asio::io_service& io_service)

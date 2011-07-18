@@ -14,7 +14,7 @@ private:
 
 public:
 	RpcController();
-	~RpcController();
+	virtual ~RpcController();
 
 	// client
 	virtual void Reset();

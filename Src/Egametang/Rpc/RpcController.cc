@@ -37,6 +37,7 @@ void RpcController::SetFailed(const std::string& reason)
 
 bool RpcController::IsCanceled() const
 {
+	return canceled_;
 }
 
 void RpcController::NotifyOnCancel(google::protobuf::Closure *callback)

@@ -13,7 +13,12 @@ protected:
 
 public:
 	PythonInterpreterTest(): python_interpreter_()
-	{}
+	{
+	}
+
+	virtual ~PythonInterpreterTest()
+	{
+	}
 };
 
 class PersonTest

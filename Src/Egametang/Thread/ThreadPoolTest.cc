@@ -11,10 +11,16 @@ class ThreadPoolTest: public testing::Test
 {
 protected:
 	ThreadPool pool_;
+
 public:
 	ThreadPoolTest() : pool_(10)
 	{
 	}
+
+	virtual ~ThreadPoolTest()
+	{
+	}
+
 	void Max(int a, int b, int* z)
 	{
 		*z = a > b? a : b;

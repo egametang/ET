@@ -10,14 +10,23 @@
 namespace Egametang {
 class BoostTest: public testing::Test
 {
+protected:
+	int a;
+	boost::function<int(int)> func;
+
 	void SetUp()
 	{
 		a = 6;
 	}
-protected:
-	int a;
-	boost::function<int(int)> func;
 public:
+	BoostTest()
+	{
+	}
+
+	virtual ~BoostTest()
+	{
+	}
+
 	int Max(int a, int b)
 	{
 		LOG(INFO) << a << " " << b;

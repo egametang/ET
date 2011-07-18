@@ -15,10 +15,13 @@ class CountBarrierTest: public testing::Test
 protected:
 	boost::detail::atomic_count count_;
 public:
-	CountBarrierTest():
-		count_(0)
+	CountBarrierTest(): count_(0)
 	{
 	}
+	virtual ~CountBarrierTest()
+	{
+	}
+
 	void Wait(CountBarrier& barrier)
 	{
 		barrier.Wait();

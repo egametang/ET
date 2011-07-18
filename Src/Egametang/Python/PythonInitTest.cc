@@ -10,12 +10,17 @@ using namespace boost::python;
 
 class PythonInitTest: public testing::Test
 {
-public:
-	PythonInitTest(): python_init_()
-	{}
-
 protected:
 	PythonInit python_init_;
+
+public:
+	PythonInitTest(): python_init_()
+	{
+	}
+
+	virtual ~PythonInitTest()
+	{
+	}
 };
 
 TEST_F(PythonInitTest, Int)

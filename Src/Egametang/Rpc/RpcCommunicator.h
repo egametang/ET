@@ -5,6 +5,7 @@
 #include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
 #include <boost/format.hpp>
+#include <boost/noncopyable.hpp>
 #include "Base/Marcos.h"
 #include "Base/Typedef.h"
 #include "Rpc/RpcTypedef.h"
@@ -33,14 +34,14 @@ struct RpcMeta
 	}
 };
 
-class RpcCommunicator
+class RpcCommunicator: public boost::noncopyable
 {
 protected:
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::socket socket_;
 
 	explicit RpcCommunicator(boost::asio::io_service& io_service);
-
+	virtual ~RpcCommunicator();
 	boost::asio::ip::tcp::socket& Socket();
 
 	virtual void Stop();
