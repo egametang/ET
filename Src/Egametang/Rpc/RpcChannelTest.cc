@@ -42,7 +42,9 @@ public:
 			LOG(ERROR) << "async accept failed: " << err.message();
 			return;
 		}
-		RecvMeta();
+		RpcMetaPtr meta(new RpcMeta());
+		StringPtr message(new std::string);
+		RecvMeta(meta, message);
 	}
 
 	void Stop()
@@ -62,14 +64,16 @@ public:
 		// 回一个消息
 		EchoResponse response;
 		response.set_num(num_);
-		std::string send_string = response.SerializeAsString();
 
-		RpcMeta response_meta;
-		response_meta.id = meta->id;
-		response_meta.size = send_string.size();
-		SendMeta(response_meta, send_string);
+		StringPtr response_message(new std::string);
+		response.SerializeToString(response_message.get());
+		VLOG(3) << "response message: " << response_message->size();
+		RpcMetaPtr response_meta(new RpcMeta());
+		response_meta->id = meta->id;
+		response_meta->size = response_message->size();
+		SendMeta(response_meta, response_message);
 	}
-	virtual void OnSendMessage()
+	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message)
 	{
 		barrier_.Signal();
 	}

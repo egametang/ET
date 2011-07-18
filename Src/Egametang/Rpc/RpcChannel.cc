@@ -32,7 +32,9 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 		LOG(ERROR) << "async connect failed: " << err.message();
 		return;
 	}
-	RecvMeta();
+	RpcMetaPtr recv_meta(new RpcMeta());
+	StringPtr recv_message(new std::string);
+	RecvMeta(recv_meta, recv_message);
 }
 
 void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -43,7 +45,9 @@ void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	handlers_.erase(meta->id);
 
 	// read size
-	RecvMeta();
+	RpcMetaPtr recv_meta(new RpcMeta());
+	StringPtr recv_message(new std::string);
+	RecvMeta(recv_meta, recv_message);
 
 	// 回调放在函数最后.如果RecvMeta()放在回调之后,
 	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
@@ -75,12 +79,12 @@ void RpcChannel::CallMethod(
 
 	boost::hash<std::string> string_hash;
 
-	std::string message = request->SerializeAsString();
-	RpcMeta meta;
-	meta.size = message.size();
-	VLOG(3) << "send size: " << meta.size;
-	meta.id = id_;
-	meta.method = string_hash(method->full_name());
+	StringPtr message(new std::string);
+	request->SerializePartialToString(message.get());
+	RpcMetaPtr meta(new RpcMeta());
+	meta->size = message->size();
+	meta->id = id_;
+	meta->method = string_hash(method->full_name());
 	SendMeta(meta, message);
 }
 
