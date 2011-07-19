@@ -107,8 +107,8 @@ TEST_F(RpcChannelTest, Echo)
 	EchoService_Stub service(&rpc_channel);
 
 	ThreadPool thread_pool(2);
-	thread_pool.PushTask(boost::bind(&IOServiceRun, boost::ref(io_server)));
-	thread_pool.PushTask(boost::bind(&IOServiceRun, boost::ref(io_client)));
+	thread_pool.Schedule(boost::bind(&IOServiceRun, boost::ref(io_server)));
+	thread_pool.Schedule(boost::bind(&IOServiceRun, boost::ref(io_client)));
 
 	EchoRequest request;
 	request.set_num(100);

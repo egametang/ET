@@ -28,7 +28,7 @@ public:
 	virtual ~ThreadPool();
 
 	virtual void Wait();
-	virtual bool PushTask(boost::function<void (void)> task);
+	virtual bool Schedule(boost::function<void (void)> task);
 };
 
 } // namespace Egametang

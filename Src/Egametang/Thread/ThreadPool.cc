@@ -67,7 +67,7 @@ void ThreadPool::Runner()
 	}
 }
 
-bool ThreadPool::PushTask(boost::function<void (void)> task)
+bool ThreadPool::Schedule(boost::function<void (void)> task)
 {
 	{
 		boost::mutex::scoped_lock lock(mutex_);

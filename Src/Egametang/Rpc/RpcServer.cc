@@ -61,7 +61,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcRequestPtr request,
 {
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::Callback, session, handler);
-	thread_pool_.PushTask(
+	thread_pool_.Schedule(
 			boost::bind(&google::protobuf::Service::CallMethod, &service_,
 					method, NULL, request.get(), done));
 }

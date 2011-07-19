@@ -172,8 +172,8 @@ public:
 TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
 	ThreadPool thread_pool(2);
-	thread_pool.PushTask(boost::bind(&RpcServerTest::Start, &rpc_server_));
-	thread_pool.PushTask(boost::bind(&RpcClientTest::Start, &rpc_client_));
+	thread_pool.Schedule(boost::bind(&RpcServerTest::Start, &rpc_server_));
+	thread_pool.Schedule(boost::bind(&RpcClientTest::Start, &rpc_client_));
 	barrier_.Wait();
 	thread_pool.Wait();
 	rpc_server_.Stop();

@@ -49,7 +49,7 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 	ThreadPool pool(10);
 	for (int i = 0; i < 10; ++i)
 	{
-		pool.PushTask(
+		pool.Schedule(
 				boost::bind(&CountBarrierTest::Signal,
 						this, boost::ref(barrier)));
 	}
