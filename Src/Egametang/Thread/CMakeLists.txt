@@ -1,6 +1,7 @@
 SET(ThreadSrc 
 	ThreadPool.cc
-	CountBarrier.cc)
+	CountBarrier.cc
+)
 
 ADD_LIBRARY(Thread ${ThreadSrc})
 
@@ -15,7 +16,7 @@ SET(Excutes
 FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
 		Thread
-		${LinkLibs}
+		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Excute} ${Excute})
 ENDFOREACH()

@@ -15,7 +15,7 @@ SET(Excutes
 FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
 		PythonInterpreter
-		${LinkLibs}
+		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Excute} ${Excute})
 ENDFOREACH()

@@ -1,6 +1,6 @@
 PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs 
 	Echo.proto
-	)
+)
 
 SET(RpcSrc 
 	RpcCommunicator.cc
@@ -8,7 +8,7 @@ SET(RpcSrc
 	RpcHandler.cc
 	RpcChannel.cc
 	${proto_srcs}
-	)
+)
 
 
 ADD_LIBRARY(Rpc ${RpcSrc})
@@ -25,7 +25,7 @@ FOREACH(Excute ${Excutes})
 	TARGET_LINK_LIBRARIES(${Excute}
 		Rpc
 		Thread
-		${LinkLibs}
+		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Excute} ${Excute})
 ENDFOREACH()

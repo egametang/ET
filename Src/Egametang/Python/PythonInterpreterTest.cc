@@ -9,10 +9,10 @@ namespace Egametang {
 class PythonInterpreterTest: public testing::Test
 {
 protected:
-	PythonInterpreter python_interpreter_;
+	PythonInterpreter interpreter_;
 
 public:
-	PythonInterpreterTest(): python_interpreter_()
+	PythonInterpreterTest(): interpreter_()
 	{
 	}
 
@@ -68,16 +68,16 @@ BOOST_PYTHON_MODULE(PersonTest)
 TEST_F(PythonInterpreterTest, EnterPythonScript)
 {
 	initPersonTest();
-	python_interpreter_.ImportPath("../../../Src/Egametang/Python/");
-	python_interpreter_.ImportModule("PythonInterpreterTest");
+	interpreter_.ImportPath("../../../Src/Egametang/Python/");
+	interpreter_.ImportModule("PythonInterpreterTest");
 
 	PersonTestPtr person(new PersonTest);
-	python_interpreter_.RegisterObjectPtr("person", person);
+	interpreter_.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());
 
 	// 进到python脚本层设置person的值为2
-	python_interpreter_.Execute("PythonInterpreterTest.fun(person)");
+	interpreter_.Execute("PythonInterpreterTest.fun(person)");
 
 	ASSERT_EQ(2, person->Guid());
 	ASSERT_EQ(std::string("tanghai"), person->Name());
