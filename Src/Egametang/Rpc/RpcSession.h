@@ -18,10 +18,10 @@ class RpcSession:
 private:
 	RpcServer& rpc_server_;
 
-	void SendResponse(RpcResponsePtr response);
+	void SendResponse(RpcMetaPtr meta, StringPtr message);
 
-	virtual void OnRecvMessage(StringPtr ss);
-	virtual void OnSendMessage();
+	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
+	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
 public:
 	RpcSession(RpcServer& server);

@@ -7,38 +7,47 @@ RpcSession::RpcSession(RpcServer& rpc_server):
 {
 }
 
-void RpcSession::OnRecvMessage(StringPtr ss)
+void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RpcRequestPtr request(new RpcRequest);
-	request->ParseFromString(*ss);
+	RpcMetaPtr send_meta(new RpcMeta());
+	StringPtr send_message(new std::string);
+	send_meta->id = meta->id;
 
-	int size = request->ByteSize();
-	std::string message = request->SerializeAsString();
+	google::protobuf::Message* request;
+	request->ParseFromString(*message);
 
-	RpcResponsePtr response(new RpcResponse);
-	response->set_id(request->id());
+	google::protobuf::Closure* done = google::protobuf::NewCallback(
+			this, &RpcServer::Callback, shared_from_this(), handler);
+	const google::protobuf::MethodDescriptor* method = NULL;
 
-	rpc_server_.RunService(shared_from_this(), request,
-			boost::bind(&RpcSession::SendResponse,
-					shared_from_this(), response));
+
+
+	rpc_server_.thread_pool_.Schedule(
+			boost::bind(&RpcSession::SendResponse, shared_from_this(),
+					send_meta, send_message));
+
+	rpc_server_.RunService(meta, message,
+			boost::bind(&RpcSession::SendResponse, shared_from_this(), _1, _2));
 	// read size
-	RecvSize();
+	RpcMetaPtr recv_meta(new RpcMeta());
+	StringPtr recv_message(new std::string);
+	RecvMeta(recv_meta, recv_message);
 }
 
-void RpcSession::OnSendMessage()
+void RpcSession::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 {
 }
 
-void RpcSession::SendResponse(RpcResponsePtr response)
+void RpcSession::SendResponse(RpcMetaPtr meta, StringPtr message)
 {
-	int size = response->ByteSize();
-	std::string message = response->SerializeAsString();
-	SendSize(size, message);
+	SendMeta(meta, message);
 }
 
 void RpcSession::Start()
 {
-	RecvSize();
+	RpcMetaPtr meta(new RpcMeta());
+	StringPtr message(new std::string);
+	RecvMeta(meta, message);
 }
 
 void RpcSession::Stop()

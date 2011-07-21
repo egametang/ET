@@ -6,22 +6,30 @@
 namespace Egametang {
 
 // google
-typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
-typedef boost::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
+typedef boost::shared_ptr<google::protobuf::Service> RpcServicePtr;
+typedef boost::shared_ptr<google::protobuf::Message> RpcMessagePtr;
 
 // rpc
+class RpcServer;
 class RpcSession;
-class RpcRequest;
 class RpcChannel;
 class RpcHandler;
-class RpcResponse;
+class MethodInfo;
 class RpcMeta;
-typedef boost::shared_ptr<RpcSession>  RpcSessionPtr;
-typedef boost::shared_ptr<RpcRequest>  RpcRequestPtr;
-typedef boost::shared_ptr<RpcChannel>  RpcChannelPtr;
-typedef boost::shared_ptr<RpcHandler>  RpcHandlerPtr;
-typedef boost::shared_ptr<RpcResponse> RpcResponsePtr;
-typedef boost::shared_ptr<RpcMeta> 	   RpcMetaPtr;
+class CallMethodBack;
+
+typedef boost::shared_ptr<RpcServer> 	    RpcServerPtr;
+typedef boost::shared_ptr<RpcSession>       RpcSessionPtr;
+typedef boost::shared_ptr<RpcChannel>       RpcChannelPtr;
+typedef boost::shared_ptr<RpcHandler>       RpcHandlerPtr;
+typedef boost::shared_ptr<MethodInfo>       MethodInfoPtr;
+typedef boost::shared_ptr<RpcMeta> 	        RpcMetaPtr;
+typedef boost::shared_ptr<CallMethodBack> CallMethodBackPtr;
+
+
+typedef boost::weak_ptr<RpcServer>     RpcServerWPtr;
+
+typedef boost::function<void (std::size_t, google::protobuf::Message*)> SendResponseHandler;
 
 } // namespace Egametang
 
