@@ -5,7 +5,7 @@ PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs
 SET(RpcSrc 
 	RpcCommunicator.cc
 	RpcController.cc
-	RpcHandler.cc
+	RequestHandler.cc
 	RpcChannel.cc
 	${proto_srcs}
 )

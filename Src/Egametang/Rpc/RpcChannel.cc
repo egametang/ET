@@ -5,7 +5,7 @@
 #include <google/protobuf/descriptor.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcChannel.h"
-#include "Rpc/RpcHandler.h"
+#include "Rpc/RequestHandler.h"
 
 namespace Egametang {
 
@@ -39,26 +39,20 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 
 void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RpcHandlerPtr handler = handlers_[meta->id];
-	handler->GetResponse()->ParseFromString(*message);
+	RequestHandlerPtr request_handler = request_handlers_[meta->id];
+	request_handlers_.erase(meta->id);
 
-	handlers_.erase(meta->id);
+	request_handler->Response()->ParseFromString(*message);
 
-	// read size
-	RpcMetaPtr recv_meta(new RpcMeta());
-	StringPtr recv_message(new std::string);
-	RecvMeta(recv_meta, recv_message);
-
+	// meta和message可以循环利用
+	RecvMeta(meta, message);
 	// 回调放在函数最后.如果RecvMeta()放在回调之后,
 	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
 	// 网络就终止了
-	if (handler->GetDone() != NULL)
-	{
-		handler->GetDone()->Run();
-	}
+	request_handler->Run();
 }
 
-void RpcChannel::OnSendMessage()
+void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 {
 }
 
@@ -74,8 +68,8 @@ void RpcChannel::CallMethod(
 		google::protobuf::Message* response,
 		google::protobuf::Closure* done)
 {
-	RpcHandlerPtr handler(new RpcHandler(controller, response, done));
-	handlers_[++id_] = handler;
+	RequestHandlerPtr request_handler(new RequestHandler(response, done));
+	request_handlers_[++id_] = request_handler;
 
 	boost::hash<std::string> string_hash;
 

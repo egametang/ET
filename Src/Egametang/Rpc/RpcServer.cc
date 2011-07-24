@@ -2,11 +2,13 @@
 #include <boost/foreach.hpp>
 #include <google/protobuf/service.h>
 #include <glog/logging.h>
+#include "Base/Marcos.h"
 #include "Rpc/RpcTypedef.h"
 #include "Rpc/RpcServer.h"
 #include "Rpc/RpcSession.h"
+#include "Rpc/ResponseHandler.h"
+#include "Rpc/MethodInfo.h"
 #include "Thread/ThreadPool.h"
-#include "Base/Marcos.h"
 
 namespace Egametang {
 
@@ -26,6 +28,11 @@ RpcServer::RpcServer(boost::asio::io_service& io_service, int port):
 					new_session, boost::asio::placeholders::error));
 }
 
+boost::asio::io_service& RpcServer::IOService()
+{
+	return io_service_;
+}
+
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
 	if (err)
@@ -41,27 +48,16 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 					boost::asio::placeholders::error));
 }
 
-ThreadPool& RpcServer::ThreadPool()
+void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler)
 {
-	return thread_pool_;
-}
-
-void RpcServer::Callback(RpcSessionPtr session, CallMethodBackPtr call_method_back)
-{
-	RpcMetaPtr meta = call_method_back->meta;
-	StringPtr message(new std::string);
-	google::protobuf::Message* request = call_method_back->request;
-	google::protobuf::Message* response = call_method_back->response;
-	response->SerializeToString(message.get());
-	meta->size = message->size();
-
+	// push到网络线程
 	session->Socket().get_io_service().post(
-			boost::bind(&CallMethodBack::Run, call_method_back,
-					meta, response));
+			boost::bind(&ResponseHandler::Run, response_handler));
 }
 
 void RpcServer::Stop()
 {
+	thread_pool_.Wait();
 	acceptor_.close();
 	foreach(RpcSessionPtr session, sessions_)
 	{
@@ -71,23 +67,23 @@ void RpcServer::Stop()
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
-		StringPtr message, SendResponseHandler handler)
+		StringPtr message, MessageHandler message_handler)
 {
 	MethodInfoPtr method_info = methods_[meta->method];
-	const google::protobuf::MethodDescriptor* method = method_info->method_descriptor;
-	// 这两个Message在CallMethodBack里面delete
-	google::protobuf::Message* request = method_info->request_prototype->New();
-	google::protobuf::Message* response = method_info->response_prototype->New();
-	request->ParseFromString(*message);
 
-	CallMethodBackPtr call_method_back(new CallMethodBack(request, response, meta, handler));
+	ResponseHandlerPtr response_handler(
+			new ResponseHandler(method_info, meta->id, message_handler));
+	response_handler->Request()->ParseFromString(*message);
+
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
-			shared_from_this(), &RpcServer::Callback,
-			session, call_method_back);
+			shared_from_this(), &RpcServer::OnCallMethod,
+			session, response_handler);
 
 	thread_pool_.Schedule(
-			boost::bind(&google::protobuf::Service::CallMethod, shared_from_this(),
-					method, NULL, request, response, done));
+			boost::bind(&google::protobuf::Service::CallMethod, this,
+					response_handler->Method(), NULL,
+					response_handler->Request(), response_handler->Response(),
+					done));
 }
 
 void RpcServer::RegisterService(RpcServicePtr service)

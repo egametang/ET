@@ -1,5 +1,5 @@
-#ifndef RPC_RPC_SESSION_H
-#define RPC_RPC_SESSION_H
+#ifndef RPC_RPCSESSION_H
+#define RPC_RPCSESSION_H
 
 #include <boost/asio.hpp>
 #include <boost/noncopyable.hpp>
@@ -18,8 +18,6 @@ class RpcSession:
 private:
 	RpcServer& rpc_server_;
 
-	void SendResponse(RpcMetaPtr meta, StringPtr message);
-
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
@@ -32,4 +30,4 @@ public:
 
 } // namespace Egametang
 
-#endif // RPC_RPC_SESSION_H
+#endif // RPC_RPCSESSION_H

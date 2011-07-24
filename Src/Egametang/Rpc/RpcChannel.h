@@ -12,20 +12,18 @@ namespace Egametang {
 
 class RpcHandler;
 
-class RpcChannel:
-		public google::protobuf::RpcChannel,
-		public RpcCommunicator
+class RpcChannel: public google::protobuf::RpcChannel, public RpcCommunicator
 {
 private:
-	typedef boost::unordered_map<std::size_t, RpcHandlerPtr> RpcCallbackMap;
+	typedef boost::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
 
 	std::size_t id_;
-	RpcCallbackMap handlers_;
+	RequestHandlerMap request_handlers_;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
-	virtual void OnSendMessage();
+	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
 public:
 	RpcChannel(boost::asio::io_service& service, std::string host, int port);
