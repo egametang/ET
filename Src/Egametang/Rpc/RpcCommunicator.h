@@ -37,8 +37,8 @@ struct RpcMeta
 class RpcCommunicator: public boost::noncopyable
 {
 protected:
-	boost::asio::io_service& io_service_;
-	boost::asio::ip::tcp::socket socket_;
+	boost::asio::io_service& io_service;
+	boost::asio::ip::tcp::socket socket;
 
 	explicit RpcCommunicator(boost::asio::io_service& io_service);
 	virtual ~RpcCommunicator();

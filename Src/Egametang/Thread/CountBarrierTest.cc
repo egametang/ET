@@ -13,9 +13,9 @@ namespace Egametang {
 class CountBarrierTest: public testing::Test
 {
 protected:
-	boost::detail::atomic_count count_;
+	boost::detail::atomic_count count;
 public:
-	CountBarrierTest(): count_(0)
+	CountBarrierTest(): count(0)
 	{
 	}
 	virtual ~CountBarrierTest()
@@ -32,7 +32,7 @@ public:
 		boost::xtime_get(&xt, boost::TIME_UTC);
 		xt.sec += 2;
 		boost::thread::sleep(xt);
-		++count_;
+		++count;
 		barrier.Signal();
 	}
 };
@@ -53,9 +53,9 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 				boost::bind(&CountBarrierTest::Signal,
 						this, boost::ref(barrier)));
 	}
-	ASSERT_EQ(0, this->count_);
+	ASSERT_EQ(0, this->count);
 	barrier.Wait();
-	ASSERT_EQ(10, this->count_);
+	ASSERT_EQ(10, this->count);
 	pool.Wait();
 }
 

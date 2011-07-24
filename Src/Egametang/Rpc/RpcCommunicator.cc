@@ -7,7 +7,7 @@
 namespace Egametang {
 
 RpcCommunicator::RpcCommunicator(boost::asio::io_service& io_service):
-		io_service_(io_service), socket_(io_service)
+		io_service(io_service), socket(io_service)
 {
 }
 
@@ -17,18 +17,18 @@ RpcCommunicator::~RpcCommunicator()
 
 boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 {
-	return socket_;
+	return socket;
 }
 
 void RpcCommunicator::Stop()
 {
-	socket_.close();
+	socket.close();
 }
 
 
 void RpcCommunicator::RecvMeta(RpcMetaPtr meta, StringPtr message)
 {
-	boost::asio::async_read(socket_,
+	boost::asio::async_read(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
 			boost::bind(&RpcCommunicator::RecvMessage, this,
 					meta, message, boost::asio::placeholders::error));
@@ -43,7 +43,7 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 		return;
 	}
 	message->resize(meta->size, '\0');
-	boost::asio::async_read(socket_,
+	boost::asio::async_read(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(&message->at(0)), meta->size),
 			boost::bind(&RpcCommunicator::RecvDone, this,
 					meta, message, boost::asio::placeholders::error));
@@ -68,7 +68,7 @@ void RpcCommunicator::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 void RpcCommunicator::SendMeta(RpcMetaPtr meta, StringPtr message)
 {
 	CHECK_EQ(meta->size, message->size()) << "meta and message size not match!";
-	boost::asio::async_write(socket_,
+	boost::asio::async_write(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
 			boost::bind(&RpcCommunicator::SendMessage, this,
 					meta, message, boost::asio::placeholders::error));
@@ -82,7 +82,7 @@ void RpcCommunicator::SendMessage(RpcMetaPtr meta, StringPtr message,
 		LOG(ERROR) << "send message size failed: " << err.message();
 		return;
 	}
-	boost::asio::async_write(socket_, boost::asio::buffer(*message),
+	boost::asio::async_write(socket, boost::asio::buffer(*message),
 			boost::bind(&RpcCommunicator::SendDone, this,
 					meta, message, boost::asio::placeholders::error));
 }

@@ -8,9 +8,9 @@ namespace Egametang {
 class CountBarrier
 {
 private:
-	int count_;
-	mutable boost::mutex mutex_;
-	boost::condition_variable condition_;
+	int count;
+	mutable boost::mutex mutex;
+	boost::condition_variable condition;
 
 public:
 	explicit CountBarrier(int count = 1);

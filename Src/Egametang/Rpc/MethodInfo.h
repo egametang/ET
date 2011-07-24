@@ -12,6 +12,7 @@ struct MethodInfo
 	const google::protobuf::MethodDescriptor* method_descriptor;
 	google::protobuf::Message* request_prototype;
 	google::protobuf::Message* response_prototype;
+
 	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* method_descriptor):
 		service(service), method_descriptor(method_descriptor)
 	{

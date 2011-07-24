@@ -8,12 +8,14 @@ namespace Egametang {
 
 class ResponseHandler
 {
+private:
 	google::protobuf::MethodDescriptor* method;
 	google::protobuf::Message* request;
 	google::protobuf::Message* response;
 	std::size_t id;
 	MessageHandler message_handler;
 
+public:
 	ResponseHandler(MethodInfoPtr& method_info, std::size_t id, MessageHandler& send_message);
 
 	~ResponseHandler();

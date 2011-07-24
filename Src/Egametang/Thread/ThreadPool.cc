@@ -4,19 +4,19 @@
 namespace Egametang {
 
 ThreadPool::ThreadPool(int num) :
-	thread_num_(num), running_(true), work_num_(0)
+	thread_num(num), running(true), work_num(0)
 {
 	if (num == 0)
 	{
-		thread_num_ = boost::thread::hardware_concurrency();
+		thread_num = boost::thread::hardware_concurrency();
 	}
-	for (int i = 0; i < thread_num_; ++i)
+	for (int i = 0; i < thread_num; ++i)
 	{
 		ThreadPtr t(new boost::thread(
 				boost::bind(&ThreadPool::Runner, this)));
-		threads_.push_back(t);
+		threads.push_back(t);
 		t->detach();
-		++work_num_;
+		++work_num;
 	}
 }
 
@@ -26,14 +26,14 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::Wait()
 {
-	boost::mutex::scoped_lock lock(mutex_);
-	running_ = false;
-	cond_.notify_all();
-	while (work_num_ > 0)
+	boost::mutex::scoped_lock lock(mutex);
+	running = false;
+	cond.notify_all();
+	while (work_num > 0)
 	{
-		done_.wait(lock);
+		done.wait(lock);
 	}
-	running_ = true;
+	running = true;
 }
 
 void ThreadPool::Runner()
@@ -43,17 +43,17 @@ void ThreadPool::Runner()
 	{
 		boost::function<void (void)> task;
 		{
-			boost::mutex::scoped_lock lock(mutex_);
-			while (running_ && tasks_.empty())
+			boost::mutex::scoped_lock lock(mutex);
+			while (running && tasks.empty())
 			{
-				cond_.wait(lock);
+				cond.wait(lock);
 			}
-			if (!tasks_.empty())
+			if (!tasks.empty())
 			{
-				task = tasks_.front();
-				tasks_.pop_front();
+				task = tasks.front();
+				tasks.pop_front();
 			}
-			continued = running_ || !tasks_.empty();
+			continued = running || !tasks.empty();
 		}
 
 		if (task)
@@ -61,23 +61,23 @@ void ThreadPool::Runner()
 			task();
 		}
 	}
-	if (--work_num_ == 0)
+	if (--work_num == 0)
 	{
-		done_.notify_one();
+		done.notify_one();
 	}
 }
 
 bool ThreadPool::Schedule(boost::function<void (void)> task)
 {
 	{
-		boost::mutex::scoped_lock lock(mutex_);
-		if (!running_)
+		boost::mutex::scoped_lock lock(mutex);
+		if (!running)
 		{
 			return false;
 		}
-		tasks_.push_back(task);
+		tasks.push_back(task);
 	}
-	cond_.notify_one();
+	cond.notify_one();
 	return true;
 }
 

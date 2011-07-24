@@ -14,23 +14,23 @@ static int global_port = 10002;
 class RpcServerTest: public RpcCommunicator
 {
 public:
-	CountBarrier& barrier_;
-	int32 num_;
-	boost::asio::ip::tcp::acceptor acceptor_;
+	CountBarrier& barrier;
+	int32 num;
+	boost::asio::ip::tcp::acceptor acceptor;
 
 public:
 	RpcServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
-		RpcCommunicator(io_service), acceptor_(io_service),
-		barrier_(barrier), num_(0)
+		RpcCommunicator(io_service), acceptor(io_service),
+		barrier(barrier), num(0)
 	{
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
-		acceptor_.open(endpoint.protocol());
-		acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-		acceptor_.bind(endpoint);
-		acceptor_.listen();
-		acceptor_.async_accept(socket_,
+		acceptor.open(endpoint.protocol());
+		acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+		acceptor.bind(endpoint);
+		acceptor.listen();
+		acceptor.async_accept(socket,
 				boost::bind(&RpcServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
 	}
@@ -49,8 +49,8 @@ public:
 
 	void Stop()
 	{
-		acceptor_.close();
-		socket_.close();
+		acceptor.close();
+		socket.close();
 	}
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -59,11 +59,11 @@ public:
 		EchoRequest request;
 		request.ParseFromString(*message);
 
-		num_ = request.num();
+		num = request.num();
 
 		// 回一个消息
 		EchoResponse response;
-		response.set_num(num_);
+		response.set_num(num);
 
 		StringPtr response_message(new std::string);
 		response.SerializeToString(response_message.get());
@@ -75,7 +75,7 @@ public:
 	}
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		barrier_.Signal();
+		barrier.Signal();
 	}
 };
 

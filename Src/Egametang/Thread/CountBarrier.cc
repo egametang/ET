@@ -3,38 +3,38 @@
 namespace Egametang {
 
 CountBarrier::CountBarrier(int count):
-	count_(count), mutex_(), condition_()
+	count(count), mutex(), condition()
 {
 }
 
 void CountBarrier::Wait()
 {
-	boost::mutex::scoped_lock lock(mutex_);
-	while (count_ > 0)
+	boost::mutex::scoped_lock lock(mutex);
+	while (count > 0)
 	{
-		condition_.wait(lock);
+		condition.wait(lock);
 	}
 }
 
 void CountBarrier::Signal()
 {
-	boost::mutex::scoped_lock lock(mutex_);
-	--count_;
-	if (count_ == 0)
+	boost::mutex::scoped_lock lock(mutex);
+	--count;
+	if (count == 0)
 	{
-		condition_.notify_all();
+		condition.notify_all();
 	}
 }
 
 int CountBarrier::Count() const
 {
-	boost::mutex::scoped_lock lock(mutex_);
-	return count_;
+	boost::mutex::scoped_lock lock(mutex);
+	return count;
 }
 
 void CountBarrier::Reset(int count)
 {
-	count_ = count;
+	this->count = count;
 }
 
 } // namespace Egametang

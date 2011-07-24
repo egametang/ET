@@ -12,19 +12,19 @@ RpcController::~RpcController()
 
 void RpcController::Reset()
 {
-	failed_ = false;
-	reason_ = "";
-	canceled_ = false;
+	failed = false;
+	reason = "";
+	canceled = false;
 }
 
 bool RpcController::Failed() const
 {
-	return failed_;
+	return failed;
 }
 
 std::string RpcController::ErrorText() const
 {
-	return reason_;
+	return reason;
 }
 
 void RpcController::StartCancel()
@@ -37,7 +37,7 @@ void RpcController::SetFailed(const std::string& reason)
 
 bool RpcController::IsCanceled() const
 {
-	return canceled_;
+	return canceled;
 }
 
 void RpcController::NotifyOnCancel(google::protobuf::Closure *callback)

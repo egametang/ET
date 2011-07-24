@@ -13,24 +13,24 @@
 namespace Egametang {
 
 RpcServer::RpcServer(boost::asio::io_service& io_service, int port):
-		io_service_(io_service), thread_pool_()
+		io_service(io_service), thread_pool()
 {
 	boost::asio::ip::address address;
 	address.from_string("localhost");
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
-	acceptor_.open(endpoint.protocol());
-	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-	acceptor_.bind(endpoint);
-	acceptor_.listen();
+	acceptor.open(endpoint.protocol());
+	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+	acceptor.bind(endpoint);
+	acceptor.listen();
 	RpcSessionPtr new_session(new RpcSession(*this));
-	acceptor_.async_accept(new_session->Socket(),
+	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
 }
 
 boost::asio::io_service& RpcServer::IOService()
 {
-	return io_service_;
+	return io_service;
 }
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
@@ -41,9 +41,9 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 		return;
 	}
 	session->Start();
-	sessions_.insert(session);
+	sessions.insert(session);
 	RpcSessionPtr new_session(new RpcSession(*this));
-	acceptor_.async_accept(new_session->Socket(),
+	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					boost::asio::placeholders::error));
 }
@@ -57,19 +57,19 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_
 
 void RpcServer::Stop()
 {
-	thread_pool_.Wait();
-	acceptor_.close();
-	foreach(RpcSessionPtr session, sessions_)
+	thread_pool.Wait();
+	acceptor.close();
+	foreach(RpcSessionPtr session, sessions)
 	{
 		session->Stop();
 	}
-	sessions_.clear();
+	sessions.clear();
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 		StringPtr message, MessageHandler message_handler)
 {
-	MethodInfoPtr method_info = methods_[meta->method];
+	MethodInfoPtr method_info = methods[meta->method];
 
 	ResponseHandlerPtr response_handler(
 			new ResponseHandler(method_info, meta->id, message_handler));
@@ -79,7 +79,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			shared_from_this(), &RpcServer::OnCallMethod,
 			session, response_handler);
 
-	thread_pool_.Schedule(
+	thread_pool.Schedule(
 			boost::bind(&google::protobuf::Service::CallMethod, this,
 					response_handler->Method(), NULL,
 					response_handler->Request(), response_handler->Response(),
@@ -96,14 +96,14 @@ void RpcServer::RegisterService(RpcServicePtr service)
 				service_descriptor->method(i);
 		std::size_t method_hash = string_hash(method_descriptor->full_name());
 		MethodInfoPtr method_info(new MethodInfo(service, method_descriptor));
-		CHECK(methods_.find(method_hash) == methods_.end());
-		methods_[method_hash] = method_info;
+		CHECK(methods.find(method_hash) == methods.end());
+		methods[method_hash] = method_info;
 	}
 }
 
 void RpcServer::RemoveSession(RpcSessionPtr& session)
 {
-	sessions_.erase(session);
+	sessions.erase(session);
 }
 
 } // namespace Egametang

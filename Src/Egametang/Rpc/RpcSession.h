@@ -16,7 +16,7 @@ class RpcSession:
 		public boost::enable_shared_from_this<RpcSession>
 {
 private:
-	RpcServer& rpc_server_;
+	RpcServer& rpc_server;
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);

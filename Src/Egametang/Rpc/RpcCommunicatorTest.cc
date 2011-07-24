@@ -31,7 +31,7 @@ public:
 		acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 		acceptor_.bind(endpoint);
 		acceptor_.listen();
-		acceptor_.async_accept(socket_,
+		acceptor_.async_accept(socket,
 				boost::bind(&RpcServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
 	}
@@ -52,13 +52,13 @@ public:
 	void Start()
 	{
 		VLOG(2) << "Start Server";
-		io_service_.run();
+		io_service.run();
 	}
 
 	void Stop()
 	{
 		acceptor_.close();
-		socket_.close();
+		socket.close();
 	}
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -97,7 +97,7 @@ public:
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
-		socket_.async_connect(endpoint,
+		socket.async_connect(endpoint,
 				boost::bind(&RpcClientTest::OnAsyncConnect, this,
 						boost::asio::placeholders::error));
 	}
@@ -105,12 +105,12 @@ public:
 	void Start()
 	{
 		VLOG(2) << "Start Client";
-		io_service_.run();
+		io_service.run();
 	}
 
 	void Stop()
 	{
-		socket_.close();
+		socket.close();
 	}
 
 	void OnAsyncConnect(const boost::system::error_code& err)

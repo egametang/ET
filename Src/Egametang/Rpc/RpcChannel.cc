@@ -10,13 +10,13 @@
 namespace Egametang {
 
 RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, int port):
-		RpcCommunicator(io_service), id_(0)
+		RpcCommunicator(io_service), id(0)
 {
 	// another thread?
 	boost::asio::ip::address address;
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
-	socket_.async_connect(endpoint,
+	socket.async_connect(endpoint,
 			boost::bind(&RpcChannel::OnAsyncConnect, this,
 					boost::asio::placeholders::error));
 }
@@ -39,8 +39,8 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 
 void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RequestHandlerPtr request_handler = request_handlers_[meta->id];
-	request_handlers_.erase(meta->id);
+	RequestHandlerPtr request_handler = request_handlers[meta->id];
+	request_handlers.erase(meta->id);
 
 	request_handler->Response()->ParseFromString(*message);
 
@@ -69,7 +69,7 @@ void RpcChannel::CallMethod(
 		google::protobuf::Closure* done)
 {
 	RequestHandlerPtr request_handler(new RequestHandler(response, done));
-	request_handlers_[++id_] = request_handler;
+	request_handlers[++id] = request_handler;
 
 	boost::hash<std::string> string_hash;
 
@@ -77,7 +77,7 @@ void RpcChannel::CallMethod(
 	request->SerializePartialToString(message.get());
 	RpcMetaPtr meta(new RpcMeta());
 	meta->size = message->size();
-	meta->id = id_;
+	meta->id = id;
 	meta->method = string_hash(method->full_name());
 	SendMeta(meta, message);
 }

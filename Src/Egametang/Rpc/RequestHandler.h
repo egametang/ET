@@ -11,6 +11,7 @@ class RequestHandler
 private:
 	google::protobuf::Message* response;
 	google::protobuf::Closure* done;
+
 public:
 	RequestHandler(
 			google::protobuf::Message* response,

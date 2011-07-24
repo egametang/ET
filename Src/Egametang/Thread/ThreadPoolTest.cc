@@ -10,10 +10,10 @@ namespace Egametang {
 class ThreadPoolTest: public testing::Test
 {
 protected:
-	ThreadPool pool_;
+	ThreadPool pool;
 
 public:
-	ThreadPoolTest() : pool_(10)
+	ThreadPoolTest() : pool(10)
 	{
 	}
 
@@ -34,11 +34,11 @@ TEST_F(ThreadPoolTest, Test1)
 	std::vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
-		pool_.Schedule(
+		pool.Schedule(
 				boost::bind(&ThreadPoolTest::Max,
 						this, x[i], y[i], &z[i]));
 	}
-	pool_.Wait();
+	pool.Wait();
 	for (int i = 0; i < 100; ++i)
 	{
 		ASSERT_EQ(9, z[i]) << "i = " << i;

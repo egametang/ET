@@ -8,9 +8,9 @@ namespace Egametang {
 class RpcController: public google::protobuf::RpcController
 {
 private:
-	bool failed_;
-	std::string reason_;
-	bool canceled_;
+	bool failed;
+	std::string reason;
+	bool canceled;
 
 public:
 	RpcController();

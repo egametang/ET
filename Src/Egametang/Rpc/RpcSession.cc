@@ -3,14 +3,14 @@
 
 namespace Egametang {
 
-RpcSession::RpcSession(RpcServer& rpc_server):
-		rpc_server_(rpc_server), RpcCommunicator(rpc_server_.IOService())
+RpcSession::RpcSession(RpcServer& server):
+		rpc_server(server), RpcCommunicator(rpc_server.IOService())
 {
 }
 
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	rpc_server_.RunService(shared_from_this(), meta, message,
+	rpc_server.RunService(shared_from_this(), meta, message,
 			boost::bind(&RpcSession::SendMeta, shared_from_this(), _1, _2));
 
 	// 可以循环利用
@@ -31,7 +31,7 @@ void RpcSession::Start()
 void RpcSession::Stop()
 {
 	RpcCommunicator::Stop();
-	rpc_server_.RemoveSession(shared_from_this());
+	rpc_server.RemoveSession(shared_from_this());
 }
 
 } // namespace Egametang

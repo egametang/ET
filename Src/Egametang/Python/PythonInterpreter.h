@@ -12,13 +12,13 @@ namespace Egametang {
 class PythonInterpreter: private boost::noncopyable
 {
 private:
-	PythonInit python_init_;
+	PythonInit python_init;
 
-	boost::python::object main_ns_;
+	boost::python::object main_ns;
 
-	boost::unordered_set<std::string> python_paths_;
+	boost::unordered_set<std::string> python_paths;
 
-	boost::unordered_set<std::string> python_modules_;
+	boost::unordered_set<std::string> python_modules;
 
 private:
 	bool GetExecString(const std::string& main_fun, std::string& exec_string);
@@ -33,7 +33,7 @@ public:
 	template <typename T>
 	void RegisterObjectPtr(std::string name, boost::shared_ptr<T> object_ptr)
 	{
-		main_ns_[name.c_str()] = object_ptr;
+		main_ns[name.c_str()] = object_ptr;
 	}
 
 	void Execute(std::string main_fun);

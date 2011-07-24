@@ -9,10 +9,10 @@ namespace Egametang {
 class PythonInterpreterTest: public testing::Test
 {
 protected:
-	PythonInterpreter interpreter_;
+	PythonInterpreter interpreter;
 
 public:
-	PythonInterpreterTest(): interpreter_()
+	PythonInterpreterTest(): interpreter()
 	{
 	}
 
@@ -24,31 +24,31 @@ public:
 class PersonTest
 {
 private:
-	int guid_;
-	std::string name_;
+	int guid;
+	std::string name;
 
 public:
-	PersonTest(): guid_(0)
+	PersonTest(): guid(0)
 	{
 	}
 	void SetGuid(int guid)
 	{
-		guid_ = guid;
+		this->guid = guid;
 	}
 
 	int Guid() const
 	{
-		return guid_;
+		return guid;
 	}
 
 	void SetName(const std::string& name)
 	{
-		name_ = name;
+		this->name = name;
 	}
 
 	std::string Name() const
 	{
-		return name_;
+		return name;
 	}
 };
 
@@ -68,16 +68,16 @@ BOOST_PYTHON_MODULE(PersonTest)
 TEST_F(PythonInterpreterTest, EnterPythonScript)
 {
 	initPersonTest();
-	interpreter_.ImportPath("../../../Src/Egametang/Python/");
-	interpreter_.ImportModule("PythonInterpreterTest");
+	interpreter.ImportPath("../../../Src/Egametang/Python/");
+	interpreter.ImportModule("PythonInterpreterTest");
 
 	PersonTestPtr person(new PersonTest);
-	interpreter_.RegisterObjectPtr("person", person);
+	interpreter.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());
 
 	// 进到python脚本层设置person的值为2
-	interpreter_.Execute("PythonInterpreterTest.fun(person)");
+	interpreter.Execute("PythonInterpreterTest.fun(person)");
 
 	ASSERT_EQ(2, person->Guid());
 	ASSERT_EQ(std::string("tanghai"), person->Name());

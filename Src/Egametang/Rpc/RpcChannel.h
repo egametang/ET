@@ -17,8 +17,8 @@ class RpcChannel: public google::protobuf::RpcChannel, public RpcCommunicator
 private:
 	typedef boost::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
 
-	std::size_t id_;
-	RequestHandlerMap request_handlers_;
+	std::size_t id;
+	RequestHandlerMap request_handlers;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 
