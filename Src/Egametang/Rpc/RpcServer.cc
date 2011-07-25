@@ -1,6 +1,8 @@
 #include <boost/asio.hpp>
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 #include <google/protobuf/service.h>
+#include <google/protobuf/descriptor.h>
 #include <glog/logging.h>
 #include "Base/Marcos.h"
 #include "Rpc/RpcTypedef.h"
@@ -8,15 +10,14 @@
 #include "Rpc/RpcSession.h"
 #include "Rpc/ResponseHandler.h"
 #include "Rpc/MethodInfo.h"
-#include "Thread/ThreadPool.h"
 
 namespace Egametang {
 
-RpcServer::RpcServer(boost::asio::io_service& io_service, int port):
-		io_service(io_service), thread_pool()
+RpcServer::RpcServer(boost::asio::io_service& service, int port):
+		io_service(service), acceptor(io_service), thread_pool()
 {
 	boost::asio::ip::address address;
-	address.from_string("localhost");
+	address.from_string("127.0.0.1");
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	acceptor.open(endpoint.protocol());
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
@@ -45,7 +46,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	RpcSessionPtr new_session(new RpcSession(*this));
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
-					boost::asio::placeholders::error));
+					new_session, boost::asio::placeholders::error));
 }
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler)
@@ -76,12 +77,12 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 	response_handler->Request()->ParseFromString(*message);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
-			shared_from_this(), &RpcServer::OnCallMethod,
+			this, &RpcServer::OnCallMethod,
 			session, response_handler);
 
 	thread_pool.Schedule(
-			boost::bind(&google::protobuf::Service::CallMethod, this,
-					response_handler->Method(), NULL,
+			boost::bind(&google::protobuf::Service::CallMethod, method_info->service,
+					response_handler->Method(), (google::protobuf::RpcController*)(NULL),
 					response_handler->Request(), response_handler->Response(),
 					done));
 }

@@ -2,18 +2,15 @@
 #define RPC_RPCSESSION_H
 
 #include <boost/asio.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "Rpc/RpcTypedef.h"
+#include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {
 
 class RpcServer;
 
-class RpcSession:
-		private boost::noncopyable,
-		public RpcCommunicator,
-		public boost::enable_shared_from_this<RpcSession>
+class RpcSession: public RpcCommunicator, public boost::enable_shared_from_this<RpcSession>
 {
 private:
 	RpcServer& rpc_server;

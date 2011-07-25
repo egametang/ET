@@ -4,6 +4,7 @@
 #include <list>
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include "Thread/ThreadTypedef.h"
 #include "Base/Marcos.h"

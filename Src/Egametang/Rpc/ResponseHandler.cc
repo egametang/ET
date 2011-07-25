@@ -1,5 +1,6 @@
 #include "Rpc/MethodInfo.h"
 #include "Rpc/ResponseHandler.h"
+#include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {
 
@@ -18,7 +19,7 @@ ResponseHandler::~ResponseHandler()
 	delete response;
 }
 
-google::protobuf::MethodDescriptor* ResponseHandler::Method()
+const google::protobuf::MethodDescriptor* ResponseHandler::Method()
 {
 	return method;
 }

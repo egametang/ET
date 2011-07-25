@@ -6,7 +6,10 @@ SET(RpcSrc
 	RpcCommunicator.cc
 	RpcController.cc
 	RequestHandler.cc
+	ResponseHandler.cc
 	RpcChannel.cc
+	RpcServer.cc
+	RpcSession.cc
 	${proto_srcs}
 )
 

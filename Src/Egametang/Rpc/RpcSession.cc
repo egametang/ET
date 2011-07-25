@@ -1,5 +1,6 @@
 #include <boost/bind.hpp>
 #include "Rpc/RpcSession.h"
+#include "Rpc/RpcServer.h"
 
 namespace Egametang {
 
@@ -10,8 +11,9 @@ RpcSession::RpcSession(RpcServer& server):
 
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	rpc_server.RunService(shared_from_this(), meta, message,
-			boost::bind(&RpcSession::SendMeta, shared_from_this(), _1, _2));
+	RpcSessionPtr session = shared_from_this();
+	rpc_server.RunService(session, meta, message,
+			boost::bind(&RpcSession::SendMeta, session, _1, _2));
 
 	// 可以循环利用
 	RecvMeta(meta, message);
@@ -31,7 +33,8 @@ void RpcSession::Start()
 void RpcSession::Stop()
 {
 	RpcCommunicator::Stop();
-	rpc_server.RemoveSession(shared_from_this());
+	RpcSessionPtr session = shared_from_this();
+	rpc_server.RemoveSession(session);
 }
 
 } // namespace Egametang

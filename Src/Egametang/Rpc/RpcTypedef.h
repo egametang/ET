@@ -3,6 +3,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
 #include <google/protobuf/service.h>
+#include "Base/Typedef.h"
 
 namespace Egametang {
 

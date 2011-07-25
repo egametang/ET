@@ -41,7 +41,7 @@ TEST_F(ThreadPoolTest, Test1)
 	pool.Wait();
 	for (int i = 0; i < 100; ++i)
 	{
-		ASSERT_EQ(9, z[i]) << "i = " << i;
+		ASSERT_EQ(9, z[i]);
 	}
 }
 

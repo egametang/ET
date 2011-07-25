@@ -1,15 +1,19 @@
 #ifndef RPC_RESPONSEHANDLER_H
 #define RPC_RESPONSEHANDLER_H
 
+#include <boost/function.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
+#include "Base/Typedef.h"
+#include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
 
 class ResponseHandler
 {
 private:
-	google::protobuf::MethodDescriptor* method;
+
+	const google::protobuf::MethodDescriptor* method;
 	google::protobuf::Message* request;
 	google::protobuf::Message* response;
 	std::size_t id;
@@ -20,7 +24,7 @@ public:
 
 	~ResponseHandler();
 
-	google::protobuf::MethodDescriptor* Method();
+	const google::protobuf::MethodDescriptor* Method();
 
 	google::protobuf::Message* Request();
 

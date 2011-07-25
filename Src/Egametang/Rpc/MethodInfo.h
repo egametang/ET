@@ -3,6 +3,7 @@
 
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
+#include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
 
@@ -10,8 +11,8 @@ struct MethodInfo
 {
 	RpcServicePtr service;
 	const google::protobuf::MethodDescriptor* method_descriptor;
-	google::protobuf::Message* request_prototype;
-	google::protobuf::Message* response_prototype;
+	const google::protobuf::Message* request_prototype;
+	const google::protobuf::Message* response_prototype;
 
 	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* method_descriptor):
 		service(service), method_descriptor(method_descriptor)

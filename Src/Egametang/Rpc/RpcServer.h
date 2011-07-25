@@ -2,11 +2,15 @@
 #define RPC_RPCSERVER_H
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
+#include <boost/unordered_set.hpp>
+#include <boost/unordered_map.hpp>
+#include <google/protobuf/service.h>
+#include "Thread/ThreadPool.h"
 #include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
 
-class RpcServer: public google::protobuf::Service, boost::enable_shared_from_this<RpcServer>
+class RpcServer: public boost::noncopyable
 {
 private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
