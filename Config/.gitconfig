@@ -1,0 +1,12 @@
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+
+[color]
+    ui = true
+
+[user]
+    name = tanghai
+    email = egametang@gmail.com
