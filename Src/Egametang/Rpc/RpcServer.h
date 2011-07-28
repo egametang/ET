@@ -29,12 +29,12 @@ public:
 	RpcServer(boost::asio::io_service& io_service, int port);
 	virtual ~RpcServer();
 
-	boost::asio::io_service& IOService();
-	void RunService(RpcSessionPtr session, RpcMetaPtr meta,
+	virtual boost::asio::io_service& IOService();
+	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler handler);
-	void RegisterService(RpcServicePtr service);
-	void RemoveSession(RpcSessionPtr& session);
-	void Stop();
+	virtual void RegisterService(RpcServicePtr service);
+	virtual void RemoveSession(RpcSessionPtr& session);
+	virtual void Stop();
 };
 
 } // namespace Egametang

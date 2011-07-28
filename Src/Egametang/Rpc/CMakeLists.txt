@@ -18,10 +18,12 @@ ADD_LIBRARY(Rpc ${RpcSrc})
 
 ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
 ADD_EXECUTABLE(RpcChannelTest RpcChannelTest.cc)
+ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
 
 SET(Excutes 
 	RpcCommunicatorTest
 	RpcChannelTest
+	RpcSessionTest
 )
 
 FOREACH(Excute ${Excutes})
