@@ -87,7 +87,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 					done));
 }
 
-void RpcServer::RegisterService(RpcServicePtr service)
+void RpcServer::Register(RpcServicePtr service)
 {
 	boost::hash<std::string> string_hash;
 	const google::protobuf::ServiceDescriptor* service_descriptor = service->GetDescriptor();
@@ -100,9 +100,12 @@ void RpcServer::RegisterService(RpcServicePtr service)
 		CHECK(methods.find(method_hash) == methods.end());
 		methods[method_hash] = method_info;
 	}
+
+	const google::protobuf::Descriptor* descriptor =
+	    google::protobuf::DescriptorPool::generated_pool()->FindMessageTypeByName();
 }
 
-void RpcServer::RemoveSession(RpcSessionPtr& session)
+void RpcServer::Remove(RpcSessionPtr& session)
 {
 	sessions.erase(session);
 }

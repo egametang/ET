@@ -32,8 +32,8 @@ public:
 	virtual boost::asio::io_service& IOService();
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler handler);
-	virtual void RegisterService(RpcServicePtr service);
-	virtual void RemoveSession(RpcSessionPtr& session);
+	virtual void Register(RpcServicePtr service);
+	virtual void Remove(RpcSessionPtr& session);
 	virtual void Stop();
 };
 

@@ -40,6 +40,7 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 	if (err)
 	{
 		LOG(ERROR) << "receive message size failed: " << err.message();
+		Stop();
 		return;
 	}
 	message->resize(meta->size, '\0');
@@ -55,6 +56,7 @@ void RpcCommunicator::RecvDone(RpcMetaPtr meta, StringPtr message,
 	if (err)
 	{
 		LOG(ERROR) << "receive message failed: " << err.message();
+		Stop();
 		return;
 	}
 	OnRecvMessage(meta, message);
@@ -80,6 +82,7 @@ void RpcCommunicator::SendMessage(RpcMetaPtr meta, StringPtr message,
 	if (err)
 	{
 		LOG(ERROR) << "send message size failed: " << err.message();
+		Stop();
 		return;
 	}
 	boost::asio::async_write(socket, boost::asio::buffer(*message),
@@ -93,6 +96,7 @@ void RpcCommunicator::SendDone(RpcMetaPtr meta, StringPtr message,
 	if (err)
 	{
 		LOG(ERROR) << "send message failed: " << err.message();
+		Stop();
 		return;
 	}
 	OnSendMessage(meta, message);

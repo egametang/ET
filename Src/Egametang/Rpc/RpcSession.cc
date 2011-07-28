@@ -34,7 +34,7 @@ void RpcSession::Stop()
 {
 	RpcCommunicator::Stop();
 	RpcSessionPtr session = shared_from_this();
-	rpc_server.RemoveSession(session);
+	rpc_server.Remove(session);
 }
 
 } // namespace Egametang

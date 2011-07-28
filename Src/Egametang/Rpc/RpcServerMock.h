@@ -21,9 +21,8 @@ public:
 
 	MOCK_METHOD0(IOService, boost::asio::io_service&());
 	MOCK_METHOD4(RunService, void(RpcSessionPtr, RpcMetaPtr, StringPtr, MessageHandler));
-	MOCK_METHOD1(RegisterService, void(RpcServicePtr));
-	MOCK_METHOD1(RemoveSession, void(RpcSessionPtr&));
-	MOCK_METHOD0(RemoveSession, void());
+	MOCK_METHOD1(Register, void(RpcServicePtr));
+	MOCK_METHOD1(Remove, void(RpcSessionPtr&));
 };
 
 } // namespace Egametang
