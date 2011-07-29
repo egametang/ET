@@ -5,6 +5,7 @@
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include <google/protobuf/service.h>
+#include "Base/Marcos.h"
 #include "Thread/ThreadPool.h"
 #include "Rpc/RpcTypedef.h"
 
@@ -29,7 +30,6 @@ public:
 	RpcServer(boost::asio::io_service& io_service, int port);
 	virtual ~RpcServer();
 
-	virtual boost::asio::io_service& IOService();
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler handler);
 	virtual void Register(RpcServicePtr service);

@@ -20,7 +20,7 @@ private:
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
 public:
-	RpcSession(RpcServer& server);
+	RpcSession(boost::asio::io_service& io_service, RpcServer& server);
 	~RpcSession();
 	void Start();
 	void Stop();

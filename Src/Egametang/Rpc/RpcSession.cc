@@ -4,8 +4,12 @@
 
 namespace Egametang {
 
-RpcSession::RpcSession(RpcServer& server):
-		rpc_server(server), RpcCommunicator(rpc_server.IOService())
+RpcSession::RpcSession(boost::asio::io_service& io_service, RpcServer& server):
+		RpcCommunicator(io_service), rpc_server(server)
+{
+}
+
+RpcSession::~RpcSession()
 {
 }
 

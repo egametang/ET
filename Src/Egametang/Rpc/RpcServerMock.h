@@ -19,7 +19,6 @@ public:
 	{
 	}
 
-	MOCK_METHOD0(IOService, boost::asio::io_service&());
 	MOCK_METHOD4(RunService, void(RpcSessionPtr, RpcMetaPtr, StringPtr, MessageHandler));
 	MOCK_METHOD1(Register, void(RpcServicePtr));
 	MOCK_METHOD1(Remove, void(RpcSessionPtr&));

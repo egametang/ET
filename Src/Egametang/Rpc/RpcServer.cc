@@ -14,7 +14,9 @@
 namespace Egametang {
 
 RpcServer::RpcServer(boost::asio::io_service& service, int port):
-		io_service(service), acceptor(io_service), thread_pool()
+		io_service(service), acceptor(io_service),
+		thread_pool(), sessions(),
+		methods()
 {
 	boost::asio::ip::address address;
 	address.from_string("127.0.0.1");
@@ -23,15 +25,14 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	RpcSessionPtr new_session(new RpcSession(*this));
+	RpcSessionPtr new_session(new RpcSession(io_service, *this));
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
 }
 
-boost::asio::io_service& RpcServer::IOService()
+RpcServer::~RpcServer()
 {
-	return io_service;
 }
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
@@ -43,7 +44,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	RpcSessionPtr new_session(new RpcSession(*this));
+	RpcSessionPtr new_session(new RpcSession(io_service, *this));
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
@@ -70,11 +71,13 @@ void RpcServer::Stop()
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 		StringPtr message, MessageHandler message_handler)
 {
+	VLOG(3) << "meta: " << meta->ToString();
 	MethodInfoPtr method_info = methods[meta->method];
 
 	ResponseHandlerPtr response_handler(
 			new ResponseHandler(method_info, meta->id, message_handler));
 	response_handler->Request()->ParseFromString(*message);
+	VLOG(3) << "request: " << response_handler->Request()->DebugString();
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::OnCallMethod,
@@ -100,9 +103,6 @@ void RpcServer::Register(RpcServicePtr service)
 		CHECK(methods.find(method_hash) == methods.end());
 		methods[method_hash] = method_info;
 	}
-
-	const google::protobuf::Descriptor* descriptor =
-	    google::protobuf::DescriptorPool::generated_pool()->FindMessageTypeByName();
 }
 
 void RpcServer::Remove(RpcSessionPtr& session)
