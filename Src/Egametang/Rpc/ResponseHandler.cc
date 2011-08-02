@@ -5,7 +5,7 @@
 namespace Egametang {
 
 ResponseHandler::ResponseHandler(
-		MethodInfoPtr& method_info, std::size_t id, MessageHandler& send_message):
+		MethodInfoPtr& method_info, std::size_t id, MessageHandler& message_handler):
 		id(id), message_handler(message_handler)
 {
 	method = method_info->method_descriptor;

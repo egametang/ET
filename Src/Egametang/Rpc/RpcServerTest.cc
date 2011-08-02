@@ -27,7 +27,6 @@ public:
 	{
 		int32 num = request->num();
 		response->set_num(num);
-		VLOG(2) << "echo response: " << response->DebugString();
 		if (done)
 		{
 			done->Run();
@@ -77,10 +76,11 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	EchoResponse response;
 	ASSERT_EQ(0U, response.num());
 
-	CountBarrier barrier(1);
+	CountBarrier barrier;
 	service.Echo(NULL, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
+	VLOG(2) << "response: \n" << response.DebugString();
 
 	channel.Stop();
 	server.Stop();

@@ -65,19 +65,17 @@ void RpcServer::Stop()
 	{
 		session->Stop();
 	}
-	sessions.clear();
+	CHECK_EQ(0U, sessions.size());
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 		StringPtr message, MessageHandler message_handler)
 {
-	VLOG(3) << "meta: " << meta->ToString();
 	MethodInfoPtr method_info = methods[meta->method];
 
 	ResponseHandlerPtr response_handler(
 			new ResponseHandler(method_info, meta->id, message_handler));
 	response_handler->Request()->ParseFromString(*message);
-	VLOG(3) << "request: " << response_handler->Request()->DebugString();
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::OnCallMethod,

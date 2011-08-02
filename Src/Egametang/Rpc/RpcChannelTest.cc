@@ -91,10 +91,9 @@ public:
 	}
 };
 
-static void IOServiceRun(boost::asio::io_service* io_service, CountBarrier* barrier)
+static void IOServiceRun(boost::asio::io_service* io_service)
 {
 	io_service->run();
-	barrier->Signal();
 }
 
 TEST_F(RpcChannelTest, Echo)
@@ -103,15 +102,13 @@ TEST_F(RpcChannelTest, Echo)
 	boost::asio::io_service io_client;
 
 	CountBarrier barrier(2);
-	ThreadPool thread_pool(2);
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server, &barrier));
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_client, &barrier));
-	barrier.Wait();
-
-	barrier.Reset(2);
 	RpcServerTest rpc_server(io_server, port, barrier);
 	RpcChannel rpc_channel(io_client, "127.0.0.1", port);
 	EchoService_Stub service(&rpc_channel);
+	
+	ThreadPool thread_pool(2);
+	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server));
+	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_client));
 
 	EchoRequest request;
 	request.set_num(100);
