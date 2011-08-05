@@ -14,8 +14,7 @@ namespace Egametang {
 class RpcServerMock: public RpcServer
 {
 public:
-	RpcServerMock(boost::asio::io_service& io_service, int port):
-		RpcServer(io_service, port)
+	RpcServerMock(int port): RpcServer(port)
 	{
 	}
 

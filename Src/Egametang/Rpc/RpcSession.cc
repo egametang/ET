@@ -1,4 +1,5 @@
 #include <boost/bind.hpp>
+#include <glog/logging.h>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServer.h"
 
@@ -11,6 +12,7 @@ RpcSession::RpcSession(boost::asio::io_service& io_service, RpcServer& server):
 
 RpcSession::~RpcSession()
 {
+	RpcCommunicator::Stop();
 }
 
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -36,7 +38,7 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
-	RpcCommunicator::Stop();
+	VLOG(2) << __FUNCTION__;
 	RpcSessionPtr session = shared_from_this();
 	rpc_server.Remove(session);
 }

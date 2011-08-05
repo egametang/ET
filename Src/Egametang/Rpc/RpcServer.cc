@@ -13,8 +13,8 @@
 
 namespace Egametang {
 
-RpcServer::RpcServer(boost::asio::io_service& service, int port):
-		io_service(service), acceptor(io_service),
+RpcServer::RpcServer(int port):
+		io_service(), acceptor(io_service),
 		thread_pool(), sessions(),
 		methods()
 {
@@ -37,6 +37,7 @@ RpcServer::~RpcServer()
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
+	VLOG(2) << __FUNCTION__;
 	if (err)
 	{
 		LOG(ERROR) << "accept fail: " << err.message();
@@ -57,15 +58,25 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_
 			boost::bind(&ResponseHandler::Run, response_handler));
 }
 
+void RpcServer::Start()
+{
+	io_service.run();
+}
+
 void RpcServer::Stop()
 {
+	VLOG(2) << __FUNCTION__;
 	thread_pool.Wait();
 	acceptor.close();
+	VLOG(2) << "session size: " << sessions.size();
 	foreach(RpcSessionPtr session, sessions)
 	{
-		session->Stop();
+		VLOG(2) << "session stop";
+		sessions.erase(session);
 	}
 	CHECK_EQ(0U, sessions.size());
+	io_service.stop();
+	VLOG(2) << __FUNCTION__ << " End";
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,

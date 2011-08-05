@@ -23,7 +23,7 @@ public:
 	RpcSession(boost::asio::io_service& io_service, RpcServer& server);
 	~RpcSession();
 	void Start();
-	void Stop();
+	virtual void Stop();
 };
 
 } // namespace Egametang

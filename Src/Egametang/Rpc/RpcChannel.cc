@@ -58,7 +58,9 @@ void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcChannel::Stop()
 {
+	VLOG(2) << __FUNCTION__;
 	RpcCommunicator::Stop();
+	VLOG(2) << __FUNCTION__ << "End";
 }
 
 void RpcChannel::CallMethod(

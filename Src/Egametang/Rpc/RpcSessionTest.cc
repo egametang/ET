@@ -19,7 +19,7 @@ protected:
 public:
 	RpcSessionTest():
 		io_service(), port(10000),
-		mock_server(io_service, port), session(io_service, mock_server)
+		mock_server(port), session(io_service, mock_server)
 	{
 	}
 

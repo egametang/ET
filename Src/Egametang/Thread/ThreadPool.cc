@@ -33,7 +33,6 @@ void ThreadPool::Wait()
 	{
 		done.wait(lock);
 	}
-	running = true;
 }
 
 void ThreadPool::Runner()
