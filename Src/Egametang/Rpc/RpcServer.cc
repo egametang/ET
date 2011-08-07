@@ -13,8 +13,8 @@
 
 namespace Egametang {
 
-RpcServer::RpcServer(int port):
-		io_service(), acceptor(io_service),
+RpcServer::RpcServer(boost::asio::io_service& service, int port):
+		io_service(service), acceptor(io_service),
 		thread_pool(), sessions(),
 		methods()
 {
@@ -37,7 +37,6 @@ RpcServer::~RpcServer()
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
 {
-	VLOG(2) << __FUNCTION__;
 	if (err)
 	{
 		LOG(ERROR) << "accept fail: " << err.message();
@@ -53,30 +52,22 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler)
 {
-	// push到网络线程
+	// 调度到网络线程
 	session->Socket().get_io_service().post(
 			boost::bind(&ResponseHandler::Run, response_handler));
 }
 
-void RpcServer::Start()
+void RpcServer::HandleStop()
 {
-	io_service.run();
+	acceptor.close();
+	sessions.clear();
 }
 
 void RpcServer::Stop()
 {
-	VLOG(2) << __FUNCTION__;
 	thread_pool.Wait();
-	acceptor.close();
-	VLOG(2) << "session size: " << sessions.size();
-	foreach(RpcSessionPtr session, sessions)
-	{
-		VLOG(2) << "session stop";
-		sessions.erase(session);
-	}
-	CHECK_EQ(0U, sessions.size());
-	io_service.stop();
-	VLOG(2) << __FUNCTION__ << " End";
+	// 调度到io_service线程,防止两个线程竞争
+	io_service.post(boost::bind(&RpcServer::HandleStop, shared_from_this()));
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,

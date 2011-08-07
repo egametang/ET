@@ -12,7 +12,7 @@ RpcSession::RpcSession(boost::asio::io_service& io_service, RpcServer& server):
 
 RpcSession::~RpcSession()
 {
-	RpcCommunicator::Stop();
+	socket.close();
 }
 
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -38,7 +38,6 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
-	VLOG(2) << __FUNCTION__;
 	RpcSessionPtr session = shared_from_this();
 	rpc_server.Remove(session);
 }

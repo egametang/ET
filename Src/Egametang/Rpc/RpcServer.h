@@ -11,13 +11,13 @@
 
 namespace Egametang {
 
-class RpcServer: public boost::noncopyable
+class RpcServer: public boost::noncopyable, public boost::enable_shared_from_this<RpcServer>
 {
 private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 	typedef boost::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
 
-	boost::asio::io_service io_service;
+	boost::asio::io_service& io_service;
 	boost::asio::ip::tcp::acceptor acceptor;
 	ThreadPool thread_pool;
 	RpcSessionSet sessions;
@@ -25,16 +25,16 @@ private:
 
 	void OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
 	void OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler);
+	void HandleStop();
 
 public:
-	RpcServer(int port);
+	RpcServer(boost::asio::io_service& service, int port);
 	virtual ~RpcServer();
 
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler handler);
 	virtual void Register(RpcServicePtr service);
 	virtual void Remove(RpcSessionPtr& session);
-	virtual void Start();
 	virtual void Stop();
 };
 

@@ -102,9 +102,9 @@ TEST_F(RpcChannelTest, Echo)
 	boost::asio::io_service io_client;
 
 	CountBarrier barrier(2);
-	RpcServerTest rpc_server(io_server, port, barrier);
-	RpcChannel rpc_channel(io_client, "127.0.0.1", port);
-	EchoService_Stub service(&rpc_channel);
+	RpcServerTest server(io_server, port, barrier);
+	RpcChannelPtr channel(new RpcChannel(io_client, "127.0.0.1", port));
+	EchoService_Stub service(channel.get());
 	
 	ThreadPool thread_pool(2);
 	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server));
@@ -119,8 +119,8 @@ TEST_F(RpcChannelTest, Echo)
 	service.Echo(NULL, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
-	rpc_channel.Stop();
-	rpc_server.Stop();
+	channel->Stop();
+	server.Stop();
 	io_server.stop();
 	io_client.stop();
 	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程

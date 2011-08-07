@@ -56,11 +56,16 @@ void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 {
 }
 
+void RpcChannel::HandleStop()
+{
+	socket.close();
+}
+
 void RpcChannel::Stop()
 {
-	VLOG(2) << __FUNCTION__;
-	RpcCommunicator::Stop();
-	VLOG(2) << __FUNCTION__ << "End";
+	// 把socket.close()调度到io_service线程,
+	// 防止两个线程同时操作socket
+	io_service.post(boost::bind(&RpcChannel::HandleStop, shared_from_this()));
 }
 
 void RpcChannel::CallMethod(

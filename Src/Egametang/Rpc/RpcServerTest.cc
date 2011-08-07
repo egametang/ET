@@ -36,7 +36,6 @@ public:
 
 static void IOServiceRun(boost::asio::io_service* io_service)
 {
-	VLOG(2) << __FUNCTION__;
 	io_service->run();
 }
 
@@ -44,10 +43,11 @@ class RpcServerTest: public testing::Test
 {
 protected:
 	boost::asio::io_service io_client;
+	boost::asio::io_service io_server;
 	int port;
 
 public:
-	RpcServerTest(): io_client(), port(10003)
+	RpcServerTest(): io_client(), io_server(), port(10003)
 	{
 	}
 
@@ -61,19 +61,23 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	ThreadPool thread_pool(2);
 
 	RpcServicePtr echo_sevice(new MyEcho);
-	RpcServer server(port);
-	server.Register(echo_sevice);
-	ASSERT_EQ(1U, server.methods.size());
 
-	RpcChannel channel(io_client, "127.0.0.1", port);
-	EchoService_Stub service(&channel);
+	RpcServerPtr server(new RpcServer(io_server, port));
+	// 注册service
+	server->Register(echo_sevice);
+	ASSERT_EQ(1U, server->methods.size());
 
+	RpcChannelPtr channel(new RpcChannel(io_client, "127.0.0.1", port));
+	EchoService_Stub service(channel.get());
+
+	// 定义消息
 	EchoRequest request;
 	request.set_num(100);
 	EchoResponse response;
 	ASSERT_EQ(0U, response.num());
 
-	thread_pool.Schedule(boost::bind(&RpcServer::Start, &server));
+	// server和client分别在两个不同的线程
+	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server));
 	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_client));
 
 	CountBarrier barrier;
@@ -81,9 +85,10 @@ TEST_F(RpcServerTest, ChannelAndServer)
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
 
-	channel.Stop();
-	server.Stop();
+	channel->Stop();
+	server->Stop();
 	io_client.stop();
+	io_server.stop();
 
 	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
 	thread_pool.Wait();

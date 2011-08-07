@@ -22,9 +22,7 @@ boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 
 void RpcCommunicator::Stop()
 {
-	VLOG(2) << __FUNCTION__;
 	socket.close();
-	VLOG(2) << __FUNCTION__ << "End";
 }
 
 
