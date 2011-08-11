@@ -11,7 +11,7 @@ private:
 	std::list<LogicNodeIf*> nodes;
 
 public:
-	virtual bool Run();
+	virtual bool Run(LogicContex* contex);
 };
 
 } // namespace Egametang

@@ -4,9 +4,14 @@
 
 namespace Egametang {
 
-bool ConditionNode::Run()
+bool BuffType::Run(LogicContex* contex)
 {
-	return condition();
+	Buff* buff = contex->buff;
+	if (buff->type == type)
+	{
+		return true;
+	}
+	return false;
 }
 
 } // namespace Egametang

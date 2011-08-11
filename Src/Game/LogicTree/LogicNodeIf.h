@@ -3,10 +3,31 @@
 
 namespace Egametang {
 
+class Spell;
+class Buff;
+
+class Spell
+{
+
+};
+
+class Buff
+{
+public:
+	int type;
+};
+
+class LogicContex
+{
+public:
+	Spell* spell;
+	Buff* buff;
+};
+
 class LogicNodeIf
 {
 public:
-	virtual bool Run() = 0;
+	virtual bool Run(LogicContex* contex) = 0;
 };
 
 } // namespace Egametang

@@ -4,9 +4,9 @@
 
 namespace Egametang {
 
-bool NotNode::Run()
+bool NotNode::Run(LogicContex* contex)
 {
-	return !node->Run();
+	return !node->Run(contex);
 }
 
 } // namespace Egametang

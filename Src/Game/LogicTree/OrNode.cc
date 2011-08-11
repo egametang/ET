@@ -4,11 +4,11 @@
 
 namespace Egametang {
 
-bool OrNode::Run()
+bool OrNode::Run(LogicContex* contex)
 {
 	foreach(LogicNodeIf* node, nodes)
 	{
-		if (node->Run())
+		if (node->Run(contex))
 		{
 			return true;
 		}
