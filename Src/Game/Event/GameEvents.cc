@@ -6,9 +6,23 @@ GameEvents::GameEvents(): events(100)
 {
 }
 
-void GameEvents::AddEvent(Event& event)
+GameEvents::~GameEvents()
 {
-	events[event.Type()].push_back(event);
+	for (std::size_t i = 0; i < events.size(); ++i)
+	{
+		for (std::list<Event>::iterator iter = events[i].begin();
+			iter != events[i].end(); ++iter)
+		{
+			delete *iter;
+		}
+	}
+}
+
+void GameEvents::AddEvent(EventConf& conf)
+{
+	int32 type = conf.type();
+	Event* event = NULL;
+	events[type].push_back(event);
 }
 
 void GameEvents::Excute(int type, ContexIf* contex)

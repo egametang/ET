@@ -11,5 +11,4 @@ public:
 
 } // namespace Egametang
 
-
 #endif // EVENT_ACTIONIF_H

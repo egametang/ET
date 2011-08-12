@@ -17,12 +17,15 @@ enum
 class GameEvents
 {
 private:
+	ConditionFactory factories;
 	std::vector<std::list<Event> > events;
 
 public:
 	GameEvents();
 
-	void AddEvent(Event& event);
+	~GameEvents();
+
+	void AddEvent(EventConf& conf);
 
 	void Excute(int type, ContexIf* contex);
 };

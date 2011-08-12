@@ -54,3 +54,4 @@ set(ThirdPartyLibs
 )
 
 ADD_SUBDIRECTORY(Egametang)
+ADD_SUBDIRECTORY(Game)

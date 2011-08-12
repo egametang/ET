@@ -2,26 +2,31 @@
 #define EVENT_EVENT_H
 
 #include "Event/ActionIf.h"
-#include "Event/LogicNodeIf.h"
+#include "Event/NodeIf.h"
 
 namespace Egametang {
-
-class EventConf;
 
 class Event
 {
 private:
 	int type;
-	LogicNodeIf* condition;
 	ActionIf* action;
+	NodeIf* condition;
 
-	void BuildCondition(EventConf& conf);
-	void BuildAction(EventConf& conf);
+	void BuildCondition(
+			NodeFactories& factories, const LogicNode& conf,
+			NodeIf*& condition);
+
+	void BuildAction(
+			NodeFactories& factories, const ConditionConf& conf);
 
 public:
-	Event(EventConf& conf);
+	Event(NodeFactories& factories, EventConf& conf);
+
 	~Event();
+
 	int Type() const;
+
 	void Excute(ContexIf* contex);
 };
 

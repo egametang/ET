@@ -1,18 +1,20 @@
 #ifndef EVENT_ANDNODE_H
 #define EVENT_ANDNODE_H
 
-#include "Event/LogicNodeIf.h"
+#include "Event/NodeIf.h"
 
 namespace Egametang {
 
-class AndNode: public LogicNodeIf
+class AndNode: public NodeIf
 {
 private:
-	std::list<LogicNodeIf*> nodes;
+	NodeIf* left;
+	NodeIf* right;
 
 public:
 	virtual ~AndNode();
 	virtual bool Check(ContexIf* contex);
+	virtual void AddChildNode(NodeIf *node, int type);
 };
 
 } // namespace Egametang

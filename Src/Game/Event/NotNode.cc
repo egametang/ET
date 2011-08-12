@@ -1,5 +1,4 @@
-#include <boost/foreach.hpp>
-#include "Base/Marcos.h"
+#include <glog/logging.h>
 #include "Event/NotNode.h"
 
 namespace Egametang {
@@ -11,6 +10,12 @@ NotNode::~NotNode()
 bool NotNode::Check(ContexIf* contex)
 {
 	return !node->Check(contex);
+}
+
+void NotNode::AddChildNode(NodeIf *node, int type)
+{
+	CHECK_EQ(1, type);
+	this->node = node;
 }
 
 } // namespace Egametang

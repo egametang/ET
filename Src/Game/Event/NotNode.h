@@ -1,18 +1,19 @@
 #ifndef EVENT_NOTNODE_H
 #define EVENT_NOTNODE_H
 
-#include "Event/LogicNodeIf.h"
+#include "Event/NodeIf.h"
 
 namespace Egametang {
 
-class NotNode: public LogicNodeIf
+class NotNode: public NodeIf
 {
 private:
-	LogicNodeIf* node;
+	NodeIf* node;
 
 public:
 	virtual ~NotNode();
 	virtual bool Check(ContexIf* contex);
+	virtual void AddChildNode(NodeIf *node, int type);
 };
 
 } // namespace Egametang

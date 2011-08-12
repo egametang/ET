@@ -9,15 +9,15 @@ EventConf
 		LogicNode 
 		{
 			// 4表示这是一个条件节点
-			type: 4
+			node: 4
 			// 1表示这个节点是用来判断buff类型的条件节点
-			condition: 1
+			type: 1
 			// 2表示dot
 			args：2
 		}
 	}
 	
-	// 
+	// 动作
 	ActionConf
 	{
 		// 扣血
