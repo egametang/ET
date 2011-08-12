@@ -1,0 +1,35 @@
+package Egametang;
+
+message LogicNode
+{
+	// and or not condition 4种节点
+	reqired int32 type = 1;
+	// 哪种条件
+	optional int32 condition = 2;
+	// 条件需要的参数
+	repeated int32 args = 3;
+	// 包含多个子节点
+	repeated LogicNode nodes = 4;
+};
+
+message ConditionConf
+{
+	optional LogicNode node = 1
+};
+
+message ActionConf
+{
+	// 行为编号
+	required int32 id = 1;
+	repeated int32 args = 2;
+};
+
+message EventConf
+{
+	// 哪类事件
+	required int32 type = 1;
+	// 条件
+	ConditionConf condition = 2;
+	// 动作
+	ActionConf action = 3;
+};

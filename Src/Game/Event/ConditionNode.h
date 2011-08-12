@@ -1,7 +1,7 @@
-#ifndef LOGICTREE_CONDITIONNODE_H
-#define LOGICTREE_CONDITIONNODE_H
+#ifndef EVENT_CONDITIONNODE_H
+#define EVENT_CONDITIONNODE_H
 
-#include "LogicTree/ConditionNode.h"
+#include "Event/ConditionNode.h"
 
 namespace Egametang {
 
@@ -13,10 +13,10 @@ public:
 	int type;
 
 public:
-	virtual bool Run(LogicContex* contex);
+	virtual bool Check(ContexIf* contex);
 };
 
 } // namespace Egametang
 
 
-#endif // LOGICTREE_CONDITIONNODE_H
+#endif // EVENT_CONDITIONNODE_H

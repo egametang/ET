@@ -1,0 +1,27 @@
+EventConf
+{
+	// 事件类型
+	type: 1
+	
+	// 条件节点
+	ConditionConf 
+	{
+		LogicNode 
+		{
+			// 4表示这是一个条件节点
+			type: 4
+			// 1表示这个节点是用来判断buff类型的条件节点
+			condition: 1
+			// 2表示dot
+			args：2
+		}
+	}
+	
+	// 
+	ActionConf
+	{
+		// 扣血
+		action: 2
+		args: 100
+	}
+}

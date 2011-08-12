@@ -1,12 +1,12 @@
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
-#include "LogicTree/NotNode.h"
+#include "Event/ConditionNode.h"
 
 namespace Egametang {
 
-bool NotNode::Run(LogicContex* contex)
+bool BuffType::Check(ContexIf* contex)
 {
-	return !node->Run(contex);
+	return true;
 }
 
 } // namespace Egametang
