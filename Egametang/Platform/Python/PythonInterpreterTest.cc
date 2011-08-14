@@ -68,7 +68,7 @@ BOOST_PYTHON_MODULE(PersonTest)
 TEST_F(PythonInterpreterTest, EnterPythonScript)
 {
 	initPersonTest();
-	interpreter.ImportPath("../../../Src/Egametang/Python/");
+	interpreter.ImportPath("../../../Egametang/Platform/Python/");
 	interpreter.ImportModule("PythonInterpreterTest");
 
 	PersonTestPtr person(new PersonTest);
