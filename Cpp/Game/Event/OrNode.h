@@ -1,6 +1,7 @@
 #ifndef EVENT_ORNODE_H
 #define EVENT_ORNODE_H
 
+#include <list>
 #include "Event/NodeIf.h"
 
 namespace Egametang {
@@ -8,13 +9,20 @@ namespace Egametang {
 class OrNode: public NodeIf
 {
 private:
-	NodeIf* left;
-	NodeIf* right;
+	std::list<NodeIf*> nodes;
 
 public:
 	virtual ~OrNode();
-	virtual bool Check(ContexIf* contex);
-	virtual void AddChildNode(NodeIf *node, int type);
+
+	virtual bool Run(ContexIf* contex);
+
+	virtual void AddChildNode(NodeIf *node);
+};
+
+class OrNodeFactory: public NodeFactoryIf
+{
+public:
+	virtual NodeIf* GetInstance(const EventNode& conf);
 };
 
 } // namespace Egametang

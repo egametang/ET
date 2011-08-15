@@ -6,38 +6,17 @@
 
 namespace Egametang {
 
-class AndNodeFactory: public NodeFactoryIf
-{
-public:
-	virtual NodeIf* GetInstance(const LogicNode& conf);
-};
-
-
-class OrNodeFactory: public NodeFactoryIf
-{
-public:
-	virtual NodeIf* GetInstance(const LogicNode& conf);
-};
-
-
-class NotNodeFactory: public NodeFactoryIf
-{
-public:
-	virtual NodeIf* GetInstance(const LogicNode& conf);
-};
-
-
 class NodeFactories
 {
 private:
-	std::vector<NodeFactoryIf*> node_factories;
+	std::vector<NodeFactoryIf*> factories;
 
 public:
-	NodeFactories(ConditionFactory* condition_factory);
+	NodeFactories();
 
 	virtual ~NodeFactories();
 
-	virtual NodeIf* GetInstance(const LogicNode& conf);
+	virtual NodeIf* GetInstance(const EventNode& conf);
 };
 
 } // namespace Egametang

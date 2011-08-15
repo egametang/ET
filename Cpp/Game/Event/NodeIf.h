@@ -3,27 +3,23 @@
 
 namespace Egametang {
 
-class ContexIf
-{
-};
-
-enum ChildNodeType
-{
-	LEFT  = 0,
-	RIGHT = 1,
-};
+class ContexIf;
+class EventNode;
 
 class NodeIf
 {
 public:
-	virtual bool Check(ContexIf* contex) = 0;
-	virtual void AddChildNode(NodeIf *node, int type);
+	virtual bool Run(ContexIf* contex) = 0;
+
+	virtual void AddChildNode(NodeIf *node)
+	{
+	}
 };
 
 class NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const LogicNode& conf) = 0;
+	virtual NodeIf* GetInstance(const EventNode& conf) = 0;
 };
 
 } // namespace Egametang

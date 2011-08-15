@@ -1,4 +1,6 @@
+#include "Base/Typedef.h"
 #include "Event/Event.h"
+#include "Event/NodeFactories.h"
 #include "Event/EventConf.pb.h"
 
 namespace Egametang {
@@ -9,23 +11,23 @@ Event::Event(NodeFactories& factories, EventConf& conf):
 	const ConditionConf& condition_conf = conf.condition();
 	if (condition_conf.has_node())
 	{
-		const LogicNode& node_conf = condition_conf.node();
+		const EventNode& node_conf = condition_conf.node();
 		BuildCondition(factories, node_conf, condition);
 	}
 }
 
 void Event::BuildCondition(
-		NodeFactories& factories, const LogicNode& conf,
+		NodeFactories& factories, const EventNode& conf,
 		NodeIf*& node)
 {
 	int32 type = conf.type();
 	node = factories.GetInstance(conf);
 	for (int i = 0; i < conf.nodes_size(); ++i)
 	{
-		const LogicNode& logic_node_conf = conf.nodes(i);
+		const EventNode& logic_node_conf = conf.nodes(i);
 		NodeIf* logic_node = NULL;
 		BuildCondition(factories, logic_node_conf, logic_node);
-		node->AddChildNode(logic_node, i);
+		node->AddChildNode(logic_node);
 	}
 }
 
@@ -35,12 +37,12 @@ Event::~Event()
 	delete action;
 }
 
-void Event::Excute(ContexIf* contex)
+void Event::Run(ContexIf* contex)
 {
-	if(condition->Check(contex))
+	if(condition->Run(contex))
 	{
 		// 执行动作
-		action->Excute(contex);
+		action->Run(contex);
 	}
 }
 

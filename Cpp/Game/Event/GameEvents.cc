@@ -1,33 +1,28 @@
+#include "Base/Typedef.h"
 #include "Event/GameEvents.h"
+#include "Event/EventConf.pb.h"
 
 namespace Egametang {
 
-GameEvents::GameEvents(): events(100)
+GameEvents::GameEvents(NodeFactories& factories):
+		factories(factories), events(100)
 {
 }
 
 GameEvents::~GameEvents()
 {
-	for (std::size_t i = 0; i < events.size(); ++i)
-	{
-		for (std::list<Event>::iterator iter = events[i].begin();
-			iter != events[i].end(); ++iter)
-		{
-			delete *iter;
-		}
-	}
 }
 
 void GameEvents::AddEvent(EventConf& conf)
 {
 	int32 type = conf.type();
-	Event* event = NULL;
+	Event event(factories, conf);
 	events[type].push_back(event);
 }
 
 void GameEvents::Excute(int type, ContexIf* contex)
 {
-	const std::list<Event>& es = events[type];
+	std::list<Event>& es = events[type];
 
 	for (std::list<Event>::iterator iter = es.begin(); iter != es.end();)
 	{
@@ -41,7 +36,7 @@ void GameEvents::Excute(int type, ContexIf* contex)
 			es.erase(current);
 			continue;
 		}
-		iter->Excute(contex);
+		iter->Run(contex);
 		++iter;
 	}
 }

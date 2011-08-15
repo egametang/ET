@@ -1,27 +1,12 @@
 package Egametang;
 
-message LogicNode
+message EventNode
 {
-	// and or not condition 4种节点
-	required int32 node = 1;
-	// 哪种条件
-	optional int32 type = 2;
+	required int32 type = 2;
 	// 条件需要的参数
 	repeated int32 args = 3;
 	// 包含多个子节点
-	repeated LogicNode nodes = 4;
-};
-
-message ConditionConf
-{
-	optional LogicNode node = 1;
-};
-
-message ActionConf
-{
-	// 行为编号
-	required int32 type = 1;
-	repeated int32 args = 2;
+	repeated EventNode nodes = 4;
 };
 
 message EventConf
@@ -32,4 +17,14 @@ message EventConf
 	required ConditionConf condition = 2;
 	// 动作
 	required ActionConf action = 3;
+};
+
+message ConditionConf
+{
+	optional EventNode node = 1;
+};
+
+message ActionConf
+{
+	optional EventNode node = 1;
 };

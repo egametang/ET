@@ -1,39 +1,39 @@
+#include "Base/Typedef.h"
+#include "Event/AndNode.h"
+#include "Event/OrNode.h"
+#include "Event/NotNode.h"
+#include "Event/BuffType.h"
+#include "Event/ChangeHealth.h"
 #include "Event/NodeFactories.h"
+#include "Event/EventConf.pb.h"
 
 namespace Egametang {
 
-NodeIf* AndNodeFactory::GetInstance(const LogicNode& conf)
+NodeFactories::NodeFactories(): factories(2000)
 {
-	return new AndNode();
-}
+	factories[0] = new AndNodeFactory();
+	factories[1] = new OrNodeFactory();
+	factories[2] = new NotNodeFactory();
 
-NodeIf* AndNodeFactory::GetInstance(const LogicNode& conf)
-{
-	return new OrNode();
-}
+	// 条件节点
+	factories[101] = new BuffTypeFactory();
 
-NodeIf* AndNodeFactory::GetInstance(const LogicNode& conf)
-{
-	return new NotNode();
-}
-
-NodeFactories::NodeFactories(ConditionFactory* condition_factory):
-		node_factories(4)
-{
-	node_factories[0] = new AndNodeFactory();
-	node_factories[1] = new OrNodeFactory();
-	node_factories[2] = new NotNodeFactory();
-	node_factories[3] = condition_factory;
+	// 行为节点
+	factories[1001] = new ChangeHealthFactory();
 }
 
 NodeFactories::~NodeFactories()
 {
+	for (std::size_t i = 0; i < factories.size(); ++i)
+	{
+		delete factories[i];
+	}
 }
 
-NodeIf* NodeFactories::GetInstance(const LogicNode& conf)
+NodeIf* NodeFactories::GetInstance(const EventNode& conf)
 {
 	int32 type = conf.type();
-	return node_factories[type]->GetInstance(conf);
+	return factories[type]->GetInstance(conf);
 }
 
 }

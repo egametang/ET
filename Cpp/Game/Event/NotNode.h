@@ -11,9 +11,19 @@ private:
 	NodeIf* node;
 
 public:
+	NotNode();
+
 	virtual ~NotNode();
-	virtual bool Check(ContexIf* contex);
-	virtual void AddChildNode(NodeIf *node, int type);
+
+	virtual bool Run(ContexIf* contex);
+
+	virtual void AddChildNode(NodeIf *node);
+};
+
+class NotNodeFactory: public NodeFactoryIf
+{
+public:
+	virtual NodeIf* GetInstance(const EventNode& conf);
 };
 
 } // namespace Egametang

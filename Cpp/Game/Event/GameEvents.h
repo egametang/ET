@@ -1,27 +1,22 @@
 #ifndef EVENT_GAMEEVENTS_H
 #define EVENT_GAMEEVENTS_H
 
-#include <boost/foreach.hpp>
-#include "Base/Marcos.h"
+#include <list>
+#include <vector>
+#include "Event/Event.h"
 
 namespace Egametang {
 
-enum
-{
-	SPELL_START     = 0,
-	SPELL_FINISH    = 1,
-	ADD_BUFF        = 2,
-	REMOVE_BUFF     = 3,
-};
+class NodeFactories;
 
 class GameEvents
 {
 private:
-	ConditionFactory factories;
+	NodeFactories& factories;
 	std::vector<std::list<Event> > events;
 
 public:
-	GameEvents();
+	GameEvents(NodeFactories& factories);
 
 	~GameEvents();
 

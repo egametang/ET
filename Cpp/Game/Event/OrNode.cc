@@ -1,35 +1,37 @@
+#include <boost/foreach.hpp>
+#include "Base/Marcos.h"
 #include "Event/OrNode.h"
 
 namespace Egametang {
+
 OrNode::~OrNode()
 {
-	delete left;
-	delete right;
+	foreach(NodeIf* node, nodes)
+	{
+		delete node;
+	}
 }
 
-bool OrNode::Check(ContexIf* contex)
+bool OrNode::Run(ContexIf* contex)
 {
-	if (left->Check(contex))
+	foreach(NodeIf* node, nodes)
 	{
-		return true;
-	}
-	if (right->Check(contex))
-	{
-		return true;
+		if (!node->Run(contex))
+		{
+			return true;
+		}
 	}
 	return false;
 }
 
-void OrNode::AddChildNode(NodeIf *node, int type)
+void OrNode::AddChildNode(NodeIf *node)
 {
-	if (type == 0)
-	{
-		left = node;
-	}
-	else
-	{
-		right = node;
-	}
+	nodes.push_back(node);
+}
+
+NodeIf* OrNodeFactory::GetInstance(const EventNode& conf)
+{
+	return new OrNode();
 }
 
 } // namespace Egametang

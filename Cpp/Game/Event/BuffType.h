@@ -1,5 +1,5 @@
-#ifndef EVENT_BUFFTYPECONDITION_H
-#define EVENT_BUFFTYPECONDITION_H
+#ifndef EVENT_BUFFTYPE_H
+#define EVENT_BUFFTYPE_H
 
 #include "Event/NodeIf.h"
 
@@ -18,18 +18,18 @@ private:
 public:
 	BuffType(int buff_type);
 
-	virtual bool Check(ContexIf* contex);
+	virtual bool Run(ContexIf* contex);
 };
 
-class BuffTypeFactory: NodeFactoryIf
+class BuffTypeFactory: public NodeFactoryIf
 {
 public:
 	virtual ~BuffTypeFactory();
 
-	virtual NodeIf* GetInstance(const LogicNode& conf);
+	virtual NodeIf* GetInstance(const EventNode& conf);
 };
 
 } // namespace Egametang
 
 
-#endif // EVENT_BUFFTYPECONDITION_H
+#endif // EVENT_BUFFTYPE_H

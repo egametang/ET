@@ -1,36 +1,37 @@
+#include <boost/foreach.hpp>
+#include "Base/Marcos.h"
 #include "Event/AndNode.h"
 
 namespace Egametang {
 
 AndNode::~AndNode()
 {
-	delete left;
-	delete right;
+	foreach(NodeIf* node, nodes)
+	{
+		delete node;
+	}
 }
 
-bool AndNode::Check(ContexIf* contex)
+bool AndNode::Run(ContexIf* contex)
 {
-	if (!left->Check(contex))
+	foreach(NodeIf* node, nodes)
 	{
-		return false;
-	}
-	if (!right->Check(contex))
-	{
-		return false;
+		if (!node->Run(contex))
+		{
+			return false;
+		}
 	}
 	return true;
 }
 
-void AndNode::AddChildNode(NodeIf *node, int type)
+void AndNode::AddChildNode(NodeIf *node)
 {
-	if (type == 0)
-	{
-		left = node;
-	}
-	else
-	{
-		right = node;
-	}
+	nodes.push_back(node);
+}
+
+NodeIf* AndNodeFactory::GetInstance(const EventNode& conf)
+{
+	return new AndNode();
 }
 
 } // namespace Egametang
