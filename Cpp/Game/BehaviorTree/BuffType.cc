@@ -1,7 +1,7 @@
-#include "Event/BuffType.h"
-#include "Event/ContexIf.h"
-#include "Event/SpellBuff.h"
-#include "Event/EventConf.pb.h"
+#include "BehaviorTree/BuffType.h"
+#include "BehaviorTree/ContexIf.h"
+#include "BehaviorTree/SpellBuff.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
 
@@ -30,7 +30,7 @@ BuffTypeFactory::~BuffTypeFactory()
 {
 }
 
-NodeIf* BuffTypeFactory::GetInstance(const EventNode& conf)
+NodeIf* BuffTypeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new BuffType(conf.args(0));
 }

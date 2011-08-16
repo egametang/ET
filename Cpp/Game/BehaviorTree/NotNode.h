@@ -1,7 +1,7 @@
-#ifndef EVENT_NOTNODE_H
-#define EVENT_NOTNODE_H
+#ifndef BEHAVIORTREE_NOTNODE_H
+#define BEHAVIORTREE_NOTNODE_H
 
-#include "Event/NodeIf.h"
+#include "BehaviorTree/NodeIf.h"
 
 namespace Egametang {
 
@@ -25,10 +25,10 @@ public:
 class NotNodeFactory: public NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const EventNode& conf);
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
 
 
-#endif // EVENT_NOTNODE_H
+#endif // BEHAVIORTREE_NOTNODE_H

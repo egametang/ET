@@ -1,7 +1,7 @@
 #include <glog/logging.h>
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
-#include "Event/SequenceNode.h"
+#include "BehaviorTree/SequenceNode.h"
 
 namespace Egametang {
 
@@ -41,7 +41,7 @@ std::string SequenceNode::ToString()
 	return s;
 }
 
-NodeIf* SequenceNodeFactory::GetInstance(const EventNode& conf)
+NodeIf* SequenceNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new SequenceNode();
 }

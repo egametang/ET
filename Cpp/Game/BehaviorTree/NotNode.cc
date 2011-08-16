@@ -1,5 +1,5 @@
 #include <stddef.h>
-#include "Event/NotNode.h"
+#include "BehaviorTree/NotNode.h"
 
 namespace Egametang {
 
@@ -30,7 +30,7 @@ std::string NotNode::ToString()
 	return s;
 }
 
-NodeIf* NotNodeFactory::GetInstance(const EventNode& conf)
+NodeIf* NotNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new NotNode();
 }

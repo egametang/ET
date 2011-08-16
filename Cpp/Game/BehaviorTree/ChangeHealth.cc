@@ -1,8 +1,8 @@
 #include <glog/logging.h>
-#include "Event/ChangeHealth.h"
-#include "Event/CombatContex.h"
-#include "Event/EventConf.pb.h"
-#include "Event/SpellBuff.h"
+#include "BehaviorTree/ChangeHealth.h"
+#include "BehaviorTree/CombatContex.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
+#include "BehaviorTree/SpellBuff.h"
 
 namespace Egametang {
 
@@ -41,7 +41,7 @@ std::string ChangeHealth::ToString()
 	return s;
 }
 
-NodeIf* ChangeHealthFactory::GetInstance(const EventNode& conf)
+NodeIf* ChangeHealthFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new ChangeHealth(conf.args(0), conf.args(1));
 }

@@ -1,8 +1,8 @@
-#ifndef EVENT_CONTEXIF_H
-#define EVENT_CONTEXIF_H
+#ifndef BEHAVIORTREE_CONTEXIF_H
+#define BEHAVIORTREE_CONTEXIF_H
 
 #include <stddef.h>
-#include "Event/SpellBuff.h"
+#include "BehaviorTree/SpellBuff.h"
 
 namespace Egametang {
 
@@ -26,5 +26,5 @@ public:
 
 } // namespace Egametang
 
-#endif // EVENT_CONTEXIF_H
+#endif // BEHAVIORTREE_CONTEXIF_H
 

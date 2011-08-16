@@ -1,18 +1,16 @@
 type: 5
-condition:
+node:
 {
+	type: 1
 	node:
 	{
 		type: 101
 		args: 2
 	}
-}
-action:
-{
 	node:
 	{
-		type: 6
-		node: 
+		type: 1
+		node:
 		{
 			type: 1001
 			args: 0

@@ -1,8 +1,8 @@
-#ifndef EVENT_SELECTORNODE_H
-#define EVENT_SELECTORNODE_H
+#ifndef BEHAVIORTREE_SELECTORNODE_H
+#define BEHAVIORTREE_SELECTORNODE_H
 
 #include <list>
-#include "Event/NodeIf.h"
+#include "BehaviorTree/NodeIf.h"
 
 namespace Egametang {
 
@@ -24,10 +24,10 @@ public:
 class SelectorNodeFactory: public NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const EventNode& conf);
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
 
 
-#endif // EVENT_SELECTORNODE_H
+#endif // BEHAVIORTREE_SELECTORNODE_H

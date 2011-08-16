@@ -1,8 +1,8 @@
-#ifndef EVENT_CHANGEHEALTH_H
-#define EVENT_CHANGEHEALTH_H
+#ifndef BEHAVIORTREE_CHANGEHEALTH_H
+#define BEHAVIORTREE_CHANGEHEALTH_H
 
 #include "Base/Typedef.h"
-#include "Event/NodeIf.h"
+#include "BehaviorTree/NodeIf.h"
 
 namespace Egametang {
 
@@ -25,9 +25,9 @@ public:
 class ChangeHealthFactory: public NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const EventNode& conf);
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
 
-#endif // EVENT_CHANGEHEALTH_H
+#endif // BEHAVIORTREE_CHANGEHEALTH_H

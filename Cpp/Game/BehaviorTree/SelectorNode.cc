@@ -1,6 +1,6 @@
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
-#include "Event/SelectorNode.h"
+#include "BehaviorTree/SelectorNode.h"
 
 namespace Egametang {
 
@@ -40,7 +40,7 @@ std::string SelectorNode::ToString()
 	return s;
 }
 
-NodeIf* SelectorNodeFactory::GetInstance(const EventNode& conf)
+NodeIf* SelectorNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new SelectorNode();
 }

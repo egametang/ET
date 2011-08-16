@@ -4,12 +4,12 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <google/protobuf/text_format.h>
-#include "Event/GameEvents.h"
-#include "Event/NodeFactories.h"
-#include "Event/EventConf.pb.h"
-#include "Event/SpellBuff.h"
-#include "Event/CombatContex.h"
-#include "Event/EventDefine.h"
+#include "BehaviorTree/GameEvents.h"
+#include "BehaviorTree/NodeFactories.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
+#include "BehaviorTree/SpellBuff.h"
+#include "BehaviorTree/CombatContex.h"
+#include "BehaviorTree/EventDefine.h"
 
 namespace Egametang {
 
@@ -38,12 +38,12 @@ static void FileToString(const std::string& file, std::string& string)
 	in.close();
 }
 
-TEST_F(GameEventsTest, DotChangeHealth)
+TEST_F(GameEventsTest, Vampire)
 {
-	std::string file = "../Cpp/Game/Event/Vampire.txt";
+	std::string file = "../Cpp/Game/BehaviorTree/Vampire.txt";
 	std::string string;
 	FileToString(file, string);
-	EventConf conf;
+	BehaviorTreeConf conf;
 	google::protobuf::TextFormat::ParseFromString(string, &conf);
 	game_events.AddEvent(conf);
 

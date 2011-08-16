@@ -1,5 +1,5 @@
-#ifndef EVENT_SPELLBUFF_H
-#define EVENT_SPELLBUFF_H
+#ifndef BEHAVIORTREE_SPELLBUFF_H
+#define BEHAVIORTREE_SPELLBUFF_H
 
 namespace Egametang {
 
@@ -30,4 +30,4 @@ public:
 } // namespace Egametang
 
 
-#endif // EVENT_SPELLBUFF_H
+#endif // BEHAVIORTREE_SPELLBUFF_H

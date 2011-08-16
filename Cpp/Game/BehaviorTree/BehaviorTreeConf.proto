@@ -1,0 +1,18 @@
+package Egametang;
+
+message BehaviorNodeConf
+{
+	required int32 type = 1;
+	// 条件需要的参数
+	repeated int32 args = 2;
+	// 包含多个子节点
+	repeated BehaviorNodeConf node = 3;
+};
+
+message BehaviorTreeConf
+{
+	// 行为树类型
+	required int32 type = 1;
+	// 行为树节点
+	required BehaviorNodeConf node = 2;
+};

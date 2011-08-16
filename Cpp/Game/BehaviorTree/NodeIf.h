@@ -1,12 +1,12 @@
-#ifndef EVENT_NODEIF_H
-#define EVENT_NODEIF_H
+#ifndef BEHAVIORTREE_NODEIF_H
+#define BEHAVIORTREE_NODEIF_H
 
 #include <string>
 
 namespace Egametang {
 
 class ContexIf;
-class EventNode;
+class BehaviorNodeConf;
 
 class NodeIf
 {
@@ -26,9 +26,9 @@ public:
 class NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const EventNode& conf) = 0;
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf) = 0;
 };
 
 } // namespace Egametang
 
-#endif // EVENT_NODEIF_H
+#endif // BEHAVIORTREE_NODEIF_H

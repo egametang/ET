@@ -1,5 +1,5 @@
-#ifndef EVENT_EVENTDEFINE_H
-#define EVENT_EVENTDEFINE_H
+#ifndef BEHAVIORTREE_EVENTDEFINE_H
+#define BEHAVIORTREE_EVENTDEFINE_H
 
 enum EventType
 {
@@ -13,12 +13,10 @@ enum EventType
 
 enum NodeType
 {
-	AND                = 0,
-	OR                 = 1,
-	NOT                = 2,
+	SEQUENCE           = 1,
+	SELECTOR           = 2,
 
-	SEQUENCE           = 6,
-	SELECTOR           = 7,
+	NOT                = 11,
 
 	// 条件子节点100 - 1001
 	BUFF_TYPE          = 101,
@@ -33,4 +31,4 @@ enum SpellUnit
 	VICTIM = 1,
 };
 
-#endif // EVENT_EVENTDEFINE_H
+#endif // BEHAVIORTREE_EVENTDEFINE_H

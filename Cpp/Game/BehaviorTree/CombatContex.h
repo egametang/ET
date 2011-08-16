@@ -1,7 +1,7 @@
-#ifndef EVENT_COMBATCONTEX_H
-#define EVENT_COMBATCONTEX_H
+#ifndef BEHAVIORTREE_COMBATCONTEX_H
+#define BEHAVIORTREE_COMBATCONTEX_H
 
-#include "Event/ContexIf.h"
+#include "BehaviorTree/ContexIf.h"
 
 namespace Egametang {
 
@@ -22,5 +22,5 @@ public:
 
 } // namespace Egametang
 
-#endif // EVENT_COMBATCONTEX_H
+#endif // BEHAVIORTREE_COMBATCONTEX_H
 

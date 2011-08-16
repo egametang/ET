@@ -2,8 +2,8 @@
 #include <glog/logging.h>
 #include "Base/Marcos.h"
 #include "Base/Typedef.h"
-#include "Event/GameEvents.h"
-#include "Event/EventConf.pb.h"
+#include "BehaviorTree/GameEvents.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
 
@@ -14,27 +14,27 @@ GameEvents::GameEvents(NodeFactories& factories):
 
 GameEvents::~GameEvents()
 {
-	foreach(std::list<Event*> list, events)
+	foreach(std::list<BehaviorTree*> list, events)
 	{
-		foreach(Event* event, list)
+		foreach(BehaviorTree* tree, list)
 		{
-			delete event;
+			delete tree;
 		}
 	}
 }
 
-void GameEvents::AddEvent(EventConf& conf)
+void GameEvents::AddEvent(const BehaviorTreeConf& conf)
 {
 	int32 type = conf.type();
-	Event* event = new Event(factories, conf);
+	BehaviorTree* event = new BehaviorTree(factories, conf);
 	events[type].push_back(event);
 }
 
 void GameEvents::Excute(int type, ContexIf* contex)
 {
-	std::list<Event*>& es = events[type];
+	std::list<BehaviorTree*>& es = events[type];
 
-	for (std::list<Event*>::iterator iter = es.begin(); iter != es.end(); ++iter)
+	for (std::list<BehaviorTree*>::iterator iter = es.begin(); iter != es.end(); ++iter)
 	{
 		CHECK(*iter);
 		(*iter)->Run(contex);

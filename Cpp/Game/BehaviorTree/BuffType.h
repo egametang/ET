@@ -1,7 +1,7 @@
-#ifndef EVENT_BUFFTYPE_H
-#define EVENT_BUFFTYPE_H
+#ifndef BEHAVIORTREE_BUFFTYPE_H
+#define BEHAVIORTREE_BUFFTYPE_H
 
-#include "Event/NodeIf.h"
+#include "BehaviorTree/NodeIf.h"
 
 namespace Egametang {
 
@@ -30,10 +30,10 @@ class BuffTypeFactory: public NodeFactoryIf
 public:
 	virtual ~BuffTypeFactory();
 
-	virtual NodeIf* GetInstance(const EventNode& conf);
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
 
 
-#endif // EVENT_BUFFTYPE_H
+#endif // BEHAVIORTREE_BUFFTYPE_H

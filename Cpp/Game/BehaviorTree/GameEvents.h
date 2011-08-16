@@ -1,9 +1,9 @@
-#ifndef EVENT_GAMEEVENTS_H
-#define EVENT_GAMEEVENTS_H
+#ifndef BEHAVIORTREE_GAMEEVENTS_H
+#define BEHAVIORTREE_GAMEEVENTS_H
 
 #include <list>
 #include <vector>
-#include "Event/Event.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 namespace Egametang {
 
@@ -13,18 +13,18 @@ class GameEvents
 {
 private:
 	NodeFactories& factories;
-	std::vector<std::list<Event*> > events;
+	std::vector<std::list<BehaviorTree*> > events;
 
 public:
 	GameEvents(NodeFactories& factories);
 
 	~GameEvents();
 
-	void AddEvent(EventConf& conf);
+	void AddEvent(const BehaviorTreeConf& conf);
 
 	void Excute(int type, ContexIf* contex);
 };
 
 } // namespace Egametang
 
-#endif // EVENT_GAMEEVENTS_H
+#endif // BEHAVIORTREE_GAMEEVENTS_H

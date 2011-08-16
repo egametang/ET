@@ -1,8 +1,8 @@
-#ifndef EVENT_SEQUENCENODE_H
-#define EVENT_SEQUENCENODE_H
+#ifndef BEHAVIORTREE_SEQUENCENODE_H
+#define BEHAVIORTREE_SEQUENCENODE_H
 
 #include <list>
-#include "Event/NodeIf.h"
+#include "BehaviorTree/NodeIf.h"
 
 namespace Egametang {
 
@@ -24,10 +24,10 @@ public:
 class SequenceNodeFactory: public NodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const EventNode& conf);
+	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
 
 
-#endif // EVENT_SEQUENCENODE_H
+#endif // BEHAVIORTREE_SEQUENCENODE_H
