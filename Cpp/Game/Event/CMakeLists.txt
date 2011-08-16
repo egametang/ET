@@ -1,4 +1,4 @@
-PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs 
+PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs
 	EventConf.proto
 )
 
@@ -12,6 +12,8 @@ SET(EventSrc
 	NodeFactories.cc
 	NotNode.cc
 	OrNode.cc
+	SelectorNode.cc
+	SequenceNode.cc
 	${proto_srcs}
 )
 

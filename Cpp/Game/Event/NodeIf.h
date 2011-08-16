@@ -11,6 +11,9 @@ class EventNode;
 class NodeIf
 {
 public:
+	virtual ~NodeIf()
+	{
+	}
 	virtual bool Run(ContexIf* contex) = 0;
 
 	virtual void AddChildNode(NodeIf *node)

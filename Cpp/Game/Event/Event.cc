@@ -33,9 +33,9 @@ void Event::BuildTree(
 {
 	int32 type = conf.type();
 	node = factories.GetInstance(conf);
-	for (int i = 0; i < conf.nodes_size(); ++i)
+	for (int i = 0; i < conf.node_size(); ++i)
 	{
-		const EventNode& logic_node_conf = conf.nodes(i);
+		const EventNode& logic_node_conf = conf.node(i);
 		NodeIf* logic_node = NULL;
 		BuildTree(factories, logic_node_conf, logic_node);
 		node->AddChildNode(logic_node);

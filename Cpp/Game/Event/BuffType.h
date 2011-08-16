@@ -18,6 +18,8 @@ private:
 public:
 	BuffType(int buff_type);
 
+	virtual ~BuffType();
+
 	virtual bool Run(ContexIf* contex);
 
 	virtual std::string ToString();

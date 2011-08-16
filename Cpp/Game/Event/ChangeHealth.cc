@@ -29,7 +29,7 @@ bool ChangeHealth::Run(ContexIf *contex)
 		target = spell->victim;
 	}
 
-	target->health -= value;
+	target->health += value;
 
 	return true;
 }

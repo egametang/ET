@@ -3,24 +3,32 @@
 #include "Event/AndNode.h"
 #include "Event/OrNode.h"
 #include "Event/NotNode.h"
+#include "Event/SequenceNode.h"
+#include "Event/SelectorNode.h"
 #include "Event/BuffType.h"
 #include "Event/ChangeHealth.h"
 #include "Event/NodeFactories.h"
 #include "Event/EventConf.pb.h"
+#include "Event/EventDefine.h"
 
 namespace Egametang {
 
 NodeFactories::NodeFactories(): factories(2000, NULL)
 {
-	factories[0] = new AndNodeFactory();
-	factories[1] = new OrNodeFactory();
-	factories[2] = new NotNodeFactory();
-
 	// 条件节点
-	factories[101] = new BuffTypeFactory();
+	factories[AND] = new AndNodeFactory();
+	factories[OR] = new OrNodeFactory();
+	factories[NOT] = new NotNodeFactory();
 
-	// 行为节点
-	factories[1001] = new ChangeHealthFactory();
+	// 动作节点
+	factories[SEQUENCE] = new SequenceNodeFactory();
+	factories[SELECTOR] = new SelectorNodeFactory();
+
+	// 条件叶子节点
+	factories[BUFF_TYPE] = new BuffTypeFactory();
+
+	// 动作叶子节点
+	factories[CHANGE_HEALTH] = new ChangeHealthFactory();
 }
 
 NodeFactories::~NodeFactories()

@@ -36,6 +36,7 @@ void GameEvents::Excute(int type, ContexIf* contex)
 
 	for (std::list<Event*>::iterator iter = es.begin(); iter != es.end(); ++iter)
 	{
+		CHECK(*iter);
 		(*iter)->Run(contex);
 	}
 }

@@ -9,6 +9,10 @@ BuffType::BuffType(int buff_type): buff_type(buff_type)
 {
 }
 
+BuffType::~BuffType()
+{
+}
+
 bool BuffType::Run(ContexIf* contex)
 {
 	Buff* buff = contex->GetBuff();

@@ -6,7 +6,7 @@ message EventNode
 	// 条件需要的参数
 	repeated int32 args = 3;
 	// 包含多个子节点
-	repeated EventNode nodes = 4;
+	repeated EventNode node = 4;
 };
 
 message ConditionConf

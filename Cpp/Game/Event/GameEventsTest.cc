@@ -9,6 +9,7 @@
 #include "Event/EventConf.pb.h"
 #include "Event/SpellBuff.h"
 #include "Event/CombatContex.h"
+#include "Event/EventDefine.h"
 
 namespace Egametang {
 
@@ -39,7 +40,7 @@ static void FileToString(const std::string& file, std::string& string)
 
 TEST_F(GameEventsTest, DotChangeHealth)
 {
-	std::string file = "../Cpp/Game/Event/DotFirstDamage.txt";
+	std::string file = "../Cpp/Game/Event/Vampire.txt";
 	std::string string;
 	FileToString(file, string);
 	EventConf conf;
@@ -48,7 +49,7 @@ TEST_F(GameEventsTest, DotChangeHealth)
 
 	Unit caster;
 	Unit victim;
-	caster.health = 1000;
+	caster.health = 2000;
 	victim.health = 2000;
 	Spell spell;
 	Buff buff;
@@ -56,11 +57,13 @@ TEST_F(GameEventsTest, DotChangeHealth)
 	spell.victim = &victim;
 	CombatContex contex(&spell, &buff);
 
-	game_events.Excute(5, &contex);
+	game_events.Excute(ON_HIT, &contex);
+	ASSERT_EQ(2000, caster.health);
 	ASSERT_EQ(2000, victim.health);
 
 	buff.buff_type = 2;
-	game_events.Excute(5, &contex);
+	game_events.Excute(ON_HIT, &contex);
+	ASSERT_EQ(2100, caster.health);
 	ASSERT_EQ(1900, victim.health);
 }
 
