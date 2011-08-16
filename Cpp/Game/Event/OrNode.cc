@@ -29,6 +29,17 @@ void OrNode::AddChildNode(NodeIf *node)
 	nodes.push_back(node);
 }
 
+std::string OrNode::ToString()
+{
+	std::string s;
+	s += "OrNode: \n";
+	foreach(NodeIf* node, nodes)
+	{
+		s += "    " + node->ToString() + "\n";
+	}
+	return s;
+}
+
 NodeIf* OrNodeFactory::GetInstance(const EventNode& conf)
 {
 	return new OrNode();

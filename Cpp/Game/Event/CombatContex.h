@@ -13,6 +13,7 @@ private:
 
 public:
 	CombatContex(Spell* spell, Buff* buff);
+	~CombatContex();
 
 	virtual Spell* GetSpell();
 

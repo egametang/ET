@@ -20,6 +20,11 @@ class Buff
 {
 public:
 	int buff_type;
+
+public:
+	Buff(): buff_type(0)
+	{
+	}
 };
 
 } // namespace Egametang

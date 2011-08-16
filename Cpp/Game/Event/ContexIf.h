@@ -9,7 +9,9 @@ namespace Egametang {
 class ContexIf
 {
 public:
-	virtual ~ContexIf();
+	virtual ~ContexIf()
+	{
+	}
 
 	virtual Spell* GetSpell()
 	{

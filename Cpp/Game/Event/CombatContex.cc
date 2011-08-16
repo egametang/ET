@@ -7,6 +7,10 @@ CombatContex::CombatContex(Spell* spell, Buff* buff):
 {
 }
 
+CombatContex::~CombatContex()
+{
+}
+
 Spell* CombatContex::GetSpell()
 {
 	return spell;

@@ -1,3 +1,4 @@
+#include <glog/logging.h>
 #include "Event/ChangeHealth.h"
 #include "Event/CombatContex.h"
 #include "Event/EventConf.pb.h"
@@ -33,7 +34,14 @@ bool ChangeHealth::Run(ContexIf *contex)
 	return true;
 }
 
-NodeIf *ChangeHealthFactory::GetInstance(const EventNode& conf)
+std::string ChangeHealth::ToString()
+{
+	std::string s;
+	s += "ChangeHealth: \n";
+	return s;
+}
+
+NodeIf* ChangeHealthFactory::GetInstance(const EventNode& conf)
 {
 	return new ChangeHealth(conf.args(0), conf.args(1));
 }

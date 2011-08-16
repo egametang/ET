@@ -1,3 +1,4 @@
+#include <glog/logging.h>
 #include "Base/Typedef.h"
 #include "Event/AndNode.h"
 #include "Event/OrNode.h"
@@ -9,7 +10,7 @@
 
 namespace Egametang {
 
-NodeFactories::NodeFactories(): factories(2000)
+NodeFactories::NodeFactories(): factories(2000, NULL)
 {
 	factories[0] = new AndNodeFactory();
 	factories[1] = new OrNodeFactory();
@@ -26,6 +27,10 @@ NodeFactories::~NodeFactories()
 {
 	for (std::size_t i = 0; i < factories.size(); ++i)
 	{
+		if (factories[i] == NULL)
+		{
+			continue;
+		}
 		delete factories[i];
 	}
 }

@@ -13,7 +13,7 @@ class GameEvents
 {
 private:
 	NodeFactories& factories;
-	std::vector<std::list<Event> > events;
+	std::vector<std::list<Event*> > events;
 
 public:
 	GameEvents(NodeFactories& factories);

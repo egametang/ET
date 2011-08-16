@@ -1,11 +1,14 @@
 #include <fcntl.h>
+#include <fstream>
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include <iosfwd>
+#include <google/protobuf/text_format.h>
 #include "Event/GameEvents.h"
 #include "Event/NodeFactories.h"
 #include "Event/EventConf.pb.h"
+#include "Event/SpellBuff.h"
+#include "Event/CombatContex.h"
 
 namespace Egametang {
 
@@ -25,15 +28,40 @@ public:
 	}
 };
 
+static void FileToString(const std::string& file, std::string& string)
+{
+	std::ifstream in(file.c_str());
+	std::ostringstream os;
+	os << in.rdbuf();
+	string = os.str();
+	in.close();
+}
+
 TEST_F(GameEventsTest, DotChangeHealth)
 {
-	std::string conf_file = "../../../Cpp/Game/Event/DotFirstDamage.txt";
+	std::string file = "../Cpp/Game/Event/DotFirstDamage.txt";
+	std::string string;
+	FileToString(file, string);
 	EventConf conf;
-	int fd = -1;
-	fd = open(conf_file.c_str(), O_RDONLY);
-	conf.ParseFromFileDescriptor(fd);
-	VLOG(2) << "conf: " << conf.DebugString();
-	close(fd);
+	google::protobuf::TextFormat::ParseFromString(string, &conf);
+	game_events.AddEvent(conf);
+
+	Unit caster;
+	Unit victim;
+	caster.health = 1000;
+	victim.health = 2000;
+	Spell spell;
+	Buff buff;
+	spell.caster = &caster;
+	spell.victim = &victim;
+	CombatContex contex(&spell, &buff);
+
+	game_events.Excute(5, &contex);
+	ASSERT_EQ(2000, victim.health);
+
+	buff.buff_type = 2;
+	game_events.Excute(5, &contex);
+	ASSERT_EQ(1900, victim.health);
 }
 
 } // namespace Egametang

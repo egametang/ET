@@ -19,6 +19,8 @@ public:
 	BuffType(int buff_type);
 
 	virtual bool Run(ContexIf* contex);
+
+	virtual std::string ToString();
 };
 
 class BuffTypeFactory: public NodeFactoryIf

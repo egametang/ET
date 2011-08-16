@@ -9,16 +9,6 @@ message EventNode
 	repeated EventNode nodes = 4;
 };
 
-message EventConf
-{
-	// 事件类型
-	required int32 type = 1;
-	// 条件
-	required ConditionConf condition = 2;
-	// 动作
-	required ActionConf action = 3;
-};
-
 message ConditionConf
 {
 	optional EventNode node = 1;
@@ -27,4 +17,14 @@ message ConditionConf
 message ActionConf
 {
 	optional EventNode node = 1;
+};
+
+message EventConf
+{
+	// 事件类型
+	required int32 type = 1;
+	// 条件
+	required ConditionConf condition = 2;
+	// 动作
+	required ActionConf action = 3;
 };

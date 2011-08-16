@@ -17,6 +17,8 @@ public:
 	virtual bool Run(ContexIf* contex);
 
 	virtual void AddChildNode(NodeIf *node);
+
+	virtual std::string ToString();
 };
 
 class OrNodeFactory: public NodeFactoryIf

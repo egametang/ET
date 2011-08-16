@@ -22,6 +22,14 @@ void NotNode::AddChildNode(NodeIf *node)
 	this->node = node;
 }
 
+std::string NotNode::ToString()
+{
+	std::string s;
+	s += "NotNode: \n";
+	s += "    " + node->ToString() + "\n";
+	return s;
+}
+
 NodeIf* NotNodeFactory::GetInstance(const EventNode& conf)
 {
 	return new NotNode();

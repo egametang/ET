@@ -1,3 +1,5 @@
+#include <boost/format.hpp>
+#include <glog/logging.h>
 #include "Base/Typedef.h"
 #include "Event/Event.h"
 #include "Event/NodeFactories.h"
@@ -8,15 +10,24 @@ namespace Egametang {
 Event::Event(NodeFactories& factories, EventConf& conf):
 		action(NULL), condition(NULL)
 {
+	type = conf.type();
+
 	const ConditionConf& condition_conf = conf.condition();
 	if (condition_conf.has_node())
 	{
 		const EventNode& node_conf = condition_conf.node();
-		BuildCondition(factories, node_conf, condition);
+		BuildTree(factories, node_conf, condition);
+	}
+
+	const ActionConf& action_conf = conf.action();
+	if (action_conf.has_node())
+	{
+		const EventNode& node_conf = action_conf.node();
+		BuildTree(factories, node_conf, action);
 	}
 }
 
-void Event::BuildCondition(
+void Event::BuildTree(
 		NodeFactories& factories, const EventNode& conf,
 		NodeIf*& node)
 {
@@ -26,7 +37,7 @@ void Event::BuildCondition(
 	{
 		const EventNode& logic_node_conf = conf.nodes(i);
 		NodeIf* logic_node = NULL;
-		BuildCondition(factories, logic_node_conf, logic_node);
+		BuildTree(factories, logic_node_conf, logic_node);
 		node->AddChildNode(logic_node);
 	}
 }
@@ -42,13 +53,16 @@ void Event::Run(ContexIf* contex)
 	if(condition->Run(contex))
 	{
 		// 执行动作
+		CHECK(action);
 		action->Run(contex);
 	}
 }
 
-int Event::Type() const
+std::string Event::ToString()
 {
-	return type;
+	boost::format format("type: %1%\ncondition: %2%\naction: %3%");
+	format % type % condition->ToString() % action->ToString();
+	return format.str();
 }
 
 } // namespace Egametang

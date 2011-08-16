@@ -1,6 +1,8 @@
 #ifndef EVENT_NODEIF_H
 #define EVENT_NODEIF_H
 
+#include <string>
+
 namespace Egametang {
 
 class ContexIf;
@@ -14,6 +16,8 @@ public:
 	virtual void AddChildNode(NodeIf *node)
 	{
 	}
+
+	virtual std::string ToString() = 0;
 };
 
 class NodeFactoryIf

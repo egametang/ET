@@ -29,6 +29,17 @@ void AndNode::AddChildNode(NodeIf *node)
 	nodes.push_back(node);
 }
 
+std::string AndNode::ToString()
+{
+	std::string s;
+	s += "AndNode: \n";
+	foreach(NodeIf* node, nodes)
+	{
+		s += "    " + node->ToString() + "\n";
+	}
+	return s;
+}
+
 NodeIf* AndNodeFactory::GetInstance(const EventNode& conf)
 {
 	return new AndNode();

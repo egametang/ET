@@ -1,14 +1,18 @@
 type: 5
-condition: {
-EventNode: {
-  type: 1
-  args: 2
+condition:
+{
+	node:
+	{
+		type: 101
+		args: 2
+	}
 }
-}
-action: {
-EventNode: {
-  type: 1
-  args: 1
-  args: 100
-}
+action:
+{
+	node: 
+	{
+		type: 1001
+		args: 1
+		args: 100
+	}
 }

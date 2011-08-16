@@ -18,6 +18,8 @@ public:
 	virtual ~ChangeHealth();
 
 	virtual bool Run(ContexIf* contex);
+
+	virtual std::string ToString();
 };
 
 class ChangeHealthFactory: public NodeFactoryIf

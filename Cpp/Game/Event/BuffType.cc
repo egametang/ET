@@ -15,6 +15,13 @@ bool BuffType::Run(ContexIf* contex)
 	return buff->buff_type == buff_type;
 }
 
+std::string BuffType::ToString()
+{
+	std::string s;
+	s += "BuffType: \n";
+	return s;
+}
+
 BuffTypeFactory::~BuffTypeFactory()
 {
 }
