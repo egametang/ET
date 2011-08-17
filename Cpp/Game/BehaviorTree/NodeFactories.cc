@@ -11,7 +11,7 @@
 
 namespace Egametang {
 
-NodeFactories::NodeFactories(): factories(2000, (NodeFactoryIf*)(NULL))
+NodeFactories::NodeFactories(): factories(2000, (BehaviorNodeFactoryIf*)(NULL))
 {
 	// 节点
 	factories[SEQUENCE] = new SequenceNodeFactory();
@@ -35,7 +35,7 @@ NodeFactories::~NodeFactories()
 	}
 }
 
-NodeIf* NodeFactories::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNodeIf* NodeFactories::GetInstance(const BehaviorNodeConf& conf)
 {
 	int32 type = conf.type();
 	return factories[type]->GetInstance(conf);

@@ -1,7 +1,7 @@
 #ifndef BEHAVIORTREE_BEHAVIORTREE_H
 #define BEHAVIORTREE_BEHAVIORTREE_H
 
-#include "BehaviorTree/NodeIf.h"
+#include "BehaviorTree/BehaviorNodeIf.h"
 
 namespace Egametang {
 
@@ -13,10 +13,10 @@ class BehaviorTree
 {
 private:
 	int type;
-	NodeIf* node;
+	BehaviorNodeIf* node;
 
 	void BuildTree(NodeFactories& factories, const BehaviorNodeConf& node_conf,
-			NodeIf*& node);
+			BehaviorNodeIf*& node);
 
 public:
 	BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& tree_conf);

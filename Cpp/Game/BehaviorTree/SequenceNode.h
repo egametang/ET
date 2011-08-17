@@ -2,29 +2,31 @@
 #define BEHAVIORTREE_SEQUENCENODE_H
 
 #include <list>
-#include "BehaviorTree/NodeIf.h"
+#include "BehaviorTree/BehaviorNodeIf.h"
 
 namespace Egametang {
 
-class SequenceNode: public NodeIf
+class SequenceNode: public BehaviorNodeIf
 {
 private:
-	std::list<NodeIf*> nodes;
+	std::list<BehaviorNodeIf*> nodes;
 
 public:
+	SequenceNode(int32 type);
+
 	virtual ~SequenceNode();
 
 	virtual bool Run(ContexIf* contex);
 
-	virtual void AddChildNode(NodeIf *node);
+	virtual void AddChildNode(BehaviorNodeIf *node);
 
 	virtual std::string ToString();
 };
 
-class SequenceNodeFactory: public NodeFactoryIf
+class SequenceNodeFactory: public BehaviorNodeFactoryIf
 {
 public:
-	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

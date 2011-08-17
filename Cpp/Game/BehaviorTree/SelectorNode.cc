@@ -1,12 +1,17 @@
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
 #include "BehaviorTree/SelectorNode.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
 
+SelectorNode::SelectorNode(int32 type): BehaviorNodeIf(type)
+{
+}
+
 SelectorNode::~SelectorNode()
 {
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		delete node;
 	}
@@ -14,7 +19,7 @@ SelectorNode::~SelectorNode()
 
 bool SelectorNode::Run(ContexIf* contex)
 {
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		if (node->Run(contex))
 		{
@@ -24,7 +29,7 @@ bool SelectorNode::Run(ContexIf* contex)
 	return false;
 }
 
-void SelectorNode::AddChildNode(NodeIf *node)
+void SelectorNode::AddChildNode(BehaviorNodeIf *node)
 {
 	nodes.push_back(node);
 }
@@ -33,16 +38,16 @@ std::string SelectorNode::ToString()
 {
 	std::string s;
 	s += "SelectorNode: \n";
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		s += "    " + node->ToString() + "\n";
 	}
 	return s;
 }
 
-NodeIf* SelectorNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNodeIf* SelectorNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
-	return new SelectorNode();
+	return new SelectorNode(conf.type());
 }
 
 } // namespace Egametang

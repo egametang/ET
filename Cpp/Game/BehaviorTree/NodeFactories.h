@@ -2,21 +2,21 @@
 #define BEHAVIORTREE_NODEFACTORIES_H
 
 #include <vector>
-#include "BehaviorTree/NodeIf.h"
+#include "BehaviorTree/BehaviorNodeIf.h"
 
 namespace Egametang {
 
 class NodeFactories
 {
 private:
-	std::vector<NodeFactoryIf*> factories;
+	std::vector<BehaviorNodeFactoryIf*> factories;
 
 public:
 	NodeFactories();
 
 	virtual ~NodeFactories();
 
-	virtual NodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

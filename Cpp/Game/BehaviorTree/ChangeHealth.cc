@@ -6,8 +6,8 @@
 
 namespace Egametang {
 
-ChangeHealth::ChangeHealth(int32 unit, int32 value):
-		unit(unit), value(value)
+ChangeHealth::ChangeHealth(int32 type, int32 unit, int32 value):
+		BehaviorNodeIf(type), unit(unit), value(value)
 {
 }
 
@@ -41,9 +41,9 @@ std::string ChangeHealth::ToString()
 	return s;
 }
 
-NodeIf* ChangeHealthFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNodeIf* ChangeHealthFactory::GetInstance(const BehaviorNodeConf& conf)
 {
-	return new ChangeHealth(conf.args(0), conf.args(1));
+	return new ChangeHealth(conf.type(), conf.args(0), conf.args(1));
 }
 
 } // namespace Egametang

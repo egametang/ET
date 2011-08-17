@@ -1,9 +1,10 @@
 #include <stddef.h>
 #include "BehaviorTree/NotNode.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
 
-NotNode::NotNode(): node(NULL)
+NotNode::NotNode(int32 type): BehaviorNodeIf(type), node(NULL)
 {
 }
 
@@ -17,7 +18,7 @@ bool NotNode::Run(ContexIf* contex)
 	return !node->Run(contex);
 }
 
-void NotNode::AddChildNode(NodeIf *node)
+void NotNode::AddChildNode(BehaviorNodeIf *node)
 {
 	this->node = node;
 }
@@ -30,9 +31,9 @@ std::string NotNode::ToString()
 	return s;
 }
 
-NodeIf* NotNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNodeIf* NotNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
-	return new NotNode();
+	return new NotNode(conf.type());
 }
 
 } // namespace Egametang

@@ -11,7 +11,7 @@ message BehaviorNodeConf
 
 message BehaviorTreeConf
 {
-	// 行为树类型
+	// 行为树类型: AI, ON_HIT, ON_HITTED ...
 	required int32 type = 1;
 	// 行为树节点
 	required BehaviorNodeConf node = 2;

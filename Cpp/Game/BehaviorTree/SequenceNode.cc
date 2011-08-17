@@ -2,12 +2,17 @@
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
 #include "BehaviorTree/SequenceNode.h"
+#include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
 
+SequenceNode::SequenceNode(int32 type): BehaviorNodeIf(type)
+{
+}
+
 SequenceNode::~SequenceNode()
 {
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		delete node;
 	}
@@ -15,7 +20,7 @@ SequenceNode::~SequenceNode()
 
 bool SequenceNode::Run(ContexIf* contex)
 {
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		if (!node->Run(contex))
 		{
@@ -25,7 +30,7 @@ bool SequenceNode::Run(ContexIf* contex)
 	return true;
 }
 
-void SequenceNode::AddChildNode(NodeIf *node)
+void SequenceNode::AddChildNode(BehaviorNodeIf *node)
 {
 	nodes.push_back(node);
 }
@@ -34,16 +39,16 @@ std::string SequenceNode::ToString()
 {
 	std::string s;
 	s += "SequenceNode: \n";
-	foreach(NodeIf* node, nodes)
+	foreach(BehaviorNodeIf* node, nodes)
 	{
 		s += "    " + node->ToString() + "\n";
 	}
 	return s;
 }
 
-NodeIf* SequenceNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNodeIf* SequenceNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
-	return new SequenceNode();
+	return new SequenceNode(conf.type());
 }
 
 } // namespace Egametang
