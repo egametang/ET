@@ -40,7 +40,7 @@ static void FileToString(const std::string& file, std::string& string)
 
 TEST_F(GameEventsTest, Vampire)
 {
-	std::string file = "../Cpp/Game/BehaviorTree/Vampire.txt";
+	std::string file = "../../../Cpp/Game/BehaviorTree/Vampire.txt";
 	std::string string;
 	FileToString(file, string);
 	BehaviorTreeConf conf;
