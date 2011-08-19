@@ -4,7 +4,15 @@
 .sconsign.dblite
 
 *.pyc
+*.suo
+*.user
+
 
 .settings/
 Dbg/
 Opt/
+
+bin/
+obj/
+Properties/
+

@@ -1,0 +1,10 @@
+﻿<Window x:Class="GameEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="768" Width="1024">
+	<DockPanel Height="720" Name="dockPanel1" Width="1000" LastChildFill="False">
+		<Menu Name="menu1" DockPanel.Dock="Top" Height="25" />
+		<ListView Name="listView1" Width="150" />
+		<ScrollBar Name="scrollBar1" Width="18" DockPanel.Dock="Right" />
+	</DockPanel>
+</Window>
