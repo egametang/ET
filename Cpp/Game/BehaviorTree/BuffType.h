@@ -1,7 +1,7 @@
 #ifndef BEHAVIORTREE_BUFFTYPE_H
 #define BEHAVIORTREE_BUFFTYPE_H
 
-#include "BehaviorTree/BehaviorNodeIf.h"
+#include "BehaviorTree/BehaviorNode.h"
 
 namespace Egametang {
 
@@ -10,7 +10,7 @@ class ContexIf;
 // 条件节点还可以预绑定一些配置参数,
 // 例如下面的buff_type字段由策划配置
 // 可配置成dot hot之类的, 由工厂类设置
-class BuffType: public BehaviorNodeIf
+class BuffType: public BehaviorNode
 {
 private:
 	int32 buff_type;
@@ -30,7 +30,7 @@ class BuffTypeFactory: public BehaviorNodeFactoryIf
 public:
 	virtual ~BuffTypeFactory();
 
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

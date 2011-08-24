@@ -6,13 +6,13 @@
 
 namespace Egametang {
 
-SequenceNode::SequenceNode(int32 type): BehaviorNodeIf(type)
+SequenceNode::SequenceNode(int32 type): BehaviorNode(type)
 {
 }
 
 SequenceNode::~SequenceNode()
 {
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		delete node;
 	}
@@ -20,7 +20,7 @@ SequenceNode::~SequenceNode()
 
 bool SequenceNode::Run(ContexIf* contex)
 {
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		if (!node->Run(contex))
 		{
@@ -30,7 +30,7 @@ bool SequenceNode::Run(ContexIf* contex)
 	return true;
 }
 
-void SequenceNode::AddChildNode(BehaviorNodeIf *node)
+void SequenceNode::AddChildNode(BehaviorNode *node)
 {
 	nodes.push_back(node);
 }
@@ -39,14 +39,14 @@ std::string SequenceNode::ToString()
 {
 	std::string s;
 	s += "SequenceNode: \n";
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		s += "    " + node->ToString() + "\n";
 	}
 	return s;
 }
 
-BehaviorNodeIf* SequenceNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNode* SequenceNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new SequenceNode(conf.type());
 }

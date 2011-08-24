@@ -6,7 +6,7 @@
 namespace Egametang {
 
 BuffType::BuffType(int32 type, int32 buff_type):
-		BehaviorNodeIf(type), buff_type(buff_type)
+		BehaviorNode(type), buff_type(buff_type)
 {
 }
 
@@ -31,7 +31,7 @@ BuffTypeFactory::~BuffTypeFactory()
 {
 }
 
-BehaviorNodeIf* BuffTypeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNode* BuffTypeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new BuffType(conf.type(), conf.args(0));
 }

@@ -2,11 +2,11 @@
 #define BEHAVIORTREE_CHANGEHEALTH_H
 
 #include "Base/Typedef.h"
-#include "BehaviorTree/BehaviorNodeIf.h"
+#include "BehaviorTree/BehaviorNode.h"
 
 namespace Egametang {
 
-class ChangeHealth: public BehaviorNodeIf
+class ChangeHealth: public BehaviorNode
 {
 private:
 	int32 unit;
@@ -25,7 +25,7 @@ public:
 class ChangeHealthFactory: public BehaviorNodeFactoryIf
 {
 public:
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

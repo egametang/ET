@@ -35,7 +35,7 @@ NodeFactories::~NodeFactories()
 	}
 }
 
-BehaviorNodeIf* NodeFactories::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNode* NodeFactories::GetInstance(const BehaviorNodeConf& conf)
 {
 	int32 type = conf.type();
 	return factories[type]->GetInstance(conf);

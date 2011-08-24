@@ -4,7 +4,7 @@
 
 namespace Egametang {
 
-NotNode::NotNode(int32 type): BehaviorNodeIf(type), node(NULL)
+NotNode::NotNode(int32 type): BehaviorNode(type), node(NULL)
 {
 }
 
@@ -18,7 +18,7 @@ bool NotNode::Run(ContexIf* contex)
 	return !node->Run(contex);
 }
 
-void NotNode::AddChildNode(BehaviorNodeIf *node)
+void NotNode::AddChildNode(BehaviorNode *node)
 {
 	this->node = node;
 }
@@ -31,7 +31,7 @@ std::string NotNode::ToString()
 	return s;
 }
 
-BehaviorNodeIf* NotNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNode* NotNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new NotNode(conf.type());
 }

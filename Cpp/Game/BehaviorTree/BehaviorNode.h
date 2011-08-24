@@ -1,5 +1,5 @@
-#ifndef BEHAVIORTREE_BEHAVIORNODEIF_H
-#define BEHAVIORTREE_BEHAVIORNODEIF_H
+#ifndef BEHAVIORTREE_BEHAVIORNODE_H
+#define BEHAVIORTREE_BEHAVIORNODE_H
 
 #include <string>
 #include "Base/Typedef.h"
@@ -9,17 +9,17 @@ namespace Egametang {
 class ContexIf;
 class BehaviorNodeConf;
 
-class BehaviorNodeIf
+class BehaviorNode
 {
 private:
 	int32 type;
 
 public:
-	BehaviorNodeIf(int32 type): type(type)
+	BehaviorNode(int32 type): type(type)
 	{
 	}
 
-	virtual ~BehaviorNodeIf()
+	virtual ~BehaviorNode()
 	{
 	}
 
@@ -28,7 +28,7 @@ public:
 		return type;
 	}
 
-	virtual void AddChildNode(BehaviorNodeIf *node)
+	virtual void AddChildNode(BehaviorNode *node)
 	{
 	}
 
@@ -40,9 +40,9 @@ public:
 class BehaviorNodeFactoryIf
 {
 public:
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf) = 0;
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf) = 0;
 };
 
 } // namespace Egametang
 
-#endif // BEHAVIORTREE_BEHAVIORNODEIF_H
+#endif // BEHAVIORTREE_BEHAVIORNODE_H

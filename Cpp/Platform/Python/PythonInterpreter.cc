@@ -30,7 +30,7 @@ bool PythonInterpreter::GetExecString(const std::string& main_fun, std::string& 
 		LOG(WARNING) << "no python path";
 		return false;
 	}
-	foreach(std::string path, python_paths)
+	foreach (std::string path, python_paths)
 	{
 		exec_string += boost::str(boost::format("sys.path.append('%1%')\n") % path);
 	}
@@ -40,7 +40,7 @@ bool PythonInterpreter::GetExecString(const std::string& main_fun, std::string& 
 		LOG(WARNING) << "no python module";
 		return false;
 	}
-	foreach(std::string module, python_modules)
+	foreach (std::string module, python_modules)
 	{
 		exec_string += boost::str(boost::format("import %1%\n") % module);
 	}

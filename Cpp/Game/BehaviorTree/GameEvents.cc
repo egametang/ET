@@ -14,9 +14,9 @@ GameEvents::GameEvents(NodeFactories& factories):
 
 GameEvents::~GameEvents()
 {
-	foreach(std::list<BehaviorTree*> list, events)
+	foreach (std::list<BehaviorTree*> list, events)
 	{
-		foreach(BehaviorTree* tree, list)
+		foreach (BehaviorTree* tree, list)
 		{
 			delete tree;
 		}

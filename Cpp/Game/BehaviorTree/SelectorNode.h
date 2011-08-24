@@ -2,14 +2,14 @@
 #define BEHAVIORTREE_SELECTORNODE_H
 
 #include <list>
-#include "BehaviorTree/BehaviorNodeIf.h"
+#include "BehaviorTree/BehaviorNode.h"
 
 namespace Egametang {
 
-class SelectorNode: public BehaviorNodeIf
+class SelectorNode: public BehaviorNode
 {
 private:
-	std::list<BehaviorNodeIf*> nodes;
+	std::list<BehaviorNode*> nodes;
 
 public:
 	SelectorNode(int32 type);
@@ -18,7 +18,7 @@ public:
 
 	virtual bool Run(ContexIf* contex);
 
-	virtual void AddChildNode(BehaviorNodeIf *node);
+	virtual void AddChildNode(BehaviorNode *node);
 
 	virtual std::string ToString();
 };
@@ -26,7 +26,7 @@ public:
 class SelectorNodeFactory: public BehaviorNodeFactoryIf
 {
 public:
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

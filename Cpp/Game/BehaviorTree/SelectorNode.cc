@@ -5,13 +5,13 @@
 
 namespace Egametang {
 
-SelectorNode::SelectorNode(int32 type): BehaviorNodeIf(type)
+SelectorNode::SelectorNode(int32 type): BehaviorNode(type)
 {
 }
 
 SelectorNode::~SelectorNode()
 {
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		delete node;
 	}
@@ -19,7 +19,7 @@ SelectorNode::~SelectorNode()
 
 bool SelectorNode::Run(ContexIf* contex)
 {
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		if (node->Run(contex))
 		{
@@ -29,7 +29,7 @@ bool SelectorNode::Run(ContexIf* contex)
 	return false;
 }
 
-void SelectorNode::AddChildNode(BehaviorNodeIf *node)
+void SelectorNode::AddChildNode(BehaviorNode *node)
 {
 	nodes.push_back(node);
 }
@@ -38,14 +38,14 @@ std::string SelectorNode::ToString()
 {
 	std::string s;
 	s += "SelectorNode: \n";
-	foreach(BehaviorNodeIf* node, nodes)
+	foreach (BehaviorNode* node, nodes)
 	{
 		s += "    " + node->ToString() + "\n";
 	}
 	return s;
 }
 
-BehaviorNodeIf* SelectorNodeFactory::GetInstance(const BehaviorNodeConf& conf)
+BehaviorNode* SelectorNodeFactory::GetInstance(const BehaviorNodeConf& conf)
 {
 	return new SelectorNode(conf.type());
 }

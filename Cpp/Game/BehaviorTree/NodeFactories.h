@@ -2,7 +2,7 @@
 #define BEHAVIORTREE_NODEFACTORIES_H
 
 #include <vector>
-#include "BehaviorTree/BehaviorNodeIf.h"
+#include "BehaviorTree/BehaviorNode.h"
 
 namespace Egametang {
 
@@ -16,7 +16,7 @@ public:
 
 	virtual ~NodeFactories();
 
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang

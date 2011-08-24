@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections;
 
 namespace GameEditor
 {
@@ -19,9 +20,41 @@ namespace GameEditor
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private Hashtable treeViewNodes = new Hashtable();
+
 		public MainWindow()
 		{
 			InitializeComponent();
+		}
+
+		private void behaviorTreeView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			var item = e.Source as TreeViewItem;
+			if (item == null)
+			{
+				return;
+			}
+			item.ContextMenu.IsOpen = true;
+			e.Handled = true;
+		}
+
+		private void NewCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;
+		}
+
+		private void OnNewNode(object sender, ExecutedRoutedEventArgs e)
+		{
+		}
+
+		private void DeleteCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;
+		}
+
+		private void OnDeleteNode(object sender, ExecutedRoutedEventArgs e)
+		{
+
 		}
 	}
 }

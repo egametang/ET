@@ -22,14 +22,14 @@ BehaviorTree::BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& tre
 
 void BehaviorTree::BuildTree(
 		NodeFactories& factories, const BehaviorNodeConf& node_conf,
-		BehaviorNodeIf*& node)
+		BehaviorNode*& node)
 {
 	int32 type = node_conf.type();
 	node = factories.GetInstance(node_conf);
 	for (int i = 0; i < node_conf.node_size(); ++i)
 	{
 		const BehaviorNodeConf& logic_node_conf = node_conf.node(i);
-		BehaviorNodeIf* logic_node = NULL;
+		BehaviorNode* logic_node = NULL;
 		BuildTree(factories, logic_node_conf, logic_node);
 		node->AddChildNode(logic_node);
 	}

@@ -1,14 +1,14 @@
 #ifndef BEHAVIORTREE_NOTNODE_H
 #define BEHAVIORTREE_NOTNODE_H
 
-#include "BehaviorTree/BehaviorNodeIf.h"
+#include "BehaviorTree/BehaviorNode.h"
 
 namespace Egametang {
 
-class NotNode: public BehaviorNodeIf
+class NotNode: public BehaviorNode
 {
 private:
-	BehaviorNodeIf* node;
+	BehaviorNode* node;
 
 public:
 	NotNode(int32 type);
@@ -17,7 +17,7 @@ public:
 
 	virtual bool Run(ContexIf* contex);
 
-	virtual void AddChildNode(BehaviorNodeIf *node);
+	virtual void AddChildNode(BehaviorNode *node);
 
 	virtual std::string ToString();
 };
@@ -25,7 +25,7 @@ public:
 class NotNodeFactory: public BehaviorNodeFactoryIf
 {
 public:
-	virtual BehaviorNodeIf* GetInstance(const BehaviorNodeConf& conf);
+	virtual BehaviorNode* GetInstance(const BehaviorNodeConf& conf);
 };
 
 } // namespace Egametang
