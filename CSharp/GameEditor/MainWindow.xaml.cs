@@ -17,32 +17,30 @@ namespace GameEditor
 			InitializeComponent();
 		}
 
-		private void behaviorTreeView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+		private void behaviorTreeView_ContextMenuOpening(object sender, ContextMenuEventArgs e)
 		{
-			var item = e.Source as TreeViewItem;
-			if (item == null)
-			{
-				return;
-			}
-			item.ContextMenu.IsOpen = true;
-			e.Handled = true;
+			newMenuItem.IsEnabled = true;
+			copyMenuItem.IsEnabled = true;
+			pasteMenuItem.IsEnabled = true;
+			delMenuItem.IsEnabled = true;
 		}
 
-		private void NewCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void newMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			e.CanExecute = true;
+
 		}
 
-		private void OnNewNode(object sender, ExecutedRoutedEventArgs e)
+		private void delMenuItem_Click(object sender, RoutedEventArgs e)
 		{
+
 		}
 
-		private void DeleteCanExecute(object sender, CanExecuteRoutedEventArgs e)
+		private void copyMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			e.CanExecute = true;
+
 		}
 
-		private void OnDeleteNode(object sender, ExecutedRoutedEventArgs e)
+		private void pasteMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
