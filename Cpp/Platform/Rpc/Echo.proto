@@ -1,5 +1,7 @@
 package Egametang;
 
+option cc_generic_services = true;
+
 message EchoRequest 
 {
 	required int32 num = 1;
