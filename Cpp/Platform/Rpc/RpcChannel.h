@@ -28,8 +28,6 @@ private:
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
-	void HandleStop();
-
 public:
 	RpcChannel(boost::asio::io_service& service, std::string host, int port);
 	~RpcChannel();

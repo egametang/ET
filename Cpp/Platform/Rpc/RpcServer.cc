@@ -57,17 +57,11 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_
 			boost::bind(&ResponseHandler::Run, response_handler));
 }
 
-void RpcServer::HandleStop()
-{
-	acceptor.close();
-	sessions.clear();
-}
-
 void RpcServer::Stop()
 {
 	thread_pool.Wait();
-	// 调度到io_service线程,防止两个线程竞争
-	io_service.post(boost::bind(&RpcServer::HandleStop, shared_from_this()));
+	acceptor.close();
+	sessions.clear();
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,

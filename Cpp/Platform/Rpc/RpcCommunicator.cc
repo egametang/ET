@@ -40,6 +40,7 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 	if (err)
 	{
 		LOG(ERROR) << "receive message size failed: " << err.message();
+		VLOG(2) << "meta: " << meta->ToString() << " message: " << *message;
 		Stop();
 		return;
 	}

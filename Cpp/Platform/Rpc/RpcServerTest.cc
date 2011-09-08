@@ -85,10 +85,10 @@ TEST_F(RpcServerTest, ChannelAndServer)
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
 
-	channel->Stop();
-	server->Stop();
-	io_client.stop();
-	io_server.stop();
+	io_client.post(boost::bind(&RpcChannel::Stop, channel));
+	io_server.post(boost::bind(&RpcServer::Stop, server));
+	io_client.post(boost::bind(&boost::asio::io_service::stop, &io_client));
+	io_server.post(boost::bind(&boost::asio::io_service::stop, &io_server));
 
 	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
 	thread_pool.Wait();

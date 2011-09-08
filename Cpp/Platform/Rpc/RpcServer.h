@@ -25,7 +25,6 @@ private:
 
 	void OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
 	void OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler);
-	void HandleStop();
 
 public:
 	RpcServer(boost::asio::io_service& service, int port);
