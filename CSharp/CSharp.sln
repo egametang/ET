@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "GameEditor\View.csproj", "{FA1C18E4-C928-4900-A77B-6944B3443B7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "View\View.csproj", "{FA1C18E4-C928-4900-A77B-6944B3443B7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Data\Model.csproj", "{3978E513-87FA-44EC-893A-DBD90A5A8808}"
 EndProject

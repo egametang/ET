@@ -27,7 +27,7 @@ namespace Egametang
 		private void newMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 
-		}
+		};
 
 		private void copyMenuItem_Click(object sender, RoutedEventArgs e)
 		{
