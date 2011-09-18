@@ -3,13 +3,17 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		xmlns:vm="clr-namespace:Egametang;assembly=ViewModel"
 		mc:Ignorable="d" 
 		d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.DataContext>
+		<vm:BehaviorTreeViewModel />
+	</UserControl.DataContext>
 	<Grid>
 		<TreeView Grid.Column="0"  HorizontalAlignment="Stretch" Name="behaviorTreeView" 
 				VerticalAlignment="Stretch" Padding="0" BorderThickness="0" 
 				ContextMenuOpening="behaviorTreeView_ContextMenuOpening"
-				ItemsSource="{Binding Children}">
+				ItemsSource="{Binding Path=Children}" >
 			<TreeView.ContextMenu>
 				<ContextMenu>
 					<MenuItem Name="newMenuItem" Header="New" Click="newMenuItem_Click" />
@@ -19,7 +23,7 @@
 				</ContextMenu>
 			</TreeView.ContextMenu>
 
-			<TreeView.ItemContainerStyle>
+			<!--<TreeView.ItemContainerStyle>
 				<Style TargetType="{x:Type TreeViewItem}">
 					<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
 					<Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
@@ -30,9 +34,9 @@
 						</Trigger>
 					</Style.Triggers>
 				</Style>
-			</TreeView.ItemContainerStyle>
+			</TreeView.ItemContainerStyle>-->
 			<TreeView.ItemTemplate>
-				<HierarchicalDataTemplate ItemsSource="{Binding Children}">
+				<HierarchicalDataTemplate ItemsSource="{Binding Children}" >
 					<TextBlock Text="{Binding Name}" />
 				</HierarchicalDataTemplate>
 			</TreeView.ItemTemplate>

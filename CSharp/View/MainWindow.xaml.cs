@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Collections;
 
 namespace Egametang
@@ -10,8 +8,6 @@ namespace Egametang
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private Hashtable treeViewNodes = new Hashtable();
-
 		public MainWindow()
 		{
 			InitializeComponent();
