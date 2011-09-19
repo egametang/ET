@@ -11,9 +11,6 @@ namespace Egametang
 
 		public BehaviorTreeViewModel()
 		{
-			root.Name = "root";
-			root.Type = 1;
-			children.Add(new BehaviorNodeViewModel(root, null));
 		}
 
 		public ObservableCollection<BehaviorNodeViewModel> Children

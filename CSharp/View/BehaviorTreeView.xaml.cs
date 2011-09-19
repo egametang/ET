@@ -15,7 +15,7 @@ namespace Egametang
 
 		private void newMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-
+			BehaviorNodeDialog dlg = new BehaviorNodeDialog();
 		}
 
 		private void copyMenuItem_Click(object sender, RoutedEventArgs e)
