@@ -58,6 +58,11 @@ void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcChannel::Stop()
 {
+	if (is_stopped)
+	{
+		return;
+	}
+	is_stopped = true;
 	socket.close();
 }
 

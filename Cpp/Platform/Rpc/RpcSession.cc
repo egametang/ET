@@ -6,7 +6,7 @@
 namespace Egametang {
 
 RpcSession::RpcSession(boost::asio::io_service& io_service, RpcServer& server):
-		RpcCommunicator(io_service), rpc_server(server)
+		RpcCommunicator(io_service), rpc_server(server), is_stopped(false)
 {
 }
 
@@ -38,6 +38,11 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
+	if (is_stopped)
+	{
+		return;
+	}
+	is_stopped = true;
 	RpcSessionPtr session = shared_from_this();
 	rpc_server.Remove(session);
 }

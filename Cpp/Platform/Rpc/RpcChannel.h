@@ -22,6 +22,7 @@ private:
 
 	std::size_t id;
 	RequestHandlerMap request_handlers;
+	bool is_stopped;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 

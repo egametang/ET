@@ -15,6 +15,7 @@ class RpcSession: public RpcCommunicator, public boost::enable_shared_from_this<
 {
 private:
 	RpcServer& rpc_server;
+	bool is_stopped;
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);

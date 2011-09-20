@@ -85,8 +85,11 @@ TEST_F(RpcServerTest, ChannelAndServer)
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
 
+	// 加入到io线程
 	io_client.post(boost::bind(&RpcChannel::Stop, channel));
 	io_server.post(boost::bind(&RpcServer::Stop, server));
+
+	// 加入任务队列,等channel和server stop,io_service才stop
 	io_client.post(boost::bind(&boost::asio::io_service::stop, &io_client));
 	io_server.post(boost::bind(&boost::asio::io_service::stop, &io_server));
 

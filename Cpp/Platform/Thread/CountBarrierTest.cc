@@ -30,7 +30,7 @@ public:
 	{
 		boost::xtime xt;
 		boost::xtime_get(&xt, boost::TIME_UTC);
-		xt.sec += 2;
+		xt.sec += 1;
 		boost::thread::sleep(xt);
 		++count;
 		barrier.Signal();
