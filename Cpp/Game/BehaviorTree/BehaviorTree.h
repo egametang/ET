@@ -15,11 +15,11 @@ private:
 	int type;
 	BehaviorNode* node;
 
-	void BuildTree(NodeFactories& factories, const BehaviorNodeConf& node_conf,
+	void BuildTree(NodeFactories& factories, const BehaviorNodeConf& nodeConf,
 			BehaviorNode*& node);
 
 public:
-	BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& tree_conf);
+	BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& treeConf);
 
 	~BehaviorTree();
 

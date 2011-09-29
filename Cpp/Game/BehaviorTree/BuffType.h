@@ -13,7 +13,7 @@ class ContexIf;
 class BuffType: public BehaviorNode
 {
 private:
-	int32 buff_type;
+	int32 buffType;
 
 public:
 	BuffType(int32 type, int buff_type);

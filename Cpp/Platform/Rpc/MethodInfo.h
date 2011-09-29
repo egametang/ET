@@ -14,11 +14,11 @@ struct MethodInfo
 	const google::protobuf::Message* requestPrototype;
 	const google::protobuf::Message* responsePrototype;
 
-	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* method_descriptor):
-		service(service), methodDescriptor(method_descriptor)
+	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* methodDescriptor):
+		service(service), methodDescriptor(methodDescriptor)
 	{
-		requestPrototype = &service->GetRequestPrototype(method_descriptor);
-		responsePrototype = &service->GetResponsePrototype(method_descriptor);
+		requestPrototype = &service->GetRequestPrototype(methodDescriptor);
+		responsePrototype = &service->GetResponsePrototype(methodDescriptor);
 	}
 };
 

@@ -7,31 +7,30 @@
 
 namespace Egametang {
 
-BehaviorTree::BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& tree_conf):
+BehaviorTree::BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& treeConf):
 		node(NULL)
 {
-	type = tree_conf.type();
+	type = treeConf.type();
 
-	const BehaviorNodeConf& node_conf = tree_conf.node();
-	if (tree_conf.has_node())
+	if (treeConf.has_node())
 	{
-		const BehaviorNodeConf& node_conf = tree_conf.node();
-		BuildTree(factories, node_conf, node);
+		const BehaviorNodeConf& nodeConf = treeConf.node();
+		BuildTree(factories, nodeConf, node);
 	}
 }
 
 void BehaviorTree::BuildTree(
-		NodeFactories& factories, const BehaviorNodeConf& node_conf,
+		NodeFactories& factories, const BehaviorNodeConf& nodeConf,
 		BehaviorNode*& node)
 {
-	int32 type = node_conf.type();
-	node = factories.GetInstance(node_conf);
-	for (int i = 0; i < node_conf.node_size(); ++i)
+	int32 type = nodeConf.type();
+	node = factories.GetInstance(nodeConf);
+	for (int i = 0; i < nodeConf.node_size(); ++i)
 	{
-		const BehaviorNodeConf& logic_node_conf = node_conf.node(i);
-		BehaviorNode* logic_node = NULL;
-		BuildTree(factories, logic_node_conf, logic_node);
-		node->AddChildNode(logic_node);
+		const BehaviorNodeConf& logicNodeConf = nodeConf.node(i);
+		BehaviorNode* logicNode = NULL;
+		BuildTree(factories, logicNodeConf, logicNode);
+		node->AddChildNode(logicNode);
 	}
 }
 

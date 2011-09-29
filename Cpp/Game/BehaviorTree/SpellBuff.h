@@ -19,10 +19,10 @@ public:
 class Buff
 {
 public:
-	int buff_type;
+	int buffType;
 
 public:
-	Buff(): buff_type(0)
+	Buff(): buffType(0)
 	{
 	}
 };

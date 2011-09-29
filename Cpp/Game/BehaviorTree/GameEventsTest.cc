@@ -61,7 +61,7 @@ TEST_F(GameEventsTest, Vampire)
 	ASSERT_EQ(2000, caster.health);
 	ASSERT_EQ(2000, victim.health);
 
-	buff.buff_type = 2;
+	buff.buffType = 2;
 	game_events.Excute(ON_HIT, &contex);
 	ASSERT_EQ(2100, caster.health);
 	ASSERT_EQ(1900, victim.health);

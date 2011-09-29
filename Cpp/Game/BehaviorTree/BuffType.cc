@@ -6,7 +6,7 @@
 namespace Egametang {
 
 BuffType::BuffType(int32 type, int32 buff_type):
-		BehaviorNode(type), buff_type(buff_type)
+		BehaviorNode(type), buffType(buff_type)
 {
 }
 
@@ -17,7 +17,7 @@ BuffType::~BuffType()
 bool BuffType::Run(ContexIf* contex)
 {
 	Buff* buff = contex->GetBuff();
-	return buff->buff_type == buff_type;
+	return buff->buffType == buffType;
 }
 
 std::string BuffType::ToString()
