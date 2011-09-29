@@ -9,7 +9,7 @@
 
 namespace Egametang {
 
-static int global_port = 10001;
+static int globalPort = 10001;
 
 class RpcServerTest: public RpcCommunicator
 {
@@ -20,8 +20,8 @@ public:
 	boost::asio::ip::tcp::acceptor acceptor;
 
 public:
-	RpcServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
-		RpcCommunicator(io_service), acceptor(io_service),
+	RpcServerTest(boost::asio::io_service& ioService, int port, CountBarrier& barrier):
+		RpcCommunicator(ioService), acceptor(ioService),
 		barrier(barrier)
 	{
 		boost::asio::ip::address address;
@@ -69,11 +69,11 @@ public:
 
 		boost::hash<std::string> string_hash;
 
-		RpcMetaPtr response_meta(new RpcMeta());
+		RpcMetaPtr responseMeta(new RpcMeta());
 		StringPtr response_message(new std::string("response test rpc communicator string"));
-		response_meta->size = response_message->size();
-		response_meta->method = 123456;
-		SendMeta(response_meta, response_message);
+		responseMeta->size = response_message->size();
+		responseMeta->method = 123456;
+		SendMeta(responseMeta, response_message);
 
 		barrier.Signal();
 	}
@@ -90,9 +90,9 @@ public:
 	RpcMeta recvMeta;
 
 public:
-	RpcClientTest(boost::asio::io_service& io_service, int port,
+	RpcClientTest(boost::asio::io_service& ioService, int port,
 			CountBarrier& barrier):
-		RpcCommunicator(io_service), barrier(barrier)
+		RpcCommunicator(ioService), barrier(barrier)
 	{
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
@@ -122,11 +122,11 @@ public:
 		}
 		boost::hash<std::string> string_hash;
 
-		RpcMetaPtr send_meta(new RpcMeta());
-		StringPtr send_message(new std::string("send test rpc communicator string"));
-		send_meta->size = send_message->size();
-		send_meta->method = 654321;
-		SendMeta(send_meta, send_message);
+		RpcMetaPtr sendMeta(new RpcMeta());
+		StringPtr sendMessage(new std::string("send test rpc communicator string"));
+		sendMeta->size = sendMessage->size();
+		sendMeta->method = 654321;
+		SendMeta(sendMeta, sendMessage);
 
 		RpcMetaPtr meta(new RpcMeta());
 		StringPtr message(new std::string);
@@ -158,8 +158,8 @@ protected:
 public:
 	RpcCommunicatorTest():
 		ioServer(), ioClient(),
-		barrier(2), rpcServer(ioServer, global_port, barrier),
-		rpcClient(ioClient, global_port, barrier)
+		barrier(2), rpcServer(ioServer, globalPort, barrier),
+		rpcClient(ioClient, globalPort, barrier)
 	{
 	}
 
@@ -171,11 +171,11 @@ public:
 
 TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
-	ThreadPool thread_pool(2);
-	thread_pool.Schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
-	thread_pool.Schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
+	ThreadPool threadPool(2);
+	threadPool.Schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
+	threadPool.Schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
-	thread_pool.Wait();
+	threadPool.Wait();
 	rpcServer.Stop();
 	rpcClient.Stop();
 

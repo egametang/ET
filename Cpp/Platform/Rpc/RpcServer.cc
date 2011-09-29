@@ -44,10 +44,10 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	RpcSessionPtr new_session(new RpcSession(ioService, *this));
-	acceptor.async_accept(new_session->Socket(),
+	RpcSessionPtr newSession(new RpcSession(ioService, *this));
+	acceptor.async_accept(newSession->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
-					new_session, boost::asio::placeholders::error));
+					newSession, boost::asio::placeholders::error));
 }
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler)
@@ -67,35 +67,35 @@ void RpcServer::Stop()
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 		StringPtr message, MessageHandler messageHandler)
 {
-	MethodInfoPtr method_info = methods[meta->method];
+	MethodInfoPtr methodInfo = methods[meta->method];
 
-	ResponseHandlerPtr response_handler(
-			new ResponseHandler(method_info, meta->id, messageHandler));
-	response_handler->Request()->ParseFromString(*message);
+	ResponseHandlerPtr responseHandler(
+			new ResponseHandler(methodInfo, meta->id, messageHandler));
+	responseHandler->Request()->ParseFromString(*message);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::OnCallMethod,
-			session, response_handler);
+			session, responseHandler);
 
 	threadPool.Schedule(
-			boost::bind(&google::protobuf::Service::CallMethod, method_info->service,
-					response_handler->Method(), (google::protobuf::RpcController*)(NULL),
-					response_handler->Request(), response_handler->Response(),
+			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->service,
+					responseHandler->Method(), (google::protobuf::RpcController*)(NULL),
+					responseHandler->Request(), responseHandler->Response(),
 					done));
 }
 
 void RpcServer::Register(RpcServicePtr service)
 {
-	boost::hash<std::string> string_hash;
-	const google::protobuf::ServiceDescriptor* service_descriptor = service->GetDescriptor();
-	for (int i = 0; i < service_descriptor->method_count(); ++i)
+	boost::hash<std::string> stringHash;
+	const google::protobuf::ServiceDescriptor* serviceDescriptor = service->GetDescriptor();
+	for (int i = 0; i < serviceDescriptor->method_count(); ++i)
 	{
-		const google::protobuf::MethodDescriptor* method_descriptor =
-				service_descriptor->method(i);
-		std::size_t method_hash = string_hash(method_descriptor->full_name());
-		MethodInfoPtr method_info(new MethodInfo(service, method_descriptor));
-		CHECK(methods.find(method_hash) == methods.end());
-		methods[method_hash] = method_info;
+		const google::protobuf::MethodDescriptor* methodDescriptor =
+				serviceDescriptor->method(i);
+		std::size_t methodHash = stringHash(methodDescriptor->full_name());
+		MethodInfoPtr methodInfo(new MethodInfo(service, methodDescriptor));
+		CHECK(methods.find(methodHash) == methods.end());
+		methods[methodHash] = methodInfo;
 	}
 }
 
