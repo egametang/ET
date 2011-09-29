@@ -1,5 +1,9 @@
 FIND_PATH(GFLAGS_INCLUDE_DIR gflags/gflags.h)
 
+if(WIN32)
+    set(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
+endif()
+
 FIND_LIBRARY(GFLAGS_LIBRARY NAMES gflags
 			DOC "The Google Gflags Library"
 			)

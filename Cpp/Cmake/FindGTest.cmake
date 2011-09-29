@@ -1,5 +1,9 @@
 FIND_PATH(GTEST_INCLUDE_DIR gtest/gtest.h)
 
+if(WIN32)
+    set(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
+endif()
+
 FIND_LIBRARY(GTEST_LIBRARY NAMES gtest
 			DOC "The Google Gtest Library"
 			)

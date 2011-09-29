@@ -1,8 +1,15 @@
 FIND_PATH(PERFTOOLS_INCLUDE_DIR google/heap-profiler.h)
 
-FIND_LIBRARY(PERFTOOLS_DEBUG_LIBRARY NAMES tcmalloc_debug
-			DOC "The Google Perftools Debug Library"
-			)
+IF(WIN32)
+	set(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")
+	FIND_LIBRARY(PERFTOOLS_DEBUG_LIBRARY NAMES tcmalloc_minimal-debug
+		DOC "The Google Perftools Debug Library"
+		)
+ELSEIF(UNIX)
+	FIND_LIBRARY(PERFTOOLS_DEBUG_LIBRARY NAMES tcmalloc_debug
+		DOC "The Google Perftools Debug Library"
+		)
+ENDIF()
 
 FIND_LIBRARY(PERFTOOLS_LIBRARY NAMES tcmalloc
 			DOC "The Google Perftools Library"
