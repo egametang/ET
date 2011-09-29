@@ -15,8 +15,8 @@ class RpcServerTest: public RpcCommunicator
 {
 public:
 	CountBarrier& barrier;
-	std::string recv_message;
-	RpcMeta recv_meta;
+	std::string recvMessage;
+	RpcMeta recvMeta;
 	boost::asio::ip::tcp::acceptor acceptor;
 
 public:
@@ -52,7 +52,7 @@ public:
 	void Start()
 	{
 		VLOG(2) << "Start Server";
-		io_service.run();
+		ioService.run();
 	}
 
 	void Stop()
@@ -64,8 +64,8 @@ public:
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
 		VLOG(2) << "Server Recv string: " << *message;
-		recv_message = *message;
-		recv_meta = *meta;
+		recvMessage = *message;
+		recvMeta = *meta;
 
 		boost::hash<std::string> string_hash;
 
@@ -85,14 +85,14 @@ public:
 class RpcClientTest: public RpcCommunicator
 {
 public:
-	CountBarrier& barrier_;
-	std::string recv_string_;
-	RpcMeta meta_;
+	CountBarrier& barrier;
+	std::string recvString;
+	RpcMeta recvMeta;
 
 public:
 	RpcClientTest(boost::asio::io_service& io_service, int port,
 			CountBarrier& barrier):
-		RpcCommunicator(io_service), barrier_(barrier)
+		RpcCommunicator(io_service), barrier(barrier)
 	{
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
@@ -105,7 +105,7 @@ public:
 	void Start()
 	{
 		VLOG(2) << "Start Client";
-		io_service.run();
+		ioService.run();
 	}
 
 	void Stop()
@@ -136,9 +136,9 @@ public:
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
 		VLOG(2) << "Client Recv string: " << *message;
-		recv_string_ = *message;
-		meta_ = *meta;
-		barrier_.Signal();
+		recvString = *message;
+		recvMeta = *meta;
+		barrier.Signal();
 	}
 
 	virtual void OnSendMessage()
@@ -149,17 +149,17 @@ public:
 class RpcCommunicatorTest: public testing::Test
 {
 protected:
-	boost::asio::io_service io_server;
-	boost::asio::io_service io_client;
-	CountBarrier barrier_;
-	RpcServerTest rpc_server;
-	RpcClientTest rpc_client;
+	boost::asio::io_service ioServer;
+	boost::asio::io_service ioClient;
+	CountBarrier barrier;
+	RpcServerTest rpcServer;
+	RpcClientTest rpcClient;
 
 public:
 	RpcCommunicatorTest():
-		io_server(), io_client(),
-		barrier_(2), rpc_server(io_server, global_port, barrier_),
-		rpc_client(io_client, global_port, barrier_)
+		ioServer(), ioClient(),
+		barrier(2), rpcServer(ioServer, global_port, barrier),
+		rpcClient(ioClient, global_port, barrier)
 	{
 	}
 
@@ -172,20 +172,20 @@ public:
 TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
 	ThreadPool thread_pool(2);
-	thread_pool.Schedule(boost::bind(&RpcServerTest::Start, &rpc_server));
-	thread_pool.Schedule(boost::bind(&RpcClientTest::Start, &rpc_client));
-	barrier_.Wait();
+	thread_pool.Schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
+	thread_pool.Schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
+	barrier.Wait();
 	thread_pool.Wait();
-	rpc_server.Stop();
-	rpc_client.Stop();
+	rpcServer.Stop();
+	rpcClient.Stop();
 
-	ASSERT_EQ(std::string("send test rpc communicator string"), rpc_server.recv_message);
-	ASSERT_EQ(rpc_server.recv_meta.size, rpc_server.recv_message.size());
-	ASSERT_EQ(654321U, rpc_server.recv_meta.method);
+	ASSERT_EQ(std::string("send test rpc communicator string"), rpcServer.recvMessage);
+	ASSERT_EQ(rpcServer.recvMeta.size, rpcServer.recvMessage.size());
+	ASSERT_EQ(654321U, rpcServer.recvMeta.method);
 
-	ASSERT_EQ(std::string("response test rpc communicator string"), rpc_client.recv_string_);
-	ASSERT_EQ(rpc_client.meta_.size, rpc_client.recv_string_.size());
-	ASSERT_EQ(123456U, rpc_client.meta_.method);
+	ASSERT_EQ(std::string("response test rpc communicator string"), rpcClient.recvString);
+	ASSERT_EQ(rpcClient.recvMeta.size, rpcClient.recvString.size());
+	ASSERT_EQ(123456U, rpcClient.recvMeta.method);
 }
 
 } // namespace Egametang

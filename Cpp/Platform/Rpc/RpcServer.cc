@@ -14,8 +14,8 @@
 namespace Egametang {
 
 RpcServer::RpcServer(boost::asio::io_service& service, int port):
-		io_service(service), acceptor(io_service),
-		thread_pool(), sessions(),
+		ioService(service), acceptor(ioService),
+		threadPool(), sessions(),
 		methods()
 {
 	boost::asio::ip::address address;
@@ -25,7 +25,7 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	RpcSessionPtr new_session(new RpcSession(io_service, *this));
+	RpcSessionPtr new_session(new RpcSession(ioService, *this));
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
@@ -44,40 +44,40 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	RpcSessionPtr new_session(new RpcSession(io_service, *this));
+	RpcSessionPtr new_session(new RpcSession(ioService, *this));
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
 }
 
-void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler)
+void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler)
 {
 	// 调度到网络线程
 	session->Socket().get_io_service().post(
-			boost::bind(&ResponseHandler::Run, response_handler));
+			boost::bind(&ResponseHandler::Run, responseHandler));
 }
 
 void RpcServer::Stop()
 {
-	thread_pool.Wait();
+	threadPool.Wait();
 	acceptor.close();
 	sessions.clear();
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
-		StringPtr message, MessageHandler message_handler)
+		StringPtr message, MessageHandler messageHandler)
 {
 	MethodInfoPtr method_info = methods[meta->method];
 
 	ResponseHandlerPtr response_handler(
-			new ResponseHandler(method_info, meta->id, message_handler));
+			new ResponseHandler(method_info, meta->id, messageHandler));
 	response_handler->Request()->ParseFromString(*message);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::OnCallMethod,
 			session, response_handler);
 
-	thread_pool.Schedule(
+	threadPool.Schedule(
 			boost::bind(&google::protobuf::Service::CallMethod, method_info->service,
 					response_handler->Method(), (google::protobuf::RpcController*)(NULL),
 					response_handler->Request(), response_handler->Response(),

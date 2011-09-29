@@ -5,12 +5,12 @@
 namespace Egametang {
 
 ResponseHandler::ResponseHandler(
-		MethodInfoPtr& method_info, std::size_t id, MessageHandler& message_handler):
-		id(id), message_handler(message_handler)
+		MethodInfoPtr& methodInfo, std::size_t id, MessageHandler& messageHandler):
+		id(id), messageHandler(messageHandler)
 {
-	method = method_info->method_descriptor;
-	request = method_info->request_prototype->New();
-	response = method_info->response_prototype->New();
+	method = methodInfo->methodDescriptor;
+	request = methodInfo->requestPrototype->New();
+	response = methodInfo->responsePrototype->New();
 }
 
 ResponseHandler::~ResponseHandler()
@@ -41,7 +41,7 @@ void ResponseHandler::Run()
 	response->SerializeToString(message.get());
 	meta->id = id;
 	meta->size = message->size();
-	message_handler(meta, message);
+	messageHandler(meta, message);
 }
 
 } // namespace Egametang

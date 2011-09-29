@@ -11,15 +11,15 @@ namespace Egametang {
 class RpcSessionTest: public testing::Test
 {
 protected:
-	boost::asio::io_service io_service;
+	boost::asio::io_service ioService;
 	int port;
-	RpcServerMock mock_server;
+	RpcServerMock mockServer;
 	RpcSession session;
 
 public:
 	RpcSessionTest():
-		io_service(), port(10000),
-		mock_server(io_service, port), session(io_service, mock_server)
+		ioService(), port(10000),
+		mockServer(ioService, port), session(ioService, mockServer)
 	{
 	}
 

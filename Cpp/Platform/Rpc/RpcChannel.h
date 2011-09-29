@@ -21,8 +21,8 @@ private:
 	typedef boost::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
 
 	std::size_t id;
-	RequestHandlerMap request_handlers;
-	bool is_stopped;
+	RequestHandlerMap requestHandlers;
+	bool isStopped;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 

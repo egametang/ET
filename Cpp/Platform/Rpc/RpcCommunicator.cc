@@ -7,7 +7,7 @@
 namespace Egametang {
 
 RpcCommunicator::RpcCommunicator(boost::asio::io_service& service):
-		io_service(service), socket(service)
+		ioService(service), socket(service)
 {
 }
 

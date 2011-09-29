@@ -37,7 +37,7 @@ struct RpcMeta
 class RpcCommunicator: public boost::noncopyable
 {
 private:
-	boost::asio::io_service& io_service;
+	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::socket socket;
 
 public:

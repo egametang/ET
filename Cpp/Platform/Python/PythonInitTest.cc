@@ -11,10 +11,10 @@ using namespace boost::python;
 class PythonInitTest: public testing::Test
 {
 protected:
-	PythonInit python_init;
+	PythonInit python;
 
 public:
-	PythonInitTest(): python_init()
+	PythonInitTest(): python()
 	{
 	}
 

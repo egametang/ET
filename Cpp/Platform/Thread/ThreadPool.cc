@@ -4,19 +4,19 @@
 namespace Egametang {
 
 ThreadPool::ThreadPool(int num) :
-	thread_num(num), running(true), work_num(0)
+	threadNum(num), running(true), workNum(0)
 {
 	if (num == 0)
 	{
-		thread_num = boost::thread::hardware_concurrency();
+		threadNum = boost::thread::hardware_concurrency();
 	}
-	for (int i = 0; i < thread_num; ++i)
+	for (int i = 0; i < threadNum; ++i)
 	{
 		ThreadPtr t(new boost::thread(
 				boost::bind(&ThreadPool::Runner, this)));
 		threads.push_back(t);
 		t->detach();
-		++work_num;
+		++workNum;
 	}
 }
 
@@ -29,7 +29,7 @@ void ThreadPool::Wait()
 	boost::mutex::scoped_lock lock(mutex);
 	running = false;
 	cond.notify_all();
-	while (work_num > 0)
+	while (workNum > 0)
 	{
 		done.wait(lock);
 	}
@@ -60,7 +60,7 @@ void ThreadPool::Runner()
 			task();
 		}
 	}
-	if (--work_num == 0)
+	if (--workNum == 0)
 	{
 		done.notify_one();
 	}

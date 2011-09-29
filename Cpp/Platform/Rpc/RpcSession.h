@@ -14,14 +14,14 @@ class RpcServer;
 class RpcSession: public RpcCommunicator, public boost::enable_shared_from_this<RpcSession>
 {
 private:
-	RpcServer& rpc_server;
-	bool is_stopped;
+	RpcServer& rpcServer;
+	bool isStopped;
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message);
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
 public:
-	RpcSession(boost::asio::io_service& io_service, RpcServer& server);
+	RpcSession(boost::asio::io_service& ioService, RpcServer& server);
 	~RpcSession();
 	void Start();
 	virtual void Stop();

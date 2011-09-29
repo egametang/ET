@@ -9,8 +9,8 @@
 
 namespace Egametang {
 
-RpcChannel::RpcChannel(boost::asio::io_service& io_service, std::string host, int port):
-		RpcCommunicator(io_service), id(0)
+RpcChannel::RpcChannel(boost::asio::io_service& ioService, std::string host, int port):
+		RpcCommunicator(ioService), id(0)
 {
 	// another thread?
 	boost::asio::ip::address address;
@@ -32,24 +32,24 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 		LOG(ERROR) << "async connect failed: " << err.message();
 		return;
 	}
-	RpcMetaPtr recv_meta(new RpcMeta());
-	StringPtr recv_message(new std::string);
-	RecvMeta(recv_meta, recv_message);
+	RpcMetaPtr recvMeta(new RpcMeta());
+	StringPtr recvMessage(new std::string);
+	RecvMeta(recvMeta, recvMessage);
 }
 
 void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RequestHandlerPtr request_handler = request_handlers[meta->id];
-	request_handlers.erase(meta->id);
+	RequestHandlerPtr requestHandler = requestHandlers[meta->id];
+	requestHandlers.erase(meta->id);
 
-	request_handler->Response()->ParseFromString(*message);
+	requestHandler->Response()->ParseFromString(*message);
 
 	// meta和message可以循环利用
 	RecvMeta(meta, message);
 	// 回调放在函数最后.如果RecvMeta()放在回调之后,
 	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
 	// 网络就终止了
-	request_handler->Run();
+	requestHandler->Run();
 }
 
 void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
@@ -58,11 +58,11 @@ void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcChannel::Stop()
 {
-	if (is_stopped)
+	if (isStopped)
 	{
 		return;
 	}
-	is_stopped = true;
+	isStopped = true;
 	socket.close();
 }
 
@@ -74,16 +74,16 @@ void RpcChannel::CallMethod(
 		google::protobuf::Closure* done)
 {
 	RequestHandlerPtr request_handler(new RequestHandler(response, done));
-	request_handlers[++id] = request_handler;
+	requestHandlers[++id] = request_handler;
 
-	boost::hash<std::string> string_hash;
+	boost::hash<std::string> stringHash;
 
 	StringPtr message(new std::string);
 	request->SerializePartialToString(message.get());
 	RpcMetaPtr meta(new RpcMeta());
 	meta->size = message->size();
 	meta->id = id;
-	meta->method = string_hash(method->full_name());
+	meta->method = stringHash(method->full_name());
 	SendMeta(meta, message);
 }
 

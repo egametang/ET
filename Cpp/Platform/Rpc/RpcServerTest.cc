@@ -34,20 +34,20 @@ public:
 	}
 };
 
-static void IOServiceRun(boost::asio::io_service* io_service)
+static void IOServiceRun(boost::asio::io_service* ioService)
 {
-	io_service->run();
+	ioService->run();
 }
 
 class RpcServerTest: public testing::Test
 {
 protected:
-	boost::asio::io_service io_client;
-	boost::asio::io_service io_server;
+	boost::asio::io_service ioClient;
+	boost::asio::io_service ioServer;
 	int port;
 
 public:
-	RpcServerTest(): io_client(), io_server(), port(10003)
+	RpcServerTest(): ioClient(), ioServer(), port(10003)
 	{
 	}
 
@@ -58,16 +58,16 @@ public:
 
 TEST_F(RpcServerTest, ChannelAndServer)
 {
-	ThreadPool thread_pool(2);
+	ThreadPool threadPool(2);
 
-	RpcServicePtr echo_sevice(new MyEcho);
+	RpcServicePtr echoSevice(new MyEcho);
 
-	RpcServerPtr server(new RpcServer(io_server, port));
+	RpcServerPtr server(new RpcServer(ioServer, port));
 	// 注册service
-	server->Register(echo_sevice);
+	server->Register(echoSevice);
 	ASSERT_EQ(1U, server->methods.size());
 
-	RpcChannelPtr channel(new RpcChannel(io_client, "127.0.0.1", port));
+	RpcChannelPtr channel(new RpcChannel(ioClient, "127.0.0.1", port));
 	EchoService_Stub service(channel.get());
 
 	// 定义消息
@@ -77,8 +77,8 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	ASSERT_EQ(0U, response.num());
 
 	// server和client分别在两个不同的线程
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server));
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_client));
+	threadPool.Schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.Schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;
 	service.Echo(NULL, &request, &response,
@@ -86,15 +86,15 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	barrier.Wait();
 
 	// 加入到io线程
-	io_client.post(boost::bind(&RpcChannel::Stop, channel));
-	io_server.post(boost::bind(&RpcServer::Stop, server));
+	ioClient.post(boost::bind(&RpcChannel::Stop, channel));
+	ioServer.post(boost::bind(&RpcServer::Stop, server));
 
 	// 加入任务队列,等channel和server stop,io_service才stop
-	io_client.post(boost::bind(&boost::asio::io_service::stop, &io_client));
-	io_server.post(boost::bind(&boost::asio::io_service::stop, &io_server));
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
 	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
-	thread_pool.Wait();
+	threadPool.Wait();
 
 	ASSERT_EQ(100, response.num());
 }

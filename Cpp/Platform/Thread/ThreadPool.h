@@ -14,8 +14,8 @@ namespace Egametang {
 class ThreadPool: private boost::noncopyable
 {
 private:
-	int thread_num;
-	boost::detail::atomic_count work_num;
+	int threadNum;
+	boost::detail::atomic_count workNum;
 	volatile bool running;
 	boost::mutex mutex;
 	boost::condition_variable cond;

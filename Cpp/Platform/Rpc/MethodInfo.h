@@ -10,15 +10,15 @@ namespace Egametang {
 struct MethodInfo
 {
 	RpcServicePtr service;
-	const google::protobuf::MethodDescriptor* method_descriptor;
-	const google::protobuf::Message* request_prototype;
-	const google::protobuf::Message* response_prototype;
+	const google::protobuf::MethodDescriptor* methodDescriptor;
+	const google::protobuf::Message* requestPrototype;
+	const google::protobuf::Message* responsePrototype;
 
 	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* method_descriptor):
-		service(service), method_descriptor(method_descriptor)
+		service(service), methodDescriptor(method_descriptor)
 	{
-		request_prototype = &service->GetRequestPrototype(method_descriptor);
-		response_prototype = &service->GetResponsePrototype(method_descriptor);
+		requestPrototype = &service->GetRequestPrototype(method_descriptor);
+		responsePrototype = &service->GetResponsePrototype(method_descriptor);
 	}
 };
 

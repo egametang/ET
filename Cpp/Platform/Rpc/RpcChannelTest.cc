@@ -17,8 +17,8 @@ public:
 	boost::asio::ip::tcp::acceptor acceptor;
 
 public:
-	RpcServerTest(boost::asio::io_service& io_service, int port, CountBarrier& barrier):
-		RpcCommunicator(io_service), acceptor(io_service),
+	RpcServerTest(boost::asio::io_service& ioService, int port, CountBarrier& barrier):
+		RpcCommunicator(ioService), acceptor(ioService),
 		barrier(barrier), num(0)
 	{
 		boost::asio::ip::address address;
@@ -63,13 +63,13 @@ public:
 		EchoResponse response;
 		response.set_num(num);
 
-		StringPtr response_message(new std::string);
-		response.SerializeToString(response_message.get());
-		VLOG(3) << "response message: " << response_message->size();
-		RpcMetaPtr response_meta(new RpcMeta());
-		response_meta->id = meta->id;
-		response_meta->size = response_message->size();
-		SendMeta(response_meta, response_message);
+		StringPtr responseMessage(new std::string);
+		response.SerializeToString(responseMessage.get());
+		VLOG(3) << "response message: " << responseMessage->size();
+		RpcMetaPtr responseMeta(new RpcMeta());
+		responseMeta->id = meta->id;
+		responseMeta->size = responseMessage->size();
+		SendMeta(responseMeta, responseMessage);
 	}
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message)
 	{
@@ -91,24 +91,24 @@ public:
 	}
 };
 
-static void IOServiceRun(boost::asio::io_service* io_service)
+static void IOServiceRun(boost::asio::io_service* ioService)
 {
-	io_service->run();
+	ioService->run();
 }
 
 TEST_F(RpcChannelTest, Echo)
 {
-	boost::asio::io_service io_server;
-	boost::asio::io_service io_client;
+	boost::asio::io_service ioServer;
+	boost::asio::io_service ioClient;
 
 	CountBarrier barrier(2);
-	RpcServerTest server(io_server, port, barrier);
-	RpcChannelPtr channel(new RpcChannel(io_client, "127.0.0.1", port));
+	RpcServerTest server(ioServer, port, barrier);
+	RpcChannelPtr channel(new RpcChannel(ioClient, "127.0.0.1", port));
 	EchoService_Stub service(channel.get());
-	
-	ThreadPool thread_pool(2);
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_server));
-	thread_pool.Schedule(boost::bind(&IOServiceRun, &io_client));
+
+	ThreadPool threadPool(2);
+	threadPool.Schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.Schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	EchoRequest request;
 	request.set_num(100);
@@ -121,10 +121,10 @@ TEST_F(RpcChannelTest, Echo)
 	barrier.Wait();
 	channel->Stop();
 	server.Stop();
-	io_server.stop();
-	io_client.stop();
+	ioServer.stop();
+	ioClient.stop();
 	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
-	thread_pool.Wait();
+	threadPool.Wait();
 
 	ASSERT_EQ(100, response.num());
 }

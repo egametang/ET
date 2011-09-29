@@ -7,40 +7,40 @@
 namespace Egametang {
 
 PythonInterpreter::PythonInterpreter():
-		python_init()
+		python()
 {
-	main_ns = boost::python::import("__main__").attr("__dict__");
+	mainNS = boost::python::import("__main__").attr("__dict__");
 }
 
 void PythonInterpreter::ImportPath(std::string path)
 {
-	python_paths.insert(path);
+	paths.insert(path);
 }
 
 void PythonInterpreter::ImportModule(std::string module)
 {
-	python_modules.insert(module);
+	modules.insert(module);
 }
 
 bool PythonInterpreter::GetExecString(const std::string& main_fun, std::string& exec_string)
 {
 	exec_string = "import sys\n";
-	if (python_paths.size() == 0)
+	if (paths.size() == 0)
 	{
 		LOG(WARNING) << "no python path";
 		return false;
 	}
-	foreach (std::string path, python_paths)
+	foreach (std::string path, paths)
 	{
 		exec_string += boost::str(boost::format("sys.path.append('%1%')\n") % path);
 	}
 
-	if (python_modules.size() == 0)
+	if (modules.size() == 0)
 	{
 		LOG(WARNING) << "no python module";
 		return false;
 	}
-	foreach (std::string module, python_modules)
+	foreach (std::string module, modules)
 	{
 		exec_string += boost::str(boost::format("import %1%\n") % module);
 	}
@@ -60,12 +60,12 @@ void PythonInterpreter::Execute(std::string main_fun)
 
 	try
 	{
-		boost::python::exec(exec_string.c_str(), main_ns);
+		boost::python::exec(exec_string.c_str(), mainNS);
 	}
 	catch (...)
 	{
 		LOG(ERROR) << "python execute error";
-		python_init.PrintError();
+		python.PrintError();
 	}
 }
 

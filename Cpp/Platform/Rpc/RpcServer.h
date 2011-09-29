@@ -17,21 +17,21 @@ private:
 	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
 	typedef boost::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
 
-	boost::asio::io_service& io_service;
+	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::acceptor acceptor;
-	ThreadPool thread_pool;
+	ThreadPool threadPool;
 	RpcSessionSet sessions;
 	MethodMap methods;
 
 	void OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err);
-	void OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr response_handler);
+	void OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler);
 
 public:
 	RpcServer(boost::asio::io_service& service, int port);
 	virtual ~RpcServer();
 
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
-			StringPtr message, MessageHandler handler);
+			StringPtr message, MessageHandler messageHandler);
 	virtual void Register(RpcServicePtr service);
 	virtual void Remove(RpcSessionPtr& session);
 	virtual void Stop();

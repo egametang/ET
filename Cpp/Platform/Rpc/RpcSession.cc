@@ -5,8 +5,8 @@
 
 namespace Egametang {
 
-RpcSession::RpcSession(boost::asio::io_service& io_service, RpcServer& server):
-		RpcCommunicator(io_service), rpc_server(server), is_stopped(false)
+RpcSession::RpcSession(boost::asio::io_service& ioService, RpcServer& server):
+		RpcCommunicator(ioService), rpcServer(server), isStopped(false)
 {
 }
 
@@ -18,7 +18,7 @@ RpcSession::~RpcSession()
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
 	RpcSessionPtr session = shared_from_this();
-	rpc_server.RunService(session, meta, message,
+	rpcServer.RunService(session, meta, message,
 			boost::bind(&RpcSession::SendMeta, session, _1, _2));
 
 	// 可以循环利用
@@ -38,13 +38,13 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
-	if (is_stopped)
+	if (isStopped)
 	{
 		return;
 	}
-	is_stopped = true;
+	isStopped = true;
 	RpcSessionPtr session = shared_from_this();
-	rpc_server.Remove(session);
+	rpcServer.Remove(session);
 }
 
 } // namespace Egametang
