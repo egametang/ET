@@ -1,5 +1,5 @@
-#ifndef RPC_RPCCHANNEL_H
-#define RPC_RPCCHANNEL_H
+#ifndef RPC_RPCCLIENT_H
+#define RPC_RPCCLIENT_H
 
 #include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
@@ -13,16 +13,15 @@ namespace Egametang {
 
 class RpcHandler;
 
-class RpcChannel:
+class RpcClient:
 	public google::protobuf::RpcChannel, public RpcCommunicator,
-	public boost::enable_shared_from_this<RpcChannel>
+	public boost::enable_shared_from_this<RpcClient>
 {
 private:
 	typedef boost::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
 
 	std::size_t id;
 	RequestHandlerMap requestHandlers;
-	bool isStopped;
 
 	void OnAsyncConnect(const boost::system::error_code& err);
 
@@ -30,9 +29,8 @@ private:
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message);
 
 public:
-	RpcChannel(boost::asio::io_service& service, std::string host, int port);
-	~RpcChannel();
-	virtual void Stop();
+	RpcClient(boost::asio::io_service& service, std::string host, int port);
+	~RpcClient();
 	virtual void CallMethod(
 			const google::protobuf::MethodDescriptor* method,
 			google::protobuf::RpcController* controller,
@@ -43,4 +41,4 @@ public:
 
 } // namespace Egametang
 
-#endif // RPC_RPCCHANNEL_H
+#endif // RPC_RPCCLIENT_H

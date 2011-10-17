@@ -14,7 +14,7 @@ typedef boost::shared_ptr<google::protobuf::Message> RpcMessagePtr;
 // rpc
 class RpcServer;
 class RpcSession;
-class RpcChannel;
+class RpcClient;
 class RequestHandler;
 class MethodInfo;
 class RpcMeta;
@@ -22,7 +22,7 @@ class ResponseHandler;
 
 typedef boost::shared_ptr<RpcServer> 	              RpcServerPtr;
 typedef boost::shared_ptr<RpcSession>                 RpcSessionPtr;
-typedef boost::shared_ptr<RpcChannel>                 RpcChannelPtr;
+typedef boost::shared_ptr<RpcClient>                  RpcClientPtr;
 typedef boost::shared_ptr<MethodInfo>                 MethodInfoPtr;
 typedef boost::shared_ptr<RpcMeta> 	                  RpcMetaPtr;
 typedef boost::shared_ptr<RequestHandler>             RequestHandlerPtr;

@@ -7,7 +7,7 @@ SET(RpcSrc
 	RpcController.cc
 	RequestHandler.cc
 	ResponseHandler.cc
-	RpcChannel.cc
+	RpcClient.cc
 	RpcServer.cc
 	RpcSession.cc
 	${proto_srcs}
@@ -17,13 +17,13 @@ SET(RpcSrc
 ADD_LIBRARY(Rpc ${RpcSrc})
 
 ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
-ADD_EXECUTABLE(RpcChannelTest RpcChannelTest.cc)
+ADD_EXECUTABLE(RpcClientTest RpcClientTest.cc)
 ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
 ADD_EXECUTABLE(RpcServerTest RpcServerTest.cc)
 
 SET(Excutes 
 	RpcCommunicatorTest
-	RpcChannelTest
+	RpcClientTest
 	RpcSessionTest
 	RpcServerTest
 )

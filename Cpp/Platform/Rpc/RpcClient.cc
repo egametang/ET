@@ -4,12 +4,12 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include "Rpc/RpcCommunicator.h"
-#include "Rpc/RpcChannel.h"
+#include "Rpc/RpcClient.h"
 #include "Rpc/RequestHandler.h"
 
 namespace Egametang {
 
-RpcChannel::RpcChannel(boost::asio::io_service& ioService, std::string host, int port):
+RpcClient::RpcClient(boost::asio::io_service& ioService, std::string host, int port):
 		RpcCommunicator(ioService), id(0)
 {
 	// another thread?
@@ -17,15 +17,15 @@ RpcChannel::RpcChannel(boost::asio::io_service& ioService, std::string host, int
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	socket.async_connect(endpoint,
-			boost::bind(&RpcChannel::OnAsyncConnect, this,
+			boost::bind(&RpcClient::OnAsyncConnect, this,
 					boost::asio::placeholders::error));
 }
 
-RpcChannel::~RpcChannel()
+RpcClient::~RpcClient()
 {
 }
 
-void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
+void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 {
 	if (err)
 	{
@@ -37,7 +37,7 @@ void RpcChannel::OnAsyncConnect(const boost::system::error_code& err)
 	RecvMeta(recvMeta, recvMessage);
 }
 
-void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
+void RpcClient::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
 	RequestHandlerPtr requestHandler = requestHandlers[meta->id];
 	requestHandlers.erase(meta->id);
@@ -52,21 +52,11 @@ void RpcChannel::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	requestHandler->Run();
 }
 
-void RpcChannel::OnSendMessage(RpcMetaPtr meta, StringPtr message)
+void RpcClient::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 {
 }
 
-void RpcChannel::Stop()
-{
-	if (isStopped)
-	{
-		return;
-	}
-	isStopped = true;
-	socket.close();
-}
-
-void RpcChannel::CallMethod(
+void RpcClient::CallMethod(
 		const google::protobuf::MethodDescriptor* method,
 		google::protobuf::RpcController* controller,
 		const google::protobuf::Message* request,

@@ -6,13 +6,12 @@
 namespace Egametang {
 
 RpcSession::RpcSession(boost::asio::io_service& ioService, RpcServer& server):
-		RpcCommunicator(ioService), rpcServer(server), isStopped(false)
+		RpcCommunicator(ioService), rpcServer(server)
 {
 }
 
 RpcSession::~RpcSession()
 {
-	socket.close();
 }
 
 void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -38,11 +37,6 @@ void RpcSession::Start()
 
 void RpcSession::Stop()
 {
-	if (isStopped)
-	{
-		return;
-	}
-	isStopped = true;
 	RpcSessionPtr session = shared_from_this();
 	rpcServer.Remove(session);
 }

@@ -7,12 +7,17 @@
 namespace Egametang {
 
 RpcCommunicator::RpcCommunicator(boost::asio::io_service& service):
-		ioService(service), socket(service)
+		isStopped(false), ioService(service), socket(service)
 {
 }
 
 RpcCommunicator::~RpcCommunicator()
 {
+	if (isStopped)
+	{
+		return;
+	}
+	socket.close();
 }
 
 boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
@@ -22,6 +27,11 @@ boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 
 void RpcCommunicator::Stop()
 {
+	if (isStopped)
+	{
+		return;
+	}
+	isStopped = true;
 	socket.close();
 }
 

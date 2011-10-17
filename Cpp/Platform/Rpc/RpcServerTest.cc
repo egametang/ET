@@ -7,7 +7,7 @@
 #include <google/protobuf/service.h>
 #include "Thread/CountBarrier.h"
 #include "Thread/ThreadPool.h"
-#include "Rpc/RpcChannel.h"
+#include "Rpc/RpcClient.h"
 #include "Rpc/RpcServer.h"
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServerMock.h"
@@ -56,7 +56,7 @@ public:
 	}
 };
 
-TEST_F(RpcServerTest, ChannelAndServer)
+TEST_F(RpcServerTest, ClientAndServer)
 {
 	ThreadPool threadPool(2);
 
@@ -67,8 +67,8 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	server->Register(echoSevice);
 	ASSERT_EQ(1U, server->methods.size());
 
-	RpcChannelPtr channel(new RpcChannel(ioClient, "127.0.0.1", port));
-	EchoService_Stub service(channel.get());
+	RpcClientPtr client(new RpcClient(ioClient, "127.0.0.1", port));
+	EchoService_Stub service(client.get());
 
 	// 定义消息
 	EchoRequest request;
@@ -86,14 +86,14 @@ TEST_F(RpcServerTest, ChannelAndServer)
 	barrier.Wait();
 
 	// 加入到io线程
-	ioClient.post(boost::bind(&RpcChannel::Stop, channel));
+	ioClient.post(boost::bind(&RpcClient::Stop, client));
 	ioServer.post(boost::bind(&RpcServer::Stop, server));
 
-	// 加入任务队列,等channel和server stop,io_service才stop
+	// 加入任务队列,等client和server stop,io_service才stop
 	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
 	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
-	// rpc_channel是个无限循环的操作, 必须主动让channel和server stop才能wait线程
+	// 必须主动让client和server stop才能wait线程
 	threadPool.Wait();
 
 	ASSERT_EQ(100, response.num());
