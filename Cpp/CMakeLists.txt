@@ -5,9 +5,10 @@ SET(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 
 PROJECT(Cpp)
 
-OPTION(BUILD_TESTS "Decide if the test suite shall be built or not" ON)
+OPTION(TESTS "Decide if the test suite shall be built or not" ON)
+OPTION(PROFILE "Use Google Perftool Profile" OFF)
 
-IF(BUILD_TESTS)
+IF(TESTS)
 	ENABLE_TESTING()
 ENDIF()
 
@@ -53,6 +54,10 @@ set(ThirdPartyLibs
 	${PYTHON_LIBRARIES}
 	${PERFTOOLS_DEBUG_LIBRARIES}
 )
+
+IF(PROFILE)
+    set(ThirdPartyLibs ${ThirdPartyLibs} ${PERFTOOLS_PROFILE_LIBRARIES})
+ENDIF()
 
 ADD_SUBDIRECTORY(Platform)
 ADD_SUBDIRECTORY(Game)
