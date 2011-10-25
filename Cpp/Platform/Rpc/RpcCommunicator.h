@@ -12,15 +12,13 @@
 
 namespace Egametang {
 
-struct RpcMeta
+class RpcMeta
 {
-	// message长度
+public:
 	std::size_t size;
 
-	// 消息id, 用于处理异步回调
 	std::size_t id;
 
-	// 消息opcode, 是proto的full_path哈希值
 	std::size_t method;
 
 	RpcMeta(): size(0), id(0), method(0)

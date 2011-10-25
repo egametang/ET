@@ -7,8 +7,9 @@
 
 namespace Egametang {
 
-struct MethodInfo
+class MethodInfo
 {
+public:
 	RpcServicePtr service;
 	const google::protobuf::MethodDescriptor* methodDescriptor;
 	const google::protobuf::Message* requestPrototype;

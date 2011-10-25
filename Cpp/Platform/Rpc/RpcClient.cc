@@ -46,7 +46,7 @@ void RpcClient::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 
 	// meta和message可以循环利用
 	RecvMeta(meta, message);
-	// 回调放在函数最后.如果RecvMeta()放在回调之后,
+	// 回调放在函数最.如果RecvMeta()放在回调之后,
 	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
 	// 网络就终止了
 	requestHandler->Run();

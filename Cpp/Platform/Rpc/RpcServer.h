@@ -4,6 +4,7 @@
 #include <boost/function.hpp>
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <google/protobuf/service.h>
 #include "Base/Marcos.h"
 #include "Thread/ThreadPool.h"

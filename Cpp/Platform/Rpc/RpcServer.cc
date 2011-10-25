@@ -52,7 +52,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler)
 {
-	// 调度到网络线程
+	// 调度到网络线
 	session->Socket().get_io_service().post(
 			boost::bind(&ResponseHandler::Run, responseHandler));
 }

@@ -1,6 +1,7 @@
 #include <glog/logging.h>
 #include "Base/Typedef.h"
 #include "BehaviorTree/NotNode.h"
+#include "BehaviorTree/EventDefine.h"
 #include "BehaviorTree/SequenceNode.h"
 #include "BehaviorTree/SelectorNode.h"
 #include "BehaviorTree/BuffType.h"

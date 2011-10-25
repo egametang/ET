@@ -1,10 +1,11 @@
 #ifndef RPC_RPCCLIENT_H
 #define RPC_RPCCLIENT_H
 
-#include <google/protobuf/service.h>
 #include <boost/unordered_map.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
+#include <google/protobuf/service.h>
 #include "Base/Typedef.h"
 #include "Rpc/RpcTypedef.h"
 #include "Rpc/RpcCommunicator.h"
