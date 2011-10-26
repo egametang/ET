@@ -12,11 +12,13 @@
 
 namespace Egametang {
 
+typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
+typedef boost::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
+
 class RpcServer: public boost::noncopyable, public boost::enable_shared_from_this<RpcServer>
 {
 private:
-	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
-	typedef boost::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
+	friend class RpcServerTest;
 
 	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::acceptor acceptor;

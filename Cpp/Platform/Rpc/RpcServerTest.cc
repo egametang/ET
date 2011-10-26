@@ -54,6 +54,11 @@ public:
 	virtual ~RpcServerTest()
 	{
 	}
+
+	MethodMap& GetMethodMap(RpcServerPtr server)
+	{
+		return server->methods;
+	}
 };
 
 TEST_F(RpcServerTest, ClientAndServer)
@@ -65,7 +70,7 @@ TEST_F(RpcServerTest, ClientAndServer)
 	RpcServerPtr server(new RpcServer(ioServer, port));
 	// 注册service
 	server->Register(echoSevice);
-	ASSERT_EQ(1U, server->methods.size());
+	ASSERT_EQ(1U, GetMethodMap(server).size());
 
 	RpcClientPtr client(new RpcClient(ioClient, "127.0.0.1", port));
 	EchoService_Stub service(client.get());

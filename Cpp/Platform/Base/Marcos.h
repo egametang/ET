@@ -3,8 +3,4 @@
 
 #define foreach BOOST_FOREACH
 
-#define private public
-
-#define protected public
-
 #endif // BASE_MARCOS_H
