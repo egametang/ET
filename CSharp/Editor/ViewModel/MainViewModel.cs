@@ -33,14 +33,12 @@ namespace Editor.ViewModel
 			{
 				return welcomeTitle;
 			}
-
 			set
 			{
 				if (welcomeTitle == value)
 				{
 					return;
 				}
-
 				welcomeTitle = value;
 				RaisePropertyChanged(WelcomeTitlePropertyName);
 			}
@@ -52,24 +50,20 @@ namespace Editor.ViewModel
 		public MainViewModel(IDataService dataService)
 		{
 			this.dataService = dataService;
-			this.dataService.GetData(
-				(item, error) =>
+			dataService.GetData((item, error) =>
 				{
 					if (error != null)
 					{
 						// Report error here
 						return;
 					}
-
 					WelcomeTitle = item.Title;
 				});
 		}
 
-		////public override void Cleanup()
-		////{
-		////    // Clean up if needed
-
-		////    base.Cleanup();
-		////}
+		public override void Cleanup()
+		{
+		    base.Cleanup();
+		}
 	}
 }

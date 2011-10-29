@@ -3,10 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		mc:Ignorable="d"
-		Height="600"
-		Width="800"
-		Title=""
+		xmlns:v="clr-namespace:Editor.View"
+		mc:Ignorable="d" Height="600" Width="800" Title="MVVM Light Application"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
 
 	<Window.Resources>
@@ -17,8 +15,11 @@
 		</ResourceDictionary>
 	</Window.Resources>
 
-	<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" FlowDirection="LeftToRight" BorderThickness="0">
-		<TabItem Header="Main" Name="mainTabItem" Padding="10,2" Margin="0">
-		</TabItem>
-	</TabControl>
+	<Grid x:Name="LayoutRoot">
+		<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+			<TabItem Header="Main" Name="mainTabItem">
+				<v:MainView />
+			</TabItem>
+		</TabControl>
+	</Grid>
 </Window>
