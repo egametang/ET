@@ -1,64 +1,63 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.Windows.Threading;
 using Editor.Model;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Threading;
 
 namespace Editor.ViewModel
 {
-	/// <summary>
-	/// This class contains properties that the main View can data bind to.
-	/// <para>
-	/// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-	/// </para>
-	/// <para>
-	/// See http://www.galasoft.ch/mvvm/getstarted
-	/// </para>
-	/// </summary>
 	public class MainViewModel : ViewModelBase
 	{
 		private readonly IDataService dataService;
+		private string loginResult = "";
 
-		/// <summary>
-		/// The <see cref="WelcomeTitle" /> property's name.
-		/// </summary>
-		public const string WelcomeTitlePropertyName = "WelcomeTitle";
-
-		private string welcomeTitle = string.Empty;
-
-		/// <summary>
-		/// Gets the WelcomeTitle property.
-		/// Changes to that property's value raise the PropertyChanged event. 
-		/// </summary>
-		public string WelcomeTitle
-		{
-			get
-			{
-				return welcomeTitle;
-			}
-			set
-			{
-				if (welcomeTitle == value)
-				{
-					return;
-				}
-				welcomeTitle = value;
-				RaisePropertyChanged(WelcomeTitlePropertyName);
-			}
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the MainViewModel class.
-		/// </summary>
 		public MainViewModel(IDataService dataService)
 		{
 			this.dataService = dataService;
-			dataService.GetData((item, error) =>
+			LoginCmd = new RelayCommand(AsyncLogin);
+		}
+
+		public string LoginResult
+		{
+			get
+			{
+				return loginResult;
+			}
+			set
+			{
+				if (loginResult == value)
 				{
-					if (error != null)
-					{
-						// Report error here
-						return;
-					}
-					WelcomeTitle = item.Title;
-				});
+					return;
+				}
+				loginResult = value;
+				RaisePropertyChanged("LoginResult");
+			}
+		}
+
+		public RelayCommand LoginCmd
+		{
+			get;
+			private set;
+		}
+
+		private void AsyncLogin()
+		{
+			Action showLoginResult = () =>
+				{
+					LoginResult = "Login OK!";
+				};
+			AsyncCallback callback = (obj) =>
+				{
+					DispatcherHelper.UIDispatcher.BeginInvoke(
+						DispatcherPriority.Normal, showLoginResult);
+				};
+
+			Action asynLogin = () =>
+				{
+					
+				};
+			asynLogin.BeginInvoke(callback, null);
 		}
 
 		public override void Cleanup()

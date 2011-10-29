@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
+using System.ComponentModel;
 
 namespace Editor
 {

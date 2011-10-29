@@ -6,15 +6,6 @@
 		xmlns:v="clr-namespace:Editor.View"
 		mc:Ignorable="d" Height="600" Width="800" Title="MVVM Light Application"
 		DataContext="{Binding Main, Source={StaticResource Locator}}">
-
-	<Window.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Skins/MainSkin.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Window.Resources>
-
 	<Grid x:Name="LayoutRoot">
 		<TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
 			<TabItem Header="Main" Name="mainTabItem">
