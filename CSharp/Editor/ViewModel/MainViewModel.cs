@@ -4,6 +4,7 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
+using System.Threading;
 
 namespace Egametang
 {
@@ -45,7 +46,6 @@ namespace Egametang
 		{
 			var task = new Task(() =>
 			{
-				App.Logger.Debug("11111");
 			});
 			task.ContinueWith(_ =>
 			{
