@@ -45,7 +45,7 @@ namespace Egametang
 		{
 			var task = new Task(() =>
 			{
-
+				App.Logger.Debug("11111");
 			});
 			task.ContinueWith(_ =>
 			{
@@ -54,8 +54,8 @@ namespace Egametang
 					{
 						LoginResult = "Login OK!";
 					}));
-			}, App.OrderedTaskScheduler);
-			task.Start();
+			});
+			task.Start(App.OrderedTaskScheduler);
 		}
 
 		public override void Cleanup()

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks.Schedulers;
 using System.Windows;
 using GalaSoft.MvvmLight.Threading;
+using NLog;
 
 namespace Egametang
 {
@@ -13,9 +14,16 @@ namespace Egametang
 		{
 			DispatcherHelper.Initialize();
 			OrderedTaskScheduler = new OrderedTaskScheduler();
+			Logger = LogManager.GetLogger("Editor");
 		}
 
 		public static OrderedTaskScheduler OrderedTaskScheduler
+		{
+			get;
+			private set;
+		}
+
+		public static Logger Logger
 		{
 			get;
 			private set;
