@@ -4,42 +4,42 @@ using System.Windows.Threading;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Threading;
-using System.Threading;
 
 namespace Egametang
 {
 	public class MainViewModel : ViewModelBase
 	{
-		private readonly IDataService dataService;
-		private string loginResult = "";
+		private Main main = new Main();
+		private RelayCommand loginCmd = null;
 
-		public MainViewModel(IDataService dataService)
+		public MainViewModel()
 		{
-			this.dataService = dataService;
-			LoginCmd = new RelayCommand(AsyncLogin);
+			loginCmd = new RelayCommand(AsyncLogin);
 		}
 
 		public string LoginResult
 		{
 			get
 			{
-				return loginResult;
+				return main.LoginResult;
 			}
 			set
 			{
-				if (loginResult == value)
+				if (main.LoginResult == value)
 				{
 					return;
 				}
-				loginResult = value;
+				main.LoginResult = value;
 				RaisePropertyChanged("LoginResult");
 			}
 		}
 
 		public RelayCommand LoginCmd
 		{
-			get;
-			private set;
+			get
+			{
+				return loginCmd;
+			}
 		}
 
 		private void AsyncLogin()

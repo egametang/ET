@@ -5,7 +5,16 @@ using System.Text;
 
 namespace Egametang
 {
-	public interface IDataService
+	public class Main
 	{
+		public Main()
+		{
+			LoginResult = "";
+		}
+		public string LoginResult
+		{
+			get;
+			set;
+		}
 	}
 }
