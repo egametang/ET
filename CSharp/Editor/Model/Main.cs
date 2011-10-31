@@ -7,14 +7,21 @@ namespace Egametang
 {
 	public class Main
 	{
+		private string loginResult = "";
+
 		public Main()
 		{
-			LoginResult = "";
 		}
 		public string LoginResult
 		{
-			get;
-			set;
+			get
+			{
+				return loginResult;
+			}
+			set
+			{
+				loginResult = value;
+			}
 		}
 	}
 }
