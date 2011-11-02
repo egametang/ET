@@ -8,11 +8,14 @@ namespace Egametang
 	public class Main
 	{
 		private string loginResult = "";
+		private string username = "";
+		private string password = "";
 
 		public Main()
 		{
 		}
-		public string LoginResult
+
+		public string LoginInfo
 		{
 			get
 			{
@@ -21,6 +24,30 @@ namespace Egametang
 			set
 			{
 				loginResult = value;
+			}
+		}
+
+		public string Username
+		{
+			get
+			{
+				return username;
+			}
+			set
+			{
+				username = value;
+			}
+		}
+
+		public string Password
+		{
+			get
+			{
+				return password;
+			}
+			set
+			{
+				password = value;
 			}
 		}
 	}

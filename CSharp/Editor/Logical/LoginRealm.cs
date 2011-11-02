@@ -7,22 +7,22 @@ using System.Text;
 
 namespace Egametang
 {
-	enum RealmOpcode
+	enum RealmLoginState: byte
 	{
-		REALM_AUTH_LOGON_CHALLENGE = 0x0000,
-		REALM_AUTH_LOGON_PROOF = 0x0001,
-		AUTH_RECONNECT_CHALLENGE = 0x02,
-		AUTH_RECONNECT_PROOF = 0x03,
-		AUTH_LOGON_PERMIT = 0x04,
-		REALM_LIST = 0x10,
-		SURVEY = 48,
+		RealmAuthLoginChallenge = 0,
+		RealmAuthLonginProof = 1,
+		AuthReconnectChallenge = 2,
+		AuthReconnectProof = 3,
+		AuthLoginPermit = 4,
+		RealmList = 10,
+		Surver = 48,
 	}
 
-	class LoginRealm
+	class RealmLogin
 	{
 		private MainViewModel mainViewModel = null;
 
-		public LoginRealm(MainViewModel mainViewModel)
+		public RealmLogin(MainViewModel mainViewModel)
 		{
 			this.mainViewModel = mainViewModel;
 		}
@@ -42,29 +42,30 @@ namespace Egametang
 
 		public async Task LoginPermit(NetworkStream stream)
 		{
-			byte[] opcodeBuffer = System.BitConverter.GetBytes((Int32)RealmOpcode.AUTH_LOGON_PERMIT);
+			byte[] opcodeBuffer = new byte[1] { (byte)RealmLoginState.AuthLoginPermit };
 			await stream.WriteAsync(opcodeBuffer, 0, opcodeBuffer.Length);
 
-			string username = "egametang@163.com";
+			string username = mainViewModel.Username;
 			username += new string(' ', 128 - username.Length);
 			byte[] usernameBuffer = System.Text.Encoding.Default.GetBytes(username);
 			await stream.WriteAsync(usernameBuffer, 0, usernameBuffer.Length);
 
 			MD5 md5 = new MD5CryptoServiceProvider();
-			byte[] password = System.Text.Encoding.Default.GetBytes("163bio1");
+			byte[] password = System.Text.Encoding.Default.GetBytes(mainViewModel.Password);
 			byte[] passMD5Buffer = md5.ComputeHash(password);
 
 			string passMD5 = BitConverter.ToString(passMD5Buffer);
 			passMD5 = passMD5.Replace("-", "");
 			passMD5 = passMD5.ToLower();
-			App.Logger.Debug("passMD5: " + passMD5);
+			App.Logger.Debug(string.Format("username: {0}, passMD5: {1}", username, passMD5));
 
 			passMD5Buffer = System.Text.Encoding.Default.GetBytes(passMD5);
+			App.Logger.Debug("passMD5Buffer len: " + passMD5Buffer.Length.ToString());
 			await stream.WriteAsync(passMD5Buffer, 0, passMD5Buffer.Length);
 
 			await DispatcherHelper.UIDispatcher.InvokeAsync(new Action(() =>
 			{
-				mainViewModel.LoginResult = "Login Permit!";
+				mainViewModel.LoginInfo += "Login Permit!" + Environment.NewLine;
 			}));
 		}
 	}
