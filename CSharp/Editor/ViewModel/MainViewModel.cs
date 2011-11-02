@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Threading;
 
 namespace Egametang
 {
@@ -11,10 +7,12 @@ namespace Egametang
 	{
 		private Main main = new Main();
 		private RelayCommand loginCmd = null;
+		private LoginRealm loginRealm = null;
 
 		public MainViewModel()
 		{
-			loginCmd = new RelayCommand(AsyncLogin);
+			loginCmd = new RelayCommand(Login);
+			loginRealm = new LoginRealm(this);
 		}
 
 		public string LoginResult
@@ -42,20 +40,9 @@ namespace Egametang
 			}
 		}
 
-		private void AsyncLogin()
+		private void Login()
 		{
-			var task = new Task(() =>
-			{
-			});
-			task.ContinueWith(_ =>
-			{
-				DispatcherHelper.UIDispatcher.BeginInvoke(DispatcherPriority.Normal,
-					new Action(() =>
-					{
-						LoginResult = "Login OK!";
-					}));
-			});
-			task.Start(App.OrderedTaskScheduler);
+			loginRealm.Login();
 		}
 
 		public override void Cleanup()
