@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Controls;
 
 namespace Egametang
 {
@@ -10,6 +11,12 @@ namespace Egametang
 		public MainView()
 		{
 			InitializeComponent();
+			Messenger.Default.Register<NotificationMessage>(this, TextBoxInfoScrollToEnd);
+		}
+
+		private void TextBoxInfoScrollToEnd(NotificationMessage msg)
+		{
+			tBInfo.ScrollToEnd();
 		}
 	}
 }

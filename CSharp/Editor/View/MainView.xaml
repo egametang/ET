@@ -15,7 +15,8 @@
 				<TextBox Width="150" x:Name="tBPassword" Text="{Binding Password}" />
 				<Button Content="登录" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding LoginCmd}" />
 			</StackPanel>
-			<TextBox x:Name="tBInfo" Margin="10" Padding="1" Height="200" VerticalScrollBarVisibility="Visible" />
+			<TextBox x:Name="tBInfo" Margin="10" Padding="1" Height="200" VerticalScrollBarVisibility="Visible" 
+					 Text="{Binding LoginInfo}" />
 		</StackPanel>
 	</Grid>
 </UserControl>
