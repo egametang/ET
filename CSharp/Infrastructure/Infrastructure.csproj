@@ -47,14 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoPopulateExportedViewsBehavior.cs" />
-    <Compile Include="DialogActivationBehavior.cs" />
     <Compile Include="IViewRegionRegistration.cs" />
-    <Compile Include="IWindow.cs" />
-    <Compile Include="RegionPopupBehaviors.cs" />
-    <Compile Include="ReturnCommandBehavior.cs" />
     <Compile Include="ViewExportAttribute.cs" />
-    <Compile Include="WindowDialogActivationBehavior.Desktop.cs" />
-    <Compile Include="WindowWrapper.Desktop.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
