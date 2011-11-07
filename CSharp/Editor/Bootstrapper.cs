@@ -2,6 +2,8 @@ using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Microsoft.Practices.Prism.MefExtensions;
 using Module.Login;
+using Infrastructure;
+using Microsoft.Practices.Prism.Regions;
 
 namespace Editor
 {
@@ -23,6 +25,13 @@ namespace Editor
 			base.InitializeShell();
 			Application.Current.MainWindow = (Shell)this.Shell;
 			Application.Current.MainWindow.Show();
+		}
+
+		protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
+		{
+			var factory = base.ConfigureDefaultRegionBehaviors();
+			factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof(AutoPopulateExportedViewsBehavior));
+			return factory;
 		}
 
 		protected override DependencyObject CreateShell()

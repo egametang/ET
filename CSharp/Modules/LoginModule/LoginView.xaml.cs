@@ -11,17 +11,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel.Composition;
+using Infrastructure;
 
 namespace Module.Login
 {
 	/// <summary>
-	/// UserControl1.xaml 的交互逻辑
+	/// LoginView.xaml 的交互逻辑
 	/// </summary>
+	[ViewExport(RegionName = "MainRegion")]
+	[PartCreationPolicy(CreationPolicy.NonShared)]
 	public partial class LoginView : UserControl
 	{
 		public LoginView()
 		{
 			InitializeComponent();
+		}
+
+		[Import]
+		LoginViewModel ViewModel
+		{
+			set
+			{
+				this.DataContext = value;
+			}
 		}
 	}
 }

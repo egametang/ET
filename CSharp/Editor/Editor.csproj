@@ -79,6 +79,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Modules\LoginModule\Login.csproj">
       <Project>{7CC7BF9C-13BE-470E-BC35-6A1944767899}</Project>
       <Name>Login</Name>

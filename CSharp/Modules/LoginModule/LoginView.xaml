@@ -6,16 +6,6 @@
 			 mc:Ignorable="d" 
 			 d:DesignHeight="600" d:DesignWidth="800">
 	<Grid>
-		<StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<Label Content="用户名: "/>
-				<TextBox Width="150" x:Name="tBUsername" Text="{Binding Username}" />
-				<Label Content="密码: "/>
-				<TextBox Width="150" x:Name="tBPassword" Text="{Binding Password}" />
-				<Button Content="登录" HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding LoginCmd}" />
-			</StackPanel>
-			<TextBox x:Name="tBInfo" Margin="10" Padding="1" Height="200" VerticalScrollBarVisibility="Visible" 
-					 Text="{Binding LoginInfo}" />
-		</StackPanel>
+		<TextBox Width="50" Height="20"></TextBox>
 	</Grid>
 </UserControl>
