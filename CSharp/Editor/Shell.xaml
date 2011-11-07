@@ -1,0 +1,9 @@
+﻿<Window x:Class="Editor.Shell"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:cal="http://www.codeplex.com/CompositeWPF" 
+	Title="Editor" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+	<Grid>
+		
+	</Grid>
+</Window>

@@ -1,32 +1,20 @@
-﻿using System.Threading.Tasks.Schedulers;
-using System.Windows;
-using GalaSoft.MvvmLight.Threading;
-using NLog;
+﻿using System.Windows;
 
-namespace Egametang
+namespace Editor
 {
-	/// <summary>
-	/// Interaction logic for App.xaml
-	/// </summary>
 	public partial class App : Application
 	{
-		static App()
+		protected override void OnStartup(StartupEventArgs e)
 		{
-			DispatcherHelper.Initialize();
-			OrderedTaskScheduler = new OrderedTaskScheduler();
-			Logger = LogManager.GetLogger("Editor");
+			base.OnStartup(e);
+			RunInDebugMode();
+			this.ShutdownMode = ShutdownMode.OnMainWindowClose;
 		}
 
-		public static OrderedTaskScheduler OrderedTaskScheduler
+		private static void RunInDebugMode()
 		{
-			get;
-			private set;
-		}
-
-		public static Logger Logger
-		{
-			get;
-			private set;
+			Bootstrapper bootstrapper = new Bootstrapper();
+			bootstrapper.Run();
 		}
 	}
 }

@@ -1,12 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Application x:Class="Egametang.App" 
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-		xmlns:vm="clr-namespace:Egametang" 
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-		StartupUri="MainWindow.xaml" mc:Ignorable="d">
+﻿<Application x:Class="Editor.App"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<Application.Resources>
-		<vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+
 	</Application.Resources>
 </Application>
