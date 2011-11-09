@@ -1,11 +1,22 @@
 ﻿<UserControl x:Class="Module.Login.LoginView"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 mc:Ignorable="d" 
-			 d:DesignHeight="600" d:DesignWidth="800">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="360">
 	<Grid>
-		<TextBox Width="50" Height="20"></TextBox>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<StackPanel Grid.Row="0"  Orientation="Horizontal">
+			<Label Content="用户名: " Height="25"></Label>
+			<TextBox Name="tbUsername"  Text="{Binding Username}"  Width="100" Height="25"></TextBox>
+			<Label Content="密码: " Height="25"></Label>
+			<PasswordBox Name="pbPassword"  Width="100" Height="25"></PasswordBox>
+			<Button Name="btnLogin"  Content="登录" Width="50" Height="25" Click="btnLogin_Click"></Button>
+		</StackPanel>
+		<TextBox Grid.Row="1" Height="100"  Name="tbLogInfo" Text="{Binding LogInfo}" 
+				VerticalScrollBarVisibility="Visible" TextChanged="tbLogInfo_TextChanged"></TextBox>
 	</Grid>
 </UserControl>

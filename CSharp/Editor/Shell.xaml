@@ -5,6 +5,6 @@
 	xmlns:prism="http://www.codeplex.com/prism"
 	Title="Editor" Height="600" Width="800" WindowStartupLocation="CenterScreen">
 	<Grid>
-		<ItemsControl Name="mainRegion" prism:RegionManager.RegionName="MainRegion"/>
+		<ItemsControl Name="mainRegion" prism:RegionManager.RegionName="MainRegion" />
 	</Grid>
 </Window>

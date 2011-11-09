@@ -31,10 +31,25 @@ namespace Module.Login
 		[Import]
 		LoginViewModel ViewModel
 		{
+			get
+			{
+				return this.DataContext as LoginViewModel;
+			}
 			set
 			{
 				this.DataContext = value;
 			}
+		}
+
+		private void btnLogin_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.Password = pbPassword.Password;
+			this.ViewModel.Login();
+		}
+
+		private void tbLogInfo_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			tbLogInfo.ScrollToEnd();
 		}
 	}
 }
