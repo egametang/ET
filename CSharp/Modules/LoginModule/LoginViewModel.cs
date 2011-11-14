@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System;
+using NLog;
 
 namespace Module.Login
 {
@@ -116,6 +117,8 @@ namespace Module.Login
 			await stream.WriteAsync(passMD5Buffer, 0, passMD5Buffer.Length);
 
 			LogInfo += "username: " + username.Trim() + " password md5: " + passMD5 + Environment.NewLine;
+			Logger logger = LogManager.GetCurrentClassLogger();
+			logger.Debug("11111111111");
 		}
 	}
 }

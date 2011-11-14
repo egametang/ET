@@ -50,7 +50,7 @@
       <HintPath>..\..\Packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\Packages\NLog.2.0.0.0\lib\NET40\NLog.dll</HintPath>
+      <HintPath>..\..\Packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
