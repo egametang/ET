@@ -36,18 +36,20 @@ namespace Infrastructure
 
 		private void AddRegisteredViews()
 		{
-			if (this.Region != null)
+			if (this.Region == null)
 			{
-				foreach (var viewEntry in this.RegisteredViews)
+				return;
+			}
+			
+			foreach (var viewEntry in this.RegisteredViews)
+			{
+				if (viewEntry.Metadata.RegionName == this.Region.Name)
 				{
-					if (viewEntry.Metadata.RegionName == this.Region.Name)
-					{
-						var view = viewEntry.Value;
+					var view = viewEntry.Value;
 
-						if (!this.Region.Views.Contains(view))
-						{
-							this.Region.Add(view);
-						}
+					if (!this.Region.Views.Contains(view))
+					{
+						this.Region.Add(view);
 					}
 				}
 			}

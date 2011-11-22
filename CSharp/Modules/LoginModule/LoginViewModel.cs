@@ -27,6 +27,7 @@ namespace Module.Login
 		private string username = "";
 		private string password = "";
 		private string logInfo = "";
+		private Logger logger = LogManager.GetCurrentClassLogger();
 
 		public LoginViewModel()
 		{
@@ -117,7 +118,6 @@ namespace Module.Login
 			await stream.WriteAsync(passMD5Buffer, 0, passMD5Buffer.Length);
 
 			LogInfo += "username: " + username.Trim() + " password md5: " + passMD5 + Environment.NewLine;
-			Logger logger = LogManager.GetCurrentClassLogger();
 			logger.Debug("11111111111");
 		}
 	}
