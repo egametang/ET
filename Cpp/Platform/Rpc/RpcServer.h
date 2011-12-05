@@ -35,7 +35,7 @@ public:
 
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler messageHandler);
-	virtual void Register(RpcServicePtr service);
+	virtual void Register(ProtobufServicePtr service);
 	virtual void Remove(RpcSessionPtr& session);
 	virtual void Stop();
 };

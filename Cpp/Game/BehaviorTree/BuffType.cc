@@ -1,6 +1,7 @@
 #include "BehaviorTree/BuffType.h"
 #include "BehaviorTree/ContexIf.h"
 #include "BehaviorTree/SpellBuff.h"
+#include "BehaviorTree/CombatContex.h"
 #include "BehaviorTree/BehaviorTreeConf.pb.h"
 
 namespace Egametang {
@@ -16,7 +17,8 @@ BuffType::~BuffType()
 
 bool BuffType::Run(ContexIf* contex)
 {
-	Buff* buff = contex->GetBuff();
+	CombatContex* combat_contex = reinterpret_cast<CombatContex*>(contex);
+	Buff* buff = combat_contex->GetBuff();
 	return buff->buffType == buffType;
 }
 

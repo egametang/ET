@@ -17,7 +17,8 @@ ChangeHealth::~ChangeHealth()
 
 bool ChangeHealth::Run(ContexIf *contex)
 {
-	Spell* spell = contex->GetSpell();
+	CombatContex* combat_contex = reinterpret_cast<CombatContex*>(contex);
+	Spell* spell = combat_contex->GetSpell();
 
 	Unit* target = NULL;
 	if (unit == 0)

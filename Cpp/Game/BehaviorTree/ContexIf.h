@@ -12,16 +12,6 @@ public:
 	virtual ~ContexIf()
 	{
 	}
-
-	virtual Spell* GetSpell()
-	{
-		return NULL;
-	}
-
-	virtual Buff* GetBuff()
-	{
-		return NULL;
-	}
 };
 
 } // namespace Egametang

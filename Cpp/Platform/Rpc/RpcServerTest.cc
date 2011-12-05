@@ -65,7 +65,7 @@ TEST_F(RpcServerTest, ClientAndServer)
 {
 	ThreadPool threadPool(2);
 
-	RpcServicePtr echoSevice(new MyEcho);
+	ProtobufServicePtr echoSevice(new MyEcho);
 
 	RpcServerPtr server(new RpcServer(ioServer, port));
 	// 注册service

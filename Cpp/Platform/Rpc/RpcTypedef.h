@@ -1,16 +1,11 @@
 #ifndef RPC_RPCTYPEDEF_H
 #define RPC_RPCTYPEDEF_H
+
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
-#include <google/protobuf/service.h>
 #include "Base/Typedef.h"
 
 namespace Egametang {
-
-// google
-typedef boost::shared_ptr<google::protobuf::Service> RpcServicePtr;
-typedef boost::shared_ptr<google::protobuf::Message> RpcMessagePtr;
-
 // rpc
 class RpcServer;
 class RpcSession;

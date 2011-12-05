@@ -84,7 +84,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 					done));
 }
 
-void RpcServer::Register(RpcServicePtr service)
+void RpcServer::Register(ProtobufServicePtr service)
 {
 	boost::hash<std::string> stringHash;
 	const google::protobuf::ServiceDescriptor* serviceDescriptor = service->GetDescriptor();

@@ -10,12 +10,12 @@ namespace Egametang {
 class MethodInfo
 {
 public:
-	RpcServicePtr service;
+	ProtobufServicePtr service;
 	const google::protobuf::MethodDescriptor* methodDescriptor;
 	const google::protobuf::Message* requestPrototype;
 	const google::protobuf::Message* responsePrototype;
 
-	MethodInfo(RpcServicePtr service, const google::protobuf::MethodDescriptor* methodDescriptor):
+	MethodInfo(ProtobufServicePtr service, const google::protobuf::MethodDescriptor* methodDescriptor):
 		service(service), methodDescriptor(methodDescriptor)
 	{
 		requestPrototype = &service->GetRequestPrototype(methodDescriptor);
