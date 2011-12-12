@@ -1,38 +1,34 @@
 #ifndef ORM_QUERY_H
 #define ORM_QUERY_H
 
+#include <string>
 #include <vector>
-#include <boost/shared_ptr.hpp>
-#include <google/protobuf/message.h>
-#include "Base/Typedef.h"
+#include "Orm/Expr.h"
 
 namespace Egametang {
 
-class SelectQuery
+class Query
 {
 	bool distinct;
-	int limit;
-	int offset;
 	std::string where;
 	std::string groupBy;
 	std::string having;
 	std::string orderBy;
+	int limit;
+	int offset;
+
 public:
-	SelectQuery(): distinct(false), limit(0), offset(0), where("true")
-	{
-	}
-	SelectQuery& Distinct(bool distinct);
-	SelectQuery& Limit(int limit);
-	SelectQuery& Offset(int offset);
-	SelectQuery& Result(std::string result);
-	SelectQuery& ClearResults();
-	SelectQuery& Where(const Expr& where);
-	SelectQuery& GroupBy(std::string groupby);
-	SelectQuery& Having(const Expr& having);
-	SelectQuery& OrderBy(Column column, bool ascending = true);
-	std::string ToString() const
-	{
-	}
+	Query();
+	~Query();
+	Query& Distinct(bool distinct);
+	Query& Where(const Expr& where);
+	Query& GroupBy(Column column);
+	Query& Having(const Expr& having);
+	Query& OrderBy(Column column, bool ascending = true);
+	Query& Limit(int limit);
+	Query& Offset(int offset);
+
+	std::string ToString() const;
 };
 
 } // namespace Egametang

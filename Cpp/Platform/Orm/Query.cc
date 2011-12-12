@@ -4,79 +4,67 @@
 
 namespace Egametang {
 
-SelectQuery& SelectQuery::Distinct(bool d)
+Query::Query(): distinct(false), where("true"), limit(0), offset(0)
 {
-	distinct = d;
+}
+
+Query::~Query()
+{
+}
+
+Query& Query::Distinct(bool value)
+{
+	distinct = value;
 	return *this;
 }
-SelectQuery& SelectQuery::Limit(int value)
+
+Query& Query::Where(const Expr& expr)
 {
-	limit = value;
+	where = expr.ToString();
 	return *this;
 }
-SelectQuery& SelectQuery::Offset(int value)
+
+Query& Query::GroupBy(Column column)
 {
-	offset = value;
+	groupBy = column.ToString();
 	return *this;
 }
-SelectQuery& SelectQuery::Result(std::string r)
+
+Query& Query::Having(const Expr& having)
 {
-	results.push_back(r);
+	having = having.ToString();
 	return *this;
 }
-SelectQuery& SelectQuery::ClearResults()
+
+Query& Query::OrderBy(Column column, bool ascending)
 {
-	results.clear();
-	return *this;
-}
-SelectQuery& SelectQuery::Source(std::string s, std::string alias)
-{
-	if (!alias.empty())
-		s += " as " + alias;
-	sources.push_back(s);
-	return *this;
-}
-SelectQuery& SelectQuery::Where(const Expr& w)
-{
-	where = (RawExpr(where) && w).asString();
-	return *this;
-}
-SelectQuery& SelectQuery::Where(std::string w)
-{
-	where = (RawExpr(where) && RawExpr(w)).asString();
-	return *this;
-}
-SelectQuery& SelectQuery::GroupBy(std::string gb)
-{
-	groupBy.push_back(gb);
-	return *this;
-}
-SelectQuery& SelectQuery::Having(const Expr & h)
-{
-	having = h.asString();
-	return *this;
-}
-SelectQuery& SelectQuery::Having(std::string h)
-{
-	having = h;
-	return *this;
-}
-SelectQuery& SelectQuery::OrderBy(std::string ob, bool ascending)
-{
-	std::string value = ob;
+	std::string value = column.ToString();
 	if (!ascending)
 	{
 		value += " desc";
 	}
-	orderBy.push_back(value);
+	orderBy = value;
 	return *this;
 }
-SelectQuery::operator std::string() const
+
+Query& Query::Limit(int value)
+{
+	limit = value;
+	return *this;
+}
+
+Query& Query::Offset(int value)
+{
+	offset = value;
+	return *this;
+}
+
+std::string Query::ToString() const
 {
 	std::string sql = "select ";
 	if (distinct)
 	{
-		sql += "distinct ";
+		sql += " distinct ";
 	}
 	if (where != "true")
 	{
@@ -90,9 +78,9 @@ SelectQuery::operator std::string() const
 	{
 		sql += " having " + having;
 	}
-	if (orderBy.size() > 0)
+	if (!orderBy.empty())
 	{
-		sql += " order by " + orderBy.join(",");
+		sql += " order by " + orderBy;
 	}
 	if (limit)
 	{

@@ -9,7 +9,7 @@ namespace Egametang {
 class Column
 {
 private:
-	std::string columns;
+	std::string columnStr;
 
 public:
 	Column(const std::string name);
@@ -17,32 +17,46 @@ public:
 	Column& operator()(std::string& column);
 	std::string ToString() const;
 
-	Gt operator>(const std::string& value);
-	Gt operator>(int value);
-	Gt operator>(double value);
-	Gt operator>(const Column value);
+	template <typename T>
+	Expr operator>(const T& value)
+	{
+		return Oper(*this,">", value);
+	}
 
-	Ge operator>=(const std::string& value);
-	Ge operator>=(int value);
-	Ge operator>=(double value);
-	Ge operator>=(const Column value);
+	template <typename T>
+	Expr operator>=(const T& value)
+	{
+		return Oper(*this, ">=", value);
+	}
 
-	Lt operator<(const std::string& value);
-	Lt operator<(int value);
-	Lt operator<(double value);
-	Lt operator<(const Column value);
+	template <typename T>
+	Expr operator<(const T& value)
+	{
+		return Oper(*this, "<", value);
+	}
 
-	Le operator<=(const std::string& value);
-	Le operator<=(int value);
-	Le operator<=(double value);
-	Le operator<=(const Column value);
+	template <typename T>
+	Expr operator<=(const T& value)
+	{
+		return Oper(*this, "<=", value);
+	}
 
-	Ne operator!=(const std::string& value);
-	Ne operator!=(int value);
-	Ne operator!=(double value);
-	Ne operator!=(const Column value);
+	template <typename T>
+	Expr operator!=(const T& value)
+	{
+		return Oper(*this, "<>", value);
+	}
 
-	Like like(const std::string value);
+	template <typename T>
+	Expr operator==(const T& value)
+	{
+		return Oper(*this, "=", value);
+	}
+
+	Expr like(const std::string value)
+	{
+		return Oper(*this, "like", value);
+	}
 };
 
 } // namespace Egametang

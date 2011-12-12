@@ -8,96 +8,40 @@ namespace Egametang {
 
 class Expr
 {
+protected:
+	std::string exprStr;
+
 public:
-	virtual ~Expr()
-	{
-	}
-	virtual std::string ToString()
-	{
-		return "true";
-	}
+	virtual ~Expr();
+	virtual std::string ToString();
 };
 
+class Not: public Expr
+{
+public:
+	Not(const Expr& expr);
+};
+
+class And: public Expr
+{
+public:
+	And(const Expr& left, const Expr& right);
+};
+
+class Or: public Expr
+{
+public:
+	Or(const Expr& left, const Expr& right);
+};
+
+// > < >= <= != like
 class Oper: public Expr
 {
 protected:
-	std::string left;
-	std::string op;
-	std::string right;
-
-	Oper(const std::string& left, const std::string& o, const std::string& right):
-			left(left), op(o), right(right)
-	{
-	}
-
-public:
-	std::string ToString() const
-	{
-		return left + " " + op + " " + right;
-	}
-};
-
-class Eq: public Oper
-{
-public:
-	Eq(const std::string& left, const std::string& right):
-			Oper(left, "=", right)
-	{
-	}
-};
-
-class Ne: public Oper
-{
-public:
-	Ne(const std::string& left, const std::string& right):
-			Oper(left, "<>", right)
-	{
-	}
-};
-
-class Gt: public Oper
-{
-public:
-	Gt(const std::string& left, const std::string& right):
-			Oper(left, ">", right)
-	{
-	}
-};
-
-class Ge: public Oper
-{
-public:
-	Ge(const std::string& left, const std::string& right):
-			Oper(left, ">=", right)
-	{
-	}
-};
-
-class Lt: public Oper
-{
-public:
-	Lt(const std::string& left, const std::string& right):
-			Oper(left, "<", right)
-	{
-	}
-};
-
-class Le: public Oper
-{
-public:
-	Le(const std::string& left, const std::string& right):
-			Oper(left, "<=", right)
-	{
-	}
-};
-
-class Like: public Oper
-{
-public:
-	Like(const std::string& left, const std::string& right):
-			Oper(left, "like", right)
-	{
-	}
+	Oper(const Column& left, const std::string& op, const std::string& right);
+	Oper(const Column& left, const std::string& op, const Column& right);
+	Oper(const Column& left, const std::string& op, int right);
+	Oper(const Column& left, const std::string& op, double right);
 };
 
 } // namespace Egametang
