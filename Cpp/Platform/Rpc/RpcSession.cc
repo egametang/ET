@@ -38,7 +38,10 @@ void RpcSession::Start()
 void RpcSession::Stop()
 {
 	RpcSessionPtr session = shared_from_this();
-	rpcServer.Remove(session);
+
+	// 延迟删除,必须等所有的bind执行完成后才能remove,
+	// 否则会出现this指针失效的问题
+	ioService.post(boost::bind(&RpcServer::Remove, &rpcServer, session));
 }
 
 } // namespace Egametang

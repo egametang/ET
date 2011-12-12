@@ -54,7 +54,7 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 		Stop();
 		return;
 	}
-	message->resize(meta->size, '\0');
+	message->resize(meta->size, 0);
 	boost::asio::async_read(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(&message->at(0)), meta->size),
 			boost::bind(&RpcCommunicator::RecvDone, this,
