@@ -8,6 +8,7 @@ namespace Egametang {
 Expr::~Expr()
 {
 }
+
 std::string Expr::ToString()
 {
 	return exprStr;

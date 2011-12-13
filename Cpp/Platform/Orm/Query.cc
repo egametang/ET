@@ -12,6 +12,12 @@ Query::~Query()
 {
 }
 
+Query& Query::Select(Column column)
+{
+	select = column.ToString();
+	return *this;
+}
+
 Query& Query::Distinct(bool value)
 {
 	distinct = value;
@@ -62,9 +68,13 @@ Query& Query::Offset(int value)
 std::string Query::ToString() const
 {
 	std::string sql = "select ";
+	if (!select.empty())
+	{
+		sql += select;
+	}
 	if (distinct)
 	{
-		sql += " distinct ";
+		sql += " distinct";
 	}
 	if (where != "true")
 	{

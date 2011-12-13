@@ -9,6 +9,7 @@ namespace Egametang {
 
 class Query
 {
+	std::string select;
 	bool distinct;
 	std::string where;
 	std::string groupBy;
@@ -20,6 +21,7 @@ class Query
 public:
 	Query();
 	~Query();
+	Query& Select(Column column);
 	Query& Distinct(bool distinct);
 	Query& Where(const Expr& where);
 	Query& GroupBy(Column column);
