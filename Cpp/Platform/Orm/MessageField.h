@@ -2,6 +2,8 @@
 #define ORM_MESSAGEFIELD_H
 
 #include <string>
+#include <google/protobuf/message.h>
+#include "Orm/OrmTypedef.h"
 
 namespace Egametang {
 
@@ -15,7 +17,14 @@ public:
 	MessageField(const google::protobuf::Message& message,
 			const google::protobuf::FieldDescriptor* field);
 	~MessageField();
-	std::string MessageField::ValueToString();
+
+	std::string GetField();
+	std::string GetRepeatedField();
+	std::string GetOptionalField();
+
+	void SetField(ResultSetPtr resultSet, int index);
+	void SetRepeatedField(ResultSetPtr resultSet, int index);
+	void SetOptionalField(ResultSetPtr resultSet, int index);
 };
 
 } // namespace Egametang
