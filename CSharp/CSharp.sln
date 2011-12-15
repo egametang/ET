@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeCanvas", "Modules\TreeCanvas\TreeCanvas.csproj", "{6CD185D1-08E0-4729-A999-2D5B57BA8193}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{EEC1B63E-05B1-4107-9627-B2542EED2B28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorView", "Controls\BehaviorView\BehaviorView.csproj", "{844E644E-A19D-4BBA-9E20-287977E2564D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,16 @@ Global
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|x86.ActiveCfg = Release|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{844E644E-A19D-4BBA-9E20-287977E2564D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,5 +82,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7CC7BF9C-13BE-470E-BC35-6A1944767899} = {C4C64188-4FAE-4CC3-A9E6-D9D4AF7429B6}
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193} = {C4C64188-4FAE-4CC3-A9E6-D9D4AF7429B6}
+		{844E644E-A19D-4BBA-9E20-287977E2564D} = {EEC1B63E-05B1-4107-9627-B2542EED2B28}
 	EndGlobalSection
 EndGlobal

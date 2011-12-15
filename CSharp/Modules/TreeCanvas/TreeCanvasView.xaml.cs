@@ -40,5 +40,15 @@ namespace Module.TreeCanvas
 				this.DataContext = value;
 			}
 		}
+
+		private void DeleteSelectedNodes_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+
+		}
+
+		private void CreateNode_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+
+		}
 	}
 }

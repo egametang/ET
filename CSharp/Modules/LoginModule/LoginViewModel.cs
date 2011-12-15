@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.ViewModel;
-using Microsoft.Practices.Prism.Commands;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Security.Cryptography;

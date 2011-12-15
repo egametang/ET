@@ -3,10 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:cal="http://www.codeplex.com/CompositeWPF"
 		xmlns:prism="http://www.codeplex.com/prism"
-		Title="Editor" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+		Title="Editor" Height="800" Width="1280" WindowStartupLocation="CenterScreen">
 	<Grid>
-		<StackPanel>
-			<ContentControl Name="mainRegion" prism:RegionManager.RegionName="MainRegion" />
-		</StackPanel>
+		<ContentControl Name="treeCanvas" prism:RegionManager.RegionName="TreeCanvasRegion" />
 	</Grid>
 </Window>
