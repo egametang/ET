@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Controls.BehaviorView
+namespace Module.TreeCanvas
 {
-	public class ConnectPoint
+	class Connector
 	{
 	}
 }

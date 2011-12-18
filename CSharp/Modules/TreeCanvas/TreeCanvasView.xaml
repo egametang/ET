@@ -3,28 +3,26 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" x:Class="Module.TreeCanvas.TreeCanvasView" 
+		xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" 
+		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+		x:Class="Module.TreeCanvas.TreeCanvasView" 
 		mc:Ignorable="d" 
-		d:DesignHeight="600" d:DesignWidth="800" xmlns:my="clr-namespace:Controls.BehaviorView;assembly=BehaviorView">
-	<UserControl.Resources>
-		<RoutedUICommand x:Key="Commands.DeleteSelectedNodes" />
-		<RoutedUICommand x:Key="Commands.CreateNode" />
-	</UserControl.Resources>
+		d:DesignHeight="600" d:DesignWidth="800">
 
 	<UserControl.CommandBindings>
-		<CommandBinding Command="{StaticResource Commands.DeleteSelectedNodes}" Executed="DeleteSelectedNodes_Executed" />
-		<CommandBinding Command="{StaticResource Commands.CreateNode}" Executed="CreateNode_Executed" />
+		<CommandBinding Command="ApplicationCommands.New" Executed="NewNode_Executed" />
 	</UserControl.CommandBindings>
 
 	<UserControl.ContextMenu>
-		<ContextMenu>
-			<MenuItem Header="Create Node" Command="{StaticResource Commands.CreateNode}" ToolTip="Creates a new node" />
+		<ContextMenu Name="cm">
+			<MenuItem Header="New Node" Command="ApplicationCommands.New" 
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 		</ContextMenu>
 	</UserControl.ContextMenu>
-	
-	<Canvas>
-		<TextBox Canvas.Left="296" Canvas.Top="271" Height="23" Name="textBox1" Width="120" />
-		<my:BehaviorNode Canvas.Left="279" Canvas.Top="151" Content="ListBoxItem" Height="42" Name="behaviorNode1" Width="120" />
+
+	<Canvas Background="Transparent" Name="canvasTree">
+		
 	</Canvas>
 	
 </UserControl>

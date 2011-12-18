@@ -41,14 +41,10 @@ namespace Module.TreeCanvas
 			}
 		}
 
-		private void DeleteSelectedNodes_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void NewNode_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-
-		}
-
-		private void CreateNode_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-
+			Point point = Mouse.GetPosition(canvasTree);
+			this.ViewModel.NewNode(point);
 		}
 	}
 }
