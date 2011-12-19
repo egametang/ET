@@ -1,10 +1,9 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Microsoft.Practices.Prism.MefExtensions;
-using Module.Login;
 using Infrastructure;
 using Microsoft.Practices.Prism.Regions;
-using Module.TreeCanvas;
+using TreeCanvas;
 
 namespace Editor
 {
@@ -14,7 +13,6 @@ namespace Editor
 		{
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(ViewExportAttribute).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(LoginModule).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(TreeCanvasModule).Assembly));
 		}
 

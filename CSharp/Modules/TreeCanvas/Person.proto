@@ -1,0 +1,8 @@
+package Egametang;
+
+import "google/protobuf/csharp_options.proto";
+
+message Person
+{
+	required int32 num = 1;
+};

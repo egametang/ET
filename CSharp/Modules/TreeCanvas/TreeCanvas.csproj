@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.ProtocolBuffers, Version=2.4.1.473, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.ProtocolBuffers.2.4.1.473\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.ProtocolBuffers.Serialization, Version=2.4.1.473, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.ProtocolBuffers.2.4.1.473\lib\net40\Google.ProtocolBuffers.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Drawing" />
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Practices.Prism">
@@ -65,6 +71,11 @@
     <Compile Include="Arrow.cs" />
     <Compile Include="Connector.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="Person.pb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Person.proto</DependentUpon>
+    </Compile>
     <Compile Include="TreeCanvasModule.cs" />
     <Compile Include="TreeCanvasView.xaml.cs">
       <DependentUpon>TreeCanvasView.xaml</DependentUpon>
@@ -87,7 +98,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="google\protobuf\csharp_options.proto" />
+    <None Include="google\protobuf\descriptor.proto" />
     <None Include="Packages.config" />
+    <None Include="Person.proto">
+      <Generator>CmdTool</Generator>
+      <LastGenOutput>Person.pb.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CHANGES.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

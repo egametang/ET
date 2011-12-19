@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using System.ComponentModel.Composition;
 using Infrastructure;
 
-namespace Module.TreeCanvas
+namespace TreeCanvas
 {
 	/// <summary>
 	/// TreeCanvasView.xaml 的交互逻辑

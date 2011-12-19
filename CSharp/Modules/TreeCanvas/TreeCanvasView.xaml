@@ -6,7 +6,7 @@
 		xmlns:ed="http://schemas.microsoft.com/expression/2010/drawing" 
 		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
 		xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
-		x:Class="Module.TreeCanvas.TreeCanvasView" 
+		x:Class="TreeCanvas.TreeCanvasView" 
 		mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="800">
 

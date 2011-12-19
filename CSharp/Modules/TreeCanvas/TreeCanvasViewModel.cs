@@ -5,8 +5,9 @@ using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using System.Collections.ObjectModel;
 using System.Windows;
+using Google.ProtocolBuffers;
 
-namespace Module.TreeCanvas
+namespace TreeCanvas
 {
 	[Export(typeof(TreeCanvasViewModel))]
 	[PartCreationPolicy(CreationPolicy.NonShared)]
@@ -41,6 +42,14 @@ namespace Module.TreeCanvas
 		public void NewNode(Point point)
 		{
 			Nodes.Add(new Node(point));
+			Person.Builder personBuilder = Person.CreateBuilder();
+			personBuilder.SetNum(1);
+			Person person = personBuilder.Build();
+			string s = TextFormat.PrintToString(person);
+			logger.Debug(s);
+
+			TextFormat.Merge("num: 2", personBuilder);
+			Person person2 = personBuilder.Build();
 		}
 	}
 }

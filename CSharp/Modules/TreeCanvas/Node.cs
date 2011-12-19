@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace Module.TreeCanvas
+namespace TreeCanvas
 {
 	class Node
 	{
