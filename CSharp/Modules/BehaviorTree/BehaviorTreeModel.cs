@@ -7,11 +7,11 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using Google.ProtocolBuffers;
 
-namespace TreeCanvas
+namespace BehaviorTree
 {
-	[Export(typeof(TreeCanvasViewModel))]
+	[Export(typeof(BehaviorTreeViewModel))]
 	[PartCreationPolicy(CreationPolicy.NonShared)]
-	class TreeCanvasViewModel : NotificationObject
+	class BehaviorTreeViewModel : NotificationObject
 	{
 	}
 }

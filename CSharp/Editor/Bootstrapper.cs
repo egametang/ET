@@ -3,7 +3,7 @@ using System.Windows;
 using Microsoft.Practices.Prism.MefExtensions;
 using Infrastructure;
 using Microsoft.Practices.Prism.Regions;
-using TreeCanvas;
+using BehaviorTree;
 
 namespace Editor
 {
@@ -13,7 +13,7 @@ namespace Editor
 		{
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(ViewExportAttribute).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(TreeCanvasModule).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(BehaviorTreeModule).Assembly));
 		}
 
 		protected override void ConfigureContainer()

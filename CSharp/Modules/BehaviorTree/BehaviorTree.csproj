@@ -8,8 +8,8 @@
     <ProjectGuid>{6CD185D1-08E0-4729-A999-2D5B57BA8193}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TreeCanvas</RootNamespace>
-    <AssemblyName>TreeCanvas</AssemblyName>
+    <RootNamespace>BehaviorTree</RootNamespace>
+    <AssemblyName>BehaviorTree</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Utf8Output>true</Utf8Output>
@@ -68,31 +68,21 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviorTreeModel.cs" />
+    <Compile Include="BehaviorTreeModule.cs" />
+    <Compile Include="BehaviorTreeView.xaml.cs">
+      <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Person.pb.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Person.proto</DependentUpon>
     </Compile>
-    <Compile Include="TreeCanvasModule.cs" />
-    <Compile Include="TreeCanvasView.xaml.cs">
-      <DependentUpon>TreeCanvasView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TreeCanvasViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="TreeCanvasView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Controls\BehaviorTree\BehaviorTree.csproj">
-      <Project>{88A0D086-1C51-466C-9123-793FFB5714B8}</Project>
-      <Name>BehaviorTree</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
       <Name>Infrastructure</Name>
@@ -106,6 +96,12 @@
       <Generator>CmdTool</Generator>
       <LastGenOutput>Person.pb.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="BehaviorTreeView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

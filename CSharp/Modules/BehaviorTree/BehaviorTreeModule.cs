@@ -1,10 +1,10 @@
 ﻿using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
-namespace TreeCanvas
+namespace BehaviorTree
 {
-	[ModuleExport(typeof(TreeCanvasModule))]
-	public class TreeCanvasModule : IModule
+	[ModuleExport(typeof(BehaviorTreeModule))]
+	public class BehaviorTreeModule : IModule
 	{
 		public void Initialize()
 		{

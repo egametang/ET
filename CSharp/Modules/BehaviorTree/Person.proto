@@ -1,4 +1,4 @@
-package TreeCanvas;
+package BehaviorTree;
 
 import "google/protobuf/csharp_options.proto";
 
