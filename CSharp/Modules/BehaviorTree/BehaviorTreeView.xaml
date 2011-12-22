@@ -9,35 +9,38 @@
 		x:Class="BehaviorTree.BehaviorTreeView" 
 		mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="800">
-
 	<UserControl.Resources>
+		
 	</UserControl.Resources>
+	
 	<UserControl.CommandBindings>
-		<CommandBinding Command="ApplicationCommands.New" Executed="NewNode_Executed" />
+		<CommandBinding Command="ApplicationCommands.New" Executed="MenuNewNode_Executed" />
 	</UserControl.CommandBindings>
 
 	<UserControl.ContextMenu>
-		<ContextMenu Name="cm">
+		<ContextMenu>
 			<MenuItem Header="New Node" Command="ApplicationCommands.New" 
 					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
-		<ListBox Name="lstTree" ItemsSource="{Binding TreeNodes}" >
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<Canvas Background="Green"/>
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
-			<ListBox.ItemContainerStyle>
-				<Style>
+		<ListBox Name="listBox" SelectionMode="Extended" ItemsSource="{Binding TreeNodes}" >
+			<ListBox.Resources>
+				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="Canvas.Left" Value="{Binding Mode=TwoWay, Path=X}"/>
 					<Setter Property="Canvas.Top" Value="{Binding Mode=TwoWay, Path=Y}"/>
 				</Style>
-			</ListBox.ItemContainerStyle>
+			</ListBox.Resources>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas Background="Transparent" AllowDrop="True" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<TextBlock FontWeight="Bold" TextAlignment="Center" Text="Node" />
+					<Rectangle Width="50" Height="40" Cursor="Hand" Fill="Green"
+						MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" 
+						MouseMove="ListBoxItem_MouseMove" />
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
