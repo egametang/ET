@@ -68,7 +68,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BehaviorTreeModel.cs" />
+    <Compile Include="BehaviorTreeViewModel.cs" />
     <Compile Include="BehaviorTreeModule.cs" />
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
@@ -78,6 +78,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Person.proto</DependentUpon>
     </Compile>
+    <Compile Include="TreeNode.cs" />
+    <Compile Include="TreeNodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

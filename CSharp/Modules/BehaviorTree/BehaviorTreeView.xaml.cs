@@ -43,7 +43,9 @@ namespace BehaviorTree
 
 		private void NewNode_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-
+			Point point = Mouse.GetPosition(lstTree);
+			var treeNode = new TreeNode(point.X, point.Y);
+			this.ViewModel.Add(treeNode, null);
 		}
 	}
 }

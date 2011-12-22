@@ -16,7 +16,7 @@ namespace BehaviorTree
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
 			this.treeNode = treeNode;
-			this.parent = parent;
+			this.parent = parent ?? this;
 		}
 
 		public double X
@@ -67,6 +67,18 @@ namespace BehaviorTree
 				}
 				treeNode.Type = value;
 				RaisePropertyChanged("Type");
+			}
+		}
+
+		public TreeNodeViewModel Parent
+		{
+			get
+			{
+				return parent;
+			}
+			set
+			{
+				parent = value;
 			}
 		}
 

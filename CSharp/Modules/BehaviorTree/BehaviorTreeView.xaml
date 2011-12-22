@@ -11,21 +11,6 @@
 		d:DesignHeight="600" d:DesignWidth="800">
 
 	<UserControl.Resources>
-		<DataTemplate x:Key="ContentListBoxItemTemplate">
-			<Border CornerRadius="15" Width="150" Margin="3" Height="300">
-				<Border.Background>
-					<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-						<GradientStop Color="OrangeRed" Offset="1" />
-						<GradientStop Color="Brown" Offset="0" />
-					</LinearGradientBrush>
-				</Border.Background>
-			</Border>
-		</DataTemplate>
-
-		<Style TargetType="ListBoxItem">
-			<Setter Property="Canvas.Left" Value="{Binding X}"/>
-			<Setter Property="Canvas.Top" Value="{Binding Y}"/>
-		</Style>
 	</UserControl.Resources>
 	<UserControl.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.New" Executed="NewNode_Executed" />
@@ -38,21 +23,23 @@
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
-		<ListBox ItemTemplate="{StaticResource ContentListBoxItemTemplate}" >
+		<ListBox Name="lstTree" ItemsSource="{Binding TreeNodes}" >
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas />
+					<Canvas Background="Green"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
-			<!--<ListBoxItem>One</ListBoxItem>
-			<ListBoxItem Canvas.Left="50">Two</ListBoxItem>
-			<ListBoxItem Canvas.Left="100">Three</ListBoxItem>
-			<ListBoxItem Canvas.Top="50" Canvas.Left="40">Four</ListBoxItem>
-			<ListBoxItem Canvas.Bottom="100" Canvas.Left="0">Five</ListBoxItem>
-			<ListBoxItem Canvas.Top="100" Canvas.Left="40">Six</ListBoxItem>
-			<ListBoxItem Canvas.Top="100" Canvas.Left="80">Seven</ListBoxItem>
-			<ListBoxItem Canvas.Top="100" Canvas.Left="120">Eight</ListBoxItem>
-			<ListBoxItem Canvas.Top="100" Canvas.Left="160">Nine</ListBoxItem>-->
+			<ListBox.ItemContainerStyle>
+				<Style>
+					<Setter Property="Canvas.Left" Value="{Binding Mode=TwoWay, Path=X}"/>
+					<Setter Property="Canvas.Top" Value="{Binding Mode=TwoWay, Path=Y}"/>
+				</Style>
+			</ListBox.ItemContainerStyle>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock FontWeight="Bold" TextAlignment="Center" Text="Node" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
 		</ListBox>
 	</Grid>
 </UserControl>
