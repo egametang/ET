@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Infrastructure;
+using NLog;
 
 namespace BehaviorTree
 {
@@ -20,6 +21,7 @@ namespace BehaviorTree
 		private bool isControlDown = false;
 		private bool isLeftButtonDown = false;
 		private Point origMouseDownPoint;
+		private Logger logger = LogManager.GetCurrentClassLogger();
 
 		public BehaviorTreeView()
 		{
@@ -59,6 +61,16 @@ namespace BehaviorTree
 			}
 			listBox.SelectedItem = null;
 			e.Handled = true;
+		}
+
+		private void MenuDeleteNode_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (listBox.SelectedItem == null)
+			{
+				return;
+			}
+			var treeNodeViewModel = listBox.SelectedItem as TreeNodeViewModel;
+			this.ViewModel.Remove(treeNodeViewModel);
 		}
 
 		private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)

@@ -1,18 +1,58 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.ViewModel;
+using NLog;
 
 namespace BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{
+		private static double width = 80;
+		private static double height = 50;
+		private double connectorX2 = 0;
+		private double connectorY2 = 0;
 		private TreeNode treeNode;
 		private TreeNodeViewModel parent;
 		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
+		private Logger logger = LogManager.GetCurrentClassLogger();
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
 			this.treeNode = treeNode;
 			this.parent = parent ?? this;
+			if (this.parent == this)
+			{
+				connectorX2 = 0;
+				connectorY2 = this.Height / 2;
+			}
+			else
+			{
+				connectorX2 = this.Parent.Width + this.Parent.X - this.X;
+				connectorY2 = this.Parent.Height / 2 + this.Parent.Y - this.Y;
+			}
+		}
+
+		public double Width
+		{
+			get
+			{
+				return width;
+			}
+			set
+			{
+				width = value;
+			}
+		}
+
+		public double Height
+		{
+			get
+			{
+				return height;
+			}
+			set
+			{
+				height = value;
+			}
 		}
 
 		public double X
@@ -29,6 +69,13 @@ namespace BehaviorTree
 				}
 				treeNode.X = value;
 				RaisePropertyChanged("X");
+
+				this.ConnectorX2 = this.Parent.Width + this.Parent.X - this.X;
+
+				foreach (var child in Children)
+				{
+					child.ConnectorX2 = this.Width + treeNode.X - child.X;
+				}
 			}
 		}
 
@@ -46,6 +93,63 @@ namespace BehaviorTree
 				}
 				treeNode.Y = value;
 				RaisePropertyChanged("Y");
+
+				ConnectorY2 = this.Parent.Height / 2 + this.Parent.Y - this.Y;
+
+				foreach (var child in Children)
+				{
+					child.ConnectorY2 = this.Height / 2 + treeNode.Y - child.Y;
+				}
+			}
+		}
+
+		public double ConnectorX1
+		{
+			get
+			{
+				return 0;
+			}
+		}
+
+		public double ConnectorY1
+		{
+			get
+			{
+				return this.Height / 2;
+			}
+		}
+
+		public double ConnectorX2
+		{
+			get
+			{
+				if (this.Parent == this)
+				{
+					return 0;
+				}
+				return this.connectorX2;
+			}
+			set
+			{
+				this.connectorX2 = value;
+				RaisePropertyChanged("ConnectorX2");
+			}
+		}
+
+		public double ConnectorY2
+		{
+			get
+			{
+				if (this.Parent == this)
+				{
+					return this.Height / 2;
+				}
+				return this.connectorY2;
+			}
+			set
+			{
+				this.connectorY2 = value;
+				RaisePropertyChanged("ConnectorY2");
 			}
 		}
 

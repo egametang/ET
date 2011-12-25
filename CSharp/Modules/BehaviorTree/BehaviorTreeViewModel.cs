@@ -33,9 +33,9 @@ namespace BehaviorTree
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
 		{
-			for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
+			for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
 			{
-				Remove(treeNodeViewModel.Children[0]);
+				Remove(treeNodeViewModel.Children[i]);
 			}
 			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
 			treeNodes.Remove(treeNodeViewModel);

@@ -10,16 +10,23 @@
 		mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="800">
 	<UserControl.Resources>
-		
+		<LinearGradientBrush x:Key="treeNodeFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#7FC9FF" Offset="0.6" />
+		</LinearGradientBrush>
+		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
 	</UserControl.Resources>
-	
+
 	<UserControl.CommandBindings>
 		<CommandBinding Command="ApplicationCommands.New" Executed="MenuNewNode_Executed" />
+		<CommandBinding Command="ApplicationCommands.Delete" Executed="MenuDeleteNode_Executed" />
 	</UserControl.CommandBindings>
 
 	<UserControl.ContextMenu>
 		<ContextMenu>
 			<MenuItem Header="New Node" Command="ApplicationCommands.New" 
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+			<MenuItem Header="Delete Node" Command="ApplicationCommands.Delete" 
 					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 		</ContextMenu>
 	</UserControl.ContextMenu>
@@ -27,20 +34,23 @@
 		<ListBox Name="listBox" SelectionMode="Extended" ItemsSource="{Binding TreeNodes}" >
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
-					<Setter Property="Canvas.Left" Value="{Binding Mode=TwoWay, Path=X}"/>
-					<Setter Property="Canvas.Top" Value="{Binding Mode=TwoWay, Path=Y}"/>
+					<Setter Property="Canvas.Left" Value="{Binding X}"/>
+					<Setter Property="Canvas.Top" Value="{Binding Y}"/>
 				</Style>
 			</ListBox.Resources>
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas Background="Transparent" AllowDrop="True" />
+					<Canvas AllowDrop="True" />
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Rectangle Width="50" Height="40" Cursor="Hand" Fill="Green"
-						MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" 
-						MouseMove="ListBoxItem_MouseMove" />
+					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove">
+						<Rectangle Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="1.3" RadiusX="4" RadiusY="4"
+								Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}" />
+						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}" 
+							  Stroke="Black" StrokeThickness="2" ></Line>
+					</Canvas>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
