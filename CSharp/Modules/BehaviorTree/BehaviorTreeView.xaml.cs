@@ -71,6 +71,8 @@ namespace BehaviorTree
 			}
 			var treeNodeViewModel = listBox.SelectedItem as TreeNodeViewModel;
 			this.ViewModel.Remove(treeNodeViewModel);
+			listBox.SelectedItem = null;
+			e.Handled = true;
 		}
 
 		private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
@@ -79,9 +81,6 @@ namespace BehaviorTree
 			{
 				return;
 			}
-			var item = (FrameworkElement)sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
-
 			isLeftButtonDown = true;
 
 			if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
@@ -91,16 +90,20 @@ namespace BehaviorTree
 			else
 			{
 				isControlDown = false;
-
-				if (!listBox.SelectedItems.Contains(treeNodeViewModel))
-				{
-					listBox.SelectedItems.Clear();
-					listBox.SelectedItems.Add(treeNodeViewModel);
-				}
 			}
 
-			item.CaptureMouse();
+			var item = (FrameworkElement)sender;
+			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+
+			if (!isControlDown && !listBox.SelectedItems.Contains(treeNodeViewModel))
+			{
+				listBox.SelectedItems.Clear();
+				listBox.SelectedItems.Add(treeNodeViewModel);
+			}
+
 			origMouseDownPoint = e.GetPosition(this);
+
+			item.CaptureMouse();
 			e.Handled = true;
 		}
 
@@ -115,27 +118,24 @@ namespace BehaviorTree
 			var item = (FrameworkElement)sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
-			if (!isDragging)
+			if (isControlDown)
 			{
-				if (isLeftButtonDown && isControlDown)
+				if (!listBox.SelectedItems.Contains(treeNodeViewModel))
 				{
-					if (listBox.SelectedItems.Contains(treeNodeViewModel))
-					{
-						listBox.SelectedItems.Remove(treeNodeViewModel);
-					}
-					else
-					{
-						listBox.SelectedItems.Add(treeNodeViewModel);
-					}
+					listBox.SelectedItems.Add(treeNodeViewModel);
 				}
 				else
 				{
-					if (listBox.SelectedItems.Count != 1 || listBox.SelectedItem != treeNodeViewModel)
-					{
-						listBox.SelectedItems.Clear();
-						listBox.SelectedItem = treeNodeViewModel;
-						listBox.SelectedItems.Add(treeNodeViewModel);
-					}
+					listBox.SelectedItems.Remove(treeNodeViewModel);
+				}
+			}
+			else if (!isDragging)
+			{
+				if (listBox.SelectedItems.Count != 1 || listBox.SelectedItem != treeNodeViewModel)
+				{
+					listBox.SelectedItems.Clear();
+					listBox.SelectedItem = treeNodeViewModel;
+					listBox.SelectedItems.Add(treeNodeViewModel);
 				}
 			}
 
@@ -156,13 +156,22 @@ namespace BehaviorTree
 
 				origMouseDownPoint = curMouseDownPoint;
 
-				foreach (TreeNodeViewModel item in listBox.SelectedItems)
+				foreach (TreeNodeViewModel selectedItem in listBox.SelectedItems)
 				{
-					item.X += dragDelta.X;
-					item.Y += dragDelta.Y;
+					selectedItem.X += dragDelta.X;
+					selectedItem.Y += dragDelta.Y;
 				}
+				return;
 			}
-			else if (isLeftButtonDown)
+
+			var item = (FrameworkElement)sender;
+			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+
+			if (!listBox.SelectedItems.Contains(treeNodeViewModel))
+			{
+				return;
+			}
+			if (isLeftButtonDown)
 			{
 				Point curMouseDownPoint = e.GetPosition(this);
 				var dragDelta = curMouseDownPoint - origMouseDownPoint;

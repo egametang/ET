@@ -15,6 +15,7 @@
 			<GradientStop Color="#7FC9FF" Offset="0.6" />
 		</LinearGradientBrush>
 		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
+		<SolidColorBrush x:Key="treeNodeSelectedBorderBrush" Color="Green" />
 	</UserControl.Resources>
 
 	<UserControl.CommandBindings>
@@ -24,9 +25,9 @@
 
 	<UserControl.ContextMenu>
 		<ContextMenu>
-			<MenuItem Header="New Node" Command="ApplicationCommands.New" 
+			<MenuItem Header="New" Command="ApplicationCommands.New" 
 					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-			<MenuItem Header="Delete Node" Command="ApplicationCommands.Delete" 
+			<MenuItem Header="Delete" Command="ApplicationCommands.Delete" 
 					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 		</ContextMenu>
 	</UserControl.ContextMenu>
@@ -45,12 +46,17 @@
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove">
-						<Rectangle Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="1.3" RadiusX="4" RadiusY="4"
+					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove" >
+						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="4" RadiusX="4" RadiusY="4"
 								Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}" />
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}" 
-							  Stroke="Black" StrokeThickness="2" ></Line>
+							  Stroke="Black" StrokeThickness="2" />
 					</Canvas>
+					<DataTemplate.Triggers>
+						<DataTrigger  Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+							<Setter TargetName="rectNode" Property="Stroke" Value="Green" />
+						</DataTrigger >
+					</DataTemplate.Triggers>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
