@@ -68,6 +68,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviorTreeLayout.cs" />
     <Compile Include="BehaviorTreeViewModel.cs" />
     <Compile Include="BehaviorTreeModule.cs" />
     <Compile Include="BehaviorTreeView.xaml.cs">

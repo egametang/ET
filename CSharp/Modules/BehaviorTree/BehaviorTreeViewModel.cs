@@ -21,6 +21,14 @@ namespace BehaviorTree
 			}
 		}
 
+		public TreeNodeViewModel Root
+		{
+			get
+			{
+				return treeNodes.Count > 0? treeNodes[0] : null;
+			}
+		}
+
 		public void Add(TreeNode treeNode, TreeNodeViewModel parent)
 		{
 			var treeNodeViewModel = new TreeNodeViewModel(treeNode, parent);
