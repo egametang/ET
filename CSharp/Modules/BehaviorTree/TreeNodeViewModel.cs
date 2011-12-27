@@ -6,6 +6,8 @@ namespace BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{
+		private double prelim = 0;
+		private double modify = 0;
 		private static double width = 80;
 		private static double height = 50;
 		private double connectorX2 = 0;
@@ -52,6 +54,30 @@ namespace BehaviorTree
 			set
 			{
 				height = value;
+			}
+		}
+
+		public double Prelim
+		{
+			get
+			{
+				return prelim;
+			}
+			set
+			{
+				prelim = value;
+			}
+		}
+
+		public double Modify
+		{
+			get
+			{
+				return modify;
+			}
+			set
+			{
+				modify = value;
 			}
 		}
 
@@ -191,6 +217,70 @@ namespace BehaviorTree
 			set
 			{
 				children = value;
+			}
+		}
+
+		public TreeNodeViewModel LeftSibling
+		{
+			get
+			{
+				if (this.Parent == this)
+				{
+					return null;
+				}
+
+				int index = this.Parent.Children.IndexOf(this);
+				if (index == 0)
+				{
+					return null;
+				}
+				else
+				{
+					return this.Parent.Children[index - 1];
+				}
+			}
+		}
+
+		public int Index
+		{
+			get
+			{
+				int index = this.Parent.Children.IndexOf(this);
+				return index;
+			}
+		}
+
+		public TreeNodeViewModel RightMostChild
+		{
+			get
+			{
+				if (this.Children.Count == 0)
+				{
+					return null;
+				}
+
+				int maxIndex = this.Children.Count - 1;
+				return this.Children[Index];
+			}
+		}
+
+		public TreeNodeViewModel LeftMostChild
+		{
+			get
+			{
+				if (this.Children.Count == 0)
+				{
+					return null;
+				}
+				return this.Children[0];
+			}
+		}
+
+		public bool IsLeaf
+		{
+			get
+			{
+				return this.Children.Count == 0;
 			}
 		}
 	}
