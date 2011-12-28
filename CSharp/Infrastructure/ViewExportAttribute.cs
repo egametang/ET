@@ -20,8 +20,8 @@ using System.ComponentModel.Composition;
 
 namespace Infrastructure
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	[MetadataAttribute]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false), MetadataAttribute]
+	
 	public class ViewExportAttribute : ExportAttribute, IViewRegionRegistration
 	{
 		public ViewExportAttribute() : base(typeof (object))

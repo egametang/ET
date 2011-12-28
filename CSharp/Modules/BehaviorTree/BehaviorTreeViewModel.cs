@@ -3,8 +3,8 @@ using System.ComponentModel.Composition;
 
 namespace BehaviorTree
 {
-	[Export(typeof (BehaviorTreeViewModel))]
-	[PartCreationPolicy(CreationPolicy.NonShared)]
+	[Export(typeof (BehaviorTreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
+	
 	internal class BehaviorTreeViewModel
 	{
 		private readonly ObservableCollection<TreeNodeViewModel> treeNodes = new ObservableCollection<TreeNodeViewModel>();
@@ -21,7 +21,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return treeNodes.Count == 0? null : treeNodes[0];
+				return treeNodes.Count == 0 ? null : treeNodes[0];
 			}
 		}
 

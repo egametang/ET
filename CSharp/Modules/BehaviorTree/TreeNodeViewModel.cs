@@ -5,6 +5,8 @@ namespace BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{
+		private static int globalNum = 0;
+		private readonly int num;
 		private const double width = 80;
 		private const double height = 50;
 		private readonly TreeNode treeNode;
@@ -15,6 +17,7 @@ namespace BehaviorTree
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
+			num = globalNum++;
 			this.treeNode = treeNode;
 			this.parent = parent ?? this;
 			if (this.parent == this)
@@ -26,6 +29,14 @@ namespace BehaviorTree
 			{
 				connectorX2 = Width + Parent.X - X;
 				connectorY2 = Height / 2 + Parent.Y - Y;
+			}
+		}
+
+		public int Num
+		{
+			get
+			{
+				return this.num;
 			}
 		}
 
@@ -45,16 +56,42 @@ namespace BehaviorTree
 			}
 		}
 
+		public bool IsRoot
+		{
+			get
+			{
+				return Parent == this;
+			}
+		}
+
+		private double prelim;
+
 		public double Prelim
 		{
-			get;
-			set;
+			get
+			{
+				return this.prelim;
+			}
+			set
+			{
+				this.prelim = value;
+				RaisePropertyChanged("Prelim");
+			}
 		}
+
+		private double modify;
 
 		public double Modify
 		{
-			get;
-			set;
+			get
+			{
+				return this.modify;
+			}
+			set
+			{
+				RaisePropertyChanged("Modify");
+				this.modify = value;
+			}
 		}
 
 		public double X
@@ -72,11 +109,11 @@ namespace BehaviorTree
 				treeNode.X = value;
 				RaisePropertyChanged("X");
 
-				ConnectorX2 = Width + Parent.X - X;
+				ConnectorX2 = Width / 2 + Parent.X - X;
 
 				foreach (TreeNodeViewModel child in Children)
 				{
-					child.ConnectorX2 = Width + treeNode.X - child.X;
+					child.ConnectorX2 = Width / 2 + treeNode.X - child.X;
 				}
 			}
 		}
@@ -96,11 +133,11 @@ namespace BehaviorTree
 				treeNode.Y = value;
 				RaisePropertyChanged("Y");
 
-				ConnectorY2 = Height / 2 + Parent.Y - Y;
+				ConnectorY2 = Height + Parent.Y - Y;
 
-				foreach (TreeNodeViewModel child in Children)
+				foreach (var child in Children)
 				{
-					child.ConnectorY2 = Height / 2 + treeNode.Y - child.Y;
+					child.ConnectorY2 = Height + treeNode.Y - child.Y;
 				}
 			}
 		}
@@ -109,7 +146,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return 0;
+				return Width / 2;
 			}
 		}
 
@@ -117,7 +154,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return Height / 2;
+				return 0;
 			}
 		}
 
@@ -125,11 +162,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (Parent == this)
-				{
-					return 0;
-				}
-				return connectorX2;
+				return this.IsRoot ? width / 2 : this.connectorX2;
 			}
 			set
 			{
@@ -142,11 +175,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (Parent == this)
-				{
-					return Height / 2;
-				}
-				return connectorY2;
+				return this.IsRoot ? 0 : this.connectorY2;
 			}
 			set
 			{
@@ -200,20 +229,13 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (Parent == this)
+				if (this.IsRoot)
 				{
 					return null;
 				}
 
-				int index = Parent.Children.IndexOf(this);
-				if (index == 0)
-				{
-					return null;
-				}
-				else
-				{
-					return Parent.Children[index - 1];
-				}
+				int index = this.Parent.Children.IndexOf(this);
+				return index == 0 ? null : this.Parent.Children[index - 1];
 			}
 		}
 
@@ -221,8 +243,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				int index = Parent.Children.IndexOf(this);
-				return index;
+				return this.IsRoot ? 0 : this.Parent.Children.IndexOf(this);
 			}
 		}
 
@@ -230,13 +251,13 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (Children.Count == 0)
+				if (this.Children.Count == 0)
 				{
 					return null;
 				}
 
-				int maxIndex = Children.Count - 1;
-				return Children[Index];
+				int maxIndex = this.Children.Count - 1;
+				return this.Children[maxIndex];
 			}
 		}
 
@@ -244,11 +265,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (Children.Count == 0)
-				{
-					return null;
-				}
-				return Children[0];
+				return this.Children.Count == 0 ? null : this.Children[0];
 			}
 		}
 
@@ -256,7 +273,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return Children.Count == 0;
+				return this.Children.Count == 0;
 			}
 		}
 	}

@@ -9,8 +9,8 @@ namespace BehaviorTree
 	/// <summary>
 	/// BehaviorTreeView.xaml 的交互逻辑
 	/// </summary>
-	[ViewExport(RegionName = "TreeCanvasRegion")]
-	[PartCreationPolicy(CreationPolicy.NonShared)]
+	[ViewExport(RegionName = "TreeCanvasRegion"), PartCreationPolicy(CreationPolicy.NonShared)]
+	
 	public partial class BehaviorTreeView
 	{
 		private const double DragThreshold = 5;

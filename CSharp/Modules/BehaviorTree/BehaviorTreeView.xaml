@@ -1,9 +1,9 @@
 ﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 x:Class="BehaviorTree.BehaviorTreeView"
-			 mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800">
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		x:Class="BehaviorTree.BehaviorTreeView"
+		mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800">
 	<UserControl.Resources>
 		<LinearGradientBrush x:Key="treeNodeFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
@@ -20,9 +20,9 @@
 	<UserControl.ContextMenu>
 		<ContextMenu>
 			<MenuItem Header="New" Command="ApplicationCommands.New"
-					  CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 			<MenuItem Header="Delete" Command="ApplicationCommands.Delete"
-					  CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
@@ -42,9 +42,20 @@
 				<DataTemplate>
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="4"
-								   RadiusX="4" RadiusY="4" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}" />
+								RadiusX="4" RadiusY="4" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
-							  Stroke="Black" StrokeThickness="2" />
+								Stroke="Black" StrokeThickness="2" />
+						<StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<Label Content="{Binding Num}"></Label>
+								<Label Content="{Binding X}"></Label>
+								<Label Content="{Binding Y}"></Label>
+							</StackPanel>
+							<StackPanel Orientation="Horizontal">
+								<Label Content="{Binding Prelim}"></Label>
+								<Label Content="{Binding Modify}"></Label>
+							</StackPanel>
+						</StackPanel>
 					</Canvas>
 					<DataTemplate.Triggers>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
