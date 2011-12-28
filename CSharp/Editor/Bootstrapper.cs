@@ -1,43 +1,38 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using Microsoft.Practices.Prism.MefExtensions;
-using Infrastructure;
-using Microsoft.Practices.Prism.Regions;
 using BehaviorTree;
+using Infrastructure;
+using Microsoft.Practices.Prism.MefExtensions;
+using Microsoft.Practices.Prism.Regions;
 
 namespace Editor
 {
-	public partial class Bootstrapper : MefBootstrapper
+	public class Bootstrapper : MefBootstrapper
 	{
 		protected override void ConfigureAggregateCatalog()
 		{
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(ViewExportAttribute).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(BehaviorTreeModule).Assembly));
-		}
-
-		protected override void ConfigureContainer()
-		{
-			base.ConfigureContainer();
+			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (Bootstrapper).Assembly));
+			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
+			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
 		}
 
 		protected override void InitializeShell()
 		{
 			base.InitializeShell();
-			Application.Current.MainWindow = (Shell)this.Shell;
+			Application.Current.MainWindow = (Shell) Shell;
 			Application.Current.MainWindow.Show();
 		}
 
 		protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
 		{
-			var factory = base.ConfigureDefaultRegionBehaviors();
-			factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof(AutoPopulateExportedViewsBehavior));
+			IRegionBehaviorFactory factory = base.ConfigureDefaultRegionBehaviors();
+			factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof (AutoPopulateExportedViewsBehavior));
 			return factory;
 		}
 
 		protected override DependencyObject CreateShell()
 		{
-			return this.Container.GetExportedValue<Shell>();
+			return Container.GetExportedValue<Shell>();
 		}
 	}
 }

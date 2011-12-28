@@ -1,21 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.ViewModel;
-using NLog;
 
 namespace BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{
-		private double prelim = 0;
-		private double modify = 0;
-		private static double width = 80;
-		private static double height = 50;
-		private double connectorX2 = 0;
-		private double connectorY2 = 0;
-		private TreeNode treeNode;
-		private TreeNodeViewModel parent;
+		private const double width = 80;
+		private const double height = 50;
+		private readonly TreeNode treeNode;
 		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
-		private Logger logger = LogManager.GetCurrentClassLogger();
+		private double connectorX2;
+		private double connectorY2;
+		private TreeNodeViewModel parent;
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
@@ -24,61 +20,41 @@ namespace BehaviorTree
 			if (this.parent == this)
 			{
 				connectorX2 = 0;
-				connectorY2 = this.Height / 2;
+				connectorY2 = Height / 2;
 			}
 			else
 			{
-				connectorX2 = this.Parent.Width + this.Parent.X - this.X;
-				connectorY2 = this.Parent.Height / 2 + this.Parent.Y - this.Y;
+				connectorX2 = Width + Parent.X - X;
+				connectorY2 = Height / 2 + Parent.Y - Y;
 			}
 		}
 
-		public double Width
+		public static double Width
 		{
 			get
 			{
 				return width;
 			}
-			set
-			{
-				width = value;
-			}
 		}
 
-		public double Height
+		public static double Height
 		{
 			get
 			{
 				return height;
 			}
-			set
-			{
-				height = value;
-			}
 		}
 
 		public double Prelim
 		{
-			get
-			{
-				return prelim;
-			}
-			set
-			{
-				prelim = value;
-			}
+			get;
+			set;
 		}
 
 		public double Modify
 		{
-			get
-			{
-				return modify;
-			}
-			set
-			{
-				modify = value;
-			}
+			get;
+			set;
 		}
 
 		public double X
@@ -96,11 +72,11 @@ namespace BehaviorTree
 				treeNode.X = value;
 				RaisePropertyChanged("X");
 
-				this.ConnectorX2 = this.Parent.Width + this.Parent.X - this.X;
+				ConnectorX2 = Width + Parent.X - X;
 
-				foreach (var child in Children)
+				foreach (TreeNodeViewModel child in Children)
 				{
-					child.ConnectorX2 = this.Width + treeNode.X - child.X;
+					child.ConnectorX2 = Width + treeNode.X - child.X;
 				}
 			}
 		}
@@ -120,11 +96,11 @@ namespace BehaviorTree
 				treeNode.Y = value;
 				RaisePropertyChanged("Y");
 
-				ConnectorY2 = this.Parent.Height / 2 + this.Parent.Y - this.Y;
+				ConnectorY2 = Height / 2 + Parent.Y - Y;
 
-				foreach (var child in Children)
+				foreach (TreeNodeViewModel child in Children)
 				{
-					child.ConnectorY2 = this.Height / 2 + treeNode.Y - child.Y;
+					child.ConnectorY2 = Height / 2 + treeNode.Y - child.Y;
 				}
 			}
 		}
@@ -141,7 +117,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return this.Height / 2;
+				return Height / 2;
 			}
 		}
 
@@ -149,15 +125,15 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (this.Parent == this)
+				if (Parent == this)
 				{
 					return 0;
 				}
-				return this.connectorX2;
+				return connectorX2;
 			}
 			set
 			{
-				this.connectorX2 = value;
+				connectorX2 = value;
 				RaisePropertyChanged("ConnectorX2");
 			}
 		}
@@ -166,15 +142,15 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (this.Parent == this)
+				if (Parent == this)
 				{
-					return this.Height / 2;
+					return Height / 2;
 				}
-				return this.connectorY2;
+				return connectorY2;
 			}
 			set
 			{
-				this.connectorY2 = value;
+				connectorY2 = value;
 				RaisePropertyChanged("ConnectorY2");
 			}
 		}
@@ -224,19 +200,19 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (this.Parent == this)
+				if (Parent == this)
 				{
 					return null;
 				}
 
-				int index = this.Parent.Children.IndexOf(this);
+				int index = Parent.Children.IndexOf(this);
 				if (index == 0)
 				{
 					return null;
 				}
 				else
 				{
-					return this.Parent.Children[index - 1];
+					return Parent.Children[index - 1];
 				}
 			}
 		}
@@ -245,7 +221,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				int index = this.Parent.Children.IndexOf(this);
+				int index = Parent.Children.IndexOf(this);
 				return index;
 			}
 		}
@@ -254,13 +230,13 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (this.Children.Count == 0)
+				if (Children.Count == 0)
 				{
 					return null;
 				}
 
-				int maxIndex = this.Children.Count - 1;
-				return this.Children[Index];
+				int maxIndex = Children.Count - 1;
+				return Children[Index];
 			}
 		}
 
@@ -268,11 +244,11 @@ namespace BehaviorTree
 		{
 			get
 			{
-				if (this.Children.Count == 0)
+				if (Children.Count == 0)
 				{
 					return null;
 				}
-				return this.Children[0];
+				return Children[0];
 			}
 		}
 
@@ -280,7 +256,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return this.Children.Count == 0;
+				return Children.Count == 0;
 			}
 		}
 	}

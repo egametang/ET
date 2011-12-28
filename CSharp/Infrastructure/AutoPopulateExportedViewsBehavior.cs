@@ -14,48 +14,57 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Regions;
 
 namespace Infrastructure
 {
-	[Export(typeof(AutoPopulateExportedViewsBehavior))]
+	[Export(typeof (AutoPopulateExportedViewsBehavior))]
 	[PartCreationPolicy(CreationPolicy.NonShared)]
 	public class AutoPopulateExportedViewsBehavior : RegionBehavior, IPartImportsSatisfiedNotification
 	{
-		protected override void OnAttach()
+		[ImportMany(AllowRecomposition = true)]
+		public Lazy<object, IViewRegionRegistration>[] RegisteredViews
 		{
-			AddRegisteredViews();
+			get;
+			set;
 		}
+
+		#region IPartImportsSatisfiedNotification Members
 
 		public void OnImportsSatisfied()
 		{
 			AddRegisteredViews();
 		}
 
+		#endregion
+
+		protected override void OnAttach()
+		{
+			AddRegisteredViews();
+		}
+
 		private void AddRegisteredViews()
 		{
-			if (this.Region == null)
+			if (Region == null)
 			{
 				return;
 			}
-			
-			foreach (var viewEntry in this.RegisteredViews)
-			{
-				if (viewEntry.Metadata.RegionName == this.Region.Name)
-				{
-					var view = viewEntry.Value;
 
-					if (!this.Region.Views.Contains(view))
+			foreach (var viewEntry in RegisteredViews)
+			{
+				if (viewEntry.Metadata.RegionName == Region.Name)
+				{
+					object view = viewEntry.Value;
+
+					if (!Region.Views.Contains(view))
 					{
-						this.Region.Add(view);
+						Region.Add(view);
 					}
 				}
 			}
 		}
-
-		[ImportMany(AllowRecomposition = true)]
-		public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
 	}
 }

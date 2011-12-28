@@ -8,12 +8,12 @@ namespace Editor
 		{
 			base.OnStartup(e);
 			RunInDebugMode();
-			this.ShutdownMode = ShutdownMode.OnMainWindowClose;
+			ShutdownMode = ShutdownMode.OnMainWindowClose;
 		}
 
 		private static void RunInDebugMode()
 		{
-			Bootstrapper bootstrapper = new Bootstrapper();
+			var bootstrapper = new Bootstrapper();
 			bootstrapper.Run();
 		}
 	}

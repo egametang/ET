@@ -14,6 +14,7 @@
 // organization, product, domain name, email address, logo, person,
 // places, or events is intended or should be inferred.
 //===================================================================================
+
 using System;
 using System.ComponentModel.Composition;
 
@@ -23,16 +24,22 @@ namespace Infrastructure
 	[MetadataAttribute]
 	public class ViewExportAttribute : ExportAttribute, IViewRegionRegistration
 	{
-		public ViewExportAttribute() : base(typeof(object))
-		{ }
-
-		public ViewExportAttribute(string viewName) : base(viewName, typeof(object))
-		{ }
-
-		public string RegionName 
+		public ViewExportAttribute() : base(typeof (object))
 		{
-			get; 
-			set; 
 		}
+
+		public ViewExportAttribute(string viewName) : base(viewName, typeof (object))
+		{
+		}
+
+		#region IViewRegionRegistration Members
+
+		public string RegionName
+		{
+			get;
+			set;
+		}
+
+		#endregion
 	}
 }

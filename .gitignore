@@ -16,4 +16,5 @@ bin/
 obj/
 Properties/
 Packages/
+_ReSharper.CSharp/
 

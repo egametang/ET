@@ -3,11 +3,15 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace BehaviorTree
 {
-	[ModuleExport(typeof(BehaviorTreeModule))]
+	[ModuleExport(typeof (BehaviorTreeModule))]
 	public class BehaviorTreeModule : IModule
 	{
+		#region IModule Members
+
 		public void Initialize()
 		{
 		}
+
+		#endregion
 	}
 }

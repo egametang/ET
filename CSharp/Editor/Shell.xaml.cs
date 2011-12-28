@@ -1,6 +1,5 @@
-using System.Windows;
 using System.ComponentModel.Composition;
-using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 
 namespace Editor
 {
@@ -13,11 +12,11 @@ namespace Editor
 		}
 
 		[Import]
-		ShellViewModel ViewModel
+		private ShellViewModel ViewModel
 		{
 			set
 			{
-				this.DataContext = value;
+				DataContext = value;
 			}
 		}
 	}

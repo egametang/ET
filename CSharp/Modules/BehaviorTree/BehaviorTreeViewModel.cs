@@ -3,11 +3,11 @@ using System.ComponentModel.Composition;
 
 namespace BehaviorTree
 {
-	[Export(typeof(BehaviorTreeViewModel))]
+	[Export(typeof (BehaviorTreeViewModel))]
 	[PartCreationPolicy(CreationPolicy.NonShared)]
-	class BehaviorTreeViewModel
+	internal class BehaviorTreeViewModel
 	{
-		private ObservableCollection<TreeNodeViewModel> treeNodes = new ObservableCollection<TreeNodeViewModel>();
+		private readonly ObservableCollection<TreeNodeViewModel> treeNodes = new ObservableCollection<TreeNodeViewModel>();
 
 		public ObservableCollection<TreeNodeViewModel> TreeNodes
 		{
@@ -15,17 +15,13 @@ namespace BehaviorTree
 			{
 				return treeNodes;
 			}
-			set
-			{
-				treeNodes = value;
-			}
 		}
 
-		public TreeNodeViewModel Root
+		private TreeNodeViewModel Root
 		{
 			get
 			{
-				return treeNodes.Count > 0? treeNodes[0] : null;
+				return treeNodes.Count == 0? null : treeNodes[0];
 			}
 		}
 
@@ -37,6 +33,7 @@ namespace BehaviorTree
 			{
 				parent.Children.Add(treeNodeViewModel);
 			}
+			BehaviorTreeLayout.ExcuteLayout(Root);
 		}
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
@@ -47,7 +44,7 @@ namespace BehaviorTree
 			}
 			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
 			treeNodes.Remove(treeNodeViewModel);
+			BehaviorTreeLayout.ExcuteLayout(Root);
 		}
 	}
 }
-

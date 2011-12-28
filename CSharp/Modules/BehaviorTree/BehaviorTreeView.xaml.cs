@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Infrastructure;
-using NLog;
 
 namespace BehaviorTree
 {
@@ -13,15 +11,14 @@ namespace BehaviorTree
 	/// </summary>
 	[ViewExport(RegionName = "TreeCanvasRegion")]
 	[PartCreationPolicy(CreationPolicy.NonShared)]
-	public partial class BehaviorTreeView : UserControl
+	public partial class BehaviorTreeView
 	{
-		private static readonly double DragThreshold = 5;
+		private const double DragThreshold = 5;
 
-		private bool isDragging = false;
-		private bool isControlDown = false;
-		private bool isLeftButtonDown = false;
+		private bool isControlDown;
+		private bool isDragging;
+		private bool isLeftButtonDown;
 		private Point origMouseDownPoint;
-		private Logger logger = LogManager.GetCurrentClassLogger();
 
 		public BehaviorTreeView()
 		{
@@ -29,15 +26,15 @@ namespace BehaviorTree
 		}
 
 		[Import]
-		BehaviorTreeViewModel ViewModel
+		private BehaviorTreeViewModel ViewModel
 		{
 			get
 			{
-				return this.DataContext as BehaviorTreeViewModel;
+				return DataContext as BehaviorTreeViewModel;
 			}
 			set
 			{
-				this.DataContext = value;
+				DataContext = value;
 			}
 		}
 
@@ -47,16 +44,16 @@ namespace BehaviorTree
 			var treeNode = new TreeNode(point.X, point.Y);
 
 			// one root node
-			if (this.ViewModel.TreeNodes.Count == 0)
+			if (ViewModel.TreeNodes.Count == 0)
 			{
-				this.ViewModel.Add(treeNode, null);
+				ViewModel.Add(treeNode, null);
 			}
 			else
 			{
 				if (listBox.SelectedItem != null)
 				{
 					var treeNodeViewModel = listBox.SelectedItem as TreeNodeViewModel;
-					this.ViewModel.Add(treeNode, treeNodeViewModel);
+					ViewModel.Add(treeNode, treeNodeViewModel);
 				}
 			}
 			listBox.SelectedItem = null;
@@ -70,7 +67,7 @@ namespace BehaviorTree
 				return;
 			}
 			var treeNodeViewModel = listBox.SelectedItem as TreeNodeViewModel;
-			this.ViewModel.Remove(treeNodeViewModel);
+			ViewModel.Remove(treeNodeViewModel);
 			listBox.SelectedItem = null;
 			e.Handled = true;
 		}
@@ -83,16 +80,9 @@ namespace BehaviorTree
 			}
 			isLeftButtonDown = true;
 
-			if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
-			{
-				isControlDown = true;
-			}
-			else
-			{
-				isControlDown = false;
-			}
+			isControlDown = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
 
-			var item = (FrameworkElement)sender;
+			var item = (FrameworkElement) sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
 			if (!isControlDown && !listBox.SelectedItems.Contains(treeNodeViewModel))
@@ -115,7 +105,7 @@ namespace BehaviorTree
 				return;
 			}
 
-			var item = (FrameworkElement)sender;
+			var item = (FrameworkElement) sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
 			if (isControlDown)
@@ -149,10 +139,12 @@ namespace BehaviorTree
 
 		private void ListBoxItem_MouseMove(object sender, MouseEventArgs e)
 		{
+			Point curMouseDownPoint;
+			Vector dragDelta;
 			if (isDragging)
 			{
-				Point curMouseDownPoint = e.GetPosition(this);
-				var dragDelta = curMouseDownPoint - origMouseDownPoint;
+				curMouseDownPoint = e.GetPosition(this);
+				dragDelta = curMouseDownPoint - origMouseDownPoint;
 
 				origMouseDownPoint = curMouseDownPoint;
 
@@ -164,24 +156,27 @@ namespace BehaviorTree
 				return;
 			}
 
-			var item = (FrameworkElement)sender;
+			if (!isLeftButtonDown)
+			{
+				return;
+			}
+
+			var item = (FrameworkElement) sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
 			if (!listBox.SelectedItems.Contains(treeNodeViewModel))
 			{
 				return;
 			}
-			if (isLeftButtonDown)
+
+			curMouseDownPoint = e.GetPosition(this);
+			dragDelta = curMouseDownPoint - origMouseDownPoint;
+			double dragDistance = Math.Abs(dragDelta.Length);
+			if (dragDistance > DragThreshold)
 			{
-				Point curMouseDownPoint = e.GetPosition(this);
-				var dragDelta = curMouseDownPoint - origMouseDownPoint;
-				double dragDistance = Math.Abs(dragDelta.Length);
-				if (dragDistance > DragThreshold)
-				{
-					isDragging = true;
-				}
-				e.Handled = true;
+				isDragging = true;
 			}
+			e.Handled = true;
 		}
 	}
 }

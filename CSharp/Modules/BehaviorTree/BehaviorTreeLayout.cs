@@ -1,55 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BehaviorTree
+﻿namespace BehaviorTree
 {
-	class BehaviorTreeLayout
+	public class BehaviorTreeLayout
 	{
-		private static double xGap = 20;
-		private static double yGap = 10;
-		private TreeNodeViewModel root = null;
+		private const double XGap = 20;
+		private const double YGap = 10;
 
-		public BehaviorTreeLayout(TreeNodeViewModel root)
+		private static void CountPrelim(TreeNodeViewModel treeNode)
 		{
-			this.root = root;
-		}
-
-		public static double XGap
-		{
-			get
-			{
-				return BehaviorTreeLayout.xGap;
-			}
-			set
-			{
-				BehaviorTreeLayout.xGap = value;
-			}
-		}
-
-		public static double YGap
-		{
-			get
-			{
-				return BehaviorTreeLayout.yGap;
-			}
-			set
-			{
-				BehaviorTreeLayout.yGap = value;
-			}
-		}
-
-		public void CountPrelim(TreeNodeViewModel treeNode)
-		{
-			
 			if (treeNode.Index == 0)
 			{
-				treeNode.Prelim = treeNode.Index * (treeNode.Width + BehaviorTreeLayout.XGap);
+				treeNode.Prelim = treeNode.Index * (TreeNodeViewModel.Width + XGap);
 				return;
 			}
 
-			double childrenCenter = 0;
+			double childrenCenter;
 			if (treeNode.Children.Count > 0)
 			{
 				int maxIndex = treeNode.Children.Count - 1;
@@ -62,7 +26,7 @@ namespace BehaviorTree
 			treeNode.Prelim = childrenCenter;
 		}
 
-		public void CountModify(TreeNodeViewModel treeNode, double prelim)
+		private static void CountModify(TreeNodeViewModel treeNode, double prelim)
 		{
 			double childrenCenter = 0;
 			if (treeNode.Children.Count > 0)
@@ -73,18 +37,18 @@ namespace BehaviorTree
 			treeNode.Modify = prelim - childrenCenter;
 		}
 
-		public void CountPrelimAndModify(TreeNodeViewModel treeNode)
+		private static void CountPrelimAndModify(TreeNodeViewModel treeNode)
 		{
 			CountPrelim(treeNode);
 			CountModify(treeNode, treeNode.Prelim);
 
-			foreach (var node in treeNode.Children)
+			foreach (TreeNodeViewModel node in treeNode.Children)
 			{
 				CountPrelimAndModify(node);
 			}
 		}
 
-		public void AjustTwoSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
+		private static void AjustTwoSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
 		{
 			if (left.IsLeaf || right.IsLeaf)
 			{
@@ -95,14 +59,8 @@ namespace BehaviorTree
 			TreeNodeViewModel tRight = right;
 			double leftTreeModify = 0;
 			double rightTreeModify = 0;
-			for (int i = 0; ; ++i)
+			for (int i = 0;; ++i)
 			{
-				if (tLeft.IsLeaf || tRight.IsLeaf)
-				{
-					right.Modify += offset;
-					return;
-				}
-
 				leftTreeModify += tLeft.Modify;
 				rightTreeModify += tRight.Modify;
 
@@ -110,38 +68,45 @@ namespace BehaviorTree
 				tRight = tRight.LeftMostChild;
 
 				double tGap = (tRight.Prelim + rightTreeModify) - (tLeft.Prelim + leftTreeModify);
-				if (tGap - BehaviorTreeLayout.XGap > offset)
+				if (tGap - XGap - TreeNodeViewModel.Width > offset)
 				{
-					offset = tGap - BehaviorTreeLayout.XGap;
+					offset = tGap - XGap - TreeNodeViewModel.Width;
+				}
+
+				if (tLeft.IsLeaf || tRight.IsLeaf)
+				{
+					break;
 				}
 			}
+			right.Modify += offset;
 		}
 
-		public void AjustTreeGap(TreeNodeViewModel treeNode)
+		private static void AjustTreeGap(TreeNodeViewModel treeNode)
 		{
 			for (int i = 0; i < treeNode.Children.Count - 1; ++i)
 			{
-				TreeNodeViewModel left = treeNode.Children[i];
-				TreeNodeViewModel right = treeNode.Children[i + 1];
+				var left = treeNode.Children[i];
+				var right = treeNode.Children[i + 1];
 				AjustTwoSubTreeGap(left, right);
 			}
 		}
 
-		public void ApplyXY(TreeNodeViewModel treeNode)
+		private static void ApplyXY(int level, TreeNodeViewModel treeNode)
 		{
-			treeNode.X = treeNode.Prelim;
-			double realModify = treeNode.Prelim - treeNode.Modify;
-			foreach (var node in treeNode.Children)
+			treeNode.X = treeNode.Prelim + treeNode.Modify;
+			treeNode.Y = level * (TreeNodeViewModel.Height + YGap);
+			++level;
+			foreach (TreeNodeViewModel node in treeNode.Children)
 			{
-
+				ApplyXY(level, node);
 			}
 		}
 
-		public void ExcuteLayout()
+		public static void ExcuteLayout(TreeNodeViewModel root)
 		{
 			CountPrelimAndModify(root);
 			AjustTreeGap(root);
-			ApplyXY(root);
+			ApplyXY(0, root);
 		}
 	}
 }
