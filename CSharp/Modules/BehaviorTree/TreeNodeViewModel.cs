@@ -10,10 +10,13 @@ namespace BehaviorTree
 		private const double width = 80;
 		private const double height = 50;
 		private readonly TreeNode treeNode;
-		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
 		private double connectorX2;
 		private double connectorY2;
+		private double prelim;
+		private double modify;
+		private double ancestorModify;
 		private TreeNodeViewModel parent;
+		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
@@ -64,8 +67,6 @@ namespace BehaviorTree
 			}
 		}
 
-		private double prelim;
-
 		public double Prelim
 		{
 			get
@@ -78,8 +79,6 @@ namespace BehaviorTree
 				RaisePropertyChanged("Prelim");
 			}
 		}
-
-		private double modify;
 
 		public double Modify
 		{
@@ -247,7 +246,7 @@ namespace BehaviorTree
 			}
 		}
 
-		public TreeNodeViewModel RightMostChild
+		public TreeNodeViewModel LastChild
 		{
 			get
 			{
@@ -261,7 +260,7 @@ namespace BehaviorTree
 			}
 		}
 
-		public TreeNodeViewModel LeftMostChild
+		public TreeNodeViewModel FirstChild
 		{
 			get
 			{
@@ -274,6 +273,18 @@ namespace BehaviorTree
 			get
 			{
 				return this.Children.Count == 0;
+			}
+		}
+
+		public double AncestorModify
+		{
+			get
+			{
+				return this.ancestorModify;
+			}
+			set
+			{
+				this.ancestorModify = value;
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 
 namespace BehaviorTree
 {
-	public class BehaviorTreeLayout
+	public static class BehaviorTreeLayout
 	{
 		private const double XGap = 20;
 		private const double YGap = 10;
@@ -21,17 +21,17 @@ namespace BehaviorTree
 			double childrenCenter = 0;
 			if (!treeNode.IsLeaf)
 			{
-				childrenCenter = (treeNode.LeftMostChild.Prelim + treeNode.RightMostChild.Prelim) / 2;
+				childrenCenter = (treeNode.FirstChild.Prelim + treeNode.LastChild.Prelim) / 2;
 			}
 
-			if (treeNode.Index == 0)
+			if (treeNode.LeftSibling == null)
 			{
 				// 如果没有左邻居，不需要设置modify
 				prelim = childrenCenter;
 			}
 			else
 			{
-				prelim = treeNode.Index * (TreeNodeViewModel.Width + XGap) + treeNode.Parent.LeftMostChild.Prelim;
+				prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
 				modify = prelim - childrenCenter;
 			}
 			treeNode.Prelim = prelim;
@@ -40,32 +40,67 @@ namespace BehaviorTree
 			logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
 		}
 
-		private static void AjustTwoSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
+		public static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		{
+			if (currentLevel == searchLevel)
+			{
+				return treeNode;
+			}
+			for (int i = 0; i < treeNode.Children.Count; ++i)
+			{
+				var child = treeNode.Children[i];
+				child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
+				var offspring = LeftMostOffspring(child, currentLevel + 1, searchLevel);
+				if (offspring == null)
+				{
+					continue;
+				}
+				return offspring;
+			}
+			return null;
+		}
+
+		public static TreeNodeViewModel RightMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		{
+			if (currentLevel == searchLevel)
+			{
+				return treeNode;
+			}
+			for (int i = treeNode.Children.Count - 1; i >= 0; --i)
+			{
+				var child = treeNode.Children[i];
+				child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
+				var offspring = RightMostOffspring(child, currentLevel + 1, searchLevel);
+				if (offspring == null)
+				{
+					continue;
+				}
+				return offspring;
+			}
+			return null;
+		}
+
+		private static void AjustTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
 		{
 			double offset = 0;
 			TreeNodeViewModel tLeft = left;
 			TreeNodeViewModel tRight = right;
-			double leftTreeModify = 0;
-			double rightTreeModify = 0;
-			for (int i = 0; ; ++i)
+			left.AncestorModify = 0;
+			right.AncestorModify = 0;
+			for (int i = 0; tLeft != null && tRight != null  ; ++i)
 			{
-				double tGap = (tRight.Prelim + rightTreeModify) - (tLeft.Prelim + leftTreeModify);
+				double tGap = (tRight.Prelim + tRight.AncestorModify) - (tLeft.Prelim + tLeft.AncestorModify);
 				if (XGap + TreeNodeViewModel.Width - tGap > offset)
 				{
 					offset = XGap + TreeNodeViewModel.Width - tGap;
 				}
-
-				if (tLeft.IsLeaf || tRight.IsLeaf)
-				{
-					break;
-				}
-				leftTreeModify += tLeft.Modify;
-				rightTreeModify += tRight.Modify;
-				tLeft = tLeft.RightMostChild;
-				tRight = tRight.LeftMostChild;
+				tLeft = RightMostOffspring(left, 0, i + 1);
+				tRight = LeftMostOffspring(right, 0, i + 1);
 			}
 			right.Modify += offset;
 			right.Prelim += offset;
+
+			// TODO:要通知right的所有父节点位置改变
 		}
 
 		private static void AjustTreeGap(TreeNodeViewModel treeNode)
@@ -80,9 +115,12 @@ namespace BehaviorTree
 			}
 			for (int i = 0; i < treeNode.Children.Count - 1; ++i)
 			{
-				var left = treeNode.Children[i];
-				var right = treeNode.Children[i + 1];
-				AjustTwoSubTreeGap(left, right);
+				for (int j = i + 1; j < treeNode.Children.Count; ++j)
+				{
+					var left = treeNode.Children[i];
+					var right = treeNode.Children[j];
+					AjustTreeGap(left, right);
+				}
 			}
 		}
 
@@ -98,7 +136,7 @@ namespace BehaviorTree
 			}
 			else
 			{
-				treeNode.X = (treeNode.LeftMostChild.X + treeNode.RightMostChild.X) / 2;
+				treeNode.X = (treeNode.FirstChild.X + treeNode.LastChild.X) / 2;
 			}
 			treeNode.Y = level * (TreeNodeViewModel.Height + YGap);
 		}
@@ -109,6 +147,7 @@ namespace BehaviorTree
 			{
 				return;
 			}
+			logger.Debug("----------------------------------");
 			CountPrelimAndModify(root);
 			AjustTreeGap(root);
 			ApplyXY(root, 0, 0);
