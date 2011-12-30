@@ -7,8 +7,6 @@
 *.suo
 *.user
 
-CSharp.sln.DotSettings
-
 .settings/
 Dbg/
 Opt/
