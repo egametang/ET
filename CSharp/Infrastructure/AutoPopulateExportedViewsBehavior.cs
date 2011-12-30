@@ -22,7 +22,6 @@ using Microsoft.Practices.Prism.Regions;
 namespace Infrastructure
 {
 	[Export(typeof (AutoPopulateExportedViewsBehavior)), PartCreationPolicy(CreationPolicy.NonShared)]
-	
 	public class AutoPopulateExportedViewsBehavior : RegionBehavior, IPartImportsSatisfiedNotification
 	{
 		[ImportMany(AllowRecomposition = true)]
@@ -36,32 +35,32 @@ namespace Infrastructure
 
 		public void OnImportsSatisfied()
 		{
-			AddRegisteredViews();
+			this.AddRegisteredViews();
 		}
 
 		#endregion
 
 		protected override void OnAttach()
 		{
-			AddRegisteredViews();
+			this.AddRegisteredViews();
 		}
 
 		private void AddRegisteredViews()
 		{
-			if (Region == null)
+			if (this.Region == null)
 			{
 				return;
 			}
 
-			foreach (var viewEntry in RegisteredViews)
+			foreach (var viewEntry in this.RegisteredViews)
 			{
-				if (viewEntry.Metadata.RegionName == Region.Name)
+				if (viewEntry.Metadata.RegionName == this.Region.Name)
 				{
 					object view = viewEntry.Value;
 
-					if (!Region.Views.Contains(view))
+					if (!this.Region.Views.Contains(view))
 					{
-						Region.Add(view);
+						this.Region.Add(view);
 					}
 				}
 			}

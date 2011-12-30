@@ -5,7 +5,7 @@ namespace BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{
-		private static int globalNum = 0;
+		private static int globalNum;
 		private readonly int num;
 		private const double width = 80;
 		private const double height = 50;
@@ -20,18 +20,18 @@ namespace BehaviorTree
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
-			num = globalNum++;
+			this.num = globalNum++;
 			this.treeNode = treeNode;
 			this.parent = parent ?? this;
 			if (this.parent == this)
 			{
-				connectorX2 = 0;
-				connectorY2 = Height / 2;
+				this.connectorX2 = 0;
+				this.connectorY2 = Height / 2;
 			}
 			else
 			{
-				connectorX2 = Width + Parent.X - X;
-				connectorY2 = Height / 2 + Parent.Y - Y;
+				this.connectorX2 = Width + this.Parent.X - this.X;
+				this.connectorY2 = Height / 2 + this.Parent.Y - this.Y;
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return Parent == this;
+				return this.Parent == this;
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace BehaviorTree
 			set
 			{
 				this.prelim = value;
-				RaisePropertyChanged("Prelim");
+				this.RaisePropertyChanged("Prelim");
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace BehaviorTree
 			}
 			set
 			{
-				RaisePropertyChanged("Modify");
+				this.RaisePropertyChanged("Modify");
 				this.modify = value;
 			}
 		}
@@ -97,22 +97,22 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return treeNode.X;
+				return this.treeNode.X;
 			}
 			set
 			{
-				if (treeNode.X == value)
+				if (this.treeNode.X == value)
 				{
 					return;
 				}
-				treeNode.X = value;
-				RaisePropertyChanged("X");
+				this.treeNode.X = value;
+				this.RaisePropertyChanged("X");
 
-				ConnectorX2 = Width / 2 + Parent.X - X;
+				this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
 
-				foreach (TreeNodeViewModel child in Children)
+				foreach (TreeNodeViewModel child in this.Children)
 				{
-					child.ConnectorX2 = Width / 2 + treeNode.X - child.X;
+					child.ConnectorX2 = Width / 2 + this.treeNode.X - child.X;
 				}
 			}
 		}
@@ -121,22 +121,22 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return treeNode.Y;
+				return this.treeNode.Y;
 			}
 			set
 			{
-				if (treeNode.Y == value)
+				if (this.treeNode.Y == value)
 				{
 					return;
 				}
-				treeNode.Y = value;
-				RaisePropertyChanged("Y");
+				this.treeNode.Y = value;
+				this.RaisePropertyChanged("Y");
 
-				ConnectorY2 = Height + Parent.Y - Y;
+				this.ConnectorY2 = Height + this.Parent.Y - this.Y;
 
-				foreach (var child in Children)
+				foreach (var child in this.Children)
 				{
-					child.ConnectorY2 = Height + treeNode.Y - child.Y;
+					child.ConnectorY2 = Height + this.treeNode.Y - child.Y;
 				}
 			}
 		}
@@ -165,8 +165,8 @@ namespace BehaviorTree
 			}
 			set
 			{
-				connectorX2 = value;
-				RaisePropertyChanged("ConnectorX2");
+				this.connectorX2 = value;
+				this.RaisePropertyChanged("ConnectorX2");
 			}
 		}
 
@@ -178,8 +178,8 @@ namespace BehaviorTree
 			}
 			set
 			{
-				connectorY2 = value;
-				RaisePropertyChanged("ConnectorY2");
+				this.connectorY2 = value;
+				this.RaisePropertyChanged("ConnectorY2");
 			}
 		}
 
@@ -187,16 +187,16 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return treeNode.Type;
+				return this.treeNode.Type;
 			}
 			set
 			{
-				if (treeNode.Type == value)
+				if (this.treeNode.Type == value)
 				{
 					return;
 				}
-				treeNode.Type = value;
-				RaisePropertyChanged("Type");
+				this.treeNode.Type = value;
+				this.RaisePropertyChanged("Type");
 			}
 		}
 
@@ -204,11 +204,11 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return parent;
+				return this.parent;
 			}
 			set
 			{
-				parent = value;
+				this.parent = value;
 			}
 		}
 
@@ -216,11 +216,11 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return children;
+				return this.children;
 			}
 			set
 			{
-				children = value;
+				this.children = value;
 			}
 		}
 

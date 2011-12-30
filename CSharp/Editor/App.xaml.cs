@@ -8,7 +8,7 @@ namespace Editor
 		{
 			base.OnStartup(e);
 			RunInDebugMode();
-			ShutdownMode = ShutdownMode.OnMainWindowClose;
+			this.ShutdownMode = ShutdownMode.OnMainWindowClose;
 		}
 
 		private static void RunInDebugMode()

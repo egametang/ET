@@ -55,7 +55,7 @@ namespace BehaviorTree
 			TreeNodeViewModel tRight = right;
 			left.AncestorModify = 0;
 			right.AncestorModify = 0;
-			for (int i = 0; tLeft != null && tRight != null  ; ++i)
+			for (int i = 0; tLeft != null && tRight != null; ++i)
 			{
 				double tGap = (tRight.Prelim + tRight.AncestorModify) - (tLeft.Prelim + tLeft.AncestorModify);
 				if (XGap + TreeNodeViewModel.Width - tGap > offset)

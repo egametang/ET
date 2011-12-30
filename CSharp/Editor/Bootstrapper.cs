@@ -11,15 +11,15 @@ namespace Editor
 	{
 		protected override void ConfigureAggregateCatalog()
 		{
-			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (Bootstrapper).Assembly));
-			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
-			AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (Bootstrapper).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
 		}
 
 		protected override void InitializeShell()
 		{
 			base.InitializeShell();
-			Application.Current.MainWindow = (Shell) Shell;
+			Application.Current.MainWindow = (Shell) this.Shell;
 			Application.Current.MainWindow.Show();
 		}
 
@@ -32,7 +32,7 @@ namespace Editor
 
 		protected override DependencyObject CreateShell()
 		{
-			return Container.GetExportedValue<Shell>();
+			return this.Container.GetExportedValue<Shell>();
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace Editor
 	{
 		public Shell()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 
 		[Import]
@@ -16,7 +16,7 @@ namespace Editor
 		{
 			set
 			{
-				DataContext = value;
+				this.DataContext = value;
 			}
 		}
 	}
