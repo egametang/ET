@@ -8,38 +8,6 @@ namespace BehaviorTree
 		private const double YGap = 10;
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-		private static void CountPrelimAndModify(TreeNodeViewModel treeNode)
-		{
-			foreach (TreeNodeViewModel node in treeNode.Children)
-			{
-				CountPrelimAndModify(node);
-			}
-
-			double prelim = 0;
-			double modify = 0;
-
-			double childrenCenter = 0;
-			if (!treeNode.IsLeaf)
-			{
-				childrenCenter = (treeNode.FirstChild.Prelim + treeNode.LastChild.Prelim) / 2;
-			}
-
-			if (treeNode.LeftSibling == null)
-			{
-				// 如果没有左邻居，不需要设置modify
-				prelim = childrenCenter;
-			}
-			else
-			{
-				prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
-				modify = prelim - childrenCenter;
-			}
-			treeNode.Prelim = prelim;
-			treeNode.Modify = modify;
-
-			logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
-		}
-
 		public static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
 			if (currentLevel == searchLevel)
@@ -80,7 +48,7 @@ namespace BehaviorTree
 			return null;
 		}
 
-		private static void AjustTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
+		private static void AjustSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
 		{
 			double offset = 0;
 			TreeNodeViewModel tLeft = left;
@@ -99,36 +67,70 @@ namespace BehaviorTree
 			}
 			right.Modify += offset;
 			right.Prelim += offset;
-
-			// TODO:要通知right的所有父节点位置改变
 		}
 
 		private static void AjustTreeGap(TreeNodeViewModel treeNode)
 		{
-			if (treeNode.IsLeaf)
-			{
-				return;
-			}
-			foreach (var child in treeNode.Children)
-			{
-				AjustTreeGap(child);
-			}
 			for (int i = 0; i < treeNode.Children.Count - 1; ++i)
 			{
 				for (int j = i + 1; j < treeNode.Children.Count; ++j)
 				{
 					var left = treeNode.Children[i];
 					var right = treeNode.Children[j];
-					AjustTreeGap(left, right);
+					AjustSubTreeGap(left, right);
 				}
 			}
 		}
 
-		private static void ApplyXY(TreeNodeViewModel treeNode, int level, double totalModify)
+		private static void CalculatePrelimAndModify(TreeNodeViewModel treeNode)
 		{
 			foreach (TreeNodeViewModel node in treeNode.Children)
 			{
-				ApplyXY(node, level + 1, treeNode.Modify + totalModify);
+				CalculatePrelimAndModify(node);
+			}
+
+			double prelim = 0;
+			double modify = 0;
+
+			if (treeNode.IsLeaf)
+			{
+				if (treeNode.LeftSibling == null)
+				{
+					// 如果没有左邻居，不需要设置modify
+					prelim = 0;
+				}
+				else
+				{
+					prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
+				}
+			}
+			else
+			{
+				// 调整子树间的间距
+				AjustTreeGap(treeNode);
+				double childrenCenter = (treeNode.FirstChild.Prelim + treeNode.LastChild.Prelim) / 2;
+				if (treeNode.LeftSibling == null)
+				{
+					// 如果没有左邻居，不需要设置modify
+					prelim = childrenCenter;
+				}
+				else
+				{
+					prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
+					modify = prelim - childrenCenter;
+				}
+			}
+			treeNode.Prelim = prelim;
+			treeNode.Modify = modify;
+
+			logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
+		}
+
+		private static void CalculateXAndY(TreeNodeViewModel treeNode, int level, double totalModify)
+		{
+			foreach (TreeNodeViewModel node in treeNode.Children)
+			{
+				CalculateXAndY(node, level + 1, treeNode.Modify + totalModify);
 			}
 			if (treeNode.IsLeaf)
 			{
@@ -147,10 +149,8 @@ namespace BehaviorTree
 			{
 				return;
 			}
-			logger.Debug("----------------------------------");
-			CountPrelimAndModify(root);
-			AjustTreeGap(root);
-			ApplyXY(root, 0, 0);
+			CalculatePrelimAndModify(root);
+			CalculateXAndY(root, 0, 0);
 		}
 	}
 }
