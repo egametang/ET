@@ -7,6 +7,7 @@
 *.suo
 *.user
 
+CSharp.sln.DotSettings
 
 .settings/
 Dbg/
@@ -16,5 +17,7 @@ bin/
 obj/
 Properties/
 Packages/
+packages/
 _ReSharper.CSharp/
+.nuget/
 
