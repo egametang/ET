@@ -35,14 +35,19 @@ namespace BehaviorTree
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 
-		public void Remove(TreeNodeViewModel treeNodeViewModel)
+		public void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
 		{
 			for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
 			{
-				this.Remove(treeNodeViewModel.Children[i]);
+				RecursionRemove(treeNodeViewModel.Children[i]);
 			}
 			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
-			this.treeNodes.Remove(treeNodeViewModel);
+			treeNodes.Remove(treeNodeViewModel);
+		}
+
+		public void Remove(TreeNodeViewModel treeNodeViewModel)
+		{
+			RecursionRemove(treeNodeViewModel);
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 	}
