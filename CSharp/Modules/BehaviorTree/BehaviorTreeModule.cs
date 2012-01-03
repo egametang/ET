@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	[ModuleExport(typeof (BehaviorTreeModule))]
 	public class BehaviorTreeModule : IModule

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	[Export(typeof (BehaviorTreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
 	internal class BehaviorTreeViewModel
@@ -35,19 +35,19 @@ namespace BehaviorTree
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 
-		public void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
+		private void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
 		{
 			for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
 			{
-				RecursionRemove(treeNodeViewModel.Children[i]);
+				this.RecursionRemove(treeNodeViewModel.Children[i]);
 			}
 			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
-			treeNodes.Remove(treeNodeViewModel);
+			this.treeNodes.Remove(treeNodeViewModel);
 		}
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
 		{
-			RecursionRemove(treeNodeViewModel);
+			this.RecursionRemove(treeNodeViewModel);
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 	}

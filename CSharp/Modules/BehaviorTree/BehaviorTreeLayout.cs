@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	public static class BehaviorTreeLayout
 	{

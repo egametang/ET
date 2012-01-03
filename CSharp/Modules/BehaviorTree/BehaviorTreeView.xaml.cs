@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Infrastructure;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	/// <summary>
 	/// BehaviorTreeView.xaml 的交互逻辑

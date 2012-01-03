@@ -1,9 +1,9 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using BehaviorTree;
 using Infrastructure;
 using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.Prism.Regions;
+using Modules.BehaviorTree;
 
 namespace Editor
 {

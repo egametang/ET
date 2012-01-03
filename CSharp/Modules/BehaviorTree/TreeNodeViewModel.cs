@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.ViewModel;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	public class TreeNodeViewModel : NotificationObject
 	{

@@ -9,7 +9,7 @@ using pbc = global::Google.ProtocolBuffers.Collections;
 using pbd = global::Google.ProtocolBuffers.Descriptors;
 using scg = global::System.Collections.Generic;
 
-namespace BehaviorTree
+namespace Modules.BehaviorTree
 {
 	namespace Proto
 	{
@@ -32,12 +32,12 @@ namespace BehaviorTree
 
 			internal static pbd::MessageDescriptor internal__static_BehaviorTree_Person__Descriptor;
 
-			internal static pb::FieldAccess.FieldAccessorTable<global::BehaviorTree.Person, global::BehaviorTree.Person.Builder>
+			internal static pb::FieldAccess.FieldAccessorTable<global::Modules.BehaviorTree.Person, global::Modules.BehaviorTree.Person.Builder>
 					internal__static_BehaviorTree_Person__FieldAccessorTable;
 
 			internal static pbd::MessageDescriptor internal__static_BehaviorTree_Group__Descriptor;
 
-			internal static pb::FieldAccess.FieldAccessorTable<global::BehaviorTree.Group, global::BehaviorTree.Group.Builder>
+			internal static pb::FieldAccess.FieldAccessorTable<global::Modules.BehaviorTree.Group, global::Modules.BehaviorTree.Group.Builder>
 					internal__static_BehaviorTree_Group__FieldAccessorTable;
 
 			#endregion
@@ -70,8 +70,8 @@ namespace BehaviorTree
 				                                                          		internal__static_BehaviorTree_Person__FieldAccessorTable
 				                                                          				=
 				                                                          				new pb::FieldAccess.FieldAccessorTable
-				                                                          						<global::BehaviorTree.Person,
-				                                                          								global::BehaviorTree.Person.Builder>(
+				                                                          						<global::Modules.BehaviorTree.Person,
+				                                                          								global::Modules.BehaviorTree.Person.Builder>(
 				                                                          						internal__static_BehaviorTree_Person__Descriptor,
 				                                                          						new string[] {"Num", "Age",});
 				                                                          		internal__static_BehaviorTree_Group__Descriptor =
@@ -79,8 +79,8 @@ namespace BehaviorTree
 				                                                          		internal__static_BehaviorTree_Group__FieldAccessorTable
 				                                                          				=
 				                                                          				new pb::FieldAccess.FieldAccessorTable
-				                                                          						<global::BehaviorTree.Group,
-				                                                          								global::BehaviorTree.Group.Builder>(
+				                                                          						<global::Modules.BehaviorTree.Group,
+				                                                          								global::Modules.BehaviorTree.Group.Builder>(
 				                                                          						internal__static_BehaviorTree_Group__Descriptor,
 				                                                          						new string[] {"Persons",});
 				                                                          		return null;
@@ -143,7 +143,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return global::BehaviorTree.Proto.Person.internal__static_BehaviorTree_Person__Descriptor;
+				return global::Modules.BehaviorTree.Proto.Person.internal__static_BehaviorTree_Person__Descriptor;
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return global::BehaviorTree.Proto.Person.internal__static_BehaviorTree_Person__FieldAccessorTable;
+				return global::Modules.BehaviorTree.Proto.Person.internal__static_BehaviorTree_Person__FieldAccessorTable;
 			}
 		}
 
@@ -405,7 +405,7 @@ namespace BehaviorTree
 			{
 				get
 				{
-					return global::BehaviorTree.Person.Descriptor;
+					return global::Modules.BehaviorTree.Person.Descriptor;
 				}
 			}
 
@@ -413,7 +413,7 @@ namespace BehaviorTree
 			{
 				get
 				{
-					return global::BehaviorTree.Person.DefaultInstance;
+					return global::Modules.BehaviorTree.Person.DefaultInstance;
 				}
 			}
 
@@ -442,7 +442,7 @@ namespace BehaviorTree
 
 			public override Builder MergeFrom(Person other)
 			{
-				if (other == global::BehaviorTree.Person.DefaultInstance)
+				if (other == global::Modules.BehaviorTree.Person.DefaultInstance)
 				{
 					return this;
 				}
@@ -609,7 +609,7 @@ namespace BehaviorTree
 
 		static Person()
 		{
-			object.ReferenceEquals(global::BehaviorTree.Proto.Person.Descriptor, null);
+			object.ReferenceEquals(global::Modules.BehaviorTree.Proto.Person.Descriptor, null);
 		}
 	}
 
@@ -656,7 +656,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return global::BehaviorTree.Proto.Person.internal__static_BehaviorTree_Group__Descriptor;
+				return global::Modules.BehaviorTree.Proto.Person.internal__static_BehaviorTree_Group__Descriptor;
 			}
 		}
 
@@ -664,14 +664,14 @@ namespace BehaviorTree
 		{
 			get
 			{
-				return global::BehaviorTree.Proto.Person.internal__static_BehaviorTree_Group__FieldAccessorTable;
+				return global::Modules.BehaviorTree.Proto.Person.internal__static_BehaviorTree_Group__FieldAccessorTable;
 			}
 		}
 
 		public const int PersonsFieldNumber = 1;
-		private pbc::PopsicleList<global::BehaviorTree.Person> persons_ = new pbc::PopsicleList<global::BehaviorTree.Person>();
+		private pbc::PopsicleList<global::Modules.BehaviorTree.Person> persons_ = new pbc::PopsicleList<global::Modules.BehaviorTree.Person>();
 
-		public scg::IList<global::BehaviorTree.Person> PersonsList
+		public scg::IList<global::Modules.BehaviorTree.Person> PersonsList
 		{
 			get
 			{
@@ -687,7 +687,7 @@ namespace BehaviorTree
 			}
 		}
 
-		public global::BehaviorTree.Person GetPersons(int index)
+		public global::Modules.BehaviorTree.Person GetPersons(int index)
 		{
 			return persons_[index];
 		}
@@ -696,7 +696,7 @@ namespace BehaviorTree
 		{
 			get
 			{
-				foreach (global::BehaviorTree.Person element in PersonsList)
+				foreach (global::Modules.BehaviorTree.Person element in PersonsList)
 				{
 					if (!element.IsInitialized)
 					{
@@ -731,7 +731,7 @@ namespace BehaviorTree
 				}
 
 				size = 0;
-				foreach (global::BehaviorTree.Person element in PersonsList)
+				foreach (global::Modules.BehaviorTree.Person element in PersonsList)
 				{
 					size += pb::CodedOutputStream.ComputeMessageSize(1, element);
 				}
@@ -898,7 +898,7 @@ namespace BehaviorTree
 			{
 				get
 				{
-					return global::BehaviorTree.Group.Descriptor;
+					return global::Modules.BehaviorTree.Group.Descriptor;
 				}
 			}
 
@@ -906,7 +906,7 @@ namespace BehaviorTree
 			{
 				get
 				{
-					return global::BehaviorTree.Group.DefaultInstance;
+					return global::Modules.BehaviorTree.Group.DefaultInstance;
 				}
 			}
 
@@ -935,7 +935,7 @@ namespace BehaviorTree
 
 			public override Builder MergeFrom(Group other)
 			{
-				if (other == global::BehaviorTree.Group.DefaultInstance)
+				if (other == global::Modules.BehaviorTree.Group.DefaultInstance)
 				{
 					return this;
 				}
@@ -1006,7 +1006,7 @@ namespace BehaviorTree
 						case 10:
 						{
 							input.ReadMessageArray(
-							                       tag, field_name, result.persons_, global::BehaviorTree.Person.DefaultInstance,
+							                       tag, field_name, result.persons_, global::Modules.BehaviorTree.Person.DefaultInstance,
 							                       extensionRegistry);
 							break;
 						}
@@ -1020,7 +1020,7 @@ namespace BehaviorTree
 				return this;
 			}
 
-			public pbc::IPopsicleList<global::BehaviorTree.Person> PersonsList
+			public pbc::IPopsicleList<global::Modules.BehaviorTree.Person> PersonsList
 			{
 				get
 				{
@@ -1036,12 +1036,12 @@ namespace BehaviorTree
 				}
 			}
 
-			public global::BehaviorTree.Person GetPersons(int index)
+			public global::Modules.BehaviorTree.Person GetPersons(int index)
 			{
 				return result.GetPersons(index);
 			}
 
-			public Builder SetPersons(int index, global::BehaviorTree.Person value)
+			public Builder SetPersons(int index, global::Modules.BehaviorTree.Person value)
 			{
 				pb::ThrowHelper.ThrowIfNull(value, "value");
 				PrepareBuilder();
@@ -1049,7 +1049,7 @@ namespace BehaviorTree
 				return this;
 			}
 
-			public Builder SetPersons(int index, global::BehaviorTree.Person.Builder builderForValue)
+			public Builder SetPersons(int index, global::Modules.BehaviorTree.Person.Builder builderForValue)
 			{
 				pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
 				PrepareBuilder();
@@ -1057,7 +1057,7 @@ namespace BehaviorTree
 				return this;
 			}
 
-			public Builder AddPersons(global::BehaviorTree.Person value)
+			public Builder AddPersons(global::Modules.BehaviorTree.Person value)
 			{
 				pb::ThrowHelper.ThrowIfNull(value, "value");
 				PrepareBuilder();
@@ -1065,7 +1065,7 @@ namespace BehaviorTree
 				return this;
 			}
 
-			public Builder AddPersons(global::BehaviorTree.Person.Builder builderForValue)
+			public Builder AddPersons(global::Modules.BehaviorTree.Person.Builder builderForValue)
 			{
 				pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
 				PrepareBuilder();
@@ -1073,7 +1073,7 @@ namespace BehaviorTree
 				return this;
 			}
 
-			public Builder AddRangePersons(scg::IEnumerable<global::BehaviorTree.Person> values)
+			public Builder AddRangePersons(scg::IEnumerable<global::Modules.BehaviorTree.Person> values)
 			{
 				PrepareBuilder();
 				result.persons_.Add(values);
@@ -1090,7 +1090,7 @@ namespace BehaviorTree
 
 		static Group()
 		{
-			object.ReferenceEquals(global::BehaviorTree.Proto.Person.Descriptor, null);
+			object.ReferenceEquals(global::Modules.BehaviorTree.Proto.Person.Descriptor, null);
 		}
 	}
 
