@@ -138,6 +138,17 @@ namespace Modules.BehaviorTree
 
 		private void ListBoxItem_MouseMove(object sender, MouseEventArgs e)
 		{
+			var item = (FrameworkElement) sender;
+			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+			if (treeNodeViewModel == null)
+			{
+				return;
+			}
+			if (!treeNodeViewModel.IsRoot)
+			{
+				return;
+			}
+
 			Point curMouseDownPoint;
 			Vector dragDelta;
 			if (this.isDragging)
@@ -147,23 +158,11 @@ namespace Modules.BehaviorTree
 
 				this.origMouseDownPoint = curMouseDownPoint;
 
-				foreach (TreeNodeViewModel selectedItem in this.listBox.SelectedItems)
-				{
-					selectedItem.X += dragDelta.X;
-					selectedItem.Y += dragDelta.Y;
-				}
+				this.ViewModel.Move(dragDelta.X, dragDelta.Y);
 				return;
 			}
 
 			if (!this.isLeftButtonDown)
-			{
-				return;
-			}
-
-			var item = (FrameworkElement) sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
-
-			if (!this.listBox.SelectedItems.Contains(treeNodeViewModel))
 			{
 				return;
 			}

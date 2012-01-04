@@ -6,9 +6,13 @@ namespace Modules.BehaviorTree
 	{
 		private const double XGap = 20;
 		private const double YGap = 10;
+		private static double rootOrigX;
+		private static double rootOrigY;
+		private static double rootOffsetX;
+		private static double rootOffsetY;
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-		public static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		private static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
 			if (currentLevel == searchLevel)
 			{
@@ -28,7 +32,7 @@ namespace Modules.BehaviorTree
 			return null;
 		}
 
-		public static TreeNodeViewModel RightMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		private static TreeNodeViewModel RightMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
 			if (currentLevel == searchLevel)
 			{
@@ -126,11 +130,11 @@ namespace Modules.BehaviorTree
 			logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
 		}
 
-		private static void CalculateXAndY(TreeNodeViewModel treeNode, int level, double totalModify)
+		private static void CalculateRelativeXAndY(TreeNodeViewModel treeNode, int level, double totalModify)
 		{
 			foreach (TreeNodeViewModel node in treeNode.Children)
 			{
-				CalculateXAndY(node, level + 1, treeNode.Modify + totalModify);
+				CalculateRelativeXAndY(node, level + 1, treeNode.Modify + totalModify);
 			}
 			if (treeNode.IsLeaf)
 			{
@@ -143,14 +147,30 @@ namespace Modules.BehaviorTree
 			treeNode.Y = level * (TreeNodeViewModel.Height + YGap);
 		}
 
+		private static void FixXAndY(TreeNodeViewModel treeNode)
+		{
+			treeNode.X += rootOffsetX;
+			treeNode.Y += rootOffsetY;
+			foreach (var node in treeNode.Children)
+			{
+				FixXAndY(node);
+			}
+		}
+
 		public static void ExcuteLayout(TreeNodeViewModel root)
 		{
 			if (root == null)
 			{
 				return;
 			}
+			rootOrigX = root.X;
+			rootOrigY = root.Y;
 			CalculatePrelimAndModify(root);
-			CalculateXAndY(root, 0, 0);
+			CalculateRelativeXAndY(root, 0, 0);
+
+			rootOffsetX = rootOrigX - root.X;
+			rootOffsetY = rootOrigY - root.Y;
+			FixXAndY(root);
 		}
 	}
 }

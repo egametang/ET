@@ -50,5 +50,20 @@ namespace Modules.BehaviorTree
 			this.RecursionRemove(treeNodeViewModel);
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
+
+		private void RecursionMove(TreeNodeViewModel treeNodeViewModel, double offsetX, double offsetY)
+		{
+			treeNodeViewModel.X += offsetX;
+			treeNodeViewModel.Y += offsetY;
+			foreach (var node in treeNodeViewModel.Children)
+			{
+				this.RecursionMove(node, offsetX, offsetY);
+			}
+		}
+
+		public void Move(double offsetX, double offsetY)
+		{
+			this.RecursionMove(this.Root, offsetX, offsetY);
+		}
 	}
 }

@@ -76,7 +76,6 @@ namespace Modules.BehaviorTree
 			set
 			{
 				this.prelim = value;
-				this.RaisePropertyChanged("Prelim");
 			}
 		}
 
@@ -88,7 +87,6 @@ namespace Modules.BehaviorTree
 			}
 			set
 			{
-				this.RaisePropertyChanged("Modify");
 				this.modify = value;
 			}
 		}
@@ -235,14 +233,6 @@ namespace Modules.BehaviorTree
 
 				int index = this.Parent.Children.IndexOf(this);
 				return index == 0 ? null : this.Parent.Children[index - 1];
-			}
-		}
-
-		public int Index
-		{
-			get
-			{
-				return this.IsRoot ? 0 : this.Parent.Children.IndexOf(this);
 			}
 		}
 

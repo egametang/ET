@@ -45,17 +45,6 @@
 								RadiusX="4" RadiusY="4" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
 								Stroke="Black" StrokeThickness="2" />
-						<StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<Label Content="{Binding Num}"></Label>
-								<Label Content="{Binding X}"></Label>
-								<Label Content="{Binding Y}"></Label>
-							</StackPanel>
-							<StackPanel Orientation="Horizontal">
-								<Label Content="{Binding Prelim}"></Label>
-								<Label Content="{Binding Modify}"></Label>
-							</StackPanel>
-						</StackPanel>
 					</Canvas>
 					<DataTemplate.Triggers>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
