@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <boost/lexical_cast.hpp>
 #include "Orm/Expr.h"
 #include "Orm/Column.h"
 
@@ -21,9 +22,6 @@ class Query
 	int offset;
 
 public:
-	Query();
-	~Query();
-
 	Query(): distinct(false), where("true"), limit(0), offset(0)
 	{
 	}

@@ -10,9 +10,9 @@ Column::~Column()
 {
 }
 
-Column& Column::operator()(std::string& column)
+Column& Column::operator()(std::string& name)
 {
-	columnStr = columnStr + ", " + column;
+	columnStr = columnStr + ", " + name;
 	return *this;
 }
 

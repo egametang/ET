@@ -1,6 +1,8 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
+#include <boost/lexical_cast.hpp>
+#include "Orm/Column.h"
 #include "Orm/Expr.h"
 
 namespace Egametang {
@@ -9,14 +11,14 @@ Expr::~Expr()
 {
 }
 
-std::string Expr::ToString()
+std::string Expr::ToString() const
 {
 	return exprStr;
 }
 
 Not::Not(const Expr& expr)
 {
-	exprStr = "not (" + expr + ") ";
+	exprStr = "not (" + expr.ToString() + ") ";
 }
 
 And::And(const Expr& left, const Expr& right)

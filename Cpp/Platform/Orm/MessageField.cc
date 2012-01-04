@@ -3,13 +3,16 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <glog/logging.h>
+#include <google/protobuf/descriptor.h>
+#include <google/protobuf/text_format.h>
+#include "Base/Typedef.h"
 #include "Orm/MessageField.h"
 
 namespace Egametang {
 
 MessageField::MessageField(
-		const google::protobuf::Message& message,
-		const google::protobuf::FieldDescriptor* field):
+		google::protobuf::Message& message,
+		google::protobuf::FieldDescriptor* field):
 	message(message), field(field)
 {
 }
@@ -19,6 +22,123 @@ MessageField::~MessageField()
 }
 
 std::string MessageField::GetField()
+{
+	std::string valueStr;
+	if (field->is_repeated())
+	{
+		valueStr = GetRepeatedField();
+	}
+	else
+	{
+		valueStr = GetOptionalField();
+	}
+	return valueStr;
+}
+
+std::string MessageField::GetRepeatedField()
+{
+	const google::protobuf::Reflection* reflection = message.GetReflection();
+	google::protobuf::FieldDescriptor::Type type = field->type();
+	std::string valueStr;
+	switch (type)
+	{
+		case google::protobuf::FieldDescriptor::TYPE_BOOL:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				bool value = reflection->GetBool(message, field);
+				valueStr += value? "1\t" : "0\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_DOUBLE:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				double value = reflection->GetDouble(message, field);
+				valueStr += boost::lexical_cast<std::string>(value) + "\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_INT32:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int32 value = reflection->GetInt32(message, field);
+				valueStr += boost::lexical_cast<std::string>(value) + "\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_INT64:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int64 value = reflection->GetInt64(message, field);
+				valueStr += boost::lexical_cast<std::string>(value) + "\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_UINT32:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int64 value = reflection->GetInt64(message, field);
+				valueStr += boost::lexical_cast<std::string>(value) + "\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_UINT64:
+		{
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int64 value = reflection->GetInt64(message, field);
+				valueStr += boost::lexical_cast<std::string>(value) + "\t";
+			}
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_STRING:
+		{
+			valueStr += "'";
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int64 value = reflection->GetInt64(message, field);
+				valueStr += reflection->GetString(message, field) + "\t";
+			}
+			valueStr += "'";
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_BYTES:
+		{
+			valueStr += "'";
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				int64 value = reflection->GetInt64(message, field);
+				valueStr += reflection->GetString(message, field) + "\t";
+			}
+			valueStr += "'";
+			break;
+		}
+		case google::protobuf::FieldDescriptor::TYPE_MESSAGE:
+		{
+			valueStr += "'";
+			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
+			{
+				const google::protobuf::Message& message = reflection->GetMessage(message, field);
+				valueStr += message.ShortDebugString() + "\t";
+			}
+			valueStr += "'";
+			break;
+		}
+		default:
+		{
+			LOG(FATAL) << "no such type";
+			break;
+		}
+	}
+	return valueStr;
+}
+
+std::string MessageField::GetOptionalField()
 {
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
@@ -73,7 +193,7 @@ std::string MessageField::GetField()
 		}
 		case google::protobuf::FieldDescriptor::TYPE_MESSAGE:
 		{
-			google::protobuf::Message& message = reflection->GetMessage(message, field);
+			const google::protobuf::Message& message = reflection->GetMessage(message, field);
 			valueStr = message.ShortDebugString();
 			break;
 		}
@@ -86,19 +206,20 @@ std::string MessageField::GetField()
 	return valueStr;
 }
 
-void MessageField::SetRepeatedField(ResultSetPtr resultSet, int index)
+void MessageField::SetRepeatedField(ResultSetPtr resultSet)
 {
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
 
 	// 获取blob string(repeated字段统一存成blob type)
+	int index = field->index();
 	std::istream* is = resultSet->getBlob(index);
 	std::ostringstream os;
 	os << is->rdbuf();
 	std::string fieldStr = os.str();
 
 	std::vector<std::string> strVector;
-	boost::split(strVector, fieldStr, boost::is_any_of("\t\t"));
+	boost::split(strVector, fieldStr, boost::is_any_of("\t"));
 
 	switch (type)
 	{
@@ -191,10 +312,11 @@ void MessageField::SetRepeatedField(ResultSetPtr resultSet, int index)
 	}
 }
 
-void MessageField::SetOptionalField(ResultSetPtr resultSet, int index)
+void MessageField::SetOptionalField(ResultSetPtr resultSet)
 {
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
+	int index = field->index();
 	switch (type)
 	{
 		case google::protobuf::FieldDescriptor::TYPE_BOOL:
@@ -253,7 +375,7 @@ void MessageField::SetOptionalField(ResultSetPtr resultSet, int index)
 			std::string value = os.str();
 
 			google::protobuf::Message* msg =
-					reflection->MutableMessage(&message, field, index);
+					reflection->MutableMessage(&message, field);
 			google::protobuf::TextFormat::ParseFromString(value, msg);
 			break;
 		}
@@ -265,20 +387,15 @@ void MessageField::SetOptionalField(ResultSetPtr resultSet, int index)
 	}
 }
 
-void MessageField::SetField(ResultSetPtr resultSet, int index)
+void MessageField::SetField(ResultSetPtr resultSet)
 {
-	if (resultSet->isNull(index))
-	{
-		return;
-	}
-
 	if (field->is_repeated())
 	{
-		SetRepeatedField(resultSet, index);
+		SetRepeatedField(resultSet);
 	}
 	else
 	{
-		SetOptionalField(resultSet, index);
+		SetOptionalField(resultSet);
 	}
 }
 

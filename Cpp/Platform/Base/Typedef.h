@@ -3,6 +3,7 @@
 #include <boost/cstdint.hpp>
 #include <boost/shared_ptr.hpp>
 #include <google/protobuf/service.h>
+#include <google/protobuf/message.h>
 
 namespace Egametang {
 

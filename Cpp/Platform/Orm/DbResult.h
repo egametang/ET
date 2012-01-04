@@ -4,7 +4,10 @@
 #ifndef ORM_DBRESULT_H
 #define ORM_DBRESULT_H
 
+#include <vector>
 #include <cppconn/resultset.h>
+#include "Base/Typedef.h"
+#include "Orm/OrmTypedef.h"
 
 namespace Egametang {
 
@@ -13,34 +16,17 @@ class DbResult
 private:
 	ResultSetPtr resultSet;
 
+	void FillMessage(ProtobufMessagePtr message);
+
 public:
-	DbResult(ResultSetPtr resultSet): resultSet(resultSet)
-	{
-	}
-	void All(std::vector<ProtobufMessagePtr>& messages)
-	{
-		while (resultSet->next())
-		{
-
-		}
-	}
-
-	void One(ProtobufMessagePtr message)
-	{
-		if (!resultSet->first())
-		{
-			return;
-		}
-		const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
-		for (int i = 0; i < descriptor->field_count(); ++i)
-		{
-			const google::protobuf::FieldDescriptor* field = descriptor->field(i);
-			MessageField messageField(*message, field);
-			messageField.SetField(resultSet, i);
-		}
-	}
-
+	DbResult(ResultSetPtr resultSet);
 	virtual ~DbResult();
+
+	void All(std::vector<ProtobufMessagePtr>& messages);
+
+	void One(ProtobufMessagePtr message);
+
+	std::size_t Count();
 };
 
 } // namespace Egametang

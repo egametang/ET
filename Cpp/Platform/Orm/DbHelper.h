@@ -18,21 +18,18 @@ namespace Egametang {
 class DbHelper
 {
 private:
-	boost::scoped_ptr<sql::Driver> driver;
+	sql::Driver* driver;
 	boost::scoped_ptr<sql::Connection> connection;
 
 public:
-	DbHelper(std::string url, std::string username, std::string password)
-	{
-		driver.reset(get_driver_instance());
-		connection.reset(driver->connect(url, username, password));
-	}
+	DbHelper(std::string url, std::string username, std::string password);
 	virtual ~DbHelper();
 
-	ResultSetPtr ExecuteQuery(std::string query)
+	template <typename Table>
+	ResultSetPtr ExecuteQuery(Query<Table>& query)
 	{
 		StatementPtr statemet(connection->createStatement());
-		ResultSetPtr resultSet(statemet->executeQuery(query));
+		ResultSetPtr resultSet(statemet->executeQuery(query.ToString()));
 		return resultSet;
 	}
 };

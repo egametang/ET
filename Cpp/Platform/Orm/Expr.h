@@ -4,6 +4,8 @@
 #ifndef ORM_EXPRESSION_H
 #define ORM_EXPRESSION_H
 
+#include <string>
+
 namespace Egametang {
 
 class Expr
@@ -13,7 +15,7 @@ protected:
 
 public:
 	virtual ~Expr();
-	virtual std::string ToString();
+	virtual std::string ToString() const;
 };
 
 class Not: public Expr
@@ -34,10 +36,12 @@ public:
 	Or(const Expr& left, const Expr& right);
 };
 
+class Column;
+
 // > < >= <= != like
 class Oper: public Expr
 {
-protected:
+public:
 	Oper(const Column& left, const std::string& op, const std::string& right);
 	Oper(const Column& left, const std::string& op, const Column& right);
 	Oper(const Column& left, const std::string& op, int right);

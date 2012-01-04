@@ -5,4 +5,15 @@
 
 namespace Egametang {
 
+DbHelper::DbHelper(std::string url, std::string username, std::string password):
+		driver(NULL)
+{
+	driver = get_driver_instance();
+	connection.reset(driver->connect(url, username, password));
+}
+
+DbHelper::~DbHelper()
+{
+}
+
 } // namespace Egametang

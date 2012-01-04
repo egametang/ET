@@ -10,21 +10,23 @@ namespace Egametang {
 class MessageField
 {
 private:
-	const google::protobuf::Message& message;
-	const google::protobuf::FieldDescriptor* field;
+	google::protobuf::Message& message;
+	google::protobuf::FieldDescriptor* field;
 
-public:
-	MessageField(const google::protobuf::Message& message,
-			const google::protobuf::FieldDescriptor* field);
-	~MessageField();
-
-	std::string GetField();
 	std::string GetRepeatedField();
 	std::string GetOptionalField();
 
-	void SetField(ResultSetPtr resultSet, int index);
-	void SetRepeatedField(ResultSetPtr resultSet, int index);
-	void SetOptionalField(ResultSetPtr resultSet, int index);
+	void SetRepeatedField(ResultSetPtr resultSet);
+	void SetOptionalField(ResultSetPtr resultSet);
+
+public:
+	MessageField(google::protobuf::Message& message,
+			google::protobuf::FieldDescriptor* field);
+	~MessageField();
+
+	std::string GetField();
+
+	void SetField(ResultSetPtr resultSet);
 };
 
 } // namespace Egametang
