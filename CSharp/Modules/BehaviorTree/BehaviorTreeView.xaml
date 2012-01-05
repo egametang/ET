@@ -26,7 +26,7 @@
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
-		<ListBox Name="listBox" SelectionMode="Extended" ItemsSource="{Binding TreeNodes}" x:FieldModifier="private">
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" x:FieldModifier="private">
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="Canvas.Left" Value="{Binding X}" />

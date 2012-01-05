@@ -13,8 +13,6 @@ namespace Modules.BehaviorTree
 	public partial class BehaviorTreeView
 	{
 		private const double DragThreshold = 5;
-
-		private bool isControlDown;
 		private bool isDragging;
 		private bool isLeftButtonDown;
 		private Point origMouseDownPoint;
@@ -79,16 +77,10 @@ namespace Modules.BehaviorTree
 			}
 			this.isLeftButtonDown = true;
 
-			this.isControlDown = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
-
 			var item = (FrameworkElement) sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
-			if (!this.isControlDown && !this.listBox.SelectedItems.Contains(treeNodeViewModel))
-			{
-				this.listBox.SelectedItems.Clear();
-				this.listBox.SelectedItems.Add(treeNodeViewModel);
-			}
+			this.listBox.SelectedItem = treeNodeViewModel;
 
 			this.origMouseDownPoint = e.GetPosition(this);
 
@@ -107,29 +99,12 @@ namespace Modules.BehaviorTree
 			var item = (FrameworkElement) sender;
 			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
-			if (this.isControlDown)
+			if (!this.isDragging)
 			{
-				if (!this.listBox.SelectedItems.Contains(treeNodeViewModel))
-				{
-					this.listBox.SelectedItems.Add(treeNodeViewModel);
-				}
-				else
-				{
-					this.listBox.SelectedItems.Remove(treeNodeViewModel);
-				}
-			}
-			else if (!this.isDragging)
-			{
-				if (this.listBox.SelectedItems.Count != 1 || this.listBox.SelectedItem != treeNodeViewModel)
-				{
-					this.listBox.SelectedItems.Clear();
-					this.listBox.SelectedItem = treeNodeViewModel;
-					this.listBox.SelectedItems.Add(treeNodeViewModel);
-				}
+				this.listBox.SelectedItem = treeNodeViewModel;
 			}
 
 			this.isLeftButtonDown = false;
-			this.isControlDown = false;
 			this.isDragging = false;
 
 			item.ReleaseMouseCapture();
