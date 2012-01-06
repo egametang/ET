@@ -9,8 +9,11 @@
 
 namespace Egametang {
 
+class DbResult;
+
 typedef boost::shared_ptr<sql::ResultSet> ResultSetPtr;
 typedef boost::shared_ptr<sql::Statement> StatementPtr;
+typedef boost::shared_ptr<DbResult> DbResultPtr;
 
 } // namespace Egametang
 

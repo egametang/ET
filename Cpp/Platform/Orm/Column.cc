@@ -16,6 +16,11 @@ Column& Column::operator()(std::string& name)
 	return *this;
 }
 
+bool Column::Empty()
+{
+	return columnStr.empty();
+}
+
 std::string Column::ToString() const
 {
 	return columnStr;

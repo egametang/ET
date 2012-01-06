@@ -28,8 +28,12 @@ void DbResult::FillMessage(ProtobufMessagePtr message)
 
 void DbResult::All(std::vector<ProtobufMessagePtr>& messages)
 {
-	for (int i = 0; resultSet->next(); ++i)
+	for (int i = 0; i < messages.size(); ++i)
 	{
+		if (!resultSet->next())
+		{
+			return;
+		}
 		ProtobufMessagePtr message = messages[i];
 		FillMessage(message);
 	}
@@ -37,7 +41,7 @@ void DbResult::All(std::vector<ProtobufMessagePtr>& messages)
 
 void DbResult::One(ProtobufMessagePtr message)
 {
-	if (!resultSet->first())
+	if (!resultSet->next())
 	{
 		return;
 	}

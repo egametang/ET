@@ -11,6 +11,17 @@ Expr::~Expr()
 {
 }
 
+Expr& Expr::operator=(const Expr& expr)
+{
+	exprStr = expr.exprStr;
+	return *this;
+}
+
+bool Expr::Empty()
+{
+	return exprStr.empty();
+}
+
 std::string Expr::ToString() const
 {
 	return exprStr;

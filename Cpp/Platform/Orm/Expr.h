@@ -15,7 +15,9 @@ protected:
 
 public:
 	virtual ~Expr();
-	virtual std::string ToString() const;
+	Expr& operator=(const Expr& expr);
+	std::string ToString() const;
+	bool Empty();
 };
 
 class Not: public Expr

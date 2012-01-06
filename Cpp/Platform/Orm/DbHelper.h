@@ -10,8 +10,9 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <mysql_connection.h>
+#include "Orm/DbResult.h"
 #include "Orm/OrmTypedef.h"
-#include "Orm/Query.h"
+#include "Orm/Select.h"
 
 namespace Egametang {
 
@@ -19,17 +20,18 @@ class DbHelper
 {
 private:
 	boost::scoped_ptr<sql::Connection> connection;
+	boost::scoped_ptr<sql::Statement> statement;
 
 public:
 	DbHelper(std::string url, std::string username, std::string password);
 	virtual ~DbHelper();
 
 	template <typename Table>
-	ResultSetPtr ExecuteQuery(Query<Table>& query)
+	DbResultPtr Execute(Select<Table> select)
 	{
-		StatementPtr statemet(connection->createStatement());
-		ResultSetPtr resultSet(statemet->executeQuery(query.ToString()));
-		return resultSet;
+		ResultSetPtr resultSet(statement->executeQuery(select.ToString()));
+		DbResultPtr dbResult(new DbResult(resultSet));
+		return dbResult;
 	}
 };
 

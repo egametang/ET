@@ -15,6 +15,7 @@ public:
 	Column(const std::string name);
 	~Column();
 	Column& operator()(std::string& name);
+	bool Empty();
 	std::string ToString() const;
 
 	template <typename T>
