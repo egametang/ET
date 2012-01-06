@@ -18,7 +18,6 @@ namespace Egametang {
 class DbHelper
 {
 private:
-	sql::Driver* driver;
 	boost::scoped_ptr<sql::Connection> connection;
 
 public:

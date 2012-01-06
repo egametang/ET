@@ -11,7 +11,7 @@ class MessageField
 {
 private:
 	google::protobuf::Message& message;
-	google::protobuf::FieldDescriptor* field;
+	const google::protobuf::FieldDescriptor* field;
 
 	std::string GetRepeatedField();
 	std::string GetOptionalField();
@@ -21,7 +21,7 @@ private:
 
 public:
 	MessageField(google::protobuf::Message& message,
-			google::protobuf::FieldDescriptor* field);
+			const google::protobuf::FieldDescriptor* field);
 	~MessageField();
 
 	std::string GetField();

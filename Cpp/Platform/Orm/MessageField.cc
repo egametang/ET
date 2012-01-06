@@ -10,9 +10,8 @@
 
 namespace Egametang {
 
-MessageField::MessageField(
-		google::protobuf::Message& message,
-		google::protobuf::FieldDescriptor* field):
+MessageField::MessageField(google::protobuf::Message& message,
+		const google::protobuf::FieldDescriptor* field):
 	message(message), field(field)
 {
 }
