@@ -1,4 +1,4 @@
-FIND_PATH(PERFTOOLS_INCLUDE_DIR google/heap-profiler.h)
+FIND_PATH(PERFTOOLS_INCLUDE_DIR google/tcmalloc.h)
 
 IF(WIN32)
 	set(CMAKE_FIND_LIBRARY_PREFIXES "lib" "")

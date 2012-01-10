@@ -37,7 +37,7 @@ public:
 	{
 		if (err)
 		{
-			LOG(ERROR) << "async accept failed: " << err.message();
+			LOG(WARNING) << "async accept failed: " << err.message();
 			return;
 		}
 		RpcMetaPtr meta(new RpcMeta());
@@ -53,13 +53,11 @@ public:
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		// 接收消息
 		EchoRequest request;
 		request.ParseFromString(*message);
 
 		num = request.num();
 
-		// 回一个消息
 		EchoResponse response;
 		response.set_num(num);
 
