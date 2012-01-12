@@ -10,7 +10,7 @@ RequestHandler::RequestHandler(
 
 google::protobuf::Message *RequestHandler::Response() const
 {
-    return response;
+	return response;
 }
 
 void RequestHandler::Run()

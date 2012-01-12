@@ -7,6 +7,7 @@ SET(ThreadSrc
 )
 
 ADD_LIBRARY(Thread ${ThreadSrc})
+SET_PROPERTY(TARGET Thread PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(ThreadPoolTest ThreadPoolTest.cc)
 ADD_EXECUTABLE(CountBarrierTest CountBarrierTest.cc)
@@ -22,5 +23,5 @@ FOREACH(Test ${Tests})
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Thread")
 ENDFOREACH()

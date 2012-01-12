@@ -20,6 +20,7 @@ SET(BehaviorTreeSrc
 )
 
 ADD_LIBRARY(BehaviorTree ${BehaviorTreeSrc})
+SET_PROPERTY(TARGET BehaviorTree PROPERTY FOLDER "Game")
 
 ADD_EXECUTABLE(GameEventsTest GameEventsTest.cc)
 
@@ -33,5 +34,5 @@ FOREACH(Test ${Tests})
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Game/BehaviorTree")
 ENDFOREACH()

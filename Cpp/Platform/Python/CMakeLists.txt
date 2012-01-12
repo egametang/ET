@@ -7,6 +7,7 @@ SET(PythonSrc
 )
 
 ADD_LIBRARY(PythonInterpreter ${PythonSrc})
+SET_PROPERTY(TARGET PythonInterpreter PROPERTY FOLDER "Platform/Python")
 
 ADD_EXECUTABLE(PythonInitTest PythonInitTest.cc)
 ADD_EXECUTABLE(PythonInterpreterTest PythonInterpreterTest.cc)
@@ -22,5 +23,5 @@ FOREACH(Test ${Tests})
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Python")
 ENDFOREACH()

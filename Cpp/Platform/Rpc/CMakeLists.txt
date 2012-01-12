@@ -19,6 +19,7 @@ SET(RpcSrc
 
 
 ADD_LIBRARY(Rpc ${RpcSrc})
+SET_PROPERTY(TARGET Rpc PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
 ADD_EXECUTABLE(RpcClientTest RpcClientTest.cc)
@@ -39,5 +40,5 @@ FOREACH(Test ${Tests})
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Rpc")
 ENDFOREACH()
