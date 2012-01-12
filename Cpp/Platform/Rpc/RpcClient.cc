@@ -1,6 +1,5 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <glog/logging.h>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include "Rpc/RpcCommunicator.h"
@@ -29,7 +28,6 @@ void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 {
 	if (err)
 	{
-		LOG(ERROR) << "async connect failed: " << err.message();
 		return;
 	}
 	RpcMetaPtr recvMeta(new RpcMeta());

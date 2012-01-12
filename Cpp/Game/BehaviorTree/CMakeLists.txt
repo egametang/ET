@@ -2,7 +2,12 @@ PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs
 	BehaviorTreeConf.proto
 )
 
+FILE(GLOB Header "*.h")
+
 SET(BehaviorTreeSrc
+	${Header}
+	${proto_hdrs}
+	${proto_srcs}
 	BuffType.cc
 	ChangeHealth.cc
 	CombatContex.cc
@@ -12,21 +17,21 @@ SET(BehaviorTreeSrc
 	SelectorNode.cc
 	SequenceNode.cc
 	BehaviorTree.cc
-	${proto_srcs}
 )
 
 ADD_LIBRARY(BehaviorTree ${BehaviorTreeSrc})
 
 ADD_EXECUTABLE(GameEventsTest GameEventsTest.cc)
 
-SET(Excutes
+SET(Tests
 	GameEventsTest
 )
 
-FOREACH(Excute ${Excutes})
-	TARGET_LINK_LIBRARIES(${Excute}
+FOREACH(Test ${Tests})
+	TARGET_LINK_LIBRARIES(${Test}
 		BehaviorTree
 		${ThirdPartyLibs}
 	)
-	ADD_TEST(${Excute} ${Excute})
+	ADD_TEST(${Test} ${Test})
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
 ENDFOREACH()

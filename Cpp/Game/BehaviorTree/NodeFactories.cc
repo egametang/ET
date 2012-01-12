@@ -1,4 +1,3 @@
-#include <glog/logging.h>
 #include "Base/Typedef.h"
 #include "BehaviorTree/NotNode.h"
 #include "BehaviorTree/EventDefine.h"

@@ -1,5 +1,4 @@
 #include <boost/foreach.hpp>
-#include <glog/logging.h>
 #include "Base/Marcos.h"
 #include "Base/Typedef.h"
 #include "BehaviorTree/GameEvents.h"
@@ -36,7 +35,6 @@ void GameEvents::Excute(int type, ContexIf* contex)
 
 	for (std::list<BehaviorTree*>::iterator iter = es.begin(); iter != es.end(); ++iter)
 	{
-		CHECK(*iter);
 		(*iter)->Run(contex);
 	}
 }

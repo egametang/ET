@@ -1,8 +1,6 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <gtest/gtest.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 
 namespace Egametang {
@@ -49,9 +47,6 @@ TEST_F(ThreadPoolTest, Test1)
 
 int main(int argc, char* argv[])
 {
-	FLAGS_logtostderr = true;
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	return RUN_ALL_TESTS();
 }

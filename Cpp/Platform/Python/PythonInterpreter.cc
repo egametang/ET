@@ -1,7 +1,6 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/python.hpp>
-#include <glog/logging.h>
 #include "Python/PythonInterpreter.h"
 
 namespace Egametang {

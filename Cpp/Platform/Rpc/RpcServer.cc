@@ -3,7 +3,6 @@
 #include <boost/bind.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/descriptor.h>
-#include <glog/logging.h>
 #include "Base/Marcos.h"
 #include "Rpc/RpcTypedef.h"
 #include "Rpc/RpcServer.h"
@@ -39,7 +38,6 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 {
 	if (err)
 	{
-		LOG(ERROR) << "accept fail: " << err.message();
 		return;
 	}
 	session->Start();
@@ -94,7 +92,6 @@ void RpcServer::Register(ProtobufServicePtr service)
 				serviceDescriptor->method(i);
 		std::size_t methodHash = stringHash(methodDescriptor->full_name());
 		MethodInfoPtr methodInfo(new MethodInfo(service, methodDescriptor));
-		CHECK(methods.find(methodHash) == methods.end());
 		methods[methodHash] = methodInfo;
 	}
 }

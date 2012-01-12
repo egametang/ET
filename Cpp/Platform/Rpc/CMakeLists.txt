@@ -2,7 +2,12 @@ PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs
 	Echo.proto
 )
 
+FILE(GLOB Header "*.h")
+
 SET(RpcSrc 
+	${Header}
+	${proto_hdrs}
+	${proto_srcs}
 	RpcCommunicator.cc
 	RpcController.cc
 	RequestHandler.cc
@@ -10,7 +15,6 @@ SET(RpcSrc
 	RpcClient.cc
 	RpcServer.cc
 	RpcSession.cc
-	${proto_srcs}
 )
 
 
@@ -21,18 +25,19 @@ ADD_EXECUTABLE(RpcClientTest RpcClientTest.cc)
 ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
 ADD_EXECUTABLE(RpcServerTest RpcServerTest.cc)
 
-SET(Excutes 
+SET(Tests 
 	RpcCommunicatorTest
 	RpcClientTest
 	RpcSessionTest
 	RpcServerTest
 )
 
-FOREACH(Excute ${Excutes})
-	TARGET_LINK_LIBRARIES(${Excute}
+FOREACH(Test ${Tests})
+	TARGET_LINK_LIBRARIES(${Test}
 		Rpc
 		Thread
 		${ThirdPartyLibs}
 	)
-	ADD_TEST(${Excute} ${Excute})
+	ADD_TEST(${Test} ${Test})
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests")
 ENDFOREACH()

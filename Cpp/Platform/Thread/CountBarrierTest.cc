@@ -3,8 +3,6 @@
 #include <boost/detail/atomic_count.hpp>
 #include <boost/date_time.hpp>
 #include <gtest/gtest.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
 
@@ -63,10 +61,7 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 
 int main(int argc, char* argv[])
 {
-	FLAGS_logtostderr = true;
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	return RUN_ALL_TESTS();
 }
 

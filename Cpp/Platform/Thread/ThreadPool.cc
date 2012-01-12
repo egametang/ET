@@ -1,4 +1,3 @@
-#include <glog/logging.h>
 #include "Thread/ThreadPool.h"
 
 namespace Egametang {

@@ -1,5 +1,4 @@
 #include <boost/bind.hpp>
-#include <glog/logging.h>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServer.h"
 

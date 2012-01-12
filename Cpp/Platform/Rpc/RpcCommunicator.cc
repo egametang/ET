@@ -1,7 +1,6 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
-#include <glog/logging.h>
 #include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {
@@ -49,8 +48,6 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 {
 	if (err)
 	{
-		LOG(ERROR) << "receive message size failed: " << err.message();
-		VLOG(2) << "meta: " << meta->ToString() << " message: " << *message;
 		Stop();
 		return;
 	}
@@ -66,7 +63,6 @@ void RpcCommunicator::RecvDone(RpcMetaPtr meta, StringPtr message,
 {
 	if (err)
 	{
-		LOG(ERROR) << "receive message failed: " << err.message();
 		Stop();
 		return;
 	}
@@ -80,7 +76,6 @@ void RpcCommunicator::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcCommunicator::SendMeta(RpcMetaPtr meta, StringPtr message)
 {
-	CHECK_EQ(meta->size, message->size()) << "meta and message size not match!";
 	boost::asio::async_write(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
 			boost::bind(&RpcCommunicator::SendMessage, this,
@@ -92,7 +87,6 @@ void RpcCommunicator::SendMessage(RpcMetaPtr meta, StringPtr message,
 {
 	if (err)
 	{
-		LOG(ERROR) << "send message size failed: " << err.message();
 		Stop();
 		return;
 	}
@@ -106,7 +100,6 @@ void RpcCommunicator::SendDone(RpcMetaPtr meta, StringPtr message,
 {
 	if (err)
 	{
-		LOG(ERROR) << "send message failed: " << err.message();
 		Stop();
 		return;
 	}

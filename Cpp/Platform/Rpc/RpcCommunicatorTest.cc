@@ -1,8 +1,6 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <gtest/gtest.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
@@ -40,7 +38,6 @@ public:
 	{
 		if (err)
 		{
-			LOG(ERROR) << "async accept failed: " << err.message();
 			return;
 		}
 
@@ -51,7 +48,6 @@ public:
 
 	void Start()
 	{
-		VLOG(2) << "Start Server";
 		ioService.run();
 	}
 
@@ -63,7 +59,6 @@ public:
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		VLOG(2) << "Server Recv string: " << *message;
 		recvMessage = *message;
 		recvMeta = *meta;
 
@@ -104,7 +99,6 @@ public:
 
 	void Start()
 	{
-		VLOG(2) << "Start Client";
 		ioService.run();
 	}
 
@@ -117,7 +111,6 @@ public:
 	{
 		if (err)
 		{
-			LOG(ERROR) << "async connect failed: " << err.message();
 			return;
 		}
 		boost::hash<std::string> string_hash;
@@ -135,7 +128,6 @@ public:
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	{
-		VLOG(2) << "Client Recv string: " << *message;
 		recvString = *message;
 		recvMeta = *meta;
 		barrier.Signal();
@@ -194,7 +186,5 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	return RUN_ALL_TESTS();
 }

@@ -1,6 +1,4 @@
 #include <gtest/gtest.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
 #include "Rpc/RpcClient.h"
 #include "Thread/CountBarrier.h"
 #include "Thread/ThreadPool.h"
@@ -37,7 +35,6 @@ public:
 	{
 		if (err)
 		{
-			LOG(WARNING) << "async accept failed: " << err.message();
 			return;
 		}
 		RpcMetaPtr meta(new RpcMeta());
@@ -63,7 +60,6 @@ public:
 
 		StringPtr responseMessage(new std::string);
 		response.SerializeToString(responseMessage.get());
-		VLOG(3) << "response message: " << responseMessage->size();
 		RpcMetaPtr responseMeta(new RpcMeta());
 		responseMeta->id = meta->id;
 		responseMeta->size = responseMessage->size();
@@ -133,7 +129,5 @@ TEST_F(RpcClientTest, Echo)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	return RUN_ALL_TESTS();
 }

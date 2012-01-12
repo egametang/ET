@@ -1,4 +1,3 @@
-#include <glog/logging.h>
 #include <boost/foreach.hpp>
 #include "Base/Marcos.h"
 #include "BehaviorTree/SequenceNode.h"

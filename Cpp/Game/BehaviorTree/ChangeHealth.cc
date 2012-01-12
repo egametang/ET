@@ -1,4 +1,3 @@
-#include <glog/logging.h>
 #include "BehaviorTree/ChangeHealth.h"
 #include "BehaviorTree/CombatContex.h"
 #include "BehaviorTree/BehaviorTreeConf.pb.h"

@@ -1,5 +1,4 @@
 #include <boost/format.hpp>
-#include <glog/logging.h>
 #include "Base/Typedef.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/NodeFactories.h"

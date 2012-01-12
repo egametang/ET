@@ -2,8 +2,6 @@
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
 #include <gtest/gtest.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
 #include <google/protobuf/service.h>
 #include "Thread/CountBarrier.h"
 #include "Thread/ThreadPool.h"
@@ -110,7 +108,5 @@ TEST_F(RpcServerTest, ClientAndServer)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	return RUN_ALL_TESTS();
 }

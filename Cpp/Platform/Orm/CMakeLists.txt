@@ -1,4 +1,7 @@
+FILE(GLOB Header "*.h")
+
 SET(OrmSrc 
+	${Header}
 	Column.cc
 	DbHelper.cc
 	DbResult.cc

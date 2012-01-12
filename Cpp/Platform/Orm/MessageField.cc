@@ -2,7 +2,6 @@
 #include <iostream>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
-#include <glog/logging.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/text_format.h>
 #include "Base/Typedef.h"
@@ -130,7 +129,6 @@ std::string MessageField::GetRepeatedField()
 		}
 		default:
 		{
-			LOG(FATAL) << "no such type";
 			break;
 		}
 	}
@@ -305,7 +303,6 @@ void MessageField::SetRepeatedField(ResultSetPtr resultSet)
 		}
 		default:
 		{
-			LOG(FATAL) << "no such type";
 			break;
 		}
 	}
