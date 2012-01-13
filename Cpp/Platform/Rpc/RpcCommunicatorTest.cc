@@ -62,8 +62,6 @@ public:
 		recvMessage = *message;
 		recvMeta = *meta;
 
-		boost::hash<std::string> string_hash;
-
 		RpcMetaPtr responseMeta(new RpcMeta());
 		StringPtr response_message(new std::string("response test rpc communicator string"));
 		responseMeta->size = response_message->size();
@@ -113,7 +111,6 @@ public:
 		{
 			return;
 		}
-		boost::hash<std::string> string_hash;
 
 		RpcMetaPtr sendMeta(new RpcMeta());
 		StringPtr sendMessage(new std::string("send test rpc communicator string"));

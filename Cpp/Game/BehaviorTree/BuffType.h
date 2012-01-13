@@ -7,9 +7,6 @@ namespace Egametang {
 
 class ContexIf;
 
-// 条件节点还可以预绑定一些配置参数,
-// 例如下面的buff_type字段由策划配置
-// 可配置成dot hot之类的, 由工厂类设置
 class BuffType: public BehaviorNode
 {
 private:
