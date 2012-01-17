@@ -5,6 +5,7 @@
 #define MONO_MONOINIT_H
 
 #include <string>
+#include <boost/unordered_map.hpp>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 

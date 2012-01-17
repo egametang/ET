@@ -1,0 +1,28 @@
+FILE(GLOB Header "*.h")
+
+SET(MonoSrc 
+	MonoInit.cc
+)
+
+ADD_LIBRARY(Mono ${MonoSrc})
+SET_PROPERTY(TARGET Rpc PROPERTY FOLDER "Platform")
+
+IF(UNIX)
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MONO_CXX_FLAGS}")
+	SET(CMAKE_LINK_LIBRARY_FLAG "${CMAKE_LINK_LIBRARY_FLAG} ${MONO_LINK_FLAGS}")
+ENDIF()
+
+ADD_EXECUTABLE(MonoInitTest MonoInitTest.cc)
+
+SET(Tests 
+	MonoInitTest
+)
+
+FOREACH(Test ${Tests})
+	TARGET_LINK_LIBRARIES(${Test}
+		Mono
+		${ThirdPartyLibs}
+	)
+	ADD_TEST(${Test} ${Test})
+	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Mono")
+ENDFOREACH()
