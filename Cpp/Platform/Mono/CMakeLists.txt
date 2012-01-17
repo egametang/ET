@@ -1,6 +1,7 @@
 FILE(GLOB Header "*.h")
 
 SET(MonoSrc 
+	${Header}
 	MonoInit.cc
 )
 
@@ -12,7 +13,22 @@ IF(UNIX)
 	SET(CMAKE_LINK_LIBRARY_FLAG "${CMAKE_LINK_LIBRARY_FLAG} ${MONO_LINK_FLAGS}")
 ENDIF()
 
+FILE(GLOB MonoCsharpSrc "*.cs")
+MESSAGE(STATUS ${MonoCsharpSrc})
+ADD_CUSTOM_COMMAND(
+	OUTPUT MonoInit.exe
+	COMMAND ${GMCS_EXECUTABLE} 
+	ARGS ${MonoCsharpSrc} -out:${CMAKE_CURRENT_BINARY_DIR}/MonoInit.exe
+	DEPENDS ${MonoCsharpSrc}
+)
+
+ADD_CUSTOM_TARGET(MonoAssembly
+	DEPENDS MonoInit.exe
+)
+
 ADD_EXECUTABLE(MonoInitTest MonoInitTest.cc)
+
+ADD_DEPENDENCIES(MonoInitTest MonoAssembly)
 
 SET(Tests 
 	MonoInitTest

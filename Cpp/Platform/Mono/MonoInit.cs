@@ -1,6 +1,9 @@
-class MonoInit
+using System;
+
+public class MonoInit
 {
-	static void Foo(int value)
+	public static void Main ()
 	{
+		Console.WriteLine("Hello Mono World");
 	}
 }
