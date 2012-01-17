@@ -6,7 +6,7 @@ SET(MonoSrc
 )
 
 ADD_LIBRARY(Mono ${MonoSrc})
-SET_PROPERTY(TARGET Rpc PROPERTY FOLDER "Platform")
+SET_PROPERTY(TARGET Mono PROPERTY FOLDER "Platform")
 
 IF(UNIX)
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MONO_CXX_FLAGS}")
@@ -22,13 +22,13 @@ ADD_CUSTOM_COMMAND(
 	DEPENDS ${MonoCsharpSrc}
 )
 
-ADD_CUSTOM_TARGET(MonoAssembly
+ADD_CUSTOM_TARGET(MonoInitTestAssembly
 	DEPENDS MonoInit.exe
 )
 
 ADD_EXECUTABLE(MonoInitTest MonoInitTest.cc)
 
-ADD_DEPENDENCIES(MonoInitTest MonoAssembly)
+ADD_DEPENDENCIES(MonoInitTest MonoInitTestAssembly)
 
 SET(Tests 
 	MonoInitTest
