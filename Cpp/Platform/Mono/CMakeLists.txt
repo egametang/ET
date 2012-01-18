@@ -8,17 +8,17 @@ SET(MonoSrc
 ADD_LIBRARY(Mono ${MonoSrc})
 SET_PROPERTY(TARGET Mono PROPERTY FOLDER "Platform")
 
-IF(UNIX)
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MONO_CXX_FLAGS}")
-	SET(CMAKE_LINK_LIBRARY_FLAG "${CMAKE_LINK_LIBRARY_FLAG} ${MONO_LINK_FLAGS}")
+IF(MSVC)
+	SET(MonoLibRelativeDir ${CMAKE_BUILD_TYPE})
+ELSEIF(UNIX)
+	SET(MonoLibRelativeDir "")
 ENDIF()
 
 FILE(GLOB MonoCsharpSrc "*.cs")
-MESSAGE(STATUS ${MonoCsharpSrc})
 ADD_CUSTOM_COMMAND(
 	OUTPUT MonoInit.exe
-	COMMAND ${GMCS_EXECUTABLE} 
-	ARGS ${MonoCsharpSrc} -out:${CMAKE_CURRENT_BINARY_DIR}/MonoInit.exe
+	COMMAND ${MONO_GMCS_EXECUTABLE} 
+	ARGS ${MonoCsharpSrc} -out:${CMAKE_CURRENT_BINARY_DIR}/${MonoLibRelativeDir}/MonoInit.exe
 	DEPENDS ${MonoCsharpSrc}
 )
 
@@ -26,17 +26,21 @@ ADD_CUSTOM_TARGET(MonoInitTestAssembly
 	DEPENDS MonoInit.exe
 )
 
+INCLUDE_DIRECTORIES(${MONO_INCLUDE_DIRS})
+LINK_DIRECTORIES(${MONO_LIBRARY_DIRS})
+
 ADD_EXECUTABLE(MonoInitTest MonoInitTest.cc)
 
 ADD_DEPENDENCIES(MonoInitTest MonoInitTestAssembly)
 
-SET(Tests 
+SET(Tests
 	MonoInitTest
 )
 
 FOREACH(Test ${Tests})
 	TARGET_LINK_LIBRARIES(${Test}
-		Mono
+		${Mono} 
+		${MONO_LIBRARIES} 
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
