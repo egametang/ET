@@ -1,7 +1,6 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
-#include <glog/logging.h>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 #include <mono/metadata/debug-helpers.h>
@@ -31,7 +30,6 @@ void MonoInit::LoadAssembly(const std::string& fileName)
 void MonoInit::InvokeMethod(const std::string& className, const std::string& methodName)
 {
 	MonoImage* image = imageMap[className];
-	CHECK(image) << "not found image: " << className << "::" << methodName;
 	std::string fullName = className + ":" + methodName;
 	MonoMethodDesc* desc = mono_method_desc_new(fullName.c_str(), 1);
 	MonoMethod* monoMethod = mono_method_desc_search_in_image(desc, image);
