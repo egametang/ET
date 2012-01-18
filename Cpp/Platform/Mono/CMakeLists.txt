@@ -22,12 +22,12 @@ ADD_CUSTOM_COMMAND(
 	DEPENDS ${MonoCsharpSrc}
 )
 
-ADD_CUSTOM_TARGET(MonoInitTestAssembly
+ADD_CUSTOM_TARGET(MonoInitTestAssembly ALL
 	DEPENDS MonoInit.exe
 )
+SET_PROPERTY(TARGET MonoInitTestAssembly PROPERTY FOLDER "Tests/Platform/Mono")
 
 INCLUDE_DIRECTORIES(${MONO_INCLUDE_DIRS})
-LINK_DIRECTORIES(${MONO_LIBRARY_DIRS})
 
 ADD_EXECUTABLE(MonoInitTest MonoInitTest.cc)
 
@@ -39,8 +39,8 @@ SET(Tests
 
 FOREACH(Test ${Tests})
 	TARGET_LINK_LIBRARIES(${Test}
-		${Mono} 
-		${MONO_LIBRARIES} 
+		${Mono}
+		${MONO_LIBRARIES}
 		${ThirdPartyLibs}
 	)
 	ADD_TEST(${Test} ${Test})
