@@ -21,6 +21,13 @@ ThreadPool::ThreadPool(int num) :
 
 ThreadPool::~ThreadPool()
 {
+	boost::mutex::scoped_lock lock(mutex);
+	running = false;
+	cond.notify_all();
+	while (workNum > 0)
+	{
+		done.wait(lock);
+	}
 }
 
 void ThreadPool::Wait()

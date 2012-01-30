@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <gtest/gtest.h>
+#include <glog/logging.h>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServerMock.h"
 
@@ -26,11 +27,18 @@ public:
 	}
 };
 
+TEST_F(RpcSessionTest, Test1)
+{
+
+}
+
 } // namespace Egametang
 
 
 int main(int argc, char* argv[])
 {
+	google::ParseCommandLineFlags(&argc, &argv, true);
+	google::InitGoogleLogging(argv[0]);
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
