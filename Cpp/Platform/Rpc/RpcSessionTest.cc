@@ -2,6 +2,7 @@
 #include <boost/asio.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
+#include <gflags/gflags.h>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServerMock.h"
 
@@ -29,7 +30,6 @@ public:
 
 TEST_F(RpcSessionTest, Test1)
 {
-
 }
 
 } // namespace Egametang
@@ -37,8 +37,8 @@ TEST_F(RpcSessionTest, Test1)
 
 int main(int argc, char* argv[])
 {
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	google::InitGoogleLogging(argv[0]);
 	testing::InitGoogleTest(&argc, argv);
+	google::InitGoogleLogging(argv[0]);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

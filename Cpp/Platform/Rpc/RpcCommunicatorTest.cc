@@ -1,6 +1,8 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <gtest/gtest.h>
+#include <glog/logging.h>
+#include <gflags/gflags.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
@@ -183,5 +185,7 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
+	google::InitGoogleLogging(argv[0]);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

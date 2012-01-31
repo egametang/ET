@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <glog/logging.h>
+#include <gflags/gflags.h>
 #include <boost/python.hpp>
 #include "Python/PythonInterpreter.h"
 
@@ -86,5 +88,7 @@ TEST_F(PythonInterpreterTest, EnterPythonScript)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
+	google::InitGoogleLogging(argv[0]);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

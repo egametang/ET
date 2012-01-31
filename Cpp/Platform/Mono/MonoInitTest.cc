@@ -2,6 +2,8 @@
 // Author: egametang@gmail.com (tanghai)
 
 #include <gtest/gtest.h>
+#include <glog/logging.h>
+#include <gflags/gflags.h>
 #include "Mono/MonoInit.h"
 
 namespace Egametang {
@@ -30,5 +32,7 @@ TEST_F(MonoInitTest, Echo)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
+	google::InitGoogleLogging(argv[0]);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

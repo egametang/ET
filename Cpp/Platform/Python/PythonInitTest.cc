@@ -1,5 +1,7 @@
 #include <boost/python.hpp>
 #include <gtest/gtest.h>
+#include <glog/logging.h>
+#include <gflags/gflags.h>
 #include "Python/PythonInit.h"
 
 namespace Egametang {
@@ -66,5 +68,7 @@ TEST_F(PythonInitTest, Dict)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
+	google::InitGoogleLogging(argv[0]);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }
