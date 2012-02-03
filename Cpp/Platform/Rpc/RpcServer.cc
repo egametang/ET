@@ -57,7 +57,7 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseH
 
 void RpcServer::Stop()
 {
-	threadPool.Wait();
+	threadPool.wait();
 	acceptor.close();
 	sessions.clear();
 }
@@ -75,7 +75,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			this, &RpcServer::OnCallMethod,
 			session, responseHandler);
 
-	threadPool.Schedule(
+	threadPool.schedule(
 			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->service,
 					responseHandler->Method(), (google::protobuf::RpcController*)(NULL),
 					responseHandler->Request(), responseHandler->Response(),

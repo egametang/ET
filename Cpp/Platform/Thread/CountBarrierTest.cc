@@ -2,10 +2,10 @@
 #include <boost/ref.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include <boost/date_time.hpp>
+#include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
-#include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
 
 namespace Egametang {
@@ -46,17 +46,17 @@ TEST_F(CountBarrierTest, Count)
 TEST_F(CountBarrierTest, WaitAndSignal)
 {
 	CountBarrier barrier(10);
-	ThreadPool pool(10);
+	boost::threadpool::fifo_pool pool(10);
 	for (int i = 0; i < 10; ++i)
 	{
-		pool.Schedule(
+		pool.schedule(
 				boost::bind(&CountBarrierTest::Signal,
 						this, boost::ref(barrier)));
 	}
 	ASSERT_EQ(0, this->count);
 	barrier.Wait();
 	ASSERT_EQ(10, this->count);
-	pool.Wait();
+	pool.wait();
 }
 
 } // namespace Egametang

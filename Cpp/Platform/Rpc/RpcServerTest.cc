@@ -1,18 +1,17 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/function.hpp>
+#include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
 #include <google/protobuf/service.h>
 #include "Thread/CountBarrier.h"
-#include "Thread/ThreadPool.h"
 #include "Rpc/RpcClient.h"
 #include "Rpc/RpcServer.h"
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServerMock.h"
 #include "Rpc/Echo.pb.h"
-#include "Thread/ThreadPool.h"
 
 namespace Egametang {
 
@@ -63,7 +62,7 @@ public:
 
 TEST_F(RpcServerTest, ClientAndServer)
 {
-	ThreadPool threadPool(2);
+	boost::threadpool::fifo_pool threadPool(2);
 
 	ProtobufServicePtr echoSevice(new MyEcho);
 
@@ -82,8 +81,8 @@ TEST_F(RpcServerTest, ClientAndServer)
 	ASSERT_EQ(0U, response.num());
 
 	// server和client分别在两个不同的线程
-	threadPool.Schedule(boost::bind(&IOServiceRun, &ioServer));
-	threadPool.Schedule(boost::bind(&IOServiceRun, &ioClient));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;
 	service.Echo(NULL, &request, &response,
@@ -99,7 +98,7 @@ TEST_F(RpcServerTest, ClientAndServer)
 	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
 	// 必须主动让client和server stop才能wait线程
-	threadPool.Wait();
+	threadPool.wait();
 
 	ASSERT_EQ(100, response.num());
 }

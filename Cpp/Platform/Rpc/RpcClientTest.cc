@@ -1,9 +1,9 @@
+#include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
 #include "Rpc/RpcClient.h"
 #include "Thread/CountBarrier.h"
-#include "Thread/ThreadPool.h"
 #include "Rpc/RpcController.h"
 #include "Rpc/Echo.pb.h"
 
@@ -102,9 +102,9 @@ TEST_F(RpcClientTest, Echo)
 	RpcClientPtr client(new RpcClient(ioClient, "127.0.0.1", port));
 	EchoService_Stub service(client.get());
 
-	ThreadPool threadPool(2);
-	threadPool.Schedule(boost::bind(&IOServiceRun, &ioServer));
-	threadPool.Schedule(boost::bind(&IOServiceRun, &ioClient));
+	boost::threadpool::fifo_pool threadPool(2);
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	EchoRequest request;
 	request.set_num(100);
@@ -120,7 +120,7 @@ TEST_F(RpcClientTest, Echo)
 	ioServer.stop();
 	ioClient.stop();
 	// 必须主动让client和server stop才能wait线程
-	threadPool.Wait();
+	threadPool.wait();
 
 	ASSERT_EQ(100, response.num());
 }

@@ -2,7 +2,6 @@ FILE(GLOB Header "*.h")
 
 SET(ThreadSrc 
 	${Header}
-	ThreadPool.cc
 	CountBarrier.cc
 )
 

@@ -1,10 +1,10 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
+#include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
 #include "Rpc/RpcCommunicator.h"
-#include "Thread/ThreadPool.h"
 #include "Thread/CountBarrier.h"
 
 namespace Egametang {
@@ -162,11 +162,11 @@ public:
 
 TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
-	ThreadPool threadPool(2);
-	threadPool.Schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
-	threadPool.Schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
+	boost::threadpool::fifo_pool threadPool(2);
+	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
+	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
-	threadPool.Wait();
+	threadPool.wait();
 	rpcServer.Stop();
 	rpcClient.Stop();
 

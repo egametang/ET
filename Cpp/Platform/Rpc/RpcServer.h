@@ -5,9 +5,9 @@
 #include <boost/unordered_set.hpp>
 #include <boost/unordered_map.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/threadpool.hpp>
 #include <google/protobuf/service.h>
 #include "Base/Marcos.h"
-#include "Thread/ThreadPool.h"
 #include "Rpc/RpcTypedef.h"
 
 namespace Egametang {
@@ -22,7 +22,7 @@ private:
 
 	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::acceptor acceptor;
-	ThreadPool threadPool;
+	boost::threadpool::fifo_pool threadPool;
 	RpcSessionSet sessions;
 	MethodMap methods;
 
