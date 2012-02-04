@@ -82,6 +82,8 @@ TEST_F(RpcServerTest, ClientAndServer)
 
 	// server和client分别在两个不同的线程
 	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+	// 等待server OK
+	boost::this_thread::sleep(boost::posix_time::milliseconds(100));
 	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;

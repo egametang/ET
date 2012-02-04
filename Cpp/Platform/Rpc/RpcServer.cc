@@ -14,7 +14,7 @@ namespace Egametang {
 
 RpcServer::RpcServer(boost::asio::io_service& service, int port):
 		ioService(service), acceptor(ioService),
-		threadPool(), sessions(),
+		threadPool(1), sessions(),
 		methods()
 {
 	boost::asio::ip::address address;

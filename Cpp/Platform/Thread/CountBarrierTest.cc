@@ -28,10 +28,7 @@ public:
 	}
 	void Signal(CountBarrier& barrier)
 	{
-		boost::xtime xt;
-		boost::xtime_get(&xt, boost::TIME_UTC);
-		xt.sec += 1;
-		boost::thread::sleep(xt);
+		boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
 		++count;
 		barrier.Signal();
 	}

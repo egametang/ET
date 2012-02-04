@@ -164,6 +164,8 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
 	boost::threadpool::fifo_pool threadPool(2);
 	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
+
+	boost::this_thread::sleep(boost::posix_time::milliseconds(100));
 	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
 	threadPool.wait();
