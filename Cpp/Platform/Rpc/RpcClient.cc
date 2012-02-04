@@ -37,17 +37,24 @@ void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 
 void RpcClient::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
-	RequestHandlerPtr requestHandler = requestHandlers[meta->id];
-	requestHandlers.erase(meta->id);
-
-	requestHandler->Response()->ParseFromString(*message);
-
-	// meta和message可以循环利用
-	RecvMeta(meta, message);
-	// 回调放在函数最.如果RecvMeta()放在回调之后,
-	// 另外线程可能让io_service stop,导致RecvMeta还未跑完
-	// 网络就终止了
-	requestHandler->Run();
+	// 没有回调
+	if (requestHandlers.find(meta->id) == requestHandlers.end())
+	{
+		// meta和message可以循环利用
+		RecvMeta(meta, message);
+	}
+	else
+	{
+		RequestHandlerPtr requestHandler = requestHandlers[meta->id];
+		requestHandlers.erase(meta->id);
+		requestHandler->Response()->ParseFromString(*message);
+		// meta和message可以循环利用
+		RecvMeta(meta, message);
+		// 回调放在函数最.如果RecvMeta()放在回调之后,
+		// 另外线程可能让io_service stop,导致RecvMeta还未跑完
+		// 网络就终止了
+		requestHandler->Run();
+	}
 }
 
 void RpcClient::OnSendMessage(RpcMetaPtr meta, StringPtr message)
@@ -61,11 +68,12 @@ void RpcClient::CallMethod(
 		google::protobuf::Message* response,
 		google::protobuf::Closure* done)
 {
-	RequestHandlerPtr request_handler(new RequestHandler(response, done));
-	requestHandlers[++id] = request_handler;
-
+	if (!done)
+	{
+		RequestHandlerPtr request_handler(new RequestHandler(response, done));
+		requestHandlers[++id] = request_handler;
+	}
 	boost::hash<std::string> stringHash;
-
 	StringPtr message(new std::string);
 	request->SerializePartialToString(message.get());
 	RpcMetaPtr meta(new RpcMeta());
