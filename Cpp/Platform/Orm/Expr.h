@@ -17,7 +17,7 @@ public:
 	virtual ~Expr();
 	Expr& operator=(const Expr& expr);
 	std::string ToString() const;
-	bool Empty();
+	bool Empty() const;
 };
 
 class Not: public Expr

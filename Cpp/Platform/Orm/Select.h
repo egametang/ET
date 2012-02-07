@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <boost/lexical_cast.hpp>
+#include <google/protobuf/descriptor.h>
 #include "Orm/Expr.h"
 #include "Orm/Column.h"
 
@@ -25,9 +26,10 @@ private:
 
 public:
 	Select(Column columns):
-			select(columns), distinct(false),
-			desc(false), limit(0),
-			offset(0)
+		select(columns), distinct(false),
+		groupBy(), orderBy(),
+		desc(false), limit(0),
+		offset(0)
 	{
 	}
 
@@ -125,5 +127,8 @@ public:
 	}
 };
 
-} // namespace Egametang
+
+}
+
+ // namespace Egametang
 #endif // ORM_QUERY_H

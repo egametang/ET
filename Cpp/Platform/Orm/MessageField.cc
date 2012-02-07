@@ -4,6 +4,8 @@
 #include <boost/lexical_cast.hpp>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/text_format.h>
+#include <glog/logging.h>
+#include <gflags/gflags.h>
 #include "Base/Typedef.h"
 #include "Orm/MessageField.h"
 
@@ -196,7 +198,6 @@ std::string MessageField::GetOptionalField()
 		}
 		default:
 		{
-			LOG(FATAL) << "no such type";
 			break;
 		}
 	}
@@ -377,7 +378,6 @@ void MessageField::SetOptionalField(ResultSetPtr resultSet)
 		}
 		default:
 		{
-			LOG(FATAL) << "no such type";
 			break;
 		}
 	}

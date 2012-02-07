@@ -1,4 +1,4 @@
-PROTOBUF_GENERATE_CPP(proto_srcs proto_hdrs 
+PROTOBUF_GENERATE_CPP(ProtoSrcs ProtoHdrs 
 	Echo.proto
 )
 
@@ -6,8 +6,8 @@ FILE(GLOB Header "*.h")
 
 SET(RpcSrc 
 	${Header}
-	${proto_hdrs}
-	${proto_srcs}
+	${ProtoHdrs}
+	${ProtoSrcs}
 	RpcCommunicator.cc
 	RpcController.cc
 	RequestHandler.cc

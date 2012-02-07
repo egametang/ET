@@ -2,8 +2,17 @@
 
 namespace Egametang {
 
-Column::Column(const std::string name): columnStr(name)
+Column::Column()
 {
+}
+
+Column::Column(const std::string& name): columnStr(name)
+{
+}
+
+Column::Column(const Column& column)
+{
+	columnStr = column.columnStr;
 }
 
 Column::~Column()
@@ -16,7 +25,7 @@ Column& Column::operator()(std::string& name)
 	return *this;
 }
 
-bool Column::Empty()
+bool Column::Empty() const
 {
 	return columnStr.empty();
 }

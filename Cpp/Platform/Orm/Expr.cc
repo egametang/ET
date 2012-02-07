@@ -2,6 +2,7 @@
 // Author: egametang@gmail.com (tanghai)
 
 #include <boost/lexical_cast.hpp>
+#include <glog/logging.h>
 #include "Orm/Column.h"
 #include "Orm/Expr.h"
 
@@ -17,7 +18,7 @@ Expr& Expr::operator=(const Expr& expr)
 	return *this;
 }
 
-bool Expr::Empty()
+bool Expr::Empty() const
 {
 	return exprStr.empty();
 }

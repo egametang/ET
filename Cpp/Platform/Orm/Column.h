@@ -12,16 +12,18 @@ private:
 	std::string columnStr;
 
 public:
-	Column(const std::string name);
+	Column();
+	Column(const std::string& name);
+	Column(const Column& column);
 	~Column();
 	Column& operator()(std::string& name);
-	bool Empty();
+	bool Empty() const;
 	std::string ToString() const;
 
 	template <typename T>
 	Expr operator>(const T& value)
 	{
-		return Oper(*this,">", value);
+		return Oper(*this, ">", value);
 	}
 
 	template <typename T>
