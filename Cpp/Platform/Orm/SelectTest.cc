@@ -8,47 +8,65 @@ namespace Egametang {
 
 class RpcServerTest: public testing::Test
 {
-public:
-
 };
 
-TEST_F(RpcServerTest, ToString)
+TEST_F(RpcServerTest, SelectFrom)
 {
 	std::string expectedSql;
 	expectedSql = "select * from Egametang.Person";
 	Select<Person> selectQuery1(Column("*"));
 	EXPECT_EQ(expectedSql, selectQuery1.ToString());
+}
 
-	Select<Person> selectQuery2(Column("*"));
+TEST_F(RpcServerTest, SelectWhere)
+{
+	std::string expectedSql;
+	Select<Person> selectQuery(Column("*"));
 	expectedSql = "select * from Egametang.Person where age > 10";
-	selectQuery2.Where(Column("age") > 10);
-	EXPECT_EQ(expectedSql, selectQuery2.ToString());
+	selectQuery.Where(Column("age") > 10);
+	EXPECT_EQ(expectedSql, selectQuery.ToString());
+}
 
-	Select<Person> selectQuery3(Column("*"));
+TEST_F(RpcServerTest, SelectDistinct)
+{
+	std::string expectedSql;
+	Select<Person> selectQuery(Column("*"));
 	expectedSql = "select * distinct from Egametang.Person where age > 10";
-	selectQuery3.Distinct().Where(Column("age") > 10);
-	EXPECT_EQ(expectedSql, selectQuery3.ToString());
+	selectQuery.Distinct().Where(Column("age") > 10);
+	EXPECT_EQ(expectedSql, selectQuery.ToString());
+}
 
-	Select<Person> selectQuery4(Column("age, name"));
+TEST_F(RpcServerTest, SelectTwoColumn)
+{
+	std::string expectedSql;
+	Select<Person> selectQuery(Column("age, name"));
 	expectedSql = "select age, name distinct from Egametang.Person where age > 10";
-	selectQuery4.Distinct().Where(Column("age") > 10);
-	EXPECT_EQ(expectedSql, selectQuery4.ToString());
+	selectQuery.Distinct().Where(Column("age") > 10);
+	EXPECT_EQ(expectedSql, selectQuery.ToString());
+}
 
-	Select<Person> selectQuery5(Column("age, name"));
+TEST_F(RpcServerTest, LimitOffset)
+{
+	std::string expectedSql;
+	Select<Person> selectQuery(Column("age, name"));
 	expectedSql = "select age, name distinct from Egametang.Person where age > 10 limit 1 offset 10";
-	selectQuery5.Distinct().Where(Column("age") > 10).Limit(1).Offset(10);
-	EXPECT_EQ(expectedSql, selectQuery5.ToString());
+	selectQuery.Distinct().Where(Column("age") > 10).Limit(1).Offset(10);
+	EXPECT_EQ(expectedSql, selectQuery.ToString());
+}
 
-	Select<Person> selectQuery6(Column("age, name"));
+TEST_F(RpcServerTest, GroupByHaving)
+{
+	std::string expectedSql;
+	Select<Person> selectQuery(Column("age, name"));
 	expectedSql =
 			"select age, name distinct from Egametang.Person"
 			" group by age having age > 10 limit 1 offset 10";
-	selectQuery6.Distinct()
+	selectQuery.Distinct()
 			.GroupBy(Column("age"))
 			.Having(Column("age") > 10)
 			.Limit(1)
 			.Offset(10);
-	EXPECT_EQ(expectedSql, selectQuery6.ToString());
+	EXPECT_EQ(expectedSql, selectQuery.ToString());
 }
 
 } // namespace Egametang

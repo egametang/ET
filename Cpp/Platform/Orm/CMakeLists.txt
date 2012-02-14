@@ -19,9 +19,11 @@ ADD_LIBRARY(Orm ${OrmSrc})
 SET_PROPERTY(TARGET Orm PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(SelectTest SelectTest.cc)
+ADD_EXECUTABLE(MessageFieldTest MessageFieldTest.cc)
 
 SET(Tests
 	SelectTest
+	MessageFieldTest
 )
 
 FOREACH(Test ${Tests})

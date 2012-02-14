@@ -1,8 +1,19 @@
 package Egametang;
 
-message Person
-{
+message Item {
 	optional int32 id = 1;
 	optional string name = 2;
-	optional int32 age = 3;
+}
+
+message Person
+{
+	optional int64 guid = 1;
+	optional int32 age = 2;
+	optional uint32 number = 3;
+	optional uint64 time = 4;
+	optional string name = 5;
+	optional double height = 6;
+	optional bytes comment = 7;
+	optional bool marry = 8;
+	optional Item item = 9;
 }

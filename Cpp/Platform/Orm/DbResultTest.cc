@@ -1,7 +1,7 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
-#include "DbResult.h"
+#include "Orm/DbResult.h"
 
 namespace Egametang {
 

@@ -82,7 +82,7 @@ std::string MessageField::GetRepeatedField()
 		{
 			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
 			{
-				int64 value = reflection->GetInt64(message, field);
+				int64 value = reflection->GetUInt32(message, field);
 				valueStr += boost::lexical_cast<std::string>(value) + "\t";
 			}
 			break;
@@ -91,7 +91,7 @@ std::string MessageField::GetRepeatedField()
 		{
 			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
 			{
-				int64 value = reflection->GetInt64(message, field);
+				int64 value = reflection->GetUInt64(message, field);
 				valueStr += boost::lexical_cast<std::string>(value) + "\t";
 			}
 			break;
@@ -101,7 +101,6 @@ std::string MessageField::GetRepeatedField()
 			valueStr += "'";
 			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
 			{
-				int64 value = reflection->GetInt64(message, field);
 				valueStr += reflection->GetString(message, field) + "\t";
 			}
 			valueStr += "'";
@@ -112,7 +111,6 @@ std::string MessageField::GetRepeatedField()
 			valueStr += "'";
 			for (int i = 0; i < reflection->FieldSize(message, field); ++i)
 			{
-				int64 value = reflection->GetInt64(message, field);
 				valueStr += reflection->GetString(message, field) + "\t";
 			}
 			valueStr += "'";
@@ -142,6 +140,7 @@ std::string MessageField::GetOptionalField()
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
 	std::string valueStr;
+	VLOG(2) << "FieldDescriptor::Type: " << type;
 	switch (type)
 	{
 		case google::protobuf::FieldDescriptor::TYPE_BOOL:
@@ -192,8 +191,8 @@ std::string MessageField::GetOptionalField()
 		}
 		case google::protobuf::FieldDescriptor::TYPE_MESSAGE:
 		{
-			const google::protobuf::Message& message = reflection->GetMessage(message, field);
-			valueStr = message.ShortDebugString();
+			const google::protobuf::Message& msg = reflection->GetMessage(message, field);
+			valueStr = msg.ShortDebugString();
 			break;
 		}
 		default:

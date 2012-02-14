@@ -41,11 +41,10 @@ void DbResult::All(std::vector<ProtobufMessagePtr>& messages)
 
 void DbResult::One(ProtobufMessagePtr message)
 {
-	if (!resultSet->next())
+	if (resultSet->next())
 	{
-		return;
+		FillMessage(message);
 	}
-	FillMessage(message);
 }
 
 std::size_t DbResult::Count()
