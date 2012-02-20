@@ -10,10 +10,12 @@
 namespace Egametang {
 
 class DbResult;
+class ResultSetMock;
 
 typedef boost::shared_ptr<sql::ResultSet> ResultSetPtr;
 typedef boost::shared_ptr<sql::Statement> StatementPtr;
 typedef boost::shared_ptr<DbResult> DbResultPtr;
+typedef boost::shared_ptr<ResultSetMock> ResultSetMockPtr;
 
 } // namespace Egametang
 

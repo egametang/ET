@@ -1,14 +1,24 @@
 // Copyright 2011 Netease Inc. All Rights Reserved.
 // Author: tanghai@corp.netease.com (tanghai)
 
+#include <sstream>
+#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
 #include <google/protobuf/descriptor.h>
 #include "Orm/MessageField.h"
 #include "Orm/Person.pb.h"
+#include "Orm/ResultSetMock.h"
 
 namespace Egametang {
+
+using namespace boost;
+using testing::_;
+using testing::Invoke;
+using testing::Return;
+using testing::An;
 
 class MessageFieldTest: public testing::Test
 {
@@ -159,6 +169,176 @@ TEST_F(MessageFieldTest, GetField_FieldIsMessage)
 	person.mutable_item()->set_name("pen");
 	str = messageField.GetField();
 	ASSERT_EQ("id: 123 name: \"pen\"", str);
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsBool)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getBoolean(7))
+		.WillOnce(Return(true))
+		.WillOnce(Return(false));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(7);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_TRUE(person.marry());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_FALSE(person.marry());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsDouble)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getDouble(5))
+		.WillOnce(Return(1.00))
+		.WillOnce(Return(12345.6789));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(5);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_FLOAT_EQ(1.00, person.height());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_FLOAT_EQ(12345.6789, person.height());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsInt32)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getInt(1))
+		.WillOnce(Return(1))
+		.WillOnce(Return(0xFFFFFFFF));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(1);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(1, person.age());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(-1, person.age());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsInt64)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getInt64(0))
+		.WillOnce(Return(1))
+		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(0);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(1, person.guid());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(-1, person.guid());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsUInt32)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getUInt(2))
+		.WillOnce(Return(1))
+		.WillOnce(Return(0xFFFFFFFF));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(2);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(1, person.number());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(4294967295, person.number());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsUInt64)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getUInt64(3))
+		.WillOnce(Return(1))
+		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(3);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(1, person.time());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(18446744073709551615ULL, person.time());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsString)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getString(4))
+		.WillOnce(Return("1"))
+		.WillOnce(Return("tanghai"));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(4);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ("1", person.name());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ("tanghai", person.name());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsBytes)
+{
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getString(6))
+		.WillOnce(Return("1"))
+		.WillOnce(Return("tanghai is a good student"));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(6);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ("1", person.comment());
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ("tanghai is a good student", person.comment());
+}
+
+TEST_F(MessageFieldTest, SetField_FieldIsMessage)
+{
+	std::istringstream is;
+	is.str("id: 123 name: \"pen\"");
+	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
+	EXPECT_CALL(*resultSetMock, getBlob(8))
+		.WillOnce(Return(&is));
+	Person person;
+	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
+	const google::protobuf::FieldDescriptor* field = descriptor->field(8);
+
+	MessageField messageField(person, field);
+
+	messageField.SetField(resultSetMock);
+	ASSERT_EQ(123, person.item().id());
+	ASSERT_EQ("pen", person.item().name());
 }
 
 } // namespace Egametang
