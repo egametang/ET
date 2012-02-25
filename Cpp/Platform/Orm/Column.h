@@ -47,7 +47,7 @@ public:
 	template <typename T>
 	Expr operator!=(const T& value)
 	{
-		return Oper(*this, "<>", value);
+		return Oper(*this, "!=", value);
 	}
 
 	template <typename T>

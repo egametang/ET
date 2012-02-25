@@ -20,10 +20,12 @@ SET_PROPERTY(TARGET Orm PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(SelectTest SelectTest.cc)
 ADD_EXECUTABLE(MessageFieldTest MessageFieldTest.cc)
+ADD_EXECUTABLE(ColumnTest ColumnTest.cc)
 
 SET(Tests
 	SelectTest
 	MessageFieldTest
+	ColumnTest
 )
 
 FOREACH(Test ${Tests})
