@@ -1,3 +1,6 @@
+// Copyright: All Rights Reserved
+// Author: egametang@gmail.com (tanghai)
+
 #ifndef ORM_COLUMN_H
 #define ORM_COLUMN_H
 

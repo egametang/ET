@@ -1,5 +1,5 @@
-// Copyright 2011 Netease Inc. All Rights Reserved.
-// Author: tanghai@corp.netease.com (tanghai)
+// Copyright: All Rights Reserved
+// Author: egametang@gmail.com (tanghai)
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>

@@ -1,3 +1,6 @@
+// Copyright: All Rights Reserved
+// Author: egametang@gmail.com (tanghai)
+
 #ifndef ORM_MESSAGEFIELD_H
 #define ORM_MESSAGEFIELD_H
 

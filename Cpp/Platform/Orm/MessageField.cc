@@ -1,3 +1,6 @@
+// Copyright: All Rights Reserved
+// Author: egametang@gmail.com (tanghai)
+
 #include <string>
 #include <iostream>
 #include <boost/algorithm/string.hpp>
