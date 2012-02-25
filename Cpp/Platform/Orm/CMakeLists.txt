@@ -22,12 +22,14 @@ ADD_EXECUTABLE(SelectTest SelectTest.cc)
 ADD_EXECUTABLE(MessageFieldTest MessageFieldTest.cc)
 ADD_EXECUTABLE(ColumnTest ColumnTest.cc)
 ADD_EXECUTABLE(ExprTest ExprTest.cc)
+ADD_EXECUTABLE(DbResultTest DbResultTest.cc)
 
 SET(Tests
 	SelectTest
 	MessageFieldTest
 	ColumnTest
 	ExprTest
+	DbResultTest
 )
 
 FOREACH(Test ${Tests})

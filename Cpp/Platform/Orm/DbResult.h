@@ -20,13 +20,24 @@ private:
 
 public:
 	DbResult(ResultSetPtr resultSet);
-	virtual ~DbResult();
-
-	void All(std::vector<ProtobufMessagePtr>& messages);
 
 	void One(ProtobufMessagePtr message);
 
 	std::size_t Count();
+
+	template <typename Table>
+	void All(std::vector<boost::shared_ptr<Table> >& messages)
+	{
+		for (std::size_t i = 0; i < messages.size(); ++i)
+		{
+			if (!resultSet->next())
+			{
+				return;
+			}
+			ProtobufMessagePtr message = messages[i];
+			FillMessage(message);
+		}
+	}
 };
 
 } // namespace Egametang
