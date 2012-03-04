@@ -1,8 +1,8 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
-#ifndef ORM_ORMTYPEDEF_H
-#define ORM_ORMTYPEDEF_H
+#ifndef ORM_TYPEDEF_H
+#define ORM_TYPEDEF_H
 
 #include <boost/shared_ptr.hpp>
 #include <cppconn/resultset.h>
@@ -19,4 +19,4 @@ typedef boost::shared_ptr<ResultSetMock> ResultSetMockPtr;
 
 } // namespace Egametang
 
-#endif // ORM_ORMTYPEDEF_H
+#endif // ORM_TYPEDEF_H

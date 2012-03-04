@@ -4,7 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include "Base/Marcos.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 #include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {

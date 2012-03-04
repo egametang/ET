@@ -11,7 +11,7 @@
 #include <cppconn/statement.h>
 #include <mysql_connection.h>
 #include "Orm/DbResult.h"
-#include "Orm/OrmTypedef.h"
+#include "Orm/Typedef.h"
 #include "Orm/Select.h"
 
 namespace Egametang {

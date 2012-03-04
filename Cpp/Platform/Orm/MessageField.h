@@ -6,7 +6,7 @@
 
 #include <string>
 #include <google/protobuf/message.h>
-#include "Orm/OrmTypedef.h"
+#include "Orm/Typedef.h"
 
 namespace Egametang {
 

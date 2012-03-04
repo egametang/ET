@@ -5,7 +5,7 @@
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
 #include "Base/Typedef.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 
 namespace Egametang {
 

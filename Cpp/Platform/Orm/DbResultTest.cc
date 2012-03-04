@@ -8,6 +8,7 @@
 #include "Orm/DbResult.h"
 #include "Orm/Select.h"
 #include "Orm/Person.pb.h"
+#include "Orm/Exception.h"
 
 namespace Egametang {
 
@@ -17,14 +18,25 @@ class DbResultTest: public testing::Test
 
 TEST_F(DbResultTest, One)
 {
-	DbHelper dbHelper("192.168.1.4", "root", "111111");
+	try
+	{
+		DbHelper dbHelper("tcp://192.168.1.104:3306", "root", "111111");
 
-	DbResultPtr result = dbHelper.Execute(
-			Select<Person>(Column("*"))
-			.Where(Column("age") > 10));
+		DbResultPtr result = dbHelper.Execute(
+				Select<Person>(Column("*")).
+				Where(Column("age") > 10)
+			);
 
-	boost::shared_ptr<Person> person;
-	result->One(person);
+		boost::shared_ptr<Person> person;
+		result->One(person);
+	}
+	catch (Exception& e)
+	{
+		if (const std::string* str=boost::get_error_info<ConnectionErrStr>(e))
+		{
+			LOG(FATAL) << *str;
+		}
+	}
 }
 
 } // namespace Egametang

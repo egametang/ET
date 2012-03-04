@@ -1,5 +1,5 @@
-#ifndef RPC_RPCTYPEDEF_H
-#define RPC_RPCTYPEDEF_H
+#ifndef RPC_TYPEDEF_H
+#define RPC_TYPEDEF_H
 
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
@@ -28,4 +28,4 @@ typedef boost::function<void (RpcMetaPtr, StringPtr)> MessageHandler;
 
 } // namespace Egametang
 
-#endif // RPC_RPC_TYPEDEF_H
+#endif // RPC_TYPEDEF_H

@@ -8,7 +8,7 @@
 #include <boost/noncopyable.hpp>
 #include "Base/Marcos.h"
 #include "Base/Typedef.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 
 namespace Egametang {
 

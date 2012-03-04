@@ -7,7 +7,7 @@
 #include <vector>
 #include <cppconn/resultset.h>
 #include "Base/Typedef.h"
-#include "Orm/OrmTypedef.h"
+#include "Orm/Typedef.h"
 
 namespace Egametang {
 

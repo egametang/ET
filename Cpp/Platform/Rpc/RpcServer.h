@@ -8,7 +8,7 @@
 #include <boost/threadpool.hpp>
 #include <google/protobuf/service.h>
 #include "Base/Marcos.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 
 namespace Egametang {
 

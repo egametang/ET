@@ -7,7 +7,7 @@
 #include <boost/thread.hpp>
 #include <google/protobuf/service.h>
 #include "Base/Typedef.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 #include "Rpc/RpcCommunicator.h"
 
 namespace Egametang {

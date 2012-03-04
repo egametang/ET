@@ -4,7 +4,7 @@
 #include <google/protobuf/service.h>
 #include <google/protobuf/descriptor.h>
 #include "Base/Marcos.h"
-#include "Rpc/RpcTypedef.h"
+#include "Rpc/Typedef.h"
 #include "Rpc/RpcServer.h"
 #include "Rpc/RpcSession.h"
 #include "Rpc/ResponseHandler.h"
