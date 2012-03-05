@@ -1,3 +1,4 @@
+#include <boost/make_shared.hpp>
 #include "Rpc/MethodInfo.h"
 #include "Rpc/ResponseHandler.h"
 #include "Rpc/RpcCommunicator.h"
@@ -36,8 +37,8 @@ google::protobuf::Message* ResponseHandler::Response()
 
 void ResponseHandler::Run()
 {
-	RpcMetaPtr meta(new RpcMeta());
-	StringPtr message(new std::string);
+	RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+	StringPtr message = boost::make_shared<std::string>();
 	response->SerializeToString(message.get());
 	meta->id = id;
 	meta->size = message->size();

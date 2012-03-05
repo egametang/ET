@@ -39,8 +39,8 @@ public:
 		{
 			return;
 		}
-		RpcMetaPtr meta(new RpcMeta());
-		StringPtr message(new std::string);
+		RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+		StringPtr message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -60,9 +60,9 @@ public:
 		EchoResponse response;
 		response.set_num(num);
 
-		StringPtr responseMessage(new std::string);
+		StringPtr responseMessage = boost::make_shared<std::string>();
 		response.SerializeToString(responseMessage.get());
-		RpcMetaPtr responseMeta(new RpcMeta());
+		RpcMetaPtr responseMeta = boost::make_shared<RpcMeta>();
 		responseMeta->id = meta->id;
 		responseMeta->size = responseMessage->size();
 		SendMeta(responseMeta, responseMessage);
@@ -99,7 +99,7 @@ TEST_F(RpcClientTest, Echo)
 
 	CountBarrier barrier(2);
 	RpcServerTest server(ioServer, port, barrier);
-	RpcClientPtr client(new RpcClient(ioClient, "127.0.0.1", port));
+	RpcClientPtr client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", port);
 	EchoService_Stub service(client.get());
 
 	boost::threadpool::fifo_pool threadPool(2);

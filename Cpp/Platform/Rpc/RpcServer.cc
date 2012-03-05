@@ -1,6 +1,7 @@
 #include <boost/asio.hpp>
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
+#include <boost/make_shared.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/descriptor.h>
 #include "Base/Marcos.h"
@@ -24,7 +25,7 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	RpcSessionPtr new_session(new RpcSession(ioService, *this));
+	RpcSessionPtr new_session = boost::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
@@ -42,7 +43,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	RpcSessionPtr newSession(new RpcSession(ioService, *this));
+	RpcSessionPtr newSession = boost::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					newSession, boost::asio::placeholders::error));
@@ -67,8 +68,8 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 {
 	MethodInfoPtr methodInfo = methods[meta->method];
 
-	ResponseHandlerPtr responseHandler(
-			new ResponseHandler(methodInfo, meta->id, messageHandler));
+	ResponseHandlerPtr responseHandler =
+			boost::make_shared<ResponseHandler>(methodInfo, meta->id, messageHandler);
 	responseHandler->Request()->ParseFromString(*message);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
@@ -91,7 +92,7 @@ void RpcServer::Register(ProtobufServicePtr service)
 		const google::protobuf::MethodDescriptor* methodDescriptor =
 				serviceDescriptor->method(i);
 		std::size_t methodHash = stringHash(methodDescriptor->full_name());
-		MethodInfoPtr methodInfo(new MethodInfo(service, methodDescriptor));
+		MethodInfoPtr methodInfo = boost::make_shared<MethodInfo>(service, methodDescriptor);
 		methods[methodHash] = methodInfo;
 	}
 }

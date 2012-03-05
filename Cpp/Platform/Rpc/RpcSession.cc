@@ -1,4 +1,5 @@
 #include <boost/bind.hpp>
+#include <boost/make_shared.hpp>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServer.h"
 
@@ -29,8 +30,8 @@ void RpcSession::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcSession::Start()
 {
-	RpcMetaPtr meta(new RpcMeta());
-	StringPtr message(new std::string);
+	RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+	StringPtr message = boost::make_shared<std::string>();
 	RecvMeta(meta, message);
 }
 

@@ -1,7 +1,8 @@
+#include <boost/python.hpp>
+#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
-#include <boost/python.hpp>
 #include "Python/PythonInterpreter.h"
 
 namespace Egametang {
@@ -71,7 +72,7 @@ TEST_F(PythonInterpreterTest, EnterPythonScript)
 	interpreter.ImportPath("../../../Cpp/Platform/Python/");
 	interpreter.ImportModule("PythonInterpreterTest");
 
-	PersonTestPtr person(new PersonTest);
+	PersonTestPtr person = boost::make_shared<PersonTestPtr>();
 	interpreter.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());

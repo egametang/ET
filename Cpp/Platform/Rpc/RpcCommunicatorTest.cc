@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
+#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
@@ -43,8 +44,8 @@ public:
 			return;
 		}
 
-		RpcMetaPtr meta(new RpcMeta());
-		StringPtr message(new std::string);
+		RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+		StringPtr message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -64,8 +65,9 @@ public:
 		recvMessage = *message;
 		recvMeta = *meta;
 
-		RpcMetaPtr responseMeta(new RpcMeta());
-		StringPtr response_message(new std::string("response test rpc communicator string"));
+		RpcMetaPtr responseMeta = boost::make_shared<RpcMeta>();
+		StringPtr response_message = boost::make_shared<std::string>(
+				"response test rpc communicator string");
 		responseMeta->size = response_message->size();
 		responseMeta->method = 123456;
 		SendMeta(responseMeta, response_message);
@@ -114,14 +116,15 @@ public:
 			return;
 		}
 
-		RpcMetaPtr sendMeta(new RpcMeta());
-		StringPtr sendMessage(new std::string("send test rpc communicator string"));
+		RpcMetaPtr sendMeta = boost::make_shared<RpcMeta>();
+		StringPtr sendMessage = boost::make_shared<std::string>(
+				"send test rpc communicator string");
 		sendMeta->size = sendMessage->size();
 		sendMeta->method = 654321;
 		SendMeta(sendMeta, sendMessage);
 
-		RpcMetaPtr meta(new RpcMeta());
-		StringPtr message(new std::string);
+		RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+		StringPtr message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
