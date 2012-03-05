@@ -1,9 +1,11 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
+#include <glog/logging.h>
 #include <google/protobuf/descriptor.h>
 #include "Orm/DbResult.h"
 #include "Orm/MessageField.h"
+#include "Orm/Exception.h"
 
 namespace Egametang {
 
@@ -16,7 +18,7 @@ void DbResult::FillMessage(ProtobufMessagePtr message)
 	const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
 	for (int i = 0; i < descriptor->field_count(); ++i)
 	{
-		if (resultSet->isNull(i))
+		if (resultSet->isNull(i + 1))
 		{
 			continue;
 		}
@@ -28,6 +30,10 @@ void DbResult::FillMessage(ProtobufMessagePtr message)
 
 void DbResult::One(ProtobufMessagePtr message)
 {
+	if (resultSet->rowsCount() == 0)
+	{
+		throw SqlNoDataException() << SqlNoDataErrStr("sql return no data");
+	}
 	if (resultSet->next())
 	{
 		FillMessage(message);

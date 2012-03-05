@@ -212,7 +212,7 @@ void MessageField::SetRepeatedField(ResultSetPtr resultSet)
 	google::protobuf::FieldDescriptor::Type type = field->type();
 
 	// 获取blob string(repeated字段统一存成blob type)
-	int index = field->index();
+	int index = field->index() + 1;
 	std::istream* is = resultSet->getBlob(index);
 	std::ostringstream os;
 	os << is->rdbuf();
@@ -315,7 +315,7 @@ void MessageField::SetOptionalField(ResultSetPtr resultSet)
 {
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
-	int index = field->index();
+	int index = field->index() + 1;
 	switch (type)
 	{
 		case google::protobuf::FieldDescriptor::TYPE_BOOL:

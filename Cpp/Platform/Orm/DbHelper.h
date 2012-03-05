@@ -5,11 +5,13 @@
 #define ORM_SQLHELPER_H
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/make_shared.hpp>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <mysql_connection.h>
+#include <glog/logging.h>
 #include "Orm/DbResult.h"
 #include "Orm/Typedef.h"
 #include "Orm/Select.h"
@@ -29,8 +31,10 @@ public:
 	template <typename Table>
 	DbResultPtr Execute(Select<Table> select)
 	{
-		ResultSetPtr resultSet(statement->executeQuery(select.ToString()));
-		DbResultPtr dbResult(new DbResult(resultSet));
+		std::string sql = select.ToString();
+		VLOG(2) << "execute sql: " << sql;
+		ResultSetPtr resultSet(statement->executeQuery(sql));
+		DbResultPtr dbResult = boost::make_shared<DbResult>(resultSet);
 		return dbResult;
 	}
 };

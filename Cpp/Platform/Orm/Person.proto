@@ -3,7 +3,8 @@
 
 package Egametang;
 
-message Item {
+message Item
+{
 	optional int32 id = 1;
 	optional string name = 2;
 }

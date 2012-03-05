@@ -1,6 +1,7 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
+#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -20,23 +21,29 @@ TEST_F(DbResultTest, One)
 {
 	try
 	{
-		DbHelper dbHelper("tcp://192.168.1.104:3306", "root", "111111");
+		DbHelper dbHelper("tcp://127.0.0.1:3306", "root", "111111");
 
 		DbResultPtr result = dbHelper.Execute(
 				Select<Person>(Column("*")).
 				Where(Column("age") > 10)
 			);
 
-		boost::shared_ptr<Person> person;
+		boost::shared_ptr<Person> person = boost::make_shared<Person>();
 		result->One(person);
+		ASSERT_EQ(26, person->age());
 	}
-	catch (Exception& e)
+	catch (const Exception& e)
 	{
 		if (const std::string* str=boost::get_error_info<ConnectionErrStr>(e))
 		{
 			LOG(FATAL) << *str;
 		}
+		if (const std::string* str=boost::get_error_info<SqlNoDataErrStr>(e))
+		{
+			LOG(WARNING) << *str;
+		}
 	}
+
 }
 
 } // namespace Egametang
