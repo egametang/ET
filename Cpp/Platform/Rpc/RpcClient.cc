@@ -3,6 +3,7 @@
 #include <boost/make_shared.hpp>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
+#include <glog/logging.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcClient.h"
 #include "Rpc/RequestHandler.h"
@@ -69,7 +70,7 @@ void RpcClient::CallMethod(
 		google::protobuf::Message* response,
 		google::protobuf::Closure* done)
 {
-	if (!done)
+	if (done)
 	{
 		RequestHandlerPtr request_handler = boost::make_shared<RequestHandler>(response, done);
 		requestHandlers[++id] = request_handler;

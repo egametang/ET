@@ -174,7 +174,7 @@ TEST_F(MessageFieldTest, GetField_FieldIsMessage)
 TEST_F(MessageFieldTest, SetField_FieldIsBool)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getBoolean(7))
+	EXPECT_CALL(*resultSetMock, getBoolean(8))
 		.WillOnce(Return(true))
 		.WillOnce(Return(false));
 	Person person;
@@ -193,7 +193,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsBool)
 TEST_F(MessageFieldTest, SetField_FieldIsDouble)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getDouble(5))
+	EXPECT_CALL(*resultSetMock, getDouble(6))
 		.WillOnce(Return(1.00))
 		.WillOnce(Return(12345.6789));
 	Person person;
@@ -212,7 +212,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsDouble)
 TEST_F(MessageFieldTest, SetField_FieldIsInt32)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getInt(1))
+	EXPECT_CALL(*resultSetMock, getInt(2))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFF));
 	Person person;
@@ -231,7 +231,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsInt32)
 TEST_F(MessageFieldTest, SetField_FieldIsInt64)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getInt64(0))
+	EXPECT_CALL(*resultSetMock, getInt64(1))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
 	Person person;
@@ -250,7 +250,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsInt64)
 TEST_F(MessageFieldTest, SetField_FieldIsUInt32)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getUInt(2))
+	EXPECT_CALL(*resultSetMock, getUInt(3))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFF));
 	Person person;
@@ -269,7 +269,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsUInt32)
 TEST_F(MessageFieldTest, SetField_FieldIsUInt64)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getUInt64(3))
+	EXPECT_CALL(*resultSetMock, getUInt64(4))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
 	Person person;
@@ -288,7 +288,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsUInt64)
 TEST_F(MessageFieldTest, SetField_FieldIsString)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getString(4))
+	EXPECT_CALL(*resultSetMock, getString(5))
 		.WillOnce(Return("1"))
 		.WillOnce(Return("tanghai"));
 	Person person;
@@ -307,7 +307,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsString)
 TEST_F(MessageFieldTest, SetField_FieldIsBytes)
 {
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getString(6))
+	EXPECT_CALL(*resultSetMock, getString(7))
 		.WillOnce(Return("1"))
 		.WillOnce(Return("tanghai is a good student"));
 	Person person;
@@ -328,7 +328,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsMessage)
 	std::istringstream is;
 	is.str("id: 123 name: \"pen\"");
 	ResultSetMockPtr resultSetMock = make_shared<ResultSetMock>();
-	EXPECT_CALL(*resultSetMock, getBlob(8))
+	EXPECT_CALL(*resultSetMock, getBlob(9))
 		.WillOnce(Return(&is));
 	Person person;
 	const google::protobuf::Descriptor* descriptor = person.GetDescriptor();
