@@ -12,12 +12,15 @@
 #include <boost/log/attributes.hpp>
 #include <boost/log/sinks/text_multifile_backend.hpp>
 #include <boost/log/attributes/current_thread_id.hpp>
-
+#include <boost/date_time/posix_time/posix_time_types.hpp>
+#include <boost/log/sinks/sync_frontend.hpp>
+#include <boost/log/sinks/text_ostream_backend.hpp>
+#include <gflags/gflags.h>
 #include "Log/Log.h"
 
-namespace attrs = boost::log::attributes;
-namespace fmt = boost::log::formatters;
-namespace keywords = boost::log::keywords;
+DEFINE_bool(logtoconsole, false, "log messages go to stderr instead of logfiles");
+
+using namespace boost::log;
 
 namespace Egametang {
 
@@ -27,36 +30,55 @@ std::string FileName(const char* s)
 	return path.filename().string();
 }
 
-BoostLogInit::BoostLogInit(const char* fileName)
+bool ELog::isInit = false;
+sources::severity_logger<SeverityLevel> ELog::slog;
+
+void ELog::Init(const char* fileName)
 {
-	auto core = boost::log::core::get();
-	core->add_global_attribute("TimeStamp", boost::make_shared<attrs::local_clock>());
-	core->add_global_attribute("ThreadId", boost::make_shared<attrs::current_thread_id>());
+	if (isInit)
+	{
+		return;
+	}
+	isInit = true;
 
-	pSink = boost::make_shared<text_sink>();
-
-	std::string logFileName = std::string(fileName) + ".log";
-	auto logStream = boost::make_shared<std::ofstream>(
-	        logFileName.c_str());
+	auto core = core::get();
+	typedef sinks::synchronous_sink<sinks::text_ostream_backend> text_sink;
+	auto pSink = boost::make_shared<text_sink>();
+	std::string logFileName = FileName(fileName) + ".log";
+	auto logStream = boost::make_shared<std::ofstream>(logFileName.c_str());
 	if (!logStream->good())
 	{
 		throw std::runtime_error("Failed to open a log file");
 	}
 	pSink->locked_backend()->add_stream(logStream);
 
-	pSink->locked_backend()->auto_flush(true);
+	// 是否输出到标准错误
+	if (FLAGS_logtoconsole)
+	{
+		pSink->locked_backend()->add_stream(
+		        boost::shared_ptr<std::ostream>(&std::clog, boost::log::empty_deleter()));
+	}
 
 	pSink->locked_backend()->set_formatter(
-	        fmt::format("%1%: %2% - %3%") % fmt::attr<unsigned int>("LineID", keywords::format =
-	                "%08x")
-	                % fmt::attr<boost::log::attributes::current_thread_id::held_type>("ThreadID")
-	                % fmt::attr<boost::log::trivial::severity_level>("Severity") % fmt::message());
+			formatters::format("[%1%][%2%][%3%]%4%")
+				% formatters::attr<unsigned int>("Line #", keywords::format = "%08x")
+				% formatters::date_time<boost::posix_time::ptime>("TimeStamp")
+				% formatters::attr<boost::thread::id>("ThreadID", keywords::format = "%05d")
+				% formatters::message()
+	);
+
+	pSink->set_filter(boost::log::filters::attr<SeverityLevel>("Severity", std::nothrow) >= INFO);
+
+    core->add_global_attribute("Line #", boost::make_shared<attributes::counter<unsigned int>>());
+    core->add_global_attribute("TimeStamp", boost::make_shared<attributes::local_clock>());
+    core->add_global_attribute("ThreadID", boost::make_shared<attributes::current_thread_id>());
 
 	core->add_sink(pSink);
 }
 
-BoostLogInit::~BoostLogInit()
+boost::log::sources::severity_logger<SeverityLevel>& ELog::GetSLog()
 {
+	return slog;
 }
 
 } // Egametang

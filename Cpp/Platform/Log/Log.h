@@ -7,25 +7,31 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/log/trivial.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/log/sinks/sync_frontend.hpp>
-#include <boost/log/sinks/text_ostream_backend.hpp>
+#include <boost/log/sources/severity_logger.hpp>
 
 namespace Egametang {
 
-#define ELOG(level) BOOST_LOG_TRIVIAL(level) << "[" << FileName(__FILE__) << ":" << __LINE__ << "] "
+#define ELOG(level) BOOST_LOG_SEV(ELog::GetSLog(), level) << "[" << FileName(__FILE__) << ":" << __LINE__ << "] "
 
 std::string FileName(const char* s);
 
-class BoostLogInit
+enum SeverityLevel
+{
+	INFO       = 0,
+	WARNING    = 1,
+	ERROR      = 2,
+	FATAL      = 3,
+};
+
+class ELog: public boost::noncopyable
 {
 private:
-	typedef boost::log::sinks::synchronous_sink<boost::log::sinks::text_ostream_backend> text_sink;
-	boost::shared_ptr<text_sink> pSink;
+	static bool isInit;
+	static boost::log::sources::severity_logger<SeverityLevel> slog;
 
 public:
-	BoostLogInit(const char* fileName);
-	~BoostLogInit();
+	static void Init(const char* fileName);
+	static boost::log::sources::severity_logger<SeverityLevel>& GetSLog();
 };
 }
 #endif // BASE_LOG_H
