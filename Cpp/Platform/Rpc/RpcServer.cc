@@ -25,10 +25,10 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	auto new_session = boost::make_shared<RpcSession>(ioService, *this);
-	acceptor.async_accept(new_session->Socket(),
+	auto newSession = boost::make_shared<RpcSession>(ioService, *this);
+	acceptor.async_accept(newSession->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
-					new_session, boost::asio::placeholders::error));
+					newSession, boost::asio::placeholders::error));
 }
 
 RpcServer::~RpcServer()
