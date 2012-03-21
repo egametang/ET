@@ -65,14 +65,14 @@ TEST_F(RpcServerTest, ClientAndServer)
 {
 	boost::threadpool::fifo_pool threadPool(2);
 
-	ProtobufServicePtr echoSevice = boost::make_shared<MyEcho>();
+	auto echoSevice = boost::make_shared<MyEcho>();
 
-	RpcServerPtr server = boost::make_shared<RpcServer>(ioServer, port);
+	auto server = boost::make_shared<RpcServer>(ioServer, port);
 	// 注册service
 	server->Register(echoSevice);
 	ASSERT_EQ(1U, GetMethodMap(server).size());
 
-	RpcClientPtr client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", port);
+	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", port);
 	EchoService_Stub service(client.get());
 
 	// 定义消息

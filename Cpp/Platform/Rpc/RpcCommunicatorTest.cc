@@ -1,3 +1,4 @@
+#include <WinSock2.h>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
@@ -41,11 +42,12 @@ public:
 	{
 		if (err)
 		{
+			LOG(FATAL) << err.message();
 			return;
 		}
 
-		RpcMetaPtr meta = boost::make_shared<RpcMeta>();
-		StringPtr message = boost::make_shared<std::string>();
+		auto meta = boost::make_shared<RpcMeta>();
+		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -65,8 +67,8 @@ public:
 		recvMessage = *message;
 		recvMeta = *meta;
 
-		RpcMetaPtr responseMeta = boost::make_shared<RpcMeta>();
-		StringPtr response_message = boost::make_shared<std::string>(
+		auto responseMeta = boost::make_shared<RpcMeta>();
+		auto response_message = boost::make_shared<std::string>(
 				"response test rpc communicator string");
 		responseMeta->size = response_message->size();
 		responseMeta->method = 123456;
@@ -94,6 +96,7 @@ public:
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
+		VLOG(2) << "port: " << port;
 		socket.async_connect(endpoint,
 				boost::bind(&RpcClientTest::OnAsyncConnect, this,
 						boost::asio::placeholders::error));
@@ -113,18 +116,19 @@ public:
 	{
 		if (err)
 		{
+			LOG(FATAL) << err.message() << err.value();
 			return;
 		}
 
-		RpcMetaPtr sendMeta = boost::make_shared<RpcMeta>();
-		StringPtr sendMessage = boost::make_shared<std::string>(
+		auto sendMeta = boost::make_shared<RpcMeta>();
+		auto sendMessage = boost::make_shared<std::string>(
 				"send test rpc communicator string");
 		sendMeta->size = sendMessage->size();
 		sendMeta->method = 654321;
 		SendMeta(sendMeta, sendMessage);
 
-		RpcMetaPtr meta = boost::make_shared<RpcMeta>();
-		StringPtr message = boost::make_shared<std::string>();
+		auto meta = boost::make_shared<RpcMeta>();
+		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -168,7 +172,7 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 	boost::threadpool::fifo_pool threadPool(2);
 	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(100));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
 	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
 	threadPool.wait();
@@ -189,6 +193,10 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 
 int main(int argc, char* argv[])
 {
+	WSADATA wsaData;
+	memset(&wsaData, 0, sizeof(wsaData));
+	int ret = WSAStartup(MAKEWORD(2,0), &wsaData);
+	assert(ret == 0);
 	testing::InitGoogleTest(&argc, argv);
 	google::InitGoogleLogging(argv[0]);
 	google::ParseCommandLineFlags(&argc, &argv, true);

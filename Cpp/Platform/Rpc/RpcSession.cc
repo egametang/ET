@@ -30,8 +30,8 @@ void RpcSession::OnSendMessage(RpcMetaPtr meta, StringPtr message)
 
 void RpcSession::Start()
 {
-	RpcMetaPtr meta = boost::make_shared<RpcMeta>();
-	StringPtr message = boost::make_shared<std::string>();
+	auto meta = boost::make_shared<RpcMeta>();
+	auto message = boost::make_shared<std::string>();
 	RecvMeta(meta, message);
 }
 

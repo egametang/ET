@@ -32,8 +32,8 @@ void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 	{
 		return;
 	}
-	RpcMetaPtr recvMeta = boost::make_shared<RpcMeta>();
-	StringPtr recvMessage = boost::make_shared<std::string>();
+	auto recvMeta = boost::make_shared<RpcMeta>();
+	auto recvMessage = boost::make_shared<std::string>();
 	RecvMeta(recvMeta, recvMessage);
 }
 
@@ -47,7 +47,7 @@ void RpcClient::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	}
 	else
 	{
-		RequestHandlerPtr requestHandler = requestHandlers[meta->id];
+		auto requestHandler = requestHandlers[meta->id];
 		requestHandlers.erase(meta->id);
 		requestHandler->Response()->ParseFromString(*message);
 		// meta和message可以循环利用
@@ -72,13 +72,13 @@ void RpcClient::CallMethod(
 {
 	if (done)
 	{
-		RequestHandlerPtr request_handler = boost::make_shared<RequestHandler>(response, done);
+		auto request_handler = boost::make_shared<RequestHandler>(response, done);
 		requestHandlers[++id] = request_handler;
 	}
 	boost::hash<std::string> stringHash;
-	StringPtr message = boost::make_shared<std::string>();
+	auto message = boost::make_shared<std::string>();
 	request->SerializePartialToString(message.get());
-	RpcMetaPtr meta = boost::make_shared<RpcMeta>();
+	auto meta = boost::make_shared<RpcMeta>();
 	meta->size = message->size();
 	meta->id = id;
 	meta->method = stringHash(method->full_name());

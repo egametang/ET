@@ -37,8 +37,8 @@ google::protobuf::Message* ResponseHandler::Response()
 
 void ResponseHandler::Run()
 {
-	RpcMetaPtr meta = boost::make_shared<RpcMeta>();
-	StringPtr message = boost::make_shared<std::string>();
+	auto meta = boost::make_shared<RpcMeta>();
+	auto message = boost::make_shared<std::string>();
 	response->SerializeToString(message.get());
 	meta->id = id;
 	meta->size = message->size();

@@ -34,7 +34,7 @@ public:
 		std::string sql = select.ToString();
 		VLOG(2) << "execute sql: " << sql;
 		ResultSetPtr resultSet(statement->executeQuery(sql));
-		DbResultPtr dbResult = boost::make_shared<DbResult>(resultSet);
+		auto dbResult = boost::make_shared<DbResult>(resultSet);
 		return dbResult;
 	}
 };

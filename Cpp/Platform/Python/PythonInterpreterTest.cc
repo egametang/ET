@@ -72,7 +72,7 @@ TEST_F(PythonInterpreterTest, EnterPythonScript)
 	interpreter.ImportPath("../../../Cpp/Platform/Python/");
 	interpreter.ImportModule("PythonInterpreterTest");
 
-	PersonTestPtr person = boost::make_shared<PersonTestPtr>();
+	auto person = boost::make_shared<PersonTestPtr>();
 	interpreter.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());

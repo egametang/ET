@@ -29,14 +29,14 @@ std::string FileName(const char* s)
 
 BoostLogInit::BoostLogInit(const char* fileName)
 {
-	boost::shared_ptr<boost::log::core> core = boost::log::core::get();
+	auto core = boost::log::core::get();
 	core->add_global_attribute("TimeStamp", boost::make_shared<attrs::local_clock>());
 	core->add_global_attribute("ThreadId", boost::make_shared<attrs::current_thread_id>());
 
 	pSink = boost::make_shared<text_sink>();
 
 	std::string logFileName = std::string(fileName) + ".log";
-	boost::shared_ptr<std::ostream> logStream = boost::make_shared<std::ofstream>(
+	auto logStream = boost::make_shared<std::ofstream>(
 	        logFileName.c_str());
 	if (!logStream->good())
 	{

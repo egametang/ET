@@ -28,7 +28,7 @@ TEST_F(DbResultTest, One)
 				Where(Column("age") > 10)
 			);
 
-		boost::shared_ptr<Person> person = boost::make_shared<Person>();
+		auto person = boost::make_shared<Person>();
 		result->One(person);
 		ASSERT_EQ(26, person->age());
 	}

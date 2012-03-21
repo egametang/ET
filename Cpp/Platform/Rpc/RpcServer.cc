@@ -25,7 +25,7 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	RpcSessionPtr new_session = boost::make_shared<RpcSession>(ioService, *this);
+	auto new_session = boost::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(new_session->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					new_session, boost::asio::placeholders::error));
@@ -43,7 +43,7 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	RpcSessionPtr newSession = boost::make_shared<RpcSession>(ioService, *this);
+	auto newSession = boost::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
 			boost::bind(&RpcServer::OnAsyncAccept, this,
 					newSession, boost::asio::placeholders::error));
@@ -68,7 +68,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 {
 	MethodInfoPtr methodInfo = methods[meta->method];
 
-	ResponseHandlerPtr responseHandler =
+	auto responseHandler =
 			boost::make_shared<ResponseHandler>(methodInfo, meta->id, messageHandler);
 	responseHandler->Request()->ParseFromString(*message);
 
@@ -92,7 +92,7 @@ void RpcServer::Register(ProtobufServicePtr service)
 		const google::protobuf::MethodDescriptor* methodDescriptor =
 				serviceDescriptor->method(i);
 		std::size_t methodHash = stringHash(methodDescriptor->full_name());
-		MethodInfoPtr methodInfo = boost::make_shared<MethodInfo>(service, methodDescriptor);
+		auto methodInfo = boost::make_shared<MethodInfo>(service, methodDescriptor);
 		methods[methodHash] = methodInfo;
 	}
 }
