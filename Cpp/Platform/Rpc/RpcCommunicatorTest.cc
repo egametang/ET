@@ -1,4 +1,3 @@
-#include <WinSock2.h>
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
@@ -42,7 +41,6 @@ public:
 	{
 		if (err)
 		{
-			LOG(FATAL) << err.message();
 			return;
 		}
 
@@ -116,7 +114,6 @@ public:
 	{
 		if (err)
 		{
-			LOG(FATAL) << err.message() << err.value();
 			return;
 		}
 
@@ -193,10 +190,6 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 
 int main(int argc, char* argv[])
 {
-	WSADATA wsaData;
-	memset(&wsaData, 0, sizeof(wsaData));
-	int ret = WSAStartup(MAKEWORD(2,0), &wsaData);
-	assert(ret == 0);
 	testing::InitGoogleTest(&argc, argv);
 	google::InitGoogleLogging(argv[0]);
 	google::ParseCommandLineFlags(&argc, &argv, true);
