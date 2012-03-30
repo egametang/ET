@@ -34,11 +34,11 @@ TEST_F(DbResultTest, One)
 	}
 	catch (const Exception& e)
 	{
-		if (const std::string* str=boost::get_error_info<ConnectionErrStr>(e))
+		if (const std::string* str = boost::get_error_info<ConnectionErrStr>(e))
 		{
 			LOG(FATAL) << *str;
 		}
-		if (const std::string* str=boost::get_error_info<SqlNoDataErrStr>(e))
+		if (const std::string* str = boost::get_error_info<SqlNoDataErrStr>(e))
 		{
 			LOG(WARNING) << *str;
 		}
