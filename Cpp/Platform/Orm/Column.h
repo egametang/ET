@@ -4,6 +4,7 @@
 #ifndef ORM_COLUMN_H
 #define ORM_COLUMN_H
 
+#include <list>
 #include <string>
 #include "Orm/Expr.h"
 
@@ -12,16 +13,17 @@ namespace Egametang {
 class Column
 {
 private:
-	std::string columnStr;
+	std::list<std::string> columns;
 
 public:
 	Column();
 	Column(const std::string& name);
 	Column(const Column& column);
 	~Column();
-	Column& operator()(std::string& name);
 	bool Empty() const;
+	Column& operator()(const std::string& name);
 	std::string ToString() const;
+	void CheckAllColumns(const google::protobuf::Message& message) const;
 
 	template <typename T>
 	Expr operator>(const T& value)
@@ -59,7 +61,7 @@ public:
 		return Oper(*this, "=", value);
 	}
 
-	Expr like(const std::string value)
+	Expr like(const std::string& value)
 	{
 		return Oper(*this, "like", value);
 	}

@@ -6,8 +6,10 @@
 
 #include <string>
 #include <vector>
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <google/protobuf/descriptor.h>
+#include "Base/Marcos.h"
 #include "Orm/Expr.h"
 #include "Orm/Column.h"
 
@@ -28,12 +30,13 @@ private:
 	int offset;
 
 public:
-	Select(Column columns):
-		select(columns), distinct(false),
-		groupBy(), orderBy(),
-		desc(false), limit(0),
-		offset(0)
+	explicit Select(Column columns):
+		select(columns),
+		distinct(false), groupBy(),
+		orderBy(), desc(false),
+		limit(0), offset(0)
 	{
+		columns.CheckAllColumns(Table::default_instance());
 	}
 
 	Select<Table>& Distinct()
@@ -44,24 +47,28 @@ public:
 
 	Select<Table>& Where(Expr expr)
 	{
+		expr.CheckAllColumns(Table::default_instance());
 		where = expr;
 		return *this;
 	}
 
 	Select<Table>& GroupBy(Column columns)
 	{
+		columns.CheckAllColumns(Table::default_instance());
 		groupBy = columns;
 		return *this;
 	}
 
 	Select<Table>& Having(Expr expr)
 	{
+		expr.CheckAllColumns(Table::default_instance());
 		having = expr;
 		return *this;
 	}
 
 	Select<Table>& OrderBy(Column columns)
 	{
+		columns.CheckAllColumns(Table::default_instance());
 		orderBy = columns;
 		return *this;
 	}
@@ -86,7 +93,6 @@ public:
 
 	std::string ToString() const
 	{
-		// TODO: 加入异常处理机制
 		std::string sql = "select ";
 		if (!select.Empty())
 		{

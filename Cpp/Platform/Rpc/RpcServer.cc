@@ -1,5 +1,4 @@
 #include <boost/asio.hpp>
-#include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <boost/make_shared.hpp>
 #include <google/protobuf/service.h>

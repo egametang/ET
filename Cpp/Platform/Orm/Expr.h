@@ -4,13 +4,20 @@
 #ifndef ORM_EXPRESSION_H
 #define ORM_EXPRESSION_H
 
+#include <list>
 #include <string>
+#include <boost/unordered_set.hpp>
+#include <google/protobuf/message.h>
 
 namespace Egametang {
+
+class Column;
 
 class Expr
 {
 protected:
+	// 记录表达式中用到的列名
+	std::list<Column> columns;
 	std::string exprStr;
 
 public:
@@ -18,27 +25,28 @@ public:
 	Expr& operator=(const Expr& expr);
 	std::string ToString() const;
 	bool Empty() const;
+	void SaveColumn(const Expr& expr);
+	void SaveColumn(const Column& column);
+	void CheckAllColumns(const google::protobuf::Message& message) const;
 };
 
 class Not: public Expr
 {
 public:
-	Not(const Expr& expr);
+	explicit Not(const Expr& expr);
 };
 
 class And: public Expr
 {
 public:
-	And(const Expr& left, const Expr& right);
+	explicit And(const Expr& left, const Expr& right);
 };
 
 class Or: public Expr
 {
 public:
-	Or(const Expr& left, const Expr& right);
+	explicit Or(const Expr& left, const Expr& right);
 };
-
-class Column;
 
 // > < >= <= != like
 class Oper: public Expr

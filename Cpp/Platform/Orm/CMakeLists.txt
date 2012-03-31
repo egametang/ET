@@ -13,6 +13,7 @@ SET(OrmSrc
 	DbResult.cc
 	Expr.cc
 	MessageField.cc
+	Update.cc
 )
 
 ADD_LIBRARY(Orm ${OrmSrc})

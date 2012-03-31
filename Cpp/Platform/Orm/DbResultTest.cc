@@ -43,7 +43,6 @@ TEST_F(DbResultTest, One)
 			LOG(WARNING) << *str;
 		}
 	}
-
 }
 
 } // namespace Egametang

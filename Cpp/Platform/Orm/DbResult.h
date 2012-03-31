@@ -19,7 +19,7 @@ private:
 	void FillMessage(ProtobufMessagePtr message);
 
 public:
-	DbResult(ResultSetPtr resultSet);
+	explicit DbResult(ResultSetPtr resultSet);
 
 	void One(ProtobufMessagePtr message);
 
