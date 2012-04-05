@@ -9,11 +9,11 @@
 
 namespace Egametang {
 
-class RpcServerTest: public testing::Test
+class SelectTest: public testing::Test
 {
 };
 
-TEST_F(RpcServerTest, SelectFrom)
+TEST_F(SelectTest, SelectFrom)
 {
 	std::string expectedSql;
 	expectedSql = "select * from Egametang.Person";
@@ -21,7 +21,7 @@ TEST_F(RpcServerTest, SelectFrom)
 	EXPECT_EQ(expectedSql, selectQuery1.ToString());
 }
 
-TEST_F(RpcServerTest, SelectWhere)
+TEST_F(SelectTest, SelectWhere)
 {
 	std::string expectedSql;
 	Select<Person> selectQuery(Column("*"));
@@ -30,7 +30,7 @@ TEST_F(RpcServerTest, SelectWhere)
 	EXPECT_EQ(expectedSql, selectQuery.ToString());
 }
 
-TEST_F(RpcServerTest, SelectDistinct)
+TEST_F(SelectTest, SelectDistinct)
 {
 	std::string expectedSql;
 	Select<Person> selectQuery(Column("*"));
@@ -39,7 +39,7 @@ TEST_F(RpcServerTest, SelectDistinct)
 	EXPECT_EQ(expectedSql, selectQuery.ToString());
 }
 
-TEST_F(RpcServerTest, SelectTwoColumn)
+TEST_F(SelectTest, SelectTwoColumn)
 {
 	std::string expectedSql;
 	Select<Person> selectQuery(Column("age")("name"));
@@ -48,7 +48,7 @@ TEST_F(RpcServerTest, SelectTwoColumn)
 	EXPECT_EQ(expectedSql, selectQuery.ToString());
 }
 
-TEST_F(RpcServerTest, LimitOffset)
+TEST_F(SelectTest, LimitOffset)
 {
 	std::string expectedSql;
 	Select<Person> selectQuery(Column("age")("name"));
@@ -57,7 +57,7 @@ TEST_F(RpcServerTest, LimitOffset)
 	EXPECT_EQ(expectedSql, selectQuery.ToString());
 }
 
-TEST_F(RpcServerTest, GroupByHaving)
+TEST_F(SelectTest, GroupByHaving)
 {
 	std::string expectedSql;
 	Select<Person> selectQuery(Column("age")("name"));

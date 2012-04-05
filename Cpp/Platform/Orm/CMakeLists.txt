@@ -20,6 +20,7 @@ ADD_LIBRARY(Orm ${OrmSrc})
 SET_PROPERTY(TARGET Orm PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(SelectTest SelectTest.cc)
+ADD_EXECUTABLE(UpdateTest UpdateTest.cc)
 ADD_EXECUTABLE(MessageFieldTest MessageFieldTest.cc)
 ADD_EXECUTABLE(ColumnTest ColumnTest.cc)
 ADD_EXECUTABLE(ExprTest ExprTest.cc)
@@ -27,6 +28,7 @@ ADD_EXECUTABLE(DbResultTest DbResultTest.cc)
 
 SET(Tests
 	SelectTest
+	UpdateTest
 	MessageFieldTest
 	ColumnTest
 	ExprTest
