@@ -9,6 +9,8 @@
 
 namespace Egametang {
 
+static int globalPort = 10000;
+
 class RpcServerTest: public RpcCommunicator
 {
 public:
@@ -32,6 +34,11 @@ public:
 				boost::bind(&RpcServerTest::OnAsyncAccept, this,
 						boost::asio::placeholders::error));
 	}
+	~RpcServerTest()
+	{
+		acceptor.close();
+		socket.close();
+	}
 
 	void OnAsyncAccept(const boost::system::error_code& err)
 	{
@@ -42,12 +49,6 @@ public:
 		auto meta = boost::make_shared<RpcMeta>();
 		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
-	}
-
-	void Stop()
-	{
-		acceptor.close();
-		socket.close();
 	}
 
 	virtual void OnRecvMessage(RpcMetaPtr meta, StringPtr message)
@@ -67,6 +68,7 @@ public:
 		responseMeta->size = responseMessage->size();
 		SendMeta(responseMeta, responseMessage);
 	}
+
 	virtual void OnSendMessage(RpcMetaPtr meta, StringPtr message)
 	{
 		barrier.Signal();
@@ -75,16 +77,6 @@ public:
 
 class RpcClientTest: public testing::Test
 {
-protected:
-	int port;
-
-public:
-	RpcClientTest(): port(10002)
-	{
-	}
-	virtual ~RpcClientTest()
-	{
-	}
 };
 
 static void IOServiceRun(boost::asio::io_service* ioService)
@@ -98,12 +90,14 @@ TEST_F(RpcClientTest, Echo)
 	boost::asio::io_service ioClient;
 
 	CountBarrier barrier(2);
-	RpcServerTest server(ioServer, port, barrier);
-	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", port);
+	RpcServerTest server(ioServer, globalPort, barrier);
+	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	boost::threadpool::fifo_pool threadPool(2);
 	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+
+	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
 	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	EchoRequest request;
@@ -115,13 +109,10 @@ TEST_F(RpcClientTest, Echo)
 	service.Echo(NULL, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
-	client->Stop();
-	server.Stop();
-	ioServer.stop();
-	ioClient.stop();
-	// 必须主动让client和server stop才能wait线程
-	threadPool.wait();
 
+	// 加入任务队列,等client和server stop,io_service才stop
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 	ASSERT_EQ(100, response.num());
 }
 

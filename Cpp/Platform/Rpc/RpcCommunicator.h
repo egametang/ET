@@ -39,12 +39,11 @@ protected:
 	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::socket socket;
 
+	virtual void Stop();
 public:
 	explicit RpcCommunicator(boost::asio::io_service& io_service);
 	virtual ~RpcCommunicator();
 	boost::asio::ip::tcp::socket& Socket();
-
-	virtual void Stop();
 
 	// recieve response
 	void RecvMeta(RpcMetaPtr meta, StringPtr message);

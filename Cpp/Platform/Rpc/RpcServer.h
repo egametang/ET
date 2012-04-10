@@ -36,8 +36,7 @@ public:
 	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
 			StringPtr message, MessageHandler messageHandler);
 	virtual void Register(ProtobufServicePtr service);
-	virtual void Remove(RpcSessionPtr& session);
-	virtual void Stop();
+	virtual void Remove(RpcSessionPtr session);
 };
 
 } // namespace Egametang

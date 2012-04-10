@@ -16,6 +16,8 @@
 
 namespace Egametang {
 
+static int globalPort = 10003;
+
 class MyEcho: public EchoService
 {
 public:
@@ -42,19 +44,6 @@ static void IOServiceRun(boost::asio::io_service* ioService)
 class RpcServerTest: public testing::Test
 {
 protected:
-	boost::asio::io_service ioClient;
-	boost::asio::io_service ioServer;
-	int port;
-
-public:
-	RpcServerTest(): ioClient(), ioServer(), port(10003)
-	{
-	}
-
-	virtual ~RpcServerTest()
-	{
-	}
-
 	MethodMap& GetMethodMap(RpcServerPtr server)
 	{
 		return server->methods;
@@ -63,16 +52,19 @@ public:
 
 TEST_F(RpcServerTest, ClientAndServer)
 {
+	boost::asio::io_service ioClient;
+	boost::asio::io_service ioServer;
+
 	boost::threadpool::fifo_pool threadPool(2);
 
 	auto echoSevice = boost::make_shared<MyEcho>();
 
-	auto server = boost::make_shared<RpcServer>(ioServer, port);
+	auto server = boost::make_shared<RpcServer>(ioServer, globalPort);
 	// 注册service
 	server->Register(echoSevice);
 	ASSERT_EQ(1U, GetMethodMap(server).size());
 
-	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", port);
+	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	// 定义消息
@@ -91,10 +83,6 @@ TEST_F(RpcServerTest, ClientAndServer)
 	service.Echo(NULL, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
-
-	// 加入到io线程
-	ioClient.post(boost::bind(&RpcClient::Stop, client));
-	ioServer.post(boost::bind(&RpcServer::Stop, server));
 
 	// 加入任务队列,等client和server stop,io_service才stop
 	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));

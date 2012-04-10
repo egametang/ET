@@ -12,10 +12,6 @@ RpcCommunicator::RpcCommunicator(boost::asio::io_service& service):
 
 RpcCommunicator::~RpcCommunicator()
 {
-	if (isStopped)
-	{
-		return;
-	}
 	socket.close();
 }
 
@@ -26,12 +22,6 @@ boost::asio::ip::tcp::socket& RpcCommunicator::Socket()
 
 void RpcCommunicator::Stop()
 {
-	if (isStopped)
-	{
-		return;
-	}
-	isStopped = true;
-	socket.close();
 }
 
 

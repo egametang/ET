@@ -32,6 +32,8 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 
 RpcServer::~RpcServer()
 {
+	threadPool.wait();
+	acceptor.close();
 }
 
 void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_code& err)
@@ -53,13 +55,6 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseH
 	// 调度到网络线
 	session->Socket().get_io_service().post(
 			boost::bind(&ResponseHandler::Run, responseHandler));
-}
-
-void RpcServer::Stop()
-{
-	threadPool.wait();
-	acceptor.close();
-	sessions.clear();
 }
 
 void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
@@ -96,7 +91,7 @@ void RpcServer::Register(ProtobufServicePtr service)
 	}
 }
 
-void RpcServer::Remove(RpcSessionPtr& session)
+void RpcServer::Remove(RpcSessionPtr session)
 {
 	sessions.erase(session);
 }

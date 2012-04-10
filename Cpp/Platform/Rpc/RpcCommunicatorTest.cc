@@ -74,9 +74,6 @@ public:
 
 		barrier.Signal();
 	}
-	virtual void OnSendMessage()
-	{
-	}
 };
 
 class RpcClientTest: public RpcCommunicator
@@ -135,46 +132,31 @@ public:
 		recvMeta = *meta;
 		barrier.Signal();
 	}
-
-	virtual void OnSendMessage()
-	{
-	}
 };
 
 class RpcCommunicatorTest: public testing::Test
 {
-protected:
-	boost::asio::io_service ioServer;
-	boost::asio::io_service ioClient;
-	CountBarrier barrier;
-	RpcServerTest rpcServer;
-	RpcClientTest rpcClient;
-
-public:
-	RpcCommunicatorTest():
-		ioServer(), ioClient(),
-		barrier(2), rpcServer(ioServer, globalPort, barrier),
-		rpcClient(ioClient, globalPort, barrier)
-	{
-	}
-
-	virtual ~RpcCommunicatorTest()
-	{
-	}
 };
 
 
 TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
+	boost::asio::io_service ioServer;
+	boost::asio::io_service ioClient;
+	CountBarrier barrier(2);
+	RpcServerTest rpcServer(ioServer, globalPort, barrier);
+	RpcClientTest rpcClient(ioClient, globalPort, barrier);
+
 	boost::threadpool::fifo_pool threadPool(2);
 	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
 
-	boost::this_thread::sleep(boost::posix_time::milliseconds(2000));
+	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
 	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
 	threadPool.wait();
-	rpcServer.Stop();
-	rpcClient.Stop();
+
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpcServer.recvMessage);
 	ASSERT_EQ(rpcServer.recvMeta.size, rpcServer.recvMessage.size());
