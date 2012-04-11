@@ -19,7 +19,7 @@ bool ChangeHealth::Run(ContexIf *contex)
 	CombatContex* combat_contex = reinterpret_cast<CombatContex*>(contex);
 	Spell* spell = combat_contex->GetSpell();
 
-	Unit* target = NULL;
+	Unit* target = nullptr;
 	if (unit == 0)
 	{
 		target = spell->caster;

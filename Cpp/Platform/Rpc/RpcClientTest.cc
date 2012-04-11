@@ -106,7 +106,7 @@ TEST_F(RpcClientTest, Echo)
 	EchoResponse response;
 
 	ASSERT_EQ(0, response.num());
-	service.Echo(NULL, &request, &response,
+	service.Echo(nullptr, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
 

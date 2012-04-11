@@ -11,7 +11,7 @@
 
 namespace Egametang {
 
-NodeFactories::NodeFactories(): factories(2000, (BehaviorNodeFactoryIf*)(NULL))
+NodeFactories::NodeFactories(): factories(2000, (BehaviorNodeFactoryIf*)(nullptr))
 {
 	// 节点
 	factories[SEQUENCE] = new SequenceNodeFactory();
@@ -27,7 +27,7 @@ NodeFactories::~NodeFactories()
 {
 	for (std::size_t i = 0; i < factories.size(); ++i)
 	{
-		if (factories[i] == NULL)
+		if (factories[i] == nullptr)
 		{
 			continue;
 		}

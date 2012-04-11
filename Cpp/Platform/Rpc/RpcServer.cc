@@ -72,7 +72,7 @@ void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
 
 	threadPool.schedule(
 			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->service,
-					responseHandler->Method(), (google::protobuf::RpcController*)(NULL),
+					responseHandler->Method(), (google::protobuf::RpcController*)(nullptr),
 					responseHandler->Request(), responseHandler->Response(),
 					done));
 }

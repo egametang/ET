@@ -80,7 +80,7 @@ TEST_F(RpcServerTest, ClientAndServer)
 	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;
-	service.Echo(NULL, &request, &response,
+	service.Echo(nullptr, &request, &response,
 			google::protobuf::NewCallback(&barrier, &CountBarrier::Signal));
 	barrier.Wait();
 

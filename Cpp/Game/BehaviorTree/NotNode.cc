@@ -4,7 +4,7 @@
 
 namespace Egametang {
 
-NotNode::NotNode(int32 type): BehaviorNode(type), node(NULL)
+NotNode::NotNode(int32 type): BehaviorNode(type), node(nullptr)
 {
 }
 

@@ -7,7 +7,7 @@
 namespace Egametang {
 
 BehaviorTree::BehaviorTree(NodeFactories& factories, const BehaviorTreeConf& treeConf):
-		node(NULL)
+		node(nullptr)
 {
 	type = treeConf.type();
 
@@ -27,7 +27,7 @@ void BehaviorTree::BuildTree(
 	for (int i = 0; i < nodeConf.node_size(); ++i)
 	{
 		const BehaviorNodeConf& logicNodeConf = nodeConf.node(i);
-		BehaviorNode* logicNode = NULL;
+		BehaviorNode* logicNode = nullptr;
 		BuildTree(factories, logicNodeConf, logicNode);
 		node->AddChildNode(logicNode);
 	}
