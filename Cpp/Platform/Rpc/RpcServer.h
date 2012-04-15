@@ -33,8 +33,9 @@ public:
 	RpcServer(boost::asio::io_service& service, int port);
 	virtual ~RpcServer();
 
-	virtual void RunService(RpcSessionPtr session, RpcMetaPtr meta,
-			StringPtr message, MessageHandler messageHandler);
+	virtual void RunService(
+			RpcSessionPtr session, const RpcMetaPtr meta,
+			const StringPtr message, MessageHandler messageHandler);
 	virtual void Register(ProtobufServicePtr service);
 	virtual void Remove(RpcSessionPtr session);
 };

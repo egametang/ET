@@ -1,4 +1,5 @@
 #include <boost/make_shared.hpp>
+#include <glog/logging.h>
 #include "Rpc/MethodInfo.h"
 #include "Rpc/ResponseHandler.h"
 #include "Rpc/RpcCommunicator.h"
@@ -6,12 +7,14 @@
 namespace Egametang {
 
 ResponseHandler::ResponseHandler(
-		MethodInfoPtr& methodInfo, std::size_t id, MessageHandler& messageHandler):
-		id(id), messageHandler(messageHandler)
+		const RpcMetaPtr meta, const StringPtr message,
+		MethodInfoPtr& methodInfo, MessageHandler& messageHandler):
+		method(methodInfo->GetMethodDescriptor()),
+		id(meta->id), messageHandler(messageHandler)
 {
-	method = methodInfo->methodDescriptor;
-	request = methodInfo->requestPrototype->New();
-	response = methodInfo->responsePrototype->New();
+	request = methodInfo->GetRequestPrototype().New();
+	response = methodInfo->GetResponsePrototype().New();
+	request->ParseFromString(*message);
 }
 
 ResponseHandler::~ResponseHandler()
@@ -20,12 +23,12 @@ ResponseHandler::~ResponseHandler()
 	delete response;
 }
 
-const google::protobuf::MethodDescriptor* ResponseHandler::Method()
+const google::protobuf::MethodDescriptor& ResponseHandler::Method() const
 {
 	return method;
 }
 
-google::protobuf::Message* ResponseHandler::Request()
+const google::protobuf::Message* ResponseHandler::Request() const
 {
 	return request;
 }

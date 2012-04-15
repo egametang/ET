@@ -6,7 +6,7 @@
 namespace Egametang {
 
 RpcSession::RpcSession(boost::asio::io_service& ioService, RpcServer& server):
-		RpcCommunicator(ioService), rpcServer(server)
+		RpcCommunicator(ioService), rpcServer(server), isStopped(false)
 {
 }
 
@@ -20,7 +20,7 @@ void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 	rpcServer.RunService(session, meta, message,
 			boost::bind(&RpcSession::SendMeta, session, _1, _2));
 
-	// 可以循环利用
+	// RunService函数里读完就不使用了,可以循环利用
 	RecvMeta(meta, message);
 }
 

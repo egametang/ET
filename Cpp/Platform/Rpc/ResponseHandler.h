@@ -12,20 +12,21 @@ namespace Egametang {
 class ResponseHandler
 {
 private:
-	const google::protobuf::MethodDescriptor* method;
+	const google::protobuf::MethodDescriptor& method;
 	google::protobuf::Message* request;
 	google::protobuf::Message* response;
 	std::size_t id;
 	MessageHandler messageHandler;
 
 public:
-	ResponseHandler(MethodInfoPtr& method_info, std::size_t id, MessageHandler& sendMessage);
+	ResponseHandler(const RpcMetaPtr meta, const StringPtr message,
+			MethodInfoPtr& methodInfo, MessageHandler& messageHandler);
 
 	~ResponseHandler();
 
-	const google::protobuf::MethodDescriptor* Method();
+	const google::protobuf::MethodDescriptor& Method() const;
 
-	google::protobuf::Message* Request();
+	const google::protobuf::Message* Request() const;
 
 	google::protobuf::Message* Response();
 

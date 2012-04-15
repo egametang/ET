@@ -57,22 +57,21 @@ void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseH
 			boost::bind(&ResponseHandler::Run, responseHandler));
 }
 
-void RpcServer::RunService(RpcSessionPtr session, RpcMetaPtr meta,
-		StringPtr message, MessageHandler messageHandler)
+void RpcServer::RunService(
+		RpcSessionPtr session, const RpcMetaPtr meta,
+		const StringPtr message, MessageHandler messageHandler)
 {
 	MethodInfoPtr methodInfo = methods[meta->method];
 
 	auto responseHandler =
-			boost::make_shared<ResponseHandler>(methodInfo, meta->id, messageHandler);
-	responseHandler->Request()->ParseFromString(*message);
+			boost::make_shared<ResponseHandler>(meta, message, methodInfo, messageHandler);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
-			this, &RpcServer::OnCallMethod,
-			session, responseHandler);
+			this, &RpcServer::OnCallMethod, session, responseHandler);
 
 	threadPool.schedule(
-			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->service,
-					responseHandler->Method(), (google::protobuf::RpcController*)(nullptr),
+			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->GetService(),
+					&responseHandler->Method(), (google::protobuf::RpcController*)(nullptr),
 					responseHandler->Request(), responseHandler->Response(),
 					done));
 }

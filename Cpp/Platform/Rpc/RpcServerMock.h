@@ -19,7 +19,7 @@ public:
 	{
 	}
 
-	MOCK_METHOD4(RunService, void(RpcSessionPtr, RpcMetaPtr, StringPtr, MessageHandler));
+	MOCK_METHOD4(RunService, void(RpcSessionPtr, const RpcMetaPtr,  const StringPtr, MessageHandler));
 	MOCK_METHOD1(Register, void(ProtobufServicePtr));
 	MOCK_METHOD1(Remove, void(RpcSessionPtr&));
 };

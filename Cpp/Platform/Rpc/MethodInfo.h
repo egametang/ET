@@ -9,18 +9,16 @@ namespace Egametang {
 
 class MethodInfo
 {
-public:
+private:
 	ProtobufServicePtr service;
 	const google::protobuf::MethodDescriptor* methodDescriptor;
-	const google::protobuf::Message* requestPrototype;
-	const google::protobuf::Message* responsePrototype;
 
-	MethodInfo(ProtobufServicePtr service, const google::protobuf::MethodDescriptor* methodDescriptor):
-		service(service), methodDescriptor(methodDescriptor)
-	{
-		requestPrototype = &service->GetRequestPrototype(methodDescriptor);
-		responsePrototype = &service->GetResponsePrototype(methodDescriptor);
-	}
+public:
+	MethodInfo(ProtobufServicePtr service, const google::protobuf::MethodDescriptor* methodDescriptor);
+	ProtobufServicePtr GetService();
+	const google::protobuf::MethodDescriptor& GetMethodDescriptor() const;
+	const google::protobuf::Message& GetRequestPrototype() const;
+	const google::protobuf::Message& GetResponsePrototype() const;
 };
 
 } // namespace Egametang

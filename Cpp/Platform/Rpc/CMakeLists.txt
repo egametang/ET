@@ -8,6 +8,7 @@ SET(RpcSrc
 	${Header}
 	${ProtoHdrs}
 	${ProtoSrcs}
+	MethodInfo.cc
 	RpcCommunicator.cc
 	RpcController.cc
 	RequestHandler.cc

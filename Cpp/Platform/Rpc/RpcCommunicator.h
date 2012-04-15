@@ -35,7 +35,6 @@ public:
 class RpcCommunicator: public boost::noncopyable
 {
 protected:
-	bool isStopped;
 	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::socket socket;
 
