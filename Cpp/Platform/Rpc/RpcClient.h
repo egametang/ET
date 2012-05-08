@@ -1,7 +1,7 @@
 #ifndef RPC_RPCCLIENT_H
 #define RPC_RPCCLIENT_H
 
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
@@ -19,7 +19,7 @@ class RpcClient:
 	public boost::enable_shared_from_this<RpcClient>
 {
 private:
-	typedef boost::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
+	typedef std::unordered_map<std::size_t, RequestHandlerPtr> RequestHandlerMap;
 
 	std::size_t id;
 	RequestHandlerMap requestHandlers;

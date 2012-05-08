@@ -1,5 +1,5 @@
 #include <boost/python.hpp>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
@@ -53,7 +53,7 @@ public:
 	}
 };
 
-typedef boost::shared_ptr<PersonTest> PersonTestPtr;
+typedef std::shared_ptr<PersonTest> PersonTestPtr;
 
 BOOST_PYTHON_MODULE(PersonTest)
 {
@@ -72,7 +72,7 @@ TEST_F(PythonInterpreterTest, EnterPythonScript)
 	interpreter.ImportPath("../../../Cpp/Platform/Python/");
 	interpreter.ImportModule("PythonInterpreterTest");
 
-	auto person = boost::make_shared<PersonTest>();
+	auto person = std::make_shared<PersonTest>();
 	interpreter.RegisterObjectPtr("person", person);
 
 	ASSERT_EQ(0, person->Guid());

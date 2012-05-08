@@ -1,8 +1,7 @@
-#include <boost/bind.hpp>
+#include <functional>
+#include <memory>
 #include <boost/asio.hpp>
-#include <boost/function.hpp>
 #include <boost/threadpool.hpp>
-#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
 #include <glog/logging.h>
 #include <gflags/gflags.h>
@@ -57,14 +56,14 @@ TEST_F(RpcServerTest, ClientAndServer)
 
 	boost::threadpool::fifo_pool threadPool(2);
 
-	auto echoSevice = boost::make_shared<MyEcho>();
+	auto echoSevice = std::make_shared<MyEcho>();
 
-	auto server = boost::make_shared<RpcServer>(ioServer, globalPort);
+	auto server = std::make_shared<RpcServer>(ioServer, globalPort);
 	// 注册service
 	server->Register(echoSevice);
 	ASSERT_EQ(1U, GetMethodMap(server).size());
 
-	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
+	auto client = std::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	// 定义消息
@@ -74,10 +73,10 @@ TEST_F(RpcServerTest, ClientAndServer)
 	ASSERT_EQ(0U, response.num());
 
 	// server和client分别在两个不同的线程
-	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(std::bind(&IOServiceRun, &ioServer));
 	// 等待server OK
 	boost::this_thread::sleep(boost::posix_time::milliseconds(100));
-	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
+	threadPool.schedule(std::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;
 	service.Echo(nullptr, &request, &response,
@@ -85,8 +84,8 @@ TEST_F(RpcServerTest, ClientAndServer)
 	barrier.Wait();
 
 	// 加入任务队列,等client和server stop,io_service才stop
-	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
-	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
+	ioClient.post(std::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(std::bind(&boost::asio::io_service::stop, &ioServer));
 
 	// 必须主动让client和server stop才能wait线程
 	threadPool.wait();

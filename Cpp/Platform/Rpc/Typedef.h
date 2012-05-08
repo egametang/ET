@@ -1,8 +1,8 @@
 #ifndef RPC_TYPEDEF_H
 #define RPC_TYPEDEF_H
 
-#include <boost/shared_ptr.hpp>
-#include <boost/function.hpp>
+#include <memory>
+#include <functional>
 #include "Base/Typedef.h"
 
 namespace Egametang {
@@ -15,16 +15,15 @@ class MethodInfo;
 class RpcMeta;
 class ResponseHandler;
 
-typedef boost::shared_ptr<RpcServer> 	              RpcServerPtr;
-typedef boost::shared_ptr<RpcSession>                 RpcSessionPtr;
-typedef boost::shared_ptr<RpcClient>                  RpcClientPtr;
-typedef boost::shared_ptr<MethodInfo>                 MethodInfoPtr;
-typedef boost::shared_ptr<RpcMeta> 	                  RpcMetaPtr;
-typedef boost::shared_ptr<RequestHandler>             RequestHandlerPtr;
-typedef boost::shared_ptr<ResponseHandler>            ResponseHandlerPtr;
+typedef std::shared_ptr<RpcServer> 	                RpcServerPtr;
+typedef std::shared_ptr<RpcSession>                 RpcSessionPtr;
+typedef std::shared_ptr<RpcClient>                  RpcClientPtr;
+typedef std::shared_ptr<MethodInfo>                 MethodInfoPtr;
+typedef std::shared_ptr<RpcMeta> 	                RpcMetaPtr;
+typedef std::shared_ptr<RequestHandler>             RequestHandlerPtr;
+typedef std::shared_ptr<ResponseHandler>            ResponseHandlerPtr;
 
-typedef boost::weak_ptr<RpcServer>                    RpcServerWPtr;
-typedef boost::function<void (RpcMetaPtr, StringPtr)> MessageHandler;
+typedef std::function<void (RpcMetaPtr, StringPtr)> MessageHandler;
 
 } // namespace Egametang
 

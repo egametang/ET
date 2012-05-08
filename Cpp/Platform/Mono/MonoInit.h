@@ -5,7 +5,7 @@
 #define MONO_MONOINIT_H
 
 #include <string>
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
 
@@ -15,7 +15,7 @@ class MonoInit
 {
 private:
 	MonoDomain *domain;
-	boost::unordered_map<std::string, MonoImage*> imageMap;
+	std::unordered_map<std::string, MonoImage*> imageMap;
 
 public:
 	MonoInit(const std::string& domainName);

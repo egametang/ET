@@ -6,7 +6,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <google/protobuf/descriptor.h>
 #include "Base/Marcos.h"

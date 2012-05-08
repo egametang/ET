@@ -4,7 +4,7 @@
 #ifndef ORM_TYPEDEF_H
 #define ORM_TYPEDEF_H
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <cppconn/resultset.h>
 
 namespace Egametang {
@@ -12,10 +12,10 @@ namespace Egametang {
 class DbResult;
 class ResultSetMock;
 
-typedef boost::shared_ptr<sql::ResultSet> ResultSetPtr;
-typedef boost::shared_ptr<sql::Statement> StatementPtr;
-typedef boost::shared_ptr<DbResult> DbResultPtr;
-typedef boost::shared_ptr<ResultSetMock> ResultSetMockPtr;
+typedef std::shared_ptr<sql::ResultSet> ResultSetPtr;
+typedef std::shared_ptr<sql::Statement> StatementPtr;
+typedef std::shared_ptr<DbResult> DbResultPtr;
+typedef std::shared_ptr<ResultSetMock> ResultSetMockPtr;
 
 } // namespace Egametang
 

@@ -2,7 +2,7 @@
 #define RPC_RPCCOMMUNICATOR_H
 
 #include <google/protobuf/service.h>
-#include <boost/unordered_map.hpp>
+#include <unordered_map>
 #include <boost/asio.hpp>
 #include <boost/format.hpp>
 #include <boost/noncopyable.hpp>

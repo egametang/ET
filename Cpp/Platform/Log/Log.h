@@ -5,7 +5,7 @@
 #define BASE_LOG_H
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/log/trivial.hpp>
 #include <boost/log/sources/severity_logger.hpp>
 

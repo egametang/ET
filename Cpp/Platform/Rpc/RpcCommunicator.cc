@@ -1,4 +1,4 @@
-#include <boost/bind.hpp>
+#include <functional>
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include "Rpc/RpcCommunicator.h"
@@ -29,8 +29,8 @@ void RpcCommunicator::RecvMeta(RpcMetaPtr meta, StringPtr message)
 {
 	boost::asio::async_read(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
-			boost::bind(&RpcCommunicator::RecvMessage, this,
-					meta, message, boost::asio::placeholders::error));
+			std::bind(&RpcCommunicator::RecvMessage, this,
+					meta, message, std::placeholders::_1));
 }
 
 void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
@@ -44,8 +44,8 @@ void RpcCommunicator::RecvMessage(RpcMetaPtr meta, StringPtr message,
 	message->resize(meta->size, 0);
 	boost::asio::async_read(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(&message->at(0)), meta->size),
-			boost::bind(&RpcCommunicator::RecvDone, this,
-					meta, message, boost::asio::placeholders::error));
+			std::bind(&RpcCommunicator::RecvDone, this,
+					meta, message, std::placeholders::_1));
 }
 
 void RpcCommunicator::RecvDone(RpcMetaPtr meta, StringPtr message,
@@ -68,8 +68,8 @@ void RpcCommunicator::SendMeta(RpcMetaPtr meta, StringPtr message)
 {
 	boost::asio::async_write(socket,
 			boost::asio::buffer(reinterpret_cast<char*>(meta.get()), sizeof(*meta)),
-			boost::bind(&RpcCommunicator::SendMessage, this,
-					meta, message, boost::asio::placeholders::error));
+			std::bind(&RpcCommunicator::SendMessage, this,
+					meta, message, std::placeholders::_1));
 }
 
 void RpcCommunicator::SendMessage(RpcMetaPtr meta, StringPtr message,
@@ -81,8 +81,8 @@ void RpcCommunicator::SendMessage(RpcMetaPtr meta, StringPtr message,
 		return;
 	}
 	boost::asio::async_write(socket, boost::asio::buffer(*message),
-			boost::bind(&RpcCommunicator::SendDone, this,
-					meta, message, boost::asio::placeholders::error));
+			std::bind(&RpcCommunicator::SendDone, this,
+					meta, message, std::placeholders::_1));
 }
 
 void RpcCommunicator::SendDone(RpcMetaPtr meta, StringPtr message,

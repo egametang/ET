@@ -11,7 +11,7 @@ namespace Egametang {
 
 class RpcServer;
 
-class RpcSession: public RpcCommunicator, public boost::enable_shared_from_this<RpcSession>
+class RpcSession: public RpcCommunicator, public std::enable_shared_from_this<RpcSession>
 {
 private:
 	RpcServer& rpcServer;

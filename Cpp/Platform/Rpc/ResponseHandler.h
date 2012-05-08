@@ -1,7 +1,6 @@
 #ifndef RPC_RESPONSEHANDLER_H
 #define RPC_RESPONSEHANDLER_H
 
-#include <boost/function.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
 #include "Base/Typedef.h"

@@ -3,8 +3,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <boost/log/common.hpp>
 #include <boost/log/filters.hpp>
@@ -43,9 +42,9 @@ void ELog::Init(const char* fileName)
 
 	auto core = core::get();
 	typedef sinks::synchronous_sink<sinks::text_ostream_backend> text_sink;
-	auto pSink = boost::make_shared<text_sink>();
+	auto pSink = std::make_shared<text_sink>();
 	std::string logFileName = FileName(fileName) + ".log";
-	auto logStream = boost::make_shared<std::ofstream>(logFileName.c_str());
+	auto logStream = std::make_shared<std::ofstream>(logFileName.c_str());
 	if (!logStream->good())
 	{
 		throw std::runtime_error("Failed to open a log file");
@@ -56,7 +55,7 @@ void ELog::Init(const char* fileName)
 	if (FLAGS_logtoconsole)
 	{
 		pSink->locked_backend()->add_stream(
-		        boost::shared_ptr<std::ostream>(&std::clog, boost::log::empty_deleter()));
+		        std::shared_ptr<std::ostream>(&std::clog, boost::log::empty_deleter()));
 	}
 
 	pSink->locked_backend()->set_formatter(
@@ -69,9 +68,9 @@ void ELog::Init(const char* fileName)
 
 	pSink->set_filter(boost::log::filters::attr<SeverityLevel>("Severity", std::nothrow) >= INFO);
 
-    core->add_global_attribute("Line #", boost::make_shared<attributes::counter<unsigned int>>());
-    core->add_global_attribute("TimeStamp", boost::make_shared<attributes::local_clock>());
-    core->add_global_attribute("ThreadID", boost::make_shared<attributes::current_thread_id>());
+    core->add_global_attribute("Line #", std::make_shared<attributes::counter<unsigned int>>());
+    core->add_global_attribute("TimeStamp", std::make_shared<attributes::local_clock>());
+    core->add_global_attribute("ThreadID", std::make_shared<attributes::current_thread_id>());
 
 	core->add_sink(pSink);
 }

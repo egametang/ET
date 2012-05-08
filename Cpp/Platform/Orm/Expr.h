@@ -6,7 +6,7 @@
 
 #include <list>
 #include <string>
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
 #include <google/protobuf/message.h>
 
 namespace Egametang {

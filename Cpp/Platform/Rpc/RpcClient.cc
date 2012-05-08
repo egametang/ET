@@ -1,6 +1,5 @@
+#include <functional>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/make_shared.hpp>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include <glog/logging.h>
@@ -18,8 +17,8 @@ RpcClient::RpcClient(boost::asio::io_service& ioService, std::string host, int p
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	socket.async_connect(endpoint,
-			boost::bind(&RpcClient::OnAsyncConnect, this,
-					boost::asio::placeholders::error));
+			std::bind(&RpcClient::OnAsyncConnect, this,
+					std::placeholders::_1));
 }
 
 RpcClient::~RpcClient()
@@ -32,8 +31,8 @@ void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 	{
 		return;
 	}
-	auto recvMeta = boost::make_shared<RpcMeta>();
-	auto recvMessage = boost::make_shared<std::string>();
+	auto recvMeta = std::make_shared<RpcMeta>();
+	auto recvMessage = std::make_shared<std::string>();
 	RecvMeta(recvMeta, recvMessage);
 }
 
@@ -72,13 +71,13 @@ void RpcClient::CallMethod(
 {
 	if (done)
 	{
-		auto request_handler = boost::make_shared<RequestHandler>(response, done);
+		auto request_handler = std::make_shared<RequestHandler>(response, done);
 		requestHandlers[++id] = request_handler;
 	}
-	boost::hash<std::string> stringHash;
-	auto message = boost::make_shared<std::string>();
+	std::hash<std::string> stringHash;
+	auto message = std::make_shared<std::string>();
 	request->SerializePartialToString(message.get());
-	auto meta = boost::make_shared<RpcMeta>();
+	auto meta = std::make_shared<RpcMeta>();
 	meta->size = message->size();
 	meta->id = id;
 	meta->method = stringHash(method->full_name());

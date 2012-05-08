@@ -1,6 +1,6 @@
+#include <functional>
+#include <memory>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/make_shared.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/descriptor.h>
 #include "Base/Marcos.h"
@@ -24,10 +24,10 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
 	acceptor.bind(endpoint);
 	acceptor.listen();
-	auto newSession = boost::make_shared<RpcSession>(ioService, *this);
+	auto newSession = std::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
-			boost::bind(&RpcServer::OnAsyncAccept, this,
-					newSession, boost::asio::placeholders::error));
+			std::bind(&RpcServer::OnAsyncAccept, this,
+					newSession, std::placeholders::_1));
 }
 
 RpcServer::~RpcServer()
@@ -44,17 +44,17 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	}
 	session->Start();
 	sessions.insert(session);
-	auto newSession = boost::make_shared<RpcSession>(ioService, *this);
+	auto newSession = std::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
-			boost::bind(&RpcServer::OnAsyncAccept, this,
-					newSession, boost::asio::placeholders::error));
+			std::bind(&RpcServer::OnAsyncAccept, this,
+					newSession, std::placeholders::_1));
 }
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler)
 {
 	// 调度到网络线
 	session->Socket().get_io_service().post(
-			boost::bind(&ResponseHandler::Run, responseHandler));
+			std::bind(&ResponseHandler::Run, responseHandler));
 }
 
 void RpcServer::RunService(
@@ -64,13 +64,13 @@ void RpcServer::RunService(
 	MethodInfoPtr methodInfo = methods[meta->method];
 
 	auto responseHandler =
-			boost::make_shared<ResponseHandler>(meta, message, methodInfo, messageHandler);
+			std::make_shared<ResponseHandler>(meta, message, methodInfo, messageHandler);
 
 	google::protobuf::Closure* done = google::protobuf::NewCallback(
 			this, &RpcServer::OnCallMethod, session, responseHandler);
 
 	threadPool.schedule(
-			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->GetService(),
+			std::bind(&google::protobuf::Service::CallMethod, methodInfo->GetService(),
 					&responseHandler->Method(), (google::protobuf::RpcController*)(nullptr),
 					responseHandler->Request(), responseHandler->Response(),
 					done));
@@ -78,14 +78,14 @@ void RpcServer::RunService(
 
 void RpcServer::Register(ProtobufServicePtr service)
 {
-	boost::hash<std::string> stringHash;
+	std::hash<std::string> stringHash;
 	const google::protobuf::ServiceDescriptor* serviceDescriptor = service->GetDescriptor();
 	for (int i = 0; i < serviceDescriptor->method_count(); ++i)
 	{
 		const google::protobuf::MethodDescriptor* methodDescriptor =
 				serviceDescriptor->method(i);
 		std::size_t methodHash = stringHash(methodDescriptor->full_name());
-		auto methodInfo = boost::make_shared<MethodInfo>(service, methodDescriptor);
+		auto methodInfo = std::make_shared<MethodInfo>(service, methodDescriptor);
 		methods[methodHash] = methodInfo;
 	}
 }

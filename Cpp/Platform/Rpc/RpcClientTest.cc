@@ -31,8 +31,8 @@ public:
 		acceptor.bind(endpoint);
 		acceptor.listen();
 		acceptor.async_accept(socket,
-				boost::bind(&RpcServerTest::OnAsyncAccept, this,
-						boost::asio::placeholders::error));
+				std::bind(&RpcServerTest::OnAsyncAccept, this,
+						std::placeholders::_1));
 	}
 	~RpcServerTest()
 	{
@@ -46,8 +46,8 @@ public:
 		{
 			return;
 		}
-		auto meta = boost::make_shared<RpcMeta>();
-		auto message = boost::make_shared<std::string>();
+		auto meta = std::make_shared<RpcMeta>();
+		auto message = std::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -61,9 +61,9 @@ public:
 		EchoResponse response;
 		response.set_num(num);
 
-		auto responseMessage = boost::make_shared<std::string>();
+		auto responseMessage = std::make_shared<std::string>();
 		response.SerializeToString(responseMessage.get());
-		auto responseMeta = boost::make_shared<RpcMeta>();
+		auto responseMeta = std::make_shared<RpcMeta>();
 		responseMeta->id = meta->id;
 		responseMeta->size = responseMessage->size();
 		SendMeta(responseMeta, responseMessage);
@@ -91,14 +91,14 @@ TEST_F(RpcClientTest, Echo)
 
 	CountBarrier barrier(2);
 	RpcServerTest server(ioServer, globalPort, barrier);
-	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
+	auto client = std::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	boost::threadpool::fifo_pool threadPool(2);
-	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(std::bind(&IOServiceRun, &ioServer));
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
+	threadPool.schedule(std::bind(&IOServiceRun, &ioClient));
 
 	EchoRequest request;
 	request.set_num(100);
@@ -111,8 +111,8 @@ TEST_F(RpcClientTest, Echo)
 	barrier.Wait();
 
 	// 加入任务队列,等client和server stop,io_service才stop
-	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
-	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
+	ioClient.post(std::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(std::bind(&boost::asio::io_service::stop, &ioServer));
 	ASSERT_EQ(100, response.num());
 }
 

@@ -1,5 +1,3 @@
-#include <boost/bind.hpp>
-#include <boost/ref.hpp>
 #include <boost/detail/atomic_count.hpp>
 #include <boost/date_time.hpp>
 #include <boost/threadpool.hpp>
@@ -47,8 +45,8 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 	for (int i = 0; i < 10; ++i)
 	{
 		pool.schedule(
-				boost::bind(&CountBarrierTest::Signal,
-						this, boost::ref(barrier)));
+				std::bind(&CountBarrierTest::Signal,
+						this, std::ref(barrier)));
 	}
 	ASSERT_EQ(0, this->count);
 	barrier.Wait();

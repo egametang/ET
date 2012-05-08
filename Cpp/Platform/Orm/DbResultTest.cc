@@ -1,7 +1,7 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <gtest/gtest.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -28,7 +28,7 @@ TEST_F(DbResultTest, One)
 				Where(Column("age") > 10)
 			);
 
-		auto person = boost::make_shared<Person>();
+		auto person = std::make_shared<Person>();
 		result->One(person);
 		ASSERT_EQ(26, person->age());
 	}
