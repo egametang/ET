@@ -17,7 +17,7 @@ ENDIF()
 FILE(GLOB MonoCsharpSrc "*.cs")
 ADD_CUSTOM_COMMAND(
 	OUTPUT MonoInit.exe
-	COMMAND ${MONO_GMCS_EXECUTABLE} 
+	COMMAND ${MONO_MCS_EXECUTABLE} 
 	ARGS ${MonoCsharpSrc} -out:${CMAKE_CURRENT_BINARY_DIR}/${MonoLibRelativeDir}/MonoInit.exe
 	DEPENDS ${MonoCsharpSrc}
 )
