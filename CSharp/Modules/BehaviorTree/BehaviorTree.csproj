@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.ProtocolBuffers, Version=2.4.1.473, Culture=neutral, PublicKeyToken=55f7125234beb589, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Google.ProtocolBuffers.2.4.1.473\lib\net40\Google.ProtocolBuffers.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\..\Packages\Prism.4.0.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -63,11 +60,6 @@
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Person.pb.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Person.proto</DependentUpon>
-    </Compile>
     <Compile Include="TreeNode.cs" />
     <Compile Include="TreeNodeViewModel.cs" />
   </ItemGroup>
@@ -84,10 +76,6 @@
     <None Include="google\protobuf\csharp_options.proto" />
     <None Include="google\protobuf\descriptor.proto" />
     <None Include="Packages.config" />
-    <None Include="Person.proto">
-      <Generator>CmdTool</Generator>
-      <LastGenOutput>Person.pb.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="BehaviorTreeView.xaml">
