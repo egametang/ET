@@ -20,7 +20,7 @@ namespace Modules.BehaviorTree
 		{
 			get
 			{
-				return this.treeNodes.Count == 0 ? null : this.treeNodes[0];
+				return this.treeNodes.Count == 0? null : this.treeNodes[0];
 			}
 		}
 

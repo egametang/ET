@@ -159,7 +159,7 @@ namespace Modules.BehaviorTree
 		{
 			get
 			{
-				return this.IsRoot ? width / 2 : this.connectorX2;
+				return this.IsRoot? width / 2 : this.connectorX2;
 			}
 			set
 			{
@@ -172,7 +172,7 @@ namespace Modules.BehaviorTree
 		{
 			get
 			{
-				return this.IsRoot ? 0 : this.connectorY2;
+				return this.IsRoot? 0 : this.connectorY2;
 			}
 			set
 			{
@@ -232,7 +232,7 @@ namespace Modules.BehaviorTree
 				}
 
 				int index = this.Parent.Children.IndexOf(this);
-				return index == 0 ? null : this.Parent.Children[index - 1];
+				return index == 0? null : this.Parent.Children[index - 1];
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace Modules.BehaviorTree
 		{
 			get
 			{
-				return this.Children.Count == 0 ? null : this.Children[0];
+				return this.Children.Count == 0? null : this.Children[0];
 			}
 		}
 
