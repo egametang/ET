@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{C4C64188-4FAE-4CC3-A9E6-D9D4AF7429B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehaviorTree", "Modules\BehaviorTree\BehaviorTree.csproj", "{6CD185D1-08E0-4729-A999-2D5B57BA8193}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{EEC1B63E-05B1-4107-9627-B2542EED2B28}"
@@ -16,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EAEF82
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{ADBF5F67-B480-4A93-9D50-C81856FC61A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Platform\Infrastructure\Infrastructure.csproj", "{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,16 +39,6 @@ Global
 		{C46F3337-0F48-4A72-84AD-8FDD1F159BB0}.Release|Mixed Platforms.Build.0 = Release|x86
 		{C46F3337-0F48-4A72-84AD-8FDD1F159BB0}.Release|x86.ActiveCfg = Release|x86
 		{C46F3337-0F48-4A72-84AD-8FDD1F159BB0}.Release|x86.Build.0 = Release|x86
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -57,11 +49,22 @@ Global
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193}.Release|x86.ActiveCfg = Release|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6CD185D1-08E0-4729-A999-2D5B57BA8193} = {C4C64188-4FAE-4CC3-A9E6-D9D4AF7429B6}
+		{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3} = {ADBF5F67-B480-4A93-9D50-C81856FC61A9}
 	EndGlobalSection
 EndGlobal
