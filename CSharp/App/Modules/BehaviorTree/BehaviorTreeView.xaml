@@ -1,0 +1,58 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		x:Class="Modules.BehaviorTree.BehaviorTreeView"
+		mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800">
+	<UserControl.Resources>
+		<LinearGradientBrush x:Key="treeNodeFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#7FC9FF" Offset="0.6" />
+		</LinearGradientBrush>
+		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
+	</UserControl.Resources>
+
+	<UserControl.CommandBindings>
+		<CommandBinding Command="ApplicationCommands.New" Executed="MenuNewNode_Executed" />
+		<CommandBinding Command="ApplicationCommands.Delete" Executed="MenuDeleteNode_Executed" />
+	</UserControl.CommandBindings>
+
+	<UserControl.ContextMenu>
+		<ContextMenu>
+			<MenuItem Header="New" Command="ApplicationCommands.New"
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+			<MenuItem Header="Delete" Command="ApplicationCommands.Delete"
+					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+		</ContextMenu>
+	</UserControl.ContextMenu>
+	<Grid>
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" x:FieldModifier="private">
+			<ListBox.Resources>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<Setter Property="Canvas.Left" Value="{Binding X}" />
+					<Setter Property="Canvas.Top" Value="{Binding Y}" />
+				</Style>
+			</ListBox.Resources>
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas AllowDrop="True" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove">
+						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="4"
+								RadiusX="4" RadiusY="4" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
+						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
+								Stroke="Black" StrokeThickness="2" />
+					</Canvas>
+					<DataTemplate.Triggers>
+						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+							<Setter TargetName="rectNode" Property="Stroke" Value="Green" />
+						</DataTrigger>
+					</DataTemplate.Triggers>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</Grid>
+</UserControl>
