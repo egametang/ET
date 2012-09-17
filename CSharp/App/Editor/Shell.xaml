@@ -3,6 +3,13 @@
         xmlns:prism="http://www.codeplex.com/prism" Title="Editor" Height="800" Width="1280"
         WindowStartupLocation="CenterScreen">
 	<Grid>
-		<ContentControl Name="treeCanvas" prism:RegionManager.RegionName="TreeCanvasRegion" />
+		<TabControl>
+			<TabItem Height="25" Width="80" Header="行为树">
+				<ContentControl Name="treeCanvas" prism:RegionManager.RegionName="TreeCanvasRegion" />
+			</TabItem>
+			<TabItem Height="25" Width="80" Header="机器人">
+				<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
+			</TabItem>
+		</TabControl>
 	</Grid>
 </Window>

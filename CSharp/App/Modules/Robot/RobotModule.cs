@@ -1,10 +1,10 @@
 ﻿using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
-namespace Modules.BehaviorTree
+namespace Modules.Robot
 {
-	[ModuleExport(moduleType: typeof (BehaviorTreeModule))]
-	public class BehaviorTreeModule : IModule
+	[ModuleExport(moduleType: typeof (RobotModule))]
+	public class RobotModule : IModule
 	{
 		public void Initialize()
 		{

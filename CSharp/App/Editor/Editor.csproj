@@ -106,6 +106,10 @@
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Modules\Robot\Robot.csproj">
+      <Project>{5D6ECBCD-BE14-4DCB-BAEC-57089748B164}</Project>
+      <Name>Robot</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -79,14 +79,15 @@ namespace ENet
 			if (address != null)
 			{
 				Native.ENetAddress nativeAddress = address.Value.NativeData;
-				this.host = Native.enet_host_create(ref nativeAddress, (IntPtr) peerLimit, 
-					(IntPtr) channelLimit, incomingBandwidth, outgoingBandwidth);
+				this.host = Native.enet_host_create(
+				                                    ref nativeAddress, (IntPtr) peerLimit, (IntPtr) channelLimit, incomingBandwidth,
+				                                    outgoingBandwidth);
 			}
 			else
 			{
 				this.host = Native.enet_host_create(
-					null, (IntPtr) peerLimit, (IntPtr) channelLimit, 
-					incomingBandwidth, outgoingBandwidth);
+				                                    null, (IntPtr) peerLimit, (IntPtr) channelLimit, incomingBandwidth,
+				                                    outgoingBandwidth);
 			}
 			if (this.host == null)
 			{
