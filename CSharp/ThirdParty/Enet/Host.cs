@@ -1,0 +1,228 @@
+﻿#region License
+
+/*
+ENet for C#
+Copyright (c) 2011 James F. Bellinger <jfb@zer7.com>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
+
+#endregion
+
+using System;
+
+namespace ENet
+{
+	public sealed unsafe class Host : IDisposable
+	{
+		private Native.ENetHost* host;
+
+		~Host()
+		{
+			this.Dispose(false);
+		}
+
+		private static void CheckChannelLimit(int channelLimit)
+		{
+			if (channelLimit < 0 || channelLimit > Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			{
+				throw new ArgumentOutOfRangeException("channelLimit");
+			}
+		}
+
+		private void CheckCreated()
+		{
+			if (this.host == null)
+			{
+				throw new InvalidOperationException("Not created.");
+			}
+		}
+
+		public void Create(ushort port, int peerLimit)
+		{
+			var address = new Address {Port = port};
+			Create(address, peerLimit);
+		}
+
+		public void Create(Address? address, int peerLimit)
+		{
+			this.Create(address, peerLimit, 0);
+		}
+
+		public void Create(Address? address, int peerLimit, int channelLimit)
+		{
+			this.Create(address, peerLimit, channelLimit, 0, 0);
+		}
+
+		public void Create(Address? address, int peerLimit, int channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
+		{
+			if (this.host != null)
+			{
+				throw new InvalidOperationException("Already created.");
+			}
+			if (peerLimit < 0 || peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			{
+				throw new ArgumentOutOfRangeException("peerLimit");
+			}
+			CheckChannelLimit(channelLimit);
+
+			if (address != null)
+			{
+				Native.ENetAddress nativeAddress = address.Value.NativeData;
+				this.host = Native.enet_host_create(ref nativeAddress, (IntPtr) peerLimit, 
+					(IntPtr) channelLimit, incomingBandwidth, outgoingBandwidth);
+			}
+			else
+			{
+				this.host = Native.enet_host_create(
+					null, (IntPtr) peerLimit, (IntPtr) channelLimit, 
+					incomingBandwidth, outgoingBandwidth);
+			}
+			if (this.host == null)
+			{
+				throw new ENetException(0, "Host creation call failed.");
+			}
+		}
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (this.host == null)
+			{
+				return;
+			}
+			Native.enet_host_destroy(this.host);
+			this.host = null;
+		}
+
+		public void Broadcast(byte channelID, ref Packet packet)
+		{
+			this.CheckCreated();
+			packet.CheckCreated();
+			Native.enet_host_broadcast(this.host, channelID, packet.NativeData);
+			packet.NativeData = null; // Broadcast automatically clears this.
+		}
+
+		public void CompressWithRangeEncoder()
+		{
+			this.CheckCreated();
+			Native.enet_host_compress_with_range_encoder(this.host);
+		}
+
+		public void DoNotCompress()
+		{
+			this.CheckCreated();
+			Native.enet_host_compress(this.host, null);
+		}
+
+		public int CheckEvents(out Event e)
+		{
+			this.CheckCreated();
+			Native.ENetEvent nativeEvent;
+			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
+			if (ret <= 0)
+			{
+				e = new Event();
+				return ret;
+			}
+			e = new Event(nativeEvent);
+			return ret;
+		}
+
+		public Peer Connect(Address address, int channelLimit, uint data)
+		{
+			this.CheckCreated();
+			CheckChannelLimit(channelLimit);
+
+			Native.ENetAddress nativeAddress = address.NativeData;
+			var peer = new Peer(Native.enet_host_connect(this.host, ref nativeAddress, (IntPtr) channelLimit, data));
+			if (peer.NativeData == null)
+			{
+				throw new ENetException(0, "Host connect call failed.");
+			}
+			return peer;
+		}
+
+		public void Flush()
+		{
+			this.CheckCreated();
+			Native.enet_host_flush(this.host);
+		}
+
+		public int Service(int timeout)
+		{
+			if (timeout < 0)
+			{
+				throw new ArgumentOutOfRangeException("timeout");
+			}
+			this.CheckCreated();
+			return Native.enet_host_service(this.host, null, (uint) timeout);
+		}
+
+		public int Service(int timeout, out Event e)
+		{
+			if (timeout < 0)
+			{
+				throw new ArgumentOutOfRangeException("timeout");
+			}
+			this.CheckCreated();
+			Native.ENetEvent nativeEvent;
+
+			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint) timeout);
+			if (ret <= 0)
+			{
+				e = new Event();
+				return ret;
+			}
+			e = new Event(nativeEvent);
+			return ret;
+		}
+
+		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
+		{
+			this.CheckCreated();
+			Native.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
+		}
+
+		public void SetChannelLimit(int channelLimit)
+		{
+			CheckChannelLimit(channelLimit);
+			this.CheckCreated();
+			Native.enet_host_channel_limit(this.host, (IntPtr) channelLimit);
+		}
+
+		public bool IsSet
+		{
+			get
+			{
+				return this.host != null;
+			}
+		}
+
+		public Native.ENetHost* NativeData
+		{
+			get
+			{
+				return this.host;
+			}
+			set
+			{
+				this.host = value;
+			}
+		}
+	}
+}
