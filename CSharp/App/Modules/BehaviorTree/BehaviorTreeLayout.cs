@@ -1,4 +1,4 @@
-﻿using NLog;
+﻿using ELog;
 
 namespace Modules.BehaviorTree
 {
@@ -10,7 +10,6 @@ namespace Modules.BehaviorTree
 		private static double rootOrigY;
 		private static double rootOffsetX;
 		private static double rootOffsetY;
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		private static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
@@ -127,7 +126,7 @@ namespace Modules.BehaviorTree
 			treeNode.Prelim = prelim;
 			treeNode.Modify = modify;
 
-			logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
+			Log.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
 		}
 
 		private static void CalculateRelativeXAndY(TreeNodeViewModel treeNode, int level, double totalModify)

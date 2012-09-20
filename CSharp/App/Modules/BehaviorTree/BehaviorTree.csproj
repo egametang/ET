@@ -44,9 +44,6 @@
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
       <HintPath>..\..\..\packages\Prism.MEFExtensions.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -79,6 +76,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\ELog\ELog.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>ELog</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Infrastructure\Infrastructure.csproj">
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
       <Name>Infrastructure</Name>

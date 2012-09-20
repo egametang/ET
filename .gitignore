@@ -13,7 +13,6 @@ Opt/
 
 bin/
 obj/
-Properties/
 Packages/
 packages/
 _ReSharper.CSharp/

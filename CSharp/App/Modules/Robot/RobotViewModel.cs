@@ -1,14 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.ViewModel;
-using NLog;
 
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal class RobotViewModel : NotificationObject
 	{
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 		private string logText = "";
 
 		public string LogText
