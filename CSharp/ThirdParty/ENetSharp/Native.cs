@@ -26,7 +26,7 @@ namespace ENet
 {
 	public static unsafe partial class Native
 	{
-		private const string LIB = "ENetCpp.dll";
+		private const string LIB = "ENet.dll";
 
 		public const int ENET_PEER_PACKET_THROTTLE_SCALE = 32;
 		public const int ENET_PEER_PACKET_THROTTLE_ACCELERATION = 2;

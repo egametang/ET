@@ -47,7 +47,7 @@
     <OutDir>$(SolutionDir)\Bin\</OutDir>
     <IntDir>$(SolutionDir)\Temp\</IntDir>
     <TargetExt>.dll</TargetExt>
-    <TargetName>$(ProjectName)Cpp</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
