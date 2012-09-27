@@ -37,9 +37,9 @@ namespace ENet
 			return obj is Address && this.Equals((Address) obj);
 		}
 
-		public bool Equals(Address address)
+		public bool Equals(Address addr)
 		{
-			return this.Port == address.Port && Native.memcmp(this.GetHostBytes(), address.GetHostBytes());
+			return this.Port == addr.Port && Native.memcmp(this.GetHostBytes(), addr.GetHostBytes());
 		}
 
 		public override int GetHashCode()
@@ -57,7 +57,7 @@ namespace ENet
 			var name = new byte[256];
 			fixed (byte* hostName = name)
 			{
-				if (Native.enet_address_get_host(ref this.address, hostName, (IntPtr) name.Length) < 0)
+				if (Native.enet_address_get_host(ref this.address, hostName, (IntPtr)name.Length) < 0)
 				{
 					return null;
 				}

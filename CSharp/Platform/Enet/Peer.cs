@@ -104,9 +104,8 @@ namespace ENet
 			{
 				throw new ArgumentNullException("data");
 			}
-			using (var packet = new Packet())
+			using (var packet = new Packet(data, offset, length))
 			{
-				packet.Create(data, offset, length);
 				this.Send(channelID, packet);
 			}
 		}

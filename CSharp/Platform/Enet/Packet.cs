@@ -33,24 +33,11 @@ namespace ENet
 			this.packet = packet;
 		}
 
-		internal void CheckCreated()
+		public Packet(byte[] data): this(data, 0, data.Length)
 		{
-			if (this.packet == null)
-			{
-				throw new InvalidOperationException("No native packet.");
-			}
 		}
 
-		public void Create(byte[] data)
-		{
-			if (data == null)
-			{
-				throw new ArgumentNullException("data");
-			}
-			Create(data, 0, data.Length);
-		}
-
-		public void Create(byte[] data, int offset, int length, PacketFlags flags = PacketFlags.None)
+		public Packet(byte[] data, int offset, int length, PacketFlags flags = PacketFlags.None)
 		{
 			if (data == null)
 			{
@@ -62,21 +49,32 @@ namespace ENet
 			}
 			fixed (byte* bytes = data)
 			{
-				Create(bytes + offset, length, flags);
+				this.packet = Native.enet_packet_create(bytes + offset, (IntPtr)length, flags);
+				if (this.packet == null)
+				{
+					throw new ENetException(0, "Packet creation call failed.");
+				}
 			}
 		}
 
-		public void Create(void* data, int length, PacketFlags flags)
+		public void Dispose()
 		{
-			if (this.packet != null)
-			{
-				throw new InvalidOperationException("Already created.");
-			}
-
-			this.packet = Native.enet_packet_create(data, (IntPtr) length, flags);
 			if (this.packet == null)
 			{
-				throw new ENetException(0, "Packet creation call failed.");
+				return;
+			}
+			if (this.packet->referenceCount == IntPtr.Zero)
+			{
+				Native.enet_packet_destroy(this.packet);
+			}
+			this.packet = null;
+		}
+
+		internal void CheckCreated()
+		{
+			if (this.packet == null)
+			{
+				throw new InvalidOperationException("No native packet.");
 			}
 		}
 
@@ -117,19 +115,6 @@ namespace ENet
 			var array = new byte[this.Length];
 			this.CopyTo(array);
 			return array;
-		}
-
-		public void Dispose()
-		{
-			if (this.packet == null)
-			{
-				return;
-			}
-			if (this.packet->referenceCount == IntPtr.Zero)
-			{
-				Native.enet_packet_destroy(this.packet);
-			}
-			this.packet = null;
 		}
 
 		public void Resize(int length)

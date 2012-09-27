@@ -27,9 +27,55 @@ namespace ENet
 	{
 		private Native.ENetHost* host;
 
+		public Host(ushort port, int peerLimit):
+			this(new Address { Port = port }, peerLimit)
+		{
+		}
+
+		public Host(Address? address, int peerLimit):
+			this(address, peerLimit, 0)
+		{
+		}
+
+		public Host(Address? address, int peerLimit, int channelLimit):
+			this(address, peerLimit, channelLimit, 0, 0)
+		{
+		}
+
+		public Host(Address? address, int peerLimit, int channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
+		{
+			if (this.host != null)
+			{
+				throw new InvalidOperationException("Already created.");
+			}
+			if (peerLimit < 0 || peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			{
+				throw new ArgumentOutOfRangeException("peerLimit");
+			}
+			CheckChannelLimit(channelLimit);
+
+			if (address != null)
+			{
+				Native.ENetAddress nativeAddress = address.Value.NativeData;
+				this.host = Native.enet_host_create(
+					ref nativeAddress, (IntPtr)peerLimit, (IntPtr)channelLimit, incomingBandwidth,
+					outgoingBandwidth);
+			}
+			else
+			{
+				this.host = Native.enet_host_create(
+					null, (IntPtr)peerLimit, (IntPtr)channelLimit, incomingBandwidth,
+					outgoingBandwidth);
+			}
+			if (this.host == null)
+			{
+				throw new ENetException(0, "Host creation call failed.");
+			}
+		}
+
 		~Host()
 		{
-			this.Dispose(false);
+			this.Dispose();
 		}
 
 		private static void CheckChannelLimit(int channelLimit)
@@ -48,59 +94,7 @@ namespace ENet
 			}
 		}
 
-		public void Create(ushort port, int peerLimit)
-		{
-			var address = new Address {Port = port};
-			Create(address, peerLimit);
-		}
-
-		public void Create(Address? address, int peerLimit)
-		{
-			this.Create(address, peerLimit, 0);
-		}
-
-		public void Create(Address? address, int peerLimit, int channelLimit)
-		{
-			this.Create(address, peerLimit, channelLimit, 0, 0);
-		}
-
-		public void Create(Address? address, int peerLimit, int channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
-		{
-			if (this.host != null)
-			{
-				throw new InvalidOperationException("Already created.");
-			}
-			if (peerLimit < 0 || peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
-			{
-				throw new ArgumentOutOfRangeException("peerLimit");
-			}
-			CheckChannelLimit(channelLimit);
-
-			if (address != null)
-			{
-				Native.ENetAddress nativeAddress = address.Value.NativeData;
-				this.host = Native.enet_host_create(
-				                                    ref nativeAddress, (IntPtr) peerLimit, (IntPtr) channelLimit, incomingBandwidth,
-				                                    outgoingBandwidth);
-			}
-			else
-			{
-				this.host = Native.enet_host_create(
-				                                    null, (IntPtr) peerLimit, (IntPtr) channelLimit, incomingBandwidth,
-				                                    outgoingBandwidth);
-			}
-			if (this.host == null)
-			{
-				throw new ENetException(0, "Host creation call failed.");
-			}
-		}
-
 		public void Dispose()
-		{
-			this.Dispose(true);
-		}
-
-		private void Dispose(bool disposing)
 		{
 			if (this.host == null)
 			{
@@ -133,13 +127,9 @@ namespace ENet
 		public int CheckEvents(out Event e)
 		{
 			this.CheckCreated();
+
 			Native.ENetEvent nativeEvent;
 			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
-			if (ret <= 0)
-			{
-				e = new Event();
-				return ret;
-			}
 			e = new Event(nativeEvent);
 			return ret;
 		}
@@ -150,11 +140,12 @@ namespace ENet
 			CheckChannelLimit(channelLimit);
 
 			Native.ENetAddress nativeAddress = address.NativeData;
-			var peer = new Peer(Native.enet_host_connect(this.host, ref nativeAddress, (IntPtr) channelLimit, data));
-			if (peer.NativeData == null)
+			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, (IntPtr) channelLimit, data);
+			if (p == null)
 			{
 				throw new ENetException(0, "Host connect call failed.");
 			}
+			var peer = new Peer(p);
 			return peer;
 		}
 
@@ -184,11 +175,6 @@ namespace ENet
 			Native.ENetEvent nativeEvent;
 
 			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint) timeout);
-			if (ret <= 0)
-			{
-				e = new Event();
-				return ret;
-			}
 			e = new Event(nativeEvent);
 			return ret;
 		}
@@ -204,26 +190,6 @@ namespace ENet
 			CheckChannelLimit(channelLimit);
 			this.CheckCreated();
 			Native.enet_host_channel_limit(this.host, (IntPtr) channelLimit);
-		}
-
-		public bool IsSet
-		{
-			get
-			{
-				return this.host != null;
-			}
-		}
-
-		public Native.ENetHost* NativeData
-		{
-			get
-			{
-				return this.host;
-			}
-			set
-			{
-				this.host = value;
-			}
 		}
 	}
 }

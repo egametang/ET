@@ -23,7 +23,7 @@ namespace ENet
 {
 	public unsafe struct Event
 	{
-		internal Native.ENetEvent e;
+		private Native.ENetEvent e;
 
 		public Event(Native.ENetEvent e)
 		{
