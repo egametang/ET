@@ -11,6 +11,8 @@
 Dbg/
 Opt/
 
+*/Temp/
+
 bin/
 obj/
 Packages/
