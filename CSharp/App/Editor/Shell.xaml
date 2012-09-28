@@ -10,6 +10,9 @@
 			<TabItem Height="25" Width="80" Header="机器人">
 				<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
 			</TabItem>
-		</TabControl>
+            <TabItem Height="25" Width="80" Header="外挂">
+                <ContentControl Name="waigua" prism:RegionManager.RegionName="WaiGuaRegion" />
+            </TabItem>
+        </TabControl>
 	</Grid>
 </Window>

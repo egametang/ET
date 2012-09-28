@@ -125,6 +125,10 @@
       <Project>{5D6ECBCD-BE14-4DCB-BAEC-57089748B164}</Project>
       <Name>Robot</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Modules\WaiGua\WaiGua.csproj">
+      <Project>{5AA48F9A-455D-4CD8-A605-A3AC38283E60}</Project>
+      <Name>WaiGua</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
