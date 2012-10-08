@@ -1,7 +1,7 @@
 /** 
  @file  time.h
  @brief ENet time constants and macros
-*/
+ */
 #ifndef __ENET_TIME_H__
 #define __ENET_TIME_H__
 

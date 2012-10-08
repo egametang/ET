@@ -1,7 +1,7 @@
 /** 
  @file  win32.h
  @brief ENet Win32 header
-*/
+ */
 #ifndef __ENET_WIN32_H__
 #define __ENET_WIN32_H__
 
@@ -19,7 +19,7 @@ typedef SOCKET ENetSocket;
 
 enum
 {
-    ENET_SOCKET_NULL = INVALID_SOCKET
+	ENET_SOCKET_NULL = INVALID_SOCKET
 };
 
 #define ENET_HOST_TO_NET_16(value) (htons (value))
@@ -30,8 +30,8 @@ enum
 
 typedef struct
 {
-    size_t dataLength;
-    void * data;
+	size_t dataLength;
+	void * data;
 } ENetBuffer;
 
 #define ENET_CALLBACK __cdecl
@@ -54,5 +54,4 @@ typedef fd_set ENetSocketSet;
 #define ENET_SOCKETSET_CHECK(sockset, socket)  FD_ISSET (socket, & (sockset))
 
 #endif /* __ENET_WIN32_H__ */
-
 
