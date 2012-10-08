@@ -30,8 +30,12 @@ namespace Modules.Robot
 
 		private void btnStart_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Start();
-			this.tbLog.ScrollToEnd();
+			ViewModel.Start();
+		}
+
+		private void tbLog_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		{
+			tbLog.ScrollToEnd();
 		}
 	}
 }

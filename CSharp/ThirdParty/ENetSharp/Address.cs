@@ -32,6 +32,12 @@ namespace ENet
 
 		private Native.ENetAddress address;
 
+		public Address(string hostName, ushort port) : this()
+		{
+			this.HostName = hostName;
+			this.Port = port;
+		}
+
 		public override bool Equals(object obj)
 		{
 			return obj is Address && this.Equals((Address) obj);
@@ -39,63 +45,47 @@ namespace ENet
 
 		public bool Equals(Address addr)
 		{
-			return this.Port == addr.Port && Native.memcmp(this.GetHostBytes(), addr.GetHostBytes());
+			return this.Port == addr.Port && this.HostIP == addr.HostIP;
 		}
 
 		public override int GetHashCode()
 		{
-			return Type.GetHashCode() ^ this.Port.GetHashCode() ^ this.IPv4Host.GetHashCode();
+			return this.Port.GetHashCode() ^ this.HostIP.GetHashCode();
 		}
 
-		public byte[] GetHostBytes()
+		public string HostIP
 		{
-			return BitConverter.GetBytes(IPAddress.NetworkToHostOrder((int) this.IPv4Host));
-		}
-
-		public string GetHostName()
-		{
-			var name = new byte[256];
-			fixed (byte* hostName = name)
+			get
 			{
-				if (Native.enet_address_get_host(ref this.address, hostName, (IntPtr)name.Length) < 0)
+				var ip = new byte[256];
+				fixed (byte* hostIP = ip)
 				{
-					return null;
+					if (Native.enet_address_get_host_ip(ref this.address, hostIP, (IntPtr) ip.Length) < 0)
+					{
+						return null;
+					}
 				}
+				return Encoding.ASCII.GetString(ip, 0, Native.strlen(ip));
 			}
-			return BytesToString(name);
 		}
 
-		public string GetHostIP()
+		public string HostName
 		{
-			var ip = new byte[256];
-			fixed (byte* hostIP = ip)
+			get
 			{
-				if (Native.enet_address_get_host_ip(ref this.address, hostIP, (IntPtr) ip.Length) < 0)
+				var name = new byte[256];
+				fixed (byte* hostName = name)
 				{
-					return null;
+					if (Native.enet_address_get_host(ref this.address, hostName, (IntPtr)name.Length) < 0)
+					{
+						return null;
+					}
 				}
+				return Encoding.ASCII.GetString(name, 0, Native.strlen(name));
 			}
-			return BytesToString(ip);
-		}
-
-		public bool SetHost(string hostName)
-		{
-			if (hostName == null)
+			set
 			{
-				throw new ArgumentNullException("hostName");
-			}
-			return Native.enet_address_set_host(ref this.address, Encoding.ASCII.GetBytes(hostName)) == 0;
-		}
-
-		private static string BytesToString(byte[] bytes)
-		{
-			try
-			{
-				return Encoding.ASCII.GetString(bytes, 0, Native.strlen(bytes));
-			}
-			catch
-			{
-				return null;
+				Native.enet_address_set_host(ref this.address, Encoding.ASCII.GetBytes(value));
 			}
 		}
 
@@ -104,22 +94,6 @@ namespace ENet
 			get
 			{
 				return this.address;
-			}
-			set
-			{
-				this.address = value;
-			}
-		}
-
-		public uint IPv4Host
-		{
-			get
-			{
-				return this.address.host;
-			}
-			set
-			{
-				this.address.host = value;
 			}
 		}
 
@@ -132,14 +106,6 @@ namespace ENet
 			set
 			{
 				this.address.port = value;
-			}
-		}
-
-		public static AddressType Type
-		{
-			get
-			{
-				return AddressType.IPv4;
 			}
 		}
 	}

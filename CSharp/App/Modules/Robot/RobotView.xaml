@@ -9,7 +9,7 @@
 		<StackPanel>
 			<Button Name="btnStart" Content="开始" Width="80" Height="25" Click="btnStart_Click" />
 			<TextBox Name="tbLog" Text="{Binding LogText, Mode=OneWay}" Height="700"
-					VerticalScrollBarVisibility="Visible" />
+					VerticalScrollBarVisibility="Visible" TextChanged="tbLog_TextChanged" />
 		</StackPanel>
 	</Grid>
 </UserControl>
