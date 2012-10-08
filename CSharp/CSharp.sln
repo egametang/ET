@@ -28,14 +28,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELog", "Platform\ELog\ELog.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENet", "ThirdParty\ENet\ENet.vcxproj", "{C9992B7C-313E-4C9F-A954-640D01EDFB58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetSharp", "ThirdParty\ENetSharp\ENetSharp.csproj", "{D0B4CFAC-A368-4742-9863-68776CFA9938}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58} = {C9992B7C-313E-4C9F-A954-640D01EDFB58}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hooks", "Platform\Hooks\Hooks.csproj", "{3A98B35C-DEA8-489C-9203-263FFB6B065D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaiGua", "App\Modules\WaiGua\WaiGua.csproj", "{5AA48F9A-455D-4CD8-A605-A3AC38283E60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetCS", "ThirdParty\ENetCS\ENetCS.csproj", "{D0B4CFAC-A368-4742-9863-68776CFA9938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,18 +122,6 @@ Global
 		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|Win32.Build.0 = Release|Win32
 		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x86.ActiveCfg = Release|Win32
 		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x86.Build.0 = Release|Win32
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Win32.ActiveCfg = Release|Any CPU
-		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|x86.ActiveCfg = Release|Any CPU
 		{3A98B35C-DEA8-489C-9203-263FFB6B065D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A98B35C-DEA8-489C-9203-263FFB6B065D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A98B35C-DEA8-489C-9203-263FFB6B065D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -161,6 +146,18 @@ Global
 		{5AA48F9A-455D-4CD8-A605-A3AC38283E60}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5AA48F9A-455D-4CD8-A605-A3AC38283E60}.Release|Win32.ActiveCfg = Release|Any CPU
 		{5AA48F9A-455D-4CD8-A605-A3AC38283E60}.Release|x86.ActiveCfg = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|Win32.ActiveCfg = Release|Any CPU
+		{D0B4CFAC-A368-4742-9863-68776CFA9938}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

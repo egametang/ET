@@ -37,7 +37,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -122,7 +122,7 @@
       <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Modules\Robot\Robot.csproj">
-      <Project>{5D6ECBCD-BE14-4DCB-BAEC-57089748B164}</Project>
+      <Project>{5d6ecbcd-be14-4dcb-baec-57089748b164}</Project>
       <Name>Robot</Name>
     </ProjectReference>
     <ProjectReference Include="..\Modules\WaiGua\WaiGua.csproj">

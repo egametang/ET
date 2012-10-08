@@ -73,9 +73,9 @@
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\ThirdParty\ENetSharp\ENetSharp.csproj">
+    <ProjectReference Include="..\..\..\ThirdParty\ENetCS\ENetCS.csproj">
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
-      <Name>ENetSharp</Name>
+      <Name>ENetCS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

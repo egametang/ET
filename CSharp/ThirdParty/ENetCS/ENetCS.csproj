@@ -7,8 +7,8 @@
     <ProjectGuid>{D0B4CFAC-A368-4742-9863-68776CFA9938}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Enet</RootNamespace>
-    <AssemblyName>Enet</AssemblyName>
+    <RootNamespace>ENet</RootNamespace>
+    <AssemblyName>ENetCS</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
