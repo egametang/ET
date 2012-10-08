@@ -49,7 +49,7 @@ namespace ENet
 			}
 			fixed (byte* bytes = data)
 			{
-				this.packet = Native.enet_packet_create(bytes + offset, (IntPtr)length, flags);
+				this.packet = Native.enet_packet_create(bytes + offset, (uint)length, flags);
 				if (this.packet == null)
 				{
 					throw new ENetException(0, "Packet creation call failed.");
@@ -124,7 +124,7 @@ namespace ENet
 				throw new ArgumentOutOfRangeException("length");
 			}
 			this.CheckCreated();
-			int ret = Native.enet_packet_resize(this.packet, (IntPtr) length);
+			int ret = Native.enet_packet_resize(this.packet, (uint)length);
 			if (ret < 0)
 			{
 				throw new ENetException(ret, "Packet resize call failed.");

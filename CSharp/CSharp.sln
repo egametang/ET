@@ -33,6 +33,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaiGua", "App\Modules\WaiGua\WaiGua.csproj", "{5AA48F9A-455D-4CD8-A605-A3AC38283E60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetCS", "ThirdParty\ENetCS\ENetCS.csproj", "{D0B4CFAC-A368-4742-9863-68776CFA9938}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9992B7C-313E-4C9F-A954-640D01EDFB58} = {C9992B7C-313E-4C9F-A954-640D01EDFB58}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -30,10 +30,13 @@ namespace Modules.Robot
 
 		public void Start()
 		{
-			var address = new Address {HostName = "192.168.10.246", Port = 8888};
-			var host = new Host(address, Native.ENET_PROTOCOL_MAXIMUM_PEER_ID);
+			Library.Initialize();
+			var host = new Host(null, Native.ENET_PROTOCOL_MAXIMUM_PEER_ID);
+			
+			var address = new Address { HostName = "192.168.10.246", Port = 8888 };
+			var peer = host.Connect(address, 1, 0);
+
 			var e = new Event();
-			var peer = host.Connect(address, 255, 0);
 			while (host.CheckEvents(out e) > 0)
 			{
 				if (e.Type == EventType.Connect)

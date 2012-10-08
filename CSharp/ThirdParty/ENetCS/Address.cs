@@ -60,7 +60,7 @@ namespace ENet
 				var ip = new byte[256];
 				fixed (byte* hostIP = ip)
 				{
-					if (Native.enet_address_get_host_ip(ref this.address, hostIP, (IntPtr) ip.Length) < 0)
+					if (Native.enet_address_get_host_ip(ref this.address, hostIP, (uint)ip.Length) < 0)
 					{
 						return null;
 					}
@@ -76,7 +76,7 @@ namespace ENet
 				var name = new byte[256];
 				fixed (byte* hostName = name)
 				{
-					if (Native.enet_address_get_host(ref this.address, hostName, (IntPtr)name.Length) < 0)
+					if (Native.enet_address_get_host(ref this.address, hostName, (uint)name.Length) < 0)
 					{
 						return null;
 					}

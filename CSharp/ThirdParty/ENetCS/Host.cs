@@ -27,28 +27,28 @@ namespace ENet
 	{
 		private Native.ENetHost* host;
 
-		public Host(ushort port, int peerLimit):
+		public Host(ushort port, uint peerLimit):
 			this(new Address { Port = port }, peerLimit)
 		{
 		}
 
-		public Host(Address? address, int peerLimit):
+		public Host(Address? address, uint peerLimit):
 			this(address, peerLimit, 0)
 		{
 		}
 
-		public Host(Address? address, int peerLimit, int channelLimit):
+		public Host(Address? address, uint peerLimit, uint channelLimit):
 			this(address, peerLimit, channelLimit, 0, 0)
 		{
 		}
 
-		public Host(Address? address, int peerLimit, int channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
+		public Host(Address? address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
 		{
 			if (this.host != null)
 			{
 				throw new InvalidOperationException("Already created.");
 			}
-			if (peerLimit < 0 || peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
 				throw new ArgumentOutOfRangeException("peerLimit");
 			}
@@ -58,13 +58,13 @@ namespace ENet
 			{
 				Native.ENetAddress nativeAddress = address.Value.NativeData;
 				this.host = Native.enet_host_create(
-					ref nativeAddress, (IntPtr)peerLimit, (IntPtr)channelLimit, incomingBandwidth,
+					ref nativeAddress, peerLimit, channelLimit, incomingBandwidth,
 					outgoingBandwidth);
 			}
 			else
 			{
 				this.host = Native.enet_host_create(
-					null, (IntPtr)peerLimit, (IntPtr)channelLimit, incomingBandwidth,
+					null, peerLimit, channelLimit, incomingBandwidth,
 					outgoingBandwidth);
 			}
 			if (this.host == null)
@@ -78,9 +78,9 @@ namespace ENet
 			this.Dispose();
 		}
 
-		private static void CheckChannelLimit(int channelLimit)
+		private static void CheckChannelLimit(uint channelLimit)
 		{
-			if (channelLimit < 0 || channelLimit > Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			if (channelLimit > Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
 			{
 				throw new ArgumentOutOfRangeException("channelLimit");
 			}
@@ -134,13 +134,13 @@ namespace ENet
 			return ret;
 		}
 
-		public Peer Connect(Address address, int channelLimit, uint data)
+		public Peer Connect(Address address, uint channelLimit, uint data)
 		{
 			this.CheckCreated();
 			CheckChannelLimit(channelLimit);
 
 			Native.ENetAddress nativeAddress = address.NativeData;
-			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, (IntPtr) channelLimit, data);
+			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
 			if (p == null)
 			{
 				throw new ENetException(0, "Host connect call failed.");
@@ -185,11 +185,11 @@ namespace ENet
 			Native.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
 		}
 
-		public void SetChannelLimit(int channelLimit)
+		public void SetChannelLimit(uint channelLimit)
 		{
 			CheckChannelLimit(channelLimit);
 			this.CheckCreated();
-			Native.enet_host_channel_limit(this.host, (IntPtr) channelLimit);
+			Native.enet_host_channel_limit(this.host, channelLimit);
 		}
 	}
 }

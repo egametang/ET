@@ -48,16 +48,16 @@ namespace ENet
 		public static extern int enet_address_set_host(ref ENetAddress address, byte[] hostName);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host(ref ENetAddress address, byte* hostName, IntPtr nameLength);
+		public static extern int enet_address_get_host(ref ENetAddress address, byte* hostName, uint nameLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host(ref ENetAddress address, byte[] hostName, IntPtr nameLength);
+		public static extern int enet_address_get_host(ref ENetAddress address, byte[] hostName, uint nameLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte* hostIP, IntPtr ipLength);
+		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte* hostIP, uint ipLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte[] hostIP, IntPtr ipLength);
+		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte[] hostIP, uint ipLength);
 
 		#endregion
 
@@ -81,18 +81,18 @@ namespace ENet
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern ENetHost* enet_host_create(
-				ENetAddress* address, IntPtr peerLimit, IntPtr channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
+				ENetAddress* address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern ENetHost* enet_host_create(
-				ref ENetAddress address, IntPtr peerLimit, IntPtr channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
+				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_host_destroy(ENetHost* host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern ENetPeer* enet_host_connect(
-				ENetHost* host, ref ENetAddress address, IntPtr channelCount, uint data);
+				ENetHost* host, ref ENetAddress address, uint channelCount, uint data);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_host_broadcast(ENetHost* host, byte channelID, ENetPacket* packet);
@@ -101,7 +101,7 @@ namespace ENet
 		public static extern void enet_host_compress(ENetHost* host, ENetCompressor* compressor);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_channel_limit(ENetHost* host, IntPtr channelLimit);
+		public static extern void enet_host_channel_limit(ENetHost* host, uint channelLimit);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_host_bandwidth_limit(ENetHost* host, uint incomingBandwidth, uint outgoingBandwidth);
@@ -110,13 +110,13 @@ namespace ENet
 		public static extern void enet_host_flush(ENetHost* host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_check_events(ENetHost* host, out ENetEvent @event);
+		public static extern int enet_host_check_events(ENetHost* host, out ENetEvent e);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_service(ENetHost* host, ENetEvent* @event, uint timeout);
+		public static extern int enet_host_service(ENetHost* host, ENetEvent* e, uint timeout);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_service(ENetHost* host, out ENetEvent @event, uint timeout);
+		public static extern int enet_host_service(ENetHost* host, out ENetEvent e, uint timeout);
 
 		#endregion
 
@@ -133,13 +133,13 @@ namespace ENet
 		#region Packet Functions
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetPacket* enet_packet_create(void* data, IntPtr dataLength, PacketFlags flags);
+		public static extern ENetPacket* enet_packet_create(void* data, uint dataLength, PacketFlags flags);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_packet_destroy(ENetPacket* packet);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_packet_resize(ENetPacket* packet, IntPtr dataLength);
+		public static extern int enet_packet_resize(ENetPacket* packet, uint dataLength);
 
 		#endregion
 
