@@ -32,12 +32,6 @@ namespace ENet
 
 		private Native.ENetAddress address;
 
-		public Address(string hostName, ushort port) : this()
-		{
-			this.HostName = hostName;
-			this.Port = port;
-		}
-
 		public override bool Equals(object obj)
 		{
 			return obj is Address && this.Equals((Address) obj);
@@ -45,15 +39,15 @@ namespace ENet
 
 		public bool Equals(Address addr)
 		{
-			return this.Port == addr.Port && this.HostIP == addr.HostIP;
+			return this.Port == addr.Port && this.IP == addr.IP;
 		}
 
 		public override int GetHashCode()
 		{
-			return this.Port.GetHashCode() ^ this.HostIP.GetHashCode();
+			return this.Port.GetHashCode() ^ this.IP.GetHashCode();
 		}
 
-		public string HostIP
+		public string IP
 		{
 			get
 			{
@@ -69,7 +63,7 @@ namespace ENet
 			}
 		}
 
-		public string HostName
+		public string Host
 		{
 			get
 			{

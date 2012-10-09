@@ -125,6 +125,11 @@ ENetHost *enet_host_create(const ENetAddress * address, size_t peerCount, size_t
 	return host;
 }
 
+void enet_enable_crc(ENetHost* host)
+{
+	host->checksum = enet_crc32;
+}
+
 /** Destroys the host and all resources associated with it.
  @param host pointer to the host to destroy
  */

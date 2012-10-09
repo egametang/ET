@@ -62,6 +62,10 @@ namespace ENet
 		{
 			get
 			{
+				if (this.e.packet == null)
+				{
+					return null;
+				}
 				return new Packet(this.e.packet);
 			}
 		}
@@ -70,6 +74,10 @@ namespace ENet
 		{
 			get
 			{
+				if (this.e.peer == null)
+				{
+					return null;
+				}
 				return new Peer(this.e.peer);
 			}
 		}

@@ -72,6 +72,9 @@ namespace ENet
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern int enet_initialize_with_callbacks(uint version, ref ENetCallbacks inits);
 
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
+		public static extern void enet_enable_crc(ENetHost* host);
+
 		#endregion
 
 		#region Host Functions

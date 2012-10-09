@@ -24,13 +24,21 @@ using System.Runtime.InteropServices;
 
 namespace ENet
 {
-	public unsafe struct Packet : IDisposable
+	public unsafe class Packet : IDisposable
 	{
 		private Native.ENetPacket* packet;
 
 		public Packet(Native.ENetPacket* packet)
 		{
+			if (packet == null)
+			{
+				throw new InvalidOperationException("No native packet.");
+			}
 			this.packet = packet;
+		}
+
+		public Packet(): this(new byte[]{})
+		{
 		}
 
 		public Packet(byte[] data): this(data, 0, data.Length)
@@ -57,24 +65,31 @@ namespace ENet
 			}
 		}
 
+		~Packet()
+		{
+			Dispose(false);
+		}
+
 		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
 		{
 			if (this.packet == null)
 			{
 				return;
 			}
-			if (this.packet->referenceCount == IntPtr.Zero)
-			{
-				Native.enet_packet_destroy(this.packet);
-			}
-			this.packet = null;
-		}
 
-		internal void CheckCreated()
-		{
-			if (this.packet == null)
+			if (disposing)
 			{
-				throw new InvalidOperationException("No native packet.");
+				if (this.packet->referenceCount == IntPtr.Zero)
+				{
+					Native.enet_packet_destroy(this.packet);
+				}
+				this.packet = null;
 			}
 		}
 
@@ -98,7 +113,6 @@ namespace ENet
 				throw new ArgumentOutOfRangeException();
 			}
 
-			this.CheckCreated();
 			if (length > this.Length - offset)
 			{
 				throw new ArgumentOutOfRangeException();
@@ -111,7 +125,6 @@ namespace ENet
 
 		public byte[] GetBytes()
 		{
-			this.CheckCreated();
 			var array = new byte[this.Length];
 			this.CopyTo(array);
 			return array;
@@ -123,7 +136,6 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("length");
 			}
-			this.CheckCreated();
 			int ret = Native.enet_packet_resize(this.packet, (uint)length);
 			if (ret < 0)
 			{
@@ -135,7 +147,6 @@ namespace ENet
 		{
 			get
 			{
-				this.CheckCreated();
 				return this.packet->data;
 			}
 		}
@@ -144,7 +155,6 @@ namespace ENet
 		{
 			get
 			{
-				this.CheckCreated();
 				if (this.packet->dataLength.ToPointer() > (void*) int.MaxValue)
 				{
 					throw new ENetException(0, "Packet too long!");
@@ -162,14 +172,6 @@ namespace ENet
 			set
 			{
 				this.packet = value;
-			}
-		}
-
-		public bool IsSet
-		{
-			get
-			{
-				return this.packet != null;
 			}
 		}
 	}

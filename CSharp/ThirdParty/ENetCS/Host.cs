@@ -32,22 +32,9 @@ namespace ENet
 		{
 		}
 
-		public Host(Address? address, uint peerLimit):
-			this(address, peerLimit, 0)
+		public Host(Address? address, uint peerLimit, uint channelLimit = 0, 
+				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
-		}
-
-		public Host(Address? address, uint peerLimit, uint channelLimit):
-			this(address, peerLimit, channelLimit, 0, 0)
-		{
-		}
-
-		public Host(Address? address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth)
-		{
-			if (this.host != null)
-			{
-				throw new InvalidOperationException("Already created.");
-			}
 			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
 				throw new ArgumentOutOfRangeException("peerLimit");
@@ -67,15 +54,41 @@ namespace ENet
 					null, peerLimit, channelLimit, incomingBandwidth,
 					outgoingBandwidth);
 			}
+
 			if (this.host == null)
 			{
 				throw new ENetException(0, "Host creation call failed.");
+			}
+
+			if (enableCrc)
+			{
+				Native.enet_enable_crc(host);
 			}
 		}
 
 		~Host()
 		{
-			this.Dispose();
+			this.Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (this.host == null)
+			{
+				return;
+			}
+
+			if (disposing)
+			{
+				Native.enet_host_destroy(this.host);
+				this.host = null;
+			}
 		}
 
 		private static void CheckChannelLimit(uint channelLimit)
@@ -86,48 +99,24 @@ namespace ENet
 			}
 		}
 
-		private void CheckCreated()
-		{
-			if (this.host == null)
-			{
-				throw new InvalidOperationException("Not created.");
-			}
-		}
-
-		public void Dispose()
-		{
-			if (this.host == null)
-			{
-				return;
-			}
-			Native.enet_host_destroy(this.host);
-			this.host = null;
-		}
-
 		public void Broadcast(byte channelID, ref Packet packet)
 		{
-			this.CheckCreated();
-			packet.CheckCreated();
 			Native.enet_host_broadcast(this.host, channelID, packet.NativeData);
 			packet.NativeData = null; // Broadcast automatically clears this.
 		}
 
 		public void CompressWithRangeEncoder()
 		{
-			this.CheckCreated();
 			Native.enet_host_compress_with_range_encoder(this.host);
 		}
 
 		public void DoNotCompress()
 		{
-			this.CheckCreated();
 			Native.enet_host_compress(this.host, null);
 		}
 
 		public int CheckEvents(out Event e)
 		{
-			this.CheckCreated();
-
 			Native.ENetEvent nativeEvent;
 			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
 			e = new Event(nativeEvent);
@@ -136,7 +125,6 @@ namespace ENet
 
 		public Peer Connect(Address address, uint channelLimit, uint data)
 		{
-			this.CheckCreated();
 			CheckChannelLimit(channelLimit);
 
 			Native.ENetAddress nativeAddress = address.NativeData;
@@ -151,7 +139,6 @@ namespace ENet
 
 		public void Flush()
 		{
-			this.CheckCreated();
 			Native.enet_host_flush(this.host);
 		}
 
@@ -161,7 +148,6 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			this.CheckCreated();
 			return Native.enet_host_service(this.host, null, (uint) timeout);
 		}
 
@@ -171,7 +157,6 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			this.CheckCreated();
 			Native.ENetEvent nativeEvent;
 
 			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint) timeout);
@@ -181,14 +166,12 @@ namespace ENet
 
 		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
 		{
-			this.CheckCreated();
 			Native.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
 		}
 
 		public void SetChannelLimit(uint channelLimit)
 		{
 			CheckChannelLimit(channelLimit);
-			this.CheckCreated();
 			Native.enet_host_channel_limit(this.host, channelLimit);
 		}
 	}
