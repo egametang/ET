@@ -43,6 +43,7 @@
     <Compile Include="Address.cs" />
     <Compile Include="AddressType.cs" />
     <Compile Include="ENetException.cs" />
+    <Compile Include="ENetClient.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="Host.cs" />

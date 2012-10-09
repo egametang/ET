@@ -20,6 +20,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #endregion
 
 using System;
+using System.Threading.Tasks;
 
 namespace ENet
 {
@@ -145,6 +146,14 @@ namespace ENet
 			set
 			{
 				this.peer->data = value;
+			}
+		}
+
+		public uint ConnectID
+		{
+			get
+			{
+				return this.peer->connectID;
 			}
 		}
 	}
