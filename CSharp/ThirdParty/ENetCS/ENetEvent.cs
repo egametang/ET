@@ -19,15 +19,19 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #endregion
 
+using ELog;
+
 namespace ENet
 {
-	public unsafe struct Event
+	public unsafe struct ENetEvent
 	{
+		private readonly ENetHost host;
 		private Native.ENetEvent e;
 
-		public Event(Native.ENetEvent e)
+		public ENetEvent(ENetHost host, Native.ENetEvent e)
 		{
 			this.e = e;
+			this.host = host;
 		}
 
 		public byte ChannelID
@@ -58,7 +62,7 @@ namespace ENet
 			}
 		}
 
-		public Packet Packet
+		public ENetPacket Packet
 		{
 			get
 			{
@@ -66,11 +70,11 @@ namespace ENet
 				{
 					return null;
 				}
-				return new Packet(this.e.packet);
+				return new ENetPacket(this.e.packet);
 			}
 		}
 
-		public Peer Peer
+		public ENetPeer ENetPeer
 		{
 			get
 			{
@@ -78,7 +82,12 @@ namespace ENet
 				{
 					return null;
 				}
-				return new Peer(this.e.peer);
+				var data = (int)e.peer->data;
+				if (!this.host.Peers.ContainsKey(data))
+				{
+					return null;
+				}
+				return this.host.Peers[data];
 			}
 		}
 

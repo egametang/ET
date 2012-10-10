@@ -24,11 +24,11 @@ using System.Runtime.InteropServices;
 
 namespace ENet
 {
-	public unsafe class Packet : IDisposable
+	public sealed unsafe class ENetPacket : IDisposable
 	{
 		private Native.ENetPacket* packet;
 
-		public Packet(Native.ENetPacket* packet)
+		public ENetPacket(Native.ENetPacket* packet)
 		{
 			if (packet == null)
 			{
@@ -37,15 +37,15 @@ namespace ENet
 			this.packet = packet;
 		}
 
-		public Packet(): this(new byte[]{})
+		public ENetPacket(): this(new byte[]{})
 		{
 		}
 
-		public Packet(byte[] data): this(data, 0, data.Length)
+		public ENetPacket(byte[] data): this(data, 0, data.Length)
 		{
 		}
 
-		public Packet(byte[] data, int offset, int length, PacketFlags flags = PacketFlags.None)
+		public ENetPacket(byte[] data, int offset, int length, PacketFlags flags = PacketFlags.None)
 		{
 			if (data == null)
 			{
@@ -65,7 +65,7 @@ namespace ENet
 			}
 		}
 
-		~Packet()
+		~ENetPacket()
 		{
 			Dispose(false);
 		}
@@ -76,7 +76,7 @@ namespace ENet
 			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.packet == null)
 			{

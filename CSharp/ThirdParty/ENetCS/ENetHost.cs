@@ -19,20 +19,24 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #endregion
 
+using ELog;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ENet
 {
-	public sealed unsafe class Host : IDisposable
+	public sealed unsafe class ENetHost : IDisposable
 	{
 		private Native.ENetHost* host;
+		private PeerManager peerManager = new PeerManager();
 
-		public Host(ushort port, uint peerLimit):
+		public ENetHost(ushort port, uint peerLimit):
 			this(new Address { Port = port }, peerLimit)
 		{
 		}
 
-		public Host(Address? address, uint peerLimit, uint channelLimit = 0, 
+		public ENetHost(Address? address, uint peerLimit, uint channelLimit = 0, 
 				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
@@ -66,7 +70,7 @@ namespace ENet
 			}
 		}
 
-		~Host()
+		~ENetHost()
 		{
 			this.Dispose(false);
 		}
@@ -91,6 +95,14 @@ namespace ENet
 			}
 		}
 
+		public PeerManager Peers
+		{
+			get
+			{
+				return peerManager;
+			}
+		}
+
 		private static void CheckChannelLimit(uint channelLimit)
 		{
 			if (channelLimit > Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
@@ -99,7 +111,7 @@ namespace ENet
 			}
 		}
 
-		public void Broadcast(byte channelID, ref Packet packet)
+		public void Broadcast(byte channelID, ref ENetPacket packet)
 		{
 			Native.enet_host_broadcast(this.host, channelID, packet.NativeData);
 			packet.NativeData = null; // Broadcast automatically clears this.
@@ -115,26 +127,32 @@ namespace ENet
 			Native.enet_host_compress(this.host, null);
 		}
 
-		public int CheckEvents(out Event e)
+		public int CheckEvents(out ENetEvent e)
 		{
 			Native.ENetEvent nativeEvent;
 			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
-			e = new Event(nativeEvent);
+			e = new ENetEvent(this, nativeEvent);
 			return ret;
 		}
 
-		public Peer Connect(Address address, uint channelLimit, uint data)
+		public Task<ENetPeer> ConnectAsync(
+			Address address, uint channelLimit = Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 
+			uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
+			var tcs = new TaskCompletionSource<ENetPeer>();
 			Native.ENetAddress nativeAddress = address.NativeData;
 			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
 			if (p == null)
 			{
 				throw new ENetException(0, "Host connect call failed.");
 			}
-			var peer = new Peer(p);
-			return peer;
+			new ENetPeer(this, p)
+			{
+				Connected = e => tcs.TrySetResult(e.ENetPeer)
+			};
+			return tcs.Task;
 		}
 
 		public void Flush()
@@ -151,7 +169,7 @@ namespace ENet
 			return Native.enet_host_service(this.host, null, (uint) timeout);
 		}
 
-		public int Service(int timeout, out Event e)
+		public int Service(int timeout, out ENetEvent e)
 		{
 			if (timeout < 0)
 			{
@@ -160,7 +178,7 @@ namespace ENet
 			Native.ENetEvent nativeEvent;
 
 			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint) timeout);
-			e = new Event(nativeEvent);
+			e = new ENetEvent(this, nativeEvent);
 			return ret;
 		}
 
@@ -173,6 +191,38 @@ namespace ENet
 		{
 			CheckChannelLimit(channelLimit);
 			Native.enet_host_channel_limit(this.host, channelLimit);
+		}
+
+		public void Run()
+		{
+			if (this.Service(0) < 0)
+			{
+				return;
+			}
+
+			ENetEvent e;
+			while (this.CheckEvents(out e) > 0)
+			{
+				switch (e.Type)
+				{
+					case EventType.Connect:
+					{
+						e.ENetPeer.Connected(e);
+						break;
+					}
+					case EventType.Receive:
+					{
+						e.ENetPeer.Received(e);
+						break;
+					}
+					case EventType.Disconnect:
+					{
+						Log.Debug("Disconnect");
+						e.ENetPeer.Disconnect(e);
+						break;
+					}
+				}
+			}
 		}
 	}
 }

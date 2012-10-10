@@ -43,20 +43,26 @@
     <Compile Include="Address.cs" />
     <Compile Include="AddressType.cs" />
     <Compile Include="ENetException.cs" />
-    <Compile Include="ENetClient.cs" />
-    <Compile Include="Event.cs" />
+    <Compile Include="ENetEvent.cs" />
     <Compile Include="EventType.cs" />
-    <Compile Include="Host.cs" />
+    <Compile Include="ENetHost.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="Native.Structs.cs" />
-    <Compile Include="Packet.cs" />
+    <Compile Include="ENetPacket.cs" />
     <Compile Include="PacketFlags.cs" />
-    <Compile Include="Peer.cs" />
+    <Compile Include="ENetPeer.cs" />
+    <Compile Include="PeerManager.cs" />
     <Compile Include="PeerState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Platform\ELog\ELog.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>ELog</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

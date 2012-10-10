@@ -1,18 +1,25 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using ELog;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 using ENet;
+using Infrastructure;
 
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal class RobotViewModel : NotificationObject
 	{
-		private Host host;
+		private ENetHost host;
 		private string logText = "";
+		private IEventAggregator eventAggregator = new EventAggregator();
+		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
+		{
+			Interval = new TimeSpan(0, 0, 0, 0, 50)
+		};
 
 		public string LogText
 		{
@@ -34,26 +41,30 @@ namespace Modules.Robot
 		public RobotViewModel()
 		{
 			Library.Initialize();
+			host = new ENetHost(8888, Native.ENET_PROTOCOL_MAXIMUM_PEER_ID);
 
-			Task.Factory.StartNew(() =>
-				{
-				
-				});
-
-
+			timer.Tick += delegate { this.host.Run(); };
+			timer.Start();
 		}
 
-		public async Task<Peer> StartClient()
+		public async void StartClient()
 		{
-			
+			try
+			{
+				await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 }, 2, 0);
+			}
+			catch (ENetException e)
+			{
+				Log.Debug(e.Message);
+				return;
+			}
 		}
 
 		public void Start()
 		{
-			var peer = StartClient().Result;
-			if (peer.State == PeerState.Connected)
+			for (int i = 0; i < 4095; ++i)
 			{
-				Log.Debug("11111111111");
+				StartClient();
 			}
 		}
 	}

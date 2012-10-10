@@ -80,8 +80,8 @@
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>ELog</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Platform\Infrastructure\Infrastructure.csproj">
-      <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
+      <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
