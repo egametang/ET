@@ -6,9 +6,9 @@ namespace ENet
 	public class PeerManager
 	{
 		private int num = 0;
-		private readonly Dictionary<int, ENetPeer> peers = new Dictionary<int, ENetPeer>();
+		private readonly Dictionary<int, Peer> peers = new Dictionary<int, Peer>();
 
-		public void Add(ENetPeer peer)
+		public void Add(Peer peer)
 		{
 			++num;
 			unsafe
@@ -32,7 +32,7 @@ namespace ENet
 			return false;
 		}
 
-		public ENetPeer this[int key]
+		public Peer this[int key]
 		{
 			get
 			{

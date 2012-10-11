@@ -43,15 +43,15 @@
     <Compile Include="Address.cs" />
     <Compile Include="AddressType.cs" />
     <Compile Include="ENetException.cs" />
-    <Compile Include="ENetEvent.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="EventType.cs" />
-    <Compile Include="ENetHost.cs" />
+    <Compile Include="Host.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="Native.Structs.cs" />
-    <Compile Include="ENetPacket.cs" />
+    <Compile Include="Packet.cs" />
     <Compile Include="PacketFlags.cs" />
-    <Compile Include="ENetPeer.cs" />
+    <Compile Include="Peer.cs" />
     <Compile Include="PeerManager.cs" />
     <Compile Include="PeerState.cs" />
   </ItemGroup>

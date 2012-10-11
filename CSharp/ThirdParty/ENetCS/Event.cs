@@ -23,12 +23,12 @@ using ELog;
 
 namespace ENet
 {
-	public unsafe struct ENetEvent
+	public unsafe struct Event
 	{
-		private readonly ENetHost host;
+		private readonly Host host;
 		private Native.ENetEvent e;
 
-		public ENetEvent(ENetHost host, Native.ENetEvent e)
+		public Event(Host host, Native.ENetEvent e)
 		{
 			this.e = e;
 			this.host = host;
@@ -62,7 +62,7 @@ namespace ENet
 			}
 		}
 
-		public ENetPacket Packet
+		public Packet Packet
 		{
 			get
 			{
@@ -70,11 +70,11 @@ namespace ENet
 				{
 					return null;
 				}
-				return new ENetPacket(this.e.packet);
+				return new Packet(this.e.packet);
 			}
 		}
 
-		public ENetPeer ENetPeer
+		public Peer Peer
 		{
 			get
 			{

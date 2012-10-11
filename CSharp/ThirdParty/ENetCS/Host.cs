@@ -26,17 +26,17 @@ using System.Threading.Tasks;
 
 namespace ENet
 {
-	public sealed unsafe class ENetHost : IDisposable
+	public sealed unsafe class Host : IDisposable
 	{
 		private Native.ENetHost* host;
-		private PeerManager peerManager = new PeerManager();
+		private readonly PeerManager peerManager = new PeerManager();
 
-		public ENetHost(ushort port, uint peerLimit):
+		public Host(ushort port, uint peerLimit):
 			this(new Address { Port = port }, peerLimit)
 		{
 		}
 
-		public ENetHost(Address? address, uint peerLimit, uint channelLimit = 0, 
+		public Host(Address? address, uint peerLimit, uint channelLimit = 0, 
 				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
@@ -70,7 +70,7 @@ namespace ENet
 			}
 		}
 
-		~ENetHost()
+		~Host()
 		{
 			this.Dispose(false);
 		}
@@ -91,16 +91,9 @@ namespace ENet
 			if (disposing)
 			{
 				Native.enet_host_destroy(this.host);
-				this.host = null;
 			}
-		}
 
-		public PeerManager Peers
-		{
-			get
-			{
-				return peerManager;
-			}
+			this.host = null;
 		}
 
 		private static void CheckChannelLimit(uint channelLimit)
@@ -111,7 +104,45 @@ namespace ENet
 			}
 		}
 
-		public void Broadcast(byte channelID, ref ENetPacket packet)
+		private int CheckEvents(out Event e)
+		{
+			Native.ENetEvent nativeEvent;
+			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
+			e = new Event(this, nativeEvent);
+			return ret;
+		}
+
+		private int Service(int timeout)
+		{
+			if (timeout < 0)
+			{
+				throw new ArgumentOutOfRangeException("timeout");
+			}
+			return Native.enet_host_service(this.host, null, (uint)timeout);
+		}
+
+		private int Service(int timeout, out Event e)
+		{
+			if (timeout < 0)
+			{
+				throw new ArgumentOutOfRangeException("timeout");
+			}
+			Native.ENetEvent nativeEvent;
+
+			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint)timeout);
+			e = new Event(this, nativeEvent);
+			return ret;
+		}
+
+		public PeerManager Peers
+		{
+			get
+			{
+				return peerManager;
+			}
+		}
+
+		public void Broadcast(byte channelID, ref Packet packet)
 		{
 			Native.enet_host_broadcast(this.host, channelID, packet.NativeData);
 			packet.NativeData = null; // Broadcast automatically clears this.
@@ -127,59 +158,27 @@ namespace ENet
 			Native.enet_host_compress(this.host, null);
 		}
 
-		public int CheckEvents(out ENetEvent e)
-		{
-			Native.ENetEvent nativeEvent;
-			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
-			e = new ENetEvent(this, nativeEvent);
-			return ret;
-		}
-
-		public Task<ENetPeer> ConnectAsync(
+		public Task<Peer> ConnectAsync(
 			Address address, uint channelLimit = Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 
 			uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
-			var tcs = new TaskCompletionSource<ENetPeer>();
+			var tcs = new TaskCompletionSource<Peer>();
 			Native.ENetAddress nativeAddress = address.NativeData;
 			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
 			if (p == null)
 			{
 				throw new ENetException(0, "Host connect call failed.");
 			}
-			new ENetPeer(this, p)
-			{
-				Connected = e => tcs.TrySetResult(e.ENetPeer)
-			};
+			var peer = new Peer(this, p);
+			peer.Connected += e => tcs.TrySetResult(e.Peer);
 			return tcs.Task;
 		}
 
 		public void Flush()
 		{
 			Native.enet_host_flush(this.host);
-		}
-
-		public int Service(int timeout)
-		{
-			if (timeout < 0)
-			{
-				throw new ArgumentOutOfRangeException("timeout");
-			}
-			return Native.enet_host_service(this.host, null, (uint) timeout);
-		}
-
-		public int Service(int timeout, out ENetEvent e)
-		{
-			if (timeout < 0)
-			{
-				throw new ArgumentOutOfRangeException("timeout");
-			}
-			Native.ENetEvent nativeEvent;
-
-			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint) timeout);
-			e = new ENetEvent(this, nativeEvent);
-			return ret;
 		}
 
 		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
@@ -200,25 +199,24 @@ namespace ENet
 				return;
 			}
 
-			ENetEvent e;
+			Event e;
 			while (this.CheckEvents(out e) > 0)
 			{
 				switch (e.Type)
 				{
 					case EventType.Connect:
 					{
-						e.ENetPeer.Connected(e);
+						e.Peer.OnConnected(e);
 						break;
 					}
 					case EventType.Receive:
 					{
-						e.ENetPeer.Received(e);
+						e.Peer.OnReceived(e);
 						break;
 					}
 					case EventType.Disconnect:
 					{
-						Log.Debug("Disconnect");
-						e.ENetPeer.Disconnect(e);
+						e.Peer.OnDisconnect(e);
 						break;
 					}
 				}
