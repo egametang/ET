@@ -24,7 +24,7 @@ namespace Hooks
 			}
 			catch (Exception)
 			{
-				Log.Debug("Error creating recv Hook");
+				Logger.Debug("Error creating recv Hook");
 				throw;
 			}
 		}
@@ -45,7 +45,7 @@ namespace Hooks
 		//		TextWriter tw = new StreamWriter("recv.txt");
 		//		tw.Write(s);
 		//		tw.Close();
-		//		Log.Debug(string.Format("Hooked:>{0}", s));
+		//		Logger.Debug(string.Format("Hooked:>{0}", s));
 		//	}
 		//	return bytesCount;
 		//}

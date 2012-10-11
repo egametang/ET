@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Log.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="NLog.cs" />
   </ItemGroup>

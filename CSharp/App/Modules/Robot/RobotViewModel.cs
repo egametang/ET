@@ -11,9 +11,8 @@ namespace Modules.Robot
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal class RobotViewModel : NotificationObject
 	{
-		private Host host;
+		private readonly Host host;
 		private string logText = "";
-		private IEventAggregator eventAggregator = new EventAggregator();
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{
 			Interval = new TimeSpan(0, 0, 0, 0, 50)
@@ -49,12 +48,12 @@ namespace Modules.Robot
 		{
 			try
 			{
-				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 }, 2, 0);
-				Log.Debug("peer data: " + peer.Data);
+				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 }, 2);
+				Logger.Debug("peer data: " + peer.Data);
 			}
 			catch (ENetException e)
 			{
-				Log.Debug(e.Message);
+				Logger.Debug(e.Message);
 			}
 		}
 

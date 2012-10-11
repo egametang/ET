@@ -126,7 +126,7 @@ namespace Modules.BehaviorTree
 			treeNode.Prelim = prelim;
 			treeNode.Modify = modify;
 
-			Log.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
+			Logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
 		}
 
 		private static void CalculateRelativeXAndY(TreeNodeViewModel treeNode, int level, double totalModify)

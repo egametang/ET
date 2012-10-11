@@ -24,7 +24,7 @@ namespace Hooks
 			}
 			catch (Exception)
 			{
-				Log.Debug("Error creating send Hook");
+				Logger.Debug("Error creating send Hook");
 				throw;
 			}
 		}
