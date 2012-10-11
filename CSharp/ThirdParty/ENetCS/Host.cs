@@ -30,6 +30,7 @@ namespace ENet
 	{
 		private Native.ENetHost* host;
 		private readonly PeerManager peerManager = new PeerManager();
+		private Action events;
 
 		public Host(ushort port, uint peerLimit):
 			this(new Address { Port = port }, peerLimit)
@@ -192,8 +193,44 @@ namespace ENet
 			Native.enet_host_channel_limit(this.host, channelLimit);
 		}
 
+		public event Action Events
+		{
+			add
+			{
+				lock (events)
+				{
+					events += value;
+				}
+			}
+			remove
+			{
+				lock (events)
+				{
+					events -= value;
+				}
+			}
+		}
+
+		private void OnExecuteEvents()
+		{
+			Action local = null;
+			lock (events)
+			{
+				if (events == null)
+				{
+					return;
+				}
+				local = events;
+				events = null;
+			}
+			local();
+		}
+
 		public void Run()
 		{
+			// 处理其它线程扔过来的事件
+			OnExecuteEvents();
+
 			if (this.Service(0) < 0)
 			{
 				return;
