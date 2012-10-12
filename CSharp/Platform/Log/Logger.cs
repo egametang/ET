@@ -1,5 +1,5 @@
 ﻿
-namespace ELog
+namespace Log
 {
 	public static class Logger
 	{

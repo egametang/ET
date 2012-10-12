@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace ELog
+namespace Log
 {
 	public class NLog: ILog
 	{

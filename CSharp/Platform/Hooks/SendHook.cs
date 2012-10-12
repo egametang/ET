@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using ELog;
+using Log;
 using EasyHook;
 
 namespace Hooks

@@ -19,7 +19,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #endregion
 
-using ELog;
+using Log;
 
 namespace ENet
 {

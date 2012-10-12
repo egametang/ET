@@ -19,7 +19,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #endregion
 
-using ELog;
+using Log;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -30,6 +30,7 @@ namespace ENet
 	{
 		private Native.ENetHost* host;
 		private readonly PeerManager peerManager = new PeerManager();
+		private readonly object eventsLock = new object();
 		private Action events;
 
 		public Host(ushort port, uint peerLimit):
@@ -197,14 +198,14 @@ namespace ENet
 		{
 			add
 			{
-				lock (events)
+				lock (eventsLock)
 				{
 					events += value;
 				}
 			}
 			remove
 			{
-				lock (events)
+				lock (eventsLock)
 				{
 					events -= value;
 				}
@@ -214,7 +215,7 @@ namespace ENet
 		private void OnExecuteEvents()
 		{
 			Action local = null;
-			lock (events)
+			lock (eventsLock)
 			{
 				if (events == null)
 				{

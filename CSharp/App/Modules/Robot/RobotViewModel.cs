@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
-using ELog;
+using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 using ENet;
@@ -49,7 +49,7 @@ namespace Modules.Robot
 			try
 			{
 				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 }, 2);
-				Logger.Debug("peer data: " + peer.Data);
+				LogText += string.Format("peer data: {0}\r\n", peer.Data);
 			}
 			catch (ENetException e)
 			{

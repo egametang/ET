@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using EasyHook;
-using ELog;
+using Log;
 
 namespace Hooks
 {
