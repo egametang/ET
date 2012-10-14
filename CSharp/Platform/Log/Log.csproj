@@ -45,8 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logger.cs" />
-    <Compile Include="ILog.cs" />
-    <Compile Include="NLog.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="NLoggerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />

@@ -3,16 +3,24 @@ namespace Log
 {
 	public static class Logger
 	{
-		private static readonly ILog logger = new NLog();
+		private static readonly ILogger globalLogger = new NLoggerAdapter();
+
+		public static ILogger GlobalLogger
+		{
+			get
+			{
+				return globalLogger;
+			}
+		}
 
 		public static void Trace(string message)
 		{
-			logger.Trace(message);
+			globalLogger.Trace(message);
 		}
 
 		public static void Debug(string message)
 		{
-			logger.Debug(message);
+			globalLogger.Debug(message);
 		}
 	}
 }

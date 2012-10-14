@@ -134,6 +134,7 @@
     <None Include="app.config" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Packages.config" />
   </ItemGroup>

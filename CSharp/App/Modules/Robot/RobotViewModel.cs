@@ -59,10 +59,11 @@ namespace Modules.Robot
 
 		public void Start()
 		{
-			for (int i = 0; i < 4095; ++i)
-			{
-				StartClient();
-			}
+			Logger.Trace("11111111111111111111111");
+			//for (int i = 0; i < 4095; ++i)
+			//{
+			//	StartClient();
+			//}
 		}
 	}
 }
