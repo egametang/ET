@@ -1,67 +1,41 @@
-﻿using System.Diagnostics;
-using System.IO;
-using NLog;
+﻿using NLog;
 
 namespace Log
 {
-	public class NLoggerAdapter: ILogger
+	public class NLoggerAdapter : ILogger
 	{
 		private const string SEP = " ";
 
+		private readonly ALogDecorater decorater;
+
 		private readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
-		public NLoggerAdapter()
+		public NLoggerAdapter(ALogDecorater decorater = null)
 		{
-			this.FileName = true;
-			this.FileLineNumber = true;
+			this.decorater = decorater;
+			if (this.decorater != null)
+			{
+				this.decorater.Level = 0;
+			}
 		}
 
-		public bool FileName
+		public string Decorate(string message)
 		{
-			get;
-			set;
-		}
-
-		public bool FileLineNumber
-		{
-			get;
-			set;
-		}
-
-		public string GetExtraInfo()
-		{
-			if (!this.FileLineNumber && !this.FileName)
+			if (decorater == null)
 			{
-				return SEP;
+				return message;
 			}
-
-			string extraInfo = "";
-			var stackTrace = new StackTrace(true);
-			var frame = stackTrace.GetFrame(3);
-
-			if (FileName)
-			{
-				var fileName = Path.GetFileName(frame.GetFileName());
-				extraInfo += fileName + " ";
-			}
-			if (FileLineNumber)
-			{
-				var fileLineNumber = frame.GetFileLineNumber();
-				extraInfo += fileLineNumber + " ";
-			}
-			extraInfo += SEP;
-
-			return extraInfo;
+			return decorater.Decorate(message);
 		}
 
 		public void Trace(string message)
 		{
-			logger.Trace(GetExtraInfo() + message);
+			logger.Trace(Decorate(SEP + message));
 		}
 
 		public void Debug(string message)
 		{
-			logger.Debug(GetExtraInfo() + message);
+			logger.Debug(Decorate(SEP + message));
 		}
 	}
 }

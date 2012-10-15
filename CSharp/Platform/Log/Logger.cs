@@ -3,7 +3,7 @@ namespace Log
 {
 	public static class Logger
 	{
-		private static readonly ILogger globalLogger = new NLoggerAdapter();
+		private static readonly ILogger globalLogger = new NLoggerAdapter(new StackInfoDecorater());
 
 		public static ILogger GlobalLogger
 		{
