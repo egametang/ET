@@ -1,30 +1,10 @@
-﻿#region License
-
-/*
-ENet for C#
-Copyright (c) 2011 James F. Bellinger <jfb@zer7.com>
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-
-#endregion
-
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ENet
 {
-	public static unsafe partial class Native
+	public static class Native
 	{
 		private const string LIB = "ENet.dll";
 
@@ -39,29 +19,14 @@ namespace ENet
 		public const uint ENET_HOST_ANY = 0;
 		public const uint ENET_HOST_BROADCAST = 0xffffffff;
 
-		#region Address Functions
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
+		public static extern int enet_address_set_host(ref ENetAddress address, string hostName);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_set_host(ref ENetAddress address, byte* hostName);
+		public static extern int enet_address_get_host(ref ENetAddress address, StringBuilder hostName, uint nameLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_set_host(ref ENetAddress address, byte[] hostName);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host(ref ENetAddress address, byte* hostName, uint nameLength);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host(ref ENetAddress address, byte[] hostName, uint nameLength);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte* hostIP, uint ipLength);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_address_get_host_ip(ref ENetAddress address, byte[] hostIP, uint ipLength);
-
-		#endregion
-
-		#region Global Functions
+		public static extern int enet_address_get_host_ip(ref ENetAddress address, StringBuilder hostIp, uint ipLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_deinitialize();
@@ -73,57 +38,48 @@ namespace ENet
 		public static extern int enet_initialize_with_callbacks(uint version, ref ENetCallbacks inits);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_enable_crc(ENetHost* host);
-
-		#endregion
-
-		#region Host Functions
+		public static extern void enet_enable_crc(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_compress_with_range_encoder(ENetHost* host);
+		public static extern int enet_host_compress_with_range_encoder(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetHost* enet_host_create(
-				ENetAddress* address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
+		public static extern IntPtr enet_host_create(
+				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth, 
+				uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetHost* enet_host_create(
-				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
+		public static extern IntPtr enet_host_create(
+				IntPtr address, uint peerLimit, uint channelLimit, uint incomingBandwidth,
+				uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_destroy(ENetHost* host);
+		public static extern void enet_host_destroy(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetPeer* enet_host_connect(
-				ENetHost* host, ref ENetAddress address, uint channelCount, uint data);
+		public static extern IntPtr enet_host_connect(
+				IntPtr host, ref ENetAddress address, uint channelCount, uint data);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_broadcast(ENetHost* host, byte channelID, ENetPacket* packet);
+		public static extern void enet_host_broadcast(IntPtr host, byte channelID, IntPtr packet);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_compress(ENetHost* host, ENetCompressor* compressor);
+		public static extern void enet_host_compress(IntPtr host, IntPtr compressor);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_channel_limit(ENetHost* host, uint channelLimit);
+		public static extern void enet_host_channel_limit(IntPtr host, uint channelLimit);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_bandwidth_limit(ENetHost* host, uint incomingBandwidth, uint outgoingBandwidth);
+		public static extern void enet_host_bandwidth_limit(IntPtr host, uint incomingBandwidth, uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_host_flush(ENetHost* host);
+		public static extern void enet_host_flush(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_check_events(ENetHost* host, out ENetEvent e);
+		public static extern int enet_host_check_events(IntPtr host, out IntPtr e);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_service(ENetHost* host, ENetEvent* e, uint timeout);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_service(ENetHost* host, out ENetEvent e, uint timeout);
-
-		#endregion
-
-		#region Miscellaneous Functions
+		public static extern int enet_host_service(IntPtr host, ref IntPtr e, uint timeout);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern uint enet_time_get();
@@ -131,51 +87,39 @@ namespace ENet
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_time_set(uint newTimeBase);
 
-		#endregion
-
-		#region Packet Functions
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
+		public static extern IntPtr enet_packet_create(string data, uint dataLength, PacketFlags flags);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetPacket* enet_packet_create(void* data, uint dataLength, PacketFlags flags);
+		public static extern void enet_packet_destroy(IntPtr packet);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_packet_destroy(ENetPacket* packet);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_packet_resize(ENetPacket* packet, uint dataLength);
-
-		#endregion
-
-		#region Peer Functions
+		public static extern int enet_packet_resize(IntPtr packet, uint dataLength);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_peer_throttle_configure(
-				ENetPeer* peer, uint interval, uint acceleration, uint deceleration);
+				IntPtr peer, uint interval, uint acceleration, uint deceleration);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_peer_send(ENetPeer* peer, byte channelID, ENetPacket* packet);
+		public static extern int enet_peer_send(IntPtr peer, byte channelID, IntPtr packet);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern ENetPacket* enet_peer_receive(ENetPeer* peer, out byte channelID);
+		public static extern IntPtr enet_peer_receive(IntPtr peer, out byte channelID);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_peer_reset(ENetPeer* peer);
+		public static extern void enet_peer_reset(IntPtr peer);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_peer_ping(ENetPeer* peer);
+		public static extern void enet_peer_ping(IntPtr peer);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_peer_disconnect_now(ENetPeer* peer, uint data);
+		public static extern void enet_peer_disconnect_now(IntPtr peer, uint data);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_peer_disconnect(ENetPeer* peer, uint data);
+		public static extern void enet_peer_disconnect(IntPtr peer, uint data);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern void enet_peer_disconnect_later(ENetPeer* peer, uint data);
-
-		#endregion
-
-		#region C# Utility
+		public static extern void enet_peer_disconnect_later(IntPtr peer, uint data);
 
 		public static bool memcmp(byte[] s1, byte[] s2)
 		{
@@ -212,7 +156,5 @@ namespace ENet
 			}
 			return i;
 		}
-
-		#endregion
 	}
 }

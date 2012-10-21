@@ -1,47 +1,31 @@
-﻿#region License
-
-/*
-ENet for C#
-Copyright (c) 2011 James F. Bellinger <jfb@zer7.com>
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-
-#endregion
-
-using System;
-using System.Diagnostics;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace ENet
 {
-	public unsafe class Peer : IDisposable
+	public class Peer : IDisposable
 	{
-		private readonly Host host;
-		private Native.ENetPeer* peer;
-		private Action<Event> connected;
-		private Action<Event> received;
-		private Action<Event> disconnect;
+		private static readonly PeerEventsManager peerEventsManager = new PeerEventsManager();
 
-		public Peer(Host host, Native.ENetPeer* peer)
+		public static PeerEventsManager PeerEventsManager
 		{
-			if (peer == null)
+			get
+			{
+				return peerEventsManager;
+			}
+		}
+
+		private IntPtr peer;
+
+		public Peer(IntPtr peer)
+		{
+			if (peer == IntPtr.Zero)
 			{
 				throw new InvalidOperationException("No native peer.");
 			}
 			this.peer = peer;
-			this.host = host;
-			this.host.Peers.Add(this);
+			PeerEventsManager.Add(peer);
 		}
 
 		~Peer()
@@ -57,28 +41,33 @@ namespace ENet
 
 		protected void Dispose(bool disposing)
 		{
-			if (this.peer == null)
+			if (this.peer == IntPtr.Zero)
 			{
 				return;
 			}
 
-			if (disposing)
-			{
-				Native.enet_peer_reset(this.peer);
-			}
-			this.host.Peers.Remove((int)this.peer->data);
-			this.peer = null;
+			PeerEventsManager.Remove(this.peer);
+			Native.enet_peer_reset(this.peer);
+			this.peer = IntPtr.Zero;
 		}
 
-		public Native.ENetPeer* NativeData
+		public ENetPeer Struct
+		{
+			get
+			{
+				return (ENetPeer)Marshal.PtrToStructure(this.peer, typeof(ENetPeer));
+			}
+			set
+			{
+				Marshal.StructureToPtr(value, this.peer, false);
+			}
+		}
+
+		public IntPtr NativePtr
 		{
 			get
 			{
 				return this.peer;
-			}
-			set
-			{
-				this.peer = value;
 			}
 		}
 
@@ -86,84 +75,8 @@ namespace ENet
 		{
 			get
 			{
-				return this.peer->state;
+				return Struct.state;
 			}
-		}
-
-		public int Data
-		{
-			get
-			{
-				return (int)this.peer->data;
-			}
-			set
-			{
-				this.peer->data = (IntPtr)value;
-			}
-		}
-
-		// peer连接上了调用该事件
-		public event Action<Event> Connected
-		{
-			add
-			{
-				connected += value;
-			}
-			remove
-			{
-				connected -= value;
-			}
-		}
-
-		public event Action<Event> Received
-		{
-			add
-			{
-				received += value;
-			}
-			remove
-			{
-				received -= value;
-			}
-		}
-
-		public event Action<Event> Disconnect
-		{
-			add
-			{
-				disconnect += value;
-			}
-			remove
-			{
-				disconnect -= value;
-			}
-		}
-
-		internal void OnConnected(Event e)
-		{
-			if (connected == null)
-			{
-				return;
-			}
-			connected(e);
-		}
-
-		internal void OnReceived(Event e)
-		{
-			if (received == null)
-			{
-				return;
-			}
-			received(e);
-		}
-
-		internal void OnDisconnect(Event e)
-		{
-			if (disconnect == null)
-			{
-				return;
-			}
-			disconnect(e);
 		}
 
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
@@ -171,14 +84,9 @@ namespace ENet
 			Native.enet_peer_throttle_configure(this.peer, interval, acceleration, deceleration);
 		}
 
-		public void Send(byte channelID, byte[] data)
+		public void Send(byte channelID, string data)
 		{
-			this.Send(channelID, data, 0, data.Length);
-		}
-
-		public void Send(byte channelID, byte[] data, int offset, int length)
-		{
-			using (var packet = new Packet(data, offset, length))
+			using (var packet = new Packet(data))
 			{
 				this.Send(channelID, packet);
 			}
@@ -186,20 +94,20 @@ namespace ENet
 
 		public void Send(byte channelID, Packet packet)
 		{
-			Native.enet_peer_send(this.peer, channelID, packet.NativeData);
+			Native.enet_peer_send(this.peer, channelID, packet.NativePtr);
 		}
 
 		public Task<Packet> ReceiveAsync()
 		{
 			var tcs = new TaskCompletionSource<Packet>();
-			this.Received += e => tcs.TrySetResult(e.Packet);
+			PeerEventsManager[this.peer].Received += e => tcs.TrySetResult(e.Packet);
 			return tcs.Task;
 		}
 
 		public Task<bool> DisconnectAsync(uint data)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			this.Disconnect += e => tcs.TrySetResult(true);
+			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
 			Native.enet_peer_disconnect(this.peer, data);
 			return tcs.Task;
 		}
@@ -207,7 +115,7 @@ namespace ENet
 		public Task<bool> DisconnectLaterAsync(uint data)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			this.Disconnect += e => tcs.TrySetResult(true);
+			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
 			Native.enet_peer_disconnect_later(this.peer, data);
 			return tcs.Task;
 		}

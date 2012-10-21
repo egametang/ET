@@ -48,8 +48,7 @@ namespace Modules.Robot
 		{
 			try
 			{
-				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 }, 2);
-				LogText += string.Format("peer data: {0}\r\n", peer.Data);
+				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 });
 			}
 			catch (ENetException e)
 			{

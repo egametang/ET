@@ -1,35 +1,11 @@
-﻿#region License
-
-/*
-ENet for C#
-Copyright (c) 2011 James F. Bellinger <jfb@zer7.com>
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-
-#endregion
-
-using Log;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace ENet
 {
-	public sealed unsafe class Host : IDisposable
+	public sealed class Host : IDisposable
 	{
-		private Native.ENetHost* host;
-		private readonly PeerManager peerManager = new PeerManager();
+		private IntPtr host;
 		private readonly object eventsLock = new object();
 		private Action events;
 
@@ -38,7 +14,33 @@ namespace ENet
 		{
 		}
 
-		public Host(Address? address, uint peerLimit, uint channelLimit = 0, 
+		public Host(Address address, uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
+			uint channelLimit = 0, uint incomingBandwidth = 0,
+			uint outgoingBandwidth = 0, bool enableCrc = true)
+		{
+			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			{
+				throw new ArgumentOutOfRangeException("peerLimit");
+			}
+			CheckChannelLimit(channelLimit);
+
+			ENetAddress nativeAddress = address.Struct;
+			this.host = Native.enet_host_create(
+				ref nativeAddress, peerLimit, channelLimit, incomingBandwidth,
+				outgoingBandwidth);
+
+			if (this.host == IntPtr.Zero)
+			{
+				throw new ENetException(0, "Host creation call failed.");
+			}
+
+			if (enableCrc)
+			{
+				Native.enet_enable_crc(host);
+			}
+		}
+
+		public Host(uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
 				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
@@ -47,21 +49,11 @@ namespace ENet
 			}
 			CheckChannelLimit(channelLimit);
 
-			if (address != null)
-			{
-				Native.ENetAddress nativeAddress = address.Value.NativeData;
-				this.host = Native.enet_host_create(
-					ref nativeAddress, peerLimit, channelLimit, incomingBandwidth,
-					outgoingBandwidth);
-			}
-			else
-			{
-				this.host = Native.enet_host_create(
-					null, peerLimit, channelLimit, incomingBandwidth,
-					outgoingBandwidth);
-			}
+			this.host = Native.enet_host_create(
+				IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth,
+				outgoingBandwidth);
 
-			if (this.host == null)
+			if (this.host == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Host creation call failed.");
 			}
@@ -85,17 +77,12 @@ namespace ENet
 
 		private void Dispose(bool disposing)
 		{
-			if (this.host == null)
+			if (this.host == IntPtr.Zero)
 			{
 				return;
 			}
-
-			if (disposing)
-			{
-				Native.enet_host_destroy(this.host);
-			}
-
-			this.host = null;
+			Native.enet_host_destroy(this.host);
+			this.host = IntPtr.Zero;
 		}
 
 		private static void CheckChannelLimit(uint channelLimit)
@@ -108,9 +95,9 @@ namespace ENet
 
 		private int CheckEvents(out Event e)
 		{
-			Native.ENetEvent nativeEvent;
+			IntPtr nativeEvent;
 			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
-			e = new Event(this, nativeEvent);
+			e = new Event(nativeEvent);
 			return ret;
 		}
 
@@ -120,34 +107,13 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			return Native.enet_host_service(this.host, null, (uint)timeout);
-		}
-
-		private int Service(int timeout, out Event e)
-		{
-			if (timeout < 0)
-			{
-				throw new ArgumentOutOfRangeException("timeout");
-			}
-			Native.ENetEvent nativeEvent;
-
-			int ret = Native.enet_host_service(this.host, out nativeEvent, (uint)timeout);
-			e = new Event(this, nativeEvent);
-			return ret;
-		}
-
-		public PeerManager Peers
-		{
-			get
-			{
-				return peerManager;
-			}
+			IntPtr e = IntPtr.Zero;
+			return Native.enet_host_service(this.host, ref e, (uint)timeout);
 		}
 
 		public void Broadcast(byte channelID, ref Packet packet)
 		{
-			Native.enet_host_broadcast(this.host, channelID, packet.NativeData);
-			packet.NativeData = null; // Broadcast automatically clears this.
+			Native.enet_host_broadcast(this.host, channelID, packet.NativePtr);
 		}
 
 		public void CompressWithRangeEncoder()
@@ -157,7 +123,7 @@ namespace ENet
 
 		public void DoNotCompress()
 		{
-			Native.enet_host_compress(this.host, null);
+			Native.enet_host_compress(this.host, IntPtr.Zero);
 		}
 
 		public Task<Peer> ConnectAsync(
@@ -167,14 +133,14 @@ namespace ENet
 			CheckChannelLimit(channelLimit);
 
 			var tcs = new TaskCompletionSource<Peer>();
-			Native.ENetAddress nativeAddress = address.NativeData;
-			Native.ENetPeer* p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
-			if (p == null)
+			ENetAddress nativeAddress = address.Struct;
+			IntPtr p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
+			if (p == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Host connect call failed.");
 			}
-			var peer = new Peer(this, p);
-			peer.Connected += e => tcs.TrySetResult(e.Peer);
+			var peer = new Peer(p);
+			Peer.PeerEventsManager[p].Connected += e => tcs.TrySetResult(peer);
 			return tcs.Task;
 		}
 
@@ -244,17 +210,17 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						e.Peer.OnConnected(e);
+						Peer.PeerEventsManager.OnConnected(e.Struct.peer, e);
 						break;
 					}
 					case EventType.Receive:
 					{
-						e.Peer.OnReceived(e);
+						Peer.PeerEventsManager.OnReceived(e.Struct.peer, e);
 						break;
 					}
 					case EventType.Disconnect:
 					{
-						e.Peer.OnDisconnect(e);
+						Peer.PeerEventsManager.OnDisconnect(e.Struct.peer, e);
 						break;
 					}
 				}
