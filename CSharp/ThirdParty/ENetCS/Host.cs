@@ -9,11 +9,6 @@ namespace ENet
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public Host(ushort port, uint peerLimit):
-			this(new Address { Port = port }, peerLimit)
-		{
-		}
-
 		public Host(Address address, uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
 			uint channelLimit = 0, uint incomingBandwidth = 0,
 			uint outgoingBandwidth = 0, bool enableCrc = true)
@@ -95,9 +90,9 @@ namespace ENet
 
 		private int CheckEvents(out Event e)
 		{
-			IntPtr nativeEvent;
-			int ret = Native.enet_host_check_events(this.host, out nativeEvent);
-			e = new Event(nativeEvent);
+			var enetEv = new ENetEvent();
+			int ret = Native.enet_host_check_events(this.host, enetEv);
+			e = new Event(enetEv);
 			return ret;
 		}
 
@@ -107,8 +102,7 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			IntPtr e = IntPtr.Zero;
-			return Native.enet_host_service(this.host, ref e, (uint)timeout);
+			return Native.enet_host_service(this.host, null, (uint)timeout);
 		}
 
 		public void Broadcast(byte channelID, ref Packet packet)
@@ -210,17 +204,17 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						Peer.PeerEventsManager.OnConnected(e.Struct.peer, e);
+						Peer.PeerEventsManager.OnConnected(e.Ev.peer, e);
 						break;
 					}
 					case EventType.Receive:
 					{
-						Peer.PeerEventsManager.OnReceived(e.Struct.peer, e);
+						Peer.PeerEventsManager.OnReceived(e.Ev.peer, e);
 						break;
 					}
 					case EventType.Disconnect:
 					{
-						Peer.PeerEventsManager.OnDisconnect(e.Struct.peer, e);
+						Peer.PeerEventsManager.OnDisconnect(e.Ev.peer, e);
 						break;
 					}
 				}

@@ -20,10 +20,6 @@ namespace ENet
 
 		public Peer(IntPtr peer)
 		{
-			if (peer == IntPtr.Zero)
-			{
-				throw new InvalidOperationException("No native peer.");
-			}
 			this.peer = peer;
 			PeerEventsManager.Add(peer);
 		}
@@ -55,6 +51,10 @@ namespace ENet
 		{
 			get
 			{
+				if (this.peer == IntPtr.Zero)
+				{
+					return new ENetPeer();
+				}
 				return (ENetPeer)Marshal.PtrToStructure(this.peer, typeof(ENetPeer));
 			}
 			set
@@ -75,8 +75,17 @@ namespace ENet
 		{
 			get
 			{
+				if (this.peer == IntPtr.Zero)
+				{
+					return PeerState.Uninitialized;
+				}
 				return Struct.state;
 			}
+		}
+
+		public void Ping()
+		{
+			Native.enet_peer_ping(this.peer);
 		}
 
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
@@ -123,11 +132,6 @@ namespace ENet
 		public void DisconnectNow(uint data)
 		{
 			Native.enet_peer_disconnect_now(this.peer, data);
-		}
-
-		public void Ping()
-		{
-			Native.enet_peer_ping(this.peer);
 		}
 	}
 }

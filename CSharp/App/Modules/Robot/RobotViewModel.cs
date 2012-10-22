@@ -38,7 +38,7 @@ namespace Modules.Robot
 		public RobotViewModel()
 		{
 			Library.Initialize();
-			host = new Host(8888, Native.ENET_PROTOCOL_MAXIMUM_PEER_ID);
+			host = new Host();
 
 			timer.Tick += delegate { this.host.Run(); };
 			timer.Start();
@@ -48,7 +48,10 @@ namespace Modules.Robot
 		{
 			try
 			{
-				Peer peer = await host.ConnectAsync(new Address { Host = "192.168.10.246", Port = 8901 });
+				Peer peer = await host.ConnectAsync(
+					new Address { Host = "192.168.10.246", Port = 8901 });
+				peer.Send(1, "aaaaaaaaaaa");
+				Packet packet = await peer.ReceiveAsync();
 			}
 			catch (ENetException e)
 			{
@@ -58,11 +61,10 @@ namespace Modules.Robot
 
 		public void Start()
 		{
-			Logger.Trace("11111111111111111111111");
-			//for (int i = 0; i < 4095; ++i)
-			//{
-			//	StartClient();
-			//}
+			for (int i = 0; i < 4095; ++i)
+			{
+				StartClient();
+			}
 		}
 	}
 }

@@ -27,11 +27,6 @@ namespace ENet
 		Zombie = 9
 	}
 
-	public enum AddressType
-	{
-		IPv4 = 0
-	}
-
 	[Flags]
 	public enum PacketFlags
 	{
@@ -81,13 +76,13 @@ namespace ENet
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetEvent
+	public class ENetEvent
 	{
-		public readonly EventType type;
-		public readonly IntPtr peer;
-		public readonly byte channelID;
-		public readonly uint data;
-		public readonly IntPtr packet;
+		public EventType type;
+		public IntPtr peer;
+		public byte channelID;
+		public uint data;
+		public IntPtr packet;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

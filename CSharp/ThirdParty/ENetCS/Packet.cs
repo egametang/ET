@@ -9,10 +9,6 @@ namespace ENet
 
 		public Packet(IntPtr packet)
 		{
-			if (packet == IntPtr.Zero)
-			{
-				throw new InvalidOperationException("No native packet.");
-			}
 			this.packet = packet;
 		}
 

@@ -3,32 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace ENet
 {
-	public struct Event
+	public class Event
 	{
-		private readonly IntPtr e;
+		private readonly ENetEvent ev;
 
-		public Event(IntPtr e)
+		public Event(ENetEvent ev)
 		{
-			this.e = e;
+			this.ev = ev;
 		}
 
-		public ENetEvent Struct
+		public ENetEvent Ev
 		{
 			get
 			{
-				return (ENetEvent)Marshal.PtrToStructure(this.e, typeof(ENetEvent));
-			}
-			set
-			{
-				Marshal.StructureToPtr(value, this.e, false);
-			}
-		}
-
-		public IntPtr NativePtr
-		{
-			get
-			{
-				return e;
+				return this.ev;
 			}
 		}
 
@@ -36,7 +24,7 @@ namespace ENet
 		{
 			get
 			{
-				return new Packet(this.Struct.packet);
+				return new Packet(this.Ev.packet);
 			}
 		}
 
@@ -44,7 +32,7 @@ namespace ENet
 		{
 			get
 			{
-				return new Peer(this.Struct.peer);
+				return new Peer(this.Ev.peer);
 			}
 		}
 
@@ -52,7 +40,7 @@ namespace ENet
 		{
 			get
 			{
-				return this.Struct.type;
+				return this.Ev.type;
 			}
 		}
 	}

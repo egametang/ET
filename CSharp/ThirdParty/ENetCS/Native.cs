@@ -76,10 +76,10 @@ namespace ENet
 		public static extern void enet_host_flush(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_check_events(IntPtr host, out IntPtr e);
+		public static extern int enet_host_check_events(IntPtr host, ENetEvent ev);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern int enet_host_service(IntPtr host, ref IntPtr e, uint timeout);
+		public static extern int enet_host_service(IntPtr host, ENetEvent ev, uint timeout);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern uint enet_time_get();
