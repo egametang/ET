@@ -48,10 +48,14 @@ namespace Modules.Robot
 		{
 			try
 			{
-				Peer peer = await host.ConnectAsync(
-					new Address { Host = "192.168.10.246", Port = 8901 });
-				peer.Send(1, "aaaaaaaaaaa");
-				Packet packet = await peer.ReceiveAsync();
+				using (Peer peer = await host.ConnectAsync(
+					new Address { Host = "192.168.10.246", Port = 8901 }))
+				{
+					Packet packet = await peer.ReceiveAsync();
+					Logger.Debug(packet.Length + " " + packet.Data);
+					
+					await peer.DisconnectLaterAsync();
+				}
 			}
 			catch (ENetException e)
 			{

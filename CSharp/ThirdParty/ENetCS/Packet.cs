@@ -65,5 +65,34 @@ namespace ENet
 				return this.packet;
 			}
 		}
+
+		public uint Length
+		{
+			get
+			{
+				if (this.packet == IntPtr.Zero)
+				{
+					return 0;
+				}
+				return this.Struct.dataLength;
+			}
+		}
+
+		public string Data
+		{
+			get
+			{
+				if (this.packet == IntPtr.Zero)
+				{
+					return "";
+				}
+				ENetPacket pkt = this.Struct;
+				if (pkt.data == IntPtr.Zero)
+				{
+					return "";
+				}
+				return Marshal.PtrToStringAuto(pkt.data, (int)pkt.dataLength);
+			}
+		}
 	}
 }

@@ -105,8 +105,7 @@ namespace ENet
 	{
 		public uint referenceCount;
 		public uint flags;
-		[MarshalAsAttribute(UnmanagedType.LPStr)]
-		public StringBuilder data;
+		public IntPtr data;
 		public uint dataLength;
 		public ENetPacketFreeCallback freeCallback;
 	}

@@ -113,7 +113,7 @@ namespace ENet
 			return tcs.Task;
 		}
 
-		public Task<bool> DisconnectAsync(uint data)
+		public Task<bool> DisconnectAsync(uint data = 0)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
@@ -121,7 +121,7 @@ namespace ENet
 			return tcs.Task;
 		}
 
-		public Task<bool> DisconnectLaterAsync(uint data)
+		public Task<bool> DisconnectLaterAsync(uint data = 0)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
