@@ -1,5 +1,4 @@
-﻿
-namespace Log
+﻿namespace Log
 {
 	public static class Logger
 	{

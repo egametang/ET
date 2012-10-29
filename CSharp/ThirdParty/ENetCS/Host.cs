@@ -5,37 +5,22 @@ namespace ENet
 {
 	public sealed class Host : IDisposable
 	{
+		private readonly PeersManager peersManager = new PeersManager();
+
+		public PeersManager PeersManager
+		{
+			get
+			{
+				return this.peersManager;
+			}
+		}
+
 		private IntPtr host;
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public Host(Address address, uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
-			uint channelLimit = 0, uint incomingBandwidth = 0,
-			uint outgoingBandwidth = 0, bool enableCrc = true)
-		{
-			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
-			{
-				throw new ArgumentOutOfRangeException("peerLimit");
-			}
-			CheckChannelLimit(channelLimit);
-
-			ENetAddress nativeAddress = address.Struct;
-			this.host = Native.enet_host_create(
-				ref nativeAddress, peerLimit, channelLimit, incomingBandwidth,
-				outgoingBandwidth);
-
-			if (this.host == IntPtr.Zero)
-			{
-				throw new ENetException(0, "Host creation call failed.");
-			}
-
-			if (enableCrc)
-			{
-				Native.enet_enable_crc(host);
-			}
-		}
-
-		public Host(uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
+		public Host(
+				Address address, uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
 				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
@@ -44,9 +29,8 @@ namespace ENet
 			}
 			CheckChannelLimit(channelLimit);
 
-			this.host = Native.enet_host_create(
-				IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth,
-				outgoingBandwidth);
+			ENetAddress nativeAddress = address.Struct;
+			this.host = Native.enet_host_create(ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -55,7 +39,30 @@ namespace ENet
 
 			if (enableCrc)
 			{
-				Native.enet_enable_crc(host);
+				Native.enet_enable_crc(this.host);
+			}
+		}
+
+		public Host(
+				uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0, uint incomingBandwidth = 0,
+				uint outgoingBandwidth = 0, bool enableCrc = true)
+		{
+			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			{
+				throw new ArgumentOutOfRangeException("peerLimit");
+			}
+			CheckChannelLimit(channelLimit);
+
+			this.host = Native.enet_host_create(IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
+
+			if (this.host == IntPtr.Zero)
+			{
+				throw new ENetException(0, "Host creation call failed.");
+			}
+
+			if (enableCrc)
+			{
+				Native.enet_enable_crc(this.host);
 			}
 		}
 
@@ -76,7 +83,12 @@ namespace ENet
 			{
 				return;
 			}
-			Native.enet_host_destroy(this.host);
+
+			if (disposing)
+			{
+				Native.enet_host_destroy(this.host);
+			}
+
 			this.host = IntPtr.Zero;
 		}
 
@@ -92,7 +104,7 @@ namespace ENet
 		{
 			var enetEv = new ENetEvent();
 			int ret = Native.enet_host_check_events(this.host, enetEv);
-			e = new Event(enetEv);
+			e = new Event(this, enetEv);
 			return ret;
 		}
 
@@ -102,7 +114,7 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			return Native.enet_host_service(this.host, null, (uint)timeout);
+			return Native.enet_host_service(this.host, null, (uint) timeout);
 		}
 
 		public void Broadcast(byte channelID, ref Packet packet)
@@ -121,8 +133,7 @@ namespace ENet
 		}
 
 		public Task<Peer> ConnectAsync(
-			Address address, uint channelLimit = Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 
-			uint data = 0)
+				Address address, uint channelLimit = Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
@@ -133,8 +144,8 @@ namespace ENet
 			{
 				throw new ENetException(0, "Host connect call failed.");
 			}
-			var peer = new Peer(p);
-			Peer.PeerEventsManager[p].Connected += e => tcs.TrySetResult(peer);
+			var peer = new Peer(this, p);
+			this.PeersManager[p].PeerEvent.Connected += e => tcs.TrySetResult(peer);
 			return tcs.Task;
 		}
 
@@ -158,16 +169,16 @@ namespace ENet
 		{
 			add
 			{
-				lock (eventsLock)
+				lock (this.eventsLock)
 				{
-					events += value;
+					this.events += value;
 				}
 			}
 			remove
 			{
-				lock (eventsLock)
+				lock (this.eventsLock)
 				{
-					events -= value;
+					this.events -= value;
 				}
 			}
 		}
@@ -175,14 +186,14 @@ namespace ENet
 		private void OnExecuteEvents()
 		{
 			Action local = null;
-			lock (eventsLock)
+			lock (this.eventsLock)
 			{
-				if (events == null)
+				if (this.events == null)
 				{
 					return;
 				}
-				local = events;
-				events = null;
+				local = this.events;
+				this.events = null;
 			}
 			local();
 		}
@@ -190,31 +201,31 @@ namespace ENet
 		public void Run()
 		{
 			// 处理其它线程扔过来的事件
-			OnExecuteEvents();
+			this.OnExecuteEvents();
 
 			if (this.Service(0) < 0)
 			{
 				return;
 			}
 
-			Event e;
-			while (this.CheckEvents(out e) > 0)
+			Event ev;
+			while (this.CheckEvents(out ev) > 0)
 			{
-				switch (e.Type)
+				switch (ev.Type)
 				{
 					case EventType.Connect:
 					{
-						Peer.PeerEventsManager.OnConnected(e.Ev.peer, e);
+						ev.Peer.PeerEvent.OnConnected(ev);
 						break;
 					}
 					case EventType.Receive:
 					{
-						Peer.PeerEventsManager.OnReceived(e.Ev.peer, e);
+						ev.Peer.PeerEvent.OnReceived(ev);
 						break;
 					}
 					case EventType.Disconnect:
 					{
-						Peer.PeerEventsManager.OnDisconnect(e.Ev.peer, e);
+						ev.Peer.PeerEvent.OnDisconnect(ev);
 						break;
 					}
 				}

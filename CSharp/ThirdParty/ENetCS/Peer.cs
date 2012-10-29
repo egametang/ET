@@ -6,22 +6,15 @@ namespace ENet
 {
 	public class Peer : IDisposable
 	{
-		private static readonly PeerEventsManager peerEventsManager = new PeerEventsManager();
-
-		public static PeerEventsManager PeerEventsManager
-		{
-			get
-			{
-				return peerEventsManager;
-			}
-		}
-
+		private readonly Host host;
+		private readonly PeerEvent peerEvent = new PeerEvent();
 		private IntPtr peer;
 
-		public Peer(IntPtr peer)
+		public Peer(Host host, IntPtr peer)
 		{
+			this.host = host;
 			this.peer = peer;
-			PeerEventsManager.Add(peer);
+			host.PeersManager.Add(peer, this);
 		}
 
 		~Peer()
@@ -31,7 +24,7 @@ namespace ENet
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -42,12 +35,15 @@ namespace ENet
 				return;
 			}
 
-			PeerEventsManager.Remove(this.peer);
-			Native.enet_peer_reset(this.peer);
+			if (disposing)
+			{
+				this.host.PeersManager.Remove(this.peer);
+				Native.enet_peer_reset(this.peer);
+			}
 			this.peer = IntPtr.Zero;
 		}
 
-		public ENetPeer Struct
+		private ENetPeer Struct
 		{
 			get
 			{
@@ -55,7 +51,7 @@ namespace ENet
 				{
 					return new ENetPeer();
 				}
-				return (ENetPeer)Marshal.PtrToStructure(this.peer, typeof(ENetPeer));
+				return (ENetPeer) Marshal.PtrToStructure(this.peer, typeof (ENetPeer));
 			}
 			set
 			{
@@ -63,11 +59,11 @@ namespace ENet
 			}
 		}
 
-		public IntPtr NativePtr
+		public PeerEvent PeerEvent
 		{
 			get
 			{
-				return this.peer;
+				return this.peerEvent;
 			}
 		}
 
@@ -79,7 +75,7 @@ namespace ENet
 				{
 					return PeerState.Uninitialized;
 				}
-				return Struct.state;
+				return this.Struct.state;
 			}
 		}
 
@@ -109,14 +105,14 @@ namespace ENet
 		public Task<Packet> ReceiveAsync()
 		{
 			var tcs = new TaskCompletionSource<Packet>();
-			PeerEventsManager[this.peer].Received += e => tcs.TrySetResult(e.Packet);
+			this.PeerEvent.Received += e => tcs.TrySetResult(e.Packet);
 			return tcs.Task;
 		}
 
 		public Task<bool> DisconnectAsync(uint data = 0)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
+			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
 			Native.enet_peer_disconnect(this.peer, data);
 			return tcs.Task;
 		}
@@ -124,7 +120,7 @@ namespace ENet
 		public Task<bool> DisconnectLaterAsync(uint data = 0)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			PeerEventsManager[this.peer].Disconnect += e => tcs.TrySetResult(true);
+			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
 			Native.enet_peer_disconnect_later(this.peer, data);
 			return tcs.Task;
 		}

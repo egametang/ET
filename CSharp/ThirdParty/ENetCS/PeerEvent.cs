@@ -12,11 +12,11 @@ namespace ENet
 		{
 			add
 			{
-				connected += value;
+				this.connected += value;
 			}
 			remove
 			{
-				connected -= value;
+				this.connected -= value;
 			}
 		}
 
@@ -24,11 +24,11 @@ namespace ENet
 		{
 			add
 			{
-				received += value;
+				this.received += value;
 			}
 			remove
 			{
-				received -= value;
+				this.received -= value;
 			}
 		}
 
@@ -36,39 +36,39 @@ namespace ENet
 		{
 			add
 			{
-				disconnect += value;
+				this.disconnect += value;
 			}
 			remove
 			{
-				disconnect -= value;
+				this.disconnect -= value;
 			}
 		}
 
 		internal void OnConnected(Event e)
 		{
-			if (connected == null)
+			if (this.connected == null)
 			{
 				return;
 			}
-			connected(e);
+			this.connected(e);
 		}
 
 		internal void OnReceived(Event e)
 		{
-			if (received == null)
+			if (this.received == null)
 			{
 				return;
 			}
-			received(e);
+			this.received(e);
 		}
 
 		internal void OnDisconnect(Event e)
 		{
-			if (disconnect == null)
+			if (this.disconnect == null)
 			{
 				return;
 			}
-			disconnect(e);
+			this.disconnect(e);
 		}
 	}
 }

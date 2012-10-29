@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
-using Log;
-using Microsoft.Practices.Prism.Events;
-using Microsoft.Practices.Prism.ViewModel;
 using ENet;
+using Log;
+using Microsoft.Practices.Prism.ViewModel;
 
 namespace Modules.Robot
 {
@@ -13,10 +12,9 @@ namespace Modules.Robot
 	{
 		private readonly Host host;
 		private string logText = "";
+
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
-		{
-			Interval = new TimeSpan(0, 0, 0, 0, 50)
-		};
+		{Interval = new TimeSpan(0, 0, 0, 0, 50)};
 
 		public string LogText
 		{
@@ -38,26 +36,28 @@ namespace Modules.Robot
 		public RobotViewModel()
 		{
 			Library.Initialize();
-			host = new Host();
+			this.host = new Host();
 
-			timer.Tick += delegate { this.host.Run(); };
-			timer.Start();
+			this.timer.Tick += delegate { this.host.Run(); };
+			this.timer.Start();
 		}
 
 		public async void StartClient()
 		{
 			try
 			{
-				using (Peer peer = await host.ConnectAsync(
-					new Address { Host = "192.168.10.246", Port = 8901 }))
+				var address = new Address {Host = "192.168.10.246", Port = 8901};
+				using (Peer peer = await this.host.ConnectAsync(address))
 				{
-					Packet packet = await peer.ReceiveAsync();
-					Logger.Debug(packet.Length + " " + packet.Data);
-					
-					await peer.DisconnectLaterAsync();
+					using (Packet packet = await peer.ReceiveAsync())
+					{
+						Logger.Debug(packet.Length + " " + packet.Data);
+
+						await peer.DisconnectLaterAsync();
+					}
 				}
 			}
-			catch (ENetException e)
+			catch (Exception e)
 			{
 				Logger.Debug(e.Message);
 			}
@@ -67,7 +67,7 @@ namespace Modules.Robot
 		{
 			for (int i = 0; i < 4095; ++i)
 			{
-				StartClient();
+				this.StartClient();
 			}
 		}
 	}

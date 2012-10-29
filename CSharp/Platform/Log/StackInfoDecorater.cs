@@ -3,12 +3,10 @@ using System.IO;
 
 namespace Log
 {
-	class StackInfoDecorater: ALogDecorater
+	internal class StackInfoDecorater : ALogDecorater
 	{
-
-		public StackInfoDecorater(ALogDecorater decorater = null)
+		public StackInfoDecorater(ALogDecorater decorater = null) : base(decorater)
 		{
-			this.decorater = decorater;
 			this.FileName = true;
 			this.FileLineNumber = true;
 		}
@@ -27,9 +25,9 @@ namespace Log
 
 		public override string Decorate(string message)
 		{
-			if (decorater != null)
+			if (this.decorater != null)
 			{
-				message = decorater.Decorate(message);
+				message = this.decorater.Decorate(message);
 			}
 
 			if (!this.FileLineNumber && !this.FileName)
@@ -39,14 +37,14 @@ namespace Log
 
 			string extraInfo = "";
 			var stackTrace = new StackTrace(true);
-			var frame = stackTrace.GetFrame(this.Level + 4);
+			var frame = stackTrace.GetFrame(this.Level + 3);
 
-			if (FileName)
+			if (this.FileName)
 			{
 				var fileName = Path.GetFileName(frame.GetFileName());
 				extraInfo += fileName + " ";
 			}
-			if (FileLineNumber)
+			if (this.FileLineNumber)
 			{
 				var fileLineNumber = frame.GetFileLineNumber();
 				extraInfo += fileLineNumber + " ";

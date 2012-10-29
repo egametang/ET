@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
+using System.Windows.Controls;
 using Infrastructure;
 
 namespace Modules.Robot
@@ -30,12 +31,12 @@ namespace Modules.Robot
 
 		private void btnStart_Click(object sender, RoutedEventArgs e)
 		{
-			ViewModel.Start();
+			this.ViewModel.Start();
 		}
 
-		private void tbLog_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+		private void tbLog_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			tbLog.ScrollToEnd();
+			this.tbLog.ScrollToEnd();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Log;
 using EasyHook;
+using Log;
 
 namespace Hooks
 {
@@ -19,8 +19,8 @@ namespace Hooks
 		{
 			try
 			{
-				localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "send"), new DSend(dSend), this);
-				localHook.ThreadACL.SetInclusiveACL(new[] {0});
+				this.localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "send"), new DSend(dSend), this);
+				this.localHook.ThreadACL.SetInclusiveACL(new[] {0});
 			}
 			catch (Exception)
 			{
@@ -31,7 +31,7 @@ namespace Hooks
 
 		public void Dispose()
 		{
-			localHook.Dispose();
+			this.localHook.Dispose();
 		}
 	}
 }

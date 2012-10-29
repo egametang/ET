@@ -45,20 +45,17 @@ namespace ENet
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr enet_host_create(
-				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth, 
-				uint outgoingBandwidth);
+				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr enet_host_create(
-				IntPtr address, uint peerLimit, uint channelLimit, uint incomingBandwidth,
-				uint outgoingBandwidth);
+				IntPtr address, uint peerLimit, uint channelLimit, uint incomingBandwidth, uint outgoingBandwidth);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_host_destroy(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		public static extern IntPtr enet_host_connect(
-				IntPtr host, ref ENetAddress address, uint channelCount, uint data);
+		public static extern IntPtr enet_host_connect(IntPtr host, ref ENetAddress address, uint channelCount, uint data);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void enet_host_broadcast(IntPtr host, byte channelID, IntPtr packet);

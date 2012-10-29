@@ -1,9 +1,8 @@
-﻿
-namespace Log
+﻿namespace Log
 {
-    public interface ILogger
+	public interface ILogger
 	{
 		void Trace(string message);
-	    void Debug(string message);
-    }
+		void Debug(string message);
+	}
 }

@@ -46,10 +46,10 @@
     <Compile Include="ENetException.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Host.cs" />
-    <Compile Include="PeerEventsManager.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="PeerEvent.cs" />
+    <Compile Include="PeersManager.cs" />
     <Compile Include="Structs.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Peer.cs" />

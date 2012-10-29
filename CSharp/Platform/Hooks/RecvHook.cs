@@ -19,8 +19,8 @@ namespace Hooks
 		{
 			try
 			{
-				localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "recv"), new DRecv(dRecv), this);
-				localHook.ThreadACL.SetInclusiveACL(new[] { 0 });
+				this.localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "recv"), new DRecv(dRecv), this);
+				this.localHook.ThreadACL.SetInclusiveACL(new[] {0});
 			}
 			catch (Exception)
 			{
@@ -31,7 +31,7 @@ namespace Hooks
 
 		public void Dispose()
 		{
-			localHook.Dispose();
+			this.localHook.Dispose();
 		}
 
 		//static int RecvHooked(IntPtr socketHandle, IntPtr buf, int count, int socketFlags)

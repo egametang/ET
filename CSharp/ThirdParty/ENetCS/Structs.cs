@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ENet
 {
@@ -97,10 +96,10 @@ namespace ENet
 		public ENetListNode previous;
 	}
 
-	[UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 	public delegate void ENetPacketFreeCallback(ref ENetPacket param0);
 
-	[StructLayoutAttribute(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential)]
 	public struct ENetPacket
 	{
 		public uint referenceCount;

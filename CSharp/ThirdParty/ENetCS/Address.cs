@@ -10,8 +10,7 @@ namespace ENet
 		public bool Equals(Address addr)
 		{
 			ENetAddress enetAddr = addr.Struct;
-			return this.address.host == enetAddr.host &&
-				this.address.port == enetAddr.port;
+			return this.address.host == enetAddr.host && this.address.port == enetAddr.port;
 		}
 
 		public string IP
@@ -19,7 +18,7 @@ namespace ENet
 			get
 			{
 				var hostIP = new StringBuilder(256);
-				Native.enet_address_get_host_ip(ref this.address, hostIP, (uint)hostIP.Length);
+				Native.enet_address_get_host_ip(ref this.address, hostIP, (uint) hostIP.Length);
 				return hostIP.ToString();
 			}
 		}
@@ -29,7 +28,7 @@ namespace ENet
 			get
 			{
 				var hostName = new StringBuilder(256);
-				Native.enet_address_get_host(ref this.address, hostName, (uint)hostName.Length);
+				Native.enet_address_get_host(ref this.address, hostName, (uint) hostName.Length);
 				return hostName.ToString();
 			}
 			set

@@ -1,13 +1,18 @@
-﻿
-namespace Log
+﻿namespace Log
 {
 	public abstract class ALogDecorater
 	{
+		protected const string SEP = " ";
 		private int level;
+		protected readonly ALogDecorater decorater;
 
-		protected ALogDecorater decorater;
+		protected ALogDecorater(ALogDecorater decorater = null)
+		{
+			this.decorater = decorater;
+			this.Level = 0;
+		}
 
-		public int Level
+		protected int Level
 		{
 			get
 			{
@@ -15,13 +20,21 @@ namespace Log
 			}
 			set
 			{
-				if (decorater != null)
-				{
-					decorater.Level = value + 1;
-				}
 				this.level = value;
+				if (this.decorater != null)
+				{
+					this.decorater.Level = value + 1;
+				}
 			}
 		}
-		public abstract string Decorate(string message);
+
+		public virtual string Decorate(string message)
+		{
+			if (this.decorater == null)
+			{
+				return message;
+			}
+			return this.decorater.Decorate(message);
+		}
 	}
 }

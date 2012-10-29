@@ -1,14 +1,13 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace ENet
+﻿namespace ENet
 {
 	public class Event
 	{
+		private readonly Host host;
 		private readonly ENetEvent ev;
 
-		public Event(ENetEvent ev)
+		public Event(Host host, ENetEvent ev)
 		{
+			this.host = host;
 			this.ev = ev;
 		}
 
@@ -24,7 +23,7 @@ namespace ENet
 		{
 			get
 			{
-				return new Packet(this.Ev.packet);
+				return new Packet(this.host, this.Ev.packet);
 			}
 		}
 
@@ -32,7 +31,8 @@ namespace ENet
 		{
 			get
 			{
-				return new Peer(this.Ev.peer);
+				Peer peer = this.host.PeersManager[this.Ev.peer];
+				return peer;
 			}
 		}
 

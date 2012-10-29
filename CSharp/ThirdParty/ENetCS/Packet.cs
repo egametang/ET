@@ -5,10 +5,12 @@ namespace ENet
 {
 	public sealed class Packet : IDisposable
 	{
+		private Host host;
 		private IntPtr packet;
 
-		public Packet(IntPtr packet)
+		public Packet(Host host, IntPtr packet)
 		{
+			this.host = host;
 			this.packet = packet;
 		}
 
@@ -18,7 +20,7 @@ namespace ENet
 			{
 				throw new ArgumentNullException("data");
 			}
-			this.packet = Native.enet_packet_create(data, (uint)data.Length, flags);
+			this.packet = Native.enet_packet_create(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Packet creation call failed.");
@@ -27,12 +29,12 @@ namespace ENet
 
 		~Packet()
 		{
-			Dispose(false);
+			this.Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -42,15 +44,20 @@ namespace ENet
 			{
 				return;
 			}
-			Native.enet_packet_destroy(this.packet);
+
+			if (disposing)
+			{
+				Native.enet_packet_destroy(this.packet);
+			}
+
 			this.packet = IntPtr.Zero;
 		}
 
-		public ENetPacket Struct
+		private ENetPacket Struct
 		{
 			get
 			{
-				return (ENetPacket)Marshal.PtrToStructure(this.packet, typeof(ENetPacket));
+				return (ENetPacket) Marshal.PtrToStructure(this.packet, typeof (ENetPacket));
 			}
 			set
 			{
@@ -91,7 +98,7 @@ namespace ENet
 				{
 					return "";
 				}
-				return Marshal.PtrToStringAuto(pkt.data, (int)pkt.dataLength);
+				return Marshal.PtrToStringAuto(pkt.data, (int) pkt.dataLength);
 			}
 		}
 	}
