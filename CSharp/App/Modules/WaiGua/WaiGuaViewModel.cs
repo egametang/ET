@@ -5,7 +5,7 @@ using Microsoft.Practices.Prism.ViewModel;
 namespace Modules.WaiGua
 {
 	[Export(contractType: typeof (WaiGuaViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-	internal class WaiGuaViewModel : NotificationObject
+	internal class WaiGuaViewModel: NotificationObject
 	{
 		private string logText = "";
 

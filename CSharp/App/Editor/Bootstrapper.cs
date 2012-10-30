@@ -9,7 +9,7 @@ using Modules.WaiGua;
 
 namespace Editor
 {
-	public class Bootstrapper : MefBootstrapper
+	public class Bootstrapper: MefBootstrapper
 	{
 		protected override void ConfigureAggregateCatalog()
 		{

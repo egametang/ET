@@ -4,7 +4,7 @@ using Microsoft.Practices.Prism.Modularity;
 namespace Modules.WaiGua
 {
 	[ModuleExport(moduleType: typeof (WaiGuaModule))]
-	public class WaiGuaModule : IModule
+	public class WaiGuaModule: IModule
 	{
 		public void Initialize()
 		{

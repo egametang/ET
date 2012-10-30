@@ -8,13 +8,13 @@ using Microsoft.Practices.Prism.ViewModel;
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-	internal class RobotViewModel : NotificationObject
+	internal class RobotViewModel: NotificationObject
 	{
 		private readonly Host host;
 		private string logText = "";
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
-		{Interval = new TimeSpan(0, 0, 0, 0, 50)};
+		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
 
 		public string LogText
 		{
@@ -46,7 +46,7 @@ namespace Modules.Robot
 		{
 			try
 			{
-				var address = new Address {Host = "192.168.10.246", Port = 8901};
+				var address = new Address { Host = "192.168.10.246", Port = 8901 };
 				using (Peer peer = await this.host.ConnectAsync(address))
 				{
 					using (Packet packet = await peer.ReceiveAsync())

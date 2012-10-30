@@ -8,7 +8,7 @@ namespace Hooks
 	[UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
 	public delegate int DSend(IntPtr handle, IntPtr buf, int count, int flag);
 
-	public class SendHook : IDisposable
+	public class SendHook: IDisposable
 	{
 		[DllImport("Ws2_32.dll", EntryPoint = "send")]
 		public static extern int Send(IntPtr handle, IntPtr buf, int count, int flag);
@@ -20,7 +20,7 @@ namespace Hooks
 			try
 			{
 				this.localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "send"), new DSend(dSend), this);
-				this.localHook.ThreadACL.SetInclusiveACL(new[] {0});
+				this.localHook.ThreadACL.SetInclusiveACL(new[] { 0 });
 			}
 			catch (Exception)
 			{

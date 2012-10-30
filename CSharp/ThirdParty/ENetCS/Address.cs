@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ENet
 {
-	public struct Address : IEquatable<Address>
+	public struct Address: IEquatable<Address>
 	{
 		private ENetAddress address;
 

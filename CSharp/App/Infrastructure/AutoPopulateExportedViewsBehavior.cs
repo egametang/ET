@@ -22,7 +22,7 @@ using Microsoft.Practices.Prism.Regions;
 namespace Infrastructure
 {
 	[Export(typeof (AutoPopulateExportedViewsBehavior)), PartCreationPolicy(CreationPolicy.NonShared)]
-	public class AutoPopulateExportedViewsBehavior : RegionBehavior, IPartImportsSatisfiedNotification
+	public class AutoPopulateExportedViewsBehavior: RegionBehavior, IPartImportsSatisfiedNotification
 	{
 		[ImportMany(AllowRecomposition = true)]
 		public Lazy<object, IViewRegionRegistration>[] RegisteredViews

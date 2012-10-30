@@ -3,7 +3,7 @@ using Microsoft.Practices.Prism.ViewModel;
 
 namespace Modules.BehaviorTree
 {
-	public class TreeNodeViewModel : NotificationObject
+	public class TreeNodeViewModel: NotificationObject
 	{
 		private static int globalNum;
 		private readonly int num;

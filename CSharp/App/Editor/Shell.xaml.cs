@@ -4,7 +4,7 @@ using System.Windows;
 namespace Editor
 {
 	[Export]
-	public partial class Shell : Window
+	public partial class Shell: Window
 	{
 		public Shell()
 		{

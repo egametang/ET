@@ -2,9 +2,9 @@
 
 namespace ENet
 {
-	public class ENetException : Exception
+	public class ENetException: Exception
 	{
-		public ENetException(int code, string message) : base(message)
+		public ENetException(int code, string message): base(message)
 		{
 			this.Code = code;
 		}

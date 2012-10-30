@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Log
 {
-	internal class StackInfoDecorater : ALogDecorater
+	internal class StackInfoDecorater: ALogDecorater
 	{
-		public StackInfoDecorater(ALogDecorater decorater = null) : base(decorater)
+		public StackInfoDecorater(ALogDecorater decorater = null): base(decorater)
 		{
 			this.FileName = true;
 			this.FileLineNumber = true;

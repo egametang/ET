@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ENet
 {
-	public class Peer : IDisposable
+	public class Peer: IDisposable
 	{
 		private readonly Host host;
 		private readonly PeerEvent peerEvent = new PeerEvent();

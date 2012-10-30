@@ -2,11 +2,11 @@
 
 namespace Log
 {
-	public class NLoggerAdapter : ALogDecorater, ILogger
+	public class NLoggerAdapter: ALogDecorater, ILogger
 	{
 		private readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
-		public NLoggerAdapter(ALogDecorater decorater = null) : base(decorater)
+		public NLoggerAdapter(ALogDecorater decorater = null): base(decorater)
 		{
 		}
 

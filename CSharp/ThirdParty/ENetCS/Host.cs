@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ENet
 {
-	public sealed class Host : IDisposable
+	public sealed class Host: IDisposable
 	{
 		private readonly PeersManager peersManager = new PeersManager();
 
