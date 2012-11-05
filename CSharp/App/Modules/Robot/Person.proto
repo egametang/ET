@@ -1,0 +1,4 @@
+﻿message Person
+{
+	required int32 guid = 1;
+}
