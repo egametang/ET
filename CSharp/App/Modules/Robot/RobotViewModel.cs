@@ -1,9 +1,13 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.IO;
+using System.Text;
 using System.Windows.Threading;
 using ENet;
 using Log;
 using Microsoft.Practices.Prism.ViewModel;
+using ProtoBuf;
+using Robot.Protos;
 
 namespace Modules.Robot
 {
@@ -52,7 +56,15 @@ namespace Modules.Robot
 					using (Packet packet = await peer.ReceiveAsync())
 					{
 						Logger.Debug(packet.Length + " " + packet.Data);
-
+						var bytes = Encoding.Default.GetBytes(packet.Data);
+						var builder = new StringBuilder();
+						foreach (var b in bytes)
+						{
+							builder.Append(b.ToString("X2"));
+						}
+						Logger.Debug(string.Format("HEX string: {0}", builder));
+						var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(new MemoryStream(bytes));
+						Logger.Debug(string.Format("{0}, {1}", smsg.Num, smsg.Seed));
 						await peer.DisconnectLaterAsync();
 					}
 				}
@@ -65,7 +77,7 @@ namespace Modules.Robot
 
 		public void Start()
 		{
-			for (int i = 0; i < 4095; ++i)
+			for (int i = 0; i < 1; ++i)
 			{
 				this.StartClient();
 			}

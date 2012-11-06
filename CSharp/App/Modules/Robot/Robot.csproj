@@ -54,12 +54,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Person.pb.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Person.proto</DependentUpon>
-    </Compile>
+    <Compile Include="Protos\Messages.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
@@ -92,10 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
-    <None Include="Person.proto">
-      <Generator>ProtobufTool</Generator>
-      <LastGenOutput>Person.pb.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
