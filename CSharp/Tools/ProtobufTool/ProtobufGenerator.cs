@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
+using EnvDTE;
+using Process = System.Diagnostics.Process;
 
 namespace ProtobufTool
 {
@@ -17,29 +19,34 @@ namespace ProtobufTool
 
 		protected override byte[] GenerateCode(string inputFileName, string inputFileContent)
 		{
-			var processStartInfo = new ProcessStartInfo("protogen.exe")
+			using (var stream = File.Open("E:\\ProtobufTool.log", FileMode.OpenOrCreate))
+			using (var streamWriter = new StreamWriter(stream))
 			{
-				CreateNoWindow = true,
-				WindowStyle = ProcessWindowStyle.Hidden,
-				WorkingDirectory = Environment.CurrentDirectory,
-				RedirectStandardError = true,
-				RedirectStandardOutput = true
-			};
-			processStartInfo.CreateNoWindow = true;
-			processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+				streamWriter.WriteLine("input: {0}\r\n {1}", inputFileName, inputFileContent);
+				var processStartInfo = new ProcessStartInfo("protogen.exe")
+				{
+					CreateNoWindow = true,
+					WindowStyle = ProcessWindowStyle.Hidden,
+				};
 
-			var tempFile = Path.GetTempFileName();
-			string inputDir = Path.GetFullPath(inputFileName);
-			processStartInfo.Arguments = string.Format(
-				" -q -writeErrors -t: csharp -i:{0} -w:{1} -o:{2} ",
-				inputFileName, inputDir, tempFile);			
-			using(var process = Process.Start(processStartInfo))
-			{
-				process.WaitForExit();
+				var projectItem = this.GetService(typeof(ProjectItem)) as ProjectItem;
+				processStartInfo.WorkingDirectory = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
+				streamWriter.WriteLine("WorkingDirectory: {0}", processStartInfo.WorkingDirectory);
+				processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+				var tempFile = Path.GetTempFileName();
+				processStartInfo.Arguments = string.Format(
+						"-i:{0} -o:{1} -q -t:csharp", inputFileName, tempFile);
+				streamWriter.WriteLine("Arguments: {0}", processStartInfo.Arguments);
+				using (var process = Process.Start(processStartInfo))
+				{
+					process.WaitForExit();
+					streamWriter.WriteLine("return code: {0}", process.ExitCode);
+				}
+				byte[] bytes = File.ReadAllBytes(tempFile);
+				File.Delete(tempFile);
+				return bytes;
 			}
-			byte[] bytes = File.ReadAllBytes(tempFile);
-			File.Delete(tempFile);
-			return bytes;
 		}
     }
 }
