@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto">
-      <HintPath>..\..\..\packages\BouncyCastle.1.7.0\lib\Net20\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\..\..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -69,6 +66,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Helper\Helper.csproj">
+      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>

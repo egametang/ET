@@ -4,6 +4,7 @@ using ProtoBuf;
 namespace Robot.Protos
 {
 	[ProtoContract]
+	[System.Xml.Serialization.XmlType(TypeName = "SMSG_Auth_Challenge")]
 	public class SMSG_Auth_Challenge
 	{
 		[ProtoMember(1, IsRequired = true)]

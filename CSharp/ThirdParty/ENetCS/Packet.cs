@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace ENet
@@ -85,20 +86,14 @@ namespace ENet
 			}
 		}
 
-		public string Data
+		public byte[] Bytes
 		{
 			get
 			{
-				if (this.packet == IntPtr.Zero)
-				{
-					return "";
-				}
-				ENetPacket pkt = this.Struct;
-				if (pkt.data == IntPtr.Zero)
-				{
-					return "";
-				}
-				return Marshal.PtrToStringAuto(pkt.data, (int) pkt.dataLength);
+				var enetPacket = this.Struct;
+				var bytes = new byte[enetPacket.dataLength];
+				Marshal.Copy(enetPacket.data, bytes, 0, (int) enetPacket.dataLength);
+				return bytes;
 			}
 		}
 	}
