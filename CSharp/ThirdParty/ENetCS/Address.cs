@@ -18,7 +18,7 @@ namespace ENet
 			get
 			{
 				var hostIP = new StringBuilder(256);
-				Native.enet_address_get_host_ip(ref this.address, hostIP, (uint) hostIP.Length);
+				NativeMethods.enet_address_get_host_ip(ref this.address, hostIP, (uint) hostIP.Length);
 				return hostIP.ToString();
 			}
 		}
@@ -28,12 +28,12 @@ namespace ENet
 			get
 			{
 				var hostName = new StringBuilder(256);
-				Native.enet_address_get_host(ref this.address, hostName, (uint) hostName.Length);
+				NativeMethods.enet_address_get_host(ref this.address, hostName, (uint) hostName.Length);
 				return hostName.ToString();
 			}
 			set
 			{
-				Native.enet_address_set_host(ref this.address, value);
+				NativeMethods.enet_address_set_host(ref this.address, value);
 			}
 		}
 

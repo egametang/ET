@@ -20,17 +20,17 @@ namespace ENet
 		private Action events;
 
 		public Host(
-				Address address, uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
+				Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
 				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
-			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
 				throw new ArgumentOutOfRangeException("peerLimit");
 			}
 			CheckChannelLimit(channelLimit);
 
 			ENetAddress nativeAddress = address.Struct;
-			this.host = Native.enet_host_create(ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
+			this.host = NativeMethods.enet_host_create(ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -39,21 +39,21 @@ namespace ENet
 
 			if (enableCrc)
 			{
-				Native.enet_enable_crc(this.host);
+				NativeMethods.enet_enable_crc(this.host);
 			}
 		}
 
 		public Host(
-				uint peerLimit = Native.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0, uint incomingBandwidth = 0,
+				uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0, uint incomingBandwidth = 0,
 				uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
-			if (peerLimit > Native.ENET_PROTOCOL_MAXIMUM_PEER_ID)
+			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
 				throw new ArgumentOutOfRangeException("peerLimit");
 			}
 			CheckChannelLimit(channelLimit);
 
-			this.host = Native.enet_host_create(IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
+			this.host = NativeMethods.enet_host_create(IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -62,7 +62,7 @@ namespace ENet
 
 			if (enableCrc)
 			{
-				Native.enet_enable_crc(this.host);
+				NativeMethods.enet_enable_crc(this.host);
 			}
 		}
 
@@ -84,17 +84,14 @@ namespace ENet
 				return;
 			}
 
-			if (disposing)
-			{
-				Native.enet_host_destroy(this.host);
-			}
+			NativeMethods.enet_host_destroy(this.host);
 
 			this.host = IntPtr.Zero;
 		}
 
 		private static void CheckChannelLimit(uint channelLimit)
 		{
-			if (channelLimit > Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
 			{
 				throw new ArgumentOutOfRangeException("channelLimit");
 			}
@@ -103,7 +100,7 @@ namespace ENet
 		private int CheckEvents(out Event e)
 		{
 			var enetEv = new ENetEvent();
-			int ret = Native.enet_host_check_events(this.host, enetEv);
+			int ret = NativeMethods.enet_host_check_events(this.host, enetEv);
 			e = new Event(this, enetEv);
 			return ret;
 		}
@@ -114,32 +111,32 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException("timeout");
 			}
-			return Native.enet_host_service(this.host, null, (uint) timeout);
+			return NativeMethods.enet_host_service(this.host, null, (uint) timeout);
 		}
 
 		public void Broadcast(byte channelID, ref Packet packet)
 		{
-			Native.enet_host_broadcast(this.host, channelID, packet.NativePtr);
+			NativeMethods.enet_host_broadcast(this.host, channelID, packet.NativePtr);
 		}
 
 		public void CompressWithRangeEncoder()
 		{
-			Native.enet_host_compress_with_range_encoder(this.host);
+			NativeMethods.enet_host_compress_with_range_encoder(this.host);
 		}
 
 		public void DoNotCompress()
 		{
-			Native.enet_host_compress(this.host, IntPtr.Zero);
+			NativeMethods.enet_host_compress(this.host, IntPtr.Zero);
 		}
 
 		public Task<Peer> ConnectAsync(
-				Address address, uint channelLimit = Native.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, uint data = 0)
+				Address address, uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
 			var tcs = new TaskCompletionSource<Peer>();
 			ENetAddress nativeAddress = address.Struct;
-			IntPtr p = Native.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
+			IntPtr p = NativeMethods.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
 			if (p == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Host connect call failed.");
@@ -151,18 +148,18 @@ namespace ENet
 
 		public void Flush()
 		{
-			Native.enet_host_flush(this.host);
+			NativeMethods.enet_host_flush(this.host);
 		}
 
 		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
 		{
-			Native.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
+			NativeMethods.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
 		}
 
 		public void SetChannelLimit(uint channelLimit)
 		{
 			CheckChannelLimit(channelLimit);
-			Native.enet_host_channel_limit(this.host, channelLimit);
+			NativeMethods.enet_host_channel_limit(this.host, channelLimit);
 		}
 
 		public event Action Events

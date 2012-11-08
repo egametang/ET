@@ -13,7 +13,7 @@ using Robot.Protos;
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-	internal class RobotViewModel: NotificationObject
+	internal class RobotViewModel: NotificationObject, IDisposable
 	{
 		private readonly Host host;
 		private string logText = "";
@@ -45,6 +45,22 @@ namespace Modules.Robot
 
 			this.timer.Tick += delegate { this.host.Run(); };
 			this.timer.Start();
+		}
+
+		~RobotViewModel()
+		{
+			this.Disposing(false);
+		}
+
+		public void Dispose()
+		{
+			this.Disposing(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Disposing(bool disposing)
+		{	
+			this.host.Dispose();
 		}
 
 		public async void StartClient()

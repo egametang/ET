@@ -28,18 +28,15 @@ namespace ENet
 			GC.SuppressFinalize(this);
 		}
 
-		protected void Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if (this.peer == IntPtr.Zero)
 			{
 				return;
 			}
 
-			if (disposing)
-			{
-				this.host.PeersManager.Remove(this.peer);
-				Native.enet_peer_reset(this.peer);
-			}
+			this.host.PeersManager.Remove(this.peer);
+			NativeMethods.enet_peer_reset(this.peer);
 			this.peer = IntPtr.Zero;
 		}
 
@@ -81,12 +78,12 @@ namespace ENet
 
 		public void Ping()
 		{
-			Native.enet_peer_ping(this.peer);
+			NativeMethods.enet_peer_ping(this.peer);
 		}
 
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
 		{
-			Native.enet_peer_throttle_configure(this.peer, interval, acceleration, deceleration);
+			NativeMethods.enet_peer_throttle_configure(this.peer, interval, acceleration, deceleration);
 		}
 
 		public void Send(byte channelID, string data)
@@ -99,7 +96,7 @@ namespace ENet
 
 		public void Send(byte channelID, Packet packet)
 		{
-			Native.enet_peer_send(this.peer, channelID, packet.NativePtr);
+			NativeMethods.enet_peer_send(this.peer, channelID, packet.NativePtr);
 		}
 
 		public Task<Packet> ReceiveAsync()
@@ -113,7 +110,7 @@ namespace ENet
 		{
 			var tcs = new TaskCompletionSource<bool>();
 			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
-			Native.enet_peer_disconnect(this.peer, data);
+			NativeMethods.enet_peer_disconnect(this.peer, data);
 			return tcs.Task;
 		}
 
@@ -121,13 +118,13 @@ namespace ENet
 		{
 			var tcs = new TaskCompletionSource<bool>();
 			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
-			Native.enet_peer_disconnect_later(this.peer, data);
+			NativeMethods.enet_peer_disconnect_later(this.peer, data);
 			return tcs.Task;
 		}
 
 		public void DisconnectNow(uint data)
 		{
-			Native.enet_peer_disconnect_now(this.peer, data);
+			NativeMethods.enet_peer_disconnect_now(this.peer, data);
 		}
 	}
 }

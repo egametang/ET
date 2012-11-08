@@ -21,7 +21,7 @@ namespace ENet
 			{
 				throw new ArgumentNullException("data");
 			}
-			this.packet = Native.enet_packet_create(data, (uint) data.Length, flags);
+			this.packet = NativeMethods.enet_packet_create(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Packet creation call failed.");
@@ -46,11 +46,7 @@ namespace ENet
 				return;
 			}
 
-			if (disposing)
-			{
-				Native.enet_packet_destroy(this.packet);
-			}
-
+			NativeMethods.enet_packet_destroy(this.packet);
 			this.packet = IntPtr.Zero;
 		}
 

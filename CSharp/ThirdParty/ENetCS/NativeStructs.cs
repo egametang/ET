@@ -54,7 +54,7 @@ namespace ENet
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void no_memory_cb();
 
-		public IntPtr malloc, free, no_memory;
+		private IntPtr malloc, free, no_memory;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

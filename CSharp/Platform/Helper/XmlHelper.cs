@@ -30,13 +30,11 @@ namespace Helper
 		{
 			T t = default(T);
 			var xmlSerializer = new XmlSerializer(typeof(T));
-			using (Stream xmlStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString)))
+			Stream xmlStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString));
+			using (var xmlReader = XmlReader.Create(xmlStream))
 			{
-				using (var xmlReader = XmlReader.Create(xmlStream))
-				{
-					Object obj = xmlSerializer.Deserialize(xmlReader);
-					t = (T)obj;
-				}
+				Object obj = xmlSerializer.Deserialize(xmlReader);
+				t = (T)obj;
 			}
 			return t;
 		}

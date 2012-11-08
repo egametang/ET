@@ -19,7 +19,7 @@ namespace ProtobufTool
 
 		protected override byte[] GenerateCode(string inputFileName, string inputFileContent)
 		{
-			using (var stream = File.Open("E:\\ProtobufTool.log", FileMode.OpenOrCreate))
+			var stream = File.Open("E:\\ProtobufTool.log", FileMode.OpenOrCreate);
 			using (var streamWriter = new StreamWriter(stream))
 			{
 				streamWriter.WriteLine("input: {0}\r\n {1}", inputFileName, inputFileContent);
