@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Helper
 {
-    public class XmlHelper
+    public static class XmlHelper
     {
 		/// <summary>
 		/// 对象序列化成 XML String
