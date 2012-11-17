@@ -67,18 +67,12 @@ namespace Modules.Robot
 		{
 			try
 			{
-				var address = new Address { Host = "192.168.10.246", Port = 8901 };
+				var address = new Address { HostName = "192.168.10.246", Port = 8901 };
 				using (Peer peer = await this.host.ConnectAsync(address))
 				{
 					using (Packet packet = await peer.ReceiveAsync())
 					{
-						var builder = new StringBuilder();
 						var bytes = packet.Bytes;
-						for (int i = 0; i < bytes.Length; ++i)
-						{
-							var b = bytes[i];
-							builder.Append(b.ToString("X2"));
-						}
 						var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
 						var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
 						Logger.Debug(string.Format(

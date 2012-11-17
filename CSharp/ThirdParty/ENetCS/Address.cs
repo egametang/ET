@@ -1,47 +1,22 @@
 ﻿using System;
-using System.Text;
+using System.Net;
 
 namespace ENet
 {
-	public struct Address: IEquatable<Address>
+	public struct Address
 	{
-		private ENetAddress address;
+		private uint ip;
+		private ushort port;
 
-		public bool Equals(Address addr)
-		{
-			ENetAddress enetAddr = addr.Struct;
-			return this.address.host == enetAddr.host && this.address.port == enetAddr.port;
-		}
-
-		public string IP
+		public uint Ip
 		{
 			get
 			{
-				var hostIP = new StringBuilder(256);
-				NativeMethods.enet_address_get_host_ip(ref this.address, hostIP, (uint) hostIP.Length);
-				return hostIP.ToString();
-			}
-		}
-
-		public string Host
-		{
-			get
-			{
-				var hostName = new StringBuilder(256);
-				NativeMethods.enet_address_get_host(ref this.address, hostName, (uint) hostName.Length);
-				return hostName.ToString();
+				return this.ip;
 			}
 			set
 			{
-				NativeMethods.enet_address_set_host(ref this.address, value);
-			}
-		}
-
-		public ENetAddress Struct
-		{
-			get
-			{
-				return this.address;
+				this.ip = value;
 			}
 		}
 
@@ -49,11 +24,38 @@ namespace ENet
 		{
 			get
 			{
-				return this.address.port;
+				return this.port;
 			}
 			set
 			{
-				this.address.port = value;
+				this.port = value;
+			}
+		}
+
+		public string HostName
+		{
+			get
+			{
+				var hostInfo = Dns.GetHostEntry(new IPAddress(this.ip));
+				return hostInfo.HostName;
+			}
+			set
+			{
+				var nameToIpAddress = Dns.GetHostEntry(value);
+				foreach (IPAddress address in nameToIpAddress.AddressList)
+				{
+					this.ip = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+					return;
+				}
+			}
+		}
+
+		public ENetAddress Struct
+		{
+			get
+			{
+				var address = new ENetAddress { host = this.ip, port = this.port };
+				return address;
 			}
 		}
 	}
