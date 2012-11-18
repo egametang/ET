@@ -43,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\ThirdParty\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Platform\;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)\Bin\</OutDir>
     <IntDir>$(SolutionDir)\Temp\</IntDir>
     <TargetExt>.dll</TargetExt>
