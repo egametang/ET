@@ -31,8 +31,18 @@
 		{
 			get
 			{
-				Peer peer = this.host.PeersManager[this.Ev.peer];
-				return peer;
+				var peerPtr = this.Ev.peer;
+				if (!this.host.PeersManager.ContainsKey(this.Ev.peer))
+				{
+					var peer = new Peer(this.host, peerPtr);
+					this.host.PeersManager.Add(peerPtr, peer);
+					return peer;
+				}
+				else
+				{
+					Peer peer = this.host.PeersManager[peerPtr];
+					return peer;
+				}
 			}
 		}
 

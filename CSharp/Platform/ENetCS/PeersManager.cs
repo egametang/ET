@@ -17,6 +17,15 @@ namespace ENet
 			this.peersManager.Remove(peerPtr);
 		}
 
+		public bool ContainsKey(IntPtr peerPtr)
+		{
+			if (this.peersManager.ContainsKey(peerPtr))
+			{
+				return true;
+			}
+			return false;
+		}
+
 		public Peer this[IntPtr peerPtr]
 		{
 			get

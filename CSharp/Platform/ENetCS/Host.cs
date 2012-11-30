@@ -16,12 +16,13 @@ namespace ENet
 		}
 
 		private IntPtr host;
+		private Action<Event> acceptHandler;
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public Host(
-				Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
-				uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
+		public Host(Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
+				uint channelLimit = 0, uint incomingBandwidth = 0, 
+				uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -43,8 +44,8 @@ namespace ENet
 			}
 		}
 
-		public Host(
-				uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0, uint incomingBandwidth = 0,
+		public Host(uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
+				uint channelLimit = 0, uint incomingBandwidth = 0,
 				uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
@@ -146,6 +147,17 @@ namespace ENet
 			return tcs.Task;
 		}
 
+		public Task<Peer> AcceptAsync()
+		{
+			if (acceptHandler != null)
+			{
+				throw new ENetException(0, "don't accept twice, when last accept not return!");
+			}
+			var tcs = new TaskCompletionSource<Peer>();
+			acceptHandler += e => tcs.TrySetResult(e.Peer);
+			return tcs.Task;
+		}
+
 		public void Flush()
 		{
 			NativeMethods.enet_host_flush(this.host);
@@ -197,7 +209,6 @@ namespace ENet
 
 		public void Run()
 		{
-			// 处理其它线程扔过来的事件
 			this.OnExecuteEvents();
 
 			if (this.Service(0) < 0)
@@ -212,7 +223,20 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						ev.Peer.PeerEvent.OnConnected(ev);
+						// 如果PeersManager包含了peer,则这次是connect事件
+						// 反之是accept事件
+						if (this.PeersManager.ContainsKey(ev.Ev.peer))
+						{
+							ev.Peer.PeerEvent.OnConnected(ev);
+						}
+						else
+						{
+							if (acceptHandler != null)
+							{
+								acceptHandler(ev);
+								acceptHandler = null;
+							}
+						}
 						break;
 					}
 					case EventType.Receive:
