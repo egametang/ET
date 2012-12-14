@@ -19,6 +19,7 @@ namespace ENet
 		private Action<Event> acceptHandler;
 		private readonly object eventsLock = new object();
 		private Action events;
+		private bool isRunning = true;
 
 		public Host(Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
 				uint channelLimit = 0, uint incomingBandwidth = 0, 
@@ -31,7 +32,9 @@ namespace ENet
 			CheckChannelLimit(channelLimit);
 
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.enet_host_create(ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
+			this.host = NativeMethods.enet_host_create(
+					ref nativeAddress, peerLimit, 
+					channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -207,47 +210,55 @@ namespace ENet
 			local();
 		}
 
-		public void Run()
+		public void Stop()
 		{
-			this.OnExecuteEvents();
+			isRunning = false;
+		}
 
-			if (this.Service(0) < 0)
+		public void Run(int timeout = 0)
+		{
+			while (isRunning)
 			{
-				return;
-			}
+				this.OnExecuteEvents();
 
-			Event ev;
-			while (this.CheckEvents(out ev) > 0)
-			{
-				switch (ev.Type)
+				if (this.Service(timeout) < 0)
 				{
-					case EventType.Connect:
+					continue;
+				}
+
+				Event ev;
+				while (this.CheckEvents(out ev) > 0)
+				{
+					switch (ev.Type)
 					{
-						// 如果PeersManager包含了peer,则这次是connect事件
-						// 反之是accept事件
-						if (this.PeersManager.ContainsKey(ev.Ev.peer))
+						case EventType.Connect:
 						{
-							ev.Peer.PeerEvent.OnConnected(ev);
-						}
-						else
-						{
-							if (acceptHandler != null)
+							// 如果PeersManager包含了peer,则这次是connect事件
+							// 反之是accept事件
+							if (this.PeersManager.ContainsKey(ev.Ev.peer))
 							{
-								acceptHandler(ev);
-								acceptHandler = null;
+								ev.Peer.PeerEvent.OnConnected(ev);
 							}
+							else
+							{
+								if (acceptHandler != null)
+								{
+									acceptHandler(ev);
+									acceptHandler = null;
+								}
+							}
+							break;
 						}
-						break;
-					}
-					case EventType.Receive:
-					{
-						ev.Peer.PeerEvent.OnReceived(ev);
-						break;
-					}
-					case EventType.Disconnect:
-					{
-						ev.Peer.PeerEvent.OnDisconnect(ev);
-						break;
+						case EventType.Receive:
+						{
+							ev.Peer.PeerEvent.OnReceived(ev);
+							break;
+						}
+						case EventType.Disconnect:
+						{
+							ev.Peer.PeerEvent.OnDisconnect(ev);
+							break;
+						}
 					}
 				}
 			}

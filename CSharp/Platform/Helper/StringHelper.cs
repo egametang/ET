@@ -10,11 +10,5 @@ namespace Helper
 			byte[] byteArray = Encoding.Default.GetBytes(str);
 			return byteArray;
 		}
-
-		public static string ToHex(this string str)
-		{
-			IEnumerable<byte> byteArray = str.ToBytes();
-			return byteArray.ToHex();
-		}
 	}
 }
