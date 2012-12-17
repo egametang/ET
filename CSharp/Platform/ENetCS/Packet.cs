@@ -6,12 +6,10 @@ namespace ENet
 {
 	public sealed class Packet: IDisposable
 	{
-		private Host host;
 		private IntPtr packet;
 
-		public Packet(Host host, IntPtr packet)
+		public Packet(IntPtr packet)
 		{
-			this.host = host;
 			this.packet = packet;
 		}
 

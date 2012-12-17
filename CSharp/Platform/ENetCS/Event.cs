@@ -1,14 +1,33 @@
-﻿namespace ENet
+﻿using System;
+
+namespace ENet
 {
+	public enum EventState
+	{
+		CONNECTED = 0,
+		DISCONNECTED = 1,
+	}
+
 	public class Event
 	{
-		private readonly Host host;
 		private readonly ENetEvent ev;
+		private EventState peerState = EventState.CONNECTED;
 
-		public Event(Host host, ENetEvent ev)
+		public Event(ENetEvent ev)
 		{
-			this.host = host;
 			this.ev = ev;
+		}
+
+		public EventState EventState
+		{
+			get
+			{
+				return peerState;
+			}
+			set
+			{
+				peerState = value;
+			}
 		}
 
 		public ENetEvent Ev
@@ -19,30 +38,19 @@
 			}
 		}
 
-		public Packet Packet
+		public IntPtr PacketPtr
 		{
 			get
 			{
-				return new Packet(this.host, this.Ev.packet);
+				return Ev.packet;
 			}
 		}
 
-		public Peer Peer
+		public IntPtr PeerPtr
 		{
 			get
 			{
-				var peerPtr = this.Ev.peer;
-				if (!this.host.PeersManager.ContainsKey(this.Ev.peer))
-				{
-					var peer = new Peer(this.host, peerPtr);
-					this.host.PeersManager.Add(peerPtr, peer);
-					return peer;
-				}
-				else
-				{
-					Peer peer = this.host.PeersManager[peerPtr];
-					return peer;
-				}
+				return this.Ev.peer;
 			}
 		}
 

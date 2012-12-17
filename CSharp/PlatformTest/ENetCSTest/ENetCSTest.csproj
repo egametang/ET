@@ -61,6 +61,10 @@
       <Project>{D0B4CFAC-A368-4742-9863-68776CFA9938}</Project>
       <Name>ENetCS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Platform\Log\Log.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

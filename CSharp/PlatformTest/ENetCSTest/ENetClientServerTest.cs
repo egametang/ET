@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Threading;
+﻿using System.Threading;
 using ENet;
+using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetCSTest
@@ -9,28 +8,41 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private static async void Connect(Host host, Address address)
+		private static async void Connect(ClientHost host, Address address)
 		{
+			Logger.Debug("Connect");
 			var peer = await host.ConnectAsync(address);
+			Logger.Debug("Connect OK");
 			var sPacket = new Packet("0123456789", PacketFlags.Reliable);
 			peer.Send(0, sPacket);
+			Logger.Debug("Send OK");
 			var rPacket = await peer.ReceiveAsync();
+			Logger.Debug("Receive OK");
 
 			Assert.AreEqual("9876543210", rPacket.Bytes.ToString());
 
 			await peer.DisconnectLaterAsync();
+			Logger.Debug("Disconnect OK");
+
+			host.Stop();
 		}
 
-		private static async void Accept(Host host)
+		private static async void Accept(ServerHost host)
 		{
+			Logger.Debug("Accept");
 			var peer = await host.AcceptAsync();
+			Logger.Debug("Accept OK");
 			var rPacket = await peer.ReceiveAsync();
+			Logger.Debug("Receive OK");
 
 			Assert.AreEqual("0123456789", rPacket.Bytes.ToString());
 
 			var sPacket = new Packet("9876543210", PacketFlags.Reliable);
 			peer.Send(0, sPacket);
+			Logger.Debug("Send OK");
 			await peer.DisconnectLaterAsync();
+
+			host.Stop();
 		}
 
 		[TestMethod]
@@ -39,8 +51,8 @@ namespace ENetCSTest
 			Library.Initialize();
 
 			var address = new Address { HostName = "127.0.0.1", Port = 8888 };
-			var serverHost = new Host();
-			var clientHost = new Host(address);
+			var clientHost = new ClientHost();
+			var serverHost = new ServerHost(address);
 
 			var server = new Thread(() => serverHost.Run(10));
 			var client = new Thread(() => clientHost.Run(10));
@@ -52,6 +64,8 @@ namespace ENetCSTest
 
 			server.Join();
 			client.Join();
+
+			Library.Deinitialize();
 		}
 	}
 }

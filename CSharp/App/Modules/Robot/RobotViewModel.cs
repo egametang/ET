@@ -15,7 +15,7 @@ namespace Modules.Robot
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal class RobotViewModel: NotificationObject, IDisposable
 	{
-		private readonly Host host;
+		private readonly ClientHost clientHost;
 		private string logText = "";
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
@@ -41,9 +41,9 @@ namespace Modules.Robot
 		public RobotViewModel()
 		{
 			Library.Initialize();
-			this.host = new Host();
+			this.clientHost = new ClientHost();
 
-			this.timer.Tick += delegate { this.host.Run(); };
+			this.timer.Tick += delegate { this.clientHost.RunOnce(); };
 			this.timer.Start();
 		}
 
@@ -60,15 +60,15 @@ namespace Modules.Robot
 
 		protected virtual void Disposing(bool disposing)
 		{	
-			this.host.Dispose();
+			this.clientHost.Dispose();
 		}
 
 		public async void StartClient()
 		{
 			try
 			{
-				var address = new Address { HostName = "192.168.10.246", Port = 8901 };
-				using (Peer peer = await this.host.ConnectAsync(address))
+				var address = new Address { HostName = "192.168.10.246", Port = 8900 };
+				using (Peer peer = await this.clientHost.ConnectAsync(address))
 				{
 					using (Packet packet = await peer.ReceiveAsync())
 					{

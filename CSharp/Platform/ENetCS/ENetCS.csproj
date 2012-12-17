@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
+    <Compile Include="ClientHost.cs" />
     <Compile Include="ENetException.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Host.cs" />
@@ -48,9 +49,16 @@
     <Compile Include="NativeStructs.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Peer.cs" />
+    <Compile Include="ServerHost.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Log\Log.csproj">
+      <Project>{72E16572-FC1F-4A9E-BC96-035417239298}</Project>
+      <Name>Log</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

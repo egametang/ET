@@ -8,39 +8,39 @@ namespace ENet
 		private Action<Event> received;
 		private Action<Event> disconnect;
 
-		public event Action<Event> Connected
+		public Action<Event> Connected
 		{
-			add
+			get
 			{
-				this.connected += value;
+				return this.connected;
 			}
-			remove
+			set
 			{
-				this.connected -= value;
+				this.connected = value;
 			}
 		}
 
-		public event Action<Event> Received
+		public Action<Event> Received
 		{
-			add
+			get
 			{
-				this.received += value;
+				return this.received;
 			}
-			remove
+			set
 			{
-				this.received -= value;
+				this.received = value;
 			}
 		}
 
-		public event Action<Event> Disconnect
+		public Action<Event> Disconnect
 		{
-			add
+			get
 			{
-				this.disconnect += value;
+				return this.disconnect;
 			}
-			remove
+			set
 			{
-				this.disconnect -= value;
+				this.disconnect = value;
 			}
 		}
 

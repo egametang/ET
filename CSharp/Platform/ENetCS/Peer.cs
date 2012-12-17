@@ -4,17 +4,14 @@ using System.Threading.Tasks;
 
 namespace ENet
 {
-	public class Peer: IDisposable
+	public sealed class Peer: IDisposable
 	{
-		private readonly Host host;
 		private readonly PeerEvent peerEvent = new PeerEvent();
 		private IntPtr peer;
 
-		public Peer(Host host, IntPtr peer)
+		public Peer(IntPtr peer)
 		{
-			this.host = host;
 			this.peer = peer;
-			host.PeersManager.Add(peer, this);
 		}
 
 		~Peer()
@@ -28,14 +25,13 @@ namespace ENet
 			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.peer == IntPtr.Zero)
 			{
 				return;
 			}
 
-			this.host.PeersManager.Remove(this.peer);
 			NativeMethods.enet_peer_reset(this.peer);
 			this.peer = IntPtr.Zero;
 		}
@@ -102,7 +98,15 @@ namespace ENet
 		public Task<Packet> ReceiveAsync()
 		{
 			var tcs = new TaskCompletionSource<Packet>();
-			this.PeerEvent.Received += e => tcs.TrySetResult(e.Packet);
+			this.PeerEvent.Received += e =>
+			{
+				if (e.EventState == EventState.DISCONNECTED)
+				{
+					throw new ENetException(3, "connect disconnected!");
+				}
+				var packet = new Packet(e.PacketPtr);
+				tcs.TrySetResult(packet);
+			};
 			return tcs.Task;
 		}
 

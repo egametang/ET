@@ -41,8 +41,8 @@ namespace ENet
 			}
 			set
 			{
-				var nameToIpAddress = Dns.GetHostEntry(value);
-				foreach (IPAddress address in nameToIpAddress.AddressList)
+				IPAddress[] addresslist = Dns.GetHostAddresses(value);
+				foreach (IPAddress address in addresslist)
 				{
 					this.ip = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
 					return;
