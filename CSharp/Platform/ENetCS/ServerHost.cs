@@ -43,10 +43,6 @@ namespace ENet
 			var tcs = new TaskCompletionSource<Peer>();
 			this.acceptEvent += e =>
 			{
-				if (e.EventState == EventState.DISCONNECTED)
-				{
-					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Accept!"));
-				}
 				var peer = new Peer(e.PeerPtr);
 				this.PeersManager.Add(e.PeerPtr, peer);
 				tcs.TrySetResult(peer);
@@ -94,12 +90,7 @@ namespace ENet
 						this.PeersManager.Remove(ev.PeerPtr);
 						peer.Dispose();
 						
-
-						if (this.acceptEvent != null)
-						{
-							this.acceptEvent(ev);
-						}
-						else if (peerEvent.Received != null)
+						if (peerEvent.Received != null)
 						{
 							peerEvent.OnReceived(ev);
 						}

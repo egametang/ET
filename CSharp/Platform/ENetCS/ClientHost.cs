@@ -43,14 +43,7 @@ namespace ENet
 			}
 			var peer = new Peer(peerPtr);
 			this.PeersManager.Add(peerPtr, peer);
-			peer.PeerEvent.Connected += e =>
-			{
-				if (e.EventState == EventState.DISCONNECTED)
-				{
-					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Connect!"));
-				}
-				tcs.TrySetResult(peer);
-			};
+			peer.PeerEvent.Connected += e => tcs.TrySetResult(peer);
 			return tcs.Task;
 		}
 
@@ -92,11 +85,7 @@ namespace ENet
 						this.PeersManager.Remove(ev.PeerPtr);
 						peer.Dispose();
 
-						if (peerEvent.Connected != null)
-						{
-							peerEvent.OnConnected(ev);
-						}
-						else if (peerEvent.Received != null)
+						if (peerEvent.Received != null)
 						{
 							peerEvent.OnReceived(ev);
 						}
