@@ -47,7 +47,7 @@ namespace ENet
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
-					throw new ENetException(3, "Connect Disconnected!");
+					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Connect!"));
 				}
 				tcs.TrySetResult(peer);
 			};
@@ -70,7 +70,6 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						Logger.Debug("client connect");
 						var peer = this.PeersManager[ev.PeerPtr];
 						peer.PeerEvent.OnConnected(ev);
 						peer.PeerEvent.Connected = null;
@@ -78,7 +77,6 @@ namespace ENet
 					}
 					case EventType.Receive:
 					{
-						Logger.Debug("client recv");
 						var peer = this.PeersManager[ev.PeerPtr];
 						peer.PeerEvent.OnReceived(ev);
 						peer.PeerEvent.Received = null;
@@ -86,31 +84,33 @@ namespace ENet
 					}
 					case EventType.Disconnect:
 					{
-						Logger.Debug("client disconnect");
-
 						ev.EventState = EventState.DISCONNECTED;
+
 						var peer = this.PeersManager[ev.PeerPtr];
-						if (peer.PeerEvent.Connected != null)
+						PeerEvent peerEvent = peer.PeerEvent;
+
+						this.PeersManager.Remove(ev.PeerPtr);
+						peer.Dispose();
+
+						if (peerEvent.Connected != null)
 						{
-							peer.PeerEvent.OnConnected(ev);
+							peerEvent.OnConnected(ev);
 						}
-						else if (peer.PeerEvent.Received != null)
+						else if (peerEvent.Received != null)
 						{
-							peer.PeerEvent.OnReceived(ev);
+							peerEvent.OnReceived(ev);
 						}
 						else
 						{
-							peer.PeerEvent.OnDisconnect(ev);
+							peerEvent.OnDisconnect(ev);
 						}
-
-						this.PeersManager.Remove(ev.PeerPtr);
 						break;
 					}
 				}
 			}
 		}
 		
-		public void Run(int timeout = 0)
+		public void Start(int timeout = 0)
 		{
 			while (isRunning)
 			{

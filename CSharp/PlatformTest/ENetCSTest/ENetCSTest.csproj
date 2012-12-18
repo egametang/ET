@@ -61,6 +61,10 @@
       <Project>{D0B4CFAC-A368-4742-9863-68776CFA9938}</Project>
       <Name>ENetCS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
+      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Platform\Log\Log.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>

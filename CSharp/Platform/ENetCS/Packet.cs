@@ -13,7 +13,7 @@ namespace ENet
 			this.packet = packet;
 		}
 
-		public Packet(string data, PacketFlags flags = PacketFlags.None)
+		public Packet(byte[] data, PacketFlags flags = PacketFlags.None)
 		{
 			if (data == null)
 			{

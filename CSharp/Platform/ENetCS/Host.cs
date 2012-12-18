@@ -5,6 +5,11 @@ namespace ENet
 {
 	public abstract class Host: IDisposable
 	{
+		static Host()
+		{
+			Library.Initialize();
+		}
+
 		private readonly PeersManager peersManager = new PeersManager();
 
 		protected PeersManager PeersManager

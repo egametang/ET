@@ -85,7 +85,7 @@ namespace ENet
 		internal static extern void enet_time_set(uint newTimeBase);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern IntPtr enet_packet_create(string data, uint dataLength, PacketFlags flags);
+		internal static extern IntPtr enet_packet_create(byte[] data, uint dataLength, PacketFlags flags);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void enet_packet_destroy(IntPtr packet);

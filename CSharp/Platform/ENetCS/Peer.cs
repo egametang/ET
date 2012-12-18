@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Log;
 
 namespace ENet
 {
@@ -82,7 +83,7 @@ namespace ENet
 			NativeMethods.enet_peer_throttle_configure(this.peer, interval, acceleration, deceleration);
 		}
 
-		public void Send(byte channelID, string data)
+		public void Send(byte channelID, byte[] data)
 		{
 			using (var packet = new Packet(data))
 			{
@@ -102,7 +103,7 @@ namespace ENet
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
-					throw new ENetException(3, "connect disconnected!");
+					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Received"));
 				}
 				var packet = new Packet(e.PacketPtr);
 				tcs.TrySetResult(packet);

@@ -6,7 +6,7 @@ namespace ENet
 {
 	public sealed class ServerHost : Host
 	{
-		private Action<Event> acceptHandler;
+		private Action<Event> acceptEvent;
 
 		public ServerHost(Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
 				uint channelLimit = 0, uint incomingBandwidth = 0,
@@ -36,16 +36,16 @@ namespace ENet
 
 		public Task<Peer> AcceptAsync()
 		{
-			if (acceptHandler != null)
+			if (this.acceptEvent != null)
 			{
 				throw new ENetException(0, "don't accept twice, when last accept not return!");
 			}
 			var tcs = new TaskCompletionSource<Peer>();
-			acceptHandler += e =>
+			this.acceptEvent += e =>
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
-					throw new ENetException(3, "Connect Disconnected!");
+					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Accept!"));
 				}
 				var peer = new Peer(e.PeerPtr);
 				this.PeersManager.Add(e.PeerPtr, peer);
@@ -70,17 +70,15 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						Logger.Debug("server connect");
-						if (acceptHandler != null)
+						if (this.acceptEvent != null)
 						{
-							acceptHandler(ev);
-							acceptHandler = null;
+							this.acceptEvent(ev);
+							this.acceptEvent = null;
 						}
 						break;
 					}
 					case EventType.Receive:
 					{
-						Logger.Debug("server recv");
 						var peer = this.PeersManager[ev.PeerPtr];
 						peer.PeerEvent.OnReceived(ev);
 						peer.PeerEvent.Received = null;
@@ -88,30 +86,35 @@ namespace ENet
 					}
 					case EventType.Disconnect:
 					{
-						Logger.Debug("server disconnect");
 						ev.EventState = EventState.DISCONNECTED;
+
 						var peer = this.PeersManager[ev.PeerPtr];
-						if (acceptHandler != null)
+						PeerEvent peerEvent = peer.PeerEvent;
+
+						this.PeersManager.Remove(ev.PeerPtr);
+						peer.Dispose();
+						
+
+						if (this.acceptEvent != null)
 						{
-							acceptHandler(ev);
+							this.acceptEvent(ev);
 						}
-						else if (peer.PeerEvent.Received != null)
+						else if (peerEvent.Received != null)
 						{
-							peer.PeerEvent.OnReceived(ev);
+							peerEvent.OnReceived(ev);
 						}
 						else
 						{
-							peer.PeerEvent.OnDisconnect(ev);
+							peerEvent.OnDisconnect(ev);
 						}
-
-						this.PeersManager.Remove(ev.PeerPtr);
+						
 						break;
 					}
 				}
 			}
 		}
 
-		public void Run(int timeout = 0)
+		public void Start(int timeout = 0)
 		{
 			while (isRunning)
 			{

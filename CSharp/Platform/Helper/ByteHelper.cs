@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Helper
@@ -17,6 +18,16 @@ namespace Helper
 			foreach (byte b in bytes)
 			{
 				stringBuilder.Append(b.ToString("X2"));
+			}
+			return stringBuilder.ToString();
+		}
+
+		public static string ToStr(this IEnumerable<byte> bytes)
+		{
+			var stringBuilder = new StringBuilder();
+			foreach (byte b in bytes)
+			{
+				stringBuilder.Append(b.ToString(CultureInfo.InvariantCulture));
 			}
 			return stringBuilder.ToString();
 		}
