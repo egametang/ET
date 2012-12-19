@@ -12,6 +12,7 @@ Dbg/
 Opt/
 
 */Temp/
+*/TestResults/
 
 bin/
 obj/
@@ -20,3 +21,5 @@ packages/
 _ReSharper.CSharp/
 .nuget/
 
+*.opensdf
+*.sdf
