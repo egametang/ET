@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using Log;
 
 namespace ENet
 {
@@ -60,11 +61,15 @@ namespace ENet
 			}
 		}
 
-		public IntPtr NativePtr
+		public IntPtr PacketPtr
 		{
 			get
 			{
 				return this.packet;
+			}
+			set
+			{
+				this.packet = value;
 			}
 		}
 

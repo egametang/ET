@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using ENet;
 using Helper;
-using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetCSTest
@@ -10,60 +8,40 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private static async void Client(ClientHost host, Address address)
+		private static async void ClientEvent(ClientHost host, Address address)
 		{
-			try
+			using (var peer = await host.ConnectAsync(address))
 			{
-				Logger.Debug("Client Connect");
-				var peer = await host.ConnectAsync(address);
-				Logger.Debug("Client Connect OK");
-				var sPacket = new Packet("0123456789".ToByteArray(), PacketFlags.Reliable);
-				peer.Send(0, sPacket);
-				Logger.Debug("Client Send OK");
-				var rPacket = await peer.ReceiveAsync();
-				Logger.Debug("Client Receive OK");
+				using (var sPacket = new Packet("0123456789".ToByteArray(), PacketFlags.Reliable))
+				{
+					peer.Send(0, sPacket);
+				}
 
-				CollectionAssert.AreEqual("9876543210".ToByteArray(), rPacket.Bytes);
+				using (var rPacket = await peer.ReceiveAsync())
+				{
+					CollectionAssert.AreEqual("9876543210".ToByteArray(), rPacket.Bytes);
+				}
 
 				await peer.DisconnectLaterAsync();
-				Logger.Debug("Client Disconnect OK");
 			}
-			catch (ENetException e)
-			{
-				Assert.Fail("Client ENetException: {0}", e.Message);
-			}
-			finally
-			{
-				host.Stop();
-			}
+			host.Stop();
 		}
 
-		private static async void Server(ServerHost host)
+		private static async void OnAccept(ServerHost host, Peer peer)
 		{
-			try
+			using (var rPacket = await peer.ReceiveAsync())
 			{
-				Logger.Debug("Server Accept");
-				var peer = await host.AcceptAsync();
-				Logger.Debug("Server Accept OK");
-				var rPacket = await peer.ReceiveAsync();
-				Logger.Debug("Server Receive OK");
-
 				CollectionAssert.AreEqual("0123456789".ToByteArray(), rPacket.Bytes);
+			}
 
-				var sPacket = new Packet("9876543210".ToByteArray(), PacketFlags.Reliable);
+			using(var sPacket = new Packet("9876543210".ToByteArray(), PacketFlags.Reliable))
+			{
 				peer.Send(0, sPacket);
-				Logger.Debug("Server Send OK");
-				await peer.DisconnectLaterAsync();
-				Logger.Debug("Server Disconnected OK");
+				host.Flush();
 			}
-			catch (ENetException e)
-			{
-				Assert.Fail("Server ENetException: {0}", e.Message);
-			}
-			finally
-			{
-				host.Stop();
-			}
+
+			// Client断开,Server端收到Disconnect事件,结束Server线程
+			peer.PeerEvent.Disconnect += (ev) => host.Stop();
 		}
 
 		[TestMethod]
@@ -73,16 +51,20 @@ namespace ENetCSTest
 			var clientHost = new ClientHost();
 			var serverHost = new ServerHost(address);
 
-			var server = new Thread(() => serverHost.Start(10));
-			var client = new Thread(() => clientHost.Start(10));
+			// accept回调事件
+			serverHost.AcceptEvent = peer => OnAccept(serverHost, peer);
 
-			serverHost.Events += () => Server(serverHost);
-			clientHost.Events += () => Client(clientHost, address);
-			server.Start();
-			client.Start();
+			var serverThread = new Thread(() => serverHost.Start(10));
+			var clientThread = new Thread(() => clientHost.Start(10));
 
-			server.Join();
-			client.Join();
+			serverThread.Start();
+			clientThread.Start();
+
+			// 往client host线程增加事件,client线程连接server
+			clientHost.Events += () => ClientEvent(clientHost, address);
+
+			serverThread.Join();
+			clientThread.Join();
 		}
 	}
 }

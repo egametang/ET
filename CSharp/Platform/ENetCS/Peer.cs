@@ -8,11 +8,11 @@ namespace ENet
 	public sealed class Peer: IDisposable
 	{
 		private readonly PeerEvent peerEvent = new PeerEvent();
-		private IntPtr peer;
+		private IntPtr peerPtr;
 
-		public Peer(IntPtr peer)
+		public Peer(IntPtr peerPtr)
 		{
-			this.peer = peer;
+			this.peerPtr = peerPtr;
 		}
 
 		~Peer()
@@ -28,28 +28,39 @@ namespace ENet
 
 		private void Dispose(bool disposing)
 		{
-			if (this.peer == IntPtr.Zero)
+			if (this.peerPtr == IntPtr.Zero)
 			{
 				return;
 			}
+			NativeMethods.enet_peer_reset(this.peerPtr);
+			this.peerPtr = IntPtr.Zero;
+		}
 
-			NativeMethods.enet_peer_reset(this.peer);
-			this.peer = IntPtr.Zero;
+		public IntPtr PeerPtr
+		{
+			get
+			{
+				return this.peerPtr;
+			}
+			set
+			{
+				this.peerPtr = value;
+			}
 		}
 
 		private ENetPeer Struct
 		{
 			get
 			{
-				if (this.peer == IntPtr.Zero)
+				if (this.peerPtr == IntPtr.Zero)
 				{
 					return new ENetPeer();
 				}
-				return (ENetPeer) Marshal.PtrToStructure(this.peer, typeof (ENetPeer));
+				return (ENetPeer) Marshal.PtrToStructure(this.peerPtr, typeof (ENetPeer));
 			}
 			set
 			{
-				Marshal.StructureToPtr(value, this.peer, false);
+				Marshal.StructureToPtr(value, this.peerPtr, false);
 			}
 		}
 
@@ -65,7 +76,7 @@ namespace ENet
 		{
 			get
 			{
-				if (this.peer == IntPtr.Zero)
+				if (this.peerPtr == IntPtr.Zero)
 				{
 					return PeerState.Uninitialized;
 				}
@@ -75,25 +86,25 @@ namespace ENet
 
 		public void Ping()
 		{
-			NativeMethods.enet_peer_ping(this.peer);
+			NativeMethods.enet_peer_ping(this.peerPtr);
 		}
 
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
 		{
-			NativeMethods.enet_peer_throttle_configure(this.peer, interval, acceleration, deceleration);
+			NativeMethods.enet_peer_throttle_configure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
 		public void Send(byte channelID, byte[] data)
 		{
-			using (var packet = new Packet(data))
-			{
-				this.Send(channelID, packet);
-			}
+			var packet = new Packet(data);
+			this.Send(channelID, packet);
 		}
 
 		public void Send(byte channelID, Packet packet)
 		{
-			NativeMethods.enet_peer_send(this.peer, channelID, packet.NativePtr);
+			NativeMethods.enet_peer_send(this.peerPtr, channelID, packet.PacketPtr);
+			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
+			packet.PacketPtr = IntPtr.Zero;
 		}
 
 		public Task<Packet> ReceiveAsync()
@@ -113,23 +124,23 @@ namespace ENet
 
 		public Task<bool> DisconnectAsync(uint data = 0)
 		{
+			NativeMethods.enet_peer_disconnect(this.peerPtr, data);
 			var tcs = new TaskCompletionSource<bool>();
 			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
-			NativeMethods.enet_peer_disconnect(this.peer, data);
 			return tcs.Task;
 		}
 
 		public Task<bool> DisconnectLaterAsync(uint data = 0)
 		{
+			NativeMethods.enet_peer_disconnect_later(this.peerPtr, data);
 			var tcs = new TaskCompletionSource<bool>();
 			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
-			NativeMethods.enet_peer_disconnect_later(this.peer, data);
 			return tcs.Task;
 		}
 
 		public void DisconnectNow(uint data)
 		{
-			NativeMethods.enet_peer_disconnect_now(this.peer, data);
+			NativeMethods.enet_peer_disconnect_now(this.peerPtr, data);
 		}
 	}
 }

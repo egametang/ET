@@ -80,7 +80,7 @@ namespace ENet
 
 		public void Broadcast(byte channelID, ref Packet packet)
 		{
-			NativeMethods.enet_host_broadcast(this.host, channelID, packet.NativePtr);
+			NativeMethods.enet_host_broadcast(this.host, channelID, packet.PacketPtr);
 		}
 
 		public void CompressWithRangeEncoder()
@@ -127,7 +127,7 @@ namespace ENet
 			}
 		}
 
-		protected void OnExecuteEvents()
+		protected void OnEvents()
 		{
 			Action local = null;
 			lock (this.eventsLock)

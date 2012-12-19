@@ -49,7 +49,7 @@ namespace ENet
 
 		public void RunOnce(int timeout = 0)
 		{
-			this.OnExecuteEvents();
+			this.OnEvents();
 
 			if (this.Service(timeout) < 0)
 			{
@@ -82,8 +82,9 @@ namespace ENet
 						var peer = this.PeersManager[ev.PeerPtr];
 						PeerEvent peerEvent = peer.PeerEvent;
 
-						this.PeersManager.Remove(ev.PeerPtr);
-						peer.Dispose();
+						this.PeersManager.Remove(peer.PeerPtr);
+						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
+						peer.PeerPtr = IntPtr.Zero;
 
 						if (peerEvent.Received != null)
 						{

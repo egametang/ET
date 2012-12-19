@@ -6,9 +6,10 @@ namespace ENet
 {
 	public sealed class ServerHost : Host
 	{
-		private Action<Event> acceptEvent;
+		private Action<Peer> acceptEvent;
 
-		public ServerHost(Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
+		public ServerHost(Address address, 
+				uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
 				uint channelLimit = 0, uint incomingBandwidth = 0,
 				uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
@@ -34,25 +35,17 @@ namespace ENet
 			}
 		}
 
-		public Task<Peer> AcceptAsync()
+		public Action<Peer> AcceptEvent
 		{
-			if (this.acceptEvent != null)
+			set
 			{
-				throw new ENetException(0, "don't accept twice, when last accept not return!");
+				this.acceptEvent = value;
 			}
-			var tcs = new TaskCompletionSource<Peer>();
-			this.acceptEvent += e =>
-			{
-				var peer = new Peer(e.PeerPtr);
-				this.PeersManager.Add(e.PeerPtr, peer);
-				tcs.TrySetResult(peer);
-			};
-			return tcs.Task;
 		}
 
 		public void RunOnce(int timeout = 0)
 		{
-			this.OnExecuteEvents();
+			this.OnEvents();
 
 			if (this.Service(timeout) < 0)
 			{
@@ -66,11 +59,13 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						if (this.acceptEvent != null)
+						if (this.acceptEvent == null)
 						{
-							this.acceptEvent(ev);
-							this.acceptEvent = null;
+							throw new ENetException(4, "No Accept Event!");
 						}
+						var peer = new Peer(ev.PeerPtr);
+						this.PeersManager.Add(peer.PeerPtr, peer);
+						this.acceptEvent(peer);
 						break;
 					}
 					case EventType.Receive:
@@ -88,7 +83,8 @@ namespace ENet
 						PeerEvent peerEvent = peer.PeerEvent;
 
 						this.PeersManager.Remove(ev.PeerPtr);
-						peer.Dispose();
+						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
+						peer.PeerPtr = IntPtr.Zero;
 						
 						if (peerEvent.Received != null)
 						{
@@ -98,7 +94,6 @@ namespace ENet
 						{
 							peerEvent.OnDisconnect(ev);
 						}
-						
 						break;
 					}
 				}
