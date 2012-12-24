@@ -67,9 +67,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\ENetCS\ENetCS.csproj">
+    <ProjectReference Include="..\..\..\Platform\ENet\ENet.csproj">
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
-      <Name>ENetCS</Name>
+      <Name>ENet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Helper\Helper.csproj">
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>

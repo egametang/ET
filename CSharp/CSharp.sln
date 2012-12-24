@@ -42,14 +42,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realm", "Server\Realm\Realm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealmContract", "Contract\RealmContract\RealmContract.csproj", "{E62B0633-1767-44A0-9479-C8E9D19DA4B8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENet", "Platform\ENet\ENet.vcxproj", "{C9992B7C-313E-4C9F-A954-640D01EDFB58}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENetCpp", "Platform\ENetCpp\ENetCpp.vcxproj", "{C9992B7C-313E-4C9F-A954-640D01EDFB58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetCS", "Platform\ENetCS\ENetCS.csproj", "{D0B4CFAC-A368-4742-9863-68776CFA9938}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58} = {C9992B7C-313E-4C9F-A954-640D01EDFB58}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENet", "Platform\ENet\ENet.csproj", "{D0B4CFAC-A368-4742-9863-68776CFA9938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetCSTest", "Platform\ENetCSTest\ENetCSTest.csproj", "{901A8E5C-C4C6-4C3C-8E18-068D75119F5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetTest", "Platform\ENetTest\ENetTest.csproj", "{901A8E5C-C4C6-4C3C-8E18-068D75119F5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

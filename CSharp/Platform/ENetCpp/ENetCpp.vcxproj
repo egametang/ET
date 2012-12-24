@@ -15,6 +15,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>ENet</RootNamespace>
+    <ProjectName>ENetCpp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -103,15 +104,15 @@
     <ClCompile Include="win32.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="callbacks.h" />
-    <ClInclude Include="enet.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="protocol.h" />
-    <ClInclude Include="time.h" />
-    <ClInclude Include="types.h" />
-    <ClInclude Include="unix.h" />
-    <ClInclude Include="utility.h" />
-    <ClInclude Include="win32.h" />
+    <ClInclude Include="ENet\callbacks.h" />
+    <ClInclude Include="ENet\enet.h" />
+    <ClInclude Include="ENet\list.h" />
+    <ClInclude Include="ENet\protocol.h" />
+    <ClInclude Include="ENet\time.h" />
+    <ClInclude Include="ENet\types.h" />
+    <ClInclude Include="ENet\unix.h" />
+    <ClInclude Include="ENet\utility.h" />
+    <ClInclude Include="ENet\win32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

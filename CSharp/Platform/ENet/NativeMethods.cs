@@ -6,7 +6,7 @@ namespace ENet
 {
 	public static class NativeMethods
 	{
-		private const string LIB = "ENet.dll";
+		private const string LIB = "ENetCpp.dll";
 
 		public const int ENET_PEER_PACKET_THROTTLE_SCALE = 32;
 		public const int ENET_PEER_PACKET_THROTTLE_ACCELERATION = 2;

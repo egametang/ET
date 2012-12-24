@@ -6,8 +6,8 @@
     <ProjectGuid>{901A8E5C-C4C6-4C3C-8E18-068D75119F5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ENetCSTest</RootNamespace>
-    <AssemblyName>ENetCSTest</AssemblyName>
+    <RootNamespace>ENetTest</RootNamespace>
+    <AssemblyName>ENetTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -57,10 +57,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Platform\ENetCS\ENetCS.csproj">
-      <Project>{D0B4CFAC-A368-4742-9863-68776CFA9938}</Project>
-      <Name>ENetCS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
@@ -68,6 +64,10 @@
     <ProjectReference Include="..\..\Platform\Log\Log.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ENet\ENet.csproj">
+      <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
+      <Name>ENet</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
