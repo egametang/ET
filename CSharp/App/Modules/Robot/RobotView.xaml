@@ -5,11 +5,16 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Robot="clr-namespace:Modules.Robot"
 		mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="800" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
-	<Grid Height="597" Margin="1,1,1,4">
+	<Grid>
 		<StackPanel>
-			<Button Name="btnStart" Content="开始" Width="80" Height="25" Click="btnStart_Click" />
-			<TextBox Name="tbLog" Text="{Binding LogText, Mode=OneWay}" Height="700"
-					VerticalScrollBarVisibility="Visible" TextChanged="tbLog_TextChanged" />
+			<StackPanel Orientation="Horizontal" >
+				<Label Content="loginIp: "></Label>
+				<TextBox Width="120" Text="{Binding LoginIp}" />
+				<Label Content="loginPort: "></Label>
+				<TextBox Width="40" Text="{Binding LoginPort}" />
+				<Button Name="btnStart" Content="Login" Width="80" Height="25" Click="btnLogin_Click" />
+				<TextBlock></TextBlock>
+			</StackPanel>
 		</StackPanel>
 	</Grid>
 </UserControl>

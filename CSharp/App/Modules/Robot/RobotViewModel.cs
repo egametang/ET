@@ -13,28 +13,46 @@ using Robot.Protos;
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-	internal class RobotViewModel: NotificationObject, IDisposable
+	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
 		private readonly ClientHost clientHost;
-		private string logText = "";
+		private string loginIp;
+		private ushort loginPort;
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
 
-		public string LogText
+		public string LoginIp
 		{
 			get
 			{
-				return this.logText;
+				return this.loginIp;
 			}
 			set
 			{
-				if (this.logText == value)
+				if (this.loginIp == value)
 				{
 					return;
 				}
-				this.logText = value;
-				this.RaisePropertyChanged("LogText");
+				this.loginIp = value;
+				this.RaisePropertyChanged("LoginIp");
+			}
+		}
+
+		public ushort LoginPort
+		{
+			get
+			{
+				return this.loginPort;
+			}
+			set
+			{
+				if (this.loginPort == value)
+				{
+					return;
+				}
+				this.loginPort = value;
+				this.RaisePropertyChanged("LoginPort");
 			}
 		}
 
@@ -58,16 +76,16 @@ namespace Modules.Robot
 			GC.SuppressFinalize(this);
 		}
 
-		protected virtual void Disposing(bool disposing)
+		private void Disposing(bool disposing)
 		{	
 			this.clientHost.Dispose();
 		}
 
-		public async void StartClient()
+		public async void Login()
 		{
 			try
 			{
-				var address = new Address { HostName = "192.168.10.246", Port = 8900 };
+				var address = new Address { HostName = this.LoginIp, Port = this.LoginPort };
 				using (Peer peer = await this.clientHost.ConnectAsync(address))
 				{
 					using (Packet packet = await peer.ReceiveAsync())
@@ -84,14 +102,6 @@ namespace Modules.Robot
 			catch (Exception e)
 			{
 				Logger.Debug(e.Message);
-			}
-		}
-
-		public void Start()
-		{
-			for (int i = 0; i < 1; ++i)
-			{
-				this.StartClient();
 			}
 		}
 	}

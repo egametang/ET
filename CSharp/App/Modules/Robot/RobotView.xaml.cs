@@ -29,14 +29,9 @@ namespace Modules.Robot
 			}
 		}
 
-		private void btnStart_Click(object sender, RoutedEventArgs e)
+		private void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Start();
-		}
-
-		private void tbLog_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			this.tbLog.ScrollToEnd();
+			this.ViewModel.Login();
 		}
 	}
 }

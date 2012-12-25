@@ -2,8 +2,12 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		xmlns:BehaviorTree="clr-namespace:Modules.BehaviorTree" 
 		x:Class="Modules.BehaviorTree.BehaviorTreeView"
-		mc:Ignorable="d" d:DesignHeight="600" d:DesignWidth="800">
+		mc:Ignorable="d" 
+		d:DesignHeight="600" 
+		d:DesignWidth="800" 
+		d:DataContext="{d:DesignInstance BehaviorTree:BehaviorTreeViewModel}">
 	<UserControl.Resources>
 		<LinearGradientBrush x:Key="treeNodeFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
@@ -26,7 +30,7 @@
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
-		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" x:FieldModifier="private">
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}">
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="Canvas.Left" Value="{Binding X}" />
@@ -39,7 +43,7 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
-				<DataTemplate>
+				<DataTemplate DataType="BehaviorTree:TreeNodeViewModel">
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="4"
 								RadiusX="4" RadiusY="4" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
