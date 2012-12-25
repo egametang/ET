@@ -58,7 +58,6 @@ namespace Modules.Robot
 
 		public RobotViewModel()
 		{
-			Library.Initialize();
 			this.clientHost = new ClientHost();
 
 			this.timer.Tick += delegate { this.clientHost.RunOnce(); };
@@ -93,8 +92,8 @@ namespace Modules.Robot
 						var bytes = packet.Bytes;
 						var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
 						var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
-						Logger.Debug(string.Format(
-							"opcode: {0}\n{1}", BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
+						Logger.Debug(string.Format("opcode: {0}\n{1}", 
+							BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
 						await peer.DisconnectLaterAsync();
 					}
 				}
