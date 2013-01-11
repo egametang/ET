@@ -85,17 +85,15 @@ namespace Modules.Robot
 			try
 			{
 				var address = new Address { HostName = this.LoginIp, Port = this.LoginPort };
-				using (Peer peer = await this.clientHost.ConnectAsync(address))
+				Peer peer = await this.clientHost.ConnectAsync(address);
+				using (Packet packet = await peer.ReceiveAsync())
 				{
-					using (Packet packet = await peer.ReceiveAsync())
-					{
-						var bytes = packet.Bytes;
-						var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
-						var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
-						Logger.Debug(string.Format("opcode: {0}\n{1}", 
-							BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
-						await peer.DisconnectLaterAsync();
-					}
+					var bytes = packet.Bytes;
+					var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
+					var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
+					Logger.Debug(string.Format("opcode: {0}\n{1}", 
+						BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
+					await peer.DisconnectLaterAsync();
 				}
 			}
 			catch (Exception e)

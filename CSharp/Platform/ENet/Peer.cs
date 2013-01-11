@@ -5,7 +5,7 @@ using Log;
 
 namespace ENet
 {
-	public sealed class Peer: IDisposable
+	public sealed class Peer
 	{
 		private readonly PeerEvent peerEvent = new PeerEvent();
 		private IntPtr peerPtr;
@@ -15,18 +15,7 @@ namespace ENet
 			this.peerPtr = peerPtr;
 		}
 
-		~Peer()
-		{
-			this.Dispose(false);
-		}
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		private void Dispose(bool disposing)
+		private void Reset()
 		{
 			if (this.peerPtr == IntPtr.Zero)
 			{

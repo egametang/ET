@@ -35,12 +35,17 @@ namespace ENet
 			}
 		}
 
-		public Action<Peer> AcceptEvent
+		public Task<Peer>AcceptAsync()
 		{
-			set
+			if (this.PeersManager.ContainsKey(IntPtr.Zero))
 			{
-				this.acceptEvent = value;
+				throw new ENetException(5, "Do Not Accept Twice!");
 			}
+			var tcs = new TaskCompletionSource<Peer>();
+			var peer = new Peer(IntPtr.Zero);
+			this.PeersManager.Add(peer.PeerPtr, peer);
+			peer.PeerEvent.Connected += e => tcs.TrySetResult(peer);
+			return tcs.Task;
 		}
 
 		public void RunOnce(int timeout = 0)
@@ -59,13 +64,15 @@ namespace ENet
 				{
 					case EventType.Connect:
 					{
-						if (this.acceptEvent == null)
-						{
-							throw new ENetException(4, "No Accept Event!");
-						}
-						var peer = new Peer(ev.PeerPtr);
+						var peer = this.PeersManager[IntPtr.Zero];
+						
+						this.PeersManager.Remove(IntPtr.Zero);
+
+						peer.PeerPtr = ev.PeerPtr;
 						this.PeersManager.Add(peer.PeerPtr, peer);
-						this.acceptEvent(peer);
+
+						PeerEvent peerEvent = peer.PeerEvent;
+						peerEvent.OnConnected(ev);
 						break;
 					}
 					case EventType.Receive:
@@ -83,7 +90,7 @@ namespace ENet
 						PeerEvent peerEvent = peer.PeerEvent;
 
 						this.PeersManager.Remove(ev.PeerPtr);
-						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
+						// enet_peer_disconnect 会 reset Peer,这里设置为0,防止再次Dispose
 						peer.PeerPtr = IntPtr.Zero;
 						
 						if (peerEvent.Received != null)
