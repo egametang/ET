@@ -1,14 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.IO;
-using System.Text;
 using System.Windows.Threading;
 using ENet;
-using Helper;
-using Log;
 using Microsoft.Practices.Prism.ViewModel;
-using ProtoBuf;
-using Robot.Protos;
+using Robot;
 
 namespace Modules.Robot
 {
@@ -80,26 +75,29 @@ namespace Modules.Robot
 			this.clientHost.Dispose();
 		}
 
-		public async void Login()
+		public void Login(string account, string password)
 		{
-			try
-			{
-				var address = new Address { HostName = this.LoginIp, Port = this.LoginPort };
-				Peer peer = await this.clientHost.ConnectAsync(address);
-				using (Packet packet = await peer.ReceiveAsync())
-				{
-					var bytes = packet.Bytes;
-					var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
-					var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
-					Logger.Debug(string.Format("opcode: {0}\n{1}", 
-						BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
-					await peer.DisconnectLaterAsync();
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Debug(e.Message);
-			}
+			//try
+			//{
+			//	var address = new Address { HostName = this.LoginIp, Port = this.LoginPort };
+			//	Peer peer = await this.clientHost.ConnectAsync(address);
+			//	using (Packet packet = await peer.ReceiveAsync())
+			//	{
+			//		var bytes = packet.Bytes;
+			//		var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
+			//		var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
+			//		Logger.Debug(string.Format("opcode: {0}\n{1}",
+			//			BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
+			//		await peer.DisconnectLaterAsync();
+			//	}
+			//}
+			//catch (Exception e)
+			//{
+			//	Logger.Debug(e.Message);
+			//}
+
+			var session = new RealmSession("192.168.11.95", 8888);
+			session.Login(account, password);
 		}
 	}
 }

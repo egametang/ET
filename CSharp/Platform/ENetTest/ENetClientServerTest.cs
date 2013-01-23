@@ -28,11 +28,13 @@ namespace ENetCSTest
 			host.Stop();
 		}
 
-		private static async void ServerEvent(ServerHost host)
+		private static async void ServerEvent(ServerHost host, Barrier barrier)
 		{
 			var peer = await host.AcceptAsync();
 			// Client断开,Server端收到Disconnect事件,结束Server线程
 			peer.PeerEvent.Disconnect += ev => host.Stop();
+
+			barrier.SignalAndWait();
 
 			using (var rPacket = await peer.ReceiveAsync())
 			{
@@ -59,11 +61,15 @@ namespace ENetCSTest
 			serverThread.Start();
 			clientThread.Start();
 
-			// 往client host线程增加事件,client线程连接server
-			clientHost.Events += () => ClientEvent(clientHost, address);
+			var barrier = new Barrier(2);
 
 			// 往server host线程增加事件,accept
-			serverHost.Events += () => ServerEvent(serverHost);
+			serverHost.Events += () => ServerEvent(serverHost, barrier);
+
+			barrier.SignalAndWait();
+
+			// 往client host线程增加事件,client线程连接server
+			clientHost.Events += () => ClientEvent(clientHost, address);
 
 			serverThread.Join();
 			clientThread.Join();

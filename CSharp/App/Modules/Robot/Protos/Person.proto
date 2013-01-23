@@ -1,6 +1,0 @@
-﻿package Egametang;
-
-message Person
-{
-	required int32 id = 1;
-};

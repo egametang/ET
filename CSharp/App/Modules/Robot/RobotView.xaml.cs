@@ -31,7 +31,7 @@ namespace Modules.Robot
 
 		private void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Login();
+			this.ViewModel.Login("egametang@163.com", "111111");
 		}
 	}
 }
