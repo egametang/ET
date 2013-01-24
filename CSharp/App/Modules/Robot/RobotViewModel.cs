@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
 using ENet;
+using Log;
 using Microsoft.Practices.Prism.ViewModel;
 using Robot;
 
@@ -75,7 +76,7 @@ namespace Modules.Robot
 			this.clientHost.Dispose();
 		}
 
-		public void Login(string account, string password)
+		public async void Login(string account, string password)
 		{
 			//try
 			//{
@@ -97,7 +98,15 @@ namespace Modules.Robot
 			//}
 
 			var session = new RealmSession("192.168.11.95", 8888);
-			session.Login(account, password);
+			bool result = await session.Login(account, password);
+
+			if (result == false)
+			{
+				Logger.Debug("session login fail!");
+				return;
+			}
+
+			Logger.Debug("session login success!");
 		}
 	}
 }

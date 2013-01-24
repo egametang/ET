@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Protos\Messages.cs" />
+    <Compile Include="RealmException.cs" />
+    <Compile Include="RealmInfo.cs" />
     <Compile Include="RealmSession.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />

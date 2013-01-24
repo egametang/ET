@@ -38,10 +38,12 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteHelper.cs" />
+    <Compile Include="JsonHelper.cs" />
     <Compile Include="LoaderHelper.cs" />
     <Compile Include="ProtobufHelper.cs" />
     <Compile Include="StringHelper.cs" />

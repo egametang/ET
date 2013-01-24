@@ -36,6 +36,49 @@ namespace Robot.Protos
 		}
 	}
 
+	[DataContract]
+	public class SMSG_Lock_For_Safe_Time
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Time
+		{
+			get;
+			set;
+		}
+	}
+
+	[DataContract]
+	public class SMSG_Password_Protect_Type
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Code
+		{
+			get;
+			set;
+		}
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public uint SubCode
+		{
+			get;
+			set;
+		}
+
+		[DataMember(Order = 3, IsRequired = true)]
+		public uint PasswordProtectType
+		{
+			get;
+			set;
+		}
+
+		[DataMember(Order = 4, IsRequired = false)]
+		public byte[] PpcCoordinate
+		{
+			get;
+			set;
+		}
+	}
+
 
 	[DataContract]
 	public class SMSG_Auth_Challenge
