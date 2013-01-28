@@ -4,7 +4,10 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Helper;
 using Log;
+using Org.BouncyCastle.Crypto.Agreement.Srp;
 using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
 using Robot.Protos;
 
@@ -66,41 +69,57 @@ namespace Robot
 			await this.networkStream.WriteAsync(neworkBytes, 0, neworkBytes.Length);
 		}
 
-		public async Task<bool> Handle_CMSG_AuthLogonPermit_Response()
+		public async Task<SMSG_Password_Protect_Type> Handle_CMSG_AuthLogonPermit_Response()
 		{
 			var result = await this.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
 
-			if (opcode == 0)
-			{
-				Logger.Trace("opcode == 0");
-				throw new RealmException("opcode == 0");
-			}
-
-			if (opcode == MessageOpcode.SMSG_LOCK_FOR_SAFE_TIME)
-			{
-				var smsgLockForSafeTime = ProtobufHelper.FromBytes<SMSG_Lock_For_Safe_Time>(message);
-				Logger.Trace("account lock time: {0}", smsgLockForSafeTime.Time);
-				return false;
-			}
-
 			if (opcode != MessageOpcode.SMSG_PASSWORD_PROTECT_TYPE)
 			{
+				Logger.Trace("opcode: {0}", opcode);
 				throw new RealmException(string.Format("error opcode: {0}", opcode));
 			}
 
-			var smsgPasswordProtectType = ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
-			this.realmInfo.SmsgPasswordProtectType = smsgPasswordProtectType;
+			var smsgPasswordProtectType = 
+				ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
 
 			Logger.Trace("message: {0}", JsonHelper.ToString(smsgPasswordProtectType));
 
 			if (smsgPasswordProtectType.Code != 200)
 			{
-				return false;
+				throw new RealmException(string.Format(
+					"SMSG_Lock_For_Safe_Time: {0}", 
+					JsonHelper.ToString(smsgPasswordProtectType)));
 			}
 
-			return true;
+			return smsgPasswordProtectType;
+		}
+
+		public async Task<SMSG_Auth_Logon_Challenge_Response> 
+			Handle_SMSG_Auth_Logon_Challenge_Response()
+		{
+			var result = await this.RecvMessage();
+			ushort opcode = result.Item1;
+			byte[] message = result.Item2;
+
+			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_CHALLENGE_RESPONSE)
+			{
+				Logger.Trace("opcode: {0}", opcode);
+			}
+
+			var smsgAuthLogonChallengeResponse =
+				ProtobufHelper.FromBytes<SMSG_Auth_Logon_Challenge_Response>(message);
+
+			if (smsgAuthLogonChallengeResponse.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
+			{
+				Logger.Trace("error code: {0}", smsgAuthLogonChallengeResponse.ErrorCode);
+				throw new RealmException(
+					string.Format("SMSG_Auth_Logon_Challenge_Response ErrorCode: {0}", 
+					JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
+			}
+
+			return smsgAuthLogonChallengeResponse;
 		}
 
 		public async Task<Tuple<ushort, byte[]>> RecvMessage()
@@ -142,7 +161,7 @@ namespace Robot
 			return new Tuple<ushort, byte[]>(opcode, messageBytes);
 		}
 
-		public async Task<bool> Login(string account, string password)
+		public async void Login(string account, string password)
 		{
 			byte[] passwordBytes = password.ToByteArray();
 			var digest = new MD5Digest();
@@ -151,24 +170,55 @@ namespace Robot
 			digest.BlockUpdate(passwordBytes, 0, passwordBytes.Length);
 			digest.DoFinal(passwordMd5, 0);
 
-			var cmsgAuthLogonPermit = new CMSG_AuthLogonPermit
+			// 发送帐号和密码MD5
+			var cmsgAuthLogonPermit = new CMSG_Auth_Logon_Permit
 			{ 
 				Account = account, 
 				PasswordMd5 = Hex.ToHexString(passwordMd5) 
 			};
+			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
+			await this.Handle_CMSG_AuthLogonPermit_Response();
 
-			this.SendMessage(MessageOpcode.CMSG_AUTHLOGONPERMIT, cmsgAuthLogonPermit);
+			// 这个消息已经没有作用,只用来保持原有的代码流程
+			var cmsgAuthLogonChallenge = new CMSG_Auth_Logon_Challenge();
+			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
+			var smsgAuthLogonChallengeResponse = 
+				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 
-			bool result = await this.Handle_CMSG_AuthLogonPermit_Response();
+			// 以下是SRP6处理过程
+			var random = new SecureRandom();
+			var srp6Client = new Srp6Client();
+			var n = new BigInteger(1, smsgAuthLogonChallengeResponse.N);
+			var g = new BigInteger(1, smsgAuthLogonChallengeResponse.G);
+			var s = new BigInteger(1, smsgAuthLogonChallengeResponse.S);
+			var b = new BigInteger(1, smsgAuthLogonChallengeResponse.B);
+			srp6Client.Init(n, g, new Sha1Digest(), random);
+			BigInteger a = srp6Client.GenerateClientCredentials(
+				s.ToByteArray(), account.ToByteArray(), password.ToByteArray());
+			BigInteger clientS = srp6Client.CalculateSecret(b);
 
-			if (result == false)
+			// 计算M1
+			var sha1Digest = new Sha1Digest();
+			var kBytes = new byte[sha1Digest.GetDigestSize()];
+			var clientSBytes = clientS.ToByteArray();
+			sha1Digest.BlockUpdate(clientSBytes, 0, clientSBytes.Length);
+			sha1Digest.DoFinal(kBytes, 0);
+
+			sha1Digest.Reset();
+			var m1 = new byte[sha1Digest.GetDigestSize()];
+			var aBytes = a.ToByteArray();
+			var bBytes = b.ToByteArray();
+			sha1Digest.BlockUpdate(aBytes, 0, aBytes.Length);
+			sha1Digest.BlockUpdate(bBytes, 0, bBytes.Length);
+			sha1Digest.BlockUpdate(kBytes, 0, kBytes.Length);
+			sha1Digest.DoFinal(m1, 0);
+
+			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{
-				return false;
-			}
-
-			var cmsgAuthLogonChallenge = new CMSG_AuthLogonChallenge { };
-
-			return true;
+				A = a.ToByteArray(),
+				M1 = clientS.ToByteArray()
+			};
+			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 		}
 	}
 }

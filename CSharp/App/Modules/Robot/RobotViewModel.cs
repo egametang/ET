@@ -77,7 +77,7 @@ namespace Modules.Robot
 			this.clientHost.Dispose();
 		}
 
-		public async void Login(string account, string password)
+		public void Login(string account, string password)
 		{
 			//try
 			//{
@@ -99,15 +99,18 @@ namespace Modules.Robot
 			//}
 
 			var session = new RealmSession("192.168.11.95", 8888);
-			bool result = await session.Login(account, password);
 
-			if (result == false)
+			try
 			{
-				Logger.Debug("session login fail!");
+				session.Login(account, password);
+			}
+			catch (Exception e)
+			{
+				Logger.Trace("recv exception: {0}, {1}", e.Message, e.StackTrace);
 				return;
 			}
 
-			Logger.Debug("session login success!");
+			Logger.Trace("session login success!");
 		}
 	}
 }
