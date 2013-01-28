@@ -33,11 +33,7 @@ namespace Infrastructure
 
 		#region IViewRegionRegistration Members
 
-		public string RegionName
-		{
-			get;
-			set;
-		}
+		public string RegionName { get; set; }
 
 		#endregion
 	}

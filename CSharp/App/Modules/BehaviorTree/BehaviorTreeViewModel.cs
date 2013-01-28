@@ -3,10 +3,12 @@ using System.ComponentModel.Composition;
 
 namespace Modules.BehaviorTree
 {
-	[Export(contractType: typeof (BehaviorTreeViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
+	[Export(contractType: typeof (BehaviorTreeViewModel)),
+		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal class BehaviorTreeViewModel
 	{
-		private readonly ObservableCollection<TreeNodeViewModel> treeNodes = new ObservableCollection<TreeNodeViewModel>();
+		private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
+			new ObservableCollection<TreeNodeViewModel>();
 
 		public ObservableCollection<TreeNodeViewModel> TreeNodes
 		{

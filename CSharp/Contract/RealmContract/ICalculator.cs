@@ -3,7 +3,7 @@
 namespace RealmContract
 {
 	[ServiceContract(Name = "Calculator", Namespace = "http://www.egametang.com/")]
-    public interface ICalculator
+	public interface ICalculator
 	{
 		double Add(double x, double y);
 	}

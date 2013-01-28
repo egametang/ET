@@ -1,32 +1,29 @@
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Helper;
 using Log;
-using Org.BouncyCastle.Utilities.Encoders;
-using ProtoBuf;
-using Robot.Protos;
-using Helper;
 using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Utilities.Encoders;
+using Robot.Protos;
 
 namespace Robot
 {
 	public class RealmSession: IDisposable
 	{
 		private readonly NetworkStream networkStream;
-		private RealmInfo realmInfo = new RealmInfo();
+		private readonly RealmInfo realmInfo = new RealmInfo();
 
 		public RealmSession(string host, ushort port)
 		{
 			Socket socket = ConnectSocket(host, port);
-			networkStream = new NetworkStream(socket);
+			this.networkStream = new NetworkStream(socket);
 		}
 
 		public void Dispose()
 		{
-			networkStream.Dispose();
+			this.networkStream.Dispose();
 		}
 
 		public static Socket ConnectSocket(string host, ushort port)
@@ -54,27 +51,27 @@ namespace Robot
 		public async void SendMessage<T>(ushort opcode, T message)
 		{
 			byte[] protoBytes = ProtobufHelper.ToBytes(message);
-			var neworkBytes = new byte[sizeof(int) + sizeof(ushort) + protoBytes.Length];
+			var neworkBytes = new byte[sizeof (int) + sizeof (ushort) + protoBytes.Length];
 
-			int totalSize = sizeof(ushort) + protoBytes.Length;
-			
+			int totalSize = sizeof (ushort) + protoBytes.Length;
+
 			var totalSizeBytes = BitConverter.GetBytes(totalSize);
 			totalSizeBytes.CopyTo(neworkBytes, 0);
 
 			var opcodeBytes = BitConverter.GetBytes(opcode);
-			opcodeBytes.CopyTo(neworkBytes, sizeof(int));
-			
-			protoBytes.CopyTo(neworkBytes, sizeof(int) + sizeof(ushort));
+			opcodeBytes.CopyTo(neworkBytes, sizeof (int));
 
-			await networkStream.WriteAsync(neworkBytes, 0, neworkBytes.Length);
+			protoBytes.CopyTo(neworkBytes, sizeof (int) + sizeof (ushort));
+
+			await this.networkStream.WriteAsync(neworkBytes, 0, neworkBytes.Length);
 		}
 
 		public async Task<bool> Handle_CMSG_AuthLogonPermit_Response()
 		{
-			var result = await RecvMessage();
+			var result = await this.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
-			
+
 			if (opcode == 0)
 			{
 				Logger.Trace("opcode == 0");
@@ -83,8 +80,7 @@ namespace Robot
 
 			if (opcode == MessageOpcode.SMSG_LOCK_FOR_SAFE_TIME)
 			{
-				var smsgLockForSafeTime = 
-					ProtobufHelper.FromBytes<SMSG_Lock_For_Safe_Time>(message);
+				var smsgLockForSafeTime = ProtobufHelper.FromBytes<SMSG_Lock_For_Safe_Time>(message);
 				Logger.Trace("account lock time: {0}", smsgLockForSafeTime.Time);
 				return false;
 			}
@@ -94,8 +90,7 @@ namespace Robot
 				throw new RealmException(string.Format("error opcode: {0}", opcode));
 			}
 
-			var smsgPasswordProtectType = 
-				ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
+			var smsgPasswordProtectType = ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
 			this.realmInfo.SmsgPasswordProtectType = smsgPasswordProtectType;
 
 			Logger.Trace("message: {0}", JsonHelper.ToString(smsgPasswordProtectType));
@@ -115,10 +110,11 @@ namespace Robot
 			var packetBytes = new byte[needReadSize];
 			while (totalReadSize != needReadSize)
 			{
-				int readSize = await networkStream.ReadAsync(packetBytes, totalReadSize, packetBytes.Length);
+				int readSize = await this.networkStream.ReadAsync(
+					packetBytes, totalReadSize, packetBytes.Length);
 				if (readSize == 0)
 				{
-					return new Tuple<ushort, byte[]>(0, new byte[] {});
+					return new Tuple<ushort, byte[]>(0, new byte[] { });
 				}
 				totalReadSize += readSize;
 			}
@@ -131,15 +127,16 @@ namespace Robot
 			var contentBytes = new byte[needReadSize];
 			while (totalReadSize != needReadSize)
 			{
-				int readSize = await networkStream.ReadAsync(contentBytes, totalReadSize, contentBytes.Length);
+				int readSize = await this.networkStream.ReadAsync(
+					contentBytes, totalReadSize, contentBytes.Length);
 				if (readSize == 0)
 				{
-					return new Tuple<ushort, byte[]>(0, new byte[] {});
+					return new Tuple<ushort, byte[]>(0, new byte[] { });
 				}
 				totalReadSize += readSize;
 			}
 			ushort opcode = BitConverter.ToUInt16(contentBytes, 0);
-			var messageBytes = new byte[needReadSize - sizeof(ushort)];
+			var messageBytes = new byte[needReadSize - sizeof (ushort)];
 			Array.Copy(contentBytes, sizeof (ushort), messageBytes, 0, messageBytes.Length);
 
 			return new Tuple<ushort, byte[]>(opcode, messageBytes);
@@ -155,19 +152,21 @@ namespace Robot
 			digest.DoFinal(passwordMd5, 0);
 
 			var cmsgAuthLogonPermit = new CMSG_AuthLogonPermit
-			{
-				Account = account,
-				PasswordMd5 = Hex.ToHexString(passwordMd5)
+			{ 
+				Account = account, 
+				PasswordMd5 = Hex.ToHexString(passwordMd5) 
 			};
-			
+
 			this.SendMessage(MessageOpcode.CMSG_AUTHLOGONPERMIT, cmsgAuthLogonPermit);
 
-			bool result = await Handle_CMSG_AuthLogonPermit_Response();
+			bool result = await this.Handle_CMSG_AuthLogonPermit_Response();
 
 			if (result == false)
 			{
 				return false;
 			}
+
+			var cmsgAuthLogonChallenge = new CMSG_AuthLogonChallenge { };
 
 			return true;
 		}

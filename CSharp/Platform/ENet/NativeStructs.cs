@@ -54,7 +54,9 @@ namespace ENet
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void no_memory_cb();
 
-		private IntPtr malloc, free, no_memory;
+		private readonly IntPtr malloc;
+		private readonly IntPtr free;
+		private readonly IntPtr no_memory;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -62,10 +64,12 @@ namespace ENet
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void compress_cb(
-				IntPtr context, IntPtr inBuffers, IntPtr inBufferCount, IntPtr inLimit, IntPtr outData, IntPtr outLimit);
+			IntPtr context, IntPtr inBuffers, IntPtr inBufferCount, IntPtr inLimit, 
+			IntPtr outData, IntPtr outLimit);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate void decompress_cb(IntPtr context, IntPtr inData, IntPtr inLimit, IntPtr outData, IntPtr outLimit);
+		public delegate void decompress_cb(
+			IntPtr context, IntPtr inData, IntPtr inLimit, IntPtr outData, IntPtr outLimit);
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void destroy_cb(IntPtr context);

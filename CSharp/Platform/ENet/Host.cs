@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace ENet
 {
@@ -24,7 +23,7 @@ namespace ENet
 		protected bool isRunning = true;
 		private readonly object eventsLock = new object();
 		private Action events;
-		
+
 		~Host()
 		{
 			this.Dispose(false);
@@ -144,7 +143,7 @@ namespace ENet
 
 		public void Stop()
 		{
-			isRunning = false;
+			this.isRunning = false;
 		}
 	}
 }

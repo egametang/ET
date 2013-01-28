@@ -30,7 +30,9 @@ namespace Editor
 		protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
 		{
 			IRegionBehaviorFactory factory = base.ConfigureDefaultRegionBehaviors();
-			factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof (AutoPopulateExportedViewsBehavior));
+			factory.AddIfMissing(
+				"AutoPopulateExportedViewsBehavior", 
+				typeof (AutoPopulateExportedViewsBehavior));
 			return factory;
 		}
 

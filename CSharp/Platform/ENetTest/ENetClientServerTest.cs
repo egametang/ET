@@ -24,7 +24,7 @@ namespace ENetCSTest
 			}
 
 			await peer.DisconnectAsync();
-			
+
 			host.Stop();
 		}
 

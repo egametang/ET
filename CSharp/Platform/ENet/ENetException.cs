@@ -9,10 +9,6 @@ namespace ENet
 			this.Code = code;
 		}
 
-		public int Code
-		{
-			get;
-			private set;
-		}
+		public int Code { get; private set; }
 	}
 }

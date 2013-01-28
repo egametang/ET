@@ -25,11 +25,7 @@ namespace Infrastructure
 	public class AutoPopulateExportedViewsBehavior: RegionBehavior, IPartImportsSatisfiedNotification
 	{
 		[ImportMany(AllowRecomposition = true)]
-		public Lazy<object, IViewRegionRegistration>[] RegisteredViews
-		{
-			get;
-			set;
-		}
+		public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
 
 		#region IPartImportsSatisfiedNotification Members
 

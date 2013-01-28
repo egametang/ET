@@ -11,7 +11,8 @@ namespace Modules.BehaviorTree
 		private static double rootOffsetX;
 		private static double rootOffsetY;
 
-		private static TreeNodeViewModel LeftMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		private static TreeNodeViewModel LeftMostOffspring(
+			TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
 			if (currentLevel == searchLevel)
 			{
@@ -31,7 +32,8 @@ namespace Modules.BehaviorTree
 			return null;
 		}
 
-		private static TreeNodeViewModel RightMostOffspring(TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+		private static TreeNodeViewModel RightMostOffspring(
+			TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
 		{
 			if (currentLevel == searchLevel)
 			{
@@ -126,10 +128,12 @@ namespace Modules.BehaviorTree
 			treeNode.Prelim = prelim;
 			treeNode.Modify = modify;
 
-			Logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " + treeNode.Modify);
+			Logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " +
+				treeNode.Modify);
 		}
 
-		private static void CalculateRelativeXAndY(TreeNodeViewModel treeNode, int level, double totalModify)
+		private static void CalculateRelativeXAndY(
+			TreeNodeViewModel treeNode, int level, double totalModify)
 		{
 			foreach (TreeNodeViewModel node in treeNode.Children)
 			{

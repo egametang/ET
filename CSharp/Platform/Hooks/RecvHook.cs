@@ -5,7 +5,8 @@ using Log;
 
 namespace Hooks
 {
-	[UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+	[UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, 
+		SetLastError = true)]
 	public delegate int DRecv(IntPtr handle, IntPtr buf, int count, int flag);
 
 	public class RecvHook: IDisposable
@@ -19,7 +20,8 @@ namespace Hooks
 		{
 			try
 			{
-				this.localHook = LocalHook.Create(LocalHook.GetProcAddress("Ws2_32.dll", "recv"), new DRecv(dRecv), this);
+				this.localHook = LocalHook.Create(
+					LocalHook.GetProcAddress("Ws2_32.dll", "recv"), new DRecv(dRecv), this);
 				this.localHook.ThreadACL.SetInclusiveACL(new[] { 0 });
 			}
 			catch (Exception)

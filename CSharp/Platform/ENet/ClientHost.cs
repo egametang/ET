@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Log;
 
 namespace ENet
 {
-	public sealed class ClientHost : Host
+	public sealed class ClientHost: Host
 	{
-		public ClientHost(uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
-				uint channelLimit = 0, uint incomingBandwidth = 0,
-				uint outgoingBandwidth = 0, bool enableCrc = true)
+		public ClientHost(
+			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
+			uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -16,7 +15,8 @@ namespace ENet
 			}
 			CheckChannelLimit(channelLimit);
 
-			this.host = NativeMethods.enet_host_create(IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
+			this.host = NativeMethods.enet_host_create(
+				IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -29,14 +29,16 @@ namespace ENet
 			}
 		}
 
-		public Task<Peer> ConnectAsync(
-				Address address, uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, uint data = 0)
+		public Task<Peer> ConnectAsync(Address address, 
+				uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT,
+				uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
 			var tcs = new TaskCompletionSource<Peer>();
 			ENetAddress nativeAddress = address.Struct;
-			IntPtr peerPtr = NativeMethods.enet_host_connect(this.host, ref nativeAddress, channelLimit, data);
+			IntPtr peerPtr = NativeMethods.enet_host_connect(
+				this.host, ref nativeAddress, channelLimit, data);
 			if (peerPtr == IntPtr.Zero)
 			{
 				throw new ENetException(0, "Host connect call failed.");
@@ -99,12 +101,12 @@ namespace ENet
 				}
 			}
 		}
-		
+
 		public void Start(int timeout = 0)
 		{
-			while (isRunning)
+			while (this.isRunning)
 			{
-				RunOnce(timeout);
+				this.RunOnce(timeout);
 			}
 		}
 	}

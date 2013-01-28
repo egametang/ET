@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Log;
 
 namespace ENet
 {
-	public sealed class ServerHost : Host
+	public sealed class ServerHost: Host
 	{
 		private Action<Peer> acceptEvent;
 
-		public ServerHost(Address address, 
-				uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
-				uint channelLimit = 0, uint incomingBandwidth = 0,
-				uint outgoingBandwidth = 0, bool enableCrc = true)
+		public ServerHost(
+			Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
+			uint channelLimit = 0, uint incomingBandwidth = 0, uint outgoingBandwidth = 0,
+			bool enableCrc = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -21,8 +20,8 @@ namespace ENet
 
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.enet_host_create(
-					ref nativeAddress, peerLimit,
-					channelLimit, incomingBandwidth, outgoingBandwidth);
+				ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, 
+				outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -35,7 +34,7 @@ namespace ENet
 			}
 		}
 
-		public Task<Peer>AcceptAsync()
+		public Task<Peer> AcceptAsync()
 		{
 			if (this.PeersManager.ContainsKey(IntPtr.Zero))
 			{
@@ -65,7 +64,7 @@ namespace ENet
 					case EventType.Connect:
 					{
 						var peer = this.PeersManager[IntPtr.Zero];
-						
+
 						this.PeersManager.Remove(IntPtr.Zero);
 
 						peer.PeerPtr = ev.PeerPtr;
@@ -92,7 +91,7 @@ namespace ENet
 						this.PeersManager.Remove(ev.PeerPtr);
 						// enet_peer_disconnect 会 reset Peer,这里设置为0,防止再次Dispose
 						peer.PeerPtr = IntPtr.Zero;
-						
+
 						if (peerEvent.Received != null)
 						{
 							peerEvent.OnReceived(ev);
@@ -109,9 +108,9 @@ namespace ENet
 
 		public void Start(int timeout = 0)
 		{
-			while (isRunning)
+			while (this.isRunning)
 			{
-				RunOnce(timeout);
+				this.RunOnce(timeout);
 			}
 		}
 	}

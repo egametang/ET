@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
-using System.Windows.Controls;
 using Infrastructure;
 
 namespace Modules.Robot

@@ -8,7 +8,8 @@ using Robot;
 
 namespace Modules.Robot
 {
-	[Export(contractType: typeof (RobotViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
+	[Export(contractType: typeof (RobotViewModel)),
+		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
 		private readonly ClientHost clientHost;
@@ -72,7 +73,7 @@ namespace Modules.Robot
 		}
 
 		private void Disposing(bool disposing)
-		{	
+		{
 			this.clientHost.Dispose();
 		}
 

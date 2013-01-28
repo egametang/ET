@@ -11,17 +11,9 @@ namespace Log
 			this.FileLineNumber = true;
 		}
 
-		public bool FileName
-		{
-			get;
-			set;
-		}
+		public bool FileName { get; set; }
 
-		public bool FileLineNumber
-		{
-			get;
-			set;
-		}
+		public bool FileLineNumber { get; set; }
 
 		public override string Decorate(string message)
 		{

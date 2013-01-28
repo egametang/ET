@@ -22,11 +22,11 @@ namespace ENet
 		{
 			get
 			{
-				return peerState;
+				return this.peerState;
 			}
 			set
 			{
-				peerState = value;
+				this.peerState = value;
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace ENet
 		{
 			get
 			{
-				return Ev.packet;
+				return this.Ev.packet;
 			}
 		}
 

@@ -16,7 +16,9 @@ namespace Modules.BehaviorTree
 		private double modify;
 		private double ancestorModify;
 		private TreeNodeViewModel parent;
-		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
+
+		private ObservableCollection<TreeNodeViewModel> children =
+			new ObservableCollection<TreeNodeViewModel>();
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
