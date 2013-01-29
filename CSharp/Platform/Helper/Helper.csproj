@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteHelper.cs" />
-    <Compile Include="CryptoHelper.cs" />
+    <Compile Include="SRP6Helper.cs" />
     <Compile Include="JsonHelper.cs" />
     <Compile Include="LoaderHelper.cs" />
     <Compile Include="ProtobufHelper.cs" />

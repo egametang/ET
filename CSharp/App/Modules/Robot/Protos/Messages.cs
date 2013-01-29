@@ -142,6 +142,6 @@ namespace Robot.Protos
 		public byte[] A { get; set; }
 
 		[DataMember(Order = 2, IsRequired = true)]
-		public byte[] M1 { get; set; }
+		public byte[] M { get; set; }
 	}
 }

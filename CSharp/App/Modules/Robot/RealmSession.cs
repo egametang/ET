@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Helper;
 using Log;
@@ -133,12 +134,14 @@ namespace Robot
 					packetBytes, totalReadSize, packetBytes.Length);
 				if (readSize == 0)
 				{
-					return new Tuple<ushort, byte[]>(0, new byte[] { });
+					throw new RealmException("connection closed!");
 				}
 				totalReadSize += readSize;
 			}
 
 			int packetSize = BitConverter.ToInt32(packetBytes, 0);
+
+			Logger.Debug("packet size: {0}", packetSize);
 
 			// 读opcode和message
 			totalReadSize = 0;
@@ -150,11 +153,15 @@ namespace Robot
 					contentBytes, totalReadSize, contentBytes.Length);
 				if (readSize == 0)
 				{
-					return new Tuple<ushort, byte[]>(0, new byte[] { });
+					throw new RealmException("connection closed!");
 				}
 				totalReadSize += readSize;
 			}
+
 			ushort opcode = BitConverter.ToUInt16(contentBytes, 0);
+
+			Logger.Debug("opcode: {0}", opcode);
+
 			var messageBytes = new byte[needReadSize - sizeof (ushort)];
 			Array.Copy(contentBytes, sizeof (ushort), messageBytes, 0, messageBytes.Length);
 
@@ -197,26 +204,23 @@ namespace Robot
 				s.ToByteArray(), account.ToByteArray(), password.ToByteArray());
 			BigInteger clientS = srp6Client.CalculateSecret(b);
 
-			// 计算M1
-			var sha1Digest = new Sha1Digest();
-			var kBytes = new byte[sha1Digest.GetDigestSize()];
-			var clientSBytes = clientS.ToByteArray();
-			sha1Digest.BlockUpdate(clientSBytes, 0, clientSBytes.Length);
-			sha1Digest.DoFinal(kBytes, 0);
+			Logger.Debug("N: {0}\nG: {1}, s: {2}, B: {3}, A: {4}, S: {5}",
+				smsgAuthLogonChallengeResponse.N.ToHex(), smsgAuthLogonChallengeResponse.G.ToHex(),
+				smsgAuthLogonChallengeResponse.S.ToHex(), smsgAuthLogonChallengeResponse.B.ToHex(),
+				a.ToByteArray().ToHex(), clientS.ToByteArray().ToHex());
 
-			sha1Digest.Reset();
-			var m1 = new byte[sha1Digest.GetDigestSize()];
-			var aBytes = a.ToByteArray();
-			var bBytes = b.ToByteArray();
-			sha1Digest.BlockUpdate(aBytes, 0, aBytes.Length);
-			sha1Digest.BlockUpdate(bBytes, 0, bBytes.Length);
-			sha1Digest.BlockUpdate(kBytes, 0, kBytes.Length);
-			sha1Digest.DoFinal(m1, 0);
+			var sha1Managed = new SHA1Managed();
+			byte[] k = SRP6Helper.SRP6ClientCalcK(sha1Managed, clientS.ToByteArray());
+			Logger.Debug("K: {0}", k.ToHex());
+			byte[] m = SRP6Helper.SRP6ClientM1(
+				sha1Managed, account.ToByteArray(), n.ToByteArray(), g.ToByteArray(), 
+				s.ToByteArray(), a.ToByteArray(), b.ToByteArray(), k);
+			Logger.Debug("M: {0}, size: {1}", m.ToHex(), m.Length);
 
 			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{
 				A = a.ToByteArray(),
-				M1 = clientS.ToByteArray()
+				M = m
 			};
 			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 		}
