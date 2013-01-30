@@ -13,25 +13,27 @@ namespace Modules.Robot
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
 		private readonly ClientHost clientHost;
-		private string loginIp;
-		private ushort loginPort;
+		private string loginIP = "192.168.11.95";
+		private ushort loginPort = 8888;
+		private string account = "egametang";
+		private string password = "163bio1";
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
 
-		public string LoginIp
+		public string LoginIP
 		{
 			get
 			{
-				return this.loginIp;
+				return this.loginIP;
 			}
 			set
 			{
-				if (this.loginIp == value)
+				if (this.loginIP == value)
 				{
 					return;
 				}
-				this.loginIp = value;
+				this.loginIP = value;
 				this.RaisePropertyChanged("LoginIp");
 			}
 		}
@@ -50,6 +52,40 @@ namespace Modules.Robot
 				}
 				this.loginPort = value;
 				this.RaisePropertyChanged("LoginPort");
+			}
+		}
+
+		public string Account
+		{
+			get
+			{
+				return this.account;
+			}
+			set
+			{
+				if (this.account == value)
+				{
+					return;
+				}
+				this.account = value;
+				this.RaisePropertyChanged("Account");
+			}
+		}
+
+		public string Password
+		{
+			get
+			{
+				return this.password;
+			}
+			set
+			{
+				if (this.password == value)
+				{
+					return;
+				}
+				this.password = value;
+				this.RaisePropertyChanged("Password");
 			}
 		}
 
@@ -77,36 +113,17 @@ namespace Modules.Robot
 			this.clientHost.Dispose();
 		}
 
-		public void Login(string account, string password)
+		public void Login()
 		{
-			//try
-			//{
-			//	var address = new Address { HostName = this.LoginIp, Port = this.LoginPort };
-			//	Peer peer = await this.clientHost.ConnectAsync(address);
-			//	using (Packet packet = await peer.ReceiveAsync())
-			//	{
-			//		var bytes = packet.Bytes;
-			//		var packetStream = new MemoryStream(bytes, 4, bytes.Length - 4);
-			//		var smsg = Serializer.Deserialize<SMSG_Auth_Challenge>(packetStream);
-			//		Logger.Debug(string.Format("opcode: {0}\n{1}",
-			//			BitConverter.ToUInt16(bytes, 0), XmlHelper.XmlSerialize(smsg)));
-			//		await peer.DisconnectLaterAsync();
-			//	}
-			//}
-			//catch (Exception e)
-			//{
-			//	Logger.Debug(e.Message);
-			//}
-
-			var session = new RealmSession("192.168.11.95", 8888);
+			var session = new RealmSession(this.LoginIP, this.LoginPort);
 
 			try
 			{
-				session.Login(account, password);
+				session.Login(this.Account, this.Password);
 			}
 			catch (Exception e)
 			{
-				Logger.Trace("recv exception: {0}, {1}", e.Message, e.StackTrace);
+				Logger.Trace("realm exception: {0}, {1}", e.Message, e.StackTrace);
 				return;
 			}
 

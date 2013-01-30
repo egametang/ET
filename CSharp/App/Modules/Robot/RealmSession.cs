@@ -97,7 +97,7 @@ namespace Robot
 			return smsgPasswordProtectType;
 		}
 
-		public async Task<SMSG_Auth_Logon_Challenge_Response> 
+		public async Task<SMSG_Auth_Logon_Challenge_Response>
 			Handle_SMSG_Auth_Logon_Challenge_Response()
 		{
 			var result = await this.RecvMessage();
@@ -204,18 +204,17 @@ namespace Robot
 				s.ToByteArray(), account.ToByteArray(), password.ToByteArray());
 			BigInteger clientS = srp6Client.CalculateSecret(b);
 
-			Logger.Debug("N: {0}\nG: {1}, s: {2}, B: {3}, A: {4}, S: {5}",
-				smsgAuthLogonChallengeResponse.N.ToHex(), smsgAuthLogonChallengeResponse.G.ToHex(),
-				smsgAuthLogonChallengeResponse.S.ToHex(), smsgAuthLogonChallengeResponse.B.ToHex(),
-				a.ToByteArray().ToHex(), clientS.ToByteArray().ToHex());
-
 			var sha1Managed = new SHA1Managed();
 			byte[] k = SRP6Helper.SRP6ClientCalcK(sha1Managed, clientS.ToByteArray());
-			Logger.Debug("K: {0}", k.ToHex());
 			byte[] m = SRP6Helper.SRP6ClientM1(
 				sha1Managed, account.ToByteArray(), n.ToByteArray(), g.ToByteArray(), 
 				s.ToByteArray(), a.ToByteArray(), b.ToByteArray(), k);
-			Logger.Debug("M: {0}, size: {1}", m.ToHex(), m.Length);
+
+			Logger.Debug("N: {0}\nG: {1}\ns: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}",
+				smsgAuthLogonChallengeResponse.N.ToHex(), smsgAuthLogonChallengeResponse.G.ToHex(),
+				smsgAuthLogonChallengeResponse.S.ToHex(), smsgAuthLogonChallengeResponse.B.ToHex(),
+				a.ToByteArray().ToHex(), clientS.ToByteArray().ToHex(),
+				k.ToHex(), m.ToHex());
 
 			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{

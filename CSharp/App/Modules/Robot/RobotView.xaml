@@ -8,10 +8,14 @@
 	<Grid>
 		<StackPanel>
 			<StackPanel Orientation="Horizontal" >
-				<Label Content="loginIp: "></Label>
-				<TextBox Width="120" Text="{Binding LoginIp}" />
-				<Label Content="loginPort: "></Label>
+				<Label Content="LoginIP: "></Label>
+				<TextBox Width="120" Text="{Binding LoginIP}" />
+				<Label Content="LoginPort: "></Label>
 				<TextBox Width="40" Text="{Binding LoginPort}" />
+				<Label Content="Account: "></Label>
+				<TextBox Width="120" Text="{Binding Account}" />
+				<Label Content="Password: "></Label>
+				<TextBox Width="120" Text="{Binding Password}" />
 				<Button Name="btnStart" Content="Login" Width="80" Height="25" Click="btnLogin_Click" />
 				<TextBlock></TextBlock>
 			</StackPanel>
