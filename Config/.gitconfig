@@ -11,3 +11,6 @@
 [user]
     name = tanghai
     email = egametang@gmail.com
+
+[core]
+    autocrlf = input
