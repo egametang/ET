@@ -34,7 +34,7 @@ namespace Modules.Robot
 					return;
 				}
 				this.loginIP = value;
-				this.RaisePropertyChanged("LoginIp");
+				this.RaisePropertyChanged("LoginIP");
 			}
 		}
 
@@ -113,12 +113,12 @@ namespace Modules.Robot
 			this.clientHost.Dispose();
 		}
 
-		public void Login()
+		public async void Login()
 		{
-			var session = new RealmSession(this.LoginIP, this.LoginPort);
-
 			try
 			{
+				var session = new RealmSession();
+				await session.ConnectAsync(this.LoginIP, this.LoginPort);
 				session.Login(this.Account, this.Password);
 			}
 			catch (Exception e)

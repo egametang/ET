@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace Helper
@@ -29,6 +31,17 @@ namespace Helper
 				stringBuilder.Append(b.ToString(CultureInfo.InvariantCulture));
 			}
 			return stringBuilder.ToString();
+		}
+
+		public static BigInteger ToUnsignedBigInteger(this byte[] bytes)
+		{
+			bytes = bytes.Concat(new[] { (byte)'0' }).ToArray();
+			return new BigInteger(bytes);
+		}
+
+		public static BigInteger ToBigInteger(this byte[] bytes)
+		{
+			return new BigInteger(bytes);
 		}
 	}
 }

@@ -70,10 +70,10 @@ namespace Robot.Protos
 	public class CMSG_Auth_Logon_Permit
 	{
 		[DataMember(Order = 1, IsRequired = true)]
-		public string Account { get; set; }
+		public byte[] Account { get; set; }
 
 		[DataMember(Order = 2, IsRequired = true)]
-		public string PasswordMd5 { get; set; }
+		public byte[] PasswordMd5 { get; set; }
 	}
 
 	[DataContract]

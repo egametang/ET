@@ -1,55 +1,25 @@
 using System;
-using System.Net;
+using System.Linq;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Helper;
 using Log;
-using Org.BouncyCastle.Crypto.Agreement.Srp;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.Utilities.Encoders;
 using Robot.Protos;
 
 namespace Robot
 {
 	public class RealmSession: IDisposable
 	{
-		private readonly NetworkStream networkStream;
+		private readonly TcpClient tcpClient = new TcpClient();
+		private NetworkStream networkStream;
 		private readonly RealmInfo realmInfo = new RealmInfo();
-
-		public RealmSession(string host, ushort port)
-		{
-			Socket socket = ConnectSocket(host, port);
-			this.networkStream = new NetworkStream(socket);
-		}
 
 		public void Dispose()
 		{
+			this.tcpClient.Close();
 			this.networkStream.Dispose();
-		}
-
-		public static Socket ConnectSocket(string host, ushort port)
-		{
-			IPHostEntry hostEntry = Dns.GetHostEntry(host);
-
-			foreach (IPAddress address in hostEntry.AddressList)
-			{
-				var ipe = new IPEndPoint(address, port);
-				var tempSocket = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-				tempSocket.Connect(ipe);
-
-				if (!tempSocket.Connected)
-				{
-					continue;
-				}
-
-				return tempSocket;
-			}
-			Logger.Debug("socket is null, address: {0}:{1}", host, port);
-			throw new SocketException(10000);
 		}
 
 		public async void SendMessage<T>(ushort opcode, T message)
@@ -168,21 +138,28 @@ namespace Robot
 			return new Tuple<ushort, byte[]>(opcode, messageBytes);
 		}
 
+		public async Task ConnectAsync(string hostName, ushort port)
+		{
+			await this.tcpClient.ConnectAsync(hostName, port);
+			this.networkStream = this.tcpClient.GetStream();
+		}
+
 		public async void Login(string account, string password)
 		{
 			byte[] passwordBytes = password.ToByteArray();
-			var digest = new MD5Digest();
-			var passwordMd5 = new byte[digest.GetDigestSize()];
-
-			digest.BlockUpdate(passwordBytes, 0, passwordBytes.Length);
-			digest.DoFinal(passwordMd5, 0);
+			MD5 md5 = MD5.Create();
+			byte[] passwordMd5 = md5.ComputeHash(passwordBytes);
 
 			// 发送帐号和密码MD5
 			var cmsgAuthLogonPermit = new CMSG_Auth_Logon_Permit
 			{ 
-				Account = account, 
-				PasswordMd5 = Hex.ToHexString(passwordMd5) 
+				Account = account.ToByteArray(),
+				PasswordMd5 = passwordMd5.ToHex().ToLower().ToByteArray()
 			};
+
+			Logger.Trace("account: {0}, password: {1}", 
+				cmsgAuthLogonPermit.Account, cmsgAuthLogonPermit.PasswordMd5.ToStr());
+
 			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
 			await this.Handle_CMSG_AuthLogonPermit_Response();
 
@@ -193,33 +170,24 @@ namespace Robot
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 
 			// 以下是SRP6处理过程
-			var random = new SecureRandom();
-			var srp6Client = new Srp6Client();
-			var n = new BigInteger(1, smsgAuthLogonChallengeResponse.N);
-			var g = new BigInteger(1, smsgAuthLogonChallengeResponse.G);
-			var s = new BigInteger(1, smsgAuthLogonChallengeResponse.S);
-			var b = new BigInteger(1, smsgAuthLogonChallengeResponse.B);
-			srp6Client.Init(n, g, new Sha1Digest(), random);
-			BigInteger a = srp6Client.GenerateClientCredentials(
-				s.ToByteArray(), account.ToByteArray(), password.ToByteArray());
-			BigInteger clientS = srp6Client.CalculateSecret(b);
+			var n = smsgAuthLogonChallengeResponse.N.ToUnsignedBigInteger();
+			var g = smsgAuthLogonChallengeResponse.G.ToUnsignedBigInteger();
+			var s = smsgAuthLogonChallengeResponse.S.ToUnsignedBigInteger();
+			var b = smsgAuthLogonChallengeResponse.B.ToUnsignedBigInteger();
+			string identity = account + ":" + password;
 
-			var sha1Managed = new SHA1Managed();
-			byte[] k = SRP6Helper.SRP6ClientCalcK(sha1Managed, clientS.ToByteArray());
-			byte[] m = SRP6Helper.SRP6ClientM1(
-				sha1Managed, account.ToByteArray(), n.ToByteArray(), g.ToByteArray(), 
-				s.ToByteArray(), a.ToByteArray(), b.ToByteArray(), k);
+			var srp6Client = new SRP6Client(new SHA1Managed(), n, g, b, s, identity, password);
 
 			Logger.Debug("N: {0}\nG: {1}\ns: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}",
-				smsgAuthLogonChallengeResponse.N.ToHex(), smsgAuthLogonChallengeResponse.G.ToHex(),
-				smsgAuthLogonChallengeResponse.S.ToHex(), smsgAuthLogonChallengeResponse.B.ToHex(),
-				a.ToByteArray().ToHex(), clientS.ToByteArray().ToHex(),
-				k.ToHex(), m.ToHex());
+				srp6Client.N.ToTrimByteArray().ToHex(), srp6Client.G.ToTrimByteArray().ToHex(),
+				srp6Client.S.ToTrimByteArray().ToHex(), srp6Client.B.ToTrimByteArray().ToHex(),
+				srp6Client.A.ToTrimByteArray().ToHex(), srp6Client.S.ToTrimByteArray().ToHex(),
+				srp6Client.K.ToTrimByteArray().ToHex(), srp6Client.M.ToHex());
 
 			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{
-				A = a.ToByteArray(),
-				M = m
+				A = srp6Client.A.ToTrimByteArray(),
+				M = srp6Client.M
 			};
 			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 		}
