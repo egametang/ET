@@ -127,12 +127,6 @@ namespace Robot.Protos
 
 		[DataMember(Order = 5, IsRequired = true)]
 		public byte[] S { get; set; }
-
-		[DataMember(Order = 6, IsRequired = true)]
-		public byte[] Unk3 { get; set; }
-
-		[DataMember(Order = 7, IsRequired = true)]
-		public uint SecurityFlags { get; set; }
 	}
 
 	[DataContract]

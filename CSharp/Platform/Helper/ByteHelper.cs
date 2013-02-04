@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -33,15 +34,10 @@ namespace Helper
 			return stringBuilder.ToString();
 		}
 
-		public static BigInteger ToUnsignedBigInteger(this byte[] bytes)
+		public static byte[] Reverse(this byte[] bytes)
 		{
-			bytes = bytes.Concat(new[] { (byte)'0' }).ToArray();
-			return new BigInteger(bytes);
-		}
-
-		public static BigInteger ToBigInteger(this byte[] bytes)
-		{
-			return new BigInteger(bytes);
+			Array.Reverse(bytes);
+			return bytes;
 		}
 	}
 }

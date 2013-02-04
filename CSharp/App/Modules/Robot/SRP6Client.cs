@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Helper;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Robot
 {
@@ -17,25 +18,32 @@ namespace Robot
 		private readonly BigInteger u;    // U
 		private readonly BigInteger s;    // S
 		private readonly BigInteger k;    // K
-		private readonly byte[] m;        // M
+		private readonly BigInteger m;        // M
 		private readonly byte[] p;
-		private readonly string account;
+		private readonly byte[] account;
 		private readonly BigInteger salt; // s, 服务端发过来的salt
 		private const int lowerK = 3;
+		private readonly BigInteger smallA ;
 		private readonly HashAlgorithm hashAlgorithm;
 
 		public SRP6Client(
 			HashAlgorithm hashAlgorithm, BigInteger n, BigInteger g, BigInteger b,
-			BigInteger salt, string account, string password)
+			BigInteger salt, byte[] account, byte[] passwordMd5Hex)
 		{
+			this.smallA = BigIntegerHelper.RandUnsignedBigInteger(19);
+
 			this.hashAlgorithm = hashAlgorithm;
 			this.n = n;
 			this.g = g;
 			this.b = b;
 			this.salt = salt;
 			this.account = account;
-			string identity = account + ":" + password;
-			this.p = hashAlgorithm.ComputeHash(identity.ToByteArray());
+			this.p = hashAlgorithm.ComputeHash(new byte[0]
+				.Concat(account)
+				.Concat(new[] { (byte)':' })
+				.Concat(passwordMd5Hex)
+				.ToArray());
+
 			this.a = this.CalculateA();  // A = g ^ a % N
 			this.x = this.CalculateX();  // X = H(s, P)
 			this.u = this.CalculateU();  // U = H(A, B)
@@ -108,7 +116,7 @@ namespace Robot
 			}
 		}
 
-		public byte[] M
+		public BigInteger M
 		{
 			get
 			{
@@ -124,6 +132,22 @@ namespace Robot
 			}
 		}
 
+		public BigInteger Salt
+		{
+			get
+			{
+				return this.salt;
+			}
+		}
+
+		public BigInteger SmallA
+		{
+			get
+			{
+				return this.smallA;
+			}
+		}
+
 		/// <summary>
 		/// 计算X: X = H(s, P)
 		/// </summary>
@@ -132,10 +156,10 @@ namespace Robot
 		{
 			hashAlgorithm.Initialize();
 			var joinBytes = new byte[0]
-				.Concat(salt.ToTrimByteArray())
+				.Concat(this.Salt.ToUBigIntegerArray())
 				.Concat(this.P)
 				.ToArray();
-			return hashAlgorithm.ComputeHash(joinBytes).ToUnsignedBigInteger();
+			return hashAlgorithm.ComputeHash(joinBytes).ToUBigInteger();
 		}
 
 		/// <summary>
@@ -144,9 +168,7 @@ namespace Robot
 		/// <returns></returns>
 		private BigInteger CalculateA()
 		{
-			BigInteger randomA = BigIntegerHelper.RandUnsignedBigInteger(19);
-			BigInteger calculatA = BigInteger.ModPow(this.G, randomA, this.N);
-			return calculatA;
+			return BigInteger.ModPow(this.G, this.SmallA, this.N);
 		}
 
 		/// <summary>
@@ -157,10 +179,10 @@ namespace Robot
 		{
 			hashAlgorithm.Initialize();
 			var joinBytes = new byte[0]
-				.Concat(this.A.ToTrimByteArray())
-				.Concat(this.B.ToTrimByteArray())
+				.Concat(this.A.ToUBigIntegerArray())
+				.Concat(this.B.ToUBigIntegerArray())
 				.ToArray();
-			return hashAlgorithm.ComputeHash(joinBytes).ToUnsignedBigInteger();
+			return hashAlgorithm.ComputeHash(joinBytes).ToUBigInteger();
 		}
 
 		/// <summary>
@@ -170,8 +192,9 @@ namespace Robot
 		private BigInteger CalculateS()
 		{
 			BigInteger s1 = this.B - BigInteger.ModPow(this.G, this.X, this.N) * lowerK;
-			BigInteger s2 = this.A + (this.U * this.X);
-			return BigInteger.ModPow(s1, s2, this.N);
+			BigInteger s2 = this.SmallA + (this.U * this.X);
+			BigInteger s3 = BigInteger.ModPow(s1, s2, this.N);
+			return s3;
 		}
 
 		/// <summary>
@@ -181,11 +204,10 @@ namespace Robot
 		private BigInteger CalculateK()
 		{
 			hashAlgorithm.Initialize();
-			byte[] sBytes = this.S.ToTrimByteArray();
-			int sLength = sBytes.Length;
-			int halfLength = sLength / 2;
+			byte[] sBytes = this.S.ToUBigIntegerArray();
+			int halfLength = sBytes.Length / 2;
 			var kBytes = new byte[40];
-			var halfS = new byte[sLength];
+			var halfS = new byte[halfLength];
 
 			for (int i = 0; i < halfLength; ++i)
 			{
@@ -207,18 +229,18 @@ namespace Robot
 				kBytes[i * 2 + 1] = p2[i];
 			}
 
-			return kBytes.ToUnsignedBigInteger();
+			return kBytes.ToUBigInteger();
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		private Byte[] CalculateM()
+		private BigInteger CalculateM()
 		{
 			hashAlgorithm.Initialize();
-			var hashN = hashAlgorithm.ComputeHash(this.N.ToTrimByteArray());
-			var hashG = hashAlgorithm.ComputeHash(this.G.ToTrimByteArray());
+			var hashN = hashAlgorithm.ComputeHash(this.N.ToUBigIntegerArray());
+			var hashG = hashAlgorithm.ComputeHash(this.G.ToUBigIntegerArray());
 
 			// 这里与标准srp6不一样,只异或了20个byte,实际上有32个byte
 			for (var i = 0; i < 20; ++i)
@@ -227,20 +249,18 @@ namespace Robot
 			}
 
 			var hashGXorhashN = hashN; // H(N) ^ H(g)
-			var hashedIdentity = hashAlgorithm.ComputeHash(this.account.ToByteArray()); // H(I)
+			var hashedIdentity = hashAlgorithm.ComputeHash(this.account); // H(I)
 
 			// H(H(N) ^ H(g), H(P), s, A, B, K_c)
-			var calculateM = hashAlgorithm.ComputeHash(new byte[0]
+			var mBytes = hashAlgorithm.ComputeHash(new byte[0]
 				.Concat(hashGXorhashN)
 				.Concat(hashedIdentity)
-				.Concat(this.salt.ToTrimByteArray())
-				.Concat(this.A.ToTrimByteArray())
-				.Concat(this.B.ToTrimByteArray())
-				.Concat(this.K.ToTrimByteArray())
+				.Concat(this.Salt.ToUBigIntegerArray())
+				.Concat(this.A.ToUBigIntegerArray())
+				.Concat(this.B.ToUBigIntegerArray())
+				.Concat(this.K.ToUBigIntegerArray())
 				.ToArray());
-			var copyM = new byte[20];
-			Array.Copy(calculateM, copyM, copyM.Length);
-			return calculateM;
+			return mBytes.ToUBigInteger();
 		}
 	}
 }

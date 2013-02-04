@@ -15,7 +15,7 @@ namespace Modules.Robot
 		private readonly ClientHost clientHost;
 		private string loginIP = "192.168.11.95";
 		private ushort loginPort = 8888;
-		private string account = "egametang";
+		private string account = "egametang@163.com";
 		private string password = "163bio1";
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)

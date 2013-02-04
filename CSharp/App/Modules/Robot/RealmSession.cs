@@ -79,6 +79,8 @@ namespace Robot
 				Logger.Trace("opcode: {0}", opcode);
 			}
 
+			Logger.Trace("message: {0}", message.ToHex());
+
 			var smsgAuthLogonChallengeResponse =
 				ProtobufHelper.FromBytes<SMSG_Auth_Logon_Challenge_Response>(message);
 
@@ -89,6 +91,9 @@ namespace Robot
 					string.Format("SMSG_Auth_Logon_Challenge_Response ErrorCode: {0}", 
 					JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
 			}
+
+			Logger.Debug("SMSG_Auth_Logon_Challenge_Response: \n{0}", 
+				JsonHelper.ToString(smsgAuthLogonChallengeResponse));
 
 			return smsgAuthLogonChallengeResponse;
 		}
@@ -149,12 +154,13 @@ namespace Robot
 			byte[] passwordBytes = password.ToByteArray();
 			MD5 md5 = MD5.Create();
 			byte[] passwordMd5 = md5.ComputeHash(passwordBytes);
+			byte[] passwordMd5Hex = passwordMd5.ToHex().ToLower().ToByteArray();
 
 			// 发送帐号和密码MD5
 			var cmsgAuthLogonPermit = new CMSG_Auth_Logon_Permit
 			{ 
 				Account = account.ToByteArray(),
-				PasswordMd5 = passwordMd5.ToHex().ToLower().ToByteArray()
+				PasswordMd5 = passwordMd5Hex
 			};
 
 			Logger.Trace("account: {0}, password: {1}", 
@@ -170,24 +176,28 @@ namespace Robot
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 
 			// 以下是SRP6处理过程
-			var n = smsgAuthLogonChallengeResponse.N.ToUnsignedBigInteger();
-			var g = smsgAuthLogonChallengeResponse.G.ToUnsignedBigInteger();
-			var s = smsgAuthLogonChallengeResponse.S.ToUnsignedBigInteger();
-			var b = smsgAuthLogonChallengeResponse.B.ToUnsignedBigInteger();
-			string identity = account + ":" + password;
+			var n = smsgAuthLogonChallengeResponse.N.ToUBigInteger();
+			var g = smsgAuthLogonChallengeResponse.G.ToUBigInteger();
+			var b = smsgAuthLogonChallengeResponse.B.ToUBigInteger();
+			var salt = smsgAuthLogonChallengeResponse.S.ToUBigInteger();
 
-			var srp6Client = new SRP6Client(new SHA1Managed(), n, g, b, s, identity, password);
+			var srp6Client = new SRP6Client(
+				new SHA1Managed(), n, g, b, salt, account.ToByteArray(), passwordMd5Hex);
 
-			Logger.Debug("N: {0}\nG: {1}\ns: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}",
-				srp6Client.N.ToTrimByteArray().ToHex(), srp6Client.G.ToTrimByteArray().ToHex(),
-				srp6Client.S.ToTrimByteArray().ToHex(), srp6Client.B.ToTrimByteArray().ToHex(),
-				srp6Client.A.ToTrimByteArray().ToHex(), srp6Client.S.ToTrimByteArray().ToHex(),
-				srp6Client.K.ToTrimByteArray().ToHex(), srp6Client.M.ToHex());
+			Logger.Debug("s: {0}\nN: {1}\nG: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}",
+				srp6Client.Salt.ToUBigIntegerArray().ToHex(),
+				srp6Client.N.ToUBigIntegerArray().ToHex(), 
+				srp6Client.G.ToUBigIntegerArray().ToHex(),
+				srp6Client.B.ToUBigIntegerArray().ToHex(),
+				srp6Client.A.ToUBigIntegerArray().ToHex(), 
+				srp6Client.S.ToUBigIntegerArray().ToHex(),
+				srp6Client.K.ToUBigIntegerArray().ToHex(), 
+				srp6Client.M.ToUBigIntegerArray().ToHex());
 
 			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{
-				A = srp6Client.A.ToTrimByteArray(),
-				M = srp6Client.M
+				A = srp6Client.A.ToUBigIntegerArray(),
+				M = srp6Client.M.ToUBigIntegerArray()
 			};
 			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 		}

@@ -24,24 +24,29 @@ namespace Helper
 			var random = new Random();
 			random.NextBytes(bigIntegerBytes);
 
-			var newBigIntegerBytes = new byte[byteNum + 1];
-
-			// 给最高位加个0,防止变成负数
-			Array.Copy(bigIntegerBytes, newBigIntegerBytes, bigIntegerBytes.Length);
-			newBigIntegerBytes[newBigIntegerBytes.Length - 1] = 0;
-
-			var bigInteger = new BigInteger(newBigIntegerBytes);
-			return bigInteger;
+			return bigIntegerBytes.ToUBigInteger();
 		}
 
-		public static byte[] ToTrimByteArray(this BigInteger bigInteger)
+		public static BigInteger ToBigInteger(this byte[] bytes)
 		{
-			var bytes = bigInteger.ToByteArray();
-			if (bytes[bytes.Length - 1] == 0)
+			return new BigInteger(bytes);
+		}
+
+		public static BigInteger ToUBigInteger(this byte[] bytes)
+		{
+			var dst = new byte[bytes.Length + 1];
+			Array.Copy(bytes, dst, bytes.Length);
+			return new BigInteger(dst);
+		}
+
+		public static byte[] ToUBigIntegerArray(this BigInteger bigInteger)
+		{
+			var result = bigInteger.ToByteArray();
+			if (result[result.Length - 1] == 0 && (result.Length % 0x10) != 0)
 			{
-				return bytes.Take(bytes.Length - 1).ToArray();
+				Array.Resize(ref result, result.Length - 1);
 			}
-			return bytes;
+			return result;
 		}
 	}
 }
