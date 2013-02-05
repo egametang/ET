@@ -29,13 +29,14 @@ namespace ENet
 			}
 		}
 
-		public Task<Peer> ConnectAsync(Address address, 
+		public Task<Peer> ConnectAsync(string hostName, ushort port, 
 				uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT,
 				uint data = 0)
 		{
 			CheckChannelLimit(channelLimit);
 
 			var tcs = new TaskCompletionSource<Peer>();
+			var address = new Address {HostName = hostName, Port = port};
 			ENetAddress nativeAddress = address.Struct;
 			IntPtr peerPtr = NativeMethods.enet_host_connect(
 				this.host, ref nativeAddress, channelLimit, data);

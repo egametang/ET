@@ -7,8 +7,8 @@ namespace ENet
 	{
 		private Action<Peer> acceptEvent;
 
-		public ServerHost(
-			Address address, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
+		public ServerHost(string hostName, ushort port, 
+			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
 			uint channelLimit = 0, uint incomingBandwidth = 0, uint outgoingBandwidth = 0,
 			bool enableCrc = true)
 		{
@@ -18,6 +18,7 @@ namespace ENet
 			}
 			CheckChannelLimit(channelLimit);
 
+			var address = new Address { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.enet_host_create(
 				ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, 

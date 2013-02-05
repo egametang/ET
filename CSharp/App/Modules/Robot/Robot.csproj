@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9283, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\BouncyCastle.1.7.0\lib\Net20\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\..\..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -47,24 +43,17 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Protos\Messages.cs" />
-    <Compile Include="RealmException.cs" />
-    <Compile Include="RealmInfo.cs" />
-    <Compile Include="RealmSession.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
     <Compile Include="RobotView.xaml.cs">
       <DependentUpon>RobotView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SRP6Client.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="RobotView.xaml">
@@ -77,10 +66,6 @@
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
       <Name>ENet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Platform\Helper\Helper.csproj">
-      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
-      <Name>Helper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>
@@ -88,6 +73,10 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LoginClient\LoginClient.csproj">
+      <Project>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</Project>
+      <Name>LoginClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

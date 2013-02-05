@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
 using ENet;
 using Log;
 using Microsoft.Practices.Prism.ViewModel;
-using Robot;
+using LoginClient;
 
 namespace Modules.Robot
 {
@@ -12,11 +13,11 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
-		private readonly ClientHost clientHost;
 		private string loginIP = "192.168.11.95";
 		private ushort loginPort = 8888;
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
+		private readonly LoginClient.LoginClient realmClient = new LoginClient.LoginClient();
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
@@ -91,10 +92,8 @@ namespace Modules.Robot
 
 		public RobotViewModel()
 		{
-			this.clientHost = new ClientHost();
-
-			this.timer.Tick += delegate { this.clientHost.RunOnce(); };
-			this.timer.Start();
+			//this.timer.Tick += delegate { this.clientHost.RunOnce(); };
+			//this.timer.Start();
 		}
 
 		~RobotViewModel()
@@ -110,24 +109,22 @@ namespace Modules.Robot
 
 		private void Disposing(bool disposing)
 		{
-			this.clientHost.Dispose();
 		}
 
 		public async void Login()
 		{
 			try
 			{
-				var session = new RealmSession();
-				await session.ConnectAsync(this.LoginIP, this.LoginPort);
-				session.Login(this.Account, this.Password);
+				// 登录realm
+				List<Realm_List_Gate> gateList = await this.realmClient.LoginRealm(
+					this.LoginIP, this.LoginPort, this.Account, this.Password);
+
+				// 登录gate
 			}
 			catch (Exception e)
 			{
 				Logger.Trace("realm exception: {0}, {1}", e.Message, e.StackTrace);
-				return;
 			}
-
-			Logger.Trace("session login success!");
 		}
 	}
 }

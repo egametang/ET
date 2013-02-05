@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Robot.Protos
+namespace LoginClient
 {
 	public static class MessageOpcode
 	{
+		public const ushort CMSG_REALM_LIST = 16;
 		public const ushort CMSG_AUTH_LOGON_PERMIT = 800;
 		public const ushort CMSG_OTP_PASSWORD = 801;
 		public const ushort CMSG_PPC_PASSWORD = 802;
@@ -15,6 +16,7 @@ namespace Robot.Protos
 		public const ushort SMSG_REALM_LIST = 902;
 		public const ushort SMSG_LOCK_FOR_SAFE_TIME = 903;
 		public const ushort SMSG_PASSWORD_PROTECT_TYPE = 904;
+		public const ushort SMSG_AUTH_LOGON_PROOF_M2 = 905;
 	}
 
 	public static class ErrorCode
@@ -137,5 +139,65 @@ namespace Robot.Protos
 
 		[DataMember(Order = 2, IsRequired = true)]
 		public byte[] M { get; set; }
+	}
+
+	[DataContract]
+	public class CMSG_Realm_List
+	{
+	}
+
+	[DataContract]
+	public class SMSG_Auth_Logon_Proof_M2
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public int ErrorCode { get; set; }
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public byte[] M { get; set; }
+	}
+
+	public class Realm_List_Gate
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public byte[] Name { get; set; }
+		[DataMember(Order = 2, IsRequired = true)]
+		public byte[] Address { get; set; }
+		[DataMember(Order = 3, IsRequired = true)]
+		public float CityLoad { get; set; }
+	}
+
+	public class SMSG_Realm_List
+	{
+		public List<Realm_List_Gate> GateList { get; set; } 
+	}
+
+	public class CMSG_Auth_Session 
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint ClientBuild { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Unk2 { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public byte[] Username { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Unk3 { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint ClientSeed { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Unk4 { get; set; }
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public byte[] Digest { get; set; }
+
+		[DataMember(Order = 1, IsRequired = false)]
+		public byte[] Mac { get; set; }
+
+		[DataMember(Order = 1, IsRequired = false)]
+		public byte[] Hd { get; set; }
 	}
 }

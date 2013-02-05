@@ -9,9 +9,9 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private static async void ClientEvent(ClientHost host, Address address)
+		private static async void ClientEvent(ClientHost host, string hostName, ushort port)
 		{
-			var peer = await host.ConnectAsync(address);
+			var peer = await host.ConnectAsync(hostName, port);
 			using (var sPacket = new Packet("0123456789".ToByteArray(), PacketFlags.Reliable))
 			{
 				peer.Send(0, sPacket);
@@ -51,9 +51,10 @@ namespace ENetCSTest
 		[TestMethod]
 		public void ClientSendToServer()
 		{
-			var address = new Address { HostName = "127.0.0.1", Port = 8888 };
+			const string hostName = "127.0.0.1";
+			const ushort port = 8888;
 			var clientHost = new ClientHost();
-			var serverHost = new ServerHost(address);
+			var serverHost = new ServerHost(hostName, port);
 
 			var serverThread = new Thread(() => serverHost.Start(10));
 			var clientThread = new Thread(() => clientHost.Start(10));
@@ -69,7 +70,7 @@ namespace ENetCSTest
 			barrier.SignalAndWait();
 
 			// 往client host线程增加事件,client线程连接server
-			clientHost.Events += () => ClientEvent(clientHost, address);
+			clientHost.Events += () => ClientEvent(clientHost, hostName, port);
 
 			serverThread.Join();
 			clientThread.Join();

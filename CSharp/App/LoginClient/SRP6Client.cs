@@ -1,12 +1,9 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Helper;
-using Org.BouncyCastle.Crypto.Digests;
 
-namespace Robot
+namespace LoginClient
 {
 	public class SRP6Client
 	{

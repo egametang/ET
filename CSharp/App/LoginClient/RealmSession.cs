@@ -1,24 +1,25 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Helper;
 using Log;
-using Robot.Protos;
 
-namespace Robot
+namespace LoginClient
 {
 	public class RealmSession: IDisposable
 	{
-		private readonly TcpClient tcpClient = new TcpClient();
-		private NetworkStream networkStream;
-		private readonly RealmInfo realmInfo = new RealmInfo();
+		private readonly NetworkStream networkStream;
+		public int ID { get; set; }
+
+		public RealmSession(NetworkStream networkStream)
+		{
+			this.networkStream = networkStream;
+		}
 
 		public void Dispose()
 		{
-			this.tcpClient.Close();
 			this.networkStream.Dispose();
 		}
 
@@ -48,8 +49,8 @@ namespace Robot
 
 			if (opcode != MessageOpcode.SMSG_PASSWORD_PROTECT_TYPE)
 			{
-				Logger.Trace("opcode: {0}", opcode);
-				throw new RealmException(string.Format("error opcode: {0}", opcode));
+				throw new LoginException(string.Format(
+					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
 
 			var smsgPasswordProtectType = 
@@ -59,9 +60,9 @@ namespace Robot
 
 			if (smsgPasswordProtectType.Code != 200)
 			{
-				throw new RealmException(string.Format(
-					"SMSG_Lock_For_Safe_Time: {0}", 
-					JsonHelper.ToString(smsgPasswordProtectType)));
+				throw new LoginException(string.Format(
+					"session: {0}, SMSG_Lock_For_Safe_Time: {1}", 
+					this.ID, JsonHelper.ToString(smsgPasswordProtectType)));
 			}
 
 			return smsgPasswordProtectType;
@@ -77,25 +78,66 @@ namespace Robot
 			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_CHALLENGE_RESPONSE)
 			{
 				Logger.Trace("opcode: {0}", opcode);
+				throw new LoginException(string.Format(
+					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
-
-			Logger.Trace("message: {0}", message.ToHex());
-
+			
 			var smsgAuthLogonChallengeResponse =
 				ProtobufHelper.FromBytes<SMSG_Auth_Logon_Challenge_Response>(message);
 
 			if (smsgAuthLogonChallengeResponse.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
 			{
 				Logger.Trace("error code: {0}", smsgAuthLogonChallengeResponse.ErrorCode);
-				throw new RealmException(
-					string.Format("SMSG_Auth_Logon_Challenge_Response ErrorCode: {0}", 
-					JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
+				throw new LoginException(
+					string.Format("session: {0}, SMSG_Auth_Logon_Challenge_Response: {1}",
+					this.ID, JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
 			}
 
 			Logger.Debug("SMSG_Auth_Logon_Challenge_Response: \n{0}", 
 				JsonHelper.ToString(smsgAuthLogonChallengeResponse));
 
 			return smsgAuthLogonChallengeResponse;
+		}
+
+		public async Task<SMSG_Auth_Logon_Proof_M2> Handle_SMSG_Auth_Logon_Proof_M2()
+		{
+			var result = await this.RecvMessage();
+			ushort opcode = result.Item1;
+			byte[] message = result.Item2;
+
+			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_PROOF_M2)
+			{
+				throw new LoginException(string.Format(
+					"session: {0}, error opcode: {1}", this.ID, opcode));
+			}
+
+			var smsgAuthLogonProofM2 = ProtobufHelper.FromBytes<SMSG_Auth_Logon_Proof_M2>(message);
+
+			if (smsgAuthLogonProofM2.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
+			{
+				throw new LoginException(string.Format(
+					"session: {0}, SMSG_Auth_Logon_Proof_M2: {1}", 
+					this.ID, JsonHelper.ToString(smsgAuthLogonProofM2)));
+			}
+
+			return smsgAuthLogonProofM2;
+		}
+
+		public async Task<SMSG_Realm_List> Handle_SMSG_Realm_List()
+		{
+			var result = await this.RecvMessage();
+			ushort opcode = result.Item1;
+			byte[] message = result.Item2;
+
+			if (opcode != MessageOpcode.SMSG_REALM_LIST)
+			{
+				throw new LoginException(string.Format(
+					"session: {0}, error opcode: {1}", this.ID, opcode));
+			}
+
+			var smsgRealmList = ProtobufHelper.FromBytes<SMSG_Realm_List>(message);
+
+			return smsgRealmList;
 		}
 
 		public async Task<Tuple<ushort, byte[]>> RecvMessage()
@@ -109,14 +151,13 @@ namespace Robot
 					packetBytes, totalReadSize, packetBytes.Length);
 				if (readSize == 0)
 				{
-					throw new RealmException("connection closed!");
+					throw new LoginException(string.Format(
+						"session: {0}, connection closed", this.ID));
 				}
 				totalReadSize += readSize;
 			}
 
 			int packetSize = BitConverter.ToInt32(packetBytes, 0);
-
-			Logger.Debug("packet size: {0}", packetSize);
 
 			// 读opcode和message
 			totalReadSize = 0;
@@ -128,14 +169,13 @@ namespace Robot
 					contentBytes, totalReadSize, contentBytes.Length);
 				if (readSize == 0)
 				{
-					throw new RealmException("connection closed!");
+					throw new LoginException(string.Format(
+						"session: {0}, connection closed", this.ID));
 				}
 				totalReadSize += readSize;
 			}
 
 			ushort opcode = BitConverter.ToUInt16(contentBytes, 0);
-
-			Logger.Debug("opcode: {0}", opcode);
 
 			var messageBytes = new byte[needReadSize - sizeof (ushort)];
 			Array.Copy(contentBytes, sizeof (ushort), messageBytes, 0, messageBytes.Length);
@@ -143,13 +183,7 @@ namespace Robot
 			return new Tuple<ushort, byte[]>(opcode, messageBytes);
 		}
 
-		public async Task ConnectAsync(string hostName, ushort port)
-		{
-			await this.tcpClient.ConnectAsync(hostName, port);
-			this.networkStream = this.tcpClient.GetStream();
-		}
-
-		public async void Login(string account, string password)
+		public async Task<List<Realm_List_Gate>> Login(string account, string password)
 		{
 			byte[] passwordBytes = password.ToByteArray();
 			MD5 md5 = MD5.Create();
@@ -200,6 +234,13 @@ namespace Robot
 				M = srp6Client.M.ToUBigIntegerArray()
 			};
 			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
+			await this.Handle_SMSG_Auth_Logon_Proof_M2();
+
+			// 请求realm list
+			var cmsgRealmList = new CMSG_Realm_List();
+			this.SendMessage(MessageOpcode.CMSG_REALM_LIST, cmsgRealmList);
+			var smsgRealmList = await this.Handle_SMSG_Realm_List();
+			return smsgRealmList.GateList;
 		}
 	}
 }
