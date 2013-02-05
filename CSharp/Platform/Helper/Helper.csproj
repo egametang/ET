@@ -49,6 +49,7 @@
     <Compile Include="LoaderHelper.cs" />
     <Compile Include="ProtobufHelper.cs" />
     <Compile Include="StringHelper.cs" />
+    <Compile Include="TimeHelper.cs" />
     <Compile Include="XmlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

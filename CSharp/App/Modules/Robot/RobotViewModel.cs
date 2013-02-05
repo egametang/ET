@@ -17,7 +17,7 @@ namespace Modules.Robot
 		private ushort loginPort = 8888;
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
-		private readonly LoginClient.LoginClient realmClient = new LoginClient.LoginClient();
+		private readonly LoginClient.LoginClient loginClient = new LoginClient.LoginClient();
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
@@ -90,12 +90,6 @@ namespace Modules.Robot
 			}
 		}
 
-		public RobotViewModel()
-		{
-			//this.timer.Tick += delegate { this.clientHost.RunOnce(); };
-			//this.timer.Start();
-		}
-
 		~RobotViewModel()
 		{
 			this.Disposing(false);
@@ -115,11 +109,12 @@ namespace Modules.Robot
 		{
 			try
 			{
-				// 登录realm
-				List<Realm_List_Gate> gateList = await this.realmClient.LoginRealm(
-					this.LoginIP, this.LoginPort, this.Account, this.Password);
+				this.timer.Tick += delegate { this.loginClient.RunOnce(); };
+				this.timer.Start();
 
-				// 登录gate
+				// 登录
+				this.loginClient.Login(
+					this.LoginIP, this.LoginPort, this.Account, this.Password);
 			}
 			catch (Exception e)
 			{

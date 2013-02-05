@@ -17,6 +17,11 @@ namespace LoginClient
 		public const ushort SMSG_LOCK_FOR_SAFE_TIME = 903;
 		public const ushort SMSG_PASSWORD_PROTECT_TYPE = 904;
 		public const ushort SMSG_AUTH_LOGON_PROOF_M2 = 905;
+
+		// Gate Message Opcode
+		public const ushort CMSG_AUTH_SESSION = 2;
+		public const ushort SMSG_AUTH_CHALLENGE = 502;
+		public const ushort SMSG_AUTH_RESPONSE = 503;
 	}
 
 	public static class ErrorCode
@@ -95,19 +100,6 @@ namespace LoginClient
 	}
 
 	[DataContract]
-	public class SMSG_Auth_Challenge
-	{
-		[DataMember(Order = 1, IsRequired = true)]
-		public uint Num { get; set; }
-
-		[DataMember(Order = 2, IsRequired = true)]
-		public uint Seed { get; set; }
-
-		[DataMember(Order = 3)]
-		public List<uint> Random { get; set; }
-	}
-
-	[DataContract]
 	public class CMSG_Auth_Logon_Challenge
 	{
 	}
@@ -156,6 +148,7 @@ namespace LoginClient
 		public byte[] M { get; set; }
 	}
 
+	[DataContract]
 	public class Realm_List_Gate
 	{
 		[DataMember(Order = 1, IsRequired = true)]
@@ -166,11 +159,14 @@ namespace LoginClient
 		public float CityLoad { get; set; }
 	}
 
+	[DataContract]
 	public class SMSG_Realm_List
 	{
+		[DataMember(Order = 1, IsRequired = true)]
 		public List<Realm_List_Gate> GateList { get; set; } 
 	}
 
+	[DataContract]
 	public class CMSG_Auth_Session 
 	{
 		[DataMember(Order = 1, IsRequired = true)]
@@ -199,5 +195,26 @@ namespace LoginClient
 
 		[DataMember(Order = 1, IsRequired = false)]
 		public byte[] Hd { get; set; }
+	}
+
+	// gate message
+	[DataContract]
+	public class SMSG_Auth_Challenge
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint Num { get; set; }
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public uint Seed { get; set; }
+
+		[DataMember(Order = 3)]
+		public List<uint> Random { get; set; }
+	}
+
+	[DataContract]
+	public class SMSG_Auth_Response
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint ErrorCode { get; set; }
 	}
 }

@@ -21,6 +21,7 @@ namespace Helper
 		public static BigInteger RandUnsignedBigInteger(int byteNum)
 		{
 			var bigIntegerBytes = new byte[byteNum];
+			//bigIntegerBytes = "973CA1A03E892A4DC676BE95FA8EFBFF2C38C3".HexToBytes().Reverse();
 			var random = new Random();
 			random.NextBytes(bigIntegerBytes);
 

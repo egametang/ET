@@ -14,12 +14,12 @@ namespace ENetCSTest
 			var peer = await host.ConnectAsync(hostName, port);
 			using (var sPacket = new Packet("0123456789".ToByteArray(), PacketFlags.Reliable))
 			{
-				peer.Send(0, sPacket);
+				peer.WriteAsync(0, sPacket);
 			}
 
-			using (var rPacket = await peer.ReceiveAsync())
+			using (var rPacket = await peer.ReadAsync())
 			{
-				Logger.Debug(rPacket.Bytes.ToStr());
+				Logger.Debug(rPacket.Bytes.ToHex());
 				CollectionAssert.AreEqual("9876543210".ToByteArray(), rPacket.Bytes);
 			}
 
@@ -36,15 +36,15 @@ namespace ENetCSTest
 
 			barrier.SignalAndWait();
 
-			using (var rPacket = await peer.ReceiveAsync())
+			using (var rPacket = await peer.ReadAsync())
 			{
-				Logger.Debug(rPacket.Bytes.ToStr());
+				Logger.Debug(rPacket.Bytes.ToHex());
 				CollectionAssert.AreEqual("0123456789".ToByteArray(), rPacket.Bytes);
 			}
 
 			using (var sPacket = new Packet("9876543210".ToByteArray(), PacketFlags.Reliable))
 			{
-				peer.Send(0, sPacket);
+				peer.WriteAsync(0, sPacket);
 			}
 		}
 

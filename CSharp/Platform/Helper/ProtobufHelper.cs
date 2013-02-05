@@ -17,5 +17,11 @@ namespace Helper
 			var ms = new MemoryStream(bytes, 0, bytes.Length);
 			return Serializer.Deserialize<T>(ms);
 		}
+
+		public static T FromBytes<T>(byte[] bytes, int index, int length)
+		{
+			var ms = new MemoryStream(bytes, index, length);
+			return Serializer.Deserialize<T>(ms);
+		}
 	}
 }

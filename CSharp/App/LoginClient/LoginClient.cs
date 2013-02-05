@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Threading.Tasks;
 using ENet;
+using Helper;
 using Log;
 
 namespace LoginClient
@@ -28,31 +29,25 @@ namespace LoginClient
 			this.clientHost.Start(timeout);
 		}
 
-		public async Task<List<Realm_List_Gate>> LoginRealm(
+		public async void Login(
 			string hostName, ushort port, string account, string password)
-	    {
-			using (var tcpClient = new TcpClient())
-			{
-				await tcpClient.ConnectAsync(hostName, port);
-
-				using (var session = new RealmSession(
-					tcpClient.GetStream()) { ID = ++this.sessionId })
-				{
-					var gateList = await session.Login(account, password);
-
-					Logger.Trace("session: {0}, login success!", session.ID);
-					return gateList;
-				}
-			}
-	    }
-
-		public async void LoginGate(string hostName, ushort port)
 		{
-			Peer peer = await this.clientHost.ConnectAsync(hostName, port);
-			using (var session = new GateSession(peer) { ID = ++sessionId })
+			++this.sessionId;
+
+			var tcpClient = new TcpClient();
+			await tcpClient.ConnectAsync(hostName, port);
+
+			Tuple<string, ushort, SRP6Client> realmInfo; // ip, port, K
+			using (var realmSession = new RealmSession(this.sessionId, new TcpChannel(tcpClient)))
 			{
-				session.Login();
+				realmInfo = await realmSession.Login(account, password);
+				Logger.Trace("session: {0}, login success!", realmSession.ID);
 			}
-		}
+
+			// 登录gate
+			Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
+			var gateSession = new GateSession(this.sessionId, new ENetChannel(peer));
+			gateSession.Login(realmInfo.Item3);
+	    }
     }
 }

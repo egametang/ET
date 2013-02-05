@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Numerics;
 using System.Text;
 
 namespace Helper
@@ -24,14 +21,9 @@ namespace Helper
 			return stringBuilder.ToString();
 		}
 
-		public static string ToStr(this IEnumerable<byte> bytes)
+		public static string ToStr(this byte[] bytes)
 		{
-			var stringBuilder = new StringBuilder();
-			foreach (byte b in bytes)
-			{
-				stringBuilder.Append(b.ToString(CultureInfo.InvariantCulture));
-			}
-			return stringBuilder.ToString();
+			return Encoding.Default.GetString(bytes);
 		}
 
 		public static byte[] Reverse(this byte[] bytes)

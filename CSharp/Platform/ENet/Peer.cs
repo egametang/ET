@@ -82,20 +82,20 @@ namespace ENet
 			NativeMethods.enet_peer_throttle_configure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
-		public void Send(byte channelID, byte[] data)
+		public void WriteAsync(byte channelID, byte[] data)
 		{
 			var packet = new Packet(data);
-			this.Send(channelID, packet);
+			this.WriteAsync(channelID, packet);
 		}
 
-		public void Send(byte channelID, Packet packet)
+		public void WriteAsync(byte channelID, Packet packet)
 		{
 			NativeMethods.enet_peer_send(this.peerPtr, channelID, packet.PacketPtr);
 			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
 			packet.PacketPtr = IntPtr.Zero;
 		}
 
-		public Task<Packet> ReceiveAsync()
+		public Task<Packet> ReadAsync()
 		{
 			var tcs = new TaskCompletionSource<Packet>();
 			this.PeerEvent.Received += e =>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Helper;
@@ -10,40 +11,24 @@ namespace LoginClient
 {
 	public class RealmSession: IDisposable
 	{
-		private readonly NetworkStream networkStream;
 		public int ID { get; set; }
 
-		public RealmSession(NetworkStream networkStream)
+		public IMessageChannel MessageChannel { get; set; }
+
+		public RealmSession(int id, IMessageChannel messageChannel)
 		{
-			this.networkStream = networkStream;
+			this.ID = id;
+			this.MessageChannel = messageChannel;
 		}
 
 		public void Dispose()
 		{
-			this.networkStream.Dispose();
-		}
-
-		public async void SendMessage<T>(ushort opcode, T message)
-		{
-			byte[] protoBytes = ProtobufHelper.ToBytes(message);
-			var neworkBytes = new byte[sizeof (int) + sizeof (ushort) + protoBytes.Length];
-
-			int totalSize = sizeof (ushort) + protoBytes.Length;
-
-			var totalSizeBytes = BitConverter.GetBytes(totalSize);
-			totalSizeBytes.CopyTo(neworkBytes, 0);
-
-			var opcodeBytes = BitConverter.GetBytes(opcode);
-			opcodeBytes.CopyTo(neworkBytes, sizeof (int));
-
-			protoBytes.CopyTo(neworkBytes, sizeof (int) + sizeof (ushort));
-
-			await this.networkStream.WriteAsync(neworkBytes, 0, neworkBytes.Length);
+			this.MessageChannel.Dispose();
 		}
 
 		public async Task<SMSG_Password_Protect_Type> Handle_CMSG_AuthLogonPermit_Response()
 		{
-			var result = await this.RecvMessage();
+			var result = await this.MessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
 
@@ -71,7 +56,7 @@ namespace LoginClient
 		public async Task<SMSG_Auth_Logon_Challenge_Response>
 			Handle_SMSG_Auth_Logon_Challenge_Response()
 		{
-			var result = await this.RecvMessage();
+			var result = await this.MessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
 
@@ -101,7 +86,7 @@ namespace LoginClient
 
 		public async Task<SMSG_Auth_Logon_Proof_M2> Handle_SMSG_Auth_Logon_Proof_M2()
 		{
-			var result = await this.RecvMessage();
+			var result = await this.MessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
 
@@ -125,7 +110,7 @@ namespace LoginClient
 
 		public async Task<SMSG_Realm_List> Handle_SMSG_Realm_List()
 		{
-			var result = await this.RecvMessage();
+			var result = await this.MessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
 
@@ -140,50 +125,7 @@ namespace LoginClient
 			return smsgRealmList;
 		}
 
-		public async Task<Tuple<ushort, byte[]>> RecvMessage()
-		{
-			int totalReadSize = 0;
-			int needReadSize = sizeof (int);
-			var packetBytes = new byte[needReadSize];
-			while (totalReadSize != needReadSize)
-			{
-				int readSize = await this.networkStream.ReadAsync(
-					packetBytes, totalReadSize, packetBytes.Length);
-				if (readSize == 0)
-				{
-					throw new LoginException(string.Format(
-						"session: {0}, connection closed", this.ID));
-				}
-				totalReadSize += readSize;
-			}
-
-			int packetSize = BitConverter.ToInt32(packetBytes, 0);
-
-			// 读opcode和message
-			totalReadSize = 0;
-			needReadSize = packetSize;
-			var contentBytes = new byte[needReadSize];
-			while (totalReadSize != needReadSize)
-			{
-				int readSize = await this.networkStream.ReadAsync(
-					contentBytes, totalReadSize, contentBytes.Length);
-				if (readSize == 0)
-				{
-					throw new LoginException(string.Format(
-						"session: {0}, connection closed", this.ID));
-				}
-				totalReadSize += readSize;
-			}
-
-			ushort opcode = BitConverter.ToUInt16(contentBytes, 0);
-
-			var messageBytes = new byte[needReadSize - sizeof (ushort)];
-			Array.Copy(contentBytes, sizeof (ushort), messageBytes, 0, messageBytes.Length);
-
-			return new Tuple<ushort, byte[]>(opcode, messageBytes);
-		}
-
-		public async Task<List<Realm_List_Gate>> Login(string account, string password)
+		public async Task<Tuple<string, ushort, SRP6Client>> Login(string account, string password)
 		{
 			byte[] passwordBytes = password.ToByteArray();
 			MD5 md5 = MD5.Create();
@@ -198,14 +140,14 @@ namespace LoginClient
 			};
 
 			Logger.Trace("account: {0}, password: {1}", 
-				cmsgAuthLogonPermit.Account, cmsgAuthLogonPermit.PasswordMd5.ToStr());
+				cmsgAuthLogonPermit.Account, cmsgAuthLogonPermit.PasswordMd5.ToHex());
 
-			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
+			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
 			await this.Handle_CMSG_AuthLogonPermit_Response();
 
 			// 这个消息已经没有作用,只用来保持原有的代码流程
 			var cmsgAuthLogonChallenge = new CMSG_Auth_Logon_Challenge();
-			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
+			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
 			var smsgAuthLogonChallengeResponse = 
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 
@@ -233,14 +175,19 @@ namespace LoginClient
 				A = srp6Client.A.ToUBigIntegerArray(),
 				M = srp6Client.M.ToUBigIntegerArray()
 			};
-			this.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
+			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 			await this.Handle_SMSG_Auth_Logon_Proof_M2();
 
 			// 请求realm list
 			var cmsgRealmList = new CMSG_Realm_List();
-			this.SendMessage(MessageOpcode.CMSG_REALM_LIST, cmsgRealmList);
+			this.MessageChannel.SendMessage(MessageOpcode.CMSG_REALM_LIST, cmsgRealmList);
 			var smsgRealmList = await this.Handle_SMSG_Realm_List();
-			return smsgRealmList.GateList;
+
+			string address = smsgRealmList.GateList[0].Address.ToStr();
+			string[] split = address.Split(new[] { ':' });
+			string gateIP = split[0];
+			ushort gatePort = UInt16.Parse(split[1]);
+			return Tuple.Create(gateIP, gatePort, srp6Client);
 		}
 	}
 }

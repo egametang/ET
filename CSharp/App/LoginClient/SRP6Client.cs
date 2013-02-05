@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Helper;
@@ -145,6 +146,14 @@ namespace LoginClient
 			}
 		}
 
+		public byte[] Account
+		{
+			get
+			{
+				return this.account;
+			}
+		}
+
 		/// <summary>
 		/// 计算X: X = H(s, P)
 		/// </summary>
@@ -246,7 +255,7 @@ namespace LoginClient
 			}
 
 			var hashGXorhashN = hashN; // H(N) ^ H(g)
-			var hashedIdentity = hashAlgorithm.ComputeHash(this.account); // H(I)
+			var hashedIdentity = hashAlgorithm.ComputeHash(this.Account); // H(I)
 
 			// H(H(N) ^ H(g), H(P), s, A, B, K_c)
 			var mBytes = hashAlgorithm.ComputeHash(new byte[0]
@@ -258,6 +267,19 @@ namespace LoginClient
 				.Concat(this.K.ToUBigIntegerArray())
 				.ToArray());
 			return mBytes.ToUBigInteger();
+		}
+
+		public byte[] CalculateGateDigest(uint clientSeed, uint serverSeed)
+		{
+			hashAlgorithm.Initialize();
+			var digest = hashAlgorithm.ComputeHash(new byte[0]
+				.Concat(this.Account)
+				.Concat(new byte[4] { 0, 0, 0, 0 })
+				.Concat(BitConverter.GetBytes(clientSeed))
+				.Concat(BitConverter.GetBytes(serverSeed))
+				.Concat(k.ToUBigIntegerArray())
+				.ToArray());
+			return digest;
 		}
 	}
 }
