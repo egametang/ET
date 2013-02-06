@@ -19,7 +19,7 @@ namespace Helper
 			var bigIntegerBytes = new byte[byteNum];
 			var random = new Random();
 			random.NextBytes(bigIntegerBytes);
-			//bigIntegerBytes = "C5487A2909326D52A615C07ADFECB55FCD0771".HexToBytes().Reverse();
+			//bigIntegerBytes = "C6DFEDA1EAAC7417A191EE5EC6062CE9546614".HexToBytes().Reverse();
 
 			return bigIntegerBytes.ToUBigInteger();
 		}
@@ -42,6 +42,20 @@ namespace Helper
 			if (result[result.Length - 1] == 0 && (result.Length % 0x10) != 0)
 			{
 				Array.Resize(ref result, result.Length - 1);
+			}
+			return result;
+		}
+
+		public static byte[] ToUBigIntegerArray(this BigInteger bigInteger, int length)
+		{
+			var result = bigInteger.ToByteArray();
+			if (result[result.Length - 1] == 0 && (result.Length % 0x10) != 0)
+			{
+				Array.Resize(ref result, result.Length - 1);
+			}
+			if (length > result.Length)
+			{
+				Array.Resize(ref result, length);
 			}
 			return result;
 		}

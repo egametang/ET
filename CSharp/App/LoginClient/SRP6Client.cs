@@ -48,7 +48,7 @@ namespace LoginClient
 			this.u = this.CalculateU();  // U = H(A, B)
 			this.s = this.CalculateS();  // S = (B - (k * g.ModExp(x, N))).ModExp(a + (u * x), N)
 			this.k = this.CalculateK();
-			this.m = this.CalculateM();  // 
+			this.m = this.CalculateM();  // H(H(N) ^ H(g), H(P), s, A, B, K)
 		}
 
 		public BigInteger N
@@ -185,9 +185,10 @@ namespace LoginClient
 		private BigInteger CalculateU()
 		{
 			hashAlgorithm.Initialize();
+
 			var joinBytes = new byte[0]
-				.Concat(this.A.ToUBigIntegerArray())
-				.Concat(this.B.ToUBigIntegerArray())
+				.Concat(this.A.ToUBigIntegerArray(32))
+				.Concat(this.B.ToUBigIntegerArray(32))
 				.ToArray();
 			return hashAlgorithm.ComputeHash(joinBytes).ToUBigInteger();
 		}
@@ -262,10 +263,10 @@ namespace LoginClient
 			var mBytes = hashAlgorithm.ComputeHash(new byte[0]
 				.Concat(hashGXorhashN)
 				.Concat(hashedIdentity)
-				.Concat(this.Salt.ToUBigIntegerArray())
-				.Concat(this.A.ToUBigIntegerArray())
-				.Concat(this.B.ToUBigIntegerArray())
-				.Concat(this.K.ToUBigIntegerArray())
+				.Concat(this.Salt.ToUBigIntegerArray(32))
+				.Concat(this.A.ToUBigIntegerArray(32))
+				.Concat(this.B.ToUBigIntegerArray(32))
+				.Concat(this.K.ToUBigIntegerArray(40))
 				.ToArray());
 			return mBytes.ToUBigInteger();
 		}
