@@ -8,7 +8,8 @@ namespace ENet
 	{
 		public ClientHost(
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
-			uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true)
+			uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true,
+			bool compressWithRangeEncoder = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -21,12 +22,17 @@ namespace ENet
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new ENetException(0, "Host creation call failed.");
+				throw new ENetException("Host creation call failed.");
 			}
 
 			if (enableCrc)
 			{
 				this.EnableCrc();
+			}
+
+			if (compressWithRangeEncoder)
+			{
+				this.CompressWithRangeCoder();
 			}
 		}
 
@@ -43,7 +49,7 @@ namespace ENet
 				this.host, ref nativeAddress, channelLimit, data);
 			if (peerPtr == IntPtr.Zero)
 			{
-				throw new ENetException(0, "Host connect call failed.");
+				throw new ENetException("Host connect call failed.");
 			}
 			var peer = new Peer(peerPtr);
 			this.PeersManager.Add(peerPtr, peer);
@@ -60,9 +66,14 @@ namespace ENet
 				return;
 			}
 
-			Event ev;
-			while (this.CheckEvents(out ev) > 0)
+			while (true)
 			{
+				Event ev = this.GetEvent();
+				if (ev == null)
+				{
+					return;
+				}
+
 				switch (ev.Type)
 				{
 					case EventType.Connect:

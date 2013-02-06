@@ -106,6 +106,7 @@ namespace Modules.Robot
 
 		private void Disposing(bool disposing)
 		{
+			this.loginClient.Dispose();
 		}
 
 		public void Login()

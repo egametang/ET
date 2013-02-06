@@ -5,10 +5,11 @@
 		public static void Initialize()
 		{
 			var inits = new ENetCallbacks();
-			int ret = NativeMethods.enet_initialize_with_callbacks(NativeMethods.ENET_VERSION, ref inits);
+			int ret = NativeMethods.enet_initialize_with_callbacks(
+				NativeMethods.ENET_VERSION, ref inits);
 			if (ret < 0)
 			{
-				throw new ENetException(ret, "Initialization failed.");
+				throw new ENetException(string.Format("Initialization failed, ret: {0}", ret));
 			}
 		}
 

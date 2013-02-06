@@ -5,12 +5,10 @@ namespace ENet
 {
 	public sealed class ServerHost: Host
 	{
-		private Action<Peer> acceptEvent;
-
 		public ServerHost(string hostName, ushort port, 
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
 			uint channelLimit = 0, uint incomingBandwidth = 0, uint outgoingBandwidth = 0,
-			bool enableCrc = true)
+			bool enableCrc = true, bool compressWithRangeEncoder = true)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -26,12 +24,17 @@ namespace ENet
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new ENetException(0, "Host creation call failed.");
+				throw new ENetException("Host creation call failed.");
 			}
 
 			if (enableCrc)
 			{
-				NativeMethods.enet_enable_crc(this.host);
+				this.EnableCrc();
+			}
+
+			if (compressWithRangeEncoder)
+			{
+				this.CompressWithRangeCoder();
 			}
 		}
 
@@ -39,7 +42,7 @@ namespace ENet
 		{
 			if (this.PeersManager.ContainsKey(IntPtr.Zero))
 			{
-				throw new ENetException(5, "Do Not Accept Twice!");
+				throw new ENetException("Do Not Accept Twice!");
 			}
 			var tcs = new TaskCompletionSource<Peer>();
 			var peer = new Peer(IntPtr.Zero);
@@ -57,9 +60,14 @@ namespace ENet
 				return;
 			}
 
-			Event ev;
-			while (this.CheckEvents(out ev) > 0)
+			while (true)
 			{
+				Event ev = this.GetEvent();
+				if (ev == null)
+				{
+					return;
+				}
+
 				switch (ev.Type)
 				{
 					case EventType.Connect:

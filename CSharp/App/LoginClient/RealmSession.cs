@@ -40,9 +40,7 @@ namespace LoginClient
 
 			var smsgPasswordProtectType = 
 				ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
-
-			Logger.Trace("message: {0}", JsonHelper.ToString(smsgPasswordProtectType));
-
+			
 			if (smsgPasswordProtectType.Code != 200)
 			{
 				throw new LoginException(string.Format(
@@ -139,8 +137,8 @@ namespace LoginClient
 				PasswordMd5 = passwordMd5Hex
 			};
 
-			Logger.Trace("account: {0}, password: {1}", 
-				cmsgAuthLogonPermit.Account, cmsgAuthLogonPermit.PasswordMd5.ToHex());
+			Logger.Trace("session: {0}, account: {1}, password: {2}", this.ID,
+				cmsgAuthLogonPermit.Account.ToStr(), cmsgAuthLogonPermit.PasswordMd5.ToHex());
 
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
 			await this.Handle_CMSG_AuthLogonPermit_Response();
@@ -151,6 +149,8 @@ namespace LoginClient
 				MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
 			var smsgAuthLogonChallengeResponse = 
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
+
+			Logger.Trace("session: {0}, SMSG_Auth_Logon_Challenge_Response OK", this.ID);
 
 			// 以下是SRP6处理过程
 			var n = smsgAuthLogonChallengeResponse.N.ToUBigInteger();
@@ -180,13 +180,24 @@ namespace LoginClient
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
 			await this.Handle_SMSG_Auth_Logon_Proof_M2();
 
+			Logger.Trace("session: {0}, SMSG_Auth_Logon_Proof_M2 OK", this.ID);
+
 			// 请求realm list
 			var cmsgRealmList = new CMSG_Realm_List();
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_REALM_LIST, cmsgRealmList);
 			var smsgRealmList = await this.Handle_SMSG_Realm_List();
 
+			Logger.Trace("session: {0}, SMSG_Realm_List OK", this.ID);
+
 			string address = smsgRealmList.GateList[0].Address.ToStr();
 			string[] split = address.Split(new[] { ':' });
+
+			if (split.Length != 2)
+			{
+				throw new LoginException(
+					string.Format("session: {0}, gate address error, address: {1}",
+					this.ID, address));
+			}
 			string gateIP = split[0];
 			ushort gatePort = UInt16.Parse(split[1]);
 			return Tuple.Create(gateIP, gatePort, srp6Client);

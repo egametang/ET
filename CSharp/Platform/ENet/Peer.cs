@@ -102,7 +102,7 @@ namespace ENet
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
-					tcs.TrySetException(new ENetException(3, "Peer Disconnected In Received"));
+					tcs.TrySetException(new ENetException("Peer Disconnected In Received"));
 				}
 				var packet = new Packet(e.PacketPtr);
 				tcs.TrySetResult(packet);

@@ -36,13 +36,15 @@ namespace LoginClient
 
 		public async Task<Tuple<ushort, byte[]>> RecvMessage()
 		{
-			Packet packet = await this.peer.ReadAsync();
-			byte[] bytes = packet.Bytes;
-			const int opcodeSize = sizeof (ushort);
-			ushort opcode = BitConverter.ToUInt16(bytes, 0);
-			var messageBytes = new byte[packet.Length - opcodeSize];
-			Array.Copy(bytes, opcodeSize, messageBytes, 0, messageBytes.Length);
-			return Tuple.Create(opcode, messageBytes);
+			using (Packet packet = await this.peer.ReadAsync())
+			{
+				byte[] bytes = packet.Bytes;
+				const int opcodeSize = sizeof(ushort);
+				ushort opcode = BitConverter.ToUInt16(bytes, 0);
+				var messageBytes = new byte[packet.Length - opcodeSize];
+				Array.Copy(bytes, opcodeSize, messageBytes, 0, messageBytes.Length);
+				return Tuple.Create(opcode, messageBytes);
+			}
 		}
 	}
 }

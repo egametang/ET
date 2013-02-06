@@ -57,7 +57,6 @@ namespace LoginClient
 			var result = await this.IMessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
-
 			if (opcode != MessageOpcode.SMSG_AUTH_CHALLENGE)
 			{
 				throw new LoginException(string.Format(

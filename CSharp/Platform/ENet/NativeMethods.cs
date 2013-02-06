@@ -43,9 +43,6 @@ namespace ENet
 		internal static extern void enet_enable_crc(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
-		internal static extern int enet_host_compress_with_range_encoder(IntPtr host);
-
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr enet_host_create(
 			ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth,
 			uint outgoingBandwidth);
@@ -67,6 +64,9 @@ namespace ENet
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void enet_host_compress(IntPtr host, IntPtr compressor);
+
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
+		internal static extern int enet_host_compress_with_range_coder(IntPtr host);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void enet_host_channel_limit(IntPtr host, uint channelLimit);

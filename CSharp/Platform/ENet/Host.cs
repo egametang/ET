@@ -60,12 +60,16 @@ namespace ENet
 			}
 		}
 
-		protected int CheckEvents(out Event e)
+		protected Event GetEvent()
 		{
 			var enetEv = new ENetEvent();
 			int ret = NativeMethods.enet_host_check_events(this.host, enetEv);
-			e = new Event(enetEv);
-			return ret;
+			if (ret <= 0)
+			{
+				return null;
+			}
+			var e = new Event(enetEv);
+			return e;
 		}
 
 		protected int Service(int timeout)
@@ -82,9 +86,9 @@ namespace ENet
 			NativeMethods.enet_host_broadcast(this.host, channelID, packet.PacketPtr);
 		}
 
-		public void CompressWithRangeEncoder()
+		protected void CompressWithRangeCoder()
 		{
-			NativeMethods.enet_host_compress_with_range_encoder(this.host);
+			NativeMethods.enet_host_compress_with_range_coder(this.host);
 		}
 
 		public void DoNotCompress()
