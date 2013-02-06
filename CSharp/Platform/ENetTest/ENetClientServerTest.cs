@@ -30,11 +30,10 @@ namespace ENetCSTest
 
 		private static async void ServerEvent(ServerHost host, Barrier barrier)
 		{
+			barrier.SignalAndWait();
 			var peer = await host.AcceptAsync();
 			// Client断开,Server端收到Disconnect事件,结束Server线程
 			peer.PeerEvent.Disconnect += ev => host.Stop();
-
-			barrier.SignalAndWait();
 
 			using (var rPacket = await peer.ReadAsync())
 			{

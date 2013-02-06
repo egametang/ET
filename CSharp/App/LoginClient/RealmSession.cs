@@ -147,7 +147,8 @@ namespace LoginClient
 
 			// 这个消息已经没有作用,只用来保持原有的代码流程
 			var cmsgAuthLogonChallenge = new CMSG_Auth_Logon_Challenge();
-			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
+			this.MessageChannel.SendMessage(
+				MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
 			var smsgAuthLogonChallengeResponse = 
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 

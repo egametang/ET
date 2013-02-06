@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
-using ENet;
 using Log;
 using Microsoft.Practices.Prism.ViewModel;
-using LoginClient;
 
 namespace Modules.Robot
 {
@@ -90,6 +87,12 @@ namespace Modules.Robot
 			}
 		}
 
+		public RobotViewModel()
+		{
+			this.timer.Tick += delegate { this.loginClient.RunOnce(); };
+			this.timer.Start();
+		}
+
 		~RobotViewModel()
 		{
 			this.Disposing(false);
@@ -105,13 +108,10 @@ namespace Modules.Robot
 		{
 		}
 
-		public async void Login()
+		public void Login()
 		{
 			try
 			{
-				this.timer.Tick += delegate { this.loginClient.RunOnce(); };
-				this.timer.Start();
-
 				// 登录
 				this.loginClient.Login(
 					this.LoginIP, this.LoginPort, this.Account, this.Password);

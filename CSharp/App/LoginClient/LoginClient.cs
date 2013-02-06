@@ -35,16 +35,28 @@ namespace LoginClient
 			await tcpClient.ConnectAsync(hostName, port);
 
 			Tuple<string, ushort, SRP6Client> realmInfo; // ip, port, K
-			using (var realmSession = new RealmSession(this.sessionId, new TcpChannel(tcpClient)))
+			var realmSession = new RealmSession(this.sessionId, new TcpChannel(tcpClient));
+			try
 			{
 				realmInfo = await realmSession.Login(account, password);
 				Logger.Trace("session: {0}, login success!", realmSession.ID);
+			}
+			finally
+			{
+				realmSession.Dispose();
 			}
 
 			// 登录gate
 			Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
 			var gateSession = new GateSession(this.sessionId, new ENetChannel(peer));
-			gateSession.Login(realmInfo.Item3);
+			try
+			{
+				gateSession.Login(realmInfo.Item3);
+			}
+			finally
+			{
+				gateSession.Dispose();
+			}
 	    }
     }
 }

@@ -1,7 +1,7 @@
 /** 
  @file  list.h
  @brief ENet list management 
- */
+*/
 #ifndef __ENET_LIST_H__
 #define __ENET_LIST_H__
 
@@ -9,24 +9,24 @@
 
 typedef struct _ENetListNode
 {
-	struct _ENetListNode * next;
-	struct _ENetListNode * previous;
+   struct _ENetListNode * next;
+   struct _ENetListNode * previous;
 } ENetListNode;
 
 typedef ENetListNode * ENetListIterator;
 
 typedef struct _ENetList
 {
-	ENetListNode sentinel;
+   ENetListNode sentinel;
 } ENetList;
 
-extern void enet_list_clear(ENetList *);
+extern void enet_list_clear (ENetList *);
 
-extern ENetListIterator enet_list_insert(ENetListIterator, void *);
-extern void * enet_list_remove(ENetListIterator);
-extern ENetListIterator enet_list_move(ENetListIterator, void *, void *);
+extern ENetListIterator enet_list_insert (ENetListIterator, void *);
+extern void * enet_list_remove (ENetListIterator);
+extern ENetListIterator enet_list_move (ENetListIterator, void *, void *);
 
-extern size_t enet_list_size(ENetList *);
+extern size_t enet_list_size (ENetList *);
 
 #define enet_list_begin(list) ((list) -> sentinel.next)
 #define enet_list_end(list) (& (list) -> sentinel)
