@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Helper;
+using Log;
 
 namespace LoginClient
 {
@@ -174,7 +175,7 @@ namespace LoginClient
 		/// <returns></returns>
 		private BigInteger CalculateA()
 		{
-			return BigInteger.ModPow(this.G, this.SmallA, this.N);
+			return BigIntegerHelper.UModPow(this.G, this.SmallA, this.N);
 		}
 
 		/// <summary>
@@ -197,9 +198,9 @@ namespace LoginClient
 		/// <returns></returns>
 		private BigInteger CalculateS()
 		{
-			BigInteger s1 = this.B - BigInteger.ModPow(this.G, this.X, this.N) * lowerK;
+			BigInteger s1 = this.B - BigIntegerHelper.UModPow(this.G, this.X, this.N) * lowerK;
 			BigInteger s2 = this.SmallA + (this.U * this.X);
-			BigInteger s3 = BigInteger.ModPow(s1, s2, this.N);
+			BigInteger s3 = BigIntegerHelper.UModPow(s1, s2, this.N);
 			return s3;
 		}
 

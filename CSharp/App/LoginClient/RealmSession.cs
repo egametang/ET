@@ -160,7 +160,7 @@ namespace LoginClient
 			var srp6Client = new SRP6Client(
 				new SHA1Managed(), n, g, b, salt, account.ToByteArray(), passwordMd5Hex);
 
-			Logger.Debug("s: {0}\nN: {1}\nG: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}",
+			Logger.Debug("s: {0}\nN: {1}\nG: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}\na: {8}",
 				srp6Client.Salt.ToUBigIntegerArray().ToHex(),
 				srp6Client.N.ToUBigIntegerArray().ToHex(), 
 				srp6Client.G.ToUBigIntegerArray().ToHex(),
@@ -168,7 +168,8 @@ namespace LoginClient
 				srp6Client.A.ToUBigIntegerArray().ToHex(), 
 				srp6Client.S.ToUBigIntegerArray().ToHex(),
 				srp6Client.K.ToUBigIntegerArray().ToHex(), 
-				srp6Client.M.ToUBigIntegerArray().ToHex());
+				srp6Client.M.ToUBigIntegerArray().ToHex(),
+				srp6Client.SmallA.ToUBigIntegerArray().ToHex());
 
 			var cmsgAuthLogonProof = new CMSG_Auth_Logon_Proof
 			{

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helper
 {
@@ -21,9 +17,9 @@ namespace Helper
 		public static BigInteger RandUnsignedBigInteger(int byteNum)
 		{
 			var bigIntegerBytes = new byte[byteNum];
-			//bigIntegerBytes = "973CA1A03E892A4DC676BE95FA8EFBFF2C38C3".HexToBytes().Reverse();
 			var random = new Random();
 			random.NextBytes(bigIntegerBytes);
+			//bigIntegerBytes = "C5487A2909326D52A615C07ADFECB55FCD0771".HexToBytes().Reverse();
 
 			return bigIntegerBytes.ToUBigInteger();
 		}
@@ -46,6 +42,23 @@ namespace Helper
 			if (result[result.Length - 1] == 0 && (result.Length % 0x10) != 0)
 			{
 				Array.Resize(ref result, result.Length - 1);
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 返回非负值
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="exponent"></param>
+		/// <param name="modulus"></param>
+		/// <returns></returns>
+		public static BigInteger UModPow(BigInteger value, BigInteger exponent, BigInteger modulus)
+		{
+			BigInteger result = BigInteger.ModPow(value, exponent, modulus);
+			if (result < 0)
+			{
+				result += modulus;
 			}
 			return result;
 		}
