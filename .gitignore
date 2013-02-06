@@ -15,6 +15,7 @@ Opt/
 */TestResults/
 
 bin/
+Bin/
 obj/
 Packages/
 packages/
