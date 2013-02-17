@@ -5,7 +5,9 @@ namespace LoginClient
 {
 	public static class MessageOpcode
 	{
+		// realm message opcode
 		public const ushort CMSG_REALM_LIST = 16;
+		public const ushort CMSG_BOSS_GM = 17;
 		public const ushort CMSG_AUTH_LOGON_PERMIT = 800;
 		public const ushort CMSG_OTP_PASSWORD = 801;
 		public const ushort CMSG_PPC_PASSWORD = 802;
@@ -18,14 +20,17 @@ namespace LoginClient
 		public const ushort SMSG_PASSWORD_PROTECT_TYPE = 904;
 		public const ushort SMSG_AUTH_LOGON_PROOF_M2 = 905;
 
-		// Gate Message Opcode
+		// gate message opcode
 		public const ushort CMSG_AUTH_SESSION = 2;
 		public const ushort SMSG_AUTH_CHALLENGE = 502;
 		public const ushort SMSG_AUTH_RESPONSE = 503;
+
+		public const ushort SMSG_SERVERTIME = 510;
 	}
 
 	public static class ErrorCode
 	{
+		// realm error code
 		public const int REALM_AUTH_SUCCESS = 0;
 		// Unable to connect
 		public const int REALM_AUTH_FAILURE = 1;
@@ -71,6 +76,10 @@ namespace LoginClient
 		// Access to this account has been blocked by parental controls.
 		// Your settings may be changed in your account preferences at site.
 		public const int REALM_AUTH_PARENTAL_CONTROL = 15;
+
+
+		// 其它error code
+		public const int AUTH_OK = 12;
 	}
 
 	[DataContract]
@@ -172,28 +181,28 @@ namespace LoginClient
 		[DataMember(Order = 1, IsRequired = true)]
 		public uint ClientBuild { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 2, IsRequired = true)]
 		public uint Unk2 { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 3, IsRequired = true)]
 		public byte[] Username { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 4, IsRequired = true)]
 		public uint Unk3 { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 5, IsRequired = true)]
 		public uint ClientSeed { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 6, IsRequired = true)]
 		public uint Unk4 { get; set; }
 
-		[DataMember(Order = 1, IsRequired = true)]
+		[DataMember(Order = 7, IsRequired = true)]
 		public byte[] Digest { get; set; }
 
-		[DataMember(Order = 1, IsRequired = false)]
+		[DataMember(Order = 8, IsRequired = false)]
 		public byte[] Mac { get; set; }
 
-		[DataMember(Order = 1, IsRequired = false)]
+		[DataMember(Order = 9, IsRequired = false)]
 		public byte[] Hd { get; set; }
 	}
 
@@ -216,5 +225,12 @@ namespace LoginClient
 	{
 		[DataMember(Order = 1, IsRequired = true)]
 		public uint ErrorCode { get; set; }
+	}
+
+	[DataContract]
+	public class CMSG_Boss_Gm
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public string Message { get; set; }
 	}
 }

@@ -14,6 +14,7 @@ namespace Modules.Robot
 		private ushort loginPort = 8888;
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
+		private string command = "";
 		private readonly LoginClient.LoginClient loginClient = new LoginClient.LoginClient();
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
@@ -87,6 +88,23 @@ namespace Modules.Robot
 			}
 		}
 
+		public string Command
+		{
+			get
+			{
+				return this.command;
+			}
+			set
+			{
+				if (this.command == value)
+				{
+					return;
+				}
+				this.command = value;
+				this.RaisePropertyChanged("Command");
+			}
+		}
+
 		public RobotViewModel()
 		{
 			this.timer.Tick += delegate { this.loginClient.RunOnce(); };
@@ -113,7 +131,6 @@ namespace Modules.Robot
 		{
 			try
 			{
-				// 登录
 				this.loginClient.Login(
 					this.LoginIP, this.LoginPort, this.Account, this.Password);
 			}
@@ -121,6 +138,11 @@ namespace Modules.Robot
 			{
 				Logger.Trace("realm exception: {0}, {1}", e.Message, e.StackTrace);
 			}
+		}
+
+		public void SendCommand()
+		{
+			this.loginClient.SendCommand(this.Command);
 		}
 	}
 }

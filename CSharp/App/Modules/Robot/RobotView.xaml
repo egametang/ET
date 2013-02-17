@@ -16,8 +16,12 @@
 				<TextBox Width="120" Text="{Binding Account}" />
 				<Label Content="Password: "></Label>
 				<TextBox Width="120" Text="{Binding Password}" />
-				<Button Name="btnStart" Content="Login" Width="80" Height="25" Click="btnLogin_Click" />
+				<Button Name="btnLogin" Content="Login" Width="80" Height="25" Click="btnLogin_Click" />
 				<TextBlock></TextBlock>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<TextBox Name="tbCommand" Width="400" Text="{Binding Command}"></TextBox>
+				<Button Name="btnSendCommand" Content="发送" Click="btnSendCommand_Click" IsEnabled="False"></Button>
 			</StackPanel>
 		</StackPanel>
 	</Grid>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ENet;
 using Helper;
+using Log;
 
 namespace LoginClient
 {
@@ -41,8 +42,15 @@ namespace LoginClient
 				byte[] bytes = packet.Bytes;
 				const int opcodeSize = sizeof(ushort);
 				ushort opcode = BitConverter.ToUInt16(bytes, 0);
-				var messageBytes = new byte[packet.Length - opcodeSize];
-				Array.Copy(bytes, opcodeSize, messageBytes, 0, messageBytes.Length);
+				const int flagSize = sizeof (ushort);
+				ushort flag = BitConverter.ToUInt16(bytes, opcodeSize);
+				if (flag != 0)
+				{
+					Logger.Debug("packet zip");
+					throw new LoginException("packet zip!");
+				}
+				var messageBytes = new byte[packet.Length - opcodeSize - flagSize];
+				Array.Copy(bytes, opcodeSize + flagSize, messageBytes, 0, messageBytes.Length);
 				return Tuple.Create(opcode, messageBytes);
 			}
 		}

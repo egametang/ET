@@ -31,6 +31,12 @@ namespace Modules.Robot
 		private void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
 			this.ViewModel.Login();
+			this.btnSendCommand.IsEnabled = true;
+		}
+
+		private void btnSendCommand_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.SendCommand();
 		}
 	}
 }
