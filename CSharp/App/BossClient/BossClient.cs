@@ -7,7 +7,7 @@ using Log;
 namespace BossClient
 {
 	public class BossClient : IDisposable
-    {
+	{
 		private int sessionId;
 		
 		private readonly ClientHost clientHost = new ClientHost();
@@ -35,7 +35,15 @@ namespace BossClient
 			{
 				throw new BossException("gate session is null");
 			}
-			await this.gateSession.HandleMessages();
+
+			try
+			{
+				await this.gateSession.HandleMessages();
+			}
+			catch (BossException e)
+			{
+				Logger.Trace("session: {0}, exception: {1}", this.gateSession.ID, e.ToString());
+			}
 		}
 
 		public async Task Login(
@@ -74,5 +82,5 @@ namespace BossClient
 			};
 			this.gateSession.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
 		}
-    }
+	}
 }
