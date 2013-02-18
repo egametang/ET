@@ -70,13 +70,13 @@
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\BossClient\BossClient.csproj">
+      <Project>{8650195a-7904-4ebc-9d81-b392a7e9b9b3}</Project>
+      <Name>BossClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\LoginClient\LoginClient.csproj">
-      <Project>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</Project>
-      <Name>LoginClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

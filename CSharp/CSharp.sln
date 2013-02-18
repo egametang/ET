@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENet", "Platform\ENet\ENet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ENetTest", "Platform\ENetTest\ENetTest.csproj", "{901A8E5C-C4C6-4C3C-8E18-068D75119F5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginClient", "App\LoginClient\LoginClient.csproj", "{8650195A-7904-4EBC-9D81-B392A7E9B9B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BossClient", "App\BossClient\BossClient.csproj", "{8650195A-7904-4EBC-9D81-B392A7E9B9B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows.Threading;
+using BossClient;
 using Microsoft.Practices.Prism.ViewModel;
 
 namespace Modules.Robot
@@ -14,7 +16,8 @@ namespace Modules.Robot
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
 		private string command = "";
-		private readonly LoginClient.LoginClient loginClient = new LoginClient.LoginClient();
+		private bool isEnableSendCommandButton;
+		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
@@ -104,9 +107,26 @@ namespace Modules.Robot
 			}
 		}
 
+		public bool IsEnableSendCommandButton
+		{
+			get
+			{
+				return this.isEnableSendCommandButton;
+			}
+			set
+			{
+				if (this.isEnableSendCommandButton == value)
+				{
+					return;
+				}
+				this.isEnableSendCommandButton = value;
+				this.RaisePropertyChanged("IsEnableSendCommandButton");
+			}
+		}
+
 		public RobotViewModel()
 		{
-			this.timer.Tick += delegate { this.loginClient.RunOnce(); };
+			this.timer.Tick += delegate { this.bossClient.RunOnce(); };
 			this.timer.Start();
 		}
 
@@ -123,18 +143,20 @@ namespace Modules.Robot
 
 		private void Disposing(bool disposing)
 		{
-			this.loginClient.Dispose();
+			this.bossClient.Dispose();
 		}
 
-		public void Login()
+		public async Task Login()
 		{
-			this.loginClient.Login(
+			await this.bossClient.Login(
 				this.LoginIP, this.LoginPort, this.Account, this.Password);
+			this.IsEnableSendCommandButton = true;
+			this.bossClient.HandleMessages();
 		}
 
 		public void SendCommand()
 		{
-			this.loginClient.SendCommand(this.Command);
+			this.bossClient.SendCommand(this.Command);
 		}
 	}
 }

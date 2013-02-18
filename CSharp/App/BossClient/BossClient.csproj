@@ -7,8 +7,8 @@
     <ProjectGuid>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LoginClient</RootNamespace>
-    <AssemblyName>LoginClient</AssemblyName>
+    <RootNamespace>BossClient</RootNamespace>
+    <AssemblyName>BossClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -42,9 +42,9 @@
     <Compile Include="GateSession.cs" />
     <Compile Include="IMessageChannel.cs" />
     <Compile Include="Messages.cs" />
-    <Compile Include="LoginClient.cs" />
+    <Compile Include="BossClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LoginException.cs" />
+    <Compile Include="BossException.cs" />
     <Compile Include="RealmSession.cs" />
     <Compile Include="SRP6Client.cs" />
     <Compile Include="TcpChannel.cs" />

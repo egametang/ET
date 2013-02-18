@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using ENet;
 using Log;
 
-namespace LoginClient
+namespace BossClient
 {
-	public class LoginClient : IDisposable
+	public class BossClient : IDisposable
     {
 		private int sessionId;
 		
@@ -28,7 +29,16 @@ namespace LoginClient
 			this.clientHost.Start(timeout);
 		}
 
-		public async void Login(
+		public async void HandleMessages()
+		{
+			if (this.gateSession == null)
+			{
+				throw new BossException("gate session is null");
+			}
+			await this.gateSession.HandleMessages();
+		}
+
+		public async Task Login(
 			string hostName, ushort port, string account, string password)
 		{
 			int loginSessionId = ++this.sessionId;
@@ -47,9 +57,8 @@ namespace LoginClient
 
 				// 登录gate
 				Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
-				gateSession = new GateSession(loginSessionId, new ENetChannel(peer));
+				this.gateSession = new GateSession(loginSessionId, new ENetChannel(peer));
 				await gateSession.Login(realmInfo.Item3);
-				await gateSession.HandleMessages();
 			}
 			catch (Exception e)
 			{

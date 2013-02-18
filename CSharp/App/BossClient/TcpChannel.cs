@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Helper;
 using Log;
-using LoginClient;
+using BossClient;
 
-namespace LoginClient
+namespace BossClient
 {
 	public class TcpChannel: IMessageChannel
 	{
@@ -53,7 +53,7 @@ namespace LoginClient
 					packetBytes, totalReadSize, packetBytes.Length);
 				if (readSize == 0)
 				{
-					throw new LoginException("connection closed");
+					throw new BossException("connection closed");
 				}
 				totalReadSize += readSize;
 			}
@@ -71,7 +71,7 @@ namespace LoginClient
 					contentBytes, totalReadSize, contentBytes.Length);
 				if (readSize == 0)
 				{
-					throw new LoginException("connection closed");
+					throw new BossException("connection closed");
 				}
 				totalReadSize += readSize;
 			}

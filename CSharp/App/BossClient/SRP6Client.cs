@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using Helper;
 using Log;
 
-namespace LoginClient
+namespace BossClient
 {
 	public class SRP6Client
 	{

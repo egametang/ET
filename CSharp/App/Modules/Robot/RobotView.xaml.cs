@@ -28,10 +28,9 @@ namespace Modules.Robot
 			}
 		}
 
-		private void btnLogin_Click(object sender, RoutedEventArgs e)
+		private async void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Login();
-			this.btnSendCommand.IsEnabled = true;
+			await this.ViewModel.Login();
 		}
 
 		private void btnSendCommand_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@ using ENet;
 using Helper;
 using Log;
 
-namespace LoginClient
+namespace BossClient
 {
 	public class GateSession: IDisposable
 	{
@@ -79,7 +79,7 @@ namespace LoginClient
 
 			if (smsgAuthResponse.ErrorCode != ErrorCode.AUTH_OK)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, SMSG_Auth_Response: {1}",
 					this.ID, JsonHelper.ToString(smsgAuthResponse)));
 			}
@@ -95,7 +95,7 @@ namespace LoginClient
 			Logger.Debug("message: {0}", message.ToHex());
 			if (opcode != MessageOpcode.SMSG_AUTH_CHALLENGE)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
 
@@ -111,7 +111,7 @@ namespace LoginClient
 
 			if (opcode != MessageOpcode.SMSG_AUTH_RESPONSE)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
 

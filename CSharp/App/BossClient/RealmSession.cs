@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Helper;
 using Log;
 
-namespace LoginClient
+namespace BossClient
 {
 	public class RealmSession: IDisposable
 	{
@@ -31,7 +31,7 @@ namespace LoginClient
 
 			if (opcode != MessageOpcode.SMSG_PASSWORD_PROTECT_TYPE)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
 
@@ -51,7 +51,7 @@ namespace LoginClient
 			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_CHALLENGE_RESPONSE)
 			{
 				Logger.Trace("opcode: {0}", opcode);
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
 			
@@ -69,7 +69,7 @@ namespace LoginClient
 
 			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_PROOF_M2)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, error opcode: {1}", this.ID, opcode));
 			}
 
@@ -85,7 +85,7 @@ namespace LoginClient
 
 			if (opcode != MessageOpcode.SMSG_REALM_LIST)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, error opcode: {1}", this.ID, opcode));
 			}
 
@@ -116,7 +116,7 @@ namespace LoginClient
 			var smsgPasswordProtectType = await this.Handle_SMSG_Password_Protect_Type();
 			if (smsgPasswordProtectType.Code != 200)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, SMSG_Password_Protect_Type: {1}",
 					this.ID, JsonHelper.ToString(smsgPasswordProtectType)));
 			}
@@ -130,7 +130,7 @@ namespace LoginClient
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
 			if (smsgAuthLogonChallengeResponse.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
 			{
-				throw new LoginException(
+				throw new BossException(
 					string.Format("session: {0}, SMSG_Auth_Logon_Challenge_Response: {1}",
 					this.ID, JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
 			}
@@ -167,7 +167,7 @@ namespace LoginClient
 			var smsgAuthLogonProofM2 = await this.Handle_SMSG_Auth_Logon_Proof_M2();
 			if (smsgAuthLogonProofM2.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
 			{
-				throw new LoginException(string.Format(
+				throw new BossException(string.Format(
 					"session: {0}, SMSG_Auth_Logon_Proof_M2: {1}",
 					this.ID, JsonHelper.ToString(smsgAuthLogonProofM2)));
 			}
@@ -186,7 +186,7 @@ namespace LoginClient
 
 			if (split.Length != 2)
 			{
-				throw new LoginException(
+				throw new BossException(
 					string.Format("session: {0}, gate address error, address: {1}",
 					this.ID, address));
 			}

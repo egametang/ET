@@ -7,7 +7,7 @@ using ENet;
 using Helper;
 using Log;
 
-namespace LoginClient
+namespace BossClient
 {
 	class ENetChannel: IMessageChannel
 	{
@@ -47,7 +47,7 @@ namespace LoginClient
 				if (flag != 0)
 				{
 					Logger.Debug("packet zip");
-					throw new LoginException("packet zip!");
+					throw new BossException("packet zip!");
 				}
 				var messageBytes = new byte[packet.Length - opcodeSize - flagSize];
 				Array.Copy(bytes, opcodeSize + flagSize, messageBytes, 0, messageBytes.Length);

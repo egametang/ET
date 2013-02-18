@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace LoginClient
+namespace BossClient
 {
 	public static class MessageOpcode
 	{

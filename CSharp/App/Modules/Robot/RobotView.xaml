@@ -21,7 +21,8 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<TextBox Name="tbCommand" Width="400" Text="{Binding Command}"></TextBox>
-				<Button Name="btnSendCommand" Content="发送" Click="btnSendCommand_Click" IsEnabled="False"></Button>
+				<Button Name="btnSendCommand" Content="发送" Click="btnSendCommand_Click" 
+						IsEnabled="{Binding IsEnableSendCommandButton}"></Button>
 			</StackPanel>
 		</StackPanel>
 	</Grid>
