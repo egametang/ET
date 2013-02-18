@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Helper;
@@ -26,7 +23,7 @@ namespace LoginClient
 			this.MessageChannel.Dispose();
 		}
 
-		public async Task<SMSG_Password_Protect_Type> Handle_CMSG_AuthLogonPermit_Response()
+		public async Task<SMSG_Password_Protect_Type> Handle_SMSG_Password_Protect_Type()
 		{
 			var result = await this.MessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
@@ -40,13 +37,6 @@ namespace LoginClient
 
 			var smsgPasswordProtectType = 
 				ProtobufHelper.FromBytes<SMSG_Password_Protect_Type>(message);
-			
-			if (smsgPasswordProtectType.Code != 200)
-			{
-				throw new LoginException(string.Format(
-					"session: {0}, SMSG_Lock_For_Safe_Time: {1}", 
-					this.ID, JsonHelper.ToString(smsgPasswordProtectType)));
-			}
 
 			return smsgPasswordProtectType;
 		}
@@ -68,17 +58,6 @@ namespace LoginClient
 			var smsgAuthLogonChallengeResponse =
 				ProtobufHelper.FromBytes<SMSG_Auth_Logon_Challenge_Response>(message);
 
-			if (smsgAuthLogonChallengeResponse.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
-			{
-				Logger.Trace("error code: {0}", smsgAuthLogonChallengeResponse.ErrorCode);
-				throw new LoginException(
-					string.Format("session: {0}, SMSG_Auth_Logon_Challenge_Response: {1}",
-					this.ID, JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
-			}
-
-			Logger.Debug("SMSG_Auth_Logon_Challenge_Response: \n{0}", 
-				JsonHelper.ToString(smsgAuthLogonChallengeResponse));
-
 			return smsgAuthLogonChallengeResponse;
 		}
 
@@ -95,14 +74,6 @@ namespace LoginClient
 			}
 
 			var smsgAuthLogonProofM2 = ProtobufHelper.FromBytes<SMSG_Auth_Logon_Proof_M2>(message);
-
-			if (smsgAuthLogonProofM2.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
-			{
-				throw new LoginException(string.Format(
-					"session: {0}, SMSG_Auth_Logon_Proof_M2: {1}", 
-					this.ID, JsonHelper.ToString(smsgAuthLogonProofM2)));
-			}
-
 			return smsgAuthLogonProofM2;
 		}
 
@@ -136,19 +107,33 @@ namespace LoginClient
 				Account = account.ToByteArray(),
 				PasswordMd5 = passwordMd5Hex
 			};
-
+			
 			Logger.Trace("session: {0}, account: {1}, password: {2}", this.ID,
 				cmsgAuthLogonPermit.Account.ToStr(), cmsgAuthLogonPermit.PasswordMd5.ToHex());
 
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
-			await this.Handle_CMSG_AuthLogonPermit_Response();
+
+			var smsgPasswordProtectType = await this.Handle_SMSG_Password_Protect_Type();
+			if (smsgPasswordProtectType.Code != 200)
+			{
+				throw new LoginException(string.Format(
+					"session: {0}, SMSG_Password_Protect_Type: {1}",
+					this.ID, JsonHelper.ToString(smsgPasswordProtectType)));
+			}
 
 			// 这个消息已经没有作用,只用来保持原有的代码流程
 			var cmsgAuthLogonChallenge = new CMSG_Auth_Logon_Challenge();
 			this.MessageChannel.SendMessage(
 				MessageOpcode.CMSG_AUTH_LOGON_CHALLENGE, cmsgAuthLogonChallenge);
+
 			var smsgAuthLogonChallengeResponse = 
 				await this.Handle_SMSG_Auth_Logon_Challenge_Response();
+			if (smsgAuthLogonChallengeResponse.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
+			{
+				throw new LoginException(
+					string.Format("session: {0}, SMSG_Auth_Logon_Challenge_Response: {1}",
+					this.ID, JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
+			}
 
 			Logger.Trace("session: {0}, SMSG_Auth_Logon_Challenge_Response OK", this.ID);
 
@@ -178,7 +163,14 @@ namespace LoginClient
 				M = srp6Client.M.ToUBigIntegerArray()
 			};
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PROOF, cmsgAuthLogonProof);
-			await this.Handle_SMSG_Auth_Logon_Proof_M2();
+
+			var smsgAuthLogonProofM2 = await this.Handle_SMSG_Auth_Logon_Proof_M2();
+			if (smsgAuthLogonProofM2.ErrorCode != ErrorCode.REALM_AUTH_SUCCESS)
+			{
+				throw new LoginException(string.Format(
+					"session: {0}, SMSG_Auth_Logon_Proof_M2: {1}",
+					this.ID, JsonHelper.ToString(smsgAuthLogonProofM2)));
+			}
 
 			Logger.Trace("session: {0}, SMSG_Auth_Logon_Proof_M2 OK", this.ID);
 

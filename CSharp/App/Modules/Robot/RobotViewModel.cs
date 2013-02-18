@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows.Threading;
-using Log;
 using Microsoft.Practices.Prism.ViewModel;
 
 namespace Modules.Robot
@@ -129,15 +128,8 @@ namespace Modules.Robot
 
 		public void Login()
 		{
-			try
-			{
-				this.loginClient.Login(
-					this.LoginIP, this.LoginPort, this.Account, this.Password);
-			}
-			catch (Exception e)
-			{
-				Logger.Trace("realm exception: {0}, {1}", e.Message, e.StackTrace);
-			}
+			this.loginClient.Login(
+				this.LoginIP, this.LoginPort, this.Account, this.Password);
 		}
 
 		public void SendCommand()
