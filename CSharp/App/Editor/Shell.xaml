@@ -3,16 +3,17 @@
 		xmlns:prism="http://www.codeplex.com/prism" Title="Editor" Height="800" Width="1280"
 		WindowStartupLocation="CenterScreen">
 	<Grid>
-		<TabControl>
+		<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
+		<!--<TabControl>
 			<TabItem Height="25" Width="80" Header="机器人">
 				<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
 			</TabItem>
 			<TabItem Height="25" Width="80" Header="行为树">
 				<ContentControl Name="treeCanvas" prism:RegionManager.RegionName="TreeCanvasRegion" />
 			</TabItem>
-            <TabItem Height="25" Width="80" Header="外挂">
-                <ContentControl Name="waigua" prism:RegionManager.RegionName="WaiGuaRegion" />
-            </TabItem>
-        </TabControl>
+			<TabItem Height="25" Width="80" Header="外挂">
+				<ContentControl Name="waigua" prism:RegionManager.RegionName="WaiGuaRegion" />
+			</TabItem>
+		</TabControl>-->
 	</Grid>
 </Window>

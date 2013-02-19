@@ -12,8 +12,6 @@ namespace BossClient
 		
 		private readonly ClientHost clientHost = new ClientHost();
 
-		private GateSession gateSession;
-		
 		public void Dispose()
 		{
 			this.clientHost.Dispose();
@@ -29,22 +27,7 @@ namespace BossClient
 			this.clientHost.Start(timeout);
 		}
 
-		public async void HandleMessages()
-		{
-			if (this.gateSession == null)
-			{
-				throw new BossException("gate session is null");
-			}
-
-			try
-			{
-				await this.gateSession.HandleMessages();
-			}
-			catch (BossException e)
-			{
-				Logger.Trace("session: {0}, exception: {1}", this.gateSession.ID, e.ToString());
-			}
-		}
+		public GateSession GateSession { get; private set; }
 
 		public async Task Login(
 			string hostName, ushort port, string account, string password)
@@ -65,8 +48,8 @@ namespace BossClient
 
 				// 登录gate
 				Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
-				this.gateSession = new GateSession(loginSessionId, new ENetChannel(peer));
-				await gateSession.Login(realmInfo.Item3);
+				this.GateSession = new GateSession(loginSessionId, new ENetChannel(peer));
+				await this.GateSession.Login(realmInfo.Item3);
 			}
 			catch (Exception e)
 			{
@@ -80,7 +63,7 @@ namespace BossClient
 			{
 				Message = command
 			};
-			this.gateSession.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
+			this.GateSession.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
 		}
 	}
 }

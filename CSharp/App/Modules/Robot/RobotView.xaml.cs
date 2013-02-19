@@ -33,9 +33,14 @@ namespace Modules.Robot
 			await this.ViewModel.Login();
 		}
 
-		private void btnSendCommand_Click(object sender, RoutedEventArgs e)
+		private void btnServers_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.SendCommand();
+			this.ViewModel.Servers();
+		}
+
+		private void btnReload_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.Reload();
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Helper;
 using Log;
@@ -12,37 +11,15 @@ namespace BossClient
 
 		public IMessageChannel IMessageChannel { get; set; }
 
-		public readonly Dictionary<ushort, Action<byte[]>> messageHandlers = 
-			new Dictionary<ushort, Action<byte[]>>();
-
-		public bool IsStop { get; set; }
-
 		public GateSession(int id, IMessageChannel eNetChannel)
 		{
 			this.ID = id;
 			this.IMessageChannel = eNetChannel;
-			this.IsStop = false;
 		}
 
 		public void Dispose()
 		{
 			this.IMessageChannel.Dispose();
-		}
-
-		public async Task HandleMessages()
-		{
-			while (!this.IsStop)
-			{
-				var result = await this.IMessageChannel.RecvMessage();
-				ushort opcode = result.Item1;
-				byte[] message = result.Item2;
-				if (!messageHandlers.ContainsKey(opcode))
-				{
-					Logger.Debug("not found opcode: {0}", opcode);
-					continue;
-				}
-				messageHandlers[opcode](message);
-			}
 		}
 
 		public void SendMessage<T>(ushort opcode, T message, byte channelID = 0)

@@ -1,13 +1,15 @@
-﻿<UserControl x:Class="Modules.Robot.RobotView"
+﻿<UserControl xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=TreeViewEx"  x:Class="Modules.Robot.RobotView"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:Robot="clr-namespace:Modules.Robot"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+		xmlns:Robot="clr-namespace:Modules.Robot"
 		mc:Ignorable="d" 
-		d:DesignHeight="600" d:DesignWidth="800" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
+		d:DesignHeight="600" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
 	<Grid>
-		<StackPanel>
-			<StackPanel Orientation="Horizontal" >
+		<DockPanel>
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="27" >
 				<Label Content="LoginIP: "></Label>
 				<TextBox Width="120" Text="{Binding LoginIP}" />
 				<Label Content="LoginPort: "></Label>
@@ -16,14 +18,21 @@
 				<TextBox Width="120" Text="{Binding Account}" />
 				<Label Content="Password: "></Label>
 				<TextBox Width="120" Text="{Binding Password}" />
-				<Button Name="btnLogin" Content="Login" Width="80" Height="25" Click="btnLogin_Click" />
-				<TextBlock></TextBlock>
+				<Button Name="btnLogin" Content="登录" Width="80" Click="btnLogin_Click" />
+				<Button Name="btnServers" Content="服务器列表" Click="btnServers_Click" 
+						IsEnabled="{Binding IsButtonEnable}"></Button>
+				<Button Name="btnReload" Content="Reload" Click="btnReload_Click" 
+						IsEnabled="{Binding IsButtonEnable}"></Button>
 			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<TextBox Name="tbCommand" Width="400" Text="{Binding Command}"></TextBox>
-				<Button Name="btnSendCommand" Content="发送" Click="btnSendCommand_Click" 
-						IsEnabled="{Binding IsEnableSendCommandButton}"></Button>
-			</StackPanel>
-		</StackPanel>
+			<ListBox Width="100" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
+					d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Label Content="{Binding Name}" ></Label>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<Grid />
+		</DockPanel>
 	</Grid>
 </UserControl>
