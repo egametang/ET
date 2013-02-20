@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using BossClient;
@@ -15,11 +16,10 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
-		private string loginIP = "192.168.11.95";
-		private ushort loginPort = 8888;
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
-		private string command = "";
+		private int findTypeIndex;
+		private string findType = "";
 		private bool isButtonEnable;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
@@ -30,40 +30,6 @@ namespace Modules.Robot
 
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
 		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
-
-		public string LoginIP
-		{
-			get
-			{
-				return this.loginIP;
-			}
-			set
-			{
-				if (this.loginIP == value)
-				{
-					return;
-				}
-				this.loginIP = value;
-				this.RaisePropertyChanged("LoginIP");
-			}
-		}
-
-		public ushort LoginPort
-		{
-			get
-			{
-				return this.loginPort;
-			}
-			set
-			{
-				if (this.loginPort == value)
-				{
-					return;
-				}
-				this.loginPort = value;
-				this.RaisePropertyChanged("LoginPort");
-			}
-		}
 
 		public string Account
 		{
@@ -99,20 +65,37 @@ namespace Modules.Robot
 			}
 		}
 
-		public string Command
+		public int FindTypeIndex
 		{
 			get
 			{
-				return this.command;
+				return this.findTypeIndex;
 			}
 			set
 			{
-				if (this.command == value)
+				if (this.findTypeIndex == value)
 				{
 					return;
 				}
-				this.command = value;
-				this.RaisePropertyChanged("Command");
+				this.findTypeIndex = value;
+				this.RaisePropertyChanged("FindTypeIndex");
+			}
+		}
+
+		public string FindType
+		{
+			get
+			{
+				return this.findType;
+			}
+			set
+			{
+				if (this.findType == value)
+				{
+					return;
+				}
+				this.findType = value;
+				this.RaisePropertyChanged("FindType");
 			}
 		}
 
@@ -166,10 +149,11 @@ namespace Modules.Robot
 			this.bossClient.Dispose();
 		}
 
-		public async Task Login()
+		public async void Login()
 		{
-			await this.bossClient.Login(
-				this.LoginIP, this.LoginPort, this.Account, this.Password);
+			var config = Config.Instance;
+			await this.bossClient.Login(config.IP, config.Port, 
+				this.Account, this.Password);
 
 			this.IsButtonEnable = true;
 
@@ -200,19 +184,9 @@ namespace Modules.Robot
 			}
 		}
 
-		public void SendCommand()
-		{
-			this.bossClient.SendCommand(this.Command);
-		}
-
 		public void Servers()
 		{
 			this.bossClient.SendCommand("servers");
-		}
-
-		public void Reload()
-		{
-			this.bossClient.SendCommand("reload");
 		}
 
 		public void Handle_SMSG_Boss_ServersInfo(byte[] message)
@@ -222,7 +196,51 @@ namespace Modules.Robot
 			this.ServerInfos.Clear();
 			foreach (var name in smsgBossServersInfo.Name)
 			{
-				this.ServerInfos.Add(new ServerViewModel {Name = name});
+				this.ServerInfos.Add(new ServerViewModel { Name = name });
+			}
+		}
+
+		public void Reload()
+		{
+			this.bossClient.SendCommand("reload");
+		}
+
+		public void Find()
+		{
+			using (var entitys = new DataCenterEntities())
+			{
+				t_character result = null;
+				switch (this.FindTypeIndex)
+				{
+					case 0:
+					{
+						result = entitys.t_character.FirstOrDefault(
+							c => c.account == this.FindType);
+						break;
+					}
+					case 1:
+					{
+						result = entitys.t_character.FirstOrDefault(
+							c => c.character_name == this.FindType);
+						break;
+					}
+					case 2:
+					{
+						var guid = Decimal.Parse(this.FindType);
+						result = entitys.t_character.FirstOrDefault(
+							c => c.character_guid == guid);
+						break;
+					}
+				}
+
+				if (result == null)
+				{
+					Logger.Debug("not find charactor info!");
+					return;
+				}
+				
+				Logger.Debug("Account: {0}, Name: {1}, GUID: {2}", 
+					result.account, result.character_name, result.character_guid);
 			}
 		}
 	}

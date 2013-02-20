@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
+using Helper;
 
 namespace Modules.Robot
 {
@@ -116,5 +118,31 @@ namespace Modules.Robot
 
 		[DataMember(Order = 2, IsRequired = true)]
 		public List<MapServerConfig> MapServerConfig { get; set; }
+	}
+
+	[DataContract]
+	public class Config
+	{
+		private static readonly Config instance;
+
+		static Config()
+		{
+			string content = File.ReadAllText("Config.json");
+			instance = JsonHelper.FromString<Config>(content);
+		}
+
+		public static Config Instance
+		{
+			get
+			{
+				return instance;
+			}
+		}
+
+		[DataMember(Order = 1, IsRequired = true)]
+		public string IP { get; set; }
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public ushort Port { get; set; }
 	}
 }

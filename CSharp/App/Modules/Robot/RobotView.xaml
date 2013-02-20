@@ -1,19 +1,14 @@
-﻿<UserControl xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=TreeViewEx"  x:Class="Modules.Robot.RobotView"
+﻿<UserControl x:Class="Modules.Robot.RobotView"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
 		xmlns:Robot="clr-namespace:Modules.Robot"
 		mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
 	<Grid>
 		<DockPanel>
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="27" >
-				<Label Content="LoginIP: "></Label>
-				<TextBox Width="120" Text="{Binding LoginIP}" />
-				<Label Content="LoginPort: "></Label>
-				<TextBox Width="40" Text="{Binding LoginPort}" />
 				<Label Content="Account: "></Label>
 				<TextBox Width="120" Text="{Binding Account}" />
 				<Label Content="Password: "></Label>
@@ -22,6 +17,14 @@
 				<Button Name="btnServers" Content="服务器列表" Click="btnServers_Click" 
 						IsEnabled="{Binding IsButtonEnable}"></Button>
 				<Button Name="btnReload" Content="Reload" Click="btnReload_Click" 
+						IsEnabled="{Binding IsButtonEnable}"></Button>
+				<ComboBox Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}">
+					<ComboBoxItem Content="帐号"></ComboBoxItem>
+					<ComboBoxItem Content="名字"></ComboBoxItem>
+					<ComboBoxItem Content="GUID"></ComboBoxItem>
+				</ComboBox>
+				<TextBox Width="120" Text="{Binding FindType}" />
+				<Button Name="btnFind" Content="查询" Click="btnFind_Click" 
 						IsEnabled="{Binding IsButtonEnable}"></Button>
 			</StackPanel>
 			<ListBox Width="100" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 

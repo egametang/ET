@@ -28,9 +28,9 @@ namespace Modules.Robot
 			}
 		}
 
-		private async void btnLogin_Click(object sender, RoutedEventArgs e)
+		private void btnLogin_Click(object sender, RoutedEventArgs e)
 		{
-			await this.ViewModel.Login();
+			this.ViewModel.Login();
 		}
 
 		private void btnServers_Click(object sender, RoutedEventArgs e)
@@ -41,6 +41,11 @@ namespace Modules.Robot
 		private void btnReload_Click(object sender, RoutedEventArgs e)
 		{
 			this.ViewModel.Reload();
+		}
+
+		private void btnFind_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.Find();
 		}
 	}
 }
