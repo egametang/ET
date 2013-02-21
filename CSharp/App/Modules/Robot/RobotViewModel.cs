@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using BossClient;
+using DataCenter;
 using Helper;
 using Log;
 using Microsoft.Practices.Prism.ViewModel;
@@ -232,7 +232,7 @@ namespace Modules.Robot
 						break;
 					}
 				}
-
+			
 				if (result == null)
 				{
 					Logger.Debug("not find charactor info!");

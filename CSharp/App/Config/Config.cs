@@ -127,7 +127,7 @@ namespace Modules.Robot
 
 		static Config()
 		{
-			string content = File.ReadAllText("Config.json");
+			string content = File.ReadAllText(@"..\App\Config\Config.json");
 			instance = JsonHelper.FromString<Config>(content);
 		}
 

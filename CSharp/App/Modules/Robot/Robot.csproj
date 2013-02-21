@@ -33,7 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Prism">
@@ -71,21 +72,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataCenter.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataCenter.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataCenter.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DataCenter.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataCenter.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
@@ -93,258 +79,6 @@
       <DependentUpon>RobotView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ServerViewModel.cs" />
-    <Compile Include="t_account.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_account_active_code.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_account_login_auth_response_cookie.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_account_tutorial_status_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_active_code.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_attribute.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_auction_item.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_available_map.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_battle_gameover_statistic.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_battle_kill_detail.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_battle_summary.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_beginner_group_config.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_beginner_group_cong.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_beginner_group_event.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_celebration_reward.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_activity.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_activity_schedule.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_character_elect_hero.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_elect_hero_stat.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_exp_buff.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_game_player.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_guess_game_over.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_guess_reward.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_kfz_hero.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_statue_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_task_reward.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_achievement.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_appearance.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_assets.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_default_fighting_options.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_item.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_options.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_character_questionnaire.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_charge_list.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_city_buff.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_city_position.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_city_task_finish_sub_state.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_city_task_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_client_config.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_common_spell.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_daily_online_time.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_employee_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_employee_notice.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_employer_notice.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_employ_notice_status.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_employ_relation.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_fighting_evaluation_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_friend.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_friend_group.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_game_hero_use_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_game_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_gs_code.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_color_scheme.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_level_state.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_pet.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_suggest_equipment.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_talent_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_talent_info_sub_state.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_unlock_hero.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_illegal_term_rules.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_item_roll_list.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_login_reward.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_mail.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_mail_item.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_mall_items_sales_count.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_map_play_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_meta.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_offline_message.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_player_offline_message.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_pve_equipment_scheme.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_pve_equipment_strength.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_questionnaire.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_roll_log.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_rune_scheme.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_social_group_basic.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_social_group_manager.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_social_group_member.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_title_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_tran_log.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_tutorial.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_tutorial_status_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_world_character.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="RobotView.xaml">
@@ -373,6 +107,10 @@
       <Project>{1d1aec85-08c1-4b6b-9615-8a79fd9ed377}</Project>
       <Name>Config</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DataCenter\DataCenter.csproj">
+      <Project>{a829a025-5e90-4085-8dd4-e3b8c1282635}</Project>
+      <Name>DataCenter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
@@ -383,23 +121,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="DataCenter.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataCenter.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="DataCenter.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataCenter.edmx</DependentUpon>
-      <LastGenOutput>DataCenter.Context.cs</LastGenOutput>
-    </None>
-    <None Include="DataCenter.edmx.diagram">
-      <DependentUpon>DataCenter.edmx</DependentUpon>
-    </None>
-    <None Include="DataCenter.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataCenter.edmx</DependentUpon>
-      <LastGenOutput>DataCenter.cs</LastGenOutput>
-    </None>
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
