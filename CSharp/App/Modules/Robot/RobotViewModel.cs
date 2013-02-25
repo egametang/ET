@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Threading;
 using BossClient;
@@ -151,9 +152,9 @@ namespace Modules.Robot
 
 		public async void Login()
 		{
-			var config = Config.Instance;
-			await this.bossClient.Login(config.IP, config.Port, 
-				this.Account, this.Password);
+			string ip = ConfigurationManager.AppSettings["IP"];
+			ushort port = UInt16.Parse(ConfigurationManager.AppSettings["Port"]);
+			await this.bossClient.Login(ip, port, this.Account, this.Password);
 
 			this.IsButtonEnable = true;
 

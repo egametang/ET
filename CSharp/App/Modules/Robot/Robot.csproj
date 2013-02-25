@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -102,10 +103,6 @@
     <ProjectReference Include="..\..\BossClient\BossClient.csproj">
       <Project>{8650195a-7904-4ebc-9d81-b392a7e9b9b3}</Project>
       <Name>BossClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Config\Config.csproj">
-      <Project>{1d1aec85-08c1-4b6b-9615-8a79fd9ed377}</Project>
-      <Name>Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DataCenter\DataCenter.csproj">
       <Project>{a829a025-5e90-4085-8dd4-e3b8c1282635}</Project>

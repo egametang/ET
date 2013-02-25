@@ -55,10 +55,6 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ENetCpp\ENetCpp.vcxproj">
-      <Project>{c9992b7c-313e-4c9f-a954-640d01edfb58}</Project>
-      <Name>ENetCpp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Log\Log.csproj">
       <Project>{72E16572-FC1F-4A9E-BC96-035417239298}</Project>
       <Name>Log</Name>

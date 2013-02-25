@@ -5,20 +5,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="646f5fee9e9a464ea8816c1d62bee588" Name="Diagram">
-        <EntityTypeShape EntityType="DataCenterModel.t_account" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_account_active_code" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_account_login_auth_response_cookie" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_account_tutorial_status_info" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_active_code" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_attribute" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_auction_item" Width="1.5" PointX="4.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_available_map" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_battle_gameover_statistic" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_battle_kill_detail" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_battle_summary" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_config" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_cong" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_event" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_account" Width="1.5" PointX="1.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_account_active_code" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_account_login_auth_response_cookie" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_account_tutorial_status_info" Width="1.5" PointX="4.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_active_code" Width="1.5" PointX="6.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_attribute" Width="1.5" PointX="6.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_auction_item" Width="1.5" PointX="4.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_available_map" Width="1.5" PointX="6.5" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_battle_gameover_statistic" Width="1.5" PointX="8.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_battle_kill_detail" Width="1.5" PointX="8.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_battle_summary" Width="1.5" PointX="8.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_config" Width="1.5" PointX="10" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_cong" Width="1.5" PointX="10" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_beginner_group_event" Width="1.5" PointX="10" PointY="7" IsExpanded="true" />
         <EntityTypeShape EntityType="DataCenterModel.t_celebration_reward" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DataCenterModel.t_challenge_activity" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DataCenterModel.t_challenge_activity_schedule" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
@@ -89,6 +89,8 @@
         <EntityTypeShape EntityType="DataCenterModel.t_tutorial" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DataCenterModel.t_tutorial_status_info" Width="1.5" PointX="26.75" PointY="19.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DataCenterModel.t_world_character" Width="1.5" PointX="26.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataCenterModel.t_map_play_info_hero" Width="1.5" PointX="4.4261802734929043" PointY="20.105384880725939" />
+        <EntityTypeShape EntityType="DataCenterModel.t_map_play_info_hero_pet" Width="1.5" PointX="5.9247470525674277" PointY="15.372352055913002" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

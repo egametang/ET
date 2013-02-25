@@ -109,5 +109,7 @@ namespace DataCenter
         public DbSet<t_tutorial> t_tutorial { get; set; }
         public DbSet<t_tutorial_status_info> t_tutorial_status_info { get; set; }
         public DbSet<t_world_character> t_world_character { get; set; }
+        public DbSet<t_map_play_info_hero> t_map_play_info_hero { get; set; }
+        public DbSet<t_map_play_info_hero_pet> t_map_play_info_hero_pet { get; set; }
     }
 }

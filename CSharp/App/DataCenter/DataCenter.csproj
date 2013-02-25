@@ -44,6 +44,7 @@
       <HintPath>..\..\packages\MySQL.Data.Entities.6.5.4.0\lib\net40\MySql.Data.Entity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -276,6 +277,12 @@
     <Compile Include="t_map_play_info.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
+    <Compile Include="t_map_play_info_hero.cs">
+      <DependentUpon>DataCenter.tt</DependentUpon>
+    </Compile>
+    <Compile Include="t_map_play_info_hero_pet.cs">
+      <DependentUpon>DataCenter.tt</DependentUpon>
+    </Compile>
     <Compile Include="t_meta.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -326,11 +333,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <EntityDeploy Include="DataCenter.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DataCenter.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.config" />
     <None Include="DataCenter.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataCenter.edmx</DependentUpon>
@@ -338,6 +345,7 @@
     </None>
     <None Include="DataCenter.edmx.diagram">
       <DependentUpon>DataCenter.edmx</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="DataCenter.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

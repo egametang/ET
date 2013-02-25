@@ -12,14 +12,14 @@ namespace DataCenter
     using System;
     using System.Collections.Generic;
     
-    public partial class t_hero_unlock_hero
+    public partial class t_map_play_info_hero_pet
     {
         public decimal character_guid { get; set; }
-        public int hero_id { get; set; }
-        public Nullable<bool> is_activated { get; set; }
-        public int cur_color_scheme_id { get; set; }
+        public string map_type { get; set; }
+        public decimal guid { get; set; }
+        public int play_count { get; set; }
+        public int play_count_s { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
-        public Nullable<int> level { get; set; }
     }
 }

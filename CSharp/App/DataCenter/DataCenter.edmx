@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DataCenterModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DataCenterModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="DataCenterModelStoreContainer">
           <EntitySet Name="t_account" EntityType="DataCenterModel.Store.t_account" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_account_active_code" EntityType="DataCenterModel.Store.t_account_active_code" store:Type="Tables" Schema="tanghai" />
@@ -120,6 +120,8 @@
           <EntitySet Name="t_mail_item" EntityType="DataCenterModel.Store.t_mail_item" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_mall_items_sales_count" EntityType="DataCenterModel.Store.t_mall_items_sales_count" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_map_play_info" EntityType="DataCenterModel.Store.t_map_play_info" store:Type="Tables" Schema="tanghai" />
+          <EntitySet Name="t_map_play_info_hero" EntityType="DataCenterModel.Store.t_map_play_info_hero" store:Type="Tables" Schema="tanghai" />
+          <EntitySet Name="t_map_play_info_hero_pet" EntityType="DataCenterModel.Store.t_map_play_info_hero_pet" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_meta" EntityType="DataCenterModel.Store.t_meta" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_offline_message" EntityType="DataCenterModel.Store.t_offline_message" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_player_offline_message" EntityType="DataCenterModel.Store.t_player_offline_message" store:Type="Tables" Schema="tanghai" />
@@ -175,9 +177,9 @@
           <Property Name="active_code" Type="varchar" MaxLength="100" />
           <Property Name="active_code_used" Type="bool" />
           <Property Name="first_char_guid" Type="ubigint" />
+          <Property Name="gm_level" Type="int" />
           <Property Name="create_time" Type="datetime" />
           <Property Name="modify_time" Type="datetime" />
-          <Property Name="gm_level" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="t_account_active_code">
           <Key>
@@ -1152,7 +1154,7 @@
           </Key>
           <Property Name="character_guid" Type="ubigint" Nullable="false" />
           <Property Name="hero_id" Type="int" Nullable="false" />
-          <Property Name="is_activated" Type="bool" />
+          <Property Name="level" Type="int" />
           <Property Name="cur_color_scheme_id" Type="int" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
@@ -1293,6 +1295,33 @@
           <Property Name="max_total_damage" Type="int" Nullable="false" />
           <Property Name="max_total_suffer_damage" Type="int" Nullable="false" />
           <Property Name="max_total_heal" Type="int" Nullable="false" />
+          <Property Name="create_time" Type="datetime" Nullable="false" />
+          <Property Name="modify_time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_map_play_info_hero">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="hero_id" />
+          </Key>
+          <Property Name="character_guid" Type="ubigint" Nullable="false" />
+          <Property Name="map_type" Type="varchar" Nullable="false" MaxLength="64" />
+          <Property Name="hero_id" Type="bigint" Nullable="false" />
+          <Property Name="play_count" Type="int" Nullable="false" />
+          <Property Name="create_time" Type="datetime" Nullable="false" />
+          <Property Name="modify_time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_map_play_info_hero_pet">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="character_guid" Type="ubigint" Nullable="false" />
+          <Property Name="map_type" Type="varchar" Nullable="false" MaxLength="64" />
+          <Property Name="guid" Type="ubigint" Nullable="false" />
+          <Property Name="play_count" Type="int" Nullable="false" />
+          <Property Name="play_count_s" Type="int" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1532,8 +1561,7 @@
           <Property Name="group_guid" Type="ubigint" Nullable="false" />
           <Property Name="room_guid" Type="ubigint" Nullable="false" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataCenterModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1622,6 +1650,8 @@
           <EntitySet Name="t_tutorial" EntityType="DataCenterModel.t_tutorial" />
           <EntitySet Name="t_tutorial_status_info" EntityType="DataCenterModel.t_tutorial_status_info" />
           <EntitySet Name="t_world_character" EntityType="DataCenterModel.t_world_character" />
+          <EntitySet Name="t_map_play_info_hero" EntityType="DataCenterModel.t_map_play_info_hero" />
+          <EntitySet Name="t_map_play_info_hero_pet" EntityType="DataCenterModel.t_map_play_info_hero_pet" />
         </EntityContainer>
         <EntityType Name="t_account">
           <Key>
@@ -2606,10 +2636,10 @@
           </Key>
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
           <Property Name="hero_id" Type="Int32" Nullable="false" />
-          <Property Name="is_activated" Type="Boolean" />
           <Property Name="cur_color_scheme_id" Type="Int32" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
+          <Property Type="Int32" Name="level" />
         </EntityType>
         <EntityType Name="t_illegal_term_rules">
           <Key>
@@ -2976,6 +3006,33 @@
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
           <Property Name="group_guid" Type="Decimal" Nullable="false" />
           <Property Name="room_guid" Type="Decimal" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_map_play_info_hero">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="hero_id" />
+          </Key>
+          <Property Type="Decimal" Name="character_guid" Nullable="false" />
+          <Property Type="String" Name="map_type" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Type="Int64" Name="hero_id" Nullable="false" />
+          <Property Type="Int32" Name="play_count" Nullable="false" />
+          <Property Type="DateTime" Name="create_time" Nullable="false" />
+          <Property Type="DateTime" Name="modify_time" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_map_play_info_hero_pet">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Type="Decimal" Name="character_guid" Nullable="false" />
+          <Property Type="String" Name="map_type" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="guid" Nullable="false" />
+          <Property Type="Int32" Name="play_count" Nullable="false" />
+          <Property Type="Int32" Name="play_count_s" Nullable="false" />
+          <Property Type="DateTime" Name="create_time" Nullable="false" />
+          <Property Type="DateTime" Name="modify_time" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -3976,9 +4033,9 @@
           <EntitySetMapping Name="t_hero_unlock_hero">
             <EntityTypeMapping TypeName="DataCenterModel.t_hero_unlock_hero">
               <MappingFragment StoreEntitySet="t_hero_unlock_hero">
+                <ScalarProperty Name="level" ColumnName="level" />
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
                 <ScalarProperty Name="hero_id" ColumnName="hero_id" />
-                <ScalarProperty Name="is_activated" ColumnName="is_activated" />
                 <ScalarProperty Name="cur_color_scheme_id" ColumnName="cur_color_scheme_id" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
@@ -4325,6 +4382,31 @@
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
                 <ScalarProperty Name="group_guid" ColumnName="group_guid" />
                 <ScalarProperty Name="room_guid" ColumnName="room_guid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_map_play_info_hero">
+            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero">
+              <MappingFragment StoreEntitySet="t_map_play_info_hero">
+                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+                <ScalarProperty Name="play_count" ColumnName="play_count" />
+                <ScalarProperty Name="hero_id" ColumnName="hero_id" />
+                <ScalarProperty Name="map_type" ColumnName="map_type" />
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_map_play_info_hero_pet">
+            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero_pet">
+              <MappingFragment StoreEntitySet="t_map_play_info_hero_pet">
+                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+                <ScalarProperty Name="play_count_s" ColumnName="play_count_s" />
+                <ScalarProperty Name="play_count" ColumnName="play_count" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="map_type" ColumnName="map_type" />
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
