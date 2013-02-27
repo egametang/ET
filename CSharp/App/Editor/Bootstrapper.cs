@@ -5,7 +5,7 @@ using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.Prism.Regions;
 using Modules.BehaviorTree;
 using Modules.Robot;
-using Modules.WaiGua;
+using Modules.Login;
 
 namespace Editor
 {
@@ -17,7 +17,7 @@ namespace Editor
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (RobotModule).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (WaiGuaModule).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (LoginModule).Assembly));
 		}
 
 		protected override void InitializeShell()

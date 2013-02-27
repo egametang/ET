@@ -81,9 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
@@ -93,10 +90,6 @@
     <Compile Include="ServerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="LoginView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="RobotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -122,6 +115,10 @@
     <ProjectReference Include="..\..\DataCenter\DataCenter.csproj">
       <Project>{a829a025-5e90-4085-8dd4-e3b8c1282635}</Project>
       <Name>DataCenter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Events\Events.csproj">
+      <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>
+      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>

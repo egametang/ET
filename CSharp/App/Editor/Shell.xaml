@@ -3,6 +3,7 @@
 		xmlns:prism="http://www.codeplex.com/prism" Title="Editor" Height="800" Width="1280"
 		WindowStartupLocation="CenterScreen">
 	<Grid>
+		<ContentControl Name="login" prism:RegionManager.RegionName="LoginRegion" />
 		<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
 		<!--<TabControl>
 			<TabItem Height="25" Width="80" Header="机器人">

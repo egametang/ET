@@ -1,10 +1,10 @@
 ﻿using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
-namespace Modules.WaiGua
+namespace Modules.Login
 {
-	[ModuleExport(moduleType: typeof (WaiGuaModule))]
-	public class WaiGuaModule: IModule
+	[ModuleExport(moduleType: typeof (LoginModule))]
+	public class LoginModule: IModule
 	{
 		public void Initialize()
 		{

@@ -8,8 +8,10 @@ using System.Windows;
 using System.Windows.Threading;
 using BossClient;
 using DataCenter;
+using Events;
 using Helper;
 using Log;
+using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
 namespace Modules.Robot
@@ -18,55 +20,15 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
-		private string account = "egametang@163.com";
-		private string password = "163bio1";
 		private int findTypeIndex;
 		private string findType = "";
 		private Visibility dockPanelVisiable = Visibility.Hidden;
-		private Visibility gridLoginVisiable = Visibility.Visible;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
 
 		public readonly Dictionary<ushort, Action<byte[]>> messageHandlers =
 			new Dictionary<ushort, Action<byte[]>>();
-
-		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal)
-		{ Interval = new TimeSpan(0, 0, 0, 0, 50) };
-
-		public string Account
-		{
-			get
-			{
-				return this.account;
-			}
-			set
-			{
-				if (this.account == value)
-				{
-					return;
-				}
-				this.account = value;
-				this.RaisePropertyChanged("Account");
-			}
-		}
-
-		public string Password
-		{
-			get
-			{
-				return this.password;
-			}
-			set
-			{
-				if (this.password == value)
-				{
-					return;
-				}
-				this.password = value;
-				this.RaisePropertyChanged("Password");
-			}
-		}
 
 		public int FindTypeIndex
 		{
@@ -119,23 +81,6 @@ namespace Modules.Robot
 			}
 		}
 
-		public Visibility GridLoginVisiable
-		{
-			get
-			{
-				return this.gridLoginVisiable;
-			}
-			set
-			{
-				if (this.gridLoginVisiable == value)
-				{
-					return;
-				}
-				this.gridLoginVisiable = value;
-				this.RaisePropertyChanged("GridLoginVisiable");
-			}
-		}
-
 		public ObservableCollection<ServerViewModel> ServerInfos
 		{
 			get
@@ -144,13 +89,12 @@ namespace Modules.Robot
 			}
 		}
 
-		public RobotViewModel()
+		[ImportingConstructor]
+		public RobotViewModel(IEventAggregator eventAggregator)
 		{
 			this.messageHandlers.Add(
 				MessageOpcode.SMSG_BOSS_SERVERSINFO, Handle_SMSG_Boss_ServersInfo);
-
-			this.timer.Tick += delegate { this.bossClient.RunOnce(); };
-			this.timer.Start();
+			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOK);
 		}
 
 		~RobotViewModel()
@@ -169,25 +113,14 @@ namespace Modules.Robot
 			this.bossClient.Dispose();
 		}
 
-		public async void Login()
+		public async void OnLoginOK(IMessageChannel messageChannel)
 		{
-			string ip = ConfigurationManager.AppSettings["IP"];
-			ushort port = UInt16.Parse(ConfigurationManager.AppSettings["Port"]);
-			await this.bossClient.Login(ip, port, this.Account, this.Password);
-
 			this.DockPanelVisiable = Visibility.Visible;
-			this.GridLoginVisiable = Visibility.Hidden;
-
-			this.HandleMessages();
-		}
-
-		public async void HandleMessages()
-		{
 			try
 			{
 				while (true)
 				{
-					var result = await this.bossClient.GateSession.IMessageChannel.RecvMessage();
+					var result = await messageChannel.RecvMessage();
 					ushort opcode = result.Item1;
 					byte[] message = result.Item2;
 					if (!messageHandlers.ContainsKey(opcode))

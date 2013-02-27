@@ -7,8 +7,8 @@
     <ProjectGuid>{5AA48F9A-455D-4CD8-A605-A3AC38283E60}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WaiGua</RootNamespace>
-    <AssemblyName>WaiGua</AssemblyName>
+    <RootNamespace>Login</RootNamespace>
+    <AssemblyName>Login</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -42,6 +42,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -50,17 +52,24 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.DataGrid, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Extended.Wpf.Toolkit.1.9.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Extended.Wpf.Toolkit.1.9.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WaiGuaViewModel.cs" />
-    <Page Include="WaiGuaView.xaml">
+    <Compile Include="LoginViewModel.cs" />
+    <Page Include="LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="WaiGua.cs" />
-    <Compile Include="WaiGuaModule.cs" />
-    <Compile Include="WaiGuaView.xaml.cs">
-      <DependentUpon>WaiGuaView.xaml</DependentUpon>
+    <Compile Include="LoginModule.cs" />
+    <Compile Include="LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -74,6 +83,14 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BossClient\BossClient.csproj">
+      <Project>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</Project>
+      <Name>BossClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Events\Events.csproj">
+      <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>
+      <Name>Events</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>

@@ -28,11 +28,6 @@ namespace Modules.Robot
 			}
 		}
 
-		private void btnLogin_Click(object sender, RoutedEventArgs e)
-		{
-			this.ViewModel.Login();
-		}
-
 		private void btnServers_Click(object sender, RoutedEventArgs e)
 		{
 			this.ViewModel.Servers();
@@ -50,7 +45,6 @@ namespace Modules.Robot
 
 		private void menuLogin_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.GridLoginVisiable = Visibility.Visible;
 		}
 	}
 }
