@@ -56,14 +56,5 @@ namespace BossClient
 				Logger.Trace("session: {0}, exception: {1}", loginSessionId, e.ToString());
 			}
 		}
-
-		public void SendCommand(string command)
-		{
-			var cmsgBossGm = new CMSG_Boss_Gm
-			{
-				Message = command
-			};
-			this.GateSession.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
-		}
 	}
 }

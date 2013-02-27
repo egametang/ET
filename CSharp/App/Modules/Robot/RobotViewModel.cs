@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
@@ -21,7 +22,10 @@ namespace Modules.Robot
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
 		private int findTypeIndex;
+		private string account = "";
 		private string findType = "";
+		private string name = "";
+		private string guid = "";
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
@@ -29,6 +33,8 @@ namespace Modules.Robot
 
 		public readonly Dictionary<ushort, Action<byte[]>> messageHandlers =
 			new Dictionary<ushort, Action<byte[]>>();
+
+		public IMessageChannel IMessageChannel { get; set; }
 
 		public int FindTypeIndex
 		{
@@ -89,6 +95,57 @@ namespace Modules.Robot
 			}
 		}
 
+		public string Account
+		{
+			get
+			{
+				return this.account;
+			}
+			set
+			{
+				if (this.account == value)
+				{
+					return;
+				}
+				this.account = value;
+				this.RaisePropertyChanged("Account");
+			}
+		}
+
+		public string Name
+		{
+			get
+			{
+				return this.name;
+			}
+			set
+			{
+				if (this.name == value)
+				{
+					return;
+				}
+				this.name = value;
+				this.RaisePropertyChanged("Name");
+			}
+		}
+
+		public string Guid
+		{
+			get
+			{
+				return this.guid;
+			}
+			set
+			{
+				if (this.guid == value)
+				{
+					return;
+				}
+				this.guid = value;
+				this.RaisePropertyChanged("Guid");
+			}
+		}
+
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
@@ -116,11 +173,12 @@ namespace Modules.Robot
 		public async void OnLoginOK(IMessageChannel messageChannel)
 		{
 			this.DockPanelVisiable = Visibility.Visible;
+			this.IMessageChannel = messageChannel;
 			try
 			{
 				while (true)
 				{
-					var result = await messageChannel.RecvMessage();
+					var result = await this.IMessageChannel.RecvMessage();
 					ushort opcode = result.Item1;
 					byte[] message = result.Item2;
 					if (!messageHandlers.ContainsKey(opcode))
@@ -138,9 +196,19 @@ namespace Modules.Robot
 			}
 		}
 
+		public void SendCommand(string command)
+		{
+			var cmsgBossGm = new CMSG_Boss_Gm
+			{
+				Message = command
+			};
+
+			this.IMessageChannel.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
+		}
+
 		public void Servers()
 		{
-			this.bossClient.SendCommand("servers");
+			this.SendCommand("servers");
 		}
 
 		public void Handle_SMSG_Boss_ServersInfo(byte[] message)
@@ -148,15 +216,15 @@ namespace Modules.Robot
 			var smsgBossServersInfo = ProtobufHelper.FromBytes<SMSG_Boss_ServersInfo>(message);
 
 			this.ServerInfos.Clear();
-			foreach (var name in smsgBossServersInfo.Name)
+			foreach (var nm in smsgBossServersInfo.Name)
 			{
-				this.ServerInfos.Add(new ServerViewModel { Name = name });
+				this.ServerInfos.Add(new ServerViewModel { Name = nm });
 			}
 		}
 
 		public void Reload()
 		{
-			this.bossClient.SendCommand("reload");
+			this.SendCommand("reload");
 		}
 
 		public void Find()
@@ -180,9 +248,9 @@ namespace Modules.Robot
 					}
 					case 2:
 					{
-						var guid = Decimal.Parse(this.FindType);
+						var findGuid = Decimal.Parse(this.FindType);
 						result = entitys.t_character.FirstOrDefault(
-							c => c.character_guid == guid);
+							c => c.character_guid == findGuid);
 						break;
 					}
 				}
@@ -192,9 +260,10 @@ namespace Modules.Robot
 					Logger.Debug("not find charactor info!");
 					return;
 				}
-				
-				Logger.Debug("Account: {0}, Name: {1}, GUID: {2}", 
-					result.account, result.character_name, result.character_guid);
+
+				this.Account = result.account;
+				this.Name = result.character_name;
+				this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
 			}
 		}
 	}
