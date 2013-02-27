@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Configuration;
 using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
 using BossClient;
 using DataCenter;
@@ -14,14 +15,15 @@ using Microsoft.Practices.Prism.ViewModel;
 namespace Modules.Robot
 {
 	[Export(contractType: typeof (RobotViewModel)),
-		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
+		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
 		private string account = "egametang@163.com";
 		private string password = "163bio1";
 		private int findTypeIndex;
 		private string findType = "";
-		private bool isButtonEnable;
+		private Visibility dockPanelVisiable = Visibility.Hidden;
+		private Visibility gridLoginVisiable = Visibility.Visible;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
@@ -100,20 +102,37 @@ namespace Modules.Robot
 			}
 		}
 
-		public bool IsButtonEnable
+		public Visibility DockPanelVisiable
 		{
 			get
 			{
-				return this.isButtonEnable;
+				return this.dockPanelVisiable;
 			}
 			set
 			{
-				if (this.isButtonEnable == value)
+				if (this.dockPanelVisiable == value)
 				{
 					return;
 				}
-				this.isButtonEnable = value;
-				this.RaisePropertyChanged("IsButtonEnable");
+				this.dockPanelVisiable = value;
+				this.RaisePropertyChanged("DockPanelVisiable");
+			}
+		}
+
+		public Visibility GridLoginVisiable
+		{
+			get
+			{
+				return this.gridLoginVisiable;
+			}
+			set
+			{
+				if (this.gridLoginVisiable == value)
+				{
+					return;
+				}
+				this.gridLoginVisiable = value;
+				this.RaisePropertyChanged("GridLoginVisiable");
 			}
 		}
 
@@ -156,7 +175,8 @@ namespace Modules.Robot
 			ushort port = UInt16.Parse(ConfigurationManager.AppSettings["Port"]);
 			await this.bossClient.Login(ip, port, this.Account, this.Password);
 
-			this.IsButtonEnable = true;
+			this.DockPanelVisiable = Visibility.Visible;
+			this.GridLoginVisiable = Visibility.Hidden;
 
 			this.HandleMessages();
 		}
@@ -180,7 +200,7 @@ namespace Modules.Robot
 			}
 			catch (Exception e)
 			{
-				this.IsButtonEnable = false;
+				this.dockPanelVisiable = Visibility.Hidden;
 				Logger.Trace(e.ToString());
 			}
 		}

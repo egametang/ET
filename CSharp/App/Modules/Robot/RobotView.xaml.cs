@@ -47,5 +47,10 @@ namespace Modules.Robot
 		{
 			this.ViewModel.Find();
 		}
+
+		private void menuLogin_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.GridLoginVisiable = Visibility.Visible;
+		}
 	}
 }

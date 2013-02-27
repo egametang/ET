@@ -43,9 +43,9 @@
     <Reference Include="Microsoft.Practices.Prism.MefExtensions">
       <HintPath>..\..\..\packages\Prism.MEFExtensions.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\MySql.Data.6.5.4\lib\net40\MySql.Data.dll</HintPath>
+      <HintPath>..\..\..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data.Entity, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -71,8 +71,19 @@
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
+    <Reference Include="Xceed.Wpf.DataGrid, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Extended.Wpf.Toolkit.1.9.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=1.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Extended.Wpf.Toolkit.1.9.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
@@ -82,6 +93,10 @@
     <Compile Include="ServerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RobotView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

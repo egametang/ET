@@ -3,32 +3,46 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:Robot="clr-namespace:Modules.Robot"
-		mc:Ignorable="d" 
+		xmlns:Robot="clr-namespace:Modules.Robot" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" mc:Ignorable="d" 
 		d:DesignHeight="600" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
 	<Grid>
-		<DockPanel>
+		<xctk:ChildWindow Name="cwLoginWindow"  Visibility="{Binding GridLoginVisiable}" 
+				HorizontalAlignment="Center" VerticalAlignment="Center" CloseButtonVisibility="Hidden">
+			<Grid Name="gridLogin"  Width="200" Height="120" >
+				<Grid.RowDefinitions>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+					<RowDefinition></RowDefinition>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="10*"></ColumnDefinition>
+					<ColumnDefinition Width="40*"></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Label Content="帐号: " Grid.Row="0" Grid.Column="0" Margin="0,8"/>
+				<TextBox Text="{Binding Account}" Grid.Row="0" Grid.Column="1" Margin="0,8,0,8" />
+				<Label Content="密码: " Grid.Row="1" Grid.Column="0" Margin="0,8"/>
+				<TextBox Text="{Binding Password}" Grid.Row="1" Grid.Column="1" Margin="0,8,0,8" />
+				<Button Name="btnLogin" Content="登录" Click="btnLogin_Click" Grid.Row="2" Grid.Column="1" Margin="12,8" />
+			</Grid>
+		</xctk:ChildWindow>
+
+		<DockPanel Name="dock" Visibility="{Binding DockPanelVisiable}">
+			<Menu DockPanel.Dock="Top" >
+				<MenuItem Header="登录" Name="menuLogin" Click="menuLogin_Click" ></MenuItem>
+			</Menu>
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="27" >
-				<Label Content="Account: "></Label>
-				<TextBox Width="120" Text="{Binding Account}" />
-				<Label Content="Password: "></Label>
-				<TextBox Width="120" Text="{Binding Password}" />
-				<Button Name="btnLogin" Content="登录" Width="80" Click="btnLogin_Click" />
-				<Button Name="btnServers" Content="服务器列表" Click="btnServers_Click" 
-						IsEnabled="{Binding IsButtonEnable}"></Button>
-				<Button Name="btnReload" Content="Reload" Click="btnReload_Click" 
-						IsEnabled="{Binding IsButtonEnable}"></Button>
+				<Button Name="btnServers" Content="服务器列表" Click="btnServers_Click" ></Button>
+				<Button Name="btnReload" Content="Reload" Click="btnReload_Click" ></Button>
 				<ComboBox Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}">
 					<ComboBoxItem Content="帐号"></ComboBoxItem>
 					<ComboBoxItem Content="名字"></ComboBoxItem>
 					<ComboBoxItem Content="GUID"></ComboBoxItem>
 				</ComboBox>
 				<TextBox Width="120" Text="{Binding FindType}" />
-				<Button Name="btnFind" Content="查询" Click="btnFind_Click" 
-						IsEnabled="{Binding IsButtonEnable}"></Button>
+				<Button Name="btnFind" Content="查询" Click="btnFind_Click" ></Button>
 			</StackPanel>
 			<ListBox Width="100" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
-					d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
+					d:DataContext="{d:DesignInstance Robot:RobotViewModel}" >
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<Label Content="{Binding Name}" ></Label>
