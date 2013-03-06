@@ -46,5 +46,10 @@ namespace Modules.Robot
 		private void menuLogin_Click(object sender, RoutedEventArgs e)
 		{
 		}
+
+		private void btnForbiddenBuy_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.ForbiddenBuy();
+		}
 	}
 }

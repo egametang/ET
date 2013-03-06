@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ENet;
 using Helper;
+using Ionic.Zlib;
 using Log;
 
 namespace BossClient
@@ -42,16 +43,19 @@ namespace BossClient
 				byte[] bytes = packet.Bytes;
 				const int opcodeSize = sizeof(ushort);
 				ushort opcode = BitConverter.ToUInt16(bytes, 0);
-				const int flagSize = sizeof (ushort);
-				ushort flag = BitConverter.ToUInt16(bytes, opcodeSize);
-				if (flag != 0)
+				byte flag = bytes[0];
+				if (flag == 0)
 				{
-					Logger.Debug("packet zip");
-					throw new BossException("packet zip!");
+					var messageBytes = new byte[packet.Length - opcodeSize - 1];
+					Array.Copy(bytes, opcodeSize + 1, messageBytes, 0, messageBytes.Length);
+					return Tuple.Create(opcode, messageBytes);
 				}
-				var messageBytes = new byte[packet.Length - opcodeSize - flagSize];
-				Array.Copy(bytes, opcodeSize + flagSize, messageBytes, 0, messageBytes.Length);
-				return Tuple.Create(opcode, messageBytes);
+				else
+				{
+					var messageBytes = new byte[packet.Length - opcodeSize - 5];
+					Array.Copy(bytes, opcodeSize + 5, messageBytes, 0, messageBytes.Length);
+					return Tuple.Create(opcode, ZlibStream.UncompressBuffer(messageBytes));
+				}
 			}
 		}
 	}

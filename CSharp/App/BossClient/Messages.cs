@@ -28,6 +28,7 @@ namespace BossClient
 		public const ushort SMSG_SERVERTIME = 510;
 
 		public const ushort SMSG_BOSS_SERVERSINFO = 22000;
+		public const ushort SMSG_BOSS_COMMAND_RESPONSE = 22001;
 	}
 
 	public static class ErrorCode
@@ -241,5 +242,12 @@ namespace BossClient
 	{
 		[DataMember(Order = 1, IsRequired = true)]
 		public List<string> Name { get; set; }
+	}
+
+	[DataContract]
+	public class SMSG_Boss_Command_Response
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public uint ErrorCode { get; set; }
 	}
 }

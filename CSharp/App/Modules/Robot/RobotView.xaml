@@ -25,31 +25,47 @@
 			</ListBox>
 			<Grid>
 				<Canvas>
-					<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}" Canvas.Left="42" Canvas.Top="19">
-						<ComboBoxItem Content="帐号"/>
-						<ComboBoxItem Content="名字"/>
-						<ComboBoxItem Content="GUID"/>
-					</ComboBox>
-					<TextBox Width="120" Text="{Binding FindType}" Canvas.Left="103" Canvas.Top="20" />
-					<Button Name="btnFind" Content="查询" Click="btnFind_Click" Canvas.Left="239" Canvas.Top="20" ></Button>
-					<GroupBox Header="角色信息" Canvas.Left="42" Canvas.Top="57" Height="163" Width="243">
-						<Grid Margin="0,10,0,0">
-							<Grid.RowDefinitions>
-								<RowDefinition></RowDefinition>
-								<RowDefinition></RowDefinition>
-								<RowDefinition></RowDefinition>
-							</Grid.RowDefinitions>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="67*"></ColumnDefinition>
-								<ColumnDefinition Width="190*"></ColumnDefinition>
-							</Grid.ColumnDefinitions>
-							<Label Content="帐号:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Width="36" />
-							<TextBox Text="{Binding Account}"  Grid.Row="0" Grid.Column="1" Margin="0,8" />
-							<Label Content="名字:" Grid.Row="1" Grid.Column="0" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="23" Width="36" />
-							<TextBox Text="{Binding Name}" Grid.Row="1" Grid.Column="1" Margin="0,8" />
-							<Label Content="GUID:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="26" Width="44" />
-							<TextBox Text="{Binding Guid}" Grid.Row="2" Grid.Column="1" Margin="0,8"/>
-						</Grid>
+					<GroupBox Header="角色信息" Canvas.Left="40" Canvas.Top="22" Height="518" Width="660">
+						<Canvas>
+							<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Canvas.Left="32" Canvas.Top="23">
+								<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}">
+									<ComboBoxItem Content="帐号"/>
+									<ComboBoxItem Content="名字"/>
+									<ComboBoxItem Content="GUID"/>
+								</ComboBox>
+								<TextBox Width="178" Text="{Binding FindType}"/>
+								<Button Name="btnFind" Content="查询" Click="btnFind_Click"></Button>
+							</StackPanel>
+							<Label Content="帐号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
+							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="146"/>
+							<Label Content="名字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
+							<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="146"/>
+							<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
+							<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="146"/>
+							<TabControl Height="315" Canvas.Top="180" Width="648">
+								<TabItem Header="信息">
+									<Grid/>
+								</TabItem>
+								<TabItem Header="包裹">
+									<Grid/>
+								</TabItem>
+								<TabItem Header="BUFF">
+									<Grid/>
+								</TabItem>
+								<TabItem Header="装备">
+									<Canvas>
+
+									</Canvas>
+								</TabItem>
+								<TabItem Header="GM">
+									<Canvas>
+										<Button Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
+										<Button Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75"/>
+									</Canvas>
+								</TabItem>
+							</TabControl>
+							<Label Name="lblErrorInfo" Content="{Binding ErrorInfo}" Canvas.Left="281" Canvas.Top="114" Width="201" Height="25"/>
+						</Canvas>
 					</GroupBox>
 				</Canvas>
 			</Grid>

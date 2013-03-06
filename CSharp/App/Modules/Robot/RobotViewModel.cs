@@ -34,6 +34,8 @@ namespace Modules.Robot
 		public readonly Dictionary<ushort, Action<byte[]>> messageHandlers =
 			new Dictionary<ushort, Action<byte[]>>();
 
+		private string errorInfo = "";
+
 		public IMessageChannel IMessageChannel { get; set; }
 
 		public int FindTypeIndex
@@ -146,11 +148,31 @@ namespace Modules.Robot
 			}
 		}
 
+		public string ErrorInfo
+		{
+			get
+			{
+				return this.errorInfo;
+			}
+			set
+			{
+				if (this.errorInfo == value)
+				{
+					return;
+				}
+				this.errorInfo = value;
+				this.RaisePropertyChanged("ErrorInfo");
+			}
+		}
+
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
 			this.messageHandlers.Add(
-				MessageOpcode.SMSG_BOSS_SERVERSINFO, Handle_SMSG_Boss_ServersInfo);
+				MessageOpcode.SMSG_BOSS_SERVERSINFO, this.Handle_SMSG_Boss_ServersInfo);
+			this.messageHandlers.Add(
+				MessageOpcode.SMSG_BOSS_COMMAND_RESPONSE, this.Handle_SMSG_Boss_Command_Response);
+
 			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOK);
 		}
 
@@ -211,6 +233,12 @@ namespace Modules.Robot
 			this.SendCommand("servers");
 		}
 
+		public void Handle_SMSG_Boss_Command_Response(byte[] message)
+		{
+			var smsgBossCommandResponse = ProtobufHelper.FromBytes<SMSG_Boss_Command_Response>(message);
+			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
+		}
+
 		public void Handle_SMSG_Boss_ServersInfo(byte[] message)
 		{
 			var smsgBossServersInfo = ProtobufHelper.FromBytes<SMSG_Boss_ServersInfo>(message);
@@ -260,11 +288,16 @@ namespace Modules.Robot
 					Logger.Debug("not find charactor info!");
 					return;
 				}
-
+				
 				this.Account = result.account;
 				this.Name = result.character_name;
 				this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
 			}
+		}
+
+		public void ForbiddenBuy()
+		{
+			this.SendCommand(string.Format("{0} 600", guid));
 		}
 	}
 }
