@@ -82,9 +82,6 @@
     <Compile Include="t_account_login_auth_response_cookie.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_account_tutorial_status_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
     <Compile Include="t_active_code.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -115,9 +112,6 @@
     <Compile Include="t_beginner_group_event.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_celebration_reward.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
     <Compile Include="t_challenge_activity.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -128,9 +122,6 @@
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_challenge_elect_hero_stat.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_challenge_exp_buff.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_challenge_game_player.cs">
@@ -166,9 +157,6 @@
     <Compile Include="t_character_default_fighting_options.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_character_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
     <Compile Include="t_character_item.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -182,9 +170,6 @@
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_city_buff.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_city_position.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_city_task_finish_sub_state.cs">
@@ -223,6 +208,9 @@
     <Compile Include="t_friend.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
+    <Compile Include="t_friend_ban_match.cs">
+      <DependentUpon>DataCenter.tt</DependentUpon>
+    </Compile>
     <Compile Include="t_friend_group.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -245,12 +233,6 @@
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_hero_suggest_equipment.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_talent_info.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_hero_talent_info_sub_state.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_hero_unlock_hero.cs">
@@ -289,9 +271,6 @@
     <Compile Include="t_offline_message.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_player_offline_message.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
     <Compile Include="t_pve_equipment_scheme.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
@@ -299,9 +278,6 @@
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_questionnaire.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="t_roll_log.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_rune_scheme.cs">
@@ -319,7 +295,7 @@
     <Compile Include="t_title_info.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_tran_log.cs">
+    <Compile Include="t_treasure.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
     <Compile Include="t_tutorial.cs">
@@ -328,16 +304,13 @@
     <Compile Include="t_tutorial_status_info.cs">
       <DependentUpon>DataCenter.tt</DependentUpon>
     </Compile>
-    <Compile Include="t_world_character.cs">
-      <DependentUpon>DataCenter.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="DataCenter.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DataCenter.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="App.config" />
+    <None Include="App.Config" />
     <None Include="DataCenter.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataCenter.edmx</DependentUpon>
@@ -345,7 +318,6 @@
     </None>
     <None Include="DataCenter.edmx.diagram">
       <DependentUpon>DataCenter.edmx</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
     <None Include="DataCenter.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

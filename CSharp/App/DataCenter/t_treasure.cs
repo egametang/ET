@@ -12,12 +12,11 @@ namespace DataCenter
     using System;
     using System.Collections.Generic;
     
-    public partial class t_city_position
+    public partial class t_treasure
     {
         public decimal character_guid { get; set; }
-        public string city_name { get; set; }
-        public float x { get; set; }
-        public float y { get; set; }
+        public int daily_count { get; set; }
+        public long daily_count_uptime { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

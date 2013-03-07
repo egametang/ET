@@ -15,7 +15,6 @@ namespace DataCenter
     public partial class t_mail
     {
         public decimal mail_guid { get; set; }
-        public bool is_deleted { get; set; }
         public bool @checked { get; set; }
         public bool is_read { get; set; }
         public bool is_system_mail { get; set; }

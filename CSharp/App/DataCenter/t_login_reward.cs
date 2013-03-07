@@ -17,7 +17,6 @@ namespace DataCenter
         public decimal character_guid { get; set; }
         public int year_day { get; set; }
         public int reward_id { get; set; }
-        public sbyte is_deleted { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

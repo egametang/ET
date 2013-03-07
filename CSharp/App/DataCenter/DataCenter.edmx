@@ -4,12 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DataCenterModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DataCenterModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="DataCenterModelStoreContainer">
           <EntitySet Name="t_account" EntityType="DataCenterModel.Store.t_account" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_account_active_code" EntityType="DataCenterModel.Store.t_account_active_code" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_account_login_auth_response_cookie" EntityType="DataCenterModel.Store.t_account_login_auth_response_cookie" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_account_tutorial_status_info" EntityType="DataCenterModel.Store.t_account_tutorial_status_info" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_active_code" EntityType="DataCenterModel.Store.t_active_code" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_attribute" EntityType="DataCenterModel.Store.t_attribute" store:Type="Tables" store:Schema="tanghai" store:Name="t_attribute">
             <DefiningQuery>SELECT
@@ -30,12 +29,10 @@
           <EntitySet Name="t_beginner_group_config" EntityType="DataCenterModel.Store.t_beginner_group_config" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_beginner_group_cong" EntityType="DataCenterModel.Store.t_beginner_group_cong" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_beginner_group_event" EntityType="DataCenterModel.Store.t_beginner_group_event" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_celebration_reward" EntityType="DataCenterModel.Store.t_celebration_reward" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_activity" EntityType="DataCenterModel.Store.t_challenge_activity" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_activity_schedule" EntityType="DataCenterModel.Store.t_challenge_activity_schedule" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_character_elect_hero" EntityType="DataCenterModel.Store.t_challenge_character_elect_hero" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_elect_hero_stat" EntityType="DataCenterModel.Store.t_challenge_elect_hero_stat" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_challenge_exp_buff" EntityType="DataCenterModel.Store.t_challenge_exp_buff" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_game_player" EntityType="DataCenterModel.Store.t_challenge_game_player" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_guess_game_over" EntityType="DataCenterModel.Store.t_challenge_guess_game_over" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_challenge_guess_reward" EntityType="DataCenterModel.Store.t_challenge_guess_reward" store:Type="Tables" Schema="tanghai" />
@@ -47,13 +44,11 @@
           <EntitySet Name="t_character_appearance" EntityType="DataCenterModel.Store.t_character_appearance" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_character_assets" EntityType="DataCenterModel.Store.t_character_assets" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_character_default_fighting_options" EntityType="DataCenterModel.Store.t_character_default_fighting_options" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_character_info" EntityType="DataCenterModel.Store.t_character_info" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_character_item" EntityType="DataCenterModel.Store.t_character_item" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_character_options" EntityType="DataCenterModel.Store.t_character_options" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_character_questionnaire" EntityType="DataCenterModel.Store.t_character_questionnaire" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_charge_list" EntityType="DataCenterModel.Store.t_charge_list" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_city_buff" EntityType="DataCenterModel.Store.t_city_buff" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_city_position" EntityType="DataCenterModel.Store.t_city_position" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_city_task_finish_sub_state" EntityType="DataCenterModel.Store.t_city_task_finish_sub_state" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_city_task_info" EntityType="DataCenterModel.Store.t_city_task_info" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_client_config" EntityType="DataCenterModel.Store.t_client_config" store:Type="Tables" Schema="tanghai" />
@@ -75,6 +70,7 @@
       FROM `t_fighting_evaluation_info` AS `t_fighting_evaluation_info`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="t_friend" EntityType="DataCenterModel.Store.t_friend" store:Type="Tables" Schema="tanghai" />
+          <EntitySet Name="t_friend_ban_match" EntityType="DataCenterModel.Store.t_friend_ban_match" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_friend_group" EntityType="DataCenterModel.Store.t_friend_group" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_game_hero_use_info" EntityType="DataCenterModel.Store.t_game_hero_use_info" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_game_info" EntityType="DataCenterModel.Store.t_game_info" store:Type="Tables" Schema="tanghai" />
@@ -83,8 +79,6 @@
           <EntitySet Name="t_hero_level_state" EntityType="DataCenterModel.Store.t_hero_level_state" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_hero_pet" EntityType="DataCenterModel.Store.t_hero_pet" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_hero_suggest_equipment" EntityType="DataCenterModel.Store.t_hero_suggest_equipment" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_hero_talent_info" EntityType="DataCenterModel.Store.t_hero_talent_info" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_hero_talent_info_sub_state" EntityType="DataCenterModel.Store.t_hero_talent_info_sub_state" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_hero_unlock_hero" EntityType="DataCenterModel.Store.t_hero_unlock_hero" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_illegal_term_rules" EntityType="DataCenterModel.Store.t_illegal_term_rules" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_item_roll_list" EntityType="DataCenterModel.Store.t_item_roll_list" store:Type="Tables" store:Schema="tanghai" store:Name="t_item_roll_list">
@@ -124,7 +118,6 @@
           <EntitySet Name="t_map_play_info_hero_pet" EntityType="DataCenterModel.Store.t_map_play_info_hero_pet" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_meta" EntityType="DataCenterModel.Store.t_meta" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_offline_message" EntityType="DataCenterModel.Store.t_offline_message" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_player_offline_message" EntityType="DataCenterModel.Store.t_player_offline_message" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_pve_equipment_scheme" EntityType="DataCenterModel.Store.t_pve_equipment_scheme" store:Type="Tables" store:Schema="tanghai" store:Name="t_pve_equipment_scheme">
             <DefiningQuery>SELECT
       `t_pve_equipment_scheme`.`character_guid`, 
@@ -154,16 +147,14 @@
       FROM `t_pve_equipment_strength` AS `t_pve_equipment_strength`</DefiningQuery>
           </EntitySet>
           <EntitySet Name="t_questionnaire" EntityType="DataCenterModel.Store.t_questionnaire" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_roll_log" EntityType="DataCenterModel.Store.t_roll_log" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_rune_scheme" EntityType="DataCenterModel.Store.t_rune_scheme" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_social_group_basic" EntityType="DataCenterModel.Store.t_social_group_basic" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_social_group_manager" EntityType="DataCenterModel.Store.t_social_group_manager" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_social_group_member" EntityType="DataCenterModel.Store.t_social_group_member" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_title_info" EntityType="DataCenterModel.Store.t_title_info" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_tran_log" EntityType="DataCenterModel.Store.t_tran_log" store:Type="Tables" Schema="tanghai" />
+          <EntitySet Name="t_treasure" EntityType="DataCenterModel.Store.t_treasure" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_tutorial" EntityType="DataCenterModel.Store.t_tutorial" store:Type="Tables" Schema="tanghai" />
           <EntitySet Name="t_tutorial_status_info" EntityType="DataCenterModel.Store.t_tutorial_status_info" store:Type="Tables" Schema="tanghai" />
-          <EntitySet Name="t_world_character" EntityType="DataCenterModel.Store.t_world_character" store:Type="Tables" Schema="tanghai" />
         </EntityContainer>
         <EntityType Name="t_account">
           <Key>
@@ -229,29 +220,6 @@
           <Property Name="create_time" Type="datetime" />
           <Property Name="modify_time" Type="datetime" />
         </EntityType>
-        <EntityType Name="t_account_tutorial_status_info">
-          <Key>
-            <PropertyRef Name="account" />
-          </Key>
-          <Property Name="account" Type="varchar" Nullable="false" MaxLength="100" />
-          <Property Name="max_level" Type="int" />
-          <Property Name="beginner_map_win_count" Type="int" />
-          <Property Name="match_count" Type="int" />
-          <Property Name="quick_match_count" Type="int" />
-          <Property Name="is_close_notify_tutorial" Type="bool" />
-          <Property Name="is_close_notify_mini_tutorial" Type="bool" />
-          <Property Name="composite_hero_token_count" Type="int" />
-          <Property Name="is_close_merge_tutorial" Type="bool" />
-          <Property Name="create_ai_map_room_count" Type="int" />
-          <Property Name="is_close_ai_map_room_tutorial" Type="bool" />
-          <Property Name="is_get_beginner_map_bonus" Type="bool" />
-          <Property Name="got_new_player_survey" Type="bool" />
-          <Property Name="player_level" Type="int" />
-          <Property Name="is_notify_common_skill" Type="bool" />
-          <Property Name="is_first_open_rune_panel" Type="bool" />
-          <Property Name="create_time" Type="datetime" />
-          <Property Name="modify_time" Type="datetime" />
-        </EntityType>
         <EntityType Name="t_active_code">
           <Key>
             <PropertyRef Name="active_code" />
@@ -289,7 +257,6 @@
             <PropertyRef Name="item_guid" />
           </Key>
           <Property Name="item_guid" Type="ubigint" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
           <Property Name="seller_guid" Type="ubigint" Nullable="false" />
           <Property Name="seller_name" Type="varchar" Nullable="false" MaxLength="64" />
           <Property Name="seller_ip" Type="varchar" Nullable="false" MaxLength="32" />
@@ -414,17 +381,6 @@
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_celebration_reward">
-          <Key>
-            <PropertyRef Name="account" />
-            <PropertyRef Name="reward_type" />
-          </Key>
-          <Property Name="account" Type="varchar" Nullable="false" MaxLength="100" />
-          <Property Name="reward_type" Type="int" Nullable="false" />
-          <Property Name="tel_number" Type="varchar" MaxLength="50" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="t_challenge_activity">
           <Key>
             <PropertyRef Name="activity_id" />
@@ -476,19 +432,6 @@
           <Property Name="hero_id" Type="int" Nullable="false" />
           <Property Name="game_position" Type="int" Nullable="false" />
           <Property Name="vote_count" Type="int" Nullable="false" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_challenge_exp_buff">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="time_year" />
-            <PropertyRef Name="time_year_day" />
-          </Key>
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="time_year" Type="int" Nullable="false" />
-          <Property Name="time_year_day" Type="int" Nullable="false" />
-          <Property Name="buff_guid" Type="ubigint" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -615,6 +558,8 @@
           <Property Name="ban_chat_expired_time" Type="bigint" />
           <Property Name="pve_equipment_max_strengthen_level" Type="int" Nullable="false" />
           <Property Name="pve_equipment_active_scheme_id" Type="int" Nullable="false" />
+          <Property Name="pos_x" Type="double" Nullable="false" />
+          <Property Name="pos_y" Type="double" Nullable="false" />
         </EntityType>
         <EntityType Name="t_character_achievement">
           <Key>
@@ -679,21 +624,12 @@
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_character_info">
-          <Key>
-            <PropertyRef Name="tid" />
-          </Key>
-          <Property Name="tid" Type="int" Nullable="false" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="t_character_item">
           <Key>
             <PropertyRef Name="item_guid" />
           </Key>
           <Property Name="item_guid" Type="ubigint" Nullable="false" />
           <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
           <Property Name="item_id" Type="int" Nullable="false" />
           <Property Name="slot" Type="int" Nullable="false" />
           <Property Name="item_count" Type="int" Nullable="false" />
@@ -760,18 +696,6 @@
           <Property Name="buff_time" Type="int" Nullable="false" />
           <Property Name="stack" Type="int" Nullable="false" />
           <Property Name="buff_values" Type="blob" Nullable="false" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_city_position">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="city_name" />
-          </Key>
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="city_name" Type="varchar" Nullable="false" MaxLength="64" />
-          <Property Name="x" Type="float" Nullable="false" />
-          <Property Name="y" Type="float" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -857,7 +781,6 @@
           <Property Name="price" Type="int" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
         </EntityType>
         <EntityType Name="t_employee_info">
           <Key>
@@ -881,7 +804,6 @@
           <Property Name="success" Type="bool" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
         </EntityType>
         <EntityType Name="t_employer_notice">
           <Key>
@@ -899,7 +821,6 @@
           <Property Name="success" Type="bool" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
       警告 6002: 表/视图“def.tanghai.t_fighting_evaluation_info”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
@@ -929,6 +850,16 @@
           <Property Name="character_guid" Type="ubigint" Nullable="false" />
           <Property Name="friend_guid" Type="ubigint" Nullable="false" />
           <Property Name="group_id" Type="int" Nullable="false" />
+          <Property Name="create_time" Type="datetime" Nullable="false" />
+          <Property Name="modify_time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_friend_ban_match">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="ban_guid" />
+          </Key>
+          <Property Name="character_guid" Type="ubigint" Nullable="false" />
+          <Property Name="ban_guid" Type="ubigint" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1037,6 +968,14 @@
           <Property Name="vip_exp" Type="int" Nullable="false" />
           <Property Name="vip_exp_accumulate" Type="int" />
           <Property Name="last_vip_exp_up_time" Type="bigint" />
+          <Property Name="employ_pvp_win_count_room" Type="int" Nullable="false" />
+          <Property Name="employ_pvp_lose_count_room" Type="int" Nullable="false" />
+          <Property Name="employ_pvp_flee_count_room" Type="int" Nullable="false" />
+          <Property Name="employ_pvp_win_count_match" Type="int" Nullable="false" />
+          <Property Name="employ_pvp_lose_count_match" Type="int" Nullable="false" />
+          <Property Name="employ_pvp_flee_count_match" Type="int" Nullable="false" />
+          <Property Name="employ_pve_pass_level_count" Type="int" Nullable="false" />
+          <Property Name="employ_pve_lose_level_count" Type="int" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1115,35 +1054,6 @@
           <Property Name="item_id3" Type="int" />
           <Property Name="item_id4" Type="int" />
           <Property Name="item_id5" Type="int" />
-          <Property Name="is_deleted" Type="bool" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_hero_talent_info">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="hero_id" />
-          </Key>
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="hero_id" Type="int" Nullable="false" />
-          <Property Name="total_used_hero_experience" Type="int" />
-          <Property Name="enable_branch" Type="int" />
-          <Property Name="this_branch_point" Type="int" />
-          <Property Name="available_experience" Type="int" />
-          <Property Name="create_time" Type="datetime" Nullable="false" />
-          <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_hero_talent_info_sub_state">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="hero_id" />
-            <PropertyRef Name="talent_id" />
-          </Key>
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="hero_id" Type="int" Nullable="false" />
-          <Property Name="talent_id" Type="int" Nullable="false" />
-          <Property Name="point" Type="int" />
-          <Property Name="is_full_point" Type="bool" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1156,6 +1066,7 @@
           <Property Name="hero_id" Type="int" Nullable="false" />
           <Property Name="level" Type="int" />
           <Property Name="cur_color_scheme_id" Type="int" Nullable="false" />
+          <Property Name="scheme_unlock_status" Type="ubigint" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1229,7 +1140,6 @@
           <Property Name="character_guid" Type="ubigint" Nullable="false" />
           <Property Name="year_day" Type="int" Nullable="false" />
           <Property Name="reward_id" Type="int" Nullable="false" />
-          <Property Name="is_deleted" Type="tinyint" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1238,7 +1148,6 @@
             <PropertyRef Name="mail_guid" />
           </Key>
           <Property Name="mail_guid" Type="ubigint" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
           <Property Name="checked" Type="bool" Nullable="false" />
           <Property Name="is_read" Type="bool" Nullable="false" />
           <Property Name="is_system_mail" Type="bool" Nullable="false" />
@@ -1263,7 +1172,6 @@
           <Property Name="item_guid" Type="ubigint" Nullable="false" />
           <Property Name="mail_guid" Type="ubigint" Nullable="false" />
           <Property Name="is_taked" Type="bool" Nullable="false" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
@@ -1342,19 +1250,6 @@
           <Property Name="content" Type="longtext" Nullable="false" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
-          <Property Name="is_deleted" Type="tinyint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_player_offline_message">
-          <Key>
-            <PropertyRef Name="fid" />
-          </Key>
-          <Property Name="fid" Type="ubigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="opcode" Type="int" Nullable="false" />
-          <Property Name="content" Type="blob" Nullable="false" />
-          <Property Name="create_time" Type="datetime" />
-          <Property Name="modify_time" Type="datetime" />
-          <Property Name="is_deleted" Type="bool" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
       警告 6002: 表/视图“def.tanghai.t_pve_equipment_scheme”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
@@ -1417,23 +1312,6 @@
           <Property Name="content" Type="text" />
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_roll_log">
-          <Key>
-            <PropertyRef Name="roll_listid" />
-          </Key>
-          <Property Name="roll_listid" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="bill_listid" Type="varchar" MaxLength="40" />
-          <Property Name="character_guid" Type="ubigint" />
-          <Property Name="vs_guid" Type="ubigint" />
-          <Property Name="roll_type" Type="smallint" />
-          <Property Name="assets_type" Type="smallint" />
-          <Property Name="amount" Type="int" />
-          <Property Name="balance" Type="bigint" />
-          <Property Name="ip" Type="varchar" MaxLength="32" />
-          <Property Name="memo" Type="varchar" MaxLength="255" />
-          <Property Name="create_time" Type="datetime" />
-          <Property Name="modify_time" Type="datetime" />
         </EntityType>
         <EntityType Name="t_rune_scheme">
           <Key>
@@ -1509,22 +1387,15 @@
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_tran_log">
+        <EntityType Name="t_treasure">
           <Key>
-            <PropertyRef Name="tran_listid" />
+            <PropertyRef Name="character_guid" />
           </Key>
-          <Property Name="tran_listid" Type="varchar" Nullable="false" MaxLength="40" />
-          <Property Name="buyer_guid" Type="ubigint" />
-          <Property Name="buyer_account" Type="varchar" MaxLength="100" />
-          <Property Name="seller_guid" Type="ubigint" />
-          <Property Name="seller_account" Type="varchar" MaxLength="100" />
-          <Property Name="assets_type" Type="smallint" />
-          <Property Name="pay_amount" Type="int" />
-          <Property Name="bill_listid" Type="varchar" MaxLength="32" />
-          <Property Name="ip" Type="varchar" MaxLength="32" />
-          <Property Name="memo" Type="varchar" MaxLength="255" />
-          <Property Name="create_time" Type="datetime" />
-          <Property Name="modify_time" Type="datetime" />
+          <Property Name="character_guid" Type="ubigint" Nullable="false" />
+          <Property Name="daily_count" Type="int" Nullable="false" />
+          <Property Name="daily_count_uptime" Type="uint" Nullable="false" />
+          <Property Name="create_time" Type="datetime" Nullable="false" />
+          <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="t_tutorial">
           <Key>
@@ -1553,15 +1424,8 @@
           <Property Name="create_time" Type="datetime" Nullable="false" />
           <Property Name="modify_time" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_world_character">
-          <Key>
-            <PropertyRef Name="character_guid" />
-          </Key>
-          <Property Name="character_guid" Type="ubigint" Nullable="false" />
-          <Property Name="group_guid" Type="ubigint" Nullable="false" />
-          <Property Name="room_guid" Type="ubigint" Nullable="false" />
-        </EntityType>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataCenterModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1569,7 +1433,6 @@
           <EntitySet Name="t_account" EntityType="DataCenterModel.t_account" />
           <EntitySet Name="t_account_active_code" EntityType="DataCenterModel.t_account_active_code" />
           <EntitySet Name="t_account_login_auth_response_cookie" EntityType="DataCenterModel.t_account_login_auth_response_cookie" />
-          <EntitySet Name="t_account_tutorial_status_info" EntityType="DataCenterModel.t_account_tutorial_status_info" />
           <EntitySet Name="t_active_code" EntityType="DataCenterModel.t_active_code" />
           <EntitySet Name="t_attribute" EntityType="DataCenterModel.t_attribute" />
           <EntitySet Name="t_auction_item" EntityType="DataCenterModel.t_auction_item" />
@@ -1580,12 +1443,10 @@
           <EntitySet Name="t_beginner_group_config" EntityType="DataCenterModel.t_beginner_group_config" />
           <EntitySet Name="t_beginner_group_cong" EntityType="DataCenterModel.t_beginner_group_cong" />
           <EntitySet Name="t_beginner_group_event" EntityType="DataCenterModel.t_beginner_group_event" />
-          <EntitySet Name="t_celebration_reward" EntityType="DataCenterModel.t_celebration_reward" />
           <EntitySet Name="t_challenge_activity" EntityType="DataCenterModel.t_challenge_activity" />
           <EntitySet Name="t_challenge_activity_schedule" EntityType="DataCenterModel.t_challenge_activity_schedule" />
           <EntitySet Name="t_challenge_character_elect_hero" EntityType="DataCenterModel.t_challenge_character_elect_hero" />
           <EntitySet Name="t_challenge_elect_hero_stat" EntityType="DataCenterModel.t_challenge_elect_hero_stat" />
-          <EntitySet Name="t_challenge_exp_buff" EntityType="DataCenterModel.t_challenge_exp_buff" />
           <EntitySet Name="t_challenge_game_player" EntityType="DataCenterModel.t_challenge_game_player" />
           <EntitySet Name="t_challenge_guess_game_over" EntityType="DataCenterModel.t_challenge_guess_game_over" />
           <EntitySet Name="t_challenge_guess_reward" EntityType="DataCenterModel.t_challenge_guess_reward" />
@@ -1597,13 +1458,11 @@
           <EntitySet Name="t_character_appearance" EntityType="DataCenterModel.t_character_appearance" />
           <EntitySet Name="t_character_assets" EntityType="DataCenterModel.t_character_assets" />
           <EntitySet Name="t_character_default_fighting_options" EntityType="DataCenterModel.t_character_default_fighting_options" />
-          <EntitySet Name="t_character_info" EntityType="DataCenterModel.t_character_info" />
           <EntitySet Name="t_character_item" EntityType="DataCenterModel.t_character_item" />
           <EntitySet Name="t_character_options" EntityType="DataCenterModel.t_character_options" />
           <EntitySet Name="t_character_questionnaire" EntityType="DataCenterModel.t_character_questionnaire" />
           <EntitySet Name="t_charge_list" EntityType="DataCenterModel.t_charge_list" />
           <EntitySet Name="t_city_buff" EntityType="DataCenterModel.t_city_buff" />
-          <EntitySet Name="t_city_position" EntityType="DataCenterModel.t_city_position" />
           <EntitySet Name="t_city_task_finish_sub_state" EntityType="DataCenterModel.t_city_task_finish_sub_state" />
           <EntitySet Name="t_city_task_info" EntityType="DataCenterModel.t_city_task_info" />
           <EntitySet Name="t_client_config" EntityType="DataCenterModel.t_client_config" />
@@ -1616,6 +1475,7 @@
           <EntitySet Name="t_employer_notice" EntityType="DataCenterModel.t_employer_notice" />
           <EntitySet Name="t_fighting_evaluation_info" EntityType="DataCenterModel.t_fighting_evaluation_info" />
           <EntitySet Name="t_friend" EntityType="DataCenterModel.t_friend" />
+          <EntitySet Name="t_friend_ban_match" EntityType="DataCenterModel.t_friend_ban_match" />
           <EntitySet Name="t_friend_group" EntityType="DataCenterModel.t_friend_group" />
           <EntitySet Name="t_game_hero_use_info" EntityType="DataCenterModel.t_game_hero_use_info" />
           <EntitySet Name="t_game_info" EntityType="DataCenterModel.t_game_info" />
@@ -1624,8 +1484,6 @@
           <EntitySet Name="t_hero_level_state" EntityType="DataCenterModel.t_hero_level_state" />
           <EntitySet Name="t_hero_pet" EntityType="DataCenterModel.t_hero_pet" />
           <EntitySet Name="t_hero_suggest_equipment" EntityType="DataCenterModel.t_hero_suggest_equipment" />
-          <EntitySet Name="t_hero_talent_info" EntityType="DataCenterModel.t_hero_talent_info" />
-          <EntitySet Name="t_hero_talent_info_sub_state" EntityType="DataCenterModel.t_hero_talent_info_sub_state" />
           <EntitySet Name="t_hero_unlock_hero" EntityType="DataCenterModel.t_hero_unlock_hero" />
           <EntitySet Name="t_illegal_term_rules" EntityType="DataCenterModel.t_illegal_term_rules" />
           <EntitySet Name="t_item_roll_list" EntityType="DataCenterModel.t_item_roll_list" />
@@ -1634,24 +1492,21 @@
           <EntitySet Name="t_mail_item" EntityType="DataCenterModel.t_mail_item" />
           <EntitySet Name="t_mall_items_sales_count" EntityType="DataCenterModel.t_mall_items_sales_count" />
           <EntitySet Name="t_map_play_info" EntityType="DataCenterModel.t_map_play_info" />
+          <EntitySet Name="t_map_play_info_hero" EntityType="DataCenterModel.t_map_play_info_hero" />
+          <EntitySet Name="t_map_play_info_hero_pet" EntityType="DataCenterModel.t_map_play_info_hero_pet" />
           <EntitySet Name="t_meta" EntityType="DataCenterModel.t_meta" />
           <EntitySet Name="t_offline_message" EntityType="DataCenterModel.t_offline_message" />
-          <EntitySet Name="t_player_offline_message" EntityType="DataCenterModel.t_player_offline_message" />
           <EntitySet Name="t_pve_equipment_scheme" EntityType="DataCenterModel.t_pve_equipment_scheme" />
           <EntitySet Name="t_pve_equipment_strength" EntityType="DataCenterModel.t_pve_equipment_strength" />
           <EntitySet Name="t_questionnaire" EntityType="DataCenterModel.t_questionnaire" />
-          <EntitySet Name="t_roll_log" EntityType="DataCenterModel.t_roll_log" />
           <EntitySet Name="t_rune_scheme" EntityType="DataCenterModel.t_rune_scheme" />
           <EntitySet Name="t_social_group_basic" EntityType="DataCenterModel.t_social_group_basic" />
           <EntitySet Name="t_social_group_manager" EntityType="DataCenterModel.t_social_group_manager" />
           <EntitySet Name="t_social_group_member" EntityType="DataCenterModel.t_social_group_member" />
           <EntitySet Name="t_title_info" EntityType="DataCenterModel.t_title_info" />
-          <EntitySet Name="t_tran_log" EntityType="DataCenterModel.t_tran_log" />
+          <EntitySet Name="t_treasure" EntityType="DataCenterModel.t_treasure" />
           <EntitySet Name="t_tutorial" EntityType="DataCenterModel.t_tutorial" />
           <EntitySet Name="t_tutorial_status_info" EntityType="DataCenterModel.t_tutorial_status_info" />
-          <EntitySet Name="t_world_character" EntityType="DataCenterModel.t_world_character" />
-          <EntitySet Name="t_map_play_info_hero" EntityType="DataCenterModel.t_map_play_info_hero" />
-          <EntitySet Name="t_map_play_info_hero_pet" EntityType="DataCenterModel.t_map_play_info_hero_pet" />
         </EntityContainer>
         <EntityType Name="t_account">
           <Key>
@@ -1665,9 +1520,9 @@
           <Property Name="active_code" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <Property Name="active_code_used" Type="Boolean" />
           <Property Name="first_char_guid" Type="Decimal" />
+          <Property Name="gm_level" Type="Int32" />
           <Property Name="create_time" Type="DateTime" />
           <Property Name="modify_time" Type="DateTime" />
-          <Property Name="gm_level" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="t_account_active_code">
           <Key>
@@ -1717,29 +1572,6 @@
           <Property Name="create_time" Type="DateTime" />
           <Property Name="modify_time" Type="DateTime" />
         </EntityType>
-        <EntityType Name="t_account_tutorial_status_info">
-          <Key>
-            <PropertyRef Name="account" />
-          </Key>
-          <Property Name="account" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="max_level" Type="Int32" />
-          <Property Name="beginner_map_win_count" Type="Int32" />
-          <Property Name="match_count" Type="Int32" />
-          <Property Name="quick_match_count" Type="Int32" />
-          <Property Name="is_close_notify_tutorial" Type="Boolean" />
-          <Property Name="is_close_notify_mini_tutorial" Type="Boolean" />
-          <Property Name="composite_hero_token_count" Type="Int32" />
-          <Property Name="is_close_merge_tutorial" Type="Boolean" />
-          <Property Name="create_ai_map_room_count" Type="Int32" />
-          <Property Name="is_close_ai_map_room_tutorial" Type="Boolean" />
-          <Property Name="is_get_beginner_map_bonus" Type="Boolean" />
-          <Property Name="got_new_player_survey" Type="Boolean" />
-          <Property Name="player_level" Type="Int32" />
-          <Property Name="is_notify_common_skill" Type="Boolean" />
-          <Property Name="is_first_open_rune_panel" Type="Boolean" />
-          <Property Name="create_time" Type="DateTime" />
-          <Property Name="modify_time" Type="DateTime" />
-        </EntityType>
         <EntityType Name="t_active_code">
           <Key>
             <PropertyRef Name="active_code" />
@@ -1774,7 +1606,6 @@
             <PropertyRef Name="item_guid" />
           </Key>
           <Property Name="item_guid" Type="Decimal" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
           <Property Name="seller_guid" Type="Decimal" Nullable="false" />
           <Property Name="seller_name" Type="String" Nullable="false" MaxLength="64" Unicode="false" FixedLength="false" />
           <Property Name="seller_ip" Type="String" Nullable="false" MaxLength="32" Unicode="false" FixedLength="false" />
@@ -1899,17 +1730,6 @@
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_celebration_reward">
-          <Key>
-            <PropertyRef Name="account" />
-            <PropertyRef Name="reward_type" />
-          </Key>
-          <Property Name="account" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="reward_type" Type="Int32" Nullable="false" />
-          <Property Name="tel_number" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
         <EntityType Name="t_challenge_activity">
           <Key>
             <PropertyRef Name="activity_id" />
@@ -1961,19 +1781,6 @@
           <Property Name="hero_id" Type="Int32" Nullable="false" />
           <Property Name="game_position" Type="Int32" Nullable="false" />
           <Property Name="vote_count" Type="Int32" Nullable="false" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_challenge_exp_buff">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="time_year" />
-            <PropertyRef Name="time_year_day" />
-          </Key>
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="time_year" Type="Int32" Nullable="false" />
-          <Property Name="time_year_day" Type="Int32" Nullable="false" />
-          <Property Name="buff_guid" Type="Decimal" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2100,6 +1907,8 @@
           <Property Name="ban_chat_expired_time" Type="Int64" />
           <Property Name="pve_equipment_max_strengthen_level" Type="Int32" Nullable="false" />
           <Property Name="pve_equipment_active_scheme_id" Type="Int32" Nullable="false" />
+          <Property Name="pos_x" Type="Double" Nullable="false" />
+          <Property Name="pos_y" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="t_character_achievement">
           <Key>
@@ -2164,21 +1973,12 @@
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_character_info">
-          <Key>
-            <PropertyRef Name="tid" />
-          </Key>
-          <Property Name="tid" Type="Int32" Nullable="false" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
         <EntityType Name="t_character_item">
           <Key>
             <PropertyRef Name="item_guid" />
           </Key>
           <Property Name="item_guid" Type="Decimal" Nullable="false" />
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
           <Property Name="item_id" Type="Int32" Nullable="false" />
           <Property Name="slot" Type="Int32" Nullable="false" />
           <Property Name="item_count" Type="Int32" Nullable="false" />
@@ -2245,18 +2045,6 @@
           <Property Name="buff_time" Type="Int32" Nullable="false" />
           <Property Name="stack" Type="Int32" Nullable="false" />
           <Property Name="buff_values" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_city_position">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="city_name" />
-          </Key>
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="city_name" Type="String" Nullable="false" MaxLength="64" Unicode="false" FixedLength="false" />
-          <Property Name="x" Type="Single" Nullable="false" />
-          <Property Name="y" Type="Single" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2342,7 +2130,6 @@
           <Property Name="price" Type="Int32" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="t_employee_info">
           <Key>
@@ -2366,7 +2153,6 @@
           <Property Name="success" Type="Boolean" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="t_employer_notice">
           <Key>
@@ -2384,7 +2170,6 @@
           <Property Name="success" Type="Boolean" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="t_fighting_evaluation_info">
           <Key>
@@ -2411,6 +2196,16 @@
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
           <Property Name="friend_guid" Type="Decimal" Nullable="false" />
           <Property Name="group_id" Type="Int32" Nullable="false" />
+          <Property Name="create_time" Type="DateTime" Nullable="false" />
+          <Property Name="modify_time" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_friend_ban_match">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="ban_guid" />
+          </Key>
+          <Property Name="character_guid" Type="Decimal" Nullable="false" />
+          <Property Name="ban_guid" Type="Decimal" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2519,6 +2314,14 @@
           <Property Name="vip_exp" Type="Int32" Nullable="false" />
           <Property Name="vip_exp_accumulate" Type="Int32" />
           <Property Name="last_vip_exp_up_time" Type="Int64" />
+          <Property Name="employ_pvp_win_count_room" Type="Int32" Nullable="false" />
+          <Property Name="employ_pvp_lose_count_room" Type="Int32" Nullable="false" />
+          <Property Name="employ_pvp_flee_count_room" Type="Int32" Nullable="false" />
+          <Property Name="employ_pvp_win_count_match" Type="Int32" Nullable="false" />
+          <Property Name="employ_pvp_lose_count_match" Type="Int32" Nullable="false" />
+          <Property Name="employ_pvp_flee_count_match" Type="Int32" Nullable="false" />
+          <Property Name="employ_pve_pass_level_count" Type="Int32" Nullable="false" />
+          <Property Name="employ_pve_lose_level_count" Type="Int32" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2597,35 +2400,6 @@
           <Property Name="item_id3" Type="Int32" />
           <Property Name="item_id4" Type="Int32" />
           <Property Name="item_id5" Type="Int32" />
-          <Property Name="is_deleted" Type="Boolean" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_hero_talent_info">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="hero_id" />
-          </Key>
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="hero_id" Type="Int32" Nullable="false" />
-          <Property Name="total_used_hero_experience" Type="Int32" />
-          <Property Name="enable_branch" Type="Int32" />
-          <Property Name="this_branch_point" Type="Int32" />
-          <Property Name="available_experience" Type="Int32" />
-          <Property Name="create_time" Type="DateTime" Nullable="false" />
-          <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_hero_talent_info_sub_state">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="hero_id" />
-            <PropertyRef Name="talent_id" />
-          </Key>
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="hero_id" Type="Int32" Nullable="false" />
-          <Property Name="talent_id" Type="Int32" Nullable="false" />
-          <Property Name="point" Type="Int32" />
-          <Property Name="is_full_point" Type="Boolean" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2636,10 +2410,11 @@
           </Key>
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
           <Property Name="hero_id" Type="Int32" Nullable="false" />
+          <Property Name="level" Type="Int32" />
           <Property Name="cur_color_scheme_id" Type="Int32" Nullable="false" />
+          <Property Name="scheme_unlock_status" Type="Decimal" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-          <Property Type="Int32" Name="level" />
         </EntityType>
         <EntityType Name="t_illegal_term_rules">
           <Key>
@@ -2708,7 +2483,6 @@
           <Property Name="character_guid" Type="Decimal" Nullable="false" />
           <Property Name="year_day" Type="Int32" Nullable="false" />
           <Property Name="reward_id" Type="Int32" Nullable="false" />
-          <Property Name="is_deleted" Type="SByte" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2717,7 +2491,6 @@
             <PropertyRef Name="mail_guid" />
           </Key>
           <Property Name="mail_guid" Type="Decimal" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
           <Property Name="checked" Type="Boolean" Nullable="false" />
           <Property Name="is_read" Type="Boolean" Nullable="false" />
           <Property Name="is_system_mail" Type="Boolean" Nullable="false" />
@@ -2742,7 +2515,6 @@
           <Property Name="item_guid" Type="Decimal" Nullable="false" />
           <Property Name="mail_guid" Type="Decimal" Nullable="false" />
           <Property Name="is_taked" Type="Boolean" Nullable="false" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
@@ -2777,6 +2549,33 @@
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
+        <EntityType Name="t_map_play_info_hero">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="hero_id" />
+          </Key>
+          <Property Name="character_guid" Type="Decimal" Nullable="false" />
+          <Property Name="map_type" Type="String" Nullable="false" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="hero_id" Type="Int64" Nullable="false" />
+          <Property Name="play_count" Type="Int32" Nullable="false" />
+          <Property Name="create_time" Type="DateTime" Nullable="false" />
+          <Property Name="modify_time" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="t_map_play_info_hero_pet">
+          <Key>
+            <PropertyRef Name="character_guid" />
+            <PropertyRef Name="map_type" />
+            <PropertyRef Name="guid" />
+          </Key>
+          <Property Name="character_guid" Type="Decimal" Nullable="false" />
+          <Property Name="map_type" Type="String" Nullable="false" MaxLength="64" Unicode="false" FixedLength="false" />
+          <Property Name="guid" Type="Decimal" Nullable="false" />
+          <Property Name="play_count" Type="Int32" Nullable="false" />
+          <Property Name="play_count_s" Type="Int32" Nullable="false" />
+          <Property Name="create_time" Type="DateTime" Nullable="false" />
+          <Property Name="modify_time" Type="DateTime" Nullable="false" />
+        </EntityType>
         <EntityType Name="t_meta">
           <Key>
             <PropertyRef Name="meta_key" />
@@ -2794,19 +2593,6 @@
           <Property Name="content" Type="String" Nullable="false" MaxLength="1073741823" Unicode="false" FixedLength="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-          <Property Name="is_deleted" Type="SByte" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_player_offline_message">
-          <Key>
-            <PropertyRef Name="fid" />
-          </Key>
-          <Property Name="fid" Type="Decimal" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="opcode" Type="Int32" Nullable="false" />
-          <Property Name="content" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="create_time" Type="DateTime" />
-          <Property Name="modify_time" Type="DateTime" />
-          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="t_pve_equipment_scheme">
           <Key>
@@ -2863,23 +2649,6 @@
           <Property Name="content" Type="String" MaxLength="65535" Unicode="false" FixedLength="false" />
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_roll_log">
-          <Key>
-            <PropertyRef Name="roll_listid" />
-          </Key>
-          <Property Name="roll_listid" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
-          <Property Name="bill_listid" Type="String" MaxLength="40" Unicode="false" FixedLength="false" />
-          <Property Name="character_guid" Type="Decimal" />
-          <Property Name="vs_guid" Type="Decimal" />
-          <Property Name="roll_type" Type="Int16" />
-          <Property Name="assets_type" Type="Int16" />
-          <Property Name="amount" Type="Int32" />
-          <Property Name="balance" Type="Int64" />
-          <Property Name="ip" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
-          <Property Name="memo" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
-          <Property Name="create_time" Type="DateTime" />
-          <Property Name="modify_time" Type="DateTime" />
         </EntityType>
         <EntityType Name="t_rune_scheme">
           <Key>
@@ -2955,22 +2724,15 @@
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_tran_log">
+        <EntityType Name="t_treasure">
           <Key>
-            <PropertyRef Name="tran_listid" />
+            <PropertyRef Name="character_guid" />
           </Key>
-          <Property Name="tran_listid" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="false" />
-          <Property Name="buyer_guid" Type="Decimal" />
-          <Property Name="buyer_account" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="seller_guid" Type="Decimal" />
-          <Property Name="seller_account" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="assets_type" Type="Int16" />
-          <Property Name="pay_amount" Type="Int32" />
-          <Property Name="bill_listid" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
-          <Property Name="ip" Type="String" MaxLength="32" Unicode="false" FixedLength="false" />
-          <Property Name="memo" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
-          <Property Name="create_time" Type="DateTime" />
-          <Property Name="modify_time" Type="DateTime" />
+          <Property Name="character_guid" Type="Decimal" Nullable="false" />
+          <Property Name="daily_count" Type="Int32" Nullable="false" />
+          <Property Name="daily_count_uptime" Type="Int64" Nullable="false" />
+          <Property Name="create_time" Type="DateTime" Nullable="false" />
+          <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="t_tutorial">
           <Key>
@@ -2999,41 +2761,6 @@
           <Property Name="create_time" Type="DateTime" Nullable="false" />
           <Property Name="modify_time" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityType Name="t_world_character">
-          <Key>
-            <PropertyRef Name="character_guid" />
-          </Key>
-          <Property Name="character_guid" Type="Decimal" Nullable="false" />
-          <Property Name="group_guid" Type="Decimal" Nullable="false" />
-          <Property Name="room_guid" Type="Decimal" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_map_play_info_hero">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="map_type" />
-            <PropertyRef Name="hero_id" />
-          </Key>
-          <Property Type="Decimal" Name="character_guid" Nullable="false" />
-          <Property Type="String" Name="map_type" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Type="Int64" Name="hero_id" Nullable="false" />
-          <Property Type="Int32" Name="play_count" Nullable="false" />
-          <Property Type="DateTime" Name="create_time" Nullable="false" />
-          <Property Type="DateTime" Name="modify_time" Nullable="false" />
-        </EntityType>
-        <EntityType Name="t_map_play_info_hero_pet">
-          <Key>
-            <PropertyRef Name="character_guid" />
-            <PropertyRef Name="map_type" />
-            <PropertyRef Name="guid" />
-          </Key>
-          <Property Type="Decimal" Name="character_guid" Nullable="false" />
-          <Property Type="String" Name="map_type" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Type="Decimal" Name="guid" Nullable="false" />
-          <Property Type="Int32" Name="play_count" Nullable="false" />
-          <Property Type="Int32" Name="play_count_s" Nullable="false" />
-          <Property Type="DateTime" Name="create_time" Nullable="false" />
-          <Property Type="DateTime" Name="modify_time" Nullable="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3051,9 +2778,9 @@
                 <ScalarProperty Name="active_code" ColumnName="active_code" />
                 <ScalarProperty Name="active_code_used" ColumnName="active_code_used" />
                 <ScalarProperty Name="first_char_guid" ColumnName="first_char_guid" />
+                <ScalarProperty Name="gm_level" ColumnName="gm_level" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="gm_level" ColumnName="gm_level" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3106,30 +2833,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_account_tutorial_status_info">
-            <EntityTypeMapping TypeName="DataCenterModel.t_account_tutorial_status_info">
-              <MappingFragment StoreEntitySet="t_account_tutorial_status_info">
-                <ScalarProperty Name="account" ColumnName="account" />
-                <ScalarProperty Name="max_level" ColumnName="max_level" />
-                <ScalarProperty Name="beginner_map_win_count" ColumnName="beginner_map_win_count" />
-                <ScalarProperty Name="match_count" ColumnName="match_count" />
-                <ScalarProperty Name="quick_match_count" ColumnName="quick_match_count" />
-                <ScalarProperty Name="is_close_notify_tutorial" ColumnName="is_close_notify_tutorial" />
-                <ScalarProperty Name="is_close_notify_mini_tutorial" ColumnName="is_close_notify_mini_tutorial" />
-                <ScalarProperty Name="composite_hero_token_count" ColumnName="composite_hero_token_count" />
-                <ScalarProperty Name="is_close_merge_tutorial" ColumnName="is_close_merge_tutorial" />
-                <ScalarProperty Name="create_ai_map_room_count" ColumnName="create_ai_map_room_count" />
-                <ScalarProperty Name="is_close_ai_map_room_tutorial" ColumnName="is_close_ai_map_room_tutorial" />
-                <ScalarProperty Name="is_get_beginner_map_bonus" ColumnName="is_get_beginner_map_bonus" />
-                <ScalarProperty Name="got_new_player_survey" ColumnName="got_new_player_survey" />
-                <ScalarProperty Name="player_level" ColumnName="player_level" />
-                <ScalarProperty Name="is_notify_common_skill" ColumnName="is_notify_common_skill" />
-                <ScalarProperty Name="is_first_open_rune_panel" ColumnName="is_first_open_rune_panel" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="t_active_code">
             <EntityTypeMapping TypeName="DataCenterModel.t_active_code">
               <MappingFragment StoreEntitySet="t_active_code">
@@ -3159,7 +2862,6 @@
             <EntityTypeMapping TypeName="DataCenterModel.t_auction_item">
               <MappingFragment StoreEntitySet="t_auction_item">
                 <ScalarProperty Name="item_guid" ColumnName="item_guid" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
                 <ScalarProperty Name="seller_guid" ColumnName="seller_guid" />
                 <ScalarProperty Name="seller_name" ColumnName="seller_name" />
                 <ScalarProperty Name="seller_ip" ColumnName="seller_ip" />
@@ -3290,17 +2992,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_celebration_reward">
-            <EntityTypeMapping TypeName="DataCenterModel.t_celebration_reward">
-              <MappingFragment StoreEntitySet="t_celebration_reward">
-                <ScalarProperty Name="account" ColumnName="account" />
-                <ScalarProperty Name="reward_type" ColumnName="reward_type" />
-                <ScalarProperty Name="tel_number" ColumnName="tel_number" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="t_challenge_activity">
             <EntityTypeMapping TypeName="DataCenterModel.t_challenge_activity">
               <MappingFragment StoreEntitySet="t_challenge_activity">
@@ -3351,18 +3042,6 @@
                 <ScalarProperty Name="hero_id" ColumnName="hero_id" />
                 <ScalarProperty Name="game_position" ColumnName="game_position" />
                 <ScalarProperty Name="vote_count" ColumnName="vote_count" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_challenge_exp_buff">
-            <EntityTypeMapping TypeName="DataCenterModel.t_challenge_exp_buff">
-              <MappingFragment StoreEntitySet="t_challenge_exp_buff">
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="time_year" ColumnName="time_year" />
-                <ScalarProperty Name="time_year_day" ColumnName="time_year_day" />
-                <ScalarProperty Name="buff_guid" ColumnName="buff_guid" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -3490,6 +3169,8 @@
                 <ScalarProperty Name="ban_chat_expired_time" ColumnName="ban_chat_expired_time" />
                 <ScalarProperty Name="pve_equipment_max_strengthen_level" ColumnName="pve_equipment_max_strengthen_level" />
                 <ScalarProperty Name="pve_equipment_active_scheme_id" ColumnName="pve_equipment_active_scheme_id" />
+                <ScalarProperty Name="pos_x" ColumnName="pos_x" />
+                <ScalarProperty Name="pos_y" ColumnName="pos_y" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3558,21 +3239,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_character_info">
-            <EntityTypeMapping TypeName="DataCenterModel.t_character_info">
-              <MappingFragment StoreEntitySet="t_character_info">
-                <ScalarProperty Name="tid" ColumnName="tid" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="t_character_item">
             <EntityTypeMapping TypeName="DataCenterModel.t_character_item">
               <MappingFragment StoreEntitySet="t_character_item">
                 <ScalarProperty Name="item_guid" ColumnName="item_guid" />
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
                 <ScalarProperty Name="item_id" ColumnName="item_id" />
                 <ScalarProperty Name="slot" ColumnName="slot" />
                 <ScalarProperty Name="item_count" ColumnName="item_count" />
@@ -3642,18 +3313,6 @@
                 <ScalarProperty Name="buff_time" ColumnName="buff_time" />
                 <ScalarProperty Name="stack" ColumnName="stack" />
                 <ScalarProperty Name="buff_values" ColumnName="buff_values" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_city_position">
-            <EntityTypeMapping TypeName="DataCenterModel.t_city_position">
-              <MappingFragment StoreEntitySet="t_city_position">
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="city_name" ColumnName="city_name" />
-                <ScalarProperty Name="x" ColumnName="x" />
-                <ScalarProperty Name="y" ColumnName="y" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -3743,7 +3402,6 @@
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3769,7 +3427,6 @@
                 <ScalarProperty Name="success" ColumnName="success" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3788,7 +3445,6 @@
                 <ScalarProperty Name="success" ColumnName="success" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3810,6 +3466,16 @@
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
                 <ScalarProperty Name="friend_guid" ColumnName="friend_guid" />
                 <ScalarProperty Name="group_id" ColumnName="group_id" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_friend_ban_match">
+            <EntityTypeMapping TypeName="DataCenterModel.t_friend_ban_match">
+              <MappingFragment StoreEntitySet="t_friend_ban_match">
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
+                <ScalarProperty Name="ban_guid" ColumnName="ban_guid" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -3919,6 +3585,14 @@
                 <ScalarProperty Name="vip_exp" ColumnName="vip_exp" />
                 <ScalarProperty Name="vip_exp_accumulate" ColumnName="vip_exp_accumulate" />
                 <ScalarProperty Name="last_vip_exp_up_time" ColumnName="last_vip_exp_up_time" />
+                <ScalarProperty Name="employ_pvp_win_count_room" ColumnName="employ_pvp_win_count_room" />
+                <ScalarProperty Name="employ_pvp_lose_count_room" ColumnName="employ_pvp_lose_count_room" />
+                <ScalarProperty Name="employ_pvp_flee_count_room" ColumnName="employ_pvp_flee_count_room" />
+                <ScalarProperty Name="employ_pvp_win_count_match" ColumnName="employ_pvp_win_count_match" />
+                <ScalarProperty Name="employ_pvp_lose_count_match" ColumnName="employ_pvp_lose_count_match" />
+                <ScalarProperty Name="employ_pvp_flee_count_match" ColumnName="employ_pvp_flee_count_match" />
+                <ScalarProperty Name="employ_pve_pass_level_count" ColumnName="employ_pve_pass_level_count" />
+                <ScalarProperty Name="employ_pve_lose_level_count" ColumnName="employ_pve_lose_level_count" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -3997,34 +3671,6 @@
                 <ScalarProperty Name="item_id3" ColumnName="item_id3" />
                 <ScalarProperty Name="item_id4" ColumnName="item_id4" />
                 <ScalarProperty Name="item_id5" ColumnName="item_id5" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_hero_talent_info">
-            <EntityTypeMapping TypeName="DataCenterModel.t_hero_talent_info">
-              <MappingFragment StoreEntitySet="t_hero_talent_info">
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="hero_id" ColumnName="hero_id" />
-                <ScalarProperty Name="total_used_hero_experience" ColumnName="total_used_hero_experience" />
-                <ScalarProperty Name="enable_branch" ColumnName="enable_branch" />
-                <ScalarProperty Name="this_branch_point" ColumnName="this_branch_point" />
-                <ScalarProperty Name="available_experience" ColumnName="available_experience" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_hero_talent_info_sub_state">
-            <EntityTypeMapping TypeName="DataCenterModel.t_hero_talent_info_sub_state">
-              <MappingFragment StoreEntitySet="t_hero_talent_info_sub_state">
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="hero_id" ColumnName="hero_id" />
-                <ScalarProperty Name="talent_id" ColumnName="talent_id" />
-                <ScalarProperty Name="point" ColumnName="point" />
-                <ScalarProperty Name="is_full_point" ColumnName="is_full_point" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4033,10 +3679,11 @@
           <EntitySetMapping Name="t_hero_unlock_hero">
             <EntityTypeMapping TypeName="DataCenterModel.t_hero_unlock_hero">
               <MappingFragment StoreEntitySet="t_hero_unlock_hero">
-                <ScalarProperty Name="level" ColumnName="level" />
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
                 <ScalarProperty Name="hero_id" ColumnName="hero_id" />
+                <ScalarProperty Name="level" ColumnName="level" />
                 <ScalarProperty Name="cur_color_scheme_id" ColumnName="cur_color_scheme_id" />
+                <ScalarProperty Name="scheme_unlock_status" ColumnName="scheme_unlock_status" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4086,7 +3733,6 @@
                 <ScalarProperty Name="character_guid" ColumnName="character_guid" />
                 <ScalarProperty Name="year_day" ColumnName="year_day" />
                 <ScalarProperty Name="reward_id" ColumnName="reward_id" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4096,7 +3742,6 @@
             <EntityTypeMapping TypeName="DataCenterModel.t_mail">
               <MappingFragment StoreEntitySet="t_mail">
                 <ScalarProperty Name="mail_guid" ColumnName="mail_guid" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
                 <ScalarProperty Name="checked" ColumnName="checked" />
                 <ScalarProperty Name="is_read" ColumnName="is_read" />
                 <ScalarProperty Name="is_system_mail" ColumnName="is_system_mail" />
@@ -4122,7 +3767,6 @@
                 <ScalarProperty Name="item_guid" ColumnName="item_guid" />
                 <ScalarProperty Name="mail_guid" ColumnName="mail_guid" />
                 <ScalarProperty Name="is_taked" ColumnName="is_taked" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4160,6 +3804,31 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="t_map_play_info_hero">
+            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero">
+              <MappingFragment StoreEntitySet="t_map_play_info_hero">
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
+                <ScalarProperty Name="map_type" ColumnName="map_type" />
+                <ScalarProperty Name="hero_id" ColumnName="hero_id" />
+                <ScalarProperty Name="play_count" ColumnName="play_count" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="t_map_play_info_hero_pet">
+            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero_pet">
+              <MappingFragment StoreEntitySet="t_map_play_info_hero_pet">
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
+                <ScalarProperty Name="map_type" ColumnName="map_type" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="play_count" ColumnName="play_count" />
+                <ScalarProperty Name="play_count_s" ColumnName="play_count_s" />
+                <ScalarProperty Name="create_time" ColumnName="create_time" />
+                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="t_meta">
             <EntityTypeMapping TypeName="DataCenterModel.t_meta">
               <MappingFragment StoreEntitySet="t_meta">
@@ -4177,20 +3846,6 @@
                 <ScalarProperty Name="content" ColumnName="content" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_player_offline_message">
-            <EntityTypeMapping TypeName="DataCenterModel.t_player_offline_message">
-              <MappingFragment StoreEntitySet="t_player_offline_message">
-                <ScalarProperty Name="fid" ColumnName="fid" />
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="opcode" ColumnName="opcode" />
-                <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4231,24 +3886,6 @@
               <MappingFragment StoreEntitySet="t_questionnaire">
                 <ScalarProperty Name="questionnaire_id" ColumnName="questionnaire_id" />
                 <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_roll_log">
-            <EntityTypeMapping TypeName="DataCenterModel.t_roll_log">
-              <MappingFragment StoreEntitySet="t_roll_log">
-                <ScalarProperty Name="roll_listid" ColumnName="roll_listid" />
-                <ScalarProperty Name="bill_listid" ColumnName="bill_listid" />
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="vs_guid" ColumnName="vs_guid" />
-                <ScalarProperty Name="roll_type" ColumnName="roll_type" />
-                <ScalarProperty Name="assets_type" ColumnName="assets_type" />
-                <ScalarProperty Name="amount" ColumnName="amount" />
-                <ScalarProperty Name="balance" ColumnName="balance" />
-                <ScalarProperty Name="ip" ColumnName="ip" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4329,19 +3966,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_tran_log">
-            <EntityTypeMapping TypeName="DataCenterModel.t_tran_log">
-              <MappingFragment StoreEntitySet="t_tran_log">
-                <ScalarProperty Name="tran_listid" ColumnName="tran_listid" />
-                <ScalarProperty Name="buyer_guid" ColumnName="buyer_guid" />
-                <ScalarProperty Name="buyer_account" ColumnName="buyer_account" />
-                <ScalarProperty Name="seller_guid" ColumnName="seller_guid" />
-                <ScalarProperty Name="seller_account" ColumnName="seller_account" />
-                <ScalarProperty Name="assets_type" ColumnName="assets_type" />
-                <ScalarProperty Name="pay_amount" ColumnName="pay_amount" />
-                <ScalarProperty Name="bill_listid" ColumnName="bill_listid" />
-                <ScalarProperty Name="ip" ColumnName="ip" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
+          <EntitySetMapping Name="t_treasure">
+            <EntityTypeMapping TypeName="DataCenterModel.t_treasure">
+              <MappingFragment StoreEntitySet="t_treasure">
+                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
+                <ScalarProperty Name="daily_count" ColumnName="daily_count" />
+                <ScalarProperty Name="daily_count_uptime" ColumnName="daily_count_uptime" />
                 <ScalarProperty Name="create_time" ColumnName="create_time" />
                 <ScalarProperty Name="modify_time" ColumnName="modify_time" />
               </MappingFragment>
@@ -4376,40 +4006,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="t_world_character">
-            <EntityTypeMapping TypeName="DataCenterModel.t_world_character">
-              <MappingFragment StoreEntitySet="t_world_character">
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-                <ScalarProperty Name="group_guid" ColumnName="group_guid" />
-                <ScalarProperty Name="room_guid" ColumnName="room_guid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_map_play_info_hero">
-            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero">
-              <MappingFragment StoreEntitySet="t_map_play_info_hero">
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="play_count" ColumnName="play_count" />
-                <ScalarProperty Name="hero_id" ColumnName="hero_id" />
-                <ScalarProperty Name="map_type" ColumnName="map_type" />
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="t_map_play_info_hero_pet">
-            <EntityTypeMapping TypeName="DataCenterModel.t_map_play_info_hero_pet">
-              <MappingFragment StoreEntitySet="t_map_play_info_hero_pet">
-                <ScalarProperty Name="modify_time" ColumnName="modify_time" />
-                <ScalarProperty Name="create_time" ColumnName="create_time" />
-                <ScalarProperty Name="play_count_s" ColumnName="play_count_s" />
-                <ScalarProperty Name="play_count" ColumnName="play_count" />
-                <ScalarProperty Name="guid" ColumnName="guid" />
-                <ScalarProperty Name="map_type" ColumnName="map_type" />
-                <ScalarProperty Name="character_guid" ColumnName="character_guid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -4426,7 +4022,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

@@ -15,7 +15,6 @@ namespace DataCenter
     public partial class t_auction_item
     {
         public decimal item_guid { get; set; }
-        public bool is_deleted { get; set; }
         public decimal seller_guid { get; set; }
         public string seller_name { get; set; }
         public string seller_ip { get; set; }

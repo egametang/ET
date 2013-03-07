@@ -54,5 +54,7 @@ namespace DataCenter
         public Nullable<long> ban_chat_expired_time { get; set; }
         public int pve_equipment_max_strengthen_level { get; set; }
         public int pve_equipment_active_scheme_id { get; set; }
+        public double pos_x { get; set; }
+        public double pos_y { get; set; }
     }
 }

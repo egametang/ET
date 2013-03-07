@@ -12,12 +12,10 @@ namespace DataCenter
     using System;
     using System.Collections.Generic;
     
-    public partial class t_challenge_exp_buff
+    public partial class t_friend_ban_match
     {
         public decimal character_guid { get; set; }
-        public int time_year { get; set; }
-        public int time_year_day { get; set; }
-        public decimal buff_guid { get; set; }
+        public decimal ban_guid { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

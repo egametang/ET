@@ -16,10 +16,10 @@ namespace DataCenter
     {
         public decimal character_guid { get; set; }
         public int hero_id { get; set; }
-        public Nullable<bool> is_activated { get; set; }
+        public Nullable<int> level { get; set; }
         public int cur_color_scheme_id { get; set; }
+        public decimal scheme_unlock_status { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
-        public Nullable<int> level { get; set; }
     }
 }

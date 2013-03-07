@@ -20,6 +20,5 @@ namespace DataCenter
         public string content { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
-        public sbyte is_deleted { get; set; }
     }
 }

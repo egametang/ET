@@ -22,8 +22,8 @@ namespace DataCenter
         public string active_code { get; set; }
         public Nullable<bool> active_code_used { get; set; }
         public Nullable<decimal> first_char_guid { get; set; }
+        public Nullable<int> gm_level { get; set; }
         public Nullable<System.DateTime> create_time { get; set; }
         public Nullable<System.DateTime> modify_time { get; set; }
-        public int gm_level { get; set; }
     }
 }

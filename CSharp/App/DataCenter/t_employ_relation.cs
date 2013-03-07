@@ -21,6 +21,5 @@ namespace DataCenter
         public int price { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
-        public bool is_deleted { get; set; }
     }
 }

@@ -24,7 +24,6 @@ namespace DataCenter
         public Nullable<int> item_id3 { get; set; }
         public Nullable<int> item_id4 { get; set; }
         public Nullable<int> item_id5 { get; set; }
-        public Nullable<bool> is_deleted { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

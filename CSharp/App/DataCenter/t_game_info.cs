@@ -56,6 +56,14 @@ namespace DataCenter
         public int vip_exp { get; set; }
         public Nullable<int> vip_exp_accumulate { get; set; }
         public Nullable<long> last_vip_exp_up_time { get; set; }
+        public int employ_pvp_win_count_room { get; set; }
+        public int employ_pvp_lose_count_room { get; set; }
+        public int employ_pvp_flee_count_room { get; set; }
+        public int employ_pvp_win_count_match { get; set; }
+        public int employ_pvp_lose_count_match { get; set; }
+        public int employ_pvp_flee_count_match { get; set; }
+        public int employ_pve_pass_level_count { get; set; }
+        public int employ_pve_lose_level_count { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

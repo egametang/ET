@@ -17,7 +17,6 @@ namespace DataCenter
         public decimal item_guid { get; set; }
         public decimal mail_guid { get; set; }
         public bool is_taked { get; set; }
-        public bool is_deleted { get; set; }
         public System.DateTime create_time { get; set; }
         public System.DateTime modify_time { get; set; }
     }

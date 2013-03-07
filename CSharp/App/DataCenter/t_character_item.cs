@@ -16,7 +16,6 @@ namespace DataCenter
     {
         public decimal item_guid { get; set; }
         public decimal character_guid { get; set; }
-        public bool is_deleted { get; set; }
         public int item_id { get; set; }
         public int slot { get; set; }
         public int item_count { get; set; }
