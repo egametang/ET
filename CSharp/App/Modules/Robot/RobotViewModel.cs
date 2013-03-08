@@ -231,7 +231,7 @@ namespace Modules.Robot
 				var message = ProtobufHelper.FromBytes<T>(content);
 				return message;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				Logger.Trace("parse message fail, opcode: {0}", opcode);
 				throw;
