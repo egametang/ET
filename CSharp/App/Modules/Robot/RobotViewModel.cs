@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using BossClient;
 using DataCenter;
 using Events;
@@ -26,6 +25,7 @@ namespace Modules.Robot
 		private string findType = "";
 		private string name = "";
 		private string guid = "";
+		private bool isGMEnable;
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
@@ -165,14 +165,26 @@ namespace Modules.Robot
 			}
 		}
 
+		public bool IsGMEnable
+		{
+			get
+			{
+				return this.isGMEnable;
+			}
+			set
+			{
+				if (this.isGMEnable == value)
+				{
+					return;
+				}
+				this.isGMEnable = value;
+				this.RaisePropertyChanged("IsGMEnable");
+			}
+		}
+
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
-			this.messageHandlers.Add(
-				MessageOpcode.SMSG_BOSS_SERVERSINFO, this.Handle_SMSG_Boss_ServersInfo);
-			this.messageHandlers.Add(
-				MessageOpcode.SMSG_BOSS_COMMAND_RESPONSE, this.Handle_SMSG_Boss_Command_Response);
-
 			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOK);
 		}
 
@@ -192,30 +204,10 @@ namespace Modules.Robot
 			this.bossClient.Dispose();
 		}
 
-		public async void OnLoginOK(IMessageChannel messageChannel)
+		public void OnLoginOK(IMessageChannel messageChannel)
 		{
 			this.DockPanelVisiable = Visibility.Visible;
 			this.IMessageChannel = messageChannel;
-			try
-			{
-				while (true)
-				{
-					var result = await this.IMessageChannel.RecvMessage();
-					ushort opcode = result.Item1;
-					byte[] message = result.Item2;
-					if (!messageHandlers.ContainsKey(opcode))
-					{
-						Logger.Debug("not found opcode: {0}", opcode);
-						continue;
-					}
-					messageHandlers[opcode](message);
-				}
-			}
-			catch (Exception e)
-			{
-				this.dockPanelVisiable = Visibility.Hidden;
-				Logger.Trace(e.ToString());
-			}
 		}
 
 		public void SendCommand(string command)
@@ -228,26 +220,35 @@ namespace Modules.Robot
 			this.IMessageChannel.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
 		}
 
-		public void Servers()
+		public async Task<T> RecvMessage<T>()
+		{
+			var result = await this.IMessageChannel.RecvMessage();
+			ushort opcode = result.Item1;
+			byte[] content = result.Item2;
+
+			try
+			{
+				var message = ProtobufHelper.FromBytes<T>(content);
+				return message;
+			}
+			catch (Exception e)
+			{
+				Logger.Trace("parse message fail, opcode: {0}", opcode);
+				throw;
+			}
+		}
+
+		public async void Servers()
 		{
 			this.SendCommand("servers");
-		}
-
-		public void Handle_SMSG_Boss_Command_Response(byte[] message)
-		{
-			var smsgBossCommandResponse = ProtobufHelper.FromBytes<SMSG_Boss_Command_Response>(message);
-			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
-		}
-
-		public void Handle_SMSG_Boss_ServersInfo(byte[] message)
-		{
-			var smsgBossServersInfo = ProtobufHelper.FromBytes<SMSG_Boss_ServersInfo>(message);
+			var smsgBossServersInfo = await this.RecvMessage<SMSG_Boss_ServersInfo>();
 
 			this.ServerInfos.Clear();
 			foreach (var nm in smsgBossServersInfo.Name)
 			{
 				this.ServerInfos.Add(new ServerViewModel { Name = nm });
 			}
+			this.ErrorInfo = "查询服务器成功!";
 		}
 
 		public void Reload()
@@ -285,19 +286,53 @@ namespace Modules.Robot
 			
 				if (result == null)
 				{
-					Logger.Debug("not find charactor info!");
+					this.ErrorInfo = "没有找到该玩家!";
 					return;
 				}
 				
 				this.Account = result.account;
 				this.Name = result.character_name;
 				this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
+				this.IsGMEnable = true;
+				this.ErrorInfo = "查询成功";
 			}
 		}
 
-		public void ForbiddenBuy()
+		public async void ForbiddenBuy()
 		{
-			this.SendCommand(string.Format("{0} 600", guid));
+			if (this.Guid == "")
+			{
+				this.ErrorInfo = "请先指定玩家";
+				return;
+			}
+			this.SendCommand(string.Format("forbidden_buy_item {0} 600", guid));
+			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
+			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
+				this.ErrorInfo = "禁止交易成功";
+				return;
+			}
+			if (smsgBossCommandResponse.ErrorCode == ErrorCode.BOSS_PLAYER_NOT_FOUND)
+			{
+				using (var entitys = new DataCenterEntities())
+				{
+					var newBuff = new t_city_buff
+					{
+						buff_guid = RandomHelper.RandUInt64(),
+						buff_id = 660100,
+						buff_time = 0,
+						buff_values = "{}".ToByteArray(),
+						character_guid = decimal.Parse(this.Guid),
+						create_time = DateTime.Now,
+						modify_time = DateTime.Now,
+						stack = 1
+					};
+					entitys.t_city_buff.Add(newBuff);
+					entitys.SaveChanges();
+				}
+				this.ErrorInfo = "禁止交易成功";
+			}
+			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
 		}
 	}
 }

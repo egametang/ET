@@ -20,7 +20,5 @@ obj/
 Packages/
 packages/
 _ReSharper.CSharp/
-.nuget/
-
 *.opensdf
 *.sdf

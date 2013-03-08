@@ -5,18 +5,19 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		xmlns:Robot="clr-namespace:Modules.Robot"
 		mc:Ignorable="d" 
-		d:DesignHeight="600" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
+		d:DesignHeight="750" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
 	<Grid>
 		<DockPanel Name="dock" Visibility="{Binding DockPanelVisiable}">
-			<Menu DockPanel.Dock="Top" >
+			<Menu DockPanel.Dock="Top" Margin="0,2" >
 				<MenuItem Header="登录" Name="menuLogin" Click="menuLogin_Click" ></MenuItem>
+				<MenuItem Header="服务器"  >
+					<MenuItem Name="menuServers" Header="显示服务器" Click="menuServers_Click"></MenuItem>
+					<MenuItem Name="menuReload" Header="Reload World" Click="menuReload_Click"></MenuItem>
+				</MenuItem>
 			</Menu>
-			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="27" >
-				<Button Name="btnServers" Content="服务器列表" Click="btnServers_Click" ></Button>
-				<Button Name="btnReload" Content="Reload" Click="btnReload_Click" ></Button>
-			</StackPanel>
-			<ListBox Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
-					d:DataContext="{d:DesignInstance Robot:RobotViewModel}" >
+			<ListBox Height="723" Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
+					d:DataContext="{d:DesignInstance Robot:RobotViewModel}" 
+					BorderThickness="3" BorderBrush="BurlyWood" >
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<Label Content="{Binding Name}" ></Label>
@@ -25,26 +26,24 @@
 			</ListBox>
 			<Grid>
 				<Canvas>
-					<GroupBox Header="角色信息" Canvas.Left="40" Canvas.Top="22" Height="518" Width="660">
+					<GroupBox Header="角色信息" Canvas.Left="10" Height="723" Width="734" BorderBrush="BurlyWood">
 						<Canvas>
-							<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Canvas.Left="32" Canvas.Top="23">
-								<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}">
-									<ComboBoxItem Content="帐号"/>
-									<ComboBoxItem Content="名字"/>
-									<ComboBoxItem Content="GUID"/>
-								</ComboBox>
-								<TextBox Width="178" Text="{Binding FindType}"/>
-								<Button Name="btnFind" Content="查询" Click="btnFind_Click"></Button>
-							</StackPanel>
-							<Label Content="帐号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
-							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="146"/>
-							<Label Content="名字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
-							<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="146"/>
+							<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}" Canvas.Left="32" Canvas.Top="23" Height="25">
+								<ComboBoxItem Content="帐 号"/>
+								<ComboBoxItem Content="名 字"/>
+								<ComboBoxItem Content="GUID"/>
+							</ComboBox>
+							<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
+							<Button Name="btnFind" Content="查询" Click="btnFind_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"></Button>
+							<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
+							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
+							<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
+							<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
 							<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
-							<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="146"/>
-							<TabControl Height="315" Canvas.Top="180" Width="648">
+							<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
+							<TabControl Height="541" Canvas.Top="160" Width="722" IsEnabled="{Binding IsGMEnable}">
 								<TabItem Header="信息">
-									<Grid/>
+									<Grid Margin="0,0,8,36"/>
 								</TabItem>
 								<TabItem Header="包裹">
 									<Grid/>
@@ -64,7 +63,7 @@
 									</Canvas>
 								</TabItem>
 							</TabControl>
-							<Label Name="lblErrorInfo" Content="{Binding ErrorInfo}" Canvas.Left="281" Canvas.Top="114" Width="201" Height="25"/>
+							<Label Name="lblErrorInfo" Content="{Binding ErrorInfo}" Canvas.Left="315" Canvas.Top="114" Width="201" Height="25"/>
 						</Canvas>
 					</GroupBox>
 				</Canvas>

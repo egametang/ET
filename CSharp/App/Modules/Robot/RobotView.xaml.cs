@@ -28,12 +28,7 @@ namespace Modules.Robot
 			}
 		}
 
-		private void btnServers_Click(object sender, RoutedEventArgs e)
-		{
-			this.ViewModel.Servers();
-		}
-
-		private void btnReload_Click(object sender, RoutedEventArgs e)
+		private void menuReload_Click(object sender, RoutedEventArgs e)
 		{
 			this.ViewModel.Reload();
 		}
@@ -45,6 +40,11 @@ namespace Modules.Robot
 
 		private void menuLogin_Click(object sender, RoutedEventArgs e)
 		{
+		}
+
+		private void menuServers_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.Servers();
 		}
 
 		private void btnForbiddenBuy_Click(object sender, RoutedEventArgs e)

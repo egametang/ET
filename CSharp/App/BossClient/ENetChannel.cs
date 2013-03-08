@@ -39,7 +39,7 @@ namespace BossClient
 				byte[] bytes = packet.Bytes;
 				const int opcodeSize = sizeof(ushort);
 				ushort opcode = BitConverter.ToUInt16(bytes, 0);
-				byte flag = bytes[0];
+				byte flag = bytes[2];
 				if (flag == 0)
 				{
 					var messageBytes = new byte[packet.Length - opcodeSize - 1];
@@ -50,7 +50,8 @@ namespace BossClient
 				{
 					var messageBytes = new byte[packet.Length - opcodeSize - 5];
 					Array.Copy(bytes, opcodeSize + 5, messageBytes, 0, messageBytes.Length);
-					return Tuple.Create(opcode, ZlibStream.UncompressBuffer(messageBytes));
+					messageBytes = ZlibStream.UncompressBuffer(messageBytes);
+					return Tuple.Create(opcode, messageBytes);
 				}
 			}
 		}

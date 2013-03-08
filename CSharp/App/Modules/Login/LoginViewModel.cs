@@ -15,7 +15,7 @@ namespace Modules.Login
 	internal class LoginViewModel : NotificationObject
 	{
 		private IEventAggregator EventAggregator { get; set; }
-		private string account = "egametang@163.com";
+		private string account = "egametang@126.com";
 		private string password = "163bio1";
 		private Visibility loginWindowVisiable = Visibility.Visible;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();

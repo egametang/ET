@@ -82,7 +82,9 @@ namespace BossClient
 
 
 		// 其它error code
+		public const int RESPONSE_SUCCESS = 0;
 		public const int AUTH_OK = 12;
+		public const int BOSS_PLAYER_NOT_FOUND = 164000;
 	}
 
 	[DataContract]
