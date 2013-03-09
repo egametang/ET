@@ -20,9 +20,10 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
+		private string errorInfo = "";
 		private int findTypeIndex;
 		private string account = "";
-		private string findType = "";
+		private string findType = "egametang@163.com";
 		private string name = "";
 		private string guid = "";
 		private bool isGMEnable;
@@ -31,10 +32,7 @@ namespace Modules.Robot
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
 
-		public readonly Dictionary<ushort, Action<byte[]>> messageHandlers =
-			new Dictionary<ushort, Action<byte[]>>();
-
-		private string errorInfo = "";
+		private readonly DataCenterEntities entities = new DataCenterEntities();
 
 		public IMessageChannel IMessageChannel { get; set; }
 
@@ -201,6 +199,7 @@ namespace Modules.Robot
 
 		private void Disposing(bool disposing)
 		{
+			this.entities.Dispose();
 			this.bossClient.Dispose();
 		}
 
@@ -258,44 +257,41 @@ namespace Modules.Robot
 
 		public void Find()
 		{
-			using (var entitys = new DataCenterEntities())
+			t_character result = null;
+			switch (this.FindTypeIndex)
 			{
-				t_character result = null;
-				switch (this.FindTypeIndex)
+				case 0:
 				{
-					case 0:
-					{
-						result = entitys.t_character.FirstOrDefault(
-							c => c.account == this.FindType);
-						break;
-					}
-					case 1:
-					{
-						result = entitys.t_character.FirstOrDefault(
-							c => c.character_name == this.FindType);
-						break;
-					}
-					case 2:
-					{
-						var findGuid = Decimal.Parse(this.FindType);
-						result = entitys.t_character.FirstOrDefault(
-							c => c.character_guid == findGuid);
-						break;
-					}
+					result = entities.t_character.FirstOrDefault(
+						c => c.account == this.FindType);
+					break;
 				}
-			
-				if (result == null)
+				case 1:
 				{
-					this.ErrorInfo = "没有找到该玩家!";
-					return;
+					result = entities.t_character.FirstOrDefault(
+						c => c.character_name == this.FindType);
+					break;
 				}
-				
-				this.Account = result.account;
-				this.Name = result.character_name;
-				this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
-				this.IsGMEnable = true;
-				this.ErrorInfo = "查询成功";
+				case 2:
+				{
+					var findGuid = Decimal.Parse(this.FindType);
+					result = entities.t_character.FirstOrDefault(
+						c => c.character_guid == findGuid);
+					break;
+				}
 			}
+			
+			if (result == null)
+			{
+				this.ErrorInfo = "没有找到该玩家!";
+				return;
+			}
+			
+			this.Account = result.account;
+			this.Name = result.character_name;
+			this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
+			this.IsGMEnable = true;
+			this.ErrorInfo = "查询成功";
 		}
 
 		public async void ForbiddenBuy()
@@ -305,7 +301,7 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-			this.SendCommand(string.Format("forbidden_buy_item {0} 600", guid));
+			this.SendCommand(string.Format("forbidden_buy_item {0} {1}", guid, int.MaxValue));
 			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
 			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
@@ -314,23 +310,62 @@ namespace Modules.Robot
 			}
 			if (smsgBossCommandResponse.ErrorCode == ErrorCode.BOSS_PLAYER_NOT_FOUND)
 			{
-				using (var entitys = new DataCenterEntities())
+				decimal character_guid = decimal.Parse(this.Guid);
+				var removeBuffs = entities.t_city_buff.Where(
+					c => c.buff_id == BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM && 
+						c.character_guid == character_guid);
+				foreach (var removeBuff in removeBuffs)
 				{
-					var newBuff = new t_city_buff
-					{
-						buff_guid = RandomHelper.RandUInt64(),
-						buff_id = 660100,
-						buff_time = 0,
-						buff_values = "{}".ToByteArray(),
-						character_guid = decimal.Parse(this.Guid),
-						create_time = DateTime.Now,
-						modify_time = DateTime.Now,
-						stack = 1
-					};
-					entitys.t_city_buff.Add(newBuff);
-					entitys.SaveChanges();
+					entities.t_city_buff.Remove(removeBuff);
 				}
+				var newBuff = new t_city_buff
+				{
+					buff_guid = RandomHelper.RandUInt64(),
+					buff_id = BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM,
+					buff_time = 0,
+					buff_values = "{}".ToByteArray(),
+					character_guid = decimal.Parse(this.Guid),
+					create_time = DateTime.Now,
+					modify_time = DateTime.Now,
+					stack = 1
+				};
+				entities.t_city_buff.Add(newBuff);
+				entities.SaveChanges();
+
 				this.ErrorInfo = "禁止交易成功";
+				return;
+			}
+			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
+		}
+
+		public async void AllowBuy()
+		{
+			if (this.Guid == "")
+			{
+				this.ErrorInfo = "请先指定玩家";
+				return;
+			}
+			this.SendCommand(string.Format("forbidden_buy_item {0} 0", guid));
+			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
+			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
+				this.ErrorInfo = "允许交易成功";
+				return;
+			}
+			if (smsgBossCommandResponse.ErrorCode == ErrorCode.BOSS_PLAYER_NOT_FOUND)
+			{
+				decimal character_guid = decimal.Parse(this.Guid);
+				var removeBuffs = entities.t_city_buff.Where(
+					c => c.buff_id == BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM &&
+						c.character_guid == character_guid);
+				foreach (var removeBuff in removeBuffs)
+				{
+					entities.t_city_buff.Remove(removeBuff);
+				}
+				entities.SaveChanges();
+
+				this.ErrorInfo = "允许交易成功";
+				return;
 			}
 			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
 		}

@@ -51,5 +51,10 @@ namespace Modules.Robot
 		{
 			this.ViewModel.ForbiddenBuy();
 		}
+
+		private void btnAllowBuy_Click(object sender, RoutedEventArgs e)
+		{
+			this.ViewModel.AllowBuy();
+		}
 	}
 }

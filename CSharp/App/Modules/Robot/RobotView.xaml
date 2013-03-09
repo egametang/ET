@@ -59,7 +59,7 @@
 								<TabItem Header="GM">
 									<Canvas>
 										<Button Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
-										<Button Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75"/>
+										<Button Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
 									</Canvas>
 								</TabItem>
 							</TabControl>

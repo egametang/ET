@@ -68,6 +68,7 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="UIAutomationProvider" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
@@ -81,6 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonDefines.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />
