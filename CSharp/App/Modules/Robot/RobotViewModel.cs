@@ -301,7 +301,7 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-			this.SendCommand(string.Format("forbidden_buy_item {0} {1}", guid, int.MaxValue));
+			this.SendCommand(string.Format("forbidden_buy_item {0} {1}", guid, 365 * 24 * 3600));
 			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
 			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
