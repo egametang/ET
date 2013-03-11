@@ -1,7 +1,6 @@
-﻿using BossClient;
-using Microsoft.Practices.Prism.Events;
+﻿using Microsoft.Practices.Prism.Events;
 
-namespace Events
+namespace BossBase
 {
 	public class LoginOKEvent : CompositePresentationEvent<IMessageChannel>
 	{

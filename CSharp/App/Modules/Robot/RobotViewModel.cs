@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using BossClient;
+using BossCommand;
 using DataCenter;
-using Events;
-using Helper;
-using Log;
+using BossBase;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
@@ -32,9 +30,33 @@ namespace Modules.Robot
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
 
-		private readonly DataCenterEntities entities = new DataCenterEntities();
+		private DataCenterEntities entities = new DataCenterEntities();
 
-		public IMessageChannel IMessageChannel { get; set; }
+		private IMessageChannel iMessageChannel;
+
+		public DataCenterEntities Entities
+		{
+			get
+			{
+				return this.entities;
+			}
+			set
+			{
+				this.entities = value;
+			}
+		}
+
+		public IMessageChannel IMessageChannel
+		{
+			get
+			{
+				return this.iMessageChannel;
+			}
+			set
+			{
+				this.iMessageChannel = value;
+			}
+		}
 
 		public int FindTypeIndex
 		{
@@ -209,38 +231,17 @@ namespace Modules.Robot
 			this.IMessageChannel = messageChannel;
 		}
 
-		public void SendCommand(string command)
-		{
-			var cmsgBossGm = new CMSG_Boss_Gm
-			{
-				Message = command
-			};
-
-			this.IMessageChannel.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
-		}
-
-		public async Task<T> RecvMessage<T>()
-		{
-			var result = await this.IMessageChannel.RecvMessage();
-			ushort opcode = result.Item1;
-			byte[] content = result.Item2;
-
-			try
-			{
-				var message = ProtobufHelper.FromBytes<T>(content);
-				return message;
-			}
-			catch (Exception)
-			{
-				Logger.Trace("parse message fail, opcode: {0}", opcode);
-				throw;
-			}
-		}
-
 		public async void Servers()
 		{
-			this.SendCommand("servers");
-			var smsgBossServersInfo = await this.RecvMessage<SMSG_Boss_ServersInfo>();
+			ABossCommand bossCommand = new BCServerInfo(this.IMessageChannel, this.Entities);
+			var result = await bossCommand.DoAsync();
+
+			var smsgBossServersInfo = result as SMSG_Boss_ServersInfo;
+			if (smsgBossServersInfo == null)
+			{
+				this.ErrorInfo = "查询服务器失败!";
+				return;
+			}
 
 			this.ServerInfos.Clear();
 			foreach (var nm in smsgBossServersInfo.Name)
@@ -252,41 +253,25 @@ namespace Modules.Robot
 
 		public void Reload()
 		{
-			this.SendCommand("reload");
+			ABossCommand bossCommand = new BCReloadWorld(this.IMessageChannel, this.Entities);
+			bossCommand.Do();
 		}
 
-		public void Find()
+		public void FindPlayer()
 		{
-			t_character result = null;
-			switch (this.FindTypeIndex)
+			ABossCommand bossCommand = new BCFindPlayer(this.IMessageChannel, this.Entities)
 			{
-				case 0:
-				{
-					result = entities.t_character.FirstOrDefault(
-						c => c.account == this.FindType);
-					break;
-				}
-				case 1:
-				{
-					result = entities.t_character.FirstOrDefault(
-						c => c.character_name == this.FindType);
-					break;
-				}
-				case 2:
-				{
-					var findGuid = Decimal.Parse(this.FindType);
-					result = entities.t_character.FirstOrDefault(
-						c => c.character_guid == findGuid);
-					break;
-				}
-			}
-			
+				FindTypeIndex = this.FindTypeIndex, 
+				FindType = this.FindType
+			};
+			var result = bossCommand.Do() as t_character;
+
 			if (result == null)
 			{
-				this.ErrorInfo = "没有找到该玩家!";
+				this.ErrorInfo = "查询失败";
 				return;
 			}
-			
+
 			this.Account = result.account;
 			this.Name = result.character_name;
 			this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
@@ -301,41 +286,21 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-			this.SendCommand(string.Format("forbidden_buy_item {0} {1}", guid, 365 * 24 * 3600));
-			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
-			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
-			{
-				this.ErrorInfo = "禁止交易成功";
-				return;
-			}
-			if (smsgBossCommandResponse.ErrorCode == ErrorCode.BOSS_PLAYER_NOT_FOUND)
-			{
-				decimal character_guid = decimal.Parse(this.Guid);
-				var removeBuffs = entities.t_city_buff.Where(
-					c => c.buff_id == BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM && 
-						c.character_guid == character_guid);
-				foreach (var removeBuff in removeBuffs)
-				{
-					entities.t_city_buff.Remove(removeBuff);
-				}
-				var newBuff = new t_city_buff
-				{
-					buff_guid = RandomHelper.RandUInt64(),
-					buff_id = BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM,
-					buff_time = 0,
-					buff_values = "{}".ToByteArray(),
-					character_guid = decimal.Parse(this.Guid),
-					create_time = DateTime.Now,
-					modify_time = DateTime.Now,
-					stack = 1
-				};
-				entities.t_city_buff.Add(newBuff);
-				entities.SaveChanges();
 
+			ABossCommand bossCommand = new BCForbiddenBuy(this.IMessageChannel, this.Entities)
+			{
+				Guid = this.Guid
+			};
+			var result = await bossCommand.DoAsync();
+
+			var errorCode = (int)result;
+
+			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
 				this.ErrorInfo = "禁止交易成功";
 				return;
 			}
-			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
+			this.ErrorInfo = string.Format("禁止交易失败, error code: {0}", errorCode);
 		}
 
 		public async void AllowBuy()
@@ -345,29 +310,19 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-			this.SendCommand(string.Format("forbidden_buy_item {0} 0", guid));
-			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
-			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
+			ABossCommand bossCommand = new BCAllowBuy(this.IMessageChannel, this.Entities)
+			{
+				Guid = this.Guid
+			};
+			var result = await bossCommand.DoAsync();
+			var errorCode = (int) result;
+			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
 				this.ErrorInfo = "允许交易成功";
 				return;
 			}
-			if (smsgBossCommandResponse.ErrorCode == ErrorCode.BOSS_PLAYER_NOT_FOUND)
-			{
-				decimal character_guid = decimal.Parse(this.Guid);
-				var removeBuffs = entities.t_city_buff.Where(
-					c => c.buff_id == BuffId.BUFF_FORBIDDEN_PLAYER_BUY_ITEM &&
-						c.character_guid == character_guid);
-				foreach (var removeBuff in removeBuffs)
-				{
-					entities.t_city_buff.Remove(removeBuff);
-				}
-				entities.SaveChanges();
 
-				this.ErrorInfo = "允许交易成功";
-				return;
-			}
-			this.ErrorInfo = smsgBossCommandResponse.ErrorCode.ToString();
+			this.ErrorInfo = errorCode.ToString();
 		}
 	}
 }

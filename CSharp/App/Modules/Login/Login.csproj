@@ -83,13 +83,13 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BossBase\BossBase.csproj">
+      <Project>{999910D3-4E7D-45B1-BD2C-47289CD4D1AB}</Project>
+      <Name>BossBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\BossClient\BossClient.csproj">
       <Project>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</Project>
       <Name>BossClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Events\Events.csproj">
-      <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>
-      <Name>Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>

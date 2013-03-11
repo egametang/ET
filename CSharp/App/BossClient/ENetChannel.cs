@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BossBase;
 using ENet;
 using Helper;
 using Ionic.Zlib;

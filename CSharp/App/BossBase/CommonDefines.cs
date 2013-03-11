@@ -1,5 +1,5 @@
 ﻿
-namespace Modules.Robot
+namespace BossBase
 {
 	public static class BuffId
 	{

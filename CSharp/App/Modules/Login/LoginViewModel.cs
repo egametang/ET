@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Events;
+using BossBase;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 

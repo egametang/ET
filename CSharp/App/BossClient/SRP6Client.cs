@@ -3,7 +3,6 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using Helper;
-using Log;
 
 namespace BossClient
 {

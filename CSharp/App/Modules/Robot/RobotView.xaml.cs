@@ -33,9 +33,9 @@ namespace Modules.Robot
 			this.ViewModel.Reload();
 		}
 
-		private void btnFind_Click(object sender, RoutedEventArgs e)
+		private void btnFindPlayer_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Find();
+			this.ViewModel.FindPlayer();
 		}
 
 		private void menuLogin_Click(object sender, RoutedEventArgs e)

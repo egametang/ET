@@ -34,7 +34,7 @@
 								<ComboBoxItem Content="GUID"/>
 							</ComboBox>
 							<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
-							<Button Name="btnFind" Content="查询" Click="btnFind_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"></Button>
+							<Button Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"></Button>
 							<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
 							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
 							<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />

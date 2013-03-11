@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8650195A-7904-4EBC-9D81-B392A7E9B9B3}</ProjectGuid>
+    <ProjectGuid>{6C16281F-5550-4024-9504-295C63889E4F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BossClient</RootNamespace>
-    <AssemblyName>BossClient</AssemblyName>
+    <RootNamespace>BossCommand</RootNamespace>
+    <AssemblyName>BossCommand</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,44 +32,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\DotNetZip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.Prism, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ENetChannel.cs" />
-    <Compile Include="GateSession.cs" />
-    <Compile Include="BossClient.cs" />
+    <Compile Include="ABossCommand.cs" />
+    <Compile Include="BCAllowBuy.cs" />
+    <Compile Include="BCFindPlayer.cs" />
+    <Compile Include="BCServerInfo.cs" />
+    <Compile Include="BCReloadWorld.cs" />
+    <Compile Include="BCForbiddenBuy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BossException.cs" />
-    <Compile Include="RealmSession.cs" />
-    <Compile Include="SRP6Client.cs" />
-    <Compile Include="TcpChannel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Platform\ENet\ENet.csproj">
-      <Project>{D0B4CFAC-A368-4742-9863-68776CFA9938}</Project>
-      <Name>ENet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
-      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
+      <Project>{24233CD5-A5DF-484B-A482-B79CB7A0D9CB}</Project>
       <Name>Helper</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Platform\Log\Log.csproj">
-      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Project>{72E16572-FC1F-4A9E-BC96-035417239298}</Project>
       <Name>Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\BossBase\BossBase.csproj">
-      <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>
+      <Project>{999910D3-4E7D-45B1-BD2C-47289CD4D1AB}</Project>
       <Name>BossBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataCenter\DataCenter.csproj">
+      <Project>{A829A025-5E90-4085-8DD4-E3B8C1282635}</Project>
+      <Name>DataCenter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace BossClient
+namespace BossBase
 {
 	public interface IMessageChannel : IDisposable
 	{
