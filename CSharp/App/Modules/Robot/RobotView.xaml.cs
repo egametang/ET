@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Windows;
 using Infrastructure;
 
@@ -36,25 +37,33 @@ namespace Modules.Robot
 		private void btnFindPlayer_Click(object sender, RoutedEventArgs e)
 		{
 			this.ViewModel.FindPlayer();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
 		}
 
 		private void menuLogin_Click(object sender, RoutedEventArgs e)
 		{
 		}
 
-		private void menuServers_Click(object sender, RoutedEventArgs e)
+		private async void menuServers_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.Servers();
+			await this.ViewModel.Servers();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
 		}
 
-		private void btnForbiddenBuy_Click(object sender, RoutedEventArgs e)
+		private async void btnForbiddenBuy_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.ForbiddenBuy();
+			await this.ViewModel.ForbiddenBuy();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
 		}
 
-		private void btnAllowBuy_Click(object sender, RoutedEventArgs e)
+		private async void btnAllowBuy_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.AllowBuy();
+			await this.ViewModel.AllowBuy();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
 		}
 	}
 }

@@ -30,33 +30,9 @@ namespace Modules.Robot
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
 
-		private DataCenterEntities entities = new DataCenterEntities();
+		public DataCenterEntities Entities { get; set; }
 
-		private IMessageChannel iMessageChannel;
-
-		public DataCenterEntities Entities
-		{
-			get
-			{
-				return this.entities;
-			}
-			set
-			{
-				this.entities = value;
-			}
-		}
-
-		public IMessageChannel IMessageChannel
-		{
-			get
-			{
-				return this.iMessageChannel;
-			}
-			set
-			{
-				this.iMessageChannel = value;
-			}
-		}
+		public IMessageChannel IMessageChannel { get; set; }
 
 		public int FindTypeIndex
 		{
@@ -205,6 +181,7 @@ namespace Modules.Robot
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
+			this.Entities = new DataCenterEntities();
 			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOK);
 		}
 
@@ -221,7 +198,7 @@ namespace Modules.Robot
 
 		private void Disposing(bool disposing)
 		{
-			this.entities.Dispose();
+			this.Entities.Dispose();
 			this.bossClient.Dispose();
 		}
 
@@ -231,7 +208,7 @@ namespace Modules.Robot
 			this.IMessageChannel = messageChannel;
 		}
 
-		public async void Servers()
+		public async Task Servers()
 		{
 			ABossCommand bossCommand = new BCServerInfo(this.IMessageChannel, this.Entities);
 			var result = await bossCommand.DoAsync();
@@ -279,7 +256,7 @@ namespace Modules.Robot
 			this.ErrorInfo = "查询成功";
 		}
 
-		public async void ForbiddenBuy()
+		public async Task ForbiddenBuy()
 		{
 			if (this.Guid == "")
 			{
@@ -303,7 +280,7 @@ namespace Modules.Robot
 			this.ErrorInfo = string.Format("禁止交易失败, error code: {0}", errorCode);
 		}
 
-		public async void AllowBuy()
+		public async Task AllowBuy()
 		{
 			if (this.Guid == "")
 			{

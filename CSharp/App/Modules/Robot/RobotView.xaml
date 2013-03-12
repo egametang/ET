@@ -1,26 +1,27 @@
-﻿<UserControl x:Class="Modules.Robot.RobotView"
+﻿<UserControl
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		xmlns:Robot="clr-namespace:Modules.Robot"
+		xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="Modules.Robot.RobotView"
 		mc:Ignorable="d" 
-		d:DesignHeight="750" d:DesignWidth="1280" d:DataContext="{d:DesignInstance Robot:RobotViewModel}">
+		d:DesignHeight="750" d:DesignWidth="1280" d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}">
 	<Grid>
-		<DockPanel Name="dock" Visibility="{Binding DockPanelVisiable}">
+		<DockPanel x:Name="dock" Visibility="{Binding DockPanelVisiable}">
 			<Menu DockPanel.Dock="Top" Margin="0,2" >
-				<MenuItem Header="登录" Name="menuLogin" Click="menuLogin_Click" ></MenuItem>
+				<MenuItem Header="登录" x:Name="menuLogin" Click="menuLogin_Click" />
 				<MenuItem Header="服务器"  >
-					<MenuItem Name="menuServers" Header="显示服务器" Click="menuServers_Click"></MenuItem>
-					<MenuItem Name="menuReload" Header="Reload World" Click="menuReload_Click"></MenuItem>
+					<MenuItem x:Name="menuServers" Header="显示服务器" Click="menuServers_Click"/>
+					<MenuItem x:Name="menuReload" Header="Reload World" Click="menuReload_Click"/>
 				</MenuItem>
 			</Menu>
 			<ListBox Height="723" Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
-					d:DataContext="{d:DesignInstance Robot:RobotViewModel}" 
-					BorderThickness="3" BorderBrush="BurlyWood" >
+				d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" 
+				BorderThickness="3" BorderBrush="BurlyWood" >
 				<ListBox.ItemTemplate>
 					<DataTemplate>
-						<Label Content="{Binding Name}" ></Label>
+						<Label Content="{Binding Name}" />
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
@@ -34,7 +35,7 @@
 								<ComboBoxItem Content="GUID"/>
 							</ComboBox>
 							<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
-							<Button Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"></Button>
+							<Button x:Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"/>
 							<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
 							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
 							<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
@@ -52,20 +53,19 @@
 									<Grid/>
 								</TabItem>
 								<TabItem Header="装备">
-									<Canvas>
-
-									</Canvas>
+									<Canvas/>
 								</TabItem>
 								<TabItem Header="GM">
 									<Canvas>
-										<Button Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
-										<Button Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
+										<Button x:Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
+										<Button x:Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
 									</Canvas>
 								</TabItem>
 							</TabControl>
-							<Label Name="lblErrorInfo" Content="{Binding ErrorInfo}" Canvas.Left="315" Canvas.Top="114" Width="201" Height="25"/>
 						</Canvas>
 					</GroupBox>
+					<TextBox Name="tbLog" Height="703" Canvas.Left="749" TextWrapping="Wrap" Text="" 
+							Canvas.Top="10" Width="402" IsReadOnly="True" />
 				</Canvas>
 			</Grid>
 		</DockPanel>
