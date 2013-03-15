@@ -43,6 +43,7 @@ namespace Modules.Robot
 
 		private void menuLogin_Click(object sender, RoutedEventArgs e)
 		{
+			this.ViewModel.ReLogin();
 		}
 
 		private async void menuServers_Click(object sender, RoutedEventArgs e)
@@ -62,6 +63,13 @@ namespace Modules.Robot
 		private async void btnAllowBuy_Click(object sender, RoutedEventArgs e)
 		{
 			await this.ViewModel.AllowBuy();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
+		}
+
+		private async void btnSendCommand_Click(object sender, RoutedEventArgs e)
+		{
+			await this.ViewModel.SendCommand();
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}

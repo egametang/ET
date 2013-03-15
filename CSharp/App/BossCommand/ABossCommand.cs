@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BossBase;
-using DataCenter;
 using Helper;
 using Log;
 
@@ -10,8 +9,6 @@ namespace BossCommand
 	public abstract class ABossCommand
 	{
 		protected IMessageChannel IMessageChannel { get; set; }
-		protected DataCenterEntities Entities { get; set; }
-
 
 		protected void SendMessage(CMSG_Boss_Gm cmsgBossGm)
 		{
@@ -36,10 +33,9 @@ namespace BossCommand
 			}
 		}
 
-		protected ABossCommand(IMessageChannel iMessageChannel, DataCenterEntities entities)
+		protected ABossCommand(IMessageChannel iMessageChannel)
 		{
 			this.IMessageChannel = iMessageChannel;
-			this.Entities = entities;
 		}
 
 		public virtual Task<object> DoAsync()
@@ -47,12 +43,7 @@ namespace BossCommand
 			throw new NotImplementedException();
 		}
 
-		public virtual object Do()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Undo()
+		public void UndoAsync()
 		{
 			throw new NotImplementedException();
 		}

@@ -18,14 +18,15 @@
 					<RowDefinition></RowDefinition>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="10*"></ColumnDefinition>
-					<ColumnDefinition Width="40*"></ColumnDefinition>
+					<ColumnDefinition Width="51*"></ColumnDefinition>
+					<ColumnDefinition Width="149*"></ColumnDefinition>
 				</Grid.ColumnDefinitions>
 				<Label Content="帐号: " Grid.Row="0" Grid.Column="0" Margin="0,8"/>
 				<TextBox Text="{Binding Account}" Grid.Row="0" Grid.Column="1" Margin="0,8,0,8" />
 				<Label Content="密码: " Grid.Row="1" Grid.Column="0" Margin="0,8"/>
 				<TextBox Text="{Binding Password}" Grid.Row="1" Grid.Column="1" Margin="0,8,0,8" />
-				<Button Name="btnLogin" Content="登录" Click="btnLogin_Click" Grid.Row="2" Grid.Column="1" Margin="12,8" />
+				<Button Name="btnLogin" Content="登录" Click="btnLogin_Click" Grid.Row="2" Grid.Column="0" Margin="0,8" />
+				<Label Name="lblErrorInfo" Content="{Binding ErrorInfo}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,7,0,0" Grid.Row="2" VerticalAlignment="Top" Width="129" Height="26"/>
 			</Grid>
 		</xctk:ChildWindow>
 	</Grid>

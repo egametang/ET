@@ -34,27 +34,20 @@ namespace BossClient
 		{
 			int loginSessionId = ++this.sessionId;
 
-			try
+			// 登录realm
+			var tcpClient = new TcpClient();
+			await tcpClient.ConnectAsync(hostName, port);
+			Tuple<string, ushort, SRP6Client> realmInfo = null; // ip, port, K
+			using (var realmSession = new RealmSession(loginSessionId, new TcpChannel(tcpClient)))
 			{
-				// 登录realm
-				var tcpClient = new TcpClient();
-				await tcpClient.ConnectAsync(hostName, port);
-				Tuple<string, ushort, SRP6Client> realmInfo = null; // ip, port, K
-				using (var realmSession = new RealmSession(loginSessionId, new TcpChannel(tcpClient)))
-				{
-					realmInfo = await realmSession.Login(account, password);
-					Logger.Trace("session: {0}, login success!", realmSession.ID);
-				}
+				realmInfo = await realmSession.Login(account, password);
+				Logger.Trace("session: {0}, login success!", realmSession.ID);
+			}
 
-				// 登录gate
-				Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
-				this.GateSession = new GateSession(loginSessionId, new ENetChannel(peer));
-				await this.GateSession.Login(realmInfo.Item3);
-			}
-			catch (Exception e)
-			{
-				Logger.Trace("session: {0}, exception: {1}", loginSessionId, e.ToString());
-			}
+			// 登录gate
+			Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
+			this.GateSession = new GateSession(loginSessionId, new ENetChannel(peer));
+			await this.GateSession.Login(realmInfo.Item3);
 		}
 	}
 }

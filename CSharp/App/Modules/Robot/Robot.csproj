@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism">
       <HintPath>..\..\..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
     </Reference>
@@ -78,6 +74,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Log</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\BossBase\BossBase.csproj">
       <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>
       <Name>BossBase</Name>
@@ -89,10 +89,6 @@
     <ProjectReference Include="..\..\BossCommand\BossCommand.csproj">
       <Project>{6c16281f-5550-4024-9504-295c63889e4f}</Project>
       <Name>BossCommand</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DataCenter\DataCenter.csproj">
-      <Project>{a829a025-5e90-4085-8dd4-e3b8c1282635}</Project>
-      <Name>DataCenter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>

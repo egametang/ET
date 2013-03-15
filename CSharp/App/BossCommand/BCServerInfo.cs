@@ -1,13 +1,11 @@
 ﻿using System.Threading.Tasks;
 using BossBase;
-using DataCenter;
 
 namespace BossCommand
 {
 	public class BCServerInfo: ABossCommand
 	{
-		public BCServerInfo(IMessageChannel iMessageChannel, DataCenterEntities entities): 
-			base(iMessageChannel, entities)
+		public BCServerInfo(IMessageChannel iMessageChannel): base(iMessageChannel)
 		{
 		}
 

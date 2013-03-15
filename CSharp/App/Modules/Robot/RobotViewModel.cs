@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
-using BossClient;
 using BossCommand;
-using DataCenter;
 using BossBase;
+using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
@@ -18,19 +16,20 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
+		private IEventAggregator eventAggregator;
+
 		private string errorInfo = "";
 		private int findTypeIndex;
 		private string account = "";
-		private string findType = "egametang@163.com";
+		private string findType = "";
 		private string name = "";
 		private string guid = "";
+		private string command = "";
 		private bool isGMEnable;
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
 			new ObservableCollection<ServerViewModel>();
-
-		public DataCenterEntities Entities { get; set; }
 
 		public IMessageChannel IMessageChannel { get; set; }
 
@@ -178,39 +177,61 @@ namespace Modules.Robot
 			}
 		}
 
+		public string Command
+		{
+			get
+			{
+				return this.command;
+			}
+			set
+			{
+				if (this.command == value)
+				{
+					return;
+				}
+				this.command = value;
+				this.RaisePropertyChanged("Command");
+			}
+		}
+
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
-			this.Entities = new DataCenterEntities();
-			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOK);
+			this.eventAggregator = eventAggregator;
+			eventAggregator.GetEvent<LoginOKEvent>().Subscribe(this.OnLoginOKEvent);
 		}
 
 		~RobotViewModel()
 		{
-			this.Disposing(false);
+			this.Disposing();
 		}
 
 		public void Dispose()
 		{
-			this.Disposing(true);
+			this.Disposing();
 			GC.SuppressFinalize(this);
 		}
 
-		private void Disposing(bool disposing)
+		private void Disposing()
 		{
-			this.Entities.Dispose();
 			this.bossClient.Dispose();
 		}
 
-		public void OnLoginOK(IMessageChannel messageChannel)
+		public void OnLoginOKEvent(IMessageChannel messageChannel)
 		{
 			this.DockPanelVisiable = Visibility.Visible;
 			this.IMessageChannel = messageChannel;
 		}
 
+		public void ReLogin()
+		{
+			this.DockPanelVisiable = Visibility.Hidden;
+			this.eventAggregator.GetEvent<ReLoginEvent>().Publish(null);
+		}
+
 		public async Task Servers()
 		{
-			ABossCommand bossCommand = new BCServerInfo(this.IMessageChannel, this.Entities);
+			ABossCommand bossCommand = new BCServerInfo(this.IMessageChannel);
 			var result = await bossCommand.DoAsync();
 
 			var smsgBossServersInfo = result as SMSG_Boss_ServersInfo;
@@ -230,30 +251,18 @@ namespace Modules.Robot
 
 		public void Reload()
 		{
-			ABossCommand bossCommand = new BCReloadWorld(this.IMessageChannel, this.Entities);
-			bossCommand.Do();
+			ABossCommand bossCommand = new BCReloadWorld(this.IMessageChannel);
+			bossCommand.DoAsync();
 		}
 
 		public void FindPlayer()
 		{
-			ABossCommand bossCommand = new BCFindPlayer(this.IMessageChannel, this.Entities)
+			ABossCommand bossCommand = new BCFindPlayer(this.IMessageChannel)
 			{
 				FindTypeIndex = this.FindTypeIndex, 
 				FindType = this.FindType
 			};
-			var result = bossCommand.Do() as t_character;
-
-			if (result == null)
-			{
-				this.ErrorInfo = "查询失败";
-				return;
-			}
-
-			this.Account = result.account;
-			this.Name = result.character_name;
-			this.Guid = result.character_guid.ToString(CultureInfo.InvariantCulture);
-			this.IsGMEnable = true;
-			this.ErrorInfo = "查询成功";
+			bossCommand.DoAsync();
 		}
 
 		public async Task ForbiddenBuy()
@@ -264,7 +273,7 @@ namespace Modules.Robot
 				return;
 			}
 
-			ABossCommand bossCommand = new BCForbiddenBuy(this.IMessageChannel, this.Entities)
+			ABossCommand bossCommand = new BCForbiddenBuy(this.IMessageChannel)
 			{
 				Guid = this.Guid
 			};
@@ -287,7 +296,7 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-			ABossCommand bossCommand = new BCAllowBuy(this.IMessageChannel, this.Entities)
+			ABossCommand bossCommand = new BCAllowBuy(this.IMessageChannel)
 			{
 				Guid = this.Guid
 			};
@@ -300,6 +309,26 @@ namespace Modules.Robot
 			}
 
 			this.ErrorInfo = errorCode.ToString();
+		}
+
+		public async Task SendCommand()
+		{
+			ABossCommand bossCommand = new BCCommand(this.IMessageChannel)
+			{ Command = this.Command };
+			string commandString = this.Command;
+			object result = null;
+			try
+			{
+				result = await bossCommand.DoAsync();
+			}
+			catch(Exception e)
+			{
+				Logger.Trace(e.ToString());
+				return;
+			}
+			var errorCode = (uint)result;
+			this.ErrorInfo = string.Format(" send command: {0}, error code: {1}", 
+				commandString, errorCode);
 		}
 	}
 }

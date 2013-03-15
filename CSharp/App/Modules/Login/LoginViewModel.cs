@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using BossBase;
+using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
@@ -15,8 +16,9 @@ namespace Modules.Login
 	internal class LoginViewModel : NotificationObject
 	{
 		private IEventAggregator EventAggregator { get; set; }
-		private string account = "egametang@126.com";
-		private string password = "163bio1";
+		private string account = "";
+		private string password = "";
+		private string errorInfo = "";
 		private Visibility loginWindowVisiable = Visibility.Visible;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Normal) 
@@ -73,19 +75,62 @@ namespace Modules.Login
 			}
 		}
 
+		public string ErrorInfo
+		{
+			get
+			{
+				return this.errorInfo;
+			}
+			set
+			{
+				if (this.errorInfo == value)
+				{
+					return;
+				}
+				this.errorInfo = value;
+				this.RaisePropertyChanged("ErrorInfo");
+			}
+		}
+
 		[ImportingConstructor]
 		public LoginViewModel(IEventAggregator eventAggregator)
 		{
 			this.EventAggregator = eventAggregator;
+			this.EventAggregator.GetEvent<ReLoginEvent>().Subscribe(this.OnReLoginEvent);
 			this.timer.Tick += delegate { this.bossClient.RunOnce(); };
 			this.timer.Start();
+		}
+
+		public void OnReLoginEvent(object obj)
+		{
+			this.LoginWindowVisiable = Visibility.Visible;
 		}
 
 		public async Task Login()
 		{
 			string ip = ConfigurationManager.AppSettings["IP"];
 			ushort port = UInt16.Parse(ConfigurationManager.AppSettings["Port"]);
-			await this.bossClient.Login(ip, port, this.Account, this.Password);
+
+			if (this.Account == "")
+			{
+				this.Account = ConfigurationManager.AppSettings["Account"];
+			}
+			if (this.Password == "")
+			{
+				this.Password = ConfigurationManager.AppSettings["Password"];
+			}
+
+			try
+			{
+				await this.bossClient.Login(ip, port, this.Account, this.Password);
+			}
+			catch (Exception e)
+			{
+				this.ErrorInfo = "登录失败";
+				Logger.Trace(e.ToString());
+				return;
+			}
+			
 			this.LoginWindowVisiable = Visibility.Hidden;
 			this.EventAggregator.GetEvent<LoginOKEvent>().Publish(
 				bossClient.GateSession.IMessageChannel);

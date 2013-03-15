@@ -42,18 +42,13 @@
   <ItemGroup>
     <Compile Include="CommonDefines.cs" />
     <Compile Include="IMessageChannel.cs" />
+    <Compile Include="ReLoginEvent.cs" />
     <Compile Include="LoginOKEvent.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataCenter\DataCenter.csproj">
-      <Project>{A829A025-5E90-4085-8DD4-E3B8C1282635}</Project>
-      <Name>DataCenter</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
