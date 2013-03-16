@@ -65,9 +65,9 @@
 						</Canvas>
 					</GroupBox>
 					<TextBox Name="tbLog" Height="675" Canvas.Left="749" TextWrapping="Wrap" Text="" 
-							Canvas.Top="38" Width="402" IsReadOnly="True" />
-					<TextBox Text="{Binding Command}" Height="23" Canvas.Left="749" TextWrapping="Wrap" Canvas.Top="10" Width="315"/>
-					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1076" Canvas.Top="10" Width="75" Click="btnSendCommand_Click"/>
+							Canvas.Top="38" Width="402" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
+					<TextBox Text="{Binding Command}" Height="23" Canvas.Left="749" TextWrapping="Wrap" Canvas.Top="10" Width="315" />
+					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1072" Canvas.Top="9" Width="75" Click="btnSendCommand_Click"/>
 				</Canvas>
 			</Grid>
 		</DockPanel>

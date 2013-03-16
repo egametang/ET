@@ -9,7 +9,7 @@ namespace BossClient
 	public class BossClient : IDisposable
 	{
 		private int sessionId;
-		
+
 		private readonly ClientHost clientHost = new ClientHost();
 
 		public void Dispose()

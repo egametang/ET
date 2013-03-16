@@ -9,7 +9,7 @@ namespace ENet
 		public ClientHost(
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
 			uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true,
-			bool compressWithRangeEncoder = true)
+			bool compressWithRangeEncoder = false)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{

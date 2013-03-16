@@ -16,7 +16,7 @@ namespace Modules.Robot
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
 	internal sealed class RobotViewModel: NotificationObject, IDisposable
 	{
-		private IEventAggregator eventAggregator;
+		private readonly IEventAggregator eventAggregator;
 
 		private string errorInfo = "";
 		private int findTypeIndex;
@@ -313,6 +313,10 @@ namespace Modules.Robot
 
 		public async Task SendCommand()
 		{
+			if (this.Command.StartsWith("gm ", true, CultureInfo.CurrentCulture))
+			{
+				this.Command = this.Command.Substring(3);
+			}
 			ABossCommand bossCommand = new BCCommand(this.IMessageChannel)
 			{ Command = this.Command };
 			string commandString = this.Command;
