@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,12 +34,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ABossCommand.cs" />
+    <Compile Include="BCForbiddenAccountLogin.cs" />
     <Compile Include="BCAllowBuy.cs" />
     <Compile Include="BCCommand.cs" />
-    <Compile Include="BCFindPlayer.cs" />
+    <Compile Include="BCGetCharacterInfo.cs" />
     <Compile Include="BCServerInfo.cs" />
     <Compile Include="BCReloadWorld.cs" />
     <Compile Include="BCForbiddenBuy.cs" />

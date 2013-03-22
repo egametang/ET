@@ -251,5 +251,8 @@ namespace BossBase
 	{
 		[DataMember(Order = 1, IsRequired = true)]
 		public uint ErrorCode { get; set; }
+
+		[DataMember(Order = 2, IsRequired = false)]
+		public string Content { get; set; }
 	}
 }

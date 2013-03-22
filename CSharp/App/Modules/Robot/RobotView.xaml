@@ -10,64 +10,85 @@
 	<Grid>
 		<DockPanel x:Name="dock" Visibility="{Binding DockPanelVisiable}">
 			<Menu DockPanel.Dock="Top" Margin="0,2" >
-				<MenuItem Header="登录" x:Name="menuLogin" Click="menuLogin_Click" />
+				<MenuItem x:Name="menuLogin" Header="登录" Click="menuLogin_Click"/>
 				<MenuItem Header="服务器"  >
 					<MenuItem x:Name="menuServers" Header="显示服务器" Click="menuServers_Click"/>
 					<MenuItem x:Name="menuReload" Header="Reload World" Click="menuReload_Click"/>
 				</MenuItem>
 			</Menu>
-			<ListBox Height="723" Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
-				d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" 
-				BorderThickness="3" BorderBrush="BurlyWood" >
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<Label Content="{Binding Name}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
 			<Grid>
 				<Canvas>
-					<GroupBox Header="角色信息" Canvas.Left="10" Height="723" Width="734" BorderBrush="BurlyWood">
-						<Canvas>
-							<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}" Canvas.Left="32" Canvas.Top="23" Height="25">
-								<ComboBoxItem Content="帐 号"/>
-								<ComboBoxItem Content="名 字"/>
-								<ComboBoxItem Content="GUID"/>
-							</ComboBox>
-							<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
-							<Button x:Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" RenderTransformOrigin="9.161,1.435" Canvas.Left="261" Canvas.Top="23" Height="25"/>
-							<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
-							<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
-							<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
-							<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
-							<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
-							<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
-							<TabControl Height="541" Canvas.Top="160" Width="722" IsEnabled="{Binding IsGMEnable}">
-								<TabItem Header="信息">
-									<Grid Margin="0,0,8,36"/>
-								</TabItem>
-								<TabItem Header="包裹">
-									<Grid/>
-								</TabItem>
-								<TabItem Header="BUFF">
-									<Grid/>
-								</TabItem>
-								<TabItem Header="装备">
-									<Canvas/>
-								</TabItem>
-								<TabItem Header="GM">
+					<TabControl Name="tcAll" Height="713" Width="867">
+						<TabItem Header="服务器">
+							<Canvas>
+								<ListBox Height="667" Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
+										d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" 
+										BorderThickness="3" BorderBrush="BurlyWood" >
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<Label Content="{Binding Name}" />
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</Canvas>
+						</TabItem>
+						<TabItem Header="帐号">
+							<Canvas>
+								<TextBox Text="{Binding Account}" Height="23" Canvas.Left="69" Canvas.Top="19" Width="120"/>
+								<Button Content="禁止帐号登录" Canvas.Left="194" Canvas.Top="47" Width="83" Click="btnForbiddenAccountLoginButton_Click"/>
+								<Button Content="允许帐号登录" Canvas.Left="194" Canvas.Top="19" Width="83" Click="btnAllowAccountLogin_Click"/>
+								<Label Content="帐号:" Canvas.Left="10" Canvas.Top="19" Width="38"/>
+								<TextBox Text="{Binding ForbiddenLoginTime}" Height="23" Canvas.Left="69" Canvas.Top="47" Width="120"/>
+								<Label Content="禁止时间:" Canvas.Left="10" Canvas.Top="47"/>
+							</Canvas>
+						</TabItem>
+						<TabItem Header="角色">
+							<Canvas>
+								<GroupBox Header="角色信息" Canvas.Left="10" Height="723" Width="734" BorderBrush="BurlyWood">
 									<Canvas>
-										<Button x:Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
-										<Button x:Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
+										<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}" Canvas.Left="32" Canvas.Top="23" Height="25">
+											<ComboBoxItem Content="帐 号"/>
+											<ComboBoxItem Content="名 字"/>
+											<ComboBoxItem Content="GUID"/>
+										</ComboBox>
+										<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
+										<Button x:Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" Canvas.Left="261" Canvas.Top="23" Height="25"/>
+										<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
+										<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
+										<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
+										<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
+										<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
+										<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
+										<TabControl Height="541" Canvas.Top="160" Width="722" IsEnabled="{Binding IsGMEnable}">
+											<TabItem Header="信息">
+												<Grid Margin="0,0,8,36"/>
+											</TabItem>
+											<TabItem Header="包裹">
+												<Grid/>
+											</TabItem>
+											<TabItem Header="BUFF">
+												<Grid/>
+											</TabItem>
+											<TabItem Header="装备">
+												<Canvas/>
+											</TabItem>
+											<TabItem Header="GM">
+												<Canvas>
+													<Button x:Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
+													<Button x:Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
+												</Canvas>
+											</TabItem>
+										</TabControl>
 									</Canvas>
-								</TabItem>
-							</TabControl>
-						</Canvas>
-					</GroupBox>
-					<TextBox Name="tbLog" Height="675" Canvas.Left="749" TextWrapping="Wrap" Text="" 
-							Canvas.Top="38" Width="402" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
-					<TextBox Text="{Binding Command}" Height="23" Canvas.Left="749" TextWrapping="Wrap" Canvas.Top="10" Width="315" />
-					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1072" Canvas.Top="9" Width="75" Click="btnSendCommand_Click"/>
+								</GroupBox>
+							</Canvas>
+						</TabItem>
+					</TabControl>
+					<TextBox Name="tbLog" Height="675" Canvas.Left="872" TextWrapping="Wrap" Text="" 
+						Canvas.Top="38" Width="398" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" 
+						VerticalScrollBarVisibility="Visible"/>
+					<TextBox Text="{Binding Command}" Height="23" Canvas.Left="872" TextWrapping="Wrap" Canvas.Top="10" Width="315" />
+					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1195" Canvas.Top="10" Width="75" Click="btnSendCommand_Click"/>
 				</Canvas>
 			</Grid>
 		</DockPanel>

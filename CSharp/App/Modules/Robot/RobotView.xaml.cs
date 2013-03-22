@@ -36,7 +36,7 @@ namespace Modules.Robot
 
 		private void btnFindPlayer_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.FindPlayer();
+			this.ViewModel.GetCharacterInfo();
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
@@ -49,6 +49,7 @@ namespace Modules.Robot
 		private async void menuServers_Click(object sender, RoutedEventArgs e)
 		{
 			await this.ViewModel.Servers();
+			this.tcAll.SelectedIndex = 0;
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
@@ -70,6 +71,20 @@ namespace Modules.Robot
 		private async void btnSendCommand_Click(object sender, RoutedEventArgs e)
 		{
 			await this.ViewModel.SendCommand();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
+		}
+
+		private async void btnForbiddenAccountLoginButton_Click(object sender, RoutedEventArgs e)
+		{
+			await this.ViewModel.ForbiddenAccountLogin();
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
+		}
+
+		private async void btnAllowAccountLogin_Click(object sender, RoutedEventArgs e)
+		{
+			await this.ViewModel.AllowAccountLogin();
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}

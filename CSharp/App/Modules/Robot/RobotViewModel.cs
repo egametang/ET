@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using BossCommand;
 using BossBase;
+using Helper;
 using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
@@ -21,10 +22,11 @@ namespace Modules.Robot
 		private string errorInfo = "";
 		private int findTypeIndex;
 		private string account = "";
-		private string findType = "";
+		private string findType = "egametang@126.com";
 		private string name = "";
 		private string guid = "";
 		private string command = "";
+		private string forbiddenLoginTime = "";
 		private bool isGMEnable;
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
@@ -177,6 +179,23 @@ namespace Modules.Robot
 			}
 		}
 
+		public string ForbiddenLoginTime
+		{
+			get
+			{
+				return this.forbiddenLoginTime;
+			}
+			set
+			{
+				if (this.forbiddenLoginTime == value)
+				{
+					return;
+				}
+				this.forbiddenLoginTime = value;
+				this.RaisePropertyChanged("ForbiddenLoginTime");
+			}
+		}
+
 		public string Command
 		{
 			get
@@ -255,14 +274,24 @@ namespace Modules.Robot
 			bossCommand.DoAsync();
 		}
 
-		public void FindPlayer()
+		public async void GetCharacterInfo()
 		{
-			ABossCommand bossCommand = new BCFindPlayer(this.IMessageChannel)
+			ABossCommand bossCommand = new BCGetCharacterInfo(this.IMessageChannel)
 			{
 				FindTypeIndex = this.FindTypeIndex, 
 				FindType = this.FindType
 			};
-			bossCommand.DoAsync();
+			var result = await bossCommand.DoAsync();
+			if (result == null)
+			{
+				this.ErrorInfo = string.Format("获取玩家信息失败");
+				return;
+			}
+			this.ErrorInfo = "获取玩家信息成功";
+			var characterInfo = (CharacterInfo)result;
+			this.Account = characterInfo.Account;
+			this.Name = characterInfo.Name;
+			this.Guid = characterInfo.Guid.ToString();
 		}
 
 		public async Task ForbiddenBuy()
@@ -301,7 +330,7 @@ namespace Modules.Robot
 				Guid = this.Guid
 			};
 			var result = await bossCommand.DoAsync();
-			var errorCode = (int) result;
+			var errorCode = (uint) result;
 			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
 				this.ErrorInfo = "允许交易成功";
@@ -309,6 +338,52 @@ namespace Modules.Robot
 			}
 
 			this.ErrorInfo = errorCode.ToString();
+		}
+
+		public async Task ForbiddenAccountLogin()
+		{
+			int time = 0;
+			if (!int.TryParse(this.ForbiddenLoginTime, out time))
+			{
+				this.ErrorInfo = "禁止时间请输入数字";
+				return;
+			}
+			if (time < 0)
+			{
+				this.ErrorInfo = "禁止时间必须>=0";
+				return;
+			}
+
+			ABossCommand bossCommand = new BCForbiddenAccountLogin(this.IMessageChannel) 
+			{ Account = this.Account, ForbiddenLoginTime = this.ForbiddenLoginTime };
+			var result = await bossCommand.DoAsync();
+
+			var errorCode = (uint)result;
+
+			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
+				this.ErrorInfo = "禁止帐号登录成功";
+				return;
+			}
+			this.ErrorInfo = string.Format("禁止帐号登录失败, error code: {0}", errorCode);
+		}
+
+		public async Task AllowAccountLogin()
+		{
+			ABossCommand bossCommand = new BCForbiddenAccountLogin(this.IMessageChannel)
+			{
+				Account = this.Account, ForbiddenLoginTime = "-1"
+			};
+			var result = await bossCommand.DoAsync();
+
+			var errorCode = (uint)result;
+
+			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
+				this.ErrorInfo = "允许帐号登录成功";
+				return;
+			}
+			this.ErrorInfo = string.Format("允许帐号登录失败, error code: {0}", errorCode);
 		}
 
 		public async Task SendCommand()
@@ -330,9 +405,9 @@ namespace Modules.Robot
 				Logger.Trace(e.ToString());
 				return;
 			}
-			var errorCode = (uint)result;
+			var smsgBossCommandResponse = (SMSG_Boss_Command_Response)result;
 			this.ErrorInfo = string.Format(" send command: {0}, error code: {1}", 
-				commandString, errorCode);
+				commandString, JsonHelper.ToString(smsgBossCommandResponse));
 		}
 	}
 }

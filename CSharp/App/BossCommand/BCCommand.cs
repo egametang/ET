@@ -16,7 +16,7 @@ namespace BossCommand
 			this.SendMessage(new CMSG_Boss_Gm { Message = this.Command });
 
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();
-			return smsgBossCommandResponse.ErrorCode;
+			return smsgBossCommandResponse;
 		}
 	}
 }
