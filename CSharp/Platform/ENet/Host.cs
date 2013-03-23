@@ -47,7 +47,7 @@ namespace ENet
 			this.host = IntPtr.Zero;
 		}
 
-		protected void EnableCrc()
+		public void EnableCrc()
 		{
 			NativeMethods.enet_enable_crc(this.host);
 		}
@@ -86,7 +86,7 @@ namespace ENet
 			NativeMethods.enet_host_broadcast(this.host, channelID, packet.PacketPtr);
 		}
 
-		protected void CompressWithRangeCoder()
+		public void CompressWithRangeCoder()
 		{
 			NativeMethods.enet_host_compress_with_range_coder(this.host);
 		}

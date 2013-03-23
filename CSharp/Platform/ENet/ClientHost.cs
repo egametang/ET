@@ -8,8 +8,7 @@ namespace ENet
 	{
 		public ClientHost(
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
-			uint incomingBandwidth = 0, uint outgoingBandwidth = 0, bool enableCrc = true,
-			bool compressWithRangeEncoder = false)
+			uint incomingBandwidth = 0, uint outgoingBandwidth = 0)
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
@@ -23,16 +22,6 @@ namespace ENet
 			if (this.host == IntPtr.Zero)
 			{
 				throw new ENetException("Host creation call failed.");
-			}
-
-			if (enableCrc)
-			{
-				this.EnableCrc();
-			}
-
-			if (compressWithRangeEncoder)
-			{
-				this.CompressWithRangeCoder();
 			}
 		}
 

@@ -12,6 +12,11 @@ namespace BossClient
 
 		private readonly ClientHost clientHost = new ClientHost();
 
+		public BossClient()
+		{
+			this.clientHost.EnableCrc();
+		}
+
 		public void Dispose()
 		{
 			this.clientHost.Dispose();
