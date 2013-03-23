@@ -38,13 +38,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ABossCommand.cs" />
-    <Compile Include="BCForbiddenAccountLogin.cs" />
-    <Compile Include="BCAllowBuy.cs" />
+    <Compile Include="BCForbidLogin.cs" />
     <Compile Include="BCCommand.cs" />
     <Compile Include="BCGetCharacterInfo.cs" />
     <Compile Include="BCServerInfo.cs" />
     <Compile Include="BCReloadWorld.cs" />
-    <Compile Include="BCForbiddenBuy.cs" />
+    <Compile Include="BCForbiddenCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

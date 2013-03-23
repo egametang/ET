@@ -34,9 +34,10 @@ namespace Modules.Robot
 			this.ViewModel.Reload();
 		}
 
-		private void btnFindPlayer_Click(object sender, RoutedEventArgs e)
+		private async void btnFindPlayer_Click(object sender, RoutedEventArgs e)
 		{
-			this.ViewModel.GetCharacterInfo();
+			await this.ViewModel.GetCharacterInfo();
+			this.tcCharacterInfo.IsEnabled = true;
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
@@ -54,16 +55,16 @@ namespace Modules.Robot
 			this.tbLog.ScrollToEnd();
 		}
 
-		private async void btnForbiddenBuy_Click(object sender, RoutedEventArgs e)
+		private async void btnForbidCharacter_Click(object sender, RoutedEventArgs e)
 		{
-			await this.ViewModel.ForbiddenBuy();
+			await this.ViewModel.ForbidCharacter(cbForbiddenType.SelectedValue.ToString(), tbForbiddenTime.Text);
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
 
-		private async void btnAllowBuy_Click(object sender, RoutedEventArgs e)
+		private async void btnAllowCharacter_Click(object sender, RoutedEventArgs e)
 		{
-			await this.ViewModel.AllowBuy();
+			await this.ViewModel.ForbidCharacter(cbForbiddenType.SelectedValue.ToString(), "-1");
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
@@ -75,16 +76,19 @@ namespace Modules.Robot
 			this.tbLog.ScrollToEnd();
 		}
 
-		private async void btnForbiddenAccountLoginButton_Click(object sender, RoutedEventArgs e)
+		private async void btnForbiddenLogin_Click(object sender, RoutedEventArgs e)
 		{
-			await this.ViewModel.ForbiddenAccountLogin();
+			await this.ViewModel.ForbiddenLogin(
+				cbForbiddenLogin.SelectedValue.ToString(), 
+				tbForbiddenLoginContent.Text, tbForbiddenLoginTime.Text);
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
 
-		private async void btnAllowAccountLogin_Click(object sender, RoutedEventArgs e)
+		private async void btnAllowLogin_Click(object sender, RoutedEventArgs e)
 		{
-			await this.ViewModel.AllowAccountLogin();
+			await this.ViewModel.ForbiddenLogin(
+				cbForbiddenLogin.SelectedValue.ToString(), tbForbiddenLoginContent.Text, "-1");
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}

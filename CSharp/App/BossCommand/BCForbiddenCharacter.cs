@@ -3,25 +3,23 @@ using BossBase;
 
 namespace BossCommand
 {
-	public class BCForbiddenBuy: ABossCommand
+	public class BCForbiddenCharacter: ABossCommand
 	{
-		public BCForbiddenBuy(IMessageChannel iMessageChannel): base(iMessageChannel)
+		public BCForbiddenCharacter(IMessageChannel iMessageChannel): base(iMessageChannel)
 		{
 		}
 
 		public string Guid { get; set; }
+		public string Command { get; set; }
+		public string ForbiddenTime { get; set; }
 		public override async Task<object> DoAsync()
 		{
 			this.SendMessage(new CMSG_Boss_Gm
 			{
-				Message = string.Format("forbidden_buy_item {0} {1}", this.Guid, 365 * 24 * 3600)
+				Message = string.Format("{0} {1} {2}", this.Command, this.Guid, this.ForbiddenTime)
 			});
 
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();
-			if (smsgBossCommandResponse.ErrorCode == ErrorCode.RESPONSE_SUCCESS)
-			{
-				return ErrorCode.RESPONSE_SUCCESS;
-			}
 			return smsgBossCommandResponse.ErrorCode;
 		}
 	}

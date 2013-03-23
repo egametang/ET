@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComboBoxForbiddenType.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />

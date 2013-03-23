@@ -7,6 +7,17 @@
 		x:Class="Modules.Robot.RobotView"
 		mc:Ignorable="d" 
 		d:DesignHeight="750" d:DesignWidth="1280" d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}">
+	<UserControl.Resources>
+		<x:Array x:Key="ComboBoxForbiddenTypeKey" Type="Robot:ComboBoxForbiddenType">
+			<Robot:ComboBoxForbiddenType Name="帐号" Value="forbid_buy_item"></Robot:ComboBoxForbiddenType>
+			<Robot:ComboBoxForbiddenType Name="IP" Value="forbid_match"></Robot:ComboBoxForbiddenType>
+		</x:Array>
+		<x:Array x:Key="ComboBoxCharacterForbiddenTypeKey" Type="Robot:ComboBoxForbiddenType">
+			<Robot:ComboBoxForbiddenType Name="购买" Value="forbid_buy_item"></Robot:ComboBoxForbiddenType>
+			<Robot:ComboBoxForbiddenType Name="匹配" Value="forbid_match"></Robot:ComboBoxForbiddenType>
+			<Robot:ComboBoxForbiddenType Name="聊天" Value="forbid_chat"></Robot:ComboBoxForbiddenType>
+		</x:Array>
+	</UserControl.Resources>
 	<Grid>
 		<DockPanel x:Name="dock" Visibility="{Binding DockPanelVisiable}">
 			<Menu DockPanel.Dock="Top" Margin="0,2" >
@@ -34,12 +45,14 @@
 						</TabItem>
 						<TabItem Header="帐号">
 							<Canvas>
-								<TextBox Text="{Binding Account}" Height="23" Canvas.Left="69" Canvas.Top="19" Width="120"/>
-								<Button Content="禁止帐号登录" Canvas.Left="194" Canvas.Top="47" Width="83" Click="btnForbiddenAccountLoginButton_Click"/>
-								<Button Content="允许帐号登录" Canvas.Left="194" Canvas.Top="19" Width="83" Click="btnAllowAccountLogin_Click"/>
-								<Label Content="帐号:" Canvas.Left="10" Canvas.Top="19" Width="38"/>
-								<TextBox Text="{Binding ForbiddenLoginTime}" Height="23" Canvas.Left="69" Canvas.Top="47" Width="120"/>
-								<Label Content="禁止时间:" Canvas.Left="10" Canvas.Top="47"/>
+								<ComboBox Name="cbForbiddenLogin" Canvas.Left="12" Canvas.Top="10" Width="51" SelectedIndex="0"	
+										ItemsSource="{StaticResource ResourceKey=ComboBoxForbiddenTypeKey}" 
+										DisplayMemberPath="Name" SelectedValuePath="Value" />
+								<TextBox Name="tbForbiddenLoginContent" Height="23" Canvas.Left="71" Canvas.Top="10" Width="120"/>
+								<TextBox Name="tbForbiddenLoginTime" Height="23" Canvas.Left="241" Canvas.Top="10" Width="83" />
+								<Label Content="时间:" Canvas.Left="196" Canvas.Top="7"/>
+								<Button Content="禁止" Canvas.Left="12" Canvas.Top="39" Width="75" Click="btnForbiddenLogin_Click"/>
+								<Button Content="允许" Canvas.Left="102" Canvas.Top="39" Width="75" Click="btnAllowLogin_Click"/>
 							</Canvas>
 						</TabItem>
 						<TabItem Header="角色">
@@ -59,7 +72,7 @@
 										<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
 										<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
 										<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
-										<TabControl Height="541" Canvas.Top="160" Width="722" IsEnabled="{Binding IsGMEnable}">
+										<TabControl Name="tcCharacterInfo" Height="541" Canvas.Top="160" Width="722" IsEnabled="False">
 											<TabItem Header="信息">
 												<Grid Margin="0,0,8,36"/>
 											</TabItem>
@@ -74,8 +87,14 @@
 											</TabItem>
 											<TabItem Header="GM">
 												<Canvas>
-													<Button x:Name="btnForbiddenBuy" Content="禁止交易" Canvas.Left="11" Canvas.Top="10" Width="75" Click="btnForbiddenBuy_Click"/>
-													<Button x:Name="btnAllowBuy" Content="允许交易" Canvas.Left="11" Canvas.Top="38" Width="75" Click="btnAllowBuy_Click" />
+													<Button x:Name="btnForbiddenBuy" Content="禁止" Canvas.Left="186" Canvas.Top="40" Width="75" Click="btnForbidCharacter_Click" />
+													<Button x:Name="btnAllowBuy" Content="允许" Canvas.Left="186" Canvas.Top="10" Width="75" Click="btnAllowCharacter_Click" />
+													<ComboBox Name="cbForbiddenType" SelectedIndex="0" Canvas.Left="61" Canvas.Top="11" Width="120" 
+															ItemsSource="{StaticResource ResourceKey=ComboBoxCharacterForbiddenTypeKey}" 
+															DisplayMemberPath="Name" SelectedValuePath="Value" />
+													<TextBox Name="tbForbiddenTime" Height="23" Canvas.Left="61" Canvas.Top="40" Width="120"/>
+													<Label Content="类型:" Canvas.Left="10" Canvas.Top="11"/>
+													<Label Content="时间:" Canvas.Left="10" Canvas.Top="37"/>
 												</Canvas>
 											</TabItem>
 										</TabControl>

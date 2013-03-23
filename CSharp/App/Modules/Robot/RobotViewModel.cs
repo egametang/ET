@@ -26,7 +26,6 @@ namespace Modules.Robot
 		private string name = "";
 		private string guid = "";
 		private string command = "";
-		private string forbiddenLoginTime = "";
 		private bool isGMEnable;
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
@@ -162,40 +161,6 @@ namespace Modules.Robot
 			}
 		}
 
-		public bool IsGMEnable
-		{
-			get
-			{
-				return this.isGMEnable;
-			}
-			set
-			{
-				if (this.isGMEnable == value)
-				{
-					return;
-				}
-				this.isGMEnable = value;
-				this.RaisePropertyChanged("IsGMEnable");
-			}
-		}
-
-		public string ForbiddenLoginTime
-		{
-			get
-			{
-				return this.forbiddenLoginTime;
-			}
-			set
-			{
-				if (this.forbiddenLoginTime == value)
-				{
-					return;
-				}
-				this.forbiddenLoginTime = value;
-				this.RaisePropertyChanged("ForbiddenLoginTime");
-			}
-		}
-
 		public string Command
 		{
 			get
@@ -274,7 +239,7 @@ namespace Modules.Robot
 			bossCommand.DoAsync();
 		}
 
-		public async void GetCharacterInfo()
+		public async Task GetCharacterInfo()
 		{
 			ABossCommand bossCommand = new BCGetCharacterInfo(this.IMessageChannel)
 			{
@@ -287,14 +252,15 @@ namespace Modules.Robot
 				this.ErrorInfo = string.Format("获取玩家信息失败");
 				return;
 			}
-			this.ErrorInfo = "获取玩家信息成功";
 			var characterInfo = (CharacterInfo)result;
+
+			this.ErrorInfo = "获取玩家信息成功";
 			this.Account = characterInfo.Account;
 			this.Name = characterInfo.Name;
 			this.Guid = characterInfo.Guid.ToString();
 		}
 
-		public async Task ForbiddenBuy()
+		public async Task ForbidCharacter(string forbiddenCommand, string forbiddenTime)
 		{
 			if (this.Guid == "")
 			{
@@ -302,77 +268,47 @@ namespace Modules.Robot
 				return;
 			}
 
-			ABossCommand bossCommand = new BCForbiddenBuy(this.IMessageChannel)
+			int time = 0;
+			if (!int.TryParse(forbiddenTime, out time))
 			{
-				Guid = this.Guid
+				this.ErrorInfo = "时间请输入数字";
+				return;
+			}
+
+			ABossCommand bossCommand = new BCForbiddenCharacter(this.IMessageChannel)
+			{
+				Guid = this.Guid,
+				Command = forbiddenCommand,
+				ForbiddenTime = forbiddenTime
 			};
 			var result = await bossCommand.DoAsync();
 
-			var errorCode = (int)result;
+			var errorCode = (uint)result;
 
 			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
-				this.ErrorInfo = "禁止交易成功";
+				this.ErrorInfo = string.Format(
+					"{0} {1} {2} Succeed!", forbiddenCommand, this.Guid, forbiddenTime);
 				return;
 			}
-			this.ErrorInfo = string.Format("禁止交易失败, error code: {0}", errorCode);
+			this.ErrorInfo = string.Format("{0} Fail, error code: {1}", forbiddenCommand, errorCode);
 		}
 
-		public async Task AllowBuy()
-		{
-			if (this.Guid == "")
-			{
-				this.ErrorInfo = "请先指定玩家";
-				return;
-			}
-			ABossCommand bossCommand = new BCAllowBuy(this.IMessageChannel)
-			{
-				Guid = this.Guid
-			};
-			var result = await bossCommand.DoAsync();
-			var errorCode = (uint) result;
-			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
-			{
-				this.ErrorInfo = "允许交易成功";
-				return;
-			}
-
-			this.ErrorInfo = errorCode.ToString();
-		}
-
-		public async Task ForbiddenAccountLogin()
+		public async Task ForbiddenLogin(
+			string forbiddenCommand, string forbiddenContent, string forbiddenTime)
 		{
 			int time = 0;
-			if (!int.TryParse(this.ForbiddenLoginTime, out time))
+			if (!int.TryParse(forbiddenTime, out time))
 			{
-				this.ErrorInfo = "禁止时间请输入数字";
-				return;
-			}
-			if (time < 0)
-			{
-				this.ErrorInfo = "禁止时间必须>=0";
+				this.ErrorInfo = "时间请输入数字";
 				return;
 			}
 
-			ABossCommand bossCommand = new BCForbiddenAccountLogin(this.IMessageChannel) 
-			{ Account = this.Account, ForbiddenLoginTime = this.ForbiddenLoginTime };
-			var result = await bossCommand.DoAsync();
-
-			var errorCode = (uint)result;
-
-			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			ABossCommand bossCommand = new BCForbidLogin(this.IMessageChannel)
 			{
-				this.ErrorInfo = "禁止帐号登录成功";
-				return;
-			}
-			this.ErrorInfo = string.Format("禁止帐号登录失败, error code: {0}", errorCode);
-		}
-
-		public async Task AllowAccountLogin()
-		{
-			ABossCommand bossCommand = new BCForbiddenAccountLogin(this.IMessageChannel)
-			{
-				Account = this.Account, ForbiddenLoginTime = "-1"
+				Command = forbiddenCommand,
+				Content = forbiddenContent,
+				ForbiddenLoginTime = forbiddenTime
 			};
 			var result = await bossCommand.DoAsync();
 
@@ -380,10 +316,11 @@ namespace Modules.Robot
 
 			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
 			{
-				this.ErrorInfo = "允许帐号登录成功";
+				this.ErrorInfo = string.Format(
+					"{0} {1} {2} Succeed!", forbiddenCommand, forbiddenContent, forbiddenTime);
 				return;
 			}
-			this.ErrorInfo = string.Format("允许帐号登录失败, error code: {0}", errorCode);
+			this.ErrorInfo = string.Format("{0}, error code: {1}", forbiddenCommand, errorCode);
 		}
 
 		public async Task SendCommand()

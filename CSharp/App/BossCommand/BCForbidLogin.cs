@@ -3,11 +3,12 @@ using BossBase;
 
 namespace BossCommand
 {
-	public class BCForbiddenAccountLogin: ABossCommand
+	public class BCForbidLogin: ABossCommand
 	{
-		public string Account { get; set; }
+		public string Command { get; set; }
+		public string Content { get; set; }
 		public string ForbiddenLoginTime { get; set; }
-		public BCForbiddenAccountLogin(IMessageChannel iMessageChannel): base(iMessageChannel)
+		public BCForbidLogin(IMessageChannel iMessageChannel): base(iMessageChannel)
 		{
 		}
 
@@ -15,7 +16,7 @@ namespace BossCommand
 		{
 			this.SendMessage(new CMSG_Boss_Gm
 			{
-				Message = string.Format("forbid_account {0} {1}", this.Account, this.ForbiddenLoginTime)
+				Message = string.Format("{0} {1} {2}", this.Command, this.Content, this.ForbiddenLoginTime)
 			});
 			var smsgBossCommandResponse = await RecvMessage<SMSG_Boss_Command_Response>();
 			return smsgBossCommandResponse.ErrorCode;
