@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
@@ -26,7 +27,14 @@ namespace Modules.Robot
 		private string name = "";
 		private string guid = "";
 		private string command = "";
-		private bool isGMEnable;
+
+		private string subject = "";
+		private string content = "";
+		private string freeGold = "";
+		private string silver = "";
+		private string itemID = "";
+		private string itemCount = "";
+
 		private Visibility dockPanelVisiable = Visibility.Hidden;
 		private readonly BossClient.BossClient bossClient = new BossClient.BossClient();
 		private readonly ObservableCollection<ServerViewModel> serverInfos = 
@@ -178,6 +186,108 @@ namespace Modules.Robot
 			}
 		}
 
+		public string Subject
+		{
+			get
+			{
+				return this.subject;
+			}
+			set
+			{
+				if (this.subject == value)
+				{
+					return;
+				}
+				this.subject = value;
+				this.RaisePropertyChanged("Subject");
+			}
+		}
+
+		public string Content
+		{
+			get
+			{
+				return this.content;
+			}
+			set
+			{
+				if (this.content == value)
+				{
+					return;
+				}
+				this.content = value;
+				this.RaisePropertyChanged("Content");
+			}
+		}
+
+		public string FreeGold
+		{
+			get
+			{
+				return this.freeGold;
+			}
+			set
+			{
+				if (this.freeGold == value)
+				{
+					return;
+				}
+				this.freeGold = value;
+				this.RaisePropertyChanged("FreeGold");
+			}
+		}
+
+		public string Silver
+		{
+			get
+			{
+				return this.silver;
+			}
+			set
+			{
+				if (this.silver == value)
+				{
+					return;
+				}
+				this.silver = value;
+				this.RaisePropertyChanged("Silver");
+			}
+		}
+
+		public string ItemID
+		{
+			get
+			{
+				return this.itemID;
+			}
+			set
+			{
+				if (this.itemID == value)
+				{
+					return;
+				}
+				this.itemID = value;
+				this.RaisePropertyChanged("ItemID");
+			}
+		}
+
+		public string ItemCount
+		{
+			get
+			{
+				return this.itemCount;
+			}
+			set
+			{
+				if (this.itemCount == value)
+				{
+					return;
+				}
+				this.itemCount = value;
+				this.RaisePropertyChanged("ItemCount");
+			}
+		}
+
 		[ImportingConstructor]
 		public RobotViewModel(IEventAggregator eventAggregator)
 		{
@@ -213,6 +323,16 @@ namespace Modules.Robot
 			this.eventAggregator.GetEvent<ReLoginEvent>().Publish(null);
 		}
 
+		public void ShowErrorInfo(uint errorCode, string commandString)
+		{
+			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			{
+				this.ErrorInfo = string.Format("{0} Succeed!", commandString);
+				return;
+			}
+			this.ErrorInfo = string.Format("{0} Fail, error code: {1}", commandString, errorCode);
+		}
+
 		public async Task Servers()
 		{
 			ABossCommand bossCommand = new BCServerInfo(this.IMessageChannel);
@@ -243,21 +363,21 @@ namespace Modules.Robot
 		{
 			ABossCommand bossCommand = new BCGetCharacterInfo(this.IMessageChannel)
 			{
-				FindTypeIndex = this.FindTypeIndex, 
+				FindTypeIndex = this.FindTypeIndex,
 				FindType = this.FindType
 			};
 			var result = await bossCommand.DoAsync();
 			if (result == null)
 			{
-				this.ErrorInfo = string.Format("获取玩家信息失败");
+				this.ErrorInfo = string.Format("{0} Fail!", bossCommand.CommandString);
 				return;
 			}
 			var characterInfo = (CharacterInfo)result;
 
-			this.ErrorInfo = "获取玩家信息成功";
 			this.Account = characterInfo.Account;
 			this.Name = characterInfo.Name;
 			this.Guid = characterInfo.Guid.ToString();
+			this.ErrorInfo = string.Format("{0} Succeed!", bossCommand.CommandString);
 		}
 
 		public async Task ForbidCharacter(string forbiddenCommand, string forbiddenTime)
@@ -267,7 +387,13 @@ namespace Modules.Robot
 				this.ErrorInfo = "请先指定玩家";
 				return;
 			}
-
+			ulong ulongGuid = 0;
+			if (!ulong.TryParse(this.Guid, out ulongGuid))
+			{
+				this.ErrorInfo = "Guid必须是数字";
+				return;
+			}
+			
 			int time = 0;
 			if (!int.TryParse(forbiddenTime, out time))
 			{
@@ -277,21 +403,15 @@ namespace Modules.Robot
 
 			ABossCommand bossCommand = new BCForbiddenCharacter(this.IMessageChannel)
 			{
-				Guid = this.Guid,
 				Command = forbiddenCommand,
+				Guid = this.Guid,
 				ForbiddenTime = forbiddenTime
 			};
 			var result = await bossCommand.DoAsync();
 
 			var errorCode = (uint)result;
 
-			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
-			{
-				this.ErrorInfo = string.Format(
-					"{0} {1} {2} Succeed!", forbiddenCommand, this.Guid, forbiddenTime);
-				return;
-			}
-			this.ErrorInfo = string.Format("{0} Fail, error code: {1}", forbiddenCommand, errorCode);
+			ShowErrorInfo(errorCode, bossCommand.CommandString);
 		}
 
 		public async Task ForbiddenLogin(
@@ -306,21 +426,55 @@ namespace Modules.Robot
 
 			ABossCommand bossCommand = new BCForbidLogin(this.IMessageChannel)
 			{
-				Command = forbiddenCommand,
-				Content = forbiddenContent,
+				Command = forbiddenCommand, 
+				Content = forbiddenContent, 
 				ForbiddenLoginTime = forbiddenTime
 			};
 			var result = await bossCommand.DoAsync();
 
 			var errorCode = (uint)result;
 
-			if (errorCode == ErrorCode.RESPONSE_SUCCESS)
+			ShowErrorInfo(errorCode, bossCommand.CommandString);
+		}
+
+		public async Task SendMail()
+		{
+			BossMail bossMail = null;
+			try
 			{
-				this.ErrorInfo = string.Format(
-					"{0} {1} {2} Succeed!", forbiddenCommand, forbiddenContent, forbiddenTime);
+				bossMail = new BossMail
+				{
+					sender_name = "系统",
+					receiver_guid = ulong.Parse(this.Guid),
+					subject = this.Subject,
+					content = this.Content,
+					free_gold = uint.Parse(this.FreeGold),
+					silver = uint.Parse(this.Silver),
+					item_dict = new Dictionary<int, int>()
+				};
+
+				if (this.ItemID != "")
+				{
+					bossMail.item_dict.Add(int.Parse(this.ItemID), int.Parse(this.ItemCount));
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.Trace(e.ToString());
+				this.ErrorInfo = "输入错误!";
 				return;
 			}
-			this.ErrorInfo = string.Format("{0}, error code: {1}", forbiddenCommand, errorCode);
+
+			ABossCommand bossCommand = new BCSendMail(this.IMessageChannel)
+			{
+				BossMail = bossMail
+			};
+
+			var result = await bossCommand.DoAsync();
+
+			var errorCode = (uint) result;
+
+			ShowErrorInfo(errorCode, bossCommand.CommandString);
 		}
 
 		public async Task SendCommand()

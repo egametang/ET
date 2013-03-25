@@ -41,6 +41,7 @@
     <Compile Include="BCForbidLogin.cs" />
     <Compile Include="BCCommand.cs" />
     <Compile Include="BCGetCharacterInfo.cs" />
+    <Compile Include="BCSendMail.cs" />
     <Compile Include="BCServerInfo.cs" />
     <Compile Include="BCReloadWorld.cs" />
     <Compile Include="BCForbiddenCharacter.cs" />

@@ -19,11 +19,8 @@ namespace BossCommand
 
 		public override async Task<object> DoAsync()
 		{
-			this.SendMessage(new CMSG_Boss_Gm
-			{
-				Message = string.Format(
-					"get_character_info {0} {1} ", this.FindTypeIndex, this.FindType)
-			});
+			this.CommandString = string.Format("get_character_info {0} {1} ", this.FindTypeIndex, this.FindType);
+			this.SendMessage(new CMSG_Boss_Gm { Message = CommandString });
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();
 			if (smsgBossCommandResponse.ErrorCode != ErrorCode.RESPONSE_SUCCESS)
 			{

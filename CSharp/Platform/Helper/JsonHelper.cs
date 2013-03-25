@@ -1,30 +1,17 @@
-﻿using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace Helper
 {
 	public static class JsonHelper
 	{
-		public static string ToString<T>(T obj)
+		public static string ToString(object obj)
 		{
-			var serializer = new DataContractJsonSerializer(typeof (T));
-			using (var ms = new MemoryStream())
-			{
-				serializer.WriteObject(ms, obj);
-				string str = Encoding.UTF8.GetString(ms.ToArray());
-				return str;
-			}
+			return JsonConvert.SerializeObject(obj);
 		}
 
 		public static T FromString<T>(string str)
 		{
-			var serializer = new DataContractJsonSerializer(typeof (T));
-			using (var ms = new MemoryStream(Encoding.Default.GetBytes(str)))
-			{
-				var obj = (T) serializer.ReadObject(ms);
-				return obj;
-			}
+			return JsonConvert.DeserializeObject<T>(str);
 		}
 	}
 }

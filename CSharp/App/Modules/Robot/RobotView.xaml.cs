@@ -38,6 +38,8 @@ namespace Modules.Robot
 		{
 			await this.ViewModel.GetCharacterInfo();
 			this.tcCharacterInfo.IsEnabled = true;
+			this.btnForbidCharacter.IsEnabled = true;
+			this.btnAllowCharacter.IsEnabled = true;
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}
@@ -89,6 +91,13 @@ namespace Modules.Robot
 		{
 			await this.ViewModel.ForbiddenLogin(
 				cbForbiddenLogin.SelectedValue.ToString(), tbForbiddenLoginContent.Text, "-1");
+			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
+			this.tbLog.ScrollToEnd();
+		}
+
+		private async void btnSendMail_Click(object sender, RoutedEventArgs e)
+		{
+			await this.ViewModel.SendMail();
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
 		}

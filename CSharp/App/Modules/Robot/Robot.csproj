@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComboBoxForbiddenType.cs" />
+    <Compile Include="NumValidation.cs" />
     <Compile Include="Robot.cs" />
     <Compile Include="RobotModule.cs" />
     <Compile Include="RobotViewModel.cs" />

@@ -15,6 +15,8 @@ namespace BossCommand
 			this.IMessageChannel.SendMessage(MessageOpcode.CMSG_BOSS_GM, cmsgBossGm);
 		}
 
+		public string CommandString { get; set; }
+
 		protected async Task<T> RecvMessage<T>()
 		{
 			var result = await this.IMessageChannel.RecvMessage();

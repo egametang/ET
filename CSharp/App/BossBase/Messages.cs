@@ -255,4 +255,39 @@ namespace BossBase
 		[DataMember(Order = 2, IsRequired = false)]
 		public string Content { get; set; }
 	}
+
+	[DataContract]
+	public class BossMailItem
+	{
+		[DataMember(Order = 1, IsRequired = false)]
+		public uint item_id { get; set; }
+
+		[DataMember(Order = 2, IsRequired = false)]
+		public uint item_count { get; set; }
+	}
+
+	[DataContract]
+	public class BossMail
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public string sender_name { get; set; }
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public ulong receiver_guid { get; set; }
+
+		[DataMember(Order = 3, IsRequired = true)]
+		public string subject { get; set; }
+
+		[DataMember(Order = 4, IsRequired = true)]
+		public string content { get; set; }
+
+		[DataMember(Order = 5, IsRequired = false)]
+		public uint free_gold { get; set; }
+
+		[DataMember(Order = 6, IsRequired = false)]
+		public uint silver { get; set; }
+
+		[DataMember(Order = 7, IsRequired = false)]
+		public Dictionary<int, int> item_dict { get; set; }
+	}
 }
