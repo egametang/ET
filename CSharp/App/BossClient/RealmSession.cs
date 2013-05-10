@@ -182,17 +182,8 @@ namespace BossClient
 
 			Logger.Trace("session: {0}, SMSG_Realm_List OK", this.ID);
 
-			string address = smsgRealmList.GateList[0].Address.ToStr();
-			string[] split = address.Split(new[] { ':' });
-
-			if (split.Length != 2)
-			{
-				throw new BossException(
-					string.Format("session: {0}, gate address error, address: {1}",
-					this.ID, address));
-			}
-			string gateIP = split[0];
-			ushort gatePort = UInt16.Parse(split[1]);
+			string gateIP = smsgRealmList.GateIP;
+			ushort gatePort = (ushort)smsgRealmList.GatePort;
 			return Tuple.Create(gateIP, gatePort, srp6Client);
 		}
 	}

@@ -174,10 +174,29 @@ namespace BossBase
 	}
 
 	[DataContract]
+	public class Realm_List_City
+	{
+		[DataMember(Order = 1, IsRequired = true)]
+		public string Name { get; set; } 
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public float CityLoad { get; set; } 
+
+		[DataMember(Order = 3, IsRequired = true)]
+		public bool IsEnable { get; set; } 
+	}
+
+	[DataContract]
 	public class SMSG_Realm_List
 	{
 		[DataMember(Order = 1, IsRequired = true)]
-		public List<Realm_List_Gate> GateList { get; set; } 
+		public string GateIP { get; set; } 
+
+		[DataMember(Order = 2, IsRequired = true)]
+		public int GatePort { get; set; } 
+
+		[DataMember(Order = 3, IsRequired = true)]
+		public List<Realm_List_City> GateList { get; set; } 
 	}
 
 	[DataContract]
