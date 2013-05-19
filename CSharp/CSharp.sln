@@ -36,8 +36,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{4FF1FB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contract", "Contract", "{01501C44-C95B-45B7-A898-76B4A7AC4EE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realm", "Server\Realm\Realm.csproj", "{15B3E0D2-6217-493A-A690-158C497F5318}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealmContract", "Contract\RealmContract\RealmContract.csproj", "{E62B0633-1767-44A0-9479-C8E9D19DA4B8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENetCpp", "Platform\ENetCpp\ENetCpp.vcxproj", "{C9992B7C-313E-4C9F-A954-640D01EDFB58}"
@@ -55,6 +53,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BossCommand", "App\BossCommand\BossCommand.csproj", "{6C16281F-5550-4024-9504-295C63889E4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCFClient", "App\Modules\WCFClient\WCFClient.csproj", "{B07D70E7-F902-4F67-A486-B7AF27D6B813}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15B3E0D2-6217-493A-A690-158C497F5318} = {15B3E0D2-6217-493A-A690-158C497F5318}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realm", "Server\Realm\Realm.csproj", "{15B3E0D2-6217-493A-A690-158C497F5318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -166,18 +169,6 @@ Global
 		{24233CD5-A5DF-484B-A482-B79CB7A0D9CB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24233CD5-A5DF-484B-A482-B79CB7A0D9CB}.Release|Win32.ActiveCfg = Release|Any CPU
 		{24233CD5-A5DF-484B-A482-B79CB7A0D9CB}.Release|x86.ActiveCfg = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Win32.ActiveCfg = Release|Any CPU
-		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|x86.ActiveCfg = Release|Any CPU
 		{E62B0633-1767-44A0-9479-C8E9D19DA4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E62B0633-1767-44A0-9479-C8E9D19DA4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E62B0633-1767-44A0-9479-C8E9D19DA4B8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -288,6 +279,18 @@ Global
 		{B07D70E7-F902-4F67-A486-B7AF27D6B813}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B07D70E7-F902-4F67-A486-B7AF27D6B813}.Release|Win32.ActiveCfg = Release|Any CPU
 		{B07D70E7-F902-4F67-A486-B7AF27D6B813}.Release|x86.ActiveCfg = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|Win32.ActiveCfg = Release|Any CPU
+		{15B3E0D2-6217-493A-A690-158C497F5318}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

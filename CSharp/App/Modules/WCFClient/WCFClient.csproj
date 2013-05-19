@@ -70,6 +70,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Service References\Realm\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="WCFClientViewModel.cs" />
     <Page Include="WCFClientView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -85,8 +90,16 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="App.config" />
     <None Include="Packages.config" />
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\Realm\service.wsdl" />
+    <None Include="Service References\Realm\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Realm\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Contract\RealmContract\RealmContract.csproj">
@@ -101,6 +114,24 @@
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Realm\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Realm\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Realm\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Realm\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
