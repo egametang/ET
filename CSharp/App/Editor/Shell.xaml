@@ -3,7 +3,17 @@
 		xmlns:prism="http://www.codeplex.com/prism" Title="Editor" Height="800" Width="1280"
 		WindowStartupLocation="CenterScreen">
 	<Grid>
-		<ContentControl Name="login" prism:RegionManager.RegionName="LoginRegion" HorizontalAlignment="Center" VerticalAlignment="Center" />
-		<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" HorizontalAlignment="Left" VerticalAlignment="Top" />
+		<!--<ContentControl Name="login" prism:RegionManager.RegionName="LoginRegion" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+		<TabControl>
+			<TabItem Height="25" Width="80" Header="机器人">
+				<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
+			</TabItem>
+			<TabItem Height="25" Width="80" Header="行为树">
+				<ContentControl Name="behaviorTree" prism:RegionManager.RegionName="BehaviorTreeRegion" />
+			</TabItem>
+			<TabItem Height="25" Width="80" Header="WCFClient">
+				<ContentControl Name="wcfClient" prism:RegionManager.RegionName="WCFClientRegion" />
+			</TabItem>
+		</TabControl>
 	</Grid>
 </Window>

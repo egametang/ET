@@ -6,6 +6,7 @@ using Microsoft.Practices.Prism.Regions;
 using Modules.BehaviorTree;
 using Modules.Robot;
 using Modules.Login;
+using Modules.WCFClient;
 
 namespace Editor
 {
@@ -18,6 +19,7 @@ namespace Editor
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (RobotModule).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (LoginModule).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (WCFClientModule).Assembly));
 		}
 
 		protected override void InitializeShell()

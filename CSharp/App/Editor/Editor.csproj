@@ -117,9 +117,15 @@
       <Project>{5d6ecbcd-be14-4dcb-baec-57089748b164}</Project>
       <Name>Robot</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Modules\WCFClient\WCFClient.csproj">
+      <Project>{B07D70E7-F902-4F67-A486-B7AF27D6B813}</Project>
+      <Name>WCFClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

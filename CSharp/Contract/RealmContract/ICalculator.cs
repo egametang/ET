@@ -2,7 +2,7 @@
 
 namespace RealmContract
 {
-	[ServiceContract(Name = "Calculator", Namespace = "http://www.egametang.com/")]
+	[ServiceContract(Name = "Calculator")]
 	public interface ICalculator
 	{
 		[OperationContract]
