@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Infrastructure;
 using Log;
-using WCFClient.Realm;
+using RealmClient.Proxy;
 
 namespace Modules.WCFClient
 {

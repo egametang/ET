@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WCFClient.Realm {
+namespace RealmClient.Proxy {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Realm.Calculator")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Proxy.Calculator")]
     public interface Calculator {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Calculator/Add", ReplyAction="http://tempuri.org/Calculator/AddResponse")]
@@ -23,12 +23,12 @@ namespace WCFClient.Realm {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface CalculatorChannel : WCFClient.Realm.Calculator, System.ServiceModel.IClientChannel {
+    public interface CalculatorChannel : RealmClient.Proxy.Calculator, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CalculatorClient : System.ServiceModel.ClientBase<WCFClient.Realm.Calculator>, WCFClient.Realm.Calculator {
+    public partial class CalculatorClient : System.ServiceModel.ClientBase<RealmClient.Proxy.Calculator>, RealmClient.Proxy.Calculator {
         
         public CalculatorClient() {
         }

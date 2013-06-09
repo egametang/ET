@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="6qjZa3j/VFvcWDbJvPq3YVrmgnY=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="v11ZQuH971ECpE/gUTaa4A49Bk0=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netTcpBinding" name="NetTcpBinding_Calculator">
       <properties>
@@ -118,7 +118,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="NetTcpBinding_Calculator" contract="Realm.Calculator" bindingType="netTcpBinding" address="net.tcp://localhost:10000/Calculator/" bindingConfiguration="NetTcpBinding_Calculator">
+    <endpoint name="NetTcpBinding_Calculator" contract="Proxy.Calculator" bindingType="netTcpBinding" address="net.tcp://localhost:10000/Calculator/" bindingConfiguration="NetTcpBinding_Calculator">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>net.tcp://localhost:10000/Calculator/</serializedValue>
@@ -133,7 +133,7 @@
           <serializedValue>NetTcpBinding_Calculator</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>Realm.Calculator</serializedValue>
+          <serializedValue>Proxy.Calculator</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
