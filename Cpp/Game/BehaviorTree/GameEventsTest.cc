@@ -1,8 +1,6 @@
 #include <fcntl.h>
 #include <fstream>
 #include <gtest/gtest.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include <google/protobuf/text_format.h>
 #include "BehaviorTree/GameEvents.h"
 #include "BehaviorTree/NodeFactories.h"
@@ -73,7 +71,5 @@ TEST_F(GameEventsTest, Vampire)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

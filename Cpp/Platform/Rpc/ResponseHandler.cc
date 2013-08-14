@@ -1,5 +1,4 @@
 #include <memory>
-#include <glog/logging.h>
 #include "Rpc/MethodInfo.h"
 #include "Rpc/ResponseHandler.h"
 #include "Rpc/RpcCommunicator.h"

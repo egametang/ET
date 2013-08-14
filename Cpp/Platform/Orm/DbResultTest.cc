@@ -3,8 +3,6 @@
 
 #include <memory>
 #include <gtest/gtest.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
 #include "Orm/DbHelper.h"
 #include "Orm/DbResult.h"
 #include "Orm/Select.h"
@@ -50,7 +48,5 @@ TEST_F(DbResultTest, One)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

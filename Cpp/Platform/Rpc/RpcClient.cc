@@ -2,7 +2,6 @@
 #include <boost/asio.hpp>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
-#include <glog/logging.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Rpc/RpcClient.h"
 #include "Rpc/RequestHandler.h"

@@ -9,7 +9,6 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 #include <mysql_connection.h>
-#include <glog/logging.h>
 #include "Orm/DbResult.h"
 #include "Orm/Typedef.h"
 #include "Orm/Select.h"
@@ -30,7 +29,6 @@ public:
 	DbResultPtr Execute(Select<Table> select)
 	{
 		std::string sql = select.ToString();
-		VLOG(2) << "execute sql: " << sql;
 		ResultSetPtr resultSet(statement->executeQuery(sql));
 		auto dbResult = std::make_shared<DbResult>(resultSet);
 		return dbResult;

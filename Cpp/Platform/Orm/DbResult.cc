@@ -1,7 +1,6 @@
 // Copyright: All Rights Reserved
 // Author: egametang@gmail.com (tanghai)
 
-#include <glog/logging.h>
 #include <google/protobuf/descriptor.h>
 #include "Orm/DbResult.h"
 #include "Orm/MessageField.h"

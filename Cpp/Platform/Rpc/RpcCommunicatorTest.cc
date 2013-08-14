@@ -2,8 +2,6 @@
 #include <boost/threadpool.hpp>
 #include <memory>
 #include <gtest/gtest.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Thread/CountBarrier.h"
 
@@ -90,7 +88,6 @@ public:
 		boost::asio::ip::address address;
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
-		VLOG(2) << "port: " << port;
 		socket.async_connect(endpoint,
 				std::bind(&RpcClientTest::OnAsyncConnect, this,
 						std::placeholders::_1));
@@ -172,7 +169,5 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

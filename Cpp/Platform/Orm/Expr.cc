@@ -4,7 +4,6 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
-#include <glog/logging.h>
 #include <google/protobuf/descriptor.h>
 #include "Base/Marcos.h"
 #include "Orm/Column.h"

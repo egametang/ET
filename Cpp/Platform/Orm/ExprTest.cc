@@ -3,8 +3,6 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Orm/Column.h"
 
 namespace Egametang {
@@ -46,7 +44,5 @@ TEST_F(ExprTest, Not)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

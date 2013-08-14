@@ -45,8 +45,6 @@ SET(Boost_USE_STATIC_RUNTIME OFF)
 
 # 设置第三方库
 SET(ThirdPartyLibs
-	glog
-	gflags
 	gtest
 	gmock
 	${PROTOBUF_LIBRARIES}

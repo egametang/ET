@@ -7,8 +7,6 @@
 #include <boost/lexical_cast.hpp>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/text_format.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Base/Typedef.h"
 #include "Orm/MessageField.h"
 
@@ -143,7 +141,6 @@ std::string MessageField::GetOptionalField()
 	const google::protobuf::Reflection* reflection = message.GetReflection();
 	google::protobuf::FieldDescriptor::Type type = field->type();
 	std::string valueStr;
-	VLOG(2) << "FieldDescriptor::Type: " << type;
 	switch (type)
 	{
 		case google::protobuf::FieldDescriptor::TYPE_BOOL:

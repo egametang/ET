@@ -5,8 +5,6 @@
 #include <memory>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include <google/protobuf/descriptor.h>
 #include "Orm/MessageField.h"
 #include "Orm/Person.pb.h"
@@ -346,8 +344,6 @@ TEST_F(MessageFieldTest, SetField_FieldIsMessage)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }
 

@@ -1,7 +1,5 @@
 #include <boost/asio.hpp>
 #include <gtest/gtest.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServerMock.h"
 
@@ -37,7 +35,5 @@ TEST_F(RpcSessionTest, Test1)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }

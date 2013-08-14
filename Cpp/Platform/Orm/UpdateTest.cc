@@ -2,8 +2,6 @@
 // Author: egametang@gmail.com (tanghai)
 
 #include <gtest/gtest.h>
-#include <glog/logging.h>
-#include <gflags/gflags.h>
 #include "Orm/Column.h"
 #include "Orm/Exception.h"
 #include "Orm/Update.h"
@@ -73,7 +71,5 @@ TEST_F(UpdateTest, Update_ThrowException)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::InitGoogleLogging(argv[0]);
-	google::ParseCommandLineFlags(&argc, &argv, true);
 	return RUN_ALL_TESTS();
 }
