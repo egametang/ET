@@ -2,7 +2,7 @@
 #define RPC_TYPEDEF_H
 
 #include <memory>
-#include <functional>
+#include <boost/bind.hpp>
 #include "Base/Typedef.h"
 
 namespace Egametang {

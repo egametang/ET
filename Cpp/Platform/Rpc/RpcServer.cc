@@ -1,4 +1,4 @@
-#include <functional>
+#include <boost/bind.hpp>
 #include <memory>
 #include <boost/asio.hpp>
 #include <google/protobuf/service.h>
@@ -26,8 +26,8 @@ RpcServer::RpcServer(boost::asio::io_service& service, int port):
 	acceptor.listen();
 	auto newSession = std::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
-			std::bind(&RpcServer::OnAsyncAccept, this,
-					newSession, std::placeholders::_1));
+			boost::bind(&RpcServer::OnAsyncAccept, this,
+					newSession, boost::asio::placeholders::error));
 }
 
 RpcServer::~RpcServer()
@@ -46,15 +46,15 @@ void RpcServer::OnAsyncAccept(RpcSessionPtr session, const boost::system::error_
 	sessions.insert(session);
 	auto newSession = std::make_shared<RpcSession>(ioService, *this);
 	acceptor.async_accept(newSession->Socket(),
-			std::bind(&RpcServer::OnAsyncAccept, this,
-					newSession, std::placeholders::_1));
+			boost::bind(&RpcServer::OnAsyncAccept, this,
+					newSession, boost::asio::placeholders::error));
 }
 
 void RpcServer::OnCallMethod(RpcSessionPtr session, ResponseHandlerPtr responseHandler)
 {
 	// 调度到网络线
 	session->Socket().get_io_service().post(
-			std::bind(&ResponseHandler::Run, responseHandler));
+			boost::bind(&ResponseHandler::Run, responseHandler));
 }
 
 void RpcServer::RunService(
@@ -70,7 +70,7 @@ void RpcServer::RunService(
 			this, &RpcServer::OnCallMethod, session, responseHandler);
 
 	threadPool.schedule(
-			std::bind(&google::protobuf::Service::CallMethod, methodInfo->GetService(),
+			boost::bind(&google::protobuf::Service::CallMethod, methodInfo->GetService(),
 					&responseHandler->Method(), (google::protobuf::RpcController*)(nullptr),
 					responseHandler->Request(), responseHandler->Response(),
 					done));

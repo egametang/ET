@@ -24,7 +24,7 @@
 namespace boost { namespace threadpool
 {
 
-  /*! \brief SizePolicyController which provides no functionality.
+  /*! \brief SizePolicyController which provides no boost/bind.hppity.
   *
   * \param Pool The pool's core type.
   */ 

@@ -67,7 +67,7 @@ namespace internal {
 // NULL and the empty string are considered different.  NULL is less
 // than anything (including the empty string) except itself.
 //
-// This class only provides minimum functionality necessary for
+// This class only provides minimum boost/bind.hppity necessary for
 // implementing Google Test.  We do not intend to implement a full-fledged
 // string class here.
 //

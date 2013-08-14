@@ -43,7 +43,7 @@ TEST_F(CountBarrierTest, WaitAndSignal)
 	for (int i = 0; i < 10; ++i)
 	{
 		pool.schedule(
-				std::bind(&CountBarrierTest::Signal,
+				boost::bind(&CountBarrierTest::Signal,
 						this, std::ref(barrier)));
 	}
 	ASSERT_EQ(0, this->count);

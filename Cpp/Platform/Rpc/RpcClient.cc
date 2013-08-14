@@ -1,4 +1,4 @@
-#include <functional>
+#include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
@@ -16,8 +16,8 @@ RpcClient::RpcClient(boost::asio::io_service& ioService, std::string host, int p
 	address.from_string(host);
 	boost::asio::ip::tcp::endpoint endpoint(address, port);
 	socket.async_connect(endpoint,
-			std::bind(&RpcClient::OnAsyncConnect, this,
-					std::placeholders::_1));
+			boost::bind(&RpcClient::OnAsyncConnect, this,
+					boost::asio::placeholders::error));
 }
 
 RpcClient::~RpcClient()

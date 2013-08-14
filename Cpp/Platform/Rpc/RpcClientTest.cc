@@ -29,8 +29,8 @@ public:
 		acceptor.bind(endpoint);
 		acceptor.listen();
 		acceptor.async_accept(socket,
-				std::bind(&RpcServerTest::OnAsyncAccept, this,
-						std::placeholders::_1));
+				boost::bind(&RpcServerTest::OnAsyncAccept, this,
+						boost::asio::placeholders::error));
 	}
 	~RpcServerTest()
 	{
@@ -93,10 +93,10 @@ TEST_F(RpcClientTest, Echo)
 	EchoService_Stub service(client.get());
 
 	boost::threadpool::fifo_pool threadPool(2);
-	threadPool.schedule(std::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-	threadPool.schedule(std::bind(&IOServiceRun, &ioClient));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	EchoRequest request;
 	request.set_num(100);
@@ -109,8 +109,8 @@ TEST_F(RpcClientTest, Echo)
 	barrier.Wait();
 
 	// 加入任务队列,等client和server stop,io_service才stop
-	ioClient.post(std::bind(&boost::asio::io_service::stop, &ioClient));
-	ioServer.post(std::bind(&boost::asio::io_service::stop, &ioServer));
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 	ASSERT_EQ(100, response.num());
 }
 

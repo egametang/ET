@@ -318,7 +318,7 @@ void DeathTest::set_last_death_test_message(const String& message) {
 
 String DeathTest::last_death_test_message_;
 
-// Provides cross platform implementation for some death functionality.
+// Provides cross platform implementation for some death boost/bind.hppity.
 class DeathTestImpl : public DeathTest {
  protected:
   DeathTestImpl(const char* a_statement, const RE* a_regex)

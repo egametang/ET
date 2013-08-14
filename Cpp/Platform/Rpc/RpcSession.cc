@@ -1,5 +1,5 @@
 #include <memory>
-#include <functional>
+#include <boost/bind.hpp>
 #include "Rpc/RpcSession.h"
 #include "Rpc/RpcServer.h"
 
@@ -18,8 +18,7 @@ void RpcSession::OnRecvMessage(RpcMetaPtr meta, StringPtr message)
 {
 	auto session = shared_from_this();
 	rpcServer.RunService(session, meta, message,
-			std::bind(&RpcSession::SendMeta, session,
-					std::placeholders::_1, std::placeholders::_2));
+			boost::bind(&RpcSession::SendMeta, session, _1, _2));
 
 	// RunService函数里读完就不使用了,可以循环利用
 	RecvMeta(meta, message);
@@ -45,7 +44,7 @@ void RpcSession::Stop()
 	isStopped = true;
 	// 延迟删除,必须等所有的bind执行完成后才能remove,
 	// 否则会出现this指针失效的问题
-	ioService.post(std::bind(&RpcServer::Remove, &rpcServer, shared_from_this()));
+	ioService.post(boost::bind(&RpcServer::Remove, &rpcServer, shared_from_this()));
 }
 
 } // namespace Egametang

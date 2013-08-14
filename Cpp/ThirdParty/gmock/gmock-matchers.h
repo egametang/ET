@@ -185,7 +185,7 @@ class StringMatchResultListener : public MatchResultListener {
 };
 
 // An internal class for implementing Matcher<T>, which will derive
-// from it.  We put functionalities common to all Matcher<T>
+// from it.  We put boost/bind.hppities common to all Matcher<T>
 // specializations here to avoid code duplication.
 template <typename T>
 class MatcherBase {

@@ -486,15 +486,15 @@
 // not conform to the TR1 spec, which requires the header to be <tuple>.
 
 #  if !GTEST_HAS_RTTI && GTEST_GCC_VER_ < 40302
-// Until version 4.3.2, gcc has a bug that causes <tr1/functional>,
+// Until version 4.3.2, gcc has a bug that causes <tr1/boost/bind.hpp>,
 // which is #included by <tr1/tuple>, to not compile when RTTI is
-// disabled.  _TR1_FUNCTIONAL is the header guard for
-// <tr1/functional>.  Hence the following #define is a hack to prevent
-// <tr1/functional> from being included.
-#   define _TR1_FUNCTIONAL 1
+// disabled.  _TR1_boost/bind.hpp is the header guard for
+// <tr1/boost/bind.hpp>.  Hence the following #define is a hack to prevent
+// <tr1/boost/bind.hpp> from being included.
+#   define _TR1_boost/bind.hpp 1
 #   include <tr1/tuple>
-#   undef _TR1_FUNCTIONAL  // Allows the user to #include
-                        // <tr1/functional> if he chooses to.
+#   undef _TR1_boost/bind.hpp  // Allows the user to #include
+                        // <tr1/boost/bind.hpp> if he chooses to.
 #  else
 #   include <tr1/tuple>  // NOLINT
 #  endif  // !GTEST_HAS_RTTI && GTEST_GCC_VER_ < 40302
@@ -1685,7 +1685,7 @@ const BiggestInt kMaxBiggestInt =
 // is typedef-ed to be unsigned int (unsigned integer made up of 4
 // bytes).
 //
-// Such functionality should belong to STL, but I cannot find it
+// Such boost/bind.hppity should belong to STL, but I cannot find it
 // there.
 //
 // Google Test uses this class in the implementation of floating-point

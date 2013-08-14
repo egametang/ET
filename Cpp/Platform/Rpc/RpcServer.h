@@ -1,7 +1,7 @@
 #ifndef RPC_RPCSERVER_H
 #define RPC_RPCSERVER_H
 
-#include <functional>
+#include <boost/bind.hpp>
 #include <unordered_set>
 #include <unordered_map>
 #include <boost/asio.hpp>

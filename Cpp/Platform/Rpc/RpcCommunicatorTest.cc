@@ -30,8 +30,8 @@ public:
 		acceptor.bind(endpoint);
 		acceptor.listen();
 		acceptor.async_accept(socket,
-				std::bind(&RpcServerTest::OnAsyncAccept, this,
-						std::placeholders::_1));
+				boost::bind(&RpcServerTest::OnAsyncAccept, this,
+						boost::asio::placeholders::error));
 	}
 
 	void OnAsyncAccept(const boost::system::error_code& err)
@@ -89,8 +89,8 @@ public:
 		address.from_string("127.0.0.1");
 		boost::asio::ip::tcp::endpoint endpoint(address, port);
 		socket.async_connect(endpoint,
-				std::bind(&RpcClientTest::OnAsyncConnect, this,
-						std::placeholders::_1));
+				boost::bind(&RpcClientTest::OnAsyncConnect, this,
+						boost::asio::placeholders::error));
 	}
 
 	void Start()
@@ -144,15 +144,15 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 	RpcClientTest rpcClient(ioClient, globalPort, barrier);
 
 	boost::threadpool::fifo_pool threadPool(2);
-	threadPool.schedule(std::bind(&RpcServerTest::Start, &rpcServer));
+	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
 
 	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-	threadPool.schedule(std::bind(&RpcClientTest::Start, &rpcClient));
+	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
 	threadPool.wait();
 
-	ioClient.post(std::bind(&boost::asio::io_service::stop, &ioClient));
-	ioServer.post(std::bind(&boost::asio::io_service::stop, &ioServer));
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpcServer.recvMessage);
 	ASSERT_EQ(rpcServer.recvMeta.size, rpcServer.recvMessage.size());

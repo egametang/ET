@@ -1,4 +1,4 @@
-#include <functional>
+#include <boost/bind.hpp>
 #include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 
@@ -21,7 +21,7 @@ TEST_F(ThreadPoolTest, Test1)
 	std::vector<int> z(100, 0);
 	for (int i = 0; i < 100; ++i)
 	{
-		pool.schedule(std::bind(&Max, x[i], y[i], &z[i]));
+		pool.schedule(boost::bind(&Max, x[i], y[i], &z[i]));
 	}
 	pool.wait();
 	for (int i = 0; i < 100; ++i)

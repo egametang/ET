@@ -1,4 +1,4 @@
-#include <functional>
+#include <boost/bind.hpp>
 #include <memory>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
@@ -71,10 +71,10 @@ TEST_F(RpcServerTest, ClientAndServer)
 	ASSERT_EQ(0U, response.num());
 
 	// server和client分别在两个不同的线程
-	threadPool.schedule(std::bind(&IOServiceRun, &ioServer));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioServer));
 	// 等待server OK
 	boost::this_thread::sleep(boost::posix_time::milliseconds(100));
-	threadPool.schedule(std::bind(&IOServiceRun, &ioClient));
+	threadPool.schedule(boost::bind(&IOServiceRun, &ioClient));
 
 	CountBarrier barrier;
 	service.Echo(nullptr, &request, &response,
@@ -82,8 +82,8 @@ TEST_F(RpcServerTest, ClientAndServer)
 	barrier.Wait();
 
 	// 加入任务队列,等client和server stop,io_service才stop
-	ioClient.post(std::bind(&boost::asio::io_service::stop, &ioClient));
-	ioServer.post(std::bind(&boost::asio::io_service::stop, &ioServer));
+	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
+	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
 
 	// 必须主动让client和server stop才能wait线程
 	threadPool.wait();
