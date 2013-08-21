@@ -28,7 +28,7 @@ public:
 	void ImportModule(std::string module);
 
 	template <typename T>
-	void RegisterObjectPtr(std::string name, std::shared_ptr<T> object_ptr)
+	void RegisterObjectPtr(std::string name, boost::shared_ptr<T> object_ptr)
 	{
 		mainNS[name.c_str()] = object_ptr;
 	}

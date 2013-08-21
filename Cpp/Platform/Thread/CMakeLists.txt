@@ -8,11 +8,9 @@ SET(ThreadSrc
 ADD_LIBRARY(Thread ${ThreadSrc})
 SET_PROPERTY(TARGET Thread PROPERTY FOLDER "Platform")
 
-ADD_EXECUTABLE(ThreadPoolTest ThreadPoolTest.cc)
 ADD_EXECUTABLE(CountBarrierTest CountBarrierTest.cc)
 
 SET(Tests 
-	ThreadPoolTest 
 	CountBarrierTest
 )
 

@@ -1,5 +1,6 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
+#include <boost/make_shared.hpp>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include "Rpc/RpcCommunicator.h"
@@ -30,8 +31,8 @@ void RpcClient::OnAsyncConnect(const boost::system::error_code& err)
 	{
 		return;
 	}
-	auto recvMeta = std::make_shared<RpcMeta>();
-	auto recvMessage = std::make_shared<std::string>();
+	auto recvMeta = boost::make_shared<RpcMeta>();
+	auto recvMessage = boost::make_shared<std::string>();
 	RecvMeta(recvMeta, recvMessage);
 }
 
@@ -70,13 +71,13 @@ void RpcClient::CallMethod(
 {
 	if (done)
 	{
-		auto request_handler = std::make_shared<RequestHandler>(response, done);
+		auto request_handler = boost::make_shared<RequestHandler>(response, done);
 		requestHandlers[++id] = request_handler;
 	}
 	std::hash<std::string> stringHash;
-	auto message = std::make_shared<std::string>();
+	auto message = boost::make_shared<std::string>();
 	request->SerializePartialToString(message.get());
-	auto meta = std::make_shared<RpcMeta>();
+	auto meta = boost::make_shared<RpcMeta>();
 	meta->size = message->size();
 	meta->id = id;
 	meta->method = stringHash(method->full_name());

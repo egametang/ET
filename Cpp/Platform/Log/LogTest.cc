@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <gflags/gflags.h>
+#include <boost/log/detail/thread_id.hpp>
 #include "Log/Log.h"
 
 namespace Egametang {
@@ -14,7 +14,7 @@ class LogTest: public testing::Test
 
 TEST_F(LogTest, Log)
 {
-	ELOG(INFO) << "Test ELOG Marco!";
+	LOG(INFO) << "Test LOG Marco!";
 }
 
 } // namespace Egametang
@@ -22,11 +22,6 @@ TEST_F(LogTest, Log)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
-	google::ParseCommandLineFlags(&argc, &argv, true);
-	Egametang::ELog::Init(argv[0]);
+	Egametang::Log::Init(argv[0]);
 	return RUN_ALL_TESTS();
 }
-
-
-
-

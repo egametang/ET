@@ -30,7 +30,7 @@ public:
 	{
 		std::string sql = select.ToString();
 		ResultSetPtr resultSet(statement->executeQuery(sql));
-		auto dbResult = std::make_shared<DbResult>(resultSet);
+		auto dbResult = boost::make_shared<DbResult>(resultSet);
 		return dbResult;
 	}
 };

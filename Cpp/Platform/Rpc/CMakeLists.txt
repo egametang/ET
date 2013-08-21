@@ -23,19 +23,20 @@ ADD_LIBRARY(Rpc ${RpcSrc})
 SET_PROPERTY(TARGET Rpc PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
-ADD_EXECUTABLE(RpcClientTest RpcClientTest.cc)
-ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
-ADD_EXECUTABLE(RpcServerTest RpcServerTest.cc)
+#ADD_EXECUTABLE(RpcClientTest RpcClientTest.cc)
+#ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
+#ADD_EXECUTABLE(RpcServerTest RpcServerTest.cc)
 
 SET(Tests 
 	RpcCommunicatorTest
-	RpcClientTest
-	RpcSessionTest
-	RpcServerTest
+#	RpcClientTest
+#	RpcSessionTest
+#	RpcServerTest
 )
 
 FOREACH(Test ${Tests})
 	TARGET_LINK_LIBRARIES(${Test}
+		Log
 		Rpc
 		Thread
 		${ThirdPartyLibs}

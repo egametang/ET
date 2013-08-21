@@ -1,7 +1,7 @@
 #ifndef BASE_TYPEDEFS_H
 #define BASE_TYPEDEFS_H
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/cstdint.hpp>
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
@@ -19,12 +19,12 @@ typedef boost::uint64_t uint64;
 
 // smart_ptr typedef
 
-typedef std::shared_ptr<int> IntPtr;
-typedef std::shared_ptr<std::string> StringPtr;
+typedef boost::shared_ptr<int> IntPtr;
+typedef boost::shared_ptr<std::string> StringPtr;
 
 // google
-typedef std::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
-typedef std::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
+typedef boost::shared_ptr<google::protobuf::Service> ProtobufServicePtr;
+typedef boost::shared_ptr<google::protobuf::Message> ProtobufMessagePtr;
 
 } // namespace Egametang
 

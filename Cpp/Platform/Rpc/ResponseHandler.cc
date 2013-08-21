@@ -1,4 +1,5 @@
-#include <memory>
+#include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
 #include "Rpc/MethodInfo.h"
 #include "Rpc/ResponseHandler.h"
 #include "Rpc/RpcCommunicator.h"
@@ -39,8 +40,8 @@ google::protobuf::Message* ResponseHandler::Response()
 
 void ResponseHandler::Run()
 {
-	auto meta = std::make_shared<RpcMeta>();
-	auto message = std::make_shared<std::string>();
+	auto meta = boost::make_shared<RpcMeta>();
+	auto message = boost::make_shared<std::string>();
 	response->SerializeToString(message.get());
 	meta->id = id;
 	meta->size = message->size();

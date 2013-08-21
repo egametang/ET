@@ -2,28 +2,26 @@
 #define RPC_RPCSERVER_H
 
 #include <boost/bind.hpp>
-#include <unordered_set>
-#include <unordered_map>
+#include <boost/unordered_set.hpp>
+#include <boost/unordered_map.hpp>
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <boost/threadpool.hpp>
 #include <google/protobuf/service.h>
 #include "Base/Marcos.h"
 #include "Rpc/Typedef.h"
 
 namespace Egametang {
 
-typedef std::unordered_set<RpcSessionPtr> RpcSessionSet;
-typedef std::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
-
 class RpcServer: public boost::noncopyable, public boost::enable_shared_from_this<RpcServer>
 {
 private:
+	typedef boost::unordered_set<RpcSessionPtr> RpcSessionSet;
+	typedef boost::unordered_map<std::size_t, MethodInfoPtr> MethodMap;
+
 	friend class RpcServerTest;
 
 	boost::asio::io_service& ioService;
 	boost::asio::ip::tcp::acceptor acceptor;
-	boost::threadpool::fifo_pool threadPool;
 	RpcSessionSet sessions;
 	MethodMap methods;
 

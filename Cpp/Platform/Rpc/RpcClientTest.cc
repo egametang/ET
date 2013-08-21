@@ -1,4 +1,3 @@
-#include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
 #include "Rpc/RpcClient.h"
 #include "Thread/CountBarrier.h"
@@ -44,8 +43,8 @@ public:
 		{
 			return;
 		}
-		auto meta = std::make_shared<RpcMeta>();
-		auto message = std::make_shared<std::string>();
+		auto meta = boost::make_shared<RpcMeta>();
+		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -59,9 +58,9 @@ public:
 		EchoResponse response;
 		response.set_num(num);
 
-		auto responseMessage = std::make_shared<std::string>();
+		auto responseMessage = boost::make_shared<std::string>();
 		response.SerializeToString(responseMessage.get());
-		auto responseMeta = std::make_shared<RpcMeta>();
+		auto responseMeta = boost::make_shared<RpcMeta>();
 		responseMeta->id = meta->id;
 		responseMeta->size = responseMessage->size();
 		SendMeta(responseMeta, responseMessage);
@@ -89,7 +88,7 @@ TEST_F(RpcClientTest, Echo)
 
 	CountBarrier barrier(2);
 	RpcServerTest server(ioServer, globalPort, barrier);
-	auto client = std::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
+	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	boost::threadpool::fifo_pool threadPool(2);

@@ -1,13 +1,14 @@
 #include <boost/asio.hpp>
-#include <boost/threadpool.hpp>
-#include <memory>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 #include <gtest/gtest.h>
 #include "Rpc/RpcCommunicator.h"
 #include "Thread/CountBarrier.h"
+#include "Log/Log.h"
 
 namespace Egametang {
 
-static int globalPort = 10001;
+static int globalPort = 11111;
 
 class RpcServerTest: public RpcCommunicator
 {
@@ -41,8 +42,8 @@ public:
 			return;
 		}
 
-		auto meta = std::make_shared<RpcMeta>();
-		auto message = std::make_shared<std::string>();
+		auto meta = boost::make_shared<RpcMeta>();
+		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -62,8 +63,8 @@ public:
 		recvMessage = *message;
 		recvMeta = *meta;
 
-		auto responseMeta = std::make_shared<RpcMeta>();
-		auto response_message = std::make_shared<std::string>(
+		auto responseMeta = boost::make_shared<RpcMeta>();
+		auto response_message = boost::make_shared<std::string>(
 				"response test rpc communicator string");
 		responseMeta->size = response_message->size();
 		responseMeta->method = 123456;
@@ -81,8 +82,7 @@ public:
 	RpcMeta recvMeta;
 
 public:
-	RpcClientTest(boost::asio::io_service& ioService, int port,
-			CountBarrier& barrier):
+	RpcClientTest(boost::asio::io_service& ioService, int port, CountBarrier& barrier):
 		RpcCommunicator(ioService), barrier(barrier)
 	{
 		boost::asio::ip::address address;
@@ -107,18 +107,19 @@ public:
 	{
 		if (err)
 		{
+			LOG(INFO) << "async connect error: " << err.message();
 			return;
 		}
 
-		auto sendMeta = std::make_shared<RpcMeta>();
-		auto sendMessage = std::make_shared<std::string>(
+		auto sendMeta = boost::make_shared<RpcMeta>();
+		auto sendMessage = boost::make_shared<std::string>(
 				"send test rpc communicator string");
 		sendMeta->size = sendMessage->size();
 		sendMeta->method = 654321;
 		SendMeta(sendMeta, sendMessage);
 
-		auto meta = std::make_shared<RpcMeta>();
-		auto message = std::make_shared<std::string>();
+		auto meta = boost::make_shared<RpcMeta>();
+		auto message = boost::make_shared<std::string>();
 		RecvMeta(meta, message);
 	}
 
@@ -139,20 +140,23 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 {
 	boost::asio::io_service ioServer;
 	boost::asio::io_service ioClient;
+
 	CountBarrier barrier(2);
+
 	RpcServerTest rpcServer(ioServer, globalPort, barrier);
+	boost::thread serverThread(boost::bind(&RpcServerTest::Start, &rpcServer));
+
+	boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+
 	RpcClientTest rpcClient(ioClient, globalPort, barrier);
-
-	boost::threadpool::fifo_pool threadPool(2);
-	threadPool.schedule(boost::bind(&RpcServerTest::Start, &rpcServer));
-
-	boost::this_thread::sleep(boost::posix_time::milliseconds(500));
-	threadPool.schedule(boost::bind(&RpcClientTest::Start, &rpcClient));
+	boost::thread clientThread(boost::bind(&RpcClientTest::Start, &rpcClient));
 	barrier.Wait();
-	threadPool.wait();
 
 	ioClient.post(boost::bind(&boost::asio::io_service::stop, &ioClient));
 	ioServer.post(boost::bind(&boost::asio::io_service::stop, &ioServer));
+
+	serverThread.join();
+	clientThread.join();
 
 	ASSERT_EQ(std::string("send test rpc communicator string"), rpcServer.recvMessage);
 	ASSERT_EQ(rpcServer.recvMeta.size, rpcServer.recvMessage.size());
@@ -169,5 +173,6 @@ TEST_F(RpcCommunicatorTest, SendAndRecvString)
 int main(int argc, char* argv[])
 {
 	testing::InitGoogleTest(&argc, argv);
+	Egametang::Log::Init(argv[0]);
 	return RUN_ALL_TESTS();
 }

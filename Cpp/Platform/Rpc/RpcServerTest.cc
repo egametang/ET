@@ -1,5 +1,5 @@
 #include <boost/bind.hpp>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/threadpool.hpp>
 #include <gtest/gtest.h>
@@ -54,14 +54,14 @@ TEST_F(RpcServerTest, ClientAndServer)
 
 	boost::threadpool::fifo_pool threadPool(2);
 
-	auto echoSevice = std::make_shared<MyEcho>();
+	auto echoSevice = boost::make_shared<MyEcho>();
 
-	auto server = std::make_shared<RpcServer>(ioServer, globalPort);
+	auto server = boost::make_shared<RpcServer>(ioServer, globalPort);
 	// 注册service
 	server->Register(echoSevice);
 	ASSERT_EQ(1U, GetMethodMap(server).size());
 
-	auto client = std::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
+	auto client = boost::make_shared<RpcClient>(ioClient, "127.0.0.1", globalPort);
 	EchoService_Stub service(client.get());
 
 	// 定义消息

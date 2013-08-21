@@ -2,7 +2,7 @@
 // Author: egametang@gmail.com (tanghai)
 
 #include <sstream>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include <google/protobuf/descriptor.h>
@@ -170,7 +170,7 @@ TEST_F(MessageFieldTest, GetField_FieldIsMessage)
 
 TEST_F(MessageFieldTest, SetField_FieldIsBool)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getBoolean(8))
 		.WillOnce(Return(true))
 		.WillOnce(Return(false));
@@ -189,7 +189,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsBool)
 
 TEST_F(MessageFieldTest, SetField_FieldIsDouble)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getDouble(6))
 		.WillOnce(Return(1.00))
 		.WillOnce(Return(12345.6789));
@@ -208,7 +208,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsDouble)
 
 TEST_F(MessageFieldTest, SetField_FieldIsInt32)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getInt(2))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFF));
@@ -227,7 +227,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsInt32)
 
 TEST_F(MessageFieldTest, SetField_FieldIsInt64)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getInt64(1))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
@@ -246,7 +246,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsInt64)
 
 TEST_F(MessageFieldTest, SetField_FieldIsUInt32)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getUInt(3))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFF));
@@ -265,7 +265,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsUInt32)
 
 TEST_F(MessageFieldTest, SetField_FieldIsUInt64)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getUInt64(4))
 		.WillOnce(Return(1))
 		.WillOnce(Return(0xFFFFFFFFFFFFFFFF));
@@ -284,7 +284,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsUInt64)
 
 TEST_F(MessageFieldTest, SetField_FieldIsString)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getString(5))
 		.WillOnce(Return("1"))
 		.WillOnce(Return("tanghai"));
@@ -303,7 +303,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsString)
 
 TEST_F(MessageFieldTest, SetField_FieldIsBytes)
 {
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getString(7))
 		.WillOnce(Return("1"))
 		.WillOnce(Return("tanghai is a good student"));
@@ -324,7 +324,7 @@ TEST_F(MessageFieldTest, SetField_FieldIsMessage)
 {
 	std::istringstream is;
 	is.str("id: 123 name: \"pen\"");
-	auto resultSetMock = std::make_shared<ResultSetMock>();
+	auto resultSetMock = boost::make_shared<ResultSetMock>();
 	EXPECT_CALL(*resultSetMock, getBlob(9))
 		.WillOnce(Return(&is));
 	Person person;

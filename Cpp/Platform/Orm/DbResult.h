@@ -26,7 +26,7 @@ public:
 	std::size_t Count();
 
 	template <typename Table>
-	void All(std::vector<std::shared_ptr<Table> >& messages)
+	void All(std::vector<boost::shared_ptr<Table> >& messages)
 	{
 		for (std::size_t i = 0; i < messages.size(); ++i)
 		{
