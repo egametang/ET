@@ -10,15 +10,9 @@ SET_PROPERTY(TARGET Log PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(LogTest LogTest.cc)
 
-SET(Tests
-	LogTest
+TARGET_LINK_LIBRARIES(LogTest
+	Log
+	${ThirdPartyLibs}
 )
-
-FOREACH(Test ${Tests})
-	TARGET_LINK_LIBRARIES(${Test}
-		Log
-		${ThirdPartyLibs}
-	)
-	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Log")
-ENDFOREACH()
+ADD_TEST(LogTest LogTest)
+SET_PROPERTY(TARGET LogTest PROPERTY FOLDER "Tests/Platform/Log")

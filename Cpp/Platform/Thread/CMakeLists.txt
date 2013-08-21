@@ -10,15 +10,9 @@ SET_PROPERTY(TARGET Thread PROPERTY FOLDER "Platform")
 
 ADD_EXECUTABLE(CountBarrierTest CountBarrierTest.cc)
 
-SET(Tests 
-	CountBarrierTest
+TARGET_LINK_LIBRARIES(CountBarrierTest
+	Thread
+	${ThirdPartyLibs}
 )
-
-FOREACH(Test ${Tests})
-	TARGET_LINK_LIBRARIES(${Test}
-		Thread
-		${ThirdPartyLibs}
-	)
-	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Thread")
-ENDFOREACH()
+ADD_TEST(CountBarrierTest CountBarrierTest)
+SET_PROPERTY(TARGET CountBarrierTest PROPERTY FOLDER "Tests/Platform/Thread")

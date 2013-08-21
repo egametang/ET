@@ -5,9 +5,9 @@ PROTOBUF_GENERATE_CPP(ProtoSrcs ProtoHdrs
 FILE(GLOB Header "*.h")
 
 SET(RpcSrc 
-	${Header}
 	${ProtoHdrs}
 	${ProtoSrcs}
+	${Header}
 	MethodInfo.cc
 	RpcCommunicator.cc
 	RpcController.cc
@@ -27,20 +27,11 @@ ADD_EXECUTABLE(RpcCommunicatorTest RpcCommunicatorTest.cc)
 #ADD_EXECUTABLE(RpcSessionTest RpcSessionTest.cc)
 #ADD_EXECUTABLE(RpcServerTest RpcServerTest.cc)
 
-SET(Tests 
-	RpcCommunicatorTest
-#	RpcClientTest
-#	RpcSessionTest
-#	RpcServerTest
+TARGET_LINK_LIBRARIES(RpcCommunicatorTest
+	Log
+	Rpc
+	Thread
+	${ThirdPartyLibs}
 )
-
-FOREACH(Test ${Tests})
-	TARGET_LINK_LIBRARIES(${Test}
-		Log
-		Rpc
-		Thread
-		${ThirdPartyLibs}
-	)
-	ADD_TEST(${Test} ${Test})
-	SET_PROPERTY(TARGET ${Test} PROPERTY FOLDER "Tests/Platform/Rpc")
-ENDFOREACH()
+ADD_TEST(RpcCommunicatorTest RpcCommunicatorTest)
+SET_PROPERTY(TARGET RpcCommunicatorTest PROPERTY FOLDER "Tests/Platform/Rpc")
