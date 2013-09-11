@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using MongoDB.Bson;
 
 namespace Component
 {
-	public class Entity
+	public class Object
 	{
-		public int Id { get; set; }
+		public ObjectId Id { get; set; }
 
 		public Dictionary<string, object> Values { get; private set; }
 
-		public Entity()
+		protected Object()
 		{
+			this.Id = ObjectId.GenerateNewId();
 			this.Values = new Dictionary<string, object>();
 		}
 

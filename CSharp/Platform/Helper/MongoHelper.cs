@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
 namespace Helper
@@ -8,6 +9,11 @@ namespace Helper
 		public static string ToJson(object obj)
 		{
 			return obj.ToJson();
+		}
+
+		public static string ToJson(object obj, JsonWriterSettings settings)
+		{
+			return obj.ToJson(settings);
 		}
 
 		public static T FromJson<T>(string str)
