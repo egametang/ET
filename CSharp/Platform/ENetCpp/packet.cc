@@ -45,6 +45,7 @@ enet_packet_create (const void * data, size_t dataLength, enet_uint32 flags)
     packet -> flags = flags;
     packet -> dataLength = dataLength;
     packet -> freeCallback = NULL;
+    packet -> userData = NULL;
 
     return packet;
 }
@@ -115,7 +116,7 @@ reflect_crc (int val, int bits)
 }
 
 static void 
-initialize_crc32 ()
+initialize_crc32 (void)
 {
     int byte;
 

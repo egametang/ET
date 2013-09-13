@@ -27,6 +27,12 @@ enet_initialize_with_callbacks (ENetVersion version, const ENetCallbacks * inits
 
    return enet_initialize ();
 }
+
+ENetVersion
+enet_linked_version (void)
+{
+    return ENET_VERSION;
+}
            
 void *
 enet_malloc (size_t size)

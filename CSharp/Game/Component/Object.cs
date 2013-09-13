@@ -7,38 +7,38 @@ namespace Component
 	{
 		public ObjectId Id { get; set; }
 
-		public Dictionary<string, object> Values { get; private set; }
+		public Dictionary<string, object> Dict { get; private set; }
 
 		protected Object()
 		{
 			this.Id = ObjectId.GenerateNewId();
-			this.Values = new Dictionary<string, object>();
+			this.Dict = new Dictionary<string, object>();
 		}
 
 		public object this[string key]
 		{
 			set
 			{
-				this.Values[key] = value;	
+				this.Dict[key] = value;	
 			}
 			get
 			{
-				return this.Values[key];
+				return this.Dict[key];
 			}
 		}
 
 		public T Get<T>(string key)
 		{
-			if (!this.Values.ContainsKey(key))
+			if (!this.Dict.ContainsKey(key))
 			{
 				throw new KeyNotFoundException(string.Format("not found key: {0}", key));
 			}
-			return (T)this.Values[key];
+			return (T)this.Dict[key];
 		}
 
 		public bool Contain(string key)
 		{
-			return this.Values.ContainsKey(key);
+			return this.Dict.ContainsKey(key);
 		}
 	}
 }

@@ -337,6 +337,30 @@ enet_peer_reset_queues (ENetPeer * peer)
     peer -> channelCount = 0;
 }
 
+void
+enet_peer_on_connect (ENetPeer * peer)
+{
+    if (peer -> state != ENET_PEER_STATE_CONNECTED && peer -> state != ENET_PEER_STATE_DISCONNECT_LATER)
+    {
+        if (peer -> incomingBandwidth != 0)
+          ++ peer -> host -> bandwidthLimitedPeers;
+
+        ++ peer -> host -> connectedPeers;
+    }
+}
+
+void
+enet_peer_on_disconnect (ENetPeer * peer)
+{
+    if (peer -> state == ENET_PEER_STATE_CONNECTED || peer -> state == ENET_PEER_STATE_DISCONNECT_LATER)
+    {
+        if (peer -> incomingBandwidth != 0)
+          -- peer -> host -> bandwidthLimitedPeers;
+
+        -- peer -> host -> connectedPeers;
+    }
+}
+
 /** Forcefully disconnects a peer.
     @param peer peer to forcefully disconnect
     @remarks The foreign host represented by the peer is not notified of the disconnection and will timeout
@@ -345,6 +369,8 @@ enet_peer_reset_queues (ENetPeer * peer)
 void
 enet_peer_reset (ENetPeer * peer)
 {
+    enet_peer_on_disconnect (peer);
+        
     peer -> outgoingPeerID = ENET_PROTOCOL_MAXIMUM_PEER_ID;
     peer -> connectID = 0;
 
@@ -519,7 +545,11 @@ enet_peer_disconnect (ENetPeer * peer, enet_uint32 data)
     enet_peer_queue_outgoing_command (peer, & command, NULL, 0, 0);
 
     if (peer -> state == ENET_PEER_STATE_CONNECTED || peer -> state == ENET_PEER_STATE_DISCONNECT_LATER)
-      peer -> state = ENET_PEER_STATE_DISCONNECTING;
+    {
+        enet_peer_on_disconnect (peer);
+
+        peer -> state = ENET_PEER_STATE_DISCONNECTING;
+    }
     else
     {
         enet_host_flush (peer -> host);
@@ -584,7 +614,7 @@ void
 enet_peer_setup_outgoing_command (ENetPeer * peer, ENetOutgoingCommand * outgoingCommand)
 {
     ENetChannel * channel = & peer -> channels [outgoingCommand -> command.header.channelID];
-
+    
     peer -> outgoingDataTotal += enet_protocol_command_size (outgoingCommand -> command.header.command) + outgoingCommand -> fragmentLength;
 
     if (outgoingCommand -> command.header.channelID == 0xFF)

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MongoDB.Bson.IO;
+using MongoDB.Bson;
 using Object = Component.Object;
 
 namespace ObjectTest
@@ -10,19 +11,35 @@ namespace ObjectTest
 	{
 	}
 
+	class Player: Object
+	{
+		public Dictionary<ObjectId, Buff> Buffs { get; private set; }
+
+		public Player()
+		{
+			this.Buffs = new Dictionary<ObjectId, Buff>();
+		}
+	}
+
 	[TestClass]
 	public class ObjectTest
 	{
 		[TestMethod]
-		public void TestSerialize()
+		public void Serialize()
 		{
-			var buff = new Buff();
-			buff.Values["health"] = 10L;
-			string json = MongoHelper.ToJson(buff);
+			var player = new Player();
+			player["health"] = 10;
+			for (int i = 0; i < 1; ++i)
+			{
+				var buff = new Buff();
+				player.Buffs.Add(buff.Id, buff);
+			}
 
-			var buff2 = MongoHelper.FromJson<Buff>(json);
+			string json = MongoHelper.ToJson(player);
+			Console.WriteLine(json);
 
-			Assert.AreEqual(10L, buff2.Values["health"]);
+			var player2 = MongoHelper.FromJson<Player>(json);
+			Console.WriteLine(MongoHelper.ToJson(player2));
 		}
 	}
 }

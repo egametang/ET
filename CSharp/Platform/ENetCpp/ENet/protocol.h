@@ -57,7 +57,7 @@ typedef enum _ENetProtocolFlag
 #ifdef _MSC_VER_
 #pragma pack(push, 1)
 #define ENET_PACKED
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) || defined(__clang__)
 #define ENET_PACKED __attribute__ ((packed))
 #else
 #define ENET_PACKED

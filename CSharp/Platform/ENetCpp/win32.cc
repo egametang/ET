@@ -2,7 +2,7 @@
  @file  win32.c
  @brief ENet Win32 system specific functions
 */
-#ifdef WIN32
+#ifdef _WIN32
 
 #include <time.h>
 #define ENET_BUILDING_LIB 1
@@ -38,6 +38,12 @@ enet_deinitialize (void)
     timeEndPeriod (1);
 
     WSACleanup ();
+}
+
+enet_uint32
+enet_host_random_seed (void)
+{
+    return (enet_uint32) timeGetTime ();
 }
 
 enet_uint32
@@ -126,6 +132,21 @@ enet_socket_bind (ENetSocket socket, const ENetAddress * address)
 }
 
 int
+enet_socket_get_address (ENetSocket socket, ENetAddress * address)
+{
+    struct sockaddr_in sin;
+    int sinLength = sizeof (struct sockaddr_in);
+
+    if (getsockname (socket, (struct sockaddr *) & sin, & sinLength) == -1)
+      return -1;
+
+    address -> host = (enet_uint32) sin.sin_addr.s_addr;
+    address -> port = ENET_NET_TO_HOST_16 (sin.sin_port);
+
+    return 0;
+}
+
+int
 enet_socket_listen (ENetSocket socket, int backlog)
 {
     return listen (socket, backlog < 0 ? SOMAXCONN : backlog) == SOCKET_ERROR ? -1 : 0;
@@ -172,6 +193,23 @@ enet_socket_set_option (ENetSocket socket, ENetSocketOption option, int value)
 
         case ENET_SOCKOPT_SNDTIMEO:
             result = setsockopt (socket, SOL_SOCKET, SO_SNDTIMEO, (char *) & value, sizeof (int));
+            break;
+
+        default:
+            break;
+    }
+    return result == SOCKET_ERROR ? -1 : 0;
+}
+
+int
+enet_socket_get_option (ENetSocket socket, ENetSocketOption option, int * value)
+{
+    int result = SOCKET_ERROR, len;
+    switch (option)
+    {
+        case ENET_SOCKOPT_ERROR:
+            len = sizeof(int);
+            result = getsockopt (socket, SOL_SOCKET, SO_ERROR, (char *) value, & len);
             break;
 
         default:
