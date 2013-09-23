@@ -90,10 +90,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Client\RealmClient\RealmClient.csproj">
-      <Project>{3ef3ae01-5ef3-4c5c-ab49-87bb9d06c007}</Project>
-      <Name>RealmClient</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>

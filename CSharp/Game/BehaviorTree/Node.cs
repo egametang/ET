@@ -4,7 +4,7 @@ namespace BehaviorTree
 {
 	public abstract class Node
 	{
-		public string Name { get; set; }
+		public string Name { get; protected set; }
 
 		protected readonly List<Node> children = new List<Node>();
 

@@ -12,6 +12,7 @@ namespace BehaviorTree
 		{
 			this.dictionary.Add("selector", config => new Selector(config));
 			this.dictionary.Add("sequence", config => new Sequence(config));
+			this.dictionary.Add("not", config => new Not(config));
 		}
 
 		public void Register(string name, Func<Config, Node> action)
@@ -28,19 +29,25 @@ namespace BehaviorTree
 			return this.dictionary[config.Name](config);
 		}
 
-		public BehaviorTree CreateTree(Config config)
+		private Node CreateTreeNode(Config config)
 		{
 			var node = this.CreateNode(config);
 			if (config.SubConfigs == null)
 			{
-				return new BehaviorTree(node);
+				return node;
 			}
 
 			foreach (var subConfig in config.SubConfigs)
 			{
-				var subNode = this.CreateNode(subConfig);
+				var subNode = this.CreateTreeNode(subConfig);
 				node.AddChild(subNode);
 			}
+			return node;
+		}
+
+		public BehaviorTree CreateTree(Config config)
+		{
+			var node = this.CreateTreeNode(config);
 			return new BehaviorTree(node);
 		}
 	}
