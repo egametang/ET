@@ -54,7 +54,7 @@ namespace ENet
 		{
 			get
 			{
-				var address = new ENetAddress { host = this.ip, port = this.port };
+				var address = new ENetAddress { Host = this.ip, Port = this.port };
 				return address;
 			}
 		}

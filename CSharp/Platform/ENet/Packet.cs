@@ -79,7 +79,7 @@ namespace ENet
 				{
 					return 0;
 				}
-				return this.Struct.dataLength;
+				return this.Struct.DataLength;
 			}
 		}
 
@@ -88,8 +88,8 @@ namespace ENet
 			get
 			{
 				var enetPacket = this.Struct;
-				var bytes = new byte[enetPacket.dataLength];
-				Marshal.Copy(enetPacket.data, bytes, 0, (int) enetPacket.dataLength);
+				var bytes = new byte[enetPacket.DataLength];
+				Marshal.Copy(enetPacket.Data, bytes, 0, (int) enetPacket.DataLength);
 				return bytes;
 			}
 		}

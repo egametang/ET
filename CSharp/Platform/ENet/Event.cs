@@ -42,7 +42,7 @@ namespace ENet
 		{
 			get
 			{
-				return this.Ev.packet;
+				return this.Ev.Packet;
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace ENet
 		{
 			get
 			{
-				return this.Ev.peer;
+				return this.Ev.Peer;
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace ENet
 		{
 			get
 			{
-				return this.Ev.type;
+				return this.Ev.Type;
 			}
 		}
 	}

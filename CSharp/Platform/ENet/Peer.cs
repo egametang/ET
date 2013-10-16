@@ -68,7 +68,7 @@ namespace ENet
 				{
 					return PeerState.Uninitialized;
 				}
-				return this.Struct.state;
+				return this.Struct.State;
 			}
 		}
 

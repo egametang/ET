@@ -124,41 +124,5 @@ namespace ENet
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void enet_peer_disconnect_later(IntPtr peer, uint data);
-
-		public static bool memcmp(byte[] s1, byte[] s2)
-		{
-			if (s1 == null || s2 == null)
-			{
-				throw new ArgumentNullException();
-			}
-			if (s1.Length != s2.Length)
-			{
-				return false;
-			}
-
-			for (int i = 0; i < s1.Length; i++)
-			{
-				if (s1[i] != s2[i])
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
-		public static int strlen(byte[] s)
-		{
-			if (s == null)
-			{
-				throw new ArgumentNullException();
-			}
-
-			int i;
-			for (i = 0; i < s.Length && s[i] != 0; i++)
-			{
-				;
-			}
-			return i;
-		}
 	}
 }
