@@ -9,17 +9,17 @@ namespace BossClient
 {
 	class ENetChannel: IMessageChannel
 	{
-		private readonly Peer peer;
+		private readonly ESocket eSocket;
 
-		public ENetChannel(Peer peer)
+		public ENetChannel(ESocket eSocket)
 		{
-			this.peer = peer;
+			this.eSocket = eSocket;
 		}
 
 		public async void Dispose()
 		{
-			await this.peer.DisconnectLaterAsync();
-			this.peer.Dispose();
+			await this.eSocket.DisconnectLaterAsync();
+			this.eSocket.Dispose();
 		}
 
 		public void SendMessage<T>(ushort opcode, T message, byte channelID = 0)
@@ -30,30 +30,27 @@ namespace BossClient
 			var opcodeBytes = BitConverter.GetBytes(opcode);
 			opcodeBytes.CopyTo(neworkBytes, 0);
 			protoBytes.CopyTo(neworkBytes, sizeof(ushort));
-			this.peer.WriteAsync(channelID, neworkBytes);
+			this.eSocket.WriteAsync(neworkBytes, channelID);
 		}
 
 		public async Task<Tuple<ushort, byte[]>> RecvMessage()
 		{
-			using (Packet packet = await this.peer.ReadAsync())
+			var bytes = await this.eSocket.ReadAsync();
+			const int opcodeSize = sizeof(ushort);
+			ushort opcode = BitConverter.ToUInt16(bytes, 0);
+			byte flag = bytes[2];
+			if (flag == 0)
 			{
-				byte[] bytes = packet.Bytes;
-				const int opcodeSize = sizeof(ushort);
-				ushort opcode = BitConverter.ToUInt16(bytes, 0);
-				byte flag = bytes[2];
-				if (flag == 0)
-				{
-					var messageBytes = new byte[packet.Length - opcodeSize - 1];
-					Array.Copy(bytes, opcodeSize + 1, messageBytes, 0, messageBytes.Length);
-					return Tuple.Create(opcode, messageBytes);
-				}
-				else
-				{
-					var messageBytes = new byte[packet.Length - opcodeSize - 5];
-					Array.Copy(bytes, opcodeSize + 5, messageBytes, 0, messageBytes.Length);
-					messageBytes = ZlibStream.UncompressBuffer(messageBytes);
-					return Tuple.Create(opcode, messageBytes);
-				}
+				var messageBytes = new byte[bytes.Length - opcodeSize - 1];
+				Array.Copy(bytes, opcodeSize + 1, messageBytes, 0, messageBytes.Length);
+				return Tuple.Create(opcode, messageBytes);
+			}
+			else
+			{
+				var messageBytes = new byte[bytes.Length - opcodeSize - 5];
+				Array.Copy(bytes, opcodeSize + 5, messageBytes, 0, messageBytes.Length);
+				messageBytes = ZlibStream.UncompressBuffer(messageBytes);
+				return Tuple.Create(opcode, messageBytes);
 			}
 		}
 	}

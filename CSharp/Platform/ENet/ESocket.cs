@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 
 namespace ENet
 {
-	public sealed class Peer: IDisposable
+	public sealed class ESocket: IDisposable
 	{
-		private readonly PeerEvent peerEvent = new PeerEvent();
-		private IntPtr peerPtr;
+		private readonly ESocketEvent eSocketEvent = new ESocketEvent();
+		private IntPtr peerPtr = IntPtr.Zero;
+		private readonly IOService service;
 
-		public Peer(IntPtr peerPtr)
+		public ESocket(IOService service)
 		{
-			this.peerPtr = peerPtr;
+			this.service = service;
 		}
 
 		public void Dispose()
@@ -52,11 +53,11 @@ namespace ENet
 			}
 		}
 
-		public PeerEvent PeerEvent
+		public ESocketEvent ESocketEvent
 		{
 			get
 			{
-				return this.peerEvent;
+				return this.eSocketEvent;
 			}
 		}
 
@@ -82,30 +83,66 @@ namespace ENet
 			NativeMethods.enet_peer_throttle_configure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
-		public void WriteAsync(byte channelID, byte[] data)
+		public Task<bool> ConnectAsync(
+			string hostName, ushort port,
+			uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT,
+			uint data = 0)
 		{
-			var packet = new Packet(data);
-			this.WriteAsync(channelID, packet);
+			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			{
+				throw new ArgumentOutOfRangeException("channelLimit");
+			}
+
+			var tcs = new TaskCompletionSource<bool>();
+			var address = new Address { HostName = hostName, Port = port };
+			ENetAddress nativeAddress = address.Struct;
+			this.peerPtr = NativeMethods.enet_host_connect(
+				this.service.HostPtr, ref nativeAddress, channelLimit, data);
+			if (this.peerPtr == IntPtr.Zero)
+			{
+				throw new ENetException("Host connect call failed.");
+			}
+			this.service.PeersManager.Add(this.peerPtr, this);
+			this.ESocketEvent.Connected += e => tcs.TrySetResult(true);
+			return tcs.Task;
 		}
 
-		public void WriteAsync(byte channelID, Packet packet)
+		public Task<bool> AcceptAsync()
 		{
+			if (this.service.PeersManager.ContainsKey(IntPtr.Zero))
+			{
+				throw new ENetException("Do Not Accept Twice!");
+			}
+			var tcs = new TaskCompletionSource<bool>();
+			this.service.PeersManager.Add(this.PeerPtr, this);
+			this.ESocketEvent.Connected += e => tcs.TrySetResult(true);
+			return tcs.Task;
+		}
+
+		public void WriteAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.None)
+		{
+			var packet = new Packet(data, flags);
 			NativeMethods.enet_peer_send(this.peerPtr, channelID, packet.PacketPtr);
 			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
 			packet.PacketPtr = IntPtr.Zero;
 		}
 
-		public Task<Packet> ReadAsync()
+		public Task<byte[]> ReadAsync()
 		{
-			var tcs = new TaskCompletionSource<Packet>();
-			this.PeerEvent.Received += e =>
+			var tcs = new TaskCompletionSource<byte[]>();
+			this.ESocketEvent.Received += e =>
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
 					tcs.TrySetException(new ENetException("Peer Disconnected In Received"));
 				}
-				var packet = new Packet(e.PacketPtr);
-				tcs.TrySetResult(packet);
+
+				using (var packet = new Packet(e.PacketPtr))
+				{
+					var bytes = packet.Bytes;
+					packet.Dispose();
+					tcs.TrySetResult(bytes);
+				}
 			};
 			return tcs.Task;
 		}
@@ -114,7 +151,7 @@ namespace ENet
 		{
 			NativeMethods.enet_peer_disconnect(this.peerPtr, data);
 			var tcs = new TaskCompletionSource<bool>();
-			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
+			this.ESocketEvent.Disconnect += e => tcs.TrySetResult(true);
 			return tcs.Task;
 		}
 
@@ -122,7 +159,7 @@ namespace ENet
 		{
 			NativeMethods.enet_peer_disconnect_later(this.peerPtr, data);
 			var tcs = new TaskCompletionSource<bool>();
-			this.PeerEvent.Disconnect += e => tcs.TrySetResult(true);
+			this.ESocketEvent.Disconnect += e => tcs.TrySetResult(true);
 			return tcs.Task;
 		}
 

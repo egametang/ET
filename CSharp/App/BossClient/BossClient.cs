@@ -10,26 +10,26 @@ namespace BossClient
 	{
 		private int sessionId;
 
-		private readonly ClientHost clientHost = new ClientHost();
+		private readonly IOService ioService = new IOService();
 
 		public BossClient()
 		{
-			this.clientHost.EnableCrc();
+			this.ioService.EnableCrc();
 		}
 
 		public void Dispose()
 		{
-			this.clientHost.Dispose();
+			this.ioService.Dispose();
 		}
 
 		public void RunOnce()
 		{
-			this.clientHost.RunOnce();
+			this.ioService.RunOnce();
 		}
 
 		public void Start(int timeout)
 		{
-			this.clientHost.Start(timeout);
+			this.ioService.Start(timeout);
 		}
 
 		public GateSession GateSession { get; private set; }
@@ -50,8 +50,9 @@ namespace BossClient
 			}
 
 			// 登录gate
-			Peer peer = await this.clientHost.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
-			this.GateSession = new GateSession(loginSessionId, new ENetChannel(peer));
+			var eSocket = new ESocket(this.ioService);
+			await eSocket.ConnectAsync(realmInfo.Item1, realmInfo.Item2);
+			this.GateSession = new GateSession(loginSessionId, new ENetChannel(eSocket));
 			await this.GateSession.Login(realmInfo.Item3);
 		}
 	}

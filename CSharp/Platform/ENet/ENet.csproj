@@ -38,18 +38,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
-    <Compile Include="ClientHost.cs" />
     <Compile Include="ENetException.cs" />
     <Compile Include="Event.cs" />
-    <Compile Include="Host.cs" />
+    <Compile Include="IOService.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="PeerEvent.cs" />
+    <Compile Include="ESocketEvent.cs" />
     <Compile Include="PeersManager.cs" />
     <Compile Include="NativeStructs.cs" />
     <Compile Include="Packet.cs" />
-    <Compile Include="Peer.cs" />
-    <Compile Include="ServerHost.cs" />
+    <Compile Include="ESocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

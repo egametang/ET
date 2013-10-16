@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ENet
 {
-	public sealed class Packet: IDisposable
+	internal sealed class Packet: IDisposable
 	{
 		private IntPtr packet;
 

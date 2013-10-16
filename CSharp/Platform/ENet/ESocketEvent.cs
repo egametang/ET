@@ -2,7 +2,7 @@
 
 namespace ENet
 {
-	public class PeerEvent
+	public class ESocketEvent
 	{
 		private Action<Event> connected;
 		private Action<Event> received;

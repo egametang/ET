@@ -1,6 +1,6 @@
 ﻿namespace ENet
 {
-	public static class Library
+	internal static class Library
 	{
 		public static void Initialize()
 		{

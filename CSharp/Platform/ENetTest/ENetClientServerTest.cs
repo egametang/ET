@@ -9,42 +9,32 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private static async void ClientEvent(ClientHost host, string hostName, ushort port)
+		private static async void ClientEvent(IOService service, string hostName, ushort port)
 		{
-			var peer = await host.ConnectAsync(hostName, port);
-			using (var sPacket = new Packet("0123456789".ToByteArray(), PacketFlags.Reliable))
-			{
-				peer.WriteAsync(0, sPacket);
-			}
+			var eSocket = new ESocket(service);
+			await eSocket.ConnectAsync(hostName, port);
+			eSocket.WriteAsync("0123456789".ToByteArray());
 
-			using (var rPacket = await peer.ReadAsync())
-			{
-				Logger.Debug(rPacket.Bytes.ToHex());
-				CollectionAssert.AreEqual("9876543210".ToByteArray(), rPacket.Bytes);
-			}
+			var bytes = await eSocket.ReadAsync();
+			CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
 
-			await peer.DisconnectAsync();
+			await eSocket.DisconnectAsync();
 
-			host.Stop();
+			service.Stop();
 		}
 
-		private static async void ServerEvent(ServerHost host, Barrier barrier)
+		private static async void ServerEvent(IOService service, Barrier barrier)
 		{
 			barrier.SignalAndWait();
-			var peer = await host.AcceptAsync();
+			var eSocket = new ESocket(service);
+			await eSocket.AcceptAsync();
 			// Client断开,Server端收到Disconnect事件,结束Server线程
-			peer.PeerEvent.Disconnect += ev => host.Stop();
+			eSocket.ESocketEvent.Disconnect += ev => service.Stop();
 
-			using (var rPacket = await peer.ReadAsync())
-			{
-				Logger.Debug(rPacket.Bytes.ToHex());
-				CollectionAssert.AreEqual("0123456789".ToByteArray(), rPacket.Bytes);
-			}
+			var bytes = await eSocket.ReadAsync();
+			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
 
-			using (var sPacket = new Packet("9876543210".ToByteArray(), PacketFlags.Reliable))
-			{
-				peer.WriteAsync(0, sPacket);
-			}
+			eSocket.WriteAsync("9876543210".ToByteArray(), 0, PacketFlags.Reliable);
 		}
 
 		[TestMethod]
@@ -52,8 +42,8 @@ namespace ENetCSTest
 		{
 			const string hostName = "127.0.0.1";
 			const ushort port = 8888;
-			var clientHost = new ClientHost();
-			var serverHost = new ServerHost(hostName, port);
+			var clientHost = new IOService();
+			var serverHost = new IOService(hostName, port);
 
 			var serverThread = new Thread(() => serverHost.Start(10));
 			var clientThread = new Thread(() => clientHost.Start(10));
