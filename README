@@ -1,0 +1,1 @@
+sudo aptitude install git-core screen cmake build-essential pkg-config libboost1.54-all-dev libprotobuf-dev protobuf-compiler
