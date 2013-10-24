@@ -40,5 +40,10 @@ namespace Component
 		{
 			return this.Dict.ContainsKey(key);
 		}
+
+		public bool Remove(string key)
+		{
+			return this.Dict.Remove(key);
+		}
 	}
 }
