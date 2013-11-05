@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
-    <Compile Include="ENetException.cs" />
+    <Compile Include="EException.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="IOService.cs" />
     <Compile Include="Library.cs" />

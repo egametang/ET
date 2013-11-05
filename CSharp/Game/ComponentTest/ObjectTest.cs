@@ -7,9 +7,6 @@ namespace ObjectTest
 {
 	class Player: Object
 	{
-		public Player()
-		{
-		}
 	}
 
 	[TestClass]

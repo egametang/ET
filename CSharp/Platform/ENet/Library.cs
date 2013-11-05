@@ -9,7 +9,7 @@
 				NativeMethods.ENET_VERSION, ref inits);
 			if (ret < 0)
 			{
-				throw new ENetException(string.Format("Initialization failed, ret: {0}", ret));
+				throw new EException(string.Format("Initialization failed, ret: {0}", ret));
 			}
 		}
 

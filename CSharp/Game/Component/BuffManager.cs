@@ -15,6 +15,13 @@ namespace Component
 		[BsonIgnore]
 		public Dictionary<int, Buff> BuffTypeDict { get; private set; }
 
+		public BuffManager()
+		{
+			this.Buffs = new HashSet<Buff>();
+			this.BuffGuidDict = new Dictionary<ObjectId, Buff>();
+			this.BuffTypeDict = new Dictionary<int, Buff>();
+		}
+
 		void ISupportInitialize.BeginInit()
 		{
 		}
@@ -34,17 +41,17 @@ namespace Component
 
 		public bool Add(Buff buff)
 		{
-			if (!this.Buffs.Contains(buff))
+			if (this.Buffs.Contains(buff))
 			{
 				return false;
 			}
 
-			if (!this.BuffGuidDict.ContainsKey(buff.Id))
+			if (this.BuffGuidDict.ContainsKey(buff.Id))
 			{
 				return false;
 			}
 
-			if (!this.BuffTypeDict.ContainsKey(buff.Type))
+			if (this.BuffTypeDict.ContainsKey(buff.Type))
 			{
 				return false;
 			}

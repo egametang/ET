@@ -21,7 +21,7 @@ namespace ENet
 			this.packet = NativeMethods.enet_packet_create(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
-				throw new ENetException("Packet creation call failed");
+				throw new EException("Packet creation call failed");
 			}
 		}
 

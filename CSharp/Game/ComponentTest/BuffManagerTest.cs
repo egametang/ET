@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using Component;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ComponentTest
@@ -11,10 +9,6 @@ namespace ComponentTest
 	[TestClass]
 	public class BuffManagerTest
 	{
-		public BuffManagerTest()
-		{
-		}
-
 		private TestContext testContextInstance;
 
 		public TestContext TestContext
@@ -30,9 +24,13 @@ namespace ComponentTest
 		}
 
 		[TestMethod]
-		public void TestMethod1()
+		public void TestAdd()
 		{
-
+			var buffManager = new BuffManager();
+			var buff = new Buff { Type = 1 };
+			buffManager.Add(buff);
+			var getBuff = buffManager.Get(buff.Id);
+			Assert.AreSame(buff, getBuff);
 		}
 	}
 }

@@ -100,7 +100,7 @@ namespace ENet
 				this.service.HostPtr, ref nativeAddress, channelLimit, data);
 			if (this.peerPtr == IntPtr.Zero)
 			{
-				throw new ENetException("Host connect call failed.");
+				throw new EException("Host connect call failed.");
 			}
 			this.service.PeersManager.Add(this.peerPtr, this);
 			this.ESocketEvent.Connected += e => tcs.TrySetResult(true);
@@ -111,7 +111,7 @@ namespace ENet
 		{
 			if (this.service.PeersManager.ContainsKey(IntPtr.Zero))
 			{
-				throw new ENetException("Do Not Accept Twice!");
+				throw new EException("Do Not Accept Twice!");
 			}
 			var tcs = new TaskCompletionSource<bool>();
 			this.service.PeersManager.Add(this.PeerPtr, this);
@@ -134,7 +134,7 @@ namespace ENet
 			{
 				if (e.EventState == EventState.DISCONNECTED)
 				{
-					tcs.TrySetException(new ENetException("Peer Disconnected In Received"));
+					tcs.TrySetException(new EException("Peer Disconnected In Received"));
 				}
 
 				using (var packet = new Packet(e.PacketPtr))

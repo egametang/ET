@@ -48,7 +48,7 @@ namespace ENet
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new ENetException("Host creation call failed.");
+				throw new EException("Host creation call failed.");
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace ENet
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new ENetException("Host creation call failed.");
+				throw new EException("Host creation call failed.");
 			}
 		}
 
