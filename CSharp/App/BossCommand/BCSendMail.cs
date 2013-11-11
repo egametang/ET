@@ -17,7 +17,7 @@ namespace BossCommand
 		public override async Task<object> DoAsync()
 		{
 			this.CommandString = string.Format(
-				"send_mail --json {0} ", JsonHelper.ToString(this.BossMail));
+				"send_mail --json {0} ", MongoHelper.ToJson(this.BossMail));
 			Logger.Trace(this.CommandString);
 			this.SendMessage(new CMSG_Boss_Gm { Message = CommandString });
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();

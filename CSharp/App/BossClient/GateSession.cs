@@ -55,7 +55,7 @@ namespace BossClient
 			{
 				throw new BossException(string.Format(
 					"session: {0}, SMSG_Auth_Response: {1}",
-					this.ID, JsonHelper.ToString(smsgAuthResponse)));
+					this.ID, MongoHelper.ToJson(smsgAuthResponse)));
 			}
 
 			Logger.Trace("session: {0}, login gate OK!", this.ID);

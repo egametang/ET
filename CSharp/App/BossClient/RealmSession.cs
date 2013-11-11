@@ -119,7 +119,7 @@ namespace BossClient
 			{
 				throw new BossException(string.Format(
 					"session: {0}, SMSG_Password_Protect_Type: {1}",
-					this.ID, JsonHelper.ToString(smsgPasswordProtectType)));
+					this.ID, MongoHelper.ToJson(smsgPasswordProtectType)));
 			}
 
 			// 这个消息已经没有作用,只用来保持原有的代码流程
@@ -133,7 +133,7 @@ namespace BossClient
 			{
 				throw new BossException(
 					string.Format("session: {0}, SMSG_Auth_Logon_Challenge_Response: {1}",
-					this.ID, JsonHelper.ToString(smsgAuthLogonChallengeResponse)));
+					this.ID, MongoHelper.ToJson(smsgAuthLogonChallengeResponse)));
 			}
 
 			Logger.Trace("session: {0}, SMSG_Auth_Logon_Challenge_Response OK", this.ID);
@@ -170,7 +170,7 @@ namespace BossClient
 			{
 				throw new BossException(string.Format(
 					"session: {0}, SMSG_Auth_Logon_Proof_M2: {1}",
-					this.ID, JsonHelper.ToString(smsgAuthLogonProofM2)));
+					this.ID, MongoHelper.ToJson(smsgAuthLogonProofM2)));
 			}
 
 			Logger.Trace("session: {0}, SMSG_Auth_Logon_Proof_M2 OK", this.ID);

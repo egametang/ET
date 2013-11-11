@@ -497,8 +497,8 @@ namespace Modules.Robot
 				return;
 			}
 			var smsgBossCommandResponse = (SMSG_Boss_Command_Response)result;
-			this.ErrorInfo = string.Format(" send command: {0}, error code: {1}", 
-				commandString, JsonHelper.ToString(smsgBossCommandResponse));
+			this.ErrorInfo = string.Format(" send command: {0}, error code: {1}",
+				commandString, MongoHelper.ToJson(smsgBossCommandResponse));
 		}
 	}
 }

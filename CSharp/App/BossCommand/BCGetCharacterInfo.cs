@@ -28,7 +28,7 @@ namespace BossCommand
 				return null;
 			}
 
-			var characterInfo = JsonHelper.FromString<CharacterInfo>(smsgBossCommandResponse.Content);
+			var characterInfo = MongoHelper.FromJson<CharacterInfo>(smsgBossCommandResponse.Content);
 			return characterInfo;
 		}
 	}

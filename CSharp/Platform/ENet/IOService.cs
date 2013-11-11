@@ -2,7 +2,7 @@
 
 namespace ENet
 {
-	public class IOService: IDisposable
+	public sealed class IOService: IDisposable
 	{
 		static IOService()
 		{
@@ -19,8 +19,8 @@ namespace ENet
 			}
 		}
 
-		protected IntPtr host;
-		protected bool isRunning = true;
+		private IntPtr host;
+		private bool isRunning = true;
 		private readonly object eventsLock = new object();
 		private Action events;
 
@@ -82,13 +82,13 @@ namespace ENet
 			this.Dispose(false);
 		}
 
-		public virtual void Dispose()
+		public void Dispose()
 		{
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
-		protected void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.host == IntPtr.Zero)
 			{
