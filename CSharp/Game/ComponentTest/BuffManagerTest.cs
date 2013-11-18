@@ -29,7 +29,7 @@ namespace ComponentTest
 			var buffManager = new BuffManager();
 			var buff = new Buff { Type = 1 };
 			buffManager.Add(buff);
-			var getBuff = buffManager.Get(buff.Id);
+			var getBuff = buffManager.GetById(buff.Id);
 			Assert.AreSame(buff, getBuff);
 		}
 	}

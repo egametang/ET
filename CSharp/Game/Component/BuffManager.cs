@@ -63,17 +63,17 @@ namespace Component
 			return true;
 		}
 
-		public Buff Get(ObjectId guid)
+		public Buff GetById(ObjectId id)
 		{
-			if (!this.BuffGuidDict.ContainsKey(guid))
+			if (!this.BuffGuidDict.ContainsKey(id))
 			{
 				return null;
 			}
 
-			return this.BuffGuidDict[guid];
+			return this.BuffGuidDict[id];
 		}
 
-		public Buff Get(int type)
+		public Buff GetByType(int type)
 		{
 			if (!this.BuffTypeDict.ContainsKey(type))
 			{
@@ -97,15 +97,15 @@ namespace Component
 			return true;
 		}
 
-		public bool Remove(ObjectId guid)
+		public bool RemoveById(ObjectId id)
 		{
-			var buff = this.Get(guid);
+			var buff = this.GetById(id);
 			return this.Remove(buff);
 		}
 
-		public bool Remove(int type)
+		public bool RemoveByType(int type)
 		{
-			var buff = this.Get(type);
+			var buff = this.GetByType(type);
 			return this.Remove(buff);
 		}
 	}

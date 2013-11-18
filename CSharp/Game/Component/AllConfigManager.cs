@@ -43,7 +43,7 @@ namespace Component
 			return configManager[type];
 		}
 
-		public Dictionary<int, T> GetAll<T>(int type) where T : IType
+		public Dictionary<int, T> GetAll<T>() where T : IType
 		{
 			var configManager = (ConfigManager<T>)allConfig[typeof (T).Name];
 			return configManager.GetAll();

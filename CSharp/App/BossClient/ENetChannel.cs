@@ -1,9 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using BossBase;
 using ENet;
 using Helper;
-using Ionic.Zlib;
+using System.IO.Compression;
 
 namespace BossClient
 {
@@ -39,18 +40,27 @@ namespace BossClient
 			const int opcodeSize = sizeof(ushort);
 			ushort opcode = BitConverter.ToUInt16(bytes, 0);
 			byte flag = bytes[2];
-			if (flag == 0)
+
+			switch (flag)
 			{
-				var messageBytes = new byte[bytes.Length - opcodeSize - 1];
-				Array.Copy(bytes, opcodeSize + 1, messageBytes, 0, messageBytes.Length);
-				return Tuple.Create(opcode, messageBytes);
-			}
-			else
-			{
-				var messageBytes = new byte[bytes.Length - opcodeSize - 5];
-				Array.Copy(bytes, opcodeSize + 5, messageBytes, 0, messageBytes.Length);
-				messageBytes = ZlibStream.UncompressBuffer(messageBytes);
-				return Tuple.Create(opcode, messageBytes);
+				case 0:
+				{
+					var messageBytes = new byte[bytes.Length - opcodeSize - 1];
+					Array.Copy(bytes, opcodeSize + 1, messageBytes, 0, messageBytes.Length);
+					return Tuple.Create(opcode, messageBytes);
+				}
+				default:
+				{
+					var decompressStream = new MemoryStream();
+					using (var zipStream = new GZipStream(
+						new MemoryStream(bytes, opcodeSize + 5, bytes.Length - opcodeSize - 5),
+							CompressionMode.Decompress))
+					{
+						zipStream.CopyTo(decompressStream);
+					}
+					var decompressBytes = decompressStream.ToArray();
+					return Tuple.Create(opcode, decompressBytes);
+				}
 			}
 		}
 	}

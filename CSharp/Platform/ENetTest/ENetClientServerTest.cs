@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using ENet;
 using Helper;
-using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetCSTest
