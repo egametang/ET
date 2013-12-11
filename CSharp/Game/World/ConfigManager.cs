@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using Helper;
 
-namespace Component
+namespace World
 {
 	public class ConfigManager<T> : ISupportInitialize, IConfigInitialize where T : IType
 	{

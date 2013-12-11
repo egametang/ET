@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Reflection;
 
-namespace Component
+namespace World
 {
 	public class AllConfigManager
 	{

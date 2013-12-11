@@ -27,14 +27,10 @@ namespace Infrastructure
 		[ImportMany(AllowRecomposition = true)]
 		public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
 
-		#region IPartImportsSatisfiedNotification Members
-
 		public void OnImportsSatisfied()
 		{
 			this.AddRegisteredViews();
 		}
-
-		#endregion
 
 		protected override void OnAttach()
 		{
@@ -50,14 +46,16 @@ namespace Infrastructure
 
 			foreach (var viewEntry in this.RegisteredViews)
 			{
-				if (viewEntry.Metadata.RegionName == this.Region.Name)
+				if (viewEntry.Metadata.RegionName != this.Region.Name)
 				{
-					object view = viewEntry.Value;
+					continue;
+				}
 
-					if (!this.Region.Views.Contains(view))
-					{
-						this.Region.Add(view);
-					}
+				object view = viewEntry.Value;
+
+				if (!this.Region.Views.Contains(view))
+				{
+					this.Region.Add(view);
 				}
 			}
 		}

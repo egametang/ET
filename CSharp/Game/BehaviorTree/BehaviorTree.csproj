@@ -60,13 +60,13 @@
     <Compile Include="Sequence.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Component\Component.csproj">
-      <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>
-      <Name>Component</Name>
-    </ProjectReference>
+    <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages.config" />
+    <ProjectReference Include="..\World\World.csproj">
+      <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>
+      <Name>World</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Object = Component.Object;
+using Object = World.Object;
 
 namespace ObjectTest
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 
-namespace Component
+namespace World
 {
 	public class Object
 	{

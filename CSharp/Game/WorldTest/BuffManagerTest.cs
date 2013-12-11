@@ -1,11 +1,8 @@
-﻿using Component;
+﻿using World;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ComponentTest
+namespace WorldTest
 {
-	/// <summary>
-	/// BuffManagerTest
-	/// </summary>
 	[TestClass]
 	public class BuffManagerTest
 	{

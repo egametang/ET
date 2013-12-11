@@ -1,4 +1,4 @@
-﻿using Component;
+﻿using World;
 
 namespace BehaviorTree
 {

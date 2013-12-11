@@ -1,5 +1,5 @@
 ﻿
-namespace Component
+namespace World
 {
 	public interface IConfigInitialize
 	{
