@@ -3,6 +3,7 @@ using System.IO;
 using Component;
 using Helper;
 using Log;
+using Logic;
 
 namespace World
 {
@@ -10,26 +11,9 @@ namespace World
 	{
 		private static readonly World instance = new World();
 
-		private ILogicEntry iLogicEntry;
+		private readonly LogicEntry logicEntry = LogicEntry.Instance;
 
-		private readonly Config config;
-
-		private World()
-		{
-			this.config = Config.Instance;
-			this.LoadLogic();
-		}
-
-		private void LoadLogic()
-		{
-			string dllPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logic.dll");
-			if (!File.Exists(dllPath))
-			{
-				throw new Exception(string.Format("not found logic dll, path: {0}", dllPath));
-			}
-			var assembly = LoaderHelper.Load(dllPath);
-			this.iLogicEntry = (ILogicEntry)assembly.CreateInstance("Logic.LogicEntry");
-		}
+		private readonly Config config = Config.Instance;
 
 		public static World Instance
 		{
@@ -41,7 +25,7 @@ namespace World
 
 		public void ReloadLogic()
 		{
-			this.LoadLogic();
+			this.logicEntry.Reload();
 		}
 
 		public void ReloadConfig()
@@ -49,13 +33,13 @@ namespace World
 			this.config.Reload();
 		}
 
-		public void Dispatcher(short opcode, byte[] content)
+		public void Enter(short opcode, byte[] content)
 		{
 			try
 			{
 				var messageEnv = new MessageEnv();
 				messageEnv.Set(this);
-				this.iLogicEntry.Enter(messageEnv, opcode, content);
+				this.logicEntry.Enter(messageEnv, opcode, content);
 			}
 			catch (Exception e)
 			{

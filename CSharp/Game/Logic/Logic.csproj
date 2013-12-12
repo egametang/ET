@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handler\ChatHandler.cs" />
-    <Compile Include="LogicEntry.cs" />
     <Compile Include="Handler\ReloadHandler.cs" />
   </ItemGroup>
   <ItemGroup>
