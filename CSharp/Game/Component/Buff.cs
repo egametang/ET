@@ -1,5 +1,5 @@
 ﻿
-namespace World
+namespace Component
 {
 	public class Buff: Object
 	{

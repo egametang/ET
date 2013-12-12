@@ -3,7 +3,7 @@ using System.Windows;
 using Infrastructure;
 using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.Prism.Regions;
-using Modules.BehaviorTree;
+using Modules.Tree;
 using Modules.Robot;
 using Modules.Login;
 using Modules.WCFClient;

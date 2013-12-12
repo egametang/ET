@@ -3,7 +3,7 @@ using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace World
+namespace Component
 {
 	public class BuffManager: ISupportInitialize
 	{

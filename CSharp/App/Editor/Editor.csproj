@@ -117,10 +117,6 @@
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Modules\BehaviorTree\BehaviorTree.csproj">
-      <Project>{6cd185d1-08e0-4729-a999-2d5b57ba8193}</Project>
-      <Name>BehaviorTree</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Modules\Login\Login.csproj">
       <Project>{5aa48f9a-455d-4cd8-a605-a3ac38283e60}</Project>
       <Name>Login</Name>
@@ -128,6 +124,10 @@
     <ProjectReference Include="..\Modules\Robot\Robot.csproj">
       <Project>{5d6ecbcd-be14-4dcb-baec-57089748b164}</Project>
       <Name>Robot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Modules\Tree\Tree.csproj">
+      <Project>{6cd185d1-08e0-4729-a999-2d5b57ba8193}</Project>
+      <Name>Tree</Name>
     </ProjectReference>
     <ProjectReference Include="..\Modules\WCFClient\WCFClient.csproj">
       <Project>{B07D70E7-F902-4F67-A486-B7AF27D6B813}</Project>

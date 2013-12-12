@@ -11,13 +11,13 @@ namespace WorldTest
 		public void TestReload()
 		{
 			var world = World.World.Instance;
-			world.Dispatcher(1, "tanghai".ToByteArray());
+			world.Dispatcher(3, "tanghai".ToByteArray());
 			int count = 10;
 			while (--count != 0)
 			{
 				world.Dispatcher(1, "tanghai".ToByteArray());
-				Thread.Sleep(10000);
-				world.Reload();
+				Thread.Sleep(1);
+				world.ReloadLogic();
 			}
 		}
 	}

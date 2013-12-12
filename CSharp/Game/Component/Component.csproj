@@ -4,13 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB5BCF0A-4741-477A-94C6-49ECA782555F}</ProjectGuid>
+    <ProjectGuid>{0FA529D1-D0A9-4A8E-90F5-117CE80F2EDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Handler</RootNamespace>
-    <AssemblyName>Handler</AssemblyName>
+    <RootNamespace>Component</RootNamespace>
+    <AssemblyName>Component</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\packages\mongocsharpdriver.1.8.3\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,21 +47,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatHandler.cs" />
-    <Compile Include="Dispatcher.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Buff.cs" />
+    <Compile Include="BuffManager.cs" />
+    <Compile Include="ConfigAttribute.cs" />
+    <Compile Include="ConfigManager.cs" />
+    <Compile Include="HandlerAttribute.cs" />
+    <Compile Include="IConfigInitialize.cs" />
+    <Compile Include="IHandler.cs" />
+    <Compile Include="ILogicEntry.cs" />
+    <Compile Include="IType.cs" />
+    <Compile Include="MessageEnv.cs" />
+    <Compile Include="Object.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Platform\Log\Log.csproj">
-      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\World\World.csproj">
-      <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>
-      <Name>World</Name>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
+      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
+      <Name>Helper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

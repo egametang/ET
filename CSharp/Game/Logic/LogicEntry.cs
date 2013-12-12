@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using World;
+using Component;
 
-namespace Handler
+namespace Logic
 {
-	public class Dispatcher : IDispatcher
+	public class LogicEntry : ILogicEntry
     {
-	    private readonly Dictionary<short, IHandle> handlers = new Dictionary<short, IHandle>();
+	    private readonly Dictionary<short, IHandler> handlers = new Dictionary<short, IHandler>();
 
-		public Dispatcher()
+		public LogicEntry()
 		{
-			Type[] types = typeof (Dispatcher).Assembly.GetTypes();
+			Type[] types = typeof (LogicEntry).Assembly.GetTypes();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(HandlerAttribute), false);
@@ -18,19 +18,20 @@ namespace Handler
 				{
 					continue;
 				}
-				var handler = (IHandle)Activator.CreateInstance(type);
+				var handler = (IHandler)Activator.CreateInstance(type);
 				short opcode = ((HandlerAttribute)attrs[0]).Opcode;
 				if (handlers.ContainsKey(opcode))
 				{
-					throw new Exception(string.Format("same opcode {0}", opcode));
+					throw new Exception(string.Format(
+						"same opcode, opcode: {0}, name: {1}", opcode, type.Name));
 				}
 				handlers[opcode] = handler;
 			}
 		}
 
-	    public void Dispatch(MessageEnv messageEnv, short opcode, byte[] content)
+	    public void Enter(MessageEnv messageEnv, short opcode, byte[] content)
 	    {
-		    IHandle handler = null;
+		    IHandler handler = null;
 			if (!handlers.TryGetValue(opcode, out handler))
 			{
 				throw new Exception(string.Format("not found handler opcode {0}", opcode));

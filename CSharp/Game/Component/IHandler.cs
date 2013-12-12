@@ -1,6 +1,6 @@
-﻿namespace World
+﻿namespace Component
 {
-	public interface IHandle
+	public interface IHandler
 	{
 		void Handle(MessageEnv messageEnv, byte[] content);
 	}

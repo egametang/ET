@@ -74,6 +74,10 @@
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Log</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Component\Component.csproj">
+      <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>
+      <Name>Component</Name>
+    </ProjectReference>
     <ProjectReference Include="..\World\World.csproj">
       <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>
       <Name>World</Name>

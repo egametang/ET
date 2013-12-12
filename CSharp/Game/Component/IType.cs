@@ -1,4 +1,4 @@
-﻿namespace World
+﻿namespace Component
 {
 	public interface IType
 	{

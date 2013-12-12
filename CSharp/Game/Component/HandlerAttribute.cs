@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Handler
+namespace Logic
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class HandlerAttribute : Attribute

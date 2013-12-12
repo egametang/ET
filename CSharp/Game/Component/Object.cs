@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 
-namespace World
+namespace Component
 {
 	public class Object
 	{
@@ -34,6 +34,21 @@ namespace World
 				throw new KeyNotFoundException(string.Format("not found key: {0}", key));
 			}
 			return (T)this.Dict[key];
+		}
+
+		public T Get<T>()
+		{
+			return this.Get<T>(typeof(T).Name);
+		}
+
+		public void Set(string key, object obj)
+		{
+			this.Dict[key] = obj;
+		}
+
+		public void Set<T>(T obj)
+		{
+			this.Dict[typeof(T).Name] = obj;
 		}
 
 		public bool Contain(string key)

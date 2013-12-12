@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -62,6 +62,10 @@
     <ProjectReference Include="..\BehaviorTree\BehaviorTree.csproj">
       <Project>{c4e7a34a-095c-4983-ab63-fc2d20cd6824}</Project>
       <Name>BehaviorTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Component\Component.csproj">
+      <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>
+      <Name>Component</Name>
     </ProjectReference>
     <ProjectReference Include="..\World\World.csproj">
       <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>

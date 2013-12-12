@@ -1,4 +1,4 @@
-﻿namespace Modules.BehaviorTree
+﻿namespace Modules.Tree
 {
 	public class TreeNode
 	{

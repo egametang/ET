@@ -1,4 +1,4 @@
-﻿using World;
+﻿using Component;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WorldTest
