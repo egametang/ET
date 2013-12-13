@@ -12,7 +12,7 @@ namespace WorldTest
 		{
 			var world = World.World.Instance;
 			world.Enter(3, "tanghai".ToByteArray());
-			int count = 10;
+			int count = 2;
 			while (--count != 0)
 			{
 				world.Enter(1, "tanghai".ToByteArray());

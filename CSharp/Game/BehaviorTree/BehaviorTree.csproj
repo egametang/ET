@@ -42,11 +42,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BehaviorTree.cs" />
@@ -60,17 +55,13 @@
     <Compile Include="Sequence.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Component\Component.csproj">
       <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>
       <Name>Component</Name>
     </ProjectReference>
-    <ProjectReference Include="..\World\World.csproj">
-      <Project>{cbedbe33-a883-4bfa-ae0a-8b3573f09bd0}</Project>
-      <Name>World</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
