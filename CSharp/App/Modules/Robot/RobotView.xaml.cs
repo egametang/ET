@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using Infrastructure;
 
-namespace Modules.Robot
+namespace Robot
 {
 	/// <summary>
 	/// RobotView.xaml 的交互逻辑

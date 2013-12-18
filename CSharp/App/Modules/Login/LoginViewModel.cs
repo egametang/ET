@@ -9,7 +9,7 @@ using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
-namespace Modules.Login
+namespace Login
 {
 	[Export(contractType: typeof (LoginViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Controls;
 
-namespace Modules.Robot
+namespace Robot
 {
 	public class NumValidation : ValidationRule
 	{

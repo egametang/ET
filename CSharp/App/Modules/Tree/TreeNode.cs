@@ -1,4 +1,4 @@
-﻿namespace Modules.Tree
+﻿namespace Tree
 {
 	public class TreeNode
 	{

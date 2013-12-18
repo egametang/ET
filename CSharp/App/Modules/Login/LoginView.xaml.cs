@@ -2,7 +2,7 @@
 using System.Windows;
 using Infrastructure;
 
-namespace Modules.Login
+namespace Login
 {
 	/// <summary>
 	/// LoginView.xaml 的交互逻辑

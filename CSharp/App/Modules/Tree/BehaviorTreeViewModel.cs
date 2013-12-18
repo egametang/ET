@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 
-namespace Modules.Tree
+namespace Tree
 {
 	[Export(contractType: typeof (BehaviorTreeViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]

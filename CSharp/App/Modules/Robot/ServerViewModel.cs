@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Prism.ViewModel;
 
-namespace Modules.Robot
+namespace Robot
 {
 	[DataContract]
 	public class ServerViewModel : NotificationObject

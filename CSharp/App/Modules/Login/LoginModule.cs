@@ -1,7 +1,7 @@
 ﻿using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.Prism.Modularity;
 
-namespace Modules.Login
+namespace Login
 {
 	[ModuleExport(moduleType: typeof (LoginModule))]
 	public class LoginModule: IModule

@@ -1,5 +1,5 @@
 ﻿
-namespace Modules.Robot
+namespace Robot
 {
 	public class ComboBoxForbiddenType
 	{

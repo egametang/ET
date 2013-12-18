@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 
-namespace Modules.WCFClient
+namespace WCFClient
 {
 	[Export(contractType: typeof(WCFClientViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]

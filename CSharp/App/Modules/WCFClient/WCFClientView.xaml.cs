@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using Infrastructure;
 
-namespace Modules.WCFClient
+namespace WCFClient
 {
 	/// <summary>
 	/// WCFClientView.xaml 的交互逻辑

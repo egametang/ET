@@ -1,4 +1,4 @@
-﻿namespace Modules.Robot
+﻿namespace Robot
 {
 	public class Robot
 	{

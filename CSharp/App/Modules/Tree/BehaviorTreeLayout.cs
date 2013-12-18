@@ -1,6 +1,6 @@
 ﻿using Log;
 
-namespace Modules.Tree
+namespace Tree
 {
 	public static class BehaviorTreeLayout
 	{

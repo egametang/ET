@@ -12,7 +12,7 @@ using Log;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
-namespace Modules.Robot
+namespace Robot
 {
 	[Export(contractType: typeof (RobotViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
