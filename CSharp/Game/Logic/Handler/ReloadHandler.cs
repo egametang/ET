@@ -2,23 +2,23 @@
 
 namespace Logic
 {
-	[HandlerAttribute(1)]
+	[HandlerAttribute(Opcode = Opcode.ReloadHandler)]
 	class ReloadHandlerHandler : IHandler
 	{
 		public void Handle(MessageEnv messageEnv, byte[] content)
 		{
-			var world = messageEnv.Get<World.World>();
-			world.ReloadLogic();
+			var world = World.World.Instance;
+			world.Logic.Reload();
 		}
 	}
 
-	[HandlerAttribute(2)]
+	[HandlerAttribute(Opcode = Opcode.ReloadConfig)]
 	class ReloadConfigHandler: IHandler
 	{
 		public void Handle(MessageEnv messageEnv, byte[] content)
 		{
-			var world = messageEnv.Get<World.World>();
-			world.ReloadConfig();
+			var world = World.World.Instance;
+			world.Config.Reload();
 		}
 	}
 }

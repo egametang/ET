@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Component;
 using Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,13 +12,13 @@ namespace WorldTest
 		public void TestReload()
 		{
 			var world = World.World.Instance;
-			world.Enter(3, "tanghai".ToByteArray());
+			world.Logic.Handle(Opcode.LoginWorld, MongoHelper.ToBson(new CLoginWorld()));
 			int count = 2;
 			while (--count != 0)
 			{
-				world.Enter(1, "tanghai".ToByteArray());
+				world.Logic.Handle(Opcode.ReloadHandler, "tanghai".ToByteArray());
 				Thread.Sleep(1);
-				world.ReloadLogic();
+				world.Logic.Reload();
 			}
 		}
 	}

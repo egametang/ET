@@ -7,9 +7,9 @@ namespace Component
 	{
 		public string RelativeDirectory { get; set; }
 
-		public ConfigAttribute(string relativeDirectory = @"..\Config")
+		public ConfigAttribute()
 		{
-			this.RelativeDirectory = relativeDirectory;
+			this.RelativeDirectory = @"..\Config";
 		}
 	}
 }

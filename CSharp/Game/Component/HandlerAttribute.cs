@@ -1,26 +1,10 @@
 ﻿using System;
 
-namespace Logic
+namespace Component
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class HandlerAttribute : Attribute
 	{
-		private short opcode;
-		public HandlerAttribute(short opcode)
-		{
-			this.opcode = opcode;
-		}
-
-		public short Opcode
-		{
-			get
-			{
-				return this.opcode;
-			}
-			set
-			{
-				this.opcode = value;
-			}
-		}
+		public Opcode Opcode { get; set; }
 	}
 }

@@ -43,13 +43,18 @@
     <Compile Include="BuffManager.cs" />
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="ConfigManager.cs" />
+    <Compile Include="EventAttribute.cs" />
+    <Compile Include="EventDefine.cs" />
     <Compile Include="HandlerAttribute.cs" />
     <Compile Include="IConfigInitialize.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="IHandler.cs" />
-    <Compile Include="ILogicEntry.cs" />
+    <Compile Include="ILogic.cs" />
     <Compile Include="IType.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="MessageEnv.cs" />
     <Compile Include="Object.cs" />
+    <Compile Include="OpcodeDefine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

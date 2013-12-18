@@ -38,7 +38,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Config\GlobalConfig.cs" />
-    <Compile Include="LogicEntry.cs" />
+    <Compile Include="Logic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
