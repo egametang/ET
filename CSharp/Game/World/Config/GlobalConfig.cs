@@ -7,7 +7,7 @@ namespace Component.Config
 	}
 
 	[ConfigAttribute]
-	public class GlobalManager: ConfigManager<GlobalConfig>
+	public class GlobalCategory: ConfigCategory<GlobalConfig>
 	{
 	}
 }

@@ -2,57 +2,94 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using Helper;
 
 namespace Component
 {
-	public abstract class ConfigManager<T> : ISupportInitialize, IConfigInitialize where T : IType
+	public class ConfigManager
 	{
-		protected readonly Dictionary<int, T> dict = new Dictionary<int, T>();
+		private static readonly ConfigManager instance = new ConfigManager();
 
-		public T this[int type]
+		public static ConfigManager Instance
 		{
 			get
 			{
-				return dict[type];
+				return instance;
 			}
 		}
 
-		public string ConfigName
+		public Dictionary<string, object> allConfig;
+
+		private ConfigManager()
 		{
-			get
+			this.Load();
+		}
+
+		private void Load()
+		{
+			this.allConfig = new Dictionary<string, object>();
+			string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+			Type[] types = typeof(ConfigManager).Assembly.GetTypes();
+			foreach (var type in types)
 			{
-				return typeof (T).Name;
+				object[] attrs = type.GetCustomAttributes(typeof(ConfigAttribute), false);
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+
+				object obj = (Activator.CreateInstance(type));
+
+				var iInit = obj as IConfigInitialize;
+				if (iInit == null)
+				{
+					throw new Exception(string.Format("class {0} is not IConfigInitialize", type.Name));
+				}
+
+				var iSupportInitialize = obj as ISupportInitialize;
+				if (iSupportInitialize != null)
+				{
+					iSupportInitialize.BeginInit();
+				}
+
+				string configDir = Path.Combine(
+					currentDir, ((ConfigAttribute)attrs[0]).RelativeDirectory);
+
+				if (!Directory.Exists(configDir))
+				{
+					throw new Exception(string.Format("not found config dir: {0}", configDir));
+				}
+				iInit.Init(configDir);
+
+
+				if (iSupportInitialize != null)
+				{
+					iSupportInitialize.EndInit();
+				}
+
+				allConfig[iInit.ConfigName] = obj;
 			}
 		}
 
-		public Dictionary<int, T> GetAll()
+		public void Reload()
 		{
-			return this.dict;
+			this.Load();
+		}
+ 
+		public T Get<T>(int type) where T : IType
+		{
+			var configManager = (ConfigCategory<T>)allConfig[typeof (T).Name];
+			return configManager[type];
 		}
 
-		public void Init(string configsDir)
+		public Dictionary<int, T> GetAll<T>() where T : IType
 		{
-			string path = Path.Combine(configsDir, this.ConfigName);
-
-			if (!Directory.Exists(path))
-			{
-				throw new Exception(string.Format("not found config path: {0}", path));
-			}
-
-			foreach (var file in Directory.GetFiles(path))
-			{
-				var t = MongoHelper.FromJson<T>(File.ReadAllText(file));
-				this.dict.Add(t.Type, t);
-			}
+			var configManager = (ConfigCategory<T>)allConfig[typeof (T).Name];
+			return configManager.GetAll();
 		}
 
-		public void BeginInit()
+		public ConfigCategory<T> GetConfigManager<T>() where T : IType
 		{
-		}
-
-		public void EndInit()
-		{
+			return (ConfigCategory<T>)allConfig[typeof(T).Name];
 		}
 	}
 }

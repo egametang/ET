@@ -34,7 +34,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event\LoginWorldBeforeEvent.cs" />
+    <Compile Include="Event\BeforeUseItemEvent.cs" />
+    <Compile Include="Event\BeforeLoginWorldEvent.cs" />
     <Compile Include="Handler\ChatHandler.cs" />
     <Compile Include="Handler\LoginWorldHandler.cs" />
     <Compile Include="Handler\ReloadHandler.cs" />

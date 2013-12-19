@@ -2,14 +2,14 @@
 
 namespace Logic.Handler
 {
-	[Handler(Opcode = Opcode.LoginWorld)]
+	[Handler(Opcode = 2)]
 	public class LoginWorldHandler: IHandler
 	{
 		public void Handle(MessageEnv messageEnv, byte[] content)
 		{
 			var world = World.World.Instance;
 			// 登录world前触发事件
-			world.Logic.Trigger(messageEnv, EventType.LoginWorldBeforeEvent);
+			world.LogicManager.Trigger(messageEnv, EventType.BeforeLoginWorldEvent);
 		}
 	}
 }

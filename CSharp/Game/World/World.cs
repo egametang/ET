@@ -1,13 +1,15 @@
 ﻿
+using Component;
+
 namespace World
 {
 	public class World
 	{
 		private static readonly World instance = new World();
 
-		private readonly Logic logic = Logic.Instance;
+		private readonly LogicManager logicManager = LogicManager.Instance;
 
-		private readonly Config config = Config.Instance;
+		private readonly ConfigManager configManager = ConfigManager.Instance;
 
 		public static World Instance
 		{
@@ -17,19 +19,19 @@ namespace World
 			}
 		}
 
-		public Logic Logic
+		public LogicManager LogicManager
 		{
 			get
 			{
-				return this.logic;
+				return this.logicManager;
 			}
 		}
 
-		public Config Config
+		public ConfigManager ConfigManager
 		{
 			get
 			{
-				return this.config;
+				return this.configManager;
 			}
 		}
 	}

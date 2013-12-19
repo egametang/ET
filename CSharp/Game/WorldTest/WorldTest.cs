@@ -12,13 +12,13 @@ namespace WorldTest
 		public void TestReload()
 		{
 			var world = World.World.Instance;
-			world.Logic.Handle(Opcode.LoginWorld, MongoHelper.ToBson(new CLoginWorld()));
+			world.LogicManager.Handle(2, MongoHelper.ToBson(new CLoginWorld()));
 			int count = 2;
 			while (--count != 0)
 			{
-				world.Logic.Handle(Opcode.ReloadHandler, "tanghai".ToByteArray());
+				world.LogicManager.Handle(3, "tanghai".ToByteArray());
 				Thread.Sleep(1);
-				world.Logic.Reload();
+				world.LogicManager.Reload();
 			}
 		}
 	}

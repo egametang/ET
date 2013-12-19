@@ -42,19 +42,21 @@
     <Compile Include="Buff.cs" />
     <Compile Include="BuffManager.cs" />
     <Compile Include="ConfigAttribute.cs" />
+    <Compile Include="ConfigCategory.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="EventAttribute.cs" />
-    <Compile Include="EventDefine.cs" />
+    <Compile Include="EventType.cs" />
     <Compile Include="HandlerAttribute.cs" />
     <Compile Include="IConfigInitialize.cs" />
     <Compile Include="IEvent.cs" />
     <Compile Include="IHandler.cs" />
     <Compile Include="ILogic.cs" />
     <Compile Include="IType.cs" />
+    <Compile Include="LogicManager.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="MessageAttribute.cs" />
     <Compile Include="MessageEnv.cs" />
     <Compile Include="Object.cs" />
-    <Compile Include="OpcodeDefine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +65,10 @@
     <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\Log\Log.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Log</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

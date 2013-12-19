@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Component;
 using Helper;
 using Log;
 
-namespace World
+namespace Component
 {
-	public class Logic : ILogic
+	public class LogicManager : ILogic
     {
-		private static readonly Logic instance = new Logic();
+		private static readonly LogicManager instance = new LogicManager();
 
-		private Dictionary<Opcode, IHandler> handlers;
+		private Dictionary<short, IHandler> handlers;
 
-		private Dictionary<EventType, SortedDictionary<EventNumber, IEvent>> events;
+		private Dictionary<EventType, SortedDictionary<short, IEvent>> events;
 
-		public static Logic Instance
+		public static LogicManager Instance
 		{
 			get
 			{
@@ -23,7 +22,7 @@ namespace World
 			}
 		}
 
-		private Logic()
+		private LogicManager()
 		{
 			this.Load();
 		}
@@ -35,7 +34,7 @@ namespace World
 			Type[] types = assembly.GetTypes();
 
 			// 加载封包处理器
-			this.handlers = new Dictionary<Opcode, IHandler>();
+			this.handlers = new Dictionary<short, IHandler>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(HandlerAttribute), false);
@@ -44,7 +43,7 @@ namespace World
 					continue;
 				}
 				var handler = (IHandler)Activator.CreateInstance(type);
-				Opcode opcode = ((HandlerAttribute)attrs[0]).Opcode;
+				short opcode = ((HandlerAttribute)attrs[0]).Opcode;
 				if (this.handlers.ContainsKey(opcode))
 				{
 					throw new Exception(string.Format(
@@ -54,7 +53,7 @@ namespace World
 			}
 
 			// 加载事件处理器
-			this.events = new Dictionary<EventType, SortedDictionary<EventNumber, IEvent>>();
+			this.events = new Dictionary<EventType, SortedDictionary<short, IEvent>>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
@@ -67,7 +66,7 @@ namespace World
 				var eventNumber = ((EventAttribute)attrs[0]).Number;
 				if (!this.events.ContainsKey(eventType))
 				{
-					this.events[eventType] = new SortedDictionary<EventNumber, IEvent>();
+					this.events[eventType] = new SortedDictionary<short, IEvent>();
 				}
 				if (this.events[eventType].ContainsKey(eventNumber))
 				{
@@ -84,7 +83,7 @@ namespace World
 			this.Load();
 		}
 
-		public void Handle(Opcode opcode, byte[] content)
+		public void Handle(short opcode, byte[] content)
 	    {
 		    IHandler handler = null;
 			if (!handlers.TryGetValue(opcode, out handler))
@@ -105,7 +104,7 @@ namespace World
 
 		public void Trigger(MessageEnv messageEnv, EventType type)
 		{
-			SortedDictionary<EventNumber, IEvent> iEventDict = null;
+			SortedDictionary<short, IEvent> iEventDict = null;
 			if (!this.events.TryGetValue(type, out iEventDict))
 			{
 				return;

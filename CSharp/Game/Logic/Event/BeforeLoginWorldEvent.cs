@@ -3,7 +3,7 @@ using Log;
 
 namespace Logic
 {
-	[EventAttribute(Type = EventType.LoginWorldBeforeEvent, Number = EventNumber.CheckPlayerEvent)]
+	[EventAttribute(Type = EventType.BeforeLoginWorldEvent, Number = 1)]
 	public class CheckPlayerEvent : IEvent
 	{
 		public void Trigger(MessageEnv messageEnv)

@@ -1,4 +1,5 @@
-﻿namespace Component
+﻿
+namespace Component
 {
 	public interface IHandler
 	{

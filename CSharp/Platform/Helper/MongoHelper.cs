@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
@@ -29,6 +30,11 @@ namespace Helper
 		public static T FromBson<T>(byte[] bytes)
 		{
 			return BsonSerializer.Deserialize<T>(bytes);
+		}
+
+		public static object FromBson(byte[] bytes, Type type)
+		{
+			return BsonSerializer.Deserialize(bytes, type);
 		}
 	}
 }
