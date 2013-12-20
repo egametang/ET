@@ -10,9 +10,9 @@ namespace Component
     {
 		private static readonly LogicManager instance = new LogicManager();
 
-		private Dictionary<short, IHandler> handlers;
+		private Dictionary<int, IHandler> handlers;
 
-		private Dictionary<EventType, SortedDictionary<short, IEvent>> events;
+		private Dictionary<EventType, SortedDictionary<int, IEvent>> events;
 
 		public static LogicManager Instance
 		{
@@ -34,7 +34,7 @@ namespace Component
 			Type[] types = assembly.GetTypes();
 
 			// 加载封包处理器
-			this.handlers = new Dictionary<short, IHandler>();
+			this.handlers = new Dictionary<int, IHandler>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(HandlerAttribute), false);
@@ -43,7 +43,7 @@ namespace Component
 					continue;
 				}
 				var handler = (IHandler)Activator.CreateInstance(type);
-				short opcode = ((HandlerAttribute)attrs[0]).Opcode;
+				int opcode = ((HandlerAttribute)attrs[0]).Opcode;
 				if (this.handlers.ContainsKey(opcode))
 				{
 					throw new Exception(string.Format(
@@ -53,7 +53,7 @@ namespace Component
 			}
 
 			// 加载事件处理器
-			this.events = new Dictionary<EventType, SortedDictionary<short, IEvent>>();
+			this.events = new Dictionary<EventType, SortedDictionary<int, IEvent>>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
@@ -66,7 +66,7 @@ namespace Component
 				var eventNumber = ((EventAttribute)attrs[0]).Number;
 				if (!this.events.ContainsKey(eventType))
 				{
-					this.events[eventType] = new SortedDictionary<short, IEvent>();
+					this.events[eventType] = new SortedDictionary<int, IEvent>();
 				}
 				if (this.events[eventType].ContainsKey(eventNumber))
 				{
@@ -104,7 +104,7 @@ namespace Component
 
 		public void Trigger(MessageEnv messageEnv, EventType type)
 		{
-			SortedDictionary<short, IEvent> iEventDict = null;
+			SortedDictionary<int, IEvent> iEventDict = null;
 			if (!this.events.TryGetValue(type, out iEventDict))
 			{
 				return;

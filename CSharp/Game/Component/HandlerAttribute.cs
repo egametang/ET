@@ -5,6 +5,6 @@ namespace Component
 	[AttributeUsage(AttributeTargets.Class)]
 	public class HandlerAttribute : Attribute
 	{
-		public short Opcode { get; set; }
+		public int Opcode { get; set; }
 	}
 }

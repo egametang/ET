@@ -41,11 +41,13 @@
   <ItemGroup>
     <Compile Include="Buff.cs" />
     <Compile Include="BuffManager.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="ConfigCategory.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="EventAttribute.cs" />
     <Compile Include="EventType.cs" />
+    <Compile Include="GameObjectManager.cs" />
     <Compile Include="HandlerAttribute.cs" />
     <Compile Include="IConfigInitialize.cs" />
     <Compile Include="IEvent.cs" />
