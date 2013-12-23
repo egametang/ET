@@ -5,12 +5,12 @@ using Component;
 
 namespace Logic
 {
-	[HandlerAttribute(Opcode = 1)]
+	[Handler(Type = typeof(CChat), Opcode = 1)]
 	class ChatHandler: IHandler
 	{
-		public void Handle(MessageEnv messageEnv, byte[] content)
+		public void Handle(MessageEnv messageEnv)
 		{
-			var chat = MongoHelper.FromBson<CChat>(content);
+			var chat = (CChat)messageEnv[KeyDefine.KMessage];
 
 			var world = World.World.Instance;
 			var globalConfig = world.ConfigManager.Get<GlobalConfig>(1);

@@ -2,10 +2,10 @@
 
 namespace Logic.Handler
 {
-	[Handler(Opcode = 2)]
+	[Handler(Type = typeof(CLoginWorld), Opcode = 2)]
 	public class LoginWorldHandler: IHandler
 	{
-		public void Handle(MessageEnv messageEnv, byte[] content)
+		public void Handle(MessageEnv messageEnv)
 		{
 			var world = World.World.Instance;
 			// 登录world前触发事件

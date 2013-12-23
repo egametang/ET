@@ -3,6 +3,6 @@ namespace Component
 {
 	public interface IHandler
 	{
-		void Handle(MessageEnv messageEnv, byte[] content);
+		void Handle(MessageEnv messageEnv);
 	}
 }

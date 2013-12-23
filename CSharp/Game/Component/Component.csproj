@@ -54,6 +54,7 @@
     <Compile Include="IHandler.cs" />
     <Compile Include="ILogic.cs" />
     <Compile Include="IType.cs" />
+    <Compile Include="KeyDefine.cs" />
     <Compile Include="LogicManager.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageAttribute.cs" />

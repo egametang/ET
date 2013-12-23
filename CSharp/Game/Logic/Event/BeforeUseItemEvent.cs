@@ -3,7 +3,7 @@ using Log;
 
 namespace Logic
 {
-	[EventAttribute(Type = EventType.BeforeUseItemEvent, Number = 1)]
+	[EventAttribute(Type = EventType.BeforeUseItemEvent, Order = 1)]
 	public class UseCountStatisticsEvent : IEvent
 	{
 		public void Trigger(MessageEnv messageEnv)

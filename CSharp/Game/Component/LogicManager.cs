@@ -10,7 +10,7 @@ namespace Component
     {
 		private static readonly LogicManager instance = new LogicManager();
 
-		private Dictionary<int, IHandler> handlers;
+		private Dictionary<int, Tuple<IHandler, Type>> handlers;
 
 		private Dictionary<EventType, SortedDictionary<int, IEvent>> events;
 
@@ -34,7 +34,7 @@ namespace Component
 			Type[] types = assembly.GetTypes();
 
 			// 加载封包处理器
-			this.handlers = new Dictionary<int, IHandler>();
+			var localHandlers = new Dictionary<int, Tuple<IHandler, Type>>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(HandlerAttribute), false);
@@ -44,16 +44,22 @@ namespace Component
 				}
 				var handler = (IHandler)Activator.CreateInstance(type);
 				int opcode = ((HandlerAttribute)attrs[0]).Opcode;
-				if (this.handlers.ContainsKey(opcode))
+				Type messageType = ((HandlerAttribute)attrs[0]).Type;
+				if (opcode == 0 || messageType == null)
+				{
+					throw new Exception(string.Format("not set opcode or type, handler name: {0}", type.Name));
+				}
+				if (localHandlers.ContainsKey(opcode))
 				{
 					throw new Exception(string.Format(
-						"same handler opcode, opcode: {0}, name: {1}", opcode, type.Name));
+						"same handler opcode, opcode: {0}, name: {1}", 
+						opcode, type.Name));
 				}
-				this.handlers[opcode] = handler;
+				localHandlers[opcode] = new Tuple<IHandler, Type>(handler, messageType);
 			}
 
 			// 加载事件处理器
-			this.events = new Dictionary<EventType, SortedDictionary<int, IEvent>>();
+			var localEvents = new Dictionary<EventType, SortedDictionary<int, IEvent>>();
 			foreach (var type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
@@ -62,20 +68,30 @@ namespace Component
 					continue;
 				}
 				var evt = (IEvent)Activator.CreateInstance(type);
-				var eventType = ((EventAttribute)attrs[0]).Type;
-				var eventNumber = ((EventAttribute)attrs[0]).Number;
-				if (!this.events.ContainsKey(eventType))
+				EventType eventType = ((EventAttribute)attrs[0]).Type;
+				int eventOrder = ((EventAttribute)attrs[0]).Order;
+
+				if (eventOrder == 0 || eventType == EventType.DefaultEvent)
 				{
-					this.events[eventType] = new SortedDictionary<int, IEvent>();
+					throw new Exception(string.Format("not set order or type, event name: {0}", type.Name));
 				}
-				if (this.events[eventType].ContainsKey(eventNumber))
+
+				if (!localEvents.ContainsKey(eventType))
+				{
+					localEvents[eventType] = new SortedDictionary<int, IEvent>();
+				}
+				if (localEvents[eventType].ContainsKey(eventOrder))
 				{
 					throw new Exception(string.Format(
 						"same event number, type: {0}, number: {1}, name: {2}", 
-						eventType, eventNumber, type.Name));
+						eventType, eventOrder, type.Name));
 				}
-				this.events[eventType][eventNumber] = evt;
+				localEvents[eventType][eventOrder] = evt;
 			}
+
+			// 
+			this.handlers = localHandlers;
+			this.events = localEvents;
 		}
 
 		public void Reload()
@@ -85,16 +101,18 @@ namespace Component
 
 		public void Handle(short opcode, byte[] content)
 	    {
-		    IHandler handler = null;
-			if (!handlers.TryGetValue(opcode, out handler))
+			Tuple<IHandler, Type> tuple = null;
+			if (!handlers.TryGetValue(opcode, out tuple))
 			{
 				throw new Exception(string.Format("not found handler opcode {0}", opcode));
 			}
 
 			try
 			{
+				object message = MongoHelper.FromBson(content, tuple.Item2);
 				var messageEnv = new MessageEnv();
-				handler.Handle(messageEnv, content);
+				messageEnv[KeyDefine.KMessage] = message;
+				tuple.Item1.Handle(messageEnv);
 			}
 			catch (Exception e)
 			{

@@ -6,6 +6,6 @@ namespace Component
 	public class EventAttribute : Attribute
 	{
 		public EventType Type { get; set; }
-		public int Number { get; set; }
+		public int Order { get; set; }
 	}
 }
