@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Log;
 
 namespace ENet
 {
@@ -11,11 +9,12 @@ namespace ENet
 	{
 		private IntPtr peerPtr = IntPtr.Zero;
 		private readonly EService service;
-		private readonly LinkedList<EEvent> recvEEvents = new LinkedList<EEvent>();
+		private readonly LinkedList<byte[]> recvBuffer = new LinkedList<byte[]>();
 
 		public Action<EEvent> Connected { get; set; }
 		public Action<EEvent> Received { get; set; }
 		public Action<EEvent> Disconnect { get; set; }
+		public Action<int> Error { get; set; }
 
 		public ESocket(EService service)
 		{
@@ -102,7 +101,14 @@ namespace ENet
 				throw new EException("host connect call failed.");
 			}
 			this.service.PeersManager.Add(this.peerPtr, this);
-			this.Connected = e => tcs.TrySetResult(true);
+			this.Connected = eEvent =>
+			{
+				if (eEvent.EventState == EventState.DISCONNECTED)
+				{
+					tcs.TrySetException(new EException("socket disconnected in connect"));
+				}
+				tcs.TrySetResult(true);
+			};
 			return tcs.Task;
 		}
 
@@ -131,6 +137,11 @@ namespace ENet
 				this.service.PeersManager.Add(this.PeerPtr, this);
 				this.Connected = eEvent =>
 				{
+					if (eEvent.EventState == EventState.DISCONNECTED)
+					{
+						tcs.TrySetException(new EException("socket disconnected in accpet"));
+					}
+
 					this.service.PeersManager.Remove(IntPtr.Zero);
 
 					this.PeerPtr = eEvent.PeerPtr;
@@ -154,15 +165,11 @@ namespace ENet
 			var tcs = new TaskCompletionSource<byte[]>();
 
 			// 如果有缓存的包,从缓存中取
-			if (this.recvEEvents.Count > 0)
+			if (this.recvBuffer.Count > 0)
 			{
-				EEvent eEvent = this.recvEEvents.First.Value;
-				this.recvEEvents.RemoveFirst();
-				using (var packet = new EPacket(eEvent.PacketPtr))
-				{
-					var bytes = packet.Bytes;
-					tcs.TrySetResult(bytes);
-				}
+				var bytes = this.recvBuffer.First.Value;
+				this.recvBuffer.RemoveFirst();
+				tcs.TrySetResult(bytes);
 			}
 			// 没有缓存封包,设置回调等待
 			else
@@ -171,7 +178,7 @@ namespace ENet
 				{
 					if (eEvent.EventState == EventState.DISCONNECTED)
 					{
-						tcs.TrySetException(new EException("Peer Disconnected In Received"));
+						tcs.TrySetException(new EException("socket disconnected in receive"));
 					}
 
 					using (var packet = new EPacket(eEvent.PacketPtr))
@@ -187,22 +194,28 @@ namespace ENet
 		public Task<bool> DisconnectAsync(uint data = 0)
 		{
 			NativeMethods.EnetPeerDisconnect(this.peerPtr, data);
+			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
+			this.PeerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
-			this.Disconnect = e => tcs.TrySetResult(true);
+			this.Disconnect = eEvent => tcs.TrySetResult(true);
 			return tcs.Task;
 		}
 
 		public Task<bool> DisconnectLaterAsync(uint data = 0)
 		{
 			NativeMethods.EnetPeerDisconnectLater(this.peerPtr, data);
+			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
+			this.PeerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
-			this.Disconnect = e => tcs.TrySetResult(true);
+			this.Disconnect = eEvent => tcs.TrySetResult(true);
 			return tcs.Task;
 		}
 
 		public void DisconnectNow(uint data)
 		{
 			NativeMethods.EnetPeerDisconnectNow(this.peerPtr, data);
+			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
+			this.PeerPtr = IntPtr.Zero;
 		}
 
 		internal void OnConnected(EEvent eEvent)
@@ -219,9 +232,14 @@ namespace ENet
 
 		internal void OnReceived(EEvent eEvent)
 		{
+			// 如果应用层还未调用readasync则将包放到缓存队列
 			if (this.Received == null)
 			{
-				this.recvEEvents.AddLast(eEvent);
+				using (var packet = new EPacket(eEvent.PacketPtr))
+				{
+					var bytes = packet.Bytes;
+					this.recvBuffer.AddLast(bytes);
+				}
 			}
 			else
 			{
@@ -232,13 +250,22 @@ namespace ENet
 			}
 		}
 
-		internal void OnDisconnect(EEvent e)
+		internal void OnDisconnect(EEvent eEvent)
 		{
 			if (this.Disconnect == null)
 			{
 				return;
 			}
-			this.Disconnect(e);
+			this.Disconnect(eEvent);
+		}
+
+		internal void OnError(int errorCode)
+		{
+			if (this.Error == null)
+			{
+				return;
+			}
+			this.Error(errorCode);
 		}
 	}
 }

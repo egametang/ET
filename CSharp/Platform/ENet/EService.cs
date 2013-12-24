@@ -43,7 +43,7 @@ namespace ENet
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
-				throw new ArgumentOutOfRangeException("peerLimit");
+				throw new ArgumentOutOfRangeException(string.Format("peerLimit: {0}", peerLimit));
 			}
 
 			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
@@ -71,7 +71,7 @@ namespace ENet
 		{
 			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
 			{
-				throw new ArgumentOutOfRangeException("peerLimit");
+				throw new ArgumentOutOfRangeException(string.Format("peerLimit: {0}", peerLimit));
 			}
 
 			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
@@ -282,19 +282,23 @@ namespace ENet
 						// 链接已经被应用层接收
 						eEvent.EventState = EventState.DISCONNECTED;
 						ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
-						this.PeersManager.Remove(eSocket.PeerPtr);
-						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
-						eSocket.PeerPtr = IntPtr.Zero;
+						this.PeersManager.Remove(eEvent.PeerPtr);
 
-						// 等待接收数据中的task抛出异常
-						if (eSocket.Received != null)
+						// 等待的task将抛出异常
+						if (eSocket.Connected != null)
+						{
+							eSocket.OnConnected(eEvent);
+						}
+						else if (eSocket.Received != null)
 						{
 							eSocket.OnReceived(eEvent);
 						}
-						else
+						else if (eSocket.Disconnect != null)
 						{
 							eSocket.OnDisconnect(eEvent);
 						}
+
+						eSocket.OnError(ErrorCode.ClientDisconnect);
 						break;
 					}
 				}
