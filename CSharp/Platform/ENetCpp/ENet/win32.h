@@ -11,6 +11,7 @@
 #pragma warning (disable: 4267) // size_t to int conversion
 #pragma warning (disable: 4244) // 64bit to 32bit int
 #pragma warning (disable: 4018) // signed/unsigned mismatch
+#pragma warning (disable: 4146) // unary minus operator applied to unsigned type
 #endif
 #endif
 

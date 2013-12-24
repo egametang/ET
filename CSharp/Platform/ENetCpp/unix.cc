@@ -2,13 +2,14 @@
  @file  unix.c
  @brief ENet Unix system specific functions
 */
-#ifndef WIN32
+#ifndef _WIN32
 
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
+#include <netinet/tcp.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <string.h>
@@ -258,11 +259,25 @@ enet_socket_set_option (ENetSocket socket, ENetSocketOption option, int value)
             break;
 
         case ENET_SOCKOPT_RCVTIMEO:
-            result = setsockopt (socket, SOL_SOCKET, SO_RCVTIMEO, (char *) & value, sizeof (int));
+        {
+            struct timeval timeVal;
+            timeVal.tv_sec = value / 1000;
+            timeVal.tv_usec = (value % 1000) * 1000;
+            result = setsockopt (socket, SOL_SOCKET, SO_RCVTIMEO, (char *) & timeVal, sizeof (struct timeval));
             break;
+        }
 
         case ENET_SOCKOPT_SNDTIMEO:
-            result = setsockopt (socket, SOL_SOCKET, SO_SNDTIMEO, (char *) & value, sizeof (int));
+        {
+            struct timeval timeVal;
+            timeVal.tv_sec = value / 1000;
+            timeVal.tv_usec = (value % 1000) * 1000;
+            result = setsockopt (socket, SOL_SOCKET, SO_SNDTIMEO, (char *) & timeVal, sizeof (struct timeval));
+            break;
+        }
+
+        case ENET_SOCKOPT_NODELAY:
+            result = setsockopt (socket, IPPROTO_TCP, TCP_NODELAY, (char *) & value, sizeof (int));
             break;
 
         default:

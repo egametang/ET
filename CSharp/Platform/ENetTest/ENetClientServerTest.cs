@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using ENet;
 using Helper;
+using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetCSTest
@@ -8,32 +10,43 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private static async void ClientEvent(IOService service, string hostName, ushort port)
+		private const int pingPangCount = 10000;
+		private static async void ClientEvent(EService service, string hostName, ushort port)
 		{
 			var eSocket = new ESocket(service);
 			await eSocket.ConnectAsync(hostName, port);
-			eSocket.WriteAsync("0123456789".ToByteArray());
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			for (int i = 0; i < pingPangCount; ++i)
+			{
+				eSocket.WriteAsync("0123456789".ToByteArray());
 
-			var bytes = await eSocket.ReadAsync();
-			CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
+				var bytes = await eSocket.ReadAsync();
 
+				CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
+			}
+			stopWatch.Stop();
+			Logger.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
 			await eSocket.DisconnectAsync();
-
 			service.Stop();
 		}
 
-		private static async void ServerEvent(IOService service, Barrier barrier)
+		private static async void ServerEvent(EService service, Barrier barrier)
 		{
 			barrier.SignalAndWait();
 			var eSocket = new ESocket(service);
 			await eSocket.AcceptAsync();
 			// Client断开,Server端收到Disconnect事件,结束Server线程
-			eSocket.ESocketEvent.Disconnect += ev => service.Stop();
+			eSocket.Disconnect += ev => service.Stop();
 
-			var bytes = await eSocket.ReadAsync();
-			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
+			for (int i = 0; i < pingPangCount; ++i)
+			{
+				var bytes = await eSocket.ReadAsync();
 
-			eSocket.WriteAsync("9876543210".ToByteArray(), 0, PacketFlags.Reliable);
+				CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
+
+				eSocket.WriteAsync("9876543210".ToByteArray());
+			}
 		}
 
 		[TestMethod]
@@ -41,8 +54,8 @@ namespace ENetCSTest
 		{
 			const string hostName = "127.0.0.1";
 			const ushort port = 8888;
-			var clientHost = new IOService();
-			var serverHost = new IOService(hostName, port);
+			var clientHost = new EService();
+			var serverHost = new EService(hostName, port);
 
 			var serverThread = new Thread(() => serverHost.Start(10));
 			var clientThread = new Thread(() => clientHost.Start(10));

@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,14 +39,13 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="EException.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="IOService.cs" />
+    <Compile Include="EEvent.cs" />
+    <Compile Include="EService.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="ESocketEvent.cs" />
     <Compile Include="PeersManager.cs" />
     <Compile Include="NativeStructs.cs" />
-    <Compile Include="Packet.cs" />
+    <Compile Include="EPacket.cs" />
     <Compile Include="ESocket.cs" />
   </ItemGroup>
   <ItemGroup>

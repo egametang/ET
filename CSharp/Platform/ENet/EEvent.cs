@@ -8,12 +8,12 @@ namespace ENet
 		DISCONNECTED = 1,
 	}
 
-	public class Event
+	public class EEvent
 	{
 		private readonly ENetEvent ev;
 		private EventState peerState = EventState.CONNECTED;
 
-		public Event(ENetEvent ev)
+		public EEvent(ENetEvent ev)
 		{
 			this.ev = ev;
 		}

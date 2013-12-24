@@ -1,21 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using Log;
 
 namespace ENet
 {
-	public sealed class IOService: IDisposable
+	public sealed class EService: IDisposable
 	{
-		static IOService()
+		static EService()
 		{
 			Library.Initialize();
 		}
 
 		private readonly PeersManager peersManager = new PeersManager();
+		private readonly LinkedList<EEvent> connEEvents = new LinkedList<EEvent>();
 
-		public PeersManager PeersManager
+		internal PeersManager PeersManager
 		{
 			get
 			{
 				return this.peersManager;
+			}
+		}
+
+		internal LinkedList<EEvent> ConnEEvents
+		{
+			get
+			{
+				return this.connEEvents;
 			}
 		}
 
@@ -24,7 +35,7 @@ namespace ENet
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public IOService(string hostName, ushort port, 
+		public EService(string hostName, ushort port, 
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
 			uint channelLimit = 0, 
 			uint incomingBandwidth = 0, 
@@ -42,7 +53,7 @@ namespace ENet
 
 			var address = new Address { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.enet_host_create(
+			this.host = NativeMethods.EnetHostCreate(
 				ref nativeAddress, peerLimit, channelLimit, incomingBandwidth, 
 				outgoingBandwidth);
 
@@ -52,7 +63,7 @@ namespace ENet
 			}
 		}
 
-		public IOService(
+		public EService(
 			uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 
 			uint channelLimit = 0,
 			uint incomingBandwidth = 0, 
@@ -68,7 +79,7 @@ namespace ENet
 				throw new ArgumentOutOfRangeException(string.Format("channelLimit: {0}", channelLimit));
 			}
 
-			this.host = NativeMethods.enet_host_create(
+			this.host = NativeMethods.EnetHostCreate(
 				IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth, outgoingBandwidth);
 
 			if (this.host == IntPtr.Zero)
@@ -77,7 +88,7 @@ namespace ENet
 			}
 		}
 
-		~IOService()
+		~EService()
 		{
 			this.Dispose(false);
 		}
@@ -95,7 +106,7 @@ namespace ENet
 				return;
 			}
 
-			NativeMethods.enet_host_destroy(this.host);
+			NativeMethods.EnetHostDestroy(this.host);
 
 			this.host = IntPtr.Zero;
 		}
@@ -110,39 +121,39 @@ namespace ENet
 
 		public void EnableCrc()
 		{
-			NativeMethods.enet_enable_crc(this.host);
+			NativeMethods.EnetEnableCrc(this.host);
 		}
 
-		private Event GetEvent()
+		private EEvent GetEvent()
 		{
 			var enetEv = new ENetEvent();
-			int ret = NativeMethods.enet_host_check_events(this.host, enetEv);
+			int ret = NativeMethods.EnetHostCheckEvents(this.host, enetEv);
 			if (ret <= 0)
 			{
 				return null;
 			}
-			var e = new Event(enetEv);
+			var e = new EEvent(enetEv);
 			return e;
 		}
 
 		public void CompressWithRangeCoder()
 		{
-			NativeMethods.enet_host_compress_with_range_coder(this.host);
+			NativeMethods.EnetHostCompressWithRangeCoder(this.host);
 		}
 
 		public void DoNotCompress()
 		{
-			NativeMethods.enet_host_compress(this.host, IntPtr.Zero);
+			NativeMethods.EnetHostCompress(this.host, IntPtr.Zero);
 		}
 
 		public void Flush()
 		{
-			NativeMethods.enet_host_flush(this.host);
+			NativeMethods.EnetHostFlush(this.host);
 		}
 
 		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
 		{
-			NativeMethods.enet_host_bandwidth_limit(this.host, incomingBandwidth, outgoingBandwidth);
+			NativeMethods.EnetHostBandwidthLimit(this.host, incomingBandwidth, outgoingBandwidth);
 		}
 
 		public void SetChannelLimit(uint channelLimit)
@@ -151,7 +162,7 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException(string.Format("channelLimit: {0}", channelLimit));
 			}
-			NativeMethods.enet_host_channel_limit(this.host, channelLimit);
+			NativeMethods.EnetHostChannelLimit(this.host, channelLimit);
 		}
 
 		public event Action Events
@@ -198,7 +209,7 @@ namespace ENet
 			{
 				throw new ArgumentOutOfRangeException(string.Format("timeout: {0}", timeout));
 			}
-			return NativeMethods.enet_host_service(this.host, null, (uint)timeout);
+			return NativeMethods.EnetHostService(this.host, null, (uint)timeout);
 		}
 
 		public void RunOnce(int timeout = 0)
@@ -217,62 +228,72 @@ namespace ENet
 
 			while (true)
 			{
-				Event ev = this.GetEvent();
-				if (ev == null)
+				EEvent eEvent = this.GetEvent();
+				if (eEvent == null)
 				{
 					return;
 				}
 
-				switch (ev.Type)
+				switch (eEvent.Type)
 				{
 					case EventType.Connect:
 					{
-						// 这是一个connect peer,否则是一个accept peer
-						if (this.PeersManager.ContainsKey(ev.PeerPtr))
+						// 这是一个connect peer
+						if (this.PeersManager.ContainsKey(eEvent.PeerPtr))
 						{
-							var peer = this.PeersManager[ev.PeerPtr];
-							peer.ESocketEvent.OnConnected(ev);
-							peer.ESocketEvent.Connected = null;
+							ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
+							eSocket.OnConnected(eEvent);
 						}
+						// accept peer
 						else
 						{
-							var peer = this.PeersManager[IntPtr.Zero];
-
-							this.PeersManager.Remove(IntPtr.Zero);
-
-							peer.PeerPtr = ev.PeerPtr;
-							this.PeersManager.Add(peer.PeerPtr, peer);
-
-							peer.ESocketEvent.OnConnected(ev);
-							peer.ESocketEvent.Connected = null;
+							// 如果server端没有acceptasync,则请求放入队列
+							if (!this.PeersManager.ContainsKey(IntPtr.Zero))
+							{
+								this.connEEvents.AddLast(eEvent);
+							}
+							else
+							{
+								ESocket eSocket = this.PeersManager[IntPtr.Zero];
+								eSocket.OnConnected(eEvent);
+							}
 						}
 						break;
 					}
 					case EventType.Receive:
 					{
-						var peer = this.PeersManager[ev.PeerPtr];
-						peer.ESocketEvent.OnReceived(ev);
-						peer.ESocketEvent.Received = null;
+						ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
+						eSocket.OnReceived(eEvent);
 						break;
 					}
 					case EventType.Disconnect:
 					{
-						ev.EventState = EventState.DISCONNECTED;
-
-						var peer = this.PeersManager[ev.PeerPtr];
-						ESocketEvent peerEvent = peer.ESocketEvent;
-
-						this.PeersManager.Remove(peer.PeerPtr);
-						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
-						peer.PeerPtr = IntPtr.Zero;
-
-						if (peerEvent.Received != null)
+						// 如果链接还在缓存中，则删除
+						foreach (EEvent connEEvent in this.connEEvents)
 						{
-							peerEvent.OnReceived(ev);
+							if (connEEvent.PeerPtr != eEvent.PeerPtr)
+							{
+								continue;
+							}
+							this.connEEvents.Remove(connEEvent);
+							return;
+						}
+
+						// 链接已经被应用层接收
+						eEvent.EventState = EventState.DISCONNECTED;
+						ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
+						this.PeersManager.Remove(eSocket.PeerPtr);
+						// enet_peer_disconnect会reset Peer,这里设置为0,防止再次Dispose
+						eSocket.PeerPtr = IntPtr.Zero;
+
+						// 等待接收数据中的task抛出异常
+						if (eSocket.Received != null)
+						{
+							eSocket.OnReceived(eEvent);
 						}
 						else
 						{
-							peerEvent.OnDisconnect(ev);
+							eSocket.OnDisconnect(eEvent);
 						}
 						break;
 					}

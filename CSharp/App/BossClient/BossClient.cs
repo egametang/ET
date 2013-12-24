@@ -10,7 +10,7 @@ namespace BossClient
 	{
 		private int sessionId;
 
-		private readonly IOService ioService = new IOService();
+		private readonly EService ioService = new EService();
 
 		public BossClient()
 		{

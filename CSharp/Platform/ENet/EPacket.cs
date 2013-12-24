@@ -3,29 +3,29 @@ using System.Runtime.InteropServices;
 
 namespace ENet
 {
-	internal sealed class Packet: IDisposable
+	internal sealed class EPacket: IDisposable
 	{
 		private IntPtr packet;
 
-		public Packet(IntPtr packet)
+		public EPacket(IntPtr packet)
 		{
 			this.packet = packet;
 		}
 
-		public Packet(byte[] data, PacketFlags flags = PacketFlags.None)
+		public EPacket(byte[] data, PacketFlags flags = PacketFlags.None)
 		{
 			if (data == null)
 			{
 				throw new ArgumentNullException("data");
 			}
-			this.packet = NativeMethods.enet_packet_create(data, (uint) data.Length, flags);
+			this.packet = NativeMethods.EnetPacketCreate(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
 				throw new EException("Packet creation call failed");
 			}
 		}
 
-		~Packet()
+		~EPacket()
 		{
 			this.Dispose(false);
 		}
@@ -43,7 +43,7 @@ namespace ENet
 				return;
 			}
 
-			NativeMethods.enet_packet_destroy(this.packet);
+			NativeMethods.EnetPacketDestroy(this.packet);
 			this.packet = IntPtr.Zero;
 		}
 

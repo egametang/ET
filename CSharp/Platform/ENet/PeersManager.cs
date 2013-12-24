@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ENet
 {
-	public class PeersManager
+	internal class PeersManager
 	{
 		private readonly Dictionary<IntPtr, ESocket> peersManager = new Dictionary<IntPtr, ESocket>();
 

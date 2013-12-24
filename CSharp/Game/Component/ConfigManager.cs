@@ -26,7 +26,7 @@ namespace Component
 
 		private void Load()
 		{
-			this.allConfig = new Dictionary<string, object>();
+			var localAllConfig = new Dictionary<string, object>();
 			string currentDir = AppDomain.CurrentDomain.BaseDirectory;
 			Type[] types = typeof(ConfigManager).Assembly.GetTypes();
 			foreach (var type in types)
@@ -66,8 +66,9 @@ namespace Component
 					iSupportInitialize.EndInit();
 				}
 
-				allConfig[iInit.ConfigName] = obj;
+				localAllConfig[iInit.ConfigName] = obj;
 			}
+			this.allConfig = localAllConfig;
 		}
 
 		public void Reload()

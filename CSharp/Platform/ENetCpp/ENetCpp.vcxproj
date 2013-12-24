@@ -45,8 +45,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\Platform\;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)\Bin\</OutDir>
-    <IntDir>$(SolutionDir)\Temp\</IntDir>
+    <OutDir>$(SolutionDir)\Bin\Debug\</OutDir>
+    <IntDir>$(SolutionDir)\Temp\Debug\</IntDir>
     <TargetExt>.dll</TargetExt>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>

@@ -5,7 +5,7 @@
 		public static void Initialize()
 		{
 			var inits = new ENetCallbacks();
-			int ret = NativeMethods.enet_initialize_with_callbacks(
+			int ret = NativeMethods.EnetInitializeWithCallbacks(
 				NativeMethods.ENET_VERSION, ref inits);
 			if (ret < 0)
 			{
@@ -15,18 +15,18 @@
 
 		public static void Deinitialize()
 		{
-			NativeMethods.enet_deinitialize();
+			NativeMethods.EnetDeinitialize();
 		}
 
 		public static uint Time
 		{
 			get
 			{
-				return NativeMethods.enet_time_get();
+				return NativeMethods.EnetTimeGet();
 			}
 			set
 			{
-				NativeMethods.enet_time_set(value);
+				NativeMethods.EnetTimeSet(value);
 			}
 		}
 	}
