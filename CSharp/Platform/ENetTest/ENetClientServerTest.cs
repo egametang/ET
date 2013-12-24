@@ -10,7 +10,7 @@ namespace ENetCSTest
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private const int pingPangCount = 10000;
+		private const int pingPangCount = 1000;
 		private static async void ClientEvent(EService service, string hostName, ushort port)
 		{
 			var eSocket = new ESocket(service);
