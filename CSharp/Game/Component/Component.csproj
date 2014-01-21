@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Buff.cs" />
     <Compile Include="BuffManager.cs" />
+    <Compile Include="Character.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="ConfigCategory.cs" />
