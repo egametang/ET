@@ -31,11 +31,16 @@ namespace ENetCSTest
 			service.Stop();
 		}
 
-		private static async void ServerEvent(EService service, Barrier barrier)
+		private static void ServerEvent(EService service, Barrier barrier)
 		{
 			barrier.SignalAndWait();
+			StartAccept(service);
+		}
+
+		private static async void StartAccept(EService service)
+		{
 			var eSocket = new ESocket(service);
-			await eSocket.AcceptAsync();
+			await eSocket.AcceptAsync(() => StartAccept(service));
 			// Client断开,Server端收到Disconnect事件,结束Server线程
 			eSocket.Disconnect += ev => service.Stop();
 
