@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.ViewModel;
 
 namespace Tree
@@ -7,8 +9,8 @@ namespace Tree
 	{
 		private static int globalNum;
 		private readonly int num;
-		private const double width = 80;
-		private const double height = 50;
+		private static double width = 80;
+		private static double height = 50;
 		private readonly TreeNode treeNode;
 		private double connectorX2;
 		private double connectorY2;
@@ -51,6 +53,10 @@ namespace Tree
 			{
 				return width;
 			}
+			set
+			{
+				width = value;
+			}
 		}
 
 		public static double Height
@@ -58,6 +64,10 @@ namespace Tree
 			get
 			{
 				return height;
+			}
+			set
+			{
+				height = value;
 			}
 		}
 
@@ -101,7 +111,7 @@ namespace Tree
 			}
 			set
 			{
-				if (this.treeNode.X == value)
+				if (Math.Abs(this.treeNode.X - value) < 0.1)
 				{
 					return;
 				}
@@ -125,7 +135,7 @@ namespace Tree
 			}
 			set
 			{
-				if (this.treeNode.Y == value)
+				if (Math.Abs(this.treeNode.Y - value) < 0.1)
 				{
 					return;
 				}
@@ -161,7 +171,7 @@ namespace Tree
 		{
 			get
 			{
-				return this.IsRoot? width / 2 : this.connectorX2;
+				return this.IsRoot? Width / 2 : this.connectorX2;
 			}
 			set
 			{

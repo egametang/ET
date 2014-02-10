@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using Infrastructure;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 
 namespace Robot
 {
@@ -138,8 +139,9 @@ namespace Robot
 				{ "套装", 26 },
 			};
 
-			HSSFWorkbook hssfWorkbook = null;
-			using (var file = new FileStream("F:\\MallItemProto.xls", FileMode.Open, FileAccess.Read))
+			HSSFWorkbook hssfWorkbook;
+			const string path = @"F:\MallItemProto.xls";
+			using (var file = new FileStream(path, FileMode.Open, FileAccess.Read))
 			{
 				hssfWorkbook = new HSSFWorkbook(file);
 			}
@@ -159,13 +161,17 @@ namespace Robot
 					continue;
 				}
 				var name = row.GetCell(nameIndex).ToString();
-				if (dict.ContainsKey(name))
+
+				if (!dict.ContainsKey(name))
 				{
-					row.GetCell(nameIndex - 1).SetCellValue(dict[name].ToString());
+					continue;
 				}
+
+				ICell cell = row.GetCell(nameIndex - 1) ?? row.CreateCell(nameIndex - 1);
+				cell.SetCellValue(dict[name].ToString());
 			}
 
-			using (var file = new FileStream("F:\\MallItemProto.xls", FileMode.Open, FileAccess.Write))
+			using (var file = new FileStream(path, FileMode.Open, FileAccess.Write))
 			{
 				hssfWorkbook.Write(file);
 			}

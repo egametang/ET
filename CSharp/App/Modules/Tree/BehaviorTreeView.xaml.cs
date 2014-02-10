@@ -38,7 +38,7 @@ namespace Tree
 		private void MenuNewNode_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			Point point = Mouse.GetPosition(this.listBox);
-			var treeNode = new TreeNode(point.X, point.Y);
+			var treeNode = new TreeNode{ X = point.X, Y = point.Y};
 
 			// one root node
 			if (this.ViewModel.TreeNodes.Count == 0)
