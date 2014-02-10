@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Windows;
 using Infrastructure;
+using NPOI.HSSF.UserModel;
 
 namespace Robot
 {
@@ -100,6 +104,72 @@ namespace Robot
 			await this.ViewModel.SendMail();
 			this.tbLog.AppendText(Environment.NewLine + this.ViewModel.ErrorInfo);
 			this.tbLog.ScrollToEnd();
+		}
+
+		private void btnExecle_Click(object sender, RoutedEventArgs e)
+		{
+			var dict = new Dictionary<string, int>
+			{
+				{ "英雄令", 1 },
+				{ "英雄令材料", 2 },
+				{ "双倍", 3 },
+				{ "会员", 4 },
+				{ "聊天", 5 },
+				{ "材料", 6 },
+				{ "印记页", 7 },
+				{ "血统页", 8 },
+				{ "坐骑", 9 },
+				{ "染色", 10 },
+				{ "星之魂玉", 11 },
+				{ "月之魂玉", 12 },
+				{ "日之魂玉", 13 },
+				{ "技能书", 14 },
+				{ "混沌之玉", 15 },
+				{ "战绩", 16 },
+				{ "坐骑翅膀", 17 },
+				{ "变身", 18 },
+				{ "将星", 19 },
+				{ "平台装备", 20 },
+				{ "将星装备", 21 },
+				{ "血魄", 22 },
+				{ "装饰", 23 },
+				{ "烟花", 24 },
+				{ "英雄礼包", 25 },
+				{ "套装", 26 },
+			};
+
+			HSSFWorkbook hssfWorkbook = null;
+			using (var file = new FileStream("F:\\MallItemProto.xls", FileMode.Open, FileAccess.Read))
+			{
+				hssfWorkbook = new HSSFWorkbook(file);
+			}
+			var sheet = hssfWorkbook.GetSheetAt(0);
+			IEnumerator rows = sheet.GetRowEnumerator();
+
+			const int nameIndex = 'Z' - 'A';
+			rows.MoveNext();
+			rows.MoveNext();
+			rows.MoveNext();
+			rows.MoveNext();
+			while (rows.MoveNext())
+			{
+				var row = (HSSFRow)rows.Current;
+				if (row.GetCell(nameIndex) == null)
+				{
+					continue;
+				}
+				var name = row.GetCell(nameIndex).ToString();
+				if (dict.ContainsKey(name))
+				{
+					row.GetCell(nameIndex - 1).SetCellValue(dict[name].ToString());
+				}
+			}
+
+			using (var file = new FileStream("F:\\MallItemProto.xls", FileMode.Open, FileAccess.Write))
+			{
+				hssfWorkbook.Write(file);
+			}
+			lblShowResult.Content = "OK";
 		}
 	}
 }

@@ -5,8 +5,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 		xmlns:Robot="clr-namespace:Robot"
 		x:Class="Robot.RobotView"
-		mc:Ignorable="d" 
-		d:DesignHeight="750" d:DesignWidth="1280" d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}">
+		mc:Ignorable="d" d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" Height="723.134" Width="1218.806">
 	<UserControl.Resources>
 		<x:Array x:Key="ComboBoxForbiddenTypeKey" Type="Robot:ComboBoxForbiddenType">
 			<Robot:ComboBoxForbiddenType Name="帐号" Value="forbid_buy_item"></Robot:ComboBoxForbiddenType>
@@ -34,7 +33,7 @@
 		</ControlTemplate>
 	</UserControl.Resources>
 	<Grid>
-		<DockPanel x:Name="dock" Visibility="{Binding DockPanelVisiable}">
+		<DockPanel x:Name="dock" Visibility="Visible">
 			<Menu DockPanel.Dock="Top" Margin="0,2" >
 				<MenuItem x:Name="menuLogin" Header="登录" Click="menuLogin_Click"/>
 				<MenuItem Header="服务器"  >
@@ -44,12 +43,12 @@
 			</Menu>
 			<Grid>
 				<Canvas>
-					<TabControl Name="tcAll" Height="713" Width="867">
+					<TabControl Name="tcAll" Height="676" Width="867" Canvas.Top="10" >
 						<TabItem Header="服务器">
-							<Canvas>
-								<ListBox Height="667" Width="119" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
+							<Canvas Margin="0,0,0,9">
+								<ListBox Height="611" Width="112" SelectionMode="Multiple" ItemsSource="{Binding ServerInfos}" 
 										d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" 
-										BorderThickness="3" BorderBrush="BurlyWood" >
+										BorderThickness="3" BorderBrush="BurlyWood" Canvas.Top="10" Canvas.Left="10" >
 									<ListBox.ItemTemplate>
 										<DataTemplate>
 											<Label Content="{Binding Name}" />
@@ -71,8 +70,8 @@
 							</Canvas>
 						</TabItem>
 						<TabItem Header="角色">
-							<Canvas>
-								<GroupBox Header="角色信息" Canvas.Left="10" Height="667" Width="837" BorderBrush="BurlyWood">
+							<Canvas Margin="0,0,-13,-9">
+								<GroupBox Header="角色信息" Canvas.Left="10" Height="639" Width="837" BorderBrush="BurlyWood">
 									<Canvas>
 										<ComboBox x:Name="cbFindType" SelectedIndex="{Binding FindTypeIndex}" Canvas.Left="32" Canvas.Top="23" Height="25">
 											<ComboBoxItem Content="帐 号"/>
@@ -81,13 +80,13 @@
 										</ComboBox>
 										<TextBox Width="166" Text="{Binding FindType}" Canvas.Left="88" Canvas.Top="23" Height="25"/>
 										<Button x:Name="btnFindPlayer" Content="查询" Click="btnFindPlayer_Click" Canvas.Left="261" Canvas.Top="23" Height="25"/>
-										<Label Content="帐 号:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
-										<TextBox Text="{Binding Account}"  Grid.Row="1" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
-										<Label Content="名 字:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
-										<TextBox Text="{Binding Name}" Grid.Row="2" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
-										<Label Content="GUID:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
-										<TextBox Text="{Binding Guid}" Grid.Row="3" Grid.Column="1" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
-										<TabControl Name="tcCharacterInfo" Height="475" Canvas.Top="160" Width="815" IsEnabled="False">
+										<Label Content="帐 号:" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="52" />
+										<TextBox Text="{Binding Account}" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="53" Width="204"/>
+										<Label Content="名 字:" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="83" />
+										<TextBox Text="{Binding Name}" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="84" Width="204"/>
+										<Label Content="GUID:" HorizontalAlignment="Center" Canvas.Left="32" Canvas.Top="114" />
+										<TextBox Text="{Binding Guid}" IsReadOnly="True" Height="25" Canvas.Left="88" Canvas.Top="114" Width="204"/>
+										<TabControl Name="tcCharacterInfo" Height="447" Canvas.Top="160" Width="815" IsEnabled="False">
 											<TabItem Header="邮件">
 												<Canvas>
 													<GroupBox Header="发送邮件" Canvas.Left="10" Canvas.Top="10" Height="279" Width="323">
@@ -155,12 +154,18 @@
 								</GroupBox>
 							</Canvas>
 						</TabItem>
+						<TabItem Header="工具">
+							<Canvas>
+								<Button Content="Execle转换" Canvas.Left="10" Canvas.Top="10" Width="75" Click="btnExecle_Click"/>
+								<Label Name="lblShowResult" Canvas.Left="90" Canvas.Top="10" Height="23" Width="54" RenderTransformOrigin="-0.35,0.567"></Label>
+							</Canvas>
+						</TabItem>
 					</TabControl>
-					<TextBox Name="tbLog" Height="675" Canvas.Left="872" TextWrapping="Wrap" Text="" 
-						Canvas.Top="38" Width="398" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" 
+					<TextBox Name="tbLog" Height="648" Canvas.Left="882" TextWrapping="Wrap" Text="" 
+						Canvas.Top="38" Width="327" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" 
 						VerticalScrollBarVisibility="Visible"/>
-					<TextBox Text="{Binding Command}" Height="23" Canvas.Left="872" TextWrapping="Wrap" Canvas.Top="10" Width="315" />
-					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1195" Canvas.Top="10" Width="75" Click="btnSendCommand_Click"/>
+					<TextBox Text="{Binding Command}" Height="38" Canvas.Left="882" TextWrapping="Wrap" Width="247" />
+					<Button Name="btnSendCommand" Content="发送" Canvas.Left="1134" Canvas.Top="10" Width="75" Click="btnSendCommand_Click"/>
 				</Canvas>
 			</Grid>
 		</DockPanel>
