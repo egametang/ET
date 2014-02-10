@@ -156,7 +156,7 @@
 						</TabItem>
 						<TabItem Header="工具">
 							<Canvas>
-								<Button Content="Execle转换" Canvas.Left="10" Canvas.Top="10" Width="75" Click="btnExecle_Click"/>
+								<Button Content="excel转换" Canvas.Left="10" Canvas.Top="10" Width="75" Click="btnExcel_Click"/>
 								<Label Name="lblShowResult" Canvas.Left="90" Canvas.Top="10" Height="23" Width="54" RenderTransformOrigin="-0.35,0.567"></Label>
 							</Canvas>
 						</TabItem>

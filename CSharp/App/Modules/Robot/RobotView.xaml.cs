@@ -107,7 +107,7 @@ namespace Robot
 			this.tbLog.ScrollToEnd();
 		}
 
-		private void btnExecle_Click(object sender, RoutedEventArgs e)
+		private void btnExcel_Click(object sender, RoutedEventArgs e)
 		{
 			var dict = new Dictionary<string, int>
 			{
