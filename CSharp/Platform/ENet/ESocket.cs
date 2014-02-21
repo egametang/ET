@@ -112,7 +112,7 @@ namespace ENet
 			return tcs.Task;
 		}
 
-		public Task<bool> AcceptAsync(Action action)
+		public Task<bool> AcceptAsync()
 		{
 			if (this.service.PeersManager.ContainsKey(IntPtr.Zero))
 			{
@@ -129,7 +129,6 @@ namespace ENet
 
 				this.PeerPtr = eEvent.PeerPtr;
 				this.service.PeersManager.Add(this.PeerPtr, this);
-				action();
 				tcs.TrySetResult(true);
 			}
 			else
@@ -146,7 +145,6 @@ namespace ENet
 
 					this.PeerPtr = eEvent.PeerPtr;
 					this.service.PeersManager.Add(this.PeerPtr, this);
-					action();
 					tcs.TrySetResult(true); 
 				};
 			}

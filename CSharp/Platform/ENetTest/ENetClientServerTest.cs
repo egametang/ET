@@ -5,12 +5,12 @@ using Helper;
 using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ENetCSTest
+namespace ENetTest
 {
 	[TestClass]
 	public class ENetClientServerTest
 	{
-		private const int pingPangCount = 1000;
+		private const int pingPangCount = 10000;
 		private static async void ClientEvent(EService service, string hostName, ushort port)
 		{
 			var eSocket = new ESocket(service);
@@ -31,19 +31,27 @@ namespace ENetCSTest
 			service.Stop();
 		}
 
-		private static void ServerEvent(EService service, Barrier barrier)
+		private static async void ServerEvent(EService service, Barrier barrier)
 		{
 			barrier.SignalAndWait();
-			StartAccept(service);
+
+			bool isRunning = true;
+			while (isRunning)
+			{
+				Logger.Debug("start accept");
+				var eSocket = new ESocket(service);
+				await eSocket.AcceptAsync();
+				eSocket.Disconnect += ev =>
+				{
+					isRunning = false;
+					service.Stop();
+				};
+				Echo(eSocket);
+			}
 		}
 
-		private static async void StartAccept(EService service)
+		private static async void Echo(ESocket eSocket)
 		{
-			var eSocket = new ESocket(service);
-			await eSocket.AcceptAsync(() => StartAccept(service));
-			// Client断开,Server端收到Disconnect事件,结束Server线程
-			eSocket.Disconnect += ev => service.Stop();
-
 			for (int i = 0; i < pingPangCount; ++i)
 			{
 				var bytes = await eSocket.ReadAsync();
@@ -62,8 +70,8 @@ namespace ENetCSTest
 			var clientHost = new EService();
 			var serverHost = new EService(hostName, port);
 
-			var serverThread = new Thread(() => serverHost.Start(10));
-			var clientThread = new Thread(() => clientHost.Start(10));
+			var serverThread = new Thread(() => serverHost.Start());
+			var clientThread = new Thread(() => clientHost.Start());
 
 			serverThread.Start();
 			clientThread.Start();
