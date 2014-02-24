@@ -33,6 +33,7 @@ namespace ZmqTest
 						Logger.Debug(string.Format("req: {0}", msg));
 						poller.Stop();
 					};
+					req.Send("hello world!");
 					poller.AddSocket(req);
 					poller.Start();
 				}
