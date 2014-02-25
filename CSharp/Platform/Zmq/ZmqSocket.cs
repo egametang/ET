@@ -4,20 +4,29 @@ using NetMQ;
 
 namespace Zmq
 {
-	public class ZmqSocket
+	public class ZmqSocket: IDisposable
 	{
+		private ZmqPoller poller;
 		private readonly NetMQSocket socket;
 
-		public ZmqSocket(NetMQSocket socket)
+		public ZmqSocket(ZmqPoller poller, NetMQSocket socket)
 		{
+			this.poller = poller;
 			this.socket = socket;
+			poller.AddSocket(this.socket);
+		}
+
+		public void Dispose()
+		{
+			this.poller.RemoveSocket(this.socket);
+			this.socket.Dispose();
 		}
 
 		private EventHandler<NetMQSocketEventArgs> SendHandler { get; set; }
 
 		private EventHandler<NetMQSocketEventArgs> RecvHandler { get; set; }
 
-	    public Task<byte[]> Recv()
+	    public Task<byte[]> RecvAsync()
 	    {
 			var tcs = new TaskCompletionSource<byte[]>();
 
@@ -32,18 +41,28 @@ namespace Zmq
 		    return tcs.Task;
 	    }
 
-		public Task<bool> Send(byte[] bytes)
+		public Task<bool> SendAsync(byte[] bytes)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
 			this.SendHandler = (sender, args) =>
 			{
 				args.Socket.SendReady -= this.SendHandler;
+				this.socket.Send(bytes, bytes.Length, true);
 				tcs.TrySetResult(true);
 			};
 			this.socket.SendReady += this.SendHandler;
-			this.socket.Send(bytes, bytes.Length, true);
 			return tcs.Task;
 		}
-    }
+
+		public void Connect(string address)
+		{
+			this.socket.Connect(address);
+		}
+
+		public void Bind(string address)
+		{
+			this.socket.Bind(address);
+		}
+	}
 }
