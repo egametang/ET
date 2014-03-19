@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using BossBase;
-using Log;
+using Logger;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
@@ -127,7 +127,7 @@ namespace Login
 			catch (Exception e)
 			{
 				this.ErrorInfo = "登录失败";
-				Logger.Trace(e.ToString());
+				Log.Trace(e.ToString());
 				return;
 			}
 			

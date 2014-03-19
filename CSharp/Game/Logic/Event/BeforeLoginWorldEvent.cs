@@ -1,5 +1,5 @@
 ﻿using Component;
-using Log;
+using Logger;
 
 namespace Logic
 {
@@ -8,7 +8,7 @@ namespace Logic
 	{
 		public void Trigger(MessageEnv messageEnv)
 		{
-			Logger.Trace("check player");
+			Log.Trace("check player");
 		}
 	}
 }

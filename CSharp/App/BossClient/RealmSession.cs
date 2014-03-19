@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossClient
 {
@@ -51,7 +51,7 @@ namespace BossClient
 
 			if (opcode != MessageOpcode.SMSG_AUTH_LOGON_CHALLENGE_RESPONSE)
 			{
-				Logger.Trace("opcode: {0}", opcode);
+				Log.Trace("opcode: {0}", opcode);
 				throw new BossException(string.Format(
 					"session: {0}, opcode: {1}", this.ID, opcode));
 			}
@@ -109,7 +109,7 @@ namespace BossClient
 				PasswordMd5 = passwordMd5Hex
 			};
 			
-			Logger.Trace("session: {0}, account: {1}, password: {2}", this.ID,
+			Log.Trace("session: {0}, account: {1}, password: {2}", this.ID,
 				cmsgAuthLogonPermit.Account.ToStr(), cmsgAuthLogonPermit.PasswordMd5.ToHex());
 
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_AUTH_LOGON_PERMIT, cmsgAuthLogonPermit);
@@ -136,7 +136,7 @@ namespace BossClient
 					this.ID, MongoHelper.ToJson(smsgAuthLogonChallengeResponse)));
 			}
 
-			Logger.Trace("session: {0}, SMSG_Auth_Logon_Challenge_Response OK", this.ID);
+			Log.Trace("session: {0}, SMSG_Auth_Logon_Challenge_Response OK", this.ID);
 
 			// 以下是SRP6处理过程
 			var n = smsgAuthLogonChallengeResponse.N.ToUBigInteger();
@@ -147,7 +147,7 @@ namespace BossClient
 			var srp6Client = new SRP6Client(
 				new SHA1Managed(), n, g, b, salt, account.ToByteArray(), passwordMd5Hex);
 
-			Logger.Debug("s: {0}\nN: {1}\nG: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}\na: {8}",
+			Log.Debug("s: {0}\nN: {1}\nG: {2}\nB: {3}\nA: {4}\nS: {5}\nK: {6}\nm: {7}\na: {8}",
 				srp6Client.Salt.ToUBigIntegerArray().ToHex(),
 				srp6Client.N.ToUBigIntegerArray().ToHex(), 
 				srp6Client.G.ToUBigIntegerArray().ToHex(),
@@ -173,14 +173,14 @@ namespace BossClient
 					this.ID, MongoHelper.ToJson(smsgAuthLogonProofM2)));
 			}
 
-			Logger.Trace("session: {0}, SMSG_Auth_Logon_Proof_M2 OK", this.ID);
+			Log.Trace("session: {0}, SMSG_Auth_Logon_Proof_M2 OK", this.ID);
 
 			// 请求realm list
 			var cmsgRealmList = new CMSG_Realm_List();
 			this.MessageChannel.SendMessage(MessageOpcode.CMSG_REALM_LIST, cmsgRealmList);
 			var smsgRealmList = await this.Handle_SMSG_Realm_List();
 
-			Logger.Trace("session: {0}, SMSG_Realm_List OK", this.ID);
+			Log.Trace("session: {0}, SMSG_Realm_List OK", this.ID);
 
 			string gateIP = smsgRealmList.GateIP;
 			ushort gatePort = (ushort)smsgRealmList.GatePort;

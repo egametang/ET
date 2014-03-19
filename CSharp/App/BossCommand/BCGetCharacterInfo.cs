@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossCommand
 {
@@ -24,7 +24,7 @@ namespace BossCommand
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();
 			if (smsgBossCommandResponse.ErrorCode != ErrorCode.RESPONSE_SUCCESS)
 			{
-				Logger.Trace("get character info fail, error code: {0}", smsgBossCommandResponse.ErrorCode);
+				Log.Trace("get character info fail, error code: {0}", smsgBossCommandResponse.ErrorCode);
 				return null;
 			}
 

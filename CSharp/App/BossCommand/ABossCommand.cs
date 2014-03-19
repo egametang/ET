@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossCommand
 {
@@ -30,7 +30,7 @@ namespace BossCommand
 			}
 			catch (Exception)
 			{
-				Logger.Trace("parse message fail, opcode: {0}", opcode);
+				Log.Trace("parse message fail, opcode: {0}", opcode);
 				throw;
 			}
 		}

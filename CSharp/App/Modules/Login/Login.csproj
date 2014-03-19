@@ -95,9 +95,9 @@
     <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
+    <ProjectReference Include="..\..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\BossBase\BossBase.csproj">
       <Project>{999910D3-4E7D-45B1-BD2C-47289CD4D1AB}</Project>

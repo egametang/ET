@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using ENet;
-using Log;
+using Logger;
 
 namespace BossClient
 {
@@ -46,7 +46,7 @@ namespace BossClient
 			using (var realmSession = new RealmSession(loginSessionId, new TcpChannel(tcpClient)))
 			{
 				realmInfo = await realmSession.Login(account, password);
-				Logger.Trace("session: {0}, login success!", realmSession.ID);
+				Log.Trace("session: {0}, login success!", realmSession.ID);
 			}
 
 			// 登录gate

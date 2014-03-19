@@ -76,9 +76,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
+    <ProjectReference Include="..\..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Helper;
-using Log;
+using Logger;
 
 namespace Component
 {
@@ -116,7 +116,7 @@ namespace Component
 			}
 			catch (Exception e)
 			{
-				Logger.Trace("message handle error: {0}", e.Message);
+				Log.Trace("message handle error: {0}", e.Message);
 			}
 	    }
 

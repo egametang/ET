@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossClient
 {
@@ -58,7 +58,7 @@ namespace BossClient
 					this.ID, MongoHelper.ToJson(smsgAuthResponse)));
 			}
 
-			Logger.Trace("session: {0}, login gate OK!", this.ID);
+			Log.Trace("session: {0}, login gate OK!", this.ID);
 		}
 
 		public async Task<SMSG_Auth_Challenge> Handle_SMSG_Auth_Challenge()
@@ -66,7 +66,7 @@ namespace BossClient
 			var result = await this.IMessageChannel.RecvMessage();
 			ushort opcode = result.Item1;
 			byte[] message = result.Item2;
-			Logger.Debug("message: {0}", message.ToHex());
+			Log.Debug("message: {0}", message.ToHex());
 			if (opcode != MessageOpcode.SMSG_AUTH_CHALLENGE)
 			{
 				throw new BossException(string.Format(

@@ -98,9 +98,9 @@
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
+    <ProjectReference Include="..\..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\BossBase\BossBase.csproj">
       <Project>{999910d3-4e7d-45b1-bd2c-47289cd4d1ab}</Project>

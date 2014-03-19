@@ -53,9 +53,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Log\Log.csproj">
-      <Project>{72E16572-FC1F-4A9E-BC96-035417239298}</Project>
-      <Name>Log</Name>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Logger</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -61,13 +61,13 @@
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Platform\Log\Log.csproj">
-      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ENet\ENet.csproj">
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
       <Name>ENet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Logger</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

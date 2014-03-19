@@ -2,7 +2,7 @@
 using System.Threading;
 using ENet;
 using Helper;
-using Log;
+using Logger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetTest
@@ -26,7 +26,7 @@ namespace ENetTest
 				CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
 			}
 			stopWatch.Stop();
-			Logger.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
+			Log.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
 			await eSocket.DisconnectAsync();
 			service.Stop();
 		}
@@ -38,7 +38,7 @@ namespace ENetTest
 			bool isRunning = true;
 			while (isRunning)
 			{
-				Logger.Debug("start accept");
+				Log.Debug("start accept");
 				var eSocket = new ESocket(service);
 				await eSocket.AcceptAsync();
 				eSocket.Disconnect += ev =>

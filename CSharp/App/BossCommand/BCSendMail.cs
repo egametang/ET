@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossCommand
 {
@@ -18,7 +18,7 @@ namespace BossCommand
 		{
 			this.CommandString = string.Format(
 				"send_mail --json {0} ", MongoHelper.ToJson(this.BossMail));
-			Logger.Trace(this.CommandString);
+			Log.Trace(this.CommandString);
 			this.SendMessage(new CMSG_Boss_Gm { Message = CommandString });
 			var smsgBossCommandResponse = await this.RecvMessage<SMSG_Boss_Command_Response>();
 			return smsgBossCommandResponse.ErrorCode;

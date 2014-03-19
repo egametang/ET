@@ -93,9 +93,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Platform\Log\Log.csproj">
+    <ProjectReference Include="..\..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj">
       <Project>{48A2E149-0DAC-41B4-BB54-DFBCCD6D42B3}</Project>

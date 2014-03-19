@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ALogDecorater.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="NLoggerAdapter.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="ILog.cs" />
+    <Compile Include="NLogAdapter.cs" />
     <Compile Include="StackInfoDecorater.cs" />
   </ItemGroup>
   <ItemGroup>

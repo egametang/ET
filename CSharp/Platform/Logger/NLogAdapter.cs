@@ -1,12 +1,12 @@
 ﻿using NLog;
 
-namespace Log
+namespace Logger
 {
-	public class NLoggerAdapter: ALogDecorater, ILogger
+	public class NLogAdapter: ALogDecorater, ILog
 	{
 		private readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
-		public NLoggerAdapter(ALogDecorater decorater = null): base(decorater)
+		public NLogAdapter(ALogDecorater decorater = null): base(decorater)
 		{
 		}
 

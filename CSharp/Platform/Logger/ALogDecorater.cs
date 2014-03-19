@@ -1,4 +1,4 @@
-﻿namespace Log
+﻿namespace Logger
 {
 	public abstract class ALogDecorater
 	{

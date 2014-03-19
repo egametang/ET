@@ -8,7 +8,7 @@ using System.Windows;
 using BossCommand;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.ViewModel;
 
@@ -460,7 +460,7 @@ namespace Robot
 			}
 			catch (Exception e)
 			{
-				Logger.Trace(e.ToString());
+				Log.Trace(e.ToString());
 				this.ErrorInfo = "输入错误!";
 				return;
 			}
@@ -493,7 +493,7 @@ namespace Robot
 			}
 			catch(Exception e)
 			{
-				Logger.Trace(e.ToString());
+				Log.Trace(e.ToString());
 				return;
 			}
 			var smsgBossCommandResponse = (SMSG_Boss_Command_Response)result;

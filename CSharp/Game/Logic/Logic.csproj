@@ -45,9 +45,9 @@
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Platform\Log\Log.csproj">
+    <ProjectReference Include="..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Log</Name>
+      <Name>Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\Component\Component.csproj">
       <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>

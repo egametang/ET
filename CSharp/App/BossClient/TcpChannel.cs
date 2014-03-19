@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using BossBase;
 using Helper;
-using Log;
+using Logger;
 
 namespace BossClient
 {
@@ -56,7 +56,7 @@ namespace BossClient
 			}
 
 			int packetSize = BitConverter.ToInt32(packetBytes, 0);
-			Logger.Debug("packetSize: {0}", packetSize);
+			Log.Debug("packetSize: {0}", packetSize);
 
 			// 读opcode和message
 			totalReadSize = 0;

@@ -1,4 +1,4 @@
-﻿using Log;
+﻿using Logger;
 
 namespace Tree
 {
@@ -128,7 +128,7 @@ namespace Tree
 			treeNode.Prelim = prelim;
 			treeNode.Modify = modify;
 
-			Logger.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " +
+			Log.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " +
 				treeNode.Modify);
 		}
 

@@ -1,6 +1,6 @@
 ﻿using Component.Config;
 using Helper;
-using Log;
+using Logger;
 using Component;
 
 namespace Logic
@@ -14,8 +14,8 @@ namespace Logic
 
 			var world = World.World.Instance;
 			var globalConfig = world.ConfigManager.Get<GlobalConfig>(1);
-			Logger.Debug(MongoHelper.ToJson(globalConfig));
-			Logger.Debug("chat content: {0}", chat.Content);
+			Log.Debug(MongoHelper.ToJson(globalConfig));
+			Log.Debug("chat content: {0}", chat.Content);
 		}
 	}
 }
