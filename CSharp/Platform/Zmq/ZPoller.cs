@@ -1,24 +1,13 @@
 ﻿using System;
-using NetMQ;
+using ZeroMQ;
 
 namespace Zmq
 {
-	public class ZmqPoller: Poller
+	public class ZPoller: Poller
 	{
 		private readonly object eventsLock = new object();
-		private Action events;
-
-		public ZmqPoller()
-		{
-			AddTimer();
-		}
-
-		private void AddTimer()
-		{
-			var timer = new NetMQTimer(TimeSpan.FromMilliseconds(10));
-			timer.Elapsed += (sender, args) => this.OnEvents();
-			AddTimer(timer);
-		}
+		private Action events = () => {};
+		private bool isRunning = true;
 
 		public event Action Events
 		{
@@ -43,15 +32,30 @@ namespace Zmq
 			Action local = null;
 			lock (this.eventsLock)
 			{
-				if (this.events == null)
-				{
-					return;
-				}
 				local = this.events;
-				this.events = null;
+				this.events = () => {};
 			}
 			local();
-			AddTimer();
+		}
+
+		public void Add(ZSocket socket)
+		{
+			this.AddSocket(socket.ZmqSocket);
+		}
+
+		public void Start()
+		{
+			isRunning = true;
+			this.OnEvents();
+			while (isRunning)
+			{
+				this.Poll(TimeSpan.FromMilliseconds(0));
+			}
+		}
+
+		public void Stop()
+		{
+			isRunning = false;
 		}
 	}
 }

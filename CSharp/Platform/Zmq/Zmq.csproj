@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NetMQ">
-      <HintPath>..\..\packages\NetMQ.3.3.0.8\lib\net40\NetMQ.dll</HintPath>
+    <Reference Include="clrzmq">
+      <HintPath>..\..\packages\clrzmq.3.0.0-rc1\lib\net40\clrzmq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ZmqPoller.cs" />
-    <Compile Include="ZmqSocket.cs" />
+    <Compile Include="ZPoller.cs" />
+    <Compile Include="ZSocket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

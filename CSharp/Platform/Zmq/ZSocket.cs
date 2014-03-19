@@ -1,54 +1,59 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
-using NetMQ;
+using ZeroMQ;
 
 namespace Zmq
 {
-	public class ZmqSocket: IDisposable
+	public class ZSocket: IDisposable
 	{
-		private ZmqPoller poller;
-		private readonly NetMQSocket socket;
+		private readonly ZmqSocket socket;
 
-		public ZmqSocket(ZmqPoller poller, NetMQSocket socket)
+		public ZSocket(ZmqSocket socket)
 		{
-			this.poller = poller;
 			this.socket = socket;
-			poller.AddSocket(this.socket);
+			this.socket.ReceiveReady += delegate { };
 		}
 
 		public void Dispose()
 		{
-			this.poller.RemoveSocket(this.socket);
 			this.socket.Dispose();
 		}
 
-		private EventHandler<NetMQSocketEventArgs> SendHandler { get; set; }
+		public ZmqSocket ZmqSocket
+		{
+			get
+			{
+				return this.socket;
+			}
+		}
 
-		private EventHandler<NetMQSocketEventArgs> RecvHandler { get; set; }
+		private EventHandler<SocketEventArgs> SendHandler { get; set; }
 
-	    public Task<byte[]> RecvAsync()
+		private EventHandler<SocketEventArgs> RecvHandler { get; set; }
+
+	    public Task<string> RecvAsync()
 	    {
-			var tcs = new TaskCompletionSource<byte[]>();
+			var tcs = new TaskCompletionSource<string>();
 
 			this.RecvHandler = (sender, args) =>
 		    {
-				bool hasMore = false;
 				args.Socket.ReceiveReady -= this.RecvHandler;
-				tcs.TrySetResult(args.Socket.Receive(true, out hasMore));
+				tcs.TrySetResult(args.Socket.Receive(Encoding.Unicode));
 		    };
 
 			this.socket.ReceiveReady += this.RecvHandler;
 		    return tcs.Task;
 	    }
 
-		public Task<bool> SendAsync(byte[] bytes)
+		public Task<bool> SendAsync(string str)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
 			this.SendHandler = (sender, args) =>
 			{
 				args.Socket.SendReady -= this.SendHandler;
-				this.socket.Send(bytes, bytes.Length, true);
+				this.socket.Send(str, Encoding.Unicode, TimeSpan.FromMilliseconds(0));
 				tcs.TrySetResult(true);
 			};
 			this.socket.SendReady += this.SendHandler;

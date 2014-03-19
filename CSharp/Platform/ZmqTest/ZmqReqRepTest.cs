@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Helper;
 using Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NetMQ;
 using Zmq;
+using ZeroMQ;
 
 namespace ZmqTest
 {
@@ -14,62 +14,10 @@ namespace ZmqTest
 		const string address = "tcp://127.0.0.1:5001";
 
 		[TestMethod]
-		public void TestMethod()
-		{
-			var task1 = Task.Factory.StartNew(Server, TaskCreationOptions.LongRunning);
-			var task2 = Task.Factory.StartNew(Client, TaskCreationOptions.LongRunning);
-			Task.WaitAll(task1, task2);
-		}
-
-		private static void Client()
-		{
-			using (var context = NetMQContext.Create())
-			{
-				using (var req = context.CreateRequestSocket())
-				{
-					var poller = new Poller();
-					req.Connect(address);
-					req.ReceiveReady += (sender, args) =>
-					{
-						bool hasMore;
-						string msg = args.Socket.ReceiveString(true, out hasMore);
-						Logger.Debug(string.Format("req: {0}", msg));
-						poller.Stop();
-					};
-					req.Send("hello world!");
-					poller.AddSocket(req);
-					poller.Start();
-				}
-			}
-		}
-
-		private static void Server()
-		{
-			using (var context = NetMQContext.Create())
-			{
-				using (var rep = context.CreateResponseSocket())
-				{
-					var poller = new Poller();
-					poller.AddSocket(rep);
-					rep.Bind(address);
-					rep.ReceiveReady += (sender, args) =>
-					{
-						bool hasMore;
-						string msg = args.Socket.ReceiveString(true, out hasMore);
-						Logger.Debug(string.Format("rep: {0}", msg));
-						args.Socket.Send(msg, true);
-						poller.Stop();
-					};
-					poller.Start();
-				}
-			}
-		}
-
-		[TestMethod]
 		public void TestSendAsyncAndRecvAsync()
 		{
-			var clientPoller = new ZmqPoller();
-			var serverPoller = new ZmqPoller();
+			var clientPoller = new ZPoller();
+			var serverPoller = new ZPoller();
 
 			clientPoller.Events += () => Client2(clientPoller);
 
@@ -80,18 +28,19 @@ namespace ZmqTest
 			Task.WaitAll(task1, task2);
 		}
 
-		public static async Task Client2(ZmqPoller poller)
+		public static async Task Client2(ZPoller zPoller)
 		{
-			using (var context = NetMQContext.Create())
+			using (var context = ZmqContext.Create())
 			{
 				try
 				{
-					var socket = new ZmqSocket(poller, context.CreateRequestSocket());
+					var socket = new ZSocket(context.CreateSocket(SocketType.REP));
+					zPoller.Add(socket);
 					socket.Connect(address);
-					await socket.SendAsync("hello world".ToByteArray());
-					byte[] bytes = await socket.RecvAsync();
-					Logger.Debug(string.Format("client2: {0}", bytes.ToStr()));
-					await Task.Run(() => poller.Stop(false));
+					await socket.SendAsync("hello world");
+					string recvStr = await socket.RecvAsync();
+					Logger.Debug(string.Format("client2: {0}", recvStr));
+					zPoller.Stop();
 				}
 				catch (Exception e)
 				{
@@ -100,18 +49,19 @@ namespace ZmqTest
 			}	
 		}
 
-		public static async Task Server2(ZmqPoller poller)
+		public static async Task Server2(ZPoller zPoller)
 		{
-			using (var context = NetMQContext.Create())
+			using (var context = ZmqContext.Create())
 			{
 				try
 				{
-					var socket = new ZmqSocket(poller, context.CreateResponseSocket());
+					var socket = new ZSocket(context.CreateSocket(SocketType.REP));
+					zPoller.Add(socket);
 					socket.Bind(address);
-					byte[] bytes = await socket.RecvAsync();
-					Logger.Debug(string.Format("server2: {0}", bytes.ToStr()));
-					await socket.SendAsync("hello world".ToByteArray());
-					await Task.Run(() => poller.Stop(false));
+					string recvStr = await socket.RecvAsync();
+					Logger.Debug(string.Format("server2: {0}", recvStr));
+					await socket.SendAsync("hello world");
+					zPoller.Stop();
 				}
 				catch (Exception e)
 				{

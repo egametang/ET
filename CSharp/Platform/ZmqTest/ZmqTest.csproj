@@ -37,8 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NetMQ">
-      <HintPath>..\..\packages\NetMQ.3.3.0.8\lib\net40\NetMQ.dll</HintPath>
+    <Reference Include="clrzmq">
+      <HintPath>..\..\packages\clrzmq.3.0.0-rc1\lib\net40\clrzmq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -59,9 +59,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
       <Name>Helper</Name>
@@ -74,6 +71,9 @@
       <Project>{31a4af28-0988-4862-9d5a-69d34cdb50e6}</Project>
       <Name>Zmq</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
