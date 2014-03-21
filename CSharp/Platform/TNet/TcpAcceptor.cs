@@ -5,18 +5,28 @@ using System.Threading.Tasks;
 
 namespace TNet
 {
-    public class TcpAcceptor
+    public class TcpAcceptor: IDisposable
     {
 	    private readonly Socket socket;
 		private readonly SocketAsyncEventArgs asyncEventArgs = new SocketAsyncEventArgs();
 
-	    public TcpAcceptor(Socket socket, EndPoint endPoint)
+	    public TcpAcceptor(ushort port, int backLog = 100)
 	    {
-		    this.socket = socket;
+			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.asyncEventArgs.Completed += OnArgsCompletion;
-			this.socket.Bind(endPoint);
+			this.socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), port));
+			this.socket.Listen(backLog);
 	    }
 
+		public void Dispose()
+		{
+			this.socket.Dispose();
+		}
+
+		/// <summary>
+		/// SocketAsyncEventArgs Accept回调函数,回调可能已经到了另外的线程
+		/// </summary>
+		/// <returns></returns>
 	    public Task<NetworkStream> AcceptAsync()
 	    {
 			var tcs = new TaskCompletionSource<NetworkStream>();
@@ -31,7 +41,9 @@ namespace TNet
 				{
 					if (asyncEventArgs.SocketError == SocketError.Success)
 					{
-						return Task.FromResult(new NetworkStream(asyncEventArgs.AcceptSocket, true));
+						var acceptSocket = asyncEventArgs.AcceptSocket;
+						asyncEventArgs.AcceptSocket = null;
+						return Task.FromResult(new NetworkStream(acceptSocket, true));
 					}
 					tcs.TrySetException(new InvalidOperationException(this.asyncEventArgs.SocketError.ToString()));
 				}
@@ -47,12 +59,14 @@ namespace TNet
 	    {
 			var tcs = (TaskCompletionSource<NetworkStream>)e.UserToken;
 
-			if (asyncEventArgs.SocketError != SocketError.Success)
+			if (e.SocketError != SocketError.Success)
 			{
-				tcs.TrySetException(new InvalidOperationException(asyncEventArgs.SocketError.ToString()));
+				tcs.TrySetException(new InvalidOperationException(e.SocketError.ToString()));
 				return;
 			}
-			tcs.SetResult(new NetworkStream(e.AcceptSocket, true));
+			var acceptSocket = e.AcceptSocket;
+			e.AcceptSocket = null;
+			tcs.SetResult(new NetworkStream(acceptSocket, true));
 	    }
     }
 }

@@ -42,6 +42,12 @@
     <Compile Include="TcpAcceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logger\Logger.csproj">
+      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
