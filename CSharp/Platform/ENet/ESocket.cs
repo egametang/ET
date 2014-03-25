@@ -190,6 +190,43 @@ namespace ENet
 			return tcs.Task;
 		}
 
+		public void WriteAsync(Action<int> action, byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		{
+			var packet = new EPacket(data, flags);
+			int ret = NativeMethods.EnetPeerSend(this.peerPtr, channelID, packet.PacketPtr);
+			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
+			packet.PacketPtr = IntPtr.Zero;
+			action(ret);
+		}
+
+		public void ReadAsync(Action<byte[], int> action)
+		{
+			// 如果有缓存的包,从缓存中取
+			if (this.recvBuffer.Count > 0)
+			{
+				var bytes = this.recvBuffer.First.Value;
+				this.recvBuffer.RemoveFirst();
+				action(bytes, 0);
+			}
+			// 没有缓存封包,设置回调等待
+			else
+			{
+				this.Received = eEvent =>
+				{
+					if (eEvent.EventState == EventState.DISCONNECTED)
+					{
+						action(new byte[0], -1);
+					}
+
+					using (var packet = new EPacket(eEvent.PacketPtr))
+					{
+						var bytes = packet.Bytes;
+						action(bytes, 0);
+					}
+				};
+			}
+		}
+
 		public Task<bool> DisconnectAsync(uint data = 0)
 		{
 			NativeMethods.EnetPeerDisconnect(this.peerPtr, data);
