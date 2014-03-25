@@ -14,7 +14,7 @@ namespace TNetTest
 	{
 		private const ushort port = 11111;
 		private int count;
-		private readonly Barrier barrier = new Barrier(100);
+		private readonly Barrier barrier = new Barrier(2);
 		private readonly object lockObject = new object();
 
 		[TestMethod]
@@ -25,7 +25,7 @@ namespace TNetTest
 
 			Thread.Sleep(2);
 
-			for (int i = 0; i < 99; ++i)
+			for (int i = 0; i < 1; ++i)
 			{
 				var thread = new Thread(this.Client);
 				thread.Start();
@@ -43,9 +43,12 @@ namespace TNetTest
 					try
 					{
 						var bytes = "tanghai".ToByteArray();
-						await ns.WriteAsync(bytes, 0, bytes.Length);
-						int n = await ns.ReadAsync(bytes, 0, bytes.Length);
-						Assert.AreEqual(7, n);
+						for (int i = 0; i < 100000; ++i)
+						{
+							await ns.WriteAsync(bytes, 0, bytes.Length);
+							int n = await ns.ReadAsync(bytes, 0, bytes.Length);
+							Assert.AreEqual(7, n);
+						}
 					}
 					catch (Exception e)
 					{
@@ -58,9 +61,9 @@ namespace TNetTest
 
 		private async void Server()
 		{
-			using (var tcpAcceptor = new TcpAcceptor(port))
+			using (var tcpAcceptor = new TcpAcceptor("127.0.0.1", port))
 			{
-				while (count != 99)
+				while (count != 1)
 				{
 					NetworkStream ns = await tcpAcceptor.AcceptAsync();
 					// 这里可能已经不在Server函数线程了
@@ -74,8 +77,11 @@ namespace TNetTest
 			try
 			{
 				var bytes = new byte[1000];
-				int n = await ns.ReadAsync(bytes, 0, 100);
-				await ns.WriteAsync(bytes, 0, n);
+				for (int i = 0; i < 100000; ++i)
+				{
+					int n = await ns.ReadAsync(bytes, 0, 100);
+					await ns.WriteAsync(bytes, 0, n);
+				}
 				lock (lockObject)
 				{
 					++count;

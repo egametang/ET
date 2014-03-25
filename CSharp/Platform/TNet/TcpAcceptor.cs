@@ -10,11 +10,11 @@ namespace TNet
 	    private readonly Socket socket;
 		private readonly SocketAsyncEventArgs asyncEventArgs = new SocketAsyncEventArgs();
 
-	    public TcpAcceptor(ushort port, int backLog = 100)
+	    public TcpAcceptor(string ip, ushort port, int backLog = 100)
 	    {
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.asyncEventArgs.Completed += OnArgsCompletion;
-			this.socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), port));
+			this.socket.Bind(new IPEndPoint(IPAddress.Parse(ip), port));
 			this.socket.Listen(backLog);
 	    }
 
@@ -55,7 +55,7 @@ namespace TNet
 			return tcs.Task;
 	    }
 
-	    private void OnArgsCompletion(object sender, SocketAsyncEventArgs e)
+	    private static void OnArgsCompletion(object sender, SocketAsyncEventArgs e)
 	    {
 			var tcs = (TaskCompletionSource<NetworkStream>)e.UserToken;
 
