@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Prism.ViewModel;
+﻿using System.Runtime.Serialization;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Robot
 {
 	[DataContract]
-	public class ServerViewModel : NotificationObject
+	public class ServerViewModel : BindableBase
 	{
 		[DataMember(Order = 1, IsRequired = true)]
 		private string name;
@@ -22,12 +17,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.name == value)
-				{
-					return;
-				}
-				this.name = value;
-				this.RaisePropertyChanged("Name");
+				this.SetProperty(ref this.name, value);
 			}
 		}
 	}

@@ -6,14 +6,14 @@ using System.Windows;
 using System.Windows.Threading;
 using BossBase;
 using Logger;
-using Microsoft.Practices.Prism.Events;
-using Microsoft.Practices.Prism.ViewModel;
+using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Login
 {
 	[Export(contractType: typeof (LoginViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-	internal class LoginViewModel : NotificationObject
+	internal class LoginViewModel : BindableBase
 	{
 		private IEventAggregator EventAggregator { get; set; }
 		private string account = "";
@@ -32,12 +32,7 @@ namespace Login
 			}
 			set
 			{
-				if (this.loginWindowVisiable == value)
-				{
-					return;
-				}
-				this.loginWindowVisiable = value;
-				this.RaisePropertyChanged("LoginWindowVisiable");
+				this.SetProperty(ref this.loginWindowVisiable, value);
 			}
 		}
 
@@ -49,12 +44,7 @@ namespace Login
 			}
 			set
 			{
-				if (this.account == value)
-				{
-					return;
-				}
-				this.account = value;
-				this.RaisePropertyChanged("Account");
+				this.SetProperty(ref this.account, value);
 			}
 		}
 
@@ -66,12 +56,7 @@ namespace Login
 			}
 			set
 			{
-				if (this.password == value)
-				{
-					return;
-				}
-				this.password = value;
-				this.RaisePropertyChanged("Password");
+				this.SetProperty(ref this.password, value);
 			}
 		}
 
@@ -83,12 +68,7 @@ namespace Login
 			}
 			set
 			{
-				if (this.errorInfo == value)
-				{
-					return;
-				}
-				this.errorInfo = value;
-				this.RaisePropertyChanged("ErrorInfo");
+				this.SetProperty(ref this.errorInfo, value);
 			}
 		}
 

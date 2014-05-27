@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.ViewModel;
 
 namespace Tree
 {
-	public class TreeNodeViewModel: NotificationObject
+	public class TreeNodeViewModel : BindableBase
 	{
 		private static int globalNum;
 		private readonly int num;
@@ -115,8 +116,9 @@ namespace Tree
 				{
 					return;
 				}
+				double x = 0;
+				this.SetProperty(ref x, value);
 				this.treeNode.X = value;
-				this.RaisePropertyChanged("X");
 
 				this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
 
@@ -139,8 +141,9 @@ namespace Tree
 				{
 					return;
 				}
+				double y = 0;
+				this.SetProperty(ref y, value);
 				this.treeNode.Y = value;
-				this.RaisePropertyChanged("Y");
 
 				this.ConnectorY2 = Height + this.Parent.Y - this.Y;
 
@@ -175,8 +178,7 @@ namespace Tree
 			}
 			set
 			{
-				this.connectorX2 = value;
-				this.RaisePropertyChanged("ConnectorX2");
+				this.SetProperty(ref this.connectorX2, value);
 			}
 		}
 
@@ -188,8 +190,7 @@ namespace Tree
 			}
 			set
 			{
-				this.connectorY2 = value;
-				this.RaisePropertyChanged("ConnectorY2");
+				this.SetProperty(ref this.connectorY2, value);
 			}
 		}
 
@@ -205,8 +206,9 @@ namespace Tree
 				{
 					return;
 				}
+				int type = 0;
+				this.SetProperty(ref type, value);
 				this.treeNode.Type = value;
-				this.RaisePropertyChanged("Type");
 			}
 		}
 

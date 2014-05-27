@@ -9,14 +9,14 @@ using BossCommand;
 using BossBase;
 using Helper;
 using Logger;
-using Microsoft.Practices.Prism.Events;
-using Microsoft.Practices.Prism.ViewModel;
+using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Robot
 {
 	[Export(contractType: typeof (RobotViewModel)),
 		PartCreationPolicy(creationPolicy: CreationPolicy.Shared)]
-	internal sealed class RobotViewModel: NotificationObject, IDisposable
+	internal sealed class RobotViewModel : BindableBase, IDisposable
 	{
 		private readonly IEventAggregator eventAggregator;
 
@@ -50,12 +50,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.findTypeIndex == value)
-				{
-					return;
-				}
-				this.findTypeIndex = value;
-				this.RaisePropertyChanged("FindTypeIndex");
+				this.SetProperty(ref this.findTypeIndex, value);
 			}
 		}
 
@@ -67,12 +62,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.findType == value)
-				{
-					return;
-				}
-				this.findType = value;
-				this.RaisePropertyChanged("FindType");
+				this.SetProperty(ref this.findType, value);
 			}
 		}
 
@@ -84,12 +74,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.dockPanelVisiable == value)
-				{
-					return;
-				}
-				this.dockPanelVisiable = value;
-				this.RaisePropertyChanged("DockPanelVisiable");
+				this.SetProperty(ref this.dockPanelVisiable, value);
 			}
 		}
 
@@ -109,12 +94,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.account == value)
-				{
-					return;
-				}
-				this.account = value;
-				this.RaisePropertyChanged("Account");
+				this.SetProperty(ref this.account, value);
 			}
 		}
 
@@ -126,12 +106,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.name == value)
-				{
-					return;
-				}
-				this.name = value;
-				this.RaisePropertyChanged("Name");
+				this.SetProperty(ref this.name, value);
 			}
 		}
 
@@ -143,12 +118,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.guid == value)
-				{
-					return;
-				}
-				this.guid = value;
-				this.RaisePropertyChanged("Guid");
+				this.SetProperty(ref this.guid, value);
 			}
 		}
 
@@ -160,12 +130,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.errorInfo == value)
-				{
-					return;
-				}
-				this.errorInfo = value;
-				this.RaisePropertyChanged("ErrorInfo");
+				this.SetProperty(ref this.errorInfo, value);
 			}
 		}
 
@@ -177,12 +142,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.command == value)
-				{
-					return;
-				}
-				this.command = value;
-				this.RaisePropertyChanged("Command");
+				this.SetProperty(ref this.command, value);
 			}
 		}
 
@@ -194,12 +154,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.subject == value)
-				{
-					return;
-				}
-				this.subject = value;
-				this.RaisePropertyChanged("Subject");
+				this.SetProperty(ref this.subject, value);
 			}
 		}
 
@@ -211,12 +166,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.content == value)
-				{
-					return;
-				}
-				this.content = value;
-				this.RaisePropertyChanged("Content");
+				this.SetProperty(ref this.content, value);
 			}
 		}
 
@@ -228,12 +178,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.freeGold == value)
-				{
-					return;
-				}
-				this.freeGold = value;
-				this.RaisePropertyChanged("FreeGold");
+				this.SetProperty(ref this.freeGold, value);
 			}
 		}
 
@@ -245,12 +190,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.silver == value)
-				{
-					return;
-				}
-				this.silver = value;
-				this.RaisePropertyChanged("Silver");
+				this.SetProperty(ref this.silver, value);
 			}
 		}
 
@@ -262,12 +202,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.itemID == value)
-				{
-					return;
-				}
-				this.itemID = value;
-				this.RaisePropertyChanged("ItemID");
+				this.SetProperty(ref this.itemID, value);
 			}
 		}
 
@@ -279,12 +214,7 @@ namespace Robot
 			}
 			set
 			{
-				if (this.itemCount == value)
-				{
-					return;
-				}
-				this.itemCount = value;
-				this.RaisePropertyChanged("ItemCount");
+				this.SetProperty(ref this.itemCount, value);
 			}
 		}
 
