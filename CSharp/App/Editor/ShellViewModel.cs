@@ -1,10 +1,10 @@
 using System.ComponentModel.Composition;
-using Microsoft.Practices.Prism.ViewModel;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace Editor
 {
 	[Export]
-	public class ShellViewModel: NotificationObject
+	public class ShellViewModel: BindableBase
 	{
 		// This is where any view model logic for the shell would go.
 	}
