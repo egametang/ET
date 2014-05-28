@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="TcpAcceptorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TcpListenerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helper\Helper.csproj">
