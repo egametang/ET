@@ -116,9 +116,8 @@ namespace Tree
 				{
 					return;
 				}
-				double x = 0;
-				this.SetProperty(ref x, value);
 				this.treeNode.X = value;
+				this.OnPropertyChanged("X");
 
 				this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
 
@@ -141,9 +140,9 @@ namespace Tree
 				{
 					return;
 				}
-				double y = 0;
-				this.SetProperty(ref y, value);
+
 				this.treeNode.Y = value;
+				this.OnPropertyChanged("Y");
 
 				this.ConnectorY2 = Height + this.Parent.Y - this.Y;
 
