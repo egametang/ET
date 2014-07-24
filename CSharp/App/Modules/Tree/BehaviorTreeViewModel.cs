@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 
 namespace Tree
@@ -9,6 +10,10 @@ namespace Tree
 	{
 		private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
 			new ObservableCollection<TreeNodeViewModel>();
+
+		// 保存折叠节点的孩子节点
+		private readonly Dictionary<TreeNodeViewModel, ObservableCollection<TreeNodeViewModel>>
+			folderNodeChildren = new Dictionary<TreeNodeViewModel, ObservableCollection<TreeNodeViewModel>>();
 
 		public ObservableCollection<TreeNodeViewModel> TreeNodes
 		{
@@ -28,6 +33,11 @@ namespace Tree
 
 		public void Add(TreeNode treeNode, TreeNodeViewModel parent)
 		{
+			// 如果父节点是折叠的,需要先展开父节点
+			if (parent != null && parent.IsFolder)
+			{
+				UnFold(parent);
+			}
 			var treeNodeViewModel = new TreeNodeViewModel(treeNode, parent);
 			this.treeNodes.Add(treeNodeViewModel);
 			if (parent != null)
@@ -43,13 +53,13 @@ namespace Tree
 			{
 				this.RecursionRemove(treeNodeViewModel.Children[i]);
 			}
-			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
 			this.treeNodes.Remove(treeNodeViewModel);
 		}
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
 		{
 			this.RecursionRemove(treeNodeViewModel);
+			treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 
@@ -66,6 +76,46 @@ namespace Tree
 		public void Move(double offsetX, double offsetY)
 		{
 			this.RecursionMove(this.Root, offsetX, offsetY);
+		}
+
+		/// <summary>
+		/// 折叠节点
+		/// </summary>
+		/// <param name="treeNodeViewModel"></param>
+		public void Fold(TreeNodeViewModel treeNodeViewModel)
+		{
+			this.folderNodeChildren[treeNodeViewModel] = treeNodeViewModel.Children;
+			foreach (var node in treeNodeViewModel.Children)
+			{
+				this.RecursionRemove(node);
+			}
+			treeNodeViewModel.IsFolder = true;
+			BehaviorTreeLayout.ExcuteLayout(this.Root);
+		}
+
+		/// <summary>
+		/// 展开节点
+		/// </summary>
+		/// <param name="treeNodeViewModel"></param>
+		public void UnFold(TreeNodeViewModel treeNodeViewModel)
+		{
+			ObservableCollection<TreeNodeViewModel> children = this.folderNodeChildren[treeNodeViewModel];
+			foreach (var tn in children)
+			{
+				this.RecursionAdd(tn);
+			}
+			treeNodeViewModel.IsFolder = false;
+			BehaviorTreeLayout.ExcuteLayout(this.Root);
+		}
+
+		private void RecursionAdd(TreeNodeViewModel treeNodeViewModel)
+		{
+			this.treeNodes.Add(treeNodeViewModel);
+			ObservableCollection<TreeNodeViewModel> children = treeNodeViewModel.Children;
+			foreach (var tn in children)
+			{
+				this.RecursionAdd(tn);
+			}
 		}
 	}
 }

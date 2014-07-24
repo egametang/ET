@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.ViewModel;
 
 namespace Tree
 {
@@ -20,8 +19,7 @@ namespace Tree
 		private double ancestorModify;
 		private TreeNodeViewModel parent;
 
-		private ObservableCollection<TreeNodeViewModel> children =
-			new ObservableCollection<TreeNodeViewModel>();
+		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
 
 		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
 		{
@@ -220,6 +218,21 @@ namespace Tree
 			set
 			{
 				this.parent = value;
+			}
+		}
+
+		/// <summary>
+		/// 节点是否折叠
+		/// </summary>
+		public bool IsFolder
+		{
+			get
+			{
+				return treeNode.IsFold;
+			}
+			set
+			{
+				treeNode.IsFold = value;
 			}
 		}
 

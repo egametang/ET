@@ -69,22 +69,52 @@ namespace Tree
 			e.Handled = true;
 		}
 
+		private void MenuDeleteNode_Close(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (this.listBox.SelectedItem == null)
+			{
+				return;
+			}
+			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			this.ViewModel.Remove(treeNodeViewModel);
+			this.listBox.SelectedItem = null;
+			e.Handled = true;
+		}
+
 		private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton != MouseButton.Left)
 			{
 				return;
 			}
-			this.isLeftButtonDown = true;
 
-			var item = (FrameworkElement) sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+			// 双击鼠标
+			if (e.ClickCount == 2 && e.ChangedButton == MouseButton.Left)
+			{
+				var item = (FrameworkElement) sender;
+				var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+				if (treeNodeViewModel.IsFolder)
+				{
+					this.ViewModel.UnFold(treeNodeViewModel);
+				}
+				else
+				{
+					this.ViewModel.Fold(treeNodeViewModel);	
+				}
+			}
+			else
+			{
+				this.isLeftButtonDown = true;
 
-			this.listBox.SelectedItem = treeNodeViewModel;
+				var item = (FrameworkElement) sender;
+				var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
-			this.origMouseDownPoint = e.GetPosition(this);
+				this.listBox.SelectedItem = treeNodeViewModel;
 
-			item.CaptureMouse();
+				this.origMouseDownPoint = e.GetPosition(this);
+
+				item.CaptureMouse();
+			}
 			e.Handled = true;
 		}
 
