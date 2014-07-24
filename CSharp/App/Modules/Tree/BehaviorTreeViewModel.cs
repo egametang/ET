@@ -73,9 +73,17 @@ namespace Tree
 			}
 		}
 
-		public void Move(double offsetX, double offsetY)
+		public void MoveToPosition(double offsetX, double offsetY)
 		{
 			this.RecursionMove(this.Root, offsetX, offsetY);
+		}
+
+		public void MoveToNode(TreeNodeViewModel from, TreeNodeViewModel to)
+		{
+			from.Parent.Children.Remove(from);
+			to.Children.Add(from);
+			from.Parent = to;
+			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 
 		/// <summary>

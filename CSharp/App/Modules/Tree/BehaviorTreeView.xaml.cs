@@ -16,6 +16,7 @@ namespace Tree
 		private bool isDragging;
 		private bool isLeftButtonDown;
 		private Point origMouseDownPoint;
+		private TreeNodeViewModel moveFromNode;
 
 		public BehaviorTreeView()
 		{
@@ -69,18 +70,6 @@ namespace Tree
 			e.Handled = true;
 		}
 
-		private void MenuDeleteNode_Close(object sender, ExecutedRoutedEventArgs e)
-		{
-			if (this.listBox.SelectedItem == null)
-			{
-				return;
-			}
-			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
-			this.ViewModel.Remove(treeNodeViewModel);
-			this.listBox.SelectedItem = null;
-			e.Handled = true;
-		}
-
 		private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton != MouseButton.Left)
@@ -101,19 +90,6 @@ namespace Tree
 				{
 					this.ViewModel.Fold(treeNodeViewModel);	
 				}
-			}
-			else
-			{
-				this.isLeftButtonDown = true;
-
-				var item = (FrameworkElement) sender;
-				var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
-
-				this.listBox.SelectedItem = treeNodeViewModel;
-
-				this.origMouseDownPoint = e.GetPosition(this);
-
-				item.CaptureMouse();
 			}
 			e.Handled = true;
 		}
@@ -149,26 +125,29 @@ namespace Tree
 			{
 				return;
 			}
-			if (!treeNodeViewModel.IsRoot)
-			{
-				return;
-			}
 
 			Point curMouseDownPoint;
 			Vector dragDelta;
-			if (this.isDragging)
+			// 拖动根节点,移动整个树
+			if (this.isDragging && treeNodeViewModel.IsRoot)
 			{
+				if (this.moveFromNode == null || !this.moveFromNode.IsRoot)
+				{
+					return;
+				}
 				curMouseDownPoint = e.GetPosition(this);
 				dragDelta = curMouseDownPoint - this.origMouseDownPoint;
 
 				this.origMouseDownPoint = curMouseDownPoint;
 
-				this.ViewModel.Move(dragDelta.X, dragDelta.Y);
+				this.ViewModel.MoveToPosition(dragDelta.X, dragDelta.Y);
 				return;
 			}
 
-			if (!this.isLeftButtonDown)
+			if (e.LeftButton != MouseButtonState.Pressed)
 			{
+				this.isDragging = false;
+				this.moveFromNode = null;
 				return;
 			}
 
@@ -180,6 +159,32 @@ namespace Tree
 				this.isDragging = true;
 			}
 			e.Handled = true;
+		}
+
+		private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
+		{
+			origMouseDownPoint = e.GetPosition(this);
+			var item = (FrameworkElement)sender;
+			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+
+			this.listBox.SelectedItem = treeNodeViewModel;
+			this.moveFromNode = treeNodeViewModel;
+		}
+
+		private void ListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseEventArgs e)
+		{
+			if (this.moveFromNode == null)
+			{
+				return;
+			}
+			if (this.moveFromNode.IsRoot)
+			{
+				return;
+			}
+			var item = (FrameworkElement)sender;
+			var moveToNode = item.DataContext as TreeNodeViewModel;
+
+			this.ViewModel.MoveToNode(this.moveFromNode, moveToNode);
 		}
 	}
 }
