@@ -80,6 +80,25 @@ namespace Tree
 
 		public void MoveToNode(TreeNodeViewModel from, TreeNodeViewModel to)
 		{
+			if (from.IsFolder)
+			{
+				this.UnFold(from);
+			}
+
+			// from节点不能是to节点的父级节点
+			TreeNodeViewModel tmpNode = to;
+			while (tmpNode != null)
+			{
+				if (tmpNode.IsRoot)
+				{
+					break;
+				}
+				if (tmpNode.Num == from.Num)
+				{
+					return;
+				}
+				tmpNode = tmpNode.Parent;
+			}
 			from.Parent.Children.Remove(from);
 			to.Children.Add(from);
 			from.Parent = to;

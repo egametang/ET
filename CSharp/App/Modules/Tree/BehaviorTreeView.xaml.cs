@@ -183,7 +183,10 @@ namespace Tree
 			}
 			var item = (FrameworkElement)sender;
 			var moveToNode = item.DataContext as TreeNodeViewModel;
-
+			if (this.moveFromNode.Num == moveToNode.Num)
+			{
+				return;
+			}
 			this.ViewModel.MoveToNode(this.moveFromNode, moveToNode);
 		}
 	}
