@@ -46,6 +46,18 @@ namespace Tree
 			}
 		}
 
+		public int ParentNum
+		{
+			get
+			{
+				if (this.parent == null)
+				{
+					return -1;
+				}
+				return this.parent.Num;
+			}
+		}
+
 		public static double Width
 		{
 			get
@@ -218,6 +230,7 @@ namespace Tree
 			set
 			{
 				this.parent = value;
+				this.OnPropertyChanged("ParentNum");
 			}
 		}
 

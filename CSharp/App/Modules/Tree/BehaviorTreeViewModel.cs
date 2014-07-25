@@ -11,10 +11,6 @@ namespace Tree
 		private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
 			new ObservableCollection<TreeNodeViewModel>();
 
-		// 保存折叠节点的孩子节点
-		private readonly Dictionary<TreeNodeViewModel, ObservableCollection<TreeNodeViewModel>>
-			folderNodeChildren = new Dictionary<TreeNodeViewModel, ObservableCollection<TreeNodeViewModel>>();
-
 		public ObservableCollection<TreeNodeViewModel> TreeNodes
 		{
 			get
@@ -49,7 +45,7 @@ namespace Tree
 
 		private void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
 		{
-			for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
+			for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
 			{
 				this.RecursionRemove(treeNodeViewModel.Children[i]);
 			}
@@ -85,6 +81,11 @@ namespace Tree
 				this.UnFold(from);
 			}
 
+			if (to.IsFolder)
+			{
+				this.UnFold(to);
+			}
+
 			// from节点不能是to节点的父级节点
 			TreeNodeViewModel tmpNode = to;
 			while (tmpNode != null)
@@ -111,7 +112,6 @@ namespace Tree
 		/// <param name="treeNodeViewModel"></param>
 		public void Fold(TreeNodeViewModel treeNodeViewModel)
 		{
-			this.folderNodeChildren[treeNodeViewModel] = treeNodeViewModel.Children;
 			foreach (var node in treeNodeViewModel.Children)
 			{
 				this.RecursionRemove(node);
@@ -123,22 +123,29 @@ namespace Tree
 		/// <summary>
 		/// 展开节点
 		/// </summary>
-		/// <param name="treeNodeViewModel"></param>
-		public void UnFold(TreeNodeViewModel treeNodeViewModel)
+		/// <param name="unFoldNode"></param>
+		public void UnFold(TreeNodeViewModel unFoldNode)
 		{
-			ObservableCollection<TreeNodeViewModel> children = this.folderNodeChildren[treeNodeViewModel];
-			foreach (var tn in children)
+			foreach (var tn in unFoldNode.Children)
 			{
 				this.RecursionAdd(tn);
 			}
-			treeNodeViewModel.IsFolder = false;
+			unFoldNode.IsFolder = false;
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 
 		private void RecursionAdd(TreeNodeViewModel treeNodeViewModel)
 		{
-			this.treeNodes.Add(treeNodeViewModel);
+			if (!this.treeNodes.Contains(treeNodeViewModel))
+			{
+				this.treeNodes.Add(treeNodeViewModel);
+			}
 			ObservableCollection<TreeNodeViewModel> children = treeNodeViewModel.Children;
+
+			if (treeNodeViewModel.IsFolder)
+			{
+				return;
+			}
 			foreach (var tn in children)
 			{
 				this.RecursionAdd(tn);

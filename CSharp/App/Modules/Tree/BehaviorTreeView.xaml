@@ -49,6 +49,8 @@
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
 								RadiusX="40" RadiusY="40" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
+						<Label Content="{Binding ParentNum}" Canvas.Left="20" Canvas.Top="5"></Label>
+						<Label Content="{Binding Num}" Canvas.Left="20" Canvas.Top="15"></Label>
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
 								Stroke="Black" StrokeThickness="2"  />
 					</Canvas>

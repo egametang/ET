@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using Infrastructure;
+using Logger;
 
 namespace Tree
 {
@@ -183,11 +184,13 @@ namespace Tree
 			}
 			var item = (FrameworkElement)sender;
 			var moveToNode = item.DataContext as TreeNodeViewModel;
+			Log.Debug("move to node: {0} {1}", moveFromNode.Num, moveToNode.Num);
 			if (this.moveFromNode.Num == moveToNode.Num)
 			{
 				return;
 			}
 			this.ViewModel.MoveToNode(this.moveFromNode, moveToNode);
+			this.moveFromNode = null;
 		}
 	}
 }
