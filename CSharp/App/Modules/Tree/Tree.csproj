@@ -76,7 +76,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -87,6 +90,9 @@
     <Compile Include="BehaviorTreeModule.cs" />
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NodeDataEditor.xaml.cs">
+      <DependentUpon>NodeDataEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeNodeData.cs" />
     <Compile Include="TreeNodeDataArray.cs" />
@@ -103,6 +109,10 @@
     <Page Include="BehaviorTreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NodeDataEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
