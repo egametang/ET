@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.IO;
+using Helper;
 
 namespace Tree
 {
@@ -27,18 +28,17 @@ namespace Tree
 			}
 		}
 
-		public void Add(TreeNode treeNode, TreeNodeViewModel parent)
+		public void Add(TreeNodeViewModel treeNode, TreeNodeViewModel parent)
 		{
 			// 如果父节点是折叠的,需要先展开父节点
 			if (parent != null && parent.IsFolder)
 			{
 				UnFold(parent);
 			}
-			var treeNodeViewModel = new TreeNodeViewModel(treeNode, parent);
-			this.treeNodes.Add(treeNodeViewModel);
+			this.treeNodes.Add(treeNode);
 			if (parent != null)
 			{
-				parent.Children.Add(treeNodeViewModel);
+				parent.Children.Add(treeNode);
 			}
 			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
@@ -76,16 +76,6 @@ namespace Tree
 
 		public void MoveToNode(TreeNodeViewModel from, TreeNodeViewModel to)
 		{
-			if (from.IsFolder)
-			{
-				this.UnFold(from);
-			}
-
-			if (to.IsFolder)
-			{
-				this.UnFold(to);
-			}
-
 			// from节点不能是to节点的父级节点
 			TreeNodeViewModel tmpNode = to;
 			while (tmpNode != null)
@@ -94,11 +84,21 @@ namespace Tree
 				{
 					break;
 				}
-				if (tmpNode.Num == from.Num)
+				if (tmpNode.Id == from.Id)
 				{
 					return;
 				}
 				tmpNode = tmpNode.Parent;
+			}
+
+			if (from.IsFolder)
+			{
+				this.UnFold(from);
+			}
+
+			if (to.IsFolder)
+			{
+				this.UnFold(to);
 			}
 			from.Parent.Children.Remove(from);
 			to.Children.Add(from);
@@ -121,7 +121,7 @@ namespace Tree
 		}
 
 		/// <summary>
-		/// 展开节点
+		/// 展开节点,一级一级展开,一次只展开下层子节点,比如下层节点是折叠的,那下下层节点不展开
 		/// </summary>
 		/// <param name="unFoldNode"></param>
 		public void UnFold(TreeNodeViewModel unFoldNode)
@@ -150,6 +150,58 @@ namespace Tree
 			{
 				this.RecursionAdd(tn);
 			}
+		}
+
+		/// <summary>
+		/// 序列化保存
+		/// </summary>
+		public void Save(string filePath)
+		{
+			var treeNodeDataArray = new TreeNodeDataArray();
+			RecursionSave(treeNodeDataArray, this.Root);
+			byte[] bytes = ProtobufHelper.ToBytes(treeNodeDataArray);
+			using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+			{
+				stream.Write(bytes, 0, bytes.Length);
+			}
+		}
+
+		private void RecursionSave(TreeNodeDataArray treeNodeDataArray, TreeNodeViewModel node)
+		{
+			if (node == null)
+			{
+				return;
+			}
+			treeNodeDataArray.Add(node.TreeNodeData);
+			foreach (TreeNodeViewModel childNode in node.Children)
+			{
+				RecursionSave(treeNodeDataArray, childNode);
+			}
+		}
+
+		/// <summary>
+		/// 从配置中加载
+		/// </summary>
+		/// <param name="filePath"></param>
+		public void Load(string filePath)
+		{
+			this.TreeNodes.Clear();
+			byte[] bytes = File.ReadAllBytes(filePath);
+			var treeNodeDataArray = ProtobufHelper.FromBytes<TreeNodeDataArray>(bytes);
+			treeNodeDataArray.Init();
+			RecursionLoad(treeNodeDataArray, treeNodeDataArray.TreeNodeDatas[0], null);
+		}
+
+		private void RecursionLoad(TreeNodeDataArray treeNodeDataArray, TreeNodeData treeNodeData, TreeNodeViewModel parentNode)
+		{
+			var node = new TreeNodeViewModel(treeNodeData, parentNode);
+			this.Add(node, parentNode);
+			foreach (int id in treeNodeData.ChildrenId)
+			{
+				TreeNodeData childNodeData = treeNodeDataArray[id];
+				RecursionLoad(treeNodeDataArray, childNodeData, node);
+			}
+			BehaviorTreeLayout.ExcuteLayout(this.Root);
 		}
 	}
 }

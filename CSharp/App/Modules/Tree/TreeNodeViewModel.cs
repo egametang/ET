@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Windows;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Tree
@@ -8,10 +7,11 @@ namespace Tree
 	public class TreeNodeViewModel : BindableBase
 	{
 		private static int globalNum;
-		private readonly int num;
 		private static double width = 80;
 		private static double height = 50;
-		private readonly TreeNode treeNode;
+		private double x;
+		private double y;
+		private readonly TreeNodeData treeNodeData;
 		private double connectorX2;
 		private double connectorY2;
 		private double prelim;
@@ -21,13 +21,40 @@ namespace Tree
 
 		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
 
-		public TreeNodeViewModel(TreeNode treeNode, TreeNodeViewModel parent)
+		/// <summary>
+		/// 用于初始化根节点
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
+		public TreeNodeViewModel(double x, double y)
 		{
-			this.num = globalNum++;
-			this.treeNode = treeNode;
+			this.x = x;
+			this.y = y;
+			this.treeNodeData = new TreeNodeData();
+			this.treeNodeData.Id = globalNum++;
+			this.parent = parent ?? this;
+			this.connectorX2 = 0;
+			this.connectorY2 = Height / 2;
+		}
+
+		public TreeNodeViewModel(TreeNodeViewModel parent)
+		{
+			this.treeNodeData = new TreeNodeData();
+			this.treeNodeData.Id = globalNum++;
+			this.parent = parent ?? this;
+
+			this.connectorX2 = Width + this.Parent.X - this.X;
+			this.connectorY2 = Height / 2 + this.Parent.Y - this.Y;
+		}
+
+		public TreeNodeViewModel(TreeNodeData data, TreeNodeViewModel parent)
+		{
+			this.treeNodeData = data;
 			this.parent = parent ?? this;
 			if (this.parent == this)
 			{
+				this.x = 200;
+				this.y = 10;
 				this.connectorX2 = 0;
 				this.connectorY2 = Height / 2;
 			}
@@ -38,23 +65,25 @@ namespace Tree
 			}
 		}
 
-		public int Num
+		public TreeNodeData TreeNodeData
 		{
 			get
 			{
-				return this.num;
+				this.treeNodeData.ChildrenId.Clear();
+				foreach (TreeNodeViewModel child in children)
+				{
+					this.treeNodeData.ChildrenId.Add(child.Id);
+				}
+				this.treeNodeData.ParentId = this.IsRoot? 0 : this.Parent.Id;
+				return this.treeNodeData;
 			}
 		}
 
-		public int ParentNum
+		public int Id
 		{
 			get
 			{
-				if (this.parent == null)
-				{
-					return -1;
-				}
-				return this.parent.Num;
+				return this.treeNodeData.Id;
 			}
 		}
 
@@ -118,22 +147,22 @@ namespace Tree
 		{
 			get
 			{
-				return this.treeNode.X;
+				return this.x;
 			}
 			set
 			{
-				if (Math.Abs(this.treeNode.X - value) < 0.1)
+				if (Math.Abs(this.x - value) < 0.1)
 				{
 					return;
 				}
-				this.treeNode.X = value;
+				this.x = value;
 				this.OnPropertyChanged("X");
 
 				this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
 
 				foreach (TreeNodeViewModel child in this.Children)
 				{
-					child.ConnectorX2 = Width / 2 + this.treeNode.X - child.X;
+					child.ConnectorX2 = Width / 2 + this.X - child.X;
 				}
 			}
 		}
@@ -142,23 +171,23 @@ namespace Tree
 		{
 			get
 			{
-				return this.treeNode.Y;
+				return this.y;
 			}
 			set
 			{
-				if (Math.Abs(this.treeNode.Y - value) < 0.1)
+				if (Math.Abs(this.Y - value) < 0.1)
 				{
 					return;
 				}
 
-				this.treeNode.Y = value;
+				this.y = value;
 				this.OnPropertyChanged("Y");
 
 				this.ConnectorY2 = Height + this.Parent.Y - this.Y;
 
 				foreach (var child in this.Children)
 				{
-					child.ConnectorY2 = Height + this.treeNode.Y - child.Y;
+					child.ConnectorY2 = Height + this.Y - child.Y;
 				}
 			}
 		}
@@ -207,17 +236,17 @@ namespace Tree
 		{
 			get
 			{
-				return this.treeNode.Type;
+				return this.treeNodeData.Type;
 			}
 			set
 			{
-				if (this.treeNode.Type == value)
+				if (this.treeNodeData.Type == value)
 				{
 					return;
 				}
 				int type = 0;
 				this.SetProperty(ref type, value);
-				this.treeNode.Type = value;
+				this.treeNodeData.Type = value;
 			}
 		}
 
@@ -241,11 +270,11 @@ namespace Tree
 		{
 			get
 			{
-				return treeNode.IsFold;
+				return this.treeNodeData.IsFold;
 			}
 			set
 			{
-				treeNode.IsFold = value;
+				this.treeNodeData.IsFold = value;
 			}
 		}
 

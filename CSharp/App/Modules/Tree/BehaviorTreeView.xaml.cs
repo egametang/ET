@@ -37,29 +37,30 @@ namespace Tree
 			}
 		}
 
-		private void MenuNewNode_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void MenuNode_New(object sender, ExecutedRoutedEventArgs e)
 		{
 			Point point = Mouse.GetPosition(this.listBox);
-			var treeNode = new TreeNode{ X = point.X, Y = point.Y};
 
 			// one root node
 			if (this.ViewModel.TreeNodes.Count == 0)
 			{
-				this.ViewModel.Add(treeNode, null);
+				var addTreeNode = new TreeNodeViewModel(point.X, point.Y);
+				this.ViewModel.Add(addTreeNode, null);
 			}
 			else
 			{
 				if (this.listBox.SelectedItem != null)
 				{
-					var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
-					this.ViewModel.Add(treeNode, treeNodeViewModel);
+					var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
+					var addTreeNode = new TreeNodeViewModel(parentNode);
+					this.ViewModel.Add(addTreeNode, parentNode);
 				}
 			}
 			this.listBox.SelectedItem = null;
 			e.Handled = true;
 		}
 
-		private void MenuDeleteNode_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void MenuNode_Delete(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (this.listBox.SelectedItem == null)
 			{
@@ -69,6 +70,16 @@ namespace Tree
 			this.ViewModel.Remove(treeNodeViewModel);
 			this.listBox.SelectedItem = null;
 			e.Handled = true;
+		}
+
+		private void MenuNode_Save(object sender, ExecutedRoutedEventArgs e)
+		{
+			this.ViewModel.Save("node.bytes");
+		}
+
+		private void MenuNode_Open(object sender, ExecutedRoutedEventArgs e)
+		{
+			this.ViewModel.Load("node.bytes");
 		}
 
 		private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
@@ -184,8 +195,8 @@ namespace Tree
 			}
 			var item = (FrameworkElement)sender;
 			var moveToNode = item.DataContext as TreeNodeViewModel;
-			Log.Debug("move to node: {0} {1}", moveFromNode.Num, moveToNode.Num);
-			if (this.moveFromNode.Num == moveToNode.Num)
+			Log.Debug("move to node: {0} {1}", moveFromNode.Id, moveToNode.Id);
+			if (this.moveFromNode.Id == moveToNode.Id)
 			{
 				return;
 			}

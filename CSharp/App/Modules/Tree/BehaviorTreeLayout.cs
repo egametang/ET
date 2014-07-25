@@ -128,8 +128,8 @@ namespace Tree
 			treeNode.Prelim = prelim;
 			treeNode.Modify = modify;
 
-			Log.Debug("Num: " + treeNode.Num + " Prelim: " + treeNode.Prelim + " Modify: " +
-				treeNode.Modify);
+			// Log.Debug("Id: " + treeNode.Id + " Prelim: " + treeNode.Prelim + " Modify: " +
+			// 	treeNode.Modify);
 		}
 
 		private static void CalculateRelativeXAndY(

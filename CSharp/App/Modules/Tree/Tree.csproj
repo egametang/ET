@@ -76,6 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -87,7 +88,8 @@
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TreeNode.cs" />
+    <Compile Include="TreeNodeData.cs" />
+    <Compile Include="TreeNodeDataArray.cs" />
     <Compile Include="TreeNodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +106,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Platform\Helper\Helper.csproj">
+      <Project>{24233CD5-A5DF-484B-A482-B79CB7A0D9CB}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Logger\Logger.csproj">
       <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
       <Name>Logger</Name>
