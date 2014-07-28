@@ -189,6 +189,10 @@ namespace Tree
 			byte[] bytes = File.ReadAllBytes(filePath);
 			var treeNodeDataArray = ProtobufHelper.FromBytes<TreeNodeDataArray>(bytes);
 			treeNodeDataArray.Init();
+			if (treeNodeDataArray.TreeNodeDatas.Count == 0)
+			{
+				return;
+			}
 			RecursionLoad(treeNodeDataArray, treeNodeDataArray.TreeNodeDatas[0], null);
 		}
 
