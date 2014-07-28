@@ -91,6 +91,7 @@
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FolderVisiableConverter.cs" />
     <Compile Include="NodeTypeToStringConverter.cs" />
     <Compile Include="NodeTypeColorConverter.cs" />
     <Compile Include="ListToStringConverter.cs" />

@@ -20,6 +20,7 @@ namespace Tree
 		private double modify;
 		private double ancestorModify;
 		private TreeNodeViewModel parent;
+		private bool isFolder;
 
 		private ObservableCollection<TreeNodeViewModel> children = new ObservableCollection<TreeNodeViewModel>();
 
@@ -91,19 +92,6 @@ namespace Tree
 			{
 				this.treeNodeData.Id = value;
 				this.OnPropertyChanged("Id");
-			}
-		}
-
-		public string Name
-		{
-			get
-			{
-				return this.treeNodeData.Name;
-			}
-			set
-			{
-				this.treeNodeData.Name = value;
-				this.OnPropertyChanged("Name");
 			}
 		}
 
@@ -319,11 +307,16 @@ namespace Tree
 		{
 			get
 			{
-				return this.treeNodeData.IsFold;
+				return this.isFolder;
 			}
 			set
 			{
-				this.treeNodeData.IsFold = value;
+				if (isFolder == value)
+				{
+					return;
+				}
+				this.isFolder = value;
+				this.OnPropertyChanged("IsFolder");
 			}
 		}
 

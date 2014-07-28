@@ -21,27 +21,21 @@ namespace Tree
 		public int Type { get; set; }
 
 		/// <summary>
-		/// 节点名字
-		/// </summary>
-		[DataMember(Order = 3)]
-		public string Name { get; set; }
-
-		/// <summary>
 		/// 节点配置参数
 		/// </summary>
-		[DataMember(Order = 4)]
+		[DataMember(Order = 3)]
 		public List<string> Args { get; set; }
 
 		/// <summary>
 		/// 父节点
 		/// </summary>
-		[DataMember(Order = 5)]
+		[DataMember(Order = 4)]
 		public int ParentId { get; set; }
 
 		/// <summary>
 		/// 子节点
 		/// </summary>
-		[DataMember(Order = 6)]
+		[DataMember(Order = 5)]
 		public List<int> ChildrenId
 		{
 			get
@@ -53,12 +47,7 @@ namespace Tree
 		/// <summary>
 		/// 节点说明
 		/// </summary>
-		[DataMember(Order = 7)]
+		[DataMember(Order = 6)]
 		public string Comment { get; set; }
-
-		/// <summary>
-		/// 节点是否折叠,给编辑器看的
-		/// </summary>
-		public bool IsFold { get; set; }
 	}
 }

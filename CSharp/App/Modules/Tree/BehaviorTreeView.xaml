@@ -32,6 +32,7 @@
 		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
 		<Tree:NodeTypeColorConverter x:Key="NodeTypeColorConverter"/>
 		<Tree:NodeTypeToStringConverter x:Key="NodeTypeToStringConverter"/>
+		<Tree:FolderVisiableConverter x:Key="FolderVisiableConverter"/>
 	</UserControl.Resources>
 
 	<UserControl.CommandBindings>
@@ -77,6 +78,7 @@
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
 								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
+						<Label Content="+" Visibility="{Binding IsFolder, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"  ></Label>
 						<StackPanel>
 							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}" ></Label>
 							<Label Content="{Binding Comment}" ></Label>
