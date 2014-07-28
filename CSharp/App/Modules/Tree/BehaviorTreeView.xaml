@@ -2,18 +2,36 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:BehaviorTree="clr-namespace:Tree" 
+		xmlns:Tree="clr-namespace:Tree"
 		x:Class="Tree.BehaviorTreeView"
 		mc:Ignorable="d" 
-		d:DesignHeight="600" 
-		d:DesignWidth="800" 
-		d:DataContext="{d:DesignInstance BehaviorTree:BehaviorTreeViewModel}">
+		d:DesignHeight="800" 
+		d:DesignWidth="1280" 
+		d:DataContext="{d:DesignInstance Tree:BehaviorTreeViewModel}">
 	<UserControl.Resources>
-		<LinearGradientBrush x:Key="treeNodeFillBrush" StartPoint="0,0" EndPoint="0,1">
+		<LinearGradientBrush x:Key="treeNodeSelectorFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
-			<GradientStop Color="#7FC9FF" Offset="0.6" />
+			<GradientStop Color="#FFF37FFF" Offset="0.6" />
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="treeNodeOtherFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#FFF59202" Offset="0.6" />
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="treeNodeActionFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#FF06F31C" Offset="0.6" />
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="treeNodeSequenceFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#FFF3EF91" Offset="0.6" />
+		</LinearGradientBrush>
+		<LinearGradientBrush x:Key="treeNodeConditionFillBrush" StartPoint="0,0" EndPoint="0,1">
+			<GradientStop Color="White" Offset="0" />
+			<GradientStop Color="#FF06CBF7" Offset="0.6" />
 		</LinearGradientBrush>
 		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
+		<Tree:NodeTypeColorConverter x:Key="NodeTypeColorConverter"/>
+		<Tree:NodeTypeToStringConverter x:Key="NodeTypeToStringConverter"/>
 	</UserControl.Resources>
 
 	<UserControl.CommandBindings>
@@ -36,6 +54,10 @@
 		</ContextMenu>
 	</UserControl.ContextMenu>
 	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="5*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
 		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}">
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
@@ -49,13 +71,16 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
-				<DataTemplate DataType="BehaviorTree:TreeNodeViewModel">
+				<DataTemplate DataType="Tree:TreeNodeViewModel">
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove"
 							PreviewMouseLeftButtonDown="ListBoxItem_PreviewMouseLeftButtonDown"
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
-								RadiusX="40" RadiusY="40" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeFillBrush}"/>
-						<Label Content="{Binding Id}" Canvas.Left="20" Canvas.Top="15"></Label>
+								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
+						<StackPanel>
+							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}" ></Label>
+							<Label Content="{Binding Comment}" ></Label>
+						</StackPanel>
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
 								Stroke="Black" StrokeThickness="2"  />
 					</Canvas>
@@ -63,9 +88,27 @@
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
 							<Setter TargetName="rectNode" Property="Stroke" Value="Green" />
 						</DataTrigger>
+						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="selector">
+							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeSelectorFillBrush}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="sequence">
+							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeSequenceFillBrush}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="condition">
+							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeConditionFillBrush}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="action">
+							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeActionFillBrush}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="other">
+							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeOtherFillBrush}" />
+						</DataTrigger>
 					</DataTemplate.Triggers>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
+		<StackPanel Grid.Column="1">
+			<Tree:NodeDataEditor x:Name="nodeDataEditor" />
+		</StackPanel>
 	</Grid>
 </UserControl>

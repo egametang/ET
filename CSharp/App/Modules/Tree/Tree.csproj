@@ -91,9 +91,13 @@
     <Compile Include="BehaviorTreeView.xaml.cs">
       <DependentUpon>BehaviorTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NodeTypeToStringConverter.cs" />
+    <Compile Include="NodeTypeColorConverter.cs" />
+    <Compile Include="ListToStringConverter.cs" />
     <Compile Include="NodeDataEditor.xaml.cs">
       <DependentUpon>NodeDataEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NodeType.cs" />
     <Compile Include="TreeNodeData.cs" />
     <Compile Include="TreeNodeDataArray.cs" />
     <Compile Include="TreeNodeViewModel.cs" />

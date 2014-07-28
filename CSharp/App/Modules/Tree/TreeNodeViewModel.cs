@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Tree
@@ -84,6 +86,37 @@ namespace Tree
 			get
 			{
 				return this.treeNodeData.Id;
+			}
+			set
+			{
+				this.treeNodeData.Id = value;
+				this.OnPropertyChanged("Id");
+			}
+		}
+
+		public string Name
+		{
+			get
+			{
+				return this.treeNodeData.Name;
+			}
+			set
+			{
+				this.treeNodeData.Name = value;
+				this.OnPropertyChanged("Name");
+			}
+		}
+
+		public string Comment
+		{
+			get
+			{
+				return this.treeNodeData.Comment;
+			}
+			set
+			{
+				this.treeNodeData.Comment = value;
+				this.OnPropertyChanged("Comment");
 			}
 		}
 
@@ -244,9 +277,25 @@ namespace Tree
 				{
 					return;
 				}
-				int type = 0;
-				this.SetProperty(ref type, value);
 				this.treeNodeData.Type = value;
+				this.OnPropertyChanged("Type");
+			}
+		}
+
+		public List<string> Args
+		{
+			get
+			{
+				return this.treeNodeData.Args;
+			}
+			set
+			{
+				if (this.treeNodeData.Args == value)
+				{
+					return;
+				}
+				this.treeNodeData.Args = value;
+				this.OnPropertyChanged("Args");
 			}
 		}
 

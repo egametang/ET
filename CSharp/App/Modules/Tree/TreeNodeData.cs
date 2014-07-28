@@ -24,13 +24,13 @@ namespace Tree
 		/// 节点名字
 		/// </summary>
 		[DataMember(Order = 3)]
-		public int Name { get; set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// 节点配置参数
 		/// </summary>
 		[DataMember(Order = 4)]
-		public string Args { get; set; }
+		public List<string> Args { get; set; }
 
 		/// <summary>
 		/// 父节点
@@ -54,7 +54,7 @@ namespace Tree
 		/// 节点说明
 		/// </summary>
 		[DataMember(Order = 7)]
-		public int Comment { get; set; }
+		public string Comment { get; set; }
 
 		/// <summary>
 		/// 节点是否折叠,给编辑器看的

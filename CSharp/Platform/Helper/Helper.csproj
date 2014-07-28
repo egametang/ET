@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="ByteHelper.cs" />
     <Compile Include="BigIntegerHelper.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="LoaderHelper.cs" />
     <Compile Include="ProtobufHelper.cs" />
     <Compile Include="RandomHelper.cs" />

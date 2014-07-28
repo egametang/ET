@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Data;
+
+namespace Tree
+{
+	[ValueConversion(typeof(List<string>), typeof(string))]
+	public class ListToStringConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value == null)
+			{
+				return "";
+			}
+			var list = (List<string>) value;
+			return String.Join(",", list);
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value == null)
+			{
+				return new List<string>();
+			}
+			var s = (string) value;
+			string[] ss = s.Split(',');
+			return ss.ToList();
+		}
+	}
+}
