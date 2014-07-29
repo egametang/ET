@@ -1,7 +1,6 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public class MessageEnv: Object
-	{
-	}
+    public class MessageEnv: Object
+    {
+    }
 }

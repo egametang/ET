@@ -2,17 +2,17 @@
 
 namespace BehaviorTree
 {
-	public abstract class Node
-	{
-		public string Name { get; protected set; }
+    public abstract class Node
+    {
+        public string Name { get; protected set; }
 
-		protected readonly List<Node> children = new List<Node>();
+        protected readonly List<Node> children = new List<Node>();
 
-		public void AddChild(Node child)
-		{
-			this.children.Add(child);
-		}
+        public void AddChild(Node child)
+        {
+            this.children.Add(child);
+        }
 
-		public abstract bool Run(BlackBoard blackBoard);
-	}
+        public abstract bool Run(BlackBoard blackBoard);
+    }
 }

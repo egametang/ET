@@ -28,6 +28,6 @@
 		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="1" Margin="2" SelectionChanged="CbType_OnSelectionChanged" />
 		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="2" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}}" />
 		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Comment}" />
-		<Button Content="OK" Grid.Row="4" Grid.Column="1" Margin="1,1,40,1"></Button>
+		<Button Content="OK" Grid.Row="4" Grid.Column="1" Margin="1,1,40,1"/>
 	</Grid>
 </UserControl>

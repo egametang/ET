@@ -8,13 +8,13 @@
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance {x:Type Robot:RobotViewModel}}" Height="723.134" Width="1218.806">
 	<UserControl.Resources>
 		<x:Array x:Key="ComboBoxForbiddenTypeKey" Type="Robot:ComboBoxForbiddenType">
-			<Robot:ComboBoxForbiddenType Name="帐号" Value="forbid_buy_item"></Robot:ComboBoxForbiddenType>
-			<Robot:ComboBoxForbiddenType Name="IP" Value="forbid_match"></Robot:ComboBoxForbiddenType>
+			<Robot:ComboBoxForbiddenType Name="帐号" Value="forbid_buy_item"/>
+			<Robot:ComboBoxForbiddenType Name="IP" Value="forbid_match"/>
 		</x:Array>
 		<x:Array x:Key="ComboBoxCharacterForbiddenTypeKey" Type="Robot:ComboBoxForbiddenType">
-			<Robot:ComboBoxForbiddenType Name="购买" Value="forbid_buy_item"></Robot:ComboBoxForbiddenType>
-			<Robot:ComboBoxForbiddenType Name="匹配" Value="forbid_match"></Robot:ComboBoxForbiddenType>
-			<Robot:ComboBoxForbiddenType Name="聊天" Value="forbid_chat"></Robot:ComboBoxForbiddenType>
+			<Robot:ComboBoxForbiddenType Name="购买" Value="forbid_buy_item"/>
+			<Robot:ComboBoxForbiddenType Name="匹配" Value="forbid_match"/>
+			<Robot:ComboBoxForbiddenType Name="聊天" Value="forbid_chat"/>
 		</x:Array>
 
 		<Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
@@ -157,7 +157,7 @@
 						<TabItem Header="工具">
 							<Canvas>
 								<Button Content="excel转换" Canvas.Left="10" Canvas.Top="10" Width="75" Click="btnExcel_Click"/>
-								<Label Name="lblShowResult" Canvas.Left="90" Canvas.Top="10" Height="23" Width="54" RenderTransformOrigin="-0.35,0.567"></Label>
+								<Label Name="lblShowResult" Canvas.Left="90" Canvas.Top="10" Height="23" Width="54" RenderTransformOrigin="-0.35,0.567"/>
 							</Canvas>
 						</TabItem>
 					</TabControl>

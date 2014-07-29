@@ -1,8 +1,7 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public static class KeyDefine
-	{
-		public const string KMessage = "message";
-	}
+    public static class KeyDefine
+    {
+        public const string KMessage = "message";
+    }
 }

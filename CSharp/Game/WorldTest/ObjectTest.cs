@@ -5,24 +5,24 @@ using Object = Component.Object;
 
 namespace ObjectTest
 {
-	class Player: Object
-	{
-	}
+    internal class Player: Object
+    {
+    }
 
-	[TestClass]
-	public class ObjectTest
-	{
-		[TestMethod]
-		public void Serialize()
-		{
-			var player = new Player();
-			player["health"] = 10;
+    [TestClass]
+    public class ObjectTest
+    {
+        [TestMethod]
+        public void Serialize()
+        {
+            var player = new Player();
+            player["health"] = 10;
 
-			string json = MongoHelper.ToJson(player);
-			Console.WriteLine(json);
+            string json = MongoHelper.ToJson(player);
+            Console.WriteLine(json);
 
-			var player2 = MongoHelper.FromJson<Player>(json);
-			Console.WriteLine(MongoHelper.ToJson(player2));
-		}
-	}
+            var player2 = MongoHelper.FromJson<Player>(json);
+            Console.WriteLine(MongoHelper.ToJson(player2));
+        }
+    }
 }

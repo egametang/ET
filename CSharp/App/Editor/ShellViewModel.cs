@@ -3,9 +3,9 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Editor
 {
-	[Export]
-	public class ShellViewModel: BindableBase
-	{
-		// This is where any view model logic for the shell would go.
-	}
+    [Export]
+    public class ShellViewModel: BindableBase
+    {
+        // This is where any view model logic for the shell would go.
+    }
 }

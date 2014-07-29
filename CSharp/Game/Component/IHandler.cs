@@ -1,8 +1,7 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public interface IHandler
-	{
-		void Handle(MessageEnv messageEnv);
-	}
+    public interface IHandler
+    {
+        void Handle(MessageEnv messageEnv);
+    }
 }

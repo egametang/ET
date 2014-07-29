@@ -2,7 +2,7 @@
 
 namespace BossBase
 {
-	public class ReLoginEvent : CompositePresentationEvent<object>
-	{
-	}
+    public class ReLoginEvent: CompositePresentationEvent<object>
+    {
+    }
 }

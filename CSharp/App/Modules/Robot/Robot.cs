@@ -1,6 +1,6 @@
 ﻿namespace Robot
 {
-	public class Robot
-	{
-	}
+    public class Robot
+    {
+    }
 }

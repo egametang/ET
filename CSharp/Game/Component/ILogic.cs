@@ -1,8 +1,7 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public interface ILogic
-	{
-		void Handle(short opcode, byte[] content);
-	}
+    public interface ILogic
+    {
+        void Handle(short opcode, byte[] content);
+    }
 }

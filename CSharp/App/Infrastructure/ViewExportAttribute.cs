@@ -20,17 +20,17 @@ using System.ComponentModel.Composition;
 
 namespace Infrastructure
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false), MetadataAttribute]
-	public class ViewExportAttribute: ExportAttribute, IViewRegionRegistration
-	{
-		public ViewExportAttribute(): base(typeof (object))
-		{
-		}
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false), MetadataAttribute]
+    public class ViewExportAttribute: ExportAttribute, IViewRegionRegistration
+    {
+        public ViewExportAttribute(): base(typeof (object))
+        {
+        }
 
-		public ViewExportAttribute(string viewName): base(viewName, typeof (object))
-		{
-		}
+        public ViewExportAttribute(string viewName): base(viewName, typeof (object))
+        {
+        }
 
-		public string RegionName { get; set; }
-	}
+        public string RegionName { get; set; }
+    }
 }

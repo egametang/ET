@@ -1,9 +1,8 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public interface IConfigInitialize
-	{
-		string ConfigName { get; }
-		void Init(string dir);
-	}
+    public interface IConfigInitialize
+    {
+        string ConfigName { get; }
+        void Init(string dir);
+    }
 }

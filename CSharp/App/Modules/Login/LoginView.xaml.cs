@@ -4,33 +4,33 @@ using Infrastructure;
 
 namespace Login
 {
-	/// <summary>
-	/// LoginView.xaml 的交互逻辑
-	/// </summary>
-	[ViewExport(RegionName = "LoginRegion"), PartCreationPolicy(CreationPolicy.NonShared)]
-	public partial class LoginView
-	{
-		public LoginView()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// LoginView.xaml 的交互逻辑
+    /// </summary>
+    [ViewExport(RegionName = "LoginRegion"), PartCreationPolicy(CreationPolicy.NonShared)]
+    public partial class LoginView
+    {
+        public LoginView()
+        {
+            this.InitializeComponent();
+        }
 
-		[Import]
-		private LoginViewModel ViewModel
-		{
-			get
-			{
-				return this.DataContext as LoginViewModel;
-			}
-			set
-			{
-				this.DataContext = value;
-			}
-		}
+        [Import]
+        private LoginViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as LoginViewModel;
+            }
+            set
+            {
+                this.DataContext = value;
+            }
+        }
 
-		private async void btnLogin_Click(object sender, RoutedEventArgs e)
-		{
-			await this.ViewModel.Login();
-		}
-	}
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            await this.ViewModel.Login();
+        }
+    }
 }

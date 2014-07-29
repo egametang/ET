@@ -1,8 +1,7 @@
-﻿
-namespace ENet
+﻿namespace ENet
 {
-	public static class ErrorCode
-	{
-		public const int ClientDisconnect = 1;
-	}
+    public static class ErrorCode
+    {
+        public const int ClientDisconnect = 1;
+    }
 }

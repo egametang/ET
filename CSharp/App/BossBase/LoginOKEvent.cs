@@ -2,7 +2,7 @@
 
 namespace BossBase
 {
-	public class LoginOKEvent : CompositePresentationEvent<IMessageChannel>
-	{
-	}
+    public class LoginOKEvent: CompositePresentationEvent<IMessageChannel>
+    {
+    }
 }

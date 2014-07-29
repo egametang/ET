@@ -7,87 +7,88 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetTest
 {
-	[TestClass]
-	public class ENetClientServerTest
-	{
-		private const int pingPangCount = 10000;
-		private static async void ClientEvent(EService service, string hostName, ushort port)
-		{
-			var eSocket = new ESocket(service);
-			await eSocket.ConnectAsync(hostName, port);
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
-			for (int i = 0; i < pingPangCount; ++i)
-			{
-				eSocket.WriteAsync("0123456789".ToByteArray());
+    [TestClass]
+    public class ENetClientServerTest
+    {
+        private const int pingPangCount = 10000;
 
-				var bytes = await eSocket.ReadAsync();
+        private static async void ClientEvent(EService service, string hostName, ushort port)
+        {
+            var eSocket = new ESocket(service);
+            await eSocket.ConnectAsync(hostName, port);
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (int i = 0; i < pingPangCount; ++i)
+            {
+                eSocket.WriteAsync("0123456789".ToByteArray());
 
-				CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
-			}
-			stopWatch.Stop();
-			Log.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
-			await eSocket.DisconnectAsync();
-			service.Stop();
-		}
+                var bytes = await eSocket.ReadAsync();
 
-		private static async void ServerEvent(EService service, Barrier barrier)
-		{
-			barrier.SignalAndWait();
+                CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
+            }
+            stopWatch.Stop();
+            Log.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
+            await eSocket.DisconnectAsync();
+            service.Stop();
+        }
 
-			bool isRunning = true;
-			while (isRunning)
-			{
-				Log.Debug("start accept");
-				var eSocket = new ESocket(service);
-				await eSocket.AcceptAsync();
-				eSocket.Disconnect += ev =>
-				{
-					isRunning = false;
-					service.Stop();
-				};
-				Echo(eSocket);
-			}
-		}
+        private static async void ServerEvent(EService service, Barrier barrier)
+        {
+            barrier.SignalAndWait();
 
-		private static async void Echo(ESocket eSocket)
-		{
-			for (int i = 0; i < pingPangCount; ++i)
-			{
-				var bytes = await eSocket.ReadAsync();
+            bool isRunning = true;
+            while (isRunning)
+            {
+                Log.Debug("start accept");
+                var eSocket = new ESocket(service);
+                await eSocket.AcceptAsync();
+                eSocket.Disconnect += ev =>
+                {
+                    isRunning = false;
+                    service.Stop();
+                };
+                Echo(eSocket);
+            }
+        }
 
-				CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
+        private static async void Echo(ESocket eSocket)
+        {
+            for (int i = 0; i < pingPangCount; ++i)
+            {
+                var bytes = await eSocket.ReadAsync();
 
-				eSocket.WriteAsync("9876543210".ToByteArray());
-			}
-		}
+                CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
 
-		[TestMethod]
-		public void ClientSendToServer()
-		{
-			const string hostName = "127.0.0.1";
-			const ushort port = 8888;
-			var clientHost = new EService();
-			var serverHost = new EService(hostName, port);
+                eSocket.WriteAsync("9876543210".ToByteArray());
+            }
+        }
 
-			var serverThread = new Thread(() => serverHost.Start());
-			var clientThread = new Thread(() => clientHost.Start());
+        [TestMethod]
+        public void ClientSendToServer()
+        {
+            const string hostName = "127.0.0.1";
+            const ushort port = 8888;
+            var clientHost = new EService();
+            var serverHost = new EService(hostName, port);
 
-			serverThread.Start();
-			clientThread.Start();
+            var serverThread = new Thread(() => serverHost.Start());
+            var clientThread = new Thread(() => clientHost.Start());
 
-			var barrier = new Barrier(2);
+            serverThread.Start();
+            clientThread.Start();
 
-			// 往server host线程增加事件,accept
-			serverHost.Events += () => ServerEvent(serverHost, barrier);
+            var barrier = new Barrier(2);
 
-			barrier.SignalAndWait();
+            // 往server host线程增加事件,accept
+            serverHost.Events += () => ServerEvent(serverHost, barrier);
 
-			// 往client host线程增加事件,client线程连接server
-			clientHost.Events += () => ClientEvent(clientHost, hostName, port);
+            barrier.SignalAndWait();
 
-			serverThread.Join();
-			clientThread.Join();
-		}
-	}
+            // 往client host线程增加事件,client线程连接server
+            clientHost.Events += () => ClientEvent(clientHost, hostName, port);
+
+            serverThread.Join();
+            clientThread.Join();
+        }
+    }
 }

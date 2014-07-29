@@ -3,11 +3,11 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace Robot
 {
-	[ModuleExport(moduleType: typeof (RobotModule))]
-	public class RobotModule: IModule
-	{
-		public void Initialize()
-		{
-		}
-	}
+    [ModuleExport(moduleType: typeof (RobotModule))]
+    public class RobotModule: IModule
+    {
+        public void Initialize()
+        {
+        }
+    }
 }

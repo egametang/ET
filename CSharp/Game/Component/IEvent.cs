@@ -1,8 +1,7 @@
-﻿
-namespace Component
+﻿namespace Component
 {
-	public interface IEvent
-	{
-		void Trigger(MessageEnv messageEnv);
-	}
+    public interface IEvent
+    {
+        void Trigger(MessageEnv messageEnv);
+    }
 }

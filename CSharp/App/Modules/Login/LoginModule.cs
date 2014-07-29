@@ -3,11 +3,11 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace Login
 {
-	[ModuleExport(moduleType: typeof (LoginModule))]
-	public class LoginModule: IModule
-	{
-		public void Initialize()
-		{
-		}
-	}
+    [ModuleExport(moduleType: typeof (LoginModule))]
+    public class LoginModule: IModule
+    {
+        public void Initialize()
+        {
+        }
+    }
 }

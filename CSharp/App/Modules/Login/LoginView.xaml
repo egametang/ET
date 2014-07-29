@@ -13,13 +13,13 @@
 				HorizontalAlignment="Center" VerticalAlignment="Center" CloseButtonVisibility="Hidden">
 			<Grid Name="gridLogin"  Width="200" Height="120" >
 				<Grid.RowDefinitions>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
-					<RowDefinition></RowDefinition>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="51*"></ColumnDefinition>
-					<ColumnDefinition Width="149*"></ColumnDefinition>
+					<ColumnDefinition Width="51*"/>
+					<ColumnDefinition Width="149*"/>
 				</Grid.ColumnDefinitions>
 				<Label Content="帐号: " Grid.Row="0" Grid.Column="0" Margin="0,8"/>
 				<TextBox Text="{Binding Account}" Grid.Row="0" Grid.Column="1" Margin="0,8,0,8" />

@@ -1,12 +1,13 @@
-﻿
+﻿using ENetTest;
+
 namespace ENetExe
 {
-	static class Program
-	{
-		static void Main(string[] args)
-		{
-			var test = new ENetTest.ENetClientServerTest();
-			test.ClientSendToServer();
-		}
-	}
+    internal static class Program
+    {
+        private static void Main(string[] args)
+        {
+            var test = new ENetClientServerTest();
+            test.ClientSendToServer();
+        }
+    }
 }

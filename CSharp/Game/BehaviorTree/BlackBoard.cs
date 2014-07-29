@@ -2,7 +2,7 @@
 
 namespace BehaviorTree
 {
-	public class BlackBoard: Object
-	{
-	}
+    public class BlackBoard: Object
+    {
+    }
 }
