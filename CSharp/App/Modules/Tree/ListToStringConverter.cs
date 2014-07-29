@@ -27,6 +27,10 @@ namespace Tree
 			}
 			var s = (string) value;
 			string[] ss = s.Split(',');
+			for (int i = 0; i < ss.Length; ++i)
+			{
+				ss[i] = ss[i].Trim();
+			}
 			return ss.ToList();
 		}
 	}
