@@ -1,8 +1,8 @@
-﻿using Microsoft.Practices.Prism.Events;
+﻿using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace BossBase
 {
-    public class LoginOKEvent: CompositePresentationEvent<IMessageChannel>
+    public class LoginOKEvent: PubSubEvent<IMessageChannel>
     {
     }
 }

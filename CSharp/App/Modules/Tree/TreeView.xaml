@@ -1,13 +1,12 @@
-﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:Tree="clr-namespace:Tree"
-		x:Class="Tree.BehaviorTreeView"
-		mc:Ignorable="d" 
-		d:DesignHeight="800" 
-		d:DesignWidth="1280" 
-		d:DataContext="{d:DesignInstance Tree:BehaviorTreeViewModel}">
+﻿<UserControl x:Class="Tree.TreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tree="clr-namespace:Tree"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+			 d:DataContext="{d:DesignInstance tree:TreeViewModel}">
 	<UserControl.Resources>
 		<LinearGradientBrush x:Key="treeNodeSelectorFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
@@ -30,36 +29,20 @@
 			<GradientStop Color="#FF06CBF7" Offset="0.6" />
 		</LinearGradientBrush>
 		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
-		<Tree:NodeTypeColorConverter x:Key="NodeTypeColorConverter"/>
-		<Tree:NodeTypeToStringConverter x:Key="NodeTypeToStringConverter"/>
-		<Tree:FolderVisiableConverter x:Key="FolderVisiableConverter"/>
+		
+		<tree:NodeTypeColorConverter x:Key="NodeTypeColorConverter"/>
+		<tree:NodeTypeToStringConverter x:Key="NodeTypeToStringConverter"/>
+		<tree:FolderVisiableConverter x:Key="FolderVisiableConverter"/>
 	</UserControl.Resources>
-
-	<UserControl.CommandBindings>
-		<CommandBinding Command="ApplicationCommands.New" Executed="MenuNode_New" />
-		<CommandBinding Command="ApplicationCommands.Delete" Executed="MenuNode_Delete" />
-		<CommandBinding Command="ApplicationCommands.Save" Executed="MenuNode_Save" />
-		<CommandBinding Command="ApplicationCommands.Open" Executed="MenuNode_Open" />
-	</UserControl.CommandBindings>
-
-	<UserControl.ContextMenu>
-		<ContextMenu>
-			<MenuItem Header="新建" Command="ApplicationCommands.New"
-					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-			<MenuItem Header="删除" Command="ApplicationCommands.Delete"
-					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-			<MenuItem Header="保存" Command="ApplicationCommands.Save"
-					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-			<MenuItem Header="打开" Command="ApplicationCommands.Open"
-					CommandTarget="{Binding Path=PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-		</ContextMenu>
-	</UserControl.ContextMenu>
+	
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="5*"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}">
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" VerticalAlignment="Stretch">
+			<ListBox.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="新建" Click="MenuItem_New" />
+					<MenuItem Header="删除" Click="MenuItem_Delete" />
+				</ContextMenu>
+			</ListBox.ContextMenu>
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="Canvas.Left" Value="{Binding X}" />
@@ -72,12 +55,13 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 			<ListBox.ItemTemplate>
-				<DataTemplate DataType="Tree:TreeNodeViewModel">
+				<DataTemplate DataType="tree:TreeNodeViewModel">
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove"
 							PreviewMouseLeftButtonDown="ListBoxItem_PreviewMouseLeftButtonDown"
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
-								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
+								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}">
+						</Rectangle>
 						<Label Content="+" Visibility="{Binding IsFolder, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>
 						<StackPanel>
 							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}"/>
@@ -109,8 +93,5 @@
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
-		<StackPanel Grid.Column="1">
-			<Tree:NodeDataEditor x:Name="nodeDataEditor" />
-		</StackPanel>
 	</Grid>
 </UserControl>

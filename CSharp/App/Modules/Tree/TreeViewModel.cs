@@ -2,15 +2,25 @@
 using System.ComponentModel.Composition;
 using System.IO;
 using Helper;
+using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Tree
 {
-    [Export(contractType: typeof (BehaviorTreeViewModel)),
-     PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-    internal class BehaviorTreeViewModel
+    [Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
+    public class TreeViewModel: BindableBase
     {
+        public IEventAggregator EventAggregator { get; set; }
+
+        private AllTreeData allTreeData;
+
         private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
                 new ObservableCollection<TreeNodeViewModel>();
+
+        public TreeViewModel(IEventAggregator eventAggregator)
+        {
+            this.EventAggregator = eventAggregator;
+        }
 
         public ObservableCollection<TreeNodeViewModel> TreeNodes
         {
@@ -28,6 +38,11 @@ namespace Tree
             }
         }
 
+        public void SelectNodeChange(TreeNodeViewModel treeNodeViewModel)
+        {
+            this.EventAggregator.GetEvent<SelectNodeChangeEvent>().Publish(treeNodeViewModel);
+        }
+
         public void Add(TreeNodeViewModel treeNode, TreeNodeViewModel parent)
         {
             // 如果父节点是折叠的,需要先展开父节点
@@ -40,7 +55,7 @@ namespace Tree
             {
                 parent.Children.Add(treeNode);
             }
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
@@ -56,7 +71,7 @@ namespace Tree
         {
             this.RecursionRemove(treeNodeViewModel);
             treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionMove(
@@ -104,7 +119,7 @@ namespace Tree
             from.Parent.Children.Remove(from);
             to.Children.Add(from);
             from.Parent = to;
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
 
         /// <summary>
@@ -118,7 +133,7 @@ namespace Tree
                 this.RecursionRemove(node);
             }
             treeNodeViewModel.IsFolder = true;
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
 
         /// <summary>
@@ -132,7 +147,7 @@ namespace Tree
                 this.RecursionAdd(tn);
             }
             unFoldNode.IsFolder = false;
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionAdd(TreeNodeViewModel treeNodeViewModel)
@@ -158,26 +173,25 @@ namespace Tree
         /// </summary>
         public void Save(string filePath)
         {
-            var treeNodeDataArray = new TreeNodeDataArray();
-            this.RecursionSave(treeNodeDataArray, this.Root);
-            byte[] bytes = ProtobufHelper.ToBytes(treeNodeDataArray);
-            using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            {
-                stream.Write(bytes, 0, bytes.Length);
-            }
+            //this.RecursionSave(treeNodeDataArray, this.Root);
+            //byte[] bytes = ProtobufHelper.ToBytes(treeNodeDataArray);
+            //using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+            //{
+            //    stream.Write(bytes, 0, bytes.Length);
+            //}
         }
 
-        private void RecursionSave(TreeNodeDataArray treeNodeDataArray, TreeNodeViewModel node)
+        private void RecursionSave(AllTreeData allTreeData, TreeNodeViewModel node)
         {
-            if (node == null)
-            {
-                return;
-            }
-            treeNodeDataArray.Add(node.TreeNodeData);
-            foreach (TreeNodeViewModel childNode in node.Children)
-            {
-                this.RecursionSave(treeNodeDataArray, childNode);
-            }
+            //if (node == null)
+            //{
+            //    return;
+            //}
+            //allTreeData.Add(node.TreeNodeData);
+            //foreach (TreeNodeViewModel childNode in node.Children)
+            //{
+            //    this.RecursionSave(allTreeData, childNode);
+            //}
         }
 
         /// <summary>
@@ -188,27 +202,22 @@ namespace Tree
         {
             this.TreeNodes.Clear();
             byte[] bytes = File.ReadAllBytes(filePath);
-            var treeNodeDataArray = ProtobufHelper.FromBytes<TreeNodeDataArray>(bytes);
-            treeNodeDataArray.Init();
-            if (treeNodeDataArray.TreeNodeDatas.Count == 0)
-            {
-                return;
-            }
-            this.RecursionLoad(treeNodeDataArray, treeNodeDataArray.TreeNodeDatas[0], null);
+            this.allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
+            allTreeData.Init();
         }
 
         private void RecursionLoad(
-                TreeNodeDataArray treeNodeDataArray, TreeNodeData treeNodeData,
+                AllTreeData allTreeData, TreeNodeData treeNodeData,
                 TreeNodeViewModel parentNode)
         {
             var node = new TreeNodeViewModel(treeNodeData, parentNode);
             this.Add(node, parentNode);
             foreach (int id in treeNodeData.Children)
             {
-                TreeNodeData childNodeData = treeNodeDataArray[id];
-                this.RecursionLoad(treeNodeDataArray, childNodeData, node);
+                TreeNodeData childNodeData = allTreeData[id];
+                this.RecursionLoad(allTreeData, childNodeData, node);
             }
-            BehaviorTreeLayout.ExcuteLayout(this.Root);
+            TreeLayout.ExcuteLayout(this.Root);
         }
     }
 }

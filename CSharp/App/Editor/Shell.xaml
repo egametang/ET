@@ -8,12 +8,14 @@
 			<TabItem Height="25" Width="80" Header="行为树">
 				<ContentControl Name="behaviorTree" prism:RegionManager.RegionName="BehaviorTreeRegion" />
 			</TabItem>
+			<!--
 			<TabItem Height="25" Width="80" Header="机器人">
 				<ContentControl Name="robot" prism:RegionManager.RegionName="RobotRegion" />
 			</TabItem>
 			<TabItem Height="25" Width="80" Header="WCFClient">
 				<ContentControl Name="wcfClient" prism:RegionManager.RegionName="WCFClientRegion" />
 			</TabItem>
+			-->
 		</TabControl>
 	</Grid>
 </Window>

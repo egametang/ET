@@ -3,8 +3,8 @@ using Microsoft.Practices.Prism.Modularity;
 
 namespace Tree
 {
-    [ModuleExport(moduleType: typeof (BehaviorTreeModule))]
-    public class BehaviorTreeModule: IModule
+    [ModuleExport(moduleType: typeof (TreeModule))]
+    public class TreeModule: IModule
     {
         public void Initialize()
         {

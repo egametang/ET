@@ -2,16 +2,14 @@
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
-using Infrastructure;
 using Logger;
 
 namespace Tree
 {
     /// <summary>
-    /// BehaviorTreeView.xaml 的交互逻辑
+    /// TreeView.xaml 的交互逻辑
     /// </summary>
-    [ViewExport(RegionName = "BehaviorTreeRegion"), PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class BehaviorTreeView
+    public partial class TreeView
     {
         private const double DragThreshold = 5;
         private bool isDragging;
@@ -19,73 +17,21 @@ namespace Tree
         private Point origMouseDownPoint;
         private TreeNodeViewModel moveFromNode;
 
-        public BehaviorTreeView()
+        public TreeView()
         {
             this.InitializeComponent();
         }
 
-        [Import]
-        private BehaviorTreeViewModel ViewModel
+        public TreeViewModel TreeViewModel
         {
             get
             {
-                return this.DataContext as BehaviorTreeViewModel;
+                return this.DataContext as TreeViewModel;
             }
             set
             {
                 this.DataContext = value;
             }
-        }
-
-        private void MenuNode_New(object sender, ExecutedRoutedEventArgs e)
-        {
-            Point point = Mouse.GetPosition(this.listBox);
-
-            // one root node
-            if (this.ViewModel.TreeNodes.Count == 0)
-            {
-                var addTreeNode = new TreeNodeViewModel(point.X, point.Y)
-                {
-                    Type = (int) NodeType.Selector
-                };
-                this.ViewModel.Add(addTreeNode, null);
-            }
-            else
-            {
-                if (this.listBox.SelectedItem != null)
-                {
-                    var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
-                    var addTreeNode = new TreeNodeViewModel(parentNode)
-                    {
-                        Type = (int) NodeType.Selector
-                    };
-                    this.ViewModel.Add(addTreeNode, parentNode);
-                }
-            }
-            this.listBox.SelectedItem = null;
-            e.Handled = true;
-        }
-
-        private void MenuNode_Delete(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (this.listBox.SelectedItem == null)
-            {
-                return;
-            }
-            var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
-            this.ViewModel.Remove(treeNodeViewModel);
-            this.listBox.SelectedItem = null;
-            e.Handled = true;
-        }
-
-        private void MenuNode_Save(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.ViewModel.Save("node.bytes");
-        }
-
-        private void MenuNode_Open(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.ViewModel.Load("node.bytes");
         }
 
         private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
@@ -98,15 +44,15 @@ namespace Tree
             // 双击鼠标
             if (e.ClickCount == 2 && e.ChangedButton == MouseButton.Left)
             {
-                var item = (FrameworkElement) sender;
+                var item = (FrameworkElement)sender;
                 var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
                 if (treeNodeViewModel.IsFolder)
                 {
-                    this.ViewModel.UnFold(treeNodeViewModel);
+                    this.TreeViewModel.UnFold(treeNodeViewModel);
                 }
                 else
                 {
-                    this.ViewModel.Fold(treeNodeViewModel);
+                    this.TreeViewModel.Fold(treeNodeViewModel);
                 }
             }
             e.Handled = true;
@@ -120,7 +66,7 @@ namespace Tree
                 return;
             }
 
-            var item = (FrameworkElement) sender;
+            var item = (FrameworkElement)sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
             if (!this.isDragging)
@@ -137,7 +83,7 @@ namespace Tree
 
         private void ListBoxItem_MouseMove(object sender, MouseEventArgs e)
         {
-            var item = (FrameworkElement) sender;
+            var item = (FrameworkElement)sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
             if (treeNodeViewModel == null)
             {
@@ -158,7 +104,7 @@ namespace Tree
 
                 this.origMouseDownPoint = curMouseDownPoint;
 
-                this.ViewModel.MoveToPosition(dragDelta.X, dragDelta.Y);
+                this.TreeViewModel.MoveToPosition(dragDelta.X, dragDelta.Y);
                 return;
             }
 
@@ -182,13 +128,13 @@ namespace Tree
         private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
         {
             this.origMouseDownPoint = e.GetPosition(this);
-            var item = (FrameworkElement) sender;
+            var item = (FrameworkElement)sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
             this.listBox.SelectedItem = treeNodeViewModel;
             this.moveFromNode = treeNodeViewModel;
 
-            this.nodeDataEditor.DataContext = treeNodeViewModel;
+            this.TreeViewModel.SelectNodeChange(treeNodeViewModel);
         }
 
         private void ListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseEventArgs e)
@@ -201,15 +147,56 @@ namespace Tree
             {
                 return;
             }
-            var item = (FrameworkElement) sender;
+            var item = (FrameworkElement)sender;
             var moveToNode = item.DataContext as TreeNodeViewModel;
             Log.Debug("move to node: {0} {1}", this.moveFromNode.Id, moveToNode.Id);
             if (this.moveFromNode.Id == moveToNode.Id)
             {
                 return;
             }
-            this.ViewModel.MoveToNode(this.moveFromNode, moveToNode);
+            this.TreeViewModel.MoveToNode(this.moveFromNode, moveToNode);
             this.moveFromNode = null;
+        }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {
+            Point point = Mouse.GetPosition(this.listBox);
+
+            // one root node
+            if (this.TreeViewModel.TreeNodes.Count == 0)
+            {
+                var addTreeNode = new TreeNodeViewModel(point.X, point.Y)
+                {
+                    Type = (int)NodeType.Selector
+                };
+                this.TreeViewModel.Add(addTreeNode, null);
+            }
+            else
+            {
+                if (this.listBox.SelectedItem != null)
+                {
+                    var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
+                    var addTreeNode = new TreeNodeViewModel(parentNode)
+                    {
+                        Type = (int)NodeType.Selector
+                    };
+                    this.TreeViewModel.Add(addTreeNode, parentNode);
+                }
+            }
+            this.listBox.SelectedItem = null;
+            e.Handled = true;
+        }
+
+        private void MenuItem_Delete(object sender, RoutedEventArgs e)
+        {
+            if (this.listBox.SelectedItem == null)
+            {
+                return;
+            }
+            var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+            this.TreeViewModel.Remove(treeNodeViewModel);
+            this.listBox.SelectedItem = null;
+            e.Handled = true;
         }
     }
 }

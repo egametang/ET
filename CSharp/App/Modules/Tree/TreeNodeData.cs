@@ -45,9 +45,15 @@ namespace Tree
         }
 
         /// <summary>
-        /// 节点说明
+        /// 该节点属于哪颗树
         /// </summary>
         [DataMember(Order = 6)]
+        public int TreeId { get; set; }
+
+        /// <summary>
+        /// 节点说明
+        /// </summary>
+        [DataMember(Order = 7)]
         public string Comment { get; set; }
     }
 }

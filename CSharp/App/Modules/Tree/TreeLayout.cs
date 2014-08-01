@@ -1,6 +1,6 @@
 ﻿namespace Tree
 {
-    public static class BehaviorTreeLayout
+    public static class TreeLayout
     {
         private const double XGap = 20;
         private const double YGap = 10;

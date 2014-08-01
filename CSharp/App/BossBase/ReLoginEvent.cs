@@ -1,8 +1,8 @@
-﻿using Microsoft.Practices.Prism.Events;
+﻿using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace BossBase
 {
-    public class ReLoginEvent: CompositePresentationEvent<object>
+    public class ReLoginEvent: PubSubEvent<object>
     {
     }
 }

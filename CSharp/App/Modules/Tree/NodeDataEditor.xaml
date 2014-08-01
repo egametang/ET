@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tree="clr-namespace:Tree"
-             mc:Ignorable="d" Height="220" Width="211" DataContextChanged="OnDataContextChanged">
+             mc:Ignorable="d" Height="220" Width="211" DataContextChanged="OnDataContextChanged"
+			 d:DataContext="{d:DesignInstance tree:TreeNodeViewModel}">
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
 	</UserControl.Resources>
+	
 	<Grid VerticalAlignment="Stretch">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
