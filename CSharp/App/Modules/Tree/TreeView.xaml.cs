@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
 using Logger;
@@ -16,6 +15,8 @@ namespace Tree
         private bool isLeftButtonDown;
         private Point origMouseDownPoint;
         private TreeNodeViewModel moveFromNode;
+
+        public AllTreeView AllTreeView { get; set; }
 
         public TreeView()
         {
@@ -134,7 +135,7 @@ namespace Tree
             this.listBox.SelectedItem = treeNodeViewModel;
             this.moveFromNode = treeNodeViewModel;
 
-            this.TreeViewModel.SelectNodeChange(treeNodeViewModel);
+            this.AllTreeView.nodeDataEditor.DataContext = treeNodeViewModel;
         }
 
         private void ListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseEventArgs e)
@@ -165,7 +166,7 @@ namespace Tree
             // one root node
             if (this.TreeViewModel.TreeNodes.Count == 0)
             {
-                var addTreeNode = new TreeNodeViewModel(point.X, point.Y)
+                var addTreeNode = new TreeNodeViewModel(this.TreeViewModel, point.X, point.Y)
                 {
                     Type = (int)NodeType.Selector
                 };
@@ -176,7 +177,7 @@ namespace Tree
                 if (this.listBox.SelectedItem != null)
                 {
                     var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
-                    var addTreeNode = new TreeNodeViewModel(parentNode)
+                    var addTreeNode = new TreeNodeViewModel(this.TreeViewModel, parentNode)
                     {
                         Type = (int)NodeType.Selector
                     };

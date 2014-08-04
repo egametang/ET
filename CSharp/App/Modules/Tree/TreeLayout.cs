@@ -1,15 +1,21 @@
 ﻿namespace Tree
 {
-    public static class TreeLayout
+    public class TreeLayout
     {
+        private readonly TreeViewModel treeViewModel;
         private const double XGap = 20;
         private const double YGap = 10;
-        private static double rootOrigX;
-        private static double rootOrigY;
-        private static double rootOffsetX;
-        private static double rootOffsetY;
+        private double rootOrigX;
+        private double rootOrigY;
+        private double rootOffsetX;
+        private double rootOffsetY;
 
-        private static TreeNodeViewModel LeftMostOffspring(
+        public TreeLayout(TreeViewModel treeViewModel)
+        {
+            this.treeViewModel = treeViewModel;
+        }
+
+        private TreeNodeViewModel LeftMostOffspring(
                 TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
         {
             if (currentLevel == searchLevel)
@@ -18,7 +24,7 @@
             }
             for (int i = 0; i < treeNode.Children.Count; ++i)
             {
-                var child = treeNode.Children[i];
+                var child = this.treeViewModel.Get(treeNode.Children[i]);
                 child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
                 var offspring = LeftMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
@@ -30,7 +36,7 @@
             return null;
         }
 
-        private static TreeNodeViewModel RightMostOffspring(
+        private TreeNodeViewModel RightMostOffspring(
                 TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
         {
             if (currentLevel == searchLevel)
@@ -39,7 +45,7 @@
             }
             for (int i = treeNode.Children.Count - 1; i >= 0; --i)
             {
-                var child = treeNode.Children[i];
+                var child = this.treeViewModel.Get(treeNode.Children[i]);
                 child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
                 var offspring = RightMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
@@ -51,7 +57,7 @@
             return null;
         }
 
-        private static void AjustSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
+        private void AjustSubTreeGap(TreeNodeViewModel left, TreeNodeViewModel right)
         {
             double offset = 0;
             TreeNodeViewModel tLeft = left;
@@ -73,24 +79,25 @@
             right.Prelim += offset;
         }
 
-        private static void AjustTreeGap(TreeNodeViewModel treeNode)
+        private void AjustTreeGap(TreeNodeViewModel treeNode)
         {
             for (int i = 0; i < treeNode.Children.Count - 1; ++i)
             {
                 for (int j = i + 1; j < treeNode.Children.Count; ++j)
                 {
-                    var left = treeNode.Children[i];
-                    var right = treeNode.Children[j];
+                    var left = this.treeViewModel.Get(treeNode.Children[i]);
+                    var right = this.treeViewModel.Get(treeNode.Children[j]);
                     AjustSubTreeGap(left, right);
                 }
             }
         }
 
-        private static void CalculatePrelimAndModify(TreeNodeViewModel treeNode)
+        private void CalculatePrelimAndModify(TreeNodeViewModel treeNode)
         {
-            foreach (TreeNodeViewModel node in treeNode.Children)
+            foreach (int childId in treeNode.Children)
             {
-                CalculatePrelimAndModify(node);
+                TreeNodeViewModel child = this.treeViewModel.Get(childId);
+                CalculatePrelimAndModify(child);
             }
 
             double prelim = 0;
@@ -131,12 +138,13 @@
             // 	treeNode.Modify);
         }
 
-        private static void CalculateRelativeXAndY(
+        private void CalculateRelativeXAndY(
                 TreeNodeViewModel treeNode, int level, double totalModify)
         {
-            foreach (TreeNodeViewModel node in treeNode.Children)
+            foreach (int childId in treeNode.Children)
             {
-                CalculateRelativeXAndY(node, level + 1, treeNode.Modify + totalModify);
+                TreeNodeViewModel child = this.treeViewModel.Get(childId);
+                CalculateRelativeXAndY(child, level + 1, treeNode.Modify + totalModify);
             }
             if (treeNode.IsLeaf)
             {
@@ -149,17 +157,18 @@
             treeNode.Y = level * (TreeNodeViewModel.Height + YGap);
         }
 
-        private static void FixXAndY(TreeNodeViewModel treeNode)
+        private void FixXAndY(TreeNodeViewModel treeNode)
         {
             treeNode.X += rootOffsetX;
             treeNode.Y += rootOffsetY;
-            foreach (var node in treeNode.Children)
+            foreach (var childId in treeNode.Children)
             {
-                FixXAndY(node);
+                TreeNodeViewModel child = this.treeViewModel.Get(childId);
+                FixXAndY(child);
             }
         }
 
-        public static void ExcuteLayout(TreeNodeViewModel root)
+        public void ExcuteLayout(TreeNodeViewModel root)
         {
             if (root == null)
             {

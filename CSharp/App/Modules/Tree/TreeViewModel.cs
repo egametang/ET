@@ -1,26 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
-using System.IO;
-using Helper;
 using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Tree
 {
     [Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class TreeViewModel: BindableBase
     {
-        public IEventAggregator EventAggregator { get; set; }
-
-        private AllTreeData allTreeData;
-
         private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
                 new ObservableCollection<TreeNodeViewModel>();
 
-        public TreeViewModel(IEventAggregator eventAggregator)
-        {
-            this.EventAggregator = eventAggregator;
-        }
+        private readonly Dictionary<int, TreeNodeViewModel> treeNodeDict = new Dictionary<int, TreeNodeViewModel>(); 
 
         public ObservableCollection<TreeNodeViewModel> TreeNodes
         {
@@ -38,9 +29,11 @@ namespace Tree
             }
         }
 
-        public void SelectNodeChange(TreeNodeViewModel treeNodeViewModel)
+        public TreeNodeViewModel Get(int id)
         {
-            this.EventAggregator.GetEvent<SelectNodeChangeEvent>().Publish(treeNodeViewModel);
+            TreeNodeViewModel node;
+            this.treeNodeDict.TryGetValue(id, out node);
+            return node;
         }
 
         public void Add(TreeNodeViewModel treeNode, TreeNodeViewModel parent)
@@ -50,28 +43,39 @@ namespace Tree
             {
                 this.UnFold(parent);
             }
+
             this.treeNodes.Add(treeNode);
+            this.treeNodeDict[treeNode.Id] = treeNode;
+
             if (parent != null)
             {
-                parent.Children.Add(treeNode);
+                parent.Children.Add(treeNode.Id);
             }
-            TreeLayout.ExcuteLayout(this.Root);
+
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
         {
             for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
             {
-                this.RecursionRemove(treeNodeViewModel.Children[i]);
+                TreeNodeViewModel child = this.Get(treeNodeViewModel.Children[i]);
+                this.RecursionRemove(child);
             }
+            this.treeNodeDict.Remove(treeNodeViewModel.Id);
             this.treeNodes.Remove(treeNodeViewModel);
         }
 
         public void Remove(TreeNodeViewModel treeNodeViewModel)
         {
             this.RecursionRemove(treeNodeViewModel);
-            treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel);
-            TreeLayout.ExcuteLayout(this.Root);
+            if (treeNodeViewModel.Parent != null)
+            {
+                treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel.Id);
+            }
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionMove(
@@ -79,9 +83,10 @@ namespace Tree
         {
             treeNodeViewModel.X += offsetX;
             treeNodeViewModel.Y += offsetY;
-            foreach (var node in treeNodeViewModel.Children)
+            foreach (var childId in treeNodeViewModel.Children)
             {
-                this.RecursionMove(node, offsetX, offsetY);
+                TreeNodeViewModel child = this.Get(childId);
+                this.RecursionMove(child, offsetX, offsetY);
             }
         }
 
@@ -116,10 +121,11 @@ namespace Tree
             {
                 this.UnFold(to);
             }
-            from.Parent.Children.Remove(from);
-            to.Children.Add(from);
+            from.Parent.Children.Remove(from.Id);
+            to.Children.Add(from.Id);
             from.Parent = to;
-            TreeLayout.ExcuteLayout(this.Root);
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
         /// <summary>
@@ -128,12 +134,14 @@ namespace Tree
         /// <param name="treeNodeViewModel"></param>
         public void Fold(TreeNodeViewModel treeNodeViewModel)
         {
-            foreach (var node in treeNodeViewModel.Children)
+            foreach (var childId in treeNodeViewModel.Children)
             {
-                this.RecursionRemove(node);
+                TreeNodeViewModel child = this.Get(childId);
+                this.RecursionRemove(child);
             }
             treeNodeViewModel.IsFolder = true;
-            TreeLayout.ExcuteLayout(this.Root);
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
         /// <summary>
@@ -142,12 +150,14 @@ namespace Tree
         /// <param name="unFoldNode"></param>
         public void UnFold(TreeNodeViewModel unFoldNode)
         {
-            foreach (var tn in unFoldNode.Children)
+            foreach (var childId in unFoldNode.Children)
             {
-                this.RecursionAdd(tn);
+                TreeNodeViewModel child = this.Get(childId);
+                this.RecursionAdd(child);
             }
             unFoldNode.IsFolder = false;
-            TreeLayout.ExcuteLayout(this.Root);
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
         private void RecursionAdd(TreeNodeViewModel treeNodeViewModel)
@@ -156,15 +166,16 @@ namespace Tree
             {
                 this.treeNodes.Add(treeNodeViewModel);
             }
-            ObservableCollection<TreeNodeViewModel> children = treeNodeViewModel.Children;
+            List<int> children = treeNodeViewModel.Children;
 
             if (treeNodeViewModel.IsFolder)
             {
                 return;
             }
-            foreach (var tn in children)
+            foreach (var childId in children)
             {
-                this.RecursionAdd(tn);
+                TreeNodeViewModel child = this.Get(childId);
+                this.RecursionAdd(child);
             }
         }
 
@@ -192,32 +203,6 @@ namespace Tree
             //{
             //    this.RecursionSave(allTreeData, childNode);
             //}
-        }
-
-        /// <summary>
-        /// 从配置中加载
-        /// </summary>
-        /// <param name="filePath"></param>
-        public void Load(string filePath)
-        {
-            this.TreeNodes.Clear();
-            byte[] bytes = File.ReadAllBytes(filePath);
-            this.allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
-            allTreeData.Init();
-        }
-
-        private void RecursionLoad(
-                AllTreeData allTreeData, TreeNodeData treeNodeData,
-                TreeNodeViewModel parentNode)
-        {
-            var node = new TreeNodeViewModel(treeNodeData, parentNode);
-            this.Add(node, parentNode);
-            foreach (int id in treeNodeData.Children)
-            {
-                TreeNodeData childNodeData = allTreeData[id];
-                this.RecursionLoad(allTreeData, childNodeData, node);
-            }
-            TreeLayout.ExcuteLayout(this.Root);
         }
     }
 }

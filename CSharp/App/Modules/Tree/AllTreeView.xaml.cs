@@ -13,13 +13,13 @@ namespace Tree
     {
         private AllTreeViewModel allTreeViewModel;
 
-        [ImportingConstructor]
-        public AllTreeView(IEventAggregator eventAggregator)
+        public AllTreeView()
         {
             this.InitializeComponent();
 
-            this.nodeDataEditor.NodeDataEditorViewModel = new NodeDataEditorViewModel(eventAggregator);
-            this.treeView.TreeViewModel = new TreeViewModel(eventAggregator);
+            this.nodeDataEditor.AllTreeView = this;
+            this.treeView.AllTreeView = this;
+            this.treeView.TreeViewModel = new TreeViewModel();
         }
 
         [Import]
@@ -41,6 +41,11 @@ namespace Tree
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {
+            this.treeView.TreeViewModel = new TreeViewModel();
         }
     }
 }

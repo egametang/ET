@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using ProtoBuf;
 
 namespace Helper
@@ -15,13 +16,27 @@ namespace Helper
         public static T FromBytes<T>(byte[] bytes)
         {
             var ms = new MemoryStream(bytes, 0, bytes.Length);
-            return Serializer.Deserialize<T>(ms);
+            T t = Serializer.Deserialize<T>(ms);
+            var iSupportInitialize = t as ISupportInitialize;
+            if (iSupportInitialize == null)
+            {
+                return t;
+            }
+            iSupportInitialize.EndInit();
+            return t;
         }
 
         public static T FromBytes<T>(byte[] bytes, int index, int length)
         {
             var ms = new MemoryStream(bytes, index, length);
-            return Serializer.Deserialize<T>(ms);
+            T t = Serializer.Deserialize<T>(ms);
+            var iSupportInitialize = t as ISupportInitialize;
+            if (iSupportInitialize == null)
+            {
+                return t;
+            }
+            iSupportInitialize.EndInit();
+            return t;
         }
     }
 }

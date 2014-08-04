@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Tree
@@ -10,6 +9,7 @@ namespace Tree
         private static int globalNum;
         private static double width = 80;
         private static double height = 50;
+        private TreeViewModel treeViewModel;
         private double x;
         private double y;
         private readonly TreeNodeData treeNodeData;
@@ -18,43 +18,36 @@ namespace Tree
         private double prelim;
         private double modify;
         private double ancestorModify;
-        private TreeNodeViewModel parent;
         private bool isFolder;
 
-        private ObservableCollection<TreeNodeViewModel> children =
-                new ObservableCollection<TreeNodeViewModel>();
-
-        /// <summary>
-        /// 用于初始化根节点
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public TreeNodeViewModel(double x, double y)
+        public TreeNodeViewModel(TreeViewModel treeViewModel, double x, double y)
         {
+            this.treeViewModel = treeViewModel;
             this.x = x;
             this.y = y;
             this.treeNodeData = new TreeNodeData();
             this.treeNodeData.Id = globalNum++;
-            this.parent = this.parent ?? this;
+            this.treeNodeData.Parent = 0;
             this.connectorX2 = 0;
             this.connectorY2 = Height / 2;
         }
 
-        public TreeNodeViewModel(TreeNodeViewModel parent)
+        public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeViewModel parent)
         {
+            this.treeViewModel = treeViewModel;
             this.treeNodeData = new TreeNodeData();
             this.treeNodeData.Id = globalNum++;
-            this.parent = parent ?? this;
+            this.Parent = parent;
 
             this.connectorX2 = Width + this.Parent.X - this.X;
             this.connectorY2 = Height / 2 + this.Parent.Y - this.Y;
         }
 
-        public TreeNodeViewModel(TreeNodeData data, TreeNodeViewModel parent)
+        public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeData data, TreeNodeViewModel parent)
         {
+            this.treeViewModel = treeViewModel;
             this.treeNodeData = data;
-            this.parent = parent ?? this;
-            if (this.parent == this)
+            if (this.IsRoot)
             {
                 this.x = 200;
                 this.y = 10;
@@ -73,9 +66,9 @@ namespace Tree
             get
             {
                 this.treeNodeData.Children.Clear();
-                foreach (TreeNodeViewModel child in this.children)
+                foreach (int child in this.Children)
                 {
-                    this.treeNodeData.Children.Add(child.Id);
+                    this.treeNodeData.Children.Add(child);
                 }
                 this.treeNodeData.Parent = this.IsRoot? 0 : this.Parent.Id;
                 return this.treeNodeData;
@@ -136,7 +129,7 @@ namespace Tree
         {
             get
             {
-                return this.Parent == this;
+                return this.Parent == null;
             }
         }
 
@@ -179,10 +172,14 @@ namespace Tree
                 this.x = value;
                 this.OnPropertyChanged("X");
 
-                this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
-
-                foreach (TreeNodeViewModel child in this.Children)
+                if (this.Parent != null)
                 {
+                    this.ConnectorX2 = Width / 2 + this.Parent.X - this.X;
+                }
+
+                foreach (var childId in this.Children)
+                {
+                    TreeNodeViewModel child = this.treeViewModel.Get(childId);
                     child.ConnectorX2 = Width / 2 + this.X - child.X;
                 }
             }
@@ -204,10 +201,14 @@ namespace Tree
                 this.y = value;
                 this.OnPropertyChanged("Y");
 
-                this.ConnectorY2 = Height + this.Parent.Y - this.Y;
-
-                foreach (var child in this.Children)
+                if (this.Parent != null)
                 {
+                    this.ConnectorY2 = Height + this.Parent.Y - this.Y;
+                }
+
+                foreach (var childId in this.Children)
+                {
+                    TreeNodeViewModel child = this.treeViewModel.Get(childId);
                     child.ConnectorY2 = Height + this.Y - child.Y;
                 }
             }
@@ -291,12 +292,20 @@ namespace Tree
         {
             get
             {
-                return this.parent;
+                if (this.Id == 0)
+                {
+                    return null;
+                }
+                TreeNodeViewModel parent = this.treeViewModel.Get(this.treeNodeData.Parent);
+                return parent;
             }
             set
             {
-                this.parent = value;
-                this.OnPropertyChanged("ParentNum");
+                if (value == null)
+                {
+                    this.treeNodeData.Parent = 0;
+                }
+                this.treeNodeData.Parent = value.Id;
             }
         }
 
@@ -320,15 +329,11 @@ namespace Tree
             }
         }
 
-        public ObservableCollection<TreeNodeViewModel> Children
+        public List<int> Children
         {
             get
             {
-                return this.children;
-            }
-            set
-            {
-                this.children = value;
+                return this.treeNodeData.Children;
             }
         }
 
@@ -341,8 +346,8 @@ namespace Tree
                     return null;
                 }
 
-                int index = this.Parent.Children.IndexOf(this);
-                return index == 0? null : this.Parent.Children[index - 1];
+                int index = this.Parent.Children.IndexOf(this.Id);
+                return index == 0? null : this.treeViewModel.Get(this.Parent.Children[index - 1]);
             }
         }
 
@@ -356,7 +361,7 @@ namespace Tree
                 }
 
                 int maxIndex = this.Children.Count - 1;
-                return this.Children[maxIndex];
+                return this.treeViewModel.Get(this.Children[maxIndex]);
             }
         }
 
@@ -364,7 +369,7 @@ namespace Tree
         {
             get
             {
-                return this.Children.Count == 0? null : this.Children[0];
+                return this.Children.Count == 0? null : this.treeViewModel.Get(this.Children[0]);
             }
         }
 

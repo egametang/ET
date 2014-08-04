@@ -8,10 +8,8 @@ namespace Tree
     /// <summary>
     /// NodeDataEditor.xaml 的交互逻辑
     /// </summary>
-    public partial class NodeDataEditor : IEventNotifyView
+    public partial class NodeDataEditor
     {
-        private NodeDataEditorViewModel nodeDataEditorViewModel;
-
         public NodeDataEditor()
         {
             this.InitializeComponent();
@@ -19,20 +17,8 @@ namespace Tree
             string[] nodeTypes = Enum.GetNames(typeof (NodeType));
             this.cbType.ItemsSource = nodeTypes;
         }
-       
-        public NodeDataEditorViewModel NodeDataEditorViewModel
-        {
-            get
-            {
-                return this.nodeDataEditorViewModel;
-            }
-            set
-            {
-                this.nodeDataEditorViewModel = value;
-                this.nodeDataEditorViewModel.EventNotifyView = this;
-                this.TreeNodeViewModel = this.nodeDataEditorViewModel.TreeNodeViewModel;
-            }
-        }
+
+        public AllTreeView AllTreeView { get; set; }
 
         public TreeNodeViewModel TreeNodeViewModel
         {
@@ -44,11 +30,6 @@ namespace Tree
             {
                 this.DataContext = value;
             }
-        }
-
-        public void OnDataContextChange()
-        {
-            this.DataContext = this.nodeDataEditorViewModel.TreeNodeViewModel;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
