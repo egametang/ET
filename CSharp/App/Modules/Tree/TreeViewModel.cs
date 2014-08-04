@@ -8,6 +8,8 @@ namespace Tree
     [Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class TreeViewModel: BindableBase
     {
+        private readonly List<TreeNodeData> treeNodeDatas = new List<TreeNodeData>();
+
         private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
                 new ObservableCollection<TreeNodeViewModel>();
 
@@ -20,6 +22,26 @@ namespace Tree
                 return this.treeNodes;
             }
         }
+
+        public int TreeId { get; set; }
+
+        public TreeViewModel(List<TreeNodeData> treeNodeDatas)
+        {
+            foreach (TreeNodeData treeNodeData in treeNodeDatas)
+            {
+                TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);       
+            }
+        }
+
+        public List<TreeNodeData> TreeNodeDatas
+        {
+            get
+            {
+                return this.treeNodeDatas;
+            }
+        }
+
+        public AllTreeViewModel AllTreeViewModel { get; set; }
 
         private TreeNodeViewModel Root
         {
@@ -177,32 +199,6 @@ namespace Tree
                 TreeNodeViewModel child = this.Get(childId);
                 this.RecursionAdd(child);
             }
-        }
-
-        /// <summary>
-        /// 序列化保存
-        /// </summary>
-        public void Save(string filePath)
-        {
-            //this.RecursionSave(treeNodeDataArray, this.Root);
-            //byte[] bytes = ProtobufHelper.ToBytes(treeNodeDataArray);
-            //using (Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-            //{
-            //    stream.Write(bytes, 0, bytes.Length);
-            //}
-        }
-
-        private void RecursionSave(AllTreeData allTreeData, TreeNodeViewModel node)
-        {
-            //if (node == null)
-            //{
-            //    return;
-            //}
-            //allTreeData.Add(node.TreeNodeData);
-            //foreach (TreeNodeViewModel childNode in node.Children)
-            //{
-            //    this.RecursionSave(allTreeData, childNode);
-            //}
         }
     }
 }

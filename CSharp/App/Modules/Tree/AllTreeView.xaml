@@ -9,7 +9,7 @@
 		d:DesignWidth="1280" 
 		d:DataContext="{d:DesignInstance Tree:AllTreeViewModel}">
 	<DockPanel>
-	<Menu DockPanel.Dock="Top">
+	<Menu DockPanel.Dock="Top" Height="24">
 		<MenuItem Header="File">
 			<MenuItem Header="打开" Click="MenuItem_Open" />
 			<MenuItem Header="保存" Click="MenuItem_Save" />
@@ -27,7 +27,16 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 		<GroupBox Grid.Row="0" Grid.Column="0" Header="行为树列表:">
-			<ListBox Name="lbTreeId" ItemsSource="{Binding TreeList}" ></ListBox>
+			<ListBox Name="lbTreeId" ItemsSource="{Binding TreeList}" VerticalAlignment="Stretch" >
+				<ListBox.ItemTemplate>
+					<DataTemplate DataType="Tree:TreeInfoViewModel">
+						<StackPanel MouseLeftButtonDown="OnMouseLeftButtonDown" Orientation="Horizontal" Margin="1,0">
+							<Label Content="{Binding Id}" VerticalAlignment="Stretch" Width="20" ></Label>
+							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" Width="150"></Label>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
 		</GroupBox>
 		<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:">
 			<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Top" />

@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.Composition;
-
+﻿
 namespace Tree
 {
-    [Export(contractType: typeof(TreeInfoViewModel)), PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-    internal class TreeInfoViewModel
+    public class TreeInfoViewModel
     {
         private int id;
         private string comment;

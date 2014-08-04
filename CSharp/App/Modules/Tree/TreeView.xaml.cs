@@ -23,7 +23,7 @@ namespace Tree
             this.InitializeComponent();
         }
 
-        public TreeViewModel TreeViewModel
+        public TreeViewModel ViewModel
         {
             get
             {
@@ -49,11 +49,11 @@ namespace Tree
                 var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
                 if (treeNodeViewModel.IsFolder)
                 {
-                    this.TreeViewModel.UnFold(treeNodeViewModel);
+                    this.ViewModel.UnFold(treeNodeViewModel);
                 }
                 else
                 {
-                    this.TreeViewModel.Fold(treeNodeViewModel);
+                    this.ViewModel.Fold(treeNodeViewModel);
                 }
             }
             e.Handled = true;
@@ -105,7 +105,7 @@ namespace Tree
 
                 this.origMouseDownPoint = curMouseDownPoint;
 
-                this.TreeViewModel.MoveToPosition(dragDelta.X, dragDelta.Y);
+                this.ViewModel.MoveToPosition(dragDelta.X, dragDelta.Y);
                 return;
             }
 
@@ -155,33 +155,38 @@ namespace Tree
             {
                 return;
             }
-            this.TreeViewModel.MoveToNode(this.moveFromNode, moveToNode);
+            this.ViewModel.MoveToNode(this.moveFromNode, moveToNode);
             this.moveFromNode = null;
         }
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
+            if (this.ViewModel == null)
+            {
+                return;
+            }
+
             Point point = Mouse.GetPosition(this.listBox);
 
             // one root node
-            if (this.TreeViewModel.TreeNodes.Count == 0)
+            if (this.ViewModel.TreeNodes.Count == 0)
             {
-                var addTreeNode = new TreeNodeViewModel(this.TreeViewModel, point.X, point.Y)
+                var addTreeNode = new TreeNodeViewModel(this.ViewModel, point.X, point.Y)
                 {
                     Type = (int)NodeType.Selector
                 };
-                this.TreeViewModel.Add(addTreeNode, null);
+                this.ViewModel.Add(addTreeNode, null);
             }
             else
             {
                 if (this.listBox.SelectedItem != null)
                 {
                     var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
-                    var addTreeNode = new TreeNodeViewModel(this.TreeViewModel, parentNode)
+                    var addTreeNode = new TreeNodeViewModel(this.ViewModel, parentNode)
                     {
                         Type = (int)NodeType.Selector
                     };
-                    this.TreeViewModel.Add(addTreeNode, parentNode);
+                    this.ViewModel.Add(addTreeNode, parentNode);
                 }
             }
             this.listBox.SelectedItem = null;
@@ -195,7 +200,7 @@ namespace Tree
                 return;
             }
             var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
-            this.TreeViewModel.Remove(treeNodeViewModel);
+            this.ViewModel.Remove(treeNodeViewModel);
             this.listBox.SelectedItem = null;
             e.Handled = true;
         }

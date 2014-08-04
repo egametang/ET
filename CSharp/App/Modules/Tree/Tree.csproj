@@ -85,7 +85,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SelectNodeChangeEvent.cs" />
     <Compile Include="TreeInfoViewModel.cs" />
     <Compile Include="AllTreeViewModel.cs" />
     <Compile Include="OneTreeData.cs" />

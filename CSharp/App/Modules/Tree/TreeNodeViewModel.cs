@@ -6,13 +6,12 @@ namespace Tree
 {
     public class TreeNodeViewModel: BindableBase
     {
-        private static int globalNum;
         private static double width = 80;
         private static double height = 50;
-        private TreeViewModel treeViewModel;
+        private readonly TreeViewModel treeViewModel;
+        private readonly TreeNodeData treeNodeData;
         private double x;
         private double y;
-        private readonly TreeNodeData treeNodeData;
         private double connectorX2;
         private double connectorY2;
         private double prelim;
@@ -26,7 +25,7 @@ namespace Tree
             this.x = x;
             this.y = y;
             this.treeNodeData = new TreeNodeData();
-            this.treeNodeData.Id = globalNum++;
+            this.treeNodeData.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
             this.treeNodeData.Parent = 0;
             this.connectorX2 = 0;
             this.connectorY2 = Height / 2;
@@ -36,14 +35,14 @@ namespace Tree
         {
             this.treeViewModel = treeViewModel;
             this.treeNodeData = new TreeNodeData();
-            this.treeNodeData.Id = globalNum++;
+            this.treeNodeData.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
             this.Parent = parent;
 
             this.connectorX2 = Width + this.Parent.X - this.X;
             this.connectorY2 = Height / 2 + this.Parent.Y - this.Y;
         }
 
-        public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeData data, TreeNodeViewModel parent)
+        public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeData data)
         {
             this.treeViewModel = treeViewModel;
             this.treeNodeData = data;
@@ -292,7 +291,7 @@ namespace Tree
         {
             get
             {
-                if (this.Id == 0)
+                if (this.treeNodeData.Parent == 0)
                 {
                     return null;
                 }

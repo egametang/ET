@@ -8,20 +8,20 @@ namespace Tree
 {
     [Export(contractType: typeof (AllTreeViewModel)),
      PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
-    internal class AllTreeViewModel
+    public class AllTreeViewModel
     {
         private AllTreeData allTreeData;
 
         public int MaxNodeId { get; set; }
         public int MaxTreeId { get; set; }
 
-        private readonly ObservableCollection<int> treeList =
-                new ObservableCollection<int>();
+        public Dictionary<int, List<TreeNodeData>> treeDict = new Dictionary<int, List<TreeNodeData>>();
 
-        public Dictionary<int, ObservableCollection<TreeNodeViewModel>> oneTree = 
-            new Dictionary<int, ObservableCollection<TreeNodeViewModel>>();
+        private readonly Dictionary<int, TreeViewModel> treeViewModelsDict = new Dictionary<int, TreeViewModel>(); 
 
-        public ObservableCollection<int> TreeList
+        public ObservableCollection<TreeInfoViewModel> treeList = new ObservableCollection<TreeInfoViewModel>();
+
+        public ObservableCollection<TreeInfoViewModel> TreeList
         {
             get
             {
@@ -31,26 +31,63 @@ namespace Tree
 
         public void Load(string file)
         {
-            this.treeList.Clear();
+            treeDict.Clear();
+            treeList.Clear();
             byte[] bytes = File.ReadAllBytes(file);
             this.allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
 
+            this.MaxNodeId = 0;
+            this.MaxTreeId = 0;
             foreach (TreeNodeData treeNodeData in allTreeData.TreeNodeDatas)
             {
-                ObservableCollection<TreeNodeViewModel> tree;
-                this.oneTree.TryGetValue(treeNodeData.TreeId, out tree);
+                List<TreeNodeData> tree;
+                this.treeDict.TryGetValue(treeNodeData.TreeId, out tree);
                 if (tree == null)
                 {
-                    tree = new ObservableCollection<TreeNodeViewModel>();
-                    oneTree[treeNodeData.TreeId] = tree;
+                    tree = new List<TreeNodeData>();
+                    this.treeDict[treeNodeData.TreeId] = tree;
                 }
-                //tree.Add(new TreeNodeViewModel(treeNodeData));
+                tree.Add(treeNodeData);
+                if (treeNodeData.Id > this.MaxNodeId)
+                {
+                    this.MaxNodeId = treeNodeData.Id;
+                }
+                if (treeNodeData.TreeId > this.MaxTreeId)
+                {
+                    this.MaxTreeId = treeNodeData.TreeId;
+                }
+
+                treeList.Add(new TreeInfoViewModel(treeNodeData.TreeId, treeNodeData.TreeId.ToString()));
             }
         }
 
         public void Save(string file)
         {
             
+        }
+
+        public void New(TreeViewModel treeViewModel)
+        {
+        }
+
+        public void Add(TreeViewModel treeViewModel)
+        {
+            treeViewModel.TreeId = ++this.MaxTreeId;
+            treeViewModel.AllTreeViewModel = this;
+            treeDict[treeViewModel.TreeId] = treeViewModel.TreeNodeDatas;
+            treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
+            this.treeList.Add(new TreeInfoViewModel(treeViewModel.TreeId, treeViewModel.TreeId.ToString()));
+        }
+
+        public TreeViewModel Get(int treeId)
+        {
+            if (this.treeViewModelsDict.ContainsKey(treeId))
+            {
+                return this.treeViewModelsDict[treeId];
+            }
+            var treeViewModel = new TreeViewModel(this.treeDict[treeId]);
+            this.treeViewModelsDict[treeId] = treeViewModel;
+            return treeViewModel;
         }
     }
 }
