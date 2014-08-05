@@ -42,13 +42,9 @@
     <Compile Include="Handler\ReloadHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Platform\Helper\Helper.csproj">
-      <Project>{24233cd5-a5df-484b-a482-b79cb7a0d9cb}</Project>
-      <Name>Helper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Platform\Logger\Logger.csproj">
-      <Project>{72e16572-fc1f-4a9e-bc96-035417239298}</Project>
-      <Name>Logger</Name>
+    <ProjectReference Include="..\..\Platform\Common\Common.csproj">
+      <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
+      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Component\Component.csproj">
       <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>
