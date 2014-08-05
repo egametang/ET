@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Tree
+namespace Modules.Tree
 {
     [ValueConversion(typeof (int), typeof (int))]
     public class NodeTypeColorConverter: IValueConverter

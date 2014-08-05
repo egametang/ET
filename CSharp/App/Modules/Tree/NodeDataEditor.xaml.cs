@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Helper;
+using Common.Helper;
 
-namespace Tree
+namespace Modules.Tree
 {
     /// <summary>
     /// NodeDataEditor.xaml 的交互逻辑

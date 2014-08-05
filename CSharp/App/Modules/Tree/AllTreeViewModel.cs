@@ -2,9 +2,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
-using Helper;
+using Common.Helper;
 
-namespace Tree
+namespace Modules.Tree
 {
     [Export(contractType: typeof (AllTreeViewModel)),
      PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]

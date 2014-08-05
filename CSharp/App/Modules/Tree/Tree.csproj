@@ -8,7 +8,7 @@
     <ProjectGuid>{6CD185D1-08E0-4729-A999-2D5B57BA8193}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Modules.Tree</RootNamespace>
+    <RootNamespace>App.Modules.Tree</RootNamespace>
     <AssemblyName>Tree</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

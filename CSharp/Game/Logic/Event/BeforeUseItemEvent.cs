@@ -1,7 +1,7 @@
 ﻿using Component;
-using Logger;
+using Common.Logger;
 
-namespace Logic
+namespace Logic.Event
 {
     [Event(Type = EventType.BeforeUseItemEvent, Order = 1)]
     public class UseCountStatisticsEvent: IEvent

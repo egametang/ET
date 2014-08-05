@@ -2,7 +2,7 @@
 using System.IO;
 using ProtoBuf;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class ProtobufHelper
     {

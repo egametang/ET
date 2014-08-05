@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Hooks
+namespace Common.Hooks
 {
     [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode,
             SetLastError = true)]

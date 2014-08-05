@@ -1,6 +1,6 @@
 ﻿using Component;
 
-namespace Logic.Handler
+namespace Logic.Event.Handler
 {
     [Handler(Type = typeof (CLoginWorld), Opcode = 2)]
     public class LoginWorldHandler: IHandler

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace Tree
+namespace Modules.Tree
 {
     [ValueConversion(typeof (List<string>), typeof (string))]
     public class ListToStringConverter: IValueConverter

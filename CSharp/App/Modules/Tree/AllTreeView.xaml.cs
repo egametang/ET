@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Infrastructure;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-namespace Tree
+namespace Modules.Tree
 {
     /// <summary>
     /// BehaviorTreeView.xaml 的交互逻辑

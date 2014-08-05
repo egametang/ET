@@ -1,4 +1,4 @@
-﻿namespace Tree
+﻿namespace Modules.Tree
 {
     public enum NodeType
     {

@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class MongoHelper
     {

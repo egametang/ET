@@ -1,6 +1,6 @@
 ﻿using Component;
 
-namespace Logic
+namespace Logic.Handler
 {
     [Handler(Type = typeof (CReloadHandler), Opcode = 3)]
     internal class ReloadHandlerHandler: IHandler

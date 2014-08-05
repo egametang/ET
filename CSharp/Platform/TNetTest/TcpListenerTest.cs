@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Helper;
-using Logger;
+using Common.Helper;
+using Common.Logger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TNetTest

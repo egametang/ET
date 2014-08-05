@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class LoaderHelper
     {

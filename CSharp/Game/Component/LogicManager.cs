@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Helper;
-using Logger;
+using Common.Helper;
+using Common.Logger;
 
 namespace Component
 {

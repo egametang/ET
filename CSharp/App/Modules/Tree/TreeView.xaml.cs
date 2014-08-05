@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using Logger;
+using Common.Logger;
 
-namespace Tree
+namespace Modules.Tree
 {
     /// <summary>
     /// TreeView.xaml 的交互逻辑

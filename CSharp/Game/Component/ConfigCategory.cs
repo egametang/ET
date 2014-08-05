@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using Helper;
+using Common.Helper;
 
 namespace Component
 {

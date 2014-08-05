@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace Logger
+namespace Common.Logger
 {
     public class NLogAdapter: ALogDecorater, ILog
     {

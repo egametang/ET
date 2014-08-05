@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class TimeHelper
     {

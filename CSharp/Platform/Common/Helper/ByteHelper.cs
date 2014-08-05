@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class ByteHelper
     {

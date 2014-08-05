@@ -1,9 +1,9 @@
 ﻿using Component;
 using Component.Config;
-using Helper;
-using Logger;
+using Common.Helper;
+using Common.Logger;
 
-namespace Logic
+namespace Logic.Handler
 {
     [Handler(Type = typeof (CChat), Opcode = 1)]
     internal class ChatHandler: IHandler

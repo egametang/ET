@@ -1,4 +1,4 @@
-﻿namespace Logger
+﻿namespace Common.Logger
 {
     public abstract class ALogDecorater
     {

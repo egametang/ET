@@ -8,7 +8,7 @@
     <ProjectGuid>{C46F3337-0F48-4A72-84AD-8FDD1F159BB0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Editor</RootNamespace>
+    <RootNamespace>App.Editor</RootNamespace>
     <AssemblyName>Editor</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFrameworkProfile>

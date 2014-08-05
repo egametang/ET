@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Numerics;
 
-namespace Helper
+namespace Common.Helper
 {
     public static class BigIntegerHelper
     {

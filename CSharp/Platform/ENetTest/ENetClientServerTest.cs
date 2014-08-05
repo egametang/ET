@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using ENet;
-using Helper;
-using Logger;
+using Common.Helper;
+using Common.Logger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ENetTest
