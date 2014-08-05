@@ -29,7 +29,9 @@ namespace Tree
         {
             foreach (TreeNodeData treeNodeData in treeNodeDatas)
             {
-                TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);       
+                TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);
+                this.treeNodes.Add(treeNodeViewModel);
+                this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
             }
         }
 

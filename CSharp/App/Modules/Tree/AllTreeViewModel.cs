@@ -63,7 +63,6 @@ namespace Tree
 
         public void Save(string file)
         {
-            
         }
 
         public void New(TreeViewModel treeViewModel)

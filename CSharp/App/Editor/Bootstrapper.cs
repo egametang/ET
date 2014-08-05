@@ -1,12 +1,9 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Infrastructure;
-using Login;
 using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.Prism.Regions;
-using Robot;
 using Tree;
-using WCFClient;
 
 namespace Editor
 {
@@ -17,9 +14,6 @@ namespace Editor
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (Bootstrapper).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (TreeModule).Assembly));
-            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (RobotModule).Assembly));
-            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (LoginModule).Assembly));
-            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (WCFClientModule).Assembly));
         }
 
         protected override void InitializeShell()
