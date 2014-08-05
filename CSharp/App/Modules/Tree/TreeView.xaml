@@ -40,7 +40,8 @@
 			<ListBox.ContextMenu>
 				<ContextMenu>
 					<MenuItem Header="新建" Click="MenuItem_New" />
-					<MenuItem Header="删除" Click="MenuItem_Delete" />
+					<MenuItem Header="删除" Click="MenuItem_Remove" />
+					<MenuItem Header="折叠/展开" Click="MenuItem_Fold" />
 				</ContextMenu>
 			</ListBox.ContextMenu>
 			<ListBox.Resources>
@@ -62,7 +63,7 @@
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
 								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}">
 						</Rectangle>
-						<Label Content="+" Visibility="{Binding IsFolder, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>
+						<Label Content="+" Visibility="{Binding IsFold, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>
 						<StackPanel>
 							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}"/>
 							<Label Content="{Binding Comment}"/>

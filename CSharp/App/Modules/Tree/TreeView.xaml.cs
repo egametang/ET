@@ -5,9 +5,6 @@ using Common.Logger;
 
 namespace Modules.Tree
 {
-    /// <summary>
-    /// TreeView.xaml 的交互逻辑
-    /// </summary>
     public partial class TreeView
     {
         private const double DragThreshold = 5;
@@ -35,48 +32,41 @@ namespace Modules.Tree
             }
         }
 
+        public bool IsDragging
+        {
+            get
+            {
+                return this.isDragging;
+            }
+            set
+            {
+                //Mouse.SetCursor(value == false? Cursors.Arrow : Cursors.Hand);
+                this.isDragging = value;
+            }
+        }
+
         private void ListBoxItem_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton != MouseButton.Left)
-            {
-                return;
-            }
-
-            // 双击鼠标
-            if (e.ClickCount == 2 && e.ChangedButton == MouseButton.Left)
-            {
-                var item = (FrameworkElement)sender;
-                var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
-                if (treeNodeViewModel.IsFolder)
-                {
-                    this.ViewModel.UnFold(treeNodeViewModel);
-                }
-                else
-                {
-                    this.ViewModel.Fold(treeNodeViewModel);
-                }
-            }
-            e.Handled = true;
         }
 
         private void ListBoxItem_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (!this.isLeftButtonDown)
             {
-                this.isDragging = false;
+                this.IsDragging = false;
                 return;
             }
 
             var item = (FrameworkElement)sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
-            if (!this.isDragging)
+            if (!this.IsDragging)
             {
                 this.listBox.SelectedItem = treeNodeViewModel;
             }
 
             this.isLeftButtonDown = false;
-            this.isDragging = false;
+            this.IsDragging = false;
 
             item.ReleaseMouseCapture();
             e.Handled = true;
@@ -94,7 +84,7 @@ namespace Modules.Tree
             Point curMouseDownPoint;
             Vector dragDelta;
             // 拖动根节点,移动整个树
-            if (this.isDragging && treeNodeViewModel.IsRoot)
+            if (this.IsDragging && treeNodeViewModel.IsRoot)
             {
                 if (this.moveFromNode == null || !this.moveFromNode.IsRoot)
                 {
@@ -111,7 +101,7 @@ namespace Modules.Tree
 
             if (e.LeftButton != MouseButtonState.Pressed)
             {
-                this.isDragging = false;
+                this.IsDragging = false;
                 this.moveFromNode = null;
                 return;
             }
@@ -121,7 +111,7 @@ namespace Modules.Tree
             double dragDistance = Math.Abs(dragDelta.Length);
             if (dragDistance > DragThreshold)
             {
-                this.isDragging = true;
+                this.IsDragging = true;
             }
             e.Handled = true;
         }
@@ -184,7 +174,7 @@ namespace Modules.Tree
                     var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
                     var addTreeNode = new TreeNodeViewModel(this.ViewModel, parentNode)
                     {
-                        Type = (int)NodeType.Selector
+                        Type = (int)NodeType.Selector,
                     };
                     this.ViewModel.Add(addTreeNode, parentNode);
                 }
@@ -193,16 +183,38 @@ namespace Modules.Tree
             e.Handled = true;
         }
 
-        private void MenuItem_Delete(object sender, RoutedEventArgs e)
+        private void MenuItem_Remove(object sender, RoutedEventArgs e)
         {
             if (this.listBox.SelectedItem == null)
             {
                 return;
             }
             var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+            if (treeNodeViewModel.IsRoot)
+            {
+                return;
+            }
             this.ViewModel.Remove(treeNodeViewModel);
             this.listBox.SelectedItem = null;
             e.Handled = true;
+        }
+
+        private void MenuItem_Fold(object sender, RoutedEventArgs e)
+        {
+            if (this.listBox.SelectedItem == null)
+            {
+                return;
+            }
+            var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+
+            if (treeNodeViewModel.IsFold)
+            {
+                this.ViewModel.UnFold(treeNodeViewModel);
+            }
+            else
+            {
+                this.ViewModel.Fold(treeNodeViewModel);
+            }
         }
     }
 }

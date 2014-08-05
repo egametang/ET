@@ -37,28 +37,55 @@ namespace Modules.Tree
 
         private void MenuItem_Open(object sender, RoutedEventArgs e)
         {
+            this.ViewModel.Open("node.bytes");
+            this.lbTreeRoots.SelectedIndex = -1;
+            this.treeView.ViewModel = null;
         }
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
+            this.ViewModel.Save("node.bytes");
         }
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
-            TreeViewModel treeViewModel = new TreeViewModel(new List<TreeNodeData>());
+            TreeViewModel treeViewModel = new TreeViewModel(this.ViewModel);
             this.ViewModel.Add(treeViewModel);
             this.treeView.ViewModel = treeViewModel;
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void MenuItem_Remove(object sender, RoutedEventArgs e)
         {
-            var item = (FrameworkElement)sender;
-            var treeInfoViewModel = item.DataContext as TreeInfoViewModel;
-            if (this.treeView.ViewModel.TreeId == treeInfoViewModel.Id)
+            if (this.lbTreeRoots.SelectedItem == null)
             {
                 return;
             }
-            this.treeView.ViewModel = this.ViewModel.Get(treeInfoViewModel.Id);
+            var treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
+            this.ViewModel.Remove(treeNodeViewModel);
+            this.lbTreeRoots.SelectedItem = null;
+            e.Handled = true;
+        }
+
+        private void ListBoxItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = (FrameworkElement)sender;
+            var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+            if (this.treeView.ViewModel != null)
+            {
+                if (this.treeView.ViewModel.TreeId == treeNodeViewModel.TreeId)
+                {
+                    return;
+                }
+            }
+            this.treeView.ViewModel = this.ViewModel.Get(treeNodeViewModel.TreeId);
+        }
+
+        private void ListBoxItem_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (FrameworkElement)sender;
+            var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+
+            this.lbTreeRoots.SelectedItem = treeNodeViewModel;
         }
     }
 }

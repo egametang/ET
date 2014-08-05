@@ -16,16 +16,16 @@
         }
 
         private TreeNodeViewModel LeftMostOffspring(
-                TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+                TreeNodeViewModel treeNodeViewModel, int currentLevel, int searchLevel)
         {
             if (currentLevel == searchLevel)
             {
-                return treeNode;
+                return treeNodeViewModel;
             }
-            for (int i = 0; i < treeNode.Children.Count; ++i)
+            for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
             {
-                var child = this.treeViewModel.Get(treeNode.Children[i]);
-                child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
+                var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
                 var offspring = LeftMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
@@ -37,16 +37,16 @@
         }
 
         private TreeNodeViewModel RightMostOffspring(
-                TreeNodeViewModel treeNode, int currentLevel, int searchLevel)
+                TreeNodeViewModel treeNodeViewModel, int currentLevel, int searchLevel)
         {
             if (currentLevel == searchLevel)
             {
-                return treeNode;
+                return treeNodeViewModel;
             }
-            for (int i = treeNode.Children.Count - 1; i >= 0; --i)
+            for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
             {
-                var child = this.treeViewModel.Get(treeNode.Children[i]);
-                child.AncestorModify = treeNode.Modify + treeNode.AncestorModify;
+                var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
                 var offspring = RightMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
@@ -79,22 +79,22 @@
             right.Prelim += offset;
         }
 
-        private void AjustTreeGap(TreeNodeViewModel treeNode)
+        private void AjustTreeGap(TreeNodeViewModel treeNodeViewModel)
         {
-            for (int i = 0; i < treeNode.Children.Count - 1; ++i)
+            for (int i = 0; i < treeNodeViewModel.Children.Count - 1; ++i)
             {
-                for (int j = i + 1; j < treeNode.Children.Count; ++j)
+                for (int j = i + 1; j < treeNodeViewModel.Children.Count; ++j)
                 {
-                    var left = this.treeViewModel.Get(treeNode.Children[i]);
-                    var right = this.treeViewModel.Get(treeNode.Children[j]);
+                    var left = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                    var right = this.treeViewModel.Get(treeNodeViewModel.Children[j]);
                     AjustSubTreeGap(left, right);
                 }
             }
         }
 
-        private void CalculatePrelimAndModify(TreeNodeViewModel treeNode)
+        private void CalculatePrelimAndModify(TreeNodeViewModel treeNodeViewModel)
         {
-            foreach (int childId in treeNode.Children)
+            foreach (int childId in treeNodeViewModel.Children)
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(childId);
                 CalculatePrelimAndModify(child);
@@ -103,58 +103,58 @@
             double prelim = 0;
             double modify = 0;
 
-            if (treeNode.IsLeaf)
+            if (treeNodeViewModel.IsLeaf)
             {
-                if (treeNode.LeftSibling == null)
+                if (treeNodeViewModel.LeftSibling == null)
                 {
                     // 如果没有左邻居，不需要设置modify
                     prelim = 0;
                 }
                 else
                 {
-                    prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
+                    prelim = treeNodeViewModel.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
                 }
             }
             else
             {
                 // 调整子树间的间距
-                AjustTreeGap(treeNode);
-                double childrenCenter = (treeNode.FirstChild.Prelim + treeNode.LastChild.Prelim) / 2;
-                if (treeNode.LeftSibling == null)
+                AjustTreeGap(treeNodeViewModel);
+                double childrenCenter = (treeNodeViewModel.FirstChild.Prelim + treeNodeViewModel.LastChild.Prelim) / 2;
+                if (treeNodeViewModel.LeftSibling == null)
                 {
                     // 如果没有左邻居，不需要设置modify
                     prelim = childrenCenter;
                 }
                 else
                 {
-                    prelim = treeNode.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
+                    prelim = treeNodeViewModel.LeftSibling.Prelim + TreeNodeViewModel.Width + XGap;
                     modify = prelim - childrenCenter;
                 }
             }
-            treeNode.Prelim = prelim;
-            treeNode.Modify = modify;
+            treeNodeViewModel.Prelim = prelim;
+            treeNodeViewModel.Modify = modify;
 
-            // Log.Debug("Id: " + treeNode.Id + " Prelim: " + treeNode.Prelim + " Modify: " +
-            // 	treeNode.Modify);
+            // Log.Debug("Id: " + treeNodeViewModel.Id + " Prelim: " + treeNodeViewModel.Prelim + " Modify: " +
+            // 	treeNodeViewModel.Modify);
         }
 
         private void CalculateRelativeXAndY(
-                TreeNodeViewModel treeNode, int level, double totalModify)
+                TreeNodeViewModel treeNodeViewModel, int level, double totalModify)
         {
-            foreach (int childId in treeNode.Children)
+            foreach (int childId in treeNodeViewModel.Children)
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(childId);
-                CalculateRelativeXAndY(child, level + 1, treeNode.Modify + totalModify);
+                CalculateRelativeXAndY(child, level + 1, treeNodeViewModel.Modify + totalModify);
             }
-            if (treeNode.IsLeaf)
+            if (treeNodeViewModel.IsLeaf)
             {
-                treeNode.X = treeNode.Prelim + totalModify;
+                treeNodeViewModel.X = treeNodeViewModel.Prelim + totalModify;
             }
             else
             {
-                treeNode.X = (treeNode.FirstChild.X + treeNode.LastChild.X) / 2;
+                treeNodeViewModel.X = (treeNodeViewModel.FirstChild.X + treeNodeViewModel.LastChild.X) / 2;
             }
-            treeNode.Y = level * (TreeNodeViewModel.Height + YGap);
+            treeNodeViewModel.Y = level * (TreeNodeViewModel.Height + YGap);
         }
 
         private void FixXAndY(TreeNodeViewModel treeNode)

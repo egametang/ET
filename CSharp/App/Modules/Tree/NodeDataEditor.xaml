@@ -9,9 +9,10 @@
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
 	</UserControl.Resources>
-	
+
 	<Grid VerticalAlignment="Stretch">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
@@ -19,17 +20,20 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="47*"/>
-			<ColumnDefinition Width="154*"/>
+			<ColumnDefinition Width="40*"/>
+			<ColumnDefinition Width="171*"/>
 		</Grid.ColumnDefinitions>
-		<Label Content="ID: " Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="26" Margin="0,0,19,0" Width="28" />
-		<Label Content="类型:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="26" Margin="-2,0,9,0" Width="40" />
-		<Label Content="参数:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="26" Margin="-2,1,9,0" Width="40" />
-		<Label Content="备注:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="26" Margin="0,40,9,0" Width="40" />
-		<Label Name="lblId" Grid.Column="1" Grid.Row="0" Margin="2" Content="{Binding Id}" />
-		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="1" Margin="2" SelectionChanged="CbType_OnSelectionChanged" />
-		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="2" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}}" />
-		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Comment}" />
-		<Button Content="OK" Grid.Row="4" Grid.Column="1" Margin="1,1,40,1"/>
+		<Label Content="Tree:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30" />
+		<Label Content="ID  :" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30"/>
+		<Label Content="类型:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		<Label Content="参数:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		<Label Content="备注:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		
+		<Label Name="lblTreeId" Grid.Column="1" Grid.Row="0" Content="{Binding TreeId}" />
+		<Label Name="lblId" Grid.Column="1" Grid.Row="1" Content="{Binding Id}" />
+		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="2" Margin="2" SelectionChanged="CbType_OnSelectionChanged" />
+		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}}" />
+		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment}" />
+		<Button Content="OK" Grid.Row="5" Grid.Column="1" Width="100" HorizontalAlignment="Left"/>
 	</Grid>
 </UserControl>

@@ -10,42 +10,41 @@ namespace Modules.Tree
      PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]
     public class AllTreeViewModel
     {
-        private AllTreeData allTreeData;
-
         public int MaxNodeId { get; set; }
         public int MaxTreeId { get; set; }
+        
+        private readonly Dictionary<int, TreeViewModel> treeViewModelsDict = new Dictionary<int, TreeViewModel>();
 
-        public Dictionary<int, List<TreeNodeData>> treeDict = new Dictionary<int, List<TreeNodeData>>();
+        public ObservableCollection<TreeNodeViewModel> rootList = new ObservableCollection<TreeNodeViewModel>();
 
-        private readonly Dictionary<int, TreeViewModel> treeViewModelsDict = new Dictionary<int, TreeViewModel>(); 
-
-        public ObservableCollection<TreeInfoViewModel> treeList = new ObservableCollection<TreeInfoViewModel>();
-
-        public ObservableCollection<TreeInfoViewModel> TreeList
+        public ObservableCollection<TreeNodeViewModel> RootList
         {
             get
             {
-                return this.treeList;
+                return this.rootList;
             }
         }
 
-        public void Load(string file)
+        public void Open(string file)
         {
-            treeDict.Clear();
-            treeList.Clear();
+            this.rootList.Clear();
+            treeViewModelsDict.Clear();
+
+            var treeDict = new Dictionary<int, List<TreeNodeData>>();
+
             byte[] bytes = File.ReadAllBytes(file);
-            this.allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
+            var allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
 
             this.MaxNodeId = 0;
             this.MaxTreeId = 0;
             foreach (TreeNodeData treeNodeData in allTreeData.TreeNodeDatas)
             {
                 List<TreeNodeData> tree;
-                this.treeDict.TryGetValue(treeNodeData.TreeId, out tree);
+                treeDict.TryGetValue(treeNodeData.TreeId, out tree);
                 if (tree == null)
                 {
                     tree = new List<TreeNodeData>();
-                    this.treeDict[treeNodeData.TreeId] = tree;
+                    treeDict[treeNodeData.TreeId] = tree;
                 }
                 tree.Add(treeNodeData);
                 if (treeNodeData.Id > this.MaxNodeId)
@@ -56,13 +55,35 @@ namespace Modules.Tree
                 {
                     this.MaxTreeId = treeNodeData.TreeId;
                 }
+            }
 
-                treeList.Add(new TreeInfoViewModel(treeNodeData.TreeId, treeNodeData.TreeId.ToString()));
+            foreach (KeyValuePair<int, List<TreeNodeData>> pair in treeDict)
+            {
+                var treeViewModel = new TreeViewModel(pair.Value)
+                {
+                    AllTreeViewModel = this,
+                    TreeId = pair.Key
+                };
+                treeViewModelsDict[pair.Key] = treeViewModel;
+                this.RootList.Add(treeViewModel.Root);
             }
         }
 
         public void Save(string file)
         {
+
+            AllTreeData allTreeData = new AllTreeData();
+            foreach (var value in treeViewModelsDict.Values)
+            {
+                List<TreeNodeData> list = value.GetDatas();
+                allTreeData.TreeNodeDatas.AddRange(list);
+            }
+
+            using (Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+            {
+                byte[] bytes = ProtobufHelper.ToBytes(allTreeData);
+                stream.Write(bytes, 0, bytes.Length);
+            }
         }
 
         public void New(TreeViewModel treeViewModel)
@@ -71,22 +92,20 @@ namespace Modules.Tree
 
         public void Add(TreeViewModel treeViewModel)
         {
-            treeViewModel.TreeId = ++this.MaxTreeId;
-            treeViewModel.AllTreeViewModel = this;
-            treeDict[treeViewModel.TreeId] = treeViewModel.TreeNodeDatas;
             treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
-            this.treeList.Add(new TreeInfoViewModel(treeViewModel.TreeId, treeViewModel.TreeId.ToString()));
+            this.rootList.Add(treeViewModel.Root);
+        }
+
+        public void Remove(TreeNodeViewModel treeViewModel)
+        {
+            treeViewModelsDict.Remove(treeViewModel.TreeId);
+            rootList.Remove(treeViewModel);
         }
 
         public TreeViewModel Get(int treeId)
         {
-            if (this.treeViewModelsDict.ContainsKey(treeId))
-            {
-                return this.treeViewModelsDict[treeId];
-            }
-            var treeViewModel = new TreeViewModel(this.treeDict[treeId]);
-            this.treeViewModelsDict[treeId] = treeViewModel;
-            return treeViewModel;
+            return this.treeViewModelsDict[treeId];
         }
+
     }
 }

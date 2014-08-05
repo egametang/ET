@@ -13,7 +13,6 @@
 		<MenuItem Header="File">
 			<MenuItem Header="打开" Click="MenuItem_Open" />
 			<MenuItem Header="保存" Click="MenuItem_Save" />
-			<MenuItem Header="新建" Click="MenuItem_New" />
 		</MenuItem>
 	</Menu>
 	<Grid>
@@ -27,11 +26,18 @@
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
 		<GroupBox Grid.Row="0" Grid.Column="0" Header="行为树列表:">
-			<ListBox Name="lbTreeId" ItemsSource="{Binding TreeList}" VerticalAlignment="Stretch" >
+			<ListBox Name="lbTreeRoots" ItemsSource="{Binding RootList}" VerticalAlignment="Stretch" >
+				<ListBox.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="新建树" Click="MenuItem_New" />
+						<MenuItem Header="删除树" Click="MenuItem_Remove" />
+					</ContextMenu>
+				</ListBox.ContextMenu>
 				<ListBox.ItemTemplate>
-					<DataTemplate DataType="Tree:TreeInfoViewModel">
-						<StackPanel MouseLeftButtonDown="OnMouseLeftButtonDown" Orientation="Horizontal" Margin="1,0">
-							<Label Content="{Binding Id}" VerticalAlignment="Stretch" Width="20" ></Label>
+					<DataTemplate DataType="Tree:TreeNodeViewModel">
+						<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" MouseLeftButtonUp="ListBoxItem_OnMouseLeftButtonUp" 
+									Orientation="Horizontal" Margin="1,0">
+							<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="20" ></Label>
 							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" Width="150"></Label>
 						</StackPanel>
 					</DataTemplate>

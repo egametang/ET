@@ -9,7 +9,7 @@ namespace Modules.Tree
         private static double width = 80;
         private static double height = 50;
         private readonly TreeViewModel treeViewModel;
-        private readonly TreeNodeData treeNodeData;
+        private readonly TreeNodeData data;
         private double x;
         private double y;
         private double connectorX2;
@@ -17,16 +17,17 @@ namespace Modules.Tree
         private double prelim;
         private double modify;
         private double ancestorModify;
-        private bool isFolder;
+        private bool isFold;
 
         public TreeNodeViewModel(TreeViewModel treeViewModel, double x, double y)
         {
             this.treeViewModel = treeViewModel;
             this.x = x;
             this.y = y;
-            this.treeNodeData = new TreeNodeData();
-            this.treeNodeData.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
-            this.treeNodeData.Parent = 0;
+            this.data = new TreeNodeData();
+            this.data.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
+            this.data.TreeId = treeViewModel.TreeId;
+            this.data.Parent = 0;
             this.connectorX2 = 0;
             this.connectorY2 = Height / 2;
         }
@@ -34,8 +35,9 @@ namespace Modules.Tree
         public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeViewModel parent)
         {
             this.treeViewModel = treeViewModel;
-            this.treeNodeData = new TreeNodeData();
-            this.treeNodeData.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
+            this.data = new TreeNodeData();
+            this.data.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
+            this.data.TreeId = treeViewModel.TreeId;
             this.Parent = parent;
 
             this.connectorX2 = Width + this.Parent.X - this.X;
@@ -45,11 +47,11 @@ namespace Modules.Tree
         public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeData data)
         {
             this.treeViewModel = treeViewModel;
-            this.treeNodeData = data;
+            this.data = data;
             if (this.IsRoot)
             {
-                this.x = 200;
-                this.y = 10;
+                this.x = 300;
+                this.y = 100;
                 this.connectorX2 = 0;
                 this.connectorY2 = Height / 2;
             }
@@ -60,17 +62,11 @@ namespace Modules.Tree
             }
         }
 
-        public TreeNodeData TreeNodeData
+        public TreeNodeData Data
         {
             get
             {
-                this.treeNodeData.Children.Clear();
-                foreach (int child in this.Children)
-                {
-                    this.treeNodeData.Children.Add(child);
-                }
-                this.treeNodeData.Parent = this.IsRoot? 0 : this.Parent.Id;
-                return this.treeNodeData;
+                return this.data;
             }
         }
 
@@ -78,11 +74,11 @@ namespace Modules.Tree
         {
             get
             {
-                return this.treeNodeData.Id;
+                return this.data.Id;
             }
             set
             {
-                this.treeNodeData.Id = value;
+                this.data.Id = value;
                 this.OnPropertyChanged("Id");
             }
         }
@@ -91,11 +87,11 @@ namespace Modules.Tree
         {
             get
             {
-                return this.treeNodeData.Comment;
+                return this.data.Comment;
             }
             set
             {
-                this.treeNodeData.Comment = value;
+                this.data.Comment = value;
                 this.OnPropertyChanged("Comment");
             }
         }
@@ -257,15 +253,15 @@ namespace Modules.Tree
         {
             get
             {
-                return this.treeNodeData.Type;
+                return this.data.Type;
             }
             set
             {
-                if (this.treeNodeData.Type == value)
+                if (this.data.Type == value)
                 {
                     return;
                 }
-                this.treeNodeData.Type = value;
+                this.data.Type = value;
                 this.OnPropertyChanged("Type");
             }
         }
@@ -274,16 +270,24 @@ namespace Modules.Tree
         {
             get
             {
-                return this.treeNodeData.Args;
+                return this.data.Args;
             }
             set
             {
-                if (this.treeNodeData.Args == value)
+                if (this.data.Args == value)
                 {
                     return;
                 }
-                this.treeNodeData.Args = value;
+                this.data.Args = value;
                 this.OnPropertyChanged("Args");
+            }
+        }
+
+        public int TreeId
+        {
+            get
+            {
+                return this.data.TreeId;
             }
         }
 
@@ -291,40 +295,40 @@ namespace Modules.Tree
         {
             get
             {
-                if (this.treeNodeData.Parent == 0)
+                if (this.data.Parent == 0)
                 {
                     return null;
                 }
-                TreeNodeViewModel parent = this.treeViewModel.Get(this.treeNodeData.Parent);
+                TreeNodeViewModel parent = this.treeViewModel.Get(this.data.Parent);
                 return parent;
             }
             set
             {
                 if (value == null)
                 {
-                    this.treeNodeData.Parent = 0;
+                    this.data.Parent = 0;
                 }
-                this.treeNodeData.Parent = value.Id;
+                this.data.Parent = value.Id;
             }
         }
 
         /// <summary>
         /// 节点是否折叠
         /// </summary>
-        public bool IsFolder
+        public bool IsFold
         {
             get
             {
-                return this.isFolder;
+                return this.isFold;
             }
             set
             {
-                if (this.isFolder == value)
+                if (this.isFold == value)
                 {
                     return;
                 }
-                this.isFolder = value;
-                this.OnPropertyChanged("IsFolder");
+                this.isFold = value;
+                this.OnPropertyChanged("IsFold");
             }
         }
 
@@ -332,7 +336,11 @@ namespace Modules.Tree
         {
             get
             {
-                return this.treeNodeData.Children;
+                if (this.isFold)
+                {
+                    return new List<int>();
+                }
+                return this.data.Children;
             }
         }
 

@@ -8,8 +8,6 @@ namespace Modules.Tree
     [Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class TreeViewModel: BindableBase
     {
-        private readonly List<TreeNodeData> treeNodeDatas = new List<TreeNodeData>();
-
         private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
                 new ObservableCollection<TreeNodeViewModel>();
 
@@ -25,6 +23,18 @@ namespace Modules.Tree
 
         public int TreeId { get; set; }
 
+        public TreeViewModel(AllTreeViewModel allTreeViewModel)
+        {
+            this.AllTreeViewModel = allTreeViewModel;
+            this.TreeId = ++allTreeViewModel.MaxTreeId;
+            TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, 300, 100);
+            this.treeNodes.Add(treeNodeViewModel);
+            this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
+
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
+        }
+
         public TreeViewModel(List<TreeNodeData> treeNodeDatas)
         {
             foreach (TreeNodeData treeNodeData in treeNodeDatas)
@@ -33,19 +43,23 @@ namespace Modules.Tree
                 this.treeNodes.Add(treeNodeViewModel);
                 this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
             }
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
         }
 
-        public List<TreeNodeData> TreeNodeDatas
+        public List<TreeNodeData> GetDatas()
         {
-            get
+            List<TreeNodeData> treeNodeDatas = new List<TreeNodeData>();
+            foreach (TreeNodeViewModel treeNodeViewModel in treeNodes)
             {
-                return this.treeNodeDatas;
+                treeNodeDatas.Add(treeNodeViewModel.Data);
             }
+            return treeNodeDatas;
         }
 
         public AllTreeViewModel AllTreeViewModel { get; set; }
 
-        private TreeNodeViewModel Root
+        public TreeNodeViewModel Root
         {
             get
             {
@@ -63,7 +77,7 @@ namespace Modules.Tree
         public void Add(TreeNodeViewModel treeNode, TreeNodeViewModel parent)
         {
             // 如果父节点是折叠的,需要先展开父节点
-            if (parent != null && parent.IsFolder)
+            if (parent != null && parent.IsFold)
             {
                 this.UnFold(parent);
             }
@@ -80,24 +94,40 @@ namespace Modules.Tree
             treeLayout.ExcuteLayout(this.Root);
         }
 
-        private void RecursionRemove(TreeNodeViewModel treeNodeViewModel)
+        private void GetChildrenIdAndSelf(TreeNodeViewModel treeNodeViewModel, List<int> children)
         {
-            for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
+            children.Add(treeNodeViewModel.Id);
+            this.GetAllChildrenId(treeNodeViewModel, children);
+        }
+
+        private void GetAllChildrenId(TreeNodeViewModel treeNodeViewModel, List<int> children)
+        {
+            foreach (int childId in treeNodeViewModel.Children)
             {
-                TreeNodeViewModel child = this.Get(treeNodeViewModel.Children[i]);
-                this.RecursionRemove(child);
+                TreeNodeViewModel child = this.Get(childId);
+                children.Add(child.Id);
+                this.GetAllChildrenId(child, children);
             }
-            this.treeNodeDict.Remove(treeNodeViewModel.Id);
-            this.treeNodes.Remove(treeNodeViewModel);
         }
 
         public void Remove(TreeNodeViewModel treeNodeViewModel)
         {
-            this.RecursionRemove(treeNodeViewModel);
-            if (treeNodeViewModel.Parent != null)
+            List<int> allId = new List<int>();
+            this.GetChildrenIdAndSelf(treeNodeViewModel, allId);
+
+            foreach (int childId in allId)
             {
-                treeNodeViewModel.Parent.Children.Remove(treeNodeViewModel.Id);
+                TreeNodeViewModel child = this.Get(childId);
+                this.treeNodes.Remove(child);
+                this.treeNodes.Remove(treeNodeViewModel);
             }
+
+            TreeNodeViewModel parent = treeNodeViewModel.Parent;
+            if (parent != null)
+            {
+                parent.Children.Remove(treeNodeViewModel.Id);
+            }
+
             var treeLayout = new TreeLayout(this);
             treeLayout.ExcuteLayout(this.Root);
         }
@@ -136,12 +166,12 @@ namespace Modules.Tree
                 tmpNode = tmpNode.Parent;
             }
 
-            if (from.IsFolder)
+            if (from.IsFold)
             {
                 this.UnFold(from);
             }
 
-            if (to.IsFolder)
+            if (to.IsFold)
             {
                 this.UnFold(to);
             }
@@ -158,12 +188,17 @@ namespace Modules.Tree
         /// <param name="treeNodeViewModel"></param>
         public void Fold(TreeNodeViewModel treeNodeViewModel)
         {
-            foreach (var childId in treeNodeViewModel.Children)
+            List<int> allChildId = new List<int>();
+            this.GetAllChildrenId(treeNodeViewModel, allChildId);
+
+            foreach (int childId in allChildId)
             {
                 TreeNodeViewModel child = this.Get(childId);
-                this.RecursionRemove(child);
+                this.treeNodes.Remove(child);
             }
-            treeNodeViewModel.IsFolder = true;
+
+            treeNodeViewModel.IsFold = true;
+
             var treeLayout = new TreeLayout(this);
             treeLayout.ExcuteLayout(this.Root);
         }
@@ -171,36 +206,22 @@ namespace Modules.Tree
         /// <summary>
         /// 展开节点,一级一级展开,一次只展开下层子节点,比如下层节点是折叠的,那下下层节点不展开
         /// </summary>
-        /// <param name="unFoldNode"></param>
-        public void UnFold(TreeNodeViewModel unFoldNode)
+        /// <param name="treeNodeViewModel"></param>
+        public void UnFold(TreeNodeViewModel treeNodeViewModel)
         {
-            foreach (var childId in unFoldNode.Children)
+            treeNodeViewModel.IsFold = false;
+
+            List<int> allChildId = new List<int>();
+            this.GetAllChildrenId(treeNodeViewModel, allChildId);
+
+            foreach (int childId in allChildId)
             {
                 TreeNodeViewModel child = this.Get(childId);
-                this.RecursionAdd(child);
+                this.treeNodes.Add(child);
             }
-            unFoldNode.IsFolder = false;
+
             var treeLayout = new TreeLayout(this);
             treeLayout.ExcuteLayout(this.Root);
-        }
-
-        private void RecursionAdd(TreeNodeViewModel treeNodeViewModel)
-        {
-            if (!this.treeNodes.Contains(treeNodeViewModel))
-            {
-                this.treeNodes.Add(treeNodeViewModel);
-            }
-            List<int> children = treeNodeViewModel.Children;
-
-            if (treeNodeViewModel.IsFolder)
-            {
-                return;
-            }
-            foreach (var childId in children)
-            {
-                TreeNodeViewModel child = this.Get(childId);
-                this.RecursionAdd(child);
-            }
         }
     }
 }
