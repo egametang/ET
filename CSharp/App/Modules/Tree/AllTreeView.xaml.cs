@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
+using System.Configuration;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using Infrastructure;
-using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Modules.Tree
 {
@@ -37,14 +35,16 @@ namespace Modules.Tree
 
         private void MenuItem_Open(object sender, RoutedEventArgs e)
         {
-            this.ViewModel.Open("node.bytes");
+            string nodePath = ConfigurationManager.AppSettings["NodePath"];
+            this.ViewModel.Open(nodePath);
             this.lbTreeRoots.SelectedIndex = -1;
             this.treeView.ViewModel = null;
         }
 
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
-            this.ViewModel.Save("node.bytes");
+            string nodePath = ConfigurationManager.AppSettings["NodePath"];
+            this.ViewModel.Save(nodePath);
         }
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
