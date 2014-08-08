@@ -12,10 +12,12 @@ namespace Modules.Tree
     {
         public int MaxNodeId { get; set; }
         public int MaxTreeId { get; set; }
-        
-        private readonly Dictionary<int, TreeViewModel> treeViewModelsDict = new Dictionary<int, TreeViewModel>();
 
-        public ObservableCollection<TreeNodeViewModel> rootList = new ObservableCollection<TreeNodeViewModel>();
+        private readonly Dictionary<int, TreeViewModel> treeViewModelsDict =
+                new Dictionary<int, TreeViewModel>();
+
+        public ObservableCollection<TreeNodeViewModel> rootList =
+                new ObservableCollection<TreeNodeViewModel>();
 
         public ObservableCollection<TreeNodeViewModel> RootList
         {
@@ -28,7 +30,7 @@ namespace Modules.Tree
         public void Open(string file)
         {
             this.rootList.Clear();
-            treeViewModelsDict.Clear();
+            this.treeViewModelsDict.Clear();
 
             var treeDict = new Dictionary<int, List<TreeNodeData>>();
 
@@ -64,16 +66,15 @@ namespace Modules.Tree
                     AllTreeViewModel = this,
                     TreeId = pair.Key
                 };
-                treeViewModelsDict[pair.Key] = treeViewModel;
+                this.treeViewModelsDict[pair.Key] = treeViewModel;
                 this.RootList.Add(treeViewModel.Root);
             }
         }
 
         public void Save(string file)
         {
-
             AllTreeData allTreeData = new AllTreeData();
-            foreach (var value in treeViewModelsDict.Values)
+            foreach (var value in this.treeViewModelsDict.Values)
             {
                 List<TreeNodeData> list = value.GetDatas();
                 allTreeData.TreeNodeDatas.AddRange(list);
@@ -92,20 +93,19 @@ namespace Modules.Tree
 
         public void Add(TreeViewModel treeViewModel)
         {
-            treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
+            this.treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
             this.rootList.Add(treeViewModel.Root);
         }
 
         public void Remove(TreeNodeViewModel treeViewModel)
         {
-            treeViewModelsDict.Remove(treeViewModel.TreeId);
-            rootList.Remove(treeViewModel);
+            this.treeViewModelsDict.Remove(treeViewModel.TreeId);
+            this.rootList.Remove(treeViewModel);
         }
 
         public TreeViewModel Get(int treeId)
         {
             return this.treeViewModelsDict[treeId];
         }
-
     }
 }

@@ -1,5 +1,5 @@
-﻿using Component;
-using Common.Logger;
+﻿using Common.Logger;
+using Component;
 
 namespace Logic.Event
 {

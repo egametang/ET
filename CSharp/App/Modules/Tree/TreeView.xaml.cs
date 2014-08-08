@@ -57,7 +57,7 @@ namespace Modules.Tree
                 return;
             }
 
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
             if (!this.IsDragging)
@@ -74,7 +74,7 @@ namespace Modules.Tree
 
         private void ListBoxItem_MouseMove(object sender, MouseEventArgs e)
         {
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
             if (treeNodeViewModel == null)
             {
@@ -119,7 +119,7 @@ namespace Modules.Tree
         private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
         {
             this.origMouseDownPoint = e.GetPosition(this);
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
             this.listBox.SelectedItem = treeNodeViewModel;
@@ -138,7 +138,7 @@ namespace Modules.Tree
             {
                 return;
             }
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var moveToNode = item.DataContext as TreeNodeViewModel;
             Log.Debug("move to node: {0} {1}", this.moveFromNode.Id, moveToNode.Id);
             if (this.moveFromNode.Id == moveToNode.Id)
@@ -163,7 +163,7 @@ namespace Modules.Tree
             {
                 var addTreeNode = new TreeNodeViewModel(this.ViewModel, point.X, point.Y)
                 {
-                    Type = (int)NodeType.Selector
+                    Type = (int) NodeType.Selector
                 };
                 this.ViewModel.Add(addTreeNode, null);
             }
@@ -174,7 +174,7 @@ namespace Modules.Tree
                     var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
                     var addTreeNode = new TreeNodeViewModel(this.ViewModel, parentNode)
                     {
-                        Type = (int)NodeType.Selector,
+                        Type = (int) NodeType.Selector,
                     };
                     this.ViewModel.Add(addTreeNode, parentNode);
                 }

@@ -1,10 +1,9 @@
-﻿
-namespace Modules.Tree
+﻿namespace Modules.Tree
 {
     public class TreeInfoViewModel
     {
-        private int id;
-        private string comment;
+        private readonly int id;
+        private readonly string comment;
 
         public TreeInfoViewModel(int id, string comment)
         {

@@ -26,7 +26,7 @@
             {
                 var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                var offspring = LeftMostOffspring(child, currentLevel + 1, searchLevel);
+                var offspring = this.LeftMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -47,7 +47,7 @@
             {
                 var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                var offspring = RightMostOffspring(child, currentLevel + 1, searchLevel);
+                var offspring = this.RightMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -72,8 +72,8 @@
                 {
                     offset = XGap + TreeNodeViewModel.Width - tGap;
                 }
-                tLeft = RightMostOffspring(left, 0, i + 1);
-                tRight = LeftMostOffspring(right, 0, i + 1);
+                tLeft = this.RightMostOffspring(left, 0, i + 1);
+                tRight = this.LeftMostOffspring(right, 0, i + 1);
             }
             right.Modify += offset;
             right.Prelim += offset;
@@ -87,7 +87,7 @@
                 {
                     var left = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                     var right = this.treeViewModel.Get(treeNodeViewModel.Children[j]);
-                    AjustSubTreeGap(left, right);
+                    this.AjustSubTreeGap(left, right);
                 }
             }
         }
@@ -97,7 +97,7 @@
             foreach (int childId in treeNodeViewModel.Children)
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(childId);
-                CalculatePrelimAndModify(child);
+                this.CalculatePrelimAndModify(child);
             }
 
             double prelim = 0;
@@ -118,8 +118,9 @@
             else
             {
                 // 调整子树间的间距
-                AjustTreeGap(treeNodeViewModel);
-                double childrenCenter = (treeNodeViewModel.FirstChild.Prelim + treeNodeViewModel.LastChild.Prelim) / 2;
+                this.AjustTreeGap(treeNodeViewModel);
+                double childrenCenter = (treeNodeViewModel.FirstChild.Prelim +
+                                         treeNodeViewModel.LastChild.Prelim) / 2;
                 if (treeNodeViewModel.LeftSibling == null)
                 {
                     // 如果没有左邻居，不需要设置modify
@@ -144,7 +145,7 @@
             foreach (int childId in treeNodeViewModel.Children)
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(childId);
-                CalculateRelativeXAndY(child, level + 1, treeNodeViewModel.Modify + totalModify);
+                this.CalculateRelativeXAndY(child, level + 1, treeNodeViewModel.Modify + totalModify);
             }
             if (treeNodeViewModel.IsLeaf)
             {
@@ -152,19 +153,20 @@
             }
             else
             {
-                treeNodeViewModel.X = (treeNodeViewModel.FirstChild.X + treeNodeViewModel.LastChild.X) / 2;
+                treeNodeViewModel.X = (treeNodeViewModel.FirstChild.X +
+                                       treeNodeViewModel.LastChild.X) / 2;
             }
             treeNodeViewModel.Y = level * (TreeNodeViewModel.Height + YGap);
         }
 
         private void FixXAndY(TreeNodeViewModel treeNode)
         {
-            treeNode.X += rootOffsetX;
-            treeNode.Y += rootOffsetY;
+            treeNode.X += this.rootOffsetX;
+            treeNode.Y += this.rootOffsetY;
             foreach (var childId in treeNode.Children)
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(childId);
-                FixXAndY(child);
+                this.FixXAndY(child);
             }
         }
 
@@ -174,14 +176,14 @@
             {
                 return;
             }
-            rootOrigX = root.X;
-            rootOrigY = root.Y;
-            CalculatePrelimAndModify(root);
-            CalculateRelativeXAndY(root, 0, 0);
+            this.rootOrigX = root.X;
+            this.rootOrigY = root.Y;
+            this.CalculatePrelimAndModify(root);
+            this.CalculateRelativeXAndY(root, 0, 0);
 
-            rootOffsetX = rootOrigX - root.X;
-            rootOffsetY = rootOrigY - root.Y;
-            FixXAndY(root);
+            this.rootOffsetX = this.rootOrigX - root.X;
+            this.rootOffsetY = this.rootOrigY - root.Y;
+            this.FixXAndY(root);
         }
     }
 }

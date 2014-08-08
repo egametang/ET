@@ -63,8 +63,7 @@
 							PreviewMouseLeftButtonDown="ListBoxItem_PreviewMouseLeftButtonDown"
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
-								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}">
-						</Rectangle>
+								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
 						<Label Content="+" Visibility="{Binding IsFold, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>
 						<StackPanel>
 							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}"/>

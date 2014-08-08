@@ -1,5 +1,4 @@
-﻿
-namespace Modules.Tree
+﻿namespace Modules.Tree
 {
     public class OneTreeData
     {

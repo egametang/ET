@@ -1,7 +1,7 @@
-﻿using Component;
-using Component.Config;
-using Common.Helper;
+﻿using Common.Helper;
 using Common.Logger;
+using Component;
+using Component.Config;
 
 namespace Logic.Handler
 {

@@ -68,7 +68,7 @@ namespace Modules.Tree
 
         private void ListBoxItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
             if (this.treeView.ViewModel != null)
             {
@@ -82,7 +82,7 @@ namespace Modules.Tree
 
         private void ListBoxItem_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var item = (FrameworkElement)sender;
+            var item = (FrameworkElement) sender;
             var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
             this.lbTreeRoots.SelectedItem = treeNodeViewModel;

@@ -11,7 +11,8 @@ namespace Modules.Tree
         private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
                 new ObservableCollection<TreeNodeViewModel>();
 
-        private readonly Dictionary<int, TreeNodeViewModel> treeNodeDict = new Dictionary<int, TreeNodeViewModel>(); 
+        private readonly Dictionary<int, TreeNodeViewModel> treeNodeDict =
+                new Dictionary<int, TreeNodeViewModel>();
 
         public ObservableCollection<TreeNodeViewModel> TreeNodes
         {
@@ -50,7 +51,7 @@ namespace Modules.Tree
         public List<TreeNodeData> GetDatas()
         {
             List<TreeNodeData> treeNodeDatas = new List<TreeNodeData>();
-            foreach (TreeNodeViewModel treeNodeViewModel in treeNodes)
+            foreach (TreeNodeViewModel treeNodeViewModel in this.treeNodes)
             {
                 treeNodeDatas.Add(treeNodeViewModel.Data);
             }
