@@ -223,5 +223,43 @@ namespace Modules.Tree
             var treeLayout = new TreeLayout(this);
             treeLayout.ExcuteLayout(this.Root);
         }
+
+        public void MoveLeft(TreeNodeViewModel treeNodeViewModel)
+        {
+            if (treeNodeViewModel.IsRoot)
+            {
+                return;
+            }
+            var parent = treeNodeViewModel.Parent;
+            int index = parent.Children.IndexOf(treeNodeViewModel.Id);
+            if (index == 0)
+            {
+                return;
+            }
+            parent.Children.Remove(treeNodeViewModel.Id);
+            parent.Children.Insert(index - 1, treeNodeViewModel.Id);
+
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
+        }
+
+        public void MoveRight(TreeNodeViewModel treeNodeViewModel)
+        {
+            if (treeNodeViewModel.IsRoot)
+            {
+                return;
+            }
+            var parent = treeNodeViewModel.Parent;
+            int index = parent.Children.IndexOf(treeNodeViewModel.Id);
+            if (index == parent.Children.Count - 1)
+            {
+                return;
+            }
+            parent.Children.Remove(treeNodeViewModel.Id);
+            parent.Children.Insert(index + 1, treeNodeViewModel.Id);
+
+            var treeLayout = new TreeLayout(this);
+            treeLayout.ExcuteLayout(this.Root);
+        }
     }
 }

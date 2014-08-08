@@ -216,5 +216,25 @@ namespace Modules.Tree
                 this.ViewModel.Fold(treeNodeViewModel);
             }
         }
+
+        private void MenuItem_MoveLeft(object sender, RoutedEventArgs e)
+        {
+            if (this.listBox.SelectedItem == null)
+            {
+                return;
+            }
+            var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+            this.ViewModel.MoveLeft(treeNodeViewModel);
+        }
+
+        private void MenuItem_MoveRight(object sender, RoutedEventArgs e)
+        {
+            if (this.listBox.SelectedItem == null)
+            {
+                return;
+            }
+            var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+            this.ViewModel.MoveRight(treeNodeViewModel);
+        }
     }
 }
