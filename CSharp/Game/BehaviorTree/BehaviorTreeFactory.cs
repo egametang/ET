@@ -5,32 +5,47 @@ namespace BehaviorTree
 {
     public class BehaviorTreeFactory
     {
-        private readonly Dictionary<string, Func<Config, Node>> dictionary =
-                new Dictionary<string, Func<Config, Node>>();
+        private static readonly BehaviorTreeFactory instance = new BehaviorTreeFactory();
 
-        public BehaviorTreeFactory()
+        public static BehaviorTreeFactory Instance
         {
-            this.dictionary.Add("selector", config => new Selector(config));
-            this.dictionary.Add("sequence", config => new Sequence(config));
-            this.dictionary.Add("not", config => new Not(config));
+            get
+            {
+                return instance;
+            }
         }
 
-        public void Register(string name, Func<Config, Node> action)
+        private readonly Dictionary<NodeType, Func<NodeConfig, Node>> dictionary =
+                new Dictionary<NodeType, Func<NodeConfig, Node>>();
+
+        private BehaviorTreeFactory()
         {
-            this.dictionary.Add(name, action);
+            var assembly = typeof(BehaviorTreeFactory).Assembly;
+            Type[] types = assembly.GetTypes();
+            foreach (var type in types)
+            {
+                object[] attrs = type.GetCustomAttributes(typeof(NodeAttribute), false);
+                if (attrs.Length == 0)
+                {
+                    continue;
+                }
+                NodeAttribute attribute = (NodeAttribute)attrs[0];
+
+                dictionary.Add(attribute.NodeType, config => (Node)Activator.CreateInstance(attribute.ClassType, new object[] { config }));
+            }
         }
 
-        private Node CreateNode(Config config)
+        private Node CreateNode(NodeConfig config)
         {
-            if (!this.dictionary.ContainsKey(config.Name))
+            if (!this.dictionary.ContainsKey((NodeType) config.Type))
             {
                 throw new KeyNotFoundException(string.Format("CreateNode cannot found: {0}",
-                        config.Name));
+                        config.Type));
             }
-            return this.dictionary[config.Name](config);
+            return this.dictionary[(NodeType) config.Type](config);
         }
 
-        private Node CreateTreeNode(Config config)
+        private Node CreateTreeNode(NodeConfig config)
         {
             var node = this.CreateNode(config);
             if (config.SubConfigs == null)
@@ -46,7 +61,7 @@ namespace BehaviorTree
             return node;
         }
 
-        public BehaviorTree CreateTree(Config config)
+        public BehaviorTree CreateTree(NodeConfig config)
         {
             var node = this.CreateTreeNode(config);
             return new BehaviorTree(node);

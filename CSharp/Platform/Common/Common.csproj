@@ -58,6 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\EventTrigger.cs" />
+    <Compile Include="Component\Env.cs" />
+    <Compile Include="Component\IEventAttribute.cs" />
+    <Compile Include="Component\IEvent.cs" />
+    <Compile Include="Component\Object.cs" />
     <Compile Include="Helper\BigIntegerHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\EnumHelper.cs" />
@@ -80,6 +85,7 @@
     <None Include="Helper\Packages.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

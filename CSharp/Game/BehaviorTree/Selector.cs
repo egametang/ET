@@ -1,10 +1,10 @@
 ﻿namespace BehaviorTree
 {
+    [NodeAttribute(NodeType.Select, typeof(Selector))]
     public class Selector: Node
     {
-        public Selector(Config config)
+        public Selector(NodeConfig config): base(config)
         {
-            this.Name = config.Name;
         }
 
         public override bool Run(BlackBoard blackBoard)

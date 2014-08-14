@@ -1,4 +1,4 @@
-﻿using Component;
+﻿using Common.Component;
 
 namespace BehaviorTree
 {

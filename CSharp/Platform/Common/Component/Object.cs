@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 
-namespace Component
+namespace Common.Component
 {
     public class Object
     {
@@ -31,7 +31,7 @@ namespace Component
         {
             if (!this.Dict.ContainsKey(key))
             {
-                throw new KeyNotFoundException(string.Format("not found key: {0}", key));
+                return default(T);
             }
             return (T) this.Dict[key];
         }

@@ -3,17 +3,17 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace BehaviorTree
 {
-    public class Config
+    public class NodeConfig
     {
         public uint Id { get; set; }
 
-        public string Name { get; set; }
+        public int Type { get; set; }
 
         [BsonIgnoreIfNull]
         public List<string> Args { get; set; }
 
         [BsonIgnoreIfNull]
-        public List<Config> SubConfigs { get; set; }
+        public List<NodeConfig> SubConfigs { get; set; }
 
         public void AddArgs(string arg)
         {
@@ -25,11 +25,11 @@ namespace BehaviorTree
             this.Args.Add(arg);
         }
 
-        public void AddSubConfig(Config subConfig)
+        public void AddSubConfig(NodeConfig subConfig)
         {
             if (this.SubConfigs == null)
             {
-                this.SubConfigs = new List<Config>();
+                this.SubConfigs = new List<NodeConfig>();
             }
 
             this.SubConfigs.Add(subConfig);

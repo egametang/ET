@@ -1,4 +1,6 @@
-﻿namespace Component
+﻿using Common.Component;
+
+namespace Component
 {
     public class GameObject: Object
     {

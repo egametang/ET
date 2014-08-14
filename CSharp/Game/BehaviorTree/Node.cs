@@ -4,9 +4,14 @@ namespace BehaviorTree
 {
     public abstract class Node
     {
-        public string Name { get; protected set; }
+        public NodeConfig Config { get; private set; }
 
         protected readonly List<Node> children = new List<Node>();
+
+        protected Node(NodeConfig config)
+        {
+            this.Config = config;
+        }
 
         public void AddChild(Node child)
         {

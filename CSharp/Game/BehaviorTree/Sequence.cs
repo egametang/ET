@@ -1,10 +1,10 @@
 ﻿namespace BehaviorTree
 {
+    [NodeAttribute(NodeType.Sequence, typeof(Sequence))]
     internal class Sequence: Node
     {
-        public Sequence(Config config)
+        public Sequence(NodeConfig config): base(config)
         {
-            this.Name = config.Name;
         }
 
         public override bool Run(BlackBoard blackBoard)

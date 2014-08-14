@@ -1,22 +1,14 @@
-﻿using System;
-
-namespace BehaviorTree
+﻿namespace BehaviorTree
 {
+    [NodeAttribute(NodeType.Not, typeof(Not))]
     public class Not: Node
     {
-        public Not(Config config)
+        public Not(NodeConfig config): base(config)
         {
-            this.Name = config.Name;
         }
 
         public override bool Run(BlackBoard blackBoard)
         {
-            if (this.children.Count != 1)
-            {
-                throw new Exception(string.Format("not node children count not eq 1: {0}",
-                        this.children.Count));
-            }
-
             return !this.children[0].Run(blackBoard);
         }
     }

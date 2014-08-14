@@ -52,21 +52,10 @@
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="ConfigCategory.cs" />
     <Compile Include="ConfigManager.cs" />
-    <Compile Include="EventAttribute.cs" />
-    <Compile Include="EventType.cs" />
     <Compile Include="GameObjectManager.cs" />
-    <Compile Include="HandlerAttribute.cs" />
     <Compile Include="IConfigInitialize.cs" />
-    <Compile Include="IEvent.cs" />
-    <Compile Include="IHandler.cs" />
-    <Compile Include="ILogic.cs" />
     <Compile Include="IType.cs" />
     <Compile Include="KeyDefine.cs" />
-    <Compile Include="LogicManager.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MessageAttribute.cs" />
-    <Compile Include="MessageEnv.cs" />
-    <Compile Include="Object.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

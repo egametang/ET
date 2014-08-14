@@ -5,9 +5,7 @@ namespace World
     public class World
     {
         private static readonly World instance = new World();
-
-        private readonly LogicManager logicManager = LogicManager.Instance;
-
+        
         private readonly ConfigManager configManager = ConfigManager.Instance;
 
         private readonly GameObjectManager gameObjectManager = new GameObjectManager();
@@ -17,14 +15,6 @@ namespace World
             get
             {
                 return instance;
-            }
-        }
-
-        public LogicManager LogicManager
-        {
-            get
-            {
-                return this.logicManager;
             }
         }
 
