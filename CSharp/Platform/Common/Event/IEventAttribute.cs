@@ -1,4 +1,4 @@
-﻿namespace Common.Component
+﻿namespace Common.Event
 {
     public class IEventAttribute
     {

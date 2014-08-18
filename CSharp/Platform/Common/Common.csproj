@@ -58,11 +58,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\EventTrigger.cs" />
-    <Compile Include="Component\Env.cs" />
-    <Compile Include="Component\IEventAttribute.cs" />
-    <Compile Include="Component\IEvent.cs" />
-    <Compile Include="Component\Object.cs" />
+    <Compile Include="Event\EventTrigger.cs" />
+    <Compile Include="Event\Env.cs" />
+    <Compile Include="Event\IEventAttribute.cs" />
+    <Compile Include="Event\IEvent.cs" />
+    <Compile Include="Base\Object.cs" />
     <Compile Include="Config\ConfigAttribute.cs" />
     <Compile Include="Config\ConfigCategory.cs" />
     <Compile Include="Config\ConfigManager.cs" />

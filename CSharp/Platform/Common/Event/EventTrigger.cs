@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Common.Component
+namespace Common.Event
 {
     public class EventTrigger<T> where T : IEventAttribute
     {

@@ -1,4 +1,4 @@
-﻿using Common.Component;
+﻿using Common.Base;
 
 namespace Model
 {
