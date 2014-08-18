@@ -1,4 +1,4 @@
-﻿namespace Component.Config
+﻿namespace Model.Config
 {
     public class GlobalConfig: IType
     {

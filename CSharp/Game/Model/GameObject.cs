@@ -1,6 +1,6 @@
 ﻿using Common.Component;
 
-namespace Component
+namespace Model
 {
     public class GameObject: Object
     {

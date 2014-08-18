@@ -1,12 +1,12 @@
-﻿using Component;
+﻿using Model;
 
 namespace World
 {
     public class World
     {
         private static readonly World instance = new World();
-        
-        private readonly ConfigManager configManager = ConfigManager.Instance;
+
+        private readonly ConfigManager configManager = new ConfigManager(typeof(World).Assembly);
 
         private readonly GameObjectManager gameObjectManager = new GameObjectManager();
 
@@ -16,6 +16,10 @@ namespace World
             {
                 return instance;
             }
+        }
+
+        private World()
+        {
         }
 
         public ConfigManager ConfigManager

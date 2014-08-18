@@ -1,4 +1,4 @@
-﻿namespace Component
+﻿namespace Model
 {
     public interface IType
     {

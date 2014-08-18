@@ -61,10 +61,6 @@
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Component\Component.csproj">
-      <Project>{0fa529d1-d0a9-4a8e-90f5-117ce80f2ede}</Project>
-      <Name>Component</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

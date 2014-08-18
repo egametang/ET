@@ -49,13 +49,7 @@
     <Compile Include="BuffManager.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="ConfigAttribute.cs" />
-    <Compile Include="ConfigCategory.cs" />
-    <Compile Include="ConfigManager.cs" />
     <Compile Include="GameObjectManager.cs" />
-    <Compile Include="IConfigInitialize.cs" />
-    <Compile Include="IType.cs" />
-    <Compile Include="KeyDefine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

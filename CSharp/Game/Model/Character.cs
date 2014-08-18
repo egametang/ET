@@ -1,4 +1,4 @@
-﻿namespace Component
+﻿namespace Model
 {
     /// <summary>
     /// 角色对象
