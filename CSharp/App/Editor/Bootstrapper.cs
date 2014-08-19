@@ -3,7 +3,7 @@ using System.Windows;
 using Infrastructure;
 using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.Prism.Regions;
-using Modules.Tree;
+using Modules.BehaviorTreeModule;
 
 namespace Editor
 {

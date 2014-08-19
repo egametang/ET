@@ -1,4 +1,4 @@
-﻿namespace Modules.Tree
+﻿namespace Modules.BehaviorTreeModule
 {
     public enum NodeType
     {

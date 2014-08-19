@@ -4,7 +4,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using Common.Helper;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     [Export(contractType: typeof (AllTreeViewModel)),
      PartCreationPolicy(creationPolicy: CreationPolicy.NonShared)]

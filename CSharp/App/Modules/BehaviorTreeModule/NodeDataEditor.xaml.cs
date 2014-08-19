@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Common.Helper;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     /// <summary>
     /// NodeDataEditor.xaml 的交互逻辑

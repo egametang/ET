@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     [ValueConversion(typeof (bool), typeof (Visibility))]
     public class FolderVisiableConverter: IValueConverter

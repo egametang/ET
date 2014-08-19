@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Common.Logger;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     public partial class TreeView
     {

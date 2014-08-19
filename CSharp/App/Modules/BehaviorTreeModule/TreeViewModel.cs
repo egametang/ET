@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Mvvm;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     [Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
     public class TreeViewModel: BindableBase

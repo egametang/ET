@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     [ValueConversion(typeof (int), typeof (string))]
     public class NodeTypeToStringConverter: IValueConverter

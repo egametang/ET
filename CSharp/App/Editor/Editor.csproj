@@ -134,9 +134,9 @@
       <Project>{48a2e149-0dac-41b4-bb54-dfbccd6d42b3}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Modules\Tree\Tree.csproj">
+    <ProjectReference Include="..\Modules\BehaviorTreeModule\BehaviorTreeModule.csproj">
       <Project>{6cd185d1-08e0-4729-a999-2d5b57ba8193}</Project>
-      <Name>Tree</Name>
+      <Name>BehaviorTreeModule</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

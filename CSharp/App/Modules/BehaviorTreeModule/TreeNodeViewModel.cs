@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Practices.Prism.Mvvm;
 
-namespace Modules.Tree
+namespace Modules.BehaviorTreeModule
 {
     public class TreeNodeViewModel: BindableBase
     {
