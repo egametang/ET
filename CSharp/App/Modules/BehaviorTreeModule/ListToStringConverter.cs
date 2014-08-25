@@ -27,6 +27,11 @@ namespace Modules.BehaviorTreeModule
                 return new List<string>();
             }
             var s = (string) value;
+            s = s.Trim();
+            if (s == "")
+            {
+                return new List<string>();
+            }
             string[] ss = s.Split(',');
             for (int i = 0; i < ss.Length; ++i)
             {
