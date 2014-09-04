@@ -12,12 +12,13 @@
         Compare = 10002,
         InAttackDistance = 10003,
         InChaseDistance = 10004,
-        FriendDieInAttackDistance = 10005,
+        FriendDieInDistance = 10005,
         FriendLessHpInAttackDistance = 10006,
         LessHp = 10007,
         OnHit = 10008,
         SelfDie = 10009,
         TargetDie = 100010,
+        TargetDistanceLess = 100011,
 
         // action节点 20000开始
         CastSpell = 20000,
@@ -28,7 +29,7 @@
         SummonFriend = 20005,
         TalkToAll = 20006,
         CallFriends = 20007,
-        ClosePlayer = 20008,
-        LeavePlayer = 20009,
+        CloseTarget = 20008,
+        LeaveTarget = 20009,
     }
 }
