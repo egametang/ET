@@ -58,15 +58,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ICategory.cs" />
     <Compile Include="Event\EventTrigger.cs" />
     <Compile Include="Event\Env.cs" />
     <Compile Include="Event\IEventAttribute.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="Base\Object.cs" />
     <Compile Include="Config\ConfigAttribute.cs" />
-    <Compile Include="Config\ConfigCategory.cs" />
+    <Compile Include="Config\ACategory.cs" />
     <Compile Include="Config\ConfigManager.cs" />
-    <Compile Include="Config\IType.cs" />
+    <Compile Include="Config\IConfig.cs" />
     <Compile Include="Helper\BigIntegerHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\EnumHelper.cs" />

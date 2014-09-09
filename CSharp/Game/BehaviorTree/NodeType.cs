@@ -2,7 +2,7 @@
 {
     public enum NodeType
     {
-        Select = 1,
+        Selector = 1,
         Sequence = 2,
         Not = 10,
     }

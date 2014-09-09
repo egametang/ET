@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 
-namespace Model
+namespace Common.Config
 {
     public class ConfigManager
     {
         public Dictionary<string, object> allConfig;
-
-        public ConfigManager(Assembly assembly)
-        {
-            Load(assembly);
-        }
 
         public void Load(Assembly assembly)
         {
@@ -28,33 +22,37 @@ namespace Model
                 
                 object obj = (Activator.CreateInstance(type));
 
-                var iSupportInitialize = obj as ISupportInitialize;
-
-                if (iSupportInitialize != null)
+                ICategory iCategory = obj as ICategory;
+                if (iCategory == null)
                 {
-                    iSupportInitialize.EndInit();
+                    throw new Exception(string.Format("class: {0} not inherit from ACategory", type.Name));
                 }
+                iCategory.BeginInit();
+                iCategory.EndInit();
 
                 localAllConfig[type.Name] = obj;
             }
             this.allConfig = localAllConfig;
         }
 
-        public T Get<T>(int type) where T : IType
+        public T Get<T>(int type) where T : IConfig
         {
-            var configCategory = (ConfigCategory<T>)this.allConfig[typeof(T).Name];
+            var configCategory = (ACategory<T>)this.allConfig[typeof(T).Name];
             return configCategory[type];
         }
 
-        public Dictionary<int, T> GetAll<T>() where T : IType
+        public T[] GetAll<T>() where T : IConfig
         {
-            var configCategory = (ConfigCategory<T>)this.allConfig[typeof(T).Name];
+            var configCategory = (ACategory<T>)this.allConfig[typeof(T).Name];
             return configCategory.GetAll();
         }
 
-        public ConfigCategory<T> GetConfigCategory<T>() where T : IType
+        public T GetCategory<T>() where T : class, ICategory, new()
         {
-            return (ConfigCategory<T>) this.allConfig[typeof (T).Name];
+            T t = new T();
+            object category;
+            bool ret = this.allConfig.TryGetValue(t.Name, out category);
+            return ret? (T) category : null;
         }
     }
 }

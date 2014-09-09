@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Common.Config;
+using Model;
 
 namespace World
 {
@@ -6,7 +7,7 @@ namespace World
     {
         private static readonly World instance = new World();
 
-        private readonly ConfigManager configManager = new ConfigManager(typeof(World).Assembly);
+        private readonly ConfigManager configManager = new ConfigManager();
 
         private readonly GameObjectManager gameObjectManager = new GameObjectManager();
 
@@ -20,6 +21,7 @@ namespace World
 
         private World()
         {
+            configManager.Load(typeof(World).Assembly);
         }
 
         public ConfigManager ConfigManager

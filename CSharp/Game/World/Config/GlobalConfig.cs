@@ -1,12 +1,14 @@
-﻿namespace Model.Config
+﻿using Common.Config;
+
+namespace World.Config
 {
-    public class GlobalConfig: IType
+    public class GlobalConfig: IConfig
     {
-        public int Type { get; set; }
+        public int Id { get; set; }
     }
 
     [Config]
-    public class GlobalCategory: ConfigCategory<GlobalConfig>
+    public class GlobalCategory: ACategory<GlobalConfig>
     {
     }
 }

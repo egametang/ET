@@ -37,12 +37,12 @@ namespace BehaviorTree
 
         private Node CreateNode(NodeConfig config)
         {
-            if (!this.dictionary.ContainsKey((NodeType) config.Type))
+            if (!this.dictionary.ContainsKey((NodeType) config.Id))
             {
-                throw new KeyNotFoundException(string.Format("CreateNode cannot found: {0}",
-                        config.Type));
+                throw new KeyNotFoundException(
+                    string.Format("CreateNode cannot found: {0}", config.Id));
             }
-            return this.dictionary[(NodeType) config.Type](config);
+            return this.dictionary[(NodeType) config.Id](config);
         }
 
         private Node CreateTreeNode(NodeConfig config)

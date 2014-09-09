@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Common.Helper;
 
-namespace Model
+namespace Common.Config
 {
-    public abstract class ConfigCategory<T>: ISupportInitialize where T : IType
+    public abstract class ACategory<T>: ICategory where T : IConfig
     {
         protected readonly Dictionary<int, T> dict = new Dictionary<int, T>();
 
-        protected ConfigCategory()
+        public void BeginInit()
         {
-            string path = Path.Combine(@"./Config/", this.ConfigName);
+            string path = Path.Combine(@"./Config/", this.Name);
 
             if (!Directory.Exists(path))
             {
@@ -22,8 +22,12 @@ namespace Model
             foreach (var file in Directory.GetFiles(path))
             {
                 var t = MongoHelper.FromJson<T>(File.ReadAllText(file));
-                this.dict.Add(t.Type, t);
+                this.dict.Add(t.Id, t);
             }
+        }
+
+        public void EndInit()
+        {
         }
 
         public T this[int type]
@@ -34,7 +38,7 @@ namespace Model
             }
         }
 
-        public string ConfigName
+        public string Name
         {
             get
             {
@@ -42,17 +46,9 @@ namespace Model
             }
         }
 
-        public Dictionary<int, T> GetAll()
+        public T[] GetAll()
         {
-            return this.dict;
-        }
-
-        public void BeginInit()
-        {
-        }
-
-        public void EndInit()
-        {
+            return this.dict.Values.ToArray();
         }
     }
 }

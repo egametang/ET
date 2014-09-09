@@ -1,6 +1,6 @@
 ﻿namespace BehaviorTree
 {
-    [NodeAttribute(NodeType.Select, typeof(Selector))]
+    [NodeAttribute(NodeType.Selector, typeof(Selector))]
     public class Selector: Node
     {
         public Selector(NodeConfig config): base(config)
