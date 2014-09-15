@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\Component.cs" />
     <Compile Include="Config\ICategory.cs" />
     <Compile Include="Event\EventTrigger.cs" />
     <Compile Include="Event\Env.cs" />

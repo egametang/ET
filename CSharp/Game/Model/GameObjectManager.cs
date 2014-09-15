@@ -15,12 +15,12 @@ namespace Model
 
         public void Add(GameObject gameObject)
         {
-            this.gameObjects.Add(gameObject.Id, gameObject);
+            this.gameObjects.Add(gameObject.Guid, gameObject);
             if (!this.typeGameObjects.ContainsKey(gameObject.Type))
             {
                 this.typeGameObjects.Add(gameObject.Type, new Dictionary<ObjectId, GameObject>());
             }
-            this.typeGameObjects[gameObject.Type].Add(gameObject.Id, gameObject);
+            this.typeGameObjects[gameObject.Type].Add(gameObject.Guid, gameObject);
         }
 
         public GameObject Get(ObjectId id)
@@ -46,11 +46,11 @@ namespace Model
             {
                 throw new ArgumentNullException("gameObject");
             }
-            if (!this.gameObjects.Remove(gameObject.Id))
+            if (!this.gameObjects.Remove(gameObject.Guid))
             {
                 return false;
             }
-            if (!this.typeGameObjects[gameObject.Type].Remove(gameObject.Id))
+            if (!this.typeGameObjects[gameObject.Type].Remove(gameObject.Guid))
             {
                 return false;
             }

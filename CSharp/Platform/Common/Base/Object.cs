@@ -5,13 +5,13 @@ namespace Common.Base
 {
     public class Object
     {
-        public ObjectId Id { get; set; }
+        public ObjectId Guid { get; set; }
 
         public Dictionary<string, object> Dict { get; private set; }
 
         protected Object()
         {
-            this.Id = ObjectId.GenerateNewId();
+            this.Guid = ObjectId.GenerateNewId();
             this.Dict = new Dictionary<string, object>();
         }
 

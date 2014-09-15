@@ -30,7 +30,7 @@ namespace Model
         {
             foreach (var buff in this.Buffs)
             {
-                this.BuffGuidDict.Add(buff.Id, buff);
+                this.BuffGuidDict.Add(buff.Guid, buff);
             }
 
             foreach (var buff in this.Buffs)
@@ -46,7 +46,7 @@ namespace Model
                 return false;
             }
 
-            if (this.BuffGuidDict.ContainsKey(buff.Id))
+            if (this.BuffGuidDict.ContainsKey(buff.Guid))
             {
                 return false;
             }
@@ -57,7 +57,7 @@ namespace Model
             }
 
             this.Buffs.Add(buff);
-            this.BuffGuidDict.Add(buff.Id, buff);
+            this.BuffGuidDict.Add(buff.Guid, buff);
             this.BuffTypeDict.Add(buff.Type, buff);
 
             return true;
@@ -91,7 +91,7 @@ namespace Model
             }
 
             this.Buffs.Remove(buff);
-            this.BuffGuidDict.Remove(buff.Id);
+            this.BuffGuidDict.Remove(buff.Guid);
             this.BuffTypeDict.Remove(buff.Type);
 
             return true;
