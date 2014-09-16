@@ -5,6 +5,7 @@
         Selector = 1,
         Sequence = 2,
         Not = 10,
+        Weight = 11,
 
         // condition节点 10000开始
         SelectTarget = 10000,
@@ -19,6 +20,7 @@
         // action节点 20000开始
         CastSpell = 20000,
         Chase = 20001,
+        Empty = 20002,
         Patrol = 20003,
         Idle = 20004,
         CloseTarget = 20008,
