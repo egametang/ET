@@ -2,6 +2,6 @@
 {
     public class Component: Object
     {
-        public Object Parent { get; set; }
+        public Entity Owner { get; set; }
     }
 }
