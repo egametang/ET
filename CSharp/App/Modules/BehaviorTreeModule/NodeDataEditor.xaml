@@ -32,8 +32,7 @@
 		<Label Name="lblTreeId" Grid.Column="1" Grid.Row="0" Content="{Binding TreeId}" />
 		<Label Name="lblId" Grid.Column="1" Grid.Row="1" Content="{Binding Id}" />
 		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="2" Margin="2" SelectionChanged="CbType_OnSelectionChanged" />
-		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}}" />
-		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment}" />
-		<Button Content="OK" Grid.Row="5" Grid.Column="1" Width="100" HorizontalAlignment="Left"/>
+        <TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" />
+		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
 	</Grid>
 </UserControl>

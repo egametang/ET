@@ -78,6 +78,10 @@ namespace Modules.BehaviorTreeModule
             }
             set
             {
+                if (this.data.Id == value)
+                {
+                    return;
+                }
                 this.data.Id = value;
                 this.OnPropertyChanged("Id");
             }
@@ -91,6 +95,10 @@ namespace Modules.BehaviorTreeModule
             }
             set
             {
+                if (this.data.Comment == value)
+                {
+                    return;
+                }
                 this.data.Comment = value;
                 this.OnPropertyChanged("Comment");
             }
