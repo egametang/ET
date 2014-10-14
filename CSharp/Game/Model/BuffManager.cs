@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Common.Base;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Component = Common.Base.Component;
 
 namespace Model
 {
-    public class BuffManager: ISupportInitialize
+    public class BuffManager: Component, ISupportInitialize
     {
         public HashSet<Buff> Buffs { get; private set; }
 
@@ -13,13 +15,13 @@ namespace Model
         public Dictionary<ObjectId, Buff> BuffGuidDict { get; private set; }
 
         [BsonIgnore]
-        public Dictionary<int, Buff> BuffTypeDict { get; private set; }
+        public MultiMap<int, Buff> BuffTypeDict { get; private set; }
 
         public BuffManager()
         {
             this.Buffs = new HashSet<Buff>();
             this.BuffGuidDict = new Dictionary<ObjectId, Buff>();
-            this.BuffTypeDict = new Dictionary<int, Buff>();
+            this.BuffTypeDict = new MultiMap<int, Buff>();
         }
 
         void ISupportInitialize.BeginInit()
@@ -51,7 +53,7 @@ namespace Model
                 return false;
             }
 
-            if (this.BuffTypeDict.ContainsKey(buff.Type))
+            if (this.BuffTypeDict.Get(buff.Type) != null)
             {
                 return false;
             }
@@ -63,24 +65,19 @@ namespace Model
             return true;
         }
 
-        public Buff GetById(ObjectId id)
+        public Buff GetByGuid(ObjectId guid)
         {
-            if (!this.BuffGuidDict.ContainsKey(id))
+            if (!this.BuffGuidDict.ContainsKey(guid))
             {
                 return null;
             }
 
-            return this.BuffGuidDict[id];
+            return this.BuffGuidDict[guid];
         }
 
         public Buff GetByType(int type)
         {
-            if (!this.BuffTypeDict.ContainsKey(type))
-            {
-                return null;
-            }
-
-            return this.BuffTypeDict[type];
+            return this.BuffTypeDict.Get(type);
         }
 
         private bool Remove(Buff buff)
@@ -92,20 +89,20 @@ namespace Model
 
             this.Buffs.Remove(buff);
             this.BuffGuidDict.Remove(buff.Guid);
-            this.BuffTypeDict.Remove(buff.Type);
+            this.BuffTypeDict.Remove(buff.Type, buff);
 
             return true;
         }
 
-        public bool RemoveById(ObjectId id)
+        public bool RemoveByGuid(ObjectId guid)
         {
-            var buff = this.GetById(id);
+            Buff buff = this.GetByGuid(guid);
             return this.Remove(buff);
         }
 
         public bool RemoveByType(int type)
         {
-            var buff = this.GetByType(type);
+            Buff buff = this.GetByType(type);
             return this.Remove(buff);
         }
     }

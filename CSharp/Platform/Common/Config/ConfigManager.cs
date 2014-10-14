@@ -19,13 +19,14 @@ namespace Common.Config
                 {
                     continue;
                 }
-                
+
                 object obj = (Activator.CreateInstance(type));
 
                 ICategory iCategory = obj as ICategory;
                 if (iCategory == null)
                 {
-                    throw new Exception(string.Format("class: {0} not inherit from ACategory", type.Name));
+                    throw new Exception(string.Format("class: {0} not inherit from ACategory",
+                            type.Name));
                 }
                 iCategory.BeginInit();
                 iCategory.EndInit();
@@ -37,13 +38,13 @@ namespace Common.Config
 
         public T Get<T>(int type) where T : IConfig
         {
-            var configCategory = (ACategory<T>)this.allConfig[typeof(T).Name];
+            var configCategory = (ACategory<T>) this.allConfig[typeof (T).Name];
             return configCategory[type];
         }
 
         public T[] GetAll<T>() where T : IConfig
         {
-            var configCategory = (ACategory<T>)this.allConfig[typeof(T).Name];
+            var configCategory = (ACategory<T>) this.allConfig[typeof (T).Name];
             return configCategory.GetAll();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace BehaviorTree
 {
@@ -20,7 +21,12 @@ namespace BehaviorTree
 
         private BehaviorTreeFactory()
         {
-            var assembly = typeof(BehaviorTreeFactory).Assembly;
+            Assembly assembly = typeof(BehaviorTreeFactory).Assembly;
+            this.RegisterNodes(assembly);
+        }
+
+        public void RegisterNodes(Assembly assembly)
+        {
             Type[] types = assembly.GetTypes();
             foreach (var type in types)
             {
@@ -31,16 +37,19 @@ namespace BehaviorTree
                 }
                 NodeAttribute attribute = (NodeAttribute)attrs[0];
 
-                dictionary.Add(attribute.NodeType, config => (Node)Activator.CreateInstance(attribute.ClassType, new object[] { config }));
-            }
+                Type classType = type;
+                this.dictionary.Add(attribute.NodeType,
+                        config =>
+                                (Node)Activator.CreateInstance(classType, new object[] { config }));
+            } 
         }
 
         private Node CreateNode(NodeConfig config)
         {
             if (!this.dictionary.ContainsKey((NodeType) config.Id))
             {
-                throw new KeyNotFoundException(
-                    string.Format("CreateNode cannot found: {0}", config.Id));
+                throw new KeyNotFoundException(string.Format("CreateNode cannot found: {0}",
+                        config.Id));
             }
             return this.dictionary[(NodeType) config.Id](config);
         }

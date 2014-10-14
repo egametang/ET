@@ -26,7 +26,8 @@
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                TreeNodeViewModel offspring = this.LeftMostOffspring(child, currentLevel + 1, searchLevel);
+                TreeNodeViewModel offspring = this.LeftMostOffspring(child, currentLevel + 1,
+                        searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -47,7 +48,8 @@
             {
                 TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                TreeNodeViewModel offspring = this.RightMostOffspring(child, currentLevel + 1, searchLevel);
+                TreeNodeViewModel offspring = this.RightMostOffspring(child, currentLevel + 1,
+                        searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -66,7 +68,8 @@
             right.AncestorModify = 0;
             for (int i = 0; tLeft != null && tRight != null; ++i)
             {
-                double tGap = (tRight.Prelim + tRight.AncestorModify) - (tLeft.Prelim + tLeft.AncestorModify);
+                double tGap = (tRight.Prelim + tRight.AncestorModify) -
+                              (tLeft.Prelim + tLeft.AncestorModify);
                 if (XGap + TreeNodeViewModel.Width - tGap > offset)
                 {
                     offset = XGap + TreeNodeViewModel.Width - tGap;

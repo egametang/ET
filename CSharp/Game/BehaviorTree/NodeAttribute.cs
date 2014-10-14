@@ -3,15 +3,13 @@
 namespace BehaviorTree
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class NodeAttribute : Attribute
+    public class NodeAttribute: Attribute
     {
         public NodeType NodeType { get; private set; }
-        public Type ClassType { get; private set; }
 
-        public NodeAttribute(NodeType nodeType, Type classType)
+        public NodeAttribute(NodeType nodeType)
         {
             this.NodeType = nodeType;
-            this.ClassType = classType;
         }
     }
 }

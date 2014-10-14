@@ -24,7 +24,8 @@ namespace Common.Event
                 IEvent iEvent = obj as IEvent;
                 if (iEvent == null)
                 {
-                    throw new Exception(string.Format("event not inherit IEvent interface: {0}", obj.GetType().FullName));
+                    throw new Exception(string.Format("event not inherit IEvent interface: {0}",
+                            obj.GetType().FullName));
                 }
 
                 IEventAttribute iEventAttribute = (T) attrs[0];

@@ -1,6 +1,6 @@
 ﻿namespace BehaviorTree
 {
-    [NodeAttribute(NodeType.Not, typeof(Not))]
+    [Node(NodeType.Not)]
     public class Not: Node
     {
         public Not(NodeConfig config): base(config)

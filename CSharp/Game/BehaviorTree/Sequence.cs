@@ -1,6 +1,6 @@
 ﻿namespace BehaviorTree
 {
-    [NodeAttribute(NodeType.Sequence, typeof(Sequence))]
+    [Node(NodeType.Sequence)]
     internal class Sequence: Node
     {
         public Sequence(NodeConfig config): base(config)

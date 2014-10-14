@@ -16,7 +16,7 @@ namespace BehaviorTree
     }
 
     [Config]
-    public class NodeCategory : ACategory<NodeConfig>
+    public class NodeCategory: ACategory<NodeConfig>
     {
     }
 }

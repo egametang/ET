@@ -21,7 +21,7 @@ namespace World
 
         private World()
         {
-            configManager.Load(typeof(World).Assembly);
+            this.configManager.Load(typeof (World).Assembly);
         }
 
         public ConfigManager ConfigManager
