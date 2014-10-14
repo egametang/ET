@@ -88,7 +88,6 @@
   <ItemGroup>
     <Compile Include="TreeInfoViewModel.cs" />
     <Compile Include="AllTreeViewModel.cs" />
-    <Compile Include="OneTreeData.cs" />
     <Compile Include="TreeLayout.cs" />
     <Compile Include="TreeView.xaml.cs">
       <DependentUpon>TreeView.xaml</DependentUpon>

@@ -24,9 +24,9 @@
             }
             for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
             {
-                var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                var offspring = this.LeftMostOffspring(child, currentLevel + 1, searchLevel);
+                TreeNodeViewModel offspring = this.LeftMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -45,9 +45,9 @@
             }
             for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
             {
-                var child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
                 child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
-                var offspring = this.RightMostOffspring(child, currentLevel + 1, searchLevel);
+                TreeNodeViewModel offspring = this.RightMostOffspring(child, currentLevel + 1, searchLevel);
                 if (offspring == null)
                 {
                     continue;
@@ -66,8 +66,7 @@
             right.AncestorModify = 0;
             for (int i = 0; tLeft != null && tRight != null; ++i)
             {
-                double tGap = (tRight.Prelim + tRight.AncestorModify) -
-                              (tLeft.Prelim + tLeft.AncestorModify);
+                double tGap = (tRight.Prelim + tRight.AncestorModify) - (tLeft.Prelim + tLeft.AncestorModify);
                 if (XGap + TreeNodeViewModel.Width - tGap > offset)
                 {
                     offset = XGap + TreeNodeViewModel.Width - tGap;
@@ -85,8 +84,8 @@
             {
                 for (int j = i + 1; j < treeNodeViewModel.Children.Count; ++j)
                 {
-                    var left = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
-                    var right = this.treeViewModel.Get(treeNodeViewModel.Children[j]);
+                    TreeNodeViewModel left = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+                    TreeNodeViewModel right = this.treeViewModel.Get(treeNodeViewModel.Children[j]);
                     this.AjustSubTreeGap(left, right);
                 }
             }
@@ -170,8 +169,9 @@
             }
         }
 
-        public void ExcuteLayout(TreeNodeViewModel root)
+        public void ExcuteLayout()
         {
+            TreeNodeViewModel root = this.treeViewModel.Root;
             if (root == null)
             {
                 return;

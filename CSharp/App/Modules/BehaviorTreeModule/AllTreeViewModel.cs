@@ -16,7 +16,7 @@ namespace Modules.BehaviorTreeModule
         private readonly Dictionary<int, TreeViewModel> treeViewModelsDict =
                 new Dictionary<int, TreeViewModel>();
 
-        public ObservableCollection<TreeNodeViewModel> rootList =
+        public readonly ObservableCollection<TreeNodeViewModel> rootList =
                 new ObservableCollection<TreeNodeViewModel>();
 
         public ObservableCollection<TreeNodeViewModel> RootList

@@ -33,7 +33,7 @@ namespace Modules.BehaviorTreeModule
             this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         public TreeViewModel(List<TreeNodeData> treeNodeDatas)
@@ -45,7 +45,7 @@ namespace Modules.BehaviorTreeModule
                 this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
             }
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         public List<TreeNodeData> GetDatas()
@@ -92,7 +92,7 @@ namespace Modules.BehaviorTreeModule
             }
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         private void GetChildrenIdAndSelf(TreeNodeViewModel treeNodeViewModel, List<int> children)
@@ -130,7 +130,7 @@ namespace Modules.BehaviorTreeModule
             }
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         private void RecursionMove(
@@ -180,7 +180,7 @@ namespace Modules.BehaviorTreeModule
             to.Children.Add(from.Id);
             from.Parent = to;
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Modules.BehaviorTreeModule
             treeNodeViewModel.IsFold = true;
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Modules.BehaviorTreeModule
             }
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         public void MoveLeft(TreeNodeViewModel treeNodeViewModel)
@@ -241,7 +241,7 @@ namespace Modules.BehaviorTreeModule
             parent.Children.Insert(index - 1, treeNodeViewModel.Id);
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
 
         public void MoveRight(TreeNodeViewModel treeNodeViewModel)
@@ -260,7 +260,7 @@ namespace Modules.BehaviorTreeModule
             parent.Children.Insert(index + 1, treeNodeViewModel.Id);
 
             var treeLayout = new TreeLayout(this);
-            treeLayout.ExcuteLayout(this.Root);
+            treeLayout.ExcuteLayout();
         }
     }
 }
