@@ -1,7 +1,26 @@
-﻿namespace Common.Base
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Common.Base
 {
     public class Component: Object
     {
-        public Entity Owner { get; set; }
+        private Entity owner;
+
+        [BsonIgnore]
+        public Entity Owner {
+            get
+            {
+                return owner;
+            }
+            set
+            {
+                this.owner = value;
+                this.Guid = this.owner.Guid;
+            }
+        }
+
+        protected Component()
+        {
+        }
     }
 }

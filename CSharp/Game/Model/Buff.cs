@@ -1,9 +1,22 @@
 ﻿using Common.Base;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
     public class Buff: Object
     {
-        public int Type { get; set; }
+        private BuffType type;
+
+        public BuffType Type
+        {
+            get
+            {
+                return this.type;
+            }
+            set
+            {
+                this.type = value;
+            }
+        }
     }
 }

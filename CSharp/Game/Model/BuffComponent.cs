@@ -7,21 +7,20 @@ using Component = Common.Base.Component;
 
 namespace Model
 {
-    public class BuffManager: Component, ISupportInitialize
+    public class BuffComponent: Component, ISupportInitialize
     {
-        public HashSet<Buff> Buffs { get; private set; }
+        [BsonElement]
+        public HashSet<Buff> Buffs { get; set; }
 
-        [BsonIgnore]
-        public Dictionary<ObjectId, Buff> BuffGuidDict { get; private set; }
+        private Dictionary<ObjectId, Buff> buffGuidDict { get; set; }
 
-        [BsonIgnore]
-        public MultiMap<int, Buff> BuffTypeDict { get; private set; }
+        private MultiMap<BuffType, Buff> buffTypeMMap { get; set; }
 
-        public BuffManager()
+        public BuffComponent()
         {
             this.Buffs = new HashSet<Buff>();
-            this.BuffGuidDict = new Dictionary<ObjectId, Buff>();
-            this.BuffTypeDict = new MultiMap<int, Buff>();
+            this.buffGuidDict = new Dictionary<ObjectId, Buff>();
+            this.buffTypeMMap = new MultiMap<BuffType, Buff>();
         }
 
         void ISupportInitialize.BeginInit()
@@ -32,12 +31,12 @@ namespace Model
         {
             foreach (var buff in this.Buffs)
             {
-                this.BuffGuidDict.Add(buff.Guid, buff);
+                this.buffGuidDict.Add(buff.Guid, buff);
             }
 
             foreach (var buff in this.Buffs)
             {
-                this.BuffTypeDict.Add(buff.Type, buff);
+                this.buffTypeMMap.Add(buff.Type, buff);
             }
         }
 
@@ -48,36 +47,41 @@ namespace Model
                 return false;
             }
 
-            if (this.BuffGuidDict.ContainsKey(buff.Guid))
+            if (this.buffGuidDict.ContainsKey(buff.Guid))
             {
                 return false;
             }
 
-            if (this.BuffTypeDict.Get(buff.Type) != null)
+            if (this.buffTypeMMap.GetOne(buff.Type) != null)
             {
                 return false;
             }
 
             this.Buffs.Add(buff);
-            this.BuffGuidDict.Add(buff.Guid, buff);
-            this.BuffTypeDict.Add(buff.Type, buff);
+            this.buffGuidDict.Add(buff.Guid, buff);
+            this.buffTypeMMap.Add(buff.Type, buff);
 
             return true;
         }
 
         public Buff GetByGuid(ObjectId guid)
         {
-            if (!this.BuffGuidDict.ContainsKey(guid))
+            if (!this.buffGuidDict.ContainsKey(guid))
             {
                 return null;
             }
 
-            return this.BuffGuidDict[guid];
+            return this.buffGuidDict[guid];
         }
 
-        public Buff GetByType(int type)
+        public Buff GetOneByType(BuffType type)
         {
-            return this.BuffTypeDict.Get(type);
+            return this.buffTypeMMap.GetOne(type);
+        }
+
+        public Buff[] GetByType(BuffType type)
+        {
+            return this.buffTypeMMap.GetByKey(type);
         }
 
         private bool Remove(Buff buff)
@@ -88,8 +92,8 @@ namespace Model
             }
 
             this.Buffs.Remove(buff);
-            this.BuffGuidDict.Remove(buff.Guid);
-            this.BuffTypeDict.Remove(buff.Type, buff);
+            this.buffGuidDict.Remove(buff.Guid);
+            this.buffTypeMMap.Remove(buff.Type, buff);
 
             return true;
         }
@@ -100,10 +104,13 @@ namespace Model
             return this.Remove(buff);
         }
 
-        public bool RemoveByType(int type)
+        public void RemoveByType(BuffType type)
         {
-            Buff buff = this.GetByType(type);
-            return this.Remove(buff);
+            Buff[] buffs = this.GetByType(type);
+            foreach (Buff buff in buffs)
+            {
+                this.Remove(buff);
+            }
         }
     }
 }

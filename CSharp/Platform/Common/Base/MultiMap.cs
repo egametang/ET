@@ -56,20 +56,20 @@ namespace Common.Base
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public List<K> GetAll(T t)
+        public K[] GetByKey(T t)
         {
             List<K> list;
             this.dictionary.TryGetValue(t, out list);
             if (list == null)
             {
-                return new List<K>();
+                return new K[0];
             }
             var newList = new List<K>();
             foreach (K k in list)
             {
                 newList.Add(k);
             }
-            return newList;
+            return newList.ToArray();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Common.Base
             }
         }
 
-        public K Get(T t)
+        public K GetOne(T t)
         {
             List<K> list;
             this.dictionary.TryGetValue(t, out list);

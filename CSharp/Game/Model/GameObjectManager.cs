@@ -10,8 +10,8 @@ namespace Model
         private readonly Dictionary<ObjectId, GameObject> gameObjects =
                 new Dictionary<ObjectId, GameObject>();
 
-        private readonly Dictionary<int, Dictionary<ObjectId, GameObject>> typeGameObjects =
-                new Dictionary<int, Dictionary<ObjectId, GameObject>>();
+        private readonly Dictionary<GameObjectType, Dictionary<ObjectId, GameObject>> typeGameObjects =
+                new Dictionary<GameObjectType, Dictionary<ObjectId, GameObject>>();
 
         public void Add(GameObject gameObject)
         {
@@ -30,7 +30,7 @@ namespace Model
             return gameObject;
         }
 
-        public GameObject[] GetOneType(int type)
+        public GameObject[] GetOneType(GameObjectType type)
         {
             Dictionary<ObjectId, GameObject> oneTypeGameObjects = null;
             if (!this.typeGameObjects.TryGetValue(type, out oneTypeGameObjects))

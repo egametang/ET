@@ -1,39 +1,51 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
     public class Object
     {
-        public ObjectId Guid { get; set; }
+        [BsonId]
+        public ObjectId Guid { get; protected set; }
 
-        public Dictionary<string, object> Dict { get; private set; }
+        [BsonElement]
+        [BsonIgnoreIfNull]
+        public Dictionary<string, object> Values;
 
         protected Object()
         {
             this.Guid = ObjectId.GenerateNewId();
-            this.Dict = new Dictionary<string, object>();
+        }
+
+        protected Object(ObjectId guid)
+        {
+            this.Guid = guid;
         }
 
         public object this[string key]
         {
             set
             {
-                this.Dict[key] = value;
+                if (this.Values == null)
+                {
+                    this.Values = new Dictionary<string, object>();
+                }
+                this.Values[key] = value;
             }
             get
             {
-                return this.Dict[key];
+                return this.Values[key];
             }
         }
 
         public T Get<T>(string key)
         {
-            if (!this.Dict.ContainsKey(key))
+            if (!this.Values.ContainsKey(key))
             {
                 return default(T);
             }
-            return (T) this.Dict[key];
+            return (T) this.Values[key];
         }
 
         public T Get<T>()
@@ -43,22 +55,35 @@ namespace Common.Base
 
         public void Set(string key, object obj)
         {
-            this.Dict[key] = obj;
+            if (this.Values == null)
+            {
+                this.Values = new Dictionary<string, object>();
+            }
+            this.Values[key] = obj;
         }
 
         public void Set<T>(T obj)
         {
-            this.Dict[typeof (T).Name] = obj;
+            if (this.Values == null)
+            {
+                this.Values = new Dictionary<string, object>();
+            }
+            this.Values[typeof (T).Name] = obj;
         }
 
         public bool Contain(string key)
         {
-            return this.Dict.ContainsKey(key);
+            return this.Values.ContainsKey(key);
         }
 
         public bool Remove(string key)
         {
-            return this.Dict.Remove(key);
+            bool ret = this.Values.Remove(key);
+            if (this.Values.Count == 0)
+            {
+                this.Values = null;
+            }
+            return ret;
         }
     }
 }

@@ -2,8 +2,25 @@
 
 namespace Model
 {
+    public enum GameObjectType
+    {
+        Player = 0,
+    }
+
     public class GameObject: Entity
     {
-        public int Type { get; set; }
+        private GameObjectType type;
+
+        public GameObjectType Type
+        {
+            get
+            {
+                return this.type;
+            }
+            set
+            {
+                this.type = value;
+            }
+        }
     }
 }
