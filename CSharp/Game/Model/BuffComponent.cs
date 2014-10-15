@@ -2,14 +2,12 @@
 using System.ComponentModel;
 using Common.Base;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using Component = Common.Base.Component;
 
 namespace Model
 {
     public class BuffComponent: Component, ISupportInitialize
     {
-        [BsonElement]
         public HashSet<Buff> Buffs { get; set; }
 
         private Dictionary<ObjectId, Buff> buffGuidDict { get; set; }
@@ -32,10 +30,6 @@ namespace Model
             foreach (var buff in this.Buffs)
             {
                 this.buffGuidDict.Add(buff.Guid, buff);
-            }
-
-            foreach (var buff in this.Buffs)
-            {
                 this.buffTypeMMap.Add(buff.Type, buff);
             }
         }

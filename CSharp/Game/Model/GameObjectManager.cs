@@ -23,10 +23,10 @@ namespace Model
             this.typeGameObjects[gameObject.Type].Add(gameObject.Guid, gameObject);
         }
 
-        public GameObject Get(ObjectId id)
+        public GameObject Get(ObjectId guid)
         {
             GameObject gameObject = null;
-            this.gameObjects.TryGetValue(id, out gameObject);
+            this.gameObjects.TryGetValue(guid, out gameObject);
             return gameObject;
         }
 
@@ -57,9 +57,9 @@ namespace Model
             return true;
         }
 
-        public bool Remove(ObjectId id)
+        public bool Remove(ObjectId guid)
         {
-            GameObject gameObject = this.Get(id);
+            GameObject gameObject = this.Get(guid);
             if (gameObject == null)
             {
                 return false;
