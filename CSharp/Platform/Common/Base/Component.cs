@@ -1,13 +1,15 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.ComponentModel;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public class Component: Object
+    public abstract class Component : Object, ISupportInitialize
     {
         private Entity owner;
 
         [BsonIgnore]
-        public Entity Owner {
+        public Entity Owner
+        {
             get
             {
                 return owner;
@@ -19,7 +21,11 @@ namespace Common.Base
             }
         }
 
-        protected Component()
+        public virtual void BeginInit()
+        {
+        }
+
+        public virtual void EndInit()
         {
         }
     }

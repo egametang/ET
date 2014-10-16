@@ -4,14 +4,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public class Object
+    public abstract class Object
     {
         [BsonId]
         public ObjectId Guid { get; protected set; }
 
         [BsonElement]
         [BsonIgnoreIfNull]
-        public Dictionary<string, object> Values;
+        private Dictionary<string, object> Values;
 
         protected Object()
         {

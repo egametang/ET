@@ -9,18 +9,6 @@ namespace Model
 
     public class GameObject: Entity
     {
-        private GameObjectType type;
-
-        public GameObjectType Type
-        {
-            get
-            {
-                return this.type;
-            }
-            set
-            {
-                this.type = value;
-            }
-        }
+        public GameObjectType Type { get; set; }
     }
 }

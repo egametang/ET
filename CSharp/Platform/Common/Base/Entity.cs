@@ -1,32 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public class Entity: Object
+    public abstract class Entity : Object, ISupportInitialize
     {
-        public Dictionary<string, Component> Components { get; private set; }
+        [BsonElement]
+        private HashSet<Component> Components { get; set; }
+
+        private Dictionary<Type, Component> ComponentDict { get; set; }
 
         protected Entity()
         {
-            this.Components = new Dictionary<string, Component>();
+            this.Components = new HashSet<Component>();
+            this.ComponentDict = new Dictionary<Type, Component>();
         }
 
         public void AddComponent<T>() where T : Component, new()
         {
             T t = new T { Owner = this };
-            this.Components.Add(typeof(T).Name, t);
+            this.Components.Add(t);
+            this.ComponentDict.Add(typeof (T), t);
         }
 
         public void RemoveComponent<T>() where T : Component
         {
-            this.Components.Remove(typeof(T).Name);
+            Component t;
+            this.ComponentDict.TryGetValue(typeof(T), out t);
+            this.Components.Remove(t);
+            this.ComponentDict.Remove(typeof(T));
         }
 
         public T GetComponent<T>() where T : Component
         {
             Component t;
-            if (!this.Components.TryGetValue(typeof(T).Name, out t))
+            if (!this.ComponentDict.TryGetValue(typeof (T), out t))
             {
                 return null;
             }
@@ -35,7 +46,20 @@ namespace Common.Base
 
         public Component[] GetComponents()
         {
-            return this.Components.Values.ToArray();
+            return this.Components.ToArray();
+        }
+
+        public virtual void BeginInit()
+        {
+        }
+
+        public virtual void EndInit()
+        {
+            foreach (Component component in this.Components)
+            {
+                this.ComponentDict.Add(component.GetType(), component);
+                component.Owner = this;
+            }
         }
     }
 }

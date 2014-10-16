@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Common.Base;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using Component = Common.Base.Component;
 
 namespace Model
 {
-    public class BuffComponent: Component, ISupportInitialize
+    public class BuffComponent: Component
     {
-        public HashSet<Buff> Buffs { get; set; }
+        [BsonElement]
+        private HashSet<Buff> Buffs { get; set; }
 
         private Dictionary<ObjectId, Buff> buffGuidDict { get; set; }
 
@@ -21,11 +22,7 @@ namespace Model
             this.buffTypeMMap = new MultiMap<BuffType, Buff>();
         }
 
-        void ISupportInitialize.BeginInit()
-        {
-        }
-
-        void ISupportInitialize.EndInit()
+        public override void EndInit()
         {
             foreach (var buff in this.Buffs)
             {
