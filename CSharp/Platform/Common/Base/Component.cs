@@ -1,12 +1,11 @@
-﻿using System.ComponentModel;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
     /// <summary>
     /// Component的Id与Owner Entity Id一样
     /// </summary>
-    public abstract class Component : Object, ISupportInitialize
+    public abstract class Component : AMongo
     {
         private Entity owner;
 
@@ -22,14 +21,6 @@ namespace Common.Base
                 this.owner = value;
                 this.Id = this.owner.Id;
             }
-        }
-
-        public virtual void BeginInit()
-        {
-        }
-
-        public virtual void EndInit()
-        {
         }
     }
 }

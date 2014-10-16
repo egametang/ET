@@ -1,9 +1,11 @@
 ﻿using Common.Base;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-    public class Buff: Object
+    public class Buff: AMongo
     {
+        [BsonElement]
         private int ConfigId { get; set; }
 
         public Buff(int configId)
@@ -11,6 +13,7 @@ namespace Model
             this.ConfigId = configId;
         }
 
+        [BsonIgnore]
         public BuffConfig Config
         {
             get

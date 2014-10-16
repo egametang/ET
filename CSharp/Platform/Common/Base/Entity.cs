@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public abstract class Entity : Object, ISupportInitialize
+    public abstract class Entity : AMongo
     {
         [BsonElement]
         private HashSet<Component> Components { get; set; }
@@ -63,11 +62,7 @@ namespace Common.Base
             return this.Components.ToArray();
         }
 
-        public virtual void BeginInit()
-        {
-        }
-
-        public virtual void EndInit()
+        public override void EndInit()
         {
             foreach (Component component in this.Components)
             {
