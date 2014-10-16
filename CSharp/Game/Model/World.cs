@@ -1,13 +1,12 @@
 ﻿using Common.Config;
-using Model;
 
-namespace World
+namespace Model
 {
     public class World
     {
         private static readonly World instance = new World();
 
-        private readonly ConfigManager configManager = new ConfigManager();
+        private readonly ConfigManager configManager = ConfigManager.Instance;
 
         private readonly GameObjectManager gameObjectManager = new GameObjectManager();
 

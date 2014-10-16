@@ -70,7 +70,7 @@
     <Compile Include="Config\ConfigAttribute.cs" />
     <Compile Include="Config\ACategory.cs" />
     <Compile Include="Config\ConfigManager.cs" />
-    <Compile Include="Config\IConfig.cs" />
+    <Compile Include="Config\AConfig.cs" />
     <Compile Include="Helper\BigIntegerHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\EnumHelper.cs" />

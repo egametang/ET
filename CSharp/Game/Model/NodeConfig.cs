@@ -2,12 +2,10 @@
 using Common.Config;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace BehaviorTree
+namespace Model
 {
-    public class NodeConfig: IConfig
+    public class NodeConfig: AConfig
     {
-        public int Id { get; set; }
-
         [BsonIgnoreIfNull]
         public List<string> Args { get; set; }
 

@@ -7,7 +7,7 @@ namespace Common.Base
     public abstract class Object
     {
         [BsonId]
-        public ObjectId Guid { get; protected set; }
+        public ObjectId Id { get; protected set; }
 
         [BsonElement]
         [BsonIgnoreIfNull]
@@ -15,12 +15,12 @@ namespace Common.Base
 
         protected Object()
         {
-            this.Guid = ObjectId.GenerateNewId();
+            this.Id = ObjectId.GenerateNewId();
         }
 
-        protected Object(ObjectId guid)
+        protected Object(ObjectId id)
         {
-            this.Guid = guid;
+            this.Id = id;
         }
 
         public object this[string key]

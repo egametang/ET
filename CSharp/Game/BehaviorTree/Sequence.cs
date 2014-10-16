@@ -1,4 +1,6 @@
-﻿namespace BehaviorTree
+﻿using Model;
+
+namespace BehaviorTree
 {
     [Node(NodeType.Sequence)]
     internal class Sequence: Node

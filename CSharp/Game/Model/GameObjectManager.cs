@@ -15,18 +15,18 @@ namespace Model
 
         public void Add(GameObject gameObject)
         {
-            this.gameObjects.Add(gameObject.Guid, gameObject);
+            this.gameObjects.Add(gameObject.Id, gameObject);
             if (!this.typeGameObjects.ContainsKey(gameObject.Type))
             {
                 this.typeGameObjects.Add(gameObject.Type, new Dictionary<ObjectId, GameObject>());
             }
-            this.typeGameObjects[gameObject.Type].Add(gameObject.Guid, gameObject);
+            this.typeGameObjects[gameObject.Type].Add(gameObject.Id, gameObject);
         }
 
-        public GameObject Get(ObjectId guid)
+        public GameObject Get(ObjectId id)
         {
             GameObject gameObject = null;
-            this.gameObjects.TryGetValue(guid, out gameObject);
+            this.gameObjects.TryGetValue(id, out gameObject);
             return gameObject;
         }
 
@@ -46,20 +46,20 @@ namespace Model
             {
                 throw new ArgumentNullException("gameObject");
             }
-            if (!this.gameObjects.Remove(gameObject.Guid))
+            if (!this.gameObjects.Remove(gameObject.Id))
             {
                 return false;
             }
-            if (!this.typeGameObjects[gameObject.Type].Remove(gameObject.Guid))
+            if (!this.typeGameObjects[gameObject.Type].Remove(gameObject.Id))
             {
                 return false;
             }
             return true;
         }
 
-        public bool Remove(ObjectId guid)
+        public bool Remove(ObjectId id)
         {
-            GameObject gameObject = this.Get(guid);
+            GameObject gameObject = this.Get(id);
             if (gameObject == null)
             {
                 return false;

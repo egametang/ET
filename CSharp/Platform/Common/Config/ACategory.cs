@@ -6,13 +6,13 @@ using Common.Helper;
 
 namespace Common.Config
 {
-    public abstract class ACategory<T>: ICategory where T : IConfig
+    public abstract class ACategory<T>: ICategory where T : AConfig
     {
         protected readonly Dictionary<int, T> dict = new Dictionary<int, T>();
 
-        public void BeginInit()
+        public virtual void BeginInit()
         {
-            string path = Path.Combine(@"./Config/", this.Name);
+            string path = Path.Combine(@"../../Config/", typeof(T).Name);
 
             if (!Directory.Exists(path))
             {
@@ -26,7 +26,15 @@ namespace Common.Config
             }
         }
 
-        public void EndInit()
+        public Type ConfigType
+        {
+            get
+            {
+                return typeof (T);
+            }
+        }
+
+        public virtual void EndInit()
         {
         }
 
@@ -35,14 +43,6 @@ namespace Common.Config
             get
             {
                 return this.dict[type];
-            }
-        }
-
-        public string Name
-        {
-            get
-            {
-                return typeof (T).Name;
             }
         }
 

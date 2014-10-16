@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Common.Config
 {
     public interface ICategory: ISupportInitialize
     {
-        string Name { get; }
+        Type ConfigType { get; }
     }
 }

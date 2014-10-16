@@ -21,6 +21,12 @@ namespace Common.Base
 
         public void AddComponent<T>() where T : Component, new()
         {
+            if (this.ComponentDict.ContainsKey(typeof (T)))
+            {
+                throw new Exception(
+                    string.Format("AddComponent, component already exist, id: {0}, component: {1}", 
+                    this.Id, typeof(T).Name));
+            }
             T t = new T { Owner = this };
             this.Components.Add(t);
             this.ComponentDict.Add(typeof (T), t);
@@ -29,7 +35,13 @@ namespace Common.Base
         public void RemoveComponent<T>() where T : Component
         {
             Component t;
-            this.ComponentDict.TryGetValue(typeof(T), out t);
+            if (!this.ComponentDict.TryGetValue(typeof (T), out t))
+            {
+                throw new Exception(
+                    string.Format("RemoveComponent, component not exist, id: {0}, component: {1}",
+                    this.Id, typeof(T).Name));
+            }
+            
             this.Components.Remove(t);
             this.ComponentDict.Remove(typeof(T));
         }
@@ -39,7 +51,9 @@ namespace Common.Base
             Component t;
             if (!this.ComponentDict.TryGetValue(typeof (T), out t))
             {
-                return null;
+                throw new Exception(
+                    string.Format("GetComponent, component not exist, id: {0}, component: {1}",
+                    this.Id, typeof(T).Name));
             }
             return (T) t;
         }
@@ -57,8 +71,8 @@ namespace Common.Base
         {
             foreach (Component component in this.Components)
             {
-                this.ComponentDict.Add(component.GetType(), component);
                 component.Owner = this;
+                this.ComponentDict.Add(component.GetType(), component);
             }
         }
     }

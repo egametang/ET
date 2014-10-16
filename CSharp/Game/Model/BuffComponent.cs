@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Base;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -11,14 +12,14 @@ namespace Model
         [BsonElement]
         private HashSet<Buff> Buffs { get; set; }
 
-        private Dictionary<ObjectId, Buff> buffGuidDict { get; set; }
+        private Dictionary<ObjectId, Buff> buffIdDict { get; set; }
 
         private MultiMap<BuffType, Buff> buffTypeMMap { get; set; }
 
         public BuffComponent()
         {
             this.Buffs = new HashSet<Buff>();
-            this.buffGuidDict = new Dictionary<ObjectId, Buff>();
+            this.buffIdDict = new Dictionary<ObjectId, Buff>();
             this.buffTypeMMap = new MultiMap<BuffType, Buff>();
         }
 
@@ -26,43 +27,36 @@ namespace Model
         {
             foreach (var buff in this.Buffs)
             {
-                this.buffGuidDict.Add(buff.Guid, buff);
-                this.buffTypeMMap.Add(buff.Type, buff);
+                this.buffIdDict.Add(buff.Id, buff);
+                this.buffTypeMMap.Add(buff.Config.Type, buff);
             }
         }
 
-        public bool Add(Buff buff)
+        public void Add(Buff buff)
         {
             if (this.Buffs.Contains(buff))
             {
-                return false;
+                throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
-            if (this.buffGuidDict.ContainsKey(buff.Guid))
+            if (this.buffIdDict.ContainsKey(buff.Id))
             {
-                return false;
-            }
-
-            if (this.buffTypeMMap.GetOne(buff.Type) != null)
-            {
-                return false;
+                throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
             this.Buffs.Add(buff);
-            this.buffGuidDict.Add(buff.Guid, buff);
-            this.buffTypeMMap.Add(buff.Type, buff);
-
-            return true;
+            this.buffIdDict.Add(buff.Id, buff);
+            this.buffTypeMMap.Add(buff.Config.Type, buff);
         }
 
-        public Buff GetByGuid(ObjectId guid)
+        public Buff GetById(ObjectId id)
         {
-            if (!this.buffGuidDict.ContainsKey(guid))
+            if (!this.buffIdDict.ContainsKey(id))
             {
                 return null;
             }
 
-            return this.buffGuidDict[guid];
+            return this.buffIdDict[id];
         }
 
         public Buff GetOneByType(BuffType type)
@@ -83,15 +77,15 @@ namespace Model
             }
 
             this.Buffs.Remove(buff);
-            this.buffGuidDict.Remove(buff.Guid);
-            this.buffTypeMMap.Remove(buff.Type, buff);
+            this.buffIdDict.Remove(buff.Id);
+            this.buffTypeMMap.Remove(buff.Config.Type, buff);
 
             return true;
         }
 
-        public bool RemoveByGuid(ObjectId guid)
+        public bool RemoveById(ObjectId id)
         {
-            Buff buff = this.GetByGuid(guid);
+            Buff buff = this.GetById(id);
             return this.Remove(buff);
         }
 

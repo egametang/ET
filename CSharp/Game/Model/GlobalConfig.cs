@@ -1,10 +1,10 @@
 ﻿using Common.Config;
 
-namespace World.Config
+namespace Model
 {
-    public class GlobalConfig: IConfig
+    public class GlobalConfig: AConfig
     {
-        public int Id { get; set; }
+        public int Type { get; set; }
     }
 
     [Config]

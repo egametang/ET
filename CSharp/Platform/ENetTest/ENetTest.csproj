@@ -55,7 +55,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ENetClientServerTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -66,6 +65,9 @@
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
       <Name>ENet</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

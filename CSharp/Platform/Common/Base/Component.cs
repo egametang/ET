@@ -3,6 +3,9 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
+    /// <summary>
+    /// Component的Id与Owner Entity Id一样
+    /// </summary>
     public abstract class Component : Object, ISupportInitialize
     {
         private Entity owner;
@@ -17,7 +20,7 @@ namespace Common.Base
             set
             {
                 this.owner = value;
-                this.Guid = this.owner.Guid;
+                this.Id = this.owner.Id;
             }
         }
 

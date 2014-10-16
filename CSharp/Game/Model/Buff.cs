@@ -4,6 +4,19 @@ namespace Model
 {
     public class Buff: Object
     {
-        public BuffType Type { get; set; }
+        private int ConfigId { get; set; }
+
+        public Buff(int configId)
+        {
+            this.ConfigId = configId;
+        }
+
+        public BuffConfig Config
+        {
+            get
+            {
+                return World.Instance.ConfigManager.Get<BuffConfig>(this.ConfigId);
+            }
+        }
     }
 }

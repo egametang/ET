@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="BehaviorTree.cs" />
     <Compile Include="BlackBoard.cs" />
-    <Compile Include="NodeConfig.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="BehaviorTreeFactory.cs" />
     <Compile Include="NodeAttribute.cs" />
@@ -59,6 +58,10 @@
     <ProjectReference Include="..\..\Platform\Common\Common.csproj">
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{0FA529D1-D0A9-4A8E-90F5-117CE80F2EDE}</Project>
+      <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

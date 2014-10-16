@@ -1,4 +1,6 @@
-﻿namespace BehaviorTree
+﻿using Model;
+
+namespace BehaviorTree
 {
     [Node(NodeType.Not)]
     public class Not: Node
