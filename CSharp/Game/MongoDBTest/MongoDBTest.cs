@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Factory;
 using Common.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;

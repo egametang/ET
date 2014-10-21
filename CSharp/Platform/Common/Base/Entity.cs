@@ -7,7 +7,8 @@ namespace Common.Base
 {
     public abstract class Entity : Object
     {
-        [BsonElement, BsonIgnoreIfNull]
+        [BsonElement] 
+        [BsonIgnoreIfNull]
         private HashSet<Component> components;
 
         private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
