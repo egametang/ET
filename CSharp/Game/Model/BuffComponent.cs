@@ -10,7 +10,7 @@ namespace Model
     public class BuffComponent: Component
     {
         [BsonElement]
-        private HashSet<Buff> Buffs { get; set; }
+        private HashSet<Buff> buffs { get; set; }
 
         private Dictionary<ObjectId, Buff> buffIdDict { get; set; }
 
@@ -18,14 +18,16 @@ namespace Model
 
         public BuffComponent()
         {
-            this.Buffs = new HashSet<Buff>();
+            this.buffs = new HashSet<Buff>();
             this.buffIdDict = new Dictionary<ObjectId, Buff>();
             this.buffTypeMMap = new MultiMap<BuffType, Buff>();
         }
 
         public override void EndInit()
         {
-            foreach (var buff in this.Buffs)
+            base.EndInit();
+
+            foreach (var buff in this.buffs)
             {
                 this.buffIdDict.Add(buff.Id, buff);
                 this.buffTypeMMap.Add(buff.Config.Type, buff);
@@ -34,7 +36,7 @@ namespace Model
 
         public void Add(Buff buff)
         {
-            if (this.Buffs.Contains(buff))
+            if (this.buffs.Contains(buff))
             {
                 throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
@@ -44,7 +46,7 @@ namespace Model
                 throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
-            this.Buffs.Add(buff);
+            this.buffs.Add(buff);
             this.buffIdDict.Add(buff.Id, buff);
             this.buffTypeMMap.Add(buff.Config.Type, buff);
         }
@@ -76,7 +78,7 @@ namespace Model
                 return false;
             }
 
-            this.Buffs.Remove(buff);
+            this.buffs.Remove(buff);
             this.buffIdDict.Remove(buff.Id);
             this.buffTypeMMap.Remove(buff.Config.Type, buff);
 
@@ -91,8 +93,8 @@ namespace Model
 
         public void RemoveByType(BuffType type)
         {
-            Buff[] buffs = this.GetByType(type);
-            foreach (Buff buff in buffs)
+            Buff[] allbuffs = this.GetByType(type);
+            foreach (Buff buff in allbuffs)
             {
                 this.Remove(buff);
             }

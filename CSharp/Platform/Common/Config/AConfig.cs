@@ -1,9 +1,9 @@
-﻿using Common.Base;
+﻿using System.ComponentModel;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Config
 {
-    public abstract class AConfig : IMongo
+    public abstract class AConfig : ISupportInitialize
     {
         [BsonId]
         public int Id { get; set; }

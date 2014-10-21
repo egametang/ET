@@ -2,13 +2,7 @@
 
 namespace Model
 {
-    public enum GameObjectType
+    public abstract class GameObject: Entity
     {
-        Player = 0,
-    }
-
-    public class GameObject: Entity
-    {
-        public GameObjectType Type { get; set; }
     }
 }

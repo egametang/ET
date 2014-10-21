@@ -1,6 +1,6 @@
 ﻿using System;
+using Common.Factory;
 using Common.Helper;
-using Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;
 using MongoDB.Driver;
@@ -18,17 +18,18 @@ namespace MongoDBTest
             var client = new MongoClient(connectionString);
             var server = client.GetServer();
             var database = server.GetDatabase("test");
-            var collection = database.GetCollection<GameObject>("GameObjects");
+            var collection = database.GetCollection<Unit>("Unit");
 
-            GameObject player1 = GameObjectFactory.CreatePlayer();
-            player1.GetComponent<BuffComponent>().Add(new Buff(1));
+            Unit player1 = UnitFactory.Create(UnitType.Player, 1);
+            Buff buff = new Buff(1);
+            player1.GetComponent<BuffComponent>().Add(buff);
             player1["hp"] = 10;
 
             collection.Insert(player1);
 
-            var query = Query<GameObject>.EQ(e => e.Id, player1.Id);
-            GameObject player2 = collection.FindOne(query);
-
+            var query = Query<Unit>.EQ(e => e.Id, player1.Id);
+            Unit player2 = collection.FindOne(query);
+            
             Console.WriteLine(MongoHelper.ToJson(player2));
             Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
         }

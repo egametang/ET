@@ -47,12 +47,16 @@
   <ItemGroup>
     <Compile Include="Buff.cs" />
     <Compile Include="BuffComponent.cs" />
+    <Compile Include="UnitConfig.cs" />
     <Compile Include="BuffConfig.cs" />
+    <Compile Include="UnitFactory.cs" />
+    <Compile Include="UnitType.cs" />
     <Compile Include="BuffType.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="GameObjectManager.cs" />
+    <Compile Include="UnitComponent.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="NodeConfig.cs" />
+    <Compile Include="Unit.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@ namespace Common.Base
     /// <summary>
     /// Component的Id与Owner Entity Id一样
     /// </summary>
-    public abstract class Component : AMongo
+    public abstract class Component : Object
     {
         private Entity owner;
 

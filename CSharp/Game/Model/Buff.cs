@@ -1,16 +1,16 @@
-﻿using Common.Base;
+﻿using Common.Config;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-    public class Buff: AMongo
+    public class Buff: GameObject
     {
         [BsonElement]
-        private int ConfigId { get; set; }
+        private int configId { get; set; }
 
         public Buff(int configId)
         {
-            this.ConfigId = configId;
+            this.configId = configId;
         }
 
         [BsonIgnore]
@@ -18,7 +18,7 @@ namespace Model
         {
             get
             {
-                return World.Instance.ConfigManager.Get<BuffConfig>(this.ConfigId);
+                return World.Instance.GetComponent<ConfigComponent>().Get<BuffConfig>(this.configId);
             }
         }
     }

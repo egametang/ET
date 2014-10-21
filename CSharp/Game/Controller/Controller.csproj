@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuffController.cs" />
-    <Compile Include="GameObjectFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

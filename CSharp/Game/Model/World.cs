@@ -1,14 +1,11 @@
 ﻿using Common.Config;
+using Common.Factory;
 
 namespace Model
 {
-    public class World
+    public class World : GameObject
     {
         private static readonly World instance = new World();
-
-        private readonly ConfigManager configManager = ConfigManager.Instance;
-
-        private readonly GameObjectManager gameObjectManager = new GameObjectManager();
 
         public static World Instance
         {
@@ -20,23 +17,13 @@ namespace Model
 
         private World()
         {
-            this.configManager.Load(typeof (World).Assembly);
-        }
+            this.AddComponent<UnitComponent>();
 
-        public ConfigManager ConfigManager
-        {
-            get
-            {
-                return this.configManager;
-            }
-        }
+            ConfigComponent configComponent = this.AddComponent<ConfigComponent>();
+            configComponent.Load(new[] { typeof (World).Assembly });
 
-        public GameObjectManager GameObjectManager
-        {
-            get
-            {
-                return this.gameObjectManager;
-            }
+            FactoryComponent factoryComponent = this.AddComponent<FactoryComponent>();
+            factoryComponent.Load(new[] { typeof(World).Assembly });
         }
     }
 }

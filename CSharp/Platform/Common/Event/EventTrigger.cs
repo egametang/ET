@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Common.Event
 {
-    public class EventTrigger<T> where T : IEventAttribute
+    public class EventTrigger<T> where T : AEventAttribute
     {
         private readonly Dictionary<int, SortedDictionary<int, IEvent>> events;
 
@@ -28,7 +28,7 @@ namespace Common.Event
                             obj.GetType().FullName));
                 }
 
-                IEventAttribute iEventAttribute = (T) attrs[0];
+                AEventAttribute iEventAttribute = (T) attrs[0];
 
                 if (!this.events.ContainsKey(iEventAttribute.Type))
                 {

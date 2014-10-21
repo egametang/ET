@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public abstract class Object
+    public abstract class Object: ISupportInitialize
     {
         [BsonId]
         public ObjectId Id { get; protected set; }
 
         [BsonElement]
         [BsonIgnoreIfNull]
-        private Dictionary<string, object> Values;
+        private Dictionary<string, object> values;
 
         protected Object()
         {
@@ -25,27 +26,27 @@ namespace Common.Base
 
         public object this[string key]
         {
-            set
-            {
-                if (this.Values == null)
-                {
-                    this.Values = new Dictionary<string, object>();
-                }
-                this.Values[key] = value;
-            }
             get
             {
-                return this.Values[key];
+                return this.values[key];
+            }
+            set
+            {
+                if (this.values == null)
+                {
+                    this.values = new Dictionary<string, object>();
+                }
+                this.values[key] = value;
             }
         }
 
         public T Get<T>(string key)
         {
-            if (!this.Values.ContainsKey(key))
+            if (!this.values.ContainsKey(key))
             {
                 return default(T);
             }
-            return (T) this.Values[key];
+            return (T) this.values[key];
         }
 
         public T Get<T>()
@@ -55,35 +56,51 @@ namespace Common.Base
 
         public void Set(string key, object obj)
         {
-            if (this.Values == null)
+            if (this.values == null)
             {
-                this.Values = new Dictionary<string, object>();
+                this.values = new Dictionary<string, object>();
             }
-            this.Values[key] = obj;
+            this.values[key] = obj;
         }
 
         public void Set<T>(T obj)
         {
-            if (this.Values == null)
+            if (this.values == null)
             {
-                this.Values = new Dictionary<string, object>();
+                this.values = new Dictionary<string, object>();
             }
-            this.Values[typeof (T).Name] = obj;
+            this.values[typeof (T).Name] = obj;
         }
 
         public bool Contain(string key)
         {
-            return this.Values.ContainsKey(key);
+            return this.values.ContainsKey(key);
         }
 
         public bool Remove(string key)
         {
-            bool ret = this.Values.Remove(key);
-            if (this.Values.Count == 0)
+            bool ret = this.values.Remove(key);
+            if (this.values.Count == 0)
             {
-                this.Values = null;
+                this.values = null;
             }
             return ret;
+        }
+
+        public virtual void BeginInit()
+        {
+            if (this.values == null)
+            {
+                this.values = new Dictionary<string, object>();
+            }
+        }
+
+        public virtual void EndInit()
+        {
+            if (this.values.Count == 0)
+            {
+                this.values = null;
+            }
         }
     }
 }
