@@ -1,6 +1,6 @@
 ﻿using Model;
 
-namespace BehaviorTree
+namespace Controller
 {
     [Node(NodeType.Not)]
     public class Not: Node

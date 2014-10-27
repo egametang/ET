@@ -4,7 +4,7 @@ namespace Model
 {
     public class UnitConfig: AConfig
     {
-        public UnitType Type { get; set; }
+        public int Type { get; set; }
     }
 
     [Config]

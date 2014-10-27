@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace BehaviorTree
+namespace Model
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class NodeAttribute: Attribute
     {
-        public NodeType NodeType { get; private set; }
+        public int NodeType { get; private set; }
 
-        public NodeAttribute(NodeType nodeType)
+        public NodeAttribute(int nodeType)
         {
             this.NodeType = nodeType;
         }

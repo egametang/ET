@@ -1,11 +1,11 @@
 ﻿using Model;
 
-namespace BehaviorTree
+namespace Controller
 {
-    [Node(NodeType.Sequence)]
-    internal class Sequence: Node
+    [Node(NodeType.Selector)]
+    public class Selector: Node
     {
-        public Sequence(NodeConfig config): base(config)
+        public Selector(NodeConfig config): base(config)
         {
         }
 
@@ -13,12 +13,12 @@ namespace BehaviorTree
         {
             foreach (var child in this.children)
             {
-                if (!child.Run(blackBoard))
+                if (child.Run(blackBoard))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 }

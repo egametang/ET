@@ -1,4 +1,4 @@
-﻿namespace BehaviorTree
+﻿namespace Model
 {
     public class BehaviorTree
     {

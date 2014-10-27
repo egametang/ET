@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Model;
 
-namespace BehaviorTree
+namespace Model
 {
     public abstract class Node
     {

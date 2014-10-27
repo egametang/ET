@@ -14,13 +14,6 @@
 
         private World()
         {
-            this.AddComponent<UnitComponent>();
-
-            ConfigComponent configComponent = this.AddComponent<ConfigComponent>();
-            configComponent.Load(new[] { typeof (World).Assembly });
-
-            FactoryComponent<Unit> factoryComponent = this.AddComponent<FactoryComponent<Unit>>();
-            factoryComponent.Load(new[] { typeof(World).Assembly });
         }
     }
 }

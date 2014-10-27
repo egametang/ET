@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Model;
 
-namespace BehaviorTree
+namespace Model
 {
     public class BehaviorTreeFactory
     {
@@ -17,17 +16,16 @@ namespace BehaviorTree
             }
         }
 
-        private readonly Dictionary<NodeType, Func<NodeConfig, Node>> dictionary =
-                new Dictionary<NodeType, Func<NodeConfig, Node>>();
+        private Dictionary<int, Func<NodeConfig, Node>> dictionary;
 
         private BehaviorTreeFactory()
         {
-            Assembly assembly = typeof(BehaviorTreeFactory).Assembly;
-            this.RegisterNodes(assembly);
         }
 
-        public void RegisterNodes(Assembly assembly)
+        public void Load(Assembly assembly)
         {
+            this.dictionary = new Dictionary<int, Func<NodeConfig, Node>>();
+
             Type[] types = assembly.GetTypes();
             foreach (var type in types)
             {
@@ -40,19 +38,18 @@ namespace BehaviorTree
 
                 Type classType = type;
                 this.dictionary.Add(attribute.NodeType,
-                        config =>
-                                (Node)Activator.CreateInstance(classType, new object[] { config }));
+                        config => (Node)Activator.CreateInstance(classType, new object[] { config }));
             } 
         }
 
         private Node CreateNode(NodeConfig config)
         {
-            if (!this.dictionary.ContainsKey((NodeType) config.Id))
+            if (!this.dictionary.ContainsKey(config.Id))
             {
                 throw new KeyNotFoundException(string.Format("CreateNode cannot found: {0}",
                         config.Id));
             }
-            return this.dictionary[(NodeType) config.Id](config);
+            return this.dictionary[config.Id](config);
         }
 
         private Node CreateTreeNode(NodeConfig config)

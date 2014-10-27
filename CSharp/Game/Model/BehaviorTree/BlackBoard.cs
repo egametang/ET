@@ -1,6 +1,6 @@
 ﻿using Common.Base;
 
-namespace BehaviorTree
+namespace Model
 {
     public class BlackBoard: Object
     {

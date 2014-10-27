@@ -45,19 +45,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\BehaviorTreeComponent.cs" />
+    <Compile Include="BehaviorTree\BehaviorTree.cs" />
+    <Compile Include="BehaviorTree\BehaviorTreeFactory.cs" />
+    <Compile Include="BehaviorTree\BlackBoard.cs" />
+    <Compile Include="BehaviorTree\Node.cs" />
+    <Compile Include="BehaviorTree\NodeAttribute.cs" />
     <Compile Include="Buff.cs" />
-    <Compile Include="BuffComponent.cs" />
-    <Compile Include="ConfigComponent.cs" />
+    <Compile Include="Component\BuffComponent.cs" />
+    <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Config\UnitConfig.cs" />
     <Compile Include="Config\BuffConfig.cs" />
     <Compile Include="FactoryAttribute.cs" />
-    <Compile Include="FactoryComponent.cs" />
+    <Compile Include="Component\FactoryComponent.cs" />
     <Compile Include="IFactory.cs" />
-    <Compile Include="UnitFactory.cs" />
-    <Compile Include="UnitType.cs" />
+    <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="BuffType.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="UnitComponent.cs" />
     <Compile Include="Config\GlobalConfig.cs" />
     <Compile Include="Config\NodeConfig.cs" />
     <Compile Include="Unit.cs" />

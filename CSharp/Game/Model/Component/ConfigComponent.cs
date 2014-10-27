@@ -10,42 +10,31 @@ namespace Model
     {
         public Dictionary<Type, ICategory> allConfig;
 
-        private Assembly[] assemblies;
-
-        public void Load(Assembly[] ass)
+        public void Load(Assembly assembly)
         {
             allConfig = new Dictionary<Type, ICategory>();
-            this.assemblies = ass;
-            foreach (Assembly assembly in assemblies)
+            Type[] types = assembly.GetTypes();
+            foreach (Type type in types)
             {
-                Type[] types = assembly.GetTypes();
-                foreach (Type type in types)
+                object[] attrs = type.GetCustomAttributes(typeof(ConfigAttribute), false);
+                if (attrs.Length == 0)
                 {
-                    object[] attrs = type.GetCustomAttributes(typeof(ConfigAttribute), false);
-                    if (attrs.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    object obj = (Activator.CreateInstance(type));
-
-                    ICategory iCategory = obj as ICategory;
-                    if (iCategory == null)
-                    {
-                        throw new Exception(
-                            string.Format("class: {0} not inherit from ACategory", type.Name));
-                    }
-                    iCategory.BeginInit();
-                    iCategory.EndInit();
-
-                    allConfig[iCategory.ConfigType] = iCategory;
+                    continue;
                 }
-            }
-        }
 
-        public void Reload()
-        {
-            this.Load(this.assemblies);
+                object obj = (Activator.CreateInstance(type));
+
+                ICategory iCategory = obj as ICategory;
+                if (iCategory == null)
+                {
+                    throw new Exception(
+                        string.Format("class: {0} not inherit from ACategory", type.Name));
+                }
+                iCategory.BeginInit();
+                iCategory.EndInit();
+
+                allConfig[iCategory.ConfigType] = iCategory;
+            }
         }
 
         public T Get<T>(int id) where T : AConfig

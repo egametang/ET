@@ -9,17 +9,17 @@ namespace Model
     public class BuffComponent: Component<Unit>
     {
         [BsonElement]
-        private HashSet<Buff> buffs { get; set; }
+        private HashSet<Buff> buffs;
 
-        private Dictionary<ObjectId, Buff> buffIdDict { get; set; }
+        private Dictionary<ObjectId, Buff> idBuff;
 
-        private MultiMap<BuffType, Buff> buffTypeMMap { get; set; }
+        private MultiMap<BuffType, Buff> typeBuff;
 
         public BuffComponent()
         {
             this.buffs = new HashSet<Buff>();
-            this.buffIdDict = new Dictionary<ObjectId, Buff>();
-            this.buffTypeMMap = new MultiMap<BuffType, Buff>();
+            this.idBuff = new Dictionary<ObjectId, Buff>();
+            this.typeBuff = new MultiMap<BuffType, Buff>();
         }
 
         public override void BeginInit()
@@ -27,8 +27,8 @@ namespace Model
             base.BeginInit();
 
             this.buffs = new HashSet<Buff>();
-            this.buffIdDict = new Dictionary<ObjectId, Buff>();
-            this.buffTypeMMap = new MultiMap<BuffType, Buff>();
+            this.idBuff = new Dictionary<ObjectId, Buff>();
+            this.typeBuff = new MultiMap<BuffType, Buff>();
         }
 
         public override void EndInit()
@@ -37,8 +37,8 @@ namespace Model
 
             foreach (var buff in this.buffs)
             {
-                this.buffIdDict.Add(buff.Id, buff);
-                this.buffTypeMMap.Add(buff.Config.Type, buff);
+                this.idBuff.Add(buff.Id, buff);
+                this.typeBuff.Add(buff.Config.Type, buff);
             }
         }
 
@@ -49,34 +49,34 @@ namespace Model
                 throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
-            if (this.buffIdDict.ContainsKey(buff.Id))
+            if (this.idBuff.ContainsKey(buff.Id))
             {
                 throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
             this.buffs.Add(buff);
-            this.buffIdDict.Add(buff.Id, buff);
-            this.buffTypeMMap.Add(buff.Config.Type, buff);
+            this.idBuff.Add(buff.Id, buff);
+            this.typeBuff.Add(buff.Config.Type, buff);
         }
 
         public Buff GetById(ObjectId id)
         {
-            if (!this.buffIdDict.ContainsKey(id))
+            if (!this.idBuff.ContainsKey(id))
             {
                 return null;
             }
 
-            return this.buffIdDict[id];
+            return this.idBuff[id];
         }
 
         public Buff GetOneByType(BuffType type)
         {
-            return this.buffTypeMMap.GetOne(type);
+            return this.typeBuff.GetOne(type);
         }
 
         public Buff[] GetByType(BuffType type)
         {
-            return this.buffTypeMMap.GetByKey(type);
+            return this.typeBuff.GetByKey(type);
         }
 
         private bool Remove(Buff buff)
@@ -87,8 +87,8 @@ namespace Model
             }
 
             this.buffs.Remove(buff);
-            this.buffIdDict.Remove(buff.Id);
-            this.buffTypeMMap.Remove(buff.Config.Type, buff);
+            this.idBuff.Remove(buff.Id);
+            this.typeBuff.Remove(buff.Config.Type, buff);
 
             return true;
         }

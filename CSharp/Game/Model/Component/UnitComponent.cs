@@ -11,8 +11,8 @@ namespace Model
         private readonly Dictionary<ObjectId, Unit> units =
                 new Dictionary<ObjectId, Unit>();
 
-        private readonly Dictionary<UnitType, Dictionary<ObjectId, Unit>> typeUnits =
-                new Dictionary<UnitType, Dictionary<ObjectId, Unit>>();
+        private readonly Dictionary<int, Dictionary<ObjectId, Unit>> typeUnits =
+                new Dictionary<int, Dictionary<ObjectId, Unit>>();
 
         public void Add(Unit unit)
         {
@@ -31,7 +31,7 @@ namespace Model
             return unit;
         }
 
-        public Unit[] GetOneType(UnitType type)
+        public Unit[] GetOneType(int type)
         {
             Dictionary<ObjectId, Unit> oneTypeUnits = null;
             if (!this.typeUnits.TryGetValue(type, out oneTypeUnits))
