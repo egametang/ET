@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Reflection;
 using Common.Base;
 
-namespace Common.Factory
+namespace Model
 {
-    public class FactoryComponent: Component
+    public class FactoryComponent<T>: Component<World> where T : Entity<T>
     {
-        private Dictionary<Type, Dictionary<int, IFactory>> allConfig;
+        private Dictionary<int, IFactory<T>> allConfig;
 
         public void Load(IEnumerable<Assembly> assemblies)
         {
-            allConfig = new Dictionary<Type, Dictionary<int, IFactory>>();
+            allConfig = new Dictionary<int, IFactory<T>>();
             foreach (Assembly assembly in assemblies)
             {
                 Type[] types = assembly.GetTypes();
@@ -24,28 +24,29 @@ namespace Common.Factory
                     }
 
                     FactoryAttribute attribute = (FactoryAttribute)attrs[0];
+                    if (attribute.ClassType != typeof (T))
+                    {
+                        continue;
+                    }
+
                     object obj = (Activator.CreateInstance(type));
 
-                    IFactory iFactory = obj as IFactory;
+                    IFactory<T> iFactory = obj as IFactory<T>;
                     if (iFactory == null)
                     {
                         throw new Exception(
                             string.Format("class: {0} not inherit from IFactory", type.Name));
                     }
 
-                    if (!allConfig.ContainsKey(attribute.ClassType))
-                    {
-                        allConfig[attribute.ClassType] = new Dictionary<int, IFactory>();
-                    }
-
-                    allConfig[attribute.ClassType][attribute.Type] = iFactory;
+                    allConfig[attribute.Type] = iFactory;
                 }
             }
         }
 
-        public T Create<T>(int type, int configId) where T: Entity
+        public T Create(int configId)
         {
-            return (T) this.allConfig[typeof(T)][type].Create(configId);
+            int type = (int) World.Instance.GetComponent<ConfigComponent>().Get<UnitConfig>(configId).Type;
+            return this.allConfig[type].Create(configId);
         }
     }
 }

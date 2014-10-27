@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Common.Base;
-using Common.Logger;
+using Common.Config;
 
-namespace Common.Config
+namespace Model
 {
-    public class ConfigComponent: Component
+    public class ConfigComponent: Component<World>
     {
         public Dictionary<Type, ICategory> allConfig;
 

@@ -2,8 +2,8 @@
 {
     public enum UnitType
     {
-        Player = 0,
-        Npc = 1,
-        Dog = 2,
+        Player = 1,
+        Npc = 2,
+        Dog = 3,
     }
 }

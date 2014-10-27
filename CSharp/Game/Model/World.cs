@@ -1,9 +1,6 @@
-﻿using Common.Config;
-using Common.Factory;
-
-namespace Model
+﻿namespace Model
 {
-    public class World : GameObject
+    public class World : GameObject<World>
     {
         private static readonly World instance = new World();
 
@@ -22,7 +19,7 @@ namespace Model
             ConfigComponent configComponent = this.AddComponent<ConfigComponent>();
             configComponent.Load(new[] { typeof (World).Assembly });
 
-            FactoryComponent factoryComponent = this.AddComponent<FactoryComponent>();
+            FactoryComponent<Unit> factoryComponent = this.AddComponent<FactoryComponent<Unit>>();
             factoryComponent.Load(new[] { typeof(World).Assembly });
         }
     }

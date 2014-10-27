@@ -69,11 +69,7 @@
     <Compile Include="Base\Object.cs" />
     <Compile Include="Config\ConfigAttribute.cs" />
     <Compile Include="Config\ACategory.cs" />
-    <Compile Include="Config\ConfigComponent.cs" />
     <Compile Include="Config\AConfig.cs" />
-    <Compile Include="Factory\FactoryComponent.cs" />
-    <Compile Include="Factory\IFactory.cs" />
-    <Compile Include="Factory\FactoryAttribute.cs" />
     <Compile Include="Helper\BigIntegerHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\EnumHelper.cs" />

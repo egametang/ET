@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    public abstract class GameObject: Entity
+    public abstract class GameObject<K>: Entity<K> where K : Entity<K>
     {
     }
 }

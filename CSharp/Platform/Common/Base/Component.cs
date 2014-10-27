@@ -5,12 +5,12 @@ namespace Common.Base
     /// <summary>
     /// Component的Id与Owner Entity Id一样
     /// </summary>
-    public abstract class Component : Object
+    public abstract class Component<T>: Object where T: Entity<T>
     {
-        private Entity owner;
+        private T owner;
 
         [BsonIgnore]
-        public Entity Owner
+        public T Owner
         {
             get
             {

@@ -6,7 +6,7 @@ using MongoDB.Bson;
 
 namespace Model
 {
-    public class UnitComponent: Component
+    public class UnitComponent: Component<World>
     {
         private readonly Dictionary<ObjectId, Unit> units =
                 new Dictionary<ObjectId, Unit>();

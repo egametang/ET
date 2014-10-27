@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Factory
+namespace Model
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class FactoryAttribute : Attribute

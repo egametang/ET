@@ -19,7 +19,7 @@ namespace MongoDBTest
             var database = server.GetDatabase("test");
             var collection = database.GetCollection<Unit>("Unit");
 
-            Unit player1 = UnitFactory.Create(UnitType.Player, 1);
+            Unit player1 = UnitFactory.Create(1);
             Buff buff = new Buff(1);
             player1.GetComponent<BuffComponent>().Add(buff);
             player1["hp"] = 10;

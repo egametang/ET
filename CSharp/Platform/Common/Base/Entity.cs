@@ -5,15 +5,15 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
-    public abstract class Entity : Object
+    public abstract class Entity<K> : Object where K : Entity<K>
     {
         [BsonElement] 
         [BsonIgnoreIfNull]
-        private HashSet<Component> components;
+        private HashSet<Component<K>> components;
 
-        private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+        private Dictionary<Type, Component<K>> componentDict = new Dictionary<Type, Component<K>>();
 
-        public T AddComponent<T>() where T : Component, new()
+        public T AddComponent<T>() where T : Component<K>, new()
         {
             if (this.componentDict.ContainsKey(typeof (T)))
             {
@@ -24,18 +24,18 @@ namespace Common.Base
 
             if (this.components == null)
             {
-                this.components = new HashSet<Component>();
+                this.components = new HashSet<Component<K>>();
             }
 
-            T t = new T { Owner = this };
+            T t = new T { Owner = (K)this };
             this.components.Add(t);
             this.componentDict.Add(typeof (T), t);
             return t;
         }
 
-        public void RemoveComponent<T>() where T : Component
+        public void RemoveComponent<T>() where T : Component<K>
         {
-            Component t;
+            Component<K> t;
             if (!this.componentDict.TryGetValue(typeof (T), out t))
             {
                 throw new Exception(
@@ -52,9 +52,9 @@ namespace Common.Base
             }
         }
 
-        public T GetComponent<T>() where T : Component
+        public T GetComponent<T>() where T : Component<K>
         {
-            Component t;
+            Component<K> t;
             if (!this.componentDict.TryGetValue(typeof (T), out t))
             {
                 throw new Exception(
@@ -64,7 +64,7 @@ namespace Common.Base
             return (T) t;
         }
 
-        public Component[] GetComponents()
+        public Component<K>[] GetComponents()
         {
             return this.components.ToArray();
         }
@@ -72,8 +72,8 @@ namespace Common.Base
         public override void BeginInit()
         {
             base.BeginInit();
-            this.components = new HashSet<Component>();
-            this.componentDict = new Dictionary<Type, Component>();
+            this.components = new HashSet<Component<K>>();
+            this.componentDict = new Dictionary<Type, Component<K>>();
         }
 
         public override void EndInit()
@@ -84,9 +84,9 @@ namespace Common.Base
                 this.components = null;
                 return;
             }
-            foreach (Component component in this.components)
+            foreach (var component in this.components)
             {
-                component.Owner = this;
+                component.Owner = (K)this;
                 this.componentDict.Add(component.GetType(), component);
             }
         }

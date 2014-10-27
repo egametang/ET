@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using Common.Base;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Component = Common.Base.Component;
 
 namespace Model
 {
-    public class BuffComponent: Component
+    public class BuffComponent: Component<Unit>
     {
         [BsonElement]
         private HashSet<Buff> buffs { get; set; }
@@ -18,6 +17,15 @@ namespace Model
 
         public BuffComponent()
         {
+            this.buffs = new HashSet<Buff>();
+            this.buffIdDict = new Dictionary<ObjectId, Buff>();
+            this.buffTypeMMap = new MultiMap<BuffType, Buff>();
+        }
+
+        public override void BeginInit()
+        {
+            base.BeginInit();
+
             this.buffs = new HashSet<Buff>();
             this.buffIdDict = new Dictionary<ObjectId, Buff>();
             this.buffTypeMMap = new MultiMap<BuffType, Buff>();

@@ -47,8 +47,12 @@
   <ItemGroup>
     <Compile Include="Buff.cs" />
     <Compile Include="BuffComponent.cs" />
+    <Compile Include="ConfigComponent.cs" />
     <Compile Include="Config\UnitConfig.cs" />
     <Compile Include="Config\BuffConfig.cs" />
+    <Compile Include="FactoryAttribute.cs" />
+    <Compile Include="FactoryComponent.cs" />
+    <Compile Include="IFactory.cs" />
     <Compile Include="UnitFactory.cs" />
     <Compile Include="UnitType.cs" />
     <Compile Include="BuffType.cs" />
