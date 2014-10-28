@@ -49,8 +49,12 @@
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
     <Compile Include="BuffController.cs" />
+    <Compile Include="ConfigCategory\BuffCategory.cs" />
+    <Compile Include="ConfigCategory\GlobalCategory.cs" />
+    <Compile Include="ConfigCategory\NodeCategory.cs" />
+    <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="NodeType.cs" />
-    <Compile Include="Factories\UnitFactory.cs" />
+    <Compile Include="Factory\UnitFactory.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>
   <ItemGroup>

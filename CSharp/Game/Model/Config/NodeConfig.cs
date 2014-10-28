@@ -8,9 +8,4 @@ namespace Model
         public List<string> Args { get; set; }
         public List<NodeConfig> SubConfigs { get; set; }
     }
-
-    [Config]
-    public class NodeCategory: ACategory<NodeConfig>
-    {
-    }
 }

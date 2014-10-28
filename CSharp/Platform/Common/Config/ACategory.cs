@@ -8,10 +8,12 @@ namespace Common.Config
 {
     public abstract class ACategory<T>: ICategory where T : AConfig
     {
-        protected readonly Dictionary<int, T> dict = new Dictionary<int, T>();
+        protected Dictionary<int, T> dict;
 
         public virtual void BeginInit()
         {
+            dict = new Dictionary<int, T>();
+
             string path = Path.Combine(@"../../Config/", typeof(T).Name);
 
             if (!Directory.Exists(path))

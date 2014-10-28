@@ -6,9 +6,4 @@ namespace Model
     {
         public int Type { get; set; }
     }
-
-    [Config]
-    public class UnitCategory : ACategory<UnitConfig>
-    {
-    }
 }

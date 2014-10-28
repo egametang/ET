@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿ using System.Collections.Generic;
 using Common.Config;
 
 namespace Model
@@ -15,10 +15,5 @@ namespace Model
         {
             this.Effects = new List<int>();
         }
-    }
-
-    [Config]
-    public class BuffCategory : ACategory<BuffConfig>
-    {
     }
 }

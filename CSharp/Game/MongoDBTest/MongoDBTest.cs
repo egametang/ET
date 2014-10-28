@@ -23,23 +23,19 @@ namespace MongoDBTest
 
 
             World world = World.Instance;
-
-            // 加载配置
-            ConfigComponent configComponent = world.AddComponent<ConfigComponent>();
-            configComponent.Load(typeof(World).Assembly);
-
             Assembly assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
 
+            // 加载配置
+            world.AddComponent<ConfigComponent>().Load(assembly);
+
             // 构造工厂
-            FactoryComponent<Unit> factoryComponent = world.AddComponent<FactoryComponent<Unit>>();
-            factoryComponent.Load(assembly);
+            world.AddComponent<FactoryComponent<Unit>>().Load(assembly);
 
             // 构造行为树
-            BehaviorTreeComponent behaviorTreeComponent = world.AddComponent<BehaviorTreeComponent>();
-            behaviorTreeComponent.Load(assembly);
+            world.AddComponent<BehaviorTreeComponent>().Load(assembly);
 
 
-            Unit player1 = factoryComponent.Create(1);
+            Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(1);
             Buff buff = new Buff(1);
             player1.GetComponent<BuffComponent>().Add(buff);
             player1["hp"] = 10;
