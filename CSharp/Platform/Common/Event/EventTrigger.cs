@@ -5,11 +5,11 @@ namespace Common.Event
 {
     public class EventTrigger<T> where T : AEventAttribute
     {
-        private readonly Dictionary<int, SortedDictionary<int, IEvent>> events;
+        private readonly Dictionary<int, List<IEvent>> events;
 
         public EventTrigger()
         {
-            this.events = new Dictionary<int, SortedDictionary<int, IEvent>>();
+            this.events = new Dictionary<int, List<IEvent>>();
 
             Type type = typeof (T);
             var types = type.Assembly.GetTypes();
@@ -32,15 +32,15 @@ namespace Common.Event
 
                 if (!this.events.ContainsKey(iEventAttribute.Type))
                 {
-                    this.events.Add(iEventAttribute.Type, new SortedDictionary<int, IEvent>());
+                    this.events.Add(iEventAttribute.Type, new List<IEvent>());
                 }
-                this.events[iEventAttribute.Type].Add(iEventAttribute.Order, iEvent);
+                this.events[iEventAttribute.Type].Add(iEvent);
             }
         }
 
         public void Trigger(int type, Env env)
         {
-            SortedDictionary<int, IEvent> iEventDict = null;
+            List<IEvent> iEventDict = null;
             if (!this.events.TryGetValue(type, out iEventDict))
             {
                 return;
@@ -48,7 +48,7 @@ namespace Common.Event
 
             foreach (var iEvent in iEventDict)
             {
-                iEvent.Value.Trigger(env);
+                iEvent.Trigger(env);
             }
         }
     }

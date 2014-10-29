@@ -6,12 +6,10 @@ namespace Common.Event
     public abstract class AEventAttribute : Attribute
     {
         public int Type { get; private set; }
-        public int Order { get; private set; }
 
-        protected AEventAttribute(int type, int order)
+        protected AEventAttribute(int type)
         {
             this.Type = type;
-            this.Order = order;
         }
     }
 }
