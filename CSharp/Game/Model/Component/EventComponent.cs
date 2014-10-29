@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Common.Base;
+using Common.Event;
 
-namespace Common.Event
+namespace Model
 {
-    public class EventTrigger<T> where T : AEventAttribute
+    public class EventComponent<T>: Component<World> where T : AEventAttribute
     {
-        private readonly Dictionary<int, List<IEvent>> events;
+        private Dictionary<int, List<IEvent>> events;
 
-        public EventTrigger()
+        public void Load(Assembly assembly)
         {
             this.events = new Dictionary<int, List<IEvent>>();
 
-            Type type = typeof (T);
-            var types = type.Assembly.GetTypes();
+            var types = assembly.GetTypes();
             foreach (var t in types)
             {
-                object[] attrs = t.GetCustomAttributes(type, false);
+                object[] attrs = t.GetCustomAttributes(typeof (T), false);
                 if (attrs.Length == 0)
                 {
                     continue;
@@ -28,7 +30,7 @@ namespace Common.Event
                             obj.GetType().FullName));
                 }
 
-                AEventAttribute iEventAttribute = (T) attrs[0];
+                AEventAttribute iEventAttribute = (AEventAttribute) attrs[0];
 
                 if (!this.events.ContainsKey(iEventAttribute.Type))
                 {
