@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -72,7 +73,7 @@ namespace Common.Base
             this.values[typeof (T).Name] = obj;
         }
 
-        public bool Contain(string key)
+        public bool ContainKey(string key)
         {
             return this.values.ContainsKey(key);
         }
@@ -85,6 +86,20 @@ namespace Common.Base
                 this.values = null;
             }
             return ret;
+        }
+
+        public void Add(string key, object value)
+        {
+            if (this.values == null)
+            {
+                this.values = new Dictionary<string, object>();
+            }
+            this.values.Add(key, value);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return this.values.GetEnumerator();
         }
 
         public virtual void BeginInit()

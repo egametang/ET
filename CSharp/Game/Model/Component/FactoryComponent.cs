@@ -5,7 +5,7 @@ using Common.Base;
 
 namespace Model
 {
-    public class FactoryComponent<T>: Component<World> where T : Entity<T>
+    public class FactoryComponent<T> : Component<World>, IAssemblyLoader where T : Entity<T>
     {
         private Dictionary<int, IFactory<T>> allConfig;
 

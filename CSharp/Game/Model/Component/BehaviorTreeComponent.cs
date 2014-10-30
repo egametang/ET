@@ -4,7 +4,7 @@ using Common.Base;
 
 namespace Model
 {
-    public class BehaviorTreeComponent: Component<World>
+    public class BehaviorTreeComponent : Component<World>, IAssemblyLoader
     {
         private Dictionary<int, BehaviorTree> trees = new Dictionary<int, BehaviorTree>();
 

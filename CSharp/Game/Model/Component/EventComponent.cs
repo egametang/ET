@@ -6,7 +6,8 @@ using Common.Event;
 
 namespace Model
 {
-    public class EventComponent<T>: Component<World> where T : AEventAttribute
+    public class EventComponent<AttributeType> : Component<World>, IAssemblyLoader
+        where AttributeType : AEventAttribute
     {
         private Dictionary<int, List<IEvent>> events;
 
@@ -17,7 +18,7 @@ namespace Model
             var types = assembly.GetTypes();
             foreach (var t in types)
             {
-                object[] attrs = t.GetCustomAttributes(typeof (T), false);
+                object[] attrs = t.GetCustomAttributes(typeof (AttributeType), false);
                 if (attrs.Length == 0)
                 {
                     continue;

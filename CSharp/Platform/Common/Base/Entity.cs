@@ -57,9 +57,7 @@ namespace Common.Base
             Component<K> t;
             if (!this.componentDict.TryGetValue(typeof (T), out t))
             {
-                throw new Exception(
-                    string.Format("GetComponent, component not exist, id: {0}, component: {1}",
-                    this.Id, typeof(T).Name));
+                return default (T);
             }
             return (T) t;
         }

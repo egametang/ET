@@ -6,7 +6,7 @@ using Common.Config;
 
 namespace Model
 {
-    public class ConfigComponent: Component<World>
+    public class ConfigComponent : Component<World>, IAssemblyLoader
     {
         public Dictionary<Type, ICategory> allConfig;
 

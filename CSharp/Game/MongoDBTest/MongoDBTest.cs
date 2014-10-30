@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using Common.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;
@@ -23,21 +21,23 @@ namespace MongoDBTest
 
 
             World world = World.Instance;
-            Assembly assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
 
             // 加载配置
-            world.AddComponent<ConfigComponent>().Load(assembly);
+            world.AddComponent<ConfigComponent>().Load(world.Assembly);
+
+            // 事件管理器
+            world.AddComponent<EventComponent<WorldEventAttribute>>().Load(world.Assembly);
+
+            world.AddComponent<UnitComponent>();
 
             // 构造工厂
-            world.AddComponent<FactoryComponent<Unit>>().Load(assembly);
+            world.AddComponent<FactoryComponent<Unit>>().Load(world.Assembly);
 
             // 构造行为树
-            world.AddComponent<BehaviorTreeComponent>().Load(assembly);
+            world.AddComponent<BehaviorTreeComponent>().Load(world.Assembly);
 
 
             Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(1);
-            Buff buff = new Buff(1);
-            player1.GetComponent<BuffComponent>().Add(buff);
             player1["hp"] = 10;
 
             collection.Insert(player1);
