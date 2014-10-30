@@ -23,18 +23,12 @@ namespace MongoDBTest
             World world = World.Instance;
 
             // 加载配置
-            world.AddComponent<ConfigComponent>().Load(world.Assembly);
-
-            // 事件管理器
-            world.AddComponent<EventComponent<WorldEventAttribute>>().Load(world.Assembly);
-
+            world.AddComponent<ConfigComponent>();
+            world.AddComponent<EventComponent<WorldEventAttribute>>();
             world.AddComponent<UnitComponent>();
-
-            // 构造工厂
-            world.AddComponent<FactoryComponent<Unit>>().Load(world.Assembly);
-
-            // 构造行为树
-            world.AddComponent<BehaviorTreeComponent>().Load(world.Assembly);
+            world.AddComponent<FactoryComponent<Unit>>();
+            world.AddComponent<BehaviorTreeComponent>();
+            world.Load();
 
 
             Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(1);

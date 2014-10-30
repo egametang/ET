@@ -20,10 +20,9 @@ namespace Model
 
         private World()
         {
-            this.Assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
         }
 
-        public void ReLoad()
+        public void Load()
         {
             this.Assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
 
