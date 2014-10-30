@@ -63,7 +63,6 @@
     <Compile Include="IFactory.cs" />
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="BuffType.cs" />
-    <Compile Include="GameObject.cs" />
     <Compile Include="Config\GlobalConfig.cs" />
     <Compile Include="Config\NodeConfig.cs" />
     <Compile Include="Unit.cs" />

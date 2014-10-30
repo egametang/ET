@@ -1,8 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Common.Base;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-    public class Unit : GameObject<Unit>
+    public class Unit : Entity<Unit>
     {
         [BsonElement]
         public int configId { get; set; }

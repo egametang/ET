@@ -4,7 +4,7 @@ using Common.Base;
 
 namespace Model
 {
-    public class World : GameObject<World>
+    public class World : Entity<World>
     {
         private static readonly World instance = new World();
 
