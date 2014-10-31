@@ -27,13 +27,13 @@ namespace Controller
             env[EnvKey.Unit] = buffComponent.Owner;
             env[EnvKey.Buff] = buff;
 
-            World.Instance.GetComponent<EventComponent<WorldEventAttribute>>().Trigger(WorldEventType.BeforeAddBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeAddBuff, env);
 
             buffComponent.buffs.Add(buff);
             buffComponent.idBuff.Add(buff.Id, buff);
             buffComponent.typeBuff.Add(buff.Config.Type, buff);
 
-            World.Instance.GetComponent<EventComponent<WorldEventAttribute>>().Trigger(WorldEventType.AfterAddBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterAddBuff, env);
         }
 
         public static Buff GetById(this BuffComponent buffComponent, ObjectId id)
@@ -67,13 +67,13 @@ namespace Controller
             env[EnvKey.Unit] = buffComponent.Owner;
             env[EnvKey.Buff] = buff;
 
-            World.Instance.GetComponent<EventComponent<UnitEventAttribute>>().Trigger(WorldEventType.BeforeRemoveBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeRemoveBuff, env);
 
             buffComponent.buffs.Remove(buff);
             buffComponent.idBuff.Remove(buff.Id);
             buffComponent.typeBuff.Remove(buff.Config.Type, buff);
 
-            World.Instance.GetComponent<EventComponent<UnitEventAttribute>>().Trigger(WorldEventType.AfterRemoveBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterRemoveBuff, env);
 
             return true;
         }

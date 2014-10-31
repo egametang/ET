@@ -57,7 +57,7 @@
     <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
-    <Compile Include="WorldEventType.cs" />
+    <Compile Include="EventType.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>
   <ItemGroup>

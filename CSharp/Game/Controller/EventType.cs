@@ -1,6 +1,6 @@
 ﻿namespace Controller
 {
-    public static class WorldEventType
+    public static class EventType
     {
         public const int BeforeAddBuff = 0;
         public const int AfterAddBuff = 1;

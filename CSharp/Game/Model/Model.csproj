@@ -67,8 +67,7 @@
     <Compile Include="Config\NodeConfig.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="UnitEventAttribute.cs" />
-    <Compile Include="WorldEventAttribute.cs" />
+    <Compile Include="EventAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

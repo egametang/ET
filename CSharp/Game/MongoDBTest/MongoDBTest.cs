@@ -24,7 +24,7 @@ namespace MongoDBTest
 
             // 加载配置
             world.AddComponent<ConfigComponent>();
-            world.AddComponent<EventComponent<WorldEventAttribute>>();
+            world.AddComponent<EventComponent<EventAttribute>>();
             world.AddComponent<UnitComponent>();
             world.AddComponent<FactoryComponent<Unit>>();
             world.AddComponent<BehaviorTreeComponent>();
