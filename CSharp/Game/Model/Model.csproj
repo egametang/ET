@@ -52,11 +52,13 @@
     <Compile Include="BehaviorTree\Node.cs" />
     <Compile Include="BehaviorTree\NodeAttribute.cs" />
     <Compile Include="Buff.cs" />
+    <Compile Include="Component\MessageComponent.cs" />
     <Compile Include="Component\BuffComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Config\UnitConfig.cs" />
     <Compile Include="Config\BuffConfig.cs" />
+    <Compile Include="MessageAttribute.cs" />
     <Compile Include="FactoryAttribute.cs" />
     <Compile Include="Component\FactoryComponent.cs" />
     <Compile Include="IAssemblyLoader.cs" />
