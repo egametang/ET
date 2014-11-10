@@ -8,6 +8,7 @@ namespace Controller
         public Unit Create(int configId)
         {
             Unit player = new Unit(configId);
+            player.AddComponent<PlayerDeadComponent>();
             player.AddComponent<BuffComponent>();
             Buff buff = new Buff(1);
             player.GetComponent<BuffComponent>().Add(buff);

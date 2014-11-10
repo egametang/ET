@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
 {
@@ -21,6 +22,15 @@ namespace Common.Base
                 this.owner = value;
                 this.Id = this.owner.Id;
             }
+        }
+
+        /// <summary>
+        /// 用于父类的Component需要重写此方法
+        /// </summary>
+        /// <returns></returns>
+        public virtual Type GetComponentType()
+        {
+            return this.GetType();
         }
     }
 }

@@ -49,8 +49,6 @@
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
     <Compile Include="EnvKey.cs" />
-    <Compile Include="UnitComponentExtension.cs" />
-    <Compile Include="BuffComponentExtension.cs" />
     <Compile Include="ConfigCategory\BuffCategory.cs" />
     <Compile Include="ConfigCategory\GlobalCategory.cs" />
     <Compile Include="ConfigCategory\NodeCategory.cs" />

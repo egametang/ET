@@ -15,10 +15,12 @@ namespace Common.Base
 
         public T AddComponent<T>() where T : Component<K>, new()
         {
-            if (this.componentDict.ContainsKey(typeof (T)))
+            T t = new T { Owner = (K) this };
+
+            if (this.componentDict.ContainsKey(t.GetComponentType()))
             {
                 throw new Exception(
-                    string.Format("AddComponent, component already exist, id: {0}, component: {1}", 
+                    string.Format("AddComponent, component already exist, id: {0}, component: {1}",
                     this.Id, typeof(T).Name));
             }
 
@@ -27,10 +29,26 @@ namespace Common.Base
                 this.components = new HashSet<Component<K>>();
             }
 
-            T t = new T { Owner = (K)this };
             this.components.Add(t);
-            this.componentDict.Add(typeof (T), t);
+            this.componentDict.Add(t.GetComponentType(), t);
             return t;
+        }
+
+        public void AddComponent(Component<K> component)
+        {
+            if (this.componentDict.ContainsKey(component.GetComponentType()))
+            {
+                throw new Exception(
+                    string.Format("AddComponent, component already exist, id: {0}, component: {1}",
+                    this.Id, component.GetComponentType().Name));
+            }
+
+            if (this.components == null)
+            {
+                this.components = new HashSet<Component<K>>();
+            }
+            this.components.Add(component);
+            this.componentDict.Add(component.GetComponentType(), component);
         }
 
         public void RemoveComponent<T>() where T : Component<K>
@@ -85,7 +103,7 @@ namespace Common.Base
             foreach (var component in this.components)
             {
                 component.Owner = (K)this;
-                this.componentDict.Add(component.GetType(), component);
+                this.componentDict.Add(component.GetComponentType(), component);
             }
         }
     }

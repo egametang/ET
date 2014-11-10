@@ -34,10 +34,14 @@ namespace MongoDBTest
             Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(1);
             player1["hp"] = 10;
 
+            player1.GetComponent<DeadComponent>().Dead();
+
             collection.Insert(player1);
 
             var query = Query<Unit>.EQ(e => e.Id, player1.Id);
             Unit player2 = collection.FindOne(query);
+
+            player2.GetComponent<DeadComponent>().Dead();
             
             Console.WriteLine(MongoHelper.ToJson(player2));
             Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
