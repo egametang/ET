@@ -31,5 +31,6 @@
         Move = 20007,
         CloseTarget = 20008,
         LeaveTarget = 20009,
+        PathPatrol = 20010,
     }
 }
