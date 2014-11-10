@@ -6,7 +6,7 @@ namespace Model
     public class Unit : Entity<Unit>
     {
         [BsonElement]
-        public int configId { get; set; }
+        private int configId { get; set; }
 
         [BsonIgnore]
         public UnitConfig Config

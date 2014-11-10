@@ -42,7 +42,7 @@ namespace Model
 
         public T Create(int configId)
         {
-            int type = (int) World.Instance.GetComponent<ConfigComponent>().Get<UnitConfig>(configId).Type;
+            int type = World.Instance.GetComponent<ConfigComponent>().Get<UnitConfig>(configId).Type;
             return this.allConfig[type].Create(configId);
         }
     }

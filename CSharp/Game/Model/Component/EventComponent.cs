@@ -20,7 +20,7 @@ namespace Model
             {
                 object[] attrs = t.GetCustomAttributes(typeof (AttributeType), false);
                 if (attrs.Length == 0)
-                {
+                { 
                     continue;
                 }
                 object obj = Activator.CreateInstance(t);

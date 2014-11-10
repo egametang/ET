@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Base;
+using Common.Event;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -54,9 +55,17 @@ namespace Model
                 throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}", buff.Id, buff.Config.Id));
             }
 
+            Env env = new Env();
+            env[EnvKey.Owner] = this.Owner;
+            env[EnvKey.Buff] = buff;
+
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeAddBuff, env);
+
             this.buffs.Add(buff);
             this.idBuff.Add(buff.Id, buff);
             this.typeBuff.Add(buff.Config.Type, buff);
+
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterAddBuff, env);
         }
 
         public Buff GetById(ObjectId id)
@@ -86,9 +95,17 @@ namespace Model
                 return false;
             }
 
+            Env env = new Env();
+            env[EnvKey.Owner] = this.Owner;
+            env[EnvKey.Buff] = buff;
+
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeRemoveBuff, env);
+
             this.buffs.Remove(buff);
             this.idBuff.Remove(buff.Id);
             this.typeBuff.Remove(buff.Config.Type, buff);
+
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterRemoveBuff, env);
 
             return true;
         }

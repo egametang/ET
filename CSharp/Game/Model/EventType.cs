@@ -1,4 +1,4 @@
-﻿namespace Controller
+﻿namespace Model
 {
     public static class EventType
     {

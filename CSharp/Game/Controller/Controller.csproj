@@ -48,14 +48,12 @@
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
-    <Compile Include="EnvKey.cs" />
     <Compile Include="ConfigCategory\BuffCategory.cs" />
     <Compile Include="ConfigCategory\GlobalCategory.cs" />
     <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
-    <Compile Include="EventType.cs" />
     <Compile Include="UnitType.cs" />
   </ItemGroup>
   <ItemGroup>
