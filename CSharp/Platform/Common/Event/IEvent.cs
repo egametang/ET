@@ -2,6 +2,6 @@
 {
     public interface IEvent
     {
-        void Trigger(Env env);
+        void Run(Env env);
     }
 }

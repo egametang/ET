@@ -56,7 +56,7 @@ namespace Common.Base
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public K[] GetByKey(T t)
+        public K[] GetAll(T t)
         {
             List<K> list;
             this.dictionary.TryGetValue(t, out list);

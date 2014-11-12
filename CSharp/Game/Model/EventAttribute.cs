@@ -8,4 +8,11 @@ namespace Model
         {
         }
     }
+
+    public class CallbackAttribute : AEventAttribute
+    {
+        public CallbackAttribute(int type): base(type)
+        {
+        }
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Common.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model;
@@ -25,7 +24,9 @@ namespace MongoDBTest
 
             // 加载配置
             world.AddComponent<ConfigComponent>();
+            world.AddComponent<EventComponent<CallbackAttribute>>();
             world.AddComponent<EventComponent<EventAttribute>>();
+            world.AddComponent<TimerComponent>();
             world.AddComponent<UnitComponent>();
             world.AddComponent<FactoryComponent<Unit>>();
             world.AddComponent<BehaviorTreeComponent>();
@@ -43,10 +44,14 @@ namespace MongoDBTest
             Console.WriteLine(MongoHelper.ToJson(player2));
             Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
 
-            Thread.Sleep(20 * 1000);
-            world.Load();
+            Unit player3 = player1.Clone();
 
-            Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
+            Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player3));
+
+            //Thread.Sleep(20 * 1000);
+            //world.Load();
+            //
+            //Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
         }
     }
 }

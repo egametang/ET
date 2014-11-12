@@ -56,6 +56,7 @@
     <Compile Include="Component\BuffComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
+    <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Config\UnitConfig.cs" />
     <Compile Include="Config\BuffConfig.cs" />
     <Compile Include="EnvKey.cs" />

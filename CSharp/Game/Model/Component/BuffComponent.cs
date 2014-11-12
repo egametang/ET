@@ -12,8 +12,10 @@ namespace Model
         [BsonElement]
         private HashSet<Buff> buffs;
 
+        [BsonIgnore]
         private Dictionary<ObjectId, Buff> idBuff;
 
+        [BsonIgnore]
         private MultiMap<BuffType, Buff> typeBuff;
 
         public BuffComponent()
@@ -40,7 +42,30 @@ namespace Model
             {
                 this.idBuff.Add(buff.Id, buff);
                 this.typeBuff.Add(buff.Config.Type, buff);
+                AddToTimer(this.Owner, buff);
             }
+        }
+
+        private static void AddToTimer(Unit owner, Buff buff)
+        {
+            if (buff.Expiration == 0)
+            {
+                return;
+            }
+            Env env = new Env();
+            env[EnvKey.OwnerId] = owner.Id;
+            env[EnvKey.BuffId] = buff.Id;
+            buff.TimerId = World.Instance.GetComponent<TimerComponent>()
+                    .Add(buff.Expiration, CallbackType.BuffTimeoutCallback, env);
+        }
+
+        private static void RemoveFromTimer(Buff buff)
+        {
+            if (buff.Expiration == 0)
+            {
+                return;
+            }
+            World.Instance.GetComponent<TimerComponent>().Remove(buff.TimerId);
         }
 
         public void Add(Buff buff)
@@ -59,13 +84,14 @@ namespace Model
             env[EnvKey.Owner] = this.Owner;
             env[EnvKey.Buff] = buff;
 
-            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeAddBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.BeforeAddBuff, env);
 
             this.buffs.Add(buff);
             this.idBuff.Add(buff.Id, buff);
             this.typeBuff.Add(buff.Config.Type, buff);
+            AddToTimer(this.Owner, buff);
 
-            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterAddBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.AfterAddBuff, env);
         }
 
         public Buff GetById(ObjectId id)
@@ -85,35 +111,34 @@ namespace Model
 
         public Buff[] GetByType(BuffType type)
         {
-            return this.typeBuff.GetByKey(type);
+            return this.typeBuff.GetAll(type);
         }
 
-        private bool Remove(Buff buff)
+        private void Remove(Buff buff)
         {
             if (buff == null)
             {
-                return false;
+                return;
             }
 
             Env env = new Env();
             env[EnvKey.Owner] = this.Owner;
             env[EnvKey.Buff] = buff;
 
-            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.BeforeRemoveBuff, env);
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.BeforeRemoveBuff, env);
 
             this.buffs.Remove(buff);
             this.idBuff.Remove(buff.Id);
             this.typeBuff.Remove(buff.Config.Type, buff);
+            RemoveFromTimer(buff);
 
-            World.Instance.GetComponent<EventComponent<EventAttribute>>().Trigger(EventType.AfterRemoveBuff, env);
-
-            return true;
+            World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.AfterRemoveBuff, env);
         }
 
-        public bool RemoveById(ObjectId id)
+        public void RemoveById(ObjectId id)
         {
             Buff buff = this.GetById(id);
-            return this.Remove(buff);
+            this.Remove(buff);
         }
 
         public void RemoveByType(BuffType type)

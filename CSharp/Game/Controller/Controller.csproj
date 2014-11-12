@@ -52,6 +52,8 @@
     <Compile Include="ConfigCategory\GlobalCategory.cs" />
     <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
+    <Compile Include="Callback\BuffTimeoutCallback.cs" />
+    <Compile Include="Event\AfterAddBuff.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
     <Compile Include="UnitType.cs" />

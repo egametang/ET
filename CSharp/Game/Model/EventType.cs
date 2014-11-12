@@ -7,4 +7,9 @@
         public const int BeforeRemoveBuff = 2;
         public const int AfterRemoveBuff = 3;
     }
+
+    public static class CallbackType
+    {
+        public const int BuffTimeoutCallback = 0;
+    }
 }

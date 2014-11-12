@@ -25,6 +25,22 @@ namespace Common.Base
             this.Id = id;
         }
 
+        public virtual void BeginInit()
+        {
+            if (this.values == null)
+            {
+                this.values = new Dictionary<string, object>();
+            }
+        }
+
+        public virtual void EndInit()
+        {
+            if (this.values.Count == 0)
+            {
+                this.values = null;
+            }
+        }
+
         public object this[string key]
         {
             get
@@ -100,22 +116,6 @@ namespace Common.Base
         public IEnumerator GetEnumerator()
         {
             return this.values.GetEnumerator();
-        }
-
-        public virtual void BeginInit()
-        {
-            if (this.values == null)
-            {
-                this.values = new Dictionary<string, object>();
-            }
-        }
-
-        public virtual void EndInit()
-        {
-            if (this.values.Count == 0)
-            {
-                this.values = null;
-            }
         }
     }
 }

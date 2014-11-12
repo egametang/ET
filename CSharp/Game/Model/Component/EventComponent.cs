@@ -41,7 +41,7 @@ namespace Model
             }
         }
 
-        public void Trigger(int type, Env env)
+        public void Run(int type, Env env)
         {
             List<IEvent> iEventDict = null;
             if (!this.events.TryGetValue(type, out iEventDict))
@@ -51,7 +51,7 @@ namespace Model
 
             foreach (var iEvent in iEventDict)
             {
-                iEvent.Trigger(env);
+                iEvent.Run(env);
             }
         }
     }

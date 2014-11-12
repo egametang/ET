@@ -13,7 +13,7 @@ namespace Common.Base
         [BsonIgnore]
         public T Owner
         {
-            protected get
+            get
             {
                 return owner;
             }
