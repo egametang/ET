@@ -67,6 +67,28 @@ namespace Model
 			}
         }
 
+		protected void Dispose(bool disposing)
+		{
+			if (this.Expiration == 0)
+			{
+				return;
+			}
+
+			// Buff在垃圾回收或者主动Dispose,都需要释放Timer回调
+			World.Instance.GetComponent<TimerComponent>().Remove(this.TimerId);
+			this.expiration = 0;
+		}
+
+		~Buff()
+		{
+			this.Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+		}
+
 		public override void BeginInit()
 		{
 			base.BeginInit();
@@ -108,17 +130,6 @@ namespace Model
 			{
 				this.ownerId = value;
 			}
-		}
-
-		public void Dispose()
-		{
-			if (this.Expiration == 0)
-			{
-				return;
-			}
-			
-			World.Instance.GetComponent<TimerComponent>().Remove(this.TimerId);
-			this.expiration = 0;
 		}
 	}
 }
