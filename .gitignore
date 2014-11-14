@@ -25,3 +25,4 @@ packages/
 _ReSharper.CSharp/
 *.opensdf
 *.sdf
+/CSharp/CSharp.sln.ide
