@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using Common.Base;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Model
+﻿namespace Model
 {
-    public class MessageComponent
-    {
-        public MessageComponent()
-        {
-        }
-    }
+	public class MessageComponent
+	{
+		public MessageComponent()
+		{
+		}
+	}
 }

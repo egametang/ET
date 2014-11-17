@@ -4,22 +4,21 @@ using System.Windows.Data;
 
 namespace Modules.BehaviorTreeModule
 {
-    [ValueConversion(typeof (int), typeof (string))]
-    public class NodeTypeToStringConverter: IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value == null)
-            {
-                return "";
-            }
-            return ((NodeType) (int) value).ToString();
-        }
+	[ValueConversion(typeof (int), typeof (string))]
+	public class NodeTypeToStringConverter: IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			if (value == null)
+			{
+				return "";
+			}
+			return ((NodeType) (int) value).ToString();
+		}
 
-        public object ConvertBack(
-                object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
-    }
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return null;
+		}
+	}
 }

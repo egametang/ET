@@ -3,8 +3,8 @@ using Model;
 
 namespace Controller
 {
-    [Config]
-    public class GlobalCategory : ACategory<GlobalConfig>
-    {
-    }
+	[Config]
+	public class GlobalCategory: ACategory<GlobalConfig>
+	{
+	}
 }

@@ -1,60 +1,60 @@
-﻿using Common.Base;
+﻿using System;
+using Common.Base;
 using Common.Event;
 using Common.Helper;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 
 namespace Model
 {
-    public class Buff: Entity<Buff>, IDisposable
+	public class Buff: Entity<Buff>, IDisposable
 	{
-        [BsonElement]
-        private int configId { get; set; }
+		[BsonElement]
+		private int configId { get; set; }
 
 		[BsonElement]
 		private ObjectId ownerId;
 
-        [BsonElement]
-        private long expiration;
+		[BsonElement]
+		private long expiration;
 
-        [BsonIgnore]
-        private ObjectId timerId;
+		[BsonIgnore]
+		private ObjectId timerId;
 
-        [BsonIgnore]
-        public long Expiration 
-        {
-            get
-            {
-                return this.expiration;
-            }
-            set
-            {
-                this.expiration = value;
-            }
-        }
+		[BsonIgnore]
+		public long Expiration
+		{
+			get
+			{
+				return this.expiration;
+			}
+			set
+			{
+				this.expiration = value;
+			}
+		}
 
-        [BsonIgnore]
-        public ObjectId TimerId 
-        {
-            get
-            {
-                return this.timerId;
-            }
-            set
-            {
-                this.timerId = value;
-            }
-        }
+		[BsonIgnore]
+		public ObjectId TimerId
+		{
+			get
+			{
+				return this.timerId;
+			}
+			set
+			{
+				this.timerId = value;
+			}
+		}
 
-        public Buff(int configId, ObjectId ownerId)
-        {
-            this.configId = configId;
+		public Buff(int configId, ObjectId ownerId)
+		{
+			this.configId = configId;
 			this.ownerId = ownerId;
-            if (this.Config.Duration != 0)
-            {
-                this.Expiration = TimeHelper.Now() + this.Config.Duration;
-            }
+			if (this.Config.Duration != 0)
+			{
+				this.Expiration = TimeHelper.Now() + this.Config.Duration;
+			}
 
 			if (this.Expiration != 0)
 			{
@@ -65,7 +65,7 @@ namespace Model
 				this.TimerId = World.Instance.GetComponent<TimerComponent>()
 						.Add(this.Expiration, CallbackType.BuffTimeoutCallback, env);
 			}
-        }
+		}
 
 		protected void Dispose(bool disposing)
 		{
@@ -74,8 +74,9 @@ namespace Model
 				return;
 			}
 
-			// Buff在垃圾回收或者主动Dispose,都需要释放Timer回调
+			// Buff在垃圾回收或者主动Dispose,都需要释放Timer回调.非托管资源
 			World.Instance.GetComponent<TimerComponent>().Remove(this.TimerId);
+
 			this.expiration = 0;
 		}
 
@@ -87,11 +88,6 @@ namespace Model
 		public void Dispose()
 		{
 			this.Dispose(true);
-		}
-
-		public override void BeginInit()
-		{
-			base.BeginInit();
 		}
 
 		public override void EndInit()
@@ -110,20 +106,20 @@ namespace Model
 		}
 
 		[BsonIgnore]
-        public BuffConfig Config
-        {
-            get
-            {
-                return World.Instance.GetComponent<ConfigComponent>().Get<BuffConfig>(this.configId);
-            }
-        }
+		public BuffConfig Config
+		{
+			get
+			{
+				return World.Instance.GetComponent<ConfigComponent>().Get<BuffConfig>(this.configId);
+			}
+		}
 
 		[BsonIgnore]
 		public ObjectId OwnerId
 		{
 			get
 			{
-				return ownerId;
+				return this.ownerId;
 			}
 
 			set

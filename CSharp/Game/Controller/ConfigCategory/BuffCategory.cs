@@ -3,8 +3,8 @@ using Model;
 
 namespace Controller
 {
-    [Config]
-    public class BuffCategory : ACategory<BuffConfig>
-    {
-    }
+	[Config]
+	public class BuffCategory: ACategory<BuffConfig>
+	{
+	}
 }

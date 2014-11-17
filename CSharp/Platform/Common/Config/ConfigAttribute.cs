@@ -2,8 +2,8 @@
 
 namespace Common.Config
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ConfigAttribute: Attribute
-    {
-    }
+	[AttributeUsage(AttributeTargets.Class)]
+	public class ConfigAttribute: Attribute
+	{
+	}
 }

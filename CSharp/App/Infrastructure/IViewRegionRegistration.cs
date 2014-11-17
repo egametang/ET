@@ -17,8 +17,8 @@
 
 namespace Infrastructure
 {
-    public interface IViewRegionRegistration
-    {
-        string RegionName { get; }
-    }
+	public interface IViewRegionRegistration
+	{
+		string RegionName { get; }
+	}
 }

@@ -3,17 +3,17 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Config
 {
-    public abstract class AConfig : ISupportInitialize
-    {
-        [BsonId]
-        public int Id { get; set; }
+	public abstract class AConfig: ISupportInitialize
+	{
+		[BsonId]
+		public int Id { get; set; }
 
-        public virtual void BeginInit()
-        {
-        }
+		public virtual void BeginInit()
+		{
+		}
 
-        public virtual void EndInit()
-        {
-        }
-    }
+		public virtual void EndInit()
+		{
+		}
+	}
 }

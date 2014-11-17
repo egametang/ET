@@ -2,14 +2,14 @@
 
 namespace Common.Event
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public abstract class AEventAttribute : Attribute
-    {
-        public int Type { get; private set; }
+	[AttributeUsage(AttributeTargets.Class)]
+	public abstract class AEventAttribute: Attribute
+	{
+		public int Type { get; private set; }
 
-        protected AEventAttribute(int type)
-        {
-            this.Type = type;
-        }
-    }
+		protected AEventAttribute(int type)
+		{
+			this.Type = type;
+		}
+	}
 }

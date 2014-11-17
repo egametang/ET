@@ -3,8 +3,8 @@ using Model;
 
 namespace Controller
 {
-    [Config]
-    public class UnitCategory : ACategory<UnitConfig>
-    {
-    }
+	[Config]
+	public class UnitCategory: ACategory<UnitConfig>
+	{
+	}
 }

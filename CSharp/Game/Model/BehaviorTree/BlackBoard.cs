@@ -2,7 +2,7 @@
 
 namespace Model
 {
-    public class BlackBoard: Object
-    {
-    }
+	public class BlackBoard: Object
+	{
+	}
 }

@@ -2,7 +2,7 @@
 
 namespace Common.Event
 {
-    public class Env: Object
-    {
-    }
+	public class Env: Object
+	{
+	}
 }

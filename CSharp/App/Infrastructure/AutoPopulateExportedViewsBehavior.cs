@@ -21,45 +21,43 @@ using Microsoft.Practices.Prism.Regions;
 
 namespace Infrastructure
 {
-    [Export(typeof (AutoPopulateExportedViewsBehavior)),
-     PartCreationPolicy(CreationPolicy.NonShared)]
-    public class AutoPopulateExportedViewsBehavior: RegionBehavior,
-            IPartImportsSatisfiedNotification
-    {
-        [ImportMany(AllowRecomposition = true)]
-        public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
+	[Export(typeof (AutoPopulateExportedViewsBehavior)), PartCreationPolicy(CreationPolicy.NonShared)]
+	public class AutoPopulateExportedViewsBehavior: RegionBehavior, IPartImportsSatisfiedNotification
+	{
+		[ImportMany(AllowRecomposition = true)]
+		public Lazy<object, IViewRegionRegistration>[] RegisteredViews { get; set; }
 
-        public void OnImportsSatisfied()
-        {
-            this.AddRegisteredViews();
-        }
+		public void OnImportsSatisfied()
+		{
+			this.AddRegisteredViews();
+		}
 
-        protected override void OnAttach()
-        {
-            this.AddRegisteredViews();
-        }
+		protected override void OnAttach()
+		{
+			this.AddRegisteredViews();
+		}
 
-        private void AddRegisteredViews()
-        {
-            if (this.Region == null)
-            {
-                return;
-            }
+		private void AddRegisteredViews()
+		{
+			if (this.Region == null)
+			{
+				return;
+			}
 
-            foreach (var viewEntry in this.RegisteredViews)
-            {
-                if (viewEntry.Metadata.RegionName != this.Region.Name)
-                {
-                    continue;
-                }
+			foreach (var viewEntry in this.RegisteredViews)
+			{
+				if (viewEntry.Metadata.RegionName != this.Region.Name)
+				{
+					continue;
+				}
 
-                object view = viewEntry.Value;
+				object view = viewEntry.Value;
 
-                if (!this.Region.Views.Contains(view))
-                {
-                    this.Region.Add(view);
-                }
-            }
-        }
-    }
+				if (!this.Region.Views.Contains(view))
+				{
+					this.Region.Add(view);
+				}
+			}
+		}
+	}
 }
