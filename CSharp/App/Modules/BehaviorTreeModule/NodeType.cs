@@ -19,6 +19,19 @@
 		TargetDie = 100010,
 		TargetDistance = 100011,
 		UnitState = 100012,
+		// 与主角的距离
+		ProtagonistDistance = 100013,
+		OwnEffect = 100014,
+		// 属性比较
+		NumbericCompare = 100015,
+		// 连续受击数
+		ContinuousBeHitted = 100016,
+		// 携带的技能是否匹配前缀
+		HaveSpellWithPrefix = 100017,
+		// 匹配前缀的技能是否在cd中
+		SpellPrefixInCD = 100018,
+
+
 
 		// action节点 20000开始
 		CastSpell = 20000,
@@ -32,5 +45,6 @@
 		CloseTarget = 20008,
 		LeaveTarget = 20009,
 		PathPatrol = 20010,
+		CastPrefixSpell = 20011,
 	}
 }
