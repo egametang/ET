@@ -1,17 +1,17 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace TNet
 {
 	public class TPoller
 	{
-		private readonly BlockingCollection<TSocketState> blockingCollection = new BlockingCollection<TSocketState>();
-
-		public HashSet<TSocket> CanWriteSocket = new HashSet<TSocket>();
-
-		public void Add(TSocketState tSocketState)
+		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
+		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
+		
+		public void Add(Action action)
 		{
-			this.blockingCollection.Add(tSocketState);
+			this.blockingCollection.Add(action);
 		}
 
 		public void Dispose()
@@ -20,38 +20,29 @@ namespace TNet
 
 		public void RunOnce(int timeout)
 		{
-			foreach (TSocket socket in CanWriteSocket)
-			{
-				if (socket.IsSending)
-				{
-					continue;
-				}
-				socket.BeginSend();
-			}
-			this.CanWriteSocket.Clear();
-
-			TSocketState socketState;
-			if (!this.blockingCollection.TryTake(out socketState, timeout))
+			// 处理读写线程的回调
+			Action action;
+			if (!this.blockingCollection.TryTake(out action, timeout))
 			{
 				return;
 			}
 
-			var stateQueue = new Queue<TSocketState>();
-			stateQueue.Enqueue(socketState);
+			var queue = new Queue<Action>();
+			queue.Enqueue(action);
 
 			while (true)
 			{
-				if (!this.blockingCollection.TryTake(out socketState, 0))
+				if (!this.blockingCollection.TryTake(out action, 0))
 				{
 					break;
 				}
-				stateQueue.Enqueue(socketState);
+				queue.Enqueue(action);
 			}
 
-			while (stateQueue.Count > 0)
+			while (queue.Count > 0)
 			{
-				TSocketState state = stateQueue.Dequeue();
-				state.Run();
+				Action a = queue.Dequeue();
+				a();
 			}
 		}
 
@@ -59,7 +50,7 @@ namespace TNet
 		{
 			while (true)
 			{
-				this.RunOnce(1);
+				this.RunOnce(10);
 			}
 		}
 	}
