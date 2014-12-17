@@ -30,6 +30,8 @@
 		HaveSpellWithPrefix = 100017,
 		// 匹配前缀的技能是否在cd中
 		SpellPrefixInCD = 100018,
+		// 开启了跟随模式
+		EnableFollow = 100019,
 
 
 
@@ -46,5 +48,7 @@
 		LeaveTarget = 20009,
 		PathPatrol = 20010,
 		CastPrefixSpell = 20011,
+		// 跟随unit
+		FollowUnit = 20012,
 	}
 }

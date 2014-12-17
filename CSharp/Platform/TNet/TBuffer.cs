@@ -5,76 +5,101 @@ namespace TNet
 {
 	public class TBuffer
 	{
-		public const int chunkSize = 8096;
+		public const int ChunkSize = 8096;
 
-		private LinkedList<byte[]> buffer = new LinkedList<byte[]>();
+		private readonly LinkedList<byte[]> bufferList = new LinkedList<byte[]>();
 
-		private int writeIndex;
+		public int LastIndex { get; set; }
 
-		private int readIndex;
+		public int FirstIndex { get; set; }
 
 		public int Count
 		{
 			get
 			{
-				if (this.buffer.Count == 0)
+				if (this.bufferList.Count == 0)
 				{
 					return 0;
 				}
-				return (this.buffer.Count - 1) * chunkSize + this.writeIndex - this.readIndex;
+				return (this.bufferList.Count - 1) * ChunkSize + this.LastIndex - this.FirstIndex;
 			}
 		}
 
-		public byte[] ReadFrom(int n)
+		public void AddLast()
 		{
+			this.bufferList.AddLast(new byte[ChunkSize]);
+		}
+
+		public void RemoveFirst()
+		{
+			this.bufferList.RemoveFirst();
+		}
+
+		public byte[] First
+		{
+			get
+			{
+				return this.bufferList.First.Value;
+			}
+		}
+
+		public byte[] Last
+		{
+			get
+			{
+				return this.bufferList.Last.Value;
+			}
+		}
+
+		public void RecvFrom(byte[] buffer)
+		{
+			int n = buffer.Length;
 			if (this.Count < n || n <= 0)
 			{
-				throw new Exception(string.Format("buffer size < n, buffer: {0} n: {1}", this.Count, n));
+				throw new Exception(string.Format("bufferList size < n, bufferList: {0} n: {1}", this.Count, n));
 			}
-			byte[] bytes = new byte[n];
 			int alreadyCopyCount = n;
 			while (alreadyCopyCount < n)
 			{
-				if (chunkSize - this.readIndex > n - alreadyCopyCount)
+				if (ChunkSize - this.FirstIndex > n - alreadyCopyCount)
 				{
-					Array.Copy(this.buffer.First.Value, this.readIndex, bytes, alreadyCopyCount,
+					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount,
 							n - alreadyCopyCount);
-					this.readIndex += n - alreadyCopyCount;
+					this.FirstIndex += n - alreadyCopyCount;
 					alreadyCopyCount = n;
 				}
 				else
 				{
-					Array.Copy(this.buffer.First.Value, this.readIndex, bytes, alreadyCopyCount,
-							chunkSize - this.readIndex);
-					alreadyCopyCount += chunkSize - this.readIndex;
-					this.readIndex = 0;
-					this.buffer.RemoveFirst();
+					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount,
+							ChunkSize - this.FirstIndex);
+					alreadyCopyCount += ChunkSize - this.FirstIndex;
+					this.FirstIndex = 0;
+					this.bufferList.RemoveFirst();
 				}
 			}
-			return bytes;
 		}
 
-		public void WriteTo(byte[] bytes)
+		public void SendTo(byte[] buffer)
 		{
 			int alreadyCopyCount = 0;
-			while (alreadyCopyCount < bytes.Length)
+			while (alreadyCopyCount < buffer.Length)
 			{
-				if (this.writeIndex == 0)
+				if (this.LastIndex == 0)
 				{
-					this.buffer.AddLast(new byte[chunkSize]);
+					this.bufferList.AddLast(new byte[ChunkSize]);
 				}
-				if (chunkSize - this.writeIndex > alreadyCopyCount)
+				if (ChunkSize - this.LastIndex > alreadyCopyCount)
 				{
-					Array.Copy(bytes, alreadyCopyCount, this.buffer.Last.Value, this.writeIndex, alreadyCopyCount);
-					this.writeIndex += alreadyCopyCount;
+					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, alreadyCopyCount);
+					this.LastIndex += alreadyCopyCount;
 					alreadyCopyCount = 0;
 				}
 				else
 				{
-					Array.Copy(bytes, alreadyCopyCount, this.buffer.Last.Value, this.writeIndex,
-							chunkSize - this.writeIndex);
-					alreadyCopyCount -= chunkSize - this.writeIndex;
-					this.writeIndex = 0;
+					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex,
+							ChunkSize - this.LastIndex);
+					alreadyCopyCount -= ChunkSize - this.LastIndex;
+					this.LastIndex = 0;
 				}
 			}
 		}
