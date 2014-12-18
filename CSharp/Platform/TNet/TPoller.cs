@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TNet
 {
-	public class TPoller
+	public class TPoller : IPoller
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
 		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
@@ -50,7 +50,7 @@ namespace TNet
 		{
 			while (true)
 			{
-				this.RunOnce(10);
+				this.RunOnce(1);
 			}
 		}
 	}

@@ -58,11 +58,11 @@ namespace TNet
 			{
 				throw new Exception(string.Format("bufferList size < n, bufferList: {0} n: {1}", this.Count, n));
 			}
-			int alreadyCopyCount = n;
+			int alreadyCopyCount = 0;
 			while (alreadyCopyCount < n)
 			{
 				if (ChunkSize - this.FirstIndex > n - alreadyCopyCount)
-				{
+				{ 
 					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount,
 							n - alreadyCopyCount);
 					this.FirstIndex += n - alreadyCopyCount;

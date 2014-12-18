@@ -1,89 +1,49 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace TNet
 {
-	public class TSocket: IDisposable
+	public class TSocket
 	{
-		private Socket socket;
-		private readonly TPoller poller;
-		private readonly SocketAsyncEventArgs innSocketAsyncEventArgs = new SocketAsyncEventArgs();
-		private readonly SocketAsyncEventArgs outSocketAsyncEventArgs = new SocketAsyncEventArgs();
-		private readonly TBuffer recvBuffer = new TBuffer();
-		private readonly TBuffer sendBuffer = new TBuffer();
-		public Action RecvAction { get; set; }
-		public Action<TSocket> AcceptAction { get; set; }
+		private IPoller poller;
+		private readonly Socket socket;
+		private readonly SocketAsyncEventArgs socketAsyncEventArgs = new SocketAsyncEventArgs();
 
-		public TSocket(TPoller poller)
+		public TSocket(IPoller poller)
 		{
 			this.poller = poller;
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			this.outSocketAsyncEventArgs.Completed += this.OnComplete;
-			this.innSocketAsyncEventArgs.Completed += this.OnComplete;
+			this.socketAsyncEventArgs.Completed += this.OnComplete;
 		}
 
-		public TSocket(TPoller poller, Socket socket)
+		public Socket Socket
 		{
-			this.poller = poller;
-			this.socket = socket;
-			this.outSocketAsyncEventArgs.Completed += this.OnComplete;
-			this.innSocketAsyncEventArgs.Completed += this.OnComplete;
+			get
+			{
+				return this.socket;
+			}
 		}
 
 		public void Dispose()
 		{
-			if (this.socket == null)
+			if (this.poller == null)
 			{
 				return;
 			}
-			socket.Dispose();
-			this.socket = null;
+			this.socket.Dispose();
+			this.poller = null;
 		}
 
-		public void Connect(string host, int port)
+		public void Bind(string host, int port)
 		{
-			if (socket.ConnectAsync(this.innSocketAsyncEventArgs))
-			{
-				return;
-			}
-
-			this.poller.Add(this.OnConnComplete);
+			this.socket.Bind(new IPEndPoint(IPAddress.Parse(host), port));
 		}
 
-		public void Accept(int port)
+		public void Listen(int backlog)
 		{
-			this.socket.Bind(new IPEndPoint(IPAddress.Any, port));
-			this.socket.Listen(100);
-			this.BeginAccept();
-		}
-
-		public bool Recv(byte[] buffer)
-		{
-			if (buffer.Length > this.RecvSize)
-			{
-				return false;
-			}
-			this.recvBuffer.RecvFrom(buffer);
-			return true;
-		}
-
-		public void Send(byte[] buffer)
-		{
-			bool needBeginSend = this.sendBuffer.Count == 0;
-			this.sendBuffer.SendTo(buffer);
-			if (needBeginSend)
-			{
-				this.BeginSend();
-			}
-		}
-
-		public int RecvSize
-		{
-			get
-			{
-				return this.recvBuffer.Count;
-			}
+			this.socket.Listen(backlog);
 		}
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -92,157 +52,119 @@ namespace TNet
 			switch (e.LastOperation)
 			{
 				case SocketAsyncOperation.Accept:
-					action = () => this.OnAcceptComplete(e.AcceptSocket);
+					action = () => OnAcceptComplete(e);
 					e.AcceptSocket = null;
 					break;
 				case SocketAsyncOperation.Connect:
-					action = this.OnConnComplete;
+					action = () => OnConnectComplete(e);
 					break;
 				case SocketAsyncOperation.Disconnect:
-					action = this.OnDisconnect;
+					action = () => OnDisconnectComplete(e);
 					break;
 				case SocketAsyncOperation.Receive:
-					action = () => this.OnRecvComplete(e.BytesTransferred);
+					action = () => OnRecvComplete(e);
 					break;
 				case SocketAsyncOperation.Send:
-					action = () => this.OnSendComplete(e.BytesTransferred);
+					action = () => OnSendComplete(e);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-			
+
 			this.poller.Add(action);
 		}
 
-		private void OnDisconnect()
+		public Task<bool> ConnectAsync(string host, int port)
 		{
-			this.Dispose();
+			var tcs = new TaskCompletionSource<bool>();
+			this.socketAsyncEventArgs.UserToken = tcs;
+			this.socketAsyncEventArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+			if (!this.socket.ConnectAsync(this.socketAsyncEventArgs))
+			{
+				this.poller.Add(() => { OnConnectComplete(this.socketAsyncEventArgs); });
+			}
+			return tcs.Task;
 		}
 
-		private void OnAcceptComplete(Socket sock)
+		private static void OnConnectComplete(SocketAsyncEventArgs e)
 		{
-			if (this.socket == null)
-			{
-				return;
-			}
-
-			TSocket newSocket = new TSocket(poller, sock);
-			if (this.AcceptAction != null)
-			{
-				this.AcceptAction(newSocket);
-			}
-			this.BeginAccept();
+			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			tcs.SetResult(true);
 		}
 
-		private void OnConnComplete()
+		public Task<bool> AcceptAsync(TSocket accpetSocket)
 		{
-			if (this.socket == null)
+			var tcs = new TaskCompletionSource<bool>();
+			this.socketAsyncEventArgs.UserToken = tcs;
+			this.socketAsyncEventArgs.AcceptSocket = accpetSocket.socket;
+			if (!this.socket.AcceptAsync(this.socketAsyncEventArgs))
 			{
-				return;
+				Action action = () => OnAcceptComplete(this.socketAsyncEventArgs);
+				this.poller.Add(action);
 			}
-			this.BeginRecv();
+			return tcs.Task;
 		}
 
-		private void OnRecvComplete(int bytesTransferred)
+		private static void OnAcceptComplete(SocketAsyncEventArgs e)
 		{
-			if (this.socket == null)
-			{
-				return;
-			}
-			this.recvBuffer.LastIndex += bytesTransferred;
-			if (this.recvBuffer.LastIndex == TBuffer.ChunkSize)
-			{
-				this.recvBuffer.LastIndex = 0;
-				this.recvBuffer.AddLast();
-			}
-
-			this.BeginRecv();
-
-			if (this.RecvAction != null)
-			{
-				this.RecvAction();
-			}
+			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			tcs.SetResult(true);
 		}
 
-		private void OnSendComplete(int bytesTransferred)
+		public Task<int> RecvAsync(byte[] buffer, int offset, int count)
 		{
-			if (this.socket == null)
+			var tcs = new TaskCompletionSource<int>();
+			this.socketAsyncEventArgs.UserToken = tcs;
+			this.socketAsyncEventArgs.SetBuffer(buffer, offset, count);
+			if (!this.socket.ReceiveAsync(this.socketAsyncEventArgs))
 			{
-				return;
+				Action action = () => OnRecvComplete(this.socketAsyncEventArgs);
+				this.poller.Add(action);
 			}
-
-			this.sendBuffer.FirstIndex += bytesTransferred;
-			if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
-			{
-				this.sendBuffer.FirstIndex = 0;
-				this.sendBuffer.RemoveFirst();
-			}
-
-			// 如果没有数据可以发送,则返回
-			if (this.sendBuffer.Count == 0)
-			{
-				return;
-			}
-
-			// 继续发送数据
-			this.BeginSend();
+			return tcs.Task;
 		}
 
-		private void BeginAccept()
+		private static void OnRecvComplete(SocketAsyncEventArgs e)
 		{
-			if (this.socket == null)
-			{
-				return;
-			}
-
-			if (this.socket.AcceptAsync(this.innSocketAsyncEventArgs))
-			{
-				return;
-			}
-			Action action = () => this.OnAcceptComplete(this.innSocketAsyncEventArgs.AcceptSocket);
-			this.poller.Add(action);
+			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			tcs.SetResult(e.BytesTransferred);
 		}
 
-		private void BeginRecv()
+		public Task<int> SendAsync(byte[] buffer, int offset, int count)
 		{
-			if (this.socket == null)
+			var tcs = new TaskCompletionSource<int>();
+			this.socketAsyncEventArgs.UserToken = tcs;
+			this.socketAsyncEventArgs.SetBuffer(buffer, offset, count);
+			if (!this.socket.SendAsync(this.socketAsyncEventArgs))
 			{
-				return;
+				Action action = () => OnSendComplete(this.socketAsyncEventArgs);
+				this.poller.Add(action);
 			}
-
-			this.innSocketAsyncEventArgs.SetBuffer(this.recvBuffer.Last, this.recvBuffer.LastIndex, TBuffer.ChunkSize - this.recvBuffer.LastIndex);
-			if (this.socket.ReceiveAsync(this.innSocketAsyncEventArgs))
-			{
-				return;
-			}
-
-			Action action = () => this.OnRecvComplete(this.innSocketAsyncEventArgs.BytesTransferred);
-			this.poller.Add(action);
+			return tcs.Task;
 		}
 
-		private void BeginSend()
+		private static void OnSendComplete(SocketAsyncEventArgs e)
 		{
-			if (this.socket == null)
-			{
-				return;
-			}
+			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			tcs.SetResult(e.BytesTransferred);
+		}
 
-			int count = 0;
-			if (TBuffer.ChunkSize - this.sendBuffer.FirstIndex < this.sendBuffer.Count)
+		public Task<bool> DisconnectAsync()
+		{
+			var tcs = new TaskCompletionSource<bool>();
+			this.socketAsyncEventArgs.UserToken = tcs;
+			if (!this.socket.DisconnectAsync(this.socketAsyncEventArgs))
 			{
-				count = TBuffer.ChunkSize - this.sendBuffer.FirstIndex;
+				Action action = () => OnDisconnectComplete(this.socketAsyncEventArgs);
+				this.poller.Add(action);
 			}
-			else
-			{
-				count = this.sendBuffer.Count;
-			}
-			this.outSocketAsyncEventArgs.SetBuffer(this.sendBuffer.First, this.sendBuffer.FirstIndex, count);
-			if (this.socket.SendAsync(outSocketAsyncEventArgs))
-			{
-				return;
-			}
-			Action action = () => this.OnSendComplete(this.outSocketAsyncEventArgs.BytesTransferred);
-			this.poller.Add(action);
+			return tcs.Task;
+		}
+
+		private static void OnDisconnectComplete(SocketAsyncEventArgs e)
+		{
+			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			tcs.SetResult(true);
 		}
 	}
 }
