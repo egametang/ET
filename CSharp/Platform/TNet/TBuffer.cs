@@ -39,6 +39,10 @@ namespace TNet
 		{
 			get
 			{
+				if (this.bufferList.First == null)
+				{
+					this.AddLast();
+				}
 				return this.bufferList.First.Value;
 			}
 		}
@@ -47,26 +51,29 @@ namespace TNet
 		{
 			get
 			{
+				if (this.bufferList.Last == null)
+				{
+					this.AddLast();
+				}
 				return this.bufferList.Last.Value;
 			}
 		}
 
 		public void RecvFrom(byte[] buffer)
 		{
-			int n = buffer.Length;
-			if (this.Count < n || n <= 0)
+			if (this.Count < buffer.Length || buffer.Length == 0)
 			{
-				throw new Exception(string.Format("bufferList size < n, bufferList: {0} n: {1}", this.Count, n));
+				throw new Exception(string.Format("bufferList size < n, bufferList: {0} buffer length: {1}", this.Count, buffer.Length));
 			}
 			int alreadyCopyCount = 0;
-			while (alreadyCopyCount < n)
+			while (alreadyCopyCount < buffer.Length)
 			{
-				if (ChunkSize - this.FirstIndex > n - alreadyCopyCount)
+				int n = buffer.Length - alreadyCopyCount;
+				if (ChunkSize - this.FirstIndex > n)
 				{ 
-					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount,
-							n - alreadyCopyCount);
-					this.FirstIndex += n - alreadyCopyCount;
-					alreadyCopyCount = n;
+					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount, n);
+					this.FirstIndex += n;
+					alreadyCopyCount += n;
 				}
 				else
 				{
@@ -88,17 +95,18 @@ namespace TNet
 				{
 					this.bufferList.AddLast(new byte[ChunkSize]);
 				}
-				if (ChunkSize - this.LastIndex > alreadyCopyCount)
+				int n = buffer.Length - alreadyCopyCount;
+				if (ChunkSize - this.LastIndex > n)
 				{
-					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, alreadyCopyCount);
-					this.LastIndex += alreadyCopyCount;
-					alreadyCopyCount = 0;
+					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, n);
+					this.LastIndex += buffer.Length - alreadyCopyCount;
+					alreadyCopyCount += n;
 				}
 				else
 				{
 					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex,
 							ChunkSize - this.LastIndex);
-					alreadyCopyCount -= ChunkSize - this.LastIndex;
+					alreadyCopyCount += ChunkSize - this.LastIndex;
 					this.LastIndex = 0;
 				}
 			}

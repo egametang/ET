@@ -1,4 +1,5 @@
 ﻿using System;
+using MongoDB.Bson;
 
 namespace TNet
 {
@@ -6,8 +7,6 @@ namespace TNet
 	{
 		void Add(Action action);
 
-		void RunOnce(int timeout);
-
-		void Run();
+		void Run(int timeout);
 	}
 }

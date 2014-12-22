@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Common.Base;
+using MongoDB.Bson;
 
 namespace TNet
 {
@@ -18,39 +20,30 @@ namespace TNet
 		{
 		}
 
-		public void RunOnce(int timeout)
+		public void Run(int timeout)
 		{
 			// 处理读写线程的回调
 			Action action;
-			if (!this.blockingCollection.TryTake(out action, timeout))
+			if (this.blockingCollection.TryTake(out action, timeout))
 			{
-				return;
-			}
 
-			var queue = new Queue<Action>();
-			queue.Enqueue(action);
-
-			while (true)
-			{
-				if (!this.blockingCollection.TryTake(out action, 0))
-				{
-					break;
-				}
+				var queue = new Queue<Action>();
 				queue.Enqueue(action);
-			}
 
-			while (queue.Count > 0)
-			{
-				Action a = queue.Dequeue();
-				a();
-			}
-		}
+				while (true)
+				{
+					if (!this.blockingCollection.TryTake(out action, 0))
+					{
+						break;
+					}
+					queue.Enqueue(action);
+				}
 
-		public void Run()
-		{
-			while (true)
-			{
-				this.RunOnce(1);
+				while (queue.Count > 0)
+				{
+					Action a = queue.Dequeue();
+					a();
+				}
 			}
 		}
 	}

@@ -9,13 +9,31 @@ namespace TNet
 	{
 		private IPoller poller;
 		private readonly Socket socket;
-		private readonly SocketAsyncEventArgs socketAsyncEventArgs = new SocketAsyncEventArgs();
+		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
+		private readonly SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
 
 		public TSocket(IPoller poller)
 		{
 			this.poller = poller;
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			this.socketAsyncEventArgs.Completed += this.OnComplete;
+			this.innArgs.Completed += this.OnComplete;
+			this.outArgs.Completed += this.OnComplete;
+		}
+
+		public IPoller Poller
+		{
+			get
+			{
+				return this.poller;
+			}
+		}
+
+		public string RemoteAddress
+		{
+			get
+			{
+				return ((IPEndPoint)socket.RemoteEndPoint).Address + ":" + ((IPEndPoint)socket.RemoteEndPoint).Port;
+			}
 		}
 
 		public Socket Socket
@@ -53,7 +71,6 @@ namespace TNet
 			{
 				case SocketAsyncOperation.Accept:
 					action = () => OnAcceptComplete(e);
-					e.AcceptSocket = null;
 					break;
 				case SocketAsyncOperation.Connect:
 					action = () => OnConnectComplete(e);
@@ -77,11 +94,11 @@ namespace TNet
 		public Task<bool> ConnectAsync(string host, int port)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			this.socketAsyncEventArgs.UserToken = tcs;
-			this.socketAsyncEventArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
-			if (!this.socket.ConnectAsync(this.socketAsyncEventArgs))
+			this.outArgs.UserToken = tcs;
+			this.outArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
+			if (!this.socket.ConnectAsync(this.outArgs))
 			{
-				this.poller.Add(() => { OnConnectComplete(this.socketAsyncEventArgs); });
+				OnConnectComplete(this.outArgs);
 			}
 			return tcs.Task;
 		}
@@ -89,18 +106,23 @@ namespace TNet
 		private static void OnConnectComplete(SocketAsyncEventArgs e)
 		{
 			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				return;
+			}
 			tcs.SetResult(true);
 		}
 
 		public Task<bool> AcceptAsync(TSocket accpetSocket)
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			this.socketAsyncEventArgs.UserToken = tcs;
-			this.socketAsyncEventArgs.AcceptSocket = accpetSocket.socket;
-			if (!this.socket.AcceptAsync(this.socketAsyncEventArgs))
+			this.innArgs.UserToken = tcs;
+			this.innArgs.AcceptSocket = accpetSocket.socket;
+			if (!this.socket.AcceptAsync(this.innArgs))
 			{
-				Action action = () => OnAcceptComplete(this.socketAsyncEventArgs);
-				this.poller.Add(action);
+				OnAcceptComplete(this.innArgs);
 			}
 			return tcs.Task;
 		}
@@ -108,18 +130,23 @@ namespace TNet
 		private static void OnAcceptComplete(SocketAsyncEventArgs e)
 		{
 			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				return;
+			}
 			tcs.SetResult(true);
 		}
 
 		public Task<int> RecvAsync(byte[] buffer, int offset, int count)
 		{
 			var tcs = new TaskCompletionSource<int>();
-			this.socketAsyncEventArgs.UserToken = tcs;
-			this.socketAsyncEventArgs.SetBuffer(buffer, offset, count);
-			if (!this.socket.ReceiveAsync(this.socketAsyncEventArgs))
+			this.innArgs.UserToken = tcs;
+			this.innArgs.SetBuffer(buffer, offset, count);
+			if (!this.socket.ReceiveAsync(this.innArgs))
 			{
-				Action action = () => OnRecvComplete(this.socketAsyncEventArgs);
-				this.poller.Add(action);
+				OnRecvComplete(this.innArgs);
 			}
 			return tcs.Task;
 		}
@@ -127,18 +154,23 @@ namespace TNet
 		private static void OnRecvComplete(SocketAsyncEventArgs e)
 		{
 			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				return;
+			}
 			tcs.SetResult(e.BytesTransferred);
 		}
 
 		public Task<int> SendAsync(byte[] buffer, int offset, int count)
 		{
 			var tcs = new TaskCompletionSource<int>();
-			this.socketAsyncEventArgs.UserToken = tcs;
-			this.socketAsyncEventArgs.SetBuffer(buffer, offset, count);
-			if (!this.socket.SendAsync(this.socketAsyncEventArgs))
+			this.outArgs.UserToken = tcs;
+			this.outArgs.SetBuffer(buffer, offset, count);
+			if (!this.socket.SendAsync(this.outArgs))
 			{
-				Action action = () => OnSendComplete(this.socketAsyncEventArgs);
-				this.poller.Add(action);
+				OnSendComplete(this.outArgs);
 			}
 			return tcs.Task;
 		}
@@ -146,17 +178,22 @@ namespace TNet
 		private static void OnSendComplete(SocketAsyncEventArgs e)
 		{
 			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				return;
+			}
 			tcs.SetResult(e.BytesTransferred);
 		}
 
 		public Task<bool> DisconnectAsync()
 		{
 			var tcs = new TaskCompletionSource<bool>();
-			this.socketAsyncEventArgs.UserToken = tcs;
-			if (!this.socket.DisconnectAsync(this.socketAsyncEventArgs))
+			this.outArgs.UserToken = tcs;
+			if (!this.socket.DisconnectAsync(this.outArgs))
 			{
-				Action action = () => OnDisconnectComplete(this.socketAsyncEventArgs);
-				this.poller.Add(action);
+				OnDisconnectComplete(this.outArgs);
 			}
 			return tcs.Task;
 		}
@@ -164,6 +201,12 @@ namespace TNet
 		private static void OnDisconnectComplete(SocketAsyncEventArgs e)
 		{
 			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				return;
+			}
 			tcs.SetResult(true);
 		}
 	}

@@ -19,7 +19,15 @@ namespace TNetTest
 		{
 			barrier = new Barrier(clientNum + 2);
 			IPoller poller = new TPoller();
-			Task.Factory.StartNew(() => poller.Run(), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() =>
+			{
+				while (true)
+				{
+					poller.Run(1);
+				}
+			}, 
+			
+			TaskCreationOptions.LongRunning);
 
 			poller.Add(() => Server(poller));
 			Thread.Sleep(500);
