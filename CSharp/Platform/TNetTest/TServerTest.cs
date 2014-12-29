@@ -10,9 +10,9 @@ namespace TNetTest
 	public class TServerTest
 	{
 		private Barrier barrier;
-		private const int clientNum = 100;
+		private const int clientNum = 10;
 
-		private const int sendNum = 10000;
+		private const int sendNum = 10000000;
 
 		[TestMethod]
 		public void SendRecv()

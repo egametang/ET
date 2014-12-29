@@ -6,6 +6,7 @@
 		Sequence = 2,
 		Not = 10,
 		Weight = 11,
+		True = 12,
 
 		// condition节点 10000开始
 		SelectTarget = 10000,
@@ -32,6 +33,8 @@
 		SpellPrefixInCD = 100018,
 		// 开启了跟随模式
 		EnableFollow = 100019,
+		// 方形陷阱选择目标
+		RectTrapSelectTarget = 100020,
 
 
 
