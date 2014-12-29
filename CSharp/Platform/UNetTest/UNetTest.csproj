@@ -6,8 +6,8 @@
     <ProjectGuid>{901A8E5C-C4C6-4C3C-8E18-068D75119F5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ENetTest</RootNamespace>
-    <AssemblyName>ENetTest</AssemblyName>
+    <RootNamespace>UNetTest</RootNamespace>
+    <AssemblyName>UNetTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -54,16 +54,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ENetClientServerTest.cs" />
+    <Compile Include="UNetClientServerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ENet\ENet.csproj">
+    <ProjectReference Include="..\UNet\UNet.csproj">
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
-      <Name>ENet</Name>
+      <Name>UNet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

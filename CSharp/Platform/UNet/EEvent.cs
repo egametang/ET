@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ENet
+namespace UNet
 {
 	public enum EventState
 	{

@@ -1,4 +1,4 @@
-﻿namespace ENet
+﻿namespace UNet
 {
 	public static class ErrorCode
 	{

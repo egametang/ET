@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace ENet
+namespace UNet
 {
 	internal sealed class EPacket: IDisposable
 	{

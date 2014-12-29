@@ -11,7 +11,7 @@
 */
 
 /** Creates a packet that may be sent to a peer.
-    @param dataContents initial contents of the packet's data; the packet's data will remain uninitialized if dataContents is NULL.
+    @param data         initial contents of the packet's data; the packet's data will remain uninitialized if data is NULL.
     @param dataLength   size of the data allocated for this packet
     @param flags        flags for this packet as described for the ENetPacket structure.
     @returns the packet on success, NULL on failure

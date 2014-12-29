@@ -2,13 +2,13 @@
 using System.Threading;
 using Common.Helper;
 using Common.Logger;
-using ENet;
+using UNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ENetTest
+namespace UNetTest
 {
 	[TestClass]
-	public class ENetClientServerTest
+	public class UNetClientServerTest
 	{
 		private const int pingPangCount = 10000;
 

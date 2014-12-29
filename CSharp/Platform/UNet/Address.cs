@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace ENet
+namespace UNet
 {
 	public struct Address
 	{

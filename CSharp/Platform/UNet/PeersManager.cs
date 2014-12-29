@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ENet
+namespace UNet
 {
 	internal class PeersManager
 	{

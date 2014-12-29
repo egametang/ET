@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ENet
+namespace UNet
 {
 	[Serializable]
 	public class EException: Exception
