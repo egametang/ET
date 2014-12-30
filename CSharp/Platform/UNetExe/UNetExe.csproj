@@ -44,9 +44,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ENetTest\ENetTest.csproj">
+    <ProjectReference Include="..\UNetTest\UNetTest.csproj">
       <Project>{901a8e5c-c4c6-4c3c-8e18-068d75119f5d}</Project>
-      <Name>ENetTest</Name>
+      <Name>UNetTest</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

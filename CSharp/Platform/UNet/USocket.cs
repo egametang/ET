@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Network;
 
 namespace UNet
 {
-	public sealed class ESocket: IDisposable
+	public sealed class USocket: IDisposable
 	{
 		private IntPtr peerPtr = IntPtr.Zero;
 		private readonly EService service;
@@ -16,7 +17,7 @@ namespace UNet
 		public Action<EEvent> Disconnect { get; set; }
 		public Action<int> Error { get; set; }
 
-		public ESocket(EService service)
+		public USocket(EService service)
 		{
 			this.service = service;
 		}
@@ -42,7 +43,7 @@ namespace UNet
 				this.peerPtr = value;
 			}
 		}
-
+		
 		private ENetPeer Struct
 		{
 			get
@@ -56,6 +57,15 @@ namespace UNet
 			set
 			{
 				Marshal.StructureToPtr(value, this.peerPtr, false);
+			}
+		}
+
+		public string RemoteAddress
+		{
+			get
+			{
+				ENetPeer peer = this.Struct;
+				return peer.Address.Host + ":" + peer.Address.Port;
 			}
 		}
 

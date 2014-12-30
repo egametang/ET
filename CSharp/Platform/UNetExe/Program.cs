@@ -1,4 +1,4 @@
-﻿using ENetTest;
+﻿using UNetTest;
 
 namespace ENetExe
 {
@@ -6,7 +6,7 @@ namespace ENetExe
 	{
 		private static void Main(string[] args)
 		{
-			var test = new ENetClientServerTest();
+			var test = new UNetClientServerTest();
 			test.ClientSendToServer();
 		}
 	}

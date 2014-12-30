@@ -1,94 +1,62 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Common.Helper;
-using Common.Logger;
 using UNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Network;
 
 namespace UNetTest
 {
 	[TestClass]
 	public class UNetClientServerTest
 	{
-		private const int pingPangCount = 10000;
+		private readonly Barrier barrier = new Barrier(3);
 
-		private static async void ClientEvent(EService service, string hostName, ushort port)
+		private async void ClientEvent(IService service, string hostName, ushort port)
 		{
-			var eSocket = new ESocket(service);
-			await eSocket.ConnectAsync(hostName, port);
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
-			for (int i = 0; i < pingPangCount; ++i)
-			{
-				eSocket.WriteAsync("0123456789".ToByteArray());
+			IChannel channel = await service.GetChannel(hostName, port);
+			channel.SendAsync("0123456789".ToByteArray());
 
-				var bytes = await eSocket.ReadAsync();
+			byte[] bytes = await channel.RecvAsync();
+			Assert.AreEqual("9876543210".ToByteArray(), bytes);
 
-				CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
-			}
-			stopWatch.Stop();
-			Log.Debug("time: {0}", stopWatch.ElapsedMilliseconds);
-			await eSocket.DisconnectAsync();
-			service.Stop();
+			barrier.RemoveParticipant();
 		}
 
-		private static async void ServerEvent(EService service, Barrier barrier)
+		private async void ServerEvent(IService service)
 		{
-			barrier.SignalAndWait();
+			IChannel channel = await service.GetChannel();
+			byte[] bytes = await channel.RecvAsync();
+			Assert.AreEqual("0123456789".ToByteArray(), bytes);
+			Array.Reverse(bytes);
+			channel.SendAsync(bytes);
 
-			bool isRunning = true;
-			while (isRunning)
-			{
-				Log.Debug("start accept");
-				var eSocket = new ESocket(service);
-				await eSocket.AcceptAsync();
-				eSocket.Disconnect += ev =>
-				{
-					isRunning = false;
-					service.Stop();
-				};
-				Echo(eSocket);
-			}
-		}
-
-		private static async void Echo(ESocket eSocket)
-		{
-			for (int i = 0; i < pingPangCount; ++i)
-			{
-				var bytes = await eSocket.ReadAsync();
-
-				CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
-
-				eSocket.WriteAsync("9876543210".ToByteArray());
-			}
+			barrier.RemoveParticipant();
 		}
 
 		[TestMethod]
 		public void ClientSendToServer()
 		{
 			const string hostName = "127.0.0.1";
-			const ushort port = 8888;
-			var clientHost = new EService();
-			var serverHost = new EService(hostName, port);
+			const ushort port = 8889;
+			IService clientService = new UService(hostName, 8888);
+			IService serverService = new UService(hostName, 8889);
 
-			var serverThread = new Thread(() => serverHost.Start());
-			var clientThread = new Thread(() => clientHost.Start());
+			Task.Factory.StartNew(() => clientService.Start(), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() => serverService.Start(), TaskCreationOptions.LongRunning);
 
-			serverThread.Start();
-			clientThread.Start();
-
-			var barrier = new Barrier(2);
+			
 
 			// 往server host线程增加事件,accept
-			serverHost.Events += () => ServerEvent(serverHost, barrier);
+			serverService.Add(() => ServerEvent(serverService));
 
-			barrier.SignalAndWait();
+			Thread.Sleep(1000);
 
 			// 往client host线程增加事件,client线程连接server
-			clientHost.Events += () => ClientEvent(clientHost, hostName, port);
+			clientService.Add(() => ClientEvent(clientService, hostName, port));
 
-			serverThread.Join();
-			clientThread.Join();
+			barrier.SignalAndWait();
 		}
 	}
 }

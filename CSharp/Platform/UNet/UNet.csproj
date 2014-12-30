@@ -48,10 +48,18 @@
     <Compile Include="PeersManager.cs" />
     <Compile Include="NativeStructs.cs" />
     <Compile Include="EPacket.cs" />
-    <Compile Include="ESocket.cs" />
+    <Compile Include="USocket.cs" />
+    <Compile Include="UChannel.cs" />
+    <Compile Include="UService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Network\Network.csproj">
+      <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
+      <Name>Network</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

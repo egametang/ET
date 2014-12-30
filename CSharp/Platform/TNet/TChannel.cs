@@ -1,68 +1,59 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Common.Helper;
 using Common.Logger;
 using MongoDB.Bson;
+using Network;
 
 namespace TNet
 {
-	public class TSession: IDisposable
+	internal class TChannel: IChannel
 	{
-		private const int RecvSendInterval = 100;
-		private readonly TServer server;
+		private const int SendInterval = 50;
+
+		private readonly TService service;
 		private TSocket socket;
+
 		private readonly TBuffer recvBuffer = new TBuffer();
 		private readonly TBuffer sendBuffer = new TBuffer();
-		public ObjectId SendTimer = ObjectId.Empty;
-		public ObjectId RecvTimer = ObjectId.Empty;
-		private event Action onRecv = () => { };
-		private event Action onSend = () => { };
 
-		public event Action OnRecv
-		{
-			add
-			{
-				this.onRecv += value;
-			}
-			remove
-			{
-				this.onRecv -= value;
-			} 
-		}
-		public event Action OnSend
-		{
-			add
-			{
-				this.onSend += value;
-			}
-			remove
-			{
-				this.onSend -= value;
-			}
-		}
+		private ObjectId sendTimer = ObjectId.Empty;
+		private Action onParseComplete = () => { };
+		private readonly PacketParser parser;
 
-		public TSession(TSocket socket, TServer server)
+		public TChannel(TSocket socket, TService service)
 		{
 			this.socket = socket;
-			this.server = server;
+			this.service = service;
+			this.parser = new PacketParser(recvBuffer);
+			Start();
 		}
 
 		public void Dispose()
 		{
-			if (this.socket == null)
+			if (socket == null)
 			{
 				return;
 			}
-			this.server.Remove(socket.RemoteAddress);
-			this.socket.Dispose();
+			this.service.Remove(this);
+			socket.Dispose();
 			this.socket = null;
 		}
 
-		public void Send(byte[] buffer)
+		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			this.sendBuffer.SendTo(buffer);
-			if (this.SendTimer == ObjectId.Empty)
+			if (this.sendTimer == ObjectId.Empty)
 			{
-				this.SendTimer = this.server.Timer.Add(TimeHelper.Now() + RecvSendInterval, this.SendTimerCallback);
+				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.SendTimerCallback);
+			}
+		}
+
+		public ObjectId SendTimer
+		{
+			get
+			{
+				return this.sendTimer;
 			}
 		}
 
@@ -96,24 +87,45 @@ namespace TNet
 				Log.Trace(e.ToString());
 			}
 
-			this.onSend();
-			this.SendTimer = ObjectId.Empty;
+			this.sendTimer = ObjectId.Empty;
 		}
 
-		public int RecvSize
+		public Task<byte[]> RecvAsync()
+		{
+			var tcs = new TaskCompletionSource<byte[]>();
+
+			if (parser.Parse())
+			{
+				tcs.SetResult(parser.GetPacket());
+			}
+			else
+			{
+				this.onParseComplete = () => this.ParseComplete(tcs);	
+			}
+			return tcs.Task;
+		}
+
+		public async Task<bool> DisconnnectAsync()
+		{
+			return await this.socket.DisconnectAsync();
+		}
+
+		public string RemoteAddress
 		{
 			get
 			{
-				return this.recvBuffer.Count;
+				return this.socket.RemoteAddress;
 			}
 		}
 
-		public void Recv(byte[] buffer)
+		private void ParseComplete(TaskCompletionSource<byte[]> tcs)
 		{
-			this.recvBuffer.RecvFrom(buffer);
+			byte[] packet = parser.GetPacket();
+			this.onParseComplete = () => { };
+			tcs.SetResult(packet);
 		}
 
-		public async void Start()
+		private async void Start()
 		{
 			try
 			{
@@ -133,9 +145,10 @@ namespace TNet
 						this.recvBuffer.LastIndex = 0;
 					}
 
-					if (this.RecvTimer == ObjectId.Empty)
+					// 解析封包
+					if (parser.Parse())
 					{
-						this.RecvTimer = this.server.Timer.Add(TimeHelper.Now() + RecvSendInterval, this.RecvTimerCallback);
+						this.onParseComplete();
 					}
 				}
 			}
@@ -143,12 +156,6 @@ namespace TNet
 			{
 				Log.Trace(e.ToString());
 			}
-		}
-
-		private void RecvTimerCallback()
-		{
-			this.onRecv();
-			this.RecvTimer = ObjectId.Empty;
 		}
 	}
 }

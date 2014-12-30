@@ -61,6 +61,10 @@
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Network\Network.csproj">
+      <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
+      <Name>Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UNet\UNet.csproj">
       <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
       <Name>UNet</Name>

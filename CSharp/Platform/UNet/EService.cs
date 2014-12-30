@@ -34,24 +34,12 @@ namespace UNet
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public EService(
-				string hostName, ushort port, uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
-				uint channelLimit = 0, uint incomingBandwidth = 0, uint outgoingBandwidth = 0)
+		public EService(string hostName, ushort port)
 		{
-			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("peerLimit: {0}", peerLimit));
-			}
-
-			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("channelLimit: {0}", channelLimit));
-			}
-
 			var address = new Address { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.EnetHostCreate(ref nativeAddress, peerLimit, channelLimit,
-					incomingBandwidth, outgoingBandwidth);
+			this.host = NativeMethods.EnetHostCreate(
+				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -59,22 +47,10 @@ namespace UNet
 			}
 		}
 
-		public EService(
-				uint peerLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, uint channelLimit = 0,
-				uint incomingBandwidth = 0, uint outgoingBandwidth = 0)
+		public EService()
 		{
-			if (peerLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("peerLimit: {0}", peerLimit));
-			}
-
-			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("channelLimit: {0}", channelLimit));
-			}
-
-			this.host = NativeMethods.EnetHostCreate(IntPtr.Zero, peerLimit, channelLimit, incomingBandwidth,
-					outgoingBandwidth);
+			this.host = NativeMethods.EnetHostCreate(
+				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -235,8 +211,8 @@ namespace UNet
 						// 这是一个connect peer
 						if (this.PeersManager.ContainsKey(eEvent.PeerPtr))
 						{
-							ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
-							eSocket.OnConnected(eEvent);
+							USocket uSocket = this.PeersManager[eEvent.PeerPtr];
+							uSocket.OnConnected(eEvent);
 						}
 								// accept peer
 						else
@@ -248,16 +224,16 @@ namespace UNet
 							}
 							else
 							{
-								ESocket eSocket = this.PeersManager[IntPtr.Zero];
-								eSocket.OnConnected(eEvent);
+								USocket uSocket = this.PeersManager[IntPtr.Zero];
+								uSocket.OnConnected(eEvent);
 							}
 						}
 						break;
 					}
 					case EventType.Receive:
 					{
-						ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
-						eSocket.OnReceived(eEvent);
+						USocket uSocket = this.PeersManager[eEvent.PeerPtr];
+						uSocket.OnReceived(eEvent);
 						break;
 					}
 					case EventType.Disconnect:
@@ -275,24 +251,24 @@ namespace UNet
 
 						// 链接已经被应用层接收
 						eEvent.EventState = EventState.DISCONNECTED;
-						ESocket eSocket = this.PeersManager[eEvent.PeerPtr];
+						USocket uSocket = this.PeersManager[eEvent.PeerPtr];
 						this.PeersManager.Remove(eEvent.PeerPtr);
 
 						// 等待的task将抛出异常
-						if (eSocket.Connected != null)
+						if (uSocket.Connected != null)
 						{
-							eSocket.OnConnected(eEvent);
+							uSocket.OnConnected(eEvent);
 						}
-						else if (eSocket.Received != null)
+						else if (uSocket.Received != null)
 						{
-							eSocket.OnReceived(eEvent);
+							uSocket.OnReceived(eEvent);
 						}
-						else if (eSocket.Disconnect != null)
+						else if (uSocket.Disconnect != null)
 						{
-							eSocket.OnDisconnect(eEvent);
+							uSocket.OnDisconnect(eEvent);
 						}
 
-						eSocket.OnError(ErrorCode.ClientDisconnect);
+						uSocket.OnError(ErrorCode.ClientDisconnect);
 						break;
 					}
 				}

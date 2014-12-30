@@ -5,11 +5,11 @@ namespace UNet
 {
 	internal class PeersManager
 	{
-		private readonly Dictionary<IntPtr, ESocket> peersManager = new Dictionary<IntPtr, ESocket>();
+		private readonly Dictionary<IntPtr, USocket> peersManager = new Dictionary<IntPtr, USocket>();
 
-		public void Add(IntPtr peerPtr, ESocket eSocket)
+		public void Add(IntPtr peerPtr, USocket uSocket)
 		{
-			this.peersManager.Add(peerPtr, eSocket);
+			this.peersManager.Add(peerPtr, uSocket);
 		}
 
 		public void Remove(IntPtr peerPtr)
@@ -26,7 +26,7 @@ namespace UNet
 			return false;
 		}
 
-		public ESocket this[IntPtr peerPtr]
+		public USocket this[IntPtr peerPtr]
 		{
 			get
 			{

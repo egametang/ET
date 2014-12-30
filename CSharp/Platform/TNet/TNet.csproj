@@ -51,17 +51,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPoller.cs" />
+    <Compile Include="PacketParser.cs" />
     <Compile Include="TPoller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TBuffer.cs" />
-    <Compile Include="TServer.cs" />
-    <Compile Include="TSession.cs" />
+    <Compile Include="TService.cs" />
+    <Compile Include="TChannel.cs" />
     <Compile Include="TSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Network\Network.csproj">
+      <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
+      <Name>Network</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

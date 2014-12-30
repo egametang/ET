@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Network;
 
 namespace UNet
 {
@@ -87,7 +88,7 @@ namespace UNet
 		{
 			get
 			{
-				var enetPacket = this.Struct;
+				ENetPacket enetPacket = this.Struct;
 				var bytes = new byte[enetPacket.DataLength];
 				Marshal.Copy(enetPacket.Data, bytes, 0, (int) enetPacket.DataLength);
 				return bytes;

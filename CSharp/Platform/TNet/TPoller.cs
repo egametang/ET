@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Common.Base;
-using MongoDB.Bson;
 
 namespace TNet
 {
-	public class TPoller : IPoller
+	internal class TPoller : IPoller
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
 		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();

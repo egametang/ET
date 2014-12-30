@@ -25,16 +25,7 @@ namespace UNet
 		AcknowledgingDisconnect = 8,
 		Zombie = 9
 	}
-
-	[Flags]
-	public enum PacketFlags
-	{
-		None = 0,
-		Reliable = 1 << 0,
-		Unsequenced = 1 << 1,
-		NoAllocate = 1 << 2
-	}
-
+	
 	[StructLayout(LayoutKind.Sequential)]
 	public struct ENetAddress
 	{
