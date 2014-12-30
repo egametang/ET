@@ -102,6 +102,7 @@ enet_host_create (const ENetAddress * address, size_t peerCount, size_t channelL
     host -> duplicatePeers = ENET_PROTOCOL_MAXIMUM_PEER_ID;
     host -> maximumPacketSize = ENET_HOST_DEFAULT_MAXIMUM_PACKET_SIZE;
     host -> maximumWaitingData = ENET_HOST_DEFAULT_MAXIMUM_WAITING_DATA;
+	host->checksum = enet_crc32;
 
     host -> compressor.context = NULL;
     host -> compressor.compress = NULL;

@@ -52,7 +52,8 @@ namespace UNet
 				{
 					return new ENetPeer();
 				}
-				return (ENetPeer) Marshal.PtrToStructure(this.peerPtr, typeof (ENetPeer));
+				ENetPeer peer = (ENetPeer) Marshal.PtrToStructure(this.peerPtr, typeof (ENetPeer));
+				return peer;
 			}
 			set
 			{
@@ -175,11 +176,11 @@ namespace UNet
 			// 如果有缓存的包,从缓存中取
 			if (this.recvBuffer.Count > 0)
 			{
-				var bytes = this.recvBuffer.First.Value;
+				byte[] bytes = this.recvBuffer.First.Value;
 				this.recvBuffer.RemoveFirst();
 				tcs.TrySetResult(bytes);
 			}
-					// 没有缓存封包,设置回调等待
+			// 没有缓存封包,设置回调等待
 			else
 			{
 				this.Received = eEvent =>
@@ -189,9 +190,9 @@ namespace UNet
 						tcs.TrySetException(new EException("socket disconnected in receive"));
 					}
 
-					using (var packet = new EPacket(eEvent.PacketPtr))
+					using (EPacket packet = new EPacket(eEvent.PacketPtr))
 					{
-						var bytes = packet.Bytes;
+						byte[] bytes = packet.Bytes;
 						tcs.TrySetResult(bytes);
 					}
 				};

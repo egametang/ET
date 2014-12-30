@@ -89,11 +89,6 @@ namespace UNet
 			}
 		}
 
-		public void EnableCrc()
-		{
-			NativeMethods.EnetEnableCrc(this.host);
-		}
-
 		private EEvent GetEvent()
 		{
 			var enetEv = new ENetEvent();
@@ -102,7 +97,7 @@ namespace UNet
 			{
 				return null;
 			}
-			var e = new EEvent(enetEv);
+			EEvent e = new EEvent(enetEv);
 			return e;
 		}
 

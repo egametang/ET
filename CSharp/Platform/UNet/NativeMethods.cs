@@ -44,9 +44,6 @@ namespace UNet
 				EntryPoint = "enet_initialize_with_callbacks")]
 		internal static extern int EnetInitializeWithCallbacks(uint version, ref ENetCallbacks inits);
 
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_enable_crc")]
-		internal static extern void EnetEnableCrc(IntPtr host);
-
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_host_create")]
 		internal static extern IntPtr EnetHostCreate(
 				ref ENetAddress address, uint peerLimit, uint channelLimit, uint incomingBandwidth,

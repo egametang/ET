@@ -6,7 +6,7 @@ namespace ENetExe
 	{
 		private static void Main(string[] args)
 		{
-			var test = new UNetClientServerTest();
+			var test = new UServiceTest();
 			test.ClientSendToServer();
 		}
 	}

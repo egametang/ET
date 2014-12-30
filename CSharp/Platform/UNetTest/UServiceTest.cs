@@ -9,7 +9,7 @@ using Network;
 namespace UNetTest
 {
 	[TestClass]
-	public class UNetClientServerTest
+	public class UServiceTest
 	{
 		private readonly Barrier barrier = new Barrier(3);
 
