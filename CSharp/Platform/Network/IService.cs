@@ -19,6 +19,8 @@ namespace Network
 
 		void Remove(IChannel channel);
 
-		void Start();
+		void RunOnce(int timeout);
+
+		void Run();
 	}
 }

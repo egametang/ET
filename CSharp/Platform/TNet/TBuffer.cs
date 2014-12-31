@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TNet
 {
-	internal class TBuffer
+	public class TBuffer
 	{
 		public const int ChunkSize = 8096;
 

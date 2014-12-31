@@ -8,13 +8,18 @@ namespace TNet
 {
 	public class TService: IService
 	{
-		private IPoller poller = new TPoller();
+		private readonly IPoller poller = new TPoller();
 		private TSocket acceptor;
-
+		
 		private readonly Dictionary<string, TChannel> channels = new Dictionary<string, TChannel>();
 
 		private readonly TimerManager timerManager = new TimerManager();
 
+		/// <summary>
+		/// 用作server端的构造函数
+		/// </summary>
+		/// <param name="host"></param>
+		/// <param name="port"></param>
 		public TService(string host, int port)
 		{
 			this.acceptor = new TSocket(poller);
@@ -22,32 +27,27 @@ namespace TNet
 			this.acceptor.Listen(100);
 		}
 
+		/// <summary>
+		/// 用作client端的构造函数
+		/// </summary>
+		public TService()
+		{
+		}
+
 		public void Dispose()
 		{
-			if (this.poller == null)
+			if (this.acceptor == null)
 			{
 				return;
 			}
 			
 			this.acceptor.Dispose();
 			this.acceptor = null;
-			this.poller = null;
 		}
 
 		public void Add(Action action)
 		{
 			this.poller.Add(action);
-		}
-
-		private async void AcceptAsync()
-		{
-			while (true)
-			{
-				TSocket newSocket = new TSocket(poller);
-				await this.acceptor.AcceptAsync(newSocket);
-				TChannel channel = new TChannel(newSocket, this);
-				channels[newSocket.RemoteAddress] = channel;
-			}
 		}
 
 		private async Task<IChannel> ConnectAsync(string host, int port)
@@ -56,15 +56,21 @@ namespace TNet
 			await newSocket.ConnectAsync(host, port);
 			TChannel channel = new TChannel(newSocket, this);
 			channels[newSocket.RemoteAddress] = channel;
+			channel.Start();
 			return channel;
 		}
 
 		public async Task<IChannel> GetChannel()
 		{
+			if (this.acceptor == null)
+			{
+				throw new Exception(string.Format("service construct must use host and port param"));
+			}
 			TSocket socket = new TSocket(this.poller);
 			await acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
 			channels[channel.RemoteAddress] = channel;
+			channel.Start();
 			return channel;
 		}
 
@@ -96,13 +102,16 @@ namespace TNet
 			return await GetChannel(ss[0], port);
 		}
 
-		public void Start()
+		public void RunOnce(int timeout)
 		{
-			AcceptAsync();
+			poller.Run(timeout);
+		}
 
+		public void Run()
+		{
 			while (true)
 			{
-				poller.Run(1);
+				this.RunOnce(1);
 				this.timerManager.Refresh();
 			}
 		}

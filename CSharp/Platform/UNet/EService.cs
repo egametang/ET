@@ -270,7 +270,7 @@ namespace UNet
 			}
 		}
 
-		public void Start(int timeout = 0)
+		public void Run(int timeout = 0)
 		{
 			while (this.isRunning)
 			{

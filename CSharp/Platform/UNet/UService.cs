@@ -16,6 +16,11 @@ namespace UNet
 			this.service = new EService(host, (ushort)port);
 		}
 
+		public UService()
+		{
+			this.service = new EService();
+		}
+
 		public void Dispose()
 		{
 			if (service == null)
@@ -84,9 +89,14 @@ namespace UNet
 			return await ConnectAsync(host, port);
 		}
 
-		public void Start()
+		public void RunOnce(int timeout)
 		{
-			this.service.Start();
+			this.service.RunOnce(timeout);
+		}
+
+		public void Run()
+		{
+			this.service.Run();
 		}
 	}
 }

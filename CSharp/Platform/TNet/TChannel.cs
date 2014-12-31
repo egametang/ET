@@ -26,7 +26,6 @@ namespace TNet
 			this.socket = socket;
 			this.service = service;
 			this.parser = new PacketParser(recvBuffer);
-			Start();
 		}
 
 		public void Dispose()
@@ -42,6 +41,8 @@ namespace TNet
 
 		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			byte[] size = BitConverter.GetBytes(buffer.Length);
+			this.sendBuffer.SendTo(size);
 			this.sendBuffer.SendTo(buffer);
 			if (this.sendTimer == ObjectId.Empty)
 			{
@@ -125,7 +126,7 @@ namespace TNet
 			tcs.SetResult(packet);
 		}
 
-		private async void Start()
+		public async void Start()
 		{
 			try
 			{

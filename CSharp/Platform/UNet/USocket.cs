@@ -102,7 +102,7 @@ namespace UNet
 			}
 
 			var tcs = new TaskCompletionSource<bool>();
-			var address = new Address { HostName = hostName, Port = port };
+			Address address = new Address { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
 			this.peerPtr = NativeMethods.EnetHostConnect(this.service.HostPtr, ref nativeAddress,
 					channelLimit, data);

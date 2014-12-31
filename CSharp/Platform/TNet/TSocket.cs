@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Common.Logger;
 
 namespace TNet
 {
@@ -153,6 +154,7 @@ namespace TNet
 
 		private static void OnRecvComplete(SocketAsyncEventArgs e)
 		{
+			Log.Debug("OnRecvComplete: " + e.BytesTransferred);
 			var tcs = (TaskCompletionSource<int>)e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)

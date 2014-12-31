@@ -2,16 +2,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
-using Common.Logger;
-using UNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Network;
 using TNet;
 
-namespace UNetTest
+namespace TServiceTest
 {
 	[TestClass]
-	public class UServiceTest
+	public class TServiceTest
 	{
 		private readonly Barrier barrier = new Barrier(3);
 
@@ -42,8 +40,8 @@ namespace UNetTest
 		{
 			const string hostName = "127.0.0.1";
 			const ushort port = 8889;
-			IService clientService = new UService();
-			IService serverService = new UService(hostName, 8889);
+			IService clientService = new TService();
+			IService serverService = new TService(hostName, 8889);
 
 			Task.Factory.StartNew(() => clientService.Run(), TaskCreationOptions.LongRunning);
 			Task.Factory.StartNew(() => serverService.Run(), TaskCreationOptions.LongRunning);
