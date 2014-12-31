@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Network;
 
 namespace UNet
@@ -15,15 +16,31 @@ namespace UNet
 			this.service = service;
 		}
 
-		public void Dispose()
+		protected void Dispose(bool disposing)
 		{
 			if (socket == null)
 			{
 				return;
 			}
+			
+			if (disposing)
+			{
+				socket.Dispose();
+			}
+
 			service.Remove(this);
-			socket.Dispose();
 			this.socket = null;
+		}
+
+		~UChannel()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)

@@ -28,15 +28,33 @@ namespace TNet
 			this.parser = new PacketParser(recvBuffer);
 		}
 
-		public void Dispose()
+		protected virtual void Dispose(bool disposing)
 		{
 			if (socket == null)
 			{
 				return;
 			}
+
+			if (disposing)
+			{
+				// 释放托管的资源
+				socket.Dispose();
+			}
+
+			// 释放非托管资源
 			this.service.Remove(this);
-			socket.Dispose();
 			this.socket = null;
+		}
+
+		~TChannel()
+		{
+			this.Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)

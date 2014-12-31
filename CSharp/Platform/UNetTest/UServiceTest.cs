@@ -2,11 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
-using Common.Logger;
 using UNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Network;
-using TNet;
 
 namespace UNetTest
 {
@@ -42,7 +40,7 @@ namespace UNetTest
 		{
 			const string hostName = "127.0.0.1";
 			const ushort port = 8889;
-			IService clientService = new UService();
+			IService clientService = new UService(hostName, 8888);
 			IService serverService = new UService(hostName, 8889);
 
 			Task.Factory.StartNew(() => clientService.Run(), TaskCreationOptions.LongRunning);

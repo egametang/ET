@@ -22,14 +22,26 @@ namespace UNet
 			this.service = service;
 		}
 
-		public void Dispose()
+		private void Dispose(bool disposing)
 		{
 			if (this.peerPtr == IntPtr.Zero)
 			{
 				return;
 			}
+
 			NativeMethods.EnetPeerReset(this.peerPtr);
 			this.peerPtr = IntPtr.Zero;
+		}
+
+		~USocket()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public IntPtr PeerPtr

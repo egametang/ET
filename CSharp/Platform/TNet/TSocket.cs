@@ -8,8 +8,8 @@ namespace TNet
 {
 	public class TSocket
 	{
-		private IPoller poller;
-		private readonly Socket socket;
+		private readonly IPoller poller;
+		private Socket socket;
 		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
 		private readonly SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
 
@@ -45,14 +45,30 @@ namespace TNet
 			}
 		}
 
-		public void Dispose()
+		protected virtual void Dispose(bool disposing)
 		{
-			if (this.poller == null)
+			if (this.socket == null)
 			{
 				return;
 			}
-			this.socket.Dispose();
-			this.poller = null;
+
+			if (disposing)
+			{
+				this.socket.Dispose();
+			}
+
+			this.socket = null;
+		}
+
+		~TSocket()
+		{
+			this.Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public void Bind(string host, int port)

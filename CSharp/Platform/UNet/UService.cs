@@ -5,30 +5,53 @@ using Network;
 
 namespace UNet
 {
-	public class UService: IService
+	public sealed class UService: IService
 	{
 		private EService service;
 
 		private readonly Dictionary<string, UChannel> channels = new Dictionary<string, UChannel>();
 
+		/// <summary>
+		/// 即可做client也可做server
+		/// </summary>
+		/// <param name="host"></param>
+		/// <param name="port"></param>
 		public UService(string host, int port)
 		{
 			this.service = new EService(host, (ushort)port);
 		}
 
+		/// <summary>
+		/// 只能做client
+		/// </summary>
 		public UService()
 		{
 			this.service = new EService();
 		}
 
-		public void Dispose()
+		private void Dispose(bool disposing)
 		{
 			if (service == null)
 			{
 				return;
 			}
-			service.Dispose();
+
+			if (disposing)
+			{
+				service.Dispose();	
+			}
 			service = null;
+		}
+
+		~UService()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public void Add(Action action)

@@ -16,7 +16,7 @@ namespace TNet
 		private readonly TimerManager timerManager = new TimerManager();
 
 		/// <summary>
-		/// 用作server端的构造函数
+		/// 即可做client也可做server
 		/// </summary>
 		/// <param name="host"></param>
 		/// <param name="port"></param>
@@ -28,21 +28,36 @@ namespace TNet
 		}
 
 		/// <summary>
-		/// 用作client端的构造函数
+		/// 只能做client端的构造函数
 		/// </summary>
 		public TService()
 		{
 		}
 
-		public void Dispose()
+		protected virtual void Dispose(bool disposing)
 		{
 			if (this.acceptor == null)
 			{
 				return;
 			}
-			
-			this.acceptor.Dispose();
+
+			if (disposing)
+			{
+				this.acceptor.Dispose();
+			}
+
 			this.acceptor = null;
+		}
+
+		~TService()
+		{
+			this.Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		public void Add(Action action)
