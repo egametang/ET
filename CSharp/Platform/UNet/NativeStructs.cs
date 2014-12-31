@@ -45,9 +45,9 @@ namespace UNet
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void NoMemoryCb();
 
-		private readonly IntPtr malloc;
-		private readonly IntPtr free;
-		private readonly IntPtr no_memory;
+		private IntPtr malloc;
+		private IntPtr free;
+		private IntPtr no_memory;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
@@ -68,8 +68,8 @@ namespace UNet
 	[StructLayout(LayoutKind.Sequential)]
 	public class ENetListNode
 	{
-		public ENetListNode Next;
-		public ENetListNode Previous;
+		public IntPtr Next;
+		public IntPtr Previous;
 	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -90,14 +90,14 @@ namespace UNet
 	public struct ENetPeer
 	{
 		public ENetListNode DispatchList;
-		public readonly IntPtr Host;
-		public readonly ushort OutgoingPeerID;
-		public readonly ushort IncomingPeerID;
-		public readonly uint ConnectID;
-		public readonly byte OutgoingSessionID;
-		public readonly byte IncomingSessionID;
+		public IntPtr Host;
+		public ushort OutgoingPeerID;
+		public ushort IncomingPeerID;
+		public uint ConnectID;
+		public byte OutgoingSessionID;
+		public byte IncomingSessionID;
 		public ENetAddress Address;
 		public IntPtr Data;
-		public readonly PeerState State;
+		public PeerState State;
 	}
 }

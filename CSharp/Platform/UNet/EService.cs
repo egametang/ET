@@ -30,13 +30,12 @@ namespace UNet
 		}
 
 		private IntPtr host;
-		private bool isRunning = true;
 		private readonly object eventsLock = new object();
 		private Action events;
 
 		public EService(string hostName, ushort port)
 		{
-			var address = new Address { HostName = hostName, Port = port };
+			Address address = new Address { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.EnetHostCreate(
 				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
@@ -91,7 +90,7 @@ namespace UNet
 
 		private EEvent GetEvent()
 		{
-			var enetEv = new ENetEvent();
+			ENetEvent enetEv = new ENetEvent();
 			int ret = NativeMethods.EnetHostCheckEvents(this.host, enetEv);
 			if (ret <= 0)
 			{
@@ -161,11 +160,6 @@ namespace UNet
 				this.events = null;
 			}
 			local();
-		}
-
-		public void Stop()
-		{
-			this.isRunning = false;
 		}
 
 		private int Service(int timeout)
@@ -272,7 +266,7 @@ namespace UNet
 
 		public void Run(int timeout = 0)
 		{
-			while (this.isRunning)
+			while (true)
 			{
 				this.RunOnce(timeout);
 			}

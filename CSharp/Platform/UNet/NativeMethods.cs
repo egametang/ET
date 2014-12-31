@@ -83,8 +83,7 @@ namespace UNet
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_host_flush")]
 		internal static extern void EnetHostFlush(IntPtr host);
 
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_host_check_events"
-				)]
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_host_check_events")]
 		internal static extern int EnetHostCheckEvents(IntPtr host, ENetEvent ev);
 
 		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_host_service")]

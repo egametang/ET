@@ -70,18 +70,6 @@ namespace UNet
 			}
 		}
 
-		public PeerState State
-		{
-			get
-			{
-				if (this.peerPtr == IntPtr.Zero)
-				{
-					return PeerState.Uninitialized;
-				}
-				return this.Struct.State;
-			}
-		}
-
 		public void Ping()
 		{
 			NativeMethods.EnetPeerPing(this.peerPtr);
