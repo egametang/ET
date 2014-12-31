@@ -4,16 +4,16 @@ using Network;
 
 namespace UNet
 {
-	internal sealed class EPacket: IDisposable
+	internal sealed class UPacket: IDisposable
 	{
 		private IntPtr packet;
 
-		public EPacket(IntPtr packet)
+		public UPacket(IntPtr packet)
 		{
 			this.packet = packet;
 		}
 
-		public EPacket(byte[] data, PacketFlags flags = PacketFlags.None)
+		public UPacket(byte[] data, PacketFlags flags = PacketFlags.None)
 		{
 			if (data == null)
 			{
@@ -22,11 +22,11 @@ namespace UNet
 			this.packet = NativeMethods.EnetPacketCreate(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
-				throw new EException("Packet creation call failed");
+				throw new UException("Packet creation call failed");
 			}
 		}
 
-		~EPacket()
+		~UPacket()
 		{
 			this.Dispose(false);
 		}

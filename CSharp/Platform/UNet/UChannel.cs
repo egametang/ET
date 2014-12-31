@@ -45,13 +45,13 @@ namespace UNet
 
 		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
-			this.socket.WriteAsync(buffer, channelID, flags);
+			this.socket.SendAsync(buffer, channelID, flags);
 		}
 
 
 		public async Task<byte[]> RecvAsync()
 		{
-			return await this.socket.ReadAsync();
+			return await this.socket.RecvAsync();
 		}
 
 		public string RemoteAddress

@@ -7,7 +7,7 @@ namespace UNet
 {
 	public sealed class UService: IService
 	{
-		private EService service;
+		private UPoller poller;
 
 		private readonly Dictionary<string, UChannel> channels = new Dictionary<string, UChannel>();
 
@@ -18,7 +18,7 @@ namespace UNet
 		/// <param name="port"></param>
 		public UService(string host, int port)
 		{
-			this.service = new EService(host, (ushort)port);
+			this.poller = new UPoller(host, (ushort)port);
 		}
 
 		/// <summary>
@@ -26,21 +26,21 @@ namespace UNet
 		/// </summary>
 		public UService()
 		{
-			this.service = new EService();
+			this.poller = new UPoller();
 		}
 
 		private void Dispose(bool disposing)
 		{
-			if (service == null)
+			if (this.poller == null)
 			{
 				return;
 			}
 
 			if (disposing)
 			{
-				service.Dispose();	
+				this.poller.Dispose();	
 			}
-			service = null;
+			this.poller = null;
 		}
 
 		~UService()
@@ -56,36 +56,46 @@ namespace UNet
 
 		public void Add(Action action)
 		{
-			this.service.Events += action;
+			this.poller.Events += action;
 		}
 
-		public EService Service
+		public UPoller Poller
 		{
 			get
 			{
-				return service;
+				return this.poller;
 			}
 		}
 
-		private async Task<IChannel> ConnectAsync(string host, int port)
+		private async Task<IChannel> ConnectAsync(string host, int port, uint channelCount)
 		{
-			USocket newSocket = new USocket(service);
-			await newSocket.ConnectAsync(host, (ushort) port);
+			USocket newSocket = new USocket(this.poller);
+			await newSocket.ConnectAsync(host, (ushort)port, channelCount);
 			UChannel channel = new UChannel(newSocket, this);
 			channels[channel.RemoteAddress] = channel;
 			return channel;
 		}
 
-		public async Task<IChannel> GetChannel(string address)
+		public async Task<IChannel> GetChannel(string address, uint channelCount)
 		{
 			string[] ss = address.Split(':');
 			int port = Convert.ToInt32(ss[1]);
-			return await GetChannel(ss[0], port);
+			return await GetChannel(ss[0], port, channelCount);
+		}
+
+		public async Task<IChannel> GetChannel(string host, int port, uint channelCount)
+		{
+			UChannel channel = null;
+			if (this.channels.TryGetValue(host + ":" + port, out channel))
+			{
+				return channel;
+			}
+			return await ConnectAsync(host, port, channelCount);
 		}
 
 		public async Task<IChannel> GetChannel()
 		{
-			USocket socket = new USocket(this.service);
+			USocket socket = new USocket(this.poller);
 			await socket.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
 			channels[channel.RemoteAddress] = channel;
@@ -102,24 +112,14 @@ namespace UNet
 			this.channels.Remove(channel.RemoteAddress);
 		}
 
-		public async Task<IChannel> GetChannel(string host, int port)
-		{
-			UChannel channel = null;
-			if (this.channels.TryGetValue(host + ":" + port, out channel))
-			{
-				return channel;
-			}
-			return await ConnectAsync(host, port);
-		}
-
 		public void RunOnce(int timeout)
 		{
-			this.service.RunOnce(timeout);
+			this.poller.RunOnce(timeout);
 		}
 
 		public void Run()
 		{
-			this.service.Run();
+			this.poller.Run();
 		}
 	}
 }

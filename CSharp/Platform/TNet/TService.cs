@@ -100,7 +100,7 @@ namespace TNet
 			this.timerManager.Remove(tChannel.SendTimer);
 		}
 
-		public async Task<IChannel> GetChannel(string host, int port)
+		public async Task<IChannel> GetChannel(string host, int port, uint channelCount)
 		{
 			TChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))
@@ -110,11 +110,11 @@ namespace TNet
 			return await ConnectAsync(host, port);
 		}
 
-		public async Task<IChannel> GetChannel(string address)
+		public async Task<IChannel> GetChannel(string address, uint channelCount)
 		{
 			string[] ss = address.Split(':');
 			int port = Convert.ToInt32(ss[1]);
-			return await GetChannel(ss[0], port);
+			return await GetChannel(ss[0], port, channelCount);
 		}
 
 		public void RunOnce(int timeout)

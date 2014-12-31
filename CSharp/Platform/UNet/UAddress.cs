@@ -3,12 +3,12 @@ using System.Net;
 
 namespace UNet
 {
-	public struct Address
+	public struct UAddress
 	{
 		private uint ip;
 		private ushort port;
 
-		public uint Ip
+		public uint IP
 		{
 			get
 			{
@@ -36,7 +36,7 @@ namespace UNet
 		{
 			get
 			{
-				var hostInfo = Dns.GetHostEntry(new IPAddress(this.ip));
+				IPHostEntry hostInfo = Dns.GetHostEntry(new IPAddress(this.ip));
 				return hostInfo.HostName;
 			}
 			set
@@ -54,7 +54,7 @@ namespace UNet
 		{
 			get
 			{
-				var address = new ENetAddress { Host = this.ip, Port = this.port };
+				ENetAddress address = new ENetAddress { Host = this.ip, Port = this.port };
 				return address;
 			}
 		}

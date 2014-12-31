@@ -38,16 +38,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
-    <Compile Include="EException.cs" />
-    <Compile Include="EEvent.cs" />
+    <Compile Include="UAddress.cs" />
+    <Compile Include="UException.cs" />
+    <Compile Include="UEvent.cs" />
     <Compile Include="ErrorCode.cs" />
-    <Compile Include="EService.cs" />
+    <Compile Include="UPoller.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="PeersManager.cs" />
     <Compile Include="NativeStructs.cs" />
-    <Compile Include="EPacket.cs" />
+    <Compile Include="UPacket.cs" />
     <Compile Include="USocket.cs" />
     <Compile Include="UChannel.cs" />
     <Compile Include="UService.cs" />

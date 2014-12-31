@@ -4,11 +4,11 @@
 	{
 		public static void Initialize()
 		{
-			var inits = new ENetCallbacks();
+			ENetCallbacks inits = new ENetCallbacks();
 			int ret = NativeMethods.EnetInitializeWithCallbacks(NativeMethods.ENET_VERSION, ref inits);
 			if (ret < 0)
 			{
-				throw new EException(string.Format("Initialization failed, ret: {0}", ret));
+				throw new UException(string.Format("Initialization failed, ret: {0}", ret));
 			}
 		}
 

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace UNet
 {
-	public sealed class EService: IDisposable
+	public sealed class UPoller: IDisposable
 	{
-		static EService()
+		static UPoller()
 		{
 			Library.Initialize();
 		}
 
 		private readonly PeersManager peersManager = new PeersManager();
-		private readonly LinkedList<EEvent> connEEvents = new LinkedList<EEvent>();
+		private readonly LinkedList<UEvent> connEEvents = new LinkedList<UEvent>();
 
 		internal PeersManager PeersManager
 		{
@@ -21,7 +21,7 @@ namespace UNet
 			}
 		}
 
-		internal LinkedList<EEvent> ConnEEvents
+		internal LinkedList<UEvent> ConnEEvents
 		{
 			get
 			{
@@ -33,31 +33,31 @@ namespace UNet
 		private readonly object eventsLock = new object();
 		private Action events;
 
-		public EService(string hostName, ushort port)
+		public UPoller(string hostName, ushort port)
 		{
-			Address address = new Address { HostName = hostName, Port = port };
+			UAddress address = new UAddress { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.EnetHostCreate(
 				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new EException("Host creation call failed.");
+				throw new UException("Host creation call failed.");
 			}
 		}
 
-		public EService()
+		public UPoller()
 		{
 			this.host = NativeMethods.EnetHostCreate(
 				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
-				throw new EException("Host creation call failed.");
+				throw new UException("Host creation call failed.");
 			}
 		}
 
-		~EService()
+		~UPoller()
 		{
 			this.Dispose(false);
 		}
@@ -88,16 +88,16 @@ namespace UNet
 			}
 		}
 
-		private EEvent GetEvent()
+		private UEvent GetEvent()
 		{
-			ENetEvent enetEv = new ENetEvent();
-			int ret = NativeMethods.EnetHostCheckEvents(this.host, enetEv);
+			ENetEvent eEvent = new ENetEvent();
+			int ret = NativeMethods.EnetHostCheckEvents(this.host, eEvent);
 			if (ret <= 0)
 			{
 				return null;
 			}
-			EEvent e = new EEvent(enetEv);
-			return e;
+			UEvent u = new UEvent(eEvent);
+			return u;
 		}
 
 		public void CompressWithRangeCoder()
@@ -187,21 +187,21 @@ namespace UNet
 
 			while (true)
 			{
-				EEvent eEvent = this.GetEvent();
-				if (eEvent == null)
+				UEvent uEvent = this.GetEvent();
+				if (uEvent == null)
 				{
 					return;
 				}
 
-				switch (eEvent.Type)
+				switch (uEvent.Type)
 				{
 					case EventType.Connect:
 					{
 						// 这是一个connect peer
-						if (this.PeersManager.ContainsKey(eEvent.PeerPtr))
+						if (this.PeersManager.ContainsKey(uEvent.PeerPtr))
 						{
-							USocket uSocket = this.PeersManager[eEvent.PeerPtr];
-							uSocket.OnConnected(eEvent);
+							USocket uSocket = this.PeersManager[uEvent.PeerPtr];
+							uSocket.OnConnected(uEvent);
 						}
 								// accept peer
 						else
@@ -209,28 +209,28 @@ namespace UNet
 							// 如果server端没有acceptasync,则请求放入队列
 							if (!this.PeersManager.ContainsKey(IntPtr.Zero))
 							{
-								this.connEEvents.AddLast(eEvent);
+								this.connEEvents.AddLast(uEvent);
 							}
 							else
 							{
 								USocket uSocket = this.PeersManager[IntPtr.Zero];
-								uSocket.OnConnected(eEvent);
+								uSocket.OnConnected(uEvent);
 							}
 						}
 						break;
 					}
 					case EventType.Receive:
 					{
-						USocket uSocket = this.PeersManager[eEvent.PeerPtr];
-						uSocket.OnReceived(eEvent);
+						USocket uSocket = this.PeersManager[uEvent.PeerPtr];
+						uSocket.OnReceived(uEvent);
 						break;
 					}
 					case EventType.Disconnect:
 					{
 						// 如果链接还在缓存中，则删除
-						foreach (EEvent connEEvent in this.connEEvents)
+						foreach (UEvent connEEvent in this.connEEvents)
 						{
-							if (connEEvent.PeerPtr != eEvent.PeerPtr)
+							if (connEEvent.PeerPtr != uEvent.PeerPtr)
 							{
 								continue;
 							}
@@ -239,22 +239,22 @@ namespace UNet
 						}
 
 						// 链接已经被应用层接收
-						eEvent.EventState = EventState.DISCONNECTED;
-						USocket uSocket = this.PeersManager[eEvent.PeerPtr];
-						this.PeersManager.Remove(eEvent.PeerPtr);
+						uEvent.EventState = EventState.DISCONNECTED;
+						USocket uSocket = this.PeersManager[uEvent.PeerPtr];
+						this.PeersManager.Remove(uEvent.PeerPtr);
 
 						// 等待的task将抛出异常
 						if (uSocket.Connected != null)
 						{
-							uSocket.OnConnected(eEvent);
+							uSocket.OnConnected(uEvent);
 						}
 						else if (uSocket.Received != null)
 						{
-							uSocket.OnReceived(eEvent);
+							uSocket.OnReceived(uEvent);
 						}
 						else if (uSocket.Disconnect != null)
 						{
-							uSocket.OnDisconnect(eEvent);
+							uSocket.OnDisconnect(uEvent);
 						}
 
 						uSocket.OnError(ErrorCode.ClientDisconnect);

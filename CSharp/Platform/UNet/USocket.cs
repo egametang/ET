@@ -9,15 +9,15 @@ namespace UNet
 	public sealed class USocket: IDisposable
 	{
 		private IntPtr peerPtr = IntPtr.Zero;
-		private readonly EService service;
+		private readonly UPoller service;
 		private readonly LinkedList<byte[]> recvBuffer = new LinkedList<byte[]>();
 
-		public Action<EEvent> Connected { get; set; }
-		public Action<EEvent> Received { get; set; }
-		public Action<EEvent> Disconnect { get; set; }
+		public Action<UEvent> Connected { get; set; }
+		public Action<UEvent> Received { get; set; }
+		public Action<UEvent> Disconnect { get; set; }
 		public Action<int> Error { get; set; }
 
-		public USocket(EService service)
+		public USocket(UPoller service)
 		{
 			this.service = service;
 		}
@@ -94,28 +94,27 @@ namespace UNet
 
 		public Task<bool> ConnectAsync(
 				string hostName, ushort port,
-				uint channelLimit = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, uint data = 0)
+				uint channel = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
 		{
-			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			if (channel > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT || channel < NativeMethods.ENET_PROTOCOL_MINIMUM_CHANNEL_COUNT)
 			{
-				throw new ArgumentOutOfRangeException("channelLimit");
+				throw new ArgumentOutOfRangeException("channel", channel.ToString());
 			}
 
 			var tcs = new TaskCompletionSource<bool>();
-			Address address = new Address { HostName = hostName, Port = port };
+			UAddress address = new UAddress { HostName = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
-			this.peerPtr = NativeMethods.EnetHostConnect(this.service.HostPtr, ref nativeAddress,
-					channelLimit, data);
+			this.peerPtr = NativeMethods.EnetHostConnect(this.service.HostPtr, ref nativeAddress, channel, 0);
 			if (this.peerPtr == IntPtr.Zero)
 			{
-				throw new EException("host connect call failed.");
+				throw new UException("host connect call failed.");
 			}
 			this.service.PeersManager.Add(this.peerPtr, this);
 			this.Connected = eEvent =>
 			{
 				if (eEvent.EventState == EventState.DISCONNECTED)
 				{
-					tcs.TrySetException(new EException("socket disconnected in connect"));
+					tcs.TrySetException(new UException("socket disconnected in connect"));
 				}
 				tcs.TrySetResult(true);
 			};
@@ -126,7 +125,7 @@ namespace UNet
 		{
 			if (this.service.PeersManager.ContainsKey(IntPtr.Zero))
 			{
-				throw new EException("do not accept twice!");
+				throw new UException("do not accept twice!");
 			}
 
 			var tcs = new TaskCompletionSource<bool>();
@@ -134,10 +133,10 @@ namespace UNet
 			// 如果有请求连接缓存的包,从缓存中取
 			if (this.service.ConnEEvents.Count > 0)
 			{
-				EEvent eEvent = this.service.ConnEEvents.First.Value;
+				UEvent uEvent = this.service.ConnEEvents.First.Value;
 				this.service.ConnEEvents.RemoveFirst();
 
-				this.PeerPtr = eEvent.PeerPtr;
+				this.PeerPtr = uEvent.PeerPtr;
 				this.service.PeersManager.Add(this.PeerPtr, this);
 				tcs.TrySetResult(true);
 			}
@@ -148,7 +147,7 @@ namespace UNet
 				{
 					if (eEvent.EventState == EventState.DISCONNECTED)
 					{
-						tcs.TrySetException(new EException("socket disconnected in accpet"));
+						tcs.TrySetException(new UException("socket disconnected in accpet"));
 					}
 
 					this.service.PeersManager.Remove(IntPtr.Zero);
@@ -161,15 +160,15 @@ namespace UNet
 			return tcs.Task;
 		}
 
-		public void WriteAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public void SendAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
-			var packet = new EPacket(data, flags);
+			UPacket packet = new UPacket(data, flags);
 			NativeMethods.EnetPeerSend(this.peerPtr, channelID, packet.PacketPtr);
 			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
 			packet.PacketPtr = IntPtr.Zero;
 		}
 
-		public Task<byte[]> ReadAsync()
+		public Task<byte[]> RecvAsync()
 		{
 			var tcs = new TaskCompletionSource<byte[]>();
 
@@ -187,10 +186,10 @@ namespace UNet
 				{
 					if (eEvent.EventState == EventState.DISCONNECTED)
 					{
-						tcs.TrySetException(new EException("socket disconnected in receive"));
+						tcs.TrySetException(new UException("socket disconnected in receive"));
 					}
 
-					using (EPacket packet = new EPacket(eEvent.PacketPtr))
+					using (UPacket packet = new UPacket(eEvent.PacketPtr))
 					{
 						byte[] bytes = packet.Bytes;
 						tcs.TrySetResult(bytes);
@@ -227,45 +226,45 @@ namespace UNet
 			this.PeerPtr = IntPtr.Zero;
 		}
 
-		internal void OnConnected(EEvent eEvent)
+		internal void OnConnected(UEvent uEvent)
 		{
 			if (this.Connected == null)
 			{
 				return;
 			}
-			Action<EEvent> localConnected = this.Connected;
+			Action<UEvent> localConnected = this.Connected;
 			this.Connected = null;
 			// 此调用将让await ConnectAsync返回,所以null必须在此之前设置
-			localConnected(eEvent);
+			localConnected(uEvent);
 		}
 
-		internal void OnReceived(EEvent eEvent)
+		internal void OnReceived(UEvent uEvent)
 		{
 			// 如果应用层还未调用readasync则将包放到缓存队列
 			if (this.Received == null)
 			{
-				using (var packet = new EPacket(eEvent.PacketPtr))
+				using (UPacket packet = new UPacket(uEvent.PacketPtr))
 				{
-					var bytes = packet.Bytes;
+					byte[] bytes = packet.Bytes;
 					this.recvBuffer.AddLast(bytes);
 				}
 			}
 			else
 			{
-				Action<EEvent> localReceived = this.Received;
+				Action<UEvent> localReceived = this.Received;
 				this.Received = null;
 				// 此调用将让await ReadAsync返回,所以null必须在此之前设置
-				localReceived(eEvent);
+				localReceived(uEvent);
 			}
 		}
 
-		internal void OnDisconnect(EEvent eEvent)
+		internal void OnDisconnect(UEvent uEvent)
 		{
 			if (this.Disconnect == null)
 			{
 				return;
 			}
-			this.Disconnect(eEvent);
+			this.Disconnect(uEvent);
 		}
 
 		internal void OnError(int errorCode)
