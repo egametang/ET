@@ -45,12 +45,12 @@
     <Compile Include="UPoller.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="PeersManager.cs" />
     <Compile Include="NativeStructs.cs" />
     <Compile Include="UPacket.cs" />
     <Compile Include="USocket.cs" />
     <Compile Include="UChannel.cs" />
     <Compile Include="UService.cs" />
+    <Compile Include="USocketManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

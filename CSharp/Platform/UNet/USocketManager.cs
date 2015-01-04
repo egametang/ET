@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace UNet
 {
-	internal class PeersManager
+	internal class USocketManager
 	{
-		private readonly Dictionary<IntPtr, USocket> peersManager = new Dictionary<IntPtr, USocket>();
+		private readonly Dictionary<IntPtr, USocket> sockets = new Dictionary<IntPtr, USocket>();
 
 		public void Add(IntPtr peerPtr, USocket uSocket)
 		{
-			this.peersManager.Add(peerPtr, uSocket);
+			this.sockets.Add(peerPtr, uSocket);
 		}
 
 		public void Remove(IntPtr peerPtr)
 		{
-			this.peersManager.Remove(peerPtr);
+			this.sockets.Remove(peerPtr);
 		}
 
 		public bool ContainsKey(IntPtr peerPtr)
 		{
-			if (this.peersManager.ContainsKey(peerPtr))
+			if (this.sockets.ContainsKey(peerPtr))
 			{
 				return true;
 			}
@@ -30,11 +30,11 @@ namespace UNet
 		{
 			get
 			{
-				if (!this.peersManager.ContainsKey(peerPtr))
+				if (!this.sockets.ContainsKey(peerPtr))
 				{
 					throw new KeyNotFoundException("No Peer Key");
 				}
-				return this.peersManager[peerPtr];
+				return this.sockets[peerPtr];
 			}
 		}
 	}

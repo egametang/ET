@@ -32,7 +32,7 @@ namespace UNet
 			}
 		}
 
-		public string HostName
+		public string Host
 		{
 			get
 			{

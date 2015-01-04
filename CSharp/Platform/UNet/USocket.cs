@@ -12,9 +12,9 @@ namespace UNet
 		private readonly UPoller service;
 		private readonly LinkedList<byte[]> recvBuffer = new LinkedList<byte[]>();
 
-		public Action<UEvent> Connected { get; set; }
-		public Action<UEvent> Received { get; set; }
-		public Action<UEvent> Disconnect { get; set; }
+		public Action<UEvent> Connected { get; private set; }
+		public Action<UEvent> Received { get; private set; }
+		public Action<UEvent> Disconnect { get; private set; }
 		public Action<int> Error { get; set; }
 
 		public USocket(UPoller service)
@@ -92,24 +92,18 @@ namespace UNet
 			NativeMethods.EnetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
-		public Task<bool> ConnectAsync(
-				string hostName, ushort port,
-				uint channel = NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+		public Task<bool> ConnectAsync(string hostName, ushort port)
 		{
-			if (channel > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT || channel < NativeMethods.ENET_PROTOCOL_MINIMUM_CHANNEL_COUNT)
-			{
-				throw new ArgumentOutOfRangeException("channel", channel.ToString());
-			}
-
 			var tcs = new TaskCompletionSource<bool>();
-			UAddress address = new UAddress { HostName = hostName, Port = port };
+			UAddress address = new UAddress { Host = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
-			this.peerPtr = NativeMethods.EnetHostConnect(this.service.HostPtr, ref nativeAddress, channel, 0);
+			this.peerPtr = NativeMethods.EnetHostConnect(
+				this.service.HostPtr, ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
 			if (this.peerPtr == IntPtr.Zero)
 			{
 				throw new UException("host connect call failed.");
 			}
-			this.service.PeersManager.Add(this.peerPtr, this);
+			this.service.USocketManager.Add(this.peerPtr, this);
 			this.Connected = eEvent =>
 			{
 				if (eEvent.EventState == EventState.DISCONNECTED)
@@ -123,7 +117,7 @@ namespace UNet
 
 		public Task<bool> AcceptAsync()
 		{
-			if (this.service.PeersManager.ContainsKey(IntPtr.Zero))
+			if (this.service.USocketManager.ContainsKey(IntPtr.Zero))
 			{
 				throw new UException("do not accept twice!");
 			}
@@ -137,12 +131,12 @@ namespace UNet
 				this.service.ConnEEvents.RemoveFirst();
 
 				this.PeerPtr = uEvent.PeerPtr;
-				this.service.PeersManager.Add(this.PeerPtr, this);
+				this.service.USocketManager.Add(this.PeerPtr, this);
 				tcs.TrySetResult(true);
 			}
 			else
 			{
-				this.service.PeersManager.Add(this.PeerPtr, this);
+				this.service.USocketManager.Add(this.PeerPtr, this);
 				this.Connected = eEvent =>
 				{
 					if (eEvent.EventState == EventState.DISCONNECTED)
@@ -150,10 +144,10 @@ namespace UNet
 						tcs.TrySetException(new UException("socket disconnected in accpet"));
 					}
 
-					this.service.PeersManager.Remove(IntPtr.Zero);
+					this.service.USocketManager.Remove(IntPtr.Zero);
 
 					this.PeerPtr = eEvent.PeerPtr;
-					this.service.PeersManager.Add(this.PeerPtr, this);
+					this.service.USocketManager.Add(this.PeerPtr, this);
 					tcs.TrySetResult(true);
 				};
 			}

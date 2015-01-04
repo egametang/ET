@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace UNet
@@ -10,14 +11,14 @@ namespace UNet
 			Library.Initialize();
 		}
 
-		private readonly PeersManager peersManager = new PeersManager();
+		private readonly USocketManager uSocketManager = new USocketManager();
 		private readonly LinkedList<UEvent> connEEvents = new LinkedList<UEvent>();
 
-		internal PeersManager PeersManager
+		internal USocketManager USocketManager
 		{
 			get
 			{
-				return this.peersManager;
+				return this.uSocketManager;
 			}
 		}
 
@@ -33,9 +34,11 @@ namespace UNet
 		private readonly object eventsLock = new object();
 		private Action events;
 
+		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
+
 		public UPoller(string hostName, ushort port)
 		{
-			UAddress address = new UAddress { HostName = hostName, Port = port };
+			UAddress address = new UAddress { Host = hostName, Port = port };
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.EnetHostCreate(
 				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
@@ -198,22 +201,22 @@ namespace UNet
 					case EventType.Connect:
 					{
 						// 这是一个connect peer
-						if (this.PeersManager.ContainsKey(uEvent.PeerPtr))
+						if (this.USocketManager.ContainsKey(uEvent.PeerPtr))
 						{
-							USocket uSocket = this.PeersManager[uEvent.PeerPtr];
+							USocket uSocket = this.USocketManager[uEvent.PeerPtr];
 							uSocket.OnConnected(uEvent);
 						}
 								// accept peer
 						else
 						{
 							// 如果server端没有acceptasync,则请求放入队列
-							if (!this.PeersManager.ContainsKey(IntPtr.Zero))
+							if (!this.USocketManager.ContainsKey(IntPtr.Zero))
 							{
 								this.connEEvents.AddLast(uEvent);
 							}
 							else
 							{
-								USocket uSocket = this.PeersManager[IntPtr.Zero];
+								USocket uSocket = this.USocketManager[IntPtr.Zero];
 								uSocket.OnConnected(uEvent);
 							}
 						}
@@ -221,7 +224,7 @@ namespace UNet
 					}
 					case EventType.Receive:
 					{
-						USocket uSocket = this.PeersManager[uEvent.PeerPtr];
+						USocket uSocket = this.USocketManager[uEvent.PeerPtr];
 						uSocket.OnReceived(uEvent);
 						break;
 					}
@@ -240,8 +243,8 @@ namespace UNet
 
 						// 链接已经被应用层接收
 						uEvent.EventState = EventState.DISCONNECTED;
-						USocket uSocket = this.PeersManager[uEvent.PeerPtr];
-						this.PeersManager.Remove(uEvent.PeerPtr);
+						USocket uSocket = this.USocketManager[uEvent.PeerPtr];
+						this.USocketManager.Remove(uEvent.PeerPtr);
 
 						// 等待的task将抛出异常
 						if (uSocket.Connected != null)

@@ -67,30 +67,30 @@ namespace UNet
 			}
 		}
 
-		private async Task<IChannel> ConnectAsync(string host, int port, uint channelCount)
+		private async Task<IChannel> ConnectAsync(string host, int port)
 		{
 			USocket newSocket = new USocket(this.poller);
-			await newSocket.ConnectAsync(host, (ushort)port, channelCount);
+			await newSocket.ConnectAsync(host, (ushort)port);
 			UChannel channel = new UChannel(newSocket, this);
 			channels[channel.RemoteAddress] = channel;
 			return channel;
 		}
 
-		public async Task<IChannel> GetChannel(string address, uint channelCount)
+		public async Task<IChannel> GetChannel(string address)
 		{
 			string[] ss = address.Split(':');
 			int port = Convert.ToInt32(ss[1]);
-			return await GetChannel(ss[0], port, channelCount);
+			return await GetChannel(ss[0], port);
 		}
 
-		public async Task<IChannel> GetChannel(string host, int port, uint channelCount)
+		public async Task<IChannel> GetChannel(string host, int port)
 		{
 			UChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))
 			{
 				return channel;
 			}
-			return await ConnectAsync(host, port, channelCount);
+			return await ConnectAsync(host, port);
 		}
 
 		public async Task<IChannel> GetChannel()

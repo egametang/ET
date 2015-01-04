@@ -11,9 +11,9 @@ namespace Network
 		/// <param name="action"></param>
 		void Add(Action action);
 
-		Task<IChannel> GetChannel(string host, int port, uint channel = 255);
+		Task<IChannel> GetChannel(string host, int port);
 
-		Task<IChannel> GetChannel(string address, uint channel = 255);
+		Task<IChannel> GetChannel(string address);
 
 		Task<IChannel> GetChannel();
 
