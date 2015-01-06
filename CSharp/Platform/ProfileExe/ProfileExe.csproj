@@ -38,16 +38,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TNetTest\TNetTest.csproj">
+      <Project>{f176d1fa-63e5-4b89-9a03-d44ccccc069a}</Project>
+      <Name>TNetTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UNetTest\UNetTest.csproj">
       <Project>{901a8e5c-c4c6-4c3c-8e18-068d75119f5d}</Project>
       <Name>UNetTest</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

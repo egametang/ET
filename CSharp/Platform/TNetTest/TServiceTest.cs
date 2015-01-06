@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Network;
 using TNet;
 
-namespace TServiceTest
+namespace TNetTest
 {
 	[TestClass]
 	public class TServiceTest
