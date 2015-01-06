@@ -3,7 +3,7 @@ using System.Net;
 
 namespace UNet
 {
-	public struct UAddress
+	internal struct UAddress
 	{
 		private uint ip;
 		private ushort port;

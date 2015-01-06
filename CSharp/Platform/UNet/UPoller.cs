@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Common.Base;
 
 namespace UNet
 {
-	public sealed class UPoller: IDisposable
+	internal sealed class UPoller: IDisposable
 	{
 		static UPoller()
 		{
@@ -12,27 +14,11 @@ namespace UNet
 		}
 
 		private readonly USocketManager uSocketManager = new USocketManager();
-		private readonly LinkedList<UEvent> connEEvents = new LinkedList<UEvent>();
-
-		internal USocketManager USocketManager
-		{
-			get
-			{
-				return this.uSocketManager;
-			}
-		}
-
-		internal LinkedList<UEvent> ConnEEvents
-		{
-			get
-			{
-				return this.connEEvents;
-			}
-		}
+		private readonly QueueDictionary<IntPtr, ENetEvent> connQueue = new QueueDictionary<IntPtr, ENetEvent>();
 
 		private IntPtr host;
-		private readonly object eventsLock = new object();
-		private Action events;
+
+		private readonly USocket acceptor = new USocket(IntPtr.Zero);
 
 		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
 
@@ -47,6 +33,8 @@ namespace UNet
 			{
 				throw new UException("Host creation call failed.");
 			}
+
+			NativeMethods.EnetHostCompressWithRangeCoder(this.host);
 		}
 
 		public UPoller()
@@ -83,34 +71,77 @@ namespace UNet
 			this.host = IntPtr.Zero;
 		}
 
-		public IntPtr HostPtr
+		public Task<USocket> AcceptAsync()
 		{
-			get
+			if (this.uSocketManager.ContainsKey(IntPtr.Zero))
 			{
-				return this.host;
+				throw new UException("do not accept twice!");
 			}
+
+			var tcs = new TaskCompletionSource<USocket>();
+			
+			// 如果有请求连接缓存的包,从缓存中取
+			if (this.connQueue.Count > 0)
+			{
+				IntPtr ptr = this.connQueue.FirstKey;
+				this.connQueue.Remove(ptr);
+
+				USocket socket = new USocket(ptr);
+				this.uSocketManager.Add(ptr, socket);
+				tcs.TrySetResult(socket);
+			}
+			else
+			{
+				this.uSocketManager.Add(acceptor.PeerPtr, acceptor);
+				acceptor.Connected = eEvent =>
+				{
+					if (eEvent.Type == EventType.Disconnect)
+					{
+						tcs.TrySetException(new UException("socket disconnected in accpet"));
+					}
+
+					this.uSocketManager.Remove(IntPtr.Zero);
+					USocket socket = new USocket(eEvent.Peer);
+					this.uSocketManager.Add(socket.PeerPtr, socket);
+					tcs.TrySetResult(socket);
+				};
+			}
+			return tcs.Task;
 		}
 
-		private UEvent GetEvent()
+		public Task<USocket> ConnectAsync(string hostName, ushort port)
 		{
-			ENetEvent eEvent = new ENetEvent();
-			int ret = NativeMethods.EnetHostCheckEvents(this.host, eEvent);
-			if (ret <= 0)
+			var tcs = new TaskCompletionSource<USocket>();
+			UAddress address = new UAddress { Host = hostName, Port = port };
+			ENetAddress nativeAddress = address.Struct;
+			
+			IntPtr ptr = NativeMethods.EnetHostConnect(
+				this.host, ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
+			USocket socket = new USocket(ptr);
+			if (socket.PeerPtr == IntPtr.Zero)
+			{
+				throw new UException("host connect call failed.");
+			}
+			this.uSocketManager.Add(socket.PeerPtr, socket);
+			socket.Connected = eEvent =>
+			{
+				if (eEvent.Type == EventType.Disconnect)
+				{
+					tcs.TrySetException(new UException("socket disconnected in connect"));
+				}
+				tcs.TrySetResult(socket);
+			};
+			return tcs.Task;
+		}
+
+		private ENetEvent GetEvent()
+		{
+			ENetEvent eNetEvent = new ENetEvent();
+			if (NativeMethods.EnetHostCheckEvents(this.host, eNetEvent) <= 0)
 			{
 				return null;
 			}
-			UEvent u = new UEvent(eEvent);
-			return u;
-		}
-
-		public void CompressWithRangeCoder()
-		{
-			NativeMethods.EnetHostCompressWithRangeCoder(this.host);
-		}
-
-		public void DoNotCompress()
-		{
-			NativeMethods.EnetHostCompress(this.host, IntPtr.Zero);
+			return eNetEvent;
 		}
 
 		public void Flush()
@@ -118,60 +149,38 @@ namespace UNet
 			NativeMethods.EnetHostFlush(this.host);
 		}
 
-		public void SetBandwidthLimit(uint incomingBandwidth, uint outgoingBandwidth)
+		public void Add(Action action)
 		{
-			NativeMethods.EnetHostBandwidthLimit(this.host, incomingBandwidth, outgoingBandwidth);
+			blockingCollection.Add(action);
 		}
 
-		public void SetChannelLimit(uint channelLimit)
+		private void OnEvents(int timeout)
 		{
-			if (channelLimit > NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT)
+			// 处理读写线程的回调
+			Action action;
+			if (!this.blockingCollection.TryTake(out action, timeout))
 			{
-				throw new ArgumentOutOfRangeException(string.Format("channelLimit: {0}", channelLimit));
+				return;
 			}
-			NativeMethods.EnetHostChannelLimit(this.host, channelLimit);
-		}
 
-		public event Action Events
-		{
-			add
+			var queue = new Queue<Action>();
+			queue.Enqueue(action);
+
+			while (this.blockingCollection.TryTake(out action, 0))
 			{
-				lock (this.eventsLock)
-				{
-					this.events += value;
-				}
+				queue.Enqueue(action);
 			}
-			remove
+
+			while (queue.Count > 0)
 			{
-				lock (this.eventsLock)
-				{
-					this.events -= value;
-				}
+				Action a = queue.Dequeue();
+				a();
 			}
 		}
 
-		public void OnEvents()
+		private int Service()
 		{
-			Action local = null;
-			lock (this.eventsLock)
-			{
-				if (this.events == null)
-				{
-					return;
-				}
-				local = this.events;
-				this.events = null;
-			}
-			local();
-		}
-
-		private int Service(int timeout)
-		{
-			if (timeout < 0)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("timeout: {0}", timeout));
-			}
-			return NativeMethods.EnetHostService(this.host, null, (uint) timeout);
+			return NativeMethods.EnetHostService(this.host, null, 0);
 		}
 
 		public void RunOnce(int timeout = 0)
@@ -181,86 +190,79 @@ namespace UNet
 				throw new ArgumentOutOfRangeException(string.Format("timeout: {0}", timeout));
 			}
 
-			this.OnEvents();
+			this.OnEvents(timeout);
 
-			if (this.Service(timeout) < 0)
+			if (this.Service() < 0)
 			{
 				return;
 			}
 
 			while (true)
 			{
-				UEvent uEvent = this.GetEvent();
-				if (uEvent == null)
+				ENetEvent eNetEvent = this.GetEvent();
+				if (eNetEvent == null)
 				{
 					return;
 				}
 
-				switch (uEvent.Type)
+				switch (eNetEvent.Type)
 				{
 					case EventType.Connect:
 					{
 						// 这是一个connect peer
-						if (this.USocketManager.ContainsKey(uEvent.PeerPtr))
+						if (this.uSocketManager.ContainsKey(eNetEvent.Peer))
 						{
-							USocket uSocket = this.USocketManager[uEvent.PeerPtr];
-							uSocket.OnConnected(uEvent);
+							USocket uSocket = this.uSocketManager[eNetEvent.Peer];
+							uSocket.OnConnected(eNetEvent);
+							break;
 						}
-								// accept peer
-						else
+
+						// 这是accept peer
+						if (this.uSocketManager.ContainsKey(IntPtr.Zero))
 						{
-							// 如果server端没有acceptasync,则请求放入队列
-							if (!this.USocketManager.ContainsKey(IntPtr.Zero))
-							{
-								this.connEEvents.AddLast(uEvent);
-							}
-							else
-							{
-								USocket uSocket = this.USocketManager[IntPtr.Zero];
-								uSocket.OnConnected(uEvent);
-							}
+							USocket uSocket = this.uSocketManager[IntPtr.Zero];
+							uSocket.OnConnected(eNetEvent);
+							break;
 						}
+
+						// 如果server端没有acceptasync,则请求放入队列
+						this.connQueue.Add(eNetEvent.Peer, eNetEvent);
 						break;
 					}
 					case EventType.Receive:
 					{
-						USocket uSocket = this.USocketManager[uEvent.PeerPtr];
-						uSocket.OnReceived(uEvent);
+						USocket uSocket = this.uSocketManager[eNetEvent.Peer];
+						uSocket.OnReceived(eNetEvent);
 						break;
 					}
 					case EventType.Disconnect:
 					{
 						// 如果链接还在缓存中，则删除
-						foreach (UEvent connEEvent in this.connEEvents)
+						if (this.connQueue.Remove(eNetEvent.Peer))
 						{
-							if (connEEvent.PeerPtr != uEvent.PeerPtr)
-							{
-								continue;
-							}
-							this.connEEvents.Remove(connEEvent);
-							return;
+							break;
 						}
 
 						// 链接已经被应用层接收
-						uEvent.EventState = EventState.DISCONNECTED;
-						USocket uSocket = this.USocketManager[uEvent.PeerPtr];
-						this.USocketManager.Remove(uEvent.PeerPtr);
+						USocket uSocket = this.uSocketManager[eNetEvent.Peer];
+						this.uSocketManager.Remove(eNetEvent.Peer);
 
 						// 等待的task将抛出异常
 						if (uSocket.Connected != null)
 						{
-							uSocket.OnConnected(uEvent);
+							uSocket.OnConnected(eNetEvent);
+							break;
 						}
-						else if (uSocket.Received != null)
+						if (uSocket.Received != null)
 						{
-							uSocket.OnReceived(uEvent);
+							uSocket.OnReceived(eNetEvent);
+							break;
 						}
-						else if (uSocket.Disconnect != null)
+						if (uSocket.Disconnect != null)
 						{
-							uSocket.OnDisconnect(uEvent);
+							uSocket.OnDisconnect(eNetEvent);
+							break;
 						}
-
-						uSocket.OnError(ErrorCode.ClientDisconnect);
 						break;
 					}
 				}

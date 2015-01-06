@@ -40,8 +40,6 @@
   <ItemGroup>
     <Compile Include="UAddress.cs" />
     <Compile Include="UException.cs" />
-    <Compile Include="UEvent.cs" />
-    <Compile Include="ErrorCode.cs" />
     <Compile Include="UPoller.cs" />
     <Compile Include="Library.cs" />
     <Compile Include="NativeMethods.cs" />
@@ -56,6 +54,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{19F8F043-1F99-4550-99DF-DEA5C7D77E55}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Network\Network.csproj">
       <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
       <Name>Network</Name>

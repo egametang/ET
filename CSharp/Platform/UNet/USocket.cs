@@ -6,21 +6,15 @@ using Network;
 
 namespace UNet
 {
-	public sealed class USocket: IDisposable
+	internal sealed class USocket : IDisposable
 	{
-		private IntPtr peerPtr = IntPtr.Zero;
-		private readonly UPoller service;
+		private IntPtr peerPtr;
 		private readonly LinkedList<byte[]> recvBuffer = new LinkedList<byte[]>();
 
-		public Action<UEvent> Connected { get; private set; }
-		public Action<UEvent> Received { get; private set; }
-		public Action<UEvent> Disconnect { get; private set; }
+		public Action<ENetEvent> Connected { get; set; }
+		public Action<ENetEvent> Received { get; private set; }
+		public Action<ENetEvent> Disconnect { get; private set; }
 		public Action<int> Error { get; set; }
-
-		public USocket(UPoller service)
-		{
-			this.service = service;
-		}
 
 		private void Dispose(bool disposing)
 		{
@@ -31,6 +25,11 @@ namespace UNet
 
 			NativeMethods.EnetPeerReset(this.peerPtr);
 			this.peerPtr = IntPtr.Zero;
+		}
+
+		public USocket(IntPtr peerPtr)
+		{
+			this.peerPtr = peerPtr;
 		}
 
 		~USocket()
@@ -49,10 +48,6 @@ namespace UNet
 			get
 			{
 				return this.peerPtr;
-			}
-			set
-			{
-				this.peerPtr = value;
 			}
 		}
 		
@@ -92,68 +87,6 @@ namespace UNet
 			NativeMethods.EnetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
-		public Task<bool> ConnectAsync(string hostName, ushort port)
-		{
-			var tcs = new TaskCompletionSource<bool>();
-			UAddress address = new UAddress { Host = hostName, Port = port };
-			ENetAddress nativeAddress = address.Struct;
-			this.peerPtr = NativeMethods.EnetHostConnect(
-				this.service.HostPtr, ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
-			if (this.peerPtr == IntPtr.Zero)
-			{
-				throw new UException("host connect call failed.");
-			}
-			this.service.USocketManager.Add(this.peerPtr, this);
-			this.Connected = eEvent =>
-			{
-				if (eEvent.EventState == EventState.DISCONNECTED)
-				{
-					tcs.TrySetException(new UException("socket disconnected in connect"));
-				}
-				tcs.TrySetResult(true);
-			};
-			return tcs.Task;
-		}
-
-		public Task<bool> AcceptAsync()
-		{
-			if (this.service.USocketManager.ContainsKey(IntPtr.Zero))
-			{
-				throw new UException("do not accept twice!");
-			}
-
-			var tcs = new TaskCompletionSource<bool>();
-
-			// 如果有请求连接缓存的包,从缓存中取
-			if (this.service.ConnEEvents.Count > 0)
-			{
-				UEvent uEvent = this.service.ConnEEvents.First.Value;
-				this.service.ConnEEvents.RemoveFirst();
-
-				this.PeerPtr = uEvent.PeerPtr;
-				this.service.USocketManager.Add(this.PeerPtr, this);
-				tcs.TrySetResult(true);
-			}
-			else
-			{
-				this.service.USocketManager.Add(this.PeerPtr, this);
-				this.Connected = eEvent =>
-				{
-					if (eEvent.EventState == EventState.DISCONNECTED)
-					{
-						tcs.TrySetException(new UException("socket disconnected in accpet"));
-					}
-
-					this.service.USocketManager.Remove(IntPtr.Zero);
-
-					this.PeerPtr = eEvent.PeerPtr;
-					this.service.USocketManager.Add(this.PeerPtr, this);
-					tcs.TrySetResult(true);
-				};
-			}
-			return tcs.Task;
-		}
-
 		public void SendAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			UPacket packet = new UPacket(data, flags);
@@ -178,12 +111,12 @@ namespace UNet
 			{
 				this.Received = eEvent =>
 				{
-					if (eEvent.EventState == EventState.DISCONNECTED)
+					if (eEvent.Type == EventType.Disconnect)
 					{
 						tcs.TrySetException(new UException("socket disconnected in receive"));
 					}
 
-					using (UPacket packet = new UPacket(eEvent.PacketPtr))
+					using (UPacket packet = new UPacket(eEvent.Packet))
 					{
 						byte[] bytes = packet.Bytes;
 						tcs.TrySetResult(bytes);
@@ -197,7 +130,7 @@ namespace UNet
 		{
 			NativeMethods.EnetPeerDisconnect(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
-			this.PeerPtr = IntPtr.Zero;
+			this.peerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
 			this.Disconnect = eEvent => tcs.TrySetResult(true);
 			return tcs.Task;
@@ -207,7 +140,7 @@ namespace UNet
 		{
 			NativeMethods.EnetPeerDisconnectLater(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
-			this.PeerPtr = IntPtr.Zero;
+			this.peerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
 			this.Disconnect = eEvent => tcs.TrySetResult(true);
 			return tcs.Task;
@@ -217,27 +150,27 @@ namespace UNet
 		{
 			NativeMethods.EnetPeerDisconnectNow(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
-			this.PeerPtr = IntPtr.Zero;
+			this.peerPtr = IntPtr.Zero;
 		}
 
-		internal void OnConnected(UEvent uEvent)
+		internal void OnConnected(ENetEvent eNetEvent)
 		{
 			if (this.Connected == null)
 			{
 				return;
 			}
-			Action<UEvent> localConnected = this.Connected;
+			Action<ENetEvent> localConnected = this.Connected;
 			this.Connected = null;
 			// 此调用将让await ConnectAsync返回,所以null必须在此之前设置
-			localConnected(uEvent);
+			localConnected(eNetEvent);
 		}
 
-		internal void OnReceived(UEvent uEvent)
+		internal void OnReceived(ENetEvent eNetEvent)
 		{
 			// 如果应用层还未调用readasync则将包放到缓存队列
 			if (this.Received == null)
 			{
-				using (UPacket packet = new UPacket(uEvent.PacketPtr))
+				using (UPacket packet = new UPacket(eNetEvent.Packet))
 				{
 					byte[] bytes = packet.Bytes;
 					this.recvBuffer.AddLast(bytes);
@@ -245,29 +178,23 @@ namespace UNet
 			}
 			else
 			{
-				Action<UEvent> localReceived = this.Received;
+				Action<ENetEvent> localReceived = this.Received;
 				this.Received = null;
 				// 此调用将让await ReadAsync返回,所以null必须在此之前设置
-				localReceived(uEvent);
+				localReceived(eNetEvent);
 			}
 		}
 
-		internal void OnDisconnect(UEvent uEvent)
+		internal void OnDisconnect(ENetEvent eNetEvent)
 		{
 			if (this.Disconnect == null)
 			{
 				return;
 			}
-			this.Disconnect(uEvent);
-		}
 
-		internal void OnError(int errorCode)
-		{
-			if (this.Error == null)
-			{
-				return;
-			}
-			this.Error(errorCode);
+			Action<ENetEvent> localDisconnect = this.Disconnect;
+			this.Disconnect = null;
+			localDisconnect(eNetEvent);
 		}
 	}
 }

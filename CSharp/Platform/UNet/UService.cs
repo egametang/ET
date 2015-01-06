@@ -56,21 +56,12 @@ namespace UNet
 
 		public void Add(Action action)
 		{
-			this.poller.Events += action;
-		}
-
-		public UPoller Poller
-		{
-			get
-			{
-				return this.poller;
-			}
+			this.poller.Add(action);
 		}
 
 		private async Task<IChannel> ConnectAsync(string host, int port)
 		{
-			USocket newSocket = new USocket(this.poller);
-			await newSocket.ConnectAsync(host, (ushort)port);
+			USocket newSocket = await this.poller.ConnectAsync(host, (ushort)port);
 			UChannel channel = new UChannel(newSocket, this);
 			channels[channel.RemoteAddress] = channel;
 			return channel;
@@ -95,8 +86,7 @@ namespace UNet
 
 		public async Task<IChannel> GetChannel()
 		{
-			USocket socket = new USocket(this.poller);
-			await socket.AcceptAsync();
+			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
 			channels[channel.RemoteAddress] = channel;
 			return channel;

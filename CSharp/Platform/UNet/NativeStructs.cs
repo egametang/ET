@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace UNet
 {
-	public enum EventType
+	internal enum EventType
 	{
 		None = 0,
 		Connect = 1,
@@ -11,7 +11,7 @@ namespace UNet
 		Receive = 3
 	}
 
-	public enum PeerState
+	internal enum PeerState
 	{
 		Uninitialized = -1,
 		Disconnected = 0,
@@ -27,14 +27,14 @@ namespace UNet
 	}
 	
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetAddress
+	internal struct ENetAddress
 	{
 		public uint Host;
 		public ushort Port;
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetCallbacks
+	internal struct ENetCallbacks
 	{
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate IntPtr MallocCb(IntPtr size);
@@ -50,8 +50,9 @@ namespace UNet
 		private IntPtr no_memory;
 	}
 
+	// ENetEvent
 	[StructLayout(LayoutKind.Sequential)]
-	public class ENetEvent
+	internal class ENetEvent
 	{
 		public EventType Type;
 		public IntPtr Peer;
@@ -61,22 +62,22 @@ namespace UNet
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetHost
+	internal struct ENetHost
 	{
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public class ENetListNode
+	internal class ENetListNode
 	{
 		public IntPtr Next;
 		public IntPtr Previous;
 	}
 
 	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	public delegate void ENetPacketFreeCallback(ref ENetPacket param0);
+	internal delegate void ENetPacketFreeCallback(ref ENetPacket param0);
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetPacket
+	internal struct ENetPacket
 	{
 		public uint ReferenceCount;
 		public uint Flags;
@@ -87,7 +88,7 @@ namespace UNet
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct ENetPeer
+	internal struct ENetPeer
 	{
 		public ENetListNode DispatchList;
 		public IntPtr Host;

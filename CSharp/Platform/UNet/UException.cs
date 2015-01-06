@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace UNet
 {
 	[Serializable]
-	public class UException: Exception
+	internal class UException : Exception
 	{
 		public UException()
 		{
