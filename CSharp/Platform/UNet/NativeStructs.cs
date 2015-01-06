@@ -33,23 +33,6 @@ namespace UNet
 		public ushort Port;
 	}
 
-	[StructLayout(LayoutKind.Sequential)]
-	internal struct ENetCallbacks
-	{
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate IntPtr MallocCb(IntPtr size);
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate void FreeCb(IntPtr memory);
-
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		public delegate void NoMemoryCb();
-
-		private IntPtr malloc;
-		private IntPtr free;
-		private IntPtr no_memory;
-	}
-
 	// ENetEvent
 	[StructLayout(LayoutKind.Sequential)]
 	internal class ENetEvent
@@ -62,19 +45,11 @@ namespace UNet
 	}
 
 	[StructLayout(LayoutKind.Sequential)]
-	internal struct ENetHost
-	{
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
 	internal class ENetListNode
 	{
 		public IntPtr Next;
 		public IntPtr Previous;
 	}
-
-	[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-	internal delegate void ENetPacketFreeCallback(ref ENetPacket param0);
 
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct ENetPacket
@@ -83,7 +58,7 @@ namespace UNet
 		public uint Flags;
 		public IntPtr Data;
 		public uint DataLength;
-		public ENetPacketFreeCallback FreeCallback;
+		public IntPtr FreeCallback;
 		public IntPtr UserData;
 	}
 
@@ -99,6 +74,5 @@ namespace UNet
 		public byte IncomingSessionID;
 		public ENetAddress Address;
 		public IntPtr Data;
-		public PeerState State;
 	}
 }

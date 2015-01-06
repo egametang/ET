@@ -72,18 +72,6 @@ namespace UNet
 			}
 		}
 
-		public uint Length
-		{
-			get
-			{
-				if (this.packet == IntPtr.Zero)
-				{
-					return 0;
-				}
-				return this.Struct.DataLength;
-			}
-		}
-
 		public byte[] Bytes
 		{
 			get

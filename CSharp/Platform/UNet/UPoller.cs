@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Base;
+using Common.Logger;
 
 namespace UNet
 {
@@ -180,7 +181,8 @@ namespace UNet
 
 		private int Service()
 		{
-			return NativeMethods.EnetHostService(this.host, null, 0);
+			int ret = NativeMethods.EnetHostService(this.host, null, 0);
+			return ret;
 		}
 
 		public void RunOnce(int timeout = 0)

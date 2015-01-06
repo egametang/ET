@@ -4,8 +4,7 @@
 	{
 		public static void Initialize()
 		{
-			ENetCallbacks inits = new ENetCallbacks();
-			int ret = NativeMethods.EnetInitializeWithCallbacks(NativeMethods.ENET_VERSION, ref inits);
+			int ret = NativeMethods.EnetInitialize();
 			if (ret < 0)
 			{
 				throw new UException(string.Format("Initialization failed, ret: {0}", ret));

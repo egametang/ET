@@ -8,12 +8,14 @@ namespace UNet
 	{
 		private readonly UService service;
 		private USocket socket;
+		private readonly string remoteAddress;
 
 
 		public UChannel(USocket socket, UService service)
 		{
 			this.socket = socket;
 			this.service = service;
+			remoteAddress = this.socket.RemoteAddress;
 		}
 
 		protected void Dispose(bool disposing)
@@ -22,13 +24,14 @@ namespace UNet
 			{
 				return;
 			}
-			
+
 			if (disposing)
 			{
 				socket.Dispose();
 			}
 
 			service.Remove(this);
+
 			this.socket = null;
 		}
 
@@ -58,7 +61,7 @@ namespace UNet
 		{
 			get
 			{
-				return this.socket.RemoteAddress;
+				return remoteAddress;
 			}
 		}
 

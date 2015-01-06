@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Common.Logger;
 using Network;
 
 namespace UNet
@@ -9,7 +10,7 @@ namespace UNet
 	internal sealed class USocket : IDisposable
 	{
 		private IntPtr peerPtr;
-		private readonly LinkedList<byte[]> recvBuffer = new LinkedList<byte[]>();
+		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
 
 		public Action<ENetEvent> Connected { get; set; }
 		public Action<ENetEvent> Received { get; private set; }
@@ -100,10 +101,9 @@ namespace UNet
 			var tcs = new TaskCompletionSource<byte[]>();
 
 			// 如果有缓存的包,从缓存中取
-			if (this.recvBuffer.Count > 0)
+			if (this.recvQueue.Count > 0)
 			{
-				byte[] bytes = this.recvBuffer.First.Value;
-				this.recvBuffer.RemoveFirst();
+				byte[] bytes = this.recvQueue.Dequeue();
 				tcs.TrySetResult(bytes);
 			}
 			// 没有缓存封包,设置回调等待
@@ -173,7 +173,7 @@ namespace UNet
 				using (UPacket packet = new UPacket(eNetEvent.Packet))
 				{
 					byte[] bytes = packet.Bytes;
-					this.recvBuffer.AddLast(bytes);
+					this.recvQueue.Enqueue(bytes);
 				}
 			}
 			else

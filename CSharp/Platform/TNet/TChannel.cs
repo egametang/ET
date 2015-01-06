@@ -20,12 +20,14 @@ namespace TNet
 		private ObjectId sendTimer = ObjectId.Empty;
 		private Action onParseComplete = () => { };
 		private readonly PacketParser parser;
+		private readonly string remoteAddress;
 
 		public TChannel(TSocket socket, TService service)
 		{
 			this.socket = socket;
 			this.service = service;
 			this.parser = new PacketParser(recvBuffer);
+			this.remoteAddress = this.socket.RemoteAddress;
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -133,7 +135,7 @@ namespace TNet
 		{
 			get
 			{
-				return this.socket.RemoteAddress;
+				return remoteAddress;
 			}
 		}
 

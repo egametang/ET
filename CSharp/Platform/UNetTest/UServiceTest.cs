@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
+using Common.Logger;
 using UNet;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Network;
@@ -31,7 +32,7 @@ namespace UNetTest
 			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
 			Array.Reverse(bytes);
 			channel.SendAsync(bytes);
-
+			
 			barrier.RemoveParticipant();
 		}
 
