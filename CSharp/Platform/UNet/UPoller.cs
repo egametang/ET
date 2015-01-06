@@ -23,9 +23,11 @@ namespace UNet
 
 		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
 
+		private ENetEvent eNetEventCache;
+
 		public UPoller(string hostName, ushort port)
 		{
-			UAddress address = new UAddress { Host = hostName, Port = port };
+			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.EnetHostCreate(
 				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
@@ -113,7 +115,7 @@ namespace UNet
 		public Task<USocket> ConnectAsync(string hostName, ushort port)
 		{
 			var tcs = new TaskCompletionSource<USocket>();
-			UAddress address = new UAddress { Host = hostName, Port = port };
+			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
 			
 			IntPtr ptr = NativeMethods.EnetHostConnect(
@@ -137,11 +139,16 @@ namespace UNet
 
 		private ENetEvent GetEvent()
 		{
-			ENetEvent eNetEvent = new ENetEvent();
-			if (NativeMethods.EnetHostCheckEvents(this.host, eNetEvent) <= 0)
+			if (this.eNetEventCache == null)
+			{
+				this.eNetEventCache = new ENetEvent();
+			}
+			if (NativeMethods.EnetHostCheckEvents(this.host, this.eNetEventCache) <= 0)
 			{
 				return null;
 			}
+			ENetEvent eNetEvent = this.eNetEventCache;
+			this.eNetEventCache = null;
 			return eNetEvent;
 		}
 

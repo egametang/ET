@@ -5,49 +5,14 @@ namespace UNet
 {
 	internal struct UAddress
 	{
-		private uint ip;
-		private ushort port;
+		private readonly uint ip;
+		private readonly ushort port;
 
-		public uint IP
+		public UAddress(string host, int port)
 		{
-			get
-			{
-				return this.ip;
-			}
-			set
-			{
-				this.ip = value;
-			}
-		}
-
-		public ushort Port
-		{
-			get
-			{
-				return this.port;
-			}
-			set
-			{
-				this.port = value;
-			}
-		}
-
-		public string Host
-		{
-			get
-			{
-				IPHostEntry hostInfo = Dns.GetHostEntry(new IPAddress(this.ip));
-				return hostInfo.HostName;
-			}
-			set
-			{
-				IPAddress[] addresslist = Dns.GetHostAddresses(value);
-				foreach (IPAddress address in addresslist)
-				{
-					this.ip = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
-					return;
-				}
-			}
+			IPAddress address = IPAddress.Parse(host);
+			this.ip = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+			this.port = (ushort) port;
 		}
 
 		public ENetAddress Struct
