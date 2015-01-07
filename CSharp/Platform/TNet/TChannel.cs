@@ -28,6 +28,8 @@ namespace TNet
 			this.service = service;
 			this.parser = new PacketParser(recvBuffer);
 			this.remoteAddress = this.socket.RemoteAddress;
+
+			StartRecv();
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -66,7 +68,7 @@ namespace TNet
 			this.sendBuffer.SendTo(buffer);
 			if (this.sendTimer == ObjectId.Empty)
 			{
-				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.SendTimerCallback);
+				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);
 			}
 		}
 
@@ -76,39 +78,6 @@ namespace TNet
 			{
 				return this.sendTimer;
 			}
-		}
-
-		private async void SendTimerCallback()
-		{
-			try
-			{
-				while (true)
-				{
-					if (this.sendBuffer.Count == 0)
-					{
-						break;
-					}
-					int sendSize = TBuffer.ChunkSize - this.sendBuffer.FirstIndex;
-					if (sendSize > this.sendBuffer.Count)
-					{
-						sendSize = this.sendBuffer.Count;
-					}
-					int n = await this.socket.SendAsync(
-						this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
-					this.sendBuffer.FirstIndex += n;
-					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
-					{
-						this.sendBuffer.FirstIndex = 0;
-						this.sendBuffer.RemoveFirst();
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Log.Trace(e.ToString());
-			}
-
-			this.sendTimer = ObjectId.Empty;
 		}
 
 		public Task<byte[]> RecvAsync()
@@ -146,7 +115,40 @@ namespace TNet
 			tcs.SetResult(packet);
 		}
 
-		public async void Start()
+		private async void StartSend()
+		{
+			try
+			{
+				while (true)
+				{
+					if (this.sendBuffer.Count == 0)
+					{
+						break;
+					}
+					int sendSize = TBuffer.ChunkSize - this.sendBuffer.FirstIndex;
+					if (sendSize > this.sendBuffer.Count)
+					{
+						sendSize = this.sendBuffer.Count;
+					}
+					int n = await this.socket.SendAsync(
+						this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+					this.sendBuffer.FirstIndex += n;
+					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
+					{
+						this.sendBuffer.FirstIndex = 0;
+						this.sendBuffer.RemoveFirst();
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Trace(e.ToString());
+			}
+
+			this.sendTimer = ObjectId.Empty;
+		}
+
+		private async void StartRecv()
 		{
 			try
 			{

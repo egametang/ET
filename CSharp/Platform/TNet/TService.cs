@@ -71,7 +71,6 @@ namespace TNet
 			await newSocket.ConnectAsync(host, port);
 			TChannel channel = new TChannel(newSocket, this);
 			channels[newSocket.RemoteAddress] = channel;
-			channel.Start();
 			return channel;
 		}
 
@@ -85,7 +84,6 @@ namespace TNet
 			await acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
 			channels[channel.RemoteAddress] = channel;
-			channel.Start();
 			return channel;
 		}
 
