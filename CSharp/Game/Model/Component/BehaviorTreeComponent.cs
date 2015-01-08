@@ -6,7 +6,7 @@ namespace Model
 {
 	public class BehaviorTreeComponent: Component<World>, IAssemblyLoader
 	{
-		private Dictionary<int, BehaviorTree> trees = new Dictionary<int, BehaviorTree>();
+		private readonly Dictionary<int, BehaviorTree> trees = new Dictionary<int, BehaviorTree>();
 
 		public void Load(Assembly assembly)
 		{
@@ -18,6 +18,14 @@ namespace Model
 			{
 				BehaviorTree behaviorTree = behaviorTreeFactory.CreateTree(nodeConfig);
 				this.trees[nodeConfig.Id] = behaviorTree;
+			}
+		}
+
+		public BehaviorTree this[int id]
+		{
+			get
+			{
+				return this.trees[id];
 			}
 		}
 	}

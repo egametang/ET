@@ -52,7 +52,7 @@
     <Compile Include="BehaviorTree\Node.cs" />
     <Compile Include="BehaviorTree\NodeAttribute.cs" />
     <Compile Include="Buff.cs" />
-    <Compile Include="Component\MessageComponent.cs" />
+    <Compile Include="Component\ServiceComponent.cs" />
     <Compile Include="Component\BuffComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
@@ -81,6 +81,14 @@
     <ProjectReference Include="..\..\Platform\Common\Common.csproj">
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\Network\Network.csproj">
+      <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
+      <Name>Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\TNet\TNet.csproj">
+      <Project>{b42d431a-3a54-4649-942a-c5356d7f9fbc}</Project>
+      <Name>TNet</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

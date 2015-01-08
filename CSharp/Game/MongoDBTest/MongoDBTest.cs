@@ -14,10 +14,10 @@ namespace MongoDBTest
 		public void TestMongoDB()
 		{
 			const string connectionString = "mongodb://localhost";
-			var client = new MongoClient(connectionString);
-			var server = client.GetServer();
-			var database = server.GetDatabase("test");
-			var collection = database.GetCollection<Unit>("Unit");
+			MongoClient client = new MongoClient(connectionString);
+			MongoServer server = client.GetServer();
+			MongoDatabase database = server.GetDatabase("test");
+			MongoCollection<Unit> collection = database.GetCollection<Unit>("Unit");
 
 			World world = World.Instance;
 
@@ -36,7 +36,7 @@ namespace MongoDBTest
 
 			collection.Insert(player1);
 
-			var query = Query<Unit>.EQ(e => e.Id, player1.Id);
+			IMongoQuery query = Query<Unit>.EQ(e => e.Id, player1.Id);
 			Unit player2 = collection.FindOne(query);
 
 			Console.WriteLine(MongoHelper.ToJson(player2));

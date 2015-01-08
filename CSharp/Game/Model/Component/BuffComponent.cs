@@ -111,6 +111,7 @@ namespace Model
 			this.typeBuff.Remove(buff.Config.Type, buff);
 
 			World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.AfterRemoveBuff, env);
+			buff.Dispose();
 		}
 
 		public void RemoveById(ObjectId id)

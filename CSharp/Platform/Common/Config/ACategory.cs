@@ -21,9 +21,9 @@ namespace Common.Config
 				throw new Exception(string.Format("not found config path: {0}", path));
 			}
 
-			foreach (var file in Directory.GetFiles(path))
+			foreach (string file in Directory.GetFiles(path))
 			{
-				var t = MongoHelper.FromJson<T>(File.ReadAllText(file));
+				T t = MongoHelper.FromJson<T>(File.ReadAllText(file));
 				this.dict.Add(t.Id, t);
 			}
 		}

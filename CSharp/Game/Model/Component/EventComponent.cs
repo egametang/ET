@@ -15,8 +15,8 @@ namespace Model
 		{
 			this.events = new Dictionary<int, List<IEvent>>();
 
-			var types = assembly.GetTypes();
-			foreach (var t in types)
+			Type[] types = assembly.GetTypes();
+			foreach (Type t in types)
 			{
 				object[] attrs = t.GetCustomAttributes(typeof (AttributeType), false);
 				if (attrs.Length == 0)

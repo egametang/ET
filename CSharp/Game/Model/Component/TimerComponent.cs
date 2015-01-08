@@ -50,7 +50,7 @@ namespace Model
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
-			List<long> timeoutTimer = new List<long>();
+			var timeoutTimer = new List<long>();
 			foreach (long time in this.timeId.Keys)
 			{
 				if (time > timeNow)

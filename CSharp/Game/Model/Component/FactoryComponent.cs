@@ -29,7 +29,7 @@ namespace Model
 
 				object obj = (Activator.CreateInstance(type));
 
-				IFactory<T> iFactory = obj as IFactory<T>;
+				var iFactory = obj as IFactory<T>;
 				if (iFactory == null)
 				{
 					throw new Exception(string.Format("class: {0} not inherit from IFactory", type.Name));
