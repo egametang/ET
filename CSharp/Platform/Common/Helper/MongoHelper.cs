@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -27,14 +28,18 @@ namespace Common.Helper
 			return obj.ToBson();
 		}
 
-		public static T FromBson<T>(byte[] bytes)
-		{
-			return BsonSerializer.Deserialize<T>(bytes);
-		}
-
 		public static object FromBson(byte[] bytes, Type type)
 		{
 			return BsonSerializer.Deserialize(bytes, type);
+		}
+
+		public static T FromBson<T>(byte[] bytes, int index = 0)
+		{
+			using (MemoryStream memoryStream = new MemoryStream(bytes))
+			{
+				memoryStream.Seek(index, SeekOrigin.Begin);
+				return (T) BsonSerializer.Deserialize(memoryStream, typeof(T));
+			}
 		}
 	}
 }

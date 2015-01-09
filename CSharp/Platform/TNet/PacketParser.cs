@@ -10,6 +10,7 @@ namespace TNet
 
 	internal class PacketParser
 	{
+		private const int packetSizeMax = 128 * 1024;
 		private readonly TBuffer buffer;
 
 		private int packetSize;

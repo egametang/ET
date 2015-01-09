@@ -90,6 +90,10 @@
       <Project>{b42d431a-3a54-4649-942a-c5356d7f9fbc}</Project>
       <Name>TNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Platform\UNet\UNet.csproj">
+      <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
+      <Name>UNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

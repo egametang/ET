@@ -3,6 +3,12 @@ using System.Threading.Tasks;
 
 namespace Network
 {
+	public enum NetworkProtocol
+	{
+		TCP,
+		UDP,
+	}
+
 	public interface IService: IDisposable
 	{
 		/// <summary>

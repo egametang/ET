@@ -3,6 +3,7 @@ using Common.Base;
 using Common.Event;
 using Network;
 using TNet;
+using UNet;
 
 namespace Model
 {
@@ -10,9 +11,20 @@ namespace Model
 	{
 		private IService service;
 
-		public void Run(string host, int port)
+		public void Run(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
-			service = new TService("127.0.0.1", 8888);
+			switch (protocol)
+			{
+				case NetworkProtocol.TCP:
+					service = new TService("127.0.0.1", 8888);
+					break;
+				case NetworkProtocol.UDP:
+					service = new UService("127.0.0.1", 8888);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("protocol");
+			}
+			
 			service.Add(AcceptChannel);
 
 			service.Run();
@@ -38,10 +50,10 @@ namespace Model
 		{
 			while (true)
 			{
-				byte[] packet = await channel.RecvAsync();
+				byte[] message = await channel.RecvAsync();
 				Env env = new Env();
-				env[EnvKey.Packet] = packet;
-				int opcode = BitConverter.ToUInt16(packet, 0);
+				env[EnvKey.Message] = message;
+				int opcode = BitConverter.ToUInt16(message, 0);
 				World.Instance.GetComponent<EventComponent<MessageAttribute>>().Run(opcode, env);
 			}
 		}

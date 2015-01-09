@@ -53,5 +53,6 @@
 		CastPrefixSpell = 20011,
 		// 跟随unit
 		FollowUnit = 20012,
+		LookAtTarget = 20013,
 	}
 }

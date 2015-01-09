@@ -6,6 +6,6 @@
 		public const string OwnerId = "OwnerId";
 		public const string Buff = "Buff";
 		public const string BuffId = "BuffId";
-		public const string Packet = "Packet";
+		public const string Message = "Message";
 	}
 }
