@@ -108,13 +108,6 @@ namespace TNet
 			return await ConnectAsync(host, port);
 		}
 
-		public async Task<IChannel> GetChannel(string address)
-		{
-			string[] ss = address.Split(':');
-			int port = Convert.ToInt32(ss[1]);
-			return await GetChannel(ss[0], port);
-		}
-
 		public void RunOnce(int timeout)
 		{
 			poller.Run(timeout);

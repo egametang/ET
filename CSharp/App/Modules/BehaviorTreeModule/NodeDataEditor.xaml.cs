@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using Common.Helper;
 
 namespace Modules.BehaviorTreeModule
 {
@@ -10,11 +9,14 @@ namespace Modules.BehaviorTreeModule
 	/// </summary>
 	public partial class NodeDataEditor
 	{
+		private readonly string[] nodeTypes;
+
 		public NodeDataEditor()
 		{
 			this.InitializeComponent();
 
-			string[] nodeTypes = Enum.GetNames(typeof (NodeType));
+			nodeTypes = Enum.GetNames(typeof (NodeType));
+			Array.Sort(nodeTypes);
 			this.cbType.ItemsSource = nodeTypes;
 		}
 
@@ -38,7 +40,9 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			this.cbType.SelectedIndex = EnumHelper.EnumIndex<NodeType>(this.TreeNodeViewModel.Type);
+			string typeStr = ((NodeType) this.TreeNodeViewModel.Type).ToString();
+			int selectIndex = Array.IndexOf(nodeTypes, typeStr);
+			this.cbType.SelectedIndex = selectIndex;
 		}
 
 		private void CbType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

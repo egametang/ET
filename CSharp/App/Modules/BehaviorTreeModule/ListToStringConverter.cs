@@ -15,7 +15,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return "";
 			}
-			var list = (List<string>) value;
+			var list = ((List<string>) value);
 			return String.Join(",", list);
 		}
 
@@ -25,7 +25,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return new List<string>();
 			}
-			var s = (string) value;
+			string s = (string) value;
 			s = s.Trim();
 			if (s == "")
 			{

@@ -19,8 +19,6 @@ namespace Network
 
 		Task<IChannel> GetChannel(string host, int port);
 
-		Task<IChannel> GetChannel(string address);
-
 		Task<IChannel> GetChannel();
 
 		void Remove(IChannel channel);
