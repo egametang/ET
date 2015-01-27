@@ -1,4 +1,5 @@
-﻿
+﻿using Model;
+
 namespace Controller
 {
     public class Entry
