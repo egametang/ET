@@ -26,3 +26,4 @@ _ReSharper.CSharp/
 *.opensdf
 *.sdf
 /CSharp/CSharp.sln.ide
+/Unity/Library
