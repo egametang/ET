@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Mvvm;
@@ -6,7 +7,7 @@ using Microsoft.Practices.Prism.Mvvm;
 namespace Modules.BehaviorTreeModule
 {
 	[Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
-	public class TreeViewModel: BindableBase
+	public class TreeViewModel: BindableBase, ICloneable
 	{
 		private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
 				new ObservableCollection<TreeNodeViewModel>();
@@ -27,7 +28,7 @@ namespace Modules.BehaviorTreeModule
 		public TreeViewModel(AllTreeViewModel allTreeViewModel)
 		{
 			this.AllTreeViewModel = allTreeViewModel;
-			this.TreeId = ++allTreeViewModel.MaxTreeId;
+			this.TreeId = ++AllTreeViewModel.MaxTreeId;
 			TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, 300, 100);
 			this.treeNodes.Add(treeNodeViewModel);
 			this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
@@ -49,42 +50,7 @@ namespace Modules.BehaviorTreeModule
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
-
-		public TreeViewModel(AllTreeViewModel allTreeViewModel, TreeViewModel copyTree)
-		{
-			this.AllTreeViewModel = allTreeViewModel;
-			this.TreeId = ++this.AllTreeViewModel.MaxTreeId;
-			// 旧id和新id的映射关系
-			var idMapping = new Dictionary<int, int>();
-			idMapping[0] = 0;
-			List<TreeNodeData> treeNodeDatas = copyTree.GetDatas();
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
-			{
-				int newId = ++this.AllTreeViewModel.MaxNodeId;
-				idMapping[treeNodeData.Id] = newId;
-				treeNodeData.Id = newId;
-				treeNodeData.TreeId = this.TreeId;
-			}
-
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
-			{
-				treeNodeData.Parent = idMapping[treeNodeData.Parent];
-				for (int i = 0; i < treeNodeData.Children.Count; ++i)
-				{
-					treeNodeData.Children[i] = idMapping[treeNodeData.Children[i]];
-				}
-			}
-
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
-			{
-				TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);
-				this.treeNodes.Add(treeNodeViewModel);
-				this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
-			}
-			TreeLayout treeLayout = new TreeLayout(this);
-			treeLayout.ExcuteLayout();
-		}
-
+		
 		public List<TreeNodeData> GetDatas()
 		{
 			var treeNodeDatas = new List<TreeNodeData>();
@@ -298,6 +264,34 @@ namespace Modules.BehaviorTreeModule
 
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
+		}
+
+		public object Clone()
+		{
+			int treeId = ++AllTreeViewModel.MaxTreeId;
+			List<TreeNodeData> treeNodeDatas = this.GetDatas();
+			// 旧id和新id的映射关系
+			var idMapping = new Dictionary<int, int>();
+			idMapping[0] = 0;
+			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			{
+				int newId = ++this.AllTreeViewModel.MaxNodeId;
+				idMapping[treeNodeData.Id] = newId;
+				treeNodeData.Id = newId;
+				treeNodeData.TreeId = treeId;
+			}
+
+			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			{
+				treeNodeData.Parent = idMapping[treeNodeData.Parent];
+				for (int i = 0; i < treeNodeData.Children.Count; ++i)
+				{
+					treeNodeData.Children[i] = idMapping[treeNodeData.Children[i]];
+				}
+			}
+
+			TreeViewModel clone = new TreeViewModel(this.AllTreeViewModel, treeNodeDatas);
+			return clone;
 		}
 	}
 }

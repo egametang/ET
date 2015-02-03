@@ -90,15 +90,16 @@ namespace Modules.BehaviorTreeModule
 			return treeViewModel;
 		}
 
-		public void Remove(TreeNodeViewModel treeNodeViewModel)
+		public void Remove(int treeId)
 		{
-			this.treeViewModelsDict.Remove(treeNodeViewModel.TreeId);
-			this.rootList.Remove(treeNodeViewModel);
+			TreeViewModel treeViewModel = treeViewModelsDict[treeId];
+			this.treeViewModelsDict.Remove(treeId);
+			this.rootList.Remove(treeViewModel.Root);
 		}
 
-		public TreeViewModel Copy(TreeNodeViewModel treeNodeViewModel)
+		public TreeViewModel Clone(TreeNodeViewModel treeNodeViewModel)
 		{
-			TreeViewModel treeViewModel = new TreeViewModel(this, treeNodeViewModel.TreeViewModel);
+			TreeViewModel treeViewModel = (TreeViewModel) treeNodeViewModel.TreeViewModel.Clone();
 			this.treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
 			this.rootList.Add(treeViewModel.Root);
 			return treeViewModel;

@@ -53,14 +53,14 @@ namespace Modules.BehaviorTreeModule
 			this.treeView.ViewModel = treeViewModel;
 		}
 
-		private void MenuItem_Copy(object sender, RoutedEventArgs e)
+		private void MenuItem_Clone(object sender, RoutedEventArgs e)
 		{
 			if (this.lbTreeRoots.SelectedItem == null)
 			{
 				return;
 			}
 			TreeNodeViewModel treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
-			TreeViewModel treeViewModel = this.ViewModel.Copy(treeNodeViewModel);
+			TreeViewModel treeViewModel = this.ViewModel.Clone(treeNodeViewModel);
 			this.treeView.ViewModel = treeViewModel;
 		}
 
@@ -71,15 +71,15 @@ namespace Modules.BehaviorTreeModule
 				return;
 			}
 			TreeNodeViewModel treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
-			this.ViewModel.Remove(treeNodeViewModel);
+			this.ViewModel.Remove(treeNodeViewModel.TreeId);
 			this.lbTreeRoots.SelectedItem = null;
 			e.Handled = true;
 		}
 
 		private void ListBoxItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			var item = (FrameworkElement) sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+			FrameworkElement item = (FrameworkElement) sender;
+			TreeNodeViewModel treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 			if (this.treeView.ViewModel != null)
 			{
 				if (this.treeView.ViewModel.TreeId == treeNodeViewModel.TreeId)
@@ -92,8 +92,8 @@ namespace Modules.BehaviorTreeModule
 
 		private void ListBoxItem_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			var item = (FrameworkElement) sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+			FrameworkElement item = (FrameworkElement) sender;
+			TreeNodeViewModel treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
 			this.lbTreeRoots.SelectedItem = treeNodeViewModel;
 		}

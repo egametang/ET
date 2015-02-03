@@ -27,7 +27,7 @@
 						<MenuItem Header="保存" Click="MenuItem_Save" />
 						<MenuItem Header="新建" Click="MenuItem_New" />
 						<MenuItem Header="删除" Click="MenuItem_Remove" />
-						<MenuItem Header="复制" Click="MenuItem_Copy" />
+						<MenuItem Header="克隆" Click="MenuItem_Clone" />
 					</ContextMenu>
 				</ListBox.ContextMenu>
 				<ListBox.ItemTemplate>

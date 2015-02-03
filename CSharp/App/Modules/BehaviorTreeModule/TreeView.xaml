@@ -7,7 +7,10 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
 			 d:DataContext="{d:DesignInstance tree:TreeViewModel}">
+
 	<UserControl.Resources>
+		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
+		
 		<LinearGradientBrush x:Key="treeNodeSelectorFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
 			<GradientStop Color="#FFF37FFF" Offset="0.6" />
@@ -62,19 +65,19 @@
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove"
 							PreviewMouseLeftButtonDown="ListBoxItem_PreviewMouseLeftButtonDown"
 							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
-						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="2"
+						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="0"
 								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
 						<Label Content="+" Visibility="{Binding IsFold, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>
-						<StackPanel>
-							<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}"/>
-							<Label Content="{Binding Comment}"/>
-						</StackPanel>
+						<Label Content="{Binding Type, Converter={StaticResource NodeTypeToStringConverter}}" Canvas.Top="0"/>
+						<Label Content="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="15"/>
+						<Label Content="{Binding Comment}" Canvas.Top="30"/>
 						<Line X1="{Binding ConnectorX1}" Y1="{Binding ConnectorY1}" X2="{Binding ConnectorX2}" Y2="{Binding ConnectorY2}"
 								Stroke="Black" StrokeThickness="2"  />
 					</Canvas>
 					<DataTemplate.Triggers>
 						<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
 							<Setter TargetName="rectNode" Property="Stroke" Value="Green" />
+							<Setter TargetName="rectNode" Property="StrokeThickness" Value="2" />
 						</DataTrigger>
 						<DataTrigger Binding="{Binding Type, Converter={StaticResource NodeTypeColorConverter}}" Value="selector">
 							<Setter TargetName="rectNode" Property="Fill" Value="{StaticResource treeNodeSelectorFillBrush}" />
