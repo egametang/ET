@@ -44,6 +44,8 @@
 				<ContextMenu>
 					<MenuItem Header="新建" Click="MenuItem_New" />
 					<MenuItem Header="删除" Click="MenuItem_Remove" />
+					<MenuItem Header="复制" Click="MenuItem_Copy" />
+					<MenuItem Header="粘贴" Click="MenuItem_Paste" />
 					<MenuItem Header="左移" Click="MenuItem_MoveLeft" />
 					<MenuItem Header="右移" Click="MenuItem_MoveRight" />
 					<MenuItem Header="折叠/展开" Click="MenuItem_Fold" />

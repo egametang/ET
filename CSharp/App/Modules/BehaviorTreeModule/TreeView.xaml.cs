@@ -119,8 +119,8 @@ namespace Modules.BehaviorTreeModule
 		private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseEventArgs e)
 		{
 			this.origMouseDownPoint = e.GetPosition(this);
-			var item = (FrameworkElement) sender;
-			var treeNodeViewModel = item.DataContext as TreeNodeViewModel;
+			FrameworkElement item = (FrameworkElement) sender;
+			TreeNodeViewModel treeNodeViewModel = item.DataContext as TreeNodeViewModel;
 
 			this.listBox.SelectedItem = treeNodeViewModel;
 			this.moveFromNode = treeNodeViewModel;
@@ -138,8 +138,8 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var item = (FrameworkElement) sender;
-			var moveToNode = item.DataContext as TreeNodeViewModel;
+			FrameworkElement item = (FrameworkElement) sender;
+			TreeNodeViewModel moveToNode = item.DataContext as TreeNodeViewModel;
 			Log.Debug("move to node: {0} {1}", this.moveFromNode.Id, moveToNode.Id);
 			if (this.moveFromNode.Id == moveToNode.Id)
 			{
@@ -189,7 +189,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
 			if (treeNodeViewModel.IsRoot)
 			{
 				return;
@@ -205,7 +205,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
 
 			if (treeNodeViewModel.IsFold)
 			{
@@ -223,7 +223,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
 			this.ViewModel.MoveLeft(treeNodeViewModel);
 		}
 
@@ -233,8 +233,28 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
 			this.ViewModel.MoveRight(treeNodeViewModel);
+		}
+
+		private void MenuItem_Copy(object sender, RoutedEventArgs e)
+		{
+			if (this.listBox.SelectedItem == null)
+			{
+				return;
+			}
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			this.ViewModel.Copy(treeNodeViewModel);
+		}
+
+		private void MenuItem_Paste(object sender, RoutedEventArgs e)
+		{
+			if (this.listBox.SelectedItem == null)
+			{
+				return;
+			}
+			TreeNodeViewModel treeNodeViewModel = this.listBox.SelectedItem as TreeNodeViewModel;
+			this.ViewModel.Paste(treeNodeViewModel);
 		}
 	}
 }

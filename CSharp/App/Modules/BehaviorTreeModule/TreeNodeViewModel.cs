@@ -62,17 +62,6 @@ namespace Modules.BehaviorTreeModule
 			}
 		}
 
-		public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeViewModel parent, TreeNodeViewModel treeNodeViewModel)
-		{
-			this.TreeViewModel = treeViewModel;
-			this.data = new TreeNodeData();
-			this.data.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
-			this.data.TreeId = treeViewModel.TreeId;
-			this.Parent = parent;
-			this.ConnectorX2 = treeNodeViewModel.ConnectorX2;
-			this.connectorY2 = treeNodeViewModel.ConnectorY2;
-		}
-
 		public TreeNodeData Data
 		{
 			get

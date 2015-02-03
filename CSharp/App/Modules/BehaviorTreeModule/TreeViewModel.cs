@@ -25,6 +25,8 @@ namespace Modules.BehaviorTreeModule
 
 		public int TreeId { get; private set; }
 
+		public int copyId;
+
 		public TreeViewModel(AllTreeViewModel allTreeViewModel)
 		{
 			this.AllTreeViewModel = allTreeViewModel;
@@ -62,7 +64,7 @@ namespace Modules.BehaviorTreeModule
 			return treeNodeDatas;
 		}
 
-		public AllTreeViewModel AllTreeViewModel { get; set; }
+		public AllTreeViewModel AllTreeViewModel { get; private set; }
 
 		public TreeNodeViewModel Root
 		{
@@ -92,6 +94,7 @@ namespace Modules.BehaviorTreeModule
 
 			if (parent != null)
 			{
+				treeNode.Parent = parent;
 				parent.Children.Add(treeNode.Id);
 			}
 
@@ -264,6 +267,54 @@ namespace Modules.BehaviorTreeModule
 
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
+		}
+
+		public void Copy(TreeNodeViewModel copyTreeNodeViewModel)
+		{
+			copyId = copyTreeNodeViewModel.Id;
+		}
+
+		public void Paste(TreeNodeViewModel pasteTreeNodeViewModel)
+		{
+			if (copyId == 0)
+			{
+				return;
+			}
+
+			TreeNodeViewModel copyTreeNodeViewModel = treeNodeDict[copyId];
+			// copy节点不能是paste节点的父级节点
+			TreeNodeViewModel tmpNode = pasteTreeNodeViewModel;
+			while (tmpNode != null)
+			{
+				if (tmpNode.IsRoot)
+				{
+					break;
+				}
+				if (tmpNode.Id == copyTreeNodeViewModel.Id)
+				{
+					return;
+				}
+				tmpNode = tmpNode.Parent;
+			}
+			copyId = 0;
+			CopyTree(copyTreeNodeViewModel, pasteTreeNodeViewModel);
+		}
+
+		private void CopyTree(TreeNodeViewModel copyTreeNodeViewModel, TreeNodeViewModel parent)
+		{
+			TreeNodeData newTreeNodeData = (TreeNodeData)copyTreeNodeViewModel.Data.Clone();
+			newTreeNodeData.Id = ++this.AllTreeViewModel.MaxNodeId;
+			newTreeNodeData.TreeId = this.TreeId;
+			newTreeNodeData.Children.Clear();
+			TreeNodeViewModel newTreeNodeViewModel = new TreeNodeViewModel(this, newTreeNodeData);
+
+			this.Add(newTreeNodeViewModel, parent);
+
+			foreach (int childId in copyTreeNodeViewModel.Children)
+			{
+				TreeNodeViewModel child = this.Get(childId);
+				this.CopyTree(child, newTreeNodeViewModel);
+			}
 		}
 
 		public object Clone()
