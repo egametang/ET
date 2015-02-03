@@ -9,12 +9,6 @@
 		d:DesignWidth="1280" 
 		d:DataContext="{d:DesignInstance Tree:AllTreeViewModel}">
 	<DockPanel>
-	<Menu DockPanel.Dock="Top" Height="24">
-		<MenuItem Header="File">
-			<MenuItem Header="打开" Click="MenuItem_Open" />
-			<MenuItem Header="保存" Click="MenuItem_Save" />
-		</MenuItem>
-	</Menu>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
@@ -29,15 +23,18 @@
 			<ListBox Name="lbTreeRoots" ItemsSource="{Binding RootList}" VerticalAlignment="Stretch" >
 				<ListBox.ContextMenu>
 					<ContextMenu>
-						<MenuItem Header="新建树" Click="MenuItem_New" />
-						<MenuItem Header="删除树" Click="MenuItem_Remove" />
+						<MenuItem Header="打开" Click="MenuItem_Open" />
+						<MenuItem Header="保存" Click="MenuItem_Save" />
+						<MenuItem Header="新建" Click="MenuItem_New" />
+						<MenuItem Header="删除" Click="MenuItem_Remove" />
+						<MenuItem Header="复制" Click="MenuItem_Copy" />
 					</ContextMenu>
 				</ListBox.ContextMenu>
 				<ListBox.ItemTemplate>
 					<DataTemplate DataType="Tree:TreeNodeViewModel">
 						<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" MouseLeftButtonUp="ListBoxItem_OnMouseLeftButtonUp" 
 									Orientation="Horizontal" Margin="1,0">
-							<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="20"/>
+							<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="30"/>
 							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" Width="150"/>
 						</StackPanel>
 					</DataTemplate>

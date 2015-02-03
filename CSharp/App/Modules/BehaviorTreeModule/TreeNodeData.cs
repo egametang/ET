@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Common.Helper;
 
 namespace Modules.BehaviorTreeModule
 {
 	[DataContract]
-	public class TreeNodeData
+	public class TreeNodeData: ICloneable
 	{
 		private readonly List<int> children = new List<int>();
 
@@ -55,5 +57,10 @@ namespace Modules.BehaviorTreeModule
 		/// </summary>
 		[DataMember(Order = 7)]
 		public string Comment { get; set; }
+
+		public object Clone()
+		{
+			return ProtobufHelper.FromBytes<TreeNodeData>(ProtobufHelper.ToBytes(this));
+		}
 	}
 }

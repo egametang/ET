@@ -49,8 +49,18 @@ namespace Modules.BehaviorTreeModule
 
 		private void MenuItem_New(object sender, RoutedEventArgs e)
 		{
-			TreeViewModel treeViewModel = new TreeViewModel(this.ViewModel);
-			this.ViewModel.Add(treeViewModel);
+			TreeViewModel treeViewModel = this.ViewModel.New();
+			this.treeView.ViewModel = treeViewModel;
+		}
+
+		private void MenuItem_Copy(object sender, RoutedEventArgs e)
+		{
+			if (this.lbTreeRoots.SelectedItem == null)
+			{
+				return;
+			}
+			TreeNodeViewModel treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
+			TreeViewModel treeViewModel = this.ViewModel.Copy(treeNodeViewModel);
 			this.treeView.ViewModel = treeViewModel;
 		}
 
@@ -60,7 +70,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
+			TreeNodeViewModel treeNodeViewModel = this.lbTreeRoots.SelectedItem as TreeNodeViewModel;
 			this.ViewModel.Remove(treeNodeViewModel);
 			this.lbTreeRoots.SelectedItem = null;
 			e.Handled = true;

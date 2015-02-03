@@ -54,5 +54,6 @@
 		// 跟随unit
 		FollowUnit = 20012,
 		LookAtTarget = 20013,
+		CastNumSpell = 20014,
 	}
 }

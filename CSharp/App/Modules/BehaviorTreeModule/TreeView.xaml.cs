@@ -161,7 +161,7 @@ namespace Modules.BehaviorTreeModule
 			// one root node
 			if (this.ViewModel.TreeNodes.Count == 0)
 			{
-				var addTreeNode = new TreeNodeViewModel(this.ViewModel, point.X, point.Y)
+				TreeNodeViewModel addTreeNode = new TreeNodeViewModel(this.ViewModel, point.X, point.Y)
 				{
 					Type = (int) NodeType.Selector
 				};
@@ -171,8 +171,8 @@ namespace Modules.BehaviorTreeModule
 			{
 				if (this.listBox.SelectedItem != null)
 				{
-					var parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
-					var addTreeNode = new TreeNodeViewModel(this.ViewModel, parentNode)
+					TreeNodeViewModel parentNode = this.listBox.SelectedItem as TreeNodeViewModel;
+					TreeNodeViewModel addTreeNode = new TreeNodeViewModel(this.ViewModel, parentNode)
 					{
 						Type = (int) NodeType.Selector,
 					};

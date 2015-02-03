@@ -22,7 +22,7 @@ namespace Modules.BehaviorTreeModule
 			}
 		}
 
-		public int TreeId { get; set; }
+		public int TreeId { get; private set; }
 
 		public TreeViewModel(AllTreeViewModel allTreeViewModel)
 		{
@@ -32,28 +32,66 @@ namespace Modules.BehaviorTreeModule
 			this.treeNodes.Add(treeNodeViewModel);
 			this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
-		public TreeViewModel(List<TreeNodeData> treeNodeDatas)
+		public TreeViewModel(AllTreeViewModel allTreeViewModel, List<TreeNodeData> treeNodeDatas)
 		{
+			this.AllTreeViewModel = allTreeViewModel;
+			this.TreeId = treeNodeDatas[0].TreeId;
 			foreach (TreeNodeData treeNodeData in treeNodeDatas)
 			{
 				TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);
 				this.treeNodes.Add(treeNodeViewModel);
 				this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
 			}
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
+			treeLayout.ExcuteLayout();
+		}
+
+		public TreeViewModel(AllTreeViewModel allTreeViewModel, TreeViewModel copyTree)
+		{
+			this.AllTreeViewModel = allTreeViewModel;
+			this.TreeId = ++this.AllTreeViewModel.MaxTreeId;
+			// 旧id和新id的映射关系
+			var idMapping = new Dictionary<int, int>();
+			idMapping[0] = 0;
+			List<TreeNodeData> treeNodeDatas = copyTree.GetDatas();
+			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			{
+				int newId = ++this.AllTreeViewModel.MaxNodeId;
+				idMapping[treeNodeData.Id] = newId;
+				treeNodeData.Id = newId;
+				treeNodeData.TreeId = this.TreeId;
+			}
+
+			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			{
+				treeNodeData.Parent = idMapping[treeNodeData.Parent];
+				for (int i = 0; i < treeNodeData.Children.Count; ++i)
+				{
+					treeNodeData.Children[i] = idMapping[treeNodeData.Children[i]];
+				}
+			}
+
+			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			{
+				TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);
+				this.treeNodes.Add(treeNodeViewModel);
+				this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
+			}
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
 		public List<TreeNodeData> GetDatas()
 		{
-			List<TreeNodeData> treeNodeDatas = new List<TreeNodeData>();
+			var treeNodeDatas = new List<TreeNodeData>();
 			foreach (TreeNodeViewModel treeNodeViewModel in this.treeNodes)
 			{
-				treeNodeDatas.Add(treeNodeViewModel.Data);
+				TreeNodeData treeNodeData = (TreeNodeData)treeNodeViewModel.Data.Clone();
+				treeNodeDatas.Add(treeNodeData);
 			}
 			return treeNodeDatas;
 		}
@@ -91,7 +129,7 @@ namespace Modules.BehaviorTreeModule
 				parent.Children.Add(treeNode.Id);
 			}
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -113,7 +151,7 @@ namespace Modules.BehaviorTreeModule
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
 		{
-			List<int> allId = new List<int>();
+			var allId = new List<int>();
 			this.GetChildrenIdAndSelf(treeNodeViewModel, allId);
 
 			foreach (int childId in allId)
@@ -129,7 +167,7 @@ namespace Modules.BehaviorTreeModule
 				parent.Children.Remove(treeNodeViewModel.Id);
 			}
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -137,7 +175,7 @@ namespace Modules.BehaviorTreeModule
 		{
 			treeNodeViewModel.X += offsetX;
 			treeNodeViewModel.Y += offsetY;
-			foreach (var childId in treeNodeViewModel.Children)
+			foreach (int childId in treeNodeViewModel.Children)
 			{
 				TreeNodeViewModel child = this.Get(childId);
 				this.RecursionMove(child, offsetX, offsetY);
@@ -178,7 +216,7 @@ namespace Modules.BehaviorTreeModule
 			from.Parent.Children.Remove(from.Id);
 			to.Children.Add(from.Id);
 			from.Parent = to;
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -188,7 +226,7 @@ namespace Modules.BehaviorTreeModule
 		/// <param name="treeNodeViewModel"></param>
 		public void Fold(TreeNodeViewModel treeNodeViewModel)
 		{
-			List<int> allChildId = new List<int>();
+			var allChildId = new List<int>();
 			this.GetAllChildrenId(treeNodeViewModel, allChildId);
 
 			foreach (int childId in allChildId)
@@ -199,7 +237,7 @@ namespace Modules.BehaviorTreeModule
 
 			treeNodeViewModel.IsFold = true;
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -211,7 +249,7 @@ namespace Modules.BehaviorTreeModule
 		{
 			treeNodeViewModel.IsFold = false;
 
-			List<int> allChildId = new List<int>();
+			var allChildId = new List<int>();
 			this.GetAllChildrenId(treeNodeViewModel, allChildId);
 
 			foreach (int childId in allChildId)
@@ -220,7 +258,7 @@ namespace Modules.BehaviorTreeModule
 				this.treeNodes.Add(child);
 			}
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -230,7 +268,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var parent = treeNodeViewModel.Parent;
+			TreeNodeViewModel parent = treeNodeViewModel.Parent;
 			int index = parent.Children.IndexOf(treeNodeViewModel.Id);
 			if (index == 0)
 			{
@@ -239,7 +277,7 @@ namespace Modules.BehaviorTreeModule
 			parent.Children.Remove(treeNodeViewModel.Id);
 			parent.Children.Insert(index - 1, treeNodeViewModel.Id);
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
@@ -249,7 +287,7 @@ namespace Modules.BehaviorTreeModule
 			{
 				return;
 			}
-			var parent = treeNodeViewModel.Parent;
+			TreeNodeViewModel parent = treeNodeViewModel.Parent;
 			int index = parent.Children.IndexOf(treeNodeViewModel.Id);
 			if (index == parent.Children.Count - 1)
 			{
@@ -258,7 +296,7 @@ namespace Modules.BehaviorTreeModule
 			parent.Children.Remove(treeNodeViewModel.Id);
 			parent.Children.Insert(index + 1, treeNodeViewModel.Id);
 
-			var treeLayout = new TreeLayout(this);
+			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 	}

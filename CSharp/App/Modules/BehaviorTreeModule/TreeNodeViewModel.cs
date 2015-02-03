@@ -8,7 +8,7 @@ namespace Modules.BehaviorTreeModule
 	{
 		private static double width = 80;
 		private static double height = 50;
-		private readonly TreeViewModel treeViewModel;
+		public TreeViewModel TreeViewModel { get; private set; }
 		private readonly TreeNodeData data;
 		private double x;
 		private double y;
@@ -21,7 +21,7 @@ namespace Modules.BehaviorTreeModule
 
 		public TreeNodeViewModel(TreeViewModel treeViewModel, double x, double y)
 		{
-			this.treeViewModel = treeViewModel;
+			this.TreeViewModel = treeViewModel;
 			this.x = x;
 			this.y = y;
 			this.data = new TreeNodeData();
@@ -34,7 +34,7 @@ namespace Modules.BehaviorTreeModule
 
 		public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeViewModel parent)
 		{
-			this.treeViewModel = treeViewModel;
+			this.TreeViewModel = treeViewModel;
 			this.data = new TreeNodeData();
 			this.data.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
 			this.data.TreeId = treeViewModel.TreeId;
@@ -46,7 +46,7 @@ namespace Modules.BehaviorTreeModule
 
 		public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeData data)
 		{
-			this.treeViewModel = treeViewModel;
+			this.TreeViewModel = treeViewModel;
 			this.data = data;
 			if (this.IsRoot)
 			{
@@ -60,6 +60,17 @@ namespace Modules.BehaviorTreeModule
 				this.connectorX2 = Width + this.Parent.X - this.X;
 				this.connectorY2 = Height / 2 + this.Parent.Y - this.Y;
 			}
+		}
+
+		public TreeNodeViewModel(TreeViewModel treeViewModel, TreeNodeViewModel parent, TreeNodeViewModel treeNodeViewModel)
+		{
+			this.TreeViewModel = treeViewModel;
+			this.data = new TreeNodeData();
+			this.data.Id = ++treeViewModel.AllTreeViewModel.MaxNodeId;
+			this.data.TreeId = treeViewModel.TreeId;
+			this.Parent = parent;
+			this.ConnectorX2 = treeNodeViewModel.ConnectorX2;
+			this.connectorY2 = treeNodeViewModel.ConnectorY2;
 		}
 
 		public TreeNodeData Data
@@ -182,7 +193,7 @@ namespace Modules.BehaviorTreeModule
 
 				foreach (var childId in this.Children)
 				{
-					TreeNodeViewModel child = this.treeViewModel.Get(childId);
+					TreeNodeViewModel child = this.TreeViewModel.Get(childId);
 					child.ConnectorX2 = Width / 2 + this.X - child.X;
 				}
 			}
@@ -211,7 +222,7 @@ namespace Modules.BehaviorTreeModule
 
 				foreach (var childId in this.Children)
 				{
-					TreeNodeViewModel child = this.treeViewModel.Get(childId);
+					TreeNodeViewModel child = this.TreeViewModel.Get(childId);
 					child.ConnectorY2 = Height + this.Y - child.Y;
 				}
 			}
@@ -307,7 +318,7 @@ namespace Modules.BehaviorTreeModule
 				{
 					return null;
 				}
-				TreeNodeViewModel parent = this.treeViewModel.Get(this.data.Parent);
+				TreeNodeViewModel parent = this.TreeViewModel.Get(this.data.Parent);
 				return parent;
 			}
 			set
@@ -362,7 +373,7 @@ namespace Modules.BehaviorTreeModule
 				}
 
 				int index = this.Parent.Children.IndexOf(this.Id);
-				return index == 0? null : this.treeViewModel.Get(this.Parent.Children[index - 1]);
+				return index == 0? null : this.TreeViewModel.Get(this.Parent.Children[index - 1]);
 			}
 		}
 
@@ -376,7 +387,7 @@ namespace Modules.BehaviorTreeModule
 				}
 
 				int maxIndex = this.Children.Count - 1;
-				return this.treeViewModel.Get(this.Children[maxIndex]);
+				return this.TreeViewModel.Get(this.Children[maxIndex]);
 			}
 		}
 
@@ -384,7 +395,7 @@ namespace Modules.BehaviorTreeModule
 		{
 			get
 			{
-				return this.Children.Count == 0? null : this.treeViewModel.Get(this.Children[0]);
+				return this.Children.Count == 0? null : this.TreeViewModel.Get(this.Children[0]);
 			}
 		}
 
