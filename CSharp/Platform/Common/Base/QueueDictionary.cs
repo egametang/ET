@@ -9,7 +9,7 @@ namespace Common.Base
 
 		public void Add(T t, K k)
 		{
-			list.Add(t);
+			this.list.Add(t);
 			this.dictionary.Add(t, k);
 		}
 
@@ -32,7 +32,7 @@ namespace Common.Base
 		{
 			get
 			{
-				return list[0];
+				return this.list[0];
 			}
 		}
 

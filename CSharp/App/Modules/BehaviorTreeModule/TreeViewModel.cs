@@ -30,7 +30,7 @@ namespace Modules.BehaviorTreeModule
 		public TreeViewModel(AllTreeViewModel allTreeViewModel)
 		{
 			this.AllTreeViewModel = allTreeViewModel;
-			this.TreeId = ++AllTreeViewModel.MaxTreeId;
+			this.TreeId = ++this.AllTreeViewModel.MaxTreeId;
 			TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, 300, 100);
 			this.treeNodes.Add(treeNodeViewModel);
 			this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
@@ -52,13 +52,13 @@ namespace Modules.BehaviorTreeModule
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
-		
+
 		public List<TreeNodeData> GetDatas()
 		{
 			var treeNodeDatas = new List<TreeNodeData>();
 			foreach (TreeNodeViewModel treeNodeViewModel in this.treeNodes)
 			{
-				TreeNodeData treeNodeData = (TreeNodeData)treeNodeViewModel.Data.Clone();
+				TreeNodeData treeNodeData = (TreeNodeData) treeNodeViewModel.Data.Clone();
 				treeNodeDatas.Add(treeNodeData);
 			}
 			return treeNodeDatas;
@@ -271,17 +271,17 @@ namespace Modules.BehaviorTreeModule
 
 		public void Copy(TreeNodeViewModel copyTreeNodeViewModel)
 		{
-			copyId = copyTreeNodeViewModel.Id;
+			this.copyId = copyTreeNodeViewModel.Id;
 		}
 
 		public void Paste(TreeNodeViewModel pasteTreeNodeViewModel)
 		{
-			if (copyId == 0)
+			if (this.copyId == 0)
 			{
 				return;
 			}
 
-			TreeNodeViewModel copyTreeNodeViewModel = treeNodeDict[copyId];
+			TreeNodeViewModel copyTreeNodeViewModel = this.treeNodeDict[this.copyId];
 			// copy节点不能是paste节点的父级节点
 			TreeNodeViewModel tmpNode = pasteTreeNodeViewModel;
 			while (tmpNode != null)
@@ -296,13 +296,13 @@ namespace Modules.BehaviorTreeModule
 				}
 				tmpNode = tmpNode.Parent;
 			}
-			copyId = 0;
-			CopyTree(copyTreeNodeViewModel, pasteTreeNodeViewModel);
+			this.copyId = 0;
+			this.CopyTree(copyTreeNodeViewModel, pasteTreeNodeViewModel);
 		}
 
 		private void CopyTree(TreeNodeViewModel copyTreeNodeViewModel, TreeNodeViewModel parent)
 		{
-			TreeNodeData newTreeNodeData = (TreeNodeData)copyTreeNodeViewModel.Data.Clone();
+			TreeNodeData newTreeNodeData = (TreeNodeData) copyTreeNodeViewModel.Data.Clone();
 			newTreeNodeData.Id = ++this.AllTreeViewModel.MaxNodeId;
 			newTreeNodeData.TreeId = this.TreeId;
 			newTreeNodeData.Children.Clear();
@@ -319,7 +319,7 @@ namespace Modules.BehaviorTreeModule
 
 		public object Clone()
 		{
-			int treeId = ++AllTreeViewModel.MaxTreeId;
+			int treeId = ++this.AllTreeViewModel.MaxTreeId;
 			List<TreeNodeData> treeNodeDatas = this.GetDatas();
 			// 旧id和新id的映射关系
 			var idMapping = new Dictionary<int, int>();

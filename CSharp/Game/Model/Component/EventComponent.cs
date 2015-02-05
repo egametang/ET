@@ -28,7 +28,7 @@ namespace Model
 				if (iEvent == null)
 				{
 					throw new Exception(string.Format("event not inherit IEvent interface: {0}",
-							obj.GetType().FullName));
+					                                  obj.GetType().FullName));
 				}
 
 				AEventAttribute iEventAttribute = (AEventAttribute) attrs[0];

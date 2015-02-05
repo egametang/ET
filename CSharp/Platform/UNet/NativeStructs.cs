@@ -25,7 +25,7 @@ namespace UNet
 		AcknowledgingDisconnect = 8,
 		Zombie = 9
 	}
-	
+
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct ENetAddress
 	{

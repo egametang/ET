@@ -38,7 +38,7 @@ namespace Common.Helper
 			using (MemoryStream memoryStream = new MemoryStream(bytes))
 			{
 				memoryStream.Seek(index, SeekOrigin.Begin);
-				return (T) BsonSerializer.Deserialize(memoryStream, typeof(T));
+				return (T) BsonSerializer.Deserialize(memoryStream, typeof (T));
 			}
 		}
 	}

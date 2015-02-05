@@ -10,39 +10,38 @@ namespace UNet
 		private USocket socket;
 		private readonly string remoteAddress;
 
-
 		public UChannel(USocket socket, UService service)
 		{
 			this.socket = socket;
 			this.service = service;
-			remoteAddress = this.socket.RemoteAddress;
+			this.remoteAddress = this.socket.RemoteAddress;
 		}
 
 		protected void Dispose(bool disposing)
 		{
-			if (socket == null)
+			if (this.socket == null)
 			{
 				return;
 			}
 
 			if (disposing)
 			{
-				socket.Dispose();
+				this.socket.Dispose();
 			}
 
-			service.Remove(this);
+			this.service.Remove(this);
 
 			this.socket = null;
 		}
 
 		~UChannel()
 		{
-			Dispose(false);
+			this.Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -50,7 +49,6 @@ namespace UNet
 		{
 			this.socket.SendAsync(buffer, channelID, flags);
 		}
-
 
 		public async Task<byte[]> RecvAsync()
 		{
@@ -61,7 +59,7 @@ namespace UNet
 		{
 			get
 			{
-				return remoteAddress;
+				return this.remoteAddress;
 			}
 		}
 

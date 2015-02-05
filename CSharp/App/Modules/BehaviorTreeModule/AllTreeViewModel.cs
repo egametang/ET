@@ -92,7 +92,7 @@ namespace Modules.BehaviorTreeModule
 
 		public void Remove(int treeId)
 		{
-			TreeViewModel treeViewModel = treeViewModelsDict[treeId];
+			TreeViewModel treeViewModel = this.treeViewModelsDict[treeId];
 			this.treeViewModelsDict.Remove(treeId);
 			this.rootList.Remove(treeViewModel.Root);
 		}

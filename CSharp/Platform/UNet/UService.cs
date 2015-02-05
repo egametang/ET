@@ -18,7 +18,7 @@ namespace UNet
 		/// <param name="port"></param>
 		public UService(string host, int port)
 		{
-			this.poller = new UPoller(host, (ushort)port);
+			this.poller = new UPoller(host, (ushort) port);
 		}
 
 		/// <summary>
@@ -38,19 +38,19 @@ namespace UNet
 
 			if (disposing)
 			{
-				this.poller.Dispose();	
+				this.poller.Dispose();
 			}
 			this.poller = null;
 		}
 
 		~UService()
 		{
-			Dispose(false);
+			this.Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -61,9 +61,9 @@ namespace UNet
 
 		private async Task<IChannel> ConnectAsync(string host, int port)
 		{
-			USocket newSocket = await this.poller.ConnectAsync(host, (ushort)port);
+			USocket newSocket = await this.poller.ConnectAsync(host, (ushort) port);
 			UChannel channel = new UChannel(newSocket, this);
-			channels[channel.RemoteAddress] = channel;
+			this.channels[channel.RemoteAddress] = channel;
 			return channel;
 		}
 
@@ -74,14 +74,14 @@ namespace UNet
 			{
 				return channel;
 			}
-			return await ConnectAsync(host, port);
+			return await this.ConnectAsync(host, port);
 		}
 
 		public async Task<IChannel> GetChannel()
 		{
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
-			channels[channel.RemoteAddress] = channel;
+			this.channels[channel.RemoteAddress] = channel;
 			return channel;
 		}
 

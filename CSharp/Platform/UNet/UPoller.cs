@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Base;
-using Common.Logger;
 
 namespace UNet
 {
@@ -15,7 +14,9 @@ namespace UNet
 		}
 
 		private readonly USocketManager uSocketManager = new USocketManager();
-		private readonly QueueDictionary<IntPtr, ENetEvent> connQueue = new QueueDictionary<IntPtr, ENetEvent>();
+
+		private readonly QueueDictionary<IntPtr, ENetEvent> connQueue =
+				new QueueDictionary<IntPtr, ENetEvent>();
 
 		private IntPtr host;
 
@@ -29,8 +30,8 @@ namespace UNet
 		{
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.EnetHostCreate(
-				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.EnetHostCreate(ref nativeAddress,
+			                                         NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -42,8 +43,8 @@ namespace UNet
 
 		public UPoller()
 		{
-			this.host = NativeMethods.EnetHostCreate(
-				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.EnetHostCreate(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
+			                                         0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -82,7 +83,7 @@ namespace UNet
 			}
 
 			var tcs = new TaskCompletionSource<USocket>();
-			
+
 			// 如果有请求连接缓存的包,从缓存中取
 			if (this.connQueue.Count > 0)
 			{
@@ -95,8 +96,8 @@ namespace UNet
 			}
 			else
 			{
-				this.uSocketManager.Add(acceptor.PeerPtr, acceptor);
-				acceptor.Connected = eEvent =>
+				this.uSocketManager.Add(this.acceptor.PeerPtr, this.acceptor);
+				this.acceptor.Connected = eEvent =>
 				{
 					if (eEvent.Type == EventType.Disconnect)
 					{
@@ -117,9 +118,9 @@ namespace UNet
 			var tcs = new TaskCompletionSource<USocket>();
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
-			
-			IntPtr ptr = NativeMethods.EnetHostConnect(
-				this.host, ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
+
+			IntPtr ptr = NativeMethods.EnetHostConnect(this.host, ref nativeAddress,
+			                                           NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
 			USocket socket = new USocket(ptr);
 			if (socket.PeerPtr == IntPtr.Zero)
 			{
@@ -159,7 +160,7 @@ namespace UNet
 
 		public void Add(Action action)
 		{
-			blockingCollection.Add(action);
+			this.blockingCollection.Add(action);
 		}
 
 		private void OnEvents(int timeout)

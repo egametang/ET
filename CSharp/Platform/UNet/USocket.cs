@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Common.Logger;
 using Network;
 
 namespace UNet
 {
-	internal sealed class USocket : IDisposable
+	internal sealed class USocket: IDisposable
 	{
 		private IntPtr peerPtr;
 		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
@@ -35,12 +34,12 @@ namespace UNet
 
 		~USocket()
 		{
-			Dispose(false);
+			this.Dispose(false);
 		}
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -51,7 +50,7 @@ namespace UNet
 				return this.peerPtr;
 			}
 		}
-		
+
 		private ENetPeer Struct
 		{
 			get

@@ -26,7 +26,7 @@ namespace Common.Base
 			{
 				throw new Exception(
 						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-								typeof (K).Name));
+						              typeof (K).Name));
 			}
 
 			if (this.components == null)
@@ -45,7 +45,7 @@ namespace Common.Base
 			{
 				throw new Exception(
 						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-								component.GetComponentType().Name));
+						              component.GetComponentType().Name));
 			}
 
 			if (this.components == null)
@@ -63,7 +63,7 @@ namespace Common.Base
 			{
 				throw new Exception(
 						string.Format("RemoveComponent, component not exist, id: {0}, component: {1}", this.Id,
-								typeof (K).Name));
+						              typeof (K).Name));
 			}
 
 			this.components.Remove(component);
@@ -105,7 +105,7 @@ namespace Common.Base
 				this.components = null;
 				return;
 			}
-			foreach (var component in this.components)
+			foreach (Component<T> component in this.components)
 			{
 				component.Owner = (T) this;
 				this.componentDict.Add(component.GetComponentType(), component);

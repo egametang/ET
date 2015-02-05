@@ -36,8 +36,6 @@
 		// 方形陷阱选择目标
 		RectTrapSelectTarget = 100020,
 
-
-
 		// action节点 20000开始
 		CastSpell = 20000,
 		Chase = 20001,

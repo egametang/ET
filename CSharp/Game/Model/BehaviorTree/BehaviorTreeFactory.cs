@@ -38,7 +38,8 @@ namespace Model
 
 				Type classType = type;
 				this.dictionary.Add(attribute.NodeType,
-						config => (Node) Activator.CreateInstance(classType, new object[] { config }));
+				                    config =>
+						                    (Node) Activator.CreateInstance(classType, new object[] { config }));
 			}
 		}
 

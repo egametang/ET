@@ -24,7 +24,8 @@ namespace Common.Helper
 			if (hexString.Length % 2 != 0)
 			{
 				throw new ArgumentException(String.Format(CultureInfo.InvariantCulture,
-						"The binary key cannot have an odd number of digits: {0}", hexString));
+				                                          "The binary key cannot have an odd number of digits: {0}",
+				                                          hexString));
 			}
 
 			var hexAsBytes = new byte[hexString.Length / 2];

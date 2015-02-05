@@ -15,9 +15,9 @@ namespace Modules.BehaviorTreeModule
 		{
 			this.InitializeComponent();
 
-			nodeTypes = Enum.GetNames(typeof (NodeType));
-			Array.Sort(nodeTypes);
-			this.cbType.ItemsSource = nodeTypes;
+			this.nodeTypes = Enum.GetNames(typeof (NodeType));
+			Array.Sort(this.nodeTypes);
+			this.cbType.ItemsSource = this.nodeTypes;
 		}
 
 		public AllTreeView AllTreeView { get; set; }
@@ -41,7 +41,7 @@ namespace Modules.BehaviorTreeModule
 				return;
 			}
 			string typeStr = ((NodeType) this.TreeNodeViewModel.Type).ToString();
-			int selectIndex = Array.IndexOf(nodeTypes, typeStr);
+			int selectIndex = Array.IndexOf(this.nodeTypes, typeStr);
 			this.cbType.SelectedIndex = selectIndex;
 		}
 

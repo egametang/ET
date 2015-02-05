@@ -33,7 +33,8 @@ namespace TNet
 		{
 			get
 			{
-				return ((IPEndPoint)socket.RemoteEndPoint).Address + ":" + ((IPEndPoint)socket.RemoteEndPoint).Port;
+				return ((IPEndPoint) this.socket.RemoteEndPoint).Address + ":" +
+				       ((IPEndPoint) this.socket.RemoteEndPoint).Port;
 			}
 		}
 
@@ -67,7 +68,7 @@ namespace TNet
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -122,7 +123,7 @@ namespace TNet
 
 		private static void OnConnectComplete(SocketAsyncEventArgs e)
 		{
-			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			var tcs = (TaskCompletionSource<bool>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
@@ -146,7 +147,7 @@ namespace TNet
 
 		private static void OnAcceptComplete(SocketAsyncEventArgs e)
 		{
-			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			var tcs = (TaskCompletionSource<bool>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
@@ -171,7 +172,7 @@ namespace TNet
 		private static void OnRecvComplete(SocketAsyncEventArgs e)
 		{
 			Log.Debug("OnRecvComplete: " + e.BytesTransferred);
-			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			var tcs = (TaskCompletionSource<int>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
@@ -195,7 +196,7 @@ namespace TNet
 
 		private static void OnSendComplete(SocketAsyncEventArgs e)
 		{
-			var tcs = (TaskCompletionSource<int>)e.UserToken;
+			var tcs = (TaskCompletionSource<int>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
@@ -218,7 +219,7 @@ namespace TNet
 
 		private static void OnDisconnectComplete(SocketAsyncEventArgs e)
 		{
-			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			var tcs = (TaskCompletionSource<bool>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{

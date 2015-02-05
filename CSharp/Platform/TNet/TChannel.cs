@@ -26,15 +26,15 @@ namespace TNet
 		{
 			this.socket = socket;
 			this.service = service;
-			this.parser = new PacketParser(recvBuffer);
+			this.parser = new PacketParser(this.recvBuffer);
 			this.remoteAddress = this.socket.RemoteAddress;
 
-			StartRecv();
+			this.StartRecv();
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (socket == null)
+			if (this.socket == null)
 			{
 				return;
 			}
@@ -42,7 +42,7 @@ namespace TNet
 			if (disposing)
 			{
 				// 释放托管的资源
-				socket.Dispose();
+				this.socket.Dispose();
 			}
 
 			// 释放非托管资源
@@ -57,7 +57,7 @@ namespace TNet
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -84,13 +84,13 @@ namespace TNet
 		{
 			var tcs = new TaskCompletionSource<byte[]>();
 
-			if (parser.Parse())
+			if (this.parser.Parse())
 			{
-				tcs.SetResult(parser.GetPacket());
+				tcs.SetResult(this.parser.GetPacket());
 			}
 			else
 			{
-				this.onParseComplete = () => this.ParseComplete(tcs);	
+				this.onParseComplete = () => this.ParseComplete(tcs);
 			}
 			return tcs.Task;
 		}
@@ -104,13 +104,13 @@ namespace TNet
 		{
 			get
 			{
-				return remoteAddress;
+				return this.remoteAddress;
 			}
 		}
 
 		private void ParseComplete(TaskCompletionSource<byte[]> tcs)
 		{
-			byte[] packet = parser.GetPacket();
+			byte[] packet = this.parser.GetPacket();
 			this.onParseComplete = () => { };
 			tcs.SetResult(packet);
 		}
@@ -130,8 +130,8 @@ namespace TNet
 					{
 						sendSize = this.sendBuffer.Count;
 					}
-					int n = await this.socket.SendAsync(
-						this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+					int n =
+							await this.socket.SendAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
 					this.sendBuffer.FirstIndex += n;
 					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
 					{
@@ -154,8 +154,10 @@ namespace TNet
 			{
 				while (true)
 				{
-					int n = await this.socket.RecvAsync(
-						this.recvBuffer.Last, this.recvBuffer.LastIndex, TBuffer.ChunkSize - this.recvBuffer.LastIndex);
+					int n =
+							await
+									this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex,
+									                      TBuffer.ChunkSize - this.recvBuffer.LastIndex);
 					if (n == 0)
 					{
 						break;
@@ -169,7 +171,7 @@ namespace TNet
 					}
 
 					// 解析封包
-					if (parser.Parse())
+					if (this.parser.Parse())
 					{
 						this.onParseComplete();
 					}

@@ -16,18 +16,18 @@ namespace Model
 			switch (protocol)
 			{
 				case NetworkProtocol.TCP:
-					service = new TService("127.0.0.1", 8888);
+					this.service = new TService("127.0.0.1", 8888);
 					break;
 				case NetworkProtocol.UDP:
-					service = new UService("127.0.0.1", 8888);
+					this.service = new UService("127.0.0.1", 8888);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("protocol");
 			}
-			
-			service.Add(AcceptChannel);
 
-			service.Run();
+			this.service.Add(this.AcceptChannel);
+
+			this.service.Run();
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace Model
 		{
 			while (true)
 			{
-				IChannel channel = await service.GetChannel();
+				IChannel channel = await this.service.GetChannel();
 				ProcessChannel(channel);
 			}
 		}

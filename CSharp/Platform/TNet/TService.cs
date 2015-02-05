@@ -10,7 +10,7 @@ namespace TNet
 	{
 		private readonly IPoller poller = new TPoller();
 		private TSocket acceptor;
-		
+
 		private readonly Dictionary<string, TChannel> channels = new Dictionary<string, TChannel>();
 
 		private readonly TimerManager timerManager = new TimerManager();
@@ -22,7 +22,7 @@ namespace TNet
 		/// <param name="port"></param>
 		public TService(string host, int port)
 		{
-			this.acceptor = new TSocket(poller);
+			this.acceptor = new TSocket(this.poller);
 			this.acceptor.Bind(host, port);
 			this.acceptor.Listen(100);
 		}
@@ -56,7 +56,7 @@ namespace TNet
 
 		public void Dispose()
 		{
-			Dispose(true);
+			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -67,10 +67,10 @@ namespace TNet
 
 		private async Task<IChannel> ConnectAsync(string host, int port)
 		{
-			TSocket newSocket = new TSocket(poller);
+			TSocket newSocket = new TSocket(this.poller);
 			await newSocket.ConnectAsync(host, port);
 			TChannel channel = new TChannel(newSocket, this);
-			channels[newSocket.RemoteAddress] = channel;
+			this.channels[newSocket.RemoteAddress] = channel;
 			return channel;
 		}
 
@@ -81,9 +81,9 @@ namespace TNet
 				throw new Exception(string.Format("service construct must use host and port param"));
 			}
 			TSocket socket = new TSocket(this.poller);
-			await acceptor.AcceptAsync(socket);
+			await this.acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
-			channels[channel.RemoteAddress] = channel;
+			this.channels[channel.RemoteAddress] = channel;
 			return channel;
 		}
 
@@ -105,12 +105,12 @@ namespace TNet
 			{
 				return channel;
 			}
-			return await ConnectAsync(host, port);
+			return await this.ConnectAsync(host, port);
 		}
 
 		public void RunOnce(int timeout)
 		{
-			poller.Run(timeout);
+			this.poller.Run(timeout);
 		}
 
 		public void Run()

@@ -34,31 +34,31 @@ namespace TNet
 			bool finish = false;
 			while (!finish)
 			{
-				switch (state)
+				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (buffer.Count < 4)
+						if (this.buffer.Count < 4)
 						{
 							finish = true;
 						}
 						else
 						{
-							buffer.RecvFrom(packetSizeBuffer);
-							packetSize = BitConverter.ToInt32(packetSizeBuffer, 0);
-							state = ParserState.PacketBody;
+							this.buffer.RecvFrom(this.packetSizeBuffer);
+							this.packetSize = BitConverter.ToInt32(this.packetSizeBuffer, 0);
+							this.state = ParserState.PacketBody;
 						}
 						break;
 					case ParserState.PacketBody:
-						if (buffer.Count < packetSize)
+						if (this.buffer.Count < this.packetSize)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.packet = new byte[packetSize];
-							buffer.RecvFrom(this.packet);
+							this.packet = new byte[this.packetSize];
+							this.buffer.RecvFrom(this.packet);
 							this.isOK = true;
-							state = ParserState.PacketSize;
+							this.state = ParserState.PacketSize;
 							finish = true;
 						}
 						break;
@@ -69,7 +69,7 @@ namespace TNet
 
 		public byte[] GetPacket()
 		{
-			byte[] result = packet;
+			byte[] result = this.packet;
 			this.isOK = false;
 			return result;
 		}

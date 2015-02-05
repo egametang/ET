@@ -21,7 +21,7 @@ namespace TNetTest
 			byte[] bytes = await channel.RecvAsync();
 			CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
 
-			barrier.RemoveParticipant();
+			this.barrier.RemoveParticipant();
 		}
 
 		private async void ServerEvent(IService service)
@@ -32,7 +32,7 @@ namespace TNetTest
 			Array.Reverse(bytes);
 			channel.SendAsync(bytes);
 
-			barrier.RemoveParticipant();
+			this.barrier.RemoveParticipant();
 		}
 
 		[TestMethod]
@@ -46,17 +46,15 @@ namespace TNetTest
 			Task.Factory.StartNew(() => clientService.Run(), TaskCreationOptions.LongRunning);
 			Task.Factory.StartNew(() => serverService.Run(), TaskCreationOptions.LongRunning);
 
-			
-
 			// 往server host线程增加事件,accept
-			serverService.Add(() => ServerEvent(serverService));
+			serverService.Add(() => this.ServerEvent(serverService));
 
 			Thread.Sleep(1000);
 
 			// 往client host线程增加事件,client线程连接server
-			clientService.Add(() => ClientEvent(clientService, hostName, port));
+			clientService.Add(() => this.ClientEvent(clientService, hostName, port));
 
-			barrier.SignalAndWait();
+			this.barrier.SignalAndWait();
 		}
 	}
 }
