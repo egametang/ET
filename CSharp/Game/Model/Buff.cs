@@ -63,7 +63,7 @@ namespace Model
 				env[EnvKey.OwnerId] = this.OwnerId;
 				env[EnvKey.BuffId] = this.Id;
 				this.TimerId = World.Instance.GetComponent<TimerComponent>()
-						.Add(this.Expiration, CallbackType.BuffTimeoutCallback, env);
+						.Add(this.Expiration, ActionType.BuffTimeoutAction, env);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Model
 				env[EnvKey.OwnerId] = this.OwnerId;
 				env[EnvKey.BuffId] = this.Id;
 				this.TimerId = World.Instance.GetComponent<TimerComponent>()
-						.Add(this.Expiration, CallbackType.BuffTimeoutCallback, env);
+						.Add(this.Expiration, ActionType.BuffTimeoutAction, env);
 			}
 		}
 

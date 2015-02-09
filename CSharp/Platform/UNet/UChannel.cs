@@ -4,7 +4,7 @@ using Network;
 
 namespace UNet
 {
-	internal class UChannel: IChannel
+	internal class UChannel: AChannel
 	{
 		private readonly UService service;
 		private USocket socket;
@@ -39,23 +39,23 @@ namespace UNet
 			this.Dispose(false);
 		}
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
-		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			this.socket.SendAsync(buffer, channelID, flags);
 		}
 
-		public async Task<byte[]> RecvAsync()
+		public override async Task<byte[]> RecvAsync()
 		{
 			return await this.socket.RecvAsync();
 		}
 
-		public string RemoteAddress
+		public override string RemoteAddress
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace UNet
 			}
 		}
 
-		public async Task<bool> DisconnnectAsync()
+		public override async Task<bool> DisconnnectAsync()
 		{
 			return await this.socket.DisconnectAsync();
 		}

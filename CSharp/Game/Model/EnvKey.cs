@@ -7,5 +7,6 @@
 		public const string Buff = "Buff";
 		public const string BuffId = "BuffId";
 		public const string Message = "Message";
+		public const string Channel = "Channel";
 	}
 }

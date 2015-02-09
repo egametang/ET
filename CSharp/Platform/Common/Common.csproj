@@ -66,7 +66,8 @@
     <Compile Include="Config\ICategory.cs" />
     <Compile Include="Event\Env.cs" />
     <Compile Include="Event\AEventAttribute.cs" />
-    <Compile Include="Event\IEvent.cs" />
+    <Compile Include="Event\IEventAsync.cs" />
+    <Compile Include="Event\IEventSync.cs" />
     <Compile Include="Base\Object.cs" />
     <Compile Include="Config\ConfigAttribute.cs" />
     <Compile Include="Config\ACategory.cs" />

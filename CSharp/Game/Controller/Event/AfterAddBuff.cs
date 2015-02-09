@@ -4,7 +4,7 @@ using Model;
 namespace Controller
 {
 	[Event(EventType.AfterAddBuff)]
-	public class AddBuffToTimer: IEvent
+	public class AddBuffToTimer: IEventSync
 	{
 		public void Run(Env env)
 		{

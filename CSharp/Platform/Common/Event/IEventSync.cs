@@ -1,6 +1,6 @@
 ﻿namespace Common.Event
 {
-	public interface IEvent
+	public interface IEventSync
 	{
 		void Run(Env env);
 	}

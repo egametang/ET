@@ -59,7 +59,7 @@ namespace UNet
 			this.poller.Add(action);
 		}
 
-		private async Task<IChannel> ConnectAsync(string host, int port)
+		private async Task<AChannel> ConnectAsync(string host, int port)
 		{
 			USocket newSocket = await this.poller.ConnectAsync(host, (ushort) port);
 			UChannel channel = new UChannel(newSocket, this);
@@ -67,7 +67,7 @@ namespace UNet
 			return channel;
 		}
 
-		public async Task<IChannel> GetChannel(string host, int port)
+		public async Task<AChannel> GetChannel(string host, int port)
 		{
 			UChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))
@@ -77,7 +77,7 @@ namespace UNet
 			return await this.ConnectAsync(host, port);
 		}
 
-		public async Task<IChannel> GetChannel()
+		public async Task<AChannel> GetChannel()
 		{
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
@@ -85,7 +85,7 @@ namespace UNet
 			return channel;
 		}
 
-		public void Remove(IChannel channel)
+		public void Remove(AChannel channel)
 		{
 			UChannel tChannel = channel as UChannel;
 			if (tChannel == null)

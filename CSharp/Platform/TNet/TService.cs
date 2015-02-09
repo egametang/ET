@@ -65,7 +65,7 @@ namespace TNet
 			this.poller.Add(action);
 		}
 
-		private async Task<IChannel> ConnectAsync(string host, int port)
+		private async Task<AChannel> ConnectAsync(string host, int port)
 		{
 			TSocket newSocket = new TSocket(this.poller);
 			await newSocket.ConnectAsync(host, port);
@@ -74,7 +74,7 @@ namespace TNet
 			return channel;
 		}
 
-		public async Task<IChannel> GetChannel()
+		public async Task<AChannel> GetChannel()
 		{
 			if (this.acceptor == null)
 			{
@@ -87,7 +87,7 @@ namespace TNet
 			return channel;
 		}
 
-		public void Remove(IChannel channel)
+		public void Remove(AChannel channel)
 		{
 			TChannel tChannel = channel as TChannel;
 			if (tChannel == null)
@@ -98,7 +98,7 @@ namespace TNet
 			this.timerManager.Remove(tChannel.SendTimer);
 		}
 
-		public async Task<IChannel> GetChannel(string host, int port)
+		public async Task<AChannel> GetChannel(string host, int port)
 		{
 			TChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))

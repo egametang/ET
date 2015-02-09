@@ -16,10 +16,10 @@ namespace Model
 			switch (protocol)
 			{
 				case NetworkProtocol.TCP:
-					this.service = new TService("127.0.0.1", 8888);
+					this.service = new TService(host, port);
 					break;
 				case NetworkProtocol.UDP:
-					this.service = new UService("127.0.0.1", 8888);
+					this.service = new UService(host, port);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("protocol");
@@ -37,7 +37,7 @@ namespace Model
 		{
 			while (true)
 			{
-				IChannel channel = await this.service.GetChannel();
+				AChannel channel = await this.service.GetChannel();
 				ProcessChannel(channel);
 			}
 		}
@@ -46,15 +46,16 @@ namespace Model
 		/// 接收分发封包
 		/// </summary>
 		/// <param name="channel"></param>
-		private static async void ProcessChannel(IChannel channel)
+		private static async void ProcessChannel(AChannel channel)
 		{
 			while (true)
 			{
 				byte[] message = await channel.RecvAsync();
 				Env env = new Env();
+				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
-				int opcode = BitConverter.ToUInt16(message, 0);
-				World.Instance.GetComponent<EventComponent<MessageAttribute>>().Run(opcode, env);
+				await World.Instance.GetComponent<EventComponent<ActionAttribute>>()
+						.Run(ActionType.MessageAction, env);
 			}
 		}
 	}

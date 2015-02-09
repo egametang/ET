@@ -9,9 +9,9 @@ namespace Model
 		}
 	}
 
-	public class CallbackAttribute: AEventAttribute
+	public class ActionAttribute: AEventAttribute
 	{
-		public CallbackAttribute(int type): base(type)
+		public ActionAttribute(int type): base(type)
 		{
 		}
 	}

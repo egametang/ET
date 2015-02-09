@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\ActorComponent.cs" />
     <Compile Include="Component\BehaviorTreeComponent.cs" />
     <Compile Include="BehaviorTree\BehaviorTree.cs" />
     <Compile Include="BehaviorTree\BehaviorTreeFactory.cs" />

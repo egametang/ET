@@ -8,8 +8,9 @@
 		public const int AfterRemoveBuff = 3;
 	}
 
-	public static class CallbackType
+	public static class ActionType
 	{
-		public const int BuffTimeoutCallback = 0;
+		public const int BuffTimeoutAction = 0;
+		public const int MessageAction = 1;
 	}
 }

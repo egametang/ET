@@ -71,7 +71,7 @@ namespace Model
 						continue;
 					}
 					this.Remove(id);
-					World.Instance.GetComponent<EventComponent<CallbackAttribute>>()
+					World.Instance.GetComponent<EventComponent<ActionAttribute>>()
 							.Run(timer.CallbackId, timer.Env);
 				}
 			}

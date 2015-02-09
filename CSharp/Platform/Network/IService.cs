@@ -17,11 +17,11 @@ namespace Network
 		/// <param name="action"></param>
 		void Add(Action action);
 
-		Task<IChannel> GetChannel(string host, int port);
+		Task<AChannel> GetChannel(string host, int port);
 
-		Task<IChannel> GetChannel();
+		Task<AChannel> GetChannel();
 
-		void Remove(IChannel channel);
+		void Remove(AChannel channel);
 
 		void RunOnce(int timeout);
 

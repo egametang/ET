@@ -48,12 +48,14 @@
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
+    <Compile Include="Action\MessageAction.cs" />
     <Compile Include="ConfigCategory\BuffCategory.cs" />
     <Compile Include="ConfigCategory\GlobalCategory.cs" />
     <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
-    <Compile Include="Callback\BuffTimeoutCallback.cs" />
+    <Compile Include="Action\BuffTimeoutAction.cs" />
     <Compile Include="Event\AfterAddBuff.cs" />
+    <Compile Include="Message\CMsgLogin.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
     <Compile Include="UnitType.cs" />

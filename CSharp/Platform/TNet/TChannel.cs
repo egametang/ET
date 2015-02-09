@@ -7,7 +7,7 @@ using Network;
 
 namespace TNet
 {
-	internal class TChannel: IChannel
+	internal class TChannel: AChannel
 	{
 		private const int SendInterval = 50;
 
@@ -55,13 +55,13 @@ namespace TNet
 			this.Dispose(false);
 		}
 
-		public void Dispose()
+		public override void Dispose()
 		{
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
-		public void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			byte[] size = BitConverter.GetBytes(buffer.Length);
 			this.sendBuffer.SendTo(size);
@@ -80,7 +80,7 @@ namespace TNet
 			}
 		}
 
-		public Task<byte[]> RecvAsync()
+		public override Task<byte[]> RecvAsync()
 		{
 			var tcs = new TaskCompletionSource<byte[]>();
 
@@ -95,12 +95,12 @@ namespace TNet
 			return tcs.Task;
 		}
 
-		public async Task<bool> DisconnnectAsync()
+		public override async Task<bool> DisconnnectAsync()
 		{
 			return await this.socket.DisconnectAsync();
 		}
 
-		public string RemoteAddress
+		public override string RemoteAddress
 		{
 			get
 			{

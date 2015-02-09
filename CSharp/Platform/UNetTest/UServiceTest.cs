@@ -15,7 +15,7 @@ namespace UNetTest
 
 		private async void ClientEvent(IService service, string hostName, ushort port)
 		{
-			IChannel channel = await service.GetChannel(hostName, port);
+			AChannel channel = await service.GetChannel(hostName, port);
 			channel.SendAsync("0123456789".ToByteArray());
 
 			byte[] bytes = await channel.RecvAsync();
@@ -26,7 +26,7 @@ namespace UNetTest
 
 		private async void ServerEvent(IService service)
 		{
-			IChannel channel = await service.GetChannel();
+			AChannel channel = await service.GetChannel();
 			byte[] bytes = await channel.RecvAsync();
 			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
 			Array.Reverse(bytes);

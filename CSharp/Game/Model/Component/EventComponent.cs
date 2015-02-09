@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using Common.Base;
 using Common.Event;
 
@@ -9,11 +10,14 @@ namespace Model
 	public class EventComponent<AttributeType>: Component<World>, IAssemblyLoader
 			where AttributeType : AEventAttribute
 	{
-		private Dictionary<int, List<IEvent>> events;
+		private Dictionary<int, List<IEventSync>> eventSyncs;
+
+		private Dictionary<int, List<IEventAsync>> eventAsyncs;
 
 		public void Load(Assembly assembly)
 		{
-			this.events = new Dictionary<int, List<IEvent>>();
+			this.eventSyncs = new Dictionary<int, List<IEventSync>>();
+			this.eventAsyncs = new Dictionary<int, List<IEventAsync>>();
 
 			Type[] types = assembly.GetTypes();
 			foreach (Type t in types)
@@ -24,35 +28,63 @@ namespace Model
 					continue;
 				}
 				object obj = Activator.CreateInstance(t);
-				IEvent iEvent = obj as IEvent;
-				if (iEvent == null)
+				IEventSync iEventSync = obj as IEventSync;
+				if (iEventSync != null)
 				{
-					throw new Exception(string.Format("event not inherit IEvent interface: {0}",
-					                                  obj.GetType().FullName));
+					AEventAttribute iEventAttribute = (AEventAttribute)attrs[0];
+
+					if (!this.eventSyncs.ContainsKey(iEventAttribute.Type))
+					{
+						this.eventSyncs.Add(iEventAttribute.Type, new List<IEventSync>());
+					}
+					this.eventSyncs[iEventAttribute.Type].Add(iEventSync);
+					continue;
 				}
 
-				AEventAttribute iEventAttribute = (AEventAttribute) attrs[0];
-
-				if (!this.events.ContainsKey(iEventAttribute.Type))
+				IEventAsync iEventAsync = obj as IEventAsync;
+				// ReSharper disable once InvertIf
+				if (iEventAsync != null)
 				{
-					this.events.Add(iEventAttribute.Type, new List<IEvent>());
+					AEventAttribute iEventAttribute = (AEventAttribute)attrs[0];
+
+					if (!this.eventAsyncs.ContainsKey(iEventAttribute.Type))
+					{
+						this.eventAsyncs.Add(iEventAttribute.Type, new List<IEventAsync>());
+					}
+					this.eventAsyncs[iEventAttribute.Type].Add(iEventAsync);
+					continue;
 				}
-				this.events[iEventAttribute.Type].Add(iEvent);
+
+				throw new Exception(
+					string.Format("event not inherit IEventSync or IEventAsync interface: {0}",
+						obj.GetType().FullName));
 			}
 		}
 
-		public void Run(int type, Env env)
+		public async Task Run(int type, Env env)
 		{
-			List<IEvent> iEventDict = null;
-			if (!this.events.TryGetValue(type, out iEventDict))
+			List<IEventSync> iEventSyncs = null;
+			if (this.eventSyncs.TryGetValue(type, out iEventSyncs))
 			{
-				return;
+				foreach (IEventSync iEventSync in iEventSyncs)
+				{
+					iEventSync.Run(env);
+				}
 			}
 
-			foreach (var iEvent in iEventDict)
+			List<IEventAsync> iEventAsyncs = null;
+			// ReSharper disable once InvertIf
+			if (this.eventAsyncs.TryGetValue(type, out iEventAsyncs))
 			{
-				iEvent.Run(env);
+				foreach (IEventAsync iEventAsync in iEventAsyncs)
+				{
+					await iEventAsync.RunAsync(env);
+				}
 			}
+
+			throw new Exception(
+				string.Format("no event handler, AttributeType: {0} type: {1}", 
+					typeof(AttributeType).Name, type));
 		}
 	}
 }

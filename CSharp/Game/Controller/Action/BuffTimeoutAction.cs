@@ -4,8 +4,8 @@ using MongoDB.Bson;
 
 namespace Controller
 {
-	[Callback(CallbackType.BuffTimeoutCallback)]
-	public class BuffTimeoutCallback: IEvent
+	[Action(ActionType.BuffTimeoutAction)]
+	public class BuffTimeoutAction: IEventSync
 	{
 		public void Run(Env env)
 		{
