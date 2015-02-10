@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Network;
+using Common.Network;
+using MongoDB.Bson;
 
 namespace UNet
 {
@@ -10,6 +11,8 @@ namespace UNet
 		private UPoller poller;
 
 		private readonly Dictionary<string, UChannel> channels = new Dictionary<string, UChannel>();
+
+		private readonly Dictionary<ObjectId, UChannel> idChannels = new Dictionary<ObjectId, UChannel>();
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -64,6 +67,7 @@ namespace UNet
 			USocket newSocket = await this.poller.ConnectAsync(host, (ushort) port);
 			UChannel channel = new UChannel(newSocket, this);
 			this.channels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
 
@@ -82,6 +86,14 @@ namespace UNet
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
 			this.channels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
+			return channel;
+		}
+
+		public AChannel GetChannel(ObjectId id)
+		{
+			UChannel channel = null;
+			this.idChannels.TryGetValue(id, out channel);
 			return channel;
 		}
 
@@ -92,6 +104,7 @@ namespace UNet
 			{
 				return;
 			}
+			this.idChannels.Remove(channel.Id);
 			this.channels.Remove(channel.RemoteAddress);
 		}
 

@@ -88,6 +88,8 @@
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Helper\TimeHelper.cs" />
     <Compile Include="Helper\XmlHelper.cs" />
+    <Compile Include="Network\AChannel.cs" />
+    <Compile Include="Network\IService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Helper\Packages.config" />

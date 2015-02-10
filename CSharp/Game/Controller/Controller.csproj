@@ -55,10 +55,10 @@
     <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="Action\BuffTimeoutAction.cs" />
     <Compile Include="Event\AfterAddBuff.cs" />
-    <Compile Include="Message\CMsgLogin.cs" />
+    <Compile Include="MessageType.cs" />
+    <Compile Include="Message\CMsgLoginEvent.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
-    <Compile Include="UnitType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Base;
-using Network;
+using Common.Network;
+using MongoDB.Bson;
 
 namespace TNet
 {
@@ -12,6 +13,8 @@ namespace TNet
 		private TSocket acceptor;
 
 		private readonly Dictionary<string, TChannel> channels = new Dictionary<string, TChannel>();
+
+		private readonly Dictionary<ObjectId, TChannel> idChannels = new Dictionary<ObjectId, TChannel>();
 
 		private readonly TimerManager timerManager = new TimerManager();
 
@@ -65,12 +68,20 @@ namespace TNet
 			this.poller.Add(action);
 		}
 
+		public AChannel GetChannel(ObjectId id)
+		{
+			TChannel channel = null;
+			this.idChannels.TryGetValue(id, out channel);
+			return channel;
+		}
+
 		private async Task<AChannel> ConnectAsync(string host, int port)
 		{
 			TSocket newSocket = new TSocket(this.poller);
 			await newSocket.ConnectAsync(host, port);
 			TChannel channel = new TChannel(newSocket, this);
 			this.channels[newSocket.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
 
@@ -84,6 +95,7 @@ namespace TNet
 			await this.acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
 			this.channels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
 
@@ -94,6 +106,7 @@ namespace TNet
 			{
 				return;
 			}
+			this.idChannels.Remove(channel.Id);
 			this.channels.Remove(channel.RemoteAddress);
 			this.timerManager.Remove(tChannel.SendTimer);
 		}

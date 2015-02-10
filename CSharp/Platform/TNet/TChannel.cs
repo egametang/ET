@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Common.Helper;
 using Common.Logger;
 using MongoDB.Bson;
-using Network;
+using Common.Network;
 
 namespace TNet
 {

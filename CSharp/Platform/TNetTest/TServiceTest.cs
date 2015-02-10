@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Network;
+using Common.Network;
 using TNet;
 
 namespace TNetTest

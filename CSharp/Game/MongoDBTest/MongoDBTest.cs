@@ -31,7 +31,7 @@ namespace MongoDBTest
 			world.AddComponent<BehaviorTreeComponent>();
 			world.Load();
 
-			Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(1);
+			Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);
 			player1["hp"] = 10;
 
 			collection.Insert(player1);

@@ -1,13 +1,13 @@
 ﻿using System;
 using Common.Base;
 using Common.Event;
-using Network;
+using Common.Network;
 using TNet;
 using UNet;
 
 namespace Model
 {
-	public class ServiceComponent: Component<World>
+	public class NetworkComponent: Component<World>
 	{
 		private IService service;
 
@@ -54,8 +54,10 @@ namespace Model
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
-				await World.Instance.GetComponent<EventComponent<ActionAttribute>>()
-						.Run(ActionType.MessageAction, env);
+#pragma warning disable 4014
+				World.Instance.GetComponent<EventComponent<ActionAttribute>>()
+						.RunAsync(ActionType.MessageAction, env);
+#pragma warning restore 4014
 			}
 		}
 	}

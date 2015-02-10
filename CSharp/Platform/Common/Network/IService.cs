@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
-namespace Network
+namespace Common.Network
 {
 	public enum NetworkProtocol
 	{
@@ -16,6 +17,8 @@ namespace Network
 		/// </summary>
 		/// <param name="action"></param>
 		void Add(Action action);
+
+		AChannel GetChannel(ObjectId id);
 
 		Task<AChannel> GetChannel(string host, int port);
 

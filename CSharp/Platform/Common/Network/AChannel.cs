@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Common.Base;
 
-namespace Network
+namespace Common.Network
 {
 	[Flags]
 	public enum PacketFlags

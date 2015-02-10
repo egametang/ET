@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Network;
+using Common.Network;
 
 namespace UNet
 {

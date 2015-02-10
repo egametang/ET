@@ -1,20 +1,32 @@
-﻿using Common.Event;
+﻿using System;
+using System.Threading.Tasks;
+using Common.Event;
+using Common.Network;
 using Model;
-using MongoDB.Bson;
-
 namespace Controller
 {
 	[Action(ActionType.MessageAction)]
-	public class MessageAction : IEventSync
+	public class MessageAction : IEventAsync
 	{
-		public void Run(Env env)
+		public async Task RunAsync(Env env)
 		{
-			Unit unit = World.Instance.GetComponent<UnitComponent>().Get(ObjectId.Empty);
-			if (unit == null)
+			AChannel channel = env.Get<AChannel>(EnvKey.Channel);
+			ChannelUnitInfoComponent channelUnitInfoComponent =
+					channel.GetComponent<ChannelUnitInfoComponent>();
+			if (channelUnitInfoComponent != null)
 			{
+				Unit unit = World.Instance.GetComponent<UnitComponent>().Get(channelUnitInfoComponent.PlayerId);
+				if (unit == null)
+				{
+					return;
+				}
+				unit.GetComponent<ActorComponent>().Add(env);
 				return;
 			}
-			unit.GetComponent<ActorComponent>().Add(env);
+
+			var message = env.Get<byte[]>(EnvKey.Message);
+			int opcode = BitConverter.ToUInt16(message, 0);
+			await World.Instance.GetComponent<EventComponent<MessageAttribute>>().RunAsync(opcode, env);
 		}
 	}
 }

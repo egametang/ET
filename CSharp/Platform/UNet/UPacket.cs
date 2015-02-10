@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Network;
+using Common.Network;
 
 namespace UNet
 {

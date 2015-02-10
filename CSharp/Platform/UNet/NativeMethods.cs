@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Network;
+using Common.Network;
 
 namespace UNet
 {

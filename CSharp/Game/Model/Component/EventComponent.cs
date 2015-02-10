@@ -61,10 +61,37 @@ namespace Model
 			}
 		}
 
-		public async Task Run(int type, Env env)
+		public void Run(int type, Env env)
 		{
 			List<IEventSync> iEventSyncs = null;
-			if (this.eventSyncs.TryGetValue(type, out iEventSyncs))
+			if (!this.eventSyncs.TryGetValue(type, out iEventSyncs))
+			{
+				throw new Exception(
+					string.Format("no event handler, AttributeType: {0} type: {1}",
+						typeof (AttributeType).Name, type));
+			}
+
+			foreach (IEventSync iEventSync in iEventSyncs)
+			{
+				iEventSync.Run(env);
+			}
+		}
+
+		public async Task RunAsync(int type, Env env)
+		{
+			List<IEventSync> iEventSyncs = null;
+			this.eventSyncs.TryGetValue(type, out iEventSyncs);
+
+			List<IEventAsync> iEventAsyncs = null;
+			this.eventAsyncs.TryGetValue(type, out iEventAsyncs);
+
+			if (iEventSyncs == null && iEventAsyncs == null)
+			{
+				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
+					typeof(AttributeType).Name, type));
+			}
+
+			if (iEventSyncs != null)
 			{
 				foreach (IEventSync iEventSync in iEventSyncs)
 				{
@@ -72,19 +99,13 @@ namespace Model
 				}
 			}
 
-			List<IEventAsync> iEventAsyncs = null;
-			// ReSharper disable once InvertIf
-			if (this.eventAsyncs.TryGetValue(type, out iEventAsyncs))
+			if (iEventAsyncs != null)
 			{
 				foreach (IEventAsync iEventAsync in iEventAsyncs)
 				{
 					await iEventAsync.RunAsync(env);
 				}
 			}
-
-			throw new Exception(
-				string.Format("no event handler, AttributeType: {0} type: {1}", 
-					typeof(AttributeType).Name, type));
 		}
 	}
 }

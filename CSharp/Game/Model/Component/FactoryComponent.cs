@@ -39,9 +39,8 @@ namespace Model
 			}
 		}
 
-		public T Create(int configId)
+		public T Create(int type, int configId)
 		{
-			int type = World.Instance.GetComponent<ConfigComponent>().Get<UnitConfig>(configId).Type;
 			return this.allConfig[type].Create(configId);
 		}
 	}

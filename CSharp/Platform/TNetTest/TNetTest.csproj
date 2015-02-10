@@ -59,10 +59,6 @@
       <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Network\Network.csproj">
-      <Project>{3bd499ff-3c34-4920-8b21-c55fba580843}</Project>
-      <Name>Network</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TNet\TNet.csproj">
       <Project>{b42d431a-3a54-4649-942a-c5356d7f9fbc}</Project>
       <Name>TNet</Name>
