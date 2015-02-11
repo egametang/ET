@@ -4,11 +4,11 @@ using System.Net.Sockets;
 using System.Threading;
 using Common.Helper;
 using Common.Logger;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace TNetTest
 {
-	[TestClass]
+	[TestFixture]
 	public class TcpListenerTest
 	{
 		private const ushort port = 11111;
@@ -16,17 +16,17 @@ namespace TNetTest
 		private readonly Barrier barrier = new Barrier(2);
 		private readonly object lockObject = new object();
 
-		[TestMethod]
+		[Test]
 		public void AcceptAsync()
 		{
-			var thread1 = new Thread(this.Server);
+			Thread thread1 = new Thread(this.Server);
 			thread1.Start();
 
 			Thread.Sleep(2);
 
 			for (int i = 0; i < 1; ++i)
 			{
-				var thread = new Thread(this.Client);
+				Thread thread = new Thread(this.Client);
 				thread.Start();
 			}
 			this.barrier.SignalAndWait();
@@ -34,7 +34,7 @@ namespace TNetTest
 
 		private async void Client()
 		{
-			using (var tcpClient = new TcpClient(AddressFamily.InterNetwork))
+			using (TcpClient tcpClient = new TcpClient(AddressFamily.InterNetwork))
 			{
 				await tcpClient.ConnectAsync("127.0.0.1", port);
 				using (NetworkStream ns = tcpClient.GetStream())
@@ -60,13 +60,13 @@ namespace TNetTest
 
 		private async void Server()
 		{
-			var tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
+			TcpListener tcpListener = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
 			tcpListener.Start();
 
 			while (this.count != 1)
 			{
-				var socket = await tcpListener.AcceptSocketAsync();
-				var ns = new NetworkStream(socket);
+				Socket socket = await tcpListener.AcceptSocketAsync();
+				NetworkStream ns = new NetworkStream(socket);
 				this.Response(ns);
 			}
 		}

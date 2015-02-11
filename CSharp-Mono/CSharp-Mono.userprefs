@@ -1,11 +1,8 @@
 ﻿<Properties StartupItem="Platform\Common\Common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="d:\Source\Egametang\CSharp\Game\Model\Component\NetworkComponent.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="d:\Source\Egametang\CSharp\Platform\TNetTest\TcpListenerTest.cs">
     <Files>
-      <File FileName="d:\Source\Egametang\CSharp\Platform\Common\Helper\BigIntegerHelper.cs" Line="27" Column="27" />
-      <File FileName="d:\Source\Egametang\CSharp\Platform\Common\Helper\XmlHelper.cs" Line="15" Column="15" />
-      <File FileName="d:\Source\Egametang\CSharp\Platform\TNet\TChannel.cs" Line="8" Column="8" />
-      <File FileName="d:\Source\Egametang\CSharp\Game\Model\Component\NetworkComponent.cs" Line="7" Column="7" />
+      <File FileName="d:\Source\Egametang\CSharp\Platform\TNetTest\TcpListenerTest.cs" Line="4" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

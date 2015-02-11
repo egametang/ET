@@ -2,13 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Common.Network;
+using NUnit.Framework;
 using UNet;
 
 namespace UNetTest
 {
-	[TestClass]
+	[TestFixture]
 	public class UServiceTest
 	{
 		private readonly Barrier barrier = new Barrier(3);
@@ -35,7 +35,7 @@ namespace UNetTest
 			this.barrier.RemoveParticipant();
 		}
 
-		[TestMethod]
+		[Test]
 		public void ClientSendToServer()
 		{
 			const string hostName = "127.0.0.1";
