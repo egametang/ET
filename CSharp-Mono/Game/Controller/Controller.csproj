@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{86CD4CD0-D91D-4E44-B610-61565918FA14}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Controller</RootNamespace>
+    <AssemblyName>Controller</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\..\CSharp\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\..\CSharp\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\CSharp\Game\Controller\MessageType.cs">
+      <Link>MessageType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\NodeType.cs">
+      <Link>NodeType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\Action\BuffTimeoutAction.cs">
+      <Link>Action\BuffTimeoutAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\Action\MessageAction.cs">
+      <Link>Action\MessageAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\BehaviorTreeNode\Not.cs">
+      <Link>BehaviorTreeNode\Not.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\BehaviorTreeNode\Selector.cs">
+      <Link>BehaviorTreeNode\Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\BehaviorTreeNode\Sequence.cs">
+      <Link>BehaviorTreeNode\Sequence.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\ConfigCategory\BuffCategory.cs">
+      <Link>ConfigCategory\BuffCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\ConfigCategory\GlobalCategory.cs">
+      <Link>ConfigCategory\GlobalCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\ConfigCategory\NodeCategory.cs">
+      <Link>ConfigCategory\NodeCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\ConfigCategory\UnitCategory.cs">
+      <Link>ConfigCategory\UnitCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\Event\AfterAddBuff.cs">
+      <Link>Event\AfterAddBuff.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\Factory\UnitFactory.cs">
+      <Link>Factory\UnitFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Controller\Message\CMsgLoginEvent.cs">
+      <Link>Message\CMsgLoginEvent.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Platform\Common\Common.csproj">
+      <Project>{EF4373AF-66D4-4313-A882-60EF0AE4239A}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{01895B6C-E8E9-4F14-9497-E9DB426ADB11}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

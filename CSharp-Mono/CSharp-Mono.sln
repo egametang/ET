@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{1CB353E9-E0E7-42F1-B2C6-9028D6FC25D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Game\Model\Model.csproj", "{01895B6C-E8E9-4F14-9497-E9DB426ADB11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Game\Controller\Controller.csproj", "{86CD4CD0-D91D-4E44-B610-61565918FA14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{3B94631D-6166-4733-922D-8D7ED69510F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Platform\Common\Common.csproj", "{EF4373AF-66D4-4313-A882-60EF0AE4239A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TNet", "Platform\TNet\TNet.csproj", "{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UNet", "Platform\UNet\UNet.csproj", "{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01895B6C-E8E9-4F14-9497-E9DB426ADB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01895B6C-E8E9-4F14-9497-E9DB426ADB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01895B6C-E8E9-4F14-9497-E9DB426ADB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01895B6C-E8E9-4F14-9497-E9DB426ADB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86CD4CD0-D91D-4E44-B610-61565918FA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CD4CD0-D91D-4E44-B610-61565918FA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CD4CD0-D91D-4E44-B610-61565918FA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CD4CD0-D91D-4E44-B610-61565918FA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4373AF-66D4-4313-A882-60EF0AE4239A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4373AF-66D4-4313-A882-60EF0AE4239A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4373AF-66D4-4313-A882-60EF0AE4239A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4373AF-66D4-4313-A882-60EF0AE4239A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01895B6C-E8E9-4F14-9497-E9DB426ADB11} = {1CB353E9-E0E7-42F1-B2C6-9028D6FC25D2}
+		{86CD4CD0-D91D-4E44-B610-61565918FA14} = {1CB353E9-E0E7-42F1-B2C6-9028D6FC25D2}
+		{EF4373AF-66D4-4313-A882-60EF0AE4239A} = {3B94631D-6166-4733-922D-8D7ED69510F2}
+		{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1} = {3B94631D-6166-4733-922D-8D7ED69510F2}
+		{3A56E389-BB11-421C-9E11-EA88C5CA3EFC} = {3B94631D-6166-4733-922D-8D7ED69510F2}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		outputpath = Bin
+	EndGlobalSection
+EndGlobal

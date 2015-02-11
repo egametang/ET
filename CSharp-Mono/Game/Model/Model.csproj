@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01895B6C-E8E9-4F14-9497-E9DB426ADB11}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Model</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\..\CSharp\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\..\CSharp\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\..\CSharp\Game\Model\BehaviorTree\BehaviorTree.cs">
+      <Link>BehaviorTree\BehaviorTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\BehaviorTree\BehaviorTreeFactory.cs">
+      <Link>BehaviorTree\BehaviorTreeFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\BehaviorTree\BlackBoard.cs">
+      <Link>BehaviorTree\BlackBoard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\BehaviorTree\Node.cs">
+      <Link>BehaviorTree\Node.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\BehaviorTree\NodeAttribute.cs">
+      <Link>BehaviorTree\NodeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\ActorComponent.cs">
+      <Link>Component\ActorComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\BehaviorTreeComponent.cs">
+      <Link>Component\BehaviorTreeComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\BuffComponent.cs">
+      <Link>Component\BuffComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\ChannelUnitInfoComponent.cs">
+      <Link>Component\ChannelUnitInfoComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\ConfigComponent.cs">
+      <Link>Component\ConfigComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\EventComponent.cs">
+      <Link>Component\EventComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\FactoryComponent.cs">
+      <Link>Component\FactoryComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\NetworkComponent.cs">
+      <Link>Component\NetworkComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\TimerComponent.cs">
+      <Link>Component\TimerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Component\UnitComponent.cs">
+      <Link>Component\UnitComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Config\BuffConfig.cs">
+      <Link>Config\BuffConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Config\GlobalConfig.cs">
+      <Link>Config\GlobalConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Config\NodeConfig.cs">
+      <Link>Config\NodeConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Config\UnitConfig.cs">
+      <Link>Config\UnitConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Buff.cs">
+      <Link>Buff.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\BuffType.cs">
+      <Link>BuffType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\EnvKey.cs">
+      <Link>EnvKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\EventAttribute.cs">
+      <Link>EventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\EventType.cs">
+      <Link>EventType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\FactoryAttribute.cs">
+      <Link>FactoryAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\IAssemblyLoader.cs">
+      <Link>IAssemblyLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\IFactory.cs">
+      <Link>IFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\MessageAttribute.cs">
+      <Link>MessageAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\Unit.cs">
+      <Link>Unit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\UnitType.cs">
+      <Link>UnitType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\CSharp\Game\Model\World.cs">
+      <Link>World.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="BehaviorTree\" />
+    <Folder Include="Component\" />
+    <Folder Include="Config\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Platform\Common\Common.csproj">
+      <Project>{EF4373AF-66D4-4313-A882-60EF0AE4239A}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\TNet\TNet.csproj">
+      <Project>{AA3FD3AA-1835-42F4-9BE3-4A26D7CA8AB1}</Project>
+      <Name>TNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\UNet\UNet.csproj">
+      <Project>{3A56E389-BB11-421C-9E11-EA88C5CA3EFC}</Project>
+      <Name>UNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
