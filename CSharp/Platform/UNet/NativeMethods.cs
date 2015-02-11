@@ -7,7 +7,7 @@ namespace UNet
 {
 	public static class NativeMethods
 	{
-		private const string LIB = "ENet.dll";
+		private const string LIB = "ENet";
 
 		public const int ENET_PEER_PACKET_THROTTLE_SCALE = 32;
 		public const int ENET_PEER_PACKET_THROTTLE_ACCELERATION = 2;
@@ -20,12 +20,10 @@ namespace UNet
 		public const uint ENET_HOST_ANY = 0;
 		public const uint ENET_HOST_BROADCAST = 0xffffffff;
 
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_address_set_host")
-		]
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_address_set_host")]
 		internal static extern int EnetAddressSetHost(ref ENetAddress address, string hostName);
 
-		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_address_get_host")
-		]
+		[DllImport(LIB, CallingConvention = CallingConvention.Cdecl, EntryPoint = "enet_address_get_host")]
 		internal static extern int EnetAddressGetHost(
 				ref ENetAddress address, StringBuilder hostName, uint nameLength);
 
