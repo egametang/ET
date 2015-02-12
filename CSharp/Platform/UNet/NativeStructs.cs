@@ -54,12 +54,10 @@ namespace UNet
 	[StructLayout(LayoutKind.Sequential)]
 	internal struct ENetPacket
 	{
-		public uint ReferenceCount;
+		public IntPtr ReferenceCount; // size_t
 		public uint Flags;
 		public IntPtr Data;
-		public uint DataLength;
-		public IntPtr FreeCallback;
-		public IntPtr UserData;
+		public IntPtr DataLength; // size_t
 	}
 
 	[StructLayout(LayoutKind.Sequential)]

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
+using Common.Logger;
 using Common.Network;
 using NUnit.Framework;
 using UNet;
@@ -20,7 +21,6 @@ namespace UNetTest
 
 			byte[] bytes = await channel.RecvAsync();
 			CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
-
 			this.barrier.RemoveParticipant();
 		}
 
@@ -31,7 +31,6 @@ namespace UNetTest
 			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
 			Array.Reverse(bytes);
 			channel.SendAsync(bytes);
-
 			this.barrier.RemoveParticipant();
 		}
 
@@ -53,7 +52,6 @@ namespace UNetTest
 
 			// 往client host线程增加事件,client线程连接server
 			clientService.Add(() => this.ClientEvent(clientService, hostName, port));
-
 			this.barrier.SignalAndWait();
 		}
 	}

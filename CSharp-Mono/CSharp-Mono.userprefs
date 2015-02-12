@@ -1,23 +1,6 @@
 ﻿<Properties StartupItem="Platform\Common\Common.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
-    <Pads>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Platform" expanded="True">
-            <Node name="TNetTest" expanded="True">
-              <Node name="TNetTest" expanded="True">
-                <Node name="TServiceTest" selected="True" />
-              </Node>
-            </Node>
-            <Node name="UNetTest" expanded="True">
-              <Node name="UNetTest" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
