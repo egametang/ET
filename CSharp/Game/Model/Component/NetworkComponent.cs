@@ -27,7 +27,7 @@ namespace Model
 
 			this.service.Add(this.AcceptChannel);
 
-			this.service.Run();
+			this.service.Start();
 		}
 
 		/// <summary>

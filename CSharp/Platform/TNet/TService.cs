@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Base;
 using Common.Network;
@@ -17,6 +18,8 @@ namespace TNet
 		private readonly Dictionary<ObjectId, TChannel> idChannels = new Dictionary<ObjectId, TChannel>();
 
 		private readonly TimerManager timerManager = new TimerManager();
+
+		private bool isStop;
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -46,9 +49,15 @@ namespace TNet
 
 			if (disposing)
 			{
+				foreach (ObjectId id in idChannels.Keys.ToArray())
+				{
+					TChannel channel = idChannels[id];
+					channel.Dispose();
+				}
 				this.acceptor.Dispose();
 			}
 
+			isStop = true;
 			this.acceptor = null;
 		}
 
@@ -126,13 +135,18 @@ namespace TNet
 			this.poller.Run(timeout);
 		}
 
-		public void Run()
+		public void Start()
 		{
-			while (true)
+			while (!isStop)
 			{
 				this.RunOnce(1);
 				this.timerManager.Refresh();
 			}
+		}
+
+		public void Stop()
+		{
+			this.isStop = true;
 		}
 
 		internal TimerManager Timer

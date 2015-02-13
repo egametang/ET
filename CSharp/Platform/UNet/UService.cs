@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Network;
 using MongoDB.Bson;
@@ -13,6 +14,8 @@ namespace UNet
 		private readonly Dictionary<string, UChannel> channels = new Dictionary<string, UChannel>();
 
 		private readonly Dictionary<ObjectId, UChannel> idChannels = new Dictionary<ObjectId, UChannel>();
+
+		private bool isStop;
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -41,8 +44,14 @@ namespace UNet
 
 			if (disposing)
 			{
+				foreach (ObjectId id in idChannels.Keys.ToArray())
+				{
+					UChannel channel = idChannels[id];
+					channel.Dispose();
+				}
 				this.poller.Dispose();
 			}
+
 			this.poller = null;
 		}
 
@@ -113,9 +122,17 @@ namespace UNet
 			this.poller.RunOnce(timeout);
 		}
 
-		public void Run()
+		public void Start()
 		{
-			this.poller.Run();
+			while (!isStop)
+			{
+				this.poller.RunOnce();
+			}
+		}
+
+		public void Stop()
+		{
+			this.isStop = true;
 		}
 	}
 }

@@ -278,13 +278,5 @@ namespace UNet
 				}
 			}
 		}
-
-		public void Run(int timeout = 0)
-		{
-			while (true)
-			{
-				this.RunOnce(timeout);
-			}
-		}
 	}
 }

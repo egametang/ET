@@ -43,8 +43,8 @@ namespace TNetTest
 			IService clientService = new TService();
 			IService serverService = new TService(hostName, 8889);
 
-			Task.Factory.StartNew(() => clientService.Run(), TaskCreationOptions.LongRunning);
-			Task.Factory.StartNew(() => serverService.Run(), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() => clientService.Start(), TaskCreationOptions.LongRunning);
+			Task.Factory.StartNew(() => serverService.Start(), TaskCreationOptions.LongRunning);
 
 			// 往server host线程增加事件,accept
 			serverService.Add(() => this.ServerEvent(serverService));

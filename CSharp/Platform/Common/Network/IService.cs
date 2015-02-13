@@ -28,6 +28,8 @@ namespace Common.Network
 
 		void RunOnce(int timeout);
 
-		void Run();
+		void Start();
+
+		void Stop();
 	}
 }
