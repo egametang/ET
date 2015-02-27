@@ -78,7 +78,6 @@ namespace UNet
 			get
 			{
 				ENetPacket enetPacket = this.Struct;
-				Log.Debug("111111111111111111111: " + enetPacket.DataLength);
 				var bytes = new byte[(long)enetPacket.DataLength];
 				Marshal.Copy(enetPacket.Data, bytes, 0, (int) enetPacket.DataLength);
 				return bytes;
