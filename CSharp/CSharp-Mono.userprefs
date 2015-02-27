@@ -1,0 +1,13 @@
+﻿<Properties StartupItem="Platform\Common\Common.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game\Model\Component\NetworkComponent.cs">
+    <Files>
+      <File FileName="Game\Model\BehaviorTree\BlackBoard.cs" Line="7" Column="7" />
+      <File FileName="Game\Model\Component\NetworkComponent.cs" Line="19" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

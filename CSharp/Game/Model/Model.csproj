@@ -1,19 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0FA529D1-D0A9-4A8E-90F5-117CE80F2EDE}</ProjectGuid>
+    <ProjectGuid>{0608C0C1-F584-4092-AAF9-1E99A78E3703}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Model</RootNamespace>
     <AssemblyName>Model</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,72 +30,50 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=1.10.0.52, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MongoDB.Bson">
       <HintPath>..\..\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.10.0.52, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MongoDB.Driver">
       <HintPath>..\..\packages\mongocsharpdriver.1.10.0-rc1\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\ChannelUnitInfoComponent.cs" />
-    <Compile Include="Component\ActorComponent.cs" />
-    <Compile Include="Component\BehaviorTreeComponent.cs" />
     <Compile Include="BehaviorTree\BehaviorTree.cs" />
     <Compile Include="BehaviorTree\BehaviorTreeFactory.cs" />
     <Compile Include="BehaviorTree\BlackBoard.cs" />
     <Compile Include="BehaviorTree\Node.cs" />
     <Compile Include="BehaviorTree\NodeAttribute.cs" />
     <Compile Include="Buff.cs" />
-    <Compile Include="Component\NetworkComponent.cs" />
+    <Compile Include="BuffType.cs" />
+    <Compile Include="Component\ActorComponent.cs" />
+    <Compile Include="Component\BehaviorTreeComponent.cs" />
     <Compile Include="Component\BuffComponent.cs" />
+    <Compile Include="Component\ChannelUnitInfoComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
-    <Compile Include="Component\TimerComponent.cs" />
-    <Compile Include="Config\UnitConfig.cs" />
-    <Compile Include="Config\BuffConfig.cs" />
-    <Compile Include="EnvKey.cs" />
-    <Compile Include="EventType.cs" />
-    <Compile Include="MessageAttribute.cs" />
-    <Compile Include="FactoryAttribute.cs" />
     <Compile Include="Component\FactoryComponent.cs" />
-    <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="IFactory.cs" />
+    <Compile Include="Component\NetworkComponent.cs" />
+    <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
-    <Compile Include="BuffType.cs" />
+    <Compile Include="Config\BuffConfig.cs" />
     <Compile Include="Config\GlobalConfig.cs" />
     <Compile Include="Config\NodeConfig.cs" />
+    <Compile Include="Config\UnitConfig.cs" />
+    <Compile Include="EnvKey.cs" />
+    <Compile Include="EventAttribute.cs" />
+    <Compile Include="EventType.cs" />
+    <Compile Include="FactoryAttribute.cs" />
+    <Compile Include="IAssemblyLoader.cs" />
+    <Compile Include="IFactory.cs" />
+    <Compile Include="MessageAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitType.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="EventAttribute.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Platform\Common\Common.csproj">
-      <Project>{19f8f043-1f99-4550-99df-dea5c7d77e55}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Platform\TNet\TNet.csproj">
-      <Project>{b42d431a-3a54-4649-942a-c5356d7f9fbc}</Project>
-      <Name>TNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Platform\UNet\UNet.csproj">
-      <Project>{d0b4cfac-a368-4742-9863-68776cfa9938}</Project>
-      <Name>UNet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -106,4 +81,18 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\Platform\Common\Common.csproj">
+      <Project>{F06B995E-6508-4C5C-A396-554316C9215D}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\UNet\UNet.csproj">
+      <Project>{D3CEA64F-4D75-4DC9-B139-8D12EB4ACF8E}</Project>
+      <Name>UNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\TNet\TNet.csproj">
+      <Project>{B1B78524-3F75-40D7-BF12-10B25A00C590}</Project>
+      <Name>TNet</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
