@@ -13,6 +13,11 @@ namespace TNet
 
 		public int FirstIndex { get; set; }
 
+		public TBuffer()
+		{
+			this.bufferList.AddLast(new byte[ChunkSize]);
+		}
+
 		public int Count
 		{
 			get
@@ -63,8 +68,9 @@ namespace TNet
 		{
 			if (this.Count < buffer.Length || buffer.Length == 0)
 			{
-				throw new Exception(string.Format("bufferList size < n, bufferList: {0} buffer length: {1}",
-				                                  this.Count, buffer.Length));
+				throw new Exception(
+					string.Format("bufferList size < n, bufferList: {0} buffer length: {1}",
+						this.Count, buffer.Length));
 			}
 			int alreadyCopyCount = 0;
 			while (alreadyCopyCount < buffer.Length)
@@ -79,7 +85,7 @@ namespace TNet
 				else
 				{
 					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount,
-					           ChunkSize - this.FirstIndex);
+						ChunkSize - this.FirstIndex);
 					alreadyCopyCount += ChunkSize - this.FirstIndex;
 					this.FirstIndex = 0;
 					this.bufferList.RemoveFirst();
@@ -92,10 +98,12 @@ namespace TNet
 			int alreadyCopyCount = 0;
 			while (alreadyCopyCount < buffer.Length)
 			{
-				if (this.LastIndex == 0)
+				if (this.LastIndex == ChunkSize)
 				{
 					this.bufferList.AddLast(new byte[ChunkSize]);
+					this.LastIndex = 0;
 				}
+
 				int n = buffer.Length - alreadyCopyCount;
 				if (ChunkSize - this.LastIndex > n)
 				{
@@ -108,7 +116,7 @@ namespace TNet
 					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex,
 					           ChunkSize - this.LastIndex);
 					alreadyCopyCount += ChunkSize - this.LastIndex;
-					this.LastIndex = 0;
+					this.LastIndex = ChunkSize;
 				}
 			}
 		}

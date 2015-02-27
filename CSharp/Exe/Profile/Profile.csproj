@@ -48,6 +48,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Tests\TNetTest\TNetTest.csproj">
+      <Project>{1888D319-0495-43F3-BA8D-163EC20D9437}</Project>
+      <Name>TNetTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Tests\UNetTest\UNetTest.csproj">
       <Project>{47A7404D-F501-43C5-8183-4B4E9E8C24B2}</Project>
       <Name>UNetTest</Name>

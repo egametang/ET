@@ -12,25 +12,32 @@ namespace UNetTest
 	[TestFixture]
 	public class UServiceTest
 	{
+		private const int echoTimes = 10000;
 		private readonly Barrier barrier = new Barrier(2);
 
 		private async void ClientEvent(IService clientService, string hostName, ushort port)
 		{
 			AChannel channel = await clientService.GetChannel(hostName, port);
-			channel.SendAsync("0123456789".ToByteArray());
+			for (int i = 0; i < echoTimes; ++i)
+			{
+				channel.SendAsync("0123456789".ToByteArray());
 
-			byte[] bytes = await channel.RecvAsync();
-			CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
+				byte[] bytes = await channel.RecvAsync();
+				CollectionAssert.AreEqual("9876543210".ToByteArray(), bytes);
+			}
 			barrier.RemoveParticipant();
 		}
 
 		private async void ServerEvent(IService service)
 		{
 			AChannel channel = await service.GetChannel();
-			byte[] bytes = await channel.RecvAsync();
-			CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
-			Array.Reverse(bytes);
-			channel.SendAsync(bytes);
+			for (int i = 0; i < echoTimes; ++i)
+			{
+				byte[] bytes = await channel.RecvAsync();
+				CollectionAssert.AreEqual("0123456789".ToByteArray(), bytes);
+				Array.Reverse(bytes);
+				channel.SendAsync(bytes);
+			}
 		}
 
 		[Test]

@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="Platform\Common\Common.csproj">
+﻿<Properties StartupItem="Exe\Profile\Profile.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Game\Model\Component\NetworkComponent.cs">
     <Files>

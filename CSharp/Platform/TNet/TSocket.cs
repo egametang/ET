@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Common.Helper;
 using Common.Logger;
 
 namespace TNet
@@ -33,8 +34,8 @@ namespace TNet
 		{
 			get
 			{
-				return ((IPEndPoint) this.socket.RemoteEndPoint).Address + ":" +
-				       ((IPEndPoint) this.socket.RemoteEndPoint).Port;
+				IPEndPoint ipEndPoint = (IPEndPoint) this.socket.RemoteEndPoint;
+				return ipEndPoint.Address + ":" + ipEndPoint.Port;
 			}
 		}
 
@@ -171,7 +172,6 @@ namespace TNet
 
 		private static void OnRecvComplete(SocketAsyncEventArgs e)
 		{
-			Log.Debug("OnRecvComplete: " + e.BytesTransferred);
 			var tcs = (TaskCompletionSource<int>) e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)

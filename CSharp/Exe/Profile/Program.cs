@@ -1,5 +1,5 @@
 ﻿using Common.Logger;
-using UNetTest;
+using TNetTest;
 
 namespace Profile
 {
@@ -7,7 +7,7 @@ namespace Profile
 	{
 		private static void Main(string[] args)
 		{
-			UServiceTest test = new UServiceTest();
+			TServiceTest test = new TServiceTest();
 			Log.Debug("Profile start");
 			test.ClientSendToServer();
 			Log.Debug("Profile stop");

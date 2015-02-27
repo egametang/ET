@@ -139,7 +139,7 @@ namespace TNet
 		{
 			while (!isStop)
 			{
-				this.RunOnce(1);
+				this.RunOnce(0);
 				this.timerManager.Refresh();
 			}
 		}

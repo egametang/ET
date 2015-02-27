@@ -9,7 +9,7 @@ namespace TNet
 {
 	internal class TChannel: AChannel
 	{
-		private const int SendInterval = 50;
+		private const int SendInterval = 0;
 
 		private readonly TService service;
 		private TSocket socket;
@@ -130,8 +130,9 @@ namespace TNet
 					{
 						sendSize = this.sendBuffer.Count;
 					}
-					int n =
-							await this.socket.SendAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+					int n = await this.socket.SendAsync(
+						this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+
 					this.sendBuffer.FirstIndex += n;
 					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
 					{
@@ -142,7 +143,7 @@ namespace TNet
 			}
 			catch (Exception e)
 			{
-				Log.Trace(e.ToString());
+				Log.Debug(e.ToString());
 			}
 
 			this.sendTimer = ObjectId.Empty;
@@ -154,10 +155,9 @@ namespace TNet
 			{
 				while (true)
 				{
-					int n =
-							await
-									this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex,
-									                      TBuffer.ChunkSize - this.recvBuffer.LastIndex);
+					int n = await this.socket.RecvAsync(
+						this.recvBuffer.Last, this.recvBuffer.LastIndex,
+						TBuffer.ChunkSize - this.recvBuffer.LastIndex);
 					if (n == 0)
 					{
 						break;

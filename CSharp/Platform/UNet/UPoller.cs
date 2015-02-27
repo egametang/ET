@@ -30,8 +30,8 @@ namespace UNet
 		{
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.EnetHostCreate(ref nativeAddress,
-			                                         NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.EnetHostCreate(
+				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -43,8 +43,8 @@ namespace UNet
 
 		public UPoller()
 		{
-			this.host = NativeMethods.EnetHostCreate(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
-			                                         0, 0, 0);
+			this.host = NativeMethods.EnetHostCreate(
+				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
