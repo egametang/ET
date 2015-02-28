@@ -21,6 +21,8 @@ namespace Common.Base
 		/// </summary>
 		private readonly MultiMap<long, ObjectId> timeGuid = new MultiMap<long, ObjectId>();
 
+		private readonly Queue<long> timeoutTimer = new Queue<long>();
+
 		public ObjectId Add(long time, Action action)
 		{
 			Timer timer = new Timer { Id = ObjectId.GenerateNewId(), Time = time, Action = action };
@@ -56,18 +58,18 @@ namespace Common.Base
 		public void Refresh()
 		{
 			long timeNow = TimeHelper.Now();
-			var timeoutTimer = new List<long>();
 			foreach (long time in this.timeGuid.Keys)
 			{
 				if (time > timeNow)
 				{
 					break;
 				}
-				timeoutTimer.Add(time);
+				timeoutTimer.Enqueue(time);
 			}
 
-			foreach (long key in timeoutTimer)
+			while (timeoutTimer.Count > 0)
 			{
+				long key = timeoutTimer.Dequeue();
 				ObjectId[] timeoutIds = this.timeGuid.GetAll(key);
 				foreach (ObjectId id in timeoutIds)
 				{

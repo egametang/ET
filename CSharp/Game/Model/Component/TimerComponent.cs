@@ -23,6 +23,8 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, ObjectId> timeId = new MultiMap<long, ObjectId>();
 
+		private readonly Queue<long> timeoutTimer = new Queue<long>();
+
 		public ObjectId Add(long time, int callbackId, Env env)
 		{
 			Timer timer = new Timer
@@ -50,18 +52,18 @@ namespace Model
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
-			var timeoutTimer = new List<long>();
 			foreach (long time in this.timeId.Keys)
 			{
 				if (time > timeNow)
 				{
 					break;
 				}
-				timeoutTimer.Add(time);
+				timeoutTimer.Enqueue(time);
 			}
 
-			foreach (long key in timeoutTimer)
+			while (timeoutTimer.Count > 0)
 			{
+				long key = timeoutTimer.Dequeue();
 				List<ObjectId> timeOutId = this.timeId[key];
 				foreach (ObjectId id in timeOutId)
 				{
