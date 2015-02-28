@@ -7,37 +7,30 @@ namespace TNet
 	public class TPoller: IPoller
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
-		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
+		private readonly ConcurrentQueue<Action> concurrentQueue = new ConcurrentQueue<Action>();
+
+		private readonly Queue<Action> localQueue = new Queue<Action>();
 
 		public void Add(Action action)
 		{
-			this.blockingCollection.Add(action);
+			this.concurrentQueue.Enqueue(action);
 		}
 
 		public void Run(int timeout)
 		{
-			// 处理读写线程的回调
-			Action action;
-			if (!this.blockingCollection.TryTake(out action, timeout))
-			{
-				return;
-			}
-
-			var queue = new Queue<Action>();
-			queue.Enqueue(action);
-
 			while (true)
 			{
-				if (!this.blockingCollection.TryTake(out action, 0))
+				Action action;
+				if (!this.concurrentQueue.TryDequeue(out action))
 				{
 					break;
 				}
-				queue.Enqueue(action);
+				localQueue.Enqueue(action);
 			}
 
-			while (queue.Count > 0)
+			while (localQueue.Count > 0)
 			{
-				Action a = queue.Dequeue();
+				Action a = localQueue.Dequeue();
 				a();
 			}
 		}

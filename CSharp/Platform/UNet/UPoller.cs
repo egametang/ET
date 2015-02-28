@@ -22,7 +22,10 @@ namespace UNet
 
 		private readonly USocket acceptor = new USocket(IntPtr.Zero);
 
-		private readonly BlockingCollection<Action> blockingCollection = new BlockingCollection<Action>();
+		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
+		private readonly ConcurrentQueue<Action> concurrentQueue = new ConcurrentQueue<Action>();
+
+		private readonly Queue<Action> localQueue = new Queue<Action>();
 
 		private ENetEvent eNetEventCache;
 
@@ -160,29 +163,24 @@ namespace UNet
 
 		public void Add(Action action)
 		{
-			this.blockingCollection.Add(action);
+			this.concurrentQueue.Enqueue(action);
 		}
 
-		private void OnEvents(int timeout)
+		private void OnEvents()
 		{
-			// 处理读写线程的回调
-			Action action;
-			if (!this.blockingCollection.TryTake(out action, timeout))
+			while (true)
 			{
-				return;
+				Action action;
+				if (!this.concurrentQueue.TryDequeue(out action))
+				{
+					break;
+				}
+				localQueue.Enqueue(action);
 			}
 
-			var queue = new Queue<Action>();
-			queue.Enqueue(action);
-
-			while (this.blockingCollection.TryTake(out action, 0))
+			while (localQueue.Count > 0)
 			{
-				queue.Enqueue(action);
-			}
-
-			while (queue.Count > 0)
-			{
-				Action a = queue.Dequeue();
+				Action a = localQueue.Dequeue();
 				a();
 			}
 		}
@@ -200,7 +198,7 @@ namespace UNet
 				throw new ArgumentOutOfRangeException(string.Format("timeout: {0}", timeout));
 			}
 
-			this.OnEvents(timeout);
+			this.OnEvents();
 
 			if (this.Service() < 0)
 			{
