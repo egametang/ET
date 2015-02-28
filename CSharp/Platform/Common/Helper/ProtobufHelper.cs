@@ -8,16 +8,16 @@ namespace Common.Helper
 	{
 		public static byte[] ToBytes<T>(T message)
 		{
-			var ms = new MemoryStream();
+			MemoryStream ms = new MemoryStream();
 			Serializer.Serialize(ms, message);
 			return ms.ToArray();
 		}
 
 		public static T FromBytes<T>(byte[] bytes)
 		{
-			var ms = new MemoryStream(bytes, 0, bytes.Length);
+			MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length);
 			T t = Serializer.Deserialize<T>(ms);
-			var iSupportInitialize = t as ISupportInitialize;
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
 				return t;
@@ -28,9 +28,9 @@ namespace Common.Helper
 
 		public static T FromBytes<T>(byte[] bytes, int index, int length)
 		{
-			var ms = new MemoryStream(bytes, index, length);
+			MemoryStream ms = new MemoryStream(bytes, index, length);
 			T t = Serializer.Deserialize<T>(ms);
-			var iSupportInitialize = t as ISupportInitialize;
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
 				return t;
