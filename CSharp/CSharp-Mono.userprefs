@@ -1,10 +1,15 @@
 ﻿<Properties StartupItem="Exe\Profile\Profile.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Game\Model\Component\NetworkComponent.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Exe\Profile\Program.cs">
     <Files>
-      <File FileName="Game\Model\BehaviorTree\BlackBoard.cs" Line="1" Column="1" />
-      <File FileName="Game\Model\Component\NetworkComponent.cs" Line="20" Column="20" />
+      <File FileName="Exe\Profile\App.config" Line="1" Column="1" />
+      <File FileName="Exe\Profile\Program.cs" Line="3" Column="3" />
     </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
