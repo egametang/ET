@@ -8,7 +8,7 @@ using MongoDB.Bson;
 
 namespace TNet
 {
-	public class TService: IService
+	public sealed class TService: IService
 	{
 		private readonly IPoller poller = new TPoller();
 		private TSocket acceptor;
@@ -18,8 +18,6 @@ namespace TNet
 		private readonly Dictionary<ObjectId, TChannel> idChannels = new Dictionary<ObjectId, TChannel>();
 
 		private readonly TimerManager timerManager = new TimerManager();
-
-		private bool isStop;
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -40,7 +38,7 @@ namespace TNet
 		{
 		}
 
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.acceptor == null)
 			{
@@ -57,7 +55,6 @@ namespace TNet
 				this.acceptor.Dispose();
 			}
 
-			isStop = true;
 			this.acceptor = null;
 		}
 
@@ -130,23 +127,10 @@ namespace TNet
 			return await this.ConnectAsync(host, port);
 		}
 
-		public void RunOnce(int timeout)
+		public void Run()
 		{
-			this.poller.Run(timeout);
-		}
-
-		public void Start()
-		{
-			while (!isStop)
-			{
-				this.RunOnce(0);
-				this.timerManager.Refresh();
-			}
-		}
-
-		public void Stop()
-		{
-			this.isStop = true;
+			this.poller.Run();
+			this.timerManager.Refresh();
 		}
 
 		internal TimerManager Timer

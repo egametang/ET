@@ -16,7 +16,7 @@ namespace TNet
 			this.concurrentQueue.Enqueue(action);
 		}
 
-		public void Run(int timeout)
+		public void Run()
 		{
 			while (true)
 			{

@@ -11,11 +11,16 @@ namespace Model
 	{
 		private readonly Queue<Env> msgEnvQueue = new Queue<Env>();
 
-		public Action msgAction = () => {};
+		private Action msgAction = () => {};
 
-		public Env Env { get; private set; }
+		private Env Env { get; set; }
 
-		public async void Run()
+		public ActorComponent()
+		{
+			Start();
+		}
+
+		private async void Start()
 		{
 			while (true)
 			{

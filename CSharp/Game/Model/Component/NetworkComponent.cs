@@ -7,7 +7,7 @@ using UNet;
 
 namespace Model
 {
-	public class NetworkComponent: Component<World>
+	public class NetworkComponent: Component<World>, IRunner
 	{
 		private IService service;
 
@@ -26,8 +26,11 @@ namespace Model
 			}
 
 			this.service.Add(this.AcceptChannel);
+		}
 
-			this.service.Start();
+		public void Run()
+		{
+			this.service.Run();
 		}
 
 		/// <summary>

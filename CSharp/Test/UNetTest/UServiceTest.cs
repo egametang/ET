@@ -15,6 +15,9 @@ namespace UNetTest
 		private const int echoTimes = 10000;
 		private readonly Barrier barrier = new Barrier(2);
 
+		private bool isClientStop;
+		private bool isServerStop;
+
 		private async void ClientEvent(IService clientService, string hostName, ushort port)
 		{
 			AChannel channel = await clientService.GetChannel(hostName, port);
@@ -48,8 +51,21 @@ namespace UNetTest
 			using (IService clientService = new UService(hostName, 8888))
 			using (IService serverService = new UService(hostName, 8889))
 			{	
-				Task task1 = Task.Factory.StartNew(() => clientService.Start(), TaskCreationOptions.LongRunning);
-				Task task2 = Task.Factory.StartNew(() => serverService.Start(), TaskCreationOptions.LongRunning);
+				Task task1 = Task.Factory.StartNew(() =>
+				{
+					while (!isClientStop)
+					{
+						clientService.Run();
+					}
+				}, TaskCreationOptions.LongRunning);
+
+				Task task2 = Task.Factory.StartNew(() =>
+				{
+					while (!isServerStop)
+					{
+						serverService.Run();
+					}
+				}, TaskCreationOptions.LongRunning);
 
 				// 往server host线程增加事件,accept
 				serverService.Add(() => this.ServerEvent(serverService));
@@ -60,8 +76,8 @@ namespace UNetTest
 				clientService.Add(() => this.ClientEvent(clientService, hostName, port));
 				barrier.SignalAndWait();
 
-				serverService.Add(serverService.Stop);
-				clientService.Add(clientService.Stop);
+				serverService.Add(() => { isServerStop = true; });
+				clientService.Add(() => { isClientStop = true; });
 				Task.WaitAll(task1, task2);
 			}
 		}

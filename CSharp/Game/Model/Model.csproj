@@ -67,6 +67,7 @@
     <Compile Include="FactoryAttribute.cs" />
     <Compile Include="IAssemblyLoader.cs" />
     <Compile Include="IFactory.cs" />
+    <Compile Include="IRunner.cs" />
     <Compile Include="MessageAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />

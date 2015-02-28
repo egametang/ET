@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Threading;
 using Common.Base;
 
 namespace Model
@@ -8,7 +10,7 @@ namespace Model
 	{
 		private static readonly World instance = new World();
 
-		public Assembly Assembly { get; set; }
+		private Assembly assembly;
 
 		public static World Instance
 		{
@@ -18,23 +20,50 @@ namespace Model
 			}
 		}
 
+		private List<IRunner> iRunners;
+
+		private bool isStop;
+
 		private World()
 		{
 		}
 
 		public void Load()
 		{
-			this.Assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
+			this.assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
+			this.iRunners = new List<IRunner>();
 
 			foreach (Component<World> component in this.GetComponents())
 			{
 				IAssemblyLoader assemblyLoader = component as IAssemblyLoader;
-				if (assemblyLoader == null)
+				if (assemblyLoader != null)
 				{
-					continue;
+					assemblyLoader.Load(this.assembly);
 				}
-				assemblyLoader.Load(this.Assembly);
+				
+				IRunner runner = component as IRunner;
+				if (runner != null)
+				{
+					this.iRunners.Add(runner);
+				}
 			}
+		}
+
+		public void Start()
+		{
+			while (!isStop)
+			{
+				Thread.Sleep(1);
+				foreach (IRunner runner in this.iRunners)
+				{
+					runner.Run();
+				}
+			}
+		}
+
+		public void Stop()
+		{
+			isStop = true;
 		}
 	}
 }

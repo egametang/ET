@@ -9,7 +9,7 @@ namespace Controller
 		{
 			Unit player = new Unit(configId);
 			player.AddComponent<BuffComponent>();
-			player.AddComponent<ActorComponent>().Run();
+			player.AddComponent<ActorComponent>();
 			World.Instance.GetComponent<UnitComponent>().Add(player);
 			return player;
 		}

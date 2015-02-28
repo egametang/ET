@@ -15,8 +15,6 @@ namespace UNet
 
 		private readonly Dictionary<ObjectId, UChannel> idChannels = new Dictionary<ObjectId, UChannel>();
 
-		private bool isStop;
-
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
@@ -117,22 +115,9 @@ namespace UNet
 			this.channels.Remove(channel.RemoteAddress);
 		}
 
-		public void RunOnce(int timeout)
+		public void Run()
 		{
-			this.poller.RunOnce(timeout);
-		}
-
-		public void Start()
-		{
-			while (!isStop)
-			{
-				this.poller.RunOnce();
-			}
-		}
-
-		public void Stop()
-		{
-			this.isStop = true;
+			this.poller.RunOnce();
 		}
 	}
 }

@@ -26,10 +26,6 @@ namespace Common.Network
 
 		void Remove(AChannel channel);
 
-		void RunOnce(int timeout);
-
-		void Start();
-
-		void Stop();
+		void Run();
 	}
 }
