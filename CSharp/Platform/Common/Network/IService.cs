@@ -26,6 +26,6 @@ namespace Common.Network
 
 		void Remove(AChannel channel);
 
-		void Run();
+		void Update();
 	}
 }

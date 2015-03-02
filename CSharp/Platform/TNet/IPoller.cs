@@ -6,6 +6,6 @@ namespace TNet
 	{
 		void Add(Action action);
 
-		void Run();
+		void Update();
 	}
 }

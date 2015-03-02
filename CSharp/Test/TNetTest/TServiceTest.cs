@@ -56,7 +56,7 @@ namespace TNetTest
 				{
 					while (!isClientStop)
 					{
-						clientService.Run();
+						clientService.Update();
 					}
 				}, TaskCreationOptions.LongRunning);
 
@@ -64,7 +64,7 @@ namespace TNetTest
 				{
 					while (!isServerStop)
 					{
-						serverService.Run();
+						serverService.Update();
 					}
 				}, TaskCreationOptions.LongRunning);
 

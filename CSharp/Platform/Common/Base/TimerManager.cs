@@ -31,19 +31,6 @@ namespace Common.Base
 			return timer.Id;
 		}
 
-		public void Update(ObjectId id, long time)
-		{
-			Timer timer;
-			if (!this.timers.TryGetValue(id, out timer))
-			{
-				return;
-			}
-
-			this.timeGuid.Remove(timer.Time, timer.Id);
-			timer.Time = time;
-			this.timeGuid.Add(timer.Time, timer.Id);
-		}
-
 		public void Remove(ObjectId id)
 		{
 			Timer timer;

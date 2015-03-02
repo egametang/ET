@@ -6,7 +6,7 @@ using MongoDB.Bson;
 
 namespace Model
 {
-	public class TimerComponent : Component<World>, IRunner
+	public class TimerComponent : Component<World>, IUpdate
 	{
 		private class Timer
 		{
@@ -49,7 +49,7 @@ namespace Model
 			this.timeId.Remove(timer.Time, timer.Id);
 		}
 
-		public void Run()
+		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
 			foreach (long time in this.timeId.Keys)

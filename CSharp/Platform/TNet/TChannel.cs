@@ -32,7 +32,7 @@ namespace TNet
 			this.StartRecv();
 		}
 
-		protected virtual void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.socket == null)
 			{

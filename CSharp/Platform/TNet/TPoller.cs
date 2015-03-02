@@ -16,7 +16,7 @@ namespace TNet
 			this.concurrentQueue.Enqueue(action);
 		}
 
-		public void Run()
+		public void Update()
 		{
 			while (true)
 			{

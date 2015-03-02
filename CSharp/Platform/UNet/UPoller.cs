@@ -33,7 +33,7 @@ namespace UNet
 		{
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.EnetHostCreate(
+			this.host = NativeMethods.ENetHostCreate(
 				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
@@ -41,12 +41,12 @@ namespace UNet
 				throw new UException("Host creation call failed.");
 			}
 
-			NativeMethods.EnetHostCompressWithRangeCoder(this.host);
+			NativeMethods.ENetHostCompressWithRangeCoder(this.host);
 		}
 
 		public UPoller()
 		{
-			this.host = NativeMethods.EnetHostCreate(
+			this.host = NativeMethods.ENetHostCreate(
 				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
@@ -73,7 +73,7 @@ namespace UNet
 				return;
 			}
 
-			NativeMethods.EnetHostDestroy(this.host);
+			NativeMethods.ENetHostDestroy(this.host);
 
 			this.host = IntPtr.Zero;
 		}
@@ -122,7 +122,7 @@ namespace UNet
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
 
-			IntPtr ptr = NativeMethods.EnetHostConnect(this.host, ref nativeAddress,
+			IntPtr ptr = NativeMethods.ENetHostConnect(this.host, ref nativeAddress,
 			                                           NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
 			USocket socket = new USocket(ptr);
 			if (socket.PeerPtr == IntPtr.Zero)
@@ -147,7 +147,7 @@ namespace UNet
 			{
 				this.eNetEventCache = new ENetEvent();
 			}
-			if (NativeMethods.EnetHostCheckEvents(this.host, this.eNetEventCache) <= 0)
+			if (NativeMethods.ENetHostCheckEvents(this.host, this.eNetEventCache) <= 0)
 			{
 				return null;
 			}
@@ -158,7 +158,7 @@ namespace UNet
 
 		public void Flush()
 		{
-			NativeMethods.EnetHostFlush(this.host);
+			NativeMethods.ENetHostFlush(this.host);
 		}
 
 		public void Add(Action action)
@@ -187,17 +187,12 @@ namespace UNet
 
 		private int Service()
 		{
-			int ret = NativeMethods.EnetHostService(this.host, null, 0);
+			int ret = NativeMethods.ENetHostService(this.host, null, 0);
 			return ret;
 		}
 
-		public void RunOnce(int timeout = 0)
+		public void Update()
 		{
-			if (timeout < 0)
-			{
-				throw new ArgumentOutOfRangeException(string.Format("timeout: {0}", timeout));
-			}
-
 			this.OnEvents();
 
 			if (this.Service() < 0)

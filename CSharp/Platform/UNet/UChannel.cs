@@ -17,7 +17,7 @@ namespace UNet
 			this.remoteAddress = this.socket.RemoteAddress;
 		}
 
-		protected void Dispose(bool disposing)
+		private void Dispose(bool disposing)
 		{
 			if (this.socket == null)
 			{

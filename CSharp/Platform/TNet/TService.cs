@@ -127,9 +127,9 @@ namespace TNet
 			return await this.ConnectAsync(host, port);
 		}
 
-		public void Run()
+		public void Update()
 		{
-			this.poller.Run();
+			this.poller.Update();
 			this.timerManager.Refresh();
 		}
 

@@ -20,7 +20,9 @@ namespace Model
 			}
 		}
 
-		private List<IRunner> iRunners;
+		public Options Options { get; set; }
+
+		private readonly List<IUpdate> iUpdates = new List<IUpdate>();
 
 		private bool isStop;
 
@@ -31,7 +33,6 @@ namespace Model
 		public void Load()
 		{
 			this.assembly = Assembly.Load(File.ReadAllBytes(@"./Controller.dll"));
-			this.iRunners = new List<IRunner>();
 
 			foreach (Component<World> component in this.GetComponents())
 			{
@@ -40,23 +41,35 @@ namespace Model
 				{
 					assemblyLoader.Load(this.assembly);
 				}
-				
-				IRunner runner = component as IRunner;
-				if (runner != null)
-				{
-					this.iRunners.Add(runner);
-				}
 			}
 		}
 
 		public void Start()
 		{
+			Load();
+
+			foreach (Component<World> component in this.GetComponents())
+			{
+				IUpdate update = component as IUpdate;
+				if (update != null)
+				{
+					this.iUpdates.Add(update);
+				}
+
+				IStart start = component as IStart;
+				if (start != null)
+				{
+					start.Start();
+				}
+			}
+
+			// loop
 			while (!isStop)
 			{
 				Thread.Sleep(1);
-				foreach (IRunner runner in this.iRunners)
+				foreach (IUpdate update in this.iUpdates)
 				{
-					runner.Run();
+					update.Update();
 				}
 			}
 		}

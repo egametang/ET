@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Common.Logger;
 using Common.Network;
 
 namespace UNet
@@ -20,7 +19,7 @@ namespace UNet
 			{
 				throw new ArgumentNullException("data");
 			}
-			this.packet = NativeMethods.EnetPacketCreate(data, (uint) data.Length, flags);
+			this.packet = NativeMethods.ENetPacketCreate(data, (uint) data.Length, flags);
 			if (this.packet == IntPtr.Zero)
 			{
 				throw new UException("Packet creation call failed");
@@ -45,7 +44,7 @@ namespace UNet
 				return;
 			}
 
-			NativeMethods.EnetPacketDestroy(this.packet);
+			NativeMethods.ENetPacketDestroy(this.packet);
 			this.packet = IntPtr.Zero;
 		}
 

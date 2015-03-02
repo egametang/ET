@@ -29,6 +29,7 @@ namespace MongoDBTest
 			world.AddComponent<UnitComponent>();
 			world.AddComponent<FactoryComponent<Unit>>();
 			world.AddComponent<BehaviorTreeComponent>();
+			world.AddComponent<NetworkComponent>();
 			world.Load();
 
 			Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);

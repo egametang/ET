@@ -4,7 +4,7 @@
 	{
 		public static void Initialize()
 		{
-			int ret = NativeMethods.EnetInitialize();
+			int ret = NativeMethods.ENetInitialize();
 			if (ret < 0)
 			{
 				throw new UException(string.Format("Initialization failed, ret: {0}", ret));
@@ -13,18 +13,18 @@
 
 		public static void Deinitialize()
 		{
-			NativeMethods.EnetDeinitialize();
+			NativeMethods.ENetDeinitialize();
 		}
 
 		public static uint Time
 		{
 			get
 			{
-				return NativeMethods.EnetTimeGet();
+				return NativeMethods.ENetTimeGet();
 			}
 			set
 			{
-				NativeMethods.EnetTimeSet(value);
+				NativeMethods.ENetTimeSet(value);
 			}
 		}
 	}

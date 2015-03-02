@@ -14,7 +14,6 @@ namespace UNet
 		public Action<ENetEvent> Connected { get; set; }
 		public Action<ENetEvent> Received { get; private set; }
 		public Action<ENetEvent> Disconnect { get; private set; }
-		public Action<int> Error { get; set; }
 
 		private void Dispose(bool disposing)
 		{
@@ -23,7 +22,7 @@ namespace UNet
 				return;
 			}
 
-			NativeMethods.EnetPeerReset(this.peerPtr);
+			NativeMethods.ENetPeerReset(this.peerPtr);
 			this.peerPtr = IntPtr.Zero;
 		}
 
@@ -79,18 +78,18 @@ namespace UNet
 
 		public void Ping()
 		{
-			NativeMethods.EnetPeerPing(this.peerPtr);
+			NativeMethods.ENetPeerPing(this.peerPtr);
 		}
 
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
 		{
-			NativeMethods.EnetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
+			NativeMethods.ENetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
 		}
 
 		public void SendAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			UPacket packet = new UPacket(data, flags);
-			NativeMethods.EnetPeerSend(this.peerPtr, channelID, packet.PacketPtr);
+			NativeMethods.ENetPeerSend(this.peerPtr, channelID, packet.PacketPtr);
 			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
 			packet.PacketPtr = IntPtr.Zero;
 		}
@@ -127,7 +126,7 @@ namespace UNet
 
 		public Task<bool> DisconnectAsync(uint data = 0)
 		{
-			NativeMethods.EnetPeerDisconnect(this.peerPtr, data);
+			NativeMethods.ENetPeerDisconnect(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
 			this.peerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
@@ -137,7 +136,7 @@ namespace UNet
 
 		public Task<bool> DisconnectLaterAsync(uint data = 0)
 		{
-			NativeMethods.EnetPeerDisconnectLater(this.peerPtr, data);
+			NativeMethods.ENetPeerDisconnectLater(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
 			this.peerPtr = IntPtr.Zero;
 			var tcs = new TaskCompletionSource<bool>();
@@ -147,7 +146,7 @@ namespace UNet
 
 		public void DisconnectNow(uint data)
 		{
-			NativeMethods.EnetPeerDisconnectNow(this.peerPtr, data);
+			NativeMethods.ENetPeerDisconnectNow(this.peerPtr, data);
 			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
 			this.peerPtr = IntPtr.Zero;
 		}

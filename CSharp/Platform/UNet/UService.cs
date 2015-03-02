@@ -115,9 +115,9 @@ namespace UNet
 			this.channels.Remove(channel.RemoteAddress);
 		}
 
-		public void Run()
+		public void Update()
 		{
-			this.poller.RunOnce();
+			this.poller.Update();
 		}
 	}
 }

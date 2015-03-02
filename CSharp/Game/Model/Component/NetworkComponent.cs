@@ -7,11 +7,11 @@ using UNet;
 
 namespace Model
 {
-	public class NetworkComponent: Component<World>, IRunner
+	public class NetworkComponent: Component<World>, IUpdate, IStart
 	{
 		private IService service;
 
-		public void Run(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
+		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
 			switch (protocol)
 			{
@@ -25,12 +25,17 @@ namespace Model
 					throw new ArgumentOutOfRangeException("protocol");
 			}
 
-			this.service.Add(this.AcceptChannel);
+			this.AcceptChannel();
 		}
 
-		public void Run()
+		public void Start()
 		{
-			this.service.Run();
+			this.Accept(World.Instance.Options.Host, World.Instance.Options.Port, World.Instance.Options.Protocol);
+		}
+
+		public void Update()
+		{
+			this.service.Update();
 		}
 
 		/// <summary>

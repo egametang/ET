@@ -55,7 +55,7 @@ namespace UNetTest
 				{
 					while (!isClientStop)
 					{
-						clientService.Run();
+						clientService.Update();
 					}
 				}, TaskCreationOptions.LongRunning);
 
@@ -63,7 +63,7 @@ namespace UNetTest
 				{
 					while (!isServerStop)
 					{
-						serverService.Run();
+						serverService.Update();
 					}
 				}, TaskCreationOptions.LongRunning);
 
