@@ -2,22 +2,29 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Common.Base;
-using Common.Config;
 
 namespace Model
 {
 	public class ConfigComponent: Component<World>, IAssemblyLoader
 	{
-		public Dictionary<Type, ICategory> allConfig;
+		private Dictionary<Type, ICategory> allConfig;
 
 		public void Load(Assembly assembly)
 		{
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();
+
+			ServerType serverType = World.Instance.Options.ServerType;
+
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof (ConfigAttribute), false);
 				if (attrs.Length == 0)
+				{
+					continue;
+				}
+				ConfigAttribute configAttribute = (ConfigAttribute) attrs[0];
+				if (!configAttribute.Contain(serverType))
 				{
 					continue;
 				}

@@ -2,10 +2,16 @@
 using CommandLine;
 using Common.Network;
 
-namespace Common.Base
+namespace Model
 {
 	public class Options
 	{
+		[Option('s', "serverType", Required = true, HelpText = "ServerType.")]
+		public ServerType ServerType { get; set; }
+
+		[Option('n', "name", Required = true, HelpText = "Name.")]
+		public string Name { get; set; }
+
 		[Option('h', "host", Required = true, HelpText = "Host.")]
 		public string Host { get; set; }
 
@@ -15,7 +21,7 @@ namespace Common.Base
 		[Option("protocol", Required = true, HelpText = "Protocol, tcp or udp.")]
 		public NetworkProtocol Protocol { get; set; }
 
-		[Option('v', null, HelpText = "Print details during execution.")]
+		[Option('v', HelpText = "Print details during execution.")]
 		public bool Verbose { get; set; }
 
 		[HelpOption]

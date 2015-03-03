@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using Common.Helper;
 
-namespace Common.Config
+namespace Model
 {
 	public abstract class ACategory<T>: ICategory where T : AConfig
 	{
-		protected Dictionary<int, T> dict;
+		private Dictionary<int, T> dict;
 
 		public virtual void BeginInit()
 		{

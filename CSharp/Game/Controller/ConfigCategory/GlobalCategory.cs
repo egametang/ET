@@ -1,5 +1,4 @@
-﻿using Common.Config;
-using Model;
+﻿using Model;
 
 namespace Controller
 {

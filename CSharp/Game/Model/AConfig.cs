@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Common.Config
+namespace Model
 {
 	public abstract class AConfig: ISupportInitialize
 	{

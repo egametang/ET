@@ -1,6 +1,4 @@
-﻿using Common.Config;
-
-namespace Model
+﻿namespace Model
 {
 	public class GlobalConfig: AConfig
 	{

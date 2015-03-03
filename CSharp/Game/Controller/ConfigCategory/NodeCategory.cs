@@ -1,9 +1,8 @@
-﻿using Common.Config;
-using Model;
+﻿using Model;
 
 namespace Controller
 {
-	[Config]
+	[Config(ServerType.All)]
 	public class NodeCategory: ACategory<NodeConfig>
 	{
 	}

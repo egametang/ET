@@ -1,9 +1,8 @@
-﻿using Common.Config;
-using Model;
+﻿using Model;
 
 namespace Controller
 {
-	[Config]
+	[Config(ServerType.Realm, ServerType.Gate, ServerType.City)]
 	public class BuffCategory: ACategory<BuffConfig>
 	{
 	}

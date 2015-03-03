@@ -43,6 +43,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACategory.cs" />
+    <Compile Include="AConfig.cs" />
     <Compile Include="BehaviorTree\BehaviorTree.cs" />
     <Compile Include="BehaviorTree\BehaviorTreeFactory.cs" />
     <Compile Include="BehaviorTree\BlackBoard.cs" />
@@ -60,21 +62,26 @@
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
+    <Compile Include="ConfigAttribute.cs" />
     <Compile Include="Config\BuffConfig.cs" />
     <Compile Include="Config\GlobalConfig.cs" />
     <Compile Include="Config\NodeConfig.cs" />
+    <Compile Include="Config\ServerInfoConfig.cs" />
     <Compile Include="Config\UnitConfig.cs" />
     <Compile Include="EnvKey.cs" />
     <Compile Include="EventAttribute.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="FactoryAttribute.cs" />
     <Compile Include="IAssemblyLoader.cs" />
+    <Compile Include="ICategory.cs" />
+    <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFactory.cs" />
     <Compile Include="IStart.cs" />
     <Compile Include="IUpdate.cs" />
     <Compile Include="MessageAttribute.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerType.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitType.cs" />
     <Compile Include="World.cs" />
