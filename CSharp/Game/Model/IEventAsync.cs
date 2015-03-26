@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Common.Event
+namespace Model
 {
 	public interface IEventAsync
 	{

@@ -37,8 +37,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action\BuffTimeoutAction.cs" />
-    <Compile Include="Action\MessageAction.cs" />
+    <Compile Include="Event\BuffTimeoutAction.cs" />
+    <Compile Include="Event\MessageAction.cs" />
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
@@ -64,6 +64,7 @@
       <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

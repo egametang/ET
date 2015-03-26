@@ -1,6 +1,5 @@
 ﻿using System;
 using Common.Base;
-using Common.Event;
 using Common.Helper;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -63,7 +62,7 @@ namespace Model
 				env[EnvKey.OwnerId] = this.OwnerId;
 				env[EnvKey.BuffId] = this.Id;
 				this.TimerId = World.Instance.GetComponent<TimerComponent>()
-						.Add(this.Expiration, ActionType.BuffTimeoutAction, env);
+						.Add(this.Expiration, EventType.BuffTimeoutAction, env);
 			}
 		}
 
@@ -101,7 +100,7 @@ namespace Model
 				env[EnvKey.OwnerId] = this.OwnerId;
 				env[EnvKey.BuffId] = this.Id;
 				this.TimerId = World.Instance.GetComponent<TimerComponent>()
-						.Add(this.Expiration, ActionType.BuffTimeoutAction, env);
+						.Add(this.Expiration, EventType.BuffTimeoutAction, env);
 			}
 		}
 

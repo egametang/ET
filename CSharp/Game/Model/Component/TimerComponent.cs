@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Common.Base;
-using Common.Event;
 using Common.Helper;
 using MongoDB.Bson;
 
@@ -58,12 +57,12 @@ namespace Model
 				{
 					break;
 				}
-				timeoutTimer.Enqueue(time);
+				this.timeoutTimer.Enqueue(time);
 			}
 
-			while (timeoutTimer.Count > 0)
+			while (this.timeoutTimer.Count > 0)
 			{
-				long key = timeoutTimer.Dequeue();
+				long key = this.timeoutTimer.Dequeue();
 				List<ObjectId> timeOutId = this.timeId[key];
 				foreach (ObjectId id in timeOutId)
 				{
@@ -73,7 +72,7 @@ namespace Model
 						continue;
 					}
 					this.Remove(id);
-					World.Instance.GetComponent<EventComponent<ActionAttribute>>()
+					World.Instance.GetComponent<EventComponent<EventAttribute>>()
 							.Run(timer.CallbackId, timer.Env);
 				}
 			}

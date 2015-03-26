@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Reflection;
 using Common.Base;
-using Common.Event;
 using Common.Network;
 using TNet;
 using UNet;
@@ -64,8 +62,8 @@ namespace Model
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
 #pragma warning disable 4014
-				World.Instance.GetComponent<EventComponent<ActionAttribute>>()
-						.RunAsync(ActionType.MessageAction, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>()
+						.RunAsync(EventType.MessageAction, env);
 #pragma warning restore 4014
 			}
 		}

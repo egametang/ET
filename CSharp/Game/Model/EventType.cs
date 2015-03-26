@@ -6,11 +6,7 @@
 		public const int AfterAddBuff = 1;
 		public const int BeforeRemoveBuff = 2;
 		public const int AfterRemoveBuff = 3;
-	}
-
-	public static class ActionType
-	{
-		public const int BuffTimeoutAction = 0;
-		public const int MessageAction = 1;
+		public const int BuffTimeoutAction = 4;
+		public const int MessageAction = 5;
 	}
 }

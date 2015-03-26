@@ -3,15 +3,19 @@
 namespace Model
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class ConfigAttribute: Attribute
+	public abstract class AEventAttribute: Attribute
 	{
+		public int Type { get; private set; }
+
 		private int ServerType { get; set; }
 
-		public ConfigAttribute(params ServerType[] serverTypes)
+		protected AEventAttribute(int type, params ServerType[] serverTypes)
 		{
+			this.Type = type;
+
 			foreach (ServerType serverType in serverTypes)
 			{
-				this.ServerType |= (int)serverType;
+				this.ServerType |= (int) serverType;
 			}
 		}
 

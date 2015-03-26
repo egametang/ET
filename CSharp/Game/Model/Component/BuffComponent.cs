@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Base;
-using Common.Event;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

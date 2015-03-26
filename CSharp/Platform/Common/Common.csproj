@@ -54,10 +54,6 @@
     <Compile Include="Base\Object.cs" />
     <Compile Include="Base\QueueDictionary.cs" />
     <Compile Include="Base\TimerManager.cs" />
-    <Compile Include="Event\AEventAttribute.cs" />
-    <Compile Include="Event\Env.cs" />
-    <Compile Include="Event\IEventAsync.cs" />
-    <Compile Include="Event\IEventSync.cs" />
     <Compile Include="Helper\BigIntegerHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
     <Compile Include="Helper\EnumHelper.cs" />

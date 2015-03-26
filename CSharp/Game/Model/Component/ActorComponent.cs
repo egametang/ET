@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.Base;
-using Common.Event;
 using Common.Logger;
 
 namespace Model

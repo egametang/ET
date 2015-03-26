@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common.Base;
-using Common.Event;
 
 namespace Model
 {
@@ -11,13 +10,14 @@ namespace Model
 			where AttributeType : AEventAttribute
 	{
 		private Dictionary<int, List<IEventSync>> eventSyncs;
-
 		private Dictionary<int, List<IEventAsync>> eventAsyncs;
 
 		public void Load(Assembly assembly)
 		{
 			this.eventSyncs = new Dictionary<int, List<IEventSync>>();
 			this.eventAsyncs = new Dictionary<int, List<IEventAsync>>();
+
+			ServerType serverType = World.Instance.Options.ServerType;
 
 			Type[] types = assembly.GetTypes();
 			foreach (Type t in types)
@@ -27,17 +27,22 @@ namespace Model
 				{
 					continue;
 				}
+
+				AEventAttribute aEventAttribute = (AEventAttribute)attrs[0];
+				if (!aEventAttribute.Contains(serverType))
+				{
+					continue;
+				}
+
 				object obj = Activator.CreateInstance(t);
 				IEventSync iEventSync = obj as IEventSync;
 				if (iEventSync != null)
 				{
-					AEventAttribute iEventAttribute = (AEventAttribute)attrs[0];
-
-					if (!this.eventSyncs.ContainsKey(iEventAttribute.Type))
+					if (!this.eventSyncs.ContainsKey(aEventAttribute.Type))
 					{
-						this.eventSyncs.Add(iEventAttribute.Type, new List<IEventSync>());
+						this.eventSyncs.Add(aEventAttribute.Type, new List<IEventSync>());
 					}
-					this.eventSyncs[iEventAttribute.Type].Add(iEventSync);
+					this.eventSyncs[aEventAttribute.Type].Add(iEventSync);
 					continue;
 				}
 
@@ -45,13 +50,11 @@ namespace Model
 				// ReSharper disable once InvertIf
 				if (iEventAsync != null)
 				{
-					AEventAttribute iEventAttribute = (AEventAttribute)attrs[0];
-
-					if (!this.eventAsyncs.ContainsKey(iEventAttribute.Type))
+					if (!this.eventAsyncs.ContainsKey(aEventAttribute.Type))
 					{
-						this.eventAsyncs.Add(iEventAttribute.Type, new List<IEventAsync>());
+						this.eventAsyncs.Add(aEventAttribute.Type, new List<IEventAsync>());
 					}
-					this.eventAsyncs[iEventAttribute.Type].Add(iEventAsync);
+					this.eventAsyncs[aEventAttribute.Type].Add(iEventAsync);
 					continue;
 				}
 

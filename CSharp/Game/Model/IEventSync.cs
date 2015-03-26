@@ -1,4 +1,4 @@
-﻿namespace Common.Event
+﻿namespace Model
 {
 	public interface IEventSync
 	{

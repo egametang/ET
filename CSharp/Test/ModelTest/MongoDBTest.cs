@@ -23,7 +23,6 @@ namespace MongoDBTest
 
 			// 加载配置
 			world.AddComponent<ConfigComponent>();
-			world.AddComponent<EventComponent<ActionAttribute>>();
 			world.AddComponent<EventComponent<EventAttribute>>();
 			world.AddComponent<TimerComponent>();
 			world.AddComponent<UnitComponent>();

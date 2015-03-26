@@ -1,6 +1,6 @@
 ﻿using Common.Base;
 
-namespace Common.Event
+namespace Model
 {
 	public class Env: Object
 	{

@@ -1,10 +1,9 @@
-﻿using Common.Event;
-using Model;
+﻿using Model;
 using MongoDB.Bson;
 
 namespace Controller
 {
-	[Action(ActionType.BuffTimeoutAction)]
+	[Event(EventType.BuffTimeoutAction)]
 	public class BuffTimeoutAction: IEventSync
 	{
 		public void Run(Env env)

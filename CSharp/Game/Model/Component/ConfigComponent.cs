@@ -24,7 +24,7 @@ namespace Model
 					continue;
 				}
 				ConfigAttribute configAttribute = (ConfigAttribute) attrs[0];
-				if (!configAttribute.Contain(serverType))
+				if (!configAttribute.Contains(serverType))
 				{
 					continue;
 				}

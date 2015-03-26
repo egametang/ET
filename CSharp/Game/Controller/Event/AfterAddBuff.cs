@@ -1,5 +1,4 @@
-﻿using Common.Event;
-using Model;
+﻿using Model;
 
 namespace Controller
 {
