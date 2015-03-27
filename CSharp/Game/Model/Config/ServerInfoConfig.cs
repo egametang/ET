@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	public class ServerInfoConfig : AConfig
+	public class ServerInfoConfig: AConfig
 	{
 		public string Zone { get; set; }
 		public string Name { get; set; }

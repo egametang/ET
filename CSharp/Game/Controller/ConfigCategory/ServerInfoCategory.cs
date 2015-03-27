@@ -4,9 +4,10 @@ using Model;
 namespace Controller
 {
 	[Config(ServerType.All)]
-	public class ServerInfoCategory : ACategory<ServerInfoConfig>
+	public class ServerInfoCategory: ACategory<ServerInfoConfig>
 	{
-		public Dictionary<string, ServerInfoConfig> NameServerInfoConfigs = new Dictionary<string, ServerInfoConfig>();
+		public Dictionary<string, ServerInfoConfig> NameServerInfoConfigs =
+				new Dictionary<string, ServerInfoConfig>();
 
 		public override void EndInit()
 		{

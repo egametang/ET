@@ -28,7 +28,7 @@ namespace Model
 					continue;
 				}
 
-				AEventAttribute aEventAttribute = (AEventAttribute)attrs[0];
+				AEventAttribute aEventAttribute = (AEventAttribute) attrs[0];
 				if (!aEventAttribute.Contains(serverType))
 				{
 					continue;
@@ -58,8 +58,7 @@ namespace Model
 					continue;
 				}
 
-				throw new Exception(
-					string.Format("event not inherit IEventSync or IEventAsync interface: {0}",
+				throw new Exception(string.Format("event not inherit IEventSync or IEventAsync interface: {0}",
 						obj.GetType().FullName));
 			}
 		}
@@ -69,8 +68,7 @@ namespace Model
 			List<IEventSync> iEventSyncs = null;
 			if (!this.eventSyncs.TryGetValue(type, out iEventSyncs))
 			{
-				throw new Exception(
-					string.Format("no event handler, AttributeType: {0} type: {1}",
+				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
 						typeof (AttributeType).Name, type));
 			}
 
@@ -91,7 +89,7 @@ namespace Model
 			if (iEventSyncs == null && iEventAsyncs == null)
 			{
 				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
-					typeof(AttributeType).Name, type));
+						typeof (AttributeType).Name, type));
 			}
 
 			if (iEventSyncs != null)

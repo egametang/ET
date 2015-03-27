@@ -33,8 +33,8 @@ namespace UNet
 		{
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.ENetHostCreate(
-				ref nativeAddress, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.ENetHostCreate(ref nativeAddress,
+					NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -46,8 +46,8 @@ namespace UNet
 
 		public UPoller()
 		{
-			this.host = NativeMethods.ENetHostCreate(
-				IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.ENetHostCreate(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID,
+					0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
@@ -123,7 +123,7 @@ namespace UNet
 			ENetAddress nativeAddress = address.Struct;
 
 			IntPtr ptr = NativeMethods.ENetHostConnect(this.host, ref nativeAddress,
-			                                           NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
+					NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
 			USocket socket = new USocket(ptr);
 			if (socket.PeerPtr == IntPtr.Zero)
 			{
@@ -175,12 +175,12 @@ namespace UNet
 				{
 					break;
 				}
-				localQueue.Enqueue(action);
+				this.localQueue.Enqueue(action);
 			}
 
-			while (localQueue.Count > 0)
+			while (this.localQueue.Count > 0)
 			{
-				Action a = localQueue.Dequeue();
+				Action a = this.localQueue.Dequeue();
 				a();
 			}
 		}

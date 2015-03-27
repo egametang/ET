@@ -5,7 +5,7 @@ using MongoDB.Bson;
 
 namespace Model
 {
-	public class TimerComponent : Component<World>, IUpdate
+	public class TimerComponent: Component<World>, IUpdate
 	{
 		private class Timer
 		{
@@ -72,8 +72,7 @@ namespace Model
 						continue;
 					}
 					this.Remove(id);
-					World.Instance.GetComponent<EventComponent<EventAttribute>>()
-							.Run(timer.CallbackId, timer.Env);
+					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(timer.CallbackId, timer.Env);
 				}
 			}
 		}

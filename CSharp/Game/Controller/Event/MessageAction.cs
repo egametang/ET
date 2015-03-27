@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Common.Network;
 using Model;
+
 namespace Controller
 {
 	[Event(EventType.MessageAction)]
-	public class MessageAction : IEventAsync
+	public class MessageAction: IEventAsync
 	{
 		public async Task RunAsync(Env env)
 		{

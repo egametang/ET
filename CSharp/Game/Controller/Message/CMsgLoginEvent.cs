@@ -1,6 +1,6 @@
 ﻿using Common.Helper;
-using Model;
 using Common.Network;
+using Model;
 
 namespace Controller.Message
 {
@@ -20,7 +20,8 @@ namespace Controller.Message
 			Unit unit = World.Instance.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);
 
 			AChannel channel = env.Get<AChannel>(EnvKey.Channel);
-			ChannelUnitInfoComponent channelUnitInfoComponent = channel.AddComponent<ChannelUnitInfoComponent>();
+			ChannelUnitInfoComponent channelUnitInfoComponent =
+					channel.AddComponent<ChannelUnitInfoComponent>();
 			channelUnitInfoComponent.Account = cmsg.Account;
 			channelUnitInfoComponent.PlayerId = unit.Id;
 		}

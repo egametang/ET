@@ -1,8 +1,6 @@
-﻿using System;
-using Common.Helper;
+﻿using Common.Helper;
 using Model;
 using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 using NUnit.Framework;
 
 namespace MongoDBTest
@@ -11,13 +9,12 @@ namespace MongoDBTest
 	public class MongoDBTest
 	{
 		[Test]
-		public void TestMongoDB()
+		public async void TestMongoDB()
 		{
 			const string connectionString = "mongodb://localhost";
 			MongoClient client = new MongoClient(connectionString);
-			MongoServer server = client.GetServer();
-			MongoDatabase database = server.GetDatabase("test");
-			MongoCollection<Unit> collection = database.GetCollection<Unit>("Unit");
+			IMongoDatabase database = client.GetDatabase("test");
+			IMongoCollection<Unit> collection = database.GetCollection<Unit>("Unit");
 
 			World world = World.Instance;
 
@@ -34,13 +31,7 @@ namespace MongoDBTest
 			Unit player1 = world.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);
 			player1["hp"] = 10;
 
-			collection.Insert(player1);
-
-			IMongoQuery query = Query<Unit>.EQ(e => e.Id, player1.Id);
-			Unit player2 = collection.FindOne(query);
-
-			Console.WriteLine(MongoHelper.ToJson(player2));
-			Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
+			await collection.InsertOneAsync(player1);
 
 			Unit player3 = player1.Clone();
 

@@ -27,7 +27,7 @@ namespace Editor
 		{
 			IRegionBehaviorFactory factory = base.ConfigureDefaultRegionBehaviors();
 			factory.AddIfMissing("AutoPopulateExportedViewsBehavior",
-			                     typeof (AutoPopulateExportedViewsBehavior));
+					typeof (AutoPopulateExportedViewsBehavior));
 			return factory;
 		}
 

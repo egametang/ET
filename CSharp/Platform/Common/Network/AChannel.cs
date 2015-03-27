@@ -18,7 +18,8 @@ namespace Common.Network
 		/// <summary>
 		/// 发送消息
 		/// </summary>
-		public abstract void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
+		public abstract void SendAsync(
+				byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
 
 		/// <summary>
 		/// 接收消息

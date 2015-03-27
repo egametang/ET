@@ -6,17 +6,17 @@ using Common.Logger;
 
 namespace Model
 {
-	public class ActorComponent : Component<Unit>
+	public class ActorComponent: Component<Unit>
 	{
 		private readonly Queue<Env> msgEnvQueue = new Queue<Env>();
 
-		private Action msgAction = () => {};
+		private Action msgAction = () => { };
 
 		private Env Env { get; set; }
 
 		public ActorComponent()
 		{
-			Start();
+			this.Start();
 		}
 
 		private async void Start()
@@ -41,7 +41,7 @@ namespace Model
 		public void Add(Env msgEnv)
 		{
 			this.msgEnvQueue.Enqueue(msgEnv);
-			msgAction();
+			this.msgAction();
 		}
 
 		private Task<Env> Get()
@@ -54,9 +54,9 @@ namespace Model
 			}
 			else
 			{
-				msgAction = () =>
+				this.msgAction = () =>
 				{
-					msgAction = () => { };
+					this.msgAction = () => { };
 					Env msg = this.msgEnvQueue.Dequeue();
 					tcs.SetResult(msg);
 				};

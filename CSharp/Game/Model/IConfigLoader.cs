@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	interface IConfigLoader
+	internal interface IConfigLoader
 	{
 		void Load(Assembly assembly);
 	}

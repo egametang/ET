@@ -46,7 +46,7 @@ namespace Model
 
 		public void Start()
 		{
-			Load();
+			this.Load();
 
 			foreach (Component<World> component in this.GetComponents())
 			{
@@ -64,7 +64,7 @@ namespace Model
 			}
 
 			// loop
-			while (!isStop)
+			while (!this.isStop)
 			{
 				Thread.Sleep(1);
 				foreach (IUpdate update in this.iUpdates)
@@ -76,7 +76,7 @@ namespace Model
 
 		public void Stop()
 		{
-			isStop = true;
+			this.isStop = true;
 		}
 	}
 }

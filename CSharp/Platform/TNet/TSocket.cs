@@ -2,8 +2,6 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Common.Helper;
-using Common.Logger;
 
 namespace TNet
 {

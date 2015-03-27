@@ -11,13 +11,13 @@ namespace Model
 		{
 			foreach (ServerType serverType in serverTypes)
 			{
-				this.ServerType |= (int)serverType;
+				this.ServerType |= (int) serverType;
 			}
 		}
 
 		public bool Contains(ServerType serverType)
 		{
-			if ((this.ServerType & (int)serverType) == 0)
+			if ((this.ServerType & (int) serverType) == 0)
 			{
 				return false;
 			}

@@ -51,12 +51,12 @@ namespace Common.Base
 				{
 					break;
 				}
-				timeoutTimer.Enqueue(time);
+				this.timeoutTimer.Enqueue(time);
 			}
 
-			while (timeoutTimer.Count > 0)
+			while (this.timeoutTimer.Count > 0)
 			{
-				long key = timeoutTimer.Dequeue();
+				long key = this.timeoutTimer.Dequeue();
 				ObjectId[] timeoutIds = this.timeGuid.GetAll(key);
 				foreach (ObjectId id in timeoutIds)
 				{

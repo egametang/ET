@@ -25,12 +25,12 @@ namespace TNet
 				{
 					break;
 				}
-				localQueue.Enqueue(action);
+				this.localQueue.Enqueue(action);
 			}
 
-			while (localQueue.Count > 0)
+			while (this.localQueue.Count > 0)
 			{
-				Action a = localQueue.Dequeue();
+				Action a = this.localQueue.Dequeue();
 				a();
 			}
 		}

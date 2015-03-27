@@ -45,7 +45,8 @@ namespace UNet
 			GC.SuppressFinalize(this);
 		}
 
-		public override void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void SendAsync(
+				byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			this.socket.SendAsync(buffer, channelID, flags);
 		}

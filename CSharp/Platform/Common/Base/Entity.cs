@@ -20,13 +20,14 @@ namespace Common.Base
 
 		public K AddComponent<K>() where K : Component<T>, new()
 		{
-			K component = new K { Owner = (T) this };
+			K component = (K) Activator.CreateInstance(typeof (K));
+			component.Owner = (T) this;
 
 			if (this.componentDict.ContainsKey(component.GetComponentType()))
 			{
 				throw new Exception(
 						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-						              typeof (K).Name));
+								typeof (K).Name));
 			}
 
 			if (this.components == null)
@@ -45,7 +46,7 @@ namespace Common.Base
 			{
 				throw new Exception(
 						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-						              component.GetComponentType().Name));
+								component.GetComponentType().Name));
 			}
 
 			if (this.components == null)
@@ -63,7 +64,7 @@ namespace Common.Base
 			{
 				throw new Exception(
 						string.Format("RemoveComponent, component not exist, id: {0}, component: {1}", this.Id,
-						              typeof (K).Name));
+								typeof (K).Name));
 			}
 
 			this.components.Remove(component);

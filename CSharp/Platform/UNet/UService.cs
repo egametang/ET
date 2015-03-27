@@ -42,9 +42,9 @@ namespace UNet
 
 			if (disposing)
 			{
-				foreach (ObjectId id in idChannels.Keys.ToArray())
+				foreach (ObjectId id in this.idChannels.Keys.ToArray())
 				{
-					UChannel channel = idChannels[id];
+					UChannel channel = this.idChannels[id];
 					channel.Dispose();
 				}
 				this.poller.Dispose();

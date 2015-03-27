@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Common.Helper;
 using Common.Logger;
-using MongoDB.Bson;
 using Common.Network;
+using MongoDB.Bson;
 
 namespace TNet
 {
@@ -61,7 +61,8 @@ namespace TNet
 			GC.SuppressFinalize(this);
 		}
 
-		public override void SendAsync(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void SendAsync(
+				byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			byte[] size = BitConverter.GetBytes(buffer.Length);
 			this.sendBuffer.SendTo(size);
@@ -130,8 +131,8 @@ namespace TNet
 					{
 						sendSize = this.sendBuffer.Count;
 					}
-					int n = await this.socket.SendAsync(
-						this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+					int n =
+							await this.socket.SendAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
 
 					this.sendBuffer.FirstIndex += n;
 					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
@@ -155,9 +156,10 @@ namespace TNet
 			{
 				while (true)
 				{
-					int n = await this.socket.RecvAsync(
-						this.recvBuffer.Last, this.recvBuffer.LastIndex,
-						TBuffer.ChunkSize - this.recvBuffer.LastIndex);
+					int n =
+							await
+									this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex,
+											TBuffer.ChunkSize - this.recvBuffer.LastIndex);
 					if (n == 0)
 					{
 						break;

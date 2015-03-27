@@ -29,7 +29,8 @@ namespace Model
 
 		public void Start()
 		{
-			this.Accept(World.Instance.Options.Host, World.Instance.Options.Port, World.Instance.Options.Protocol);
+			this.Accept(World.Instance.Options.Host, World.Instance.Options.Port,
+					World.Instance.Options.Protocol);
 		}
 
 		public void Update()

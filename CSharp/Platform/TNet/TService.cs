@@ -47,9 +47,9 @@ namespace TNet
 
 			if (disposing)
 			{
-				foreach (ObjectId id in idChannels.Keys.ToArray())
+				foreach (ObjectId id in this.idChannels.Keys.ToArray())
 				{
-					TChannel channel = idChannels[id];
+					TChannel channel = this.idChannels[id];
 					channel.Dispose();
 				}
 				this.acceptor.Dispose();
