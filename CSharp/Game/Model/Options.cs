@@ -12,6 +12,12 @@ namespace Model
 		[Option('n', "name", Required = true, HelpText = "Name.")]
 		public string Name { get; set; }
 
+		[Option('h', "gateHost", Required = false, HelpText = "GateHost.")]
+		public string GateHost { get; set; }
+
+		[Option('p', "gatePort", Required = false, HelpText = "GatePort.")]
+		public int GatePort { get; set; }
+
 		[Option('h', "host", Required = true, HelpText = "Host.")]
 		public string Host { get; set; }
 

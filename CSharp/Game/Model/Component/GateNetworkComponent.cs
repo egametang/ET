@@ -6,7 +6,10 @@ using UNet;
 
 namespace Model
 {
-	public class NetworkComponent: Component<World>, IUpdate, IStart
+	/// <summary>
+	/// gate对外连接使用
+	/// </summary>
+	public class GateNetworkComponent: Component<World>, IUpdate, IStart
 	{
 		private IService service;
 
@@ -29,7 +32,7 @@ namespace Model
 
 		public void Start()
 		{
-			this.Accept(World.Instance.Options.Host, World.Instance.Options.Port,
+			this.Accept(World.Instance.Options.GateHost, World.Instance.Options.GatePort,
 					World.Instance.Options.Protocol);
 		}
 
@@ -62,19 +65,10 @@ namespace Model
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
-				int opcode = BitConverter.ToUInt16(message, 0);
-				// 这个区间表示消息是rpc响应消息
-				if (opcode >= 40000 && opcode < 50000)
-				{
-					int id = BitConverter.ToInt32(message, 2);
-					channel.RequestCallback(id, message, true);
-					continue;
-				}
-
 				// 进行消息解析分发
 #pragma warning disable 4014
 				World.Instance.GetComponent<EventComponent<EventAttribute>>()
-						.RunAsync(EventType.Message, env);
+						.RunAsync(EventType.GateMessage, env);
 #pragma warning restore 4014
 			}
 		}

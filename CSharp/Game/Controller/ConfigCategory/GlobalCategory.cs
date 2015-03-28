@@ -2,7 +2,7 @@
 
 namespace Controller
 {
-	[Config]
+	[Config(ServerType.All)]
 	public class GlobalCategory: ACategory<GlobalConfig>
 	{
 	}

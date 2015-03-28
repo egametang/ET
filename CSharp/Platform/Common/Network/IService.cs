@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Common.Base;
 using MongoDB.Bson;
 
 namespace Common.Network
@@ -22,10 +23,14 @@ namespace Common.Network
 
 		Task<AChannel> GetChannel(string host, int port);
 
+		Task<AChannel> GetChannel(string address);
+
 		Task<AChannel> GetChannel();
 
 		void Remove(AChannel channel);
 
 		void Update();
+
+		TimerManager Timer { get; }
 	}
 }

@@ -5,19 +5,16 @@ namespace Model
 	[AttributeUsage(AttributeTargets.Class)]
 	public class ConfigAttribute: Attribute
 	{
-		private int ServerType { get; set; }
+		private ServerType ServerType { get; set; }
 
-		public ConfigAttribute(params ServerType[] serverTypes)
+		public ConfigAttribute(ServerType serverType)
 		{
-			foreach (ServerType serverType in serverTypes)
-			{
-				this.ServerType |= (int) serverType;
-			}
+			this.ServerType = serverType;
 		}
 
 		public bool Contains(ServerType serverType)
 		{
-			if ((this.ServerType & (int) serverType) == 0)
+			if ((this.ServerType &  serverType) == 0)
 			{
 				return false;
 			}

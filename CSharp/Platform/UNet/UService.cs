@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Base;
 using Common.Network;
 using MongoDB.Bson;
 
@@ -14,6 +15,8 @@ namespace UNet
 		private readonly Dictionary<string, UChannel> channels = new Dictionary<string, UChannel>();
 
 		private readonly Dictionary<ObjectId, UChannel> idChannels = new Dictionary<ObjectId, UChannel>();
+
+		private readonly TimerManager timerManager = new TimerManager();
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -88,6 +91,13 @@ namespace UNet
 			return await this.ConnectAsync(host, port);
 		}
 
+		public async Task<AChannel> GetChannel(string address)
+		{
+			string[] ss = address.Split(':');
+			int port = int.Parse(ss[1]);
+			return await this.GetChannel(ss[0], port);
+		}
+
 		public async Task<AChannel> GetChannel()
 		{
 			USocket socket = await this.poller.AcceptAsync();
@@ -118,6 +128,14 @@ namespace UNet
 		public void Update()
 		{
 			this.poller.Update();
+		}
+
+		public TimerManager Timer
+		{
+			get
+			{
+				return this.timerManager;
+			}
 		}
 	}
 }

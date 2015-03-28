@@ -7,21 +7,17 @@ namespace Model
 	{
 		public int Type { get; private set; }
 
-		private int ServerType { get; set; }
+		private ServerType ServerType { get; set; }
 
-		protected AEventAttribute(int type, params ServerType[] serverTypes)
+		protected AEventAttribute(int type, ServerType serverType)
 		{
 			this.Type = type;
-
-			foreach (ServerType serverType in serverTypes)
-			{
-				this.ServerType |= (int) serverType;
-			}
+			this.ServerType = serverType;
 		}
 
 		public bool Contains(ServerType serverType)
 		{
-			if ((this.ServerType & (int) serverType) == 0)
+			if ((this.ServerType & serverType) == 0)
 			{
 				return false;
 			}

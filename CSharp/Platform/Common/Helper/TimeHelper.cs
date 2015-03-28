@@ -6,7 +6,7 @@ namespace Common.Helper
 	{
 		public static long Now()
 		{
-			var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+			DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 			return Convert.ToInt64((DateTime.UtcNow - epoch).TotalMilliseconds);
 		}
 	}

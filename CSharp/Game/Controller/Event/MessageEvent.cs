@@ -5,8 +5,8 @@ using Model;
 
 namespace Controller
 {
-	[Event(EventType.MessageAction)]
-	public class MessageAction: IEventAsync
+	[Event(EventType.Message, ServerType.All)]
+	public class MessageEvent: IEventAsync
 	{
 		public async Task RunAsync(Env env)
 		{

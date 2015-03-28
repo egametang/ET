@@ -10,7 +10,7 @@ namespace Controller.Message
 		public byte[] PassMd5 { get; set; }
 	}
 
-	[Message(MessageType.CMsgLogin)]
+	[Message(MessageType.CMsgLogin, ServerType.Realm)]
 	internal class CMsgLoginEvent: IEventSync
 	{
 		public void Run(Env env)

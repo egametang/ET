@@ -5,7 +5,7 @@
 	/// </summary>
 	public class MessageAttribute: AEventAttribute
 	{
-		public MessageAttribute(int type, params ServerType[] serverTypes): base(type, serverTypes)
+		public MessageAttribute(int type, ServerType serverType): base(type, serverType)
 		{
 		}
 	}

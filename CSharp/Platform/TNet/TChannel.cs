@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Helper;
 using Common.Logger;
@@ -10,8 +12,6 @@ namespace TNet
 	internal class TChannel: AChannel
 	{
 		private const int SendInterval = 0;
-
-		private readonly TService service;
 		private TSocket socket;
 
 		private readonly TBuffer recvBuffer = new TBuffer();
@@ -22,7 +22,7 @@ namespace TNet
 		private readonly PacketParser parser;
 		private readonly string remoteAddress;
 
-		public TChannel(TSocket socket, TService service)
+		public TChannel(TSocket socket, TService service): base(service)
 		{
 			this.socket = socket;
 			this.service = service;
@@ -38,6 +38,8 @@ namespace TNet
 			{
 				return;
 			}
+
+			this.onDispose(this);
 
 			if (disposing)
 			{
@@ -67,6 +69,23 @@ namespace TNet
 			byte[] size = BitConverter.GetBytes(buffer.Length);
 			this.sendBuffer.SendTo(size);
 			this.sendBuffer.SendTo(buffer);
+			if (this.sendTimer == ObjectId.Empty)
+			{
+				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);
+			}
+		}
+
+		public override void SendAsync(
+			List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		{
+			int size = buffers.Select(b => b.Length).Sum();
+			byte[] sizeBuffer = BitConverter.GetBytes(size);
+			this.sendBuffer.SendTo(sizeBuffer);
+			foreach (byte[] buffer in buffers)
+			{
+				this.sendBuffer.SendTo(buffer);	
+			}
+			
 			if (this.sendTimer == ObjectId.Empty)
 			{
 				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);

@@ -38,8 +38,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event\BuffTimeoutAction.cs" />
-    <Compile Include="Event\MessageAction.cs" />
+    <Compile Include="Event\BuffTimeoutEvent.cs" />
+    <Compile Include="Event\GateMessageEvent.cs" />
+    <Compile Include="Event\MessageEvent.cs" />
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
@@ -48,9 +49,7 @@
     <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\ServerInfoCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
-    <Compile Include="Event\AfterAddBuff.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
-    <Compile Include="MessageType.cs" />
     <Compile Include="Message\CMsgLoginEvent.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -41,5 +41,15 @@ namespace Common.Helper
 				return (T) BsonSerializer.Deserialize(memoryStream, typeof (T));
 			}
 		}
+
+		public static T FromBson<T>(byte[] bytes, int index, int count)
+		{
+			using (MemoryStream memoryStream = new MemoryStream(bytes))
+			{
+				memoryStream.Seek(index, SeekOrigin.Begin);
+				memoryStream.Seek(index + count, SeekOrigin.End);
+				return (T)BsonSerializer.Deserialize(memoryStream, typeof(T));
+			}
+		}
 	}
 }

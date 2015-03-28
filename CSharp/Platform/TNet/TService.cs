@@ -127,13 +127,20 @@ namespace TNet
 			return await this.ConnectAsync(host, port);
 		}
 
+		public async Task<AChannel> GetChannel(string address)
+		{
+			string[] ss = address.Split(':');
+			int port = int.Parse(ss[1]);
+			return await this.GetChannel(ss[0], port);
+		}
+
 		public void Update()
 		{
 			this.poller.Update();
 			this.timerManager.Refresh();
 		}
 
-		internal TimerManager Timer
+		public TimerManager Timer
 		{
 			get
 			{
