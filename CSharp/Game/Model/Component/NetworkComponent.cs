@@ -72,11 +72,6 @@ namespace Model
 				env[EnvKey.Message] = message;
 				int opcode = BitConverter.ToUInt16(message, 0);
 
-				if (MessageTypeHelper.IsClientMessage(opcode))
-				{
-					continue;
-				}
-
 				// 这个区间表示消息是rpc响应消息
 				if (MessageTypeHelper.IsRpcResponseMessage(opcode))
 				{
@@ -86,8 +81,13 @@ namespace Model
 				}
 
 				// 进行消息分发
-				World.Instance.GetComponent<EventComponent<MessageAttribute>>().RunAsync(opcode, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateMessage, env);
 			}
+		}
+
+		public async void SendAsync(string address, byte[] buffer)
+		{
+			
 		}
 
 		// 消息回调或者超时回调

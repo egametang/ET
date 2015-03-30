@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressHelper.cs" />
     <Compile Include="Event\BuffTimeoutEvent.cs" />
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />
@@ -47,6 +48,8 @@
     <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\ServerInfoCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
+    <Compile Include="Event\LogicMessageEvent.cs" />
+    <Compile Include="Event\GateMessageEvent.cs" />
     <Compile Include="Factory\UnitFactory.cs" />
     <Compile Include="Message\CMsgLoginEvent.cs" />
     <Compile Include="NodeType.cs" />

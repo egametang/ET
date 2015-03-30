@@ -66,19 +66,7 @@ namespace Model
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
 
-				// 进行消息分发
-				int opcode = BitConverter.ToUInt16(message, 0);
-				if (!MessageTypeHelper.IsClientMessage(opcode))
-				{
-					ChannelUnitInfoComponent channelUnitInfoComponent = channel.GetComponent<ChannelUnitInfoComponent>();
-					byte[] idBuffer = channelUnitInfoComponent.PlayerId.ToByteArray();
-					byte[] buffer = new byte[message.Length + 12];
-					Array.Copy(message, 0, buffer, 0, 4);
-					Array.Copy(idBuffer, 0, buffer, 4, idBuffer.Length);
-					Array.Copy(message, 4, buffer, 4 + 12, message.Length - 4);
-					continue;
-				}
-				World.Instance.GetComponent<EventComponent<MessageAttribute>>().RunAsync(opcode, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateMessage, env);
 			}
 		}
 	}
