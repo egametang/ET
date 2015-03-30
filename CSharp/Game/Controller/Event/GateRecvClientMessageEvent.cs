@@ -4,8 +4,8 @@ using Model;
 
 namespace Controller
 {
-	[Event(EventType.GateMessage, ServerType.Gate)]
-	public class GateMessageEvent : IEventSync
+	[Event(EventType.GateRecvClientMessage, ServerType.Gate)]
+	public class GateRecvClientMessageEvent : IEventSync
 	{
 		public void Run(Env env)
 		{
@@ -13,14 +13,8 @@ namespace Controller
 			AChannel channel = env.Get<AChannel>(EnvKey.Channel);
 
 			// 进行消息分发
-			int opcode = BitConverter.ToUInt16(message, 0);
-			if (!MessageTypeHelper.IsClientMessage(opcode))
-			{
-				return;
-			}
-
 			ChannelUnitInfoComponent channelUnitInfoComponent = channel.GetComponent<ChannelUnitInfoComponent>();
-			byte[] idBuffer = channelUnitInfoComponent.PlayerId.ToByteArray();
+			byte[] idBuffer = channelUnitInfoComponent.UnitId.ToByteArray();
 			byte[] buffer = new byte[message.Length + 12];
 			Array.Copy(message, 0, buffer, 0, 4);
 			Array.Copy(idBuffer, 0, buffer, 4, idBuffer.Length);

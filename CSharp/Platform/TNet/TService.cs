@@ -105,6 +105,11 @@ namespace TNet
 			return channel;
 		}
 
+		public bool HasChannel(string address)
+		{
+			return this.channels.ContainsKey(address);
+		}
+
 		public void Remove(AChannel channel)
 		{
 			TChannel tChannel = channel as TChannel;

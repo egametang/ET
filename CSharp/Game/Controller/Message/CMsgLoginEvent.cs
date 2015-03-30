@@ -20,10 +20,10 @@ namespace Controller.Message
 			Unit unit = World.Instance.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);
 
 			AChannel channel = env.Get<AChannel>(EnvKey.Channel);
-			ChannelUnitInfoComponent channelUnitInfoComponent =
-					channel.AddComponent<ChannelUnitInfoComponent>();
+			ChannelUnitInfoComponent channelUnitInfoComponent = channel.AddComponent<ChannelUnitInfoComponent>();
 			channelUnitInfoComponent.Account = cmsg.Account;
-			channelUnitInfoComponent.PlayerId = unit.Id;
+			channelUnitInfoComponent.UnitId = unit.Id;
+			World.Instance.GetComponent<GateNetworkComponent>().AssociateUnitIdAndChannel(unit.Id, channel);
 		}
 	}
 }

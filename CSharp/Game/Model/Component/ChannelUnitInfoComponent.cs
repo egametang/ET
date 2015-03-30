@@ -10,7 +10,7 @@ namespace Model
 	public class ChannelUnitInfoComponent: Component<AChannel>
 	{
 		public byte[] Account { get; set; }
-		public ObjectId PlayerId { get; set; }
+		public ObjectId UnitId { get; set; }
 		public string ServerName { get; set; }
 	}
 }

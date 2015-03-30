@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Base;
 using Common.Network;
+using MongoDB.Bson;
 using TNet;
 using UNet;
 
@@ -12,6 +14,8 @@ namespace Model
 	public class GateNetworkComponent: Component<World>, IUpdate, IStart
 	{
 		private IService service;
+
+		private readonly Dictionary<ObjectId, AChannel> unitIdChannels = new Dictionary<ObjectId, AChannel>();
 
 		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
@@ -49,6 +53,7 @@ namespace Model
 			while (true)
 			{
 				AChannel channel = await this.service.GetChannel();
+				channel.OnDispose += this.OnChannelDispose;
 				ProcessChannel(channel);
 			}
 		}
@@ -65,9 +70,43 @@ namespace Model
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
+				int opcode = BitConverter.ToUInt16(message, 0);
 
-				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateMessage, env);
+				if (!MessageTypeHelper.IsClientMessage(opcode))
+				{
+					continue;
+				}
+
+				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateRecvClientMessage, env);
 			}
+		}
+
+		// channel删除的时候需要清除与unit id的关联
+		private void OnChannelDispose(AChannel channel)
+		{
+			ChannelUnitInfoComponent channelUnitInfoComponent =
+					channel.GetComponent<ChannelUnitInfoComponent>();
+			if (channelUnitInfoComponent != null)
+			{
+				this.unitIdChannels.Remove(channelUnitInfoComponent.UnitId);
+			}
+		}
+
+		// 将unit id与channel关联起来
+		public void AssociateUnitIdAndChannel(ObjectId id, AChannel channel)
+		{
+			this.unitIdChannels[id] = channel;
+		}
+
+		public void SendAsync(ObjectId id, byte[] buffer)
+		{
+			AChannel channel;
+			if (!this.unitIdChannels.TryGetValue(id, out channel))
+			{
+				return;
+			}
+
+			channel.SendAsync(buffer);
 		}
 	}
 }

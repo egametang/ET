@@ -27,6 +27,8 @@ namespace Common.Network
 
 		Task<AChannel> GetChannel();
 
+		bool HasChannel(string address);
+
 		void Remove(AChannel channel);
 
 		void Update();

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Common.Base;
 using Common.Helper;
 using Common.Network;
-using MongoDB.Bson;
 using TNet;
 using UNet;
 
@@ -17,6 +16,8 @@ namespace Model
 		private int requestId;
 
 		private readonly Dictionary<int, Action<byte[], bool>> requestCallback = new Dictionary<int, Action<byte[], bool>>();
+
+		private readonly Dictionary<string, Queue<byte[]>> cache = new Dictionary<string, Queue<byte[]>>();
 
 		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
@@ -80,14 +81,46 @@ namespace Model
 					continue;
 				}
 
+				// 如果是发给client的消息,说明这是gate server,需要根据unitid查到channel,进行发送
+				if (MessageTypeHelper.IsServerMessage(opcode))
+				{
+					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateRecvServerMessage, env);
+					continue;
+				}
+
 				// 进行消息分发
-				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateMessage, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.LogicRecvMessage, env);
 			}
 		}
 
 		public async void SendAsync(string address, byte[] buffer)
 		{
-			
+			Queue<byte[]> queue;
+			AChannel channel;
+			// 连接已存在
+			if (this.service.HasChannel(address))
+			{
+				channel = await this.service.GetChannel(address);
+				channel.SendAsync(buffer);
+				return;
+			}
+
+			// 连接不存在,但是处于正在连接过程中
+			if (this.cache.TryGetValue(address, out queue))
+			{
+				queue.Enqueue(buffer);
+				return;
+			}
+
+			// 连接不存在,需要启动连接
+			queue = new Queue<byte[]>();
+			queue.Enqueue(buffer);
+			this.cache[address] = queue;
+			channel = await this.service.GetChannel(address);
+			while (queue.Count > 0)
+			{
+				channel.SendAsync(queue.Dequeue());
+			}
 		}
 
 		// 消息回调或者超时回调

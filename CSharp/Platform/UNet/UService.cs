@@ -114,6 +114,11 @@ namespace UNet
 			return channel;
 		}
 
+		public bool HasChannel(string address)
+		{
+			return this.channels.ContainsKey(address);
+		}
+
 		public void Remove(AChannel channel)
 		{
 			UChannel tChannel = channel as UChannel;
