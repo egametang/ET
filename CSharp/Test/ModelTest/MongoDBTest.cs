@@ -1,5 +1,7 @@
-﻿using Common.Helper;
+﻿using System;
+using Common.Helper;
 using Model;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using NUnit.Framework;
 
@@ -41,6 +43,14 @@ namespace MongoDBTest
 			//world.Load();
 			//
 			//Assert.AreEqual(MongoHelper.ToJson(player1), MongoHelper.ToJson(player2));
+		}
+
+		[Test]
+		public void Test()
+		{
+			ObjectId id = ObjectId.GenerateNewId();
+			byte[] bytes = id.ToByteArray();
+			Console.WriteLine(bytes.Length);
 		}
 	}
 }

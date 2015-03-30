@@ -12,7 +12,6 @@ namespace Model
 		protected AEventAttribute(int type, ServerType serverType)
 		{
 			this.Type = type;
-			this.ServerType = serverType;
 		}
 
 		public bool Contains(ServerType serverType)

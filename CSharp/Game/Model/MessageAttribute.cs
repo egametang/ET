@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
 	/// <summary>
 	/// 搭配EventComponent用来分发消息

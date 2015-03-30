@@ -11,5 +11,6 @@ namespace Model
 	{
 		public byte[] Account { get; set; }
 		public ObjectId PlayerId { get; set; }
+		public string ServerName { get; set; }
 	}
 }

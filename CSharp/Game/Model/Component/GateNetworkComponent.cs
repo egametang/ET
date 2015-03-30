@@ -65,11 +65,20 @@ namespace Model
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.Message] = message;
-				// 进行消息解析分发
-#pragma warning disable 4014
-				World.Instance.GetComponent<EventComponent<EventAttribute>>()
-						.RunAsync(EventType.GateMessage, env);
-#pragma warning restore 4014
+
+				// 进行消息分发
+				int opcode = BitConverter.ToUInt16(message, 0);
+				if (!MessageTypeHelper.IsClientMessage(opcode))
+				{
+					ChannelUnitInfoComponent channelUnitInfoComponent = channel.GetComponent<ChannelUnitInfoComponent>();
+					byte[] idBuffer = channelUnitInfoComponent.PlayerId.ToByteArray();
+					byte[] buffer = new byte[message.Length + 12];
+					Array.Copy(message, 0, buffer, 0, 4);
+					Array.Copy(idBuffer, 0, buffer, 4, idBuffer.Length);
+					Array.Copy(message, 4, buffer, 4 + 12, message.Length - 4);
+					continue;
+				}
+				World.Instance.GetComponent<EventComponent<MessageAttribute>>().RunAsync(opcode, env);
 			}
 		}
 	}
