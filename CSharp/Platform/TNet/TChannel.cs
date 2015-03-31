@@ -9,7 +9,7 @@ using MongoDB.Bson;
 
 namespace TNet
 {
-	internal class TChannel: AChannel
+	public class TChannel: AChannel
 	{
 		private const int SendInterval = 0;
 		private TSocket socket;
@@ -21,15 +21,25 @@ namespace TNet
 		private Action onParseComplete = () => { };
 		private readonly PacketParser parser;
 		private readonly string remoteAddress;
+		private bool isConnected;
 
 		public TChannel(TSocket socket, TService service): base(service)
 		{
+			this.isConnected = true;
 			this.socket = socket;
 			this.service = service;
 			this.parser = new PacketParser(this.recvBuffer);
 			this.remoteAddress = this.socket.RemoteAddress;
-
 			this.StartRecv();
+		}
+
+		public TChannel(TSocket socket, string host, int port, TService service)
+			: base(service)
+		{
+			this.socket = socket;
+			this.service = service;
+			this.parser = new PacketParser(this.recvBuffer);
+			this.remoteAddress = host + ":" + port;
 		}
 
 		private void Dispose(bool disposing)
@@ -63,15 +73,34 @@ namespace TNet
 			GC.SuppressFinalize(this);
 		}
 
+		public override async Task<bool> ConnectAsync()
+		{
+			string[] ss = this.RemoteAddress.Split(':');
+			int port = int.Parse(ss[1]);
+			bool result = await this.socket.ConnectAsync(ss[0], port);
+			this.isConnected = true;
+			this.SetStartSendFlag();
+			this.StartRecv();
+			return result;
+		}
+
+		private void SetStartSendFlag()
+		{
+			if (this.sendTimer == ObjectId.Empty)
+			{
+				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);
+			}
+		}
+
 		public override void SendAsync(
 				byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			byte[] size = BitConverter.GetBytes(buffer.Length);
 			this.sendBuffer.SendTo(size);
 			this.sendBuffer.SendTo(buffer);
-			if (this.sendTimer == ObjectId.Empty)
+			if (this.isConnected)
 			{
-				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);
+				this.SetStartSendFlag();
 			}
 		}
 
@@ -85,10 +114,9 @@ namespace TNet
 			{
 				this.sendBuffer.SendTo(buffer);	
 			}
-			
-			if (this.sendTimer == ObjectId.Empty)
+			if (this.isConnected)
 			{
-				this.sendTimer = this.service.Timer.Add(TimeHelper.Now() + SendInterval, this.StartSend);
+				this.SetStartSendFlag();
 			}
 		}
 
@@ -135,7 +163,7 @@ namespace TNet
 			tcs.SetResult(packet);
 		}
 
-		private async void StartSend()
+		public async void StartSend()
 		{
 			try
 			{
@@ -175,10 +203,9 @@ namespace TNet
 			{
 				while (true)
 				{
-					int n =
-							await
-									this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex,
-											TBuffer.ChunkSize - this.recvBuffer.LastIndex);
+					int n = await this.socket.RecvAsync(
+						this.recvBuffer.Last, this.recvBuffer.LastIndex,
+								TBuffer.ChunkSize - this.recvBuffer.LastIndex);
 					if (n == 0)
 					{
 						break;

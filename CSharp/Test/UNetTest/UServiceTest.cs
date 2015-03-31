@@ -19,7 +19,7 @@ namespace UNetTest
 
 		private async void ClientEvent(IService clientService, string hostName, ushort port)
 		{
-			AChannel channel = await clientService.GetChannel(hostName, port);
+			AChannel channel = clientService.GetChannel(hostName, port);
 			for (int i = 0; i < echoTimes; ++i)
 			{
 				channel.SendAsync("0123456789".ToByteArray());

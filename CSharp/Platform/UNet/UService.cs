@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Base;
+using Common.Logger;
 using Common.Network;
 using MongoDB.Bson;
 
@@ -72,30 +73,45 @@ namespace UNet
 			this.poller.Add(action);
 		}
 
-		private async Task<AChannel> ConnectAsync(string host, int port)
+		private async void SocketConnectAsync(AChannel channel)
 		{
-			USocket newSocket = await this.poller.ConnectAsync(host, (ushort) port);
-			UChannel channel = new UChannel(newSocket, this);
-			this.channels[channel.RemoteAddress] = channel;
-			this.idChannels[channel.Id] = channel;
-			return channel;
+			while (true)
+			{
+				try
+				{
+					await channel.ConnectAsync();
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Trace(e.ToString());
+				}
+
+				await this.Timer.Sleep(5000);
+			}
 		}
 
-		public async Task<AChannel> GetChannel(string host, int port)
+		public AChannel GetChannel(string host, int port)
 		{
 			UChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))
 			{
 				return channel;
 			}
-			return await this.ConnectAsync(host, port);
+
+			USocket newSocket = new USocket(this.poller);
+			channel = new UChannel(newSocket, host, port, this);
+			this.channels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
+			this.SocketConnectAsync(channel);
+			return channel;
 		}
 
-		public async Task<AChannel> GetChannel(string address)
+		public AChannel GetChannel(string address)
 		{
 			string[] ss = address.Split(':');
 			int port = int.Parse(ss[1]);
-			return await this.GetChannel(ss[0], port);
+			return this.GetChannel(ss[0], port);
 		}
 
 		public async Task<AChannel> GetChannel()
@@ -112,11 +128,6 @@ namespace UNet
 			UChannel channel = null;
 			this.idChannels.TryGetValue(id, out channel);
 			return channel;
-		}
-
-		public bool HasChannel(string address)
-		{
-			return this.channels.ContainsKey(address);
 		}
 
 		public void Remove(AChannel channel)

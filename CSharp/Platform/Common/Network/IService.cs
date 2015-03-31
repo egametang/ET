@@ -21,13 +21,11 @@ namespace Common.Network
 
 		AChannel GetChannel(ObjectId id);
 
-		Task<AChannel> GetChannel(string host, int port);
+		AChannel GetChannel(string host, int port);
 
-		Task<AChannel> GetChannel(string address);
+		AChannel GetChannel(string address);
 
 		Task<AChannel> GetChannel();
-
-		bool HasChannel(string address);
 
 		void Remove(AChannel channel);
 

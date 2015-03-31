@@ -93,34 +93,10 @@ namespace Model
 			}
 		}
 
-		public async void SendAsync(string address, byte[] buffer)
+		public void SendAsync(string address, byte[] buffer)
 		{
-			Queue<byte[]> queue;
-			AChannel channel;
-			// 连接已存在
-			if (this.service.HasChannel(address))
-			{
-				channel = await this.service.GetChannel(address);
-				channel.SendAsync(buffer);
-				return;
-			}
-
-			// 连接不存在,但是处于正在连接过程中
-			if (this.cache.TryGetValue(address, out queue))
-			{
-				queue.Enqueue(buffer);
-				return;
-			}
-
-			// 连接不存在,需要启动连接
-			queue = new Queue<byte[]>();
-			queue.Enqueue(buffer);
-			this.cache[address] = queue;
-			channel = await this.service.GetChannel(address);
-			while (queue.Count > 0)
-			{
-				channel.SendAsync(queue.Dequeue());
-			}
+			AChannel channel = this.service.GetChannel(address);
+			channel.SendAsync(buffer);
 		}
 
 		// 消息回调或者超时回调

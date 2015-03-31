@@ -25,6 +25,8 @@ namespace Common.Network
 			this.service = service;
 		}
 
+		public abstract Task<bool> ConnectAsync();
+
 		/// <summary>
 		/// 发送消息
 		/// </summary>

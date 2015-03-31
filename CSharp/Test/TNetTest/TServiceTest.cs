@@ -19,7 +19,7 @@ namespace TNetTest
 
 		private async void ClientEvent(IService service, string hostName, ushort port)
 		{
-			AChannel channel = await service.GetChannel(hostName, port);
+			AChannel channel = service.GetChannel(hostName, port);
 			for (int i = 0; i < echoTimes; ++i)
 			{
 				channel.SendAsync("0123456789".ToByteArray());
@@ -71,8 +71,6 @@ namespace TNetTest
 
 					// 往server host线程增加事件,accept
 					serverService.Add(() => this.ServerEvent(serverService));
-
-					Thread.Sleep(1000);
 
 					// 往client host线程增加事件,client线程连接server
 					clientService.Add(() => this.ClientEvent(clientService, hostName, port));

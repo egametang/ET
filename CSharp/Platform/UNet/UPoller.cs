@@ -20,7 +20,7 @@ namespace UNet
 
 		private IntPtr host;
 
-		private readonly USocket acceptor = new USocket(IntPtr.Zero);
+		private readonly USocket acceptor;
 
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
 		private readonly ConcurrentQueue<Action> concurrentQueue = new ConcurrentQueue<Action>();
@@ -31,6 +31,7 @@ namespace UNet
 
 		public UPoller(string hostName, ushort port)
 		{
+			this.acceptor = new USocket(IntPtr.Zero, this);
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.ENetHostCreate(ref nativeAddress,
@@ -78,6 +79,22 @@ namespace UNet
 			this.host = IntPtr.Zero;
 		}
 
+		public USocketManager USocketManager
+		{
+			get
+			{
+				return this.uSocketManager;
+			}
+		}
+
+		public IntPtr Host
+		{
+			get
+			{
+				return this.host;
+			}
+		}
+
 		public Task<USocket> AcceptAsync()
 		{
 			if (this.uSocketManager.ContainsKey(IntPtr.Zero))
@@ -93,7 +110,7 @@ namespace UNet
 				IntPtr ptr = this.connQueue.FirstKey;
 				this.connQueue.Remove(ptr);
 
-				USocket socket = new USocket(ptr);
+				USocket socket = new USocket(ptr, this);
 				this.uSocketManager.Add(ptr, socket);
 				tcs.TrySetResult(socket);
 			}
@@ -108,36 +125,11 @@ namespace UNet
 					}
 
 					this.uSocketManager.Remove(IntPtr.Zero);
-					USocket socket = new USocket(eEvent.Peer);
+					USocket socket = new USocket(eEvent.Peer, this);
 					this.uSocketManager.Add(socket.PeerPtr, socket);
 					tcs.TrySetResult(socket);
 				};
 			}
-			return tcs.Task;
-		}
-
-		public Task<USocket> ConnectAsync(string hostName, ushort port)
-		{
-			var tcs = new TaskCompletionSource<USocket>();
-			UAddress address = new UAddress(hostName, port);
-			ENetAddress nativeAddress = address.Struct;
-
-			IntPtr ptr = NativeMethods.ENetHostConnect(this.host, ref nativeAddress,
-					NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
-			USocket socket = new USocket(ptr);
-			if (socket.PeerPtr == IntPtr.Zero)
-			{
-				throw new UException("host connect call failed.");
-			}
-			this.uSocketManager.Add(socket.PeerPtr, socket);
-			socket.Connected = eEvent =>
-			{
-				if (eEvent.Type == EventType.Disconnect)
-				{
-					tcs.TrySetException(new UException("socket disconnected in connect"));
-				}
-				tcs.TrySetResult(socket);
-			};
 			return tcs.Task;
 		}
 

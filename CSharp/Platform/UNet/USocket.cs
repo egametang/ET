@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Common.Logger;
 using Common.Network;
 
 namespace UNet
 {
 	internal sealed class USocket: IDisposable
 	{
+		private readonly UPoller poller;
 		private IntPtr peerPtr;
 		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
 
@@ -26,9 +28,15 @@ namespace UNet
 			this.peerPtr = IntPtr.Zero;
 		}
 
-		public USocket(IntPtr peerPtr)
+		public USocket(IntPtr peerPtr, UPoller poller)
 		{
+			this.poller = poller;
 			this.peerPtr = peerPtr;
+		}
+
+		public USocket(UPoller poller)
+		{
+			this.poller = poller;
 		}
 
 		~USocket()
@@ -84,6 +92,31 @@ namespace UNet
 		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
 		{
 			NativeMethods.ENetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
+		}
+
+		public Task<bool> ConnectAsync(string hostName, ushort port)
+		{
+			var tcs = new TaskCompletionSource<bool>();
+			UAddress address = new UAddress(hostName, port);
+			ENetAddress nativeAddress = address.Struct;
+
+			this.peerPtr = NativeMethods.ENetHostConnect(this.poller.Host, ref nativeAddress,
+					NativeMethods.ENET_PROTOCOL_MAXIMUM_CHANNEL_COUNT, 0);
+			if (this.PeerPtr == IntPtr.Zero)
+			{
+				throw new UException("host connect call failed.");
+			}
+			this.poller.USocketManager.Add(this.PeerPtr, this);
+			this.Connected = eEvent =>
+			{
+				if (eEvent.Type == EventType.Disconnect)
+				{
+					tcs.TrySetException(new UException("socket disconnected in connect"));
+				}
+				Log.Debug("11111111111111, connect ok");
+				tcs.TrySetResult(true);
+			};
+			return tcs.Task;
 		}
 
 		public void SendAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Base;
+using Common.Logger;
 using Common.Network;
 using MongoDB.Bson;
 
@@ -81,16 +82,6 @@ namespace TNet
 			return channel;
 		}
 
-		private async Task<AChannel> ConnectAsync(string host, int port)
-		{
-			TSocket newSocket = new TSocket(this.poller);
-			await newSocket.ConnectAsync(host, port);
-			TChannel channel = new TChannel(newSocket, this);
-			this.channels[newSocket.RemoteAddress] = channel;
-			this.idChannels[channel.Id] = channel;
-			return channel;
-		}
-
 		public async Task<AChannel> GetChannel()
 		{
 			if (this.acceptor == null)
@@ -105,11 +96,6 @@ namespace TNet
 			return channel;
 		}
 
-		public bool HasChannel(string address)
-		{
-			return this.channels.ContainsKey(address);
-		}
-
 		public void Remove(AChannel channel)
 		{
 			TChannel tChannel = channel as TChannel;
@@ -122,21 +108,45 @@ namespace TNet
 			this.timerManager.Remove(tChannel.SendTimer);
 		}
 
-		public async Task<AChannel> GetChannel(string host, int port)
+		private async void SocketConnectAsync(AChannel channel)
+		{
+			while (true)
+			{
+				try
+				{
+					await channel.ConnectAsync();
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Trace(e.ToString());
+				}
+				
+				await this.Timer.Sleep(5000);
+			}
+		}
+
+		public AChannel GetChannel(string host, int port)
 		{
 			TChannel channel = null;
 			if (this.channels.TryGetValue(host + ":" + port, out channel))
 			{
 				return channel;
 			}
-			return await this.ConnectAsync(host, port);
+
+			TSocket newSocket = new TSocket(this.poller);
+			channel = new TChannel(newSocket, host, port, this);
+			this.channels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
+			this.SocketConnectAsync(channel);
+			return channel;
 		}
 
-		public async Task<AChannel> GetChannel(string address)
+		public AChannel GetChannel(string address)
 		{
 			string[] ss = address.Split(':');
 			int port = int.Parse(ss[1]);
-			return await this.GetChannel(ss[0], port);
+			return this.GetChannel(ss[0], port);
 		}
 
 		public void Update()

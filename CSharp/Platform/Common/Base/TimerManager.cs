@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common.Helper;
 using MongoDB.Bson;
 
@@ -40,6 +41,13 @@ namespace Common.Base
 			}
 			this.timers.Remove(timer.Id);
 			this.timeGuid.Remove(timer.Time, timer.Id);
+		}
+
+		public Task<bool> Sleep(int time)
+		{
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			this.Add(TimeHelper.Now() + time, () => { tcs.SetResult(true); });
+			return tcs.Task;
 		}
 
 		public void Refresh()
