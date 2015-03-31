@@ -13,7 +13,7 @@ namespace Common.Helper
 
 		public static string ToHex(this IEnumerable<byte> bytes)
 		{
-			var stringBuilder = new StringBuilder();
+			StringBuilder stringBuilder = new StringBuilder();
 			foreach (byte b in bytes)
 			{
 				stringBuilder.Append(b.ToString("X2"));

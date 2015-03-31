@@ -18,8 +18,6 @@ namespace Model
 		private readonly Dictionary<int, Action<byte[], bool>> requestCallback =
 				new Dictionary<int, Action<byte[], bool>>();
 
-		private readonly Dictionary<string, Queue<byte[]>> cache = new Dictionary<string, Queue<byte[]>>();
-
 		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
 			switch (protocol)

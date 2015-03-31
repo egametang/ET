@@ -61,7 +61,6 @@
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\FactoryComponent.cs" />
     <Compile Include="Component\GateNetworkComponent.cs" />
-    <Compile Include="Component\RpcComponent.cs" />
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />

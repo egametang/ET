@@ -13,7 +13,7 @@ namespace Common.Helper
 				throw new Exception(string.Format("not found path, path: {0}", path));
 			}
 			byte[] buffer = File.ReadAllBytes(path);
-			var assembly = Assembly.Load(buffer);
+			Assembly assembly = Assembly.Load(buffer);
 			return assembly;
 		}
 	}

@@ -28,17 +28,17 @@ namespace Common.Logger
 			}
 
 			string extraInfo = "";
-			var stackTrace = new StackTrace(true);
-			var frame = stackTrace.GetFrame(this.Level + 3);
+			StackTrace stackTrace = new StackTrace(true);
+			StackFrame frame = stackTrace.GetFrame(this.Level + 3);
 
 			if (this.FileName)
 			{
-				var fileName = Path.GetFileName(frame.GetFileName());
+				string fileName = Path.GetFileName(frame.GetFileName());
 				extraInfo += fileName + " ";
 			}
 			if (this.FileLineNumber)
 			{
-				var fileLineNumber = frame.GetFileLineNumber();
+				int fileLineNumber = frame.GetFileLineNumber();
 				extraInfo += fileLineNumber + " ";
 			}
 			return extraInfo + message;

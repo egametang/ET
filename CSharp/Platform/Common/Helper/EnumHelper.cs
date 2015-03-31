@@ -7,14 +7,13 @@ namespace Common.Helper
 		public static int EnumIndex<T>(int value)
 		{
 			int i = 0;
-			foreach (var v in Enum.GetValues(typeof (T)))
+			foreach (object v in Enum.GetValues(typeof (T)))
 			{
-				if ((int) v != value)
+				if ((int) v == value)
 				{
-					++i;
-					continue;
+					return i;
 				}
-				return i;
+				++i;
 			}
 			return -1;
 		}

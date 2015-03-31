@@ -8,16 +8,16 @@ namespace Common.Helper
 		public static BigInteger RandBigInteger(int byteNum)
 		{
 			var bigIntegerBytes = new byte[byteNum];
-			var random = new Random();
+			Random random = new Random();
 			random.NextBytes(bigIntegerBytes);
-			var bigInteger = new BigInteger(bigIntegerBytes);
+			BigInteger bigInteger = new BigInteger(bigIntegerBytes);
 			return bigInteger;
 		}
 
 		public static BigInteger RandUnsignedBigInteger(int byteNum)
 		{
 			var bigIntegerBytes = new byte[byteNum];
-			var random = new Random();
+			Random random = new Random();
 			random.NextBytes(bigIntegerBytes);
 			//bigIntegerBytes = "C6DFEDA1EAAC7417A191EE5EC6062CE9546614".HexToBytes().Reverse();
 

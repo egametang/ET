@@ -14,8 +14,8 @@ namespace Common.Helper
 		public static string XmlSerialize<T>(T obj)
 		{
 			string xmlString = string.Empty;
-			var xmlSerializer = new XmlSerializer(typeof (T));
-			using (var ms = new MemoryStream())
+			XmlSerializer xmlSerializer = new XmlSerializer(typeof (T));
+			using (MemoryStream ms = new MemoryStream())
 			{
 				xmlSerializer.Serialize(ms, obj);
 				xmlString = Encoding.UTF8.GetString(ms.ToArray());
@@ -29,9 +29,9 @@ namespace Common.Helper
 		public static T XmlDeserialize<T>(string xmlString)
 		{
 			T t = default(T);
-			var xmlSerializer = new XmlSerializer(typeof (T));
+			XmlSerializer xmlSerializer = new XmlSerializer(typeof (T));
 			Stream xmlStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString));
-			using (var xmlReader = XmlReader.Create(xmlStream))
+			using (XmlReader xmlReader = XmlReader.Create(xmlStream))
 			{
 				Object obj = xmlSerializer.Deserialize(xmlReader);
 				t = (T) obj;
