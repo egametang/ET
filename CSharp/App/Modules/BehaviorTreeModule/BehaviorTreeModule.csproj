@@ -93,7 +93,7 @@
       <DependentUpon>TreeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TreeViewModel.cs" />
-    <Compile Include="TreeModule.cs" />
+    <Compile Include="BehaviorTreeModule.cs" />
     <Compile Include="AllTreeView.xaml.cs">
       <DependentUpon>AllTreeView.xaml</DependentUpon>
     </Compile>

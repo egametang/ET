@@ -13,7 +13,7 @@ namespace Editor
 
 		private static void RunInDebugMode()
 		{
-			var bootstrapper = new Bootstrapper();
+			Bootstrapper bootstrapper = new Bootstrapper();
 			bootstrapper.Run();
 		}
 	}

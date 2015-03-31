@@ -13,7 +13,7 @@ namespace Editor
 		{
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (Bootstrapper).Assembly));
 			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (ViewExportAttribute).Assembly));
-			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (TreeModule).Assembly));
+			this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof (BehaviorTreeModule).Assembly));
 		}
 
 		protected override void InitializeShell()
