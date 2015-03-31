@@ -15,7 +15,8 @@ namespace Model
 
 		private int requestId;
 
-		private readonly Dictionary<int, Action<byte[], bool>> requestCallback = new Dictionary<int, Action<byte[], bool>>();
+		private readonly Dictionary<int, Action<byte[], bool>> requestCallback =
+				new Dictionary<int, Action<byte[], bool>>();
 
 		private readonly Dictionary<string, Queue<byte[]>> cache = new Dictionary<string, Queue<byte[]>>();
 
@@ -84,12 +85,14 @@ namespace Model
 				// 如果是发给client的消息,说明这是gate server,需要根据unitid查到channel,进行发送
 				if (MessageTypeHelper.IsServerMessage(opcode))
 				{
-					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateRecvServerMessage, env);
+					World.Instance.GetComponent<EventComponent<EventAttribute>>()
+							.Run(EventType.GateRecvServerMessage, env);
 					continue;
 				}
 
 				// 进行消息分发
-				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.LogicRecvMessage, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>()
+						.Run(EventType.LogicRecvMessage, env);
 			}
 		}
 
@@ -130,16 +133,16 @@ namespace Model
 				}
 				else
 				{
-					tcs.SetException(new Exception(string.Format("rpc timeout {0} {1}", type, MongoHelper.ToJson(request))));
+					tcs.SetException(
+					                 new Exception(string.Format("rpc timeout {0} {1}", type,
+							                 MongoHelper.ToJson(request))));
 				}
 			};
 
 			if (waitTime > 0)
 			{
-				this.service.Timer.Add(TimeHelper.Now() + waitTime, () =>
-				{
-					this.RequestCallback(channel, this.requestId, null, false);
-				});
+				this.service.Timer.Add(TimeHelper.Now() + waitTime,
+						() => { this.RequestCallback(channel, this.requestId, null, false); });
 			}
 			return tcs.Task;
 		}

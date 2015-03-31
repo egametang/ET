@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Common.Logger;
 using Common.Network;
 
 namespace UNet
@@ -113,7 +112,6 @@ namespace UNet
 				{
 					tcs.TrySetException(new UException("socket disconnected in connect"));
 				}
-				Log.Debug("11111111111111, connect ok");
 				tcs.TrySetResult(true);
 			};
 			return tcs.Task;

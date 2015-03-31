@@ -2,18 +2,23 @@
 {
 	public static class MessageType
 	{
-	#region client message 0
+		#region client message 0
+
 		public const int CMsgLogin = 1;
-	#endregion client message 10000
 
-	#region server message 10000
-	#endregion server message 20000
+		#endregion client message 10000
 
-	#region rpc request message 20000
-	#endregion rpc request message 30000
+		#region server message 10000
 
-	#region rpc request message 30000
-	#endregion rpc request message 40000
+		#endregion server message 20000
+
+		#region rpc request message 20000
+
+		#endregion rpc request message 30000
+
+		#region rpc request message 30000
+
+		#endregion rpc request message 40000
 	}
 
 	public static class MessageTypeHelper

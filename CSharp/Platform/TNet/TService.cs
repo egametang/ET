@@ -121,7 +121,7 @@ namespace TNet
 				{
 					Log.Trace(e.ToString());
 				}
-				
+
 				await this.Timer.Sleep(5000);
 			}
 		}

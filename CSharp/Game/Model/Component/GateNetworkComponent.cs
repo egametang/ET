@@ -15,7 +15,8 @@ namespace Model
 	{
 		private IService service;
 
-		private readonly Dictionary<ObjectId, AChannel> unitIdChannels = new Dictionary<ObjectId, AChannel>();
+		private readonly Dictionary<ObjectId, AChannel> unitIdChannels =
+				new Dictionary<ObjectId, AChannel>();
 
 		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
@@ -77,7 +78,8 @@ namespace Model
 					continue;
 				}
 
-				World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.GateRecvClientMessage, env);
+				World.Instance.GetComponent<EventComponent<EventAttribute>>()
+						.Run(EventType.GateRecvClientMessage, env);
 			}
 		}
 

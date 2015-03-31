@@ -33,8 +33,7 @@ namespace TNet
 			this.StartRecv();
 		}
 
-		public TChannel(TSocket socket, string host, int port, TService service)
-			: base(service)
+		public TChannel(TSocket socket, string host, int port, TService service): base(service)
 		{
 			this.socket = socket;
 			this.service = service;
@@ -105,14 +104,14 @@ namespace TNet
 		}
 
 		public override void SendAsync(
-			List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+				List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
 			int size = buffers.Select(b => b.Length).Sum();
 			byte[] sizeBuffer = BitConverter.GetBytes(size);
 			this.sendBuffer.SendTo(sizeBuffer);
 			foreach (byte[] buffer in buffers)
 			{
-				this.sendBuffer.SendTo(buffer);	
+				this.sendBuffer.SendTo(buffer);
 			}
 			if (this.isConnected)
 			{
@@ -203,9 +202,9 @@ namespace TNet
 			{
 				while (true)
 				{
-					int n = await this.socket.RecvAsync(
-						this.recvBuffer.Last, this.recvBuffer.LastIndex,
-								TBuffer.ChunkSize - this.recvBuffer.LastIndex);
+					int n =
+							await this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex,
+									TBuffer.ChunkSize - this.recvBuffer.LastIndex);
 					if (n == 0)
 					{
 						break;

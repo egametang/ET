@@ -6,8 +6,8 @@ namespace Controller
 	{
 		public static string GetAddressByServerName(string serverName)
 		{
-			ServerInfoConfig serverInfoConfig = World.Instance.GetComponent<ConfigComponent>()
-						.GetCategory<ServerInfoCategory>()[serverName];
+			ServerInfoConfig serverInfoConfig =
+					World.Instance.GetComponent<ConfigComponent>().GetCategory<ServerInfoCategory>()[serverName];
 			string address = serverInfoConfig.Host + ":" + serverInfoConfig.Port;
 			return address;
 		}

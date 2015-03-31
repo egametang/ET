@@ -5,7 +5,7 @@ using MongoDB.Bson;
 namespace Controller
 {
 	[Event(EventType.LogicRecvMessage, ServerType.All)]
-	public class LogicRecvMessageEvent : IEventSync
+	public class LogicRecvMessageEvent: IEventSync
 	{
 		public void Run(Env env)
 		{

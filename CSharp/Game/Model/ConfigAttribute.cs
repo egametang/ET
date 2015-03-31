@@ -14,7 +14,7 @@ namespace Model
 
 		public bool Contains(ServerType serverType)
 		{
-			if ((this.ServerType &  serverType) == 0)
+			if ((this.ServerType & serverType) == 0)
 			{
 				return false;
 			}

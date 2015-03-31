@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Logger;
 using Common.Network;
 
 namespace UNet
@@ -29,8 +28,7 @@ namespace UNet
 			this.remoteAddress = this.socket.RemoteAddress;
 		}
 
-		public UChannel(USocket socket, string host, int port, UService service)
-			: base(service)
+		public UChannel(USocket socket, string host, int port, UService service): base(service)
 		{
 			this.socket = socket;
 			this.service = service;
@@ -71,7 +69,7 @@ namespace UNet
 		{
 			string[] ss = this.RemoteAddress.Split(':');
 			int port = int.Parse(ss[1]);
-			bool result = await this.socket.ConnectAsync(ss[0], (ushort)port);
+			bool result = await this.socket.ConnectAsync(ss[0], (ushort) port);
 			this.isConnected = true;
 			while (this.queue.Count > 0)
 			{
