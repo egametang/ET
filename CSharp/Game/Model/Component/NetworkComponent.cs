@@ -9,14 +9,27 @@ using UNet;
 
 namespace Model
 {
+	public enum RpcStatus
+	{
+		OK,
+		Timeout,
+		Exception,
+	}
+
+	public class RpcExcetionInfo
+	{
+		public int ErrorCode { get; set; }
+		public string ErrorInfo { get; set; }
+	}
+
 	public class NetworkComponent: Component<World>, IUpdate, IStart
 	{
 		private IService service;
 
 		private int requestId;
 
-		private readonly Dictionary<int, Action<byte[], bool>> requestCallback =
-				new Dictionary<int, Action<byte[], bool>>();
+		private readonly Dictionary<int, Action<byte[], RpcStatus>> requestCallback =
+				new Dictionary<int, Action<byte[], RpcStatus>>();
 
 		private void Accept(string host, int port, NetworkProtocol protocol = NetworkProtocol.TCP)
 		{
@@ -72,11 +85,11 @@ namespace Model
 				env[EnvKey.Message] = message;
 				int opcode = BitConverter.ToUInt16(message, 0);
 
-				// 这个区间表示消息是rpc响应消息
-				if (MessageTypeHelper.IsRpcResponseMessage(opcode))
+				// 表示消息是rpc响应消息
+				if (opcode == 0)
 				{
 					int id = BitConverter.ToInt32(message, 2);
-					this.RequestCallback(channel, id, message, true);
+					this.RequestCallback(channel, id, message, RpcStatus.OK);
 					continue;
 				}
 
@@ -101,13 +114,14 @@ namespace Model
 		}
 
 		// 消息回调或者超时回调
-		public void RequestCallback(AChannel channel, int id, byte[] buffer, bool isOK)
+		public void RequestCallback(AChannel channel, int id, byte[] buffer, RpcStatus status)
 		{
-			Action<byte[], bool> action;
-			if (this.requestCallback.TryGetValue(id, out action))
+			Action<byte[], RpcStatus> action;
+			if (!this.requestCallback.TryGetValue(id, out action))
 			{
-				action(buffer, isOK);
+				return;
 			}
+			action(buffer, status);
 			this.requestCallback.Remove(id);
 		}
 
@@ -124,23 +138,29 @@ namespace Model
 			var tcs = new TaskCompletionSource<T>();
 			this.requestCallback[this.requestId] = (e, b) =>
 			{
-				if (b)
+				if (b == RpcStatus.Timeout)
 				{
-					T response = MongoHelper.FromBson<T>(e, 6);
-					tcs.SetResult(response);
+					tcs.SetException(new Exception(
+						string.Format("rpc timeout {0} {1}", type, MongoHelper.ToJson(request))));
+					return;
 				}
-				else
+				if (b == RpcStatus.Exception)
 				{
-					tcs.SetException(
-					                 new Exception(string.Format("rpc timeout {0} {1}", type,
-							                 MongoHelper.ToJson(request))));
+					RpcExcetionInfo errorInfo = MongoHelper.FromBson<RpcExcetionInfo>(e, 8);
+					tcs.SetException(new Exception(
+						string.Format("rpc exception {0} {1} {2}", type, MongoHelper.ToJson(request), MongoHelper.ToJson(errorInfo))));
+					return;
 				}
+
+				// RpcStatus.OK
+				T response = MongoHelper.FromBson<T>(e, 6);
+				tcs.SetResult(response);
 			};
 
 			if (waitTime > 0)
 			{
 				this.service.Timer.Add(TimeHelper.Now() + waitTime,
-						() => { this.RequestCallback(channel, this.requestId, null, false); });
+						() => { this.RequestCallback(channel, this.requestId, null, RpcStatus.Timeout); });
 			}
 			return tcs.Task;
 		}
@@ -148,11 +168,23 @@ namespace Model
 		/// <summary>
 		/// Rpc响应
 		/// </summary>
-		public void Response<T>(AChannel channel, short type, int id, T response)
+		public void Response<T>(AChannel channel, int id, T response)
 		{
 			byte[] responseBuffer = MongoHelper.ToBson(response);
-			byte[] typeBuffer = BitConverter.GetBytes(type);
+			byte[] typeBuffer = BitConverter.GetBytes(0);
 			byte[] idBuffer = BitConverter.GetBytes(id);
+			channel.SendAsync(new List<byte[]> { typeBuffer, idBuffer, responseBuffer });
+		}
+
+		/// <summary>
+		/// Rpc响应
+		/// </summary>
+		public void ResponseException(AChannel channel, int id, int errorCode, string errorInfo)
+		{
+			byte[] typeBuffer = BitConverter.GetBytes(0);
+			byte[] idBuffer = BitConverter.GetBytes(id);
+			RpcExcetionInfo info = new RpcExcetionInfo { ErrorCode = errorCode, ErrorInfo = errorInfo };
+			byte[] responseBuffer = MongoHelper.ToBson(info);
 			channel.SendAsync(new List<byte[]> { typeBuffer, idBuffer, responseBuffer });
 		}
 	}
