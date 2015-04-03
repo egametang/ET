@@ -5,8 +5,8 @@ using Model;
 
 namespace Controller
 {
-	[Event(EventType.LogicRecvRpcMessage, ServerType.All)]
-	public class LogicRecvRpcMessageEventEvent : IEventAsync
+	[Event(EventType.LogicRecvRequestMessage, ServerType.All)]
+	public class LogicRecvRequestMessageEvent : IEventAsync
 	{
 		public async Task RunAsync(Env env)
 		{
@@ -23,7 +23,7 @@ namespace Controller
 			catch (Exception e)
 			{
 				int requestId = env.Get<int>(EnvKey.RpcRequestId);
-				World.Instance.GetComponent<NetworkComponent>().RpcException(channel, requestId, 0, e.Message);
+				World.Instance.GetComponent<NetworkComponent>().RpcException(channel, requestId, e);
 				throw;
 			}
 		}

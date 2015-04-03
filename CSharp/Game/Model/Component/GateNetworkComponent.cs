@@ -78,8 +78,10 @@ namespace Model
 					continue;
 				}
 
+#pragma warning disable 4014
 				World.Instance.GetComponent<EventComponent<EventAttribute>>()
 						.RunAsync(EventType.GateRecvClientMessage, env);
+#pragma warning restore 4014
 			}
 		}
 

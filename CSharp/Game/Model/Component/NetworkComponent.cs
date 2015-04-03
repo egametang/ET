@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Common.Base;
 using Common.Helper;
@@ -111,23 +114,29 @@ namespace Model
 				// 如果是server message(发给client的消息),说明这是gate server,需要根据unitid查到channel,进行发送
 				if (MessageTypeHelper.IsServerMessage(opcode))
 				{
+#pragma warning disable 4014
 					World.Instance.GetComponent<EventComponent<EventAttribute>>()
 							.RunAsync(EventType.GateRecvServerMessage, env);
+#pragma warning restore 4014
 					continue;
 				}
 
 				// 进行消息分发
 				if (MessageTypeHelper.IsClientMessage(opcode))
 				{
+#pragma warning disable 4014
 					World.Instance.GetComponent<EventComponent<EventAttribute>>()
 							.RunAsync(EventType.LogicRecvClientMessage, env);
+#pragma warning restore 4014
 					continue;
 				}
 
 				if (MessageTypeHelper.IsRpcRequestMessage(opcode))
 				{
+#pragma warning disable 4014
 					World.Instance.GetComponent<EventComponent<EventAttribute>>()
-							.RunAsync(EventType.LogicRecvRpcMessage, env);
+							.RunAsync(EventType.LogicRecvRequestMessage, env);
+#pragma warning restore 4014
 				}
 			}
 		}
@@ -169,24 +178,29 @@ namespace Model
 			byte[] idBuffer = BitConverter.GetBytes(this.requestId);
 			channel.SendAsync(new List<byte[]> { typeBuffer, idBuffer, requestBuffer });
 			var tcs = new TaskCompletionSource<T>();
-			this.requestCallback[this.requestId] = (e, b) =>
+			this.requestCallback[this.requestId] = (messageBytes, status) =>
 			{
-				if (b == RpcResponseStatus.Timeout)
+				if (status == RpcResponseStatus.Timeout)
 				{
 					tcs.SetException(new Exception(
 						string.Format("rpc timeout {0} {1}", type, MongoHelper.ToJson(request))));
 					return;
 				}
-				if (b == RpcResponseStatus.Exception)
+				if (status == RpcResponseStatus.Exception)
 				{
-					RpcExcetionInfo errorInfo = MongoHelper.FromBson<RpcExcetionInfo>(e, 8);
-					tcs.SetException(new Exception(
-						string.Format("rpc exception {0} {1} {2}", type, MongoHelper.ToJson(request), MongoHelper.ToJson(errorInfo))));
+					BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.All));
+					Exception exception;
+					using (MemoryStream stream = new MemoryStream(messageBytes))
+					{
+						stream.Seek(6, SeekOrigin.Begin);
+						exception = (Exception)formatter.Deserialize(stream);
+					}
+					tcs.SetException(exception);
 					return;
 				}
 
 				// RpcResponseStatus.Succee
-				T response = MongoHelper.FromBson<T>(e, 6);
+				T response = MongoHelper.FromBson<T>(messageBytes, 6);
 				tcs.SetResult(response);
 			};
 
@@ -212,13 +226,16 @@ namespace Model
 		/// <summary>
 		/// Rpc响应
 		/// </summary>
-		public void RpcException(AChannel channel, int id, int errorCode, string errorInfo)
+		public void RpcException(AChannel channel, int id, Exception e)
 		{
-			byte[] typeBuffer = BitConverter.GetBytes(Opcode.RpcException);
+			byte[] opcodeBuffer = BitConverter.GetBytes(Opcode.RpcException);
 			byte[] idBuffer = BitConverter.GetBytes(id);
-			RpcExcetionInfo info = new RpcExcetionInfo(errorCode, errorInfo);
-			byte[] responseBuffer = MongoHelper.ToBson(info);
-			channel.SendAsync(new List<byte[]> { typeBuffer, idBuffer, responseBuffer });
+			BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.All));
+			using (MemoryStream stream = new MemoryStream())
+			{
+				formatter.Serialize(stream, e);
+				channel.SendAsync(new List<byte[]> { opcodeBuffer, idBuffer, stream.ToArray() });
+			}
 		}
 	}
 }
