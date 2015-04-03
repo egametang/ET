@@ -1,8 +1,7 @@
-﻿using Common.Helper;
-using Common.Network;
+﻿using Common.Network;
 using Model;
 
-namespace Controller.Message
+namespace Controller
 {
 	public class CMsgLogin
 	{
@@ -10,13 +9,12 @@ namespace Controller.Message
 		public byte[] PassMd5 { get; set; }
 	}
 
-	[Message(MessageType.CMsgLogin, ServerType.Realm)]
+	[Message(Opcode.CMsgLogin, typeof(CMsgLogin), ServerType.Gate)]
 	internal class CMsgLoginEvent: IEventSync
 	{
 		public void Run(Env env)
 		{
-			var messageBytes = env.Get<byte[]>(EnvKey.Message);
-			CMsgLogin cmsg = MongoHelper.FromBson<CMsgLogin>(messageBytes, 2);
+			CMsgLogin cmsg = env.Get<CMsgLogin>(EnvKey.Message);
 			Unit unit = World.Instance.GetComponent<FactoryComponent<Unit>>().Create(UnitType.GatePlayer, 1);
 
 			AChannel channel = env.Get<AChannel>(EnvKey.Channel);

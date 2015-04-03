@@ -1,10 +1,10 @@
 ﻿namespace Model
 {
-	public static class MessageType
+	public static class Opcode
 	{
 		#region client message 0
 
-		public const int CMsgLogin = 1;
+		public const ushort CMsgLogin = 1;
 
 		#endregion client message 10000
 
@@ -16,14 +16,13 @@
 
 		#endregion rpc request message 30000
 
-		#region rpc request message 30000
-
-		#endregion rpc request message 40000
+		public const ushort RpcResponse = 30000;
+		public const ushort RpcException = 30001;
 	}
 
 	public static class MessageTypeHelper
 	{
-		public static bool IsClientMessage(int opcode)
+		public static bool IsClientMessage(ushort opcode)
 		{
 			if (opcode > 0 && opcode < 10000)
 			{
@@ -32,7 +31,7 @@
 			return false;
 		}
 
-		public static bool IsServerMessage(int opcode)
+		public static bool IsServerMessage(ushort opcode)
 		{
 			if (opcode > 10000 && opcode < 20000)
 			{
@@ -41,7 +40,7 @@
 			return false;
 		}
 
-		public static bool IsRpcRequestMessage(int opcode)
+		public static bool IsRpcRequestMessage(ushort opcode)
 		{
 			if (opcode > 20000 && opcode < 30000)
 			{
@@ -50,7 +49,7 @@
 			return false;
 		}
 
-		public static bool IsRpcResponseMessage(int opcode)
+		public static bool IsRpcResponseMessage(ushort opcode)
 		{
 			if (opcode > 30000 && opcode < 40000)
 			{

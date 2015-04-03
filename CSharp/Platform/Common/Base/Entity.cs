@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Helper;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Common.Base
@@ -12,6 +13,14 @@ namespace Common.Base
 		private HashSet<Component<T>> components;
 
 		private Dictionary<Type, Component<T>> componentDict = new Dictionary<Type, Component<T>>();
+
+		protected Entity()
+		{
+		}
+
+		protected Entity(ObjectId id): base(id)
+		{
+		}
 
 		public T Clone()
 		{

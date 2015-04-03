@@ -28,9 +28,19 @@ namespace Common.Helper
 			return obj.ToBson();
 		}
 
-		public static object FromBson(byte[] bytes, Type type)
+		public static object FromBson(Type type, byte[] bytes)
 		{
 			return BsonSerializer.Deserialize(bytes, type);
+		}
+
+		public static object FromBson(Type type, byte[] bytes, int index, int count)
+		{
+			using (MemoryStream memoryStream = new MemoryStream(bytes))
+			{
+				memoryStream.Seek(index, SeekOrigin.Begin);
+				memoryStream.Seek(index + count, SeekOrigin.End);
+				return BsonSerializer.Deserialize(memoryStream, type);
+			}
 		}
 
 		public static T FromBson<T>(byte[] bytes, int index = 0)

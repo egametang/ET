@@ -53,16 +53,18 @@
     <Compile Include="BehaviorTree\NodeAttribute.cs" />
     <Compile Include="Buff.cs" />
     <Compile Include="BuffType.cs" />
-    <Compile Include="Component\ActorComponent.cs" />
+    <Compile Include="Actor.cs" />
     <Compile Include="Component\BehaviorTreeComponent.cs" />
     <Compile Include="Component\BuffComponent.cs" />
     <Compile Include="Component\ChannelUnitInfoComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
+    <Compile Include="Component\MessageComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\FactoryComponent.cs" />
     <Compile Include="Component\GateNetworkComponent.cs" />
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
+    <Compile Include="Component\ActorComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="ConfigAttribute.cs" />
     <Compile Include="Config\BuffConfig.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="EventAttribute.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="FactoryAttribute.cs" />
+    <Compile Include="GameException.cs" />
     <Compile Include="IAssemblyLoader.cs" />
     <Compile Include="ICategory.cs" />
     <Compile Include="IConfigLoader.cs" />
@@ -84,7 +87,7 @@
     <Compile Include="IStart.cs" />
     <Compile Include="IUpdate.cs" />
     <Compile Include="MessageAttribute.cs" />
-    <Compile Include="MessageType.cs" />
+    <Compile Include="Opcode.cs" />
     <Compile Include="NumDefine.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

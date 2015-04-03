@@ -67,19 +67,19 @@ namespace Model
 		{
 			while (true)
 			{
-				byte[] message = await channel.RecvAsync();
+				byte[] messageBytes = await channel.RecvAsync();
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
-				env[EnvKey.Message] = message;
-				int opcode = BitConverter.ToUInt16(message, 0);
-
+				env[EnvKey.MessageBytes] = messageBytes;
+				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+				env[EnvKey.Opcode] = opcode;
 				if (!MessageTypeHelper.IsClientMessage(opcode))
 				{
 					continue;
 				}
 
 				World.Instance.GetComponent<EventComponent<EventAttribute>>()
-						.Run(EventType.GateRecvClientMessage, env);
+						.RunAsync(EventType.GateRecvClientMessage, env);
 			}
 		}
 

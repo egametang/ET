@@ -49,9 +49,11 @@
     <Compile Include="ConfigCategory\ServerInfoCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="Event\GateRecvServerMessageEvent.cs" />
-    <Compile Include="Event\LogicRecvMessageEvent.cs" />
+    <Compile Include="Event\LogicRecvRpcMessageEvent.cs" />
+    <Compile Include="Event\LogicRecvClientMessageEvent.cs" />
     <Compile Include="Event\GateRecvClientMessageEvent.cs" />
-    <Compile Include="Factory\UnitFactory.cs" />
+    <Compile Include="Factory\UnitPlayerFactory.cs" />
+    <Compile Include="MessageParseHelper.cs" />
     <Compile Include="Message\CMsgLoginEvent.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
