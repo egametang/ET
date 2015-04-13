@@ -6,17 +6,22 @@ namespace Common.Helper
 {
 	public static class ProtobufHelper
 	{
-		public static byte[] ToBytes<T>(T message)
+		public static byte[] ToBytes(object message)
 		{
-			MemoryStream ms = new MemoryStream();
-			Serializer.Serialize(ms, message);
-			return ms.ToArray();
+			using (MemoryStream ms = new MemoryStream())
+			{
+				Serializer.Serialize(ms, message);
+				return ms.ToArray();
+			}
 		}
 
 		public static T FromBytes<T>(byte[] bytes)
 		{
-			MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length);
-			T t = Serializer.Deserialize<T>(ms);
+			T t;
+			using (MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length))
+			{
+				t = Serializer.Deserialize<T>(ms);
+			}
 			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
@@ -28,8 +33,11 @@ namespace Common.Helper
 
 		public static T FromBytes<T>(byte[] bytes, int index, int length)
 		{
-			MemoryStream ms = new MemoryStream(bytes, index, length);
-			T t = Serializer.Deserialize<T>(ms);
+			T t;
+			using (MemoryStream ms = new MemoryStream(bytes, index, length))
+			{
+				t = Serializer.Deserialize<T>(ms);
+			}
 			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
