@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -33,8 +34,17 @@ namespace Modules.BehaviorTreeModule
 
 			var treeDict = new Dictionary<int, List<TreeNodeData>>();
 
+			AllTreeData allTreeData = new AllTreeData();
 			string content = File.ReadAllText(file);
-			AllTreeData allTreeData = MongoHelper.FromJson<AllTreeData>(content);
+			foreach (string line in content.Split(new[] { "\r\n" }, StringSplitOptions.None))
+			{
+				if (line.Trim() == "")
+				{
+					continue;
+				}
+				TreeNodeData treeNodeData = MongoHelper.FromJson<TreeNodeData>(line);
+				allTreeData.TreeNodeDatas.Add(treeNodeData);
+			}
 
 			this.MaxNodeId = 0;
 			this.MaxTreeId = 0;
@@ -71,14 +81,18 @@ namespace Modules.BehaviorTreeModule
 			AllTreeData allTreeData = new AllTreeData();
 			foreach (TreeViewModel value in this.treeViewModelsDict.Values)
 			{
-				List<TreeNodeData> list = value.GetDatas();//
+				List<TreeNodeData> list = value.GetDatas();
 				allTreeData.TreeNodeDatas.AddRange(list);
 			}
 
 			using (StreamWriter stream = new StreamWriter(new FileStream(file, FileMode.Create, FileAccess.Write)))
 			{
-				string content = MongoHelper.ToJson(allTreeData);
-				stream.Write(content);
+				foreach (TreeNodeData treeNodeData in allTreeData.TreeNodeDatas)
+				{
+					string content = MongoHelper.ToJson(treeNodeData);
+					stream.Write(content);
+					stream.Write("\r\n");
+				}
 			}
 		}
 
