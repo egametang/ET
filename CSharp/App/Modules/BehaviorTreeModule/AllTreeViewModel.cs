@@ -6,7 +6,7 @@ using Common.Helper;
 
 namespace Modules.BehaviorTreeModule
 {
-	[Export(typeof (AllTreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
+	[Export(typeof(AllTreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
 	public class AllTreeViewModel
 	{
 		public int MaxNodeId { get; set; }
@@ -33,8 +33,8 @@ namespace Modules.BehaviorTreeModule
 
 			var treeDict = new Dictionary<int, List<TreeNodeData>>();
 
-			byte[] bytes = File.ReadAllBytes(file);
-			AllTreeData allTreeData = ProtobufHelper.FromBytes<AllTreeData>(bytes);
+			string content = File.ReadAllText(file);
+			AllTreeData allTreeData = MongoHelper.FromJson<AllTreeData>(content);
 
 			this.MaxNodeId = 0;
 			this.MaxTreeId = 0;
@@ -71,14 +71,14 @@ namespace Modules.BehaviorTreeModule
 			AllTreeData allTreeData = new AllTreeData();
 			foreach (TreeViewModel value in this.treeViewModelsDict.Values)
 			{
-				List<TreeNodeData> list = value.GetDatas();
+				List<TreeNodeData> list = value.GetDatas();//
 				allTreeData.TreeNodeDatas.AddRange(list);
 			}
 
-			using (Stream stream = new FileStream(file, FileMode.Create, FileAccess.Write))
+			using (StreamWriter stream = new StreamWriter(new FileStream(file, FileMode.Create, FileAccess.Write)))
 			{
-				byte[] bytes = ProtobufHelper.ToBytes(allTreeData);
-				stream.Write(bytes, 0, bytes.Length);
+				string content = MongoHelper.ToJson(allTreeData);
+				stream.Write(content);
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace Modules.BehaviorTreeModule
 
 		public TreeViewModel Clone(TreeNodeViewModel treeNodeViewModel)
 		{
-			TreeViewModel treeViewModel = (TreeViewModel) treeNodeViewModel.TreeViewModel.Clone();
+			TreeViewModel treeViewModel = (TreeViewModel)treeNodeViewModel.TreeViewModel.Clone();
 			this.treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
 			this.rootList.Add(treeViewModel.Root);
 			return treeViewModel;

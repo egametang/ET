@@ -6,9 +6,9 @@ using Common.Helper;
 namespace Modules.BehaviorTreeModule
 {
 	[DataContract]
-	public class TreeNodeData: ICloneable
+	public class TreeNodeData : ICloneable
 	{
-		private readonly List<int> children = new List<int>();
+		private List<int> children = new List<int>();
 
 		/// <summary>
 		/// 节点唯一Id
@@ -43,6 +43,10 @@ namespace Modules.BehaviorTreeModule
 			get
 			{
 				return this.children;
+			}
+			set
+			{
+				this.children = value;
 			}
 		}
 
