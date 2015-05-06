@@ -11,5 +11,13 @@
 		MoveToTarget = 100,
 		Desdroy = 101,
 		DistanceWithTarget = 102,
+
+		PlayMotion = 210,
+		ApplyCloak = 211,
+		CancelCloak = 212,
+		ChangeModel = 213,
+		RevertModel = 214,
+		ChangeMaterial = 215,
+		RevertMaterial = 216,
 	}
 }
