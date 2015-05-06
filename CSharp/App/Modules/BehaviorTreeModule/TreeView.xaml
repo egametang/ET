@@ -6,7 +6,7 @@
              xmlns:tree="clr-namespace:Modules.BehaviorTreeModule"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-			 d:DataContext="{d:DesignInstance tree:TreeViewModel}">
+			 d:DataContext="{d:DesignInstance tree:TreeViewModel}" HorizontalAlignment="Stretch">
 
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
@@ -39,7 +39,7 @@
 	</UserControl.Resources>
 	
 	<Grid>
-		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" VerticalAlignment="Stretch">
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 			<ListBox.ContextMenu>
 				<ContextMenu>
 					<MenuItem Header="新建" Click="MenuItem_New" />

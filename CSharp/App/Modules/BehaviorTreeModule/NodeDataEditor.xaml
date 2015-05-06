@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tree="clr-namespace:Modules.BehaviorTreeModule"
-             mc:Ignorable="d" Height="220" Width="211" DataContextChanged="OnDataContextChanged"
-			 d:DataContext="{d:DesignInstance tree:TreeNodeViewModel}">
+             mc:Ignorable="d" Height="220" DataContextChanged="OnDataContextChanged"
+			 d:DataContext="{d:DesignInstance tree:TreeNodeViewModel}" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" d:DesignWidth="242">
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
 	</UserControl.Resources>
 
-	<Grid VerticalAlignment="Stretch">
+	<Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
@@ -20,8 +20,8 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="40*"/>
-			<ColumnDefinition Width="171*"/>
+			<ColumnDefinition Width="40"/>
+			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 		<Label Content="Tree:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30" />
 		<Label Content="ID  :" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30"/>
@@ -29,10 +29,10 @@
 		<Label Content="参数:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
 		<Label Content="备注:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
 		
-		<Label Name="lblTreeId" Grid.Column="1" Grid.Row="0" Content="{Binding TreeId}" />
-		<Label Name="lblId" Grid.Column="1" Grid.Row="1" Content="{Binding Id}" />
-		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="2" Margin="2" SelectionChanged="CbType_OnSelectionChanged" />
-        <TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" />
-		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" />
+		<Label Name="lblTreeId" Grid.Column="1" Grid.Row="0" Content="{Binding TreeId}" HorizontalAlignment="Stretch"/>
+		<Label Name="lblId" Grid.Column="1" Grid.Row="1" Content="{Binding Id}" HorizontalAlignment="Stretch"/>
+		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="2" Margin="2" SelectionChanged="CbType_OnSelectionChanged" HorizontalAlignment="Stretch"/>
+		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
+		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
 	</Grid>
 </UserControl>

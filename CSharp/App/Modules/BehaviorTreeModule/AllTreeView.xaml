@@ -35,14 +35,14 @@
 						<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" MouseLeftButtonUp="ListBoxItem_OnMouseLeftButtonUp" 
 									Orientation="Horizontal" Margin="1,0">
 							<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="30"/>
-							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" Width="150"/>
+							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
 			</ListBox>
 		</GroupBox>
-		<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Margin="0,116,0,0">
-			<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Top" />
+		<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Height="250" VerticalAlignment="Bottom">
+			<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
 		</GroupBox>
 		<GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" VerticalAlignment="Stretch"
 				HorizontalAlignment="Stretch" />
