@@ -9,44 +9,44 @@
 		d:DesignWidth="1280" 
 		d:DataContext="{d:DesignInstance Tree:AllTreeViewModel}">
 	<DockPanel>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="230"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<GroupBox Grid.Row="0" Grid.Column="0" Header="行为树列表:" Margin="0,0,0,289" Grid.RowSpan="2">
-			<ListBox Name="lbTreeRoots" ItemsSource="{Binding RootList}" >
-				<ListBox.ContextMenu>
-					<ContextMenu>
-						<MenuItem Header="打开" Click="MenuItem_Open" />
-						<MenuItem Header="保存" Click="MenuItem_Save" />
-						<MenuItem Header="新建" Click="MenuItem_New" />
-						<MenuItem Header="删除" Click="MenuItem_Remove" />
-						<MenuItem Header="克隆" Click="MenuItem_Clone" />
-					</ContextMenu>
-				</ListBox.ContextMenu>
-				<ListBox.ItemTemplate>
-					<DataTemplate DataType="Tree:TreeNodeViewModel">
-						<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" MouseLeftButtonUp="ListBoxItem_OnMouseLeftButtonUp" 
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="230"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<GroupBox Grid.Row="0" Grid.Column="0" Header="行为树列表:" Margin="0,0,0,289" Grid.RowSpan="2">
+				<ListBox Name="lbTrees" ItemsSource="{Binding TreeViewModels}" >
+					<ListBox.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="打开" Click="MenuItem_Open" />
+							<MenuItem Header="保存" Click="MenuItem_Save" />
+							<MenuItem Header="新建" Click="MenuItem_New" />
+							<MenuItem Header="删除" Click="MenuItem_Remove" />
+							<MenuItem Header="克隆" Click="MenuItem_Clone" />
+						</ContextMenu>
+					</ListBox.ContextMenu>
+					<ListBox.ItemTemplate>
+						<DataTemplate DataType="Tree:TreeViewModel">
+							<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" 
 									Orientation="Horizontal" Margin="1,0">
-							<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="30"/>
-							<Label Content="{Binding Comment}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-		</GroupBox>
-		<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Height="250" VerticalAlignment="Bottom">
-			<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
-		</GroupBox>
-		<GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" VerticalAlignment="Stretch"
+								<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="30"/>
+								<Label Content="{Binding Comment}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</GroupBox>
+			<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Height="250" VerticalAlignment="Bottom">
+				<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+			</GroupBox>
+			<GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" VerticalAlignment="Stretch"
 				HorizontalAlignment="Stretch" />
-		<Tree:TreeView x:Name="treeView" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" />
+			<Tree:TreeView x:Name="treeView" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" />
 		</Grid>
 	</DockPanel>
 </UserControl>

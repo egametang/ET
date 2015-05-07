@@ -159,7 +159,7 @@ namespace Modules.BehaviorTreeModule
 			Point point = Mouse.GetPosition(this.listBox);
 
 			// one root node
-			if (this.ViewModel.TreeNodes.Count == 0)
+			if (this.ViewModel.AllNodes.Count == 0)
 			{
 				TreeNodeViewModel addTreeNode = new TreeNodeViewModel(this.ViewModel, point.X, point.Y)
 				{

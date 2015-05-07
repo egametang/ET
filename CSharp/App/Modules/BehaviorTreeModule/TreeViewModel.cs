@@ -1,139 +1,152 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
+using Common.Helper;
 using Microsoft.Practices.Prism.Mvvm;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Modules.BehaviorTreeModule
 {
+	[BsonDiscriminator("TreeProto", RootClass = true)]
 	[Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
-	public class TreeViewModel: BindableBase, ICloneable
+	public class TreeViewModel: BindableBase, ICloneable, ISupportInitialize
 	{
-		private readonly ObservableCollection<TreeNodeViewModel> treeNodes =
-				new ObservableCollection<TreeNodeViewModel>();
+		[BsonElement]
+		private TreeNodeViewModel root;
+		[BsonElement]
+		private int treeId;
+		[BsonElement]
+		private int maxNodeId;
+        [BsonIgnore]
+		public ObservableCollection<TreeNodeViewModel> allNodes = new ObservableCollection<TreeNodeViewModel>();
 
-		private readonly Dictionary<int, TreeNodeViewModel> treeNodeDict =
-				new Dictionary<int, TreeNodeViewModel>();
-
-		public ObservableCollection<TreeNodeViewModel> TreeNodes
+		[BsonIgnore]
+		public ObservableCollection<TreeNodeViewModel> AllNodes
 		{
 			get
 			{
-				return this.treeNodes;
+				return this.allNodes;
 			}
 		}
 
-		public int TreeId { get; private set; }
-
-		public int copyId;
-
-		public TreeViewModel(AllTreeViewModel allTreeViewModel)
+		[BsonIgnore]
+		public int TreeId
 		{
-			this.AllTreeViewModel = allTreeViewModel;
-			this.TreeId = ++this.AllTreeViewModel.MaxTreeId;
-			TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, 300, 100);
-			this.treeNodes.Add(treeNodeViewModel);
-			this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
-
-			TreeLayout treeLayout = new TreeLayout(this);
-			treeLayout.ExcuteLayout();
-		}
-
-		public TreeViewModel(AllTreeViewModel allTreeViewModel, List<TreeNodeData> treeNodeDatas)
-		{
-			this.AllTreeViewModel = allTreeViewModel;
-			this.TreeId = treeNodeDatas[0].TreeId;
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+			get
 			{
-				TreeNodeViewModel treeNodeViewModel = new TreeNodeViewModel(this, treeNodeData);
-				this.treeNodes.Add(treeNodeViewModel);
-				this.treeNodeDict[treeNodeViewModel.Id] = treeNodeViewModel;
+				return this.treeId;
 			}
-			TreeLayout treeLayout = new TreeLayout(this);
-			treeLayout.ExcuteLayout();
-		}
-
-		public List<TreeNodeData> GetDatas()
-		{
-			var treeNodeDatas = new List<TreeNodeData>();
-			foreach (TreeNodeViewModel treeNodeViewModel in this.treeNodes)
+			set
 			{
-				TreeNodeData treeNodeData = (TreeNodeData) treeNodeViewModel.Data.Clone();
-				treeNodeDatas.Add(treeNodeData);
+				if (this.treeId == value)
+				{
+					return;
+				}
+				this.treeId = value;
+				this.OnPropertyChanged("TreeId");
 			}
-			return treeNodeDatas;
 		}
 
-		public AllTreeViewModel AllTreeViewModel { get; private set; }
+		[BsonIgnore]
+		public string Comment
+		{
+			get
+			{
+				if (this.root == null)
+				{
+					return "";
+				}
+				return this.root.Comment;
+			}
+			set
+			{
+				this.OnPropertyChanged("Comment");
+			}
+		}
 
+		public int MaxNodeId 
+		{
+			get
+			{
+				return this.maxNodeId;
+			}
+			set
+			{
+				this.maxNodeId = value;
+			} 
+		}
+
+		[BsonIgnore]
+		public TreeNodeViewModel copy;
+        
+		[BsonIgnore]
 		public TreeNodeViewModel Root
 		{
 			get
 			{
-				return this.treeNodes.Count == 0? null : this.treeNodes[0];
+				return this.root;
 			}
-		}
-
-		public TreeNodeViewModel Get(int id)
-		{
-			TreeNodeViewModel node;
-			this.treeNodeDict.TryGetValue(id, out node);
-			return node;
+			set
+			{
+				this.root = value;
+			}
 		}
 
 		public void Add(TreeNodeViewModel treeNode, TreeNodeViewModel parent)
 		{
 			// 如果父节点是折叠的,需要先展开父节点
-			if (parent != null && parent.IsFold)
-			{
-				this.UnFold(parent);
-			}
-
-			this.treeNodes.Add(treeNode);
-			this.treeNodeDict[treeNode.Id] = treeNode;
-
 			if (parent != null)
 			{
+				if (parent.IsFold)
+				{
+					this.UnFold(parent);
+				}
 				treeNode.Parent = parent;
-				parent.Children.Add(treeNode.Id);
+				parent.Children.Add(treeNode);
 			}
+			else
+			{
+				this.root = treeNode;
+			}
+
+			treeNode.TreeViewModel = this;
+			allNodes.Add(treeNode);
 
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
 		}
 
-		private void GetChildrenIdAndSelf(TreeNodeViewModel treeNodeViewModel, List<int> children)
+		private void GetChildrenIdAndSelf(TreeNodeViewModel treeNodeViewModel, List<TreeNodeViewModel> children)
 		{
-			children.Add(treeNodeViewModel.Id);
+			children.Add(treeNodeViewModel);
 			this.GetAllChildrenId(treeNodeViewModel, children);
 		}
 
-		private void GetAllChildrenId(TreeNodeViewModel treeNodeViewModel, List<int> children)
+		private void GetAllChildrenId(TreeNodeViewModel treeNodeViewModel, List<TreeNodeViewModel> children)
 		{
-			foreach (int childId in treeNodeViewModel.Children)
+			foreach (TreeNodeViewModel child in treeNodeViewModel.Children)
 			{
-				TreeNodeViewModel child = this.Get(childId);
-				children.Add(child.Id);
+				children.Add(child);
 				this.GetAllChildrenId(child, children);
 			}
 		}
 
 		public void Remove(TreeNodeViewModel treeNodeViewModel)
 		{
-			var allId = new List<int>();
-			this.GetChildrenIdAndSelf(treeNodeViewModel, allId);
+			var all = new List<TreeNodeViewModel>();
+			this.GetChildrenIdAndSelf(treeNodeViewModel, all);
 
-			foreach (int childId in allId)
+			foreach (TreeNodeViewModel child in all)
 			{
-				TreeNodeViewModel child = this.Get(childId);
-				this.treeNodes.Remove(child);
-				this.treeNodes.Remove(treeNodeViewModel);
+				this.allNodes.Remove(child);
 			}
 
 			TreeNodeViewModel parent = treeNodeViewModel.Parent;
 			if (parent != null)
 			{
-				parent.Children.Remove(treeNodeViewModel.Id);
+				parent.Children.Remove(treeNodeViewModel);
 			}
 
 			TreeLayout treeLayout = new TreeLayout(this);
@@ -142,11 +155,10 @@ namespace Modules.BehaviorTreeModule
 
 		private void RecursionMove(TreeNodeViewModel treeNodeViewModel, double offsetX, double offsetY)
 		{
-			treeNodeViewModel.X += offsetX;
-			treeNodeViewModel.Y += offsetY;
-			foreach (int childId in treeNodeViewModel.Children)
+			treeNodeViewModel.XX += offsetX;
+			treeNodeViewModel.YY += offsetY;
+			foreach (TreeNodeViewModel child in treeNodeViewModel.Children)
 			{
-				TreeNodeViewModel child = this.Get(childId);
 				this.RecursionMove(child, offsetX, offsetY);
 			}
 		}
@@ -182,8 +194,8 @@ namespace Modules.BehaviorTreeModule
 			{
 				this.UnFold(to);
 			}
-			from.Parent.Children.Remove(from.Id);
-			to.Children.Add(from.Id);
+			from.Parent.Children.Remove(from);
+			to.Children.Add(from);
 			from.Parent = to;
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
@@ -195,13 +207,12 @@ namespace Modules.BehaviorTreeModule
 		/// <param name="treeNodeViewModel"></param>
 		public void Fold(TreeNodeViewModel treeNodeViewModel)
 		{
-			var allChildId = new List<int>();
-			this.GetAllChildrenId(treeNodeViewModel, allChildId);
+			var allChild = new List<TreeNodeViewModel>();
+			this.GetAllChildrenId(treeNodeViewModel, allChild);
 
-			foreach (int childId in allChildId)
+			foreach (TreeNodeViewModel child in allChild)
 			{
-				TreeNodeViewModel child = this.Get(childId);
-				this.treeNodes.Remove(child);
+				this.allNodes.Remove(child);
 			}
 
 			treeNodeViewModel.IsFold = true;
@@ -218,13 +229,12 @@ namespace Modules.BehaviorTreeModule
 		{
 			treeNodeViewModel.IsFold = false;
 
-			var allChildId = new List<int>();
-			this.GetAllChildrenId(treeNodeViewModel, allChildId);
+			var allChild = new List<TreeNodeViewModel>();
+			this.GetAllChildrenId(treeNodeViewModel, allChild);
 
-			foreach (int childId in allChildId)
+			foreach (TreeNodeViewModel child in allChild)
 			{
-				TreeNodeViewModel child = this.Get(childId);
-				this.treeNodes.Add(child);
+				this.allNodes.Add(child);
 			}
 
 			TreeLayout treeLayout = new TreeLayout(this);
@@ -238,13 +248,13 @@ namespace Modules.BehaviorTreeModule
 				return;
 			}
 			TreeNodeViewModel parent = treeNodeViewModel.Parent;
-			int index = parent.Children.IndexOf(treeNodeViewModel.Id);
+			int index = parent.Children.IndexOf(treeNodeViewModel);
 			if (index == 0)
 			{
 				return;
 			}
-			parent.Children.Remove(treeNodeViewModel.Id);
-			parent.Children.Insert(index - 1, treeNodeViewModel.Id);
+			parent.Children.Remove(treeNodeViewModel);
+			parent.Children.Insert(index - 1, treeNodeViewModel);
 
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
@@ -257,13 +267,13 @@ namespace Modules.BehaviorTreeModule
 				return;
 			}
 			TreeNodeViewModel parent = treeNodeViewModel.Parent;
-			int index = parent.Children.IndexOf(treeNodeViewModel.Id);
+			int index = parent.Children.IndexOf(treeNodeViewModel);
 			if (index == parent.Children.Count - 1)
 			{
 				return;
 			}
-			parent.Children.Remove(treeNodeViewModel.Id);
-			parent.Children.Insert(index + 1, treeNodeViewModel.Id);
+			parent.Children.Remove(treeNodeViewModel);
+			parent.Children.Insert(index + 1, treeNodeViewModel);
 
 			TreeLayout treeLayout = new TreeLayout(this);
 			treeLayout.ExcuteLayout();
@@ -271,17 +281,17 @@ namespace Modules.BehaviorTreeModule
 
 		public void Copy(TreeNodeViewModel copyTreeNodeViewModel)
 		{
-			this.copyId = copyTreeNodeViewModel.Id;
+			this.copy = copyTreeNodeViewModel;
 		}
 
 		public void Paste(TreeNodeViewModel pasteTreeNodeViewModel)
 		{
-			if (this.copyId == 0)
+			if (this.copy == null)
 			{
 				return;
 			}
 
-			TreeNodeViewModel copyTreeNodeViewModel = this.treeNodeDict[this.copyId];
+			TreeNodeViewModel copyTreeNodeViewModel = this.copy;
 			// copy节点不能是paste节点的父级节点
 			TreeNodeViewModel tmpNode = pasteTreeNodeViewModel;
 			while (tmpNode != null)
@@ -296,53 +306,52 @@ namespace Modules.BehaviorTreeModule
 				}
 				tmpNode = tmpNode.Parent;
 			}
-			this.copyId = 0;
+			this.copy = null;
 			this.CopyTree(copyTreeNodeViewModel, pasteTreeNodeViewModel);
 		}
 
 		private void CopyTree(TreeNodeViewModel copyTreeNodeViewModel, TreeNodeViewModel parent)
 		{
-			TreeNodeData newTreeNodeData = (TreeNodeData) copyTreeNodeViewModel.Data.Clone();
-			newTreeNodeData.Id = ++this.AllTreeViewModel.MaxNodeId;
-			newTreeNodeData.TreeId = this.TreeId;
-			newTreeNodeData.Children.Clear();
-			TreeNodeViewModel newTreeNodeViewModel = new TreeNodeViewModel(this, newTreeNodeData);
+			TreeNodeViewModel newTreeNodeViewModel = (TreeNodeViewModel)copyTreeNodeViewModel.Clone();
+			newTreeNodeViewModel.Id = ++this.MaxNodeId;
 
 			this.Add(newTreeNodeViewModel, parent);
 
-			foreach (int childId in copyTreeNodeViewModel.Children)
+			foreach (TreeNodeViewModel child in copyTreeNodeViewModel.Children)
 			{
-				TreeNodeViewModel child = this.Get(childId);
 				this.CopyTree(child, newTreeNodeViewModel);
 			}
 		}
 
 		public object Clone()
 		{
-			int treeId = ++this.AllTreeViewModel.MaxTreeId;
-			List<TreeNodeData> treeNodeDatas = this.GetDatas();
-			// 旧id和新id的映射关系
-			var idMapping = new Dictionary<int, int>();
-			idMapping[0] = 0;
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
-			{
-				int newId = ++this.AllTreeViewModel.MaxNodeId;
-				idMapping[treeNodeData.Id] = newId;
-				treeNodeData.Id = newId;
-				treeNodeData.TreeId = treeId;
-			}
+			return MongoHelper.FromJson<TreeViewModel>(MongoHelper.ToJson(this));
+		}
 
-			foreach (TreeNodeData treeNodeData in treeNodeDatas)
+		private void SetChildParent(TreeNodeViewModel node)
+		{
+			if (node == null)
 			{
-				treeNodeData.Parent = idMapping[treeNodeData.Parent];
-				for (int i = 0; i < treeNodeData.Children.Count; ++i)
-				{
-					treeNodeData.Children[i] = idMapping[treeNodeData.Children[i]];
-				}
+				return;
 			}
+			node.TreeViewModel = this;
+            allNodes.Add(node);
+			foreach (TreeNodeViewModel child in node.Children)
+			{
+				child.Parent = node;
+				SetChildParent(child);
+			}
+		}
 
-			TreeViewModel clone = new TreeViewModel(this.AllTreeViewModel, treeNodeDatas);
-			return clone;
+		public void BeginInit()
+		{
+		}
+
+		public void EndInit()
+		{
+			SetChildParent(Root);
+			this.Root.XX = 250;
+			this.Root.YY = 10;
 		}
 	}
 }

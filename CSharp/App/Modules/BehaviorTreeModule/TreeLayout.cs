@@ -1,4 +1,6 @@
-﻿namespace Modules.BehaviorTreeModule
+﻿using Common.Logger;
+
+namespace Modules.BehaviorTreeModule
 {
 	public class TreeLayout
 	{
@@ -24,7 +26,7 @@
 			}
 			for (int i = 0; i < treeNodeViewModel.Children.Count; ++i)
 			{
-				TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+				TreeNodeViewModel child = treeNodeViewModel.Children[i];
 				child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
 				TreeNodeViewModel offspring = this.LeftMostOffspring(child, currentLevel + 1, searchLevel);
 				if (offspring == null)
@@ -45,7 +47,7 @@
 			}
 			for (int i = treeNodeViewModel.Children.Count - 1; i >= 0; --i)
 			{
-				TreeNodeViewModel child = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
+				TreeNodeViewModel child = treeNodeViewModel.Children[i];
 				child.AncestorModify = treeNodeViewModel.Modify + treeNodeViewModel.AncestorModify;
 				TreeNodeViewModel offspring = this.RightMostOffspring(child, currentLevel + 1, searchLevel);
 				if (offspring == null)
@@ -84,8 +86,8 @@
 			{
 				for (int j = i + 1; j < treeNodeViewModel.Children.Count; ++j)
 				{
-					TreeNodeViewModel left = this.treeViewModel.Get(treeNodeViewModel.Children[i]);
-					TreeNodeViewModel right = this.treeViewModel.Get(treeNodeViewModel.Children[j]);
+					TreeNodeViewModel left = treeNodeViewModel.Children[i];
+					TreeNodeViewModel right = treeNodeViewModel.Children[j];
 					this.AjustSubTreeGap(left, right);
 				}
 			}
@@ -93,9 +95,8 @@
 
 		private void CalculatePrelimAndModify(TreeNodeViewModel treeNodeViewModel)
 		{
-			foreach (int childId in treeNodeViewModel.Children)
+			foreach (TreeNodeViewModel child in treeNodeViewModel.Children)
 			{
-				TreeNodeViewModel child = this.treeViewModel.Get(childId);
 				this.CalculatePrelimAndModify(child);
 			}
 
@@ -134,36 +135,33 @@
 			treeNodeViewModel.Prelim = prelim;
 			treeNodeViewModel.Modify = modify;
 
-			// Log.Debug("Id: " + treeNodeViewModel.Id + " Prelim: " + treeNodeViewModel.Prelim + " Modify: " +
-			// 	treeNodeViewModel.Modify);
+			Log.Debug("Id: " + treeNodeViewModel.Id + " Prelim: " + treeNodeViewModel.Prelim + " Modify: " + treeNodeViewModel.Modify);
 		}
 
 		private void CalculateRelativeXAndY(
 				TreeNodeViewModel treeNodeViewModel, int level, double totalModify)
 		{
-			foreach (int childId in treeNodeViewModel.Children)
+			foreach (TreeNodeViewModel child in treeNodeViewModel.Children)
 			{
-				TreeNodeViewModel child = this.treeViewModel.Get(childId);
 				this.CalculateRelativeXAndY(child, level + 1, treeNodeViewModel.Modify + totalModify);
 			}
 			if (treeNodeViewModel.IsLeaf)
 			{
-				treeNodeViewModel.X = treeNodeViewModel.Prelim + totalModify;
+				treeNodeViewModel.XX = treeNodeViewModel.Prelim + totalModify;
 			}
 			else
 			{
-				treeNodeViewModel.X = (treeNodeViewModel.FirstChild.X + treeNodeViewModel.LastChild.X) / 2;
+				treeNodeViewModel.XX = (treeNodeViewModel.FirstChild.XX + treeNodeViewModel.LastChild.XX) / 2;
 			}
-			treeNodeViewModel.Y = level * (TreeNodeViewModel.Height + YGap);
+			treeNodeViewModel.YY = level * (TreeNodeViewModel.Height + YGap);
 		}
 
 		private void FixXAndY(TreeNodeViewModel treeNode)
 		{
-			treeNode.X += this.rootOffsetX;
-			treeNode.Y += this.rootOffsetY;
-			foreach (var childId in treeNode.Children)
+			treeNode.XX += this.rootOffsetX;
+			treeNode.YY += this.rootOffsetY;
+			foreach (TreeNodeViewModel child in treeNode.Children)
 			{
-				TreeNodeViewModel child = this.treeViewModel.Get(childId);
 				this.FixXAndY(child);
 			}
 		}
@@ -175,13 +173,13 @@
 			{
 				return;
 			}
-			this.rootOrigX = root.X;
-			this.rootOrigY = root.Y;
+			this.rootOrigX = root.XX;
+			this.rootOrigY = root.YY;
 			this.CalculatePrelimAndModify(root);
 			this.CalculateRelativeXAndY(root, 0, 0);
 
-			this.rootOffsetX = this.rootOrigX - root.X;
-			this.rootOffsetY = this.rootOrigY - root.Y;
+			this.rootOffsetX = this.rootOrigX - root.XX;
+			this.rootOffsetY = this.rootOrigY - root.YY;
 			this.FixXAndY(root);
 		}
 	}

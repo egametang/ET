@@ -15,24 +15,20 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
 			<RowDefinition Height="4*"/>
-			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="40"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<Label Content="Tree:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30" />
-		<Label Content="ID  :" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30"/>
-		<Label Content="类型:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
-		<Label Content="参数:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
-		<Label Content="备注:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		<Label Content="ID  :" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="30"/>
+		<Label Content="类型:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		<Label Content="参数:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
+		<Label Content="备注:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Height="30"/>
 		
-		<Label Name="lblTreeId" Grid.Column="1" Grid.Row="0" Content="{Binding TreeId}" HorizontalAlignment="Stretch"/>
-		<Label Name="lblId" Grid.Column="1" Grid.Row="1" Content="{Binding Id}" HorizontalAlignment="Stretch"/>
-		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="2" Margin="2" SelectionChanged="CbType_OnSelectionChanged" HorizontalAlignment="Stretch"/>
-		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
-		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="4" Margin="2" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
+		<Label Name="lblId" Grid.Column="1" Grid.Row="0" Content="{Binding Id}" HorizontalAlignment="Stretch"/>
+		<ComboBox Name="cbType" Grid.Column="1" Grid.Row="1" Margin="2" SelectionChanged="CbType_OnSelectionChanged" HorizontalAlignment="Stretch"/>
+		<TextBox Name="tbArgs" Grid.Column="1" Grid.Row="2" Margin="2" Text="{Binding Args, Converter={StaticResource ListToStringConverter}, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
+		<TextBox Name="tbComment" Grid.Column="1" Grid.Row="3" Margin="2" Text="{Binding Comment, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
 	</Grid>
 </UserControl>

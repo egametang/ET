@@ -10,7 +10,7 @@
 
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
-		
+
 		<LinearGradientBrush x:Key="treeNodeSelectorFillBrush" StartPoint="0,0" EndPoint="0,1">
 			<GradientStop Color="White" Offset="0" />
 			<GradientStop Color="#FFF37FFF" Offset="0.6" />
@@ -32,14 +32,14 @@
 			<GradientStop Color="#FF06CBF7" Offset="0.6" />
 		</LinearGradientBrush>
 		<SolidColorBrush x:Key="treeNodeBorderBrush" Color="Black" />
-		
+
 		<tree:NodeTypeColorConverter x:Key="NodeTypeColorConverter"/>
 		<tree:NodeTypeToStringConverter x:Key="NodeTypeToStringConverter"/>
 		<tree:FolderVisiableConverter x:Key="FolderVisiableConverter"/>
 	</UserControl.Resources>
-	
+
 	<Grid>
-		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding TreeNodes}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<ListBox Name="listBox" SelectionMode="Single" ItemsSource="{Binding AllNodes}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 			<ListBox.ContextMenu>
 				<ContextMenu>
 					<MenuItem Header="新建" Click="MenuItem_New" />
@@ -53,8 +53,8 @@
 			</ListBox.ContextMenu>
 			<ListBox.Resources>
 				<Style TargetType="{x:Type ListBoxItem}">
-					<Setter Property="Canvas.Left" Value="{Binding X}" />
-					<Setter Property="Canvas.Top" Value="{Binding Y}" />
+					<Setter Property="Canvas.Left" Value="{Binding XX}" />
+					<Setter Property="Canvas.Top" Value="{Binding YY}" />
 				</Style>
 			</ListBox.Resources>
 			<ListBox.ItemsPanel>
@@ -66,7 +66,7 @@
 				<DataTemplate DataType="tree:TreeNodeViewModel">
 					<Canvas MouseDown="ListBoxItem_MouseDown" MouseUp="ListBoxItem_MouseUp" MouseMove="ListBoxItem_MouseMove"
 							PreviewMouseLeftButtonDown="ListBoxItem_PreviewMouseLeftButtonDown"
-							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp">
+							PreviewMouseLeftButtonUp="ListBoxItem_PreviewMouseLeftButtonUp" Background="#FFD62121" >
 						<Rectangle Name="rectNode" Width="{Binding Width}" Height="{Binding Height}" Cursor="Hand" StrokeThickness="0"
 								RadiusX="10" RadiusY="10" Stroke="{StaticResource treeNodeBorderBrush}" Fill="{StaticResource treeNodeSelectorFillBrush}"/>
 						<Label Content="+" Visibility="{Binding IsFold, Converter={StaticResource FolderVisiableConverter}}" Canvas.Left="60" Canvas.Top="10"/>

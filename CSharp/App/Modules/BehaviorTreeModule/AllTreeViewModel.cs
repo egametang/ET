@@ -1,40 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.IO;
 using Common.Helper;
 
 namespace Modules.BehaviorTreeModule
 {
-	[Export(typeof(AllTreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
 	public class AllTreeViewModel
 	{
-		public int MaxNodeId { get; set; }
+        private static readonly AllTreeViewModel instance = new AllTreeViewModel();
+	    public static AllTreeViewModel Instance
+	    {
+	        get
+	        {
+	            return instance;
+	        }
+	    }
 		public int MaxTreeId { get; set; }
 
-		private readonly Dictionary<int, TreeViewModel> treeViewModelsDict =
-				new Dictionary<int, TreeViewModel>();
+		private readonly ObservableCollection<TreeViewModel> treeViewModels =
+				new ObservableCollection<TreeViewModel>();
 
-		public readonly ObservableCollection<TreeNodeViewModel> rootList =
-				new ObservableCollection<TreeNodeViewModel>();
-
-		public ObservableCollection<TreeNodeViewModel> RootList
+		public ObservableCollection<TreeViewModel> TreeViewModels
 		{
 			get
 			{
-				return this.rootList;
+				return this.treeViewModels;
 			}
 		}
 
 		public void Open(string file)
 		{
-			this.rootList.Clear();
-			this.treeViewModelsDict.Clear();
-
-			var treeDict = new Dictionary<int, List<TreeNodeData>>();
-
-			AllTreeData allTreeData = new AllTreeData();
+			this.treeViewModels.Clear();
 			string content = File.ReadAllText(file);
 			foreach (string line in content.Split(new[] { "\r\n" }, StringSplitOptions.None))
 			{
@@ -42,54 +38,24 @@ namespace Modules.BehaviorTreeModule
 				{
 					continue;
 				}
-				TreeNodeData treeNodeData = MongoHelper.FromJson<TreeNodeData>(line);
-				allTreeData.TreeNodeDatas.Add(treeNodeData);
-			}
-
-			this.MaxNodeId = 0;
-			this.MaxTreeId = 0;
-			foreach (TreeNodeData treeNodeData in allTreeData.TreeNodeDatas)
-			{
-				List<TreeNodeData> tree;
-				treeDict.TryGetValue(treeNodeData.TreeId, out tree);
-				if (tree == null)
+				TreeViewModel treeViewModel = MongoHelper.FromJson<TreeViewModel>(line);
+				this.treeViewModels.Add(treeViewModel);
+				TreeLayout layout = new TreeLayout(treeViewModel);
+				layout.ExcuteLayout();
+				if (treeViewModel.TreeId > this.MaxTreeId)
 				{
-					tree = new List<TreeNodeData>();
-					treeDict[treeNodeData.TreeId] = tree;
+					this.MaxTreeId = treeViewModel.TreeId;
 				}
-				tree.Add(treeNodeData);
-				if (treeNodeData.Id > this.MaxNodeId)
-				{
-					this.MaxNodeId = treeNodeData.Id;
-				}
-				if (treeNodeData.TreeId > this.MaxTreeId)
-				{
-					this.MaxTreeId = treeNodeData.TreeId;
-				}
-			}
-
-			foreach (KeyValuePair<int, List<TreeNodeData>> pair in treeDict)
-			{
-				TreeViewModel treeViewModel = new TreeViewModel(this, pair.Value);
-				this.treeViewModelsDict[pair.Key] = treeViewModel;
-				this.RootList.Add(treeViewModel.Root);
 			}
 		}
 
 		public void Save(string file)
 		{
-			AllTreeData allTreeData = new AllTreeData();
-			foreach (TreeViewModel value in this.treeViewModelsDict.Values)
-			{
-				List<TreeNodeData> list = value.GetDatas();
-				allTreeData.TreeNodeDatas.AddRange(list);
-			}
-
 			using (StreamWriter stream = new StreamWriter(new FileStream(file, FileMode.Create, FileAccess.Write)))
 			{
-				foreach (TreeNodeData treeNodeData in allTreeData.TreeNodeDatas)
+				foreach (TreeViewModel value in this.treeViewModels)
 				{
-					string content = MongoHelper.ToJson(treeNodeData);
+					string content = MongoHelper.ToJson(value);
 					stream.Write(content);
 					stream.Write("\r\n");
 				}
@@ -98,30 +64,22 @@ namespace Modules.BehaviorTreeModule
 
 		public TreeViewModel New()
 		{
-			TreeViewModel treeViewModel = new TreeViewModel(this);
-			this.treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
-			this.rootList.Add(treeViewModel.Root);
+			TreeViewModel treeViewModel = new TreeViewModel();
+			treeViewModel.TreeId = ++this.MaxTreeId;
+			this.treeViewModels.Add(treeViewModel);
 			return treeViewModel;
 		}
 
-		public void Remove(int treeId)
+		public void Remove(TreeViewModel treeViewModel)
 		{
-			TreeViewModel treeViewModel = this.treeViewModelsDict[treeId];
-			this.treeViewModelsDict.Remove(treeId);
-			this.rootList.Remove(treeViewModel.Root);
+			this.treeViewModels.Remove(treeViewModel);
 		}
 
-		public TreeViewModel Clone(TreeNodeViewModel treeNodeViewModel)
+		public TreeViewModel Clone(TreeViewModel treeViewModel)
 		{
-			TreeViewModel treeViewModel = (TreeViewModel)treeNodeViewModel.TreeViewModel.Clone();
-			this.treeViewModelsDict[treeViewModel.TreeId] = treeViewModel;
-			this.rootList.Add(treeViewModel.Root);
-			return treeViewModel;
-		}
-
-		public TreeViewModel Get(int treeId)
-		{
-			return this.treeViewModelsDict[treeId];
+			TreeViewModel newTreeViewModel = (TreeViewModel)treeViewModel.Clone();
+			this.treeViewModels.Add(treeViewModel);
+			return newTreeViewModel;
 		}
 	}
 }
