@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tree="clr-namespace:Modules.BehaviorTreeModule"
-             mc:Ignorable="d" Height="220" DataContextChanged="OnDataContextChanged"
+             mc:Ignorable="d" Height="200" DataContextChanged="OnDataContextChanged"
 			 d:DataContext="{d:DesignInstance tree:TreeNodeViewModel}" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" d:DesignWidth="242">
 	<UserControl.Resources>
 		<tree:ListToStringConverter x:Key="ListToStringConverter"/>
@@ -15,7 +15,7 @@
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="4*"/>
+			<RowDefinition Height="5*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="40"/>

@@ -41,7 +41,7 @@
 					</ListBox.ItemTemplate>
 				</ListBox>
 			</GroupBox>
-			<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Height="250" VerticalAlignment="Bottom">
+			<GroupBox Grid.Row="1" Grid.Column="0" Header="节点编辑:" Height="220" VerticalAlignment="Bottom">
 				<Tree:NodeDataEditor x:Name="nodeDataEditor" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
 			</GroupBox>
 			<GridSplitter Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Width="3" ShowsPreview="False" VerticalAlignment="Stretch"

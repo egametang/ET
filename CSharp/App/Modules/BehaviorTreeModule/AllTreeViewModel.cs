@@ -78,7 +78,8 @@ namespace Modules.BehaviorTreeModule
 		public TreeViewModel Clone(TreeViewModel treeViewModel)
 		{
 			TreeViewModel newTreeViewModel = (TreeViewModel)treeViewModel.Clone();
-			this.treeViewModels.Add(treeViewModel);
+			newTreeViewModel.TreeId = ++this.MaxTreeId;
+			this.treeViewModels.Add(newTreeViewModel);
 			return newTreeViewModel;
 		}
 	}

@@ -350,8 +350,8 @@ namespace Modules.BehaviorTreeModule
 		public void EndInit()
 		{
 			SetChildParent(Root);
-			this.Root.XX = 250;
-			this.Root.YY = 10;
+			this.Root.XX = 450;
+			this.Root.YY = 20;
 		}
 	}
 }
