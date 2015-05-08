@@ -83,7 +83,7 @@ namespace Modules.BehaviorTreeModule
 			TreeViewModel treeViewModel = item.DataContext as TreeViewModel;
 			if (this.treeView.ViewModel != null)
 			{
-				if (this.treeView.ViewModel.TreeId == treeViewModel.TreeId)
+				if (this.treeView.ViewModel.Id == treeViewModel.Id)
 				{
 					return;
 				}

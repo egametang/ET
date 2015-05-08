@@ -42,9 +42,9 @@ namespace Modules.BehaviorTreeModule
 				this.treeViewModels.Add(treeViewModel);
 				TreeLayout layout = new TreeLayout(treeViewModel);
 				layout.ExcuteLayout();
-				if (treeViewModel.TreeId > this.MaxTreeId)
+				if (treeViewModel.Id > this.MaxTreeId)
 				{
-					this.MaxTreeId = treeViewModel.TreeId;
+					this.MaxTreeId = treeViewModel.Id;
 				}
 			}
 		}
@@ -65,7 +65,7 @@ namespace Modules.BehaviorTreeModule
 		public TreeViewModel New()
 		{
 			TreeViewModel treeViewModel = new TreeViewModel();
-			treeViewModel.TreeId = ++this.MaxTreeId;
+			treeViewModel.Id = ++this.MaxTreeId;
 			this.treeViewModels.Add(treeViewModel);
 			return treeViewModel;
 		}
@@ -78,7 +78,7 @@ namespace Modules.BehaviorTreeModule
 		public TreeViewModel Clone(TreeViewModel treeViewModel)
 		{
 			TreeViewModel newTreeViewModel = (TreeViewModel)treeViewModel.Clone();
-			newTreeViewModel.TreeId = ++this.MaxTreeId;
+			newTreeViewModel.Id = ++this.MaxTreeId;
 			this.treeViewModels.Add(newTreeViewModel);
 			return newTreeViewModel;
 		}

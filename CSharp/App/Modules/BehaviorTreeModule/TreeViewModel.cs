@@ -13,12 +13,12 @@ namespace Modules.BehaviorTreeModule
 	[Export(typeof (TreeViewModel)), PartCreationPolicy(CreationPolicy.NonShared)]
 	public class TreeViewModel: BindableBase, ICloneable, ISupportInitialize
 	{
-		[BsonElement]
-		private TreeNodeViewModel root;
-		[BsonElement]
-		private int treeId;
+		[BsonId]
+		private int id;
 		[BsonElement]
 		private int maxNodeId;
+		[BsonElement]
+		private TreeNodeViewModel root;
         [BsonIgnore]
 		public ObservableCollection<TreeNodeViewModel> allNodes = new ObservableCollection<TreeNodeViewModel>();
 
@@ -32,20 +32,20 @@ namespace Modules.BehaviorTreeModule
 		}
 
 		[BsonIgnore]
-		public int TreeId
+		public int Id
 		{
 			get
 			{
-				return this.treeId;
+				return this.id;
 			}
 			set
 			{
-				if (this.treeId == value)
+				if (this.id == value)
 				{
 					return;
 				}
-				this.treeId = value;
-				this.OnPropertyChanged("TreeId");
+				this.id = value;
+				this.OnPropertyChanged("id");
 			}
 		}
 
@@ -66,6 +66,7 @@ namespace Modules.BehaviorTreeModule
 			}
 		}
 
+		[BsonIgnore]
 		public int MaxNodeId 
 		{
 			get

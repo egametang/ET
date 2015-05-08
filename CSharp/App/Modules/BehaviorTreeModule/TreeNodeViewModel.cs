@@ -9,7 +9,7 @@ namespace Modules.BehaviorTreeModule
 	[BsonDiscriminator("NodeProto", RootClass = true)]
 	public class TreeNodeViewModel: BindableBase, ICloneable
 	{
-		[BsonElement]
+		[BsonId]
 		private int id;
 		[BsonElement]
 		private int type;

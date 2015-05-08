@@ -34,7 +34,7 @@
 						<DataTemplate DataType="Tree:TreeViewModel">
 							<StackPanel MouseLeftButtonDown="ListBoxItem_OnMouseLeftButtonDown" 
 									Orientation="Horizontal" Margin="1,0">
-								<Label Content="{Binding TreeId}" VerticalAlignment="Stretch" Width="30"/>
+								<Label Content="{Binding Id}" VerticalAlignment="Stretch" Width="30"/>
 								<Label Content="{Binding Comment}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 							</StackPanel>
 						</DataTemplate>
