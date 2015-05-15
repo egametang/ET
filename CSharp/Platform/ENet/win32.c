@@ -4,9 +4,10 @@
 */
 #ifdef _WIN32
 
-#include <time.h>
 #define ENET_BUILDING_LIB 1
 #include "enet/enet.h"
+#include <windows.h>
+#include <mmsystem.h>
 
 static enet_uint32 timeBase = 0;
 

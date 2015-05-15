@@ -28,6 +28,7 @@
 							<MenuItem Header="新建" Click="MenuItem_New" />
 							<MenuItem Header="删除" Click="MenuItem_Remove" />
 							<MenuItem Header="克隆" Click="MenuItem_Clone" />
+							<MenuItem Header="路径" Click="MenuItem_Path" />
 						</ContextMenu>
 					</ListBox.ContextMenu>
 					<ListBox.ItemTemplate>

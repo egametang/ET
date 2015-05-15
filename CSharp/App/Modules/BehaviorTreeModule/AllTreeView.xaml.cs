@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.Configuration;
+using System.IO;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Infrastructure;
+using Application = System.Windows.Application;
 
 namespace Modules.BehaviorTreeModule
 {
@@ -35,7 +38,7 @@ namespace Modules.BehaviorTreeModule
 
 		private void MenuItem_Open(object sender, RoutedEventArgs e)
 		{
-			string nodePath = ConfigurationManager.AppSettings["NodePath"];
+			string nodePath = Path.Combine(ConfigurationManager.AppSettings["NodePath"], "TreeProto.txt");
 			this.ViewModel.Open(nodePath);
 			this.lbTrees.SelectedIndex = -1;
 			this.treeView.ViewModel = null;
@@ -43,7 +46,7 @@ namespace Modules.BehaviorTreeModule
 
 		private void MenuItem_Save(object sender, RoutedEventArgs e)
 		{
-			string nodePath = ConfigurationManager.AppSettings["NodePath"];
+			string nodePath = Path.Combine(ConfigurationManager.AppSettings["NodePath"], "TreeProto.txt");
 			this.ViewModel.Save(nodePath);
 		}
 
@@ -63,6 +66,24 @@ namespace Modules.BehaviorTreeModule
 			TreeViewModel treeViewModel = this.lbTrees.SelectedItem as TreeViewModel;
 			TreeViewModel newTreeViewModel = this.ViewModel.Clone(treeViewModel);
 			this.treeView.ViewModel = newTreeViewModel;
+		}
+
+		private void MenuItem_Path(object sender, RoutedEventArgs e)
+		{
+			FolderBrowserDialog dialog = new FolderBrowserDialog();
+			dialog.SelectedPath = ConfigurationManager.AppSettings["NodePath"];
+			dialog.ShowDialog();
+			string path = dialog.SelectedPath;
+			if (path.Length < 1 || !Directory.Exists(path))
+			{
+				System.Windows.MessageBox.Show("选择的目录无效");
+				return;
+			}
+			Configuration cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			cfg.AppSettings.Settings["NodePath"].Value = path;
+			cfg.Save();
+			ConfigurationManager.AppSettings["NodePath"] = path;
+			Application.Current.MainWindow.Title = string.Format("行为树编辑器 当前工作目录[{0}]", ConfigurationManager.AppSettings["NodePath"]);
 		}
 
 		private void MenuItem_Remove(object sender, RoutedEventArgs e)
