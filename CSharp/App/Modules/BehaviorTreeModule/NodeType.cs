@@ -19,5 +19,6 @@
 		RevertModel = 214,
 		ChangeMaterial = 215,
 		RevertMaterial = 216,
+		CreateEffect = 219,
 	}
 }

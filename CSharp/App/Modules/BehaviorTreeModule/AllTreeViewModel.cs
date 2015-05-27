@@ -80,6 +80,8 @@ namespace Modules.BehaviorTreeModule
 			TreeViewModel newTreeViewModel = (TreeViewModel)treeViewModel.Clone();
 			newTreeViewModel.Id = ++this.MaxTreeId;
 			this.treeViewModels.Add(newTreeViewModel);
+			TreeLayout layout = new TreeLayout(newTreeViewModel);
+			layout.ExcuteLayout();
 			return newTreeViewModel;
 		}
 	}
