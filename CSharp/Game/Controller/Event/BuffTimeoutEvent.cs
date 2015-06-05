@@ -4,7 +4,7 @@ using MongoDB.Bson;
 namespace Controller
 {
 	[Event(EventType.BuffTimeout, ServerType.City)]
-	public class BuffTimeoutEvent: IEventSync
+	public class BuffTimeoutEvent: IEvent
 	{
 		public void Run(Env env)
 		{

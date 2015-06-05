@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common.Base;
+using Common.Helper;
 
 namespace Model
 {
 	public class MessageComponent: Component<World>, IAssemblyLoader
 	{
-		private Dictionary<ushort, List<IEventSync>> eventSyncs;
-		private Dictionary<ushort, List<IEventAsync>> eventAsyncs;
-		private Dictionary<ushort, Type> typeClassType;
+		private Dictionary<Opcode, Func<byte[], byte[]>> events;
+		private Dictionary<Opcode, Func<byte[], Task<byte[]>>> eventsAsync;
 
 		public void Load(Assembly assembly)
 		{
-			this.eventSyncs = new Dictionary<ushort, List<IEventSync>>();
-			this.eventAsyncs = new Dictionary<ushort, List<IEventAsync>>();
-			this.typeClassType = new Dictionary<ushort, Type>();
+			this.events = new Dictionary<Opcode, Func<byte[], byte[]>>();
+			this.eventsAsync = new Dictionary<Opcode, Func<byte[], Task<byte[]>>>();
 
 			ServerType serverType = World.Instance.Options.ServerType;
 
@@ -34,87 +33,57 @@ namespace Model
 				{
 					continue;
 				}
-
-				this.typeClassType[messageAttribute.Opcode] = messageAttribute.ClassType;
-
+				
 				object obj = Activator.CreateInstance(t);
 
-				IEventSync iEventSync = obj as IEventSync;
-				if (iEventSync != null)
+				IRegister iRegister = obj as IRegister;
+				if (iRegister != null)
 				{
-					if (!this.eventSyncs.ContainsKey(messageAttribute.Opcode))
-					{
-						this.eventSyncs.Add(messageAttribute.Opcode, new List<IEventSync>());
-					}
-					this.eventSyncs[messageAttribute.Opcode].Add(iEventSync);
-					continue;
+					iRegister.Register();
 				}
 
-				IEventAsync iEventAsync = obj as IEventAsync;
-				if (iEventAsync != null)
-				{
-					if (!this.eventAsyncs.ContainsKey(messageAttribute.Opcode))
-					{
-						this.eventAsyncs.Add(messageAttribute.Opcode, new List<IEventAsync>());
-					}
-					this.eventAsyncs[messageAttribute.Opcode].Add(iEventAsync);
-					continue;
-				}
-
-				throw new Exception(string.Format("message handler not inherit IEventSync or IEventAsync interface: {0}",
+				throw new Exception(
+					string.Format("message handler not inherit IRegister interface: {0}", 
 						obj.GetType().FullName));
 			}
 		}
 
-		public Type GetClassType(ushort opcode)
+		public void Register<T, R>(Func<T, R> func)
 		{
-			return this.typeClassType[opcode];
+			Opcode opcode = (Opcode) Enum.Parse(typeof (Opcode), typeof (T).Name);
+			events.Add(opcode, messageBytes =>
+			{
+				T t = MongoHelper.FromBson<T>(messageBytes, 6);
+				R k = func(t);
+				return MongoHelper.ToBson(k);
+			});
 		}
 
-		public void Run(ushort opcode, Env env)
+		public void RegisterAsync<T, R>(Func<T, Task<R>> func)
 		{
-			List<IEventSync> iEventSyncs = null;
-			if (!this.eventSyncs.TryGetValue(opcode, out iEventSyncs))
+			Opcode opcode = (Opcode)Enum.Parse(typeof(Opcode), typeof(T).Name);
+			eventsAsync.Add(opcode, async messageBytes =>
 			{
-				throw new Exception(string.Format("no message handler, MessageAttribute: {0} opcode: {1}",
-						typeof(MessageAttribute).Name, opcode));
-			}
-
-			foreach (IEventSync iEventSync in iEventSyncs)
-			{
-				iEventSync.Run(env);
-			}
+				T t = MongoHelper.FromBson<T>(messageBytes, 6);
+				R r = await func(t);
+				return MongoHelper.ToBson(r);
+			});
 		}
 
-		public async Task RunAsync(ushort opcode, Env env)
+		public async Task<byte[]> RunAsync(Opcode opcode, byte[] messageBytes)
 		{
-			List<IEventSync> iEventSyncs = null;
-			this.eventSyncs.TryGetValue(opcode, out iEventSyncs);
-
-			List<IEventAsync> iEventAsyncs = null;
-			this.eventAsyncs.TryGetValue(opcode, out iEventAsyncs);
-
-			if (iEventSyncs == null && iEventAsyncs == null)
+			Func<byte[], byte[]> func = null;
+			if (this.events.TryGetValue(opcode, out func))
 			{
-				throw new Exception(string.Format("no message handler, MessageAttribute: {0} opcode: {1}",
-						typeof(MessageAttribute).Name, opcode));
+				return func(messageBytes);
 			}
 
-			if (iEventSyncs != null)
+			Func<byte[], Task<byte[]>> funcAsync = null;
+			if (this.eventsAsync.TryGetValue(opcode, out funcAsync))
 			{
-				foreach (IEventSync iEventSync in iEventSyncs)
-				{
-					iEventSync.Run(env);
-				}
+				return await funcAsync(messageBytes);
 			}
-
-			if (iEventAsyncs != null)
-			{
-				foreach (IEventAsync iEventAsync in iEventAsyncs)
-				{
-					await iEventAsync.RunAsync(env);
-				}
-			}
+			throw new GameException(string.Format("not found opcode handler: {0}", opcode));
 		}
 	}
 }

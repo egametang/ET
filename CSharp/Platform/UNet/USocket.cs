@@ -83,16 +83,6 @@ namespace UNet
 			}
 		}
 
-		public void Ping()
-		{
-			NativeMethods.ENetPeerPing(this.peerPtr);
-		}
-
-		public void ConfigureThrottle(uint interval, uint acceleration, uint deceleration)
-		{
-			NativeMethods.ENetPeerThrottleConfigure(this.peerPtr, interval, acceleration, deceleration);
-		}
-
 		public Task<bool> ConnectAsync(string hostName, ushort port)
 		{
 			var tcs = new TaskCompletionSource<bool>();
@@ -163,23 +153,6 @@ namespace UNet
 			var tcs = new TaskCompletionSource<bool>();
 			this.Disconnect = eEvent => tcs.TrySetResult(true);
 			return tcs.Task;
-		}
-
-		public Task<bool> DisconnectLaterAsync(uint data = 0)
-		{
-			NativeMethods.ENetPeerDisconnectLater(this.peerPtr, data);
-			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
-			this.peerPtr = IntPtr.Zero;
-			var tcs = new TaskCompletionSource<bool>();
-			this.Disconnect = eEvent => tcs.TrySetResult(true);
-			return tcs.Task;
-		}
-
-		public void DisconnectNow(uint data)
-		{
-			NativeMethods.ENetPeerDisconnectNow(this.peerPtr, data);
-			// EnetPeerDisconnect会reset Peer,这里设置为0,防止再次Dispose
-			this.peerPtr = IntPtr.Zero;
 		}
 
 		internal void OnConnected(ENetEvent eNetEvent)

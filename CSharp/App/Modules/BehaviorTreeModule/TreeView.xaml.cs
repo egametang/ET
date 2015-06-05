@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using Common.Logger;
+using Model;
 
 namespace Modules.BehaviorTreeModule
 {

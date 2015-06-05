@@ -5,11 +5,11 @@ namespace Model
 	[AttributeUsage(AttributeTargets.Class)]
 	public class NodeAttribute: Attribute
 	{
-		public int NodeType { get; private set; }
+		public NodeType Type { get; private set; }
 
-		public NodeAttribute(int nodeType)
+		public NodeAttribute(NodeType nodeType)
 		{
-			this.NodeType = nodeType;
+			this.Type = nodeType;
 		}
 	}
 }

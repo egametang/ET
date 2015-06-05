@@ -7,16 +7,10 @@ namespace Model
 	/// </summary>
 	public class MessageAttribute: Attribute
 	{
-		public ushort Opcode { get; private set; }
-
-		public Type ClassType { get; private set; }
-
 		private ServerType ServerType { get; set; }
 
-		public MessageAttribute(ushort opcode, Type classType, ServerType serverType)
+		public MessageAttribute(ServerType serverType)
 		{
-			this.Opcode = opcode;
-			this.ClassType = classType;
 			this.ServerType = serverType;
 		}
 

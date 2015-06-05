@@ -71,7 +71,7 @@ namespace Model
 				Env env = new Env();
 				env[EnvKey.Channel] = channel;
 				env[EnvKey.MessageBytes] = messageBytes;
-				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+				Opcode opcode = (Opcode)BitConverter.ToUInt16(messageBytes, 0);
 				env[EnvKey.Opcode] = opcode;
 				if (!MessageTypeHelper.IsClientMessage(opcode))
 				{

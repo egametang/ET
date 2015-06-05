@@ -107,7 +107,6 @@
     <Compile Include="NodeDataEditor.xaml.cs">
       <DependentUpon>NodeDataEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NodeType.cs" />
     <Compile Include="TreeNodeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +131,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Game\Model\Model.csproj">
+      <Project>{0608c0c1-f584-4092-aaf9-1e99a78e3703}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Platform\Common\Common.csproj">
       <Project>{f06b995e-6508-4c5c-a396-554316c9215d}</Project>
       <Name>Common</Name>

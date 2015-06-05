@@ -9,13 +9,13 @@ namespace Model
 	public class EventComponent<AttributeType>: Component<World>, IAssemblyLoader
 			where AttributeType : AEventAttribute
 	{
-		private Dictionary<int, List<IEventSync>> eventSyncs;
-		private Dictionary<int, List<IEventAsync>> eventAsyncs;
+		private Dictionary<EventType, List<IEvent>> eventSyncs;
+		private Dictionary<EventType, List<IEventAsync>> eventAsyncs;
 
 		public void Load(Assembly assembly)
 		{
-			this.eventSyncs = new Dictionary<int, List<IEventSync>>();
-			this.eventAsyncs = new Dictionary<int, List<IEventAsync>>();
+			this.eventSyncs = new Dictionary<EventType, List<IEvent>>();
+			this.eventAsyncs = new Dictionary<EventType, List<IEventAsync>>();
 
 			ServerType serverType = World.Instance.Options.ServerType;
 
@@ -35,14 +35,14 @@ namespace Model
 				}
 
 				object obj = Activator.CreateInstance(t);
-				IEventSync iEventSync = obj as IEventSync;
-				if (iEventSync != null)
+				IEvent iEvent = obj as IEvent;
+				if (iEvent != null)
 				{
 					if (!this.eventSyncs.ContainsKey(aEventAttribute.Type))
 					{
-						this.eventSyncs.Add(aEventAttribute.Type, new List<IEventSync>());
+						this.eventSyncs.Add(aEventAttribute.Type, new List<IEvent>());
 					}
-					this.eventSyncs[aEventAttribute.Type].Add(iEventSync);
+					this.eventSyncs[aEventAttribute.Type].Add(iEvent);
 					continue;
 				}
 
@@ -58,29 +58,29 @@ namespace Model
 					continue;
 				}
 
-				throw new Exception(string.Format("event not inherit IEventSync or IEventAsync interface: {0}",
+				throw new Exception(string.Format("event not inherit IEvent or IEventAsync interface: {0}",
 						obj.GetType().FullName));
 			}
 		}
 
-		public void Run(int type, Env env)
+		public void Run(EventType type, Env env)
 		{
-			List<IEventSync> iEventSyncs = null;
+			List<IEvent> iEventSyncs = null;
 			if (!this.eventSyncs.TryGetValue(type, out iEventSyncs))
 			{
 				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
 						typeof (AttributeType).Name, type));
 			}
 
-			foreach (IEventSync iEventSync in iEventSyncs)
+			foreach (IEvent iEventSync in iEventSyncs)
 			{
 				iEventSync.Run(env);
 			}
 		}
 
-		public async Task RunAsync(int type, Env env)
+		public async Task RunAsync(EventType type, Env env)
 		{
-			List<IEventSync> iEventSyncs = null;
+			List<IEvent> iEventSyncs = null;
 			this.eventSyncs.TryGetValue(type, out iEventSyncs);
 
 			List<IEventAsync> iEventAsyncs = null;
@@ -94,7 +94,7 @@ namespace Model
 
 			if (iEventSyncs != null)
 			{
-				foreach (IEventSync iEventSync in iEventSyncs)
+				foreach (IEvent iEventSync in iEventSyncs)
 				{
 					iEventSync.Run(env);
 				}

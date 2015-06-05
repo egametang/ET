@@ -9,12 +9,10 @@ namespace Model
 {
 	public class Actor : Entity<Unit>, IDisposable
 	{
-		private readonly Queue<Env> msgEnvQueue = new Queue<Env>();
+		private readonly Queue<byte[]> msgQueue = new Queue<byte[]>();
 
 		private Action msgAction = () => { };
-
-		private Env Env { get; set; }
-
+		
 		private bool isStop;
 
 		public Actor(ObjectId id): base(id)
@@ -28,10 +26,9 @@ namespace Model
 			{
 				try
 				{
-					Env env = await this.Get();
-					this.Env = env;
-					ushort opcode = env.Get<ushort>(EnvKey.Opcode);
-					await World.Instance.GetComponent<MessageComponent>().RunAsync(opcode, env);
+					byte[] messageBytes = await this.Get();
+					Opcode opcode = (Opcode)BitConverter.ToUInt16(messageBytes, 0);
+					await World.Instance.GetComponent<MessageComponent>().RunAsync(opcode, messageBytes);
 				}
 				catch (Exception e)
 				{
@@ -40,26 +37,26 @@ namespace Model
 			}
 		}
 
-		public void Add(Env msgEnv)
+		public void Add(byte[] msg)
 		{
-			this.msgEnvQueue.Enqueue(msgEnv);
+			this.msgQueue.Enqueue(msg);
 			this.msgAction();
 		}
 
-		private Task<Env> Get()
+		private Task<byte[]> Get()
 		{
-			var tcs = new TaskCompletionSource<Env>();
-			if (this.msgEnvQueue.Count > 0)
+			var tcs = new TaskCompletionSource<byte[]>();
+			if (this.msgQueue.Count > 0)
 			{
-				Env env = this.msgEnvQueue.Dequeue();
-				tcs.SetResult(env);
+				byte[] messageBytes = this.msgQueue.Dequeue();
+				tcs.SetResult(messageBytes);
 			}
 			else
 			{
 				this.msgAction = () =>
 				{
 					this.msgAction = () => { };
-					Env msg = this.msgEnvQueue.Dequeue();
+					byte[] msg = this.msgQueue.Dequeue();
 					tcs.SetResult(msg);
 				};
 			}

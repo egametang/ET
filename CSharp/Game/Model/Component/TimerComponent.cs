@@ -11,7 +11,7 @@ namespace Model
 		{
 			public ObjectId Id { get; set; }
 			public long Time { get; set; }
-			public int CallbackId { get; set; }
+			public EventType CallbackEvent { get; set; }
 			public Env Env { get; set; }
 		}
 
@@ -24,13 +24,13 @@ namespace Model
 
 		private readonly Queue<long> timeoutTimer = new Queue<long>();
 
-		public ObjectId Add(long time, int callbackId, Env env)
+		public ObjectId Add(long time, EventType callbackEvent, Env env)
 		{
 			Timer timer = new Timer
 			{
 				Id = ObjectId.GenerateNewId(),
 				Time = time,
-				CallbackId = callbackId,
+				CallbackEvent = callbackEvent,
 				Env = env
 			};
 			this.timers[timer.Id] = timer;
@@ -72,7 +72,7 @@ namespace Model
 						continue;
 					}
 					this.Remove(id);
-					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(timer.CallbackId, timer.Env);
+					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(timer.CallbackEvent, timer.Env);
 				}
 			}
 		}

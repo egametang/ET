@@ -16,7 +16,7 @@ namespace Model
 			}
 		}
 
-		private Dictionary<int, Func<NodeConfig, Node>> dictionary;
+		private Dictionary<NodeType, Func<NodeConfig, Node>> dictionary;
 
 		private BehaviorTreeFactory()
 		{
@@ -24,7 +24,7 @@ namespace Model
 
 		public void Load(Assembly assembly)
 		{
-			this.dictionary = new Dictionary<int, Func<NodeConfig, Node>>();
+			this.dictionary = new Dictionary<NodeType, Func<NodeConfig, Node>>();
 
 			Type[] types = assembly.GetTypes();
 			foreach (var type in types)
@@ -37,18 +37,18 @@ namespace Model
 				NodeAttribute attribute = (NodeAttribute) attrs[0];
 
 				Type classType = type;
-				this.dictionary.Add(attribute.NodeType,
+				this.dictionary.Add(attribute.Type,
 						config => (Node) Activator.CreateInstance(classType, new object[] { config }));
 			}
 		}
 
 		private Node CreateNode(NodeConfig config)
 		{
-			if (!this.dictionary.ContainsKey(config.Id))
+			if (!this.dictionary.ContainsKey((NodeType)config.Id))
 			{
 				throw new KeyNotFoundException(string.Format("CreateNode cannot found: {0}", config.Id));
 			}
-			return this.dictionary[config.Id](config);
+			return this.dictionary[(NodeType)config.Id](config);
 		}
 
 		private Node CreateTreeNode(NodeConfig config)

@@ -83,12 +83,15 @@
     <Compile Include="IAssemblyLoader.cs" />
     <Compile Include="ICategory.cs" />
     <Compile Include="IConfigLoader.cs" />
+    <Compile Include="IRegister.cs" />
     <Compile Include="IEventAsync.cs" />
-    <Compile Include="IEventSync.cs" />
+    <Compile Include="IMessage.cs" />
+    <Compile Include="IEvent.cs" />
     <Compile Include="IFactory.cs" />
     <Compile Include="IStart.cs" />
     <Compile Include="IUpdate.cs" />
     <Compile Include="MessageAttribute.cs" />
+    <Compile Include="NodeType.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="NumDefine.cs" />
     <Compile Include="Options.cs" />
