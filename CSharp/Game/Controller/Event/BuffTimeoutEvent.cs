@@ -4,9 +4,9 @@ using MongoDB.Bson;
 namespace Controller
 {
 	[Event(EventType.BuffTimeout, ServerType.City)]
-	public class BuffTimeoutEvent: IEvent
+	public class BuffTimeoutEvent: AEvent<Env>
 	{
-		public void Run(Env env)
+		public override void Run(Env env)
 		{
 			Unit owner = World.Instance.GetComponent<UnitComponent>().Get(env.Get<ObjectId>(EnvKey.OwnerId));
 			if (owner == null)

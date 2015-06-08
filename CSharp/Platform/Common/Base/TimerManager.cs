@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Common.Helper;
 using MongoDB.Bson;
@@ -20,7 +21,7 @@ namespace Common.Base
 		/// <summary>
 		/// key: time, value: timer id
 		/// </summary>
-		private readonly MultiMap<long, ObjectId> timeGuid = new MultiMap<long, ObjectId>();
+		private readonly MultiMap<long, ObjectId> timeId = new MultiMap<long, ObjectId>();
 
 		private readonly Queue<long> timeoutTimer = new Queue<long>();
 
@@ -28,7 +29,7 @@ namespace Common.Base
 		{
 			Timer timer = new Timer { Id = ObjectId.GenerateNewId(), Time = time, Action = action };
 			this.timers[timer.Id] = timer;
-			this.timeGuid.Add(timer.Time, timer.Id);
+			this.timeId.Add(timer.Time, timer.Id);
 			return timer.Id;
 		}
 
@@ -40,7 +41,7 @@ namespace Common.Base
 				return;
 			}
 			this.timers.Remove(timer.Id);
-			this.timeGuid.Remove(timer.Time, timer.Id);
+			this.timeId.Remove(timer.Time, timer.Id);
 		}
 
 		public Task<bool> Sleep(int time)
@@ -50,30 +51,36 @@ namespace Common.Base
 			return tcs.Task;
 		}
 
+		public Task<bool> Sleep(int time, CancellationToken token)
+		{
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ObjectId id = this.Add(TimeHelper.Now() + time, () => { tcs.SetResult(true); });
+			token.Register(() => { this.Remove(id); });
+			return tcs.Task;
+		}
+
 		public void Refresh()
 		{
 			long timeNow = TimeHelper.Now();
-			foreach (long time in this.timeGuid.Keys)
-			{
-				if (time > timeNow)
-				{
-					break;
-				}
-				this.timeoutTimer.Enqueue(time);
-			}
 
-			while (this.timeoutTimer.Count > 0)
+			while (true)
 			{
-				long key = this.timeoutTimer.Dequeue();
-				ObjectId[] timeoutIds = this.timeGuid.GetAll(key);
-				foreach (ObjectId id in timeoutIds)
+				KeyValuePair<long, List<ObjectId>> first = this.timeId.First;
+				if (first.Key > timeNow)
+				{
+					return;
+				}
+
+				List<ObjectId> timeoutId = first.Value;
+				this.timeId.Remove(first.Key);
+				foreach (ObjectId id in timeoutId)
 				{
 					Timer timer;
 					if (!this.timers.TryGetValue(id, out timer))
 					{
 						continue;
 					}
-					this.Remove(id);
+					this.timers.Remove(id);
 					timer.Action();
 				}
 			}

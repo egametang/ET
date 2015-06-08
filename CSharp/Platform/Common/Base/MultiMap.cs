@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.Base
 {
@@ -24,6 +25,14 @@ namespace Common.Base
 			}
 			list.Add(k);
 			this.dictionary[t] = list;
+		}
+
+		public KeyValuePair<T, List<K>> First
+		{
+			get
+			{
+				return dictionary.First();
+			}
 		}
 
 		public bool Remove(T t, K k)

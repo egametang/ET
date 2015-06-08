@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressHelper.cs" />
+    <Compile Include="Event\SleepTimeoutEvent.cs" />
     <Compile Include="Event\BuffTimeoutEvent.cs" />
     <Compile Include="BehaviorTreeNode\Not.cs" />
     <Compile Include="BehaviorTreeNode\Selector.cs" />

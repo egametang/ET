@@ -12,5 +12,7 @@
 		public const string Opcode = "Opcode";
 		public const string MessageUnitId = "MessageUnitId";
 		public const string RpcRequestId = "RpcRequestId";
+
+		public const string SleepTimeout_TaskCompletionSource = "SleepTimeout_TaskCompletionSource";
 	}
 }

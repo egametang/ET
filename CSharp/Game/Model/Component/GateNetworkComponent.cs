@@ -68,20 +68,15 @@ namespace Model
 			while (true)
 			{
 				byte[] messageBytes = await channel.RecvAsync();
-				Env env = new Env();
-				env[EnvKey.Channel] = channel;
-				env[EnvKey.MessageBytes] = messageBytes;
 				Opcode opcode = (Opcode)BitConverter.ToUInt16(messageBytes, 0);
-				env[EnvKey.Opcode] = opcode;
-				if (!MessageTypeHelper.IsClientMessage(opcode))
+				if (!OpcodeHelper.IsClientMessage(opcode))
 				{
 					continue;
 				}
 
-#pragma warning disable 4014
-				World.Instance.GetComponent<EventComponent<EventAttribute>>()
-						.RunAsync(EventType.GateRecvClientMessage, env);
-#pragma warning restore 4014
+				ObjectId unitId = channel.GetComponent<ChannelUnitInfoComponent>().UnitId;
+				Actor actor = World.Instance.GetComponent<ActorComponent>().Get(unitId);
+				actor.Add(messageBytes);
 			}
 		}
 

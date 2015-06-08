@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common.Base;
+using Common.Logger;
 
 namespace Model
 {
 	public class EventComponent<AttributeType>: Component<World>, IAssemblyLoader
 			where AttributeType : AEventAttribute
 	{
-		private Dictionary<EventType, List<IEvent>> eventSyncs;
-		private Dictionary<EventType, List<IEventAsync>> eventAsyncs;
+		private Dictionary<EventType, List<object>> allEvents;
 
 		public void Load(Assembly assembly)
 		{
-			this.eventSyncs = new Dictionary<EventType, List<IEvent>>();
-			this.eventAsyncs = new Dictionary<EventType, List<IEventAsync>>();
+			this.allEvents = new Dictionary<EventType, List<object>>();
 
 			ServerType serverType = World.Instance.Options.ServerType;
 
@@ -35,76 +34,180 @@ namespace Model
 				}
 
 				object obj = Activator.CreateInstance(t);
-				IEvent iEvent = obj as IEvent;
-				if (iEvent != null)
+				if (obj == null)
 				{
-					if (!this.eventSyncs.ContainsKey(aEventAttribute.Type))
-					{
-						this.eventSyncs.Add(aEventAttribute.Type, new List<IEvent>());
-					}
-					this.eventSyncs[aEventAttribute.Type].Add(iEvent);
-					continue;
+					throw new Exception(string.Format("event not inherit IEvent or IEventAsync interface: {0}",
+							obj.GetType().FullName));
 				}
-
-				IEventAsync iEventAsync = obj as IEventAsync;
-				// ReSharper disable once InvertIf
-				if (iEventAsync != null)
+				if (!this.allEvents.ContainsKey(aEventAttribute.Type))
 				{
-					if (!this.eventAsyncs.ContainsKey(aEventAttribute.Type))
-					{
-						this.eventAsyncs.Add(aEventAttribute.Type, new List<IEventAsync>());
-					}
-					this.eventAsyncs[aEventAttribute.Type].Add(iEventAsync);
-					continue;
+					this.allEvents.Add(aEventAttribute.Type, new List<object>());
 				}
-
-				throw new Exception(string.Format("event not inherit IEvent or IEventAsync interface: {0}",
-						obj.GetType().FullName));
+				this.allEvents[aEventAttribute.Type].Add(obj);
 			}
 		}
 
-		public void Run(EventType type, Env env)
+		public async Task RunAsync(EventType type)
 		{
-			List<IEvent> iEventSyncs = null;
-			if (!this.eventSyncs.TryGetValue(type, out iEventSyncs))
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
-				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
-						typeof (AttributeType).Name, type));
+				return;
 			}
 
-			foreach (IEvent iEventSync in iEventSyncs)
+			foreach (object obj in iEvents)
 			{
-				iEventSync.Run(env);
+				try
+				{
+					AEvent iEvent = obj as AEvent;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent", type));
+					}
+					iEvent.Run();
+					await iEvent.RunAsync();
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
+				}
 			}
 		}
 
-		public async Task RunAsync(EventType type, Env env)
+		public async Task RunAsync<A>(EventType type, A a)
 		{
-			List<IEvent> iEventSyncs = null;
-			this.eventSyncs.TryGetValue(type, out iEventSyncs);
-
-			List<IEventAsync> iEventAsyncs = null;
-			this.eventAsyncs.TryGetValue(type, out iEventAsyncs);
-
-			if (iEventSyncs == null && iEventAsyncs == null)
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
-				throw new Exception(string.Format("no event handler, AttributeType: {0} type: {1}",
-						typeof (AttributeType).Name, type));
+				return;
 			}
 
-			if (iEventSyncs != null)
+			foreach (object obj in iEvents)
 			{
-				foreach (IEvent iEventSync in iEventSyncs)
+				try
 				{
-					iEventSync.Run(env);
+					AEvent<A> iEvent = obj as AEvent<A>;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent<{1}>", type, typeof(A).Name));
+					}
+					iEvent.Run(a);
+					await iEvent.RunAsync(a);
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
 				}
 			}
+		}
 
-			if (iEventAsyncs != null)
+		public async Task RunAsync<A, B>(EventType type, A a, B b)
+		{
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
-				foreach (IEventAsync iEventAsync in iEventAsyncs)
+				return;
+			}
+
+			foreach (object obj in iEvents)
+			{
+				try
 				{
-					await iEventAsync.RunAsync(env);
+					AEvent<A, B> iEvent = obj as AEvent<A, B>;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}>", type, typeof(A).Name, typeof(B).Name));
+					}
+					iEvent.Run(a, b);
+					await iEvent.RunAsync(a, b);
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
+				}
+			}
+		}
+
+		public async Task RunAsync<A, B, C>(EventType type, A a, B b, C c)
+		{
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
+			{
+				return;
+			}
+
+			foreach (object obj in iEvents)
+			{
+				try
+				{
+					AEvent<A, B, C> iEvent = obj as AEvent<A, B, C>;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}>", type,
+							typeof(A).Name, typeof(B).Name, typeof(C).Name));
+					}
+					iEvent.Run(a, b, c);
+					await iEvent.RunAsync(a, b, c);
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
+				}
+			}
+		}
+
+		public async Task RunAsync<A, B, C, D>(EventType type, A a, B b, C c, D d)
+		{
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
+			{
+				return;
+			}
+
+			foreach (object obj in iEvents)
+			{
+				try
+				{
+					AEvent<A, B, C, D> iEvent = obj as AEvent<A, B, C, D>;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}, {4}>", type,
+							typeof(A).Name, typeof(B).Name, typeof(C).Name, typeof(D).Name));
+					}
+					iEvent.Run(a, b, c, d);
+					await iEvent.RunAsync(a, b, c, d);
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
+				}
+			}
+		}
+
+		public async Task RunAsync<A, B, C, D, E>(EventType type, A a, B b, C c, D d, E e)
+		{
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
+			{
+				return;
+			}
+
+			foreach (object obj in iEvents)
+			{
+				try
+				{
+					AEvent<A, B, C, D, E> iEvent = obj as AEvent<A, B, C, D, E>;
+					if (iEvent == null)
+					{
+						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}, {4}, {5}>", type,
+							typeof(A).Name, typeof(B).Name, typeof(C).Name, typeof(D).Name, typeof(E).Name));
+					}
+					iEvent.Run(a, b, c, d, e);
+					await iEvent.RunAsync(a, b, c, d, e);
+				}
+				catch (Exception err)
+				{
+					Log.Debug(err.ToString());
 				}
 			}
 		}

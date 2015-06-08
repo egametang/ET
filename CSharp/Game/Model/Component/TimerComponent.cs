@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Common.Base;
 using Common.Helper;
 using MongoDB.Bson;
@@ -21,9 +23,7 @@ namespace Model
 		/// key: time, value: timer id
 		/// </summary>
 		private readonly MultiMap<long, ObjectId> timeId = new MultiMap<long, ObjectId>();
-
-		private readonly Queue<long> timeoutTimer = new Queue<long>();
-
+		
 		public ObjectId Add(long time, EventType callbackEvent, Env env)
 		{
 			Timer timer = new Timer
@@ -48,31 +48,38 @@ namespace Model
 			this.timeId.Remove(timer.Time, timer.Id);
 		}
 
+		public Task<bool> Sleep(int time)
+		{
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			Env env = new Env();
+			env[EnvKey.SleepTimeout_TaskCompletionSource] = tcs;
+			this.Add(TimeHelper.Now() + time, EventType.SleepTimeout, env);
+			return tcs.Task;
+		}
+
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
-			foreach (long time in this.timeId.Keys)
-			{
-				if (time > timeNow)
-				{
-					break;
-				}
-				this.timeoutTimer.Enqueue(time);
-			}
 
-			while (this.timeoutTimer.Count > 0)
+			while (true)
 			{
-				long key = this.timeoutTimer.Dequeue();
-				List<ObjectId> timeOutId = this.timeId[key];
-				foreach (ObjectId id in timeOutId)
+				KeyValuePair<long, List<ObjectId>> first = this.timeId.First;
+				if (first.Key > timeNow)
+				{
+					return;
+				}
+
+				List<ObjectId> timeoutId = first.Value;
+				this.timeId.Remove(first.Key);
+				foreach (ObjectId id in timeoutId)
 				{
 					Timer timer;
 					if (!this.timers.TryGetValue(id, out timer))
 					{
 						continue;
 					}
-					this.Remove(id);
-					World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(timer.CallbackEvent, timer.Env);
+					this.timers.Remove(id);
+					World.Instance.GetComponent<EventComponent<EventAttribute>>().RunAsync(timer.CallbackEvent, timer.Env);
 				}
 			}
 		}

@@ -109,7 +109,7 @@ namespace Model
 				}
 
 				// 如果是server message(发给client的消息),说明这是gate server,需要根据unitid查到channel,进行发送
-				if (MessageTypeHelper.IsServerMessage(opcode))
+				if (OpcodeHelper.IsServerMessage(opcode))
 				{
 					byte[] idBuffer = new byte[12];
 					Array.Copy(messageBytes, 2, idBuffer, 0, 12);
@@ -176,23 +176,21 @@ namespace Model
 			var tcs = new TaskCompletionSource<T>();
 			this.requestCallback[this.requestId] = (messageBytes, status) =>
 			{
-				if (status == RpcResponseStatus.Timeout)
+				switch (status)
 				{
-					tcs.SetException(new Exception(
-						string.Format("rpc timeout {0} {1}", opcode, MongoHelper.ToJson(request))));
-					return;
-				}
-				if (status == RpcResponseStatus.Exception)
-				{
-					BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.All));
-					Exception exception;
-					using (MemoryStream stream = new MemoryStream(messageBytes))
-					{
-						stream.Seek(6, SeekOrigin.Begin);
-						exception = (Exception)formatter.Deserialize(stream);
-					}
-					tcs.SetException(exception);
-					return;
+					case RpcResponseStatus.Timeout:
+						tcs.SetException(new Exception(
+								string.Format("rpc timeout {0} {1}", opcode, MongoHelper.ToJson(request))));
+						return;
+					case RpcResponseStatus.Exception:
+						BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.All));
+						Exception exception;
+						using (MemoryStream stream = new MemoryStream(messageBytes, 6, messageBytes.Length - 6))
+						{
+							exception = (Exception)formatter.Deserialize(stream);
+						}
+						tcs.SetException(exception);
+						return;
 				}
 
 				// RpcResponseStatus.Succee

@@ -62,13 +62,13 @@ namespace Model
 			env[EnvKey.Owner] = this.Owner;
 			env[EnvKey.Buff] = buff;
 
-			World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.BeforeAddBuff, env);
+			World.Instance.GetComponent<EventComponent<EventAttribute>>().RunAsync(EventType.BeforeAddBuff, env);
 
 			this.buffs.Add(buff);
 			this.idBuff.Add(buff.Id, buff);
 			this.typeBuff.Add(buff.Config.Type, buff);
 
-			World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.AfterAddBuff, env);
+			World.Instance.GetComponent<EventComponent<EventAttribute>>().RunAsync(EventType.AfterAddBuff, env);
 		}
 
 		public Buff GetById(ObjectId id)
@@ -103,13 +103,13 @@ namespace Model
 			env[EnvKey.Buff] = buff;
 
 			World.Instance.GetComponent<EventComponent<EventAttribute>>()
-					.Run(EventType.BeforeRemoveBuff, env);
+					.RunAsync(EventType.BeforeRemoveBuff, env);
 
 			this.buffs.Remove(buff);
 			this.idBuff.Remove(buff.Id);
 			this.typeBuff.Remove(buff.Config.Type, buff);
 
-			World.Instance.GetComponent<EventComponent<EventAttribute>>().Run(EventType.AfterRemoveBuff, env);
+			World.Instance.GetComponent<EventComponent<EventAttribute>>().RunAsync(EventType.AfterRemoveBuff, env);
 			buff.Dispose();
 		}
 
