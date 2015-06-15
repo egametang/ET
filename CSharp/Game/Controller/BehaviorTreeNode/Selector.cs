@@ -9,11 +9,11 @@ namespace Controller
 		{
 		}
 
-		public override bool Run(BlackBoard blackBoard)
+		public override bool Run(Env env)
 		{
 			foreach (var child in this.children)
 			{
-				if (child.Run(blackBoard))
+				if (child.Run(env))
 				{
 					return true;
 				}

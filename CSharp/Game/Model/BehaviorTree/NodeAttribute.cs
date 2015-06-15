@@ -7,9 +7,9 @@ namespace Model
 	{
 		public NodeType Type { get; private set; }
 
-		public NodeAttribute(NodeType nodeType)
+		public NodeAttribute(NodeType type)
 		{
-			this.Type = nodeType;
+			this.Type = type;
 		}
 	}
 }

@@ -79,7 +79,9 @@ namespace Model
 						continue;
 					}
 					this.timers.Remove(id);
+#pragma warning disable 4014
 					World.Instance.GetComponent<EventComponent<EventAttribute>>().RunAsync(timer.CallbackEvent, timer.Env);
+#pragma warning restore 4014
 				}
 			}
 		}

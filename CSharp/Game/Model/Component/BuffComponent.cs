@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Common.Base;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+#pragma warning disable 4014
 
 namespace Model
 {

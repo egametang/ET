@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressHelper.cs" />
+    <Compile Include="ConfigCategory\TreeCategory.cs" />
     <Compile Include="Event\SleepTimeoutEvent.cs" />
     <Compile Include="Event\BuffTimeoutEvent.cs" />
     <Compile Include="BehaviorTreeNode\Not.cs" />
@@ -46,7 +47,6 @@
     <Compile Include="BehaviorTreeNode\Sequence.cs" />
     <Compile Include="ConfigCategory\BuffCategory.cs" />
     <Compile Include="ConfigCategory\GlobalCategory.cs" />
-    <Compile Include="ConfigCategory\NodeCategory.cs" />
     <Compile Include="ConfigCategory\ServerInfoCategory.cs" />
     <Compile Include="ConfigCategory\UnitCategory.cs" />
     <Compile Include="Factory\UnitPlayerFactory.cs" />

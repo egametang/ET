@@ -1,23 +1,46 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Common.Base;
 
 namespace Model
 {
-	public class BehaviorTreeComponent: Component<World>, IAssemblyLoader
+	public class BehaviorTreeComponent : Component<World>, IAssemblyLoader, IStart
 	{
-		private readonly Dictionary<int, BehaviorTree> trees = new Dictionary<int, BehaviorTree>();
+		private Dictionary<int, BehaviorTree> behaviorTrees;
+
+		private Dictionary<NodeType, Func<NodeConfig, Node>> dictionary =
+				new Dictionary<NodeType, Func<NodeConfig, Node>>();
 
 		public void Load(Assembly assembly)
 		{
-			BehaviorTreeFactory behaviorTreeFactory = BehaviorTreeFactory.Instance;
-			behaviorTreeFactory.Load(assembly);
-
-			NodeConfig[] nodeConfigs = World.Instance.GetComponent<ConfigComponent>().GetAll<NodeConfig>();
-			foreach (NodeConfig nodeConfig in nodeConfigs)
+			this.behaviorTrees = new Dictionary<int, BehaviorTree>();
+			dictionary = new Dictionary<NodeType, Func<NodeConfig, Node>>();
+			Type[] types = assembly.GetTypes();
+			foreach (Type type in types)
 			{
-				BehaviorTree behaviorTree = behaviorTreeFactory.CreateTree(nodeConfig);
-				this.trees[nodeConfig.Id] = behaviorTree;
+				object[] attrs = type.GetCustomAttributes(typeof(NodeAttribute), false);
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+
+				NodeAttribute attribute = attrs[0] as NodeAttribute;
+				Type classType = type;
+				if (this.dictionary.ContainsKey(attribute.Type))
+				{
+					throw new GameException(string.Format("已经存在同类节点: {0}", attribute.Type));
+				}
+				this.dictionary.Add(attribute.Type, config => (Node)Activator.CreateInstance(classType, config));
+			}
+		}
+
+		public void Start()
+		{
+			TreeConfig[] configs = World.Instance.GetComponent<ConfigComponent>().GetAll<TreeConfig>();
+			foreach (TreeConfig proto in configs)
+			{
+				behaviorTrees[proto.Id] = CreateTree(proto);
 			}
 		}
 
@@ -25,8 +48,45 @@ namespace Model
 		{
 			get
 			{
-				return this.trees[id];
+				BehaviorTree behaviorTree;
+				if (!this.behaviorTrees.TryGetValue(id, out behaviorTree))
+				{
+					throw new GameException(string.Format("无法找到行为树: {0}", id));
+				}
+				return behaviorTree;
 			}
+		}
+
+		private Node CreateOneNode(NodeConfig proto)
+		{
+			NodeType nodeType = (NodeType)proto.Type;
+			if (!this.dictionary.ContainsKey(nodeType))
+			{
+				throw new KeyNotFoundException(string.Format("NodeType没有定义该节点: {0}", nodeType));
+			}
+			return this.dictionary[nodeType](proto);
+		}
+
+		private Node CreateTreeNode(NodeConfig proto)
+		{
+			Node node = this.CreateOneNode(proto);
+			if (proto.Children == null)
+			{
+				return node;
+			}
+
+			foreach (NodeConfig nodeProto in proto.Children)
+			{
+				Node childNode = this.CreateTreeNode(nodeProto);
+				node.AddChild(childNode);
+			}
+			return node;
+		}
+
+		private BehaviorTree CreateTree(TreeConfig treeConfig)
+		{
+			Node node = this.CreateTreeNode(treeConfig.Root);
+			return new BehaviorTree(node);
 		}
 	}
 }

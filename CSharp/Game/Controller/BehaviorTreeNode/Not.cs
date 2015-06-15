@@ -9,9 +9,9 @@ namespace Controller
 		{
 		}
 
-		public override bool Run(BlackBoard blackBoard)
+		public override bool Run(Env env)
 		{
-			return !this.children[0].Run(blackBoard);
+			return !this.children[0].Run(env);
 		}
 	}
 }
