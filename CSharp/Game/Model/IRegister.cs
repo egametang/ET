@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Model
+﻿namespace Model
 {
 	public interface IRegister
 	{
@@ -15,15 +13,5 @@ namespace Model
 		}
 
 		public abstract R Run(T t);
-	}
-
-	public abstract class MEventAsync<T, R> : IRegister
-	{
-		public void Register()
-		{
-			World.Instance.GetComponent<MessageComponent>().RegisterAsync<T, R>(this.Run);
-		}
-
-		public abstract Task<R> Run(T t);
 	}
 }

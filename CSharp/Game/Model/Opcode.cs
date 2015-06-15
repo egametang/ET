@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	public enum Opcode: short
+	public enum Opcode: ushort
 	{
 		CMsgLogin = 1,
 		RpcResponse = 30000,

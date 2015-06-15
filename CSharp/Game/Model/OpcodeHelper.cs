@@ -19,23 +19,5 @@
 			}
 			return false;
 		}
-
-		public static bool IsRpcRequestMessage(Opcode opcode)
-		{
-			if ((ushort)opcode > 20000 && (ushort)opcode < 30000)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		public static bool IsRpcResponseMessage(Opcode opcode)
-		{
-			if ((ushort)opcode > 30000 && (ushort)opcode < 40000)
-			{
-				return true;
-			}
-			return false;
-		}
 	}
 }

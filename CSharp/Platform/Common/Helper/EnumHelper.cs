@@ -17,5 +17,10 @@ namespace Common.Helper
 			}
 			return -1;
 		}
+
+		public static T FromString<T>(string str)
+		{
+			return (T) Enum.Parse(typeof (T), str);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Common.Helper;
 using Model;
 
 namespace Modules.BehaviorTreeModule
@@ -58,7 +59,7 @@ namespace Modules.BehaviorTreeModule
 				return;
 			}
 			this.TreeNodeViewModel.Type =
-					(int) Enum.Parse(typeof (NodeType), this.cbType.SelectedValue.ToString().Trim());
+					(int) EnumHelper.FromString<NodeType>(this.cbType.SelectedValue.ToString().Trim());
 		}
 	}
 }

@@ -50,23 +50,12 @@ namespace Model
 
 		public void Register<T, R>(Func<T, R> func)
 		{
-			Opcode opcode = (Opcode) Enum.Parse(typeof (Opcode), typeof (T).Name);
+			Opcode opcode = EnumHelper.FromString<Opcode>(typeof (T).Name);
 			events.Add(opcode, messageBytes =>
 			{
 				T t = MongoHelper.FromBson<T>(messageBytes, 6);
 				R k = func(t);
 				return MongoHelper.ToBson(k);
-			});
-		}
-
-		public void RegisterAsync<T, R>(Func<T, Task<R>> func)
-		{
-			Opcode opcode = (Opcode)Enum.Parse(typeof(Opcode), typeof(T).Name);
-			eventsAsync.Add(opcode, async messageBytes =>
-			{
-				T t = MongoHelper.FromBson<T>(messageBytes, 6);
-				R r = await func(t);
-				return MongoHelper.ToBson(r);
 			});
 		}
 

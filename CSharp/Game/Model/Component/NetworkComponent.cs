@@ -169,7 +169,7 @@ namespace Model
 
 			++this.requestId;
 			byte[] requestBuffer = MongoHelper.ToBson(request);
-			Opcode opcode = (Opcode)Enum.Parse(typeof(Opcode), request.GetType().Name);
+			Opcode opcode = EnumHelper.FromString<Opcode>(request.GetType().Name);
 			byte[] opcodeBuffer = BitConverter.GetBytes((ushort)opcode);
 			byte[] idBuffer = BitConverter.GetBytes(this.requestId);
 			channel.SendAsync(new List<byte[]> { opcodeBuffer, idBuffer, requestBuffer });
