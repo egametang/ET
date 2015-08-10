@@ -38,7 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressHelper.cs" />
+    <Compile Include="Logic\AddressHelper.cs" />
     <Compile Include="ConfigCategory\TreeCategory.cs" />
     <Compile Include="Event\SleepTimeoutEvent.cs" />
     <Compile Include="Event\BuffTimeoutEvent.cs" />
@@ -63,7 +63,9 @@
       <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extension\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
