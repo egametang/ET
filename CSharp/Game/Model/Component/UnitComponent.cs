@@ -44,7 +44,7 @@ namespace Model
 		{
 			if (unit == null)
 			{
-				throw new ArgumentNullException("unit");
+				throw new ArgumentNullException(nameof(unit));
 			}
 			if (!this.units.Remove(unit.Id))
 			{
