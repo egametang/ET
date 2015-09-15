@@ -179,8 +179,7 @@ namespace Model
 				switch (status)
 				{
 					case RpcResponseStatus.Timeout:
-						tcs.SetException(new Exception(
-								string.Format("rpc timeout {0} {1}", opcode, MongoHelper.ToJson(request))));
+						tcs.SetException(new Exception($"rpc timeout {opcode} {MongoHelper.ToJson(request)}"));
 						return;
 					case RpcResponseStatus.Exception:
 						BinaryFormatter formatter = new BinaryFormatter(null, new StreamingContext(StreamingContextStates.All));

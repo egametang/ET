@@ -18,7 +18,7 @@ namespace Model
 
 			if (!Directory.Exists(path))
 			{
-				throw new Exception(string.Format("not found config path: {0}", path));
+				throw new Exception($"not found config path: {path}");
 			}
 
 			foreach (string file in Directory.GetFiles(path))

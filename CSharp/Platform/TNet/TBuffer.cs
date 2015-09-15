@@ -68,8 +68,7 @@ namespace TNet
 		{
 			if (this.Count < buffer.Length || buffer.Length == 0)
 			{
-				throw new Exception(string.Format("bufferList size < n, bufferList: {0} buffer length: {1}",
-						this.Count, buffer.Length));
+				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length}");
 			}
 			int alreadyCopyCount = 0;
 			while (alreadyCopyCount < buffer.Length)

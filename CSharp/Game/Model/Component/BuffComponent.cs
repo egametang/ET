@@ -49,14 +49,12 @@ namespace Model
 		{
 			if (this.buffs.Contains(buff))
 			{
-				throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}",
-						buff.Id, buff.Config.Id));
+				throw new ArgumentException($"already exist same buff, Id: {buff.Id} ConfigId: {buff.Config.Id}");
 			}
 
 			if (this.idBuff.ContainsKey(buff.Id))
 			{
-				throw new ArgumentException(string.Format("already exist same buff, Id: {0} ConfigId: {1}",
-						buff.Id, buff.Config.Id));
+				throw new ArgumentException($"already exist same buff, Id: {buff.Id} ConfigId: {buff.Config.Id}");
 			}
 
 			Env env = new Env();

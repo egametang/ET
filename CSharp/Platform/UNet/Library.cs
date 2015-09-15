@@ -7,7 +7,7 @@
 			int ret = NativeMethods.ENetInitialize();
 			if (ret < 0)
 			{
-				throw new UException(string.Format("Initialization failed, ret: {0}", ret));
+				throw new UException($"Initialization failed, ret: {ret}");
 			}
 		}
 

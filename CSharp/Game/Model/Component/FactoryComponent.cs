@@ -32,7 +32,7 @@ namespace Model
 				var iFactory = obj as IFactory<T>;
 				if (iFactory == null)
 				{
-					throw new Exception(string.Format("class: {0} not inherit from IFactory", type.Name));
+					throw new Exception($"class: {type.Name} not inherit from IFactory");
 				}
 
 				this.allConfig[attribute.Type] = iFactory;

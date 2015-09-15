@@ -34,7 +34,7 @@ namespace Model
 				ICategory iCategory = obj as ICategory;
 				if (iCategory == null)
 				{
-					throw new Exception(string.Format("class: {0} not inherit from ACategory", type.Name));
+					throw new Exception($"class: {type.Name} not inherit from ACategory");
 				}
 				iCategory.BeginInit();
 				iCategory.EndInit();
@@ -49,7 +49,7 @@ namespace Model
 			ICategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
-				throw new KeyNotFoundException(string.Format("ConfigComponent not found key: {0}", type.FullName));
+				throw new KeyNotFoundException($"ConfigComponent not found key: {type.FullName}");
 			}
 			return ((ACategory<T>) configCategory)[id];
 		}
@@ -60,7 +60,7 @@ namespace Model
 			ICategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
-				throw new KeyNotFoundException(string.Format("ConfigComponent not found key: {0}", type.FullName));
+				throw new KeyNotFoundException($"ConfigComponent not found key: {type.FullName}");
 			}
 			return ((ACategory<T>) configCategory).GetAll();
 		}

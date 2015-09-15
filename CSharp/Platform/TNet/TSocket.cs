@@ -126,7 +126,7 @@ namespace TNet
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
-				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
 				return;
 			}
 			tcs.SetResult(true);
@@ -150,7 +150,7 @@ namespace TNet
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
-				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
 				return;
 			}
 			tcs.SetResult(true);
@@ -174,7 +174,7 @@ namespace TNet
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
-				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
 				return;
 			}
 			tcs.SetResult(e.BytesTransferred);
@@ -198,7 +198,7 @@ namespace TNet
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
-				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
 				return;
 			}
 			tcs.SetResult(e.BytesTransferred);
@@ -221,7 +221,7 @@ namespace TNet
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
 			{
-				tcs.SetException(new Exception(string.Format("socket error: {0}", e.SocketError)));
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
 				return;
 			}
 			tcs.SetResult(true);

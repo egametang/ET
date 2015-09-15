@@ -86,7 +86,7 @@ namespace TNet
 		{
 			if (this.acceptor == null)
 			{
-				throw new Exception(string.Format("service construct must use host and port param"));
+				throw new Exception("service construct must use host and port param");
 			}
 			TSocket socket = new TSocket(this.poller);
 			await this.acceptor.AcceptAsync(socket);

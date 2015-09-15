@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Modules.BehaviorTreeModule</RootNamespace>
     <AssemblyName>BehaviorTreeModule</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Utf8Output>true</Utf8Output>
     <ExpressionBlendVersion>4.0.20621.0</ExpressionBlendVersion>

@@ -83,7 +83,7 @@ namespace Modules.BehaviorTreeModule
 			cfg.AppSettings.Settings["NodePath"].Value = path;
 			cfg.Save();
 			ConfigurationManager.AppSettings["NodePath"] = path;
-			Application.Current.MainWindow.Title = string.Format("行为树编辑器 当前工作目录[{0}]", ConfigurationManager.AppSettings["NodePath"]);
+			Application.Current.MainWindow.Title = $"行为树编辑器 当前工作目录[{ConfigurationManager.AppSettings["NodePath"]}]";
 		}
 
 		private void MenuItem_Remove(object sender, RoutedEventArgs e)

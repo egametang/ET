@@ -29,7 +29,7 @@ namespace Model
 				Type classType = type;
 				if (this.dictionary.ContainsKey(attribute.Type))
 				{
-					throw new GameException(string.Format("已经存在同类节点: {0}", attribute.Type));
+					throw new GameException($"已经存在同类节点: {attribute.Type}");
 				}
 				this.dictionary.Add(attribute.Type, config => (Node)Activator.CreateInstance(classType, config));
 			}
@@ -51,7 +51,7 @@ namespace Model
 				BehaviorTree behaviorTree;
 				if (!this.behaviorTrees.TryGetValue(id, out behaviorTree))
 				{
-					throw new GameException(string.Format("无法找到行为树: {0}", id));
+					throw new GameException($"无法找到行为树: {id}");
 				}
 				return behaviorTree;
 			}
@@ -59,10 +59,10 @@ namespace Model
 
 		private Node CreateOneNode(NodeConfig proto)
 		{
-			NodeType nodeType = (NodeType)proto.Type;
+			NodeType nodeType = proto.Type;
 			if (!this.dictionary.ContainsKey(nodeType))
 			{
-				throw new KeyNotFoundException(string.Format("NodeType没有定义该节点: {0}", nodeType));
+				throw new KeyNotFoundException($"NodeType没有定义该节点: {nodeType}");
 			}
 			return this.dictionary[nodeType](proto);
 		}

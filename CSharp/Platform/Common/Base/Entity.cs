@@ -34,9 +34,7 @@ namespace Common.Base
 
 			if (this.componentDict.ContainsKey(component.GetComponentType()))
 			{
-				throw new Exception(
-						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-								typeof (K).Name));
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
 
 			if (this.components == null)
@@ -53,9 +51,7 @@ namespace Common.Base
 		{
 			if (this.componentDict.ContainsKey(component.GetComponentType()))
 			{
-				throw new Exception(
-						string.Format("AddComponent, component already exist, id: {0}, component: {1}", this.Id,
-								component.GetComponentType().Name));
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {component.GetComponentType().Name}");
 			}
 
 			if (this.components == null)
@@ -71,9 +67,7 @@ namespace Common.Base
 			Component<T> component;
 			if (!this.componentDict.TryGetValue(typeof (K), out component))
 			{
-				throw new Exception(
-						string.Format("RemoveComponent, component not exist, id: {0}, component: {1}", this.Id,
-								typeof (K).Name));
+				throw new Exception($"RemoveComponent, component not exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
 
 			this.components.Remove(component);

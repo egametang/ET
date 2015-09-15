@@ -32,7 +32,7 @@ namespace Model
 				}
 				catch (Exception e)
 				{
-					Log.Trace(string.Format(e.ToString()));
+					Log.Trace(e.ToString());
 				}
 			}
 		}

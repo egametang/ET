@@ -37,14 +37,9 @@ namespace Model
 				object obj = Activator.CreateInstance(t);
 
 				IRegister iRegister = obj as IRegister;
-				if (iRegister != null)
-				{
-					iRegister.Register();
-				}
+				iRegister?.Register();
 
-				throw new Exception(
-					string.Format("message handler not inherit IRegister interface: {0}", 
-						obj.GetType().FullName));
+				throw new Exception($"message handler not inherit IRegister interface: {obj.GetType().FullName}");
 			}
 		}
 
@@ -72,7 +67,7 @@ namespace Model
 			{
 				return await funcAsync(messageBytes);
 			}
-			throw new GameException(string.Format("not found opcode handler: {0}", opcode));
+			throw new GameException($"not found opcode handler: {opcode}");
 		}
 	}
 }

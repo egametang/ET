@@ -36,8 +36,7 @@ namespace Model
 				object obj = Activator.CreateInstance(t);
 				if (obj == null)
 				{
-					throw new Exception(string.Format("event not inherit IEvent or IEventAsync interface: {0}",
-							obj.GetType().FullName));
+					throw new Exception($"event not inherit IEvent or IEventAsync interface: {obj.GetType().FullName}");
 				}
 				if (!this.allEvents.ContainsKey(aEventAttribute.Type))
 				{
@@ -62,7 +61,7 @@ namespace Model
 					AEvent iEvent = obj as AEvent;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent", type));
+						throw new GameException($"event type: {type} is not IEvent");
 					}
 					iEvent.Run();
 					await iEvent.RunAsync();
@@ -89,7 +88,7 @@ namespace Model
 					AEvent<A> iEvent = obj as AEvent<A>;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent<{1}>", type, typeof(A).Name));
+						throw new GameException($"event type: {type} is not IEvent<{typeof (A).Name}>");
 					}
 					iEvent.Run(a);
 					await iEvent.RunAsync(a);
@@ -116,7 +115,7 @@ namespace Model
 					AEvent<A, B> iEvent = obj as AEvent<A, B>;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}>", type, typeof(A).Name, typeof(B).Name));
+						throw new GameException($"event type: {type} is not IEvent<{typeof (A).Name}, {typeof (B).Name}>");
 					}
 					iEvent.Run(a, b);
 					await iEvent.RunAsync(a, b);
@@ -143,8 +142,7 @@ namespace Model
 					AEvent<A, B, C> iEvent = obj as AEvent<A, B, C>;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}>", type,
-							typeof(A).Name, typeof(B).Name, typeof(C).Name));
+						throw new GameException($"event type: {type} is not IEvent<{typeof (A).Name}, {typeof (B).Name}, {typeof (C).Name}>");
 					}
 					iEvent.Run(a, b, c);
 					await iEvent.RunAsync(a, b, c);
@@ -171,8 +169,7 @@ namespace Model
 					AEvent<A, B, C, D> iEvent = obj as AEvent<A, B, C, D>;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}, {4}>", type,
-							typeof(A).Name, typeof(B).Name, typeof(C).Name, typeof(D).Name));
+						throw new GameException($"event type: {type} is not IEvent<{typeof (A).Name}, {typeof (B).Name}, {typeof (C).Name}, {typeof (D).Name}>");
 					}
 					iEvent.Run(a, b, c, d);
 					await iEvent.RunAsync(a, b, c, d);
@@ -199,8 +196,8 @@ namespace Model
 					AEvent<A, B, C, D, E> iEvent = obj as AEvent<A, B, C, D, E>;
 					if (iEvent == null)
 					{
-						throw new GameException(string.Format("event type: {0} is not IEvent<{1}, {2}, {3}, {4}, {5}>", type,
-							typeof(A).Name, typeof(B).Name, typeof(C).Name, typeof(D).Name, typeof(E).Name));
+						throw new GameException(
+								$"event type: {type} is not IEvent<{typeof (A).Name}, {typeof (B).Name}, {typeof (C).Name}, {typeof (D).Name}, {typeof (E).Name}>");
 					}
 					iEvent.Run(a, b, c, d, e);
 					await iEvent.RunAsync(a, b, c, d, e);
