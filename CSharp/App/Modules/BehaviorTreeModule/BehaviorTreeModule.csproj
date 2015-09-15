@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="AllTreeView.xaml">
