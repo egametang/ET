@@ -1,12 +1,13 @@
-﻿using Model;
+﻿using Base;
 
 namespace Controller
 {
+	[Message]
     public class Entry
     {
-		public static void Log()
+		public static void Init()
 		{
-			Interop.Log();
+			UnityEngine.Debug.Log("aaaaaaaaaaaaaaaaa" + typeof(Init).Name);
 		}
     }
 }

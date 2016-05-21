@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1AA60596-6964-87F6-2427-6CA85BBAF27D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
+    <UnityVersion>5.3.4f1</UnityVersion>
+    <RootNamespace></RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_3_4;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_3_4;UNITY_5_3;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="AsyncBridge.Net35">
+      <HintPath>Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\CLRSharp_Env.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\CrossBind\Yield.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Execute\CodeBody.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Execute\Context.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Execute\StackFrame.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Execute\ValueOnStack.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Interface\EnvAndLog.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\CLRSharp\CLRSharp_Instance.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\CLRSharp\CLRSharp_Type.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\Delegate\Delegate_Helper.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\System\System_Type.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\Type_Common.cs" />
+    <Compile Include="Assets\Plugins\CLRSharp\CLRSharp\Type\Type_List.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Code.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Document.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ExceptionHandler.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ILProcessor.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Instruction.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\MethodBody.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCode.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCodes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\SequencePoint.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Symbols.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\BlobHeap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Buffers.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\CodedIndex.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\ElementType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\GuidHeap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Heap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\MetadataToken.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Row.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\StringHeap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TableHeap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TokenType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\UserStringHeap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Utilities.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBuffer.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBufferEqualityComparer.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\DataDirectory.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Image.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Section.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\TextMap.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ArrayType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyFlags.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyHashAlgorithm.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyLinkedResource.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\BaseAssemblyResolver.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\CallSite.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\CustomAttribute.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\DefaultAssemblyResolver.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\EmbeddedResource.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ExportedType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\FileAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\FunctionPointerType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceMethod.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameterAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IConstantProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ICustomAttributeProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericInstance.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericParameterProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMarshalInfoProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMemberDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataScope.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataTokenProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMethodSignature.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\Import.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\LinkedResource.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ManifestResourceAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MarshalInfo.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberDefinitionCollection.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataResolver.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataSystem.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodCallingConvention.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodImplAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReturnType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSemanticsAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSpecification.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\Modifiers.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleKind.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\NativeType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeInfo.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinitionCollection.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PinnedType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PointerType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\ReferenceType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\Resource.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\SecurityDeclaration.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\SentinelType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TargetRuntime.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeAttributes.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinition.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinitionCollection.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeParser.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeReference.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSpecification.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSystem.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Cecil\VariantType.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\Collection.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\ReadOnlyCollection.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoConvert.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoService.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono\Actions.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono\Empty.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.20\MonoCecil\Mono\Funcs.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.Cecil.Mdb\MdbReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.Cecil.Mdb\MdbReaderProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\AnonymousScopeEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CapturedScope.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CapturedVariable.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CodeBlockEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CompileUnitEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ICompileUnit.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\IMethodDef.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ISourceFile.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LineNumberEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LineNumberTable.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LocalVariableEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MethodEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolFile.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolFileException.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MyBinaryReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MyBinaryWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\NamespaceEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\NamespaceInfo.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\OffsetTable.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ScopeVariable.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceFileEntry.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodBuilder.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodImpl.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SymbolDocumentWriterImpl.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SymbolWriterImpl.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitAccess.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitSet.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\CvInfo.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DataStream.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiDbgHdr.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiHeader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiModuleInfo.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiSecCon.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\IntHashTable.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\Interfaces.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\MsfDirectory.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbConstant.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbDebugException.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbException.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFile.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFileHeader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFunction.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLine.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLines.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbScope.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSlot.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSource.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\SourceLocationProvider.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedDocumentWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedWriter2.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ModuleMetadata.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbHelper.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbReader.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
+    <Compile Include="Assets\Plugins\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
+    <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+</Project>

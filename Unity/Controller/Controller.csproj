@@ -46,16 +46,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UnityVS.Unity.CSharp.csproj">
-      <Project>{164a416e-423a-6066-5bd1-6e559e316dd4}</Project>
-      <Name>UnityVS.Unity.CSharp</Name>
+    <ProjectReference Include="..\Unity.CSharp.csproj">
+      <Project>{4123f183-8f61-27ae-ea27-294dde0cc7eb}</Project>
+      <Name>Unity.CSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UnityVS.Unity.CSharp.Plugins.csproj">
-      <Project>{d526745b-ad5e-90c8-810d-631401465d12}</Project>
-      <Name>UnityVS.Unity.CSharp.Plugins</Name>
+    <ProjectReference Include="..\Unity.CSharp.Plugins.csproj">
+      <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
+      <Name>Unity.CSharp.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)\CSharp60Support\Roslyn\pdb2mdb.exe" $(TargetFileName)
+echo f | xcopy /y $(TargetDir)Controller.dll $(SolutionDir)Assets\Res\Code\$(TargetFileName).bytes
+echo f | xcopy /y $(TargetDir)Controller.dll.mdb $(SolutionDir)Assets\Res\Code\$(TargetFileName).mdb.bytes</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
