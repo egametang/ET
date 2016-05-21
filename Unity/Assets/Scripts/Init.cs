@@ -1,10 +1,11 @@
-﻿using Base;
+﻿using System;
+using Base;
 using UnityEngine;
 
 public class Init : MonoBehaviour 
 {
 	CLRSharp.CLRSharp_Environment env;
-	// Use this for initialization
+	
 
 	void Start()
 	{
@@ -21,16 +22,13 @@ public class Init : MonoBehaviour
 		//env.LoadModule (msDll);//如果无符号是pdb的话，第二个参数传null
 		//env.LoadModule(msDll, msPdb, new Mono.Cecil.Pdb.PdbReaderProvider());//Pdb
 		env.LoadModule(msDll, msMdb, new Mono.Cecil.Mdb.MdbReaderProvider());//如果符号是Mdb格式
-		Debug.Log("LoadModule Controller.dll done.");
 
 		//step01建立一个线程上下文，用来模拟L#的线程模型，每个线程创建一个即可。
 		CLRSharp.ThreadContext context = new CLRSharp.ThreadContext(env);
-		Debug.Log("Create ThreadContext for L#.");
 
 		//step02取得想要调用的L#类型
 		CLRSharp.ICLRType wantType = env.GetType("Controller.Entry");//用全名称，包括命名空间
-		Debug.Log("GetType:" + wantType.Name);
-		Log.Debug(wantType.TypeForSystem.ToString());
+
 		//和反射代码中的Type.GetType相对应
 		//step03 静态调用
 		//得到类型上的一个函数，第一个参数是函数名字，第二个参数是函数的参数表，这是一个没有参数的函数

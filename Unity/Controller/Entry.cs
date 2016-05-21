@@ -1,13 +1,22 @@
-﻿using Base;
+﻿using System;
+using Base;
+using System.Threading.Tasks;
 
 namespace Controller
 {
 	[Message]
     public class Entry
     {
-		public static void Init()
+		public static async void Init()
 		{
-			UnityEngine.Debug.Log("aaaaaaaaaaaaaaaaa" + typeof(Init).Name);
+			try
+			{
+				await Task.Factory.StartNew(()=> {Log.Debug("aaaaaaaaaaaaaaaaa");});
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
     }
 }
