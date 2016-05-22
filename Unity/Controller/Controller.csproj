@@ -11,13 +11,13 @@
     <AssemblyName>Controller</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,6 +29,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncBridge.Net35, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b3b1c0202c0d6a87, processorArchitecture=MSIL">
@@ -50,13 +53,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{ed5f97a1-3863-478a-9086-d9faf7c5b99f}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Unity.CSharp.csproj">
       <Project>{4123f183-8f61-27ae-ea27-294dde0cc7eb}</Project>
       <Name>Unity.CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.CSharp.Editor.csproj">
+      <Project>{27d29a4b-fde7-b1bd-e226-b13a243bca00}</Project>
+      <Name>Unity.CSharp.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Unity.CSharp.Plugins.csproj">
       <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
@@ -66,8 +76,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)\CSharp60Support\Roslyn\pdb2mdb.exe" $(TargetFileName)
-echo f | xcopy /y $(TargetDir)Controller.dll $(SolutionDir)Assets\Res\Code\$(TargetFileName).bytes
-echo f | xcopy /y $(TargetDir)Controller.dll.mdb $(SolutionDir)Assets\Res\Code\$(TargetFileName).mdb.bytes</PostBuildEvent>
+echo f | xcopy /y $(TargetDir)$(TargetFileName) $(SolutionDir)Assets\Res\Code\$(TargetFileName).bytes
+echo f | xcopy /y $(TargetDir)$(TargetFileName).mdb $(SolutionDir)Assets\Res\Code\$(TargetFileName).mdb.bytes</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
