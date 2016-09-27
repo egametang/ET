@@ -10,22 +10,92 @@ namespace Base
 	{
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component<T>> components = new HashSet<Component<T>>();
-
 		private Dictionary<Type, Component<T>> componentDict = new Dictionary<Type, Component<T>>();
+
+		[BsonIgnore]
+		public T Parent { get; set; }
+		public string Name { get; }
+
+		[BsonElement, BsonIgnoreIfNull]
+		private Dictionary<long, T> idChildren;
+
+		[BsonElement, BsonIgnoreIfNull]
+		private Dictionary<string, T> nameChildren;
 
 		protected Entity()
 		{
+			this.Name = "";
 			ObjectManager.Add(this);
 		}
 
-		protected Entity(long id): base(id)
+		protected Entity(string name)
 		{
+			this.Name = name;
+			ObjectManager.Add(this);
+		}
+
+		protected Entity(long id, string name): base(id)
+		{
+			this.Name = name;
 			ObjectManager.Add(this);
 		}
 
 		public T Clone()
 		{
 			return MongoHelper.FromBson<T>(MongoHelper.ToBson(this));
+		}
+
+
+		public int Count
+		{
+			get
+			{
+				return this.idChildren.Count;
+			}
+		}
+
+		public void Add(T t)
+		{
+			t.Parent = (T)this;
+			if (this.idChildren == null)
+			{
+				this.idChildren = new Dictionary<long, T>();
+				this.nameChildren = new Dictionary<string, T>();
+			}
+			this.idChildren.Add(t.Id, t);
+			this.nameChildren.Add(t.Name, t);
+		}
+
+		private void Remove(T t)
+		{
+			this.idChildren.Remove(t.Id);
+			this.nameChildren.Remove(t.Name);
+			if (this.idChildren.Count == 0)
+			{
+				this.idChildren = null;
+				this.nameChildren = null;
+			}
+			t.Dispose();
+		}
+
+		public void Remove(long id)
+		{
+			T t;
+			if (!this.idChildren.TryGetValue(id, out t))
+			{
+				return;
+			}
+			this.Remove(t);
+		}
+
+		public void Remove(string name)
+		{
+			T t;
+			if (!this.nameChildren.TryGetValue(name, out t))
+			{
+				return;
+			}
+			this.Remove(t);
 		}
 
 		public override void Dispose()
@@ -36,6 +106,11 @@ namespace Base
 			}
 
 			base.Dispose();
+
+			foreach (T t in this.idChildren.Values.ToArray())
+			{
+				t.Dispose();
+			}
 
 			foreach (Component<T> component in this.GetComponents())
 			{
@@ -48,6 +123,7 @@ namespace Base
 					Log.Error(e.ToString());
 				}
 			}
+			this.Parent?.Remove(this.Id);
 
 			ObjectManager.Remove(this.Id);
 		}
