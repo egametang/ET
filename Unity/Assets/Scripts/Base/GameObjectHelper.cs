@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Base
 {
 	public static class GameObjectHelper
 	{
-		public static T Get<T>(this GameObject gameObject, string key) where T : class
+		public static T Get<T>(this GameObject gameObject, string key) where T: class 
 		{
 			try
 			{
@@ -14,7 +13,7 @@ namespace Base
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"获取 {gameObject.name} ReferenceCollector key {key} 失败", e);
+				throw new ConfigException($"获取{gameObject.name}的ReferenceCollector key失败, key: {key}", e);
 			}
 		}
 	}

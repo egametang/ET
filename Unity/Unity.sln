@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp.Plugins", "Unity.CSharp.Plugins.csproj", "{1AA60596-6964-87F6-2427-6CA85BBAF27D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp", "Unity.CSharp.csproj", "{4123F183-8F61-27AE-EA27-294DDE0CC7EB}"
@@ -8,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp.Editor", "Unity.CSharp.Editor.csproj", "{27D29A4B-FDE7-B1BD-E226-B13A243BCA00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{E875513C-291C-4378-815E-85D7DFB8C1A9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{ED5F97A1-3863-478A-9086-D9FAF7C5B99F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,6 @@ Global
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED5F97A1-3863-478A-9086-D9FAF7C5B99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED5F97A1-3863-478A-9086-D9FAF7C5B99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED5F97A1-3863-478A-9086-D9FAF7C5B99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED5F97A1-3863-478A-9086-D9FAF7C5B99F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

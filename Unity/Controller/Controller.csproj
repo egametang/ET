@@ -53,13 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event\InitSceneStartEvent_InitGame.cs" />
+    <Compile Include="Message\S2C_InitBuffInfoEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj">
-      <Project>{ed5f97a1-3863-478a-9086-d9faf7c5b99f}</Project>
-      <Name>Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Unity.CSharp.csproj">
       <Project>{4123f183-8f61-27ae-ea27-294dde0cc7eb}</Project>
       <Name>Unity.CSharp</Name>
@@ -72,6 +70,9 @@
       <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
       <Name>Unity.CSharp.Plugins</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
