@@ -19,6 +19,7 @@ namespace Controller
 			byte[] mdbBytes = code.Get<TextAsset>("Controller.dll.mdb").bytes;
 			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
 			Object.ObjectManager.Register("Controller", assembly);
+			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 
 			Game.Scene.AddComponent<MessageComponent>();
 

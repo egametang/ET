@@ -91,6 +91,7 @@ namespace Base
 					throw new GameException($"socket error: {e.LastOperation}");
 			}
 
+			// 回调到主线程处理
 			this.poller.Add(action);
 		}
 
