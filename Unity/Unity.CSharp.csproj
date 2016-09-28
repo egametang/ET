@@ -131,6 +131,7 @@
     <Compile Include="Assets\Scripts\Base\ReferenceCollector.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Component\Game.cs" />
+    <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\GlobalConfigComponent.cs" />

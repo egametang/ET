@@ -12,13 +12,12 @@ namespace Base
 		[BsonIgnore]
 		public T Parent { get; private set; }
 
-		private List<T> children;
-
-		[BsonElement, BsonIgnoreIfNull]
-		private Dictionary<long, T> idChildren;
-
-		[BsonElement, BsonIgnoreIfNull]
-		private Dictionary<string, T> nameChildren;
+		[BsonElement]
+		private readonly List<T> children = new List<T>();
+		
+		private readonly Dictionary<long, T> idChildren = new Dictionary<long, T>();
+		
+		private readonly Dictionary<string, T> nameChildren = new Dictionary<string, T>();
 
 		[BsonIgnore]
 		public int Count
@@ -32,12 +31,6 @@ namespace Base
 		public void Add(T t)
 		{
 			t.GetComponent<LevelComponent<T>>().Parent = this.Owner;
-			if (this.idChildren == null)
-			{
-				this.children = new List<T>();
-				this.idChildren = new Dictionary<long, T>();
-				this.nameChildren = new Dictionary<string, T>();
-			}
 			this.children.Add(t);
 			this.idChildren.Add(t.Id, t);
 			this.nameChildren.Add(t.Name, t);
@@ -52,12 +45,6 @@ namespace Base
 		{
 			this.idChildren.Remove(t.Id);
 			this.nameChildren.Remove(t.Name);
-			if (this.idChildren.Count == 0)
-			{
-				this.children = null;
-				this.idChildren = null;
-				this.nameChildren = null;
-			}
 			t.Dispose();
 		}
 
@@ -98,4 +85,22 @@ namespace Base
 			this.Parent?.GetComponent<LevelComponent<T>>().Remove(this.Id);
 		}
     }
+
+	public static class LevelHelper
+	{
+		public static void AddChild<T>(this Entity<T> entity, T t) where T : Entity<T>
+		{
+			entity.GetComponent<LevelComponent<T>>().Add(t);
+		}
+
+		public static void RemoveChild<T>(this Entity<T> entity, long id) where T : Entity<T>
+		{
+			entity.GetComponent<LevelComponent<T>>().Remove(id);
+		}
+
+		public static void RemoveChild<T>(this Entity<T> entity, string name) where T : Entity<T>
+		{
+			entity.GetComponent<LevelComponent<T>>().Remove(name);
+		}
+	}
 }
