@@ -158,62 +158,6 @@ namespace Base
 			this.objects.Remove(id);
 		}
 
-		public void Open(long id)
-		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
-			{
-				return;
-			}
-			IObjectEvent e;
-			if (!objectEvents.TryGetValue(obj.GetType(), out e))
-			{
-				return;
-			}
-			IOpen open = e as IOpen;
-			if (open == null)
-			{
-				return;
-			}
-			try
-			{
-				e.SetValue(obj);
-				open.Open();
-			}
-			catch (Exception exc)
-			{
-				Log.Error(exc.ToString());
-			}
-		}
-
-		public void Close(long id)
-		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
-			{
-				return;
-			}
-			IObjectEvent e;
-			if (!objectEvents.TryGetValue(obj.GetType(), out e))
-			{
-				return;
-			}
-			IClose close = e as IClose;
-			if (close == null)
-			{
-				return;
-			}
-			try
-			{
-				e.SetValue(obj);
-				close.Close();
-			}
-			catch (Exception exc)
-			{
-				Log.Error(exc.ToString());
-			}
-		}
-
 		public void Awake(long id)
 		{
 			Object obj;

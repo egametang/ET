@@ -3,17 +3,18 @@
 	/// <summary>
 	/// 游戏和扩展编辑器都需要用到的数据放在这个Scene上面
 	/// </summary>
-	public sealed class Share : Entity
+	public sealed class Share
 	{
-		private static Scene share;
+		private static Unit share;
 
-		public static Scene Scene
+		public static Unit Scene
 		{
 			get
 			{
 				if (share == null)
 				{
-					share = new Scene("Share", SceneType.Share);
+					share = new Unit();
+					share.AddComponent<Scene>();
 					share.AddComponent<EventComponent>();
 					share.AddComponent<LogComponent>();
 					GlobalConfigComponent globalConfigComponent = share.AddComponent<GlobalConfigComponent>();
@@ -25,7 +26,7 @@
 
 		public static void Close()
 		{
-			Scene scene = share;
+			Unit scene = share;
 			share = null;
 			scene?.Dispose();
 		}

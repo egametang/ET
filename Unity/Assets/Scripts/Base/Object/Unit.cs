@@ -6,25 +6,25 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base
 {
-	public abstract class Entity: Object
+	public sealed class Unit: Object
 	{
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 		
-		protected Entity()
+		public Unit()
 		{
 			ObjectManager.Add(this);
 		}
 
-		protected Entity(long id): base(id)
+		public Unit(long id): base(id)
 		{
 			ObjectManager.Add(this);
 		}
 
-		public T Clone<T>() where T: Entity
+		public Unit Clone()
 		{
-			return MongoHelper.FromBson<T>(MongoHelper.ToBson(this));
+			return MongoHelper.FromBson<Unit>(MongoHelper.ToBson(this));
 		}
 
 		public override void Dispose()
@@ -53,7 +53,7 @@ namespace Base
 		public K AddComponent<K>() where K : Component, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
-			component.SetOwner(this);
+			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -74,7 +74,7 @@ namespace Base
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.SetOwner(this);
+			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -95,7 +95,7 @@ namespace Base
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.SetOwner(this);
+			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -117,7 +117,7 @@ namespace Base
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.SetOwner(this);
+			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -200,7 +200,7 @@ namespace Base
 			}
 			foreach (Component component in this.components)
 			{
-				component.SetOwner(this);
+				component.Owner = this;
 				this.componentDict.Add(component.GetType(), component);
 			}
 		}

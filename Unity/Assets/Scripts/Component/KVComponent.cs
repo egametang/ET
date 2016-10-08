@@ -42,22 +42,4 @@ namespace Base
 			base.Dispose();
 		}
     }
-
-	public static class KVHelper
-	{
-		public static void KVAdd(this Entity entity, string key, object value)
-		{
-			entity.GetComponent<KVComponent>().Add(key, value);
-		}
-
-		public static void KVRemove(this Entity entity, string key)
-		{
-			entity.GetComponent<KVComponent>().Remove(key);
-		}
-
-		public static void KVGet<T>(this Entity entity, string key)
-		{
-			entity.GetComponent<KVComponent>().Get<T>(key);
-		}
-	}
 }

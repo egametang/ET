@@ -1,23 +1,11 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Base
+﻿namespace Base
 {
 	/// <summary>
 	/// Component的Id与Owner Entity Id一样
 	/// </summary>
 	public abstract class Component: Object
 	{
-		private Entity owner;
-		
-		public T GetOwner<T>() where T: Entity
-		{
-			return this.owner as T;
-		}
-
-		public void SetOwner(Entity entity)
-		{
-			this.owner = entity;
-		}
+		public Unit Owner { get; set; }
 
 		protected Component()
 		{
@@ -27,6 +15,11 @@ namespace Base
 		protected Component(long id): base(id)
 		{
 			ObjectManager.Add(this);
+		}
+
+		public T GetComponent<T>() where T: Component
+		{
+			return this.Owner.GetComponent<T>();
 		}
 
 		public override void Dispose()

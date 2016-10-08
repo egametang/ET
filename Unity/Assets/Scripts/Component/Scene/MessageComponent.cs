@@ -66,7 +66,7 @@ namespace Base
 					}
 
 					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
-					if (messageAttribute.SceneType != this.GetOwner<Scene>().SceneType)
+					if (messageAttribute.SceneType != this.GetComponent<Scene>().SceneType)
 					{
 						continue;
 					}
@@ -83,7 +83,7 @@ namespace Base
 			}
 		}
 
-		public void Register<T>(Action<Scene, T> action)
+		public void Register<T>(Action<Unit, T> action)
 		{
 			Opcode opcode = EnumHelper.FromString<Opcode>(typeof (T).Name);
 			if (!this.events.ContainsKey(opcode))
@@ -91,6 +91,7 @@ namespace Base
 				this.events.Add(opcode, new List<Action<byte[], int, int>>());
 			}
 			List<Action<byte[], int, int>> actions = this.events[opcode];
+
 			actions.Add((messageBytes, offset, count) =>
 			{
 				T t;
@@ -108,7 +109,7 @@ namespace Base
 					Log.Debug(MongoHelper.ToJson(t));
 				}
 
-				action(this.GetOwner<Scene>(), t);
+				action(this.Owner, t);
 			});
 		}
 
@@ -121,7 +122,7 @@ namespace Base
 		public void Close(NetChannelType channelType)
 		{
 			AChannel channel = this.GetChannel(channelType);
-			if (channel == null || channel.IsDisposed())
+			if (channel == null || channel.Id == 0)
 			{
 				return;
 			}
@@ -139,7 +140,7 @@ namespace Base
 
 		private void UpdateChannel(AChannel channel)
 		{
-			if (channel.IsDisposed())
+			if (channel.Id == 0)
 			{
 				return;
 			}
@@ -207,7 +208,7 @@ namespace Base
 			List<Action<byte[], int, int>> actions;
 			if (!this.events.TryGetValue(opcode, out actions))
 			{
-				if (this.GetOwner<Scene>().SceneType == SceneType.Game)
+				if (this.GetComponent<Scene>().SceneType == SceneType.Game)
 				{
 					Log.Error($"消息{opcode}没有处理");
 				}

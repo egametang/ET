@@ -119,10 +119,9 @@
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocket.cs" />
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\Unit.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoader.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\IOpen.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IStart.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
@@ -132,9 +131,11 @@
     <Compile Include="Assets\Scripts\Base\ReferenceCollector.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Component\Game.cs" />
+    <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\Scene\Scene.cs" />
+    <Compile Include="Assets\Scripts\Component\UI\UI.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\Scene\ChildrenComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\Scene.cs" />
+    <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\LogComponent.cs" />
@@ -162,10 +163,12 @@
     <Compile Include="Assets\Scripts\Other\EventIdType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\IEvent.cs" />
+    <Compile Include="Assets\Scripts\Other\UIType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -29,15 +29,9 @@ namespace Base
 			this.poller = null;
 		}
 
-		~TService()
-		{
-			this.Dispose(false);
-		}
-
 		public override void Dispose()
 		{
 			this.Dispose(true);
-			GC.SuppressFinalize(this);
 		}
 
 		public override void Add(Action action)

@@ -1,16 +1,17 @@
 ﻿namespace Base
 {
-	public sealed class Game: Entity
+	public sealed class Game
 	{
-		private static Scene game;
+		private static Unit game;
 
-		public static Scene Scene
+		public static Unit Scene
 		{
 			get
 			{
 				if (game == null)
 				{
-					game = new Scene("Game", SceneType.Game);
+					game = new Unit();
+					game.AddComponent<Scene>();
 				}
 				return game;
 			}
@@ -18,7 +19,7 @@
 
 		public static void Close()
 		{
-			Scene scene = game;
+			Unit scene = game;
 			game = null;
 			scene.Dispose();
 		}

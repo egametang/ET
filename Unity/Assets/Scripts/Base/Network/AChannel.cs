@@ -12,12 +12,14 @@ namespace Base
 		NoAllocate = 1 << 2
 	}
 
-	public abstract class AChannel: Entity
+	public abstract class AChannel: IDisposable
 	{
+		public long Id { get; private set; }
 		protected AService service;
 
 		protected AChannel(AService service)
 		{
+			this.Id = IdGenerater.GenerateId();
 			this.service = service;
 		}
 
@@ -35,18 +37,16 @@ namespace Base
 		/// </summary>
 		public abstract byte[] Recv();
 
-		public override void Dispose()
+		public virtual void Dispose()
 		{
 			if (this.Id == 0)
 			{
 				return;
 			}
 
-			long id = this.Id;
+			this.service.Remove(this.Id);
 
-			base.Dispose();
-
-			this.service.Remove(id);
+			this.Id = 0;
 		}
 	}
 }
