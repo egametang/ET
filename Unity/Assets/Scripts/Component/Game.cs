@@ -1,6 +1,6 @@
 ﻿namespace Base
 {
-	public sealed class Game: Entity<Game>
+	public sealed class Game: Entity
 	{
 		private static Scene game;
 

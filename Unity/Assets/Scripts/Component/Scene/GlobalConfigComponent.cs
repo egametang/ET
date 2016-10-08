@@ -14,7 +14,7 @@ namespace Base
 	/// <summary>
 	/// 全局配置
 	/// </summary>
-	public class GlobalConfigComponent : Component<Scene>
+	public class GlobalConfigComponent : Component
 	{
 		public GlobalProto GlobalProto;
 		

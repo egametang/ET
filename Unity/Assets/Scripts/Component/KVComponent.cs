@@ -7,7 +7,7 @@ namespace Base
 	/// <summary>
 	/// Key Value组件用于保存一些数据
 	/// </summary>
-    public class KVComponent<T> : Component<T> where T: Entity<T>
+    public class KVComponent : Component
     {
 		[BsonElement]
 		private readonly Dictionary<string, object> kv = new Dictionary<string, object>();
@@ -22,14 +22,14 @@ namespace Base
 			this.kv.Remove(key);
 		}
 
-		public K Get<K>(string key)
+		public T Get<T>(string key)
 		{
 			object k;
 			if (!this.kv.TryGetValue(key, out k))
 			{
-				return default(K);
+				return default(T);
 			}
-			return (K)k;
+			return (T)k;
 		}
 
 		public override void Dispose()
@@ -45,19 +45,19 @@ namespace Base
 
 	public static class KVHelper
 	{
-		public static void Add<T>(this Entity<T> entity, string key, T value) where T : Entity<T>
+		public static void KVAdd(this Entity entity, string key, object value)
 		{
-			entity.GetComponent<KVComponent<T>>().Add(key, value);
+			entity.GetComponent<KVComponent>().Add(key, value);
 		}
 
-		public static void Remove<T>(this Entity<T> entity, string key) where T : Entity<T>
+		public static void KVRemove(this Entity entity, string key)
 		{
-			entity.GetComponent<KVComponent<T>>().Remove(key);
+			entity.GetComponent<KVComponent>().Remove(key);
 		}
 
-		public static void Get<T, K>(this Entity<T> entity, string key) where T : Entity<T>
+		public static void KVGet<T>(this Entity entity, string key)
 		{
-			entity.GetComponent<KVComponent<T>>().Get<K>(key);
+			entity.GetComponent<KVComponent>().Get<T>(key);
 		}
 	}
 }

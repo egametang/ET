@@ -18,7 +18,7 @@ namespace Base
 		}
 	}
 
-	public class NetworkComponent: Component<Scene>
+	public class NetworkComponent: Component
 	{
 		private AService service;
 		

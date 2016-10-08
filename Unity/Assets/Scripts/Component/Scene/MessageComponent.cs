@@ -19,8 +19,7 @@ namespace Base
 	{
 		public void Load()
 		{
-			MessageComponent component = this.GetValue();
-			component.Load();
+			this.GetValue().Load();
 		}
 
 		public void Awake()
@@ -37,7 +36,7 @@ namespace Base
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	public class MessageComponent: Component<Scene>
+	public class MessageComponent: Component
 	{
 		private uint RpcId { get; set; }
 		private Dictionary<Opcode, List<Action<byte[], int, int>>> events;
@@ -67,7 +66,7 @@ namespace Base
 					}
 
 					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
-					if (messageAttribute.SceneType != this.Owner.SceneType)
+					if (messageAttribute.SceneType != this.GetOwner<Scene>().SceneType)
 					{
 						continue;
 					}
@@ -109,7 +108,7 @@ namespace Base
 					Log.Debug(MongoHelper.ToJson(t));
 				}
 
-				action(this.Owner, t);
+				action(this.GetOwner<Scene>(), t);
 			});
 		}
 
@@ -208,7 +207,7 @@ namespace Base
 			List<Action<byte[], int, int>> actions;
 			if (!this.events.TryGetValue(opcode, out actions))
 			{
-				if (this.Owner.SceneType == SceneType.Game)
+				if (this.GetOwner<Scene>().SceneType == SceneType.Game)
 				{
 					Log.Error($"消息{opcode}没有处理");
 				}
@@ -226,6 +225,41 @@ namespace Base
 					Log.Error(e.ToString());
 				}
 			}
+		}
+
+
+		public Task<Response> CallAsync<Response>(object request, CancellationToken cancellationToken) where Response : IErrorMessage
+		{
+			this.Send(request, ++this.RpcId);
+
+			var tcs = new TaskCompletionSource<Response>();
+
+			this.requestCallback[this.RpcId] = (bytes, offset, count) =>
+			{
+				try
+				{
+					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
+					Opcode opcode = EnumHelper.FromString<Opcode>(response.GetType().Name);
+					if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+					{
+						Log.Debug(MongoHelper.ToJson(response));
+					}
+					if (response.ErrorMessage.errno != (int)ErrorCode.ERR_Success)
+					{
+						tcs.SetException(new RpcException((ErrorCode)response.ErrorMessage.errno, response.ErrorMessage.msg.Utf8ToStr()));
+						return;
+					}
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new GameException($"Rpc Error: {typeof(Response).FullName}", e));
+				}
+			};
+
+			cancellationToken.Register(() => { this.requestCallback.Remove(this.RpcId); });
+
+			return tcs.Task;
 		}
 
 		/// <summary>
@@ -275,6 +309,7 @@ namespace Base
 		{
 			var tcs = new TaskCompletionSource<Response>();
 			Opcode opcode = EnumHelper.FromString<Opcode>(typeof(Response).Name);
+
 			this.waitCallback[opcode] = (bytes, offset, count) =>
 			{
 				try
@@ -285,6 +320,7 @@ namespace Base
 					{
 						Log.Debug(MongoHelper.ToJson(response));
 					}
+					
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -292,6 +328,8 @@ namespace Base
 					tcs.SetException(new GameException($"Wait Error: {typeof(Response).FullName}", e));
 				}
 			};
+
+			cancellationToken.Register(() => { this.waitCallback.Remove(opcode); });
 
 			return tcs.Task;
 		}

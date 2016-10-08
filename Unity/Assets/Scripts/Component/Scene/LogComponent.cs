@@ -13,7 +13,7 @@ namespace Base
 		}
 	}
 
-	public class LogComponent : Component<Scene>
+	public class LogComponent : Component
 	{
 		private StreamWriter info;
 

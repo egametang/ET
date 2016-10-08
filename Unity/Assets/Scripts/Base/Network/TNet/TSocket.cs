@@ -9,7 +9,7 @@ namespace Base
 	/// </summary>
 	public class TSocket: IDisposable
 	{
-		private readonly IPoller poller;
+		private readonly TPoller poller;
 		private Socket socket;
 		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
 		private readonly SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
@@ -20,7 +20,7 @@ namespace Base
 		public Action<SocketError> OnDisconnect;
 		private string remoteAddress;
 
-		public TSocket(IPoller poller)
+		public TSocket(TPoller poller)
 		{
 			this.poller = poller;
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

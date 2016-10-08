@@ -6,33 +6,23 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base
 {
-	public abstract class Entity<T>: Object where T : Entity<T>
+	public abstract class Entity: Object
 	{
 		[BsonElement, BsonIgnoreIfNull]
-		private HashSet<Component<T>> components = new HashSet<Component<T>>();
-		private Dictionary<Type, Component<T>> componentDict = new Dictionary<Type, Component<T>>();
-
-		public string Name { get; }
-
+		private HashSet<Component> components = new HashSet<Component>();
+		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+		
 		protected Entity()
 		{
-			this.Name = "";
 			ObjectManager.Add(this);
 		}
 
-		protected Entity(string name)
+		protected Entity(long id): base(id)
 		{
-			this.Name = name;
 			ObjectManager.Add(this);
 		}
 
-		protected Entity(long id, string name): base(id)
-		{
-			this.Name = name;
-			ObjectManager.Add(this);
-		}
-
-		public T Clone()
+		public T Clone<T>() where T: Entity
 		{
 			return MongoHelper.FromBson<T>(MongoHelper.ToBson(this));
 		}
@@ -46,7 +36,7 @@ namespace Base
 
 			base.Dispose();
 
-			foreach (Component<T> component in this.GetComponents())
+			foreach (Component component in this.GetComponents())
 			{
 				try
 				{
@@ -60,10 +50,10 @@ namespace Base
 			ObjectManager.Remove(this.Id);
 		}
 
-		public K AddComponent<K>() where K : Component<T>, new()
+		public K AddComponent<K>() where K : Component, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
-			component.Owner = (T) this;
+			component.SetOwner(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -72,7 +62,7 @@ namespace Base
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component<T>>();
+				this.components = new HashSet<Component>();
 			}
 
 			this.components.Add(component);
@@ -81,10 +71,10 @@ namespace Base
 			return component;
 		}
 
-		public K AddComponent<K, P1>(P1 p1) where K : Component<T>, new()
+		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.Owner = (T)this;
+			component.SetOwner(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -93,7 +83,7 @@ namespace Base
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component<T>>();
+				this.components = new HashSet<Component>();
 			}
 
 			this.components.Add(component);
@@ -102,10 +92,10 @@ namespace Base
 			return component;
 		}
 
-		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component<T>, new()
+		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.Owner = (T)this;
+			component.SetOwner(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -114,7 +104,7 @@ namespace Base
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component<T>>();
+				this.components = new HashSet<Component>();
 			}
 
 			this.components.Add(component);
@@ -124,10 +114,10 @@ namespace Base
 		}
 
 
-		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component<T>, new()
+		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
 			K component = (K)Activator.CreateInstance(typeof(K));
-			component.Owner = (T)this;
+			component.SetOwner(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -136,7 +126,7 @@ namespace Base
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component<T>>();
+				this.components = new HashSet<Component>();
 			}
 
 			this.components.Add(component);
@@ -145,7 +135,7 @@ namespace Base
 			return component;
 		}
 
-		public void AddComponent(Component<T> component)
+		public void AddComponent(Component component)
 		{
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -154,16 +144,16 @@ namespace Base
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component<T>>();
+				this.components = new HashSet<Component>();
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
 			ObjectManager.Awake(component.Id);
 		}
 
-		public void RemoveComponent<K>() where K : Component<T>
+		public void RemoveComponent<K>() where K : Component
 		{
-			Component<T> component;
+			Component component;
 			if (!this.componentDict.TryGetValue(typeof (K), out component))
 			{
 				return;
@@ -178,9 +168,9 @@ namespace Base
 			component.Dispose();
 		}
 
-		public K GetComponent<K>() where K : Component<T>
+		public K GetComponent<K>() where K : Component
 		{
-			Component<T> component;
+			Component component;
 			if (!this.componentDict.TryGetValue(typeof (K), out component))
 			{
 				return default(K);
@@ -188,7 +178,7 @@ namespace Base
 			return (K) component;
 		}
 
-		public Component<T>[] GetComponents()
+		public Component[] GetComponents()
 		{
 			return components.ToArray();
 		}
@@ -196,8 +186,8 @@ namespace Base
 		public override void BeginInit()
 		{
 			base.BeginInit();
-			this.components = new HashSet<Component<T>>();
-			this.componentDict = new Dictionary<Type, Component<T>>();
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void EndInit()
@@ -208,9 +198,9 @@ namespace Base
 				this.components = null;
 				return;
 			}
-			foreach (Component<T> component in this.components)
+			foreach (Component component in this.components)
 			{
-				component.Owner = (T) this;
+				component.SetOwner(this);
 				this.componentDict.Add(component.GetType(), component);
 			}
 		}

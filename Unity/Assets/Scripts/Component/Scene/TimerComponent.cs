@@ -59,7 +59,7 @@ namespace Base
 		}
 	}
 
-	public class TimerComponent: Component<Scene>
+	public class TimerComponent: Component
 	{
 		public readonly Dictionary<ObjectId, Timer> timers = new Dictionary<ObjectId, Timer>();
 

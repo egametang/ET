@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Base
 {
+	/// <summary>
+	/// 管理该所有的配置
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
 	public abstract class ACategory<T>: ICategory where T : AConfig
 	{
 		protected Dictionary<long, T> dict;
@@ -34,7 +38,7 @@ namespace Base
 						continue;
 					}
 					T t = MongoHelper.FromJson<T>(str2);
-					this.dict.Add(t.id, t);
+					this.dict.Add(t.Id, t);
 				}
 				catch (Exception e)
 				{

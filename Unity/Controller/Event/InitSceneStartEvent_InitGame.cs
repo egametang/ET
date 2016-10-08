@@ -22,6 +22,7 @@ namespace Controller
 			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 
 			Game.Scene.AddComponent<MessageComponent>();
+			Game.Scene.AddComponent<ChildrenComponent>();
 
 			try
 			{

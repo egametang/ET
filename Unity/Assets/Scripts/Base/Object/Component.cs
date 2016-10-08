@@ -5,21 +5,18 @@ namespace Base
 	/// <summary>
 	/// Component的Id与Owner Entity Id一样
 	/// </summary>
-	public abstract class Component<T>: Object where T : Entity<T>
+	public abstract class Component: Object
 	{
-		private T owner;
-
-		[BsonIgnore]
-		public T Owner
+		private Entity owner;
+		
+		public T GetOwner<T>() where T: Entity
 		{
-			get
-			{
-				return this.owner;
-			}
-			set
-			{
-				this.owner = value;
-			}
+			return this.owner as T;
+		}
+
+		public void SetOwner(Entity entity)
+		{
+			this.owner = entity;
 		}
 
 		protected Component()

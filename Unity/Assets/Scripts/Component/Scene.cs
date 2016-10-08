@@ -10,18 +10,17 @@ namespace Base
 		Login,
 		Lobby,
 		Map,
-		Launcher,
-		Robot,
-        BehaviorTreeScene,
-		RobotClient,
 	}
 
-	public sealed class Scene: Entity<Scene>
+	public sealed class Scene: Entity
 	{
+		public string Name { get; }
+
 		public SceneType SceneType { get; }
 
-		public Scene(string name, SceneType sceneType): base(name)
+		public Scene(string name, SceneType sceneType)
 		{
+			this.Name = name;
 			this.SceneType = sceneType;
 		}
 

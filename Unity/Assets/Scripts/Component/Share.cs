@@ -3,7 +3,7 @@
 	/// <summary>
 	/// 游戏和扩展编辑器都需要用到的数据放在这个Scene上面
 	/// </summary>
-	public sealed class Share : Entity<Share>
+	public sealed class Share : Entity
 	{
 		private static Scene share;
 

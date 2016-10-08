@@ -6,7 +6,7 @@ namespace Base
 {
 	public sealed class TService: AService
 	{
-		private IPoller poller = new TPoller();
+		private TPoller poller = new TPoller();
 		
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
 

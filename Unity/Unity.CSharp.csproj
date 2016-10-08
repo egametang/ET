@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -81,12 +81,14 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Base\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Base\Config\AConfig.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ConfigAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
-    <Compile Include="Assets\Scripts\Base\FileHelper.cs" />
     <Compile Include="Assets\Scripts\Base\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ArrayHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\EnumHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\FileHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\IdGenerater.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MongoHelper.cs" />
@@ -99,7 +101,6 @@
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AService.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\TNet\IPoller.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\PacketParser.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TBuffer.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TChannel.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Component\Game.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\Scene\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\GlobalConfigComponent.cs" />
@@ -141,16 +143,17 @@
     <Compile Include="Assets\Scripts\Component\Scene\TimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene\TimerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Share.cs" />
-    <Compile Include="Assets\Scripts\Component\LevelComponent.cs" />
+    <Compile Include="Assets\Scripts\Config\BuffProto.cs" />
     <Compile Include="Assets\Scripts\Config\GlobalProto.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\Message\AMEvent.cs" />
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Message\IErrorMessage.cs" />
     <Compile Include="Assets\Scripts\Message\IMRegister.cs" />
+    <Compile Include="Assets\Scripts\Message\Message.cs" />
+    <Compile Include="Assets\Scripts\Message\MessageAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\Opcode.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
-    <Compile Include="Assets\Scripts\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Other\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\Env.cs" />
@@ -158,9 +161,7 @@
     <Compile Include="Assets\Scripts\Other\EventAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\EventIdType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
-    <Compile Include="Assets\Scripts\Other\ICategory.cs" />
     <Compile Include="Assets\Scripts\Other\IEvent.cs" />
-    <Compile Include="Assets\Scripts\Other\MessageAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />

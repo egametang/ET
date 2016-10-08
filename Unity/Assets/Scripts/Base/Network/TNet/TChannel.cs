@@ -33,13 +33,10 @@ namespace Base
 			{
 				return;
 			}
-
-			long id = this.Id;
-
+			
 			base.Dispose();
 
 			this.socket.Dispose();
-			this.service.Remove(id);
 		}
 
 		public override void ConnectAsync()

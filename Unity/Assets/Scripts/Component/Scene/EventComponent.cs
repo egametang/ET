@@ -21,7 +21,7 @@ namespace Base
 	/// <summary>
 	/// 事件分发
 	/// </summary>
-	public class EventComponent: Component<Scene>
+	public class EventComponent: Component
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
 

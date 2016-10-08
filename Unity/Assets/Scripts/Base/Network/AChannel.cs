@@ -12,7 +12,7 @@ namespace Base
 		NoAllocate = 1 << 2
 	}
 
-	public abstract class AChannel: Entity<AChannel>
+	public abstract class AChannel: Entity
 	{
 		protected AService service;
 
@@ -42,7 +42,11 @@ namespace Base
 				return;
 			}
 
+			long id = this.Id;
+
 			base.Dispose();
+
+			this.service.Remove(id);
 		}
 	}
 }

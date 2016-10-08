@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Base
 {
-	public class TPoller: IPoller
+	public class TPoller
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
 		private Queue<Action> queue = new Queue<Action>();
