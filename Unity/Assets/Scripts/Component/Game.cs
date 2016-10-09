@@ -2,15 +2,16 @@
 {
 	public sealed class Game
 	{
-		private static Scene game;
+		private static Entity game;
 
-		public static Scene Scene
+		public static Entity Scene
 		{
 			get
 			{
 				if (game == null)
 				{
-					game = new Scene("Game", SceneType.Game);
+					game = new Entity();
+					game.AddComponent<Scene>();
 				}
 				return game;
 			}

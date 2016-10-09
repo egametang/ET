@@ -1,12 +1,16 @@
-﻿namespace Base
+﻿using UnityEngine;
+
+namespace Base
 {
-	public sealed class UI: Entity
+	public sealed class UI: Component
 	{
 		public Entity Scene { get; set; }
 
 		public UIType UIType { get; set; }
 
-		public string Name { get; }
+		public string Name { get; set; }
+
+		public GameObject GameObject { get; set; }
 		
 		public override void Dispose()
 		{

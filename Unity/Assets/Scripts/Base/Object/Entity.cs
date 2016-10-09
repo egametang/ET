@@ -6,18 +6,18 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base
 {
-	public abstract class Entity: Object
+	public sealed class Entity: Object
 	{
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
-		protected Entity()
+		public Entity()
 		{
 			ObjectManager.Add(this);
 		}
 
-		protected Entity(long id): base(id)
+		public Entity(long id): base(id)
 		{
 			ObjectManager.Add(this);
 		}

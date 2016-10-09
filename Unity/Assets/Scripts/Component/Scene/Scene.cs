@@ -13,19 +13,13 @@
 		RobotClient,
 	}
 
-	public sealed class Scene: Entity
+	public sealed class Scene: Component
 	{
-		public Scene Owner { get; set; }
+		public Scene Parent { get; set; }
 
 		public string Name { get; set; }
 
 		public SceneType SceneType { get; private set; }
-
-		public Scene(string name, SceneType sceneType)
-		{
-			this.Name = name;
-			this.SceneType = sceneType;
-		}
 
 		public override void Dispose()
 		{
