@@ -9,7 +9,7 @@ namespace Base
 		private TPoller poller = new TPoller();
 		
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
-
+		
 		private void Dispose(bool disposing)
 		{
 			if (this.poller == null)
@@ -58,7 +58,6 @@ namespace Base
 				return;
 			}
 			this.idChannels.Remove(id);
-			this.Timer.Remove(channel.SendTimer);
 			channel.Dispose();
 		}
 
@@ -82,7 +81,6 @@ namespace Base
 		public override void Update()
 		{
 			this.poller.Update();
-			this.Timer.Update();
 		}
 	}
 }

@@ -27,16 +27,6 @@ namespace Base
 
 		public abstract void Update();
 
-		private readonly TimerManager timerManager = new TimerManager();
-
-		public TimerManager Timer
-		{
-			get
-			{
-				return timerManager;
-			}
-		}
-
 		public Action<long, SocketError> OnError;
 
 		public void OnChannelError(long channelId, SocketError error)
