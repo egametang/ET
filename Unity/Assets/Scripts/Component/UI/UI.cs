@@ -1,8 +1,8 @@
 ﻿namespace Base
 {
-	public sealed class UI: Component
+	public sealed class UI: Entity
 	{
-		public Unit Scene { get; set; }
+		public Entity Scene { get; set; }
 
 		public UIType UIType { get; set; }
 

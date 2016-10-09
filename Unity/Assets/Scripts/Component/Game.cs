@@ -2,16 +2,15 @@
 {
 	public sealed class Game
 	{
-		private static Unit game;
+		private static Scene game;
 
-		public static Unit Scene
+		public static Scene Scene
 		{
 			get
 			{
 				if (game == null)
 				{
-					game = new Unit();
-					game.AddComponent<Scene>();
+					game = new Scene("Game", SceneType.Game);
 				}
 				return game;
 			}
@@ -19,7 +18,7 @@
 
 		public static void Close()
 		{
-			Unit scene = game;
+			Entity scene = game;
 			game = null;
 			scene.Dispose();
 		}

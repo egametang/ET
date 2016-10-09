@@ -10,9 +10,9 @@ namespace Base
     public class ChildrenComponent: Component
     {
 		[BsonIgnore]
-		public Unit Parent { get; private set; }
+		public Entity Parent { get; private set; }
 		
-		private readonly Dictionary<long, Unit> idChildren = new Dictionary<long, Unit>();
+		private readonly Dictionary<long, Entity> idChildren = new Dictionary<long, Entity>();
 
 		[BsonIgnore]
 		public int Count
@@ -23,38 +23,38 @@ namespace Base
 			}
 		}
 
-		public void Add(Unit unit)
+		public void Add(Entity entity)
 		{
-			unit.GetComponent<ChildrenComponent>().Parent = this.Owner;
-			this.idChildren.Add(unit.Id, unit);
+			entity.GetComponent<ChildrenComponent>().Parent = this.Owner;
+			this.idChildren.Add(entity.Id, entity);
 		}
 
-		public Unit Get(long id)
+		public Entity Get(long id)
 		{
-			Unit unit = null;
-			this.idChildren.TryGetValue(id, out unit);
-			return unit;
+			Entity entity = null;
+			this.idChildren.TryGetValue(id, out entity);
+			return entity;
 		}
 
-		public Unit[] GetChildren()
+		public Entity[] GetChildren()
 		{
 			return this.idChildren.Values.ToArray();
 		}
 
-		private void Remove(Unit unit)
+		private void Remove(Entity entity)
 		{
-			this.idChildren.Remove(unit.Id);
-			unit.Dispose();
+			this.idChildren.Remove(entity.Id);
+			entity.Dispose();
 		}
 
 		public void Remove(long id)
 		{
-			Unit unit;
-			if (!this.idChildren.TryGetValue(id, out unit))
+			Entity entity;
+			if (!this.idChildren.TryGetValue(id, out entity))
 			{
 				return;
 			}
-			this.Remove(unit);
+			this.Remove(entity);
 		}
 
 		public override void Dispose()
@@ -66,7 +66,7 @@ namespace Base
 
 			base.Dispose();
 
-			foreach (Unit entity in this.idChildren.Values.ToArray())
+			foreach (Entity entity in this.idChildren.Values.ToArray())
 			{
 				entity.Dispose();
 			}
@@ -77,14 +77,14 @@ namespace Base
 
 	public static partial class ChildrenHelper
 	{
-		public static void Add(this Unit unit, Unit child)
+		public static void Add(this Entity entity, Entity child)
 		{
-			unit.GetComponent<ChildrenComponent>().Add(child);
+			entity.GetComponent<ChildrenComponent>().Add(child);
 		}
 
-		public static void Remove(this Unit unit, long id)
+		public static void Remove(this Entity entity, long id)
 		{
-			unit.GetComponent<ChildrenComponent>().Remove(id);
+			entity.GetComponent<ChildrenComponent>().Remove(id);
 		}
 	}
 }

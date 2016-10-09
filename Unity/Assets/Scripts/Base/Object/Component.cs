@@ -5,7 +5,17 @@
 	/// </summary>
 	public abstract class Component: Object
 	{
-		public Unit Owner { get; set; }
+		public Entity Owner { get; set; }
+
+		public T GetOwner<T>() where T: Entity
+		{
+			T owner = this.Owner as T;
+			if (owner == null)
+			{
+				Log.Error($"Owner类型是{this.Owner.GetType().Name}, 无法转成: {typeof(T).Name}");
+			}
+			return owner;
+		}
 
 		protected Component()
 		{

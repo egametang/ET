@@ -15,16 +15,16 @@ namespace Base
 	}
 
 	[ObjectEvent]
-	public class MessageComponentEvent : ObjectEvent<MessageComponent>, ILoader, IAwake, IUpdate
+	public class MessageComponentEvent : ObjectEvent<MessageComponent>, ILoader, IAwake<SceneType>, IUpdate
 	{
 		public void Load()
 		{
 			this.GetValue().Load();
 		}
 
-		public void Awake()
+		public void Awake(SceneType sceneType)
 		{
-			this.GetValue().Awake();
+			this.GetValue().Awake(sceneType);
 		}
 
 		public void Update()
@@ -38,14 +38,16 @@ namespace Base
 	/// </summary>
 	public class MessageComponent: Component
 	{
+		private SceneType SceneType;
 		private uint RpcId { get; set; }
 		private Dictionary<Opcode, List<Action<byte[], int, int>>> events;
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
 		private readonly Dictionary<Opcode, Action<byte[], int, int>> waitCallback = new Dictionary<Opcode, Action<byte[], int, int>>();
 		private readonly Dictionary<NetChannelType, AChannel> channels = new Dictionary<NetChannelType, AChannel>();
 		
-		public void Awake()
+		public void Awake(SceneType sceneType)
 		{
+			this.SceneType = sceneType;
 			this.Load();
 		}
 
@@ -66,7 +68,7 @@ namespace Base
 					}
 
 					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
-					if (messageAttribute.SceneType != this.GetComponent<Scene>().SceneType)
+					if (messageAttribute.SceneType != this.SceneType)
 					{
 						continue;
 					}
@@ -83,7 +85,7 @@ namespace Base
 			}
 		}
 
-		public void Register<T>(Action<Unit, T> action)
+		public void Register<T>(Action<Entity, T> action)
 		{
 			Opcode opcode = EnumHelper.FromString<Opcode>(typeof (T).Name);
 			if (!this.events.ContainsKey(opcode))
@@ -208,7 +210,7 @@ namespace Base
 			List<Action<byte[], int, int>> actions;
 			if (!this.events.TryGetValue(opcode, out actions))
 			{
-				if (this.GetComponent<Scene>().SceneType == SceneType.Game)
+				if (this.SceneType == SceneType.Game)
 				{
 					Log.Error($"消息{opcode}没有处理");
 				}

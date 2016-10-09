@@ -7,6 +7,6 @@
 			component.Register<T>(Run);
 		}
 
-		public abstract void Run(Unit scene, T message);
+		public abstract void Run(Entity scene, T message);
 	}
 }

@@ -6,27 +6,22 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base
 {
-	public sealed class Unit: Object
+	public abstract class Entity: Object
 	{
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+
+		protected Entity()
+		{
+			ObjectManager.Add(this);
+		}
+
+		protected Entity(long id): base(id)
+		{
+			ObjectManager.Add(this);
+		}
 		
-		public Unit()
-		{
-			ObjectManager.Add(this);
-		}
-
-		public Unit(long id): base(id)
-		{
-			ObjectManager.Add(this);
-		}
-
-		public Unit Clone()
-		{
-			return MongoHelper.FromBson<Unit>(MongoHelper.ToBson(this));
-		}
-
 		public override void Dispose()
 		{
 			if (this.Id == 0)
