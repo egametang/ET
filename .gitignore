@@ -27,3 +27,8 @@ _ReSharper.CSharp/
 *.sdf
 /CSharp/CSharp.sln.ide
 /Unity/Library
+/Unity/Assets/Res/Code/Controller.dll.bytes
+/Unity/Assets/Res/Code/Controller.dll.bytes.meta
+/Unity/Assets/Res/Code/Controller.dll.mdb.bytes
+/Unity/Assets/Res/Code/Controller.dll.mdb.bytes.meta
+/Unity/CSharp60Support/compilation log.txt

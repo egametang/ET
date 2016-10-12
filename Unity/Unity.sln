@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp", "Unity.CShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp.Editor", "Unity.CSharp.Editor.csproj", "{27D29A4B-FDE7-B1BD-E226-B13A243BCA00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{E875513C-291C-4378-815E-85D7DFB8C1A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Controller", "Controller\Unity.Controller.csproj", "{E875513C-291C-4378-815E-85D7DFB8C1A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
