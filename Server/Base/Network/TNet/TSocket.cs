@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Base
 {
@@ -18,7 +19,6 @@ namespace Base
 		public Action<int, SocketError> OnRecv;
 		public Action<int, SocketError> OnSend;
 		public Action<SocketError> OnDisconnect;
-		private string remoteAddress;
 
 		public TSocket(TPoller poller)
 		{
@@ -28,13 +28,13 @@ namespace Base
 			this.outArgs.Completed += this.OnComplete;
 		}
 
-		public string RemoteAddress
+		public TSocket(TPoller poller, string host, int port): this(poller)
 		{
-			get
-			{
-				return remoteAddress;
-			}
+			this.Bind(host, port);
+			this.Listen(100);
 		}
+
+		public string RemoteAddress { get; private set; }
 
 		public Socket Socket
 		{
@@ -44,30 +44,50 @@ namespace Base
 			}
 		}
 
-		protected void Dispose(bool disposing)
+		public void Dispose()
 		{
 			if (this.socket == null)
 			{
 				return;
 			}
-
-			if (disposing)
-			{
-				this.socket.Close();
-			}
+			
+			this.socket.Close();
 
 			this.socket = null;
 		}
 
-		~TSocket()
+		private void Bind(string host, int port)
 		{
-			this.Dispose(false);
+			this.socket.Bind(new IPEndPoint(IPAddress.Parse(host), port));
 		}
 
-		public void Dispose()
+		private void Listen(int backlog)
 		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
+			this.socket.Listen(backlog);
+		}
+
+		public Task<bool> AcceptAsync(TSocket accpetSocket)
+		{
+			var tcs = new TaskCompletionSource<bool>();
+			this.innArgs.UserToken = tcs;
+			this.innArgs.AcceptSocket = accpetSocket.socket;
+			if (!this.socket.AcceptAsync(this.innArgs))
+			{
+				OnAcceptComplete(this.innArgs);
+			}
+			return tcs.Task;
+		}
+
+		private static void OnAcceptComplete(SocketAsyncEventArgs e)
+		{
+			var tcs = (TaskCompletionSource<bool>)e.UserToken;
+			e.UserToken = null;
+			if (e.SocketError != SocketError.Success)
+			{
+				tcs.SetException(new Exception($"socket error: {e.SocketError}"));
+				return;
+			}
+			tcs.SetResult(true);
 		}
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -87,6 +107,9 @@ namespace Base
 				case SocketAsyncOperation.Disconnect:
 					action = () => OnDisconnectComplete(e);
 					break;
+				case SocketAsyncOperation.Accept:
+					action = () => OnAcceptComplete(e);
+					break;
 				default:
 					throw new Exception($"socket error: {e.LastOperation}");
 			}
@@ -97,7 +120,7 @@ namespace Base
 
 		public bool ConnectAsync(string host, int port)
 		{
-			remoteAddress = $"{host}:{port}";
+			this.RemoteAddress = $"{host}:{port}";
 			this.outArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
 			if (this.socket.ConnectAsync(this.outArgs))
 			{

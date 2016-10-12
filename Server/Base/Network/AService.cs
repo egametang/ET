@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Base
 {
@@ -22,14 +25,16 @@ namespace Base
 		public abstract AChannel GetChannel(string host, int port);
 
 		public abstract AChannel GetChannel(string address);
-		
+
+		public abstract Task<AChannel> GetChannel();
+
 		public abstract void Remove(long channelId);
 
 		public abstract void Update();
 
 		public Action<long, SocketError> OnError;
 
-		public void OnChannelError(long channelId, SocketError error)
+		protected void OnChannelError(long channelId, SocketError error)
 		{
 			this.OnError?.Invoke(channelId, error);
 			this.Remove(channelId);

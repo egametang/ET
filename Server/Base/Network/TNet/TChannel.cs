@@ -14,16 +14,24 @@ namespace Base
 
 		private bool isSending;
 		private readonly PacketParser parser;
-		private readonly string remoteAddress;
 		private bool isConnected;
 
 		public Action<long, SocketError> OnError;
+
+		public string RemoteAddress { get; }
 
 		public TChannel(TSocket socket, string host, int port, TService service) : base(service)
 		{
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
-			this.remoteAddress = host + ":" + port;
+			this.RemoteAddress = host + ":" + port;
+		}
+
+		public TChannel(TSocket socket, TService service) : base(service)
+		{
+			this.socket = socket;
+			this.parser = new PacketParser(this.recvBuffer);
+			this.RemoteAddress = socket.RemoteAddress;
 		}
 
 		public override void Dispose()
@@ -43,7 +51,7 @@ namespace Base
 
 		public override void ConnectAsync()
 		{
-			string[] ss = this.remoteAddress.Split(':');
+			string[] ss = this.RemoteAddress.Split(':');
 			int port = int.Parse(ss[1]);
 			bool result = this.socket.ConnectAsync(ss[0], port);
 			if (!result)

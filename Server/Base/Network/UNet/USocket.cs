@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Base
 {
@@ -16,8 +17,8 @@ namespace Base
 		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
 		private readonly Queue<BufferInfo> sendQueue = new Queue<BufferInfo>();
 		private bool isConnected;
-		private string remoteAddress;
 		public Action Disconnect;
+		public TaskCompletionSource<USocket> AcceptTcs { private get; set; }
 
 		public USocket(IntPtr peerPtr, UPoller poller)
 		{
@@ -30,7 +31,7 @@ namespace Base
 			this.poller = poller;
 		}
 
-		private void Dispose(bool disposing)
+		public void Dispose()
 		{
 			if (this.PeerPtr == IntPtr.Zero)
 			{
@@ -41,26 +42,10 @@ namespace Base
 			NativeMethods.ENetPeerDisconnectNow(this.PeerPtr, 0);
 			this.PeerPtr = IntPtr.Zero;
 		}
-
-		~USocket()
-		{
-			this.Dispose(false);
-		}
-
-		public void Dispose()
-		{
-			this.Dispose(true);
-		}
-
+		
 		public IntPtr PeerPtr { get; set; }
 
-		public string RemoteAddress
-		{
-			get
-			{
-				return remoteAddress;
-			}
-		}
+		public string RemoteAddress { get; private set; }
 
 		public Queue<byte[]> RecvQueue
 		{
@@ -72,7 +57,7 @@ namespace Base
 
 		public void ConnectAsync(string host, ushort port)
 		{
-			this.remoteAddress = host + ":" + port;
+			this.RemoteAddress = host + ":" + port;
 			UAddress address = new UAddress(host, port);
 			ENetAddress nativeAddress = address.Struct;
 
@@ -97,7 +82,7 @@ namespace Base
 			packet.PacketPtr = IntPtr.Zero;
 		}
 
-		internal void OnConnected(ENetEvent eNetEvent)
+		internal void OnConnected()
 		{
 			isConnected = true;
 			while (this.sendQueue.Count > 0)
@@ -105,6 +90,20 @@ namespace Base
 				BufferInfo info = this.sendQueue.Dequeue();
 				this.SendAsync(info.Buffer, info.ChannelID, info.Flags);
 			}
+		}
+
+		internal void OnAccepted(ENetEvent eEvent)
+		{
+			isConnected = true;
+			if (eEvent.Type == EventType.Disconnect)
+			{
+				this.AcceptTcs.TrySetException(new Exception("socket disconnected in accpet"));
+			}
+
+			this.poller.USocketManager.Remove(IntPtr.Zero);
+			USocket socket = new USocket(eEvent.Peer, this.poller);
+			this.poller.USocketManager.Add(socket.PeerPtr, socket);
+			this.AcceptTcs.TrySetResult(socket);
 		}
 
 		internal void OnReceived(ENetEvent eNetEvent)

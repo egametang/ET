@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Base
 {
 	public sealed class UService: AService
 	{
 		private UPoller poller;
-		
+
 		private readonly Dictionary<long, UChannel> idChannels = new Dictionary<long, UChannel>();
+		private readonly Dictionary<string, UChannel> addressChannels = new Dictionary<string, UChannel>();
+
+		/// <summary>
+		/// 即可做client也可做server
+		/// </summary>
+		/// <param name="host"></param>
+		/// <param name="port"></param>
+		public UService(string host, int port)
+		{
+			this.poller = new UPoller(host, (ushort)port);
+		}
 
 		/// <summary>
 		/// 只能做client
@@ -19,29 +31,20 @@ namespace Base
 			this.poller = new UPoller();
 		}
 
-		private void Dispose(bool disposing)
+		public override void Dispose()
 		{
 			if (this.poller == null)
 			{
 				return;
 			}
 
-			if (disposing)
+			foreach (long id in this.idChannels.Keys.ToArray())
 			{
-				foreach (long id in this.idChannels.Keys.ToArray())
-				{
-					UChannel channel = this.idChannels[id];
-					channel.Dispose();
-				}
-				this.poller.Dispose();
+				UChannel channel = this.idChannels[id];
+				channel.Dispose();
 			}
-
+			
 			this.poller = null;
-		}
-
-		public override void Dispose()
-		{
-			this.Dispose(true);
 		}
 
 		public override void Add(Action action)
@@ -51,20 +54,33 @@ namespace Base
 
 		public override AChannel GetChannel(string host, int port)
 		{
-			UChannel channel = null;
+			return this.GetChannel($"{host}:{port}");
+		}
 
+		public override AChannel GetChannel(string address)
+		{
+			UChannel channel = null;
+			if (this.addressChannels.TryGetValue(address, out channel))
+			{
+				return channel;
+			}
 			USocket newSocket = new USocket(this.poller);
+			string[] ss = address.Split(':');
+			int port = int.Parse(ss[1]);
+			string host = ss[0];
 			channel = new UChannel(newSocket, host, port, this);
 			newSocket.Disconnect += () => this.OnChannelError(channel.Id, SocketError.SocketError);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
 
-		public override AChannel GetChannel(string address)
+		public override async Task<AChannel> GetChannel()
 		{
-			string[] ss = address.Split(':');
-			int port = int.Parse(ss[1]);
-			return this.GetChannel(ss[0], port);
+			USocket socket = await this.poller.AcceptAsync();
+			UChannel channel = new UChannel(socket, this);
+			this.addressChannels[channel.RemoteAddress] = channel;
+			this.idChannels[channel.Id] = channel;
+			return channel;
 		}
 
 		public override AChannel GetChannel(long id)

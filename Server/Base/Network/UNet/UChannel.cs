@@ -6,7 +6,7 @@ namespace Base
 {
 	internal class UChannel: AChannel
 	{
-		private USocket socket;
+		private readonly USocket socket;
 		private readonly string remoteAddress;
 
 		public UChannel(USocket socket, string host, int port, UService service): base(service)
@@ -14,6 +14,13 @@ namespace Base
 			this.socket = socket;
 			this.service = service;
 			this.remoteAddress = host + ":" + port;
+		}
+
+		public UChannel(USocket socket, UService service) : base(service)
+		{
+			this.socket = socket;
+			this.service = service;
+			this.remoteAddress = socket.RemoteAddress;
 		}
 
 		public override void Dispose()
@@ -26,6 +33,14 @@ namespace Base
 			base.Dispose();
 
 			this.socket.Dispose();
+		}
+
+		public string RemoteAddress
+		{
+			get
+			{
+				return this.remoteAddress;
+			}
 		}
 
 		public override void ConnectAsync()
