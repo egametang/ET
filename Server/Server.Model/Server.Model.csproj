@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AEventAttribute.cs" />
-    <Compile Include="AMEvent.cs" />
+    <Compile Include="Event\AEventAttribute.cs" />
+    <Compile Include="Message\AMEvent.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\MessageHandlerComponent.cs" />
     <Compile Include="Component\MessageComponent.cs" />
@@ -55,15 +55,15 @@
     <Compile Include="Component\Scene.cs" />
     <Compile Include="Component\TimeComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
-    <Compile Include="EntityType.cs" />
-    <Compile Include="Env.cs" />
-    <Compile Include="EnvKey.cs" />
+    <Compile Include="Event\EntityType.cs" />
+    <Compile Include="Event\Env.cs" />
+    <Compile Include="Event\EnvKey.cs" />
     <Compile Include="Message\ErrorCode.cs" />
-    <Compile Include="EventAttribute.cs" />
-    <Compile Include="EventIdType.cs" />
+    <Compile Include="Event\EventAttribute.cs" />
+    <Compile Include="Event\EventIdType.cs" />
     <Compile Include="GameException.cs" />
     <Compile Include="Message\IErrorMessage.cs" />
-    <Compile Include="IEvent.cs" />
+    <Compile Include="Event\IEvent.cs" />
     <Compile Include="Message\IMRegister.cs" />
     <Compile Include="Message\Message.cs" />
     <Compile Include="Message\MessageAttribute.cs" />
