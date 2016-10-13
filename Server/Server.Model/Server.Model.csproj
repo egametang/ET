@@ -73,7 +73,7 @@
     <Compile Include="Scene\Server.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Base\Server.Base.csproj">
+    <ProjectReference Include="..\Server.Base\Server.Base.csproj">
       <Project>{afbad3d5-c827-4ba6-9940-7060b6c39306}</Project>
       <Name>Server.Base</Name>
     </ProjectReference>
