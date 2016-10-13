@@ -23,7 +23,7 @@ namespace Base
 			this.buffer = buffer;
 		}
 
-		public bool Parse()
+		private bool Parse()
 		{
 			if (this.isOK)
 			{
@@ -72,6 +72,11 @@ namespace Base
 
 		public byte[] GetPacket()
 		{
+			this.Parse();
+			if (!this.isOK)
+			{
+				return null;
+			}
 			byte[] result = this.packet;
 			this.isOK = false;
 			return result;

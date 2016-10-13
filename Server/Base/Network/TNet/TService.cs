@@ -55,7 +55,7 @@ namespace Base
 			return channel;
 		}
 
-		public override async Task<AChannel> GetChannel()
+		public override async Task<AChannel> AcceptChannel()
 		{
 			if (this.acceptor == null)
 			{

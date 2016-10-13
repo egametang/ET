@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Base
 {
@@ -19,14 +20,29 @@ namespace Base
 		public Action<long, SocketError> OnError;
 
 		public string RemoteAddress { get; }
+		private TaskCompletionSource<byte[]> recvTcs;
 
+		/// <summary>
+		/// connect
+		/// </summary>
 		public TChannel(TSocket socket, string host, int port, TService service) : base(service)
 		{
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
 			this.RemoteAddress = host + ":" + port;
+			
+			bool result = this.socket.ConnectAsync(host, port);
+			if (!result)
+			{
+				this.OnConnected(this.Id, SocketError.Success);
+				return;
+			}
+			this.socket.OnConn += e => OnConnected(this.Id, e);
 		}
 
+		/// <summary>
+		/// accept
+		/// </summary>
 		public TChannel(TSocket socket, TService service) : base(service)
 		{
 			this.socket = socket;
@@ -48,20 +64,7 @@ namespace Base
 			this.socket.Dispose();
 			this.service.Remove(id);
 		}
-
-		public override void ConnectAsync()
-		{
-			string[] ss = this.RemoteAddress.Split(':');
-			int port = int.Parse(ss[1]);
-			bool result = this.socket.ConnectAsync(ss[0], port);
-			if (!result)
-			{
-				this.OnConnected(this.Id, SocketError.Success);
-				return;
-			}
-			this.socket.OnConn += e => OnConnected(this.Id, e);
-		}
-
+		
 		private void OnConnected(long channelId, SocketError error)
 		{
 			if (this.service.GetChannel(channelId) == null)
@@ -102,15 +105,6 @@ namespace Base
 			{
 				this.StartSend();
 			}
-		}
-
-		public override byte[] Recv()
-		{
-			if (this.parser.Parse())
-			{
-				return this.parser.GetPacket();
-			}
-			return null;
 		}
 
 		private void StartSend()
@@ -191,7 +185,33 @@ namespace Base
 				this.recvBuffer.AddLast();
 				this.recvBuffer.LastIndex = 0;
 			}
+
+			if (this.recvTcs != null)
+			{
+				byte[] packet = this.parser.GetPacket();
+				if (packet != null)
+				{
+					this.recvTcs.SetResult(packet);
+					this.recvTcs = null;
+				}
+			}
+
 			StartRecv();
+		}
+
+		public override Task<byte[]> Recv()
+		{
+			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
+			byte[] packet = this.parser.GetPacket();
+			if (packet != null)
+			{
+				tcs.SetResult(packet);
+			}
+			else
+			{
+				recvTcs = tcs;
+			}
+			return tcs.Task;
 		}
 	}
 }

@@ -16,8 +16,6 @@ namespace Base
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
-		/// <param name="host"></param>
-		/// <param name="port"></param>
 		public UService(string host, int port)
 		{
 			this.poller = new UPoller(host, (ushort)port);
@@ -74,7 +72,7 @@ namespace Base
 			return channel;
 		}
 
-		public override async Task<AChannel> GetChannel()
+		public override async Task<AChannel> AcceptChannel()
 		{
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);

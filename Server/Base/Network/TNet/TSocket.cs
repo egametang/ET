@@ -33,14 +33,21 @@ namespace Base
 			this.Bind(host, port);
 			this.Listen(100);
 		}
-
-		public string RemoteAddress { get; private set; }
-
+		
 		public Socket Socket
 		{
 			get
 			{
 				return this.socket;
+			}
+		}
+
+		public string RemoteAddress
+		{
+			get
+			{
+				IPEndPoint ipEndPoint = (IPEndPoint)this.socket.RemoteEndPoint;
+				return ipEndPoint.Address + ":" + ipEndPoint.Port;
 			}
 		}
 
@@ -120,7 +127,6 @@ namespace Base
 
 		public bool ConnectAsync(string host, int port)
 		{
-			this.RemoteAddress = $"{host}:{port}";
 			this.outArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
 			if (this.socket.ConnectAsync(this.outArgs))
 			{

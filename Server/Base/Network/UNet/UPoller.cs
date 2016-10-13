@@ -11,26 +11,24 @@ namespace Base
 			Library.Initialize();
 		}
 
-		private readonly USocketManager uSocketManager = new USocketManager();
-
+		public USocketManager USocketManager { get; }
 		private readonly QueueDictionary<IntPtr, ENetEvent> connQueue = new QueueDictionary<IntPtr, ENetEvent>();
 
 		private IntPtr host;
 
-		private readonly USocket acceptor;
-
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
 		private Queue<Action> concurrentQueue = new Queue<Action>();
-
 		private Queue<Action> localQueue;
+		private readonly object lockObject = new object();
 
 		private ENetEvent eNetEventCache;
 
-		private readonly object lockObject = new object();
+		private TaskCompletionSource<USocket> AcceptTcs { get; set; }
 
 		public UPoller(string hostName, ushort port)
 		{
-			this.acceptor = new USocket(IntPtr.Zero, this);
+			this.USocketManager = new USocketManager();
+			
 			UAddress address = new UAddress(hostName, port);
 			ENetAddress nativeAddress = address.Struct;
 			this.host = NativeMethods.ENetHostCreate(ref nativeAddress,
@@ -46,7 +44,8 @@ namespace Base
 
 		public UPoller()
 		{
-			this.uSocketManager = new USocketManager();
+			this.USocketManager = new USocketManager();
+
 			this.host = NativeMethods.ENetHostCreate(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
@@ -65,14 +64,6 @@ namespace Base
 			NativeMethods.ENetHostDestroy(this.host);
 
 			this.host = IntPtr.Zero;
-		}
-
-		public USocketManager USocketManager
-		{
-			get
-			{
-				return this.uSocketManager;
-			}
 		}
 
 		public IntPtr Host
@@ -113,7 +104,7 @@ namespace Base
 
 		public Task<USocket> AcceptAsync()
 		{
-			if (this.uSocketManager.ContainsKey(IntPtr.Zero))
+			if (this.AcceptTcs != null)
 			{
 				throw new Exception("do not accept twice!");
 			}
@@ -127,15 +118,30 @@ namespace Base
 				this.connQueue.Remove(ptr);
 
 				USocket socket = new USocket(ptr, this);
-				this.uSocketManager.Add(ptr, socket);
-				tcs.TrySetResult(socket);
+				this.USocketManager.Add(ptr, socket);
+				tcs.SetResult(socket);
 			}
 			else
 			{
-				this.uSocketManager.Add(this.acceptor.PeerPtr, this.acceptor);
-				this.acceptor.AcceptTcs = tcs;
+				this.AcceptTcs = tcs;
 			}
 			return tcs.Task;
+		}
+
+		private void OnAccepted(ENetEvent eEvent)
+		{
+			if (eEvent.Type == EventType.Disconnect)
+			{
+				this.AcceptTcs.TrySetException(new Exception("socket disconnected in accpet"));
+			}
+			
+			USocket socket = new USocket(eEvent.Peer, this);
+			this.USocketManager.Add(socket.PeerPtr, socket);
+			socket.OnAccepted();
+
+			var tcs = this.AcceptTcs;
+			this.AcceptTcs = null;
+			tcs.SetResult(socket);
 		}
 
 		private void OnEvents()
@@ -181,18 +187,17 @@ namespace Base
 					case EventType.Connect:
 						{
 							// 这是一个connect peer
-							if (this.uSocketManager.ContainsKey(eNetEvent.Peer))
+							if (this.USocketManager.ContainsKey(eNetEvent.Peer))
 							{
-								USocket uSocket = this.uSocketManager[eNetEvent.Peer];
+								USocket uSocket = this.USocketManager[eNetEvent.Peer];
 								uSocket.OnConnected();
 								break;
 							}
 
 							// 这是accept peer
-							if (this.uSocketManager.ContainsKey(IntPtr.Zero))
+							if (this.AcceptTcs != null)
 							{
-								USocket uSocket = this.uSocketManager[IntPtr.Zero];
-								uSocket.OnAccepted(eNetEvent);
+								this.OnAccepted(eNetEvent);
 								break;
 							}
 

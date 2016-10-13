@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Base
 {
@@ -22,9 +23,7 @@ namespace Base
 			this.Id = IdGenerater.GenerateId();
 			this.service = service;
 		}
-
-		public abstract void ConnectAsync();
-
+		
 		/// <summary>
 		/// 发送消息
 		/// </summary>
@@ -35,7 +34,7 @@ namespace Base
 		/// <summary>
 		/// 接收消息
 		/// </summary>
-		public abstract byte[] Recv();
+		public abstract Task<byte[]> Recv();
 
 		public virtual void Dispose()
 		{

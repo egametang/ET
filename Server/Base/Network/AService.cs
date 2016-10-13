@@ -26,7 +26,7 @@ namespace Base
 
 		public abstract AChannel GetChannel(string address);
 
-		public abstract Task<AChannel> GetChannel();
+		public abstract Task<AChannel> AcceptChannel();
 
 		public abstract void Remove(long channelId);
 

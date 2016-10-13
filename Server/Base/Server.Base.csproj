@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,7 +69,11 @@
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Helper\TimeHelper.cs" />
     <Compile Include="Helper\ZipHelper.cs" />
-    <Compile Include="Log.cs" />
+    <Compile Include="Log\Log.cs" />
+    <Compile Include="Log\ALogDecorater.cs" />
+    <Compile Include="Log\ILog.cs" />
+    <Compile Include="Log\NLogAdapter.cs" />
+    <Compile Include="Log\StackInfoDecorater.cs" />
     <Compile Include="MultiMap.cs" />
     <Compile Include="Network\AChannel.cs" />
     <Compile Include="Network\AService.cs" />

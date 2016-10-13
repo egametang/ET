@@ -1,26 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Base
 {
 	internal class UChannel: AChannel
 	{
 		private readonly USocket socket;
-		private readonly string remoteAddress;
+		public string RemoteAddress { get; private set; }
 
+		private TaskCompletionSource<byte[]> recvTcs;
+
+		/// <summary>
+		/// connect
+		/// </summary>
 		public UChannel(USocket socket, string host, int port, UService service): base(service)
 		{
 			this.socket = socket;
 			this.service = service;
-			this.remoteAddress = host + ":" + port;
+			this.RemoteAddress = host + ":" + port;
+			this.socket.ConnectAsync(host, (ushort)port);
+			this.socket.Received += this.OnRecv;
 		}
 
+		/// <summary>
+		/// accept
+		/// </summary>
 		public UChannel(USocket socket, UService service) : base(service)
 		{
 			this.socket = socket;
 			this.service = service;
-			this.remoteAddress = socket.RemoteAddress;
+			this.RemoteAddress = socket.RemoteAddress;
+			this.socket.Received += this.OnRecv;
 		}
 
 		public override void Dispose()
@@ -33,21 +45,6 @@ namespace Base
 			base.Dispose();
 
 			this.socket.Dispose();
-		}
-
-		public string RemoteAddress
-		{
-			get
-			{
-				return this.remoteAddress;
-			}
-		}
-
-		public override void ConnectAsync()
-		{
-			string[] ss = this.remoteAddress.Split(':');
-			ushort port = ushort.Parse(ss[1]);
-			this.socket.ConnectAsync(ss[0], port);
 		}
 
 		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
@@ -68,13 +65,26 @@ namespace Base
 			this.socket.SendAsync(buffer, channelID, flags);
 		}
 
-		public override byte[] Recv()
+		public override Task<byte[]> Recv()
 		{
-			if (this.socket?.RecvQueue.Count == 0)
+			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
+			var recvQueue = this.socket.RecvQueue;
+			if (recvQueue.Count > 0)
 			{
-				return null;
+				tcs.SetResult(recvQueue.Dequeue());
 			}
-			return this.socket?.RecvQueue.Dequeue();
+			else
+			{
+				recvTcs = tcs;
+			}
+			
+			return tcs.Task;
+		}
+
+		private void OnRecv()
+		{
+			this.recvTcs?.SetResult(this.socket.RecvQueue.Dequeue());
+			this.recvTcs = null;
 		}
 	}
 }
