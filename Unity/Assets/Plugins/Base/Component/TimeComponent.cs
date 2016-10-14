@@ -1,6 +1,4 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Base
 {
 	/// <summary>
 	/// 用于同步服务端和客户端时间

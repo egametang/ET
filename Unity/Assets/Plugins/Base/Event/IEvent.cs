@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Base
 {
 	public interface IEvent
 	{

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Base;
+using UnityEngine;
 
 namespace Model
 {

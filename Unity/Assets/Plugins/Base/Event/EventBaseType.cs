@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Base
 {
     public static class EventBaseType
 	{

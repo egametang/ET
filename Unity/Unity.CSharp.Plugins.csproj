@@ -140,7 +140,6 @@
     <Compile Include="Assets\Plugins\Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Object\ObjectManager.cs" />
     <Compile Include="Assets\Plugins\Base\QueueDictionary.cs" />
-    <Compile Include="Assets\Plugins\Base\ReferenceCollector.cs" />
     <Compile Include="Assets\Plugins\Base\TryLocker.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonConstants.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonDefaults.cs" />

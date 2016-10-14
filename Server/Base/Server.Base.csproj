@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E5078EC6-2B0E-4711-BE8B-D99F69638316}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Base</RootNamespace>
+    <AssemblyName>Base</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\Lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\Lib\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\Lib\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\Lib\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\EventComponent.cs">
+      <Link>Component\EventComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\KVComponent.cs">
+      <Link>Component\KVComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\MessageComponent.cs">
+      <Link>Component\MessageComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\MessageHandlerComponent.cs">
+      <Link>Component\MessageHandlerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\NetworkComponent.cs">
+      <Link>Component\NetworkComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\TimeComponent.cs">
+      <Link>Component\TimeComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\TimerComponent.cs">
+      <Link>Component\TimerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ACategory.cs">
+      <Link>Config\ACategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\AConfig.cs">
+      <Link>Config\AConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ConfigAttribute.cs">
+      <Link>Config\ConfigAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ICategory.cs">
+      <Link>Config\ICategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\DoubleMap.cs">
+      <Link>DoubleMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\AEventAttribute.cs">
+      <Link>Event\AEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\Env.cs">
+      <Link>Event\Env.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EnvBaseKey.cs">
+      <Link>Event\EnvBaseKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EventAttribute.cs">
+      <Link>Event\EventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EventBaseType.cs">
+      <Link>Event\EventBaseType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\IEvent.cs">
+      <Link>Event\IEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ArrayHelper.cs">
+      <Link>Helper\ArrayHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ByteHelper.cs">
+      <Link>Helper\ByteHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\EnumHelper.cs">
+      <Link>Helper\EnumHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\FileHelper.cs">
+      <Link>Helper\FileHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\IdGenerater.cs">
+      <Link>Helper\IdGenerater.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MD5Helper.cs">
+      <Link>Helper\MD5Helper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MongoHelper.cs">
+      <Link>Helper\MongoHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ProtobufHelper.cs">
+      <Link>Helper\ProtobufHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\RandomHelper.cs">
+      <Link>Helper\RandomHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\StringHelper.cs">
+      <Link>Helper\StringHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\TimeHelper.cs">
+      <Link>Helper\TimeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ZipHelper.cs">
+      <Link>Helper\ZipHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMEvent.cs">
+      <Link>Message\AMEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\IErrorMessage.cs">
+      <Link>Message\IErrorMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\IMRegister.cs">
+      <Link>Message\IMRegister.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\MessageAttribute.cs">
+      <Link>Message\MessageAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\RpcException.cs">
+      <Link>Message\RpcException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\MultiMap.cs">
+      <Link>MultiMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\AChannel.cs">
+      <Link>Network\AChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\AService.cs">
+      <Link>Network\AService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\PacketParser.cs">
+      <Link>Network\TNet\PacketParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\TBuffer.cs">
+      <Link>Network\TNet\TBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\TChannel.cs">
+      <Link>Network\TNet\TChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\TPoller.cs">
+      <Link>Network\TNet\TPoller.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\TService.cs">
+      <Link>Network\TNet\TService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\TNet\TSocket.cs">
+      <Link>Network\TNet\TSocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\Library.cs">
+      <Link>Network\UNet\Library.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\NativeMethods.cs">
+      <Link>Network\UNet\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\NativeStructs.cs">
+      <Link>Network\UNet\NativeStructs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\UAddress.cs">
+      <Link>Network\UNet\UAddress.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\UChannel.cs">
+      <Link>Network\UNet\UChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\UPacket.cs">
+      <Link>Network\UNet\UPacket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\UPoller.cs">
+      <Link>Network\UNet\UPoller.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\UService.cs">
+      <Link>Network\UNet\UService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\USocket.cs">
+      <Link>Network\UNet\USocket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Network\UNet\USocketManager.cs">
+      <Link>Network\UNet\USocketManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\Component.cs">
+      <Link>Object\Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\Entity.cs">
+      <Link>Object\Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\IAwake.cs">
+      <Link>Object\IAwake.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\ILoader.cs">
+      <Link>Object\ILoader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\IStart.cs">
+      <Link>Object\IStart.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\IUpdate.cs">
+      <Link>Object\IUpdate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\Object.cs">
+      <Link>Object\Object.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\ObjectEventAttribute.cs">
+      <Link>Object\ObjectEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Object\ObjectManager.cs">
+      <Link>Object\ObjectManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\QueueDictionary.cs">
+      <Link>QueueDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\TryLocker.cs">
+      <Link>TryLocker.cs</Link>
+    </Compile>
+    <Compile Include="Log.cs" />
+    <Compile Include="Logger\ALogDecorater.cs" />
+    <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Logger\NLogAdapter.cs" />
+    <Compile Include="Logger\StackInfoDecorater.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

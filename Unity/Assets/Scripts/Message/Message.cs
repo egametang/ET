@@ -1,3 +1,4 @@
+using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model

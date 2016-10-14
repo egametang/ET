@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
-using Base;
 
-namespace Model
+namespace Base
 {
 	[ObjectEvent]
 	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol>

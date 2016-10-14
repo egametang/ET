@@ -1,7 +1,6 @@
 ﻿using System;
-using Base;
 
-namespace Model
+namespace Base
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public abstract class AEventAttribute: Attribute

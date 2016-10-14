@@ -62,10 +62,6 @@
       <Project>{4123f183-8f61-27ae-ea27-294dde0cc7eb}</Project>
       <Name>Unity.CSharp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Unity.CSharp.Editor.csproj">
-      <Project>{27d29a4b-fde7-b1bd-e226-b13a243bca00}</Project>
-      <Name>Unity.CSharp.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Unity.CSharp.Plugins.csproj">
       <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
       <Name>Unity.CSharp.Plugins</Name>

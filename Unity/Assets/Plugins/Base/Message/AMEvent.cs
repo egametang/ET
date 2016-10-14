@@ -1,6 +1,6 @@
 ﻿using Base;
 
-namespace Model
+namespace Base
 {
 	public abstract class AMEvent<T>: IMRegister<MessageHandlerComponent>
 	{

@@ -1,6 +1,4 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Base
 {
 	public sealed class Game
 	{

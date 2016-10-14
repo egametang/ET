@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace Base
 {
 	public enum MessageType
 	{

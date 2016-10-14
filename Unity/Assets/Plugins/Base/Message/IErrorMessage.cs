@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using Base;
-using MongoDB.Bson;
-using ProtoBuf;
-
-namespace Model
+﻿namespace Base
 {
 	/// <summary>
 	/// 服务端回的RPC消息需要继承这个接口

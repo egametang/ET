@@ -4,7 +4,7 @@ using System.Reflection;
 using Base;
 using Object = Base.Object;
 
-namespace Model
+namespace Base
 {
 	[ObjectEvent]
 	public class EventComponentEvent : ObjectEvent<EventComponent>, ILoader, IAwake

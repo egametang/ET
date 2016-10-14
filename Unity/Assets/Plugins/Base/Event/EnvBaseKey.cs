@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Base
 {
 	/// <summary>
 	/// 一般使用事件名+变量名

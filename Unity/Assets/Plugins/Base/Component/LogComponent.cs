@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Base;
 
-namespace Model
+namespace Base
 {
 	[ObjectEvent]
 	public class LogComponentEvent : ObjectEvent<LogComponent>, IAwake

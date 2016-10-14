@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Base;
 
-namespace Model
+namespace Base
 {
 	[ObjectEvent]
 	public class MessageComponentEvent : ObjectEvent<MessageComponent>, IAwake<MessageHandlerComponent, AChannel>

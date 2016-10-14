@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Base;
 using MongoDB.Bson.Serialization.Attributes;
-using Object = System.Object;
 
-namespace Model
+namespace Base
 {
 	public class Env: Object
 	{
