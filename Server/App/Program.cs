@@ -7,9 +7,9 @@ using Object = Base.Object;
 
 namespace App
 {
-	class Program
+	internal static class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			try
 			{
@@ -21,12 +21,15 @@ namespace App
 				byte[] pdbBytes = File.ReadAllBytes("./Controller.pdb");
 				Assembly controller = Assembly.Load(dllBytes, pdbBytes);
 				Object.ObjectManager.Register("Controller", controller);
-				
+
 				Game.Scene.AddComponent<EventComponent>();
 				TimeComponent timeComponent = Game.Scene.AddComponent<TimeComponent>();
 				Game.Scene.AddComponent<TimerComponent, TimeComponent>(timeComponent);
-				Game.Scene.AddComponent<NetworkComponent, NetworkProtocol>(NetworkProtocol.UDP);
-				Game.Scene.AddComponent<MessageHandlerComponent, MessageType>(MessageType.Realm);
+
+				Options options = Game.Scene.AddComponent<OptionsComponent, string[]>(args).Options;
+
+				Game.Scene.AddComponent<NetworkComponent, NetworkProtocol, string, int>(options.Protocol, options.Host, options.Port);
+				Game.Scene.AddComponent<MessageHandlerComponent, string>(options.AppType);
 
 				while (true)
 				{

@@ -3,7 +3,8 @@ namespace Model
 {
 	public static class Opcode
 	{
-		public const ushort S2C_InitBuffInfo = 1;
+		public const ushort C2S_Login = 1;
+		public const ushort S2C_InitBuffInfo = 2;
 		public const ushort S2C_StartGame = 4;
 	}
 }

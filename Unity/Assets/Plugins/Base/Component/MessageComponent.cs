@@ -115,9 +115,9 @@ namespace Base
 				{
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
 					ushort opcode = this.messageHandler.MessageOpcode[request.GetType()];
-					if (response.ErrorMessage.errno != 0)
+					if (response.ErrorMessage.Errno != 0)
 					{
-						tcs.SetException(new RpcException(response.ErrorMessage.errno, response.ErrorMessage.msg.Utf8ToStr()));
+						tcs.SetException(new RpcException(response.ErrorMessage.Errno, response.ErrorMessage.Message));
 						return;
 					}
 					tcs.SetResult(response);
@@ -149,9 +149,9 @@ namespace Base
 				try
 				{
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
-					if (response.ErrorMessage.errno != 0)
+					if (response.ErrorMessage.Errno != 0)
 					{
-						tcs.SetException(new RpcException(response.ErrorMessage.errno,  response.ErrorMessage.msg.Utf8ToStr()));
+						tcs.SetException(new RpcException(response.ErrorMessage.Errno,  response.ErrorMessage.Message));
 						return;
 					}
 					tcs.SetResult(response);

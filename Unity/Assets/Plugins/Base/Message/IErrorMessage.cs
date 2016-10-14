@@ -5,12 +5,12 @@
 	/// </summary>
 	public interface IErrorMessage
 	{
-		ErrorMessage ErrorMessage { get; }
+		ErrorMessage ErrorMessage { get; set; }
 	}
 	
 	public class ErrorMessage
 	{
-		public int errno = 0;
-		public byte[] msg = "".ToByteArray();
+		public int Errno = 0;
+		public string Message = "";
 	}
 }

@@ -4,7 +4,7 @@ using System.Net.Sockets;
 namespace Base
 {
 	[ObjectEvent]
-	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol>
+	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol, string, int>
 	{
 		public void Update()
 		{
@@ -12,19 +12,19 @@ namespace Base
 			component.Update();
 		}
 
-		public void Awake(NetworkProtocol protocol)
+		public void Awake(NetworkProtocol protocol, string host, int port)
 		{
-			this.GetValue().Awake(protocol);
+			this.GetValue().Awake(protocol, host, port);
 		}
 	}
 
 	public class NetworkComponent: Component
 	{
-		private AService service;
+		public AService Service;
 		
 		private void Dispose(bool disposing)
 		{
-			if (this.service == null)
+			if (this.Service == null)
 			{
 				return;
 			}
@@ -33,10 +33,10 @@ namespace Base
 
 			if (disposing)
 			{
-				this.service.Dispose();
+				this.Service.Dispose();
 			}
 
-			this.service = null;
+			this.Service = null;
 		}
 
 		public override void Dispose()
@@ -48,15 +48,15 @@ namespace Base
 			this.Dispose(true);
 		}
 
-		public void Awake(NetworkProtocol protocol)
+		public void Awake(NetworkProtocol protocol, string host, int port)
 		{
 			switch (protocol)
 			{
 				case NetworkProtocol.TCP:
-					this.service = new TService { OnError = this.OnError };
+					this.Service = new TService(host, port) { OnError = this.OnError };
 					break;
 				case NetworkProtocol.UDP:
-					this.service = new UService { OnError = this.OnError };
+					this.Service = new UService(host, port) { OnError = this.OnError };
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -65,42 +65,18 @@ namespace Base
 
 		public void Update()
 		{
-			if (this.service == null)
+			if (this.Service == null)
 			{
 				return;
 			}
-			this.service.Update();
+			this.Service.Update();
 		}
-
-		public AChannel GetChannel(long channelId)
-		{
-			AChannel channel = this.service?.GetChannel(channelId);
-			return channel;
-		}
-
-
-		public AChannel ConnectChannel(string host, int port)
-		{
-			AChannel channel = this.service.GetChannel(host, port);
-			return channel;
-		}
-
+		
 		public void OnError(long id, SocketError error)
 		{
 			Env env = new Env();
 			env[EnvBaseKey.ChannelError] = error;
 			Game.Scene.GetComponent<EventComponent>().Run(EventBaseType.NetworkChannelError, env);
-		}
-
-		public void RemoveChannel(long channelId)
-		{
-			AChannel channel = this.service?.GetChannel(channelId);
-			if (channel == null)
-			{
-				return;
-			}
-			this.service.Remove(channelId);
-			channel.Dispose();
 		}
 	}
 }

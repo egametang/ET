@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENet", "ThirdParty\ENet\ENe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.App", "App\Server.App.csproj", "{3F8DC04C-9E05-403F-B6A5-36293EB99937}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuget", "ThirdParty\Nuget\Nuget.csproj", "{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,11 +85,24 @@ Global
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Release|x64.Build.0 = Release|Any CPU
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Release|x86.Build.0 = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|x64.Build.0 = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Debug|x86.Build.0 = Debug|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|x64.Build.0 = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C9992B7C-313E-4C9F-A954-640D01EDFB58} = {01CCAD69-09B1-42F9-8A39-489268BEE18D}
+		{F6F8E6AB-632C-4C6E-BFB1-B39570FF2135} = {01CCAD69-09B1-42F9-8A39-489268BEE18D}
 	EndGlobalSection
 EndGlobal

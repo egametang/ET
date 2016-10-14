@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\Event\EnvKey.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
+    <Compile Include="Assets\Scripts\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Message\Opcode.cs" />

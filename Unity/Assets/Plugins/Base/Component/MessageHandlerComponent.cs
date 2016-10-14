@@ -5,16 +5,16 @@ using System.Reflection;
 namespace Base
 {
 	[ObjectEvent]
-	public class MessageHandlerComponentEvent : ObjectEvent<MessageHandlerComponent>, ILoader, IAwake<MessageType>
+	public class MessageHandlerComponentEvent : ObjectEvent<MessageHandlerComponent>, ILoader, IAwake<string>
 	{
 		public void Load()
 		{
 			this.GetValue().Load();
 		}
 
-		public void Awake(MessageType messageType)
+		public void Awake(string appType)
 		{
-			this.GetValue().Awake(messageType);
+			this.GetValue().Awake(appType);
 		}
 	}
 	
@@ -23,13 +23,13 @@ namespace Base
 	/// </summary>
 	public class MessageHandlerComponent: Component
 	{
-		private MessageType MessageType;
+		private string AppType;
 		private Dictionary<ushort, List<Action<Entity, byte[], int, int>>> events;
 		public Dictionary<Type, ushort> MessageOpcode { get; private set; } = new Dictionary<Type, ushort>();
 		
-		public void Awake(MessageType messageType)
+		public void Awake(string appType)
 		{
-			this.MessageType = messageType;
+			this.AppType = appType;
 			this.Load();
 		}
 
@@ -51,7 +51,7 @@ namespace Base
 					}
 
 					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
-					if (messageAttribute.MessageType != this.MessageType)
+					if (messageAttribute.AppType != this.AppType)
 					{
 						continue;
 					}

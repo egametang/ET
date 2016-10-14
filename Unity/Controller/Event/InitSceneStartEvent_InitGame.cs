@@ -15,20 +15,13 @@ namespace Controller
 	{
 		public async void Run()
 		{
-			GameObject code = (GameObject)Resources.Load("Code/Code");
-			byte[] assBytes = code.Get<TextAsset>("Controller.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Controller.dll.mdb").bytes;
-			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
-			Object.ObjectManager.Register("Controller", assembly);
-			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
-
 			Game.Scene.AddComponent<MessageComponent>();
 			Game.Scene.AddComponent<ChildrenComponent>();
 
 			try
 			{
-				S2C_FetchServerTime s2CFetchServerTime = await Game.Scene.GetComponent<MessageComponent>().CallAsync<S2C_FetchServerTime>(new C2S_FetchServerTime());
-				Log.Info($"server time is: {s2CFetchServerTime.ServerTime}");
+				S2C_Login s2CLogin = await Game.Scene.GetComponent<MessageComponent>().CallAsync<S2C_Login>(new C2S_Login {Account = "tanghai", Password = "1111111"});
+				Log.Info(MongoHelper.ToJson(s2CLogin));
 			}
 			catch (RpcException e)
 			{
