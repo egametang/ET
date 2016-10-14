@@ -1,7 +1,6 @@
-﻿using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Base
+namespace Model
 {
 	public class Init: MonoBehaviour
 	{
@@ -12,7 +11,7 @@ namespace Base
 
 		private void Update()
 		{
-			Object.ObjectManager.Update();
+			Base.Object.ObjectManager.Update();
 		}
 	}
 }

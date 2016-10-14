@@ -1,4 +1,6 @@
-﻿namespace Base
+﻿using Base;
+
+namespace Model
 {
 	public enum SceneType
 	{
@@ -11,6 +13,8 @@
 		Robot,
 		BehaviorTreeScene,
 		RobotClient,
+
+		Realm,
 	}
 
 	public sealed class Scene: Component

@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Base;
+using UnityEngine;
+using Component = Base.Component;
 
-namespace Base
+namespace Model
 {
 	public sealed class UI: Component
 	{

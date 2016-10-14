@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Base
+namespace Model
 {
 	[Serializable]
 	public class GameException: Exception
@@ -41,25 +41,6 @@ namespace Base
 
 		public ConfigException(string message, Exception e) : base(message, e)
 		{
-		}
-	}
-
-	/// <summary>
-	/// RPC异常,带ErrorCode
-	/// </summary>
-	[Serializable]
-	public class RpcException : Exception
-	{
-		public ErrorCode Error { get; private set; }
-
-		public RpcException(ErrorCode error, string message) : base($"{(int)error} : {message}")
-		{
-			this.Error = error;
-		}
-
-		public RpcException(ErrorCode error, string message, Exception e) : base($"{(int)error} : {message}", e)
-		{
-			this.Error = error;
 		}
 	}
 }

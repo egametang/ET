@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Base;
+using Model;
 using UnityEngine;
 using Object = Base.Object;
 

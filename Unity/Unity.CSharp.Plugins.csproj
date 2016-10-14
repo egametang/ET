@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.5f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,6 +73,75 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Plugins\Base\Component\EventComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\KVComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\LogComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\MessageComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\MessageHandlerComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\NetworkComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\TimeComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Component\TimerComponent.cs" />
+    <Compile Include="Assets\Plugins\Base\Config\ACategory.cs" />
+    <Compile Include="Assets\Plugins\Base\Config\AConfig.cs" />
+    <Compile Include="Assets\Plugins\Base\Config\ConfigAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Config\ICategory.cs" />
+    <Compile Include="Assets\Plugins\Base\DoubleMap.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\AEventAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\Env.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\EnvBaseKey.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\EventAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\EventBaseType.cs" />
+    <Compile Include="Assets\Plugins\Base\Event\IEvent.cs" />
+    <Compile Include="Assets\Plugins\Base\Game.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\ArrayHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\ByteHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\EnumHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\FileHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\IdGenerater.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\MD5Helper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\MongoHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\ProtobufHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\RandomHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\StringHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\TimeHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\ZipHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Log.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\AMEvent.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\IErrorMessage.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\IMRegister.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\MessageAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\RpcException.cs" />
+    <Compile Include="Assets\Plugins\Base\MultiMap.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\AChannel.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\AService.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\PacketParser.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\TBuffer.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\TChannel.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\TPoller.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\TService.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\TNet\TSocket.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\Library.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\NativeMethods.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\NativeStructs.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\UAddress.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\UChannel.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\UPacket.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\UPoller.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\UService.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\USocket.cs" />
+    <Compile Include="Assets\Plugins\Base\Network\UNet\USocketManager.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\Component.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\Entity.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\IAwake.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\ILoader.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\IStart.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\IUpdate.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\Object.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\ObjectEventAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Object\ObjectManager.cs" />
+    <Compile Include="Assets\Plugins\Base\QueueDictionary.cs" />
+    <Compile Include="Assets\Plugins\Base\ReferenceCollector.cs" />
+    <Compile Include="Assets\Plugins\Base\TryLocker.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonConstants.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonDefaults.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonExtensionMethods.cs" />
@@ -446,5 +517,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

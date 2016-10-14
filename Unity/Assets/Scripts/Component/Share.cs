@@ -1,4 +1,6 @@
-﻿namespace Base
+﻿using Base;
+
+namespace Model
 {
 	/// <summary>
 	/// 游戏和扩展编辑器都需要用到的数据放在这个Scene上面

@@ -1,6 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	[BsonIgnoreExtraElements]
 	public class C2S_LoginGate

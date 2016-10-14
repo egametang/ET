@@ -1,6 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Base;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	public enum AssetUrlEnum
 	{

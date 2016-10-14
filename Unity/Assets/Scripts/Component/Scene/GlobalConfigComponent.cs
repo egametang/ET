@@ -1,6 +1,7 @@
 ﻿using System.IO;
+using Base;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
 	public class GlobalConfigComponentEvent : ObjectEvent<GlobalConfigComponent>, IAwake

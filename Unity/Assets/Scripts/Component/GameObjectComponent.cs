@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using Base;
+using UnityEngine;
+using Component = UnityEngine.Component;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
 	public class GameObjectComponentEvent : ObjectEvent<GameObjectComponent>, IAwake<GameObject>
