@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base;
+using Object = Base.Object;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
 	public class EventComponentEvent : ObjectEvent<EventComponent>, ILoader, IAwake

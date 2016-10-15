@@ -10,6 +10,7 @@ namespace Model
 		private void Start()
 		{
 			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
+			Object.ObjectManager.Register("Model", typeof(Init).Assembly);
 
 			GameObject code = (GameObject)Resources.Load("Code");
 			byte[] assBytes = code.Get<TextAsset>("Controller.dll").bytes;

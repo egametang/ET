@@ -47,27 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\EventComponent.cs">
-      <Link>Component\EventComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\KVComponent.cs">
-      <Link>Component\KVComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\MessageComponent.cs">
-      <Link>Component\MessageComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\MessageHandlerComponent.cs">
-      <Link>Component\MessageHandlerComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\NetworkComponent.cs">
-      <Link>Component\NetworkComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\TimeComponent.cs">
-      <Link>Component\TimeComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Component\TimerComponent.cs">
-      <Link>Component\TimerComponent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ACategory.cs">
       <Link>Config\ACategory.cs</Link>
     </Compile>

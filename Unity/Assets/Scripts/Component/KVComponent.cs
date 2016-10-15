@@ -2,7 +2,7 @@
 using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// Key Value组件用于保存一些数据

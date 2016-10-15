@@ -41,6 +41,24 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
+      <Link>Component\EventComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\KVComponent.cs">
+      <Link>Component\KVComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageComponent.cs">
+      <Link>Component\MessageComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageHandlerComponent.cs">
+      <Link>Component\MessageHandlerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
+      <Link>Component\NetworkComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
+      <Link>Component\TimerComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\AppType.cs">
       <Link>Message\AppType.cs</Link>
     </Compile>

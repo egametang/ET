@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Base;
 using MongoDB.Bson;
 
-namespace Base
+namespace Model
 {
 	public class Timer
 	{

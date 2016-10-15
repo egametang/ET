@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Base;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
-	public class MessageComponentEvent : ObjectEvent<MessageComponent>, IAwake<MessageHandlerComponent, AChannel>
+	public class MessageComponentEvent : ObjectEvent<MessageComponent>, IAwake<AChannel>
 	{
-		public void Awake(MessageHandlerComponent messageHandler, AChannel aChannel)
+		public void Awake(AChannel aChannel)
 		{
-			this.GetValue().Awake(messageHandler, aChannel);
+			this.GetValue().Awake(aChannel);
 		}
 	}
 	
@@ -25,9 +26,9 @@ namespace Base
 		private AChannel channel;
 		private MessageHandlerComponent messageHandler;
 		
-		public void Awake(MessageHandlerComponent handler, AChannel aChannel)
+		public void Awake(AChannel aChannel)
 		{
-			this.messageHandler = handler;
+			this.messageHandler = Game.Scene.GetComponent<MessageHandlerComponent>();
 			this.channel = aChannel;
 			this.StartRecv();
 		}

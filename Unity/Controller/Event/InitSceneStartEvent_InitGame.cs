@@ -12,14 +12,13 @@ namespace Controller
 	{
 		public async void Run()
 		{
-			MessageHandlerComponent messageHandlerComponent = Game.Scene.AddComponent<MessageHandlerComponent, string>("Client");
-			Game.Scene.AddComponent<NetworkComponent, NetworkProtocol>(NetworkProtocol.UDP);
-			//Game.Scene.AddComponent<MessageComponent, MessageHandlerComponent>();
-			Game.Scene.AddComponent<ChildrenComponent>();
+			Game.Scene.AddComponent<MessageHandlerComponent, string>("Client");
+			NetworkComponent networkComponent = Game.Scene.AddComponent<NetworkComponent, NetworkProtocol>(NetworkProtocol.UDP);
+			Entity session = networkComponent.Get("127.0.0.1:8888");
 
 			try
 			{
-				S2C_Login s2CLogin = await Game.Scene.GetComponent<MessageComponent>().CallAsync<S2C_Login>(new C2S_Login {Account = "tanghai", Password = "1111111"});
+				S2C_Login s2CLogin = await session.GetComponent<MessageComponent>().CallAsync<S2C_Login>(new C2S_Login {Account = "tanghai", Password = "1111111"});
 				Log.Info(MongoHelper.ToJson(s2CLogin));
 			}
 			catch (RpcException e)

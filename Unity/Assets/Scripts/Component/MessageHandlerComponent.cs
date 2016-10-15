@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base;
+using Object = Base.Object;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
 	public class MessageHandlerComponentEvent : ObjectEvent<MessageHandlerComponent>, ILoader, IAwake<string>
@@ -21,7 +23,7 @@ namespace Base
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	public class MessageHandlerComponent: Component
+	public class MessageHandlerComponent: Component, IMessageHandler
 	{
 		private string AppType;
 		private Dictionary<ushort, List<Action<Entity, byte[], int, int>>> events;
@@ -66,6 +68,11 @@ namespace Base
 					iMRegister.Register(this, messageAttribute.Opcode);
 				}
 			}
+		}
+
+		public void RegisterOpcode(Type type, ushort opcode)
+		{
+			this.MessageOpcode[type] = opcode;
 		}
 
 		public void Register<T>(ushort opcode, Action<Entity, T> action)

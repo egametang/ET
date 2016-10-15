@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Base;
 
-namespace Base
+namespace Model
 {
 	[ObjectEvent]
 	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol>, IAwake<NetworkProtocol, string, int>
