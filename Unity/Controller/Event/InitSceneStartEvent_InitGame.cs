@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Reflection;
 using Base;
 using Model;
-using UnityEngine;
-using Object = Base.Object;
 
 namespace Controller
 {
@@ -15,7 +12,9 @@ namespace Controller
 	{
 		public async void Run()
 		{
-			Game.Scene.AddComponent<MessageComponent>();
+			MessageHandlerComponent messageHandlerComponent = Game.Scene.AddComponent<MessageHandlerComponent, string>("Client");
+			Game.Scene.AddComponent<NetworkComponent, NetworkProtocol>(NetworkProtocol.UDP);
+			//Game.Scene.AddComponent<MessageComponent, MessageHandlerComponent>();
 			Game.Scene.AddComponent<ChildrenComponent>();
 
 			try

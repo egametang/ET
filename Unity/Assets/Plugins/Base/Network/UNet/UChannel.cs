@@ -8,7 +8,6 @@ namespace Base
 	internal class UChannel: AChannel
 	{
 		private readonly USocket socket;
-		public string RemoteAddress { get; private set; }
 
 		private TaskCompletionSource<byte[]> recvTcs;
 

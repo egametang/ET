@@ -16,10 +16,6 @@ namespace Base
 		private bool isSending;
 		private readonly PacketParser parser;
 		private bool isConnected;
-
-		public Action<long, SocketError> OnError;
-
-		public string RemoteAddress { get; }
 		private TaskCompletionSource<byte[]> recvTcs;
 
 		/// <summary>
@@ -142,7 +138,7 @@ namespace Base
 			if (error != SocketError.Success)
 			{
 				Log.Info($"socket send fail, error: {error}, n: {n}");
-				this.OnError(this.Id, error);
+				this.OnError(this, error);
 				return;
 			}
 			this.sendBuffer.FirstIndex += n;
@@ -175,7 +171,7 @@ namespace Base
 			if (error != SocketError.Success)
 			{
 				Log.Info($"socket recv fail, error: {error}, {n}");
-				this.OnError(this.Id, error);
+				this.OnError(this, error);
 				return;
 			}
 

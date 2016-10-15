@@ -22,22 +22,20 @@ namespace Base
 
 		public abstract AChannel GetChannel(long id);
 
-		public abstract AChannel GetChannel(string host, int port);
-
-		public abstract AChannel GetChannel(string address);
-
 		public abstract Task<AChannel> AcceptChannel();
+
+		public abstract AChannel ConnectChannel(string host, int port);
 
 		public abstract void Remove(long channelId);
 
 		public abstract void Update();
 
-		public Action<long, SocketError> OnError;
+		public Action<AChannel, SocketError> OnError;
 
-		protected void OnChannelError(long channelId, SocketError error)
+		protected void OnChannelError(AChannel channel, SocketError error)
 		{
-			this.OnError?.Invoke(channelId, error);
-			this.Remove(channelId);
+			this.OnError?.Invoke(channel, error);
+			this.Remove(channel.Id);
 		}
 
 		public abstract void Dispose();

@@ -13,17 +13,12 @@ namespace Base
 	}
 
 	[ObjectEvent]
-	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate, IAwake<TimeComponent>
+	public class TimerComponentEvent : ObjectEvent<TimerComponent> 
 	{
 		public void Update()
 		{
 			TimerComponent component = this.GetValue();
 			component.Update();
-		}
-
-		public void Awake(TimeComponent p1)
-		{
-			this.GetValue().TimeComponent = p1;
 		}
 	}
 
@@ -31,7 +26,7 @@ namespace Base
 	{
 		public static void Update(this TimerComponent component)
 		{
-			long timeNow = component.TimeComponent.Now();
+			long timeNow = TimeHelper.Now();
 			foreach (long time in component.timeId.Keys)
 			{
 				if (time > timeNow)
@@ -69,8 +64,6 @@ namespace Base
 		public readonly MultiMap<long, ObjectId> timeId = new MultiMap<long, ObjectId>();
 
 		public readonly Queue<long> timeoutTimer = new Queue<long>();
-
-		public TimeComponent TimeComponent { get; set; }
 
 		public void Remove(ObjectId id)
 		{

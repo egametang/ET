@@ -14,5 +14,8 @@ namespace Model
 	public class S2C_Login: IErrorMessage
 	{
 		public ErrorMessage ErrorMessage { get; set; }
+
+		public string Host;
+		public int Port;
 	}
 }

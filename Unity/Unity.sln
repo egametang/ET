@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp.Plugins", "Unity.CSharp.Plugins.csproj", "{1AA60596-6964-87F6-2427-6CA85BBAF27D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.CSharp", "Unity.CSharp.csproj", "{4123F183-8F61-27AE-EA27-294DDE0CC7EB}"

@@ -11,7 +11,6 @@ namespace Base
 		private UPoller poller;
 
 		private readonly Dictionary<long, UChannel> idChannels = new Dictionary<long, UChannel>();
-		private readonly Dictionary<string, UChannel> addressChannels = new Dictionary<string, UChannel>();
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -49,34 +48,21 @@ namespace Base
 		{
 			this.poller.Add(action);
 		}
-
-		public override AChannel GetChannel(string host, int port)
-		{
-			return this.GetChannel($"{host}:{port}");
-		}
-
-		public override AChannel GetChannel(string address)
-		{
-			UChannel channel = null;
-			if (this.addressChannels.TryGetValue(address, out channel))
-			{
-				return channel;
-			}
-			USocket newSocket = new USocket(this.poller);
-			string[] ss = address.Split(':');
-			int port = int.Parse(ss[1]);
-			string host = ss[0];
-			channel = new UChannel(newSocket, host, port, this);
-			newSocket.Disconnect += () => this.OnChannelError(channel.Id, SocketError.SocketError);
-			this.idChannels[channel.Id] = channel;
-			return channel;
-		}
-
+		
 		public override async Task<AChannel> AcceptChannel()
 		{
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
-			this.addressChannels[channel.RemoteAddress] = channel;
+			socket.Disconnect += () => this.OnChannelError(channel, SocketError.SocketError);
+			this.idChannels[channel.Id] = channel;
+			return channel;
+		}
+
+		public override AChannel ConnectChannel(string host, int port)
+		{
+			USocket newSocket = new USocket(this.poller);
+			UChannel channel = new UChannel(newSocket, host, port, this);
+			newSocket.Disconnect += () => this.OnChannelError(channel, SocketError.SocketError);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}

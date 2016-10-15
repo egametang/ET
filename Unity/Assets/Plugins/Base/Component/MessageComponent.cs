@@ -29,13 +29,26 @@ namespace Base
 		{
 			this.messageHandler = handler;
 			this.channel = aChannel;
-			this.UpdateChannel();
+			this.StartRecv();
+		}
+
+		public string RemoteAddress
+		{
+			get
+			{
+				return this.channel.RemoteAddress;
+			}
 		}
 		
-		private async void UpdateChannel()
+		private async void StartRecv()
 		{
 			while (true)
 			{
+				if (this.Id == 0)
+				{
+					return;
+				}
+
 				byte[] messageBytes;
 				try
 				{
@@ -114,7 +127,6 @@ namespace Base
 				try
 				{
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
-					ushort opcode = this.messageHandler.MessageOpcode[request.GetType()];
 					if (response.ErrorMessage.Errno != 0)
 					{
 						tcs.SetException(new RpcException(response.ErrorMessage.Errno, response.ErrorMessage.Message));

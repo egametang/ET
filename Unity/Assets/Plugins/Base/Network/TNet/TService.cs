@@ -11,7 +11,6 @@ namespace Base
 		private readonly TSocket acceptor;
 
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
-		private readonly Dictionary<string, TChannel> addressChannels = new Dictionary<string, TChannel>();
 
 		/// <summary>
 		/// 即可做client也可做server
@@ -64,10 +63,21 @@ namespace Base
 			TSocket socket = new TSocket(this.poller);
 			await this.acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
-			this.addressChannels[channel.RemoteAddress] = channel;
+			channel.ErrorCallback += this.OnChannelError;
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
+
+		public override AChannel ConnectChannel(string host, int port)
+		{
+			TSocket newSocket = new TSocket(this.poller);
+			TChannel channel = new TChannel(newSocket, host, port, this);
+			channel.ErrorCallback += this.OnChannelError;
+			this.idChannels[channel.Id] = channel;
+
+			return channel;
+		}
+
 
 		public override void Remove(long id)
 		{
@@ -83,31 +93,7 @@ namespace Base
 			this.idChannels.Remove(id);
 			channel.Dispose();
 		}
-
-		public override AChannel GetChannel(string host, int port)
-		{
-			string address = $"{host}:{port}";
-			return this.GetChannel(address);
-		}
-
-		public override AChannel GetChannel(string address)
-		{
-			TChannel channel = null;
-			if (this.addressChannels.TryGetValue(address, out channel))
-			{
-				return channel;
-			}
-
-			string[] ss = address.Split(':');
-			string host = ss[0];
-			int port = int.Parse(ss[1]);
-			TSocket newSocket = new TSocket(this.poller);
-			channel = new TChannel(newSocket, host, port, this);
-			channel.OnError += this.OnChannelError;
-			this.idChannels[channel.Id] = channel;
-			return channel;
-		}
-
+		
 		public override void Update()
 		{
 			this.poller.Update();

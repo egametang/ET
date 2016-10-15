@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace Base
 {
 	[ObjectEvent]
-	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol, string, int>
+	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol>, IAwake<NetworkProtocol, string, int>
 	{
 		public void Update()
 		{
 			NetworkComponent component = this.GetValue();
 			component.Update();
+		}
+
+		public void Awake(NetworkProtocol protocol)
+		{
+			this.GetValue().Awake(protocol);
 		}
 
 		public void Awake(NetworkProtocol protocol, string host, int port)
@@ -21,22 +26,103 @@ namespace Base
 	public class NetworkComponent: Component
 	{
 		public AService Service;
-		
-		private void Dispose(bool disposing)
+
+		public Dictionary<long, Entity> sessions = new Dictionary<long, Entity>();
+		public Dictionary<string, Entity> adressSessions = new Dictionary<string, Entity>();
+
+		public void Awake(NetworkProtocol protocol)
 		{
-			if (this.Service == null)
+			switch (protocol)
+			{
+				case NetworkProtocol.TCP:
+					this.Service = new TService();
+					break;
+				case NetworkProtocol.UDP:
+					this.Service = new UService();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public void Awake(NetworkProtocol protocol, string host, int port)
+		{
+			switch (protocol)
+			{
+				case NetworkProtocol.TCP:
+					this.Service = new TService(host, port);
+					break;
+				case NetworkProtocol.UDP:
+					this.Service = new UService(host, port);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+
+			this.StartAccept();
+		}
+
+		private async void StartAccept()
+		{
+			while (true)
+			{
+				if (this.Id == 0)
+				{
+					return;
+				}
+
+				AChannel channel = await this.Service.AcceptChannel();
+
+				Entity session = new Entity();
+				this.Add(session);
+
+				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+
+				session.AddComponent<MessageComponent, MessageHandlerComponent, AChannel>(this.GetComponent<MessageHandlerComponent>(), channel);
+			}
+		}
+
+		public void Add(Entity session)
+		{
+			this.sessions.Add(session.Id, session);
+			this.adressSessions.Add(session.GetComponent<MessageComponent>().RemoteAddress, session);
+		}
+
+		public void Remove(long id)
+		{
+			Entity session;
+			if (!this.sessions.TryGetValue(id, out session))
 			{
 				return;
 			}
+			this.sessions.Remove(id);
+			this.adressSessions.Remove(session.GetComponent<MessageComponent>().RemoteAddress);
+		}
 
-			base.Dispose();
+		public Entity Get(long id)
+		{
+			Entity session;
+			this.sessions.TryGetValue(id, out session);
+			return session;
+		}
 
-			if (disposing)
+		public Entity Get(string address)
+		{
+			Entity session;
+			if (this.adressSessions.TryGetValue(address, out session))
 			{
-				this.Service.Dispose();
+				return session;
 			}
 
-			this.Service = null;
+			string[] ss = address.Split(':');
+			int port = int.Parse(ss[1]);
+			string host = ss[0];
+			AChannel channel = this.Service.ConnectChannel(host, port);
+			session = new Entity();
+			this.Add(session);
+
+			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			return session;
 		}
 
 		public override void Dispose()
@@ -45,22 +131,10 @@ namespace Base
 			{
 				return;
 			}
-			this.Dispose(true);
-		}
 
-		public void Awake(NetworkProtocol protocol, string host, int port)
-		{
-			switch (protocol)
-			{
-				case NetworkProtocol.TCP:
-					this.Service = new TService(host, port) { OnError = this.OnError };
-					break;
-				case NetworkProtocol.UDP:
-					this.Service = new UService(host, port) { OnError = this.OnError };
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+			base.Dispose();
+
+			this.Service.Dispose();
 		}
 
 		public void Update()
@@ -70,13 +144,6 @@ namespace Base
 				return;
 			}
 			this.Service.Update();
-		}
-		
-		public void OnError(long id, SocketError error)
-		{
-			Env env = new Env();
-			env[EnvBaseKey.ChannelError] = error;
-			Game.Scene.GetComponent<EventComponent>().Run(EventBaseType.NetworkChannelError, env);
 		}
 	}
 }

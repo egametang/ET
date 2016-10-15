@@ -22,14 +22,24 @@ namespace App
 				Assembly controller = Assembly.Load(dllBytes, pdbBytes);
 				Object.ObjectManager.Register("Controller", controller);
 
-				Game.Scene.AddComponent<EventComponent>();
-				TimeComponent timeComponent = Game.Scene.AddComponent<TimeComponent>();
-				Game.Scene.AddComponent<TimerComponent, TimeComponent>(timeComponent);
-
 				Options options = Game.Scene.AddComponent<OptionsComponent, string[]>(args).Options;
 
+				Game.Scene.AddComponent<EventComponent>();
+				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<NetworkComponent, NetworkProtocol, string, int>(options.Protocol, options.Host, options.Port);
 				Game.Scene.AddComponent<MessageHandlerComponent, string>(options.AppType);
+
+				// 根据不同的AppType添加不同的组件
+				switch (options.AppType)
+				{
+					case "realm":
+						break;
+					case "gate":
+						break;
+					default:
+						throw new Exception($"命令行参数没有设置正确的AppType: {options.AppType}");
+				}
+				
 
 				while (true)
 				{

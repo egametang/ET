@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Base
@@ -17,6 +18,28 @@ namespace Base
 	{
 		public long Id { get; private set; }
 		protected AService service;
+
+		public string RemoteAddress { get; protected set; }
+
+		private event Action<AChannel, SocketError> errorCallback;
+
+		public event Action<AChannel, SocketError> ErrorCallback
+		{
+			add
+			{
+				this.errorCallback += value;
+			}
+			remove
+			{
+				this.errorCallback -= value;
+			}
+		}
+
+		public void OnError(AChannel channel, SocketError e)
+		{
+			this.errorCallback(channel, e);
+		}
+
 
 		protected AChannel(AService service)
 		{
