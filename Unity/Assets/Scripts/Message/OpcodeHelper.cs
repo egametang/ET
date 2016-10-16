@@ -6,7 +6,7 @@ namespace Model
 	{
 		private static readonly HashSet<ushort> needDebugLogMessageSet = new HashSet<ushort>
 		{
-			Opcode.S2C_StartGame,
+			1,
 		};
 
 		public static bool IsNeedDebugLogMessage(ushort opcode)

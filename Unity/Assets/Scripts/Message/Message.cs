@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
+	[Opcode(1)]
 	[BsonIgnoreExtraElements]
 	public class C2S_Login
 	{
@@ -10,6 +11,7 @@ namespace Model
 		public string Password;
 	}
 
+	[Opcode(2)]
 	[BsonIgnoreExtraElements]
 	public class S2C_Login: IErrorMessage
 	{

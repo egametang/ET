@@ -1,7 +1,15 @@
-﻿namespace Base
+﻿using System;
+
+namespace Base
 {
-	public interface IMRegister<in T>
+	public interface IMessageHandler
 	{
-		void Register(T component, ushort opcode);
+		void RegisterHandler<T>(ushort opcode, Action<Entity, T, uint> action);
+		ushort GetOpcode(Type type);
+	}
+
+	public interface IMRegister
+	{
+		void Register(IMessageHandler messageHandler);
 	}
 }

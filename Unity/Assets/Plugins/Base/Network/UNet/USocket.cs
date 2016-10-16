@@ -18,8 +18,32 @@ namespace Base
 		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
 		private readonly Queue<BufferInfo> sendQueue = new Queue<BufferInfo>();
 		private bool isConnected;
-		public Action Disconnect;
-		public Action Received;
+		public Action disconnect;
+		public Action received;
+
+		public event Action Received
+		{
+			add
+			{
+				this.received += value;
+			}
+			remove
+			{
+				this.received -= value;
+			}
+		}
+
+		public event Action Disconnect
+		{
+			add
+			{
+				this.disconnect += value;
+			}
+			remove
+			{
+				this.disconnect -= value;
+			}
+		}
 
 		public USocket(IntPtr peerPtr, UPoller poller)
 		{
@@ -127,11 +151,12 @@ namespace Base
 				byte[] bytes = packet.Bytes;
 				this.RecvQueue.Enqueue(bytes);
 			}
+			this.received();
 		}
 
 		internal void OnDisconnect(ENetEvent eNetEvent)
 		{
-			Disconnect();
+			disconnect();
 		}
 	}
 }

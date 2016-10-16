@@ -7,14 +7,11 @@ namespace Base
 	/// </summary>
 	public class MessageAttribute : Attribute
 	{
-		public ushort Opcode { get; private set; }
-		
 		public string AppType { get; private set; }
 
-		public MessageAttribute(string appType, ushort opcode)
+		public MessageAttribute(string appType)
 		{
 			this.AppType = appType;
-			this.Opcode = opcode;
 		}
 	}
 }

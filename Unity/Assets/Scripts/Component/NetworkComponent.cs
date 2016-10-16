@@ -75,11 +75,9 @@ namespace Model
 				AChannel channel = await this.Service.AcceptChannel();
 
 				Entity session = new Entity();
-				this.Add(session);
-
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-
-				session.AddComponent<MessageComponent, MessageHandlerComponent, AChannel>(this.GetComponent<MessageHandlerComponent>(), channel);
+				session.AddComponent<MessageComponent, AChannel>(channel);
+				this.Add(session);
 			}
 		}
 
@@ -120,9 +118,11 @@ namespace Model
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
 			session = new Entity();
+			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			session.AddComponent<MessageComponent, AChannel>(channel);
 			this.Add(session);
 
-			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			
 			return session;
 		}
 

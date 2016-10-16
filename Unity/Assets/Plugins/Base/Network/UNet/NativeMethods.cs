@@ -81,25 +81,25 @@ namespace Base
 		[DllImport(LIB, EntryPoint = "enet_peer_throttle_configure", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerThrottleConfigure(IntPtr peer, uint interval, uint acceleration, uint deceleration);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_send")]
+		[DllImport(LIB, EntryPoint = "enet_peer_send", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern int ENetPeerSend(IntPtr peer, byte channelID, IntPtr packet);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_receive")]
+		[DllImport(LIB, EntryPoint = "enet_peer_receive", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern IntPtr ENetPeerReceive(IntPtr peer, out byte channelID);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_reset")]
+		[DllImport(LIB, EntryPoint = "enet_peer_reset", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerReset(IntPtr peer);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_ping")]
+		[DllImport(LIB, EntryPoint = "enet_peer_ping", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerPing(IntPtr peer);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_disconnect_now")]
+		[DllImport(LIB, EntryPoint = "enet_peer_disconnect_now", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerDisconnectNow(IntPtr peer, uint data);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_disconnect")]
+		[DllImport(LIB, EntryPoint = "enet_peer_disconnect", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerDisconnect(IntPtr peer, uint data);
 
-		[DllImport(LIB, EntryPoint = "enet_peer_disconnect_later")]
+		[DllImport(LIB, EntryPoint = "enet_peer_disconnect_later", CallingConvention = CallingConvention.Cdecl)]
 		internal static extern void ENetPeerDisconnectLater(IntPtr peer, uint data);
 	}
 }

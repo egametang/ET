@@ -1,22 +1,13 @@
-﻿using System;
-using Base;
-
-namespace Base
+﻿namespace Base
 {
-	public interface IMessageHandler
+	public abstract class AMEvent<T>: IMRegister
 	{
-		void Register<T>(ushort opcode, Action<Entity, T> action);
-		void RegisterOpcode(Type type, ushort opcode);
-	}
+		public abstract void Run(Entity scene, T message, uint rpcId);
 
-	public abstract class AMEvent<T>: IMRegister<IMessageHandler>
-	{
-		public abstract void Run(Entity scene, T message);
-
-		public void Register(IMessageHandler component, ushort opcode)
+		public void Register(IMessageHandler component)
 		{
-			component.RegisterOpcode(typeof(T), opcode);
-			component.Register<T>(opcode, Run);
+			ushort opcode = component.GetOpcode(typeof (T));
+			component.RegisterHandler<T>(opcode, Run);
 		}
 	}
 }

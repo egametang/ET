@@ -52,6 +52,8 @@ namespace Base
 			{
 				throw new Exception("Host creation call failed.");
 			}
+
+			NativeMethods.ENetHostCompressWithRangeCoder(this.host);
 		}
 
 		public void Dispose()

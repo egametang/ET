@@ -27,7 +27,7 @@ namespace Model
 	{
 		private string AppType;
 		private Dictionary<ushort, List<Action<Entity, byte[], int, int>>> events;
-		public Dictionary<Type, ushort> MessageOpcode { get; private set; } = new Dictionary<Type, ushort>();
+		public Dictionary<Type, ushort> messageOpcode { get; private set; } = new Dictionary<Type, ushort>();
 		
 		public void Awake(string appType)
 		{
@@ -38,9 +38,26 @@ namespace Model
 		public void Load()
 		{
 			this.events = new Dictionary<ushort, List<Action<Entity, byte[], int, int>>>();
-			this.MessageOpcode = new Dictionary<Type, ushort>();
+			this.messageOpcode = new Dictionary<Type, ushort>();
 
 			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
+
+			foreach (Assembly assembly in assemblies)
+			{
+				Type[] types = assembly.GetTypes();
+				foreach (Type type in types)
+				{
+					object[] attrs = type.GetCustomAttributes(typeof(OpcodeAttribute), false);
+					if (attrs.Length == 0)
+					{
+						continue;
+					}
+
+					OpcodeAttribute opcodeAttribute = (OpcodeAttribute)attrs[0];
+					this.messageOpcode[type] = opcodeAttribute.Opcode;
+				}
+			}
+
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();
@@ -60,22 +77,22 @@ namespace Model
 
 					object obj = Activator.CreateInstance(type);
 
-					IMRegister<MessageHandlerComponent> iMRegister = obj as IMRegister<MessageHandlerComponent>;
+					IMRegister iMRegister = obj as IMRegister;
 					if (iMRegister == null)
 					{
 						throw new Exception($"message handler not inherit IEventSync or IEventAsync interface: {obj.GetType().FullName}");
 					}
-					iMRegister.Register(this, messageAttribute.Opcode);
+					iMRegister.Register(this);
 				}
 			}
 		}
 
-		public void RegisterOpcode(Type type, ushort opcode)
+		public ushort GetOpcode(Type type)
 		{
-			this.MessageOpcode[type] = opcode;
+			return this.messageOpcode[type];
 		}
 
-		public void Register<T>(ushort opcode, Action<Entity, T> action)
+		public void RegisterHandler<T>(ushort opcode, Action<Entity, T, uint> action)
 		{
 			if (!this.events.ContainsKey(opcode))
 			{
@@ -86,8 +103,10 @@ namespace Model
 			actions.Add((entity, messageBytes, offset, count) =>
 			{
 				T t;
+				uint rpcId;
 				try
-			    {
+				{
+					rpcId = BitConverter.ToUInt32(messageBytes, 2) & 0x7fffffff;
                     t = MongoHelper.FromBson<T>(messageBytes, offset, count);
                 }
 			    catch (Exception ex)
@@ -95,7 +114,7 @@ namespace Model
 			        throw new Exception("解释消息失败:" + opcode, ex);
 			    }
 
-				action(entity, t);
+				action(entity, t, rpcId);
 			});
 		}
 
@@ -105,7 +124,7 @@ namespace Model
 			List<Action<Entity, byte[], int, int>> actions;
 			if (!this.events.TryGetValue(opcode, out actions))
 			{
-				Log.Error($"消息{opcode}没有处理");
+				Log.Error($"消息 {opcode} 没有处理");
 				return;
 			}
 
