@@ -10,6 +10,11 @@ namespace MyEditor
 	public class ServerCommandLineEditor : EditorWindow
 	{
 		private const string Path = @"..\Server\Bin\Debug\CommandLineConfig.txt";
+
+		private int copyNum = 1;
+
+		private NetworkProtocol protocol;
+
 		private CommandLines commandLines;
 
 		[MenuItem("Tools/服务端命令行配置")]
@@ -39,8 +44,10 @@ namespace MyEditor
 				commandLine.IP = EditorGUILayout.TextField(commandLine.IP);
 				GUILayout.Label($"AppType:");
 				commandLine.Options.AppType = EditorGUILayout.TextField(commandLine.Options.AppType);
-				GUILayout.Label($"Name:");
-				commandLine.Options.Name = EditorGUILayout.TextField(commandLine.Options.Name);
+				GUILayout.Label($"Id:");
+				commandLine.Options.Id = EditorGUILayout.IntField(commandLine.Options.Id);
+				GUILayout.Label($"Protocol:");
+				commandLine.Options.Protocol = (NetworkProtocol)EditorGUILayout.EnumPopup(commandLine.Options.Protocol);
 				GUILayout.Label($"Host:");
 				commandLine.Options.Host = EditorGUILayout.TextField(commandLine.Options.Host);
 				GUILayout.Label($"Port:");
@@ -52,18 +59,30 @@ namespace MyEditor
 				}
 				if (GUILayout.Button("复制"))
 				{
-					CommandLine newCommandLine = (CommandLine)commandLine.Clone();
-					this.commandLines.Commands.Add(newCommandLine);
+					for (int j = 1; j < this.copyNum + 1; ++j)
+					{
+						CommandLine newCommandLine = (CommandLine) commandLine.Clone();
+						newCommandLine.Options.Id += j;
+						newCommandLine.Options.Port += j;
+						newCommandLine.Options.Protocol = this.protocol;
+						this.commandLines.Commands.Add(newCommandLine);
+					}
 					break;
 				}
 				GUILayout.EndHorizontal();
 			}
 
+			GUILayout.BeginHorizontal();
+			this.copyNum = EditorGUILayout.IntField("复制数量: ", this.copyNum);
+			this.protocol = (NetworkProtocol)EditorGUILayout.EnumPopup("协议: ", this.protocol);
+			GUILayout.EndHorizontal();
 
+			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("添加"))
 			{
-				CommandLine commandLine = new CommandLine();
-				this.commandLines.Commands.Add(commandLine);
+				CommandLine newCommandLine = new CommandLine();
+				newCommandLine.Options.Protocol = this.protocol;
+				this.commandLines.Commands.Add(newCommandLine);
 			}
 
 			if (GUILayout.Button("保存"))
@@ -75,7 +94,7 @@ namespace MyEditor
 			{
 				foreach (CommandLine commandLine in this.commandLines.Commands)
 				{
-					string arguments = $"--appType={commandLine.Options.AppType} --name={commandLine.Options.Name} --Host={commandLine.Options.Host} --Port={commandLine.Options.Port}";
+					string arguments = $"--appType={commandLine.Options.AppType} --id={commandLine.Options.Id} --Protocol={commandLine.Options.Protocol} --Host={commandLine.Options.Host} --Port={commandLine.Options.Port}";
 
 					ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
 					{
@@ -85,6 +104,7 @@ namespace MyEditor
 					Process.Start(info);
 				}
 			}
+			GUILayout.EndHorizontal();
 		}
 
 		void OnDisable()

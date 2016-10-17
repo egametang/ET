@@ -98,6 +98,7 @@
     <Compile Include="Assets\Plugins\Base\Helper\TimeHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ZipHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Log.cs" />
+    <Compile Include="Assets\Plugins\Base\LogType.cs" />
     <Compile Include="Assets\Plugins\Base\Message\AMEvent.cs" />
     <Compile Include="Assets\Plugins\Base\Message\IErrorMessage.cs" />
     <Compile Include="Assets\Plugins\Base\Message\IMRegister.cs" />

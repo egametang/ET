@@ -14,9 +14,9 @@ namespace Model
 		public string AppType { get; set; }
 
 #if SERVER
-		[Option("name", Required = true, HelpText = "Name.")]
+		[Option("id", Required = true, HelpText = "Id.")]
 #endif
-		public string Name { get; set; }
+		public int Id { get; set; }
 
 #if SERVER
 		[Option("protocol", Required = false, HelpText = "Protocol, tcp or udp.", DefaultValue = NetworkProtocol.UDP)]

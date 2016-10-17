@@ -44,6 +44,7 @@ namespace Base
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
 			this.RemoteAddress = socket.RemoteAddress;
+			this.OnAccepted();
 		}
 
 		public override void Dispose()
@@ -60,7 +61,14 @@ namespace Base
 			this.socket.Dispose();
 			this.service.Remove(id);
 		}
-		
+
+		private void OnAccepted()
+		{
+			this.isConnected = true;
+			this.StartSend();
+			this.StartRecv();
+		}
+
 		private void OnConnected(long channelId, SocketError error)
 		{
 			if (this.service.GetChannel(channelId) == null)
@@ -137,7 +145,6 @@ namespace Base
 			this.socket.OnSend = null;
 			if (error != SocketError.Success)
 			{
-				Log.Info($"socket send fail, error: {error}, n: {n}");
 				this.OnError(this, error);
 				return;
 			}
@@ -154,6 +161,7 @@ namespace Base
 		private void StartRecv()
 		{
 			int size = TBuffer.ChunkSize - this.recvBuffer.LastIndex;
+			
 			if (!this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size))
 			{
 				this.OnRecv(size, SocketError.Success);
@@ -170,25 +178,25 @@ namespace Base
 			this.socket.OnRecv = null;
 			if (error != SocketError.Success)
 			{
-				Log.Info($"socket recv fail, error: {error}, {n}");
 				this.OnError(this, error);
 				return;
 			}
-
+			
 			this.recvBuffer.LastIndex += n;
 			if (this.recvBuffer.LastIndex == TBuffer.ChunkSize)
 			{
 				this.recvBuffer.AddLast();
 				this.recvBuffer.LastIndex = 0;
 			}
-
+			
 			if (this.recvTcs != null)
 			{
 				byte[] packet = this.parser.GetPacket();
 				if (packet != null)
 				{
-					this.recvTcs.SetResult(packet);
+					var tcs = this.recvTcs;
 					this.recvTcs = null;
+					tcs.SetResult(packet);
 				}
 			}
 

@@ -23,11 +23,11 @@ namespace Base
 			this.buffer = buffer;
 		}
 
-		private bool Parse()
+		private void Parse()
 		{
 			if (this.isOK)
 			{
-				return true;
+				return;
 			}
 
 			bool finish = false;
@@ -67,7 +67,6 @@ namespace Base
 						break;
 				}
 			}
-			return this.isOK;
 		}
 
 		public byte[] GetPacket()

@@ -25,6 +25,11 @@ namespace Model
 		{
 			Base.Object.ObjectManager.Update();
 		}
+
+		private void OnApplicationQuit()
+		{
+			Game.Close();
+		}
 	}
 }
 

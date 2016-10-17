@@ -155,7 +155,6 @@ namespace Model
 		public Task<Response> CallAsync<Response>(object request) where Response : IErrorMessage
 		{
 			this.Send(++RpcId, request);
-
 			var tcs = new TaskCompletionSource<Response>();
 			this.requestCallback[RpcId] = (bytes, offset, count) =>
 			{

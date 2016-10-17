@@ -28,7 +28,7 @@ namespace App
 				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<NetworkComponent, NetworkProtocol, string, int>(options.Protocol, options.Host, options.Port);
 				Game.Scene.AddComponent<MessageHandlerComponent, string>(options.AppType);
-
+				
 				// 根据不同的AppType添加不同的组件
 				switch (options.AppType)
 				{

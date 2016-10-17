@@ -2,7 +2,7 @@
 {
 	public abstract class AMEvent<T>: IMRegister
 	{
-		public abstract void Run(Entity scene, T message, uint rpcId);
+		protected abstract void Run(Entity scene, T message, uint rpcId);
 
 		public void Register(IMessageHandler component)
 		{

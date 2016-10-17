@@ -119,6 +119,9 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ZipHelper.cs">
       <Link>Helper\ZipHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\LogType.cs">
+      <Link>LogType.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMEvent.cs">
       <Link>Message\AMEvent.cs</Link>
     </Compile>
