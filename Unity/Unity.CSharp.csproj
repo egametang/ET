@@ -103,6 +103,7 @@
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
+    <Compile Include="Assets\Scripts\Other\Options.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
   </ItemGroup>

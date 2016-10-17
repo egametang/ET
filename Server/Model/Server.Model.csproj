@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SERVER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -70,6 +70,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
       <Link>Message\OpcodeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
+      <Link>Other\Options.cs</Link>
     </Compile>
     <Compile Include="Component\OptionsComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
