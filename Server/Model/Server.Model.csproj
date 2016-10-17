@@ -68,9 +68,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\Message.cs">
       <Link>Message\Message.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\Opcode.cs">
-      <Link>Message\Opcode.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
       <Link>Message\OpcodeHelper.cs</Link>
     </Compile>
