@@ -50,8 +50,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageComponent.cs">
       <Link>Component\MessageComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageHandlerComponent.cs">
-      <Link>Component\MessageHandlerComponent.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageDispatherComponent.cs">
+      <Link>Component\MessageDispatherComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
       <Link>Component\NetworkComponent.cs</Link>

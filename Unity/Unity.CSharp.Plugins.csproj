@@ -102,7 +102,7 @@
     <Compile Include="Assets\Plugins\Base\Message\AMEvent.cs" />
     <Compile Include="Assets\Plugins\Base\Message\IErrorMessage.cs" />
     <Compile Include="Assets\Plugins\Base\Message\IMRegister.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\OpcodeAttribute.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Message\MessageAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Message\RpcException.cs" />
     <Compile Include="Assets\Plugins\Base\MultiMap.cs" />
@@ -510,6 +510,5 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

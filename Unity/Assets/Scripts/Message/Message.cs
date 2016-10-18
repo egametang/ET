@@ -3,25 +3,23 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	[Opcode(1)]
+	[Message(1)]
 	[BsonIgnoreExtraElements]
-	public class C2S_Login
+	public class C2S_Login: ARequest
 	{
 		public string Account;
 		public string Password;
 	}
 
-	[Opcode(2)]
+	[Message(2)]
 	[BsonIgnoreExtraElements]
-	public class S2C_Login: IErrorMessage
+	public class S2C_Login: AResponse
 	{
-		public ErrorMessage ErrorMessage { get; set; }
-
 		public string Host;
 		public int Port;
 	}
 
-	[Opcode(3)]
+	[Message(3)]
 	[BsonIgnoreExtraElements]
 	public class S2C_ServerLog
 	{
@@ -29,16 +27,15 @@ namespace Model
 		public string Log;
 	}
 
-	[Opcode(4)]
+	[Message(4)]
 	[BsonIgnoreExtraElements]
-	public class C2S_SubscribeLog
+	public class C2S_SubscribeLog: ARequest
 	{
 	}
 
-	[Opcode(5)]
+	[Message(5)]
 	[BsonIgnoreExtraElements]
-	public class S2C_SubscribeLog: IErrorMessage
+	public class S2C_SubscribeLog: AResponse
 	{
-		public ErrorMessage ErrorMessage { get; set; }
 	}
 }

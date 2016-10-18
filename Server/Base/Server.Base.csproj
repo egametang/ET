@@ -134,8 +134,8 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\MessageAttribute.cs">
       <Link>Message\MessageAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\OpcodeAttribute.cs">
-      <Link>Message\OpcodeAttribute.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\MessageHandlerAttribute.cs">
+      <Link>Message\MessageHandlerAttribute.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\RpcException.cs">
       <Link>Message\RpcException.cs</Link>

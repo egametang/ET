@@ -1,16 +1,22 @@
 ﻿namespace Base
 {
-	/// <summary>
-	/// 服务端回的RPC消息需要继承这个接口
-	/// </summary>
-	public interface IErrorMessage
+	public abstract class AMessage
 	{
-		ErrorMessage ErrorMessage { get; set; }
 	}
-	
-	public class ErrorMessage
+
+	public abstract class ARequest : AMessage
 	{
-		public int Errno = 0;
+		public uint RpcId;
+	}
+
+	/// <summary>
+	/// 服务端回的RPC消息需要继承这个抽象类
+	/// </summary>
+	public abstract class AResponse: AMessage
+	{
+		public uint RpcId;
+
+		public int ErrorCode = 0;
 		public string Message = "";
 	}
 }

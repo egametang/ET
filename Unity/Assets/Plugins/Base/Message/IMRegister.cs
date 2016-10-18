@@ -2,14 +2,15 @@
 
 namespace Base
 {
-	public interface IMessageHandler
+	public interface IMessageDispather
 	{
-		void RegisterHandler<T>(ushort opcode, Action<Entity, T, uint> action);
 		ushort GetOpcode(Type type);
+		void RegisterHandler<T>(ushort opcode, Action<Entity, T> action);
+		void RegisterRpcHandler<T>(ushort opcode, Action<Entity, T, uint> action);
 	}
 
 	public interface IMRegister
 	{
-		void Register(IMessageHandler messageHandler);
+		void Register(IMessageDispather messageDispather);
 	}
 }
