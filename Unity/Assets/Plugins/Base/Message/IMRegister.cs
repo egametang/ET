@@ -5,8 +5,11 @@ namespace Base
 	public interface IMessageDispather
 	{
 		ushort GetOpcode(Type type);
-		void RegisterHandler<T>(ushort opcode, Action<Entity, T> action);
-		void RegisterRpcHandler<T>(ushort opcode, Action<Entity, T, uint> action);
+		void RegisterHandler<Message>(ushort opcode, Action<Entity, Message> action) where Message : AMessage;
+
+		void RegisterRpcHandler<Request, Response>(ushort opcode, Action<Entity, Request, Action<Response>> action) 
+			where Request : ARequest
+			where Response : AResponse;
 	}
 
 	public interface IMRegister

@@ -100,7 +100,7 @@
     <Compile Include="Assets\Plugins\Base\Log.cs" />
     <Compile Include="Assets\Plugins\Base\LogType.cs" />
     <Compile Include="Assets\Plugins\Base\Message\AMEvent.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\IErrorMessage.cs" />
+    <Compile Include="Assets\Plugins\Base\Message\AMessage.cs" />
     <Compile Include="Assets\Plugins\Base\Message\IMRegister.cs" />
     <Compile Include="Assets\Plugins\Base\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Message\MessageAttribute.cs" />

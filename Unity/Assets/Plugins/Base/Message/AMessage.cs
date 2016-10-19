@@ -6,7 +6,6 @@
 
 	public abstract class ARequest : AMessage
 	{
-		public uint RpcId;
 	}
 
 	/// <summary>
@@ -14,8 +13,6 @@
 	/// </summary>
 	public abstract class AResponse: AMessage
 	{
-		public uint RpcId;
-
 		public int ErrorCode = 0;
 		public string Message = "";
 	}

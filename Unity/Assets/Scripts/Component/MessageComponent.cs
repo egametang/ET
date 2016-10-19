@@ -99,20 +99,24 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, uint rpcId, uint rpcFlag, byte[] messageBytes, int offset)
 		{
+			// 普通消息
 			if (rpcId == 0)
 			{
 				this.messageDispather.Handle(this.Owner, opcode, messageBytes, offset);
+				return;
 			}
 
 			// rpcFlag>0 表示这是一个rpc响应消息
 			if (rpcFlag > 0)
 			{
 				Action<byte[], int, int> action;
-				if (this.requestCallback.TryGetValue(rpcId, out action))
+				// Rpc回调有找不着的可能，因为client可能取消Rpc调用
+				if (!this.requestCallback.TryGetValue(rpcId, out action))
 				{
-					this.requestCallback.Remove(rpcId);
-					action(messageBytes, offset, messageBytes.Length - offset);
+					return;
 				}
+				this.requestCallback.Remove(rpcId);
+				action(messageBytes, offset, messageBytes.Length - offset);
 			}
 			else // 这是一个rpc请求消息
 			{
@@ -161,7 +165,6 @@ namespace Model
 			where Request: ARequest 
 			where Response : AResponse
 		{
-			request.RpcId = ++RpcId;
 			this.SendMessage(++RpcId, request);
 			var tcs = new TaskCompletionSource<Response>();
 			this.requestCallback[RpcId] = (bytes, offset, count) =>
@@ -185,12 +188,12 @@ namespace Model
 			return tcs.Task;
 		}
 
-		public void Send(object message)
+		public void Send<Message>(Message message) where Message: AMessage
 		{
 			this.SendMessage(0, message);
 		}
 
-		public void Reply<T>(uint rpcId, T message) where T: AResponse
+		public void Reply<Response>(uint rpcId, Response message) where Response: AResponse
 		{
 			this.SendMessage(rpcId, message, false);
 		}
@@ -199,17 +202,23 @@ namespace Model
 		{
 			ushort opcode = this.messageDispather.GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
-			if (rpcId > 0 && !isCall)
+			if (!isCall)
 			{
-				rpcId = rpcId | 0x4fffffff;
+				rpcId = rpcId | 0x40000000;
 			}
-			byte[] seqBytes = BitConverter.GetBytes(rpcId);
-			byte[] messageBytes = MongoHelper.ToBson(message);
 			
-			if (channel == null)
+			byte[] messageBytes = MongoHelper.ToBson(message);
+			if (messageBytes.Length > 100)
 			{
-				throw new Exception("game channel not found!");
+				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);
+				if (newMessageBytes.Length < messageBytes.Length)
+				{
+					messageBytes = newMessageBytes;
+					rpcId = rpcId | 0x80000000;
+				}
 			}
+
+			byte[] seqBytes = BitConverter.GetBytes(rpcId);
 
 			channel.Send(new List<byte[]> { opcodeBytes, seqBytes, messageBytes });
 		}

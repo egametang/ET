@@ -35,9 +35,9 @@ namespace Model
 		}
 
 		private string AppType;
-		private Dictionary<ushort, List<Action<Entity, MessageInfo>>> events;
-		private Dictionary<ushort, List<Action<Entity, MessageInfo>>> rpcHandlers;
-		public Dictionary<Type, MessageAttribute> messageOpcode { get; private set; } = new Dictionary<Type, MessageAttribute>();
+		private Dictionary<ushort, List<Action<Entity, MessageInfo>>> handlers;
+		private Dictionary<ushort, Action<Entity, MessageInfo>> rpcHandlers;
+		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; } = new Dictionary<Type, MessageAttribute>();
 		
 		public void Awake(string appType)
 		{
@@ -47,8 +47,8 @@ namespace Model
 
 		public void Load()
 		{
-			this.events = new Dictionary<ushort, List<Action<Entity, MessageInfo>>>();
-			this.rpcHandlers = new Dictionary<ushort, List<Action<Entity, MessageInfo>>>();
+			this.handlers = new Dictionary<ushort, List<Action<Entity, MessageInfo>>>();
+			this.rpcHandlers = new Dictionary<ushort, Action<Entity, MessageInfo>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
 			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
@@ -91,7 +91,7 @@ namespace Model
 					IMRegister iMRegister = obj as IMRegister;
 					if (iMRegister == null)
 					{
-						throw new Exception($"message handler not inherit IEventSync or IEventAsync interface: {obj.GetType().FullName}");
+						throw new Exception($"message handler not inherit AMEvent or AMRpcEvent abstract class: {obj.GetType().FullName}");
 					}
 					iMRegister.Register(this);
 				}
@@ -103,51 +103,55 @@ namespace Model
 			return this.messageOpcode[type].Opcode;
 		}
 
-		public void RegisterHandler<T>(ushort opcode, Action<Entity, T> action)
+		public void RegisterHandler<Message>(ushort opcode, Action<Entity, Message> action) where Message: AMessage
 		{
-			if (!this.events.ContainsKey(opcode))
+			if (!this.handlers.ContainsKey(opcode))
 			{
-				this.events.Add(opcode, new List<Action<Entity, MessageInfo>>());
+				this.handlers.Add(opcode, new List<Action<Entity, MessageInfo>>());
 			}
-			List<Action<Entity, MessageInfo>> actions = this.events[opcode];
+			List<Action<Entity, MessageInfo>> actions = this.handlers[opcode];
 
 			actions.Add((entity, messageInfo) =>
 			{
-				T t;
+				Message message;
 				try
 				{
-                    t = MongoHelper.FromBson<T>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+                    message = MongoHelper.FromBson<Message>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
                 }
 			    catch (Exception ex)
 			    {
 			        throw new Exception("解释消息失败:" + opcode, ex);
 			    }
 
-				action(entity, t);
+				action(entity, message);
 			});
 		}
-
-		public void RegisterRpcHandler<T>(ushort opcode, Action<Entity, T, uint> action)
+		
+		public void RegisterRpcHandler<Request, Response>(ushort opcode, Action<Entity, Request, Action<Response>> action) 
+			where Request: ARequest 
+			where Response: AResponse
 		{
-			if (!this.rpcHandlers.ContainsKey(opcode))
+			if (this.rpcHandlers.ContainsKey(opcode))
 			{
-				this.rpcHandlers.Add(opcode, new List<Action<Entity, MessageInfo>>());
+				Log.Error($"rpc消息不能注册两次! opcode: {opcode}");
+				return;
 			}
-			List<Action<Entity, MessageInfo>> actions = this.rpcHandlers[opcode];
-
-			actions.Add((entity, messageInfo) =>
+			this.rpcHandlers.Add(opcode, (entity, messageInfo) =>
 			{
-				T t;
+				Request request;
 				try
 				{
-					t = MongoHelper.FromBson<T>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+					request = MongoHelper.FromBson<Request>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
 				}
 				catch (Exception ex)
 				{
 					throw new Exception("解释消息失败:" + opcode, ex);
 				}
 
-				action(entity, t, messageInfo.RpcId);
+				action(entity, request, response =>
+				{
+					entity.GetComponent<MessageComponent>().Reply(messageInfo.RpcId, response);
+				});
 			});
 		}
 
@@ -155,7 +159,7 @@ namespace Model
 		public void Handle(Entity entity, ushort opcode, byte[] messageBytes, int offset)
 		{
 			List<Action<Entity, MessageInfo>> actions;
-			if (!this.events.TryGetValue(opcode, out actions))
+			if (!this.handlers.TryGetValue(opcode, out actions))
 			{
 				Log.Error($"消息 {opcode} 没有处理");
 				return;
@@ -176,23 +180,20 @@ namespace Model
 
 		public void HandleRpc(Entity entity, ushort opcode, byte[] messageBytes, int offset, uint rpcId)
 		{
-			List<Action<Entity, MessageInfo>> actions;
-			if (!this.rpcHandlers.TryGetValue(opcode, out actions))
+			Action<Entity, MessageInfo> action;
+			if (!this.rpcHandlers.TryGetValue(opcode, out action))
 			{
 				Log.Error($"Rpc消息 {opcode} 没有处理");
 				return;
 			}
 
-			foreach (var ev in actions)
+			try
 			{
-				try
-				{
-					ev(entity, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset, RpcId = rpcId });
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
+				action(entity, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset, RpcId = rpcId });
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
 			}
 		}
 

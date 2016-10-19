@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\AppInfoComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />

@@ -34,9 +34,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="C2S_SubscribeLogEvent.cs" />
+    <Compile Include="C2S_SubscribeLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="C2S_LoginEvent.cs" />
+    <Compile Include="C2S_LoginHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Base\Server.Base.csproj">

@@ -23,7 +23,7 @@ namespace App
 				Object.ObjectManager.Register("Controller", controller);
 
 				Options options = Game.Scene.AddComponent<OptionsComponent, string[]>(args).Options;
-
+				
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<NetworkComponent, NetworkProtocol, string, int>(options.Protocol, options.Host, options.Port);

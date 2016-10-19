@@ -21,8 +21,9 @@ namespace Model
 
 	[Message(3)]
 	[BsonIgnoreExtraElements]
-	public class S2C_ServerLog
+	public class S2C_ServerLog: AMessage
 	{
+		public string AppType;
 		public LogType Type;
 		public string Log;
 	}

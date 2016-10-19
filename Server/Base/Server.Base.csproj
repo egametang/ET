@@ -122,11 +122,11 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\LogType.cs">
       <Link>LogType.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMessage.cs">
+      <Link>Message\AMessage.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMEvent.cs">
       <Link>Message\AMEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\IErrorMessage.cs">
-      <Link>Message\IErrorMessage.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\IMRegister.cs">
       <Link>Message\IMRegister.cs</Link>

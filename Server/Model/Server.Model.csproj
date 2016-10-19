@@ -41,6 +41,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\AppInfoComponent.cs">
+      <Link>Component\AppInfoComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
       <Link>Component\EventComponent.cs</Link>
     </Compile>
