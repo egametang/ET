@@ -74,7 +74,7 @@ namespace Model
 
 				AChannel channel = await this.Service.AcceptChannel();
 
-				Entity session = new Entity();
+				Entity session = new Entity(EntityType.Session);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				session.AddComponent<MessageComponent, AChannel>(channel);
 				this.Add(session);
@@ -87,7 +87,7 @@ namespace Model
 			this.adressSessions.Add(session.GetComponent<MessageComponent>().RemoteAddress, session);
 		}
 
-		private void Remove(long id)
+		public void Remove(long id)
 		{
 			Entity session;
 			if (!this.sessions.TryGetValue(id, out session))
@@ -117,7 +117,7 @@ namespace Model
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			session = new Entity();
+			session = new Entity(EntityType.Session);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			session.AddComponent<MessageComponent, AChannel>(channel);
 			this.Add(session);

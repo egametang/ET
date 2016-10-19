@@ -8,17 +8,21 @@ namespace Base
 {
 	public sealed class Entity: Object
 	{
+		public string Type { get; set; }
+
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
-		public Entity()
+		public Entity(string entityType)
 		{
+			this.Type = entityType;
 			ObjectManager.Add(this);
 		}
 
-		public Entity(long id): base(id)
+		public Entity(long id, string entityType) : base(id)
 		{
+			this.Type = entityType;
 			ObjectManager.Add(this);
 		}
 		

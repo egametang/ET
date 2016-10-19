@@ -77,6 +77,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\CommandLine.cs">
       <Link>Other\CommandLine.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
+      <Link>Other\EntityType.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>

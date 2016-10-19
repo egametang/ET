@@ -10,7 +10,7 @@
 			{
 				if (game == null)
 				{
-					game = new Entity();
+					game = new Entity("Scene");
 				}
 				return game;
 			}
