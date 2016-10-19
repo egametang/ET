@@ -18,8 +18,8 @@ namespace Base
 		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
 		private readonly Queue<BufferInfo> sendQueue = new Queue<BufferInfo>();
 		private bool isConnected;
-		public Action disconnect;
-		public Action received;
+		private Action disconnect;
+		private Action received;
 
 		public event Action Received
 		{

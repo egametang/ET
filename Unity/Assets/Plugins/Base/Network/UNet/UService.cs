@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Base
@@ -53,7 +52,6 @@ namespace Base
 		{
 			USocket socket = await this.poller.AcceptAsync();
 			UChannel channel = new UChannel(socket, this);
-			socket.Disconnect += () => this.OnChannelError(channel, SocketError.SocketError);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
@@ -62,7 +60,6 @@ namespace Base
 		{
 			USocket newSocket = new USocket(this.poller);
 			UChannel channel = new UChannel(newSocket, host, port, this);
-			newSocket.Disconnect += () => this.OnChannelError(channel, SocketError.SocketError);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}

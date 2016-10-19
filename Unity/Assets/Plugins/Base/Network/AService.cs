@@ -30,14 +30,6 @@ namespace Base
 
 		public abstract void Update();
 
-		public Action<AChannel, SocketError> OnError;
-
-		protected void OnChannelError(AChannel channel, SocketError error)
-		{
-			this.OnError?.Invoke(channel, error);
-			this.Remove(channel.Id);
-		}
-
 		public abstract void Dispose();
 	}
 }

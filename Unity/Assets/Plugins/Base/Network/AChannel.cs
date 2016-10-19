@@ -17,6 +17,7 @@ namespace Base
 	public abstract class AChannel: IDisposable
 	{
 		public long Id { get; private set; }
+
 		protected AService service;
 
 		public string RemoteAddress { get; protected set; }
@@ -35,7 +36,7 @@ namespace Base
 			}
 		}
 
-		public void OnError(AChannel channel, SocketError e)
+		protected void OnError(AChannel channel, SocketError e)
 		{
 			this.errorCallback(channel, e);
 		}

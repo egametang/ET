@@ -26,10 +26,10 @@ namespace Model
 
 	public class NetworkComponent: Component
 	{
-		public AService Service;
+		private AService Service;
 
-		public Dictionary<long, Entity> sessions = new Dictionary<long, Entity>();
-		public Dictionary<string, Entity> adressSessions = new Dictionary<string, Entity>();
+		private readonly Dictionary<long, Entity> sessions = new Dictionary<long, Entity>();
+		private readonly Dictionary<string, Entity> adressSessions = new Dictionary<string, Entity>();
 
 		public void Awake(NetworkProtocol protocol)
 		{
@@ -81,13 +81,13 @@ namespace Model
 			}
 		}
 
-		public void Add(Entity session)
+		private void Add(Entity session)
 		{
 			this.sessions.Add(session.Id, session);
 			this.adressSessions.Add(session.GetComponent<MessageComponent>().RemoteAddress, session);
 		}
 
-		public void Remove(long id)
+		private void Remove(long id)
 		{
 			Entity session;
 			if (!this.sessions.TryGetValue(id, out session))
@@ -122,7 +122,6 @@ namespace Model
 			session.AddComponent<MessageComponent, AChannel>(channel);
 			this.Add(session);
 
-			
 			return session;
 		}
 

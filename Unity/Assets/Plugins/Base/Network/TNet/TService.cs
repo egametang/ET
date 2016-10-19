@@ -63,7 +63,6 @@ namespace Base
 			TSocket socket = new TSocket(this.poller);
 			await this.acceptor.AcceptAsync(socket);
 			TChannel channel = new TChannel(socket, this);
-			channel.ErrorCallback += this.OnChannelError;
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
@@ -72,7 +71,6 @@ namespace Base
 		{
 			TSocket newSocket = new TSocket(this.poller);
 			TChannel channel = new TChannel(newSocket, host, port, this);
-			channel.ErrorCallback += this.OnChannelError;
 			this.idChannels[channel.Id] = channel;
 
 			return channel;

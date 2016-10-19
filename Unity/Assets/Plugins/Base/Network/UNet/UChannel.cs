@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Base
@@ -21,6 +22,7 @@ namespace Base
 			this.RemoteAddress = host + ":" + port;
 			this.socket.ConnectAsync(host, (ushort)port);
 			this.socket.Received += this.OnRecv;
+			this.socket.Disconnect += () => { this.OnError(this, SocketError.SocketError); };
 		}
 
 		/// <summary>
@@ -32,6 +34,7 @@ namespace Base
 			this.service = service;
 			this.RemoteAddress = socket.RemoteAddress;
 			this.socket.Received += this.OnRecv;
+			this.socket.Disconnect += () => { this.OnError(this, SocketError.SocketError); };
 		}
 
 		public override void Dispose()
@@ -82,8 +85,9 @@ namespace Base
 
 		private void OnRecv()
 		{
-			this.recvTcs?.SetResult(this.socket.RecvQueue.Dequeue());
+			var tcs = this.recvTcs;
 			this.recvTcs = null;
+			tcs?.SetResult(this.socket.RecvQueue.Dequeue());
 		}
 	}
 }
