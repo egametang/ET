@@ -140,9 +140,9 @@ namespace Model
 				try
 				{
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
-					if (response.ErrorCode != 0)
+					if (response.Error != 0)
 					{
-						tcs.SetException(new RpcException(response.ErrorCode, response.Message));
+						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
 					tcs.SetResult(response);
@@ -172,9 +172,9 @@ namespace Model
 				try
 				{
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
-					if (response.ErrorCode != 0)
+					if (response.Error != 0)
 					{
-						tcs.SetException(new RpcException(response.ErrorCode,  response.Message));
+						tcs.SetException(new RpcException(response.Error,  response.Message));
 						return;
 					}
 					tcs.SetResult(response);
@@ -219,7 +219,7 @@ namespace Model
 			}
 
 			byte[] seqBytes = BitConverter.GetBytes(rpcId);
-
+			
 			channel.Send(new List<byte[]> { opcodeBytes, seqBytes, messageBytes });
 		}
 

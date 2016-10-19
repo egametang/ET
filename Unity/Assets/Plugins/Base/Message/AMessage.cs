@@ -13,7 +13,7 @@
 	/// </summary>
 	public abstract class AResponse: AMessage
 	{
-		public int ErrorCode = 0;
+		public int Error = 0;
 		public string Message = "";
 	}
 }

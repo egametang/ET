@@ -14,10 +14,12 @@ namespace Model
 	public class LogToClientComponent : Component
 	{
 		private string appType;
+		private int appId;
 
 		public void Awake()
 		{
 			this.appType = Game.Scene.GetComponent<OptionsComponent>().Options.AppType;
+			this.appId = Game.Scene.GetComponent<OptionsComponent>().Options.Id;
 			Log.Callback.Add(this.Id, this.LogToClient);
 		}
 
@@ -27,7 +29,7 @@ namespace Model
 			{
 				return;
 			}
-			this.GetComponent<MessageComponent>().Send(new S2C_ServerLog { AppType = this.appType, Type = type, Log = message });
+			this.GetComponent<MessageComponent>().Send(new R2C_ServerLog { AppType = this.appType, AppId = this.appId, Type = type, Log = message });
 		}
 
 		public override void Dispose()

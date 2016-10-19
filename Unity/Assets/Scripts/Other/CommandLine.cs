@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Base;
 using Model;
 
-namespace MyEditor
+namespace Model
 {
 	public class CommandLine: ICloneable
 	{

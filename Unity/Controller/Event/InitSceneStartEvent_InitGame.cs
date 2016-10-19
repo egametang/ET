@@ -19,9 +19,13 @@ namespace Controller
 			try
 			{
 				// 订阅服务端日志, 服务端收到这个消息会将之后的日志转发给客户端
-				await session.GetComponent<MessageComponent>().Call<C2S_SubscribeLog, S2C_SubscribeLog>(new C2S_SubscribeLog());
-				S2C_Login s2CLogin = await session.GetComponent<MessageComponent>().Call<C2S_Login, S2C_Login>(new C2S_Login {Account = "tanghai", Password = "1111111"});
-				Log.Info(MongoHelper.ToJson(s2CLogin));
+				await session.GetComponent<MessageComponent>().Call<C2R_SubscribeLog, R2C_SubscribeLog>(new C2R_SubscribeLog());
+				R2C_Login s2CLogin = await session.GetComponent<MessageComponent>().Call<C2R_Login, R2C_Login>(new C2R_Login {Account = "111", Password = "111111"});
+
+				// 连接Gate
+				Entity gateSession = networkComponent.Get(s2CLogin.Address);
+				await gateSession.GetComponent<MessageComponent>().Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
+				Log.Info("连接Gate验证成功!");
 			}
 			catch (RpcException e)
 			{

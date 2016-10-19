@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
+    <Compile Include="Assets\Scripts\Other\CommandLine.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\Options.cs" />

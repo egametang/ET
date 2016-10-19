@@ -33,8 +33,10 @@ namespace App
 				switch (options.AppType)
 				{
 					case "Realm":
+						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case "Gate":
+						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {options.AppType}");
