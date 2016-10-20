@@ -18,7 +18,11 @@ namespace App
 				Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 				Object.ObjectManager.Register("Model", typeof(ErrorCode).Assembly);
 				byte[] dllBytes = File.ReadAllBytes("./Controller.dll");
+#if __MonoCS__
+				byte[] pdbBytes = File.ReadAllBytes("./Controller.dll.mdb");
+#else
 				byte[] pdbBytes = File.ReadAllBytes("./Controller.pdb");
+#endif
 				Assembly controller = Assembly.Load(dllBytes, pdbBytes);
 				Object.ObjectManager.Register("Controller", controller);
 
