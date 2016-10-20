@@ -14,7 +14,7 @@ namespace Controller
 		{
 			Game.Scene.AddComponent<MessageDispatherComponent, string>("Client");
 			NetworkComponent networkComponent = Game.Scene.AddComponent<NetworkComponent, NetworkProtocol>(NetworkProtocol.TCP);
-			Entity session = networkComponent.Get("127.0.0.1:8888");
+			Entity session = networkComponent.Get("127.0.0.1:10001");
 
 			try
 			{

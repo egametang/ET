@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Base;
 #if SERVER
 using CommandLine;
@@ -6,17 +7,22 @@ using CommandLine;
 
 namespace Model
 {
-	public class Options
+	public class Options: ICloneable
 	{
-#if SERVER
-		[Option("appType", Required = true, HelpText = "AppType: realm gate")]
-#endif
-		public string AppType { get; set; }
-
 #if SERVER
 		[Option("id", Required = true, HelpText = "Id.")]
 #endif
 		public int Id { get; set; }
+
+#if SERVER
+		[Option("IP", Required = false, HelpText = "进程运行的服务器ip.")]
+#endif
+		public string IP { get; set; }
+
+#if SERVER
+		[Option("appType", Required = true, HelpText = "AppType: realm gate")]
+#endif
+		public string AppType { get; set; }
 
 #if SERVER
 		[Option("protocol", Required = false, HelpText = "Protocol, tcp or udp.", DefaultValue = NetworkProtocol.UDP)]
@@ -58,6 +64,11 @@ namespace Model
 			usage.AppendLine("Quickstart Application 1.0");
 			usage.AppendLine("Read user manual for usage instructions...");
 			return usage.ToString();
+		}
+
+		public object Clone()
+		{
+			return MongoHelper.FromBson<Options>(MongoHelper.ToBson(this));
 		}
 	}
 }

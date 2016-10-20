@@ -5,6 +5,7 @@
 		public const string Client = "Client";
 		public const string Robot = "Robot";
 
+		public const string Manager = "Manager";
 		public const string Realm = "Realm";
 		public const string Gate = "Gate";
 	}

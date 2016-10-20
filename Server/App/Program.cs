@@ -17,14 +17,7 @@ namespace App
 
 				Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 				Object.ObjectManager.Register("Model", typeof(ErrorCode).Assembly);
-				byte[] dllBytes = File.ReadAllBytes("./Controller.dll");
-#if __MonoCS__
-				byte[] pdbBytes = File.ReadAllBytes("./Controller.dll.mdb");
-#else
-				byte[] pdbBytes = File.ReadAllBytes("./Controller.pdb");
-#endif
-				Assembly controller = Assembly.Load(dllBytes, pdbBytes);
-				Object.ObjectManager.Register("Controller", controller);
+				Object.ObjectManager.Register("Controller", DllHelper.GetController());
 
 				Options options = Game.Scene.AddComponent<OptionsComponent, string[]>(args).Options;
 				
@@ -36,10 +29,13 @@ namespace App
 				// 根据不同的AppType添加不同的组件
 				switch (options.AppType)
 				{
-					case "Realm":
+					case AppType.Manager:
+						Game.Scene.AddComponent<AppManagerComponent>();
+						break;
+					case AppType.Realm:
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
-					case "Gate":
+					case AppType.Gate:
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					default:

@@ -83,7 +83,6 @@
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\AppInfoComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Assets\Scripts\Event\EnvKey.cs" />
     <Compile Include="Assets\Scripts\Event\EventIdType.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
@@ -113,5 +113,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

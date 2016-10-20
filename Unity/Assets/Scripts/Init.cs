@@ -11,12 +11,7 @@ namespace Model
 		{
 			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 			Object.ObjectManager.Register("Model", typeof(Init).Assembly);
-
-			GameObject code = (GameObject)Resources.Load("Code");
-			byte[] assBytes = code.Get<TextAsset>("Controller.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Controller.dll.mdb").bytes;
-			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
-			Object.ObjectManager.Register("Controller", assembly);
+			Object.ObjectManager.Register("Controller", DllHelper.GetController());
 
 			Game.Scene.AddComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 		}

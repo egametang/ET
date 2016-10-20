@@ -37,36 +37,36 @@ namespace MyEditor
 
 		void OnGUI()
 		{
-			for (int i = 0; i < this.commandLines.Commands.Count; ++i)
+			for (int i = 0; i < this.commandLines.Options.Count; ++i)
 			{
-				CommandLine commandLine = this.commandLines.Commands[i];
+				Options options = this.commandLines.Options[i];
 				GUILayout.BeginHorizontal();
-				GUILayout.Label($"IP:");
-				commandLine.IP = EditorGUILayout.TextField(commandLine.IP);
-				GUILayout.Label($"AppType:");
-				commandLine.Options.AppType = EditorGUILayout.TextField(commandLine.Options.AppType);
 				GUILayout.Label($"Id:");
-				commandLine.Options.Id = EditorGUILayout.IntField(commandLine.Options.Id);
+				options.Id = EditorGUILayout.IntField(options.Id);
+				GUILayout.Label($"服务器IP:");
+				options.IP = EditorGUILayout.TextField(options.IP);
+				GUILayout.Label($"AppType:");
+				options.AppType = EditorGUILayout.TextField(options.AppType);
 				GUILayout.Label($"Protocol:");
-				commandLine.Options.Protocol = (NetworkProtocol)EditorGUILayout.EnumPopup(commandLine.Options.Protocol);
+				options.Protocol = (NetworkProtocol)EditorGUILayout.EnumPopup(options.Protocol);
 				GUILayout.Label($"Host:");
-				commandLine.Options.Host = EditorGUILayout.TextField(commandLine.Options.Host);
+				options.Host = EditorGUILayout.TextField(options.Host);
 				GUILayout.Label($"Port:");
-				commandLine.Options.Port = EditorGUILayout.IntField(commandLine.Options.Port);
+				options.Port = EditorGUILayout.IntField(options.Port);
 				if (GUILayout.Button("删除"))
 				{
-					this.commandLines.Commands.Remove(commandLine);
+					this.commandLines.Options.Remove(options);
 					break;
 				}
 				if (GUILayout.Button("复制"))
 				{
 					for (int j = 1; j < this.copyNum + 1; ++j)
 					{
-						CommandLine newCommandLine = (CommandLine) commandLine.Clone();
-						newCommandLine.Options.Id += j;
-						newCommandLine.Options.Port += j;
-						newCommandLine.Options.Protocol = this.protocol;
-						this.commandLines.Commands.Add(newCommandLine);
+						Options newOptions = (Options)options.Clone();
+						newOptions.Id += j;
+						newOptions.Port += j;
+						newOptions.Protocol = this.protocol;
+						this.commandLines.Options.Add(newOptions);
 					}
 					break;
 				}
@@ -81,9 +81,9 @@ namespace MyEditor
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("添加"))
 			{
-				CommandLine newCommandLine = new CommandLine();
-				newCommandLine.Options.Protocol = this.protocol;
-				this.commandLines.Commands.Add(newCommandLine);
+				Options newOptions = new Options();
+				newOptions.Protocol = this.protocol;
+				this.commandLines.Options.Add(newOptions);
 			}
 
 			if (GUILayout.Button("保存"))
@@ -93,17 +93,16 @@ namespace MyEditor
 
 			if (GUILayout.Button("启动"))
 			{
-				foreach (CommandLine commandLine in this.commandLines.Commands)
-				{
-					string arguments = $"--appType={commandLine.Options.AppType} --id={commandLine.Options.Id} --Protocol={commandLine.Options.Protocol} --Host={commandLine.Options.Host} --Port={commandLine.Options.Port}";
+				Options options = this.commandLines.Manager;
+				
+				string arguments = $"--appType={options.AppType} --id={options.Id} --Protocol={options.Protocol} --Host={options.Host} --Port={options.Port}";
 
-					ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
-					{
-						UseShellExecute = true,
-						WorkingDirectory = @"..\Server\Bin\Debug"
-					};
-					Process.Start(info);
-				}
+				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
+				{
+					UseShellExecute = true,
+					WorkingDirectory = @"..\Server\Bin\Debug"
+				};
+				Process.Start(info);
 			}
 			GUILayout.EndHorizontal();
 		}

@@ -2,19 +2,18 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Base;
-using MongoDB.Bson;
 
 namespace Model
 {
 	public class Timer
 	{
-		public ObjectId Id { get; set; }
+		public long Id { get; set; }
 		public long Time { get; set; }
 		public TaskCompletionSource<bool> tcs;
 	}
 
 	[ObjectEvent]
-	public class TimerComponentEvent : ObjectEvent<TimerComponent> 
+	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
 	{
 		public void Update()
 		{
@@ -23,50 +22,47 @@ namespace Model
 		}
 	}
 
-	public static class TimerComponentExtension
+	public class TimerComponent: Component
 	{
-		public static void Update(this TimerComponent component)
+		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
+
+		/// <summary>
+		/// key: time, value: timer id
+		/// </summary>
+		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
+
+		private readonly Queue<long> timeoutTimer = new Queue<long>();
+
+		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
-			foreach (long time in component.timeId.Keys)
+			foreach (long time in this.timeId.Keys)
 			{
 				if (time > timeNow)
 				{
 					break;
 				}
-				component.timeoutTimer.Enqueue(time);
+				this.timeoutTimer.Enqueue(time);
 			}
 
-			while (component.timeoutTimer.Count > 0)
+			while (this.timeoutTimer.Count > 0)
 			{
-				long key = component.timeoutTimer.Dequeue();
-				ObjectId[] timeOutId = component.timeId.GetAll(key);
-				foreach (ObjectId id in timeOutId)
+				long key = this.timeoutTimer.Dequeue();
+				long[] timeOutId = this.timeId.GetAll(key);
+				foreach (long id in timeOutId)
 				{
 					Timer timer;
-					if (!component.timers.TryGetValue(id, out timer))
+					if (!this.timers.TryGetValue(id, out timer))
 					{
 						continue;
 					}
-					component.Remove(id);
+					this.Remove(id);
 					timer.tcs.SetResult(true);
 				}
 			}
 		}
-	}
 
-	public class TimerComponent: Component
-	{
-		public readonly Dictionary<ObjectId, Timer> timers = new Dictionary<ObjectId, Timer>();
-
-		/// <summary>
-		/// key: time, value: timer id
-		/// </summary>
-		public readonly MultiMap<long, ObjectId> timeId = new MultiMap<long, ObjectId>();
-
-		public readonly Queue<long> timeoutTimer = new Queue<long>();
-
-		public void Remove(ObjectId id)
+		private void Remove(long id)
 		{
 			Timer timer;
 			if (!this.timers.TryGetValue(id, out timer))
@@ -80,7 +76,7 @@ namespace Model
 		public Task WaitTillAsync(long tillTime, CancellationToken cancellationToken)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			Timer timer = new Timer { Id = ObjectId.GenerateNewId(), Time = tillTime, tcs = tcs };
+			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
 			cancellationToken.Register(() =>
@@ -93,7 +89,7 @@ namespace Model
 		public Task WaitTillAsync(long tillTime)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			Timer timer = new Timer { Id = ObjectId.GenerateNewId(), Time = tillTime, tcs = tcs };
+			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
 			return tcs.Task;
@@ -104,7 +100,7 @@ namespace Model
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			Timer timer = new Timer
 			{
-				Id = ObjectId.GenerateNewId(),
+				Id = IdGenerater.GenerateId(),
 				Time = TimeHelper.Now() + time,
 				tcs = tcs
 			};
@@ -122,7 +118,7 @@ namespace Model
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			Timer timer = new Timer
 			{
-				Id = ObjectId.GenerateNewId(),
+				Id = IdGenerater.GenerateId(),
 				Time = TimeHelper.Now() + time,
 				tcs = tcs
 			};

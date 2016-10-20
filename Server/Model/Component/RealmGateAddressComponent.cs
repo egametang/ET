@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using Base;
 
 namespace Model
@@ -20,15 +18,14 @@ namespace Model
 
 		public void Awake()
 		{
-			string s = File.ReadAllText("./CommandLineConfig.txt");
-			CommandLines commandLines = MongoHelper.FromJson<CommandLines>(s);
-			foreach (CommandLine commandLine in commandLines.Commands)
+			CommandLines commandLines = this.GetComponent<OptionsComponent>().AllOptions;
+			foreach (Options options in commandLines.Options)
 			{
-				if (commandLine.Options.AppType != "Gate")
+				if (options.AppType != "Gate")
 				{
 					continue;
 				}
-				this.GateAddress.Add($"{commandLine.Options.Host}:{commandLine.Options.Port}");
+				this.GateAddress.Add($"{options.Host}:{options.Port}");
 			}
 		}
 

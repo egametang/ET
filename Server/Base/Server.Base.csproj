@@ -104,6 +104,9 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MongoHelper.cs">
       <Link>Helper\MongoHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\NetHelper.cs">
+      <Link>Helper\NetHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ProtobufHelper.cs">
       <Link>Helper\ProtobufHelper.cs</Link>
     </Compile>

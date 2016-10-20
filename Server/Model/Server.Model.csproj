@@ -41,9 +41,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\AppInfoComponent.cs">
-      <Link>Component\AppInfoComponent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
       <Link>Component\EventComponent.cs</Link>
     </Compile>
@@ -83,10 +80,12 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>
+    <Compile Include="Component\AppManagerComponent.cs" />
     <Compile Include="Component\LogToClientComponent.cs" />
     <Compile Include="Component\GateSessionKeyComponent.cs" />
     <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Component\OptionsComponent.cs" />
+    <Compile Include="Helper\DllHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +94,7 @@
       <Name>Server.Base</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

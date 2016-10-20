@@ -92,6 +92,7 @@
     <Compile Include="Assets\Plugins\Base\Helper\IdGenerater.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\MongoHelper.cs" />
+    <Compile Include="Assets\Plugins\Base\Helper\NetHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ProtobufHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\RandomHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\StringHelper.cs" />
