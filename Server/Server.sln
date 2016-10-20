@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Controller", "Contro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{01CCAD69-09B1-42F9-8A39-489268BEE18D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ENet", "ThirdParty\ENet\ENet.vcxproj", "{C9992B7C-313E-4C9F-A954-640D01EDFB58}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.App", "App\Server.App.csproj", "{3F8DC04C-9E05-403F-B6A5-36293EB99937}"
 EndProject
 Global
@@ -61,16 +59,6 @@ Global
 		{3878BD71-2F75-4EDF-882F-BC708154B1B0}.Release|x64.Build.0 = Release|Any CPU
 		{3878BD71-2F75-4EDF-882F-BC708154B1B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{3878BD71-2F75-4EDF-882F-BC708154B1B0}.Release|x86.Build.0 = Release|Any CPU
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Debug|x64.ActiveCfg = Debug|x64
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Debug|x64.Build.0 = Debug|x64
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Debug|x86.ActiveCfg = Debug|Win32
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Debug|x86.Build.0 = Debug|Win32
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|Any CPU.ActiveCfg = Release|Win32
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x64.ActiveCfg = Release|x64
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x64.Build.0 = Release|x64
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x86.ActiveCfg = Release|Win32
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58}.Release|x86.Build.0 = Release|Win32
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F8DC04C-9E05-403F-B6A5-36293EB99937}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -86,8 +74,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{C9992B7C-313E-4C9F-A954-640D01EDFB58} = {01CCAD69-09B1-42F9-8A39-489268BEE18D}
 	EndGlobalSection
 EndGlobal
