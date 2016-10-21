@@ -53,6 +53,12 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageDispatherComponent.cs">
       <Link>Component\MessageDispatherComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetInnerComponent.cs">
+      <Link>Component\NetInnerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetOuterComponent.cs">
+      <Link>Component\NetOuterComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
       <Link>Component\NetworkComponent.cs</Link>
     </Compile>
@@ -71,8 +77,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
       <Link>Message\OpcodeHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\CommandLine.cs">
-      <Link>Other\CommandLine.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
+      <Link>Other\BsonClassMapRegister.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
       <Link>Other\EntityType.cs</Link>
@@ -80,11 +86,14 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\StartConfig.cs">
+      <Link>Other\StartConfig.cs</Link>
+    </Compile>
     <Compile Include="Component\AppManagerComponent.cs" />
     <Compile Include="Component\LogToClientComponent.cs" />
     <Compile Include="Component\GateSessionKeyComponent.cs" />
     <Compile Include="Component\RealmGateAddressComponent.cs" />
-    <Compile Include="Component\OptionsComponent.cs" />
+    <Compile Include="Component\StartConfigComponent.cs" />
     <Compile Include="Helper\DllHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

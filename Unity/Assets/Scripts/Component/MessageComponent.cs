@@ -166,6 +166,7 @@ namespace Model
 			where Response : AResponse
 		{
 			this.SendMessage(++RpcId, request);
+			
 			var tcs = new TaskCompletionSource<Response>();
 			this.requestCallback[RpcId] = (bytes, offset, count) =>
 			{

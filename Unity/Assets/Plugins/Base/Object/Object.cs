@@ -6,6 +6,7 @@ namespace Base
 {
 	public abstract class Object: IDisposable, ISupportInitialize
 	{
+		[BsonIgnore]
 		public static ObjectManager ObjectManager = new ObjectManager();
 
 		[BsonId]

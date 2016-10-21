@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -84,6 +86,8 @@
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Scene.cs" />
     <Compile Include="Assets\Scripts\Component\TimeComponent.cs" />
@@ -100,7 +104,8 @@
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
-    <Compile Include="Assets\Scripts\Other\CommandLine.cs" />
+    <Compile Include="Assets\Scripts\Other\BsonClassMapRegister.cs" />
+    <Compile Include="Assets\Scripts\Other\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\Options.cs" />

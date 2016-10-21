@@ -1,10 +1,13 @@
-﻿namespace Base
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Base
 {
 	/// <summary>
 	/// Component的Id与Owner Entity Id一样
 	/// </summary>
-	public abstract class Component: Object
+	public abstract class Component : Object
 	{
+		[BsonIgnore]
 		public Entity Owner { get; set; }
 
 		protected Component()
@@ -24,6 +27,11 @@
 
 		public override void Dispose()
 		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+
 			base.Dispose();
 
 			ObjectManager.Remove(this.Id);

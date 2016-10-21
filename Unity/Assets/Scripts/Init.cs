@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Base;
+using MongoDB.Bson.Serialization;
 using UnityEngine;
 using Object = Base.Object;
 
@@ -9,6 +10,7 @@ namespace Model
 	{
 		private void Start()
 		{
+			BsonClassMapRegister.Register();
 			Object.ObjectManager.Register("Base", typeof(Game).Assembly);
 			Object.ObjectManager.Register("Model", typeof(Init).Assembly);
 			Object.ObjectManager.Register("Controller", DllHelper.GetController());

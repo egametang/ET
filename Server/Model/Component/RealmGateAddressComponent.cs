@@ -14,22 +14,22 @@ namespace Model
 
 	public class RealmGateAddressComponent : Component
 	{
-		private readonly List<string> GateAddress = new List<string>();
+		private readonly List<Entity> GateAddress = new List<Entity>();
 
 		public void Awake()
 		{
-			CommandLines commandLines = this.GetComponent<OptionsComponent>().AllOptions;
-			foreach (Options options in commandLines.Options)
+			StartConfig[] startConfigs = this.GetComponent<StartConfigComponent>().GetAll();
+			foreach (StartConfig config in startConfigs)
 			{
-				if (options.AppType != "Gate")
+				if (config.Options.AppType != "Gate")
 				{
 					continue;
 				}
-				this.GateAddress.Add($"{options.Host}:{options.Port}");
+				this.GateAddress.Add(config.Config);
 			}
 		}
 
-		public string GetAddress()
+		public Entity GetAddress()
 		{
 			int n = RandomHelper.RandomNumber(0, this.GateAddress.Count);
 			return this.GateAddress[n];

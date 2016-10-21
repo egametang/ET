@@ -18,8 +18,8 @@ namespace Model
 
 		public void Awake()
 		{
-			this.appType = Game.Scene.GetComponent<OptionsComponent>().Options.AppType;
-			this.appId = Game.Scene.GetComponent<OptionsComponent>().Options.Id;
+			this.appType = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.Options.AppType;
+			this.appId = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.Options.Id;
 			Log.Callback.Add(this.Id, this.LogToClient);
 		}
 

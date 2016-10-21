@@ -117,6 +117,7 @@ namespace Model
 				try
 				{
                     message = MongoHelper.FromBson<Message>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+					Log.Info(MongoHelper.ToJson(message));
                 }
 			    catch (Exception ex)
 			    {
@@ -142,6 +143,7 @@ namespace Model
 				try
 				{
 					request = MongoHelper.FromBson<Request>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+					Log.Info(MongoHelper.ToJson(request));
 				}
 				catch (Exception ex)
 				{
@@ -149,9 +151,10 @@ namespace Model
 				}
 
 				action(entity, request, response =>
-				{
-					entity.GetComponent<MessageComponent>().Reply(messageInfo.RpcId, response);
-				});
+					{
+						entity.GetComponent<MessageComponent>().Reply(messageInfo.RpcId, response); 
+					} 
+				);
 			});
 		}
 

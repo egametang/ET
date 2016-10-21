@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Base;
 using Model;
+using MongoDB.Bson.Serialization;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,63 +12,94 @@ namespace MyEditor
 {
 	public class ServerCommandLineEditor : EditorWindow
 	{
-		private const string Path = @"..\Server\Bin\Debug\CommandLineConfig.txt";
+		private const string Path = @"..\Server\App\Start.txt";
 
 		private int copyNum = 1;
 
-		private NetworkProtocol protocol;
+		private string AppType = Model.AppType.Realm;
 
-		private CommandLines commandLines;
+		private List<StartConfig> startConfigs = new List<StartConfig>();
 
 		[MenuItem("Tools/服务端命令行配置")]
-		static void ShowWindow()
+		private static void ShowWindow()
 		{
+			BsonClassMapRegister.Register();
 			GetWindow(typeof(ServerCommandLineEditor));
 		}
 
-		void OnEnable()
+		private void OnEnable()
 		{
 			if (!File.Exists(Path))
 			{
-				this.commandLines = new CommandLines();
 				return;
 			}
-			string s = File.ReadAllText(Path);
-			this.commandLines = MongoHelper.FromJson<CommandLines>(s);
+
+			string s2 = "";
+			try
+			{
+				string[] ss = File.ReadAllText(Path).Split('\n');
+				foreach (string s in ss)
+				{
+					s2 = s.Trim();
+					if (s2 == "")
+					{
+						continue;
+					}
+
+					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
+					this.startConfigs.Add(startConfig);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error($"加载配置失败! {s2} \n {e}");
+			}
 		}
 
-		void OnGUI()
+		private void OnGUI()
 		{
-			for (int i = 0; i < this.commandLines.Options.Count; ++i)
+			for (int i = 0; i < this.startConfigs.Count; ++i)
 			{
-				Options options = this.commandLines.Options[i];
+				StartConfig startConfig = this.startConfigs[i];
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"Id:");
-				options.Id = EditorGUILayout.IntField(options.Id);
+				startConfig.Options.Id = EditorGUILayout.IntField(startConfig.Options.Id);
 				GUILayout.Label($"服务器IP:");
-				options.IP = EditorGUILayout.TextField(options.IP);
+				startConfig.IP = EditorGUILayout.TextField(startConfig.IP);
 				GUILayout.Label($"AppType:");
-				options.AppType = EditorGUILayout.TextField(options.AppType);
-				GUILayout.Label($"Protocol:");
-				options.Protocol = (NetworkProtocol)EditorGUILayout.EnumPopup(options.Protocol);
-				GUILayout.Label($"Host:");
-				options.Host = EditorGUILayout.TextField(options.Host);
-				GUILayout.Label($"Port:");
-				options.Port = EditorGUILayout.IntField(options.Port);
+				startConfig.Options.AppType = EditorGUILayout.TextField(startConfig.Options.AppType);
+
+				InnerConfig innerConfig = startConfig.Config.GetComponent<InnerConfig>();
+				if (innerConfig != null)
+				{
+					GUILayout.Label($"Host:");
+					innerConfig.Host = EditorGUILayout.TextField(innerConfig.Host);
+					GUILayout.Label($"Port:");
+					innerConfig.Port = EditorGUILayout.IntField(innerConfig.Port);
+				}
+
+				OuterConfig outerConfig = startConfig.Config.GetComponent<OuterConfig>();
+				if (outerConfig != null)
+				{
+					GUILayout.Label($"OuterHost:");
+					outerConfig.Host = EditorGUILayout.TextField(outerConfig.Host);
+					GUILayout.Label($"OuterHost:");
+					outerConfig.Port = EditorGUILayout.IntField(outerConfig.Port);
+				}
+
+
 				if (GUILayout.Button("删除"))
 				{
-					this.commandLines.Options.Remove(options);
+					this.startConfigs.Remove(startConfig);
 					break;
 				}
 				if (GUILayout.Button("复制"))
 				{
 					for (int j = 1; j < this.copyNum + 1; ++j)
 					{
-						Options newOptions = (Options)options.Clone();
-						newOptions.Id += j;
-						newOptions.Port += j;
-						newOptions.Protocol = this.protocol;
-						this.commandLines.Options.Add(newOptions);
+						StartConfig newStartConfig = (StartConfig)startConfig.Clone();
+						newStartConfig.Options.Id += j;
+						this.startConfigs.Add(newStartConfig);
 					}
 					break;
 				}
@@ -75,27 +108,61 @@ namespace MyEditor
 
 			GUILayout.BeginHorizontal();
 			this.copyNum = EditorGUILayout.IntField("复制数量: ", this.copyNum);
-			this.protocol = (NetworkProtocol)EditorGUILayout.EnumPopup("协议: ", this.protocol);
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
+
+			GUILayout.Label($"添加的AppType:");
+			this.AppType = EditorGUILayout.TextField(this.AppType);
+
 			if (GUILayout.Button("添加"))
 			{
-				Options newOptions = new Options();
-				newOptions.Protocol = this.protocol;
-				this.commandLines.Options.Add(newOptions);
+				StartConfig newStartConfig = new StartConfig();
+
+				newStartConfig.Options.AppType = this.AppType;
+				newStartConfig.Config.AddComponent<InnerConfig>();
+
+				if (this.AppType == Model.AppType.Gate || this.AppType == Model.AppType.Realm || this.AppType == Model.AppType.Manager)
+				{
+					newStartConfig.Config.AddComponent<OuterConfig>();
+				}
+
+				this.startConfigs.Add(newStartConfig);
 			}
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
 
 			if (GUILayout.Button("保存"))
 			{
-				File.WriteAllText(Path, MongoHelper.ToJson(this.commandLines));
+				using (StreamWriter sw = new StreamWriter(new FileStream(Path, FileMode.Create)))
+				{
+					foreach (StartConfig startConfig in this.startConfigs)
+					{
+						sw.Write(MongoHelper.ToJson(startConfig));
+						sw.Write('\n');
+					}
+				}
 			}
 
 			if (GUILayout.Button("启动"))
 			{
-				Options options = this.commandLines.Manager;
+				StartConfig startConfig = null;
+				foreach (StartConfig config in this.startConfigs)
+				{
+					if (config.Options.AppType == Model.AppType.Manager)
+					{
+						startConfig = config;
+					}
+				}
+
+				if (startConfig == null)
+				{
+					Log.Error("没有配置Manager!");
+					return;
+				}
 				
-				string arguments = $"--appType={options.AppType} --id={options.Id} --Protocol={options.Protocol} --Host={options.Host} --Port={options.Port}";
+				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 
 				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
 				{
@@ -107,11 +174,11 @@ namespace MyEditor
 			GUILayout.EndHorizontal();
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{
 		}
 
-		void OnDestroy()
+		private void OnDestroy()
 		{
 		}
 	}

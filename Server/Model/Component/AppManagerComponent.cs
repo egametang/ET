@@ -22,20 +22,20 @@ namespace Model
 		public void Awake()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
-			CommandLines commandLines = Game.Scene.GetComponent<OptionsComponent>().AllOptions;
-			foreach (Options options in commandLines.Options)
+			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
+			foreach (StartConfig startConfig in startConfigs)
 			{
-				if (!ips.Contains(options.IP))
+				if (!ips.Contains(startConfig.IP))
 				{
 					continue;
 				}
 
-				if (options.AppType == AppType.Manager)
+				if (startConfig.Options.AppType == AppType.Manager)
 				{
 					continue;
 				}
 
-				string arguments = $"--appType={options.AppType} --id={options.Id} --Protocol={options.Protocol} --Host={options.Host} --Port={options.Port}";
+				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 
 				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
 				{

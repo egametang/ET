@@ -18,13 +18,16 @@ namespace Controller
 			}
 
 			// 随机分配一个Gate
-			string gateAddress = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
-			Entity gateSession = Game.Scene.GetComponent<NetworkComponent>().Get(gateAddress);
+			Entity config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
+			Log.Info($"gate address: {MongoHelper.ToJson(config)}");
+			string innerAddress = $"{config.GetComponent<InnerConfig>().Host}:{config.GetComponent<InnerConfig>().Port}";
+			Entity gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);
 			
 			// 向gate请求一个key,客户端可以拿着这个key连接gate
 			G2R_GetLoginKey g2RGetLoginKey = await gateSession.GetComponent<MessageComponent>().Call<R2G_GetLoginKey, G2R_GetLoginKey>(new R2G_GetLoginKey());
 			
-			r2CLogin = new R2C_Login {Address = gateAddress, Key = g2RGetLoginKey.Key};
+			string outerAddress = $"{config.GetComponent<OuterConfig>().Host}:{config.GetComponent<OuterConfig>().Port}";
+			r2CLogin = new R2C_Login {Address = outerAddress, Key = g2RGetLoginKey.Key};
 			reply(r2CLogin);
 		}
 	}

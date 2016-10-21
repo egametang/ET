@@ -12,6 +12,8 @@ namespace Base
 
 		[BsonElement, BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
+
+		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		public Entity(string entityType)

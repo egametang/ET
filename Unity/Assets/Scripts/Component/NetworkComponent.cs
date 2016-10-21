@@ -4,34 +4,14 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class NetworkComponentEvent : ObjectEvent<NetworkComponent>, IUpdate, IAwake<NetworkProtocol>, IAwake<NetworkProtocol, string, int>
-	{
-		public void Update()
-		{
-			NetworkComponent component = this.GetValue();
-			component.Update();
-		}
-
-		public void Awake(NetworkProtocol protocol)
-		{
-			this.GetValue().Awake(protocol);
-		}
-
-		public void Awake(NetworkProtocol protocol, string host, int port)
-		{
-			this.GetValue().Awake(protocol, host, port);
-		}
-	}
-
-	public class NetworkComponent: Component
+	public abstract class NetworkComponent: Component
 	{
 		private AService Service;
 
 		private readonly Dictionary<long, Entity> sessions = new Dictionary<long, Entity>();
 		private readonly Dictionary<string, Entity> adressSessions = new Dictionary<string, Entity>();
 
-		public void Awake(NetworkProtocol protocol)
+		protected void Awake(NetworkProtocol protocol)
 		{
 			switch (protocol)
 			{
@@ -46,7 +26,7 @@ namespace Model
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, string host, int port)
+		protected void Awake(NetworkProtocol protocol, string host, int port)
 		{
 			switch (protocol)
 			{
