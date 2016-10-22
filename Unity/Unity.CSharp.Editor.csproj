@@ -111,6 +111,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\EditorInit.cs" />
+    <Compile Include="Assets\Editor\ObjectManagerToolsEditor\ObjectManagerToolsWindow.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\UI\ServerCommandLineEditor.cs" />
   </ItemGroup>

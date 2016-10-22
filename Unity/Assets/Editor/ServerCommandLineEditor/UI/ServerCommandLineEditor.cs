@@ -18,12 +18,12 @@ namespace MyEditor
 
 		private string AppType = Model.AppType.Realm;
 
-		private List<StartConfig> startConfigs = new List<StartConfig>();
+		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 
 		[MenuItem("Tools/服务端命令行配置")]
 		private static void ShowWindow()
 		{
-			BsonClassMapRegister.Register();
+			
 			GetWindow(typeof(ServerCommandLineEditor));
 		}
 

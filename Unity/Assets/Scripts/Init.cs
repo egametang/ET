@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Base;
 using MongoDB.Bson.Serialization;
 using UnityEngine;
@@ -20,7 +21,14 @@ namespace Model
 
 		private void Update()
 		{
-			Base.Object.ObjectManager.Update();
+			try
+			{
+				Base.Object.ObjectManager.Update();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
 
 		private void OnApplicationQuit()

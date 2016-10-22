@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Base;
 
 namespace Model
@@ -114,6 +115,11 @@ namespace Model
 
 			base.Dispose();
 
+			foreach (Entity entity in this.sessions.Values.ToArray())
+			{
+				entity.Dispose();
+			}
+			
 			this.Service.Dispose();
 		}
 

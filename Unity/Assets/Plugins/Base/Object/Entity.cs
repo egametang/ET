@@ -35,6 +35,8 @@ namespace Base
 				return;
 			}
 
+			long id = this.Id;
+			
 			base.Dispose();
 
 			foreach (Component component in this.GetComponents())
@@ -48,7 +50,7 @@ namespace Base
 					Log.Error(e.ToString());
 				}
 			}
-			ObjectManager.Remove(this.Id);
+			ObjectManager.Remove(id);
 		}
 
 		public K AddComponent<K>() where K : Component, new()

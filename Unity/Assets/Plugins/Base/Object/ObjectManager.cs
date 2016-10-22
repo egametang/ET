@@ -122,6 +122,7 @@ namespace Base
 
 		public void Add(Object obj)
 		{
+			Log.Debug($"Add: {obj.GetType().Name} {obj.Id}");
 			if (objectEvents == null)
 			{
 				return;
@@ -155,6 +156,7 @@ namespace Base
 
 		public void Remove(long id)
 		{
+			Log.Debug($"remove: {id}");
 			this.objects.Remove(id);
 		}
 

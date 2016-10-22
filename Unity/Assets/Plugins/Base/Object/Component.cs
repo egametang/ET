@@ -32,9 +32,11 @@ namespace Base
 				return;
 			}
 
+			long id = this.Id;
+
 			base.Dispose();
 
-			ObjectManager.Remove(this.Id);
+			ObjectManager.Remove(id);
 		}
 	}
 }
