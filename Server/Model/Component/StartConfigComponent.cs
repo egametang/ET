@@ -26,25 +26,6 @@ namespace Model
 
 		public void Awake(string[] args)
 		{
-			//StartConfig sc = new StartConfig();
-			////sc.IP = "192.168.12.112";
-			////sc.Options.AppType = "Realm";
-			////sc.Options.Id = 1;
-			//
-			//InnerConfig inneConfig = sc.Config.AddComponent<InnerConfig>();
-			////inneConfig.Host = "127.0.0.1";
-			////inneConfig.Port = 10002;
-			//
-			//OuterConfig outerConfig = sc.Config.AddComponent<OuterConfig>();
-			////outerConfig.Host = "127.0.0.1";
-			////outerConfig.Port = 10003;
-			//
-			//string s3 = MongoHelper.ToJson(sc);
-			//StartConfig s4 = MongoHelper.FromJson<StartConfig>(s3);
-
-			//BsonClassMap.RegisterClassMap<OuterConfig>();
-			//BsonClassMap.RegisterClassMap<InnerConfig>();
-
 			string[] ss = File.ReadAllText("./Start.txt").Split('\n');
 			foreach (string s in ss)
 			{
