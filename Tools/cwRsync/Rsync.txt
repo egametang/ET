@@ -1,2 +1,2 @@
 SET HOME=%HOMEDRIVE%%HOMEPATH%
-rsync.exe -vzrtopg --progress --password-file=./rsync.secrets --exclude-from=exclude.txt ../.. tanghai@192.168.1.134::Source/Egametang
+.\Tools\cwRsync\rsync.exe -vzrtopg --password-file=./Tools/cwRsync/rsync.secrets --exclude-from=./Tools/cwRsync/exclude.txt --delete ./ tanghai@192.168.1.134::Tanghai/Source/Egametang --chmod=ugo=rwX

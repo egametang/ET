@@ -25,7 +25,7 @@ namespace Model
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig startConfig in startConfigs)
 			{
-				if (!ips.Contains(startConfig.IP))
+				if (!ips.Contains(startConfig.IP) && startConfig.IP != "*")
 				{
 					continue;
 				}
@@ -35,13 +35,20 @@ namespace Model
 					continue;
 				}
 
-				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 
-				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
+#if __MonoCS__
+				const string exe = @"mono";
+				string arguments = $"App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+#else
+				const string exe = @"App.exe";
+				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+#endif
+				ProcessStartInfo info = new ProcessStartInfo(exe, arguments)
 				{
 					UseShellExecute = true,
 					WorkingDirectory = @"..\Server\Bin\Debug"
 				};
+
 				Process process = Process.Start(info);
 				this.processes.Add(process.Id, process);
 			}

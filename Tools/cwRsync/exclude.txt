@@ -1,1 +1,10 @@
-../../.git
+.git/
+Log/
+Tools/
+Server/Bin/
+Server/packages/
+Server/Temp/
+Server/Server.sdf
+Unity/Library/
+Unity/Temp/
+*/obj

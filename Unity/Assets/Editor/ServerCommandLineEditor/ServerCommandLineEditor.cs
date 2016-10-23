@@ -23,7 +23,6 @@ namespace MyEditor
 		[MenuItem("Tools/服务端命令行配置")]
 		private static void ShowWindow()
 		{
-			
 			GetWindow(typeof(ServerCommandLineEditor));
 		}
 
