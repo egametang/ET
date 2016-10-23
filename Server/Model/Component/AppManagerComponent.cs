@@ -39,14 +39,20 @@ namespace Model
 #if __MonoCS__
 				const string exe = @"mono";
 				string arguments = $"App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				const string workDir = @"../Server/Bin/Debug";
 #else
 				const string exe = @"App.exe";
 				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				const string workDir = @"..\Server\Bin\Debug";
 #endif
-				ProcessStartInfo info = new ProcessStartInfo(exe, arguments)
+				Log.Debug($"{startConfig.Options.Id} {MongoHelper.ToJson(startConfig)}"); 
+				ProcessStartInfo info = new ProcessStartInfo
 				{
+					FileName = exe,
+					Arguments = arguments,
+					CreateNoWindow = true,
 					UseShellExecute = true,
-					WorkingDirectory = @"..\Server\Bin\Debug"
+					WorkingDirectory = workDir
 				};
 
 				Process process = Process.Start(info);
