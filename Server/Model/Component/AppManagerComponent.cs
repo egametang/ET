@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Model
 
 
 #if __MonoCS__
-				const string exe = @"mono";
+				const string exe = @"/usr/local/bin/mono";
 				string arguments = $"App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 				const string workDir = @"../Server/Bin/Debug";
 #else
@@ -45,18 +46,24 @@ namespace Model
 				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 				const string workDir = @"..\Server\Bin\Debug";
 #endif
-				Log.Debug($"{startConfig.Options.Id} {MongoHelper.ToJson(startConfig)}"); 
-				ProcessStartInfo info = new ProcessStartInfo
+				try
 				{
-					FileName = exe,
-					Arguments = arguments,
-					CreateNoWindow = true,
-					UseShellExecute = true,
-					WorkingDirectory = workDir
-				};
+					ProcessStartInfo info = new ProcessStartInfo
+					{
+						FileName = exe,
+						Arguments = arguments,
+						CreateNoWindow = true,
+						UseShellExecute = true,
+						WorkingDirectory = workDir
+					};
 
-				Process process = Process.Start(info);
-				this.processes.Add(process.Id, process);
+					Process process = Process.Start(info);
+					this.processes.Add(process.Id, process);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
 			}
 		}
     }

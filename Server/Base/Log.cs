@@ -5,7 +5,7 @@ namespace Base
 {
 	public static class Log
 	{
-		private static readonly ILog globalLog = new NLogAdapter(new StackInfoDecorater());
+		private static readonly ILog globalLog = new NLogAdapter();
 
 		public static Dictionary<long, Action<LogType, string>> Callback { get; } = new Dictionary<long, Action<LogType, string>>();
 

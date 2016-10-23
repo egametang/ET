@@ -1,6 +1,7 @@
 ﻿using System;
 using Base;
 using Model;
+using NLog;
 using Object = Base.Object;
 
 namespace App
@@ -11,8 +12,6 @@ namespace App
 		{
 			try
 			{
-				Log.Info("server start........................");
-
 				BsonClassMapRegister.Register();
 
 				Object.ObjectManager.Register("Base", typeof(Game).Assembly);
@@ -20,7 +19,11 @@ namespace App
 				Object.ObjectManager.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
-				
+				LogManager.Configuration.Variables["appType"] = startConfig.Options.AppType;
+				LogManager.Configuration.Variables["appId"] = startConfig.Options.Id.ToString("D4");
+
+				Log.Info("server start........................");
+
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
 

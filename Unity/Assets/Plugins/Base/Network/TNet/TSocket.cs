@@ -30,8 +30,15 @@ namespace Base
 
 		public TSocket(TPoller poller, string host, int port): this(poller)
 		{
-			this.Bind(host, port);
-			this.Listen(100);
+			try
+			{
+				this.Bind(host, port);
+				this.Listen(100);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"socket bind error: {host} {port}", e);
+			}
 		}
 		
 		public Socket Socket
