@@ -18,12 +18,6 @@ namespace MyEditor
 			GetWindow(typeof(RsyncEditor));
 		}
 
-		[MenuItem("Tools/Rsync同步")]
-		private static void ShowTool()
-		{
-			GetWindow(typeof(RsyncEditor));
-		}
-
 		private void OnEnable()
 		{
 			if (!File.Exists(ConfigFile))

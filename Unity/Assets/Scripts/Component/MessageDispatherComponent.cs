@@ -81,7 +81,7 @@ namespace Model
 					}
 
 					MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-					if (messageHandlerAttribute.AppType != this.AppType)
+					if (!messageHandlerAttribute.Contains(this.AppType))
 					{
 						continue;
 					}

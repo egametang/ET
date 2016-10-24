@@ -19,8 +19,8 @@ namespace MyEditor
 		private string AppType = Model.AppType.Manager;
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
-
-		[MenuItem("Tools/服务端命令行配置")]
+	
+		[MenuItem("Tools/命令行配置")]
 		private static void ShowWindow()
 		{
 			GetWindow(typeof(ServerCommandLineEditor));

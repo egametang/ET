@@ -5,5 +5,6 @@ namespace Model
 		public const int ERR_Success = 0;
 		public const int ERR_AccountOrPasswordError = 1;
 		public const int ERR_ConnectGateKeyError = 2;
+		public const int ERR_ReloadFail = 3;
 	}
 }

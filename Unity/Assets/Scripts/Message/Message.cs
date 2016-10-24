@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -83,6 +84,31 @@ namespace Model
 	[Message(9)]
 	[BsonIgnoreExtraElements]
 	public class G2C_LoginGate : AResponse
+	{
+	}
+
+	[Message(10)]
+	[BsonIgnoreExtraElements]
+	public class C2M_Reload : ARequest
+	{
+		public List<string> AppType = new List<string>();
+	}
+
+	[Message(11)]
+	[BsonIgnoreExtraElements]
+	public class M2C_Reload : AResponse
+	{
+	}
+
+	[Message(12)]
+	[BsonIgnoreExtraElements]
+	public class M2A_Reload : ARequest
+	{
+	}
+
+	[Message(13)]
+	[BsonIgnoreExtraElements]
+	public class A2M_Reload : AResponse
 	{
 	}
 }
