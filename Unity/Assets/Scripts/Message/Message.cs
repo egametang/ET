@@ -7,7 +7,9 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2R_Login: ARequest
 	{
+		[BsonElement("a")]
 		public string Account;
+		[BsonElement("p")]
 		public string Password;
 	}
 
@@ -15,7 +17,9 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class R2C_Login: AResponse
 	{
+		[BsonElement("a")]
 		public string Address { get; set; }
+		[BsonElement("k")]
 		public long Key { get; set; }
 	}
 
@@ -23,9 +27,13 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class R2C_ServerLog: AMessage
 	{
+		[BsonElement("at")]
 		public string AppType { get; set; }
+		[BsonElement("a")]
 		public int AppId { get; set; }
+		[BsonElement("t")]
 		public LogType Type { get; set; }
+		[BsonElement("l")]
 		public string Log { get; set; }
 	}
 
@@ -63,6 +71,7 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2G_LoginGate : ARequest
 	{
+		[BsonElement("k")]
 		public long Key;
 
 		public C2G_LoginGate(long key)

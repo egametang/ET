@@ -13,8 +13,9 @@ namespace Controller
 		public async void Run()
 		{
 			Game.Scene.AddComponent<MessageDispatherComponent, string>("Client");
+			ClientConfig clientConfig = Game.Scene.AddComponent<ClientConfigComponent>().Config;
 			NetworkComponent networkComponent = Game.Scene.AddComponent<NetOuterComponent>();
-			Entity session = networkComponent.Get("192.168.12.188:10003");
+			Entity session = networkComponent.Get($"{clientConfig.Host}:{clientConfig.Port}");
 
 			try
 			{

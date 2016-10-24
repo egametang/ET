@@ -113,6 +113,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\ClientConfigEditor\ClientConfigEditor.cs" />
     <Compile Include="Assets\Editor\EditorInit.cs" />
     <Compile Include="Assets\Editor\ObjectManagerToolsEditor\ObjectManagerToolsWindow.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
