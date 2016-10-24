@@ -16,7 +16,7 @@ namespace MyEditor
 
 		private int copyNum = 1;
 
-		private string AppType = Model.AppType.Realm;
+		private string AppType = Model.AppType.Manager;
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 

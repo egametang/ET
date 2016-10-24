@@ -9,7 +9,6 @@ namespace Controller
 	{
 		protected override void Run(Entity scene, C2G_LoginGate message, Action<G2C_LoginGate> reply)
 		{
-			Log.Info(MongoHelper.ToJson(message));
 			bool isCheckOK = Game.Scene.GetComponent<GateSessionKeyComponent>().Check(message.Key);
 			G2C_LoginGate g2CLoginGate = new G2C_LoginGate();
 			if (!isCheckOK)

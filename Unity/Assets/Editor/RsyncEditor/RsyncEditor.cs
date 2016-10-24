@@ -96,7 +96,6 @@ namespace MyEditor
 			if (GUILayout.Button("同步"))
 			{
 				string arguments = $"-vzrtopg --password-file=./Config/Rsync/rsync.secrets --exclude-from=./Config/Rsync/exclude.txt --delete ./ {this.rsyncConfig.Account}@{this.rsyncConfig.Host}::Upload/{this.rsyncConfig.RelativePath} --chmod=ugo=rwX";
-				Log.Debug(arguments);
 				ProcessStartInfo startInfo = new ProcessStartInfo();
 				startInfo.FileName = @".\Tools\cwRsync\rsync.exe";
 				startInfo.Arguments = arguments;

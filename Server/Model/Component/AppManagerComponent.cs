@@ -38,14 +38,14 @@ namespace Model
 
 
 #if __MonoCS__
-				const string exe = @"/usr/local/bin/mono";
+				const string exe = @"mono";
 				string arguments = $"App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
-				const string workDir = @"../Server/Bin/Debug";
 #else
 				const string exe = @"App.exe";
 				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
-				const string workDir = @"..\Server\Bin\Debug";
 #endif
+
+				Log.Info($"{exe} {arguments}");
 				try
 				{
 					ProcessStartInfo info = new ProcessStartInfo
@@ -53,8 +53,7 @@ namespace Model
 						FileName = exe,
 						Arguments = arguments,
 						CreateNoWindow = true,
-						UseShellExecute = true,
-						WorkingDirectory = workDir
+						UseShellExecute = true
 					};
 
 					Process process = Process.Start(info);
