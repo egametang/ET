@@ -116,6 +116,7 @@
     <Compile Include="Assets\Editor\EditorInit.cs" />
     <Compile Include="Assets\Editor\ObjectManagerToolsEditor\ObjectManagerToolsWindow.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
+    <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
   </ItemGroup>
