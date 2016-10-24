@@ -42,10 +42,6 @@ namespace MyEditor
 			rsyncConfig.Password = EditorGUILayout.TextField("密码", rsyncConfig.Password);
 			rsyncConfig.RelativePath = EditorGUILayout.TextField("相对路径", rsyncConfig.RelativePath);
 
-			if (GUILayout.Button("添加排除项目"))
-			{
-				this.rsyncConfig.Exclude.Add("");
-			}
 			this.isFold = EditorGUILayout.Foldout(isFold, $"排除列表:");
 
 			if (!this.isFold)
@@ -61,6 +57,11 @@ namespace MyEditor
 					}
 					GUILayout.EndHorizontal();
 				}
+			}
+
+			if (GUILayout.Button("添加排除项目"))
+			{
+				this.rsyncConfig.Exclude.Add("");
 			}
 
 			if (GUILayout.Button("保存"))

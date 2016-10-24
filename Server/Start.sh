@@ -2,4 +2,4 @@
 
 cd Bin/Debug/
 pkill App.exe
-mono App.exe --id=1 --appType=Manager
+mono --debug App.exe --id=1 --appType=Manager

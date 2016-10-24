@@ -19,8 +19,9 @@ namespace App
 				Object.ObjectManager.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
+
 				LogManager.Configuration.Variables["appType"] = startConfig.Options.AppType;
-				LogManager.Configuration.Variables["appId"] = startConfig.Options.Id.ToString("D4");
+				LogManager.Configuration.Variables["appId"] = startConfig.Options.Id.ToString();
 
 				Log.Info("server start........................");
 

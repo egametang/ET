@@ -39,7 +39,7 @@ namespace Model
 
 #if __MonoCS__
 				const string exe = @"mono";
-				string arguments = $"App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				string arguments = $"--debug App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
 #else
 				const string exe = @"App.exe";
 				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
