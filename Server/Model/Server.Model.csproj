@@ -86,6 +86,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\ServerType.cs">
+      <Link>Other\ServerType.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\StartConfig.cs">
       <Link>Other\StartConfig.cs</Link>
     </Compile>

@@ -21,7 +21,7 @@ namespace Controller
 						continue;
 					}
 					InnerConfig innerConfig = startConfig.Config.GetComponent<InnerConfig>();
-					Entity serverSession = netInnerComponent.Get($"{innerConfig.Host}:{innerConfig.Port}");
+					Entity serverSession = netInnerComponent.Get(innerConfig.Address);
 					await serverSession.GetComponent<MessageComponent>().Call<M2A_Reload, A2M_Reload>(new M2A_Reload());
 				}
 			}

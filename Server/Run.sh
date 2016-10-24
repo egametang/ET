@@ -5,5 +5,5 @@ cd Bin/Debug/
 cmake ../..
 make
 
-pkill App.exe
+ps -ef | grep App.exe | awk '{print $2}' | xargs kill -9
 mono --debug App.exe --id=1 --appType=Manager

@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Other\BsonClassMapRegister.cs" />
     <Compile Include="Assets\Scripts\Other\ClientConfig.cs" />
+    <Compile Include="Assets\Scripts\Other\ServerType.cs" />
     <Compile Include="Assets\Scripts\Other\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />

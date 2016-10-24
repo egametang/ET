@@ -43,6 +43,15 @@ namespace Model
 	{
 		public string Host { get; set; }
 		public int Port { get; set; }
+
+		[BsonIgnore]
+		public string Address
+		{
+			get
+			{
+				return $"{this.Host}:{this.Port}";
+			}
+		}
 	}
 
 	[BsonIgnoreExtraElements]
@@ -50,5 +59,14 @@ namespace Model
 	{
 		public string Host { get; set; }
 		public int Port { get; set; }
+
+		[BsonIgnore]
+		public string Address
+		{
+			get
+			{
+				return $"{this.Host}:{this.Port}";
+			}
+		}
 	}
 }

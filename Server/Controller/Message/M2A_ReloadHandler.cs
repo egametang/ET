@@ -20,7 +20,7 @@ namespace Controller
 				a2MReload.Error = ErrorCode.ERR_ReloadFail;
 				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().MyConfig;
 				InnerConfig innerConfig = myStartConfig.Config.GetComponent<InnerConfig>();
-				a2MReload.Message = $"{innerConfig.Host}:{innerConfig.Port} reload fail, {e}";
+				a2MReload.Message = $"{innerConfig.Address} reload fail, {e}";
 			}
 			reply(a2MReload);
 		}

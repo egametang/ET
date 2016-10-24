@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Base;
 using Model;
 using UnityEditor;
@@ -14,8 +13,8 @@ namespace MyEditor
 
 		private bool isAll;
 
-		private string[] appTypes = { "Manager", "Realm", "Gate" };
-		private bool[] isCheck = { false, false, false };
+		private readonly string[] serverTypes = Enum.GetNames(typeof(ServerType));
+		private bool[] isCheck;
 
 		[MenuItem("Tools/服务器管理")]
 		private static void ShowWindow()
@@ -25,6 +24,7 @@ namespace MyEditor
 
 		private void OnEnable()
 		{
+			this.isCheck = new bool[this.serverTypes.Length];
 		}
 
 		private void OnGUI()
@@ -35,6 +35,7 @@ namespace MyEditor
 				return;
 			}
 
+			
 			List<string> selected = new List<string>();
 			this.isAll = GUILayout.Toggle(this.isAll, "All");
 			if (this.isAll)
@@ -45,9 +46,9 @@ namespace MyEditor
 				}
 			}
 
-			for (int i = 0; i < this.appTypes.Length; ++i)
+			for (int i = 0; i < this.serverTypes.Length; ++i)
 			{
-				this.isCheck[i] = GUILayout.Toggle(this.isCheck[i], this.appTypes[i]);
+				this.isCheck[i] = GUILayout.Toggle(this.isCheck[i], this.serverTypes[i]);
 				if (!this.isCheck[i])
 				{
 					this.isAll = false;
@@ -62,7 +63,7 @@ namespace MyEditor
 				{
 					if (this.isCheck[i])
 					{
-						selected.Add(this.appTypes[i]);
+						selected.Add(this.serverTypes[i]);
 					}
 				}
 				NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
