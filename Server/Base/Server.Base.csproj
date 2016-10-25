@@ -80,9 +80,6 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\IEvent.cs">
       <Link>Event\IEvent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Game.cs">
-      <Link>Game.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ArrayHelper.cs">
       <Link>Helper\ArrayHelper.cs</Link>
     </Compile>
@@ -124,24 +121,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\LogType.cs">
       <Link>LogType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMessage.cs">
-      <Link>Message\AMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\AMEvent.cs">
-      <Link>Message\AMEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\IMRegister.cs">
-      <Link>Message\IMRegister.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\MessageAttribute.cs">
-      <Link>Message\MessageAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\MessageHandlerAttribute.cs">
-      <Link>Message\MessageHandlerAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Message\RpcException.cs">
-      <Link>Message\RpcException.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\MultiMap.cs">
       <Link>MultiMap.cs</Link>

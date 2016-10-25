@@ -15,17 +15,17 @@ namespace Controller
 			Game.Scene.AddComponent<MessageDispatherComponent, string>("Client");
 			ClientConfig clientConfig = Game.Scene.AddComponent<ClientConfigComponent>().Config;
 			NetworkComponent networkComponent = Game.Scene.AddComponent<NetOuterComponent>();
-			Entity session = networkComponent.Get($"{clientConfig.Host}:{clientConfig.Port}");
+			Session session = networkComponent.Get(clientConfig.Address);
 
 			try
 			{
-				R2C_Login s2CLogin = await session.GetComponent<MessageComponent>().Call<C2R_Login, R2C_Login>(new C2R_Login {Account = "abcdef", Password = "111111"});
+				R2C_Login s2CLogin = await session.Call<C2R_Login, R2C_Login>(new C2R_Login {Account = "abcdef", Password = "111111"});
 				networkComponent.Remove(session.Id);
 
 				// 连接Gate
 				Log.Debug(MongoHelper.ToJson(s2CLogin));
-				Entity gateSession = networkComponent.Get(s2CLogin.Address);
-				await gateSession.GetComponent<MessageComponent>().Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
+				Session gateSession = networkComponent.Get(s2CLogin.Address);
+				await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
 				Log.Info("连接Gate验证成功!");
 			}
 			catch (RpcException e)

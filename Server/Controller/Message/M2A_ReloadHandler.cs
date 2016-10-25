@@ -8,7 +8,7 @@ namespace Controller
 	[MessageHandler(AppType.Manager, AppType.Realm, AppType.Gate)]
 	public class M2A_ReloadHandler : AMRpcEvent<M2A_Reload, A2M_Reload>
 	{
-		protected override void Run(Entity session, M2A_Reload message, Action<A2M_Reload> reply)
+		protected override void Run(Session session, M2A_Reload message, Action<A2M_Reload> reply)
 		{
 			A2M_Reload a2MReload = new A2M_Reload();
 			try
@@ -19,7 +19,7 @@ namespace Controller
 			{
 				a2MReload.Error = ErrorCode.ERR_ReloadFail;
 				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().MyConfig;
-				InnerConfig innerConfig = myStartConfig.Config.GetComponent<InnerConfig>();
+				InnerConfig innerConfig = myStartConfig.GetComponent<InnerConfig>();
 				a2MReload.Message = $"{innerConfig.Address} reload fail, {e}";
 			}
 			reply(a2MReload);

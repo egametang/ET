@@ -9,8 +9,8 @@ namespace Model
 	{
 		private AService Service;
 
-		private readonly Dictionary<long, Entity> sessions = new Dictionary<long, Entity>();
-		private readonly Dictionary<string, Entity> adressSessions = new Dictionary<string, Entity>();
+		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
+		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
 		protected void Awake(NetworkProtocol protocol)
 		{
@@ -55,40 +55,39 @@ namespace Model
 
 				AChannel channel = await this.Service.AcceptChannel();
 
-				Entity session = new Entity(EntityType.Session);
+				Session session = new Session(channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-				session.AddComponent<MessageComponent, AChannel>(channel);
 				this.Add(session);
 			}
 		}
 
-		private void Add(Entity session)
+		private void Add(Session session)
 		{
 			this.sessions.Add(session.Id, session);
-			this.adressSessions.Add(session.GetComponent<MessageComponent>().RemoteAddress, session);
+			this.adressSessions.Add(session.RemoteAddress, session);
 		}
 
 		public void Remove(long id)
 		{
-			Entity session;
+			Session session;
 			if (!this.sessions.TryGetValue(id, out session))
 			{
 				return;
 			}
 			this.sessions.Remove(id);
-			this.adressSessions.Remove(session.GetComponent<MessageComponent>().RemoteAddress);
+			this.adressSessions.Remove(session.RemoteAddress);
 		}
 
-		public Entity Get(long id)
+		public Session Get(long id)
 		{
-			Entity session;
+			Session session;
 			this.sessions.TryGetValue(id, out session);
 			return session;
 		}
 
-		public Entity Get(string address)
+		public Session Get(string address)
 		{
-			Entity session;
+			Session session;
 			if (this.adressSessions.TryGetValue(address, out session))
 			{
 				return session;
@@ -98,9 +97,8 @@ namespace Model
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			session = new Entity(EntityType.Session);
+			session = new Session(channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-			session.AddComponent<MessageComponent, AChannel>(channel);
 			this.Add(session);
 
 			return session;
@@ -115,9 +113,9 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (Entity entity in this.sessions.Values.ToArray())
+			foreach (Session session in this.sessions.Values.ToArray())
 			{
-				entity.Dispose();
+				session.Dispose();
 			}
 			
 			this.Service.Dispose();

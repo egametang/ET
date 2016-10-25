@@ -7,7 +7,7 @@ namespace Controller
 	[MessageHandler(AppType.Manager)]
 	public class C2M_ReloadHandler: AMRpcEvent<C2M_Reload, M2C_Reload>
 	{
-		protected override async void Run(Entity session, C2M_Reload message, Action<M2C_Reload> reply)
+		protected override async void Run(Session session, C2M_Reload message, Action<M2C_Reload> reply)
 		{
 			M2C_Reload m2CReload = new M2C_Reload();
 			try
@@ -16,13 +16,13 @@ namespace Controller
 				NetInnerComponent netInnerComponent = Game.Scene.GetComponent<NetInnerComponent>();
 				foreach (StartConfig startConfig in startConfigComponent.GetAll())
 				{
-					if (!message.AppType.Contains(startConfig.Options.AppType))
+					if (!message.AppType.Contains(startConfig.AppType))
 					{
 						continue;
 					}
-					InnerConfig innerConfig = startConfig.Config.GetComponent<InnerConfig>();
-					Entity serverSession = netInnerComponent.Get(innerConfig.Address);
-					await serverSession.GetComponent<MessageComponent>().Call<M2A_Reload, A2M_Reload>(new M2A_Reload());
+					InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
+					Session serverSession = netInnerComponent.Get(innerConfig.Address);
+					await serverSession.Call<M2A_Reload, A2M_Reload>(new M2A_Reload());
 				}
 			}
 			catch (Exception e)

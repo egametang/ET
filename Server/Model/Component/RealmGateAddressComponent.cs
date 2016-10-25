@@ -14,18 +14,18 @@ namespace Model
 
 	public class RealmGateAddressComponent : Component
 	{
-		private readonly List<Entity> GateAddress = new List<Entity>();
+		private readonly List<StartConfig> GateAddress = new List<StartConfig>();
 
 		public void Awake()
 		{
 			StartConfig[] startConfigs = this.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig config in startConfigs)
 			{
-				if (config.Options.AppType != "Gate")
+				if (config.AppType != "Gate")
 				{
 					continue;
 				}
-				this.GateAddress.Add(config.Config);
+				this.GateAddress.Add(config);
 			}
 		}
 

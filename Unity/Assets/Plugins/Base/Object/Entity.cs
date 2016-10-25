@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Base
 {
-	public sealed class Entity: Object
+	public class Entity: Object
 	{
 		public string Type { get; set; }
 
@@ -16,13 +15,13 @@ namespace Base
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
-		public Entity(string entityType)
+		protected Entity(string entityType)
 		{
 			this.Type = entityType;
 			ObjectManager.Add(this);
 		}
 
-		public Entity(long id, string entityType) : base(id)
+		protected Entity(long id, string entityType) : base(id)
 		{
 			this.Type = entityType;
 			ObjectManager.Add(this);

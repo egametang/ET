@@ -17,13 +17,21 @@ namespace Model
 		Realm,
 	}
 
-	public sealed class Scene: Component
+	public sealed class Scene: Entity
 	{
 		public Scene Parent { get; set; }
 
 		public string Name { get; set; }
 
 		public SceneType SceneType { get; private set; }
+
+		public Scene(): base(EntityType.Scene)
+		{
+		}
+
+		public Scene(long id): base(id, EntityType.Scene)
+		{
+		}
 
 		public override void Dispose()
 		{

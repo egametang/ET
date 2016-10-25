@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// 搭配MessageComponent用来分发消息

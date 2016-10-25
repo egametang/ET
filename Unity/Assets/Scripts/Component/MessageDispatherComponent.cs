@@ -35,8 +35,8 @@ namespace Model
 		}
 
 		private string AppType;
-		private Dictionary<ushort, List<Action<Entity, MessageInfo>>> handlers;
-		private Dictionary<ushort, Action<Entity, MessageInfo>> rpcHandlers;
+		private Dictionary<ushort, List<Action<Session, MessageInfo>>> handlers;
+		private Dictionary<ushort, Action<Session, MessageInfo>> rpcHandlers;
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; } = new Dictionary<Type, MessageAttribute>();
 		
 		public void Awake(string appType)
@@ -47,8 +47,8 @@ namespace Model
 
 		public void Load()
 		{
-			this.handlers = new Dictionary<ushort, List<Action<Entity, MessageInfo>>>();
-			this.rpcHandlers = new Dictionary<ushort, Action<Entity, MessageInfo>>();
+			this.handlers = new Dictionary<ushort, List<Action<Session, MessageInfo>>>();
+			this.rpcHandlers = new Dictionary<ushort, Action<Session, MessageInfo>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
 			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
@@ -103,13 +103,13 @@ namespace Model
 			return this.messageOpcode[type].Opcode;
 		}
 
-		public void RegisterHandler<Message>(ushort opcode, Action<Entity, Message> action) where Message: AMessage
+		public void RegisterHandler<Message>(ushort opcode, Action<Session, Message> action) where Message: AMessage
 		{
 			if (!this.handlers.ContainsKey(opcode))
 			{
-				this.handlers.Add(opcode, new List<Action<Entity, MessageInfo>>());
+				this.handlers.Add(opcode, new List<Action<Session, MessageInfo>>());
 			}
-			List<Action<Entity, MessageInfo>> actions = this.handlers[opcode];
+			List<Action<Session, MessageInfo>> actions = this.handlers[opcode];
 
 			actions.Add((entity, messageInfo) =>
 			{
@@ -128,7 +128,7 @@ namespace Model
 			});
 		}
 		
-		public void RegisterRpcHandler<Request, Response>(ushort opcode, Action<Entity, Request, Action<Response>> action) 
+		public void RegisterRpcHandler<Request, Response>(ushort opcode, Action<Session, Request, Action<Response>> action) 
 			where Request: ARequest 
 			where Response: AResponse
 		{
@@ -137,7 +137,7 @@ namespace Model
 				Log.Error($"rpc消息不能注册两次! opcode: {opcode}");
 				return;
 			}
-			this.rpcHandlers.Add(opcode, (entity, messageInfo) =>
+			this.rpcHandlers.Add(opcode, (session, messageInfo) =>
 			{
 				Request request;
 				try
@@ -150,18 +150,18 @@ namespace Model
 					throw new Exception("解释消息失败:" + opcode, ex);
 				}
 
-				action(entity, request, response =>
+				action(session, request, response =>
 					{
-						entity.GetComponent<MessageComponent>().Reply(messageInfo.RpcId, response); 
+						session.Reply(messageInfo.RpcId, response); 
 					} 
 				);
 			});
 		}
 
 
-		public void Handle(Entity entity, ushort opcode, byte[] messageBytes, int offset)
+		public void Handle(Session session, ushort opcode, byte[] messageBytes, int offset)
 		{
-			List<Action<Entity, MessageInfo>> actions;
+			List<Action<Session, MessageInfo>> actions;
 			if (!this.handlers.TryGetValue(opcode, out actions))
 			{
 				Log.Error($"消息 {opcode} 没有处理");
@@ -172,7 +172,7 @@ namespace Model
 			{
 				try
 				{
-					ev(entity, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset });
+					ev(session, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset });
 				}
 				catch (Exception e)
 				{
@@ -181,9 +181,9 @@ namespace Model
 			}
 		}
 
-		public void HandleRpc(Entity entity, ushort opcode, byte[] messageBytes, int offset, uint rpcId)
+		public void HandleRpc(Session session, ushort opcode, byte[] messageBytes, int offset, uint rpcId)
 		{
-			Action<Entity, MessageInfo> action;
+			Action<Session, MessageInfo> action;
 			if (!this.rpcHandlers.TryGetValue(opcode, out action))
 			{
 				Log.Error($"Rpc消息 {opcode} 没有处理");
@@ -192,7 +192,7 @@ namespace Model
 
 			try
 			{
-				action(entity, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset, RpcId = rpcId });
+				action(session, new MessageInfo { MessageBytes = messageBytes, Offset = offset, Count = messageBytes.Length - offset, RpcId = rpcId });
 			}
 			catch (Exception e)
 			{

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Base;
 using CommandLine;
-using MongoDB.Bson.Serialization;
 
 namespace Model
 {
@@ -38,7 +37,7 @@ namespace Model
 				{
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
 					this.allConfigs.Add(startConfig);
-					this.configDict.Add(startConfig.Options.Id, startConfig);
+					this.configDict.Add(startConfig.AppId, startConfig);
 				}
 				catch (Exception)
 				{

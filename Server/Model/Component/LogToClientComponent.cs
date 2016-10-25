@@ -18,8 +18,8 @@ namespace Model
 
 		public void Awake()
 		{
-			this.appType = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.Options.AppType;
-			this.appId = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.Options.Id;
+			this.appType = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.AppType;
+			this.appId = Game.Scene.GetComponent<StartConfigComponent>().MyConfig.AppId;
 			Log.Callback.Add(this.Id, this.LogToClient);
 		}
 
@@ -29,7 +29,7 @@ namespace Model
 			{
 				return;
 			}
-			this.GetComponent<MessageComponent>().Send(new R2C_ServerLog { AppType = this.appType, AppId = this.appId, Type = type, Log = message });
+			this.GetOwner<Session>().Send(new R2C_ServerLog { AppType = this.appType, AppId = this.appId, Type = type, Log = message });
 		}
 
 		public override void Dispose()

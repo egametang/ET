@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -84,7 +82,6 @@
     <Compile Include="Assets\Plugins\Base\Event\EventAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Event\EventBaseType.cs" />
     <Compile Include="Assets\Plugins\Base\Event\IEvent.cs" />
-    <Compile Include="Assets\Plugins\Base\Game.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ArrayHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\EnumHelper.cs" />
@@ -100,12 +97,6 @@
     <Compile Include="Assets\Plugins\Base\Helper\ZipHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Log.cs" />
     <Compile Include="Assets\Plugins\Base\LogType.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\AMEvent.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\AMessage.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\IMRegister.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\MessageAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Message\RpcException.cs" />
     <Compile Include="Assets\Plugins\Base\MultiMap.cs" />
     <Compile Include="Assets\Plugins\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Plugins\Base\Network\AService.cs" />

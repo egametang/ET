@@ -67,10 +67,10 @@ namespace MyEditor
 					}
 				}
 				NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				Entity session = networkComponent.Get($"{this.managerAddress}");
+				Session session = networkComponent.Get($"{this.managerAddress}");
 				try
 				{
-					session.GetComponent<MessageComponent>().Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = selected });
+					session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = selected });
 				}
 				catch (RpcException e)
 				{

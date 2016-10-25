@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// RPC异常,带ErrorCode

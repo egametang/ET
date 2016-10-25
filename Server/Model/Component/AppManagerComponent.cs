@@ -26,12 +26,12 @@ namespace Model
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig startConfig in startConfigs)
 			{
-				if (!ips.Contains(startConfig.IP) && startConfig.IP != "*")
+				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
 				{
 					continue;
 				}
 
-				if (startConfig.Options.AppType == AppType.Manager)
+				if (startConfig.AppType == AppType.Manager)
 				{
 					continue;
 				}
@@ -39,10 +39,10 @@ namespace Model
 
 #if __MonoCS__
 				const string exe = @"mono";
-				string arguments = $"--debug App.exe --id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				string arguments = $"--debug App.exe --id={startConfig.AppId} --appType={startConfig.AppType}";
 #else
 				const string exe = @"App.exe";
-				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				string arguments = $"--id={startConfig.AppId} --appType={startConfig.AppType}";
 #endif
 
 				Log.Info($"{exe} {arguments}");

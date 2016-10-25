@@ -4,7 +4,7 @@ using Component = Base.Component;
 
 namespace Model
 {
-	public sealed class UI: Component
+	public sealed class UI: Entity
 	{
 		public Entity Scene { get; set; }
 
@@ -22,6 +22,14 @@ namespace Model
 			}
 
 			base.Dispose();
+		}
+
+		public UI(): base(EntityType.UI)
+		{
+		}
+
+		public UI(long id): base(id, EntityType.UI)
+		{
 		}
 	}
 }

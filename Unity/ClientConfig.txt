@@ -1,1 +1,1 @@
-{ "_t" : "ClientConfig", "Host" : "192.168.1.134", "Port" : 10003 }
+{ "_t" : "ClientConfig", "Host" : "192.168.12.188", "Port" : 10001 }

@@ -8,7 +8,12 @@ namespace Base
 	public abstract class Component : Object
 	{
 		[BsonIgnore]
-		public Entity Owner { get; set; }
+		public Entity Owner { protected get; set; }
+
+		protected T GetOwner<T>() where T: Entity
+		{
+			return this.Owner as T;
+		}
 
 		protected Component()
 		{
@@ -20,7 +25,7 @@ namespace Base
 			ObjectManager.Add(this);
 		}
 
-		public T GetComponent<T>() where T: Component
+		protected T GetComponent<T>() where T: Component
 		{
 			return this.Owner.GetComponent<T>();
 		}

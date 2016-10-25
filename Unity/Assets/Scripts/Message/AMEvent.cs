@@ -1,10 +1,11 @@
 ﻿using System;
+using Base;
 
-namespace Base
+namespace Model
 {
 	public abstract class AMEvent<Message>: IMRegister where Message: AMessage
 	{
-		protected abstract void Run(Entity scene, Message message);
+		protected abstract void Run(Session session, Message message);
 
 		public void Register(IMessageDispather component)
 		{
@@ -17,7 +18,7 @@ namespace Base
 			where Request : ARequest
 			where Response: AResponse
 	{
-		protected abstract void Run(Entity scene, Request message, Action<Response> reply);
+		protected abstract void Run(Session scene, Request message, Action<Response> reply);
 
 		public void Register(IMessageDispather component)
 		{

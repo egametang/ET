@@ -6,29 +6,15 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class MessageComponentEvent : ObjectEvent<MessageComponent>, IAwake<AChannel>
-	{
-		public void Awake(AChannel aChannel)
-		{
-			this.GetValue().Awake(aChannel);
-		}
-	}
-	
-	/// <summary>
-	/// 消息收发
-	/// </summary>
-	public class MessageComponent: Component
+	public sealed class Session: Entity
 	{
 		private static uint RpcId { get; set; }
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
-		private AChannel channel;
-		private MessageDispatherComponent messageDispather;
-		
-		public void Awake(AChannel aChannel)
+		private readonly AChannel channel;
+
+		public Session(AChannel channel) : base(EntityType.Session)
 		{
-			this.messageDispather = Game.Scene.GetComponent<MessageDispatherComponent>();
-			this.channel = aChannel;
+			this.channel = channel;
 			this.StartRecv();
 		}
 
@@ -39,7 +25,7 @@ namespace Model
 				return this.channel.RemoteAddress;
 			}
 		}
-		
+
 		private async void StartRecv()
 		{
 			while (true)
@@ -93,7 +79,7 @@ namespace Model
 			{
 				offset = 6;
 			}
-			
+
 			this.RunDecompressedBytes(opcode, rpcId, rpcFlag, messageBytes, offset);
 		}
 
@@ -102,7 +88,7 @@ namespace Model
 			// 普通消息
 			if (rpcId == 0)
 			{
-				this.messageDispather.Handle(this.Owner, opcode, messageBytes, offset);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset);
 				return;
 			}
 
@@ -120,14 +106,14 @@ namespace Model
 			}
 			else // 这是一个rpc请求消息
 			{
-				this.messageDispather.HandleRpc(this.Owner, opcode, messageBytes, offset, rpcId);
+				Game.Scene.GetComponent<MessageDispatherComponent>().HandleRpc(this, opcode, messageBytes, offset, rpcId);
 			}
 		}
 
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) 
+		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken)
 			where Request : ARequest
 			where Response : AResponse
 		{
@@ -161,12 +147,12 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request) 
-			where Request: ARequest 
+		public Task<Response> Call<Request, Response>(Request request)
+			where Request : ARequest
 			where Response : AResponse
 		{
 			this.SendMessage(++RpcId, request);
-			
+
 			var tcs = new TaskCompletionSource<Response>();
 			this.requestCallback[RpcId] = (bytes, offset, count) =>
 			{
@@ -175,7 +161,7 @@ namespace Model
 					Response response = MongoHelper.FromBson<Response>(bytes, offset, count);
 					if (response.Error != 0)
 					{
-						tcs.SetException(new RpcException(response.Error,  response.Message));
+						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
 					tcs.SetResult(response);
@@ -185,29 +171,29 @@ namespace Model
 					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
 				}
 			};
-			
+
 			return tcs.Task;
 		}
 
-		public void Send<Message>(Message message) where Message: AMessage
+		public void Send<Message>(Message message) where Message : AMessage
 		{
 			this.SendMessage(0, message);
 		}
 
-		public void Reply<Response>(uint rpcId, Response message) where Response: AResponse
+		public void Reply<Response>(uint rpcId, Response message) where Response : AResponse
 		{
 			this.SendMessage(rpcId, message, false);
 		}
 
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
-			ushort opcode = this.messageDispather.GetOpcode(message.GetType());
+			ushort opcode = Game.Scene.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)
 			{
 				rpcId = rpcId | 0x40000000;
 			}
-			
+
 			byte[] messageBytes = MongoHelper.ToBson(message);
 			if (messageBytes.Length > 100)
 			{
@@ -220,7 +206,7 @@ namespace Model
 			}
 
 			byte[] seqBytes = BitConverter.GetBytes(rpcId);
-			
+
 			channel.Send(new List<byte[]> { opcodeBytes, seqBytes, messageBytes });
 		}
 

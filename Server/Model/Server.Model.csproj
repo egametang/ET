@@ -47,9 +47,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\KVComponent.cs">
       <Link>Component\KVComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageComponent.cs">
-      <Link>Component\MessageComponent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageDispatherComponent.cs">
       <Link>Component\MessageDispatherComponent.cs</Link>
     </Compile>
@@ -65,17 +62,44 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
       <Link>Component\TimerComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Game.cs">
+      <Link>Entity\Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Scene.cs">
+      <Link>Entity\Scene.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs">
+      <Link>Entity\Session.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\AMessage.cs">
+      <Link>Message\AMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\AMEvent.cs">
+      <Link>Message\AMEvent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\AppType.cs">
       <Link>Message\AppType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\ErrorCode.cs">
       <Link>Message\ErrorCode.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\IMRegister.cs">
+      <Link>Message\IMRegister.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\Message.cs">
       <Link>Message\Message.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageAttribute.cs">
+      <Link>Message\MessageAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageHandlerAttribute.cs">
+      <Link>Message\MessageHandlerAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
       <Link>Message\OpcodeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\RpcException.cs">
+      <Link>Message\RpcException.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
       <Link>Other\BsonClassMapRegister.cs</Link>

@@ -3,18 +3,16 @@ using Base;
 
 namespace Model
 {
-	public class StartConfig: ICloneable
+	public class StartConfig: Entity
 	{
-		public Options Options { get; set; }
+		public int AppId { get; set; }
 
-		public string IP { get; set; }
+		public string AppType { get; set; }
 
-		public Entity Config { get; set; }
+		public string ServerIP { get; set; }
 
-		public StartConfig()
+		public StartConfig(): base(EntityType.Config)
 		{
-			this.Options = new Options();
-			this.Config = new Entity("StartConfig");
 		}
 
 		public object Clone()

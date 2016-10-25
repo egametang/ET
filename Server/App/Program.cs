@@ -20,21 +20,21 @@ namespace App
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
-				LogManager.Configuration.Variables["appType"] = startConfig.Options.AppType;
-				LogManager.Configuration.Variables["appId"] = startConfig.Options.Id.ToString();
+				LogManager.Configuration.Variables["appType"] = startConfig.AppType;
+				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
 
 				Log.Info("server start........................");
 
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
 
-				InnerConfig innerConfig = startConfig.Config.GetComponent<InnerConfig>();
+				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
-				Game.Scene.AddComponent<MessageDispatherComponent, string>(startConfig.Options.AppType);
+				Game.Scene.AddComponent<MessageDispatherComponent, string>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
-				OuterConfig outerConfig = startConfig.Config.GetComponent<OuterConfig>();
-				switch (startConfig.Options.AppType)
+				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
+				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
@@ -49,7 +49,7 @@ namespace App
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					default:
-						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.Options.AppType}");
+						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
 				}
 
 				while (true)

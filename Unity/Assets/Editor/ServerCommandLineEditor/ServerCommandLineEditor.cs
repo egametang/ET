@@ -61,14 +61,14 @@ namespace MyEditor
 			{
 				StartConfig startConfig = this.startConfigs[i];
 				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Id:");
-				startConfig.Options.Id = EditorGUILayout.IntField(startConfig.Options.Id);
+				GUILayout.Label($"AppId:");
+				startConfig.AppId = EditorGUILayout.IntField(startConfig.AppId);
 				GUILayout.Label($"服务器IP:");
-				startConfig.IP = EditorGUILayout.TextField(startConfig.IP);
+				startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP);
 				GUILayout.Label($"AppType:");
-				startConfig.Options.AppType = EditorGUILayout.TextField(startConfig.Options.AppType);
+				startConfig.AppType = EditorGUILayout.TextField(startConfig.AppType);
 
-				InnerConfig innerConfig = startConfig.Config.GetComponent<InnerConfig>();
+				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
 				{
 					GUILayout.Label($"Host:");
@@ -77,7 +77,7 @@ namespace MyEditor
 					innerConfig.Port = EditorGUILayout.IntField(innerConfig.Port);
 				}
 
-				OuterConfig outerConfig = startConfig.Config.GetComponent<OuterConfig>();
+				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
 				if (outerConfig != null)
 				{
 					GUILayout.Label($"OuterHost:");
@@ -97,7 +97,7 @@ namespace MyEditor
 					for (int j = 1; j < this.copyNum + 1; ++j)
 					{
 						StartConfig newStartConfig = (StartConfig)startConfig.Clone();
-						newStartConfig.Options.Id += j;
+						newStartConfig.AppId += j;
 						this.startConfigs.Add(newStartConfig);
 					}
 					break;
@@ -118,12 +118,12 @@ namespace MyEditor
 			{
 				StartConfig newStartConfig = new StartConfig();
 
-				newStartConfig.Options.AppType = this.AppType;
-				newStartConfig.Config.AddComponent<InnerConfig>();
+				newStartConfig.AppType = this.AppType;
+				newStartConfig.AddComponent<InnerConfig>();
 
 				if (this.AppType == Model.AppType.Gate || this.AppType == Model.AppType.Realm || this.AppType == Model.AppType.Manager)
 				{
-					newStartConfig.Config.AddComponent<OuterConfig>();
+					newStartConfig.AddComponent<OuterConfig>();
 				}
 
 				this.startConfigs.Add(newStartConfig);
@@ -149,7 +149,7 @@ namespace MyEditor
 				StartConfig startConfig = null;
 				foreach (StartConfig config in this.startConfigs)
 				{
-					if (config.Options.AppType == Model.AppType.Manager)
+					if (config.AppType == Model.AppType.Manager)
 					{
 						startConfig = config;
 					}
@@ -161,7 +161,7 @@ namespace MyEditor
 					return;
 				}
 				
-				string arguments = $"--id={startConfig.Options.Id} --appType={startConfig.Options.AppType}";
+				string arguments = $"--id={startConfig.AppId} --appType={startConfig.AppType}";
 
 				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
 				{
