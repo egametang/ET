@@ -11,9 +11,9 @@ namespace Model
 	public class Options: ICloneable
 	{
 #if SERVER
-		[Option("id", Required = true, HelpText = "Id.")]
+		[Option("appId", Required = true, HelpText = "Id.")]
 #endif
-		public int Id { get; set; }
+		public int AppId { get; set; }
 
 #if SERVER
 		[Option("appType", Required = true, HelpText = "AppType: realm gate")]

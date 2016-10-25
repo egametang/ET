@@ -14,6 +14,11 @@ namespace Base
 			return Convert.ToInt64((DateTime.UtcNow - epoch).TotalMilliseconds);
 		}
 
+		public static long ClientNowSeconds()
+		{
+			return Convert.ToInt64((DateTime.UtcNow - epoch).TotalSeconds);
+		}
+
 		public static long ClientNowTicks()
 		{	
 			return Convert.ToInt64((DateTime.UtcNow - epoch).Ticks);

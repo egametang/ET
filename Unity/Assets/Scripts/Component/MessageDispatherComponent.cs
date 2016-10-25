@@ -111,7 +111,7 @@ namespace Model
 			}
 			List<Action<Session, MessageInfo>> actions = this.handlers[opcode];
 
-			actions.Add((entity, messageInfo) =>
+			actions.Add((session, messageInfo) =>
 			{
 				Message message;
 				try
@@ -124,7 +124,7 @@ namespace Model
 			        throw new Exception("解释消息失败:" + opcode, ex);
 			    }
 
-				action(entity, message);
+				action(session, message);
 			});
 		}
 		

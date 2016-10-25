@@ -51,7 +51,7 @@ namespace Model
 				throw new Exception($"命令行格式错误!");
 			}
 
-			this.MyConfig = this.Get(options.Id);
+			this.MyConfig = this.Get(options.AppId);
 		}
 
 		public StartConfig Get(int id)

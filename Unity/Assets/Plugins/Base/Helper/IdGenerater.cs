@@ -2,11 +2,15 @@
 {
 	public static class IdGenerater
 	{
-		private static long value = long.MaxValue;
+		public static long AppId { private get; set; }
+
+		private static ushort value;
 
 		public static long GenerateId()
 		{
-			return --value;
+			long time = TimeHelper.ClientNowSeconds();
+
+			return (AppId << 48) + (time << 16) + ++value;
 		}
 	}
 }

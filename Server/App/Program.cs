@@ -20,6 +20,8 @@ namespace App
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
+				IdGenerater.AppId = startConfig.AppId;
+
 				LogManager.Configuration.Variables["appType"] = startConfig.AppType;
 				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
 
