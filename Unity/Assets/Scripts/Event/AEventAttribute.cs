@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Base
+namespace Model
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public abstract class AEventAttribute: Attribute
 	{
-		public int Type { get; private set; }
+		public EventIdType Type { get; private set; }
 
-        protected AEventAttribute(int type)
+        protected AEventAttribute(EventIdType type)
         {
 			this.Type = type;
 		}

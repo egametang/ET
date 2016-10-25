@@ -25,11 +25,11 @@ namespace Model
 	/// </summary>
 	public class EventComponent: Component
 	{
-		private Dictionary<int, List<object>> allEvents;
+		private Dictionary<EventIdType, List<object>> allEvents;
 
 		public void Load()
 		{
-			this.allEvents = new Dictionary<int, List<object>>();
+			this.allEvents = new Dictionary<EventIdType, List<object>>();
 			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
@@ -53,7 +53,7 @@ namespace Model
 			}
 		}
 
-		public void Run(int type)
+		public void Run(EventIdType type)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -79,7 +79,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(EventIdType type, A a)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -105,7 +105,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(EventIdType type, A a, B b)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -131,7 +131,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(EventIdType type, A a, B b, C c)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -157,7 +157,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C, D>(int type, A a, B b, C c, D d)
+		public void Run<A, B, C, D>(EventIdType type, A a, B b, C c, D d)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -183,7 +183,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C, D, E>(int type, A a, B b, C c, D d, E e)
+		public void Run<A, B, C, D, E>(EventIdType type, A a, B b, C c, D d, E e)
 		{
 			List<object> iEvents = null;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -209,7 +209,7 @@ namespace Model
 				}
 			}
 		}
-        public void Run<A, B, C, D, E,F>(int type, A a, B b, C c, D d, E e,F f)
+        public void Run<A, B, C, D, E,F>(EventIdType type, A a, B b, C c, D d, E e,F f)
         {
             List<object> iEvents = null;
             if (!this.allEvents.TryGetValue(type, out iEvents))

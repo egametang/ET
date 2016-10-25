@@ -71,6 +71,24 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs">
       <Link>Entity\Session.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\AEventAttribute.cs">
+      <Link>Event\AEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\Env.cs">
+      <Link>Event\Env.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\EnvKey.cs">
+      <Link>Event\EnvKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\EventAttribute.cs">
+      <Link>Event\EventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\EventIdType.cs">
+      <Link>Event\EventIdType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Event\IEvent.cs">
+      <Link>Event\IEvent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\AMessage.cs">
       <Link>Message\AMessage.cs</Link>
     </Compile>
@@ -109,9 +127,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\ServerType.cs">
-      <Link>Other\ServerType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\StartConfig.cs">
       <Link>Other\StartConfig.cs</Link>

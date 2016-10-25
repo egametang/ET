@@ -97,8 +97,12 @@
     <Compile Include="Assets\Scripts\Entity\UI.cs" />
     <Compile Include="Assets\Scripts\Config\BuffProto.cs" />
     <Compile Include="Assets\Scripts\Config\GlobalProto.cs" />
+    <Compile Include="Assets\Scripts\Event\AEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Event\Env.cs" />
     <Compile Include="Assets\Scripts\Event\EnvKey.cs" />
+    <Compile Include="Assets\Scripts\Event\EventAttribute.cs" />
     <Compile Include="Assets\Scripts\Event\EventIdType.cs" />
+    <Compile Include="Assets\Scripts\Event\IEvent.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
@@ -114,7 +118,6 @@
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\Other\BsonClassMapRegister.cs" />
     <Compile Include="Assets\Scripts\Other\ClientConfig.cs" />
-    <Compile Include="Assets\Scripts\Other\ServerType.cs" />
     <Compile Include="Assets\Scripts\Other\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />

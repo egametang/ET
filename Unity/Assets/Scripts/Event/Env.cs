@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
-	public class Env: Object
+	public class Env
 	{
 		[BsonElement, BsonIgnoreIfNull]
-		private Dictionary<string, object> values = new Dictionary<string, object>();
+		private Dictionary<EnvKey, object> values = new Dictionary<EnvKey, object>();
 
-		public object this[string key]
+		public object this[EnvKey key]
 		{
 			get
 			{
@@ -20,13 +20,13 @@ namespace Base
 			{
 				if (this.values == null)
 				{
-					this.values = new Dictionary<string, object>();
+					this.values = new Dictionary<EnvKey, object>();
 				}
 				this.values[key] = value;
 			}
 		}
 
-		public T Get<T>(string key)
+		public T Get<T>(EnvKey key)
 		{
 			if (this.values == null || !this.values.ContainsKey(key))
 			{
@@ -43,16 +43,16 @@ namespace Base
 			}
 		}
 
-		public void Set(string key, object obj)
+		public void Set(EnvKey key, object obj)
 		{
 			if (this.values == null)
 			{
-				this.values = new Dictionary<string, object>();
+				this.values = new Dictionary<EnvKey, object>();
 			}
 			this.values[key] = obj;
 		}
 
-		public bool ContainKey(string key)
+		public bool ContainKey(EnvKey key)
 		{
 			if (this.values == null)
 			{
@@ -61,7 +61,7 @@ namespace Base
 			return this.values.ContainsKey(key);
 		}
 
-		public void Remove(string key)
+		public void Remove(EnvKey key)
 		{
 			if (this.values == null)
 			{
@@ -74,11 +74,11 @@ namespace Base
 			}
 		}
 
-		public void Add(string key, object value)
+		public void Add(EnvKey key, object value)
 		{
 			if (this.values == null)
 			{
-				this.values = new Dictionary<string, object>();
+				this.values = new Dictionary<EnvKey, object>();
 			}
 			this.values[key] = value;
 		}

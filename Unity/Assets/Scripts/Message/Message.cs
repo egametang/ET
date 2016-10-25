@@ -29,7 +29,7 @@ namespace Model
 	public class R2C_ServerLog: AMessage
 	{
 		[BsonElement("at")]
-		public string AppType { get; set; }
+		public AppType AppType { get; set; }
 		[BsonElement("a")]
 		public int AppId { get; set; }
 		[BsonElement("t")]
@@ -91,7 +91,7 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2M_Reload : ARequest
 	{
-		public List<string> AppType = new List<string>();
+		public List<AppType> AppType = new List<AppType>();
 	}
 
 	[Message(11)]

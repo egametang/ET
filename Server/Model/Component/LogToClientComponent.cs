@@ -13,7 +13,7 @@ namespace Model
 
 	public class LogToClientComponent : Component
 	{
-		private string appType;
+		private AppType appType;
 		private int appId;
 
 		public void Awake()

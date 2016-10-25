@@ -18,13 +18,11 @@ namespace Base
 		protected Entity(string entityType)
 		{
 			this.Type = entityType;
-			ObjectManager.Add(this);
 		}
 
 		protected Entity(long id, string entityType) : base(id)
 		{
 			this.Type = entityType;
-			ObjectManager.Add(this);
 		}
 		
 		public override void Dispose()
@@ -33,8 +31,6 @@ namespace Base
 			{
 				return;
 			}
-
-			long id = this.Id;
 			
 			base.Dispose();
 
@@ -49,7 +45,6 @@ namespace Base
 					Log.Error(e.ToString());
 				}
 			}
-			ObjectManager.Remove(id);
 		}
 
 		public K AddComponent<K>() where K : Component, new()

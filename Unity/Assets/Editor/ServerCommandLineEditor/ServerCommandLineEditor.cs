@@ -16,7 +16,7 @@ namespace MyEditor
 
 		private int copyNum = 1;
 
-		private string AppType = Model.AppType.Manager;
+		private AppType AppType = AppType.Manager;
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 	
@@ -66,7 +66,7 @@ namespace MyEditor
 				GUILayout.Label($"服务器IP:");
 				startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP);
 				GUILayout.Label($"AppType:");
-				startConfig.AppType = EditorGUILayout.TextField(startConfig.AppType);
+				startConfig.AppType = (AppType)EditorGUILayout.EnumPopup(startConfig.AppType);
 
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
@@ -112,7 +112,7 @@ namespace MyEditor
 			GUILayout.BeginHorizontal();
 
 			GUILayout.Label($"添加的AppType:");
-			this.AppType = EditorGUILayout.TextField(this.AppType);
+			this.AppType = (AppType)EditorGUILayout.EnumPopup(this.AppType);
 
 			if (GUILayout.Button("添加"))
 			{
@@ -121,7 +121,7 @@ namespace MyEditor
 				newStartConfig.AppType = this.AppType;
 				newStartConfig.AddComponent<InnerConfig>();
 
-				if (this.AppType == Model.AppType.Gate || this.AppType == Model.AppType.Realm || this.AppType == Model.AppType.Manager)
+				if (this.AppType == AppType.Gate || this.AppType == AppType.Realm || this.AppType == AppType.Manager)
 				{
 					newStartConfig.AddComponent<OuterConfig>();
 				}

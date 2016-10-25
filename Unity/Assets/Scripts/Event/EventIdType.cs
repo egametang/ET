@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
-    public static class EventIdType
+    public enum EventIdType
     {
-		public const int InitSceneStart = 1000;
+		InitSceneStart,
     }
 }

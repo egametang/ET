@@ -17,12 +17,10 @@ namespace Base
 
 		protected Component()
 		{
-			ObjectManager.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
-			ObjectManager.Add(this);
 		}
 
 		protected T GetComponent<T>() where T: Component
@@ -36,12 +34,8 @@ namespace Base
 			{
 				return;
 			}
-
-			long id = this.Id;
-
+			
 			base.Dispose();
-
-			ObjectManager.Remove(id);
 		}
 	}
 }

@@ -22,7 +22,7 @@ namespace App
 
 				IdGenerater.AppId = startConfig.AppId;
 
-				LogManager.Configuration.Variables["appType"] = startConfig.AppType;
+				LogManager.Configuration.Variables["appType"] = startConfig.AppType.ToString();
 				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
 
 				Log.Info("server start........................");
@@ -32,7 +32,7 @@ namespace App
 
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
-				Game.Scene.AddComponent<MessageDispatherComponent, string>(startConfig.AppType);
+				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();

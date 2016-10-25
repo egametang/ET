@@ -76,12 +76,6 @@
     <Compile Include="Assets\Plugins\Base\Config\ConfigAttribute.cs" />
     <Compile Include="Assets\Plugins\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Plugins\Base\DoubleMap.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\AEventAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\Env.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\EnvBaseKey.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\EventAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\EventBaseType.cs" />
-    <Compile Include="Assets\Plugins\Base\Event\IEvent.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ArrayHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\EnumHelper.cs" />

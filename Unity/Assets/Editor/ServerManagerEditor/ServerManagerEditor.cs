@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Base;
 using Model;
 using UnityEditor;
@@ -13,7 +12,7 @@ namespace MyEditor
 
 		private bool isAll;
 
-		private readonly string[] serverTypes = Enum.GetNames(typeof(ServerType));
+		private readonly List<AppType> serverTypes = AppTypeHelper.GetServerTypes();
 		private bool[] isCheck;
 
 		[MenuItem("Tools/服务器管理")]
@@ -24,7 +23,7 @@ namespace MyEditor
 
 		private void OnEnable()
 		{
-			this.isCheck = new bool[this.serverTypes.Length];
+			this.isCheck = new bool[this.serverTypes.Count];
 		}
 
 		private void OnGUI()
@@ -36,7 +35,7 @@ namespace MyEditor
 			}
 
 			
-			List<string> selected = new List<string>();
+			List<AppType> selected = new List<AppType>();
 			this.isAll = GUILayout.Toggle(this.isAll, "All");
 			if (this.isAll)
 			{
@@ -46,9 +45,9 @@ namespace MyEditor
 				}
 			}
 
-			for (int i = 0; i < this.serverTypes.Length; ++i)
+			for (int i = 0; i < this.serverTypes.Count; ++i)
 			{
-				this.isCheck[i] = GUILayout.Toggle(this.isCheck[i], this.serverTypes[i]);
+				this.isCheck[i] = GUILayout.Toggle(this.isCheck[i], this.serverTypes[i].ToString());
 				if (!this.isCheck[i])
 				{
 					this.isAll = false;

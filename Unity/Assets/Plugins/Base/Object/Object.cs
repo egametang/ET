@@ -15,11 +15,13 @@ namespace Base
 		protected Object()
 		{
 			Id = IdGenerater.GenerateId();
+			ObjectManager.Add(this);
 		}
 
 		protected Object(long id)
 		{
 			this.Id = id;
+			ObjectManager.Add(this);
 		}
 
 		public bool IsDisposed()
@@ -33,6 +35,8 @@ namespace Base
 			{
 				return;
 			}
+
+			ObjectManager.Remove(this.Id);
 
 			this.Id = 0;
 		}

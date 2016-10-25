@@ -2,7 +2,7 @@
 
 namespace Base
 {
-	public sealed class Game
+	public static class Game
 	{
 		private static Scene scene;
 

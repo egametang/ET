@@ -7,7 +7,7 @@ namespace Model
 	{
 		public int AppId { get; set; }
 
-		public string AppType { get; set; }
+		public AppType AppType { get; set; }
 
 		public string ServerIP { get; set; }
 

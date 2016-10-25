@@ -62,24 +62,6 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\DoubleMap.cs">
       <Link>DoubleMap.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\AEventAttribute.cs">
-      <Link>Event\AEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\Env.cs">
-      <Link>Event\Env.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EnvBaseKey.cs">
-      <Link>Event\EnvBaseKey.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EventAttribute.cs">
-      <Link>Event\EventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\EventBaseType.cs">
-      <Link>Event\EventBaseType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Event\IEvent.cs">
-      <Link>Event\IEvent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\ArrayHelper.cs">
       <Link>Helper\ArrayHelper.cs</Link>
     </Compile>

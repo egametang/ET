@@ -7,14 +7,14 @@ using Object = Base.Object;
 namespace Model
 {
 	[ObjectEvent]
-	public class MessageHandlerComponentEvent : ObjectEvent<MessageDispatherComponent>, ILoader, IAwake<string>
+	public class MessageHandlerComponentEvent : ObjectEvent<MessageDispatherComponent>, ILoader, IAwake<AppType>
 	{
 		public void Load()
 		{
 			this.GetValue().Load();
 		}
 
-		public void Awake(string appType)
+		public void Awake(AppType appType)
 		{
 			this.GetValue().Awake(appType);
 		}
@@ -34,12 +34,12 @@ namespace Model
 			public uint RpcId;
 		}
 
-		private string AppType;
+		private AppType AppType;
 		private Dictionary<ushort, List<Action<Session, MessageInfo>>> handlers;
 		private Dictionary<ushort, Action<Session, MessageInfo>> rpcHandlers;
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; } = new Dictionary<Type, MessageAttribute>();
 		
-		public void Awake(string appType)
+		public void Awake(AppType appType)
 		{
 			this.AppType = appType;
 			this.Load();
@@ -100,7 +100,12 @@ namespace Model
 
 		public ushort GetOpcode(Type type)
 		{
-			return this.messageOpcode[type].Opcode;
+			MessageAttribute messageAttribute;
+			if (!this.messageOpcode.TryGetValue(type, out messageAttribute))
+			{
+				throw new Exception($"查找Opcode失败: {type.Name}");
+			}
+			return messageAttribute.Opcode;
 		}
 
 		public void RegisterHandler<Message>(ushort opcode, Action<Session, Message> action) where Message: AMessage
