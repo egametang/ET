@@ -50,6 +50,12 @@ namespace App
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
+					case AppType.AllServer:
+						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
+						Game.Scene.AddComponent<AppManagerComponent>();
+						Game.Scene.AddComponent<RealmGateAddressComponent>();
+						Game.Scene.AddComponent<GateSessionKeyComponent>();
+						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
 				}

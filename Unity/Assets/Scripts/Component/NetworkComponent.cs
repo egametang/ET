@@ -63,6 +63,12 @@ namespace Model
 
 		private void Add(Session session)
 		{
+			Session s;
+			if (this.adressSessions.TryGetValue(session.RemoteAddress, out s))
+			{
+				this.Remove(s.Id);
+				Log.Warning($"session 地址冲突, 可能是客户端断开, 服务器还没检测到!: {session.RemoteAddress}");
+			}
 			this.sessions.Add(session.Id, session);
 			this.adressSessions.Add(session.RemoteAddress, session);
 		}
@@ -76,6 +82,7 @@ namespace Model
 			}
 			this.sessions.Remove(id);
 			this.adressSessions.Remove(session.RemoteAddress);
+			session.Dispose();
 		}
 
 		public Session Get(long id)

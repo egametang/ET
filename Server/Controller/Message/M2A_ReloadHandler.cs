@@ -5,7 +5,7 @@ using Object = Base.Object;
 
 namespace Controller
 {
-	[MessageHandler(AppType.Manager, AppType.Realm, AppType.Gate)]
+	[MessageHandler(AppType.AllServer)]
 	public class M2A_ReloadHandler : AMRpcEvent<M2A_Reload, A2M_Reload>
 	{
 		protected override void Run(Session session, M2A_Reload message, Action<A2M_Reload> reply)

@@ -8,7 +8,7 @@ namespace MyEditor
 {
 	public class RsyncEditor : EditorWindow
 	{
-		private const string ConfigFile = @"..\Config\Rsync\rsyncConfig.txt";
+		private const string ConfigFile = @"..\Tools\cwRsync\Config\rsyncConfig.txt";
 		private RsyncConfig rsyncConfig;
 		private bool isFold = true;
 
@@ -61,7 +61,7 @@ namespace MyEditor
 			if (GUILayout.Button("保存"))
 			{
 				File.WriteAllText(ConfigFile, MongoHelper.ToJson(this.rsyncConfig));
-				using (StreamWriter sw = new StreamWriter(new FileStream(@"..\Config\Rsync\rsync.secrets", FileMode.Create)))
+				using (StreamWriter sw = new StreamWriter(new FileStream(@"..\Tools\cwRsync\Config\exclude.txt", FileMode.Create)))
 				{
 					foreach (string s in this.rsyncConfig.Exclude)
 					{
@@ -69,8 +69,8 @@ namespace MyEditor
 					}
 				}
 
-				File.WriteAllText($@"..\Config\Rsync\rsync.secrets", this.rsyncConfig.Password);
-				File.WriteAllText($@"..\Config\Rsync\rsyncd.secrets", $"{this.rsyncConfig.Account}:{this.rsyncConfig.Password}");
+				File.WriteAllText($@"..\Tools\cwRsync\Config\rsync.secrets", this.rsyncConfig.Password);
+				File.WriteAllText($@"..\Tools\cwRsync\Config\rsyncd.secrets", $"{this.rsyncConfig.Account}:{this.rsyncConfig.Password}");
 
 				string rsyncdConf =
 					"uid = root\n" +
@@ -85,12 +85,12 @@ namespace MyEditor
 					$"auth users = {this.rsyncConfig.Account}\n" +
 					"secrets file = /etc/rsyncd.secrets\n" +
 					"list = yes";
-				File.WriteAllText($@"..\Config\Rsync\rsyncd.conf", rsyncdConf);
+				File.WriteAllText($@"..\Tools\cwRsync\Config\rsyncd.conf", rsyncdConf);
 			}
 
 			if (GUILayout.Button("同步"))
 			{
-				string arguments = $"-vzrtopg --password-file=./Config/Rsync/rsync.secrets --exclude-from=./Config/Rsync/exclude.txt --delete ./ {this.rsyncConfig.Account}@{this.rsyncConfig.Host}::Upload/{this.rsyncConfig.RelativePath} --chmod=ugo=rwX";
+				string arguments = $"-vzrtopg --password-file=./Tools/cwRsync/Config/rsync.secrets --exclude-from=./Tools/cwRsync/Config/exclude.txt --delete ./ {this.rsyncConfig.Account}@{this.rsyncConfig.Host}::Upload/{this.rsyncConfig.RelativePath} --chmod=ugo=rwX";
 				ProcessStartInfo startInfo = new ProcessStartInfo();
 				startInfo.FileName = @".\Tools\cwRsync\rsync.exe";
 				startInfo.Arguments = arguments;

@@ -24,6 +24,7 @@ namespace Model
 		{
 			string[] ips = NetHelper.GetAddressIPs();
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
+			string configFile = Game.Scene.GetComponent<StartConfigComponent>().Options.Config;
 			foreach (StartConfig startConfig in startConfigs)
 			{
 				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
@@ -31,18 +32,17 @@ namespace Model
 					continue;
 				}
 
-				if (startConfig.AppType == AppType.Manager)
+				if (startConfig.AppType.Is(AppType.Manager))
 				{
 					continue;
 				}
 
-
 #if __MonoCS__
 				const string exe = @"mono";
-				string arguments = $"--debug App.exe --appId={startConfig.AppId} --appType={startConfig.AppType}";
+				string arguments = $"--debug App.exe --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #else
 				const string exe = @"App.exe";
-				string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType}";
+				string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #endif
 
 				Log.Info($"{exe} {arguments}");

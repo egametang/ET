@@ -9,7 +9,8 @@ namespace Base
 	{
 		public string Type { get; set; }
 
-		[BsonElement, BsonIgnoreIfNull]
+		[BsonElement]
+		[BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
 
 		[BsonIgnore]

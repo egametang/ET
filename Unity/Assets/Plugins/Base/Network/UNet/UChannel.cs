@@ -43,9 +43,7 @@ namespace Base
 			{
 				return;
 			}
-			
 			base.Dispose();
-
 			this.socket.Dispose();
 		}
 

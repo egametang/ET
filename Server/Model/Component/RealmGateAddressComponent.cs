@@ -21,7 +21,7 @@ namespace Model
 			StartConfig[] startConfigs = this.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig config in startConfigs)
 			{
-				if (config.AppType != AppType.Gate)
+				if (!config.AppType.Is(AppType.Gate))
 				{
 					continue;
 				}

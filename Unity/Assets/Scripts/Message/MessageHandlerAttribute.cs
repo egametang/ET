@@ -8,19 +8,16 @@ namespace Model
 	/// </summary>
 	public class MessageHandlerAttribute : Attribute
 	{
-		private HashSet<AppType> AppTypes { get; } = new HashSet<AppType>();
+		private readonly AppType type;
 
-		public MessageHandlerAttribute(params AppType[] appTypes)
+		public MessageHandlerAttribute(AppType appType)
 		{
-			foreach (AppType appType in appTypes)
-			{
-				this.AppTypes.Add(appType);
-			}
+			this.type = appType;
 		}
 
 		public bool Contains(AppType appType)
 		{
-			return this.AppTypes.Contains(appType);
+			return this.type.Is(appType);
 		}
 	}
 }

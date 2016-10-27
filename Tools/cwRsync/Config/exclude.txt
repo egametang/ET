@@ -1,9 +1,9 @@
 .git/
 Log/
 Tools/
-Server/Bin/
+Bin/
 Server/packages/
-Server/Temp/
+Temp/
 Server/Server.sdf
 Unity/Library/
 Unity/Temp/

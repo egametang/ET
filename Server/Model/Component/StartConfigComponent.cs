@@ -21,11 +21,18 @@ namespace Model
 
 		private readonly Dictionary<int, StartConfig> configDict = new Dictionary<int, StartConfig>();
 
+		public Options Options = new Options();
+
 		public StartConfig MyConfig { get; private set; }
 
 		public void Awake(string[] args)
 		{
-			string[] ss = File.ReadAllText("./Start.txt").Split('\n');
+			if (!Parser.Default.ParseArguments(args, this.Options))
+			{
+				throw new Exception($"命令行格式错误!");
+			}
+			
+			string[] ss = File.ReadAllText(this.Options.Config).Split('\n');
 			foreach (string s in ss)
 			{
 				string s2 = s.Trim();
@@ -45,13 +52,7 @@ namespace Model
 				}
 			}
 
-			Options options = new Options();
-			if (!Parser.Default.ParseArguments(args, options))
-			{
-				throw new Exception($"命令行格式错误!");
-			}
-
-			this.MyConfig = this.Get(options.AppId);
+			this.MyConfig = this.Get(this.Options.AppId);
 		}
 
 		public StartConfig Get(int id)

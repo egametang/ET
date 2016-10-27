@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Base;
 using MongoDB.Bson.Serialization.Attributes;
 #if SERVER
@@ -11,26 +10,19 @@ namespace Model
 	public class Options: ICloneable
 	{
 #if SERVER
-		[Option("appId", Required = true, HelpText = "Id.")]
+		[Option("appId", Required = true)]
 #endif
 		public int AppId { get; set; }
 
 #if SERVER
-		[Option("appType", Required = true, HelpText = "AppType: realm gate")]
+		[Option("appType", Required = true)]
 #endif
-		public string AppType { get; set; }
+		public AppType AppType { get; set; }
 
 #if SERVER
-		[HelpOption]
+		[Option("config", Required = false, DefaultValue = "Start.txt")]
 #endif
-		public string GetUsage()
-		{
-			// this without using CommandLine.Text
-			StringBuilder usage = new StringBuilder();
-			usage.AppendLine("Quickstart Application 1.0");
-			usage.AppendLine("Read user manual for usage instructions...");
-			return usage.ToString();
-		}
+		public string Config { get; set; }
 
 		public object Clone()
 		{
