@@ -23,13 +23,12 @@ namespace Base
 
 		static Log()
 		{
-			if (!Directory.Exists("../Log"))
+			if (!Directory.Exists("../Logs"))
 			{
-				Directory.CreateDirectory("../Log");
+				Directory.CreateDirectory("../Logs");
 			}
-			string s = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-			info = new StreamWriter($"../Log/log-{s}.info.log", false, Encoding.Unicode, 1024);
-			error = new StreamWriter($"../Log/log-{s}.error.log", false, Encoding.Unicode, 1024);
+			info = new StreamWriter($"../Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
+			error = new StreamWriter($"../Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
 		}
 
 		public static void Warning(string msg)
