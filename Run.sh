@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [$1 = ""]
+then
+    echo "please input config file! for example:"
+    echo "bash Run.sh Config/StartConfig/192.168.12.188.txt"
+    exit 9
+fi
+
 xbuild ./Server/Server.sln
 cd Bin
 cmake ..
