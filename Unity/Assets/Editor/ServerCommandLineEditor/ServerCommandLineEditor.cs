@@ -20,7 +20,7 @@ namespace MyEditor
 
 		private string fileName;
 
-		private string addFileName;
+		private string newFileName = "";
 
 		private int copyNum = 1;
 
@@ -89,6 +89,19 @@ namespace MyEditor
 			return Path.Combine(ConfigDir, this.fileName);
 		}
 
+		private void Save()
+		{
+			string path = this.GetFilePath();
+			using (StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create)))
+			{
+				foreach (StartConfig startConfig in this.startConfigs)
+				{
+					sw.Write(MongoHelper.ToJson(startConfig));
+					sw.Write('\n');
+				}
+			}
+		}
+
 		private void OnGUI()
 		{
 			GUILayout.BeginHorizontal();
@@ -103,16 +116,52 @@ namespace MyEditor
 				this.LoadConfig();
 			}
 			
-			this.addFileName = EditorGUILayout.TextField("文件名", this.addFileName);
+			this.newFileName = EditorGUILayout.TextField("文件名", this.newFileName);
 
-			if (GUILayout.Button("添加配置文件"))
+			if (GUILayout.Button("添加"))
 			{
-				this.fileName = this.addFileName;
-				this.addFileName = "";
+				this.fileName = this.newFileName;
+				this.newFileName = "";
 				File.WriteAllText(this.GetFilePath(), "");
 				this.files = this.GetConfigFiles();
 				this.selectedIndex = this.files.IndexOf(this.fileName);
+				this.LoadConfig();
 			}
+
+			if (GUILayout.Button("复制"))
+			{
+				this.fileName = $"{this.fileName}-copy";
+				this.Save();
+				this.files = this.GetConfigFiles();
+				this.selectedIndex = this.files.IndexOf(this.fileName);
+				this.newFileName = "";
+			}
+
+			if (GUILayout.Button("重命名"))
+			{
+				if (this.newFileName == "")
+				{
+					Log.Debug("请输入新名字!");
+				}
+				else
+				{
+					File.Delete(this.GetFilePath());
+					this.fileName = this.newFileName;
+					this.Save();
+					this.files = this.GetConfigFiles();
+					this.selectedIndex = this.files.IndexOf(this.fileName);
+					this.newFileName = "";
+				}
+			}
+
+			if (GUILayout.Button("删除"))
+			{
+				File.Delete(this.GetFilePath());
+				this.files = this.GetConfigFiles();
+				this.selectedIndex = 0;
+				this.newFileName = "";
+			}
+
 			GUILayout.EndHorizontal();
 
 			GUILayout.Label("配置内容:");
@@ -193,15 +242,7 @@ namespace MyEditor
 
 			if (GUILayout.Button("保存"))
 			{
-				string path = this.GetFilePath();
-				using (StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create)))
-				{
-					foreach (StartConfig startConfig in this.startConfigs)
-					{
-						sw.Write(MongoHelper.ToJson(startConfig));
-						sw.Write('\n');
-					}
-				}
+				this.Save();
 			}
 
 			if (GUILayout.Button("启动"))
