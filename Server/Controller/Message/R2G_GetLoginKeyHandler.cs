@@ -5,7 +5,7 @@ using Model;
 namespace Controller
 {
 	[MessageHandler(AppType.Gate)]
-	public class R2G_GetLoginKeyHandler : AMRpcEvent<R2G_GetLoginKey, G2R_GetLoginKey>
+	public class R2G_GetLoginKeyHandler : AMRpcHandler<R2G_GetLoginKey, G2R_GetLoginKey>
 	{
 		protected override void Run(Session session, R2G_GetLoginKey message, Action<G2R_GetLoginKey> reply)
 		{

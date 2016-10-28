@@ -5,7 +5,7 @@ using Model;
 namespace Controller
 {
 	[MessageHandler(AppType.Manager)]
-	public class C2M_ReloadHandler: AMRpcEvent<C2M_Reload, M2C_Reload>
+	public class C2M_ReloadHandler: AMRpcHandler<C2M_Reload, M2C_Reload>
 	{
 		protected override async void Run(Session session, C2M_Reload message, Action<M2C_Reload> reply)
 		{

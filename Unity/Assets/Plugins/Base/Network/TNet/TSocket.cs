@@ -82,6 +82,10 @@ namespace Base
 
 		public Task<bool> AcceptAsync(TSocket accpetSocket)
 		{
+			if (this.socket == null)
+			{
+				throw new Exception($"TSocket已经被Dispose,不能接收连接!");
+			}
 			var tcs = new TaskCompletionSource<bool>();
 			this.innArgs.UserToken = tcs;
 			this.innArgs.AcceptSocket = accpetSocket.socket;

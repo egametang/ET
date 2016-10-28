@@ -5,7 +5,7 @@ using Model;
 namespace Controller
 {
 	[MessageHandler(AppType.Gate)]
-	public class C2G_LoginGateHandler : AMRpcEvent<C2G_LoginGate, G2C_LoginGate>
+	public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
 	{
 		protected override void Run(Session session, C2G_LoginGate message, Action<G2C_LoginGate> reply)
 		{

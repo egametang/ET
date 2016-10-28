@@ -49,11 +49,19 @@ namespace Base
 
 		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("UChannel已经被Dispose, 不能发送消息");
+			}
 			this.socket.SendAsync(buffer, channelID, flags);
 		}
 
 		public override void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("UChannel已经被Dispose, 不能发送消息");
+			}
 			int size = buffers.Select(b => b.Length).Sum();
 			var buffer = new byte[size];
 			int index = 0;
@@ -67,6 +75,10 @@ namespace Base
 
 		public override Task<byte[]> Recv()
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("UChannel已经被Dispose, 不能接收消息");
+			}
 			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
 			var recvQueue = this.socket.RecvQueue;
 			if (recvQueue.Count > 0)

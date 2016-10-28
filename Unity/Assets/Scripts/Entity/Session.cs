@@ -88,7 +88,7 @@ namespace Model
 			// 普通消息
 			if (rpcId == 0)
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, 0);
 				return;
 			}
 
@@ -106,7 +106,7 @@ namespace Model
 			}
 			else // 这是一个rpc请求消息
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().HandleRpc(this, opcode, messageBytes, offset, rpcId);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, rpcId);
 			}
 		}
 
@@ -177,11 +177,19 @@ namespace Model
 
 		public void Send<Message>(Message message) where Message : AMessage
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("session已经被Dispose了");
+			}
 			this.SendMessage(0, message);
 		}
 
 		public void Reply<Response>(uint rpcId, Response message) where Response : AResponse
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("session已经被Dispose了");
+			}
 			this.SendMessage(rpcId, message, false);
 		}
 

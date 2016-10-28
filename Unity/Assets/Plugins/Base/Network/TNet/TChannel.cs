@@ -87,6 +87,10 @@ namespace Base
 
 		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			byte[] size = BitConverter.GetBytes(buffer.Length);
 			this.sendBuffer.SendTo(size);
 			this.sendBuffer.SendTo(buffer);
@@ -98,6 +102,10 @@ namespace Base
 
 		public override void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			int size = buffers.Select(b => b.Length).Sum();
 			byte[] sizeBuffer = BitConverter.GetBytes(size);
 			this.sendBuffer.SendTo(sizeBuffer);
@@ -205,6 +213,10 @@ namespace Base
 
 		public override Task<byte[]> Recv()
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能接收消息");
+			}
 			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
 			byte[] packet = this.parser.GetPacket();
 			if (packet != null)

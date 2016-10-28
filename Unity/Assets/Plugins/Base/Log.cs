@@ -74,6 +74,12 @@ namespace Base
 				error.Flush();
 			}
 
+			info.WriteLine(s);
+			if (IsNeedFlush)
+			{
+				info.Flush();
+			}
+
 #if UNITY_EDITOR
 			UnityEngine.Debug.LogError(s);
 #endif
@@ -91,6 +97,12 @@ namespace Base
 			DateTime dateTime = DateTime.Now;
 			string s = $"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} {TimeHelper.ClientNow()} {msg}";
 			UnityEngine.Debug.Log(s);
+
+			info.WriteLine(s);
+			if (IsNeedFlush)
+			{
+				info.Flush();
+			}
 #endif
 		}
 

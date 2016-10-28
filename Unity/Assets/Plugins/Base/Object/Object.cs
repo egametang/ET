@@ -24,11 +24,6 @@ namespace Base
 			ObjectManager.Add(this);
 		}
 
-		public bool IsDisposed()
-		{
-			return this.Id == 0;
-		}
-
 		public virtual void Dispose()
 		{
 			if (this.Id == 0)

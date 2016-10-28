@@ -5,7 +5,7 @@ using Model;
 namespace Controller
 {
 	[MessageHandler(AppType.Realm)]
-	public class C2R_LoginHandler: AMRpcEvent<C2R_Login, R2C_Login>
+	public class C2R_LoginHandler: AMRpcHandler<C2R_Login, R2C_Login>
 	{
 		protected override async void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
 		{
@@ -19,7 +19,7 @@ namespace Controller
 
 			// 随机分配一个Gate
 			Entity config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
-			Log.Info($"gate address: {MongoHelper.ToJson(config)}");
+			//Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
 			string innerAddress = $"{config.GetComponent<InnerConfig>().Host}:{config.GetComponent<InnerConfig>().Port}";
 			Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);
 			

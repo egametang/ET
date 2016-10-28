@@ -117,6 +117,10 @@ namespace Base
 
 		public void SendAsync(byte[] data, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
 		{
+			if (this.PeerPtr == IntPtr.Zero)
+			{
+				throw new Exception($"USocket 已经被Dispose,不能发送数据!");
+			}
 			if (!isConnected)
 			{
 				sendQueue.Enqueue(new BufferInfo { Buffer = data, ChannelID = channelID, Flags = flags });
