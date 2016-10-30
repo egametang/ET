@@ -34,8 +34,8 @@ namespace MyEditor
 				return;
 			}
 
-			
-			List<AppType> selected = new List<AppType>();
+
+			AppType reloadType = AppType.None;
 			this.isAll = GUILayout.Toggle(this.isAll, "All");
 			if (this.isAll)
 			{
@@ -62,14 +62,14 @@ namespace MyEditor
 				{
 					if (this.isCheck[i])
 					{
-						selected.Add(this.serverTypes[i]);
+						reloadType = reloadType | this.serverTypes[i];
 					}
 				}
 				NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				Session session = networkComponent.Get($"{this.managerAddress}");
 				try
 				{
-					session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = selected });
+					session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = reloadType });
 				}
 				catch (RpcException e)
 				{

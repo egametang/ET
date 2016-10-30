@@ -91,7 +91,7 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2M_Reload : ARequest
 	{
-		public List<AppType> AppType = new List<AppType>();
+		public AppType AppType;
 	}
 
 	[Message(11)]

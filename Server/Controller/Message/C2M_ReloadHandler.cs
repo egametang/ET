@@ -16,7 +16,7 @@ namespace Controller
 				NetInnerComponent netInnerComponent = Game.Scene.GetComponent<NetInnerComponent>();
 				foreach (StartConfig startConfig in startConfigComponent.GetAll())
 				{
-					if (!message.AppType.Contains(startConfig.AppType))
+					if (!message.AppType.Is(startConfig.AppType))
 					{
 						continue;
 					}

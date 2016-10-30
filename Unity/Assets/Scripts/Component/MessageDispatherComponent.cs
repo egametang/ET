@@ -28,7 +28,7 @@ namespace Model
 	{
 		private AppType AppType;
 		private Dictionary<ushort, List<IMHandler>> handlers;
-		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; } = new Dictionary<Type, MessageAttribute>();
+		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
 		
 		public void Awake(AppType appType)
 		{
@@ -71,7 +71,7 @@ namespace Model
 					}
 
 					MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-					if (!messageHandlerAttribute.Contains(this.AppType))
+					if (!messageHandlerAttribute.Type.Is(this.AppType))
 					{
 						continue;
 					}

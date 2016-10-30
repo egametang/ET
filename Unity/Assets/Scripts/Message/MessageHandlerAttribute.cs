@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Model
 {
@@ -8,16 +7,11 @@ namespace Model
 	/// </summary>
 	public class MessageHandlerAttribute : Attribute
 	{
-		private readonly AppType type;
+		public AppType Type { get; }
 
 		public MessageHandlerAttribute(AppType appType)
 		{
-			this.type = appType;
-		}
-
-		public bool Contains(AppType appType)
-		{
-			return this.type.Is(appType);
+			this.Type = appType;
 		}
 	}
 }

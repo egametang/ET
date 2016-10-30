@@ -3,14 +3,10 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	public class ServerType: Attribute
-	{
-		
-	}
-	
 	[Flags]
 	public enum AppType
 	{
+		None = 0,
 		Manager = 1,
 		Realm = 2,
 		Gate = 4,
