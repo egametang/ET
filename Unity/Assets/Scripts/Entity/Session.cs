@@ -87,29 +87,23 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, uint rpcId, uint rpcFlag, byte[] messageBytes, int offset)
 		{
-			// 普通消息
-			if (rpcId == 0)
+			// 普通消息或者是Rpc请求消息
+			if (rpcFlag == 0)
 			{
-				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, 0);
+				MessageInfo messageInfo = new MessageInfo(opcode, messageBytes, offset, rpcId);
+				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
 				return;
 			}
 
 			// rpcFlag>0 表示这是一个rpc响应消息
-			if (rpcFlag > 0)
+			Action<byte[], int, int> action;
+			// Rpc回调有找不着的可能，因为client可能取消Rpc调用
+			if (!this.requestCallback.TryGetValue(rpcId, out action))
 			{
-				Action<byte[], int, int> action;
-				// Rpc回调有找不着的可能，因为client可能取消Rpc调用
-				if (!this.requestCallback.TryGetValue(rpcId, out action))
-				{
-					return;
-				}
-				this.requestCallback.Remove(rpcId);
-				action(messageBytes, offset, messageBytes.Length - offset);
+				return;
 			}
-			else // 这是一个rpc请求消息
-			{
-				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, rpcId);
-			}
+			this.requestCallback.Remove(rpcId);
+			action(messageBytes, offset, messageBytes.Length - offset);
 		}
 
 		/// <summary>

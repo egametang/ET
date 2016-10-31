@@ -107,12 +107,12 @@ namespace Model
 			return messageAttribute.Opcode;
 		}
 
-		public void Handle(Session session, ushort opcode, byte[] messageBytes, int offset, uint rpcId)
+		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
-			if (!this.handlers.TryGetValue(opcode, out actions))
+			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
-				Log.Error($"消息 {opcode} 没有处理");
+				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;
 			}
 
@@ -120,14 +120,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Handle(session, opcode, new MessageInfo
-						{
-							MessageBytes = messageBytes,
-							Offset = offset,
-							Count = messageBytes.Length - offset,
-							RpcId = rpcId
-						}
-					);
+					ev.Handle(session, messageInfo);
 				}
 				catch (Exception e)
 				{

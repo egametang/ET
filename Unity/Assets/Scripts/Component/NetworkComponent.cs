@@ -12,7 +12,7 @@ namespace Model
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
-		private event Action<Session> removeCallback;
+		private event Action<Session> removeCallback = session => { };
 
 		public event Action<Session> RemoveCallback
 		{
@@ -138,6 +138,15 @@ namespace Model
 			return session;
 		}
 
+		public void Update()
+		{
+			if (this.Service == null)
+			{
+				return;
+			}
+			this.Service.Update();
+		}
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)
@@ -153,15 +162,6 @@ namespace Model
 			}
 			
 			this.Service.Dispose();
-		}
-
-		public void Update()
-		{
-			if (this.Service == null)
-			{
-				return;
-			}
-			this.Service.Update();
 		}
 	}
 }

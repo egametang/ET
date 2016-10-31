@@ -7,7 +7,7 @@ namespace Model
 	{
 		protected abstract void Run(Session session, Message message);
 		
-		public void Handle(Session session, ushort opcode, MessageInfo messageInfo)
+		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			Message message;
 			try
@@ -16,7 +16,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {opcode}", e);
+				throw new Exception($"解释消息失败: {messageInfo.Opcode}", e);
 			}
 
 			this.Run(session, message);
@@ -34,7 +34,7 @@ namespace Model
 	{
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, ushort opcode, MessageInfo messageInfo)
+		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			try
 			{
@@ -52,7 +52,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {opcode}", e);
+				throw new Exception($"解释消息失败: {messageInfo.Opcode}", e);
 			}
 		}
 
