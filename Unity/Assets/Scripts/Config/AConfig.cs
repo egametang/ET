@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// 每个Config的基类

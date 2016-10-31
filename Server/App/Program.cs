@@ -14,8 +14,7 @@ namespace App
 			{
 				BsonClassMapRegister.Register();
 
-				Object.ObjectManager.Register("Base", typeof(Game).Assembly);
-				Object.ObjectManager.Register("Model", typeof(ErrorCode).Assembly);
+				Object.ObjectManager.Register("Model", typeof(Game).Assembly);
 				Object.ObjectManager.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;

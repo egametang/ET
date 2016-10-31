@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Base
+namespace Model
 {
 	public interface ICategory: ISupportInitialize
 	{

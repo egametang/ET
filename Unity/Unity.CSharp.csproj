@@ -79,12 +79,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\RobotComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
@@ -92,8 +92,12 @@
     <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
-    <Compile Include="Assets\Scripts\Config\BuffProto.cs" />
-    <Compile Include="Assets\Scripts\Config\GlobalProto.cs" />
+    <Compile Include="Assets\Scripts\Config\ACategory.cs" />
+    <Compile Include="Assets\Scripts\Config\AConfig.cs" />
+    <Compile Include="Assets\Scripts\Config\ConfigAttribute.cs" />
+    <Compile Include="Assets\Scripts\Config\ConfigHelper.cs" />
+    <Compile Include="Assets\Scripts\Config\ICategory.cs" />
+    <Compile Include="Assets\Scripts\Model\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
@@ -112,7 +116,7 @@
     <Compile Include="Assets\Scripts\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Message\IMHandler.cs" />
-    <Compile Include="Assets\Scripts\Message\Message.cs" />
+    <Compile Include="Assets\Scripts\Model\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Message\MessageAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
@@ -130,5 +134,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

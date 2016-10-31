@@ -41,6 +41,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
+      <Link>Component\ConfigComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
       <Link>Component\EventComponent.cs</Link>
     </Compile>
@@ -64,6 +67,18 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
       <Link>Component\TimerComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Config\ACategory.cs">
+      <Link>Config\ACategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Config\AConfig.cs">
+      <Link>Config\AConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Config\ConfigAttribute.cs">
+      <Link>Config\ConfigAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Config\ICategory.cs">
+      <Link>Config\ICategory.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Game.cs">
       <Link>Entity\Game.cs</Link>
@@ -107,9 +122,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\IMHandler.cs">
       <Link>Message\IMHandler.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\Message.cs">
-      <Link>Message\Message.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageAttribute.cs">
       <Link>Message\MessageAttribute.cs</Link>
     </Compile>
@@ -121,6 +133,12 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\RpcException.cs">
       <Link>Message\RpcException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Model\Config\BuffConfig.cs">
+      <Link>Model\Config\BuffConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Model\Message\Message.cs">
+      <Link>Model\Message\Message.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
       <Link>Other\BsonClassMapRegister.cs</Link>
@@ -139,6 +157,7 @@
     <Compile Include="Component\GateSessionKeyComponent.cs" />
     <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Component\StartConfigComponent.cs" />
+    <Compile Include="Config\ConfigHelper.cs" />
     <Compile Include="Helper\DllHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

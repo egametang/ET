@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using Base;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// 管理该所有的配置
@@ -16,19 +16,10 @@ namespace Base
 		public virtual void BeginInit()
 		{
 			this.dict = new Dictionary<long, T>();
+			
+			string configStr = ConfigHelper.GetText(typeof (T).Name);
 
-			string path = $@"Config/{typeof(T).Name}";
-			string configStr;
-			try
-			{
-				configStr = File.ReadAllText(path);
-			}
-			catch (Exception)
-			{
-				throw new Exception($"load config file fail, path: {path}");
-			}
-
-			foreach (string str in configStr.Split(new[] { "\r\n" }, StringSplitOptions.None))
+			foreach (string str in configStr.Split(new[] { "\n" }, StringSplitOptions.None))
 			{
 				try
 				{

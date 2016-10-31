@@ -47,18 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ACategory.cs">
-      <Link>Config\ACategory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\AConfig.cs">
-      <Link>Config\AConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ConfigAttribute.cs">
-      <Link>Config\ConfigAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Plugins\Base\Config\ICategory.cs">
-      <Link>Config\ICategory.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\DoubleMap.cs">
       <Link>DoubleMap.cs</Link>
     </Compile>

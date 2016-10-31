@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -71,10 +73,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\Base\Config\ACategory.cs" />
-    <Compile Include="Assets\Plugins\Base\Config\AConfig.cs" />
-    <Compile Include="Assets\Plugins\Base\Config\ConfigAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Plugins\Base\DoubleMap.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ArrayHelper.cs" />
     <Compile Include="Assets\Plugins\Base\Helper\ByteHelper.cs" />
