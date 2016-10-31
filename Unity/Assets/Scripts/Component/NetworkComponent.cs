@@ -71,16 +71,11 @@ namespace Model
 
 				Session session = new Session(this.GetOwner<Scene>(), channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-				this.Add(session);
+				this.sessions.Add(session.Id, session);
+				this.AddToAddressDict(session);
 			}
 		}
-
-		private void Add(Session session)
-		{
-			this.sessions.Add(session.Id, session);
-			this.AddToAddressDict(session);
-		}
-
+		
 		private void AddToAddressDict(Session session)
 		{
 			Session s;
@@ -123,15 +118,15 @@ namespace Model
 				return session;
 			}
 
-			session = this.GetNew(address);
+			session = this.Create(address);
 			this.AddToAddressDict(session);
 			return session;
 		}
 
 		/// <summary>
-		/// 创建一个新Session,不保存到地址缓存中
+		/// 创建一个新Session
 		/// </summary>
-		public Session GetNew(string address)
+		public Session Create(string address)
 		{
 			string[] ss = address.Split(':');
 			int port = int.Parse(ss[1]);
@@ -139,6 +134,7 @@ namespace Model
 			AChannel channel = this.Service.ConnectChannel(host, port);
 			Session session = new Session(this.GetOwner<Scene>(), channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			this.sessions.Add(session.Id, session);
 			return session;
 		}
 
