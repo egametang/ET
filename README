@@ -1,4 +1,19 @@
-c++ lib: sudo aptitude install git-core screen cmake build-essential pkg-config libboost1.54-all-dev libprotobuf-dev protobuf-compiler
+ET框架：一个Unity客户端和分布式游戏服务器框架
+
+01.客户端服务端共用代码
+02.服务器使用组件设计，一切皆是组件
+03.单APP设计，各种服务器都是一个同样的App，在启动时根据命令行的AppType，不同的服务器挂载不同的逻辑组件，挂载不同的消息handler，挂载不同的配置
+04.跨平台设计，既可以在windows上跑，也可以在linux上跑，windows用vs开发方便单步调试
+05.框架支持不停服重新加载逻辑dll，也就是服务器热更新
+06.一行配置即可将所有种类服务器集中到一个进程中，开发时，只需要启动一个进程，不用再启动一堆的服务进程
+07.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼
+08.提供及其方便的网络rpc调用，使用async await语法的异步rpc
+09.使用NLog库，打log及其方便，开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了
+10.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。
+11.提供rsync同步工具，可以windows上开发测试完之后，一键同步代码到linux，linux一键编译运行
+12.提供命令行配置工具，配置分布式服务器及其简单
+
+linux工具安装命令: sudo aptitude install git-core screen cmake build-essential pkg-config
 
 Email: egametang@gmail.com
 QQ   : 80081771

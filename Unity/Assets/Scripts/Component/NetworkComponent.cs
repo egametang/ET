@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using Base;
 
 namespace Model
@@ -11,6 +12,20 @@ namespace Model
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
+
+		private event Action<Session> removeCallback;
+
+		public event Action<Session> RemoveCallback
+		{
+			add
+			{
+				this.removeCallback += value;
+			}
+			remove
+			{
+				this.removeCallback -= value;
+			}
+		}
 
 		protected void Awake(NetworkProtocol protocol)
 		{
@@ -63,13 +78,18 @@ namespace Model
 
 		private void Add(Session session)
 		{
+			this.sessions.Add(session.Id, session);
+			this.AddToAddressDict(session);
+		}
+
+		private void AddToAddressDict(Session session)
+		{
 			Session s;
 			if (this.adressSessions.TryGetValue(session.RemoteAddress, out s))
 			{
 				this.Remove(s.Id);
 				Log.Warning($"session 地址冲突, 可能是客户端断开, 服务器还没检测到!: {session.RemoteAddress}");
 			}
-			this.sessions.Add(session.Id, session);
 			this.adressSessions.Add(session.RemoteAddress, session);
 		}
 
@@ -80,6 +100,7 @@ namespace Model
 			{
 				return;
 			}
+			removeCallback.Invoke(session);
 			this.sessions.Remove(id);
 			this.adressSessions.Remove(session.RemoteAddress);
 			session.Dispose();
@@ -92,6 +113,9 @@ namespace Model
 			return session;
 		}
 
+		/// <summary>
+		/// 从地址缓存中取Session,如果没有则创建一个新的Session,并且保存到地址缓存中
+		/// </summary>
 		public Session Get(string address)
 		{
 			Session session;
@@ -100,14 +124,22 @@ namespace Model
 				return session;
 			}
 
+			session = this.GetNew(address);
+			this.AddToAddressDict(session);
+			return session;
+		}
+
+		/// <summary>
+		/// 创建一个新Session,不保存到地址缓存中
+		/// </summary>
+		public Session GetNew(string address)
+		{
 			string[] ss = address.Split(':');
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			session = new Session(channel);
+			Session session = new Session(channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-			this.Add(session);
-
 			return session;
 		}
 

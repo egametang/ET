@@ -226,8 +226,8 @@ namespace Model
 			}
 
 			base.Dispose();
-
-			channel.Dispose();
+			
+			this.channel.Dispose();
 		}
 	}
 }
