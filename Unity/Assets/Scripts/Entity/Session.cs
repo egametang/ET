@@ -9,11 +9,13 @@ namespace Model
 	public sealed class Session: Entity
 	{
 		private static uint RpcId { get; set; }
+		private readonly Scene scene;
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
 		private readonly AChannel channel;
 
-		public Session(AChannel channel) : base(EntityType.Session)
+		public Session(Scene scene, AChannel channel) : base(EntityType.Session)
 		{
+			this.scene = scene;
 			this.channel = channel;
 			this.StartRecv();
 		}
@@ -88,7 +90,7 @@ namespace Model
 			// 普通消息
 			if (rpcId == 0)
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, 0);
+				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, 0);
 				return;
 			}
 
@@ -106,7 +108,7 @@ namespace Model
 			}
 			else // 这是一个rpc请求消息
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, rpcId);
+				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, opcode, messageBytes, offset, rpcId);
 			}
 		}
 
@@ -195,7 +197,7 @@ namespace Model
 
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
-			ushort opcode = Game.Scene.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
+			ushort opcode = this.scene.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)
 			{

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using Base;
 
 namespace Model
@@ -70,7 +69,7 @@ namespace Model
 
 				AChannel channel = await this.Service.AcceptChannel();
 
-				Session session = new Session(channel);
+				Session session = new Session(this.GetOwner<Scene>(), channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.Add(session);
 			}
@@ -138,7 +137,7 @@ namespace Model
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			Session session = new Session(channel);
+			Session session = new Session(this.GetOwner<Scene>(), channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			return session;
 		}
