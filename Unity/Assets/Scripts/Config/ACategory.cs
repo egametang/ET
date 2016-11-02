@@ -57,7 +57,7 @@ namespace Model
 				T t;
 				if (!this.dict.TryGetValue(type, out t))
 				{
-					throw new Exception($"{typeof(T)} 没有找到配置, key: {type}");
+					throw new KeyNotFoundException($"{typeof(T)} 没有找到配置, key: {type}");
 				}
 				return t;
 			}

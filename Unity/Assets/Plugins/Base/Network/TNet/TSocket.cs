@@ -8,7 +8,7 @@ namespace Base
 	/// <summary>
 	/// 封装Socket,将回调push到主线程处理
 	/// </summary>
-	public class TSocket: IDisposable
+	public sealed class TSocket: IDisposable
 	{
 		private readonly TPoller poller;
 		private Socket socket;
@@ -65,8 +65,9 @@ namespace Base
 				return;
 			}
 			
-			this.socket.Close();
-
+			this.socket.Dispose();
+			this.innArgs.Dispose();
+			this.outArgs.Dispose();
 			this.socket = null;
 		}
 

@@ -32,7 +32,7 @@ namespace Base
 		}
 	}
 
-	public class ObjectManager : IDisposable
+	public sealed class ObjectManager : IDisposable
 	{
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
