@@ -12,7 +12,9 @@ namespace Model
 		Gate = 4,
 		// 7
 		AllServer = Manager | Realm | Gate,
-		
+
+		Benchmark,
+
 		Client,
 		Robot,
 	}

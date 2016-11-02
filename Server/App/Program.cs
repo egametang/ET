@@ -28,35 +28,40 @@ namespace App
 
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
-
-				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
-				Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
+				
 				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
+				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
+				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
+						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
 					case AppType.Realm:
+						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
+						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					case AppType.AllServer:
+						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
-					case AppType.Robot:
-						Game.Scene.AddComponent<RobotComponent>();
+					case AppType.Benchmark:
+						Game.Scene.AddComponent<NetOuterComponent>();
+						Game.Scene.AddComponent<BenchmakComponent, string>(clientConfig.Address);
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");

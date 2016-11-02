@@ -9,13 +9,13 @@ namespace Model
 	public sealed class Session: Entity
 	{
 		private static uint RpcId { get; set; }
-		private readonly Scene scene;
+		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
 		private readonly AChannel channel;
 
-		public Session(Scene scene, AChannel channel) : base(EntityType.Session)
+		public Session(NetworkComponent network, AChannel channel) : base(EntityType.Session)
 		{
-			this.scene = scene;
+			this.network = network;
 			this.channel = channel;
 			this.StartRecv();
 		}
@@ -25,6 +25,14 @@ namespace Model
 			get
 			{
 				return this.channel.RemoteAddress;
+			}
+		}
+
+		public ChannelType ChannelType
+		{
+			get
+			{
+				return this.channel.ChannelType;
 			}
 		}
 
@@ -91,7 +99,7 @@ namespace Model
 			if (rpcFlag == 0)
 			{
 				MessageInfo messageInfo = new MessageInfo(opcode, messageBytes, offset, rpcId);
-				this.scene.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
+				this.network.Owner.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
 				return;
 			}
 
@@ -191,7 +199,7 @@ namespace Model
 
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
-			ushort opcode = this.scene.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
+			ushort opcode = this.network.Owner.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)
 			{
@@ -221,9 +229,12 @@ namespace Model
 				return;
 			}
 
+			long id = this.Id;
+
 			base.Dispose();
 			
 			this.channel.Dispose();
+			this.network.Remove(id);
 		}
 	}
 }

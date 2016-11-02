@@ -15,7 +15,7 @@ namespace Base
 		/// <summary>
 		/// connect
 		/// </summary>
-		public UChannel(USocket socket, string host, int port, UService service): base(service)
+		public UChannel(USocket socket, string host, int port, UService service): base(service, ChannelType.Connect)
 		{
 			this.socket = socket;
 			this.service = service;
@@ -28,7 +28,7 @@ namespace Base
 		/// <summary>
 		/// accept
 		/// </summary>
-		public UChannel(USocket socket, UService service) : base(service)
+		public UChannel(USocket socket, UService service) : base(service, ChannelType.Accept)
 		{
 			this.socket = socket;
 			this.service = service;

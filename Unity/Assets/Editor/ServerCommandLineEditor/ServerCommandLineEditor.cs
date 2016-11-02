@@ -179,9 +179,9 @@ namespace MyEditor
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
 				{
-					GUILayout.Label($"Host:");
+					GUILayout.Label($"InnerHost:");
 					innerConfig.Host = EditorGUILayout.TextField(innerConfig.Host);
-					GUILayout.Label($"Port:");
+					GUILayout.Label($"InnerPort:");
 					innerConfig.Port = EditorGUILayout.IntField(innerConfig.Port);
 				}
 
@@ -190,10 +190,18 @@ namespace MyEditor
 				{
 					GUILayout.Label($"OuterHost:");
 					outerConfig.Host = EditorGUILayout.TextField(outerConfig.Host);
-					GUILayout.Label($"OuterHost:");
+					GUILayout.Label($"OuterPort:");
 					outerConfig.Port = EditorGUILayout.IntField(outerConfig.Port);
 				}
 
+				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
+				if (clientConfig != null)
+				{
+					GUILayout.Label($"Host:");
+					clientConfig.Host = EditorGUILayout.TextField(clientConfig.Host);
+					GUILayout.Label($"Port:");
+					clientConfig.Port = EditorGUILayout.IntField(clientConfig.Port);
+				}
 
 				if (GUILayout.Button("删除"))
 				{
@@ -226,11 +234,16 @@ namespace MyEditor
 				StartConfig newStartConfig = new StartConfig();
 
 				newStartConfig.AppType = this.AppType;
-				newStartConfig.AddComponent<InnerConfig>();
-
-				if (this.AppType.Is(AppType.Gate) || this.AppType.Is(AppType.Realm) || this.AppType.Is(AppType.Manager))
+				
+				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager))
 				{
+					newStartConfig.AddComponent<InnerConfig>();
 					newStartConfig.AddComponent<OuterConfig>();
+				}
+
+				if (this.AppType.Is(AppType.Benchmark))
+				{
+					newStartConfig.AddComponent<ClientConfig>();
 				}
 
 				this.startConfigs.Add(newStartConfig);

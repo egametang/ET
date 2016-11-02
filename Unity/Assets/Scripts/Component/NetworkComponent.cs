@@ -69,10 +69,9 @@ namespace Model
 
 				AChannel channel = await this.Service.AcceptChannel();
 
-				Session session = new Session(this.GetOwner<Scene>(), channel);
+				Session session = new Session(this, channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.sessions.Add(session.Id, session);
-				this.AddToAddressDict(session);
 			}
 		}
 		
@@ -96,7 +95,10 @@ namespace Model
 			}
 			removeCallback.Invoke(session);
 			this.sessions.Remove(id);
-			this.adressSessions.Remove(session.RemoteAddress);
+			if (session.ChannelType == ChannelType.Connect)
+			{
+				this.adressSessions.Remove(session.RemoteAddress);
+			}
 			session.Dispose();
 		}
 
@@ -132,7 +134,7 @@ namespace Model
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			Session session = new Session(this.GetOwner<Scene>(), channel);
+			Session session = new Session(this, channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;

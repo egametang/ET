@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.InteropServices;
 
 namespace Base
@@ -73,7 +74,8 @@ namespace Base
 			get
 			{
 				ENetPeer peer = this.Struct;
-				return peer.Address.Host + ":" + peer.Address.Port;
+				IPAddress ipaddr = new IPAddress(peer.Address.Host);
+				return $"{ipaddr}:{peer.Address.Port}";
 			}
 		}
 

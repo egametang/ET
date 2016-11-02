@@ -16,6 +16,7 @@ namespace Model
 
 			BsonClassMap.RegisterClassMap<InnerConfig>();
 			BsonClassMap.RegisterClassMap<OuterConfig>();
+			BsonClassMap.RegisterClassMap<ClientConfig>();
 		}
 	}
 }

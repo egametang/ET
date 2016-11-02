@@ -14,9 +14,17 @@ namespace Base
 		NoAllocate = 1 << 2
 	}
 
+	public enum ChannelType
+	{
+		Connect,
+		Accept,
+	}
+
 	public abstract class AChannel: IDisposable
 	{
 		public long Id { get; private set; }
+
+		public ChannelType ChannelType { get; }
 
 		protected AService service;
 
@@ -42,9 +50,10 @@ namespace Base
 		}
 
 
-		protected AChannel(AService service)
+		protected AChannel(AService service, ChannelType channelType)
 		{
 			this.Id = IdGenerater.GenerateId();
+			this.ChannelType = channelType;
 			this.service = service;
 		}
 		

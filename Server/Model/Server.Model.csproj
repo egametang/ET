@@ -41,6 +41,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\BenchmakComponent.cs">
+      <Link>Component\BenchmakComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
       <Link>Component\ConfigComponent.cs</Link>
     </Compile>
@@ -142,6 +145,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
       <Link>Other\BsonClassMapRegister.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\ClientConfig.cs">
+      <Link>Other\ClientConfig.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
       <Link>Other\EntityType.cs</Link>

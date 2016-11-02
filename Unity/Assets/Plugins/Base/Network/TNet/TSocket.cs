@@ -65,7 +65,7 @@ namespace Base
 				return;
 			}
 			
-			this.socket.Dispose();
+			this.socket.Close();
 			this.innArgs.Dispose();
 			this.outArgs.Dispose();
 			this.socket = null;

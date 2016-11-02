@@ -8,9 +8,9 @@ namespace Base
 	public abstract class Component : Object
 	{
 		[BsonIgnore]
-		public Entity Owner { protected get; set; }
+		public Entity Owner { get; set; }
 
-		protected T GetOwner<T>() where T: Entity
+		public T GetOwner<T>() where T: Entity
 		{
 			return this.Owner as T;
 		}

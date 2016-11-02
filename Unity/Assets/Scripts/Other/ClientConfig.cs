@@ -1,8 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Base;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public class ClientConfig
+	[BsonIgnoreExtraElements]
+	public class ClientConfig: Component
 	{
 		public string Host = "";
 		public int Port;

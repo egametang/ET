@@ -21,7 +21,7 @@ namespace Base
 		/// <summary>
 		/// connect
 		/// </summary>
-		public TChannel(TSocket socket, string host, int port, TService service) : base(service)
+		public TChannel(TSocket socket, string host, int port, TService service) : base(service, ChannelType.Connect)
 		{
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
@@ -39,7 +39,7 @@ namespace Base
 		/// <summary>
 		/// accept
 		/// </summary>
-		public TChannel(TSocket socket, TService service) : base(service)
+		public TChannel(TSocket socket, TService service) : base(service, ChannelType.Accept)
 		{
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
