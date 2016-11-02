@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Base;
 
 namespace Model
@@ -10,21 +11,6 @@ namespace Model
 		private AService Service;
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
-		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
-
-		private event Action<Session> removeCallback = session => { };
-
-		public event Action<Session> RemoveCallback
-		{
-			add
-			{
-				this.removeCallback += value;
-			}
-			remove
-			{
-				this.removeCallback -= value;
-			}
-		}
 
 		protected void Awake(NetworkProtocol protocol)
 		{
@@ -67,38 +53,28 @@ namespace Model
 					return;
 				}
 
-				AChannel channel = await this.Service.AcceptChannel();
-
-				Session session = new Session(this, channel);
-				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-				this.sessions.Add(session.Id, session);
+				await this.Accept();
 			}
 		}
-		
-		private void AddToAddressDict(Session session)
+
+		protected virtual async Task<Session> Accept()
 		{
-			Session s;
-			if (this.adressSessions.TryGetValue(session.RemoteAddress, out s))
-			{
-				this.Remove(s.Id);
-				Log.Warning($"session 地址冲突, 可能是客户端断开, 服务器还没检测到!: {session.RemoteAddress}");
-			}
-			this.adressSessions.Add(session.RemoteAddress, session);
+
+			AChannel channel = await this.Service.AcceptChannel();
+			Session session = new Session(this, channel);
+			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			this.sessions.Add(session.Id, session);
+			return session;
 		}
 
-		public void Remove(long id)
+		public virtual void Remove(long id)
 		{
 			Session session;
 			if (!this.sessions.TryGetValue(id, out session))
 			{
 				return;
 			}
-			removeCallback.Invoke(session);
 			this.sessions.Remove(id);
-			if (session.ChannelType == ChannelType.Connect)
-			{
-				this.adressSessions.Remove(session.RemoteAddress);
-			}
 			session.Dispose();
 		}
 
@@ -106,22 +82,6 @@ namespace Model
 		{
 			Session session;
 			this.sessions.TryGetValue(id, out session);
-			return session;
-		}
-
-		/// <summary>
-		/// 从地址缓存中取Session,如果没有则创建一个新的Session,并且保存到地址缓存中
-		/// </summary>
-		public Session Get(string address)
-		{
-			Session session;
-			if (this.adressSessions.TryGetValue(address, out session))
-			{
-				return session;
-			}
-
-			session = this.Create(address);
-			this.AddToAddressDict(session);
 			return session;
 		}
 

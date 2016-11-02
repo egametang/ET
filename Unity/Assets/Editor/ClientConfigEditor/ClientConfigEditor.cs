@@ -55,6 +55,7 @@ namespace MyEditor
 
 		private void OnDestroy()
 		{
+			this.config.Dispose();
 		}
 	}
 }

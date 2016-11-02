@@ -65,16 +65,19 @@ namespace MyEditor
 						reloadType = reloadType | this.serverTypes[i];
 					}
 				}
-				NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				Session session = networkComponent.Get($"{this.managerAddress}");
-				try
+				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
+				using (Session session = networkComponent.Create($"{this.managerAddress}"))
 				{
-					session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = reloadType });
+					try
+					{
+						session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = reloadType });
+					}
+					catch (RpcException e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
-				catch (RpcException e)
-				{
-					Log.Error(e.ToString());
-				}
+
 				Log.Info("Reload OK!");
 			}
 		}

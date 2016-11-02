@@ -19,7 +19,7 @@ namespace Model
 
 		public void Awake(string address)
 		{
-			NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
+			NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 
 			for (int i = 0; i < 400; i++)
 			{
@@ -27,7 +27,7 @@ namespace Model
 			}
 		}
 
-		private async void TestAsync(NetworkComponent networkComponent, string address, int j)
+		private async void TestAsync(NetOuterComponent networkComponent, string address, int j)
 		{
 			using (Session session = networkComponent.Create(address))
 			{
@@ -38,9 +38,11 @@ namespace Model
 					try
 					{
 						R2C_Login s2CLogin = await session.Call<C2R_Login, R2C_Login>(new C2R_Login { Account = "abcdef", Password = "111111" });
-						
-						Session gateSession = networkComponent.Get(s2CLogin.Address);
-						await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
+
+						using (Session gateSession = networkComponent.Create(s2CLogin.Address))
+						{
+							await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
+						}
 
 						++this.k;
 						if (this.k % 1000 == 0)
