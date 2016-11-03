@@ -121,6 +121,10 @@ namespace Base
 
 		private void StartSend()
 		{
+			if (this.Id == 0)
+			{
+				return;
+			}
 			// 没有数据需要发送
 			if (this.sendBuffer.Count == 0)
 			{
@@ -168,6 +172,10 @@ namespace Base
 
 		private void StartRecv()
 		{
+			if (this.Id == 0)
+			{
+				return;
+			}
 			int size = TBuffer.ChunkSize - this.recvBuffer.LastIndex;
 			
 			if (!this.socket.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size))

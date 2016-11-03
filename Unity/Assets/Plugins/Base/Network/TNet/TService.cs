@@ -38,7 +38,7 @@ namespace Base
 				TChannel channel = this.idChannels[id];
 				channel.Dispose();
 			}
-			this.acceptor.Dispose();
+			this.acceptor?.Dispose();
 			this.poller = null;
 		}
 

@@ -44,6 +44,15 @@ namespace MyEditor
 			}
 		}
 
+		public void ClearConfig()
+		{
+			foreach (StartConfig startConfig in this.startConfigs)
+			{
+				startConfig.Dispose();
+			}
+			this.startConfigs.Clear();
+		}
+
 		private List<string> GetConfigFiles()
 		{
 			List<string> fs = Directory.GetFiles(ConfigDir).ToList();
@@ -64,7 +73,7 @@ namespace MyEditor
 			string s2 = "";
 			try
 			{
-				this.startConfigs.Clear();
+				this.ClearConfig();
 				string[] ss = File.ReadAllText(filePath).Split('\n');
 				foreach (string s in ss)
 				{
@@ -293,6 +302,7 @@ namespace MyEditor
 
 		private void OnDestroy()
 		{
+			this.ClearConfig();
 		}
 	}
 }

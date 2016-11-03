@@ -97,8 +97,12 @@ namespace Base
 			return tcs.Task;
 		}
 
-		private static void OnAcceptComplete(SocketAsyncEventArgs e)
+		private void OnAcceptComplete(SocketAsyncEventArgs e)
 		{
+			if (this.socket == null)
+			{
+				return;
+			}
 			var tcs = (TaskCompletionSource<bool>)e.UserToken;
 			e.UserToken = null;
 			if (e.SocketError != SocketError.Success)
@@ -150,6 +154,10 @@ namespace Base
 
 		private void OnConnectComplete(SocketAsyncEventArgs e)
 		{
+			if (this.socket == null)
+			{
+				return;
+			}
 			if (this.OnConn == null)
 			{
 				return;
@@ -177,6 +185,10 @@ namespace Base
 
 		private void OnRecvComplete(SocketAsyncEventArgs e)
 		{
+			if (this.socket == null)
+			{
+				return;
+			}
 			if (this.OnRecv == null)
 			{
 				return;
@@ -204,6 +216,10 @@ namespace Base
 
 		private void OnSendComplete(SocketAsyncEventArgs e)
 		{
+			if (this.socket == null)
+			{
+				return;
+			}
 			if (this.OnSend == null)
 			{
 				return;
@@ -213,6 +229,10 @@ namespace Base
 
 		private void OnDisconnectComplete(SocketAsyncEventArgs e)
 		{
+			if (this.socket == null)
+			{
+				return;
+			}
 			if (this.OnDisconnect == null)
 			{
 				return;
