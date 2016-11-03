@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public class StartConfig: Entity
+	public class StartConfig: AConfig
 	{
 		public int AppId { get; set; }
 		

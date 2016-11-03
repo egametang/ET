@@ -29,36 +29,4 @@ namespace Model
 			return MongoHelper.FromBson<Options>(MongoHelper.ToBson(this));
 		}
 	}
-
-	[BsonIgnoreExtraElements]
-	public class InnerConfig: Component
-	{
-		public string Host { get; set; }
-		public int Port { get; set; }
-
-		[BsonIgnore]
-		public string Address
-		{
-			get
-			{
-				return $"{this.Host}:{this.Port}";
-			}
-		}
-	}
-
-	[BsonIgnoreExtraElements]
-	public class OuterConfig: Component
-	{
-		public string Host { get; set; }
-		public int Port { get; set; }
-
-		[BsonIgnore]
-		public string Address
-		{
-			get
-			{
-				return $"{this.Host}:{this.Port}";
-			}
-		}
-	}
 }

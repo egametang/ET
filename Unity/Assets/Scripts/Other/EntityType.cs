@@ -8,5 +8,8 @@
 		public const string UI = "UI";
 		public const string Config = "Config";
 		public const string Network = "Network";
+
+		// Config
+		public const string BuffConfig = "BuffConfig";
 	}
 }

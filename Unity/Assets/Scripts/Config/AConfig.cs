@@ -1,21 +1,17 @@
-﻿using System.ComponentModel;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using Base;
 
 namespace Model
 {
 	/// <summary>
 	/// 每个Config的基类
 	/// </summary>
-	public abstract class AConfig: ISupportInitialize
+	public abstract class AConfig: Entity
 	{
-		[BsonId]
-		public long Id { get; set; }
-
-		public virtual void BeginInit()
+		public AConfig(string entityType): base(entityType)
 		{
 		}
 
-		public virtual void EndInit()
+		public AConfig(long id, string entityType): base(id, entityType)
 		{
 		}
 	}

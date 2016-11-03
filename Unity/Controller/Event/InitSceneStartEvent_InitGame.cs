@@ -13,7 +13,7 @@ namespace Controller
 		public async void Run()
 		{
 			Game.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
-			ClientConfig clientConfig = Game.Scene.AddComponent<ClientConfigComponent>().Config;
+			ClientConfig clientConfig = Game.Scene.AddComponent<ClientConfigComponent>().Config.GetComponent<ClientConfig>();
 			NetOuterComponent networkComponent = Game.Scene.AddComponent<NetOuterComponent>();
 			using (Session session = networkComponent.Create(clientConfig.Address))
 			{

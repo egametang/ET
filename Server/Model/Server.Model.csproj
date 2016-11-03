@@ -47,6 +47,15 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
       <Link>Component\ConfigComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs">
+      <Link>Component\Config\ClientConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs">
+      <Link>Component\Config\InnerConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs">
+      <Link>Component\Config\OuterConfig.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
       <Link>Component\EventComponent.cs</Link>
     </Compile>
@@ -83,8 +92,17 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Config\ICategory.cs">
       <Link>Config\ICategory.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Config\BuffConfig.cs">
+      <Link>Entity\Config\BuffConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Config\StartConfig.cs">
+      <Link>Entity\Config\StartConfig.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Game.cs">
       <Link>Entity\Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Message.cs">
+      <Link>Entity\Message\Message.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Scene.cs">
       <Link>Entity\Scene.cs</Link>
@@ -137,26 +155,14 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\RpcException.cs">
       <Link>Message\RpcException.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Model\Config\BuffConfig.cs">
-      <Link>Model\Config\BuffConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Model\Message\Message.cs">
-      <Link>Model\Message\Message.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
       <Link>Other\BsonClassMapRegister.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\ClientConfig.cs">
-      <Link>Other\ClientConfig.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
       <Link>Other\EntityType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\StartConfig.cs">
-      <Link>Other\StartConfig.cs</Link>
     </Compile>
     <Compile Include="Component\AppManagerComponent.cs" />
     <Compile Include="Component\LogToClientComponent.cs" />

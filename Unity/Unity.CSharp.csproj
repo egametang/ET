@@ -83,6 +83,9 @@
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
@@ -120,14 +123,13 @@
     <Compile Include="Assets\Scripts\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
-    <Compile Include="Assets\Scripts\Model\Config\BuffConfig.cs" />
-    <Compile Include="Assets\Scripts\Model\Message\Message.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Other\BsonClassMapRegister.cs" />
-    <Compile Include="Assets\Scripts\Other\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Other\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\Options.cs" />
-    <Compile Include="Assets\Scripts\Other\StartConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
   </ItemGroup>
@@ -135,5 +137,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

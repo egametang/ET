@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using Base;
 using Model;
 using UnityEditor;
@@ -11,9 +8,9 @@ namespace MyEditor
 {
 	public class ClientConfigEditor : EditorWindow
 	{
-		private const string Path = "./ClientConfig.txt";
+		private const string Path = "./StartConfig.txt";
 
-		private ClientConfig config;
+		private StartConfig config;
 
 		[MenuItem("Tools/客户端配置")]
 		private static void ShowWindow()
@@ -25,21 +22,23 @@ namespace MyEditor
 		{
 			if (!File.Exists(Path))
 			{
-				this.config = new ClientConfig();
+				this.config = new StartConfig();
+				this.config.AppType = AppType.Client;
+				this.config.ServerIP = "*";
+				this.config.AddComponent<ClientConfig>();
 				return;
 			}
 
 			string s = File.ReadAllText(Path);
-			this.config = MongoHelper.FromJson<ClientConfig>(s);
+			this.config = MongoHelper.FromJson<StartConfig>(s);
 		}
 
 		private void OnGUI()
 		{
-			this.config.Host = EditorGUILayout.TextField("地址: ", this.config.Host);
-			this.config.Port = EditorGUILayout.IntField("端口: ", this.config.Port);
-
-			GUILayout.BeginHorizontal();
-
+			ClientConfig clientConfig = this.config.GetComponent<ClientConfig>();
+			clientConfig.Host = EditorGUILayout.TextField("地址: ", clientConfig.Host);
+			clientConfig.Port = EditorGUILayout.IntField("端口: ", clientConfig.Port);
+			
 			if (GUILayout.Button("保存"))
 			{
 				using (StreamWriter sw = new StreamWriter(new FileStream(Path, FileMode.Create)))

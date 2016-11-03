@@ -14,12 +14,24 @@ namespace Model
 
 	public class ClientConfigComponent : Component
     {
-		public ClientConfig Config { get; private set; }
+		public StartConfig Config { get; private set; }
 
 		public void Awake()
 		{
-			string s = File.ReadAllText("./ClientConfig.txt");
-			this.Config = MongoHelper.FromJson<ClientConfig>(s);
+			string s = File.ReadAllText("./StartConfig.txt");
+			this.Config = MongoHelper.FromJson<StartConfig>(s);
+		}
+
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+
+			base.Dispose();
+
+			this.Config.Dispose();
 		}
     }
 }
