@@ -8,7 +8,7 @@ namespace Model
 {
 	public class Entity: Object
 	{
-		public string Type { get; set; }
+		public EntityType Type { get; set; }
 
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -17,12 +17,12 @@ namespace Model
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
-		protected Entity(string entityType)
+		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
 		}
 
-		protected Entity(long id, string entityType) : base(id)
+		protected Entity(long id, EntityType entityType) : base(id)
 		{
 			this.Type = entityType;
 		}

@@ -164,6 +164,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
       <Link>Object\Entity.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\EntityType.cs">
+      <Link>Object\EntityType.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\IAwake.cs">
       <Link>Object\IAwake.cs</Link>
     </Compile>
@@ -184,9 +187,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\ObjectManager.cs">
       <Link>Object\ObjectManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
-      <Link>Other\EntityType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
