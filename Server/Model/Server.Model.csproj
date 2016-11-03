@@ -86,6 +86,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Config\AConfig.cs">
       <Link>Config\AConfig.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Config\AConfigComponent.cs">
+      <Link>Config\AConfigComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Config\ConfigAttribute.cs">
       <Link>Config\ConfigAttribute.cs</Link>
     </Compile>
@@ -155,8 +158,32 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\RpcException.cs">
       <Link>Message\RpcException.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\BsonClassMapRegister.cs">
-      <Link>Other\BsonClassMapRegister.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\Component.cs">
+      <Link>Object\Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
+      <Link>Object\Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\IAwake.cs">
+      <Link>Object\IAwake.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\ILoader.cs">
+      <Link>Object\ILoader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\IStart.cs">
+      <Link>Object\IStart.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\IUpdate.cs">
+      <Link>Object\IUpdate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\Object.cs">
+      <Link>Object\Object.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\ObjectEventAttribute.cs">
+      <Link>Object\ObjectEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\ObjectManager.cs">
+      <Link>Object\ObjectManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityType.cs">
       <Link>Other\EntityType.cs</Link>

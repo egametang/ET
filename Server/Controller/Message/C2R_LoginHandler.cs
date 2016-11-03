@@ -18,7 +18,7 @@ namespace Controller
 			}
 
 			// 随机分配一个Gate
-			Entity config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
+			StartConfig config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
 			//Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
 			string innerAddress = $"{config.GetComponent<InnerConfig>().Host}:{config.GetComponent<InnerConfig>().Port}";
 			Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);

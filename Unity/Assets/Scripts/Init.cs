@@ -1,7 +1,6 @@
 ﻿using System;
 using Base;
 using UnityEngine;
-using Object = Base.Object;
 
 namespace Model
 {
@@ -9,7 +8,6 @@ namespace Model
 	{
 		private void Start()
 		{
-			BsonClassMapRegister.Register();
 			Object.ObjectManager.Register("Model", typeof(Game).Assembly);
 			Object.ObjectManager.Register("Controller", DllHelper.GetController());
 

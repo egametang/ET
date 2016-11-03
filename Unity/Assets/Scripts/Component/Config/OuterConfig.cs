@@ -1,10 +1,9 @@
-﻿using Base;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
 	[BsonIgnoreExtraElements]
-	public class OuterConfig : Component
+	public class OuterConfig : AConfigComponent
 	{
 		public string Host { get; set; }
 		public int Port { get; set; }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Base;
 
-namespace Base
+namespace Model
 {
 	public interface IObjectEvent
 	{

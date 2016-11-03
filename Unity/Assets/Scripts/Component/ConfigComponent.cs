@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Base;
-using Object = Base.Object;
+using Object = Model.Object;
 
 namespace Model
 {

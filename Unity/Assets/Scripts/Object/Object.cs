@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	public abstract class Object: IDisposable, ISupportInitialize
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using Base;
 using Model;
-using Object = Base.Object;
+using Object = Model.Object;
 
 namespace Controller
 {

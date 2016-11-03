@@ -2,7 +2,7 @@
 using Base;
 using Model;
 using NLog;
-using Object = Base.Object;
+using Object = Model.Object;
 
 namespace App
 {
@@ -12,8 +12,6 @@ namespace App
 		{
 			try
 			{
-				BsonClassMapRegister.Register();
-
 				Object.ObjectManager.Register("Model", typeof(Game).Assembly);
 				Object.ObjectManager.Register("Controller", DllHelper.GetController());
 

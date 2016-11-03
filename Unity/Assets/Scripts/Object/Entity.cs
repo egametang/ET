@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	public class Entity: Object
 	{

@@ -2,8 +2,8 @@
 using Base;
 using UnityEditor;
 using UnityEngine;
-using Object = Base.Object;
 using Model;
+using Object = Model.Object;
 
 namespace MyEditor
 {
@@ -12,7 +12,6 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			BsonClassMapRegister.Register();
 			EditorApplication.update += Update;
 		}
 

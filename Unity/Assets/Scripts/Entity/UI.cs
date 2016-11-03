@@ -1,6 +1,4 @@
-﻿using Base;
-using UnityEngine;
-using Component = Base.Component;
+﻿using UnityEngine;
 
 namespace Model
 {

@@ -108,15 +108,6 @@
     <Compile Include="Assets\Plugins\Base\Network\UNet\UService.cs" />
     <Compile Include="Assets\Plugins\Base\Network\UNet\USocket.cs" />
     <Compile Include="Assets\Plugins\Base\Network\UNet\USocketManager.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\Component.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\Entity.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\IAwake.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\ILoader.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\IStart.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\IUpdate.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\Object.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\ObjectEventAttribute.cs" />
-    <Compile Include="Assets\Plugins\Base\Object\ObjectManager.cs" />
     <Compile Include="Assets\Plugins\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Plugins\Base\TryLocker.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonConstants.cs" />

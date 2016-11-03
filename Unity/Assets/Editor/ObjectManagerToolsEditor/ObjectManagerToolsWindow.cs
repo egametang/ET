@@ -1,4 +1,5 @@
 ﻿using Base;
+using Model;
 using UnityEditor;
 
 public class ObjectManagerToolsWindow : EditorWindow

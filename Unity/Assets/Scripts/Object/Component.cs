@@ -1,10 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// Component的Id与Owner Entity Id一样
 	/// </summary>
+	[BsonKnownTypes(typeof(AConfigComponent))]
 	public abstract class Component : Object
 	{
 		[BsonIgnore]

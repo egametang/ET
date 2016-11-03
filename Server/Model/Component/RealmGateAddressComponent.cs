@@ -29,7 +29,7 @@ namespace Model
 			}
 		}
 
-		public Entity GetAddress()
+		public StartConfig GetAddress()
 		{
 			int n = RandomHelper.RandomNumber(0, this.GateAddress.Count);
 			return this.GateAddress[n];
