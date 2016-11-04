@@ -57,7 +57,7 @@ namespace Model
 			}
 		}
 
-		protected virtual async Task<Session> Accept()
+		private async Task<Session> Accept()
 		{
 
 			AChannel channel = await this.Service.AcceptChannel();

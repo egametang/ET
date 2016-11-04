@@ -7,6 +7,5 @@
 		Session,
 		UI,
 		Config,
-		Network,
 	}
 }

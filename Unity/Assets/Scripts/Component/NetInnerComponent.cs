@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Base;
 
 namespace Model
@@ -38,24 +37,6 @@ namespace Model
 			this.Awake(NetworkProtocol.TCP, host, port);
 		}
 
-		protected override async Task<Session> Accept()
-		{
-			Session session = await base.Accept();
-			this.AddToAddressDict(session);
-			return session;
-		}
-
-		private void AddToAddressDict(Session session)
-		{
-			Session s;
-			if (this.adressSessions.TryGetValue(session.RemoteAddress, out s))
-			{
-				this.Remove(s.Id);
-				Log.Warning($"session 地址冲突, 可能是客户端断开, 服务器还没检测到!: {session.RemoteAddress}");
-			}
-			this.adressSessions.Add(session.RemoteAddress, session);
-		}
-
 		public override void Remove(long id)
 		{
 			Session session = this.Get(id);
@@ -80,7 +61,7 @@ namespace Model
 			}
 
 			session = this.Create(address);
-			this.AddToAddressDict(session);
+			this.adressSessions.Add(address, session);
 			return session;
 		}
 	}
