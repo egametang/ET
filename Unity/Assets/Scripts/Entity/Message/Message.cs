@@ -111,4 +111,16 @@ namespace Model
 	public class A2M_Reload : AResponse
 	{
 	}
+
+	[Message(14)]
+	[BsonIgnoreExtraElements]
+	public class C2R_Ping : ARequest
+	{
+	}
+
+	[Message(15)]
+	[BsonIgnoreExtraElements]
+	public class R2C_Ping : AResponse
+	{
+	}
 }
