@@ -93,9 +93,11 @@
     <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\ResourcesComponent.cs" />
     <Compile Include="Assets\Scripts\Component\RobotComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Config\AConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Config\AConfig.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="Assets\Scripts\Event\EventIdType.cs" />
     <Compile Include="Assets\Scripts\Event\IEvent.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\AssetBundleHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\Message\AMHandler.cs" />
@@ -136,8 +139,12 @@
     <Compile Include="Assets\Scripts\Object\ObjectManager.cs" />
     <Compile Include="Assets\Scripts\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
+    <Compile Include="Assets\Scripts\Other\LayerNames.cs" />
+    <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\Options.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
+    <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
+    <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
   </ItemGroup>

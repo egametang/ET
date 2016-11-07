@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
@@ -8,12 +7,12 @@ namespace Model
 	/// <summary>
 	/// 父子层级信息
 	/// </summary>
-    public class ChildrenComponent: Component
+    public class ChildrenComponent<T>: Component where T: Entity
     {
 		[BsonIgnore]
-		public Entity Parent { get; private set; }
+		public T Parent { get; private set; }
 		
-		private readonly Dictionary<long, Entity> idChildren = new Dictionary<long, Entity>();
+		private readonly Dictionary<long, T> idChildren = new Dictionary<long, T>();
 
 		[BsonIgnore]
 		public int Count
@@ -24,20 +23,20 @@ namespace Model
 			}
 		}
 
-		public void Add(Entity entity)
+		public void Add(T child)
 		{
-			entity.GetComponent<ChildrenComponent>().Parent = this.Owner;
-			this.idChildren.Add(entity.Id, entity);
+			child.GetComponent<ChildrenComponent<T>>().Parent = (T)this.Owner;
+			this.idChildren.Add(child.Id, child);
 		}
 
-		public Entity Get(long id)
+		public T Get(long id)
 		{
-			Entity entity = null;
-			this.idChildren.TryGetValue(id, out entity);
-			return entity;
+			T child = null;
+			this.idChildren.TryGetValue(id, out child);
+			return child;
 		}
 
-		public Entity[] GetChildren()
+		public T[] GetChildren()
 		{
 			return this.idChildren.Values.ToArray();
 		}
@@ -50,12 +49,12 @@ namespace Model
 
 		public void Remove(long id)
 		{
-			Entity entity;
-			if (!this.idChildren.TryGetValue(id, out entity))
+			T child;
+			if (!this.idChildren.TryGetValue(id, out child))
 			{
 				return;
 			}
-			this.Remove(entity);
+			this.Remove(child);
 		}
 
 		public override void Dispose()
@@ -67,25 +66,35 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (Entity entity in this.idChildren.Values.ToArray())
+			foreach (T child in this.idChildren.Values.ToArray())
 			{
-				entity.Dispose();
+				child.Dispose();
 			}
 
-			this.Parent?.GetComponent<ChildrenComponent>().Remove(this.Id);
+			this.Parent?.GetComponent<ChildrenComponent<T>>().Remove(this.Id);
 		}
     }
 
-	public static partial class ChildrenHelper
+	public static class ChildrenHelper
 	{
-		public static void Add(this Entity entity, Entity child)
+		public static void AddChild<T>(this T parent, T child) where T: Entity
 		{
-			entity.GetComponent<ChildrenComponent>().Add(child);
+			parent.GetComponent<ChildrenComponent<T>>().Add(child);
 		}
 
-		public static void Remove(this Entity entity, long id)
+		public static void RemoveChild<T>(this T entity, long id) where T: Entity
 		{
-			entity.GetComponent<ChildrenComponent>().Remove(id);
+			entity.GetComponent<ChildrenComponent<T>>().Remove(id);
+		}
+
+		public static T GetChild<T>(this T entity, long id) where T: Entity
+		{
+			return entity.GetComponent<ChildrenComponent<T>>().Get(id);
+		}
+
+		public static T[] GetChildren<T>(this T entity) where T: Entity
+		{
+			return entity.GetComponent<ChildrenComponent<T>>().GetChildren();
 		}
 	}
 }

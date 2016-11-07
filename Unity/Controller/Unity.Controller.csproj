@@ -56,6 +56,7 @@
     <Compile Include="Event\InitSceneStartEvent_InitGame.cs" />
     <Compile Include="Message\R2C_ServerLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity.CSharp.csproj">

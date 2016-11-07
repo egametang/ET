@@ -1,6 +1,5 @@
 ﻿using System;
 using Base;
-using MongoDB.Bson.Serialization.Attributes;
 #if SERVER
 using CommandLine;
 #endif

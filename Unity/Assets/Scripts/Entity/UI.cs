@@ -4,13 +4,19 @@ namespace Model
 {
 	public sealed class UI: Entity
 	{
-		public Entity Scene { get; set; }
+		public Scene Scene { get; set; }
 
-		public UIType UIType { get; set; }
+		public UIType UIType { get; }
 
-		public string Name { get; set; }
+		public string Name
+		{
+			get
+			{
+				return this.GameObject.name;
+			}
+		}
 
-		public GameObject GameObject { get; set; }
+		public GameObject GameObject { get; }
 		
 		public override void Dispose()
 		{
@@ -22,12 +28,19 @@ namespace Model
 			base.Dispose();
 		}
 
-		public UI(): base(EntityType.UI)
+		public void SetAsFirstSibling()
 		{
+			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(long id): base(id, EntityType.UI)
+		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject) : base(EntityType.UI)
 		{
+			this.Scene = scene;
+			this.UIType = uiType;
+
+			gameObject.transform.SetParent(parent?.GameObject.transform);
+			this.GameObject = gameObject;
+			this.AddComponent<ChildrenComponent<UI>>();
 		}
 	}
 }

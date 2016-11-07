@@ -2,7 +2,7 @@
 {
 	public enum UIType
 	{
-		None,
+		Root,
 		UIButton,
 		UILoading,
 		UISkillAndBuff,
