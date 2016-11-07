@@ -40,7 +40,7 @@ namespace Model
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
-			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
+			Assembly[] assemblies = ObjectManager.Instance.GetAssemblies();
 
 			foreach (Assembly assembly in assemblies)
 			{

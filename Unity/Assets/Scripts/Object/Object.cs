@@ -7,22 +7,19 @@ namespace Model
 {
 	public abstract class Object: IDisposable, ISupportInitialize
 	{
-		[BsonIgnore]
-		public static ObjectManager ObjectManager = new ObjectManager();
-
 		[BsonId]
 		public long Id { get; private set; }
 
 		protected Object()
 		{
 			Id = IdGenerater.GenerateId();
-			ObjectManager.Add(this);
+			ObjectManager.Instance.Add(this);
 		}
 
 		protected Object(long id)
 		{
 			this.Id = id;
-			ObjectManager.Add(this);
+			ObjectManager.Instance.Add(this);
 		}
 
 		public virtual void Dispose()
@@ -32,7 +29,7 @@ namespace Model
 				return;
 			}
 
-			ObjectManager.Remove(this.Id);
+			ObjectManager.Instance.Remove(this);
 
 			this.Id = 0;
 		}

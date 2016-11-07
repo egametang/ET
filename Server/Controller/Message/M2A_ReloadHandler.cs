@@ -1,7 +1,6 @@
 ﻿using System;
 using Base;
 using Model;
-using Object = Model.Object;
 
 namespace Controller
 {
@@ -13,7 +12,7 @@ namespace Controller
 			A2M_Reload a2MReload = new A2M_Reload();
 			try
 			{
-				Object.ObjectManager.Register("Controller", DllHelper.GetController());
+				ObjectManager.Instance.Register("Controller", DllHelper.GetController());
 			}
 			catch (Exception e)
 			{

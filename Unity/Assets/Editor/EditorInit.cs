@@ -3,7 +3,6 @@ using Base;
 using UnityEditor;
 using UnityEngine;
 using Model;
-using Object = Model.Object;
 
 namespace MyEditor
 {
@@ -12,6 +11,7 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
+			ObjectManager.Instance.Register("Editor", typeof(EditorInit).Assembly);
 			EditorApplication.update += Update;
 		}
 
@@ -24,12 +24,11 @@ namespace MyEditor
 
 			try
 			{
-				Object.ObjectManager.Update();
+				ObjectManager.Instance.Update();
 			}
 			catch (Exception e)
 			{
-				Object.ObjectManager.Dispose();
-				Object.ObjectManager = new ObjectManager();
+				ObjectManager.Reset();
 				Log.Error(e.ToString());
 			}
 		}

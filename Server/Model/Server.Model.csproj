@@ -173,9 +173,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\ILoader.cs">
       <Link>Object\ILoader.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\IStart.cs">
-      <Link>Object\IStart.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\IUpdate.cs">
       <Link>Object\IUpdate.cs</Link>
     </Compile>

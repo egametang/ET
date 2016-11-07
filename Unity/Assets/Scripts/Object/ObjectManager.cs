@@ -39,19 +39,33 @@ namespace Model
 
 		private Dictionary<Type, IObjectEvent> objectEvents;
 
-		private readonly Dictionary<long, Object> objects = new Dictionary<long, Object>();
+		private readonly HashSet<Object> objects = new HashSet<Object>();
+		private readonly HashSet<Object> updates = new HashSet<Object>();
+		private readonly HashSet<Object> loaders = new HashSet<Object>();
 
-		private List<long> starts = new List<long>();
-		private List<long> newStarts = new List<long>();
+		private static ObjectManager instance = new ObjectManager();
 
-		private List<long> updates = new List<long>(3000);
-		private List<long> newUpdates = new List<long>(3000);
+		public static ObjectManager Instance
+		{
+			get
+			{
+				return instance;
+			}
+		}
 
-		private readonly List<long> loaders = new List<long>();
+		private ObjectManager()
+		{
+		}
+
+		public static void Reset()
+		{
+			instance.Dispose();
+			instance = new ObjectManager();
+		}
 
 		public void Dispose()
 		{
-			foreach (Object o in this.objects.Values.ToArray())
+			foreach (Object o in this.objects.ToArray())
 			{
 				o.Dispose();
 			}
@@ -99,13 +113,8 @@ namespace Model
 
 		private void Load()
 		{
-			foreach (long id in this.loaders)
+			foreach (Object obj in this.loaders)
 			{
-				Object obj;
-				if (!this.objects.TryGetValue(id, out obj))
-				{
-					continue;
-				}
 				IObjectEvent objectEvent;
 				if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 				{
@@ -128,44 +137,51 @@ namespace Model
 				return;
 			}
 
-			this.objects.Add(obj.Id, obj);
+			this.objects.Add(obj);
 			IObjectEvent objectEvent;
 			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
 				return;
 			}
 
-			IStart iStart = objectEvent as IStart;
-			if (iStart != null)
-			{
-				this.newStarts.Add(obj.Id);
-			}
-
 			IUpdate iUpdate = objectEvent as IUpdate;
 			if (iUpdate != null)
 			{
-				this.newUpdates.Add(obj.Id);
+				this.updates.Add(obj);
 			}
 
 			ILoader iLoader = objectEvent as ILoader;
 			if (iLoader != null)
 			{
-				this.loaders.Add(obj.Id);
+				this.loaders.Add(obj);
 			}
 		}
 
-		public void Remove(long id)
+		public void Remove(Object obj)
 		{
-			this.objects.Remove(id);
-		}
+			this.objects.Remove(obj);
 
-		public void Awake(long id)
-		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
+			IObjectEvent objectEvent;
+			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
 				return;
 			}
+
+			IUpdate iUpdate = objectEvent as IUpdate;
+			if (iUpdate != null)
+			{
+				this.updates.Remove(obj);
+			}
+
+			ILoader iLoader = objectEvent as ILoader;
+			if (iLoader != null)
+			{
+				this.loaders.Remove(obj);
+			}
+		}
+
+		public void Awake(Object obj)
+		{
 			IObjectEvent objectEvent;
 			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
@@ -180,13 +196,8 @@ namespace Model
 			iAwake.Awake();
 		}
 
-		public void Awake<P1>(long id, P1 p1)
+		public void Awake<P1>(Object obj, P1 p1)
 		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
-			{
-				return;
-			}
 			IObjectEvent objectEvent;
 			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
@@ -201,13 +212,8 @@ namespace Model
 			iAwake.Awake(p1);
 		}
 
-		public void Awake<P1, P2>(long id, P1 p1, P2 p2)
+		public void Awake<P1, P2>(Object obj, P1 p1, P2 p2)
 		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
-			{
-				return;
-			}
 			IObjectEvent objectEvent;
 			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
@@ -222,13 +228,8 @@ namespace Model
 			iAwake.Awake(p1, p2);
 		}
 
-		public void Awake<P1, P2, P3>(long id, P1 p1, P2 p2, P3 p3)
+		public void Awake<P1, P2, P3>(Object obj, P1 p1, P2 p2, P3 p3)
 		{
-			Object obj;
-			if (!objects.TryGetValue(id, out obj))
-			{
-				return;
-			}
 			IObjectEvent objectEvent;
 			if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 			{
@@ -242,49 +243,11 @@ namespace Model
 			objectEvent.SetValue(obj);
 			iAwake.Awake(p1, p2, p3);
 		}
-
-		private void Start()
-		{
-			starts = newStarts;
-			newStarts = new List<long>();
-			foreach (long id in starts)
-			{
-				Object obj;
-				if (!this.objects.TryGetValue(id, out obj))
-				{
-					continue;
-				}
-				IObjectEvent objectEvent;
-				if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
-				{
-					continue;
-				}
-				IStart iStart = objectEvent as IStart;
-				if (iStart == null)
-				{
-					continue;
-				}
-				objectEvent.SetValue(obj);
-				iStart.Start();
-			}
-		}
 		
 		public void Update()
 		{
-			this.Start();
-
-			// 交换update
-			List<long> tmpUpdate = updates;
-			updates = newUpdates;
-			newUpdates = tmpUpdate;
-			newUpdates.Clear();
-			foreach (long id in updates)
+			foreach (Object obj in updates)
 			{
-				Object obj;
-				if (!objects.TryGetValue(id, out obj))
-				{
-					continue;
-				}
 				IObjectEvent objectEvent;
 				if (!objectEvents.TryGetValue(obj.GetType(), out objectEvent))
 				{
@@ -295,7 +258,6 @@ namespace Model
 				{
 					continue;
 				}
-				newUpdates.Add(id);
 				objectEvent.SetValue(obj);
 				try
 				{
@@ -311,7 +273,7 @@ namespace Model
 		public override string ToString()
 		{
 			var info = new Dictionary<string, int>();
-			foreach (Object obj in objects.Values)
+			foreach (Object obj in objects)
 			{
 				if (info.ContainsKey(obj.GetType().Name))
 				{
@@ -330,7 +292,7 @@ namespace Model
 				sb.Append($"{info[key],10} {key}\r\n");
 			}
 
-			sb.Append($"\r\n start: {newStarts.Count}, update: {newUpdates.Count} total: {this.objects.Count}");
+			sb.Append($"\r\n update: {this.updates.Count} total: {this.objects.Count}");
 			return sb.ToString();
 		}
 	}

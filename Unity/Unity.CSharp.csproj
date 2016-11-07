@@ -130,7 +130,6 @@
     <Compile Include="Assets\Scripts\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Object\ILoader.cs" />
-    <Compile Include="Assets\Scripts\Object\IStart.cs" />
     <Compile Include="Assets\Scripts\Object\IUpdate.cs" />
     <Compile Include="Assets\Scripts\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Object\ObjectEventAttribute.cs" />

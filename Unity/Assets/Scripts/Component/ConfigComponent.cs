@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Base;
-using Object = Model.Object;
 
 namespace Model
 {
@@ -12,7 +10,7 @@ namespace Model
 
 		public void Load()
 		{
-			Assembly assembly = Object.ObjectManager.GetAssembly("Base");
+			Assembly assembly = ObjectManager.Instance.GetAssembly("Base");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();

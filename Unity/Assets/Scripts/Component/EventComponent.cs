@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Base;
-using Object = Model.Object;
 
 namespace Model
 {
@@ -30,7 +29,7 @@ namespace Model
 		public void Load()
 		{
 			this.allEvents = new Dictionary<EventIdType, List<object>>();
-			Assembly[] assemblies = Object.ObjectManager.GetAssemblies();
+			Assembly[] assemblies = ObjectManager.Instance.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

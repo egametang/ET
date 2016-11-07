@@ -2,7 +2,6 @@
 using Base;
 using Model;
 using NLog;
-using Object = Model.Object;
 
 namespace App
 {
@@ -12,8 +11,8 @@ namespace App
 		{
 			try
 			{
-				Object.ObjectManager.Register("Model", typeof(Game).Assembly);
-				Object.ObjectManager.Register("Controller", DllHelper.GetController());
+				ObjectManager.Instance.Register("Model", typeof(Game).Assembly);
+				ObjectManager.Instance.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
@@ -67,7 +66,7 @@ namespace App
 
 				while (true)
 				{
-					Object.ObjectManager.Update();
+					ObjectManager.Instance.Update();
 				}
 			}
 			catch (Exception e)

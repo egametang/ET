@@ -66,7 +66,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Awake(component.Id);
+			ObjectManager.Instance.Awake(component);
 			return component;
 		}
 
@@ -87,7 +87,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Awake(component.Id, p1);
+			ObjectManager.Instance.Awake(component, p1);
 			return component;
 		}
 
@@ -108,7 +108,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Awake(component.Id, p1, p2);
+			ObjectManager.Instance.Awake(component, p1, p2);
 			return component;
 		}
 
@@ -130,7 +130,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Awake(component.Id, p1, p2, p3);
+			ObjectManager.Instance.Awake(component, p1, p2, p3);
 			return component;
 		}
 
@@ -147,7 +147,7 @@ namespace Model
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Awake(component.Id);
+			ObjectManager.Instance.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component
