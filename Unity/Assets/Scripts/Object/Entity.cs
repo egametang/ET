@@ -20,11 +20,13 @@ namespace Model
 		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
+			ObjectManager.Instance.Add(this);
 		}
 
 		protected Entity(long id, EntityType entityType) : base(id)
 		{
 			this.Type = entityType;
+			ObjectManager.Instance.Add(this);
 		}
 		
 		public override void Dispose()
@@ -33,7 +35,7 @@ namespace Model
 			{
 				return;
 			}
-			
+
 			base.Dispose();
 
 			foreach (Component component in this.GetComponents())
@@ -47,6 +49,8 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
+
+			ObjectManager.Instance.Remove(this);
 		}
 
 		public K AddComponent<K>() where K : Component, new()

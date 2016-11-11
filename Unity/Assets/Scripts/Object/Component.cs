@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
 	[BsonKnownTypes(typeof(AConfigComponent))]
-	public abstract class Component : Object
+	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
 		public Entity Owner { get; set; }
@@ -15,10 +16,12 @@ namespace Model
 
 		protected Component()
 		{
+			ObjectManager.Instance.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
+			ObjectManager.Instance.Add(this);
 		}
 
 		protected T GetComponent<T>() where T: Component
@@ -32,8 +35,10 @@ namespace Model
 			{
 				return;
 			}
-			
+
 			base.Dispose();
+			
+			ObjectManager.Instance.Remove(this);
 		}
 	}
 }

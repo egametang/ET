@@ -39,7 +39,6 @@
     <Compile Include="Message\M2A_ReloadHandler.cs" />
     <Compile Include="Message\C2M_ReloadHandler.cs" />
     <Compile Include="Message\R2G_GetLoginKeyHandler.cs" />
-    <Compile Include="Message\C2R_SubscribeLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Message\C2R_LoginHandler.cs" />
   </ItemGroup>

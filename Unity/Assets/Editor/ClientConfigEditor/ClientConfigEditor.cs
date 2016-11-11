@@ -43,7 +43,7 @@ namespace MyEditor
 			{
 				using (StreamWriter sw = new StreamWriter(new FileStream(Path, FileMode.Create)))
 				{
-					sw.Write(MongoHelper.ToJson(this.config));
+					sw.Write(this.config);
 				}
 			}
 		}

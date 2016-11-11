@@ -16,10 +16,5 @@ namespace Model
 		public StartConfig(): base(EntityType.Config)
 		{
 		}
-
-		public object Clone()
-		{
-			return MongoHelper.FromJson<StartConfig>(MongoHelper.ToJson(this));
-		}
 	}
 }

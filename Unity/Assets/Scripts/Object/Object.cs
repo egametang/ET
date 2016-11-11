@@ -5,33 +5,20 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public abstract class Object: IDisposable, ISupportInitialize
+	public abstract class Object: IDisposable, ISupportInitialize, ICloneable
 	{
 		[BsonId]
+		[BsonIgnoreIfDefault]
 		public long Id { get; private set; }
 
 		protected Object()
 		{
 			Id = IdGenerater.GenerateId();
-			ObjectManager.Instance.Add(this);
 		}
 
 		protected Object(long id)
 		{
 			this.Id = id;
-			ObjectManager.Instance.Add(this);
-		}
-
-		public virtual void Dispose()
-		{
-			if (this.Id == 0)
-			{
-				return;
-			}
-
-			ObjectManager.Instance.Remove(this);
-
-			this.Id = 0;
 		}
 
 		public virtual void BeginInit()
@@ -40,6 +27,21 @@ namespace Model
 
 		public virtual void EndInit()
 		{
+		}
+
+		public override string ToString()
+		{
+			return MongoHelper.ToJson(this);
+		}
+
+		public virtual void Dispose()
+		{
+			this.Id = 0;
+		}
+
+		public object Clone()
+		{
+			return MongoHelper.FromJson(this.GetType(), this.ToString());
 		}
 	}
 }

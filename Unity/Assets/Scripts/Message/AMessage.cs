@@ -1,7 +1,10 @@
 ﻿namespace Model
 {
-	public abstract class AMessage
+	public abstract class AMessage: Object
 	{
+		protected AMessage(): base(0)
+		{
+		}
 	}
 
 	public abstract class ARequest : AMessage

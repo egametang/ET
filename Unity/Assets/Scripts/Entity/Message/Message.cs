@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -8,9 +7,9 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2R_Login: ARequest
 	{
-		[BsonElement("a")]
+		[BsonElement("A")]
 		public string Account;
-		[BsonElement("p")]
+		[BsonElement("P")]
 		public string Password;
 	}
 
@@ -18,9 +17,9 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class R2C_Login: AResponse
 	{
-		[BsonElement("a")]
+		[BsonElement("A")]
 		public string Address { get; set; }
-		[BsonElement("k")]
+		[BsonElement("K")]
 		public long Key { get; set; }
 	}
 
@@ -28,26 +27,14 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class R2C_ServerLog: AMessage
 	{
-		[BsonElement("at")]
+		[BsonElement("AT")]
 		public AppType AppType { get; set; }
-		[BsonElement("a")]
+		[BsonElement("A")]
 		public int AppId { get; set; }
-		[BsonElement("t")]
+		[BsonElement("T")]
 		public LogType Type { get; set; }
-		[BsonElement("l")]
+		[BsonElement("L")]
 		public string Log { get; set; }
-	}
-
-	[Message(4)]
-	[BsonIgnoreExtraElements]
-	public class C2R_SubscribeLog: ARequest
-	{
-	}
-
-	[Message(5)]
-	[BsonIgnoreExtraElements]
-	public class R2C_SubscribeLog: AResponse
-	{
 	}
 
 	[Message(6)]
@@ -72,7 +59,7 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class C2G_LoginGate : ARequest
 	{
-		[BsonElement("k")]
+		[BsonElement("K")]
 		public long Key;
 
 		public C2G_LoginGate(long key)

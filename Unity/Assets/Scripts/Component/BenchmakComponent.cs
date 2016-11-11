@@ -17,7 +17,7 @@ namespace Model
 	{
 		private int k;
 
-		private long time1 = TimeHelper.ClientNowTicks();
+		private long time1 = TimeHelper.ClientNow();
 
 		public async void Awake(string address)
 		{
@@ -32,34 +32,37 @@ namespace Model
 
 		private async void TestAsync(NetOuterComponent networkComponent, string address, int j)
 		{
-			using (Session session = networkComponent.Create(address))
+			try
 			{
-				int i = 0;
-				while (i < 10000000)
+				using (Session session = networkComponent.Create(address))
 				{
-					++i;
-					try
+					int i = 0;
+					while (i < 10000000)
 					{
+						++i;
 						await session.Call<C2R_Ping, R2C_Ping>(new C2R_Ping());
 
 						++this.k;
-						if (this.k % 100000 == 0)
+
+						if (this.k % 100000 != 0)
 						{
-							long time2 = TimeHelper.ClientNowTicks();
-							long time = time2 - this.time1;
-							this.time1 = time2;
-							Log.Info($"{j} Benchmark k: {k} 每10W次耗时: {time}");
+							continue;
 						}
-					}
-					catch (RpcException e)
-					{
-						Log.Error(e.ToString());
-					}
-					catch (Exception e)
-					{
-						Log.Error(e.ToString());
+
+						long time2 = TimeHelper.ClientNow();
+						long time = time2 - this.time1;
+						this.time1 = time2;
+						Log.Info($"{j} Benchmark k: {this.k} 每10W次耗时: {time} ms");
 					}
 				}
+			}
+			catch (RpcException e)
+			{
+				Log.Error(e.ToString());
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
 			}
 		}
 
