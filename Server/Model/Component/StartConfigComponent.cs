@@ -7,7 +7,7 @@ using CommandLine;
 namespace Model
 {
 	[ObjectEvent]
-	public class OptionsComponentEvent : ObjectEvent<StartConfigComponent>, IAwake<string[]>
+	public class StartConfigComponentEvent : ObjectEvent<StartConfigComponent>, IAwake<string[]>
 	{
 		public void Awake(string[] args)
 		{

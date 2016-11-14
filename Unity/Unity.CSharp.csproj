@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />

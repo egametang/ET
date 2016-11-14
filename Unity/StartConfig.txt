@@ -1,1 +1,0 @@
-{ "_t" : "StartConfig", "_id" : NumberLong("96871590002689"), "Type" : "Config", "components" : [{ "_t" : "ClientConfig", "_id" : NumberLong("96871590002690"), "Host" : "127.0.0.1", "Port" : 10000 }], "AppId" : 0, "AppType" : "None", "ServerIP" : null }
