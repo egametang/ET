@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4123F183-8F61-27AE-EA27-294DDE0CC7EB}</ProjectGuid>
+    <ProjectGuid>{CF118143-7E37-744F-BE45-3F55345FEC40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,20 +71,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.CSharp.Plugins.csproj">
-      <Project>{1AA60596-6964-87F6-2427-6CA85BBAF27D}</Project>
-      <Name>Unity.CSharp.Plugins</Name>
+    <ProjectReference Include="Unity.Plugins.csproj">
+      <Project>{D1FDB199-0FB7-099D-3771-C6A942E4E326}</Project>
+      <Name>Unity.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Component\BenchmakComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
-    <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
-    <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
@@ -100,12 +98,15 @@
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Config\ACategory.cs" />
-    <Compile Include="Assets\Scripts\Config\AConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Config\AConfig.cs" />
+    <Compile Include="Assets\Scripts\Config\AConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Config\ConfigAttribute.cs" />
     <Compile Include="Assets\Scripts\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Config\ICategory.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
     <Compile Include="Assets\Scripts\Entity\UI.cs" />
@@ -128,23 +129,20 @@
     <Compile Include="Assets\Scripts\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
-    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
-    <Compile Include="Assets\Scripts\Entity\Message\Message.cs" />
     <Compile Include="Assets\Scripts\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Object\Entity.cs" />
+    <Compile Include="Assets\Scripts\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Object\ILoader.cs" />
     <Compile Include="Assets\Scripts\Object\IUpdate.cs" />
     <Compile Include="Assets\Scripts\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Object\ObjectEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Object\ObjectManager.cs" />
-    <Compile Include="Assets\Scripts\Object\EntityType.cs" />
-    <Compile Include="Assets\Scripts\Other\GameException.cs" />
-    <Compile Include="Assets\Scripts\Other\LayerNames.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
-    <Compile Include="Assets\Scripts\Other\Options.cs" />
-    <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
+    <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
+    <Compile Include="Assets\Scripts\Other\LayerNames.cs" />
+    <Compile Include="Assets\Scripts\Other\Options.cs" />
     <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
@@ -153,6 +151,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

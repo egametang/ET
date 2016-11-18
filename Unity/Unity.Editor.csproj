@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{27D29A4B-FDE7-B1BD-E226-B13A243BCA00}</ProjectGuid>
+    <ProjectGuid>{C17F48D3-964E-E97C-3D2E-966F7A6C6D93}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -18,7 +18,6 @@
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -102,13 +101,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.CSharp.Plugins.csproj">
-      <Project>{1AA60596-6964-87F6-2427-6CA85BBAF27D}</Project>
-      <Name>Unity.CSharp.Plugins</Name>
+    <ProjectReference Include="Unity.Plugins.csproj">
+      <Project>{D1FDB199-0FB7-099D-3771-C6A942E4E326}</Project>
+      <Name>Unity.Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.CSharp.csproj">
-      <Project>{4123F183-8F61-27AE-EA27-294DDE0CC7EB}</Project>
-      <Name>Unity.CSharp</Name>
+    <ProjectReference Include="Unity.csproj">
+      <Project>{CF118143-7E37-744F-BE45-3F55345FEC40}</Project>
+      <Name>Unity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -124,5 +123,6 @@
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

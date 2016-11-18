@@ -67,6 +67,14 @@
       <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
       <Name>Unity.CSharp.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Unity.csproj">
+      <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>
+      <Name>Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.Plugins.csproj">
+      <Project>{d1fdb199-0fb7-099d-3771-c6a942e4e326}</Project>
+      <Name>Unity.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Factory\" />
