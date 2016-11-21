@@ -3,34 +3,13 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class BenchmakComponentEvent : DisposerEvent<BenchmakComponent>, IAwake<string>
-	{
-		public void Awake(string address)
-		{
-			BenchmakComponent component = this.GetValue();
-			component.Awake(address);
-		}
-	}
-
 	public class BenchmakComponent : Component
 	{
 		private int k;
 
 		private long time1 = TimeHelper.ClientNow();
 
-		public async void Awake(string address)
-		{
-			NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-
-			for (int i = 0; i < 100; i++)
-			{
-				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
-				TestAsync(networkComponent, address, i);
-			}
-		}
-
-		private async void TestAsync(NetOuterComponent networkComponent, string address, int j)
+		public async void TestAsync(NetOuterComponent networkComponent, string address, int j)
 		{
 			try
 			{

@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\BenchmarkComponentE.cs" />
     <Compile Include="Event\InitSceneStartEvent_InitGame.cs" />
     <Compile Include="Message\R2C_ServerLogHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

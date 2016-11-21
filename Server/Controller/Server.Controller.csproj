@@ -34,6 +34,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Controller\Component\BenchmarkComponentE.cs">
+      <Link>Component\BenchmarkComponentE.cs</Link>
+    </Compile>
+    <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Message\C2G_LoginGateHandler.cs" />
     <Compile Include="Message\C2R_PingHandler.cs" />
     <Compile Include="Message\M2A_ReloadHandler.cs" />

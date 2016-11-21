@@ -5,26 +5,18 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class EventComponentEvent : DisposerEvent<EventComponent>, ILoader, IAwake
-	{
-		public void Load()
-		{
-			this.GetValue().Load();
-		}
-
-		public void Awake()
-		{
-			this.GetValue().Load();
-		}
-	}
-
 	/// <summary>
 	/// 事件分发
 	/// </summary>
+	[DisposerEvent(typeof(EventComponent))]
 	public class EventComponent: Component
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
+
+		public void Awake()
+		{
+			this.Load();
+		}
 
 		public void Load()
 		{

@@ -1,18 +1,8 @@
-﻿using Base;
-using UnityEngine;
-using Component = UnityEngine.Component;
+﻿using UnityEngine;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class GameObjectComponentEvent : DisposerEvent<GameObjectComponent>, IAwake<GameObject>
-	{
-		public void Awake(GameObject gameObject)
-		{
-			this.GetValue().Awake(gameObject);
-		}
-	}
-
+	[DisposerEvent(typeof(GameObjectComponent))]
 	public class GameObjectComponent : Component
     {
 		public GameObject GameObject { get; private set; }

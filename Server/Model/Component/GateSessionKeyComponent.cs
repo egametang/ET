@@ -3,15 +3,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class GateSessionKeyComponentEvent : DisposerEvent<GateSessionKeyComponent>, IAwake
-	{
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-	}
-
+	[DisposerEvent(typeof(GateSessionKeyComponent))]
 	public class GateSessionKeyComponent : Component
 	{
 		private TimerComponent timerComponent;

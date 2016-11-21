@@ -1,17 +1,6 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Model
 {
-	[DisposerEvent]
-	public class RobotComponentEvent : DisposerEvent<RobotComponent>, IAwake
-	{
-		public void Awake()
-		{
-			RobotComponent component = this.GetValue();
-			component.Awake();
-		}
-	}
-
+	[DisposerEvent(typeof(RobotComponent))]
 	public class RobotComponent : Component
     {
 		public void Awake()

@@ -3,15 +3,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class ClientConfigComponentEvent : DisposerEvent<ClientConfigComponent>, IAwake
-	{
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-	}
-
+	[DisposerEvent(typeof(ClientConfigComponent))]
 	public class ClientConfigComponent : Component
     {
 		public StartConfig Config { get; private set; }

@@ -7,24 +7,10 @@ using UnityEngine;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class UIComponentEvent : DisposerEvent<UIComponent>, IAwake, ILoader
-	{
-		public void Load()
-		{
-			UIComponent component = GetValue();
-			component.Load();
-		}
-
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-	}
-	
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
+	[DisposerEvent(typeof(UIComponent))]
 	public class UIComponent: Component
 	{
         private UI Root;

@@ -6,29 +6,43 @@ using Base;
 
 namespace Model
 {
-	public interface IDisposerEvent
+	[Flags]
+	public enum DisposerEventType
 	{
-		Type ValueType();
-		void SetValue(object value);
+		Awake = 1,
+		Awake1 = 2,
+		Awake2 = 4,
+		Awake3 = 8,
+		Update = 16,
+		Load = 32,
 	}
 
-	public abstract class DisposerEvent<T> : IDisposerEvent
+	public class DisposerTypeInfo
 	{
-		private T value;
+		private readonly Dictionary<DisposerEventType, MethodInfo> infos = new Dictionary<DisposerEventType, MethodInfo>();
 
-		protected T GetValue()
+		public void Add(DisposerEventType type, MethodInfo methodInfo)
 		{
-			return value;
+			try
+			{
+				this.infos.Add(type, methodInfo);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"Add DisposerEventType MethodInfo Error: {type}", e);
+			}
 		}
 
-		public void SetValue(object v)
+		public MethodInfo Get(DisposerEventType type)
 		{
-			this.value = (T)v;
+			MethodInfo methodInfo;
+			this.infos.TryGetValue(type, out methodInfo);
+			return methodInfo;
 		}
 
-		public Type ValueType()
+		public DisposerEventType[] GetDisposerEvent2Types()
 		{
-			return typeof(T);
+			return this.infos.Keys.ToArray();
 		}
 	}
 
@@ -36,39 +50,95 @@ namespace Model
 	{
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
-		private Dictionary<Type, IDisposerEvent> disposerEvents;
+		private readonly Dictionary<DisposerEventType, HashSet<Disposer>> disposers = new Dictionary<DisposerEventType, HashSet<Disposer>>();
 
-		private readonly HashSet<Disposer> updates = new HashSet<Disposer>();
-		private readonly HashSet<Disposer> loaders = new HashSet<Disposer>();
+		private Dictionary<Type, DisposerTypeInfo> eventInfo;
+
+		public DisposerEventManager()
+		{
+			foreach (DisposerEventType t in Enum.GetValues(typeof(DisposerEventType)))
+			{
+				this.disposers.Add(t, new HashSet<Disposer>());
+			}
+		}
 
 		public void Register(string name, Assembly assembly)
 		{
-			this.assemblies[name] = assembly;
+			this.eventInfo = new Dictionary<Type, DisposerTypeInfo>();
 
-			this.disposerEvents = new Dictionary<Type, IDisposerEvent>();
+			this.assemblies[name] = assembly;
+			
 			foreach (Assembly ass in this.assemblies.Values)
 			{
 				Type[] types = ass.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(DisposerEventAttribute), false);
-
+					object[] attrs = type.GetCustomAttributes(typeof(DisposerEventAttribute), true);
 					if (attrs.Length == 0)
 					{
 						continue;
 					}
 
-					object obj = Activator.CreateInstance(type);
-					IDisposerEvent disposerEvent = obj as IDisposerEvent;
-					if (disposerEvent == null)
+					DisposerEventAttribute DisposerEventAttribute = attrs[0] as DisposerEventAttribute;
+
+					Type type2 = DisposerEventAttribute.ClassType;
+
+					if (!this.eventInfo.ContainsKey(type2))
 					{
-						Log.Error($"组件事件没有继承IComponentEvent: {type.Name}");
+						this.eventInfo.Add(type2, new DisposerTypeInfo());
 					}
-					this.disposerEvents[disposerEvent.ValueType()] = disposerEvent;
+
+					foreach (MethodInfo methodInfo in type.GetMethods())
+					{
+						int n = methodInfo.GetParameters().Length;
+						if (methodInfo.IsStatic)
+						{
+							--n;
+						}
+						string sn = n > 0? $"{methodInfo.Name}{n}" : methodInfo.Name;
+						foreach (string s in Enum.GetNames(typeof(DisposerEventType)))
+						{
+							if (s != sn)
+							{
+								continue;
+							}
+							DisposerEventType t = EnumHelper.FromString<DisposerEventType>(s);
+							this.eventInfo[type2].Add(t, methodInfo);
+							break;
+						}
+					}
 				}
 			}
 
 			this.Load();
+		}
+
+		public void Add(Disposer disposer)
+		{
+			DisposerTypeInfo disposerTypeInfo;
+			if (!this.eventInfo.TryGetValue(disposer.GetType(), out disposerTypeInfo))
+			{
+				return;
+			}
+
+			foreach (DisposerEventType disposerEvent2Type in disposerTypeInfo.GetDisposerEvent2Types())
+			{
+				this.disposers[disposerEvent2Type].Add(disposer);
+			}
+		}
+
+		public void Remove(Disposer disposer)
+		{
+			DisposerTypeInfo disposerTypeInfo;
+			if (!this.eventInfo.TryGetValue(disposer.GetType(), out disposerTypeInfo))
+			{
+				return;
+			}
+
+			foreach (DisposerEventType disposerEvent2Type in disposerTypeInfo.GetDisposerEvent2Types())
+			{
+				this.disposers[disposerEvent2Type].Remove(disposer);
+			}
 		}
 
 		public Assembly GetAssembly(string name)
@@ -83,157 +153,53 @@ namespace Model
 
 		private void Load()
 		{
-			foreach (Disposer disposer in this.loaders)
-			{
-				IDisposerEvent disposerEvent;
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-				{
-					continue;
-				}
-				ILoader iLoader = disposerEvent as ILoader;
-				if (iLoader == null)
-				{
-					continue;
-				}
-				disposerEvent.SetValue(disposer);
-				iLoader.Load();
-			}
-		}
-
-		public void Add(Disposer disposer)
-		{
-			if (this.disposerEvents == null)
+			HashSet<Disposer> list;
+			if (!this.disposers.TryGetValue(DisposerEventType.Update, out list))
 			{
 				return;
 			}
-			
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
+			foreach (Disposer disposer in list)
 			{
-				return;
-			}
-
-			IUpdate iUpdate = disposerEvent as IUpdate;
-			if (iUpdate != null)
-			{
-				this.updates.Add(disposer);
-			}
-
-			ILoader iLoader = disposerEvent as ILoader;
-			if (iLoader != null)
-			{
-				this.loaders.Add(disposer);
-			}
-		}
-
-		public void Remove(Disposer disposer)
-		{
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-			{
-				return;
-			}
-
-			IUpdate iUpdate = disposerEvent as IUpdate; 
-			if (iUpdate != null)
-			{
-				this.updates.Remove(disposer);
-			}
-
-			ILoader iLoader = disposerEvent as ILoader;
-			if (iLoader != null)
-			{
-				this.loaders.Remove(disposer);
+				DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+				disposerTypeInfo.Get(DisposerEventType.Load).Run(disposer);
 			}
 		}
 
 		public void Awake(Disposer disposer)
 		{
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-			{
-				return;
-			}
-			IAwake iAwake = disposerEvent as IAwake;
-			if (iAwake == null)
-			{
-				return;
-			}
-			disposerEvent.SetValue(disposer);
-			iAwake.Awake();
+			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+			disposerTypeInfo.Get(DisposerEventType.Awake)?.Run(disposer);
 		}
 
-		public void Awake<P1>(Disposer disposer, P1 p1)
+		public void Awake(Disposer disposer, object p1)
 		{
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-			{
-				return;
-			}
-			IAwake<P1> iAwake = disposerEvent as IAwake<P1>;
-			if (iAwake == null)
-			{
-				return;
-			}
-			disposerEvent.SetValue(disposer);
-			iAwake.Awake(p1);
+			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+			disposerTypeInfo.Get(DisposerEventType.Awake1)?.Run(disposer, p1);
 		}
 
-		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
+		public void Awake(Disposer disposer, object p1, object p2)
 		{
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-			{
-				return;
-			}
-			IAwake<P1, P2> iAwake = disposerEvent as IAwake<P1, P2>;
-			if (iAwake == null)
-			{
-				return;
-			}
-			disposerEvent.SetValue(disposer);
-			iAwake.Awake(p1, p2);
+			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+			disposerTypeInfo.Get(DisposerEventType.Awake2)?.Run(disposer, p1, p2 );
 		}
 
-		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
+		public void Awake(Disposer disposer, object p1, object p2, object p3)
 		{
-			IDisposerEvent disposerEvent;
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-			{
-				return;
-			}
-			IAwake<P1, P2, P3> iAwake = disposerEvent as IAwake<P1, P2, P3>;
-			if (iAwake == null)
-			{
-				return;
-			}
-			disposerEvent.SetValue(disposer);
-			iAwake.Awake(p1, p2, p3);
+			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+			disposerTypeInfo.Get(DisposerEventType.Awake3)?.Run(disposer, p1, p2, p3 );
 		}
-		
+
 		public void Update()
 		{
-			foreach (Disposer disposer in updates)
+			HashSet<Disposer> list;
+			if (!this.disposers.TryGetValue(DisposerEventType.Update, out list))
 			{
-				IDisposerEvent disposerEvent;
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
-				{
-					continue;
-				}
-				IUpdate iUpdate = disposerEvent as IUpdate;
-				if (iUpdate == null)
-				{
-					continue;
-				}
-				disposerEvent.SetValue(disposer);
-				try
-				{
-					iUpdate.Update();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
+				return;
+			}
+			foreach (Disposer disposer in list)
+			{
+				DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
+				disposerTypeInfo.Get(DisposerEventType.Update).Run(disposer);
 			}
 		}
 	}

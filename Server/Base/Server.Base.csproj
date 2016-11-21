@@ -68,6 +68,9 @@
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MD5Helper.cs">
       <Link>Helper\MD5Helper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MethodInfoHelper.cs">
+      <Link>Helper\MethodInfoHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Plugins\Base\Helper\MongoHelper.cs">
       <Link>Helper\MongoHelper.cs</Link>
     </Compile>

@@ -6,15 +6,7 @@ using CommandLine;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class StartConfigComponentEvent : DisposerEvent<StartConfigComponent>, IAwake<string[]>
-	{
-		public void Awake(string[] args)
-		{
-			this.GetValue().Awake(args);
-		}
-	}
-
+	[DisposerEvent(typeof(StartConfigComponent))]
 	public class StartConfigComponent: Component
 	{
 		private readonly List<StartConfig> allConfigs = new List<StartConfig>();

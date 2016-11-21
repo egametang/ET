@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Base;
+using MongoDB.Bson;
 
 namespace Model
 {
@@ -206,7 +207,7 @@ namespace Model
 				rpcId = rpcId | 0x40000000;
 			}
 
-			byte[] messageBytes = MongoHelper.ToBson(message);
+			byte[] messageBytes = message.ToBson();
 			if (messageBytes.Length > 100)
 			{
 				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);

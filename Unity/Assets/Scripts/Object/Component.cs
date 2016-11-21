@@ -21,7 +21,7 @@ namespace Model
 		{
 		}
 
-		protected T GetComponent<T>() where T: Component
+		public T GetComponent<T>() where T: Component
 		{
 			return this.Owner.GetComponent<T>();
 		}

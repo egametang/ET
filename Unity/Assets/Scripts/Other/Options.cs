@@ -1,5 +1,6 @@
 ﻿using System;
 using Base;
+using MongoDB.Bson;
 #if SERVER
 using CommandLine;
 #endif
@@ -25,7 +26,7 @@ namespace Model
 
 		public object Clone()
 		{
-			return MongoHelper.FromBson<Options>(MongoHelper.ToBson(this));
+			return MongoHelper.FromBson<Options>(this.ToBson());
 		}
 	}
 }

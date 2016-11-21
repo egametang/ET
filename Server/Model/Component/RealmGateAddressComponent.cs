@@ -3,31 +3,9 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class RealmGateAddressComponentEvent : DisposerEvent<RealmGateAddressComponent>, IAwake
-	{
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-	}
-
 	public class RealmGateAddressComponent : Component
 	{
-		private readonly List<StartConfig> GateAddress = new List<StartConfig>();
-
-		public void Awake()
-		{
-			StartConfig[] startConfigs = this.GetComponent<StartConfigComponent>().GetAll();
-			foreach (StartConfig config in startConfigs)
-			{
-				if (!config.AppType.Is(AppType.Gate))
-				{
-					continue;
-				}
-				this.GateAddress.Add(config);
-			}
-		}
+		public readonly List<StartConfig> GateAddress = new List<StartConfig>();
 
 		public StartConfig GetAddress()
 		{

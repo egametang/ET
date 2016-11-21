@@ -5,24 +5,10 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class MessageHandlerComponentEvent : DisposerEvent<MessageDispatherComponent>, ILoader, IAwake<AppType>
-	{
-		public void Load()
-		{
-			this.GetValue().Load();
-		}
-
-		public void Awake(AppType appType)
-		{
-			this.GetValue().Awake(appType);
-		}
-	}
-
-	
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
+	[DisposerEvent(typeof(MessageDispatherComponent))]
 	public class MessageDispatherComponent: Component
 	{
 		private AppType AppType;

@@ -10,13 +10,13 @@ namespace Model
 		Manager = 1,
 		Realm = 2,
 		Gate = 4,
+
+		Benchmark = 8,
+		Client = 16,
+		Robot = 32,
+
 		// 7
 		AllServer = Manager | Realm | Gate,
-
-		Benchmark,
-
-		Client,
-		Robot,
 	}
 
 	public static class AppTypeHelper

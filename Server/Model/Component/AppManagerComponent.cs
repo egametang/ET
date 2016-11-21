@@ -6,15 +6,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class AppManagerComponentEvent : DisposerEvent<AppManagerComponent>, IAwake
-	{
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-	}
-
+	[DisposerEvent(typeof(AppManagerComponent))]
 	public class AppManagerComponent: Component
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();

@@ -3,26 +3,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent]
-	public class NetInnerComponentEvent : DisposerEvent<NetInnerComponent>, IUpdate, IAwake, IAwake<string, int>
-	{
-		public void Update()
-		{
-			NetworkComponent component = this.GetValue();
-			component.Update();
-		}
-
-		public void Awake()
-		{
-			this.GetValue().Awake();
-		}
-
-		public void Awake(string host, int port)
-		{
-			this.GetValue().Awake(host, port);
-		}
-	}
-
+	[DisposerEvent(typeof(NetInnerComponent))]
 	public class NetInnerComponent : NetworkComponent
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
