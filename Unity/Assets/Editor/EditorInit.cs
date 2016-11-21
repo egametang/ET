@@ -11,7 +11,7 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			ObjectManager.Instance.Register("Editor", typeof(EditorInit).Assembly);
+			DisposerManager.Instance.Register("Editor", typeof(EditorInit).Assembly);
 			EditorApplication.update += Update;
 		}
 
@@ -24,11 +24,11 @@ namespace MyEditor
 
 			try
 			{
-				ObjectManager.Instance.Update();
+				DisposerManager.Instance.Update();
 			}
 			catch (Exception e)
 			{
-				ObjectManager.Reset();
+				DisposerManager.Reset();
 				Log.Error(e.ToString());
 			}
 		}

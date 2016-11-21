@@ -6,8 +6,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IAwake
+	[DisposerEvent]
+	public class AppManagerComponentEvent : DisposerEvent<AppManagerComponent>, IAwake
 	{
 		public void Awake()
 		{

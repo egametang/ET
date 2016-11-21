@@ -1,6 +1,7 @@
 ﻿using System;
 using Base;
 using Model;
+using MongoDB.Bson;
 using NLog;
 
 namespace App
@@ -11,8 +12,8 @@ namespace App
 		{
 			try
 			{
-				ObjectManager.Instance.Register("Model", typeof(Game).Assembly);
-				ObjectManager.Instance.Register("Controller", DllHelper.GetController());
+				DisposerManager.Instance.Register("Model", typeof(Game).Assembly);
+				DisposerManager.Instance.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
@@ -23,6 +24,9 @@ namespace App
 
 				Log.Info("server start........................");
 
+				Unit unit = new Unit(UnitType.Hero);
+				Log.Debug(unit.ToJson());
+				
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
 				
@@ -66,7 +70,7 @@ namespace App
 
 				while (true)
 				{
-					ObjectManager.Instance.Update();
+					DisposerManager.Instance.Update();
 				}
 			}
 			catch (Exception e)

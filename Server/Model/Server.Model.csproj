@@ -113,6 +113,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs">
       <Link>Entity\Session.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Unit.cs">
+      <Link>Entity\Unit.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Event\AEventAttribute.cs">
       <Link>Event\AEventAttribute.cs</Link>
     </Compile>
@@ -161,6 +164,15 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Component.cs">
       <Link>Object\Component.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\Disposer.cs">
+      <Link>Object\Disposer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerEventAttribute.cs">
+      <Link>Object\DisposerEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerManager.cs">
+      <Link>Object\DisposerManager.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
       <Link>Object\Entity.cs</Link>
     </Compile>
@@ -178,12 +190,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Object.cs">
       <Link>Object\Object.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\ObjectEventAttribute.cs">
-      <Link>Object\ObjectEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\ObjectManager.cs">
-      <Link>Object\ObjectManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>

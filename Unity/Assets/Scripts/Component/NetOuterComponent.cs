@@ -2,8 +2,8 @@
 
 namespace Model
 {
-	[ObjectEvent]
-	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IUpdate, IAwake, IAwake<string, int>
+	[DisposerEvent]
+	public class NetOuterComponentEvent : DisposerEvent<NetOuterComponent>, IUpdate, IAwake, IAwake<string, int>
 	{
 		public void Update()
 		{

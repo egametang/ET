@@ -10,7 +10,7 @@ namespace Model
 
 		public void Load()
 		{
-			Assembly assembly = ObjectManager.Instance.GetAssembly("Base");
+			Assembly assembly = DisposerManager.Instance.GetAssembly("Base");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();

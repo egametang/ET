@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class ClientConfigComponentEvent : ObjectEvent<ClientConfigComponent>, IAwake
+	[DisposerEvent]
+	public class ClientConfigComponentEvent : DisposerEvent<ClientConfigComponent>, IAwake
 	{
 		public void Awake()
 		{

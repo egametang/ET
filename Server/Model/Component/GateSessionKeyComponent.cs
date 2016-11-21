@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class GateSessionKeyComponentEvent : ObjectEvent<GateSessionKeyComponent>, IAwake
+	[DisposerEvent]
+	public class GateSessionKeyComponentEvent : DisposerEvent<GateSessionKeyComponent>, IAwake
 	{
 		public void Awake()
 		{

@@ -4,8 +4,8 @@ using Component = UnityEngine.Component;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class GameObjectComponentEvent : ObjectEvent<GameObjectComponent>, IAwake<GameObject>
+	[DisposerEvent]
+	public class GameObjectComponentEvent : DisposerEvent<GameObjectComponent>, IAwake<GameObject>
 	{
 		public void Awake(GameObject gameObject)
 		{

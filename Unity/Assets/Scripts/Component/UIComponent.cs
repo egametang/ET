@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class UIComponentEvent : ObjectEvent<UIComponent>, IAwake, ILoader
+	[DisposerEvent]
+	public class UIComponentEvent : DisposerEvent<UIComponent>, IAwake, ILoader
 	{
 		public void Load()
 		{
@@ -63,7 +63,7 @@ namespace Model
 		{
 			this.UiTypes = new Dictionary<UIType, IUIFactory>();
 
-			Assembly[] assemblies = ObjectManager.Instance.GetAssemblies();
+			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

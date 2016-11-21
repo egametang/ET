@@ -5,11 +5,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public abstract class Object: IDisposable, ISupportInitialize, ICloneable
+	public abstract class Object: ISupportInitialize, ICloneable
 	{
 		[BsonId]
 		[BsonIgnoreIfDefault]
-		public long Id { get; private set; }
+		public long Id { get; protected set; }
 
 		protected Object()
 		{
@@ -31,17 +31,22 @@ namespace Model
 
 		public override string ToString()
 		{
+			return this.ToJson();
+		}
+
+		public string ToJson()
+		{
 			return MongoHelper.ToJson(this);
 		}
 
-		public virtual void Dispose()
+		public byte[] ToBson()
 		{
-			this.Id = 0;
+			return MongoHelper.ToBson(this);
 		}
 
 		public object Clone()
 		{
-			return MongoHelper.FromJson(this.GetType(), this.ToString());
+			return MongoHelper.FromBson(this.GetType(), this.ToBson());
 		}
 	}
 }

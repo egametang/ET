@@ -5,8 +5,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class MessageHandlerComponentEvent : ObjectEvent<MessageDispatherComponent>, ILoader, IAwake<AppType>
+	[DisposerEvent]
+	public class MessageHandlerComponentEvent : DisposerEvent<MessageDispatherComponent>, ILoader, IAwake<AppType>
 	{
 		public void Load()
 		{
@@ -40,7 +40,7 @@ namespace Model
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
-			Assembly[] assemblies = ObjectManager.Instance.GetAssemblies();
+			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
 
 			foreach (Assembly assembly in assemblies)
 			{

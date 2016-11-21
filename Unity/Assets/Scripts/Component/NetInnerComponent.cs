@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class NetInnerComponentEvent : ObjectEvent<NetInnerComponent>, IUpdate, IAwake, IAwake<string, int>
+	[DisposerEvent]
+	public class NetInnerComponentEvent : DisposerEvent<NetInnerComponent>, IUpdate, IAwake, IAwake<string, int>
 	{
 		public void Update()
 		{

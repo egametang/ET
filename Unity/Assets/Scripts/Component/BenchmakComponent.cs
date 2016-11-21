@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class BenchmakComponentEvent : ObjectEvent<BenchmakComponent>, IAwake<string>
+	[DisposerEvent]
+	public class BenchmakComponentEvent : DisposerEvent<BenchmakComponent>, IAwake<string>
 	{
 		public void Awake(string address)
 		{

@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class RealmGateAddressComponentEvent : ObjectEvent<RealmGateAddressComponent>, IAwake
+	[DisposerEvent]
+	public class RealmGateAddressComponentEvent : DisposerEvent<RealmGateAddressComponent>, IAwake
 	{
 		public void Awake()
 		{

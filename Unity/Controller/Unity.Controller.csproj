@@ -59,14 +59,6 @@
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Unity.CSharp.csproj">
-      <Project>{4123f183-8f61-27ae-ea27-294dde0cc7eb}</Project>
-      <Name>Unity.CSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Unity.CSharp.Plugins.csproj">
-      <Project>{1aa60596-6964-87f6-2427-6ca85bbaf27d}</Project>
-      <Name>Unity.CSharp.Plugins</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Unity.csproj">
       <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>
       <Name>Unity</Name>

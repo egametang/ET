@@ -5,8 +5,8 @@ using Base;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class EventComponentEvent : ObjectEvent<EventComponent>, ILoader, IAwake
+	[DisposerEvent]
+	public class EventComponentEvent : DisposerEvent<EventComponent>, ILoader, IAwake
 	{
 		public void Load()
 		{
@@ -29,7 +29,7 @@ namespace Model
 		public void Load()
 		{
 			this.allEvents = new Dictionary<EventIdType, List<object>>();
-			Assembly[] assemblies = ObjectManager.Instance.GetAssemblies();
+			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

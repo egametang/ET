@@ -6,8 +6,8 @@ using CommandLine;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class StartConfigComponentEvent : ObjectEvent<StartConfigComponent>, IAwake<string[]>
+	[DisposerEvent]
+	public class StartConfigComponentEvent : DisposerEvent<StartConfigComponent>, IAwake<string[]>
 	{
 		public void Awake(string[] args)
 		{

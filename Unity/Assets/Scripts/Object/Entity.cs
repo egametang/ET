@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public class Entity: Object
+	public class Entity: Disposer
 	{
 		public EntityType Type { get; set; }
 
@@ -20,13 +20,12 @@ namespace Model
 		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
-			ObjectManager.Instance.Add(this);
+			
 		}
 
 		protected Entity(long id, EntityType entityType) : base(id)
 		{
 			this.Type = entityType;
-			ObjectManager.Instance.Add(this);
 		}
 		
 		public override void Dispose()
@@ -49,8 +48,6 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-
-			ObjectManager.Instance.Remove(this);
 		}
 
 		public K AddComponent<K>() where K : Component, new()
@@ -70,7 +67,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Instance.Awake(component);
+			DisposerManager.Instance.Awake(component);
 			return component;
 		}
 
@@ -91,7 +88,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Instance.Awake(component, p1);
+			DisposerManager.Instance.Awake(component, p1);
 			return component;
 		}
 
@@ -112,7 +109,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Instance.Awake(component, p1, p2);
+			DisposerManager.Instance.Awake(component, p1, p2);
 			return component;
 		}
 
@@ -134,7 +131,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Instance.Awake(component, p1, p2, p3);
+			DisposerManager.Instance.Awake(component, p1, p2, p3);
 			return component;
 		}
 
@@ -151,7 +148,7 @@ namespace Model
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			ObjectManager.Instance.Awake(component);
+			DisposerManager.Instance.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component

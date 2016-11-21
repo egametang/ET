@@ -3,7 +3,7 @@
 namespace Model
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class ObjectEventAttribute: Attribute
+	public class DisposerEventAttribute: Attribute
 	{
 	}
 }

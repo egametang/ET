@@ -2,8 +2,8 @@
 
 namespace Model
 {
-	[ObjectEvent]
-	public class RobotComponentEvent : ObjectEvent<RobotComponent>, IAwake
+	[DisposerEvent]
+	public class RobotComponentEvent : DisposerEvent<RobotComponent>, IAwake
 	{
 		public void Awake()
 		{

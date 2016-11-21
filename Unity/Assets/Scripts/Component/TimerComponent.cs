@@ -12,8 +12,8 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent]
-	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	[DisposerEvent]
+	public class TimerComponentEvent : DisposerEvent<TimerComponent>, IUpdate
 	{
 		public void Update()
 		{
