@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base;
 
 namespace Model
 {
@@ -10,7 +11,7 @@ namespace Model
 
 		public void Load()
 		{
-			Assembly assembly = DisposerManager.Instance.GetAssembly("Base");
+			Assembly assembly = Game.DisposerEventManager.GetAssembly("Base");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();

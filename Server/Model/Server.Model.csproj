@@ -173,8 +173,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerEventAttribute.cs">
       <Link>Object\DisposerEventAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerManager.cs">
-      <Link>Object\DisposerManager.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerEventManager.cs">
+      <Link>Object\DisposerEventManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
       <Link>Object\Entity.cs</Link>

@@ -7,18 +7,27 @@ namespace Model
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{
-			DisposerManager.Instance.Add(this);
+			Game.Add(this);
 		}
 
 		protected Disposer(long id): base(id)
 		{
-			DisposerManager.Instance.Add(this);
+			Game.Add(this);
 		}
 
 		public virtual void Dispose()
 		{
-			DisposerManager.Instance.Remove(this);
+			Game.Remove(this);
 			this.Id = 0;
+		}
+
+		public override void BeginInit()
+		{
+		}
+
+		public override void EndInit()
+		{
+			Game.Add(this);
 		}
 	}
 }

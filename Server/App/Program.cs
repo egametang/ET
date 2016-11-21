@@ -12,8 +12,8 @@ namespace App
 		{
 			try
 			{
-				DisposerManager.Instance.Register("Model", typeof(Game).Assembly);
-				DisposerManager.Instance.Register("Controller", DllHelper.GetController());
+				Game.DisposerEventManager.Register("Model", typeof(Game).Assembly);
+				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
 
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
@@ -70,7 +70,7 @@ namespace App
 
 				while (true)
 				{
-					DisposerManager.Instance.Update();
+					Game.Update();
 				}
 			}
 			catch (Exception e)

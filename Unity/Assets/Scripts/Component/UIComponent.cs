@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Base;
 using UnityEngine;
 
 namespace Model
@@ -63,7 +64,7 @@ namespace Model
 		{
 			this.UiTypes = new Dictionary<UIType, IUIFactory>();
 
-			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
+			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

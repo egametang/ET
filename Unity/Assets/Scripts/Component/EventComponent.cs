@@ -29,7 +29,7 @@ namespace Model
 		public void Load()
 		{
 			this.allEvents = new Dictionary<EventIdType, List<object>>();
-			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
+			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

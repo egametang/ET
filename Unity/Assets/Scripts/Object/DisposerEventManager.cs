@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Base;
 
 namespace Model
@@ -33,43 +32,14 @@ namespace Model
 		}
 	}
 
-	public sealed class DisposerManager : IDisposable
+	public sealed class DisposerEventManager
 	{
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
 		private Dictionary<Type, IDisposerEvent> disposerEvents;
 
-		private readonly HashSet<Disposer> disposers = new HashSet<Disposer>();
 		private readonly HashSet<Disposer> updates = new HashSet<Disposer>();
 		private readonly HashSet<Disposer> loaders = new HashSet<Disposer>();
-
-		private static DisposerManager instance = new DisposerManager();
-
-		public static DisposerManager Instance
-		{
-			get
-			{
-				return instance;
-			}
-		}
-
-		private DisposerManager()
-		{
-		}
-
-		public static void Reset()
-		{
-			instance.Dispose();
-			instance = new DisposerManager();
-		}
-
-		public void Dispose()
-		{
-			foreach (Disposer o in this.disposers.ToArray())
-			{
-				o.Dispose();
-			}
-		}
 
 		public void Register(string name, Assembly assembly)
 		{
@@ -136,8 +106,7 @@ namespace Model
 			{
 				return;
 			}
-
-			this.disposers.Add(disposer);
+			
 			IDisposerEvent disposerEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
 			{
@@ -159,15 +128,13 @@ namespace Model
 
 		public void Remove(Disposer disposer)
 		{
-			this.disposers.Remove(disposer);
-
 			IDisposerEvent disposerEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out disposerEvent))
 			{
 				return;
 			}
 
-			IUpdate iUpdate = disposerEvent as IUpdate;
+			IUpdate iUpdate = disposerEvent as IUpdate; 
 			if (iUpdate != null)
 			{
 				this.updates.Remove(disposer);
@@ -268,32 +235,6 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-		}
-
-		public override string ToString()
-		{
-			var info = new Dictionary<string, int>();
-			foreach (Disposer obj in this.disposers)
-			{
-				if (info.ContainsKey(obj.GetType().Name))
-				{
-					info[obj.GetType().Name] += 1;
-				}
-				else
-				{
-					info[obj.GetType().Name] = 1;
-				}
-			}
-			info = info.OrderByDescending(s => s.Value).ToDictionary(p => p.Key, p => p.Value);
-			StringBuilder sb = new StringBuilder();
-			sb.Append("\r\n");
-			foreach (string key in info.Keys)
-			{
-				sb.Append($"{info[key],10} {key}\r\n");
-			}
-
-			sb.Append($"\r\n update: {this.updates.Count} total: {this.disposers.Count}");
-			return sb.ToString();
 		}
 	}
 }

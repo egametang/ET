@@ -8,8 +8,8 @@ namespace Model
 	{
 		private void Start()
 		{
-			DisposerManager.Instance.Register("Model", typeof(Game).Assembly);
-			DisposerManager.Instance.Register("Controller", DllHelper.GetController());
+			Game.DisposerEventManager.Register("Model", typeof(Game).Assembly);
+			Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
 
 			Game.Scene.AddComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 		}
@@ -18,7 +18,7 @@ namespace Model
 		{
 			try
 			{
-				DisposerManager.Instance.Update();
+				Game.Update();
 			}
 			catch (Exception e)
 			{
@@ -28,7 +28,7 @@ namespace Model
 
 		private void OnApplicationQuit()
 		{
-			Game.Close();
+			Game.CloseScene();
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace Controller
 			A2M_Reload a2MReload = new A2M_Reload();
 			try
 			{
-				DisposerManager.Instance.Register("Controller", DllHelper.GetController());
+				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
 			}
 			catch (Exception e)
 			{

@@ -66,7 +66,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			DisposerManager.Instance.Awake(component);
+			Game.DisposerEventManager.Awake(component);
 			return component;
 		}
 
@@ -87,7 +87,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			DisposerManager.Instance.Awake(component, p1);
+			Game.DisposerEventManager.Awake(component, p1);
 			return component;
 		}
 
@@ -108,7 +108,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			DisposerManager.Instance.Awake(component, p1, p2);
+			Game.DisposerEventManager.Awake(component, p1, p2);
 			return component;
 		}
 
@@ -130,7 +130,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			DisposerManager.Instance.Awake(component, p1, p2, p3);
+			Game.DisposerEventManager.Awake(component, p1, p2, p3);
 			return component;
 		}
 
@@ -147,7 +147,7 @@ namespace Model
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			DisposerManager.Instance.Awake(component);
+			Game.DisposerEventManager.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component

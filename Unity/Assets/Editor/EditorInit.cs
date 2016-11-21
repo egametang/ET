@@ -2,7 +2,6 @@
 using Base;
 using UnityEditor;
 using UnityEngine;
-using Model;
 
 namespace MyEditor
 {
@@ -11,7 +10,7 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			DisposerManager.Instance.Register("Editor", typeof(EditorInit).Assembly);
+			Game.DisposerEventManager.Register("Editor", typeof(EditorInit).Assembly);
 			EditorApplication.update += Update;
 		}
 
@@ -24,11 +23,10 @@ namespace MyEditor
 
 			try
 			{
-				DisposerManager.Instance.Update();
+				Game.Update();
 			}
 			catch (Exception e)
 			{
-				DisposerManager.Reset();
 				Log.Error(e.ToString());
 			}
 		}

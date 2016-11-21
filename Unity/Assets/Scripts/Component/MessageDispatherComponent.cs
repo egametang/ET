@@ -40,7 +40,7 @@ namespace Model
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
-			Assembly[] assemblies = DisposerManager.Instance.GetAssemblies();
+			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();
 
 			foreach (Assembly assembly in assemblies)
 			{

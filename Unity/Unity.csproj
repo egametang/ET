@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -108,12 +106,12 @@
     <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
-    <Compile Include="Assets\Scripts\Entity\Message\OuterMessage.cs" />
     <Compile Include="Assets\Scripts\Entity\Message\InnerMessage.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\OuterMessage.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
-    <Compile Include="Assets\Scripts\Entity\Unit.cs" />
     <Compile Include="Assets\Scripts\Entity\UI.cs" />
+    <Compile Include="Assets\Scripts\Entity\Unit.cs" />
     <Compile Include="Assets\Scripts\Event\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Event\Env.cs" />
     <Compile Include="Assets\Scripts\Event\EnvKey.cs" />
@@ -134,15 +132,15 @@
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\Object\Component.cs" />
+    <Compile Include="Assets\Scripts\Object\Disposer.cs" />
+    <Compile Include="Assets\Scripts\Object\DisposerEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Object\DisposerEventManager.cs" />
     <Compile Include="Assets\Scripts\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Object\ILoader.cs" />
     <Compile Include="Assets\Scripts\Object\IUpdate.cs" />
-    <Compile Include="Assets\Scripts\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Object\Object.cs" />
-    <Compile Include="Assets\Scripts\Object\DisposerEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Object\DisposerManager.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
     <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
