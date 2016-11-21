@@ -38,7 +38,7 @@ namespace Model
 			}
 		}
 
-		public void Awake()
+		private void Awake()
 		{
 			GameObject uiCanvas = GameObject.Find("/UICanvas");
 			uiCanvas.GetComponent<Canvas>().worldCamera = GameObject.Find("/Camera").GetComponent<Camera>();
@@ -46,7 +46,7 @@ namespace Model
 			this.Load();
 		}
 
-		public void Load()
+		private void Load()
 		{
 			this.UiTypes = new Dictionary<UIType, IUIFactory>();
 

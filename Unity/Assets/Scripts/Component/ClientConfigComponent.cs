@@ -8,7 +8,7 @@ namespace Model
     {
 		public StartConfig Config { get; private set; }
 
-		public void Awake()
+		private void Awake()
 		{
 			string s = File.ReadAllText("../Config/StartConfig/ClientConfig.txt");
 			this.Config = MongoHelper.FromJson<StartConfig>(s);

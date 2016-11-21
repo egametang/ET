@@ -13,12 +13,12 @@ namespace Model
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
 
-		public void Awake()
+		private void Awake()
 		{
 			this.Load();
 		}
 
-		public void Load()
+		private void Load()
 		{
 			this.allEvents = new Dictionary<EventIdType, List<object>>();
 			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();

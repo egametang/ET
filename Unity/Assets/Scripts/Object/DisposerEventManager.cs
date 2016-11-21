@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Base;
 
 namespace Model
@@ -43,6 +44,16 @@ namespace Model
 		public DisposerEventType[] GetDisposerEvent2Types()
 		{
 			return this.infos.Keys.ToArray();
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (DisposerEventType disposerEventType in this.infos.Keys.ToArray())
+			{
+				sb.Append($"{disposerEventType} {this.infos[disposerEventType].Name} ");
+			}
+			return sb.ToString();
 		}
 	}
 
@@ -88,7 +99,7 @@ namespace Model
 						this.eventInfo.Add(type2, new DisposerTypeInfo());
 					}
 
-					foreach (MethodInfo methodInfo in type.GetMethods())
+					foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly))
 					{
 						int n = methodInfo.GetParameters().Length;
 						if (methodInfo.IsStatic)
@@ -201,6 +212,16 @@ namespace Model
 				DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
 				disposerTypeInfo.Get(DisposerEventType.Update).Run(disposer);
 			}
+		}
+
+		public string MethodInfo()
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (Type type in this.eventInfo.Keys.ToArray())
+			{
+				sb.Append($"{type.Name} {this.eventInfo[type]}\n");
+			}
+			return sb.ToString();
 		}
 	}
 }

@@ -3,7 +3,7 @@
 	[DisposerEvent(typeof(RobotComponent))]
 	public class RobotComponent : Component
     {
-		public void Awake()
+		private void Awake()
 		{
 		}
 		

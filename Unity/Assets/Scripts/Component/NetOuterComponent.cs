@@ -5,14 +5,19 @@ namespace Model
 	[DisposerEvent(typeof(NetOuterComponent))]
 	public class NetOuterComponent : NetworkComponent
 	{
-		public void Awake()
+		private void Awake()
 		{
 			this.Awake(NetworkProtocol.UDP);
 		}
 
-		public void Awake(string host, int port)
+		private void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.UDP, host, port);
+		}
+
+		private new void Update()
+		{
+			base.Update();
 		}
 	}
 }

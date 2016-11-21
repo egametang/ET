@@ -8,14 +8,19 @@ namespace Model
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
-		public void Awake()
+		private void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
 		}
 
-		public void Awake(string host, int port)
+		private void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
+		}
+
+		private new void Update()
+		{
+			base.Update();
 		}
 
 		public override void Remove(long id)

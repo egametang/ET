@@ -7,7 +7,7 @@ namespace Controller
 	[DisposerEvent(typeof(BenchmakComponent))]
 	public static class BenchmakComponentE
 	{
-		public static async void Awake(this BenchmakComponent component, string address)
+		private static async void Awake(this BenchmakComponent component, string address)
 		{
 			try
 			{

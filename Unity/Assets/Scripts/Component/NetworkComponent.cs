@@ -100,7 +100,7 @@ namespace Model
 			return session;
 		}
 
-		public void Update()
+		protected void Update()
 		{
 			if (this.Service == null)
 			{

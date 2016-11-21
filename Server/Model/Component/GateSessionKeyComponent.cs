@@ -10,7 +10,7 @@ namespace Model
 
 		private readonly HashSet<long> sessionKey = new HashSet<long>();
 
-		public void Awake()
+		private void Awake()
 		{
 			this.timerComponent = Game.Scene.GetComponent<TimerComponent>();
 		}

@@ -7,7 +7,7 @@ namespace Model
     {
 		public GameObject GameObject { get; private set; }
 
-		public void Awake(GameObject gameObject)
+		private void Awake(GameObject gameObject)
 		{
 			this.GameObject = gameObject;
 		}

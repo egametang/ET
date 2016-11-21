@@ -9,7 +9,7 @@ namespace Model
 	{
 		private Dictionary<Type, ICategory> allConfig;
 
-		public void Load()
+		private void Load()
 		{
 			Assembly assembly = Game.DisposerEventManager.GetAssembly("Base");
 

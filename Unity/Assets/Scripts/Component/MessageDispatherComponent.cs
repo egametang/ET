@@ -15,13 +15,13 @@ namespace Model
 		private Dictionary<ushort, List<IMHandler>> handlers;
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
 		
-		public void Awake(AppType appType)
+		private void Awake(AppType appType)
 		{
 			this.AppType = appType;
 			this.Load();
 		}
 
-		public void Load()
+		private void Load()
 		{
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();

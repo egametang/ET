@@ -17,7 +17,7 @@ namespace Model
 
 		public StartConfig MyConfig { get; private set; }
 
-		public void Awake(string[] args)
+		private void Awake(string[] args)
 		{
 			if (!Parser.Default.ParseArguments(args, this.Options))
 			{
