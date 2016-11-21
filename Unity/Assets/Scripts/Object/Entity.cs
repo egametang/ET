@@ -20,7 +20,6 @@ namespace Model
 		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
-			
 		}
 
 		protected Entity(long id, EntityType entityType) : base(id)

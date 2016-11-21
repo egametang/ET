@@ -108,7 +108,8 @@
     <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
-    <Compile Include="Assets\Scripts\Entity\Message\Message.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\OuterMessage.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\InnerMessage.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
     <Compile Include="Assets\Scripts\Entity\Unit.cs" />

@@ -104,8 +104,11 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Game.cs">
       <Link>Entity\Game.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Message.cs">
-      <Link>Entity\Message\Message.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\InnerMessage.cs">
+      <Link>Entity\Message\InnerMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
+      <Link>Entity\Message\OuterMessage.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Scene.cs">
       <Link>Entity\Scene.cs</Link>

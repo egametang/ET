@@ -1,6 +1,8 @@
 using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
+// 服务器与客户端之间的消息 Opcode从1-9999
+
 namespace Model
 {
 	[Message(1)]
@@ -36,25 +38,7 @@ namespace Model
 		[BsonElement("L")]
 		public string Log { get; set; }
 	}
-
-	[Message(6)]
-	[BsonIgnoreExtraElements]
-	public class R2G_GetLoginKey : ARequest
-	{
-	}
-
-	[Message(7)]
-	[BsonIgnoreExtraElements]
-	public class G2R_GetLoginKey : AResponse
-	{
-		public long Key;
-
-		public G2R_GetLoginKey(long key)
-		{
-			this.Key = key;
-		}
-	}
-
+	
 	[Message(8)]
 	[BsonIgnoreExtraElements]
 	public class C2G_LoginGate : ARequest
@@ -86,19 +70,7 @@ namespace Model
 	public class M2C_Reload : AResponse
 	{
 	}
-
-	[Message(12)]
-	[BsonIgnoreExtraElements]
-	public class M2A_Reload : ARequest
-	{
-	}
-
-	[Message(13)]
-	[BsonIgnoreExtraElements]
-	public class A2M_Reload : AResponse
-	{
-	}
-
+	
 	[Message(14)]
 	[BsonIgnoreExtraElements]
 	public class C2R_Ping : ARequest
