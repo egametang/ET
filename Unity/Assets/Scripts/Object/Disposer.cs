@@ -7,17 +7,17 @@ namespace Model
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{
-			Game.Add(this);
+			Game.DisposerEventManager.Add(this);
 		}
 
 		protected Disposer(long id): base(id)
 		{
-			Game.Add(this);
+			Game.DisposerEventManager.Add(this);
 		}
 
 		public virtual void Dispose()
 		{
-			Game.Remove(this);
+			Game.DisposerEventManager.Remove(this);
 			this.Id = 0;
 		}
 
@@ -27,7 +27,7 @@ namespace Model
 
 		public override void EndInit()
 		{
-			Game.Add(this);
+			Game.DisposerEventManager.Add(this);
 		}
 	}
 }

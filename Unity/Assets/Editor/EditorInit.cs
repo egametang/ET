@@ -23,7 +23,7 @@ namespace MyEditor
 
 			try
 			{
-				Game.Update();
+				Game.DisposerEventManager.Update();
 			}
 			catch (Exception e)
 			{

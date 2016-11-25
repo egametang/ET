@@ -13,10 +13,11 @@ namespace App
 			{
 				Game.DisposerEventManager.Register("Model", typeof(Game).Assembly);
 				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
-				
-				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string[]>(args).MyConfig;
 
-				IdGenerater.AppId = startConfig.AppId;
+				Options options = Game.Scene.AddComponent<OptionComponent>().Options;
+				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
+
+				IdGenerater.AppId = options.AppId;
 
 				LogManager.Configuration.Variables["appType"] = startConfig.AppType.ToString();
 				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
@@ -25,7 +26,6 @@ namespace App
 				
 				Game.Scene.AddComponent<EventComponent>();
 				Game.Scene.AddComponent<TimerComponent>();
-				
 				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
@@ -66,7 +66,14 @@ namespace App
 
 				while (true)
 				{
-					Game.Update();
+					try
+					{
+						Game.DisposerEventManager.Update();
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
 			}
 			catch (Exception e)

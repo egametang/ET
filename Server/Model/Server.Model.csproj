@@ -200,6 +200,7 @@
     <Compile Include="Component\AppManagerComponent.cs" />
     <Compile Include="Component\GateSessionKeyComponent.cs" />
     <Compile Include="Component\RealmGateAddressComponent.cs" />
+    <Compile Include="Component\OptionComponent.cs" />
     <Compile Include="Component\StartConfigComponent.cs" />
     <Compile Include="Config\ConfigHelper.cs" />
     <Compile Include="Helper\DllHelper.cs" />

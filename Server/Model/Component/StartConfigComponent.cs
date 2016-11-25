@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Base;
-using CommandLine;
 
 namespace Model
 {
@@ -12,19 +11,12 @@ namespace Model
 		private readonly List<StartConfig> allConfigs = new List<StartConfig>();
 
 		private readonly Dictionary<int, StartConfig> configDict = new Dictionary<int, StartConfig>();
+		
+		public StartConfig StartConfig { get; private set; }
 
-		public Options Options = new Options();
-
-		public StartConfig MyConfig { get; private set; }
-
-		private void Awake(string[] args)
+		private void Awake(string path, int appId)
 		{
-			if (!Parser.Default.ParseArguments(args, this.Options))
-			{
-				throw new Exception($"命令行格式错误!");
-			}
-			
-			string[] ss = File.ReadAllText(this.Options.Config).Split('\n');
+			string[] ss = File.ReadAllText(path).Split('\n');
 			foreach (string s in ss)
 			{
 				string s2 = s.Trim();
@@ -44,7 +36,7 @@ namespace Model
 				}
 			}
 
-			this.MyConfig = this.Get(this.Options.AppId);
+			this.StartConfig = this.Get(appId);
 		}
 
 		public StartConfig Get(int id)

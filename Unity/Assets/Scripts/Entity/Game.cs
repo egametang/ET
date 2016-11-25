@@ -44,23 +44,6 @@ namespace Base
 			}
 		}
 
-		public static void Add(Disposer disposer)
-		{
-			disposers.Add(disposer);
-			disposerEventManager.Add(disposer);
-		}
-
-		public static void Remove(Disposer disposer)
-		{
-			disposers.Remove(disposer);
-			disposerEventManager.Remove(disposer);
-		}
-
-		public static void Update()
-		{
-			disposerEventManager.Update();
-		}
-
 		public static string DisposerInfo()
 		{
 			var info = new Dictionary<string, int>();

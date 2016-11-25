@@ -17,7 +17,7 @@ namespace Controller
 			catch (Exception e)
 			{
 				a2MReload.Error = ErrorCode.ERR_ReloadFail;
-				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().MyConfig;
+				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
 				InnerConfig innerConfig = myStartConfig.GetComponent<InnerConfig>();
 				a2MReload.Message = $"{innerConfig.Address} reload fail, {e}";
 			}

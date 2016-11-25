@@ -36,8 +36,9 @@ namespace Model
 
 		private void StartProcess(int appId)
 		{
+			OptionComponent optionComponent = Game.Scene.GetComponent<OptionComponent>();
 			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
-			string configFile = startConfigComponent.Options.Config;
+			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 #if __MonoCS__
 			const string exe = @"mono";

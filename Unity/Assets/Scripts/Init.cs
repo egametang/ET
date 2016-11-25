@@ -18,7 +18,7 @@ namespace Model
 		{
 			try
 			{
-				Game.Update();
+				Game.DisposerEventManager.Update();
 			}
 			catch (Exception e)
 			{
