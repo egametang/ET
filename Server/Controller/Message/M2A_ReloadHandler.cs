@@ -9,19 +9,20 @@ namespace Controller
 	{
 		protected override void Run(Session session, M2A_Reload message, Action<A2M_Reload> reply)
 		{
-			A2M_Reload a2MReload = new A2M_Reload();
+			A2M_Reload response = new A2M_Reload();
 			try
 			{
 				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
+				reply(response);
 			}
 			catch (Exception e)
 			{
-				a2MReload.Error = ErrorCode.ERR_ReloadFail;
+				response.Error = ErrorCode.ERR_ReloadFail;
 				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
 				InnerConfig innerConfig = myStartConfig.GetComponent<InnerConfig>();
-				a2MReload.Message = $"{innerConfig.Address} reload fail, {e}";
+				response.Message = $"{innerConfig.Address} reload fail, {e}";
+				reply(response);
 			}
-			reply(a2MReload);
 		}
 	}
 }

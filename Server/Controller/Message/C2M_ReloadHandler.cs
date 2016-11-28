@@ -9,7 +9,7 @@ namespace Controller
 	{
 		protected override async void Run(Session session, C2M_Reload message, Action<M2C_Reload> reply)
 		{
-			M2C_Reload m2CReload = new M2C_Reload();
+			M2C_Reload response = new M2C_Reload();
 			try
 			{
 				StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
@@ -24,13 +24,12 @@ namespace Controller
 					Session serverSession = netInnerComponent.Get(innerConfig.Address);
 					await serverSession.Call<M2A_Reload, A2M_Reload>(new M2A_Reload());
 				}
+				reply(response);
 			}
 			catch (Exception e)
 			{
-				m2CReload.Error = ErrorCode.ERR_ReloadFail;
-				m2CReload.Message = e.ToString();
+				ReplyError(response, e, reply);
 			}
-			reply(m2CReload);
 		}
 	}
 }

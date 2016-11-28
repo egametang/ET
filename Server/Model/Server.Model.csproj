@@ -80,6 +80,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
       <Link>Component\TimerComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\UnitComponent.cs">
+      <Link>Component\UnitComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Config\ACategory.cs">
       <Link>Config\ACategory.cs</Link>
     </Compile>
@@ -197,6 +200,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>
+    <Compile Include="Component\Unit\MasterComponent.cs" />
+    <Compile Include="Component\Unit\LockComponent.cs" />
     <Compile Include="Component\AppManagerComponent.cs" />
     <Compile Include="Component\GateSessionKeyComponent.cs" />
     <Compile Include="Component\RealmGateAddressComponent.cs" />

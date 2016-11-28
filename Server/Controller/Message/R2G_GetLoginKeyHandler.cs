@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Base;
 using Model;
 
@@ -9,9 +10,17 @@ namespace Controller
 	{
 		protected override void Run(Session session, R2G_GetLoginKey message, Action<G2R_GetLoginKey> reply)
 		{
-			long key = Game.Scene.GetComponent<GateSessionKeyComponent>().Get();
-			G2R_GetLoginKey g2RGetLoginKey = new G2R_GetLoginKey(key);
-			reply(g2RGetLoginKey);
+			G2R_GetLoginKey response = new G2R_GetLoginKey();
+			try
+			{
+				long key = Game.Scene.GetComponent<GateSessionKeyComponent>().Get();
+				response.Key = key;
+				reply(response);
+			}
+			catch (Exception e)
+			{
+				ReplyError(response, e, reply);
+			}
 		}
 	}
 }

@@ -32,6 +32,14 @@ namespace Model
 			where Request : ARequest
 			where Response: AResponse
 	{
+		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
+		{
+			Log.Error(e.ToString());
+			response.Error = ErrorCode.ERR_RpcFail;
+			response.Message = e.ToString();
+			reply(response);
+		}
+
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
 		public void Handle(Session session, MessageInfo messageInfo)

@@ -99,6 +99,7 @@
     <Compile Include="Assets\Scripts\Component\TimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\UIComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
     <Compile Include="Assets\Scripts\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Config\AConfig.cs" />
     <Compile Include="Assets\Scripts\Config\AConfigComponent.cs" />
