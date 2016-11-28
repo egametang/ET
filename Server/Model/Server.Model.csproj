@@ -170,14 +170,14 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Component.cs">
       <Link>Object\Component.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\ComponentEventAttribute.cs">
+      <Link>Object\ComponentEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Object\ComponentEventManager.cs">
+      <Link>Object\ComponentEventManager.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Disposer.cs">
       <Link>Object\Disposer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerEventAttribute.cs">
-      <Link>Object\DisposerEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\DisposerEventManager.cs">
-      <Link>Object\DisposerEventManager.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
       <Link>Object\Entity.cs</Link>

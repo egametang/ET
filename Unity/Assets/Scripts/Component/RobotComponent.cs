@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	[DisposerEvent(typeof(RobotComponent))]
+	[ComponentEvent(typeof(RobotComponent))]
 	public class RobotComponent : Component
     {
 		private void Awake()

@@ -8,8 +8,8 @@ namespace Model
 	{
 		private void Start()
 		{
-			Game.DisposerEventManager.Register("Model", typeof(Game).Assembly);
-			Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
+			Game.ComponentEventManager.Register("Model", typeof(Game).Assembly);
+			Game.ComponentEventManager.Register("Controller", DllHelper.GetController());
 
 			Game.Scene.AddComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 		}
@@ -18,7 +18,7 @@ namespace Model
 		{
 			try
 			{
-				Game.DisposerEventManager.Update();
+				Game.ComponentEventManager.Update();
 			}
 			catch (Exception e)
 			{

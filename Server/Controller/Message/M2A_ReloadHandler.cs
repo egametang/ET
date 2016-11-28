@@ -12,7 +12,7 @@ namespace Controller
 			A2M_Reload response = new A2M_Reload();
 			try
 			{
-				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
+				Game.ComponentEventManager.Register("Controller", DllHelper.GetController());
 				reply(response);
 			}
 			catch (Exception e)

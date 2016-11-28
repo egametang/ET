@@ -5,7 +5,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent(typeof(StartConfigComponent))]
+	[ComponentEvent(typeof(StartConfigComponent))]
 	public class StartConfigComponent: Component
 	{
 		private readonly List<StartConfig> allConfigs = new List<StartConfig>();

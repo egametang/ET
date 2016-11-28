@@ -10,7 +10,7 @@ namespace Model
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
-	[DisposerEvent(typeof(UIComponent))]
+	[ComponentEvent(typeof(UIComponent))]
 	public class UIComponent: Component
 	{
         private UI Root;
@@ -50,7 +50,7 @@ namespace Model
 		{
 			this.UiTypes = new Dictionary<UIType, IUIFactory>();
 
-			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();
+			Assembly[] assemblies = Game.ComponentEventManager.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();

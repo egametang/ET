@@ -3,11 +3,11 @@
 namespace Model
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class DisposerEventAttribute: Attribute
+	public class ComponentEventAttribute: Attribute
 	{
 		public Type ClassType;
 
-		public DisposerEventAttribute(Type classType)
+		public ComponentEventAttribute(Type classType)
 		{
 			this.ClassType = classType;
 		}

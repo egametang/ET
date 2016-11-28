@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[DisposerEvent(typeof(NetOuterComponent))]
+	[ComponentEvent(typeof(NetOuterComponent))]
 	public class NetOuterComponent : NetworkComponent
 	{
 		private void Awake()

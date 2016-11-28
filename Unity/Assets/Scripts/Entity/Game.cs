@@ -9,7 +9,7 @@ namespace Base
 	{
 		private static readonly HashSet<Disposer> disposers = new HashSet<Disposer>();
 
-		private static DisposerEventManager disposerEventManager;
+		private static ComponentEventManager componentEventManager;
 
 		private static Scene scene;
 
@@ -36,11 +36,11 @@ namespace Base
 			disposers.Clear();
 		}
 
-		public static DisposerEventManager DisposerEventManager
+		public static ComponentEventManager ComponentEventManager
 		{
 			get
 			{
-				return disposerEventManager ?? (disposerEventManager = new DisposerEventManager());
+				return componentEventManager ?? (componentEventManager = new ComponentEventManager());
 			}
 		}
 

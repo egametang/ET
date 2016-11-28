@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[DisposerEvent(typeof(GameObjectComponent))]
+	[ComponentEvent(typeof(GameObjectComponent))]
 	public class GameObjectComponent : Component
     {
 		public GameObject GameObject { get; private set; }

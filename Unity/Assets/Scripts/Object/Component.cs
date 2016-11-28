@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using Base;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
@@ -15,10 +16,12 @@ namespace Model
 
 		protected Component()
 		{
+			Game.ComponentEventManager.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
+			Game.ComponentEventManager.Add(this);
 		}
 
 		public T GetComponent<T>() where T: Component
@@ -34,6 +37,8 @@ namespace Model
 			}
 
 			base.Dispose();
+
+			Game.ComponentEventManager.Remove(this);
 		}
 	}
 }

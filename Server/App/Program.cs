@@ -11,8 +11,8 @@ namespace App
 		{
 			try
 			{
-				Game.DisposerEventManager.Register("Model", typeof(Game).Assembly);
-				Game.DisposerEventManager.Register("Controller", DllHelper.GetController());
+				Game.ComponentEventManager.Register("Model", typeof(Game).Assembly);
+				Game.ComponentEventManager.Register("Controller", DllHelper.GetController());
 
 				Options options = Game.Scene.AddComponent<OptionComponent>().Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
@@ -68,7 +68,7 @@ namespace App
 				{
 					try
 					{
-						Game.DisposerEventManager.Update();
+						Game.ComponentEventManager.Update();
 					}
 					catch (Exception e)
 					{

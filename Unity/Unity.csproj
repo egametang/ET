@@ -136,8 +136,8 @@
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Object\Disposer.cs" />
-    <Compile Include="Assets\Scripts\Object\DisposerEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Object\DisposerEventManager.cs" />
+    <Compile Include="Assets\Scripts\Object\ComponentEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Object\ComponentEventManager.cs" />
     <Compile Include="Assets\Scripts\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Object\IAwake.cs" />

@@ -3,7 +3,7 @@ using Base;
 
 namespace Model
 {
-	[DisposerEvent(typeof(ClientConfigComponent))]
+	[ComponentEvent(typeof(ClientConfigComponent))]
 	public class ClientConfigComponent : Component
     {
 		public StartConfig Config { get; private set; }

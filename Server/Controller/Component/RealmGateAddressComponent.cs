@@ -2,7 +2,7 @@
 
 namespace Controller
 {
-	[DisposerEvent(typeof(RealmGateAddressComponent))]
+	[ComponentEvent(typeof(RealmGateAddressComponent))]
 	public static class RealmGateAddressComponentE
 	{
 		public static void Awake(this RealmGateAddressComponent component)

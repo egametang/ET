@@ -57,7 +57,7 @@ namespace Model
 		}
 	}
 
-	public sealed class DisposerEventManager
+	public sealed class ComponentEventManager
 	{
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
@@ -65,7 +65,7 @@ namespace Model
 
 		private Dictionary<Type, DisposerTypeInfo> eventInfo;
 
-		public DisposerEventManager()
+		public ComponentEventManager()
 		{
 			foreach (DisposerEventType t in Enum.GetValues(typeof(DisposerEventType)))
 			{
@@ -84,15 +84,15 @@ namespace Model
 				Type[] types = ass.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(DisposerEventAttribute), true);
+					object[] attrs = type.GetCustomAttributes(typeof(ComponentEventAttribute), true);
 					if (attrs.Length == 0)
 					{
 						continue;
 					}
 
-					DisposerEventAttribute DisposerEventAttribute = attrs[0] as DisposerEventAttribute;
+					ComponentEventAttribute componentEventAttribute = attrs[0] as ComponentEventAttribute;
 
-					Type type2 = DisposerEventAttribute.ClassType;
+					Type type2 = componentEventAttribute.ClassType;
 
 					if (!this.eventInfo.ContainsKey(type2))
 					{

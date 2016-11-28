@@ -16,7 +16,7 @@ namespace Model
 		}
 	}
 
-	[DisposerEvent(typeof(MasterComponent))]
+	[ComponentEvent(typeof(MasterComponent))]
 	public class MasterComponent : Component
 	{
 		private readonly List<string> slavesAddress = new List<string>();

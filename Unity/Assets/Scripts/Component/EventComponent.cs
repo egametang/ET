@@ -8,7 +8,7 @@ namespace Model
 	/// <summary>
 	/// 事件分发
 	/// </summary>
-	[DisposerEvent(typeof(EventComponent))]
+	[ComponentEvent(typeof(EventComponent))]
 	public class EventComponent: Component
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
@@ -21,7 +21,7 @@ namespace Model
 		private void Load()
 		{
 			this.allEvents = new Dictionary<EventIdType, List<object>>();
-			Assembly[] assemblies = Game.DisposerEventManager.GetAssemblies();
+			Assembly[] assemblies = Game.ComponentEventManager.GetAssemblies();
 			foreach (Assembly assembly in assemblies)
 			{
 				Type[] types = assembly.GetTypes();
