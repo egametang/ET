@@ -10,7 +10,7 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			Game.ComponentEventManager.Register("Editor", typeof(EditorInit).Assembly);
+			Game.EntityEventManager.Register("Editor", typeof(EditorInit).Assembly);
 			EditorApplication.update += Update;
 		}
 
@@ -23,7 +23,7 @@ namespace MyEditor
 
 			try
 			{
-				Game.ComponentEventManager.Update();
+				Game.EntityEventManager.Update();
 			}
 			catch (Exception e)
 			{

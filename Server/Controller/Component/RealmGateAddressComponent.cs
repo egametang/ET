@@ -2,7 +2,7 @@
 
 namespace Controller
 {
-	[ComponentEvent(typeof(RealmGateAddressComponent))]
+	[EntityEvent(typeof(RealmGateAddressComponent))]
 	public static class RealmGateAddressComponentE
 	{
 		public static void Awake(this RealmGateAddressComponent component)

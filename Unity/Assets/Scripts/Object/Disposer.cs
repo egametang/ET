@@ -24,7 +24,6 @@ namespace Model
 
 		public override void EndInit()
 		{
-			Game.ComponentEventManager.Add(this);
 		}
 	}
 }

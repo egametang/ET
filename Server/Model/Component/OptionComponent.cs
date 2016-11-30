@@ -3,7 +3,7 @@ using CommandLine;
 
 namespace Model
 {
-	[ComponentEvent(typeof(OptionComponent))]
+	[EntityEvent(typeof(OptionComponent))]
 	public class OptionComponent : Component
 	{
 		public Options Options { get; } = new Options();

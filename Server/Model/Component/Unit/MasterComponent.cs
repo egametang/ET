@@ -16,7 +16,7 @@ namespace Model
 		}
 	}
 
-	[ComponentEvent(typeof(MasterComponent))]
+	[EntityEvent(typeof(MasterComponent))]
 	public class MasterComponent : Component
 	{
 		private readonly List<string> slavesAddress = new List<string>();

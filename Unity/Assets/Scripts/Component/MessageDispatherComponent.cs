@@ -8,7 +8,7 @@ namespace Model
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ComponentEvent(typeof(MessageDispatherComponent))]
+	[EntityEvent(typeof(MessageDispatherComponent))]
 	public class MessageDispatherComponent: Component
 	{
 		private AppType AppType;
@@ -26,7 +26,7 @@ namespace Model
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
-			Assembly[] assemblies = Game.ComponentEventManager.GetAssemblies();
+			Assembly[] assemblies = Game.EntityEventManager.GetAssemblies();
 
 			foreach (Assembly assembly in assemblies)
 			{

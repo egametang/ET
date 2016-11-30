@@ -8,7 +8,7 @@ using Base;
 namespace Model
 {
 	[Flags]
-	public enum DisposerEventType
+	public enum EntityEventType
 	{
 		Awake = 1,
 		Awake1 = 2,
@@ -18,11 +18,11 @@ namespace Model
 		Load = 32,
 	}
 
-	public class DisposerTypeInfo
+	public class EntityTypeInfo
 	{
-		private readonly Dictionary<DisposerEventType, MethodInfo> infos = new Dictionary<DisposerEventType, MethodInfo>();
+		private readonly Dictionary<EntityEventType, MethodInfo> infos = new Dictionary<EntityEventType, MethodInfo>();
 
-		public void Add(DisposerEventType type, MethodInfo methodInfo)
+		public void Add(EntityEventType type, MethodInfo methodInfo)
 		{
 			try
 			{
@@ -34,14 +34,14 @@ namespace Model
 			}
 		}
 
-		public MethodInfo Get(DisposerEventType type)
+		public MethodInfo Get(EntityEventType type)
 		{
 			MethodInfo methodInfo;
 			this.infos.TryGetValue(type, out methodInfo);
 			return methodInfo;
 		}
 
-		public DisposerEventType[] GetDisposerEvent2Types()
+		public EntityEventType[] GetDisposerEvent2Types()
 		{
 			return this.infos.Keys.ToArray();
 		}
@@ -49,7 +49,7 @@ namespace Model
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (DisposerEventType disposerEventType in this.infos.Keys.ToArray())
+			foreach (EntityEventType disposerEventType in this.infos.Keys.ToArray())
 			{
 				sb.Append($"{disposerEventType} {this.infos[disposerEventType].Name} ");
 			}
@@ -57,17 +57,17 @@ namespace Model
 		}
 	}
 
-	public sealed class ComponentEventManager
+	public sealed class EntityEventManager
 	{
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
-		private readonly Dictionary<DisposerEventType, HashSet<Disposer>> disposers = new Dictionary<DisposerEventType, HashSet<Disposer>>();
+		private readonly Dictionary<EntityEventType, HashSet<Disposer>> disposers = new Dictionary<EntityEventType, HashSet<Disposer>>();
 
-		private Dictionary<Type, DisposerTypeInfo> eventInfo;
+		private Dictionary<Type, EntityTypeInfo> eventInfo;
 
-		public ComponentEventManager()
+		public EntityEventManager()
 		{
-			foreach (DisposerEventType t in Enum.GetValues(typeof(DisposerEventType)))
+			foreach (EntityEventType t in Enum.GetValues(typeof(EntityEventType)))
 			{
 				this.disposers.Add(t, new HashSet<Disposer>());
 			}
@@ -75,7 +75,7 @@ namespace Model
 
 		public void Register(string name, Assembly assembly)
 		{
-			this.eventInfo = new Dictionary<Type, DisposerTypeInfo>();
+			this.eventInfo = new Dictionary<Type, EntityTypeInfo>();
 
 			this.assemblies[name] = assembly;
 			
@@ -84,19 +84,19 @@ namespace Model
 				Type[] types = ass.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(ComponentEventAttribute), true);
+					object[] attrs = type.GetCustomAttributes(typeof(EntityEventAttribute), true);
 					if (attrs.Length == 0)
 					{
 						continue;
 					}
 
-					ComponentEventAttribute componentEventAttribute = attrs[0] as ComponentEventAttribute;
+					EntityEventAttribute entityEventAttribute = attrs[0] as EntityEventAttribute;
 
-					Type type2 = componentEventAttribute.ClassType;
+					Type type2 = entityEventAttribute.ClassType;
 
 					if (!this.eventInfo.ContainsKey(type2))
 					{
-						this.eventInfo.Add(type2, new DisposerTypeInfo());
+						this.eventInfo.Add(type2, new EntityTypeInfo());
 					}
 
 					foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly))
@@ -107,13 +107,13 @@ namespace Model
 							--n;
 						}
 						string sn = n > 0? $"{methodInfo.Name}{n}" : methodInfo.Name;
-						foreach (string s in Enum.GetNames(typeof(DisposerEventType)))
+						foreach (string s in Enum.GetNames(typeof(EntityEventType)))
 						{
 							if (s != sn)
 							{
 								continue;
 							}
-							DisposerEventType t = EnumHelper.FromString<DisposerEventType>(s);
+							EntityEventType t = EnumHelper.FromString<EntityEventType>(s);
 							this.eventInfo[type2].Add(t, methodInfo);
 							break;
 						}
@@ -126,13 +126,13 @@ namespace Model
 
 		public void Add(Disposer disposer)
 		{
-			DisposerTypeInfo disposerTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out disposerTypeInfo))
+			EntityTypeInfo entityTypeInfo;
+			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
 			{
 				return;
 			}
 
-			foreach (DisposerEventType disposerEvent2Type in disposerTypeInfo.GetDisposerEvent2Types())
+			foreach (EntityEventType disposerEvent2Type in entityTypeInfo.GetDisposerEvent2Types())
 			{
 				this.disposers[disposerEvent2Type].Add(disposer);
 			}
@@ -140,13 +140,13 @@ namespace Model
 
 		public void Remove(Disposer disposer)
 		{
-			DisposerTypeInfo disposerTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out disposerTypeInfo))
+			EntityTypeInfo entityTypeInfo;
+			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
 			{
 				return;
 			}
 
-			foreach (DisposerEventType disposerEvent2Type in disposerTypeInfo.GetDisposerEvent2Types())
+			foreach (EntityEventType disposerEvent2Type in entityTypeInfo.GetDisposerEvent2Types())
 			{
 				this.disposers[disposerEvent2Type].Remove(disposer);
 			}
@@ -165,52 +165,52 @@ namespace Model
 		private void Load()
 		{
 			HashSet<Disposer> list;
-			if (!this.disposers.TryGetValue(DisposerEventType.Update, out list))
+			if (!this.disposers.TryGetValue(EntityEventType.Update, out list))
 			{
 				return;
 			}
 			foreach (Disposer disposer in list)
 			{
-				DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-				disposerTypeInfo.Get(DisposerEventType.Load).Run(disposer);
+				EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+				entityTypeInfo.Get(EntityEventType.Load).Run(disposer);
 			}
 		}
 
 		public void Awake(Disposer disposer)
 		{
-			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-			disposerTypeInfo.Get(DisposerEventType.Awake)?.Run(disposer);
+			EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+			entityTypeInfo.Get(EntityEventType.Awake)?.Run(disposer);
 		}
 
 		public void Awake(Disposer disposer, object p1)
 		{
-			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-			disposerTypeInfo.Get(DisposerEventType.Awake1)?.Run(disposer, p1);
+			EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+			entityTypeInfo.Get(EntityEventType.Awake1)?.Run(disposer, p1);
 		}
 
 		public void Awake(Disposer disposer, object p1, object p2)
 		{
-			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-			disposerTypeInfo.Get(DisposerEventType.Awake2)?.Run(disposer, p1, p2 );
+			EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+			entityTypeInfo.Get(EntityEventType.Awake2)?.Run(disposer, p1, p2 );
 		}
 
 		public void Awake(Disposer disposer, object p1, object p2, object p3)
 		{
-			DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-			disposerTypeInfo.Get(DisposerEventType.Awake3)?.Run(disposer, p1, p2, p3 );
+			EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+			entityTypeInfo.Get(EntityEventType.Awake3)?.Run(disposer, p1, p2, p3 );
 		}
 
 		public void Update()
 		{
 			HashSet<Disposer> list;
-			if (!this.disposers.TryGetValue(DisposerEventType.Update, out list))
+			if (!this.disposers.TryGetValue(EntityEventType.Update, out list))
 			{
 				return;
 			}
 			foreach (Disposer disposer in list)
 			{
-				DisposerTypeInfo disposerTypeInfo = this.eventInfo[disposer.GetType()];
-				disposerTypeInfo.Get(DisposerEventType.Update).Run(disposer);
+				EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+				entityTypeInfo.Get(EntityEventType.Update).Run(disposer);
 			}
 		}
 

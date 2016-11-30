@@ -1,6 +1,7 @@
 ﻿using System;
 using Base;
 using Model;
+using MongoDB.Bson;
 using NLog;
 
 namespace App
@@ -11,10 +12,10 @@ namespace App
 		{
 			try
 			{
-				Game.ComponentEventManager.Register("Model", typeof(Game).Assembly);
-				Game.ComponentEventManager.Register("Controller", DllHelper.GetController());
+				Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
+				Game.EntityEventManager.Register("Controller", DllHelper.GetController());
 
-				Options options = Game.Scene.AddComponent<OptionComponent>().Options;
+				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
 
 				IdGenerater.AppId = options.AppId;
@@ -68,7 +69,7 @@ namespace App
 				{
 					try
 					{
-						Game.ComponentEventManager.Update();
+						Game.EntityEventManager.Update();
 					}
 					catch (Exception e)
 					{

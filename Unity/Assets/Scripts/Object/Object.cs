@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Base;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
@@ -32,16 +33,6 @@ namespace Model
 		public override string ToString()
 		{
 			return this.ToJson();
-		}
-
-		public string ToJson()
-		{
-			return MongoHelper.ToJson(this);
-		}
-
-		public byte[] ToBson()
-		{
-			return MongoHelper.ToBson(this);
 		}
 
 		public object Clone()

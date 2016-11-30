@@ -12,7 +12,7 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ComponentEvent(typeof(TimerComponent))]
+	[EntityEvent(typeof(TimerComponent))]
 	public class TimerComponent: Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();

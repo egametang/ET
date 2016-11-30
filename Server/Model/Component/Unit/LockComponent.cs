@@ -15,7 +15,7 @@ namespace Model
 	/// <summary>
 	/// 分布式锁组件,Unit对象可能在不同进程上有镜像,访问该对象的时候需要对他加锁
 	/// </summary>
-	[ComponentEvent(typeof(LockComponent))]
+	[EntityEvent(typeof(LockComponent))]
 	public class LockComponent: Component
 	{
 		private LockStatus status = LockStatus.LockedNot;

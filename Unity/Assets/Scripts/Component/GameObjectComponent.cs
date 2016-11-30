@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[ComponentEvent(typeof(GameObjectComponent))]
+	[EntityEvent(typeof(GameObjectComponent))]
 	public class GameObjectComponent : Component
     {
 		public GameObject GameObject { get; private set; }

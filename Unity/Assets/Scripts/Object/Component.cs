@@ -16,12 +16,12 @@ namespace Model
 
 		protected Component()
 		{
-			Game.ComponentEventManager.Add(this);
+			Game.EntityEventManager.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
-			Game.ComponentEventManager.Add(this);
+			Game.EntityEventManager.Add(this);
 		}
 
 		public T GetComponent<T>() where T: Component
@@ -38,7 +38,14 @@ namespace Model
 
 			base.Dispose();
 
-			Game.ComponentEventManager.Remove(this);
+			Game.EntityEventManager.Remove(this);
+		}
+
+		public override void EndInit()
+		{
+			base.EndInit();
+
+			Game.EntityEventManager.Add(this);
 		}
 	}
 }
