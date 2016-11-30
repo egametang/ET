@@ -7,7 +7,7 @@ namespace Base
 {
 	public static class Game
 	{
-		private static readonly HashSet<Disposer> disposers = new HashSet<Disposer>();
+		private static HashSet<Disposer> disposers;
 
 		private static EntityEventManager entityEventManager;
 
@@ -21,6 +21,14 @@ namespace Base
 			}
 		}
 
+		public static HashSet<Disposer> Disposers
+		{
+			get
+			{
+				return disposers ?? (disposers = new HashSet<Disposer>());
+			}
+		}
+
 		public static void CloseScene()
 		{
 			scene.Dispose();
@@ -29,11 +37,12 @@ namespace Base
 
 		public static void ClearDisposers()
 		{
-			foreach (Disposer disposer in disposers)
+			foreach (Disposer disposer in Disposers)
 			{
 				disposer.Dispose();
 			}
 			disposers.Clear();
+			disposers = null;
 		}
 
 		public static EntityEventManager EntityEventManager
@@ -47,7 +56,7 @@ namespace Base
 		public static string DisposerInfo()
 		{
 			var info = new Dictionary<string, int>();
-			foreach (Disposer disposer in disposers)
+			foreach (Disposer disposer in Disposers)
 			{
 				if (info.ContainsKey(disposer.GetType().Name))
 				{
