@@ -8,6 +8,7 @@ namespace Model
 		public byte[] MessageBytes { get; }
 		public int Offset { get; }
 		public uint RpcId { get; }
+		public object Message { get; set; }
 
 		public MessageInfo(ushort opcode, byte[] messageBytes, int offset, uint rpcId)
 		{

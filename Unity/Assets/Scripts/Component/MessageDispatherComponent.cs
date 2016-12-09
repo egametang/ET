@@ -14,7 +14,8 @@ namespace Model
 		private AppType AppType;
 		private Dictionary<ushort, List<IMHandler>> handlers;
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
-		
+		private Dictionary<ushort, Type> opcodeType { get; set; }
+
 		private void Awake(AppType appType)
 		{
 			this.AppType = appType;
@@ -25,6 +26,7 @@ namespace Model
 		{
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
+			this.opcodeType = new Dictionary<ushort, Type>();
 
 			Assembly[] assemblies = Game.EntityEventManager.GetAssemblies();
 
@@ -41,6 +43,7 @@ namespace Model
 
 					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
 					this.messageOpcode[type] = messageAttribute;
+					this.opcodeType[messageAttribute.Opcode] = type;
 				}
 			}
 
@@ -92,6 +95,16 @@ namespace Model
 			return messageAttribute.Opcode;
 		}
 
+		public Type GetType(ushort opcode)
+		{
+			Type messageType;
+			if (!this.opcodeType.TryGetValue(opcode, out messageType))
+			{
+				throw new Exception($"查找Opcode Type失败: {opcode}");
+			}
+			return messageType;
+		}
+
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
@@ -100,6 +113,10 @@ namespace Model
 				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;
 			}
+
+			Type messageType = this.GetType(messageInfo.Opcode);
+			object message = MongoHelper.FromBson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+			messageInfo.Message = message;
 
 			foreach (IMHandler ev in actions)
 			{

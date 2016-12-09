@@ -4,10 +4,10 @@ using Model;
 
 namespace Controller
 {
-	[EntityEvent(typeof(BenchmakComponent))]
+	[EntityEvent(typeof(BenchmarkComponent))]
 	public static class BenchmakComponentE
 	{
-		private static async void Awake(this BenchmakComponent component, string address)
+		private static async void Awake(this BenchmarkComponent component, string address)
 		{
 			try
 			{

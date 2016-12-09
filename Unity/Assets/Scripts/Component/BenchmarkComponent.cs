@@ -3,7 +3,7 @@ using Base;
 
 namespace Model
 {
-	public class BenchmakComponent : Component
+	public class BenchmarkComponent : Component
 	{
 		private int k;
 

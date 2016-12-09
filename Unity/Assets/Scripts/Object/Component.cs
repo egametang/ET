@@ -38,6 +38,8 @@ namespace Model
 
 			base.Dispose();
 
+			this.Owner.RemoveComponent(this.GetType());
+
 			Game.EntityEventManager.Remove(this);
 		}
 

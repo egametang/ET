@@ -51,6 +51,10 @@ namespace Base
 			{
 				return entityEventManager ?? (entityEventManager = new EntityEventManager());
 			}
+			set
+			{
+				entityEventManager = value;
+			}
 		}
 
 		public static string DisposerInfo()

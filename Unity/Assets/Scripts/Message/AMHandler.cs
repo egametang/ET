@@ -9,16 +9,11 @@ namespace Model
 		
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			Message message;
-			try
+			Message message = messageInfo.Message as Message;
+			if (message == null)
 			{
-				message = MongoHelper.FromBson<Message>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+				Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof(Message).Name}");
 			}
-			catch (Exception e)
-			{
-				throw new Exception($"解释消息失败: {messageInfo.Opcode}", e);
-			}
-
 			this.Run(session, message);
 		}
 
@@ -46,7 +41,11 @@ namespace Model
 		{
 			try
 			{
-				Request request = MongoHelper.FromBson<Request>(messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+				Request request = messageInfo.Message as Request;
+				if (request == null)
+				{
+					Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof(Request).Name}");
+				}
 				this.Run(session, request, response =>
 					{
 						// 等回调回来,session可以已经断开了,所以需要判断session id是否为0

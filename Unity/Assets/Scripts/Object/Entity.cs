@@ -171,6 +171,23 @@ namespace Model
 			component.Dispose();
 		}
 
+		public void RemoveComponent(Type type)
+		{
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
+			{
+				return;
+			}
+
+			this.components.Remove(component);
+			this.componentDict.Remove(type);
+			if (this.components.Count == 0)
+			{
+				this.components = null;
+			}
+			component.Dispose();
+		}
+
 		public K GetComponent<K>() where K : Component
 		{
 			Component component;
