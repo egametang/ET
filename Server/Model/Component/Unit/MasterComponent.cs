@@ -19,20 +19,23 @@ namespace Model
 	[EntityEvent(typeof(MasterComponent))]
 	public class MasterComponent : Component
 	{
-		private readonly List<string> slavesAddress = new List<string>();
+		/// 镜像的地址
+		private readonly List<string> ghostsAddress = new List<string>();
 
+		/// 当前获取锁的进程地址
 		private string lockedAddress = "";
 
+		/// 请求锁的队列
 		private readonly Queue<LockInfo> queue = new Queue<LockInfo>();
 
-		public void AddSlave(string address)
+		public void AddGhost(string address)
 		{
-			this.slavesAddress.Add(address);
+			this.ghostsAddress.Add(address);
 		}
 
-		public void RemoveSlave(string address)
+		public void RemoveGhost(string address)
 		{
-			this.slavesAddress.Remove(address);
+			this.ghostsAddress.Remove(address);
 		}
 
 		public Task<bool> Lock(string address)

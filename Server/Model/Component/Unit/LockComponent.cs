@@ -23,7 +23,7 @@ namespace Model
 		private int lockCount;
 		private readonly Queue<TaskCompletionSource<bool>> queue = new Queue<TaskCompletionSource<bool>>();
 
-		public void Awake(string addr)
+		public void Awake(string addr)	
 		{
 			this.address = addr;
 		}

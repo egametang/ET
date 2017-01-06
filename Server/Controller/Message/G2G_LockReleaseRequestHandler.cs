@@ -10,16 +10,24 @@ namespace Controller
 		protected override void Run(Session session, G2G_LockReleaseRequest message, Action<G2G_LockReleaseResponse> reply)
 		{
 			G2G_LockReleaseResponse g2GLockReleaseResponse = new G2G_LockReleaseResponse();
-			
-			Unit unit = Game.Scene.GetComponent<UnitComponent>().Get(message.Id);
-			if (unit == null)
+
+			try
 			{
-				g2GLockReleaseResponse.Error = ErrorCode.ERR_NotFoundUnit;
+				Unit unit = Game.Scene.GetComponent<UnitComponent>().Get(message.Id);
+				if (unit == null)
+				{
+					g2GLockReleaseResponse.Error = ErrorCode.ERR_NotFoundUnit;
+					reply(g2GLockReleaseResponse);
+					return;
+				}
+
+				unit.GetComponent<MasterComponent>().Release(message.Address);
 				reply(g2GLockReleaseResponse);
 			}
-
-			unit.GetComponent<MasterComponent>().Release(message.Address);
-			reply(g2GLockReleaseResponse);
+			catch (Exception e)
+			{
+				ReplyError(g2GLockReleaseResponse, e, reply);
+			}
 		}
 	}
 }

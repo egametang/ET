@@ -41,8 +41,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\BenchmakComponent.cs">
-      <Link>Component\BenchmakComponent.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\BenchmarkComponent.cs">
+      <Link>Component\BenchmarkComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
       <Link>Component\ConfigComponent.cs</Link>

@@ -58,7 +58,7 @@ namespace App
 						break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();
-						Game.Scene.AddComponent<BenchmakComponent, string>(clientConfig.Address);
+						Game.Scene.AddComponent<BenchmarkComponent, string>(clientConfig.Address);
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
