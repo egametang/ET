@@ -98,6 +98,7 @@ namespace MyEditor
 				startInfo.WorkingDirectory = @"..\";
 				Process p = Process.Start(startInfo);
 				p.WaitForExit();
+				Log.Info($"{startInfo.FileName} {startInfo.Arguments}");
 				Log.Info("同步完成!");
 			}
 		}

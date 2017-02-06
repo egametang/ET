@@ -1,1 +1,1 @@
-{ "_t" : "RsyncConfig", "Host" : "192.168.12.188", "Account" : "tanghai", "Password" : "1234567890", "RelativePath" : "Source/Egametang", "Exclude" : [".git/", "Logs/", "Tools/", "Bin/", "Server/packages/", "Temp/", "Server/Server.sdf", "Unity/Library/", "Unity/Temp/", "*/obj"] }
+{ "_t" : "RsyncConfig", "Host" : "192.168.8.235", "Account" : "tanghai", "Password" : "1234567890", "RelativePath" : "Source/Egametang", "Exclude" : [".git/", "Logs/", "Tools/", "Bin/", "Server/packages/", "Temp/", "Server/Server.sdf", "Unity/Library/", "Unity/Temp/", "*/obj"] }

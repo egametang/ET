@@ -6,15 +6,10 @@ namespace Base
 {
 	public static class Log
 	{
-		private static StreamWriter info;
+		private static readonly StreamWriter info;
 
-		private static StreamWriter error;
-
-		// 每多少秒发一次
-		public static long SendToServerFrequency = 20 * 1000;
-
-		public static long SendToServerTime;
-
+		private static readonly StreamWriter error;
+		
 #if UNITY_EDITOR
 		private static bool IsNeedFlush = true;
 #else
@@ -27,8 +22,8 @@ namespace Base
 			{
 				Directory.CreateDirectory("../Logs");
 			}
-			info = new StreamWriter($"../Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
-			error = new StreamWriter($"../Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
+			info = new StreamWriter("../Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
+			error = new StreamWriter("../Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
 		}
 
 		public static void Warning(string msg)
@@ -83,12 +78,6 @@ namespace Base
 #if UNITY_EDITOR
 			UnityEngine.Debug.LogError(s);
 #endif
-
-			long timeNow = TimeHelper.ClientNow();
-			if (timeNow - SendToServerTime > SendToServerFrequency)
-			{
-				SendToServerTime = timeNow;
-			}
 		}
 
 		public static void Debug(string msg)
