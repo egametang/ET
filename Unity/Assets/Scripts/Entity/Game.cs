@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Model;
 
-namespace Base
+namespace Model
 {
 	public static class Game
 	{
@@ -13,11 +12,23 @@ namespace Base
 
 		private static Scene scene;
 
+		static Game()
+		{
+			disposers = new HashSet<Disposer>();
+
+			entityEventManager = new EntityEventManager();
+			entityEventManager.Register("Model", typeof(Game).Assembly);
+			entityEventManager.Register("Controller", DllHelper.GetController());
+
+			scene = new Scene();
+			scene.AddComponent<EventComponent>();
+		}
+
 		public static Scene Scene
 		{
 			get
 			{
-				return scene ?? (scene = new Scene());
+				return scene;
 			}
 		}
 
@@ -25,7 +36,7 @@ namespace Base
 		{
 			get
 			{
-				return disposers ?? (disposers = new HashSet<Disposer>());
+				return disposers;
 			}
 		}
 
@@ -49,7 +60,7 @@ namespace Base
 		{
 			get
 			{
-				return entityEventManager ?? (entityEventManager = new EntityEventManager());
+				return entityEventManager;
 			}
 			set
 			{

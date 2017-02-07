@@ -1,0 +1,14 @@
+﻿using Model;
+using UnityEngine;
+
+namespace MyEditor
+{
+	[Event(EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
+	public class BehaviorTreeNewCreateClickEvent_CreateNode: IEvent<string, Vector2>
+	{
+		public void Run(string name, Vector2 pos)
+		{
+			BehaviorDesignerWindow.Instance.onCreateNode(name, pos);
+		}
+	}
+}

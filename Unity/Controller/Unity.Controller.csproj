@@ -53,6 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BehaviorTree\Root.cs" />
+    <Compile Include="BehaviorTree\Selector.cs" />
+    <Compile Include="BehaviorTree\Sequence.cs" />
+    <Compile Include="BehaviorTree\True.cs" />
     <Compile Include="Component\BenchmarkComponentE.cs" />
     <Compile Include="Event\InitSceneStartEvent_InitGame.cs" />
     <Compile Include="Message\R2C_ServerLogHandler.cs" />
@@ -71,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Factory\" />
+    <Folder Include="Handler\" />
     <Folder Include="Helper\" />
     <Folder Include="Logic\" />
   </ItemGroup>
