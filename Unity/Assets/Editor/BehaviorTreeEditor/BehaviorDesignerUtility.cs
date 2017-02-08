@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Base;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,7 +29,6 @@ namespace MyEditor
 			{
 				throw new Exception($"无法找到资源: {imageName}", e);
 			}
-
 		}
 
 		public static void DrawConnection(Vector2 src, Vector2 dst)

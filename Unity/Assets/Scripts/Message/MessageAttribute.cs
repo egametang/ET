@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	public class MessageAttribute : Attribute
+	public class MessageAttribute: Attribute
 	{
 		public ushort Opcode { get; private set; }
 

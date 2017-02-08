@@ -90,7 +90,7 @@ namespace Model
 			{
 				sb.Append($"{info[key],10} {key}\r\n");
 			}
-			
+
 			return sb.ToString();
 		}
 	}

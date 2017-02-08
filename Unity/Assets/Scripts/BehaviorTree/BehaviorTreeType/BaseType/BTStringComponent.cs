@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
-    public class BTStringComponent : BTTypeBaseComponent
-    {
-        public string fieldValue;
-    }
+	public class BTStringComponent: BTTypeBaseComponent
+	{
+		public string fieldValue;
+	}
 }

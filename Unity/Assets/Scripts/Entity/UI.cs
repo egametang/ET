@@ -17,7 +17,7 @@ namespace Model
 		}
 
 		public GameObject GameObject { get; }
-		
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)
@@ -33,7 +33,7 @@ namespace Model
 			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject) : base(EntityType.UI)
+		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject): base(EntityType.UI)
 		{
 			this.Scene = scene;
 			this.UIType = uiType;

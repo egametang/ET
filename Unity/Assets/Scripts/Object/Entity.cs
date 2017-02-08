@@ -23,12 +23,12 @@ namespace Model
 			Game.EntityEventManager.Add(this);
 		}
 
-		protected Entity(long id, EntityType entityType) : base(id)
+		protected Entity(long id, EntityType entityType): base(id)
 		{
 			this.Type = entityType;
 			Game.EntityEventManager.Add(this);
 		}
-		
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)
@@ -76,12 +76,12 @@ namespace Model
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = (K)Activator.CreateInstance(typeof(K));
+			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
 
 			if (this.components == null)
@@ -97,12 +97,12 @@ namespace Model
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = (K)Activator.CreateInstance(typeof(K));
+			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
 
 			if (this.components == null)
@@ -116,15 +116,14 @@ namespace Model
 			return component;
 		}
 
-
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = (K)Activator.CreateInstance(typeof(K));
+			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
 
 			if (this.components == null)

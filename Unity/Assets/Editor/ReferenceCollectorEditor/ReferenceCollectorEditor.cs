@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-[CustomEditor(typeof(ReferenceCollector))]
+[CustomEditor(typeof (ReferenceCollector))]
 [CanEditMultipleObjects]
-public class ReferenceCollectorEditor : Editor
+public class ReferenceCollectorEditor: Editor
 {
 	private string searchKey
 	{
@@ -19,14 +19,14 @@ public class ReferenceCollectorEditor : Editor
 			if (_searchKey != value)
 			{
 				_searchKey = value;
-				heroPrefab = referenceCollector.Get<UnityEngine.Object>(searchKey);
+				heroPrefab = referenceCollector.Get<Object>(searchKey);
 			}
 		}
 	}
 
 	private ReferenceCollector referenceCollector;
 
-	private UnityEngine.Object heroPrefab = null;
+	private Object heroPrefab;
 
 	private string _searchKey = "";
 
@@ -45,7 +45,7 @@ public class ReferenceCollectorEditor : Editor
 
 	private void OnEnable()
 	{
-		referenceCollector = (ReferenceCollector)target;
+		referenceCollector = (ReferenceCollector) target;
 	}
 
 	public override void OnInspectorGUI()
@@ -72,7 +72,7 @@ public class ReferenceCollectorEditor : Editor
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.BeginHorizontal();
 		searchKey = EditorGUILayout.TextField(searchKey);
-		EditorGUILayout.ObjectField(heroPrefab, typeof(UnityEngine.Object), false);
+		EditorGUILayout.ObjectField(heroPrefab, typeof (Object), false);
 		if (GUILayout.Button("删除"))
 		{
 			referenceCollector.Remove(searchKey);
@@ -86,7 +86,7 @@ public class ReferenceCollectorEditor : Editor
 		{
 			GUILayout.BeginHorizontal();
 			referenceCollector.data[i].key = EditorGUILayout.TextField(referenceCollector.data[i].key, GUILayout.Width(150));
-			referenceCollector.data[i].gameObject = EditorGUILayout.ObjectField(referenceCollector.data[i].gameObject, typeof(UnityEngine.Object), true);
+			referenceCollector.data[i].gameObject = EditorGUILayout.ObjectField(referenceCollector.data[i].gameObject, typeof (Object), true);
 			if (GUILayout.Button("X"))
 			{
 				delList.Add(i);
@@ -118,7 +118,7 @@ public class ReferenceCollectorEditor : Editor
 		serializedObject.UpdateIfDirtyOrScript();
 	}
 
-	private void AddReference(SerializedProperty dataProperty, string key, UnityEngine.Object obj)
+	private void AddReference(SerializedProperty dataProperty, string key, Object obj)
 	{
 		int index = dataProperty.arraySize;
 		dataProperty.InsertArrayElementAtIndex(index);

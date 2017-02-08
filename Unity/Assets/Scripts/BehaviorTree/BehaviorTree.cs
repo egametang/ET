@@ -4,34 +4,34 @@ using Base;
 
 namespace Model
 {
-    public class BehaviorTree
-    {
-        private readonly Node node;
-        public BehaviorTreeConfig behaviorTreeConfig { get; set; }
-        public Scene Scene { get; }
+	public class BehaviorTree
+	{
+		private readonly Node node;
+		public BehaviorTreeConfig behaviorTreeConfig { get; set; }
+		public Scene Scene { get; }
 
-	    public string Discription
-	    {
-		    get
-		    {
-			    return this.node.Description;
-		    }
-	    }
+		public string Discription
+		{
+			get
+			{
+				return this.node.Description;
+			}
+		}
 
-        public BehaviorTree(Scene scene, Node node)
-        {
-	        this.Scene = scene;
-            this.node = node;
-        }
+		public BehaviorTree(Scene scene, Node node)
+		{
+			this.Scene = scene;
+			this.node = node;
+		}
 
-        public bool Run(BTEnv env)
-        {
-	        try
-	        {
+		public bool Run(BTEnv env)
+		{
+			try
+			{
 				bool ret = this.node.DoRun(this, env);
-                List<long> pathList = env.Get<List<long>>(BTEnvKey.NodePath);
-                Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRunTreeEvent, this, pathList);
-                return ret;
+				List<long> pathList = env.Get<List<long>>(BTEnvKey.NodePath);
+				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRunTreeEvent, this, pathList);
+				return ret;
 			}
 			catch (Exception e)
 			{
@@ -40,5 +40,5 @@ namespace Model
 				return false;
 			}
 		}
-    }
+	}
 }

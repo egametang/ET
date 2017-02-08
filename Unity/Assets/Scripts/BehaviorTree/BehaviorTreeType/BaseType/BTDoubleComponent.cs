@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
-    public class BTDoubleComponent : BTTypeBaseComponent
-    {
-        public double fieldValue;
-    }
+	public class BTDoubleComponent: BTTypeBaseComponent
+	{
+		public double fieldValue;
+	}
 }

@@ -1,12 +1,12 @@
 ﻿namespace Model
 {
-    public enum NodeClassifyType
-    {
-        Composite,
-        Decorator,
-        Action,
-        Condition,
-        Root,
-        DataTransform
-    }
+	public enum NodeClassifyType
+	{
+		Composite,
+		Decorator,
+		Action,
+		Condition,
+		Root,
+		DataTransform
+	}
 }

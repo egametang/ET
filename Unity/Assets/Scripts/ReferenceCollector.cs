@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 [Serializable]
@@ -14,7 +14,7 @@ public class ReferenceCollectorData
 	public Object gameObject;
 }
 
-public class ReferenceCollectorDataComparer : IComparer<ReferenceCollectorData>
+public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
 {
 	public int Compare(ReferenceCollectorData x, ReferenceCollectorData y)
 	{
@@ -26,7 +26,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 {
 	public List<ReferenceCollectorData> data = new List<ReferenceCollectorData>();
 
-    private Dictionary<string, Object>  dict = new Dictionary<string, Object>();
+	private readonly Dictionary<string, Object> dict = new Dictionary<string, Object>();
 
 #if UNITY_EDITOR
 	public void Add(string key, Object obj)
@@ -53,8 +53,8 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 			element.FindPropertyRelative("key").stringValue = key;
 			element.FindPropertyRelative("gameObject").objectReferenceValue = obj;
 		}
-        EditorUtility.SetDirty(this);
-        serializedObject.ApplyModifiedProperties();
+		EditorUtility.SetDirty(this);
+		serializedObject.ApplyModifiedProperties();
 		serializedObject.UpdateIfDirtyOrScript();
 	}
 
@@ -79,49 +79,49 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		serializedObject.UpdateIfDirtyOrScript();
 	}
 
-    public void Clear()
-    {
-        SerializedObject serializedObject = new SerializedObject(this);
-        var dataProperty = serializedObject.FindProperty("data");
-        dataProperty.ClearArray();
-        EditorUtility.SetDirty(this);
-        serializedObject.ApplyModifiedProperties();
-        serializedObject.UpdateIfDirtyOrScript();
-    }
+	public void Clear()
+	{
+		SerializedObject serializedObject = new SerializedObject(this);
+		var dataProperty = serializedObject.FindProperty("data");
+		dataProperty.ClearArray();
+		EditorUtility.SetDirty(this);
+		serializedObject.ApplyModifiedProperties();
+		serializedObject.UpdateIfDirtyOrScript();
+	}
 
-    public void Sort()
-    {
-        SerializedObject serializedObject = new SerializedObject(this);
-        data.Sort(new ReferenceCollectorDataComparer());
-        EditorUtility.SetDirty(this);
-        serializedObject.ApplyModifiedProperties();
-        serializedObject.UpdateIfDirtyOrScript();
-    }
+	public void Sort()
+	{
+		SerializedObject serializedObject = new SerializedObject(this);
+		data.Sort(new ReferenceCollectorDataComparer());
+		EditorUtility.SetDirty(this);
+		serializedObject.ApplyModifiedProperties();
+		serializedObject.UpdateIfDirtyOrScript();
+	}
 #endif
 
 	public T Get<T>(string key) where T : class
-    {
-        Object dictGo;
-        if (!dict.TryGetValue(key, out dictGo))
-        {
-            return null;
-        }
-        return dictGo as T;
-    }
+	{
+		Object dictGo;
+		if (!dict.TryGetValue(key, out dictGo))
+		{
+			return null;
+		}
+		return dictGo as T;
+	}
 
-    public void OnBeforeSerialize()
-    {
-    }
+	public void OnBeforeSerialize()
+	{
+	}
 
-    public void OnAfterDeserialize()
-    {
-        dict.Clear();
-        foreach (var referenceCollectorData in data)
-        {
-            if (!dict.ContainsKey(referenceCollectorData.key))
-            {
-                dict.Add(referenceCollectorData.key, referenceCollectorData.gameObject);
-            }
-        }
-    }
+	public void OnAfterDeserialize()
+	{
+		dict.Clear();
+		foreach (var referenceCollectorData in data)
+		{
+			if (!dict.ContainsKey(referenceCollectorData.key))
+			{
+				dict.Add(referenceCollectorData.key, referenceCollectorData.gameObject);
+			}
+		}
+	}
 }

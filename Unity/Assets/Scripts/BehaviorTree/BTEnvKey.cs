@@ -7,12 +7,13 @@ namespace Model
 	{
 		Input,
 		Output,
-		None,
+		None
 	}
+
 	public enum BehaviorTreeEnum
 	{
 		SkillShakingTree,
-		SkillShakingTree2,
+		SkillShakingTree2
 	}
 
 	public static class BTEnvKey
@@ -82,15 +83,17 @@ namespace Model
 			}
 			return strArr;
 		}
+
 		public static List<string> GetTreeEnumList(Dictionary<string, Type> envKeyDict)
 		{
 			List<string> list = new List<string>();
 			foreach (var item in envKeyDict)
 			{
-				list.Add(item.Key.ToString());
+				list.Add(item.Key);
 			}
 			return list;
 		}
+
 		public static List<string> GetTreeEnumFilterList(Dictionary<string, Type> envKeyDict, Type type)
 		{
 			List<string> list = new List<string>();
@@ -98,7 +101,7 @@ namespace Model
 			{
 				if (item.Value == type)
 				{
-					list.Add(item.Key.ToString());
+					list.Add(item.Key);
 				}
 			}
 			return list;

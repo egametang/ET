@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using Base;
 using Model;
 using UnityEditor;
-using UnityEngine;
 
 namespace MyEditor
 {
@@ -37,12 +35,11 @@ namespace MyEditor
 			}
 		}
 
-        public static void SaveOneTree(BehaviorTreeConfig treeConfig, string treePath, params object[] paramList)
+		public static void SaveOneTree(BehaviorTreeConfig treeConfig, string treePath, params object[] paramList)
 		{
 			EditorUtility.SetDirty(treeConfig.gameObject);
 			AssetDatabase.SaveAssets();
 		}
-
 
 		public static void CheckHasName(BehaviorTreeConfig config, string path, string nodeName)
 		{

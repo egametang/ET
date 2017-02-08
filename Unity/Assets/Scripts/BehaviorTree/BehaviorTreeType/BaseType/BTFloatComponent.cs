@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
-    public class BTFloatComponent : BTTypeBaseComponent
-    {
-        public float fieldValue;
-    }
+	public class BTFloatComponent: BTTypeBaseComponent
+	{
+		public float fieldValue;
+	}
 }

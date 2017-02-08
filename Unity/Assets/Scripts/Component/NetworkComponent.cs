@@ -59,7 +59,6 @@ namespace Model
 
 		private async Task<Session> Accept()
 		{
-
 			AChannel channel = await this.Service.AcceptChannel();
 			Session session = new Session(this, channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
@@ -122,7 +121,7 @@ namespace Model
 			{
 				session.Dispose();
 			}
-			
+
 			this.Service.Dispose();
 		}
 	}

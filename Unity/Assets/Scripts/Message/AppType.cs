@@ -16,7 +16,7 @@ namespace Model
 		Robot = 32,
 
 		// 7
-		AllServer = Manager | Realm | Gate,
+		AllServer = Manager | Realm | Gate
 	}
 
 	public static class AppTypeHelper

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	public class ServerCommandLineEditor : EditorWindow
+	public class ServerCommandLineEditor: EditorWindow
 	{
 		private const string ConfigDir = @"..\Config\StartConfig\";
 
@@ -31,7 +31,7 @@ namespace MyEditor
 		[MenuItem("Tools/命令行配置")]
 		private static void ShowWindow()
 		{
-			GetWindow(typeof(ServerCommandLineEditor));
+			GetWindow(typeof (ServerCommandLineEditor));
 		}
 
 		private void OnEnable()
@@ -124,7 +124,7 @@ namespace MyEditor
 			{
 				this.LoadConfig();
 			}
-			
+
 			this.newFileName = EditorGUILayout.TextField("文件名", this.newFileName);
 
 			if (GUILayout.Button("添加"))
@@ -183,7 +183,7 @@ namespace MyEditor
 				GUILayout.Label($"服务器IP:");
 				startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP);
 				GUILayout.Label($"AppType:");
-				startConfig.AppType = (AppType)EditorGUILayout.EnumPopup(startConfig.AppType);
+				startConfig.AppType = (AppType) EditorGUILayout.EnumPopup(startConfig.AppType);
 
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
@@ -221,7 +221,7 @@ namespace MyEditor
 				{
 					for (int j = 1; j < this.copyNum + 1; ++j)
 					{
-						StartConfig newStartConfig = (StartConfig)startConfig.Clone();
+						StartConfig newStartConfig = (StartConfig) startConfig.Clone();
 						newStartConfig.AppId += j;
 						this.startConfigs.Add(newStartConfig);
 					}
@@ -236,14 +236,14 @@ namespace MyEditor
 			this.copyNum = EditorGUILayout.IntField("复制数量: ", this.copyNum);
 
 			GUILayout.Label($"添加的AppType:");
-			this.AppType = (AppType)EditorGUILayout.EnumPopup(this.AppType);
+			this.AppType = (AppType) EditorGUILayout.EnumPopup(this.AppType);
 
 			if (GUILayout.Button("添加一行配置"))
 			{
 				StartConfig newStartConfig = new StartConfig();
 
 				newStartConfig.AppType = this.AppType;
-				
+
 				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager))
 				{
 					newStartConfig.AddComponent<InnerConfig>();
@@ -258,7 +258,6 @@ namespace MyEditor
 				this.startConfigs.Add(newStartConfig);
 			}
 			GUILayout.EndHorizontal();
-
 
 			GUILayout.BeginHorizontal();
 
@@ -286,11 +285,7 @@ namespace MyEditor
 
 				string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
 
-				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments)
-				{
-					UseShellExecute = true,
-					WorkingDirectory = @"..\Bin\"
-				};
+				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments) { UseShellExecute = true, WorkingDirectory = @"..\Bin\" };
 				Process.Start(info);
 			}
 			GUILayout.EndHorizontal();

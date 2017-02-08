@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
-    public enum EventIdType
-    {
+	public enum EventIdType
+	{
 		InitSceneStart,
 
 		BehaviorTreeRunTreeEvent,
@@ -13,6 +13,6 @@
 		BehaviorTreeMouseInNode,
 		BehaviorTreeConnectState,
 		BehaviorTreeReplaceClick,
-		BehaviorTreeRightDesignerDrag,
+		BehaviorTreeRightDesignerDrag
 	}
 }

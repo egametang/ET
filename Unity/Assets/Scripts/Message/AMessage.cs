@@ -4,7 +4,7 @@
 	{
 	}
 
-	public abstract class ARequest : AMessage
+	public abstract class ARequest: AMessage
 	{
 	}
 

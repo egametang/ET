@@ -3,7 +3,7 @@ using Base;
 
 namespace Model
 {
-	public class BenchmarkComponent : Component
+	public class BenchmarkComponent: Component
 	{
 		private int k;
 
@@ -54,5 +54,5 @@ namespace Model
 
 			base.Dispose();
 		}
-    }
+	}
 }

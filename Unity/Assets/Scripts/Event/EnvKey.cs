@@ -5,6 +5,6 @@
 	/// </summary>
 	public enum EnvKey
 	{
-		ChannelError,
+		ChannelError
 	}
 }

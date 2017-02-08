@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
@@ -7,16 +6,16 @@ namespace Model
 	/// <summary>
 	/// Key Value组件用于保存一些数据
 	/// </summary>
-    public class KVComponent : Component
-    {
+	public class KVComponent: Component
+	{
 		[BsonElement]
 		private readonly Dictionary<string, object> kv = new Dictionary<string, object>();
-		
+
 		public void Add(string key, object value)
 		{
 			this.kv.Add(key, value);
 		}
-		
+
 		public void Remove(string key)
 		{
 			this.kv.Remove(key);
@@ -29,7 +28,7 @@ namespace Model
 			{
 				return default(T);
 			}
-			return (T)k;
+			return (T) k;
 		}
 
 		public override void Dispose()
@@ -41,5 +40,5 @@ namespace Model
 
 			base.Dispose();
 		}
-    }
+	}
 }

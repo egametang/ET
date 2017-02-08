@@ -26,8 +26,8 @@ namespace MyEditor
 
 		private Rect mGraphRect = new Rect(0, 0, 2000, 2000); //绘图区域
 		private float mLeftWidth = 380f;
-         private float mRightWidth = 0;
-        private Vector2 mScrollPosition = Vector2.zero;
+		private float mRightWidth;
+		private Vector2 mScrollPosition = Vector2.zero;
 
 		public void Draw(Rect windowRect)
 		{
@@ -60,7 +60,6 @@ namespace MyEditor
 			HandleEvents();
 			CalcGraphRect();
 		}
-        
 
 		public void DrawNodes()
 		{
@@ -93,26 +92,26 @@ namespace MyEditor
 		private Vector2 mSrcOffset = Vector2.zero;
 		private bool mLock = true;
 		private bool mDragingLeftBorder;
-        private bool mDragingRightBorder;
+		private bool mDragingRightBorder;
 
-        public void HandleEvents()
+		public void HandleEvents()
 		{
 			var e = Event.current;
 			switch (e.type)
 			{
 				case EventType.MouseDown:
-                    GUI.FocusControl("");
+					GUI.FocusControl("");
 					mMousePos = e.mousePosition;
-                    if (!BehaviorDesignerWindow.windowRect.Contains(mMousePos))
-                    {
-                        BehaviorDesignerWindow.Instance.CloseSubWin();
-                    }
-                    if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
-                    {
-                        break;
-                    }
-                    //单击选中
-                    if (e.button == 0)
+					if (!BehaviorDesignerWindow.windowRect.Contains(mMousePos))
+					{
+						BehaviorDesignerWindow.Instance.CloseSubWin();
+					}
+					if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
+					{
+						break;
+					}
+					//单击选中
+					if (e.button == 0)
 					{
 						CheckMouseInNode();
 					}
@@ -137,18 +136,18 @@ namespace MyEditor
 					{
 						mDragingLeftBorder = true;
 					}
-                    if (e.button == 0 && e.mousePosition.x < mLeftWidth + mBorderRect.width && e.mousePosition.x > mLeftWidth + mBorderRect.width - 30)
-                    {
-                        mDragingRightBorder = true;
-                    } 
-                    
-                    break;
+					if (e.button == 0 && e.mousePosition.x < mLeftWidth + mBorderRect.width && e.mousePosition.x > mLeftWidth + mBorderRect.width - 30)
+					{
+						mDragingRightBorder = true;
+					}
+
+					break;
 				case EventType.MouseUp:
-                    if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
-                    {
-                        break;
-                    }
-                    if (e.button == 0 && e.shift)
+					if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
+					{
+						break;
+					}
+					if (e.button == 0 && e.shift)
 					{
 						mSelectedNode.Offset = mSrcOffset;
 						mSelectedNode.Parent.AutoSort();
@@ -160,7 +159,7 @@ namespace MyEditor
 					}
 					mState = State.Normal;
 					mDragingLeftBorder = false;
-                    mDragingRightBorder = false;
+					mDragingRightBorder = false;
 					break;
 				case EventType.MouseDrag:
 					//中键
@@ -197,15 +196,15 @@ namespace MyEditor
 						mLeftWidth += e.delta.x;
 						return;
 					}
-                    if (mDragingRightBorder)
-                    {
-                        mRightWidth -= e.delta.x;
-                        Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRightDesignerDrag, e.delta.x);
-                        return;
-                    }
+					if (mDragingRightBorder)
+					{
+						mRightWidth -= e.delta.x;
+						Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRightDesignerDrag, e.delta.x);
+						return;
+					}
 
-                    //左键
-                    if (e.button == 0 && (e.control || !mLock))
+					//左键
+					if (e.button == 0 && (e.control || !mLock))
 					{
 						if (mSelectedNode != null)
 						{
@@ -322,74 +321,75 @@ namespace MyEditor
 			}
 		}
 
-        public List<string>GetCanRepalceList()
-        {
-            List<string> result = new List<string>();
-            if (mSelectedNode != null)
-            {
-                if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() || BehaviorManager.GetInstance().CurTree.Root.nodeId == mSelectedNode.NodeData.nodeId)
-                {
-                    List<ClientNodeTypeProto> list = BehaviorManager.GetInstance().Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
-                    foreach (ClientNodeTypeProto nodeType in list)
-                    {
-                        result.Add(nodeType.name);
-                       // menu.AddItem(new GUIContent(string.Format("{0}/{1}", "替换为", nodeType.name)), false, new GenericMenu.MenuFunction2(this.ChangeNodeType), nodeType.name);
-                    }
-                }
-                else
-                {
-                   // NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
-                    List<ClientNodeTypeProto> canSubtituteList = BehaviorManager.GetInstance().AllNodeProtoList;
-                    canSubtituteList.Sort(CompareShowName);
-                    foreach (ClientNodeTypeProto nodeType in canSubtituteList)
-                    {
-                        if (nodeType.classify == NodeClassifyType.Root.ToString())
-                        {
-                            continue;
-                        }
-                        // menu.AddItem(new GUIContent(string.Format("{0}/{1}", "替换为", nodeType.name)), false, new GenericMenu.MenuFunction2(this.ChangeNodeType), nodeType.name);
-                        if (mSelectedNode.NodeData.Proto.child_limit <= nodeType.child_limit)
-                        {
-                            result.Add(nodeType.name);
-                        }
-                        
-                    }
-                }
+		public List<string> GetCanRepalceList()
+		{
+			List<string> result = new List<string>();
+			if (mSelectedNode != null)
+			{
+				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
+				    BehaviorManager.GetInstance().CurTree.Root.nodeId == mSelectedNode.NodeData.nodeId)
+				{
+					List<ClientNodeTypeProto> list = BehaviorManager.GetInstance().Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
+					foreach (ClientNodeTypeProto nodeType in list)
+					{
+						result.Add(nodeType.name);
+						// menu.AddItem(new GUIContent(string.Format("{0}/{1}", "替换为", nodeType.name)), false, new GenericMenu.MenuFunction2(this.ChangeNodeType), nodeType.name);
+					}
+				}
+				else
+				{
+					// NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
+					List<ClientNodeTypeProto> canSubtituteList = BehaviorManager.GetInstance().AllNodeProtoList;
+					canSubtituteList.Sort(CompareShowName);
+					foreach (ClientNodeTypeProto nodeType in canSubtituteList)
+					{
+						if (nodeType.classify == NodeClassifyType.Root.ToString())
+						{
+							continue;
+						}
+						// menu.AddItem(new GUIContent(string.Format("{0}/{1}", "替换为", nodeType.name)), false, new GenericMenu.MenuFunction2(this.ChangeNodeType), nodeType.name);
+						if (mSelectedNode.NodeData.Proto.child_limit <= nodeType.child_limit)
+						{
+							result.Add(nodeType.name);
+						}
+					}
+				}
+			}
+			return result;
+		}
 
-            }
-            return result;
-        }
-        public List<string> GetCanCreateList()
-        {
-            List<string> result = new List<string>();
+		public List<string> GetCanCreateList()
+		{
+			List<string> result = new List<string>();
 
-            foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.GetInstance().Classify2NodeProtoList)
-            {
-                string classify = kv.Key;
-                List<ClientNodeTypeProto> nodeProtoList = kv.Value;
-                nodeProtoList.Sort(CompareShowName);
-                if (classify == NodeClassifyType.Root.ToString())
-                {
-                    continue;
-                }
-                foreach (var node in nodeProtoList)
-                {
-                    if (mSelectedNode != null && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
-                    {
-                        result.Add(node.name);
-                    }
-                }
-            }
-            return result;
-        }
-        ///菜单相关
-        public void PopMenu()
+			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.GetInstance().Classify2NodeProtoList)
+			{
+				string classify = kv.Key;
+				List<ClientNodeTypeProto> nodeProtoList = kv.Value;
+				nodeProtoList.Sort(CompareShowName);
+				if (classify == NodeClassifyType.Root.ToString())
+				{
+					continue;
+				}
+				foreach (var node in nodeProtoList)
+				{
+					if (mSelectedNode != null && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
+					{
+						result.Add(node.name);
+					}
+				}
+			}
+			return result;
+		}
+
+		///菜单相关
+		public void PopMenu()
 		{
 			var menu = new GenericMenu();
-			
-            menu.AddItem(new GUIContent("创建子节点"), false, this.PopUpCreate);
-            menu.AddItem(new GUIContent("替换当前节点"), false, this.PopUpReplace);
-            string selectNodeName = BehaviorManager.GetInstance().selectNodeName;
+
+			menu.AddItem(new GUIContent("创建子节点"), false, this.PopUpCreate);
+			menu.AddItem(new GUIContent("替换当前节点"), false, this.PopUpReplace);
+			string selectNodeName = BehaviorManager.GetInstance().selectNodeName;
 			string selectNodeType = BehaviorManager.GetInstance().selectNodeType;
 			if (mSelectedNode != null && selectNodeName != "")
 			{
@@ -433,22 +433,25 @@ namespace MyEditor
 				menu.AddDisabledItem(new GUIContent("新建"));
 				menu.AddDisabledItem(new GUIContent("替换"));
 			}
-            menu.AddItem(new GUIContent("自动排序"), false, this.AutoSort);
-            menu.AddItem(new GUIContent("复制"), false, this.CopyNode);
+			menu.AddItem(new GUIContent("自动排序"), false, this.AutoSort);
+			menu.AddItem(new GUIContent("复制"), false, this.CopyNode);
 			menu.AddItem(new GUIContent("剪切"), false, this.CutNode);
 			menu.AddItem(new GUIContent("粘贴"), false, this.PasteNode);
 			menu.AddItem(new GUIContent("删除节点"), false, this.RemoveNode);
-            menu.ShowAsContext();
+			menu.ShowAsContext();
 		}
-        private void PopUpCreate()
-        {
-            BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos,SubWinType.CreateNode);
-        }
-        private void PopUpReplace()
-        {
-            BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.ReplaceNode);
-        }
-        private static int CompareShowName(ClientNodeTypeProto clientNodeType1, ClientNodeTypeProto clientNodeType2)
+
+		private void PopUpCreate()
+		{
+			BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.CreateNode);
+		}
+
+		private void PopUpReplace()
+		{
+			BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.ReplaceNode);
+		}
+
+		private static int CompareShowName(ClientNodeTypeProto clientNodeType1, ClientNodeTypeProto clientNodeType2)
 		{
 			if (string.IsNullOrEmpty(clientNodeType1.name) || string.IsNullOrEmpty(clientNodeType2.name))
 			{
@@ -506,7 +509,7 @@ namespace MyEditor
 			if (mCopyNode != null && mCopyNode != mSelectedNode)
 			{
 				var data = BehaviorManager.GetInstance().CopyNode(mCopyNode.NodeData);
-                BehaviorManager.GetInstance().ResetTreeId();
+				BehaviorManager.GetInstance().ResetTreeId();
 				var node = CreateNode(data, Vector2.zero);
 				ConnectNode(node, mSelectedNode);
 			}
@@ -542,8 +545,8 @@ namespace MyEditor
 				return;
 			}
 			mDetachedNodes.Remove(mSelectedNode);
-            BehaviorManager.GetInstance().ResetTreeId();
-        }
+			BehaviorManager.GetInstance().ResetTreeId();
+		}
 
 		private void ChangeNodeType()
 		{
@@ -580,8 +583,8 @@ namespace MyEditor
 			{
 				newNode.AddChild(child);
 			}
-            BehaviorManager.GetInstance().ResetTreeId();
-            Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeAfterChangeNodeType);
+			BehaviorManager.GetInstance().ResetTreeId();
+			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeAfterChangeNodeType);
 		}
 
 		public void onChangeNodeType(params object[] list)
@@ -622,22 +625,22 @@ namespace MyEditor
 			{
 				mDetachedNodes.Add(node);
 			}
-            BehaviorManager.GetInstance().ResetTreeId();
-            Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeCreateNode, node);
+			BehaviorManager.GetInstance().ResetTreeId();
+			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeCreateNode, node);
 			return node;
 		}
 
 		/// 事件相关
 		public NodeDesigner onCreateTree(params object[] list)
 		{
-            if (BehaviorManager.GetInstance().CurTree == null)
-            {
-                Log.Error($"CurTree can not be null");
-                return null;
-            }
+			if (BehaviorManager.GetInstance().CurTree == null)
+			{
+				Log.Error($"CurTree can not be null");
+				return null;
+			}
 			RootNode = new NodeDesigner(BehaviorManager.GetInstance().CurTree.Root);
 			CalcGraphRect();
-            return RootNode;
+			return RootNode;
 		}
 
 		public void onSelectNode(params object[] list)

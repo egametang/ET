@@ -7,8 +7,8 @@ namespace Model
 	{
 		public EventIdType Type { get; private set; }
 
-        protected AEventAttribute(EventIdType type)
-        {
+		protected AEventAttribute(EventIdType type)
+		{
 			this.Type = type;
 		}
 	}

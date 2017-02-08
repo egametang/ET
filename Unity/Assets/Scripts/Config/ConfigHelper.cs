@@ -9,7 +9,7 @@ namespace Model
 		{
 			try
 			{
-				string configStr = ((GameObject)Resources.Load("Config")).Get<TextAsset>(key).text;
+				string configStr = ((GameObject) Resources.Load("Config")).Get<TextAsset>(key).text;
 				return configStr;
 			}
 			catch (Exception)

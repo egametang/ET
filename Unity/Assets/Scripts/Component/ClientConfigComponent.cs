@@ -3,9 +3,9 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(typeof(ClientConfigComponent))]
-	public class ClientConfigComponent : Component
-    {
+	[EntityEvent(typeof (ClientConfigComponent))]
+	public class ClientConfigComponent: Component
+	{
 		public StartConfig Config { get; private set; }
 
 		private void Awake()
@@ -25,5 +25,5 @@ namespace Model
 
 			this.Config.Dispose();
 		}
-    }
+	}
 }

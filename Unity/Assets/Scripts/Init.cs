@@ -8,7 +8,7 @@ namespace Model
 	{
 		private void Start()
 		{
-			Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
+			Game.EntityEventManager.Register("Model", typeof (Game).Assembly);
 			Game.EntityEventManager.Register("Controller", DllHelper.GetController());
 
 			Game.Scene.AddComponent<EventComponent>().Run(EventIdType.InitSceneStart);
@@ -32,4 +32,3 @@ namespace Model
 		}
 	}
 }
-

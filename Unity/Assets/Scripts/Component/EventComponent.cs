@@ -8,7 +8,7 @@ namespace Model
 	/// <summary>
 	/// 事件分发
 	/// </summary>
-	[EntityEvent(typeof(EventComponent))]
+	[EntityEvent(typeof (EventComponent))]
 	public class EventComponent: Component
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
@@ -27,11 +27,11 @@ namespace Model
 				Type[] types = assembly.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
+					object[] attrs = type.GetCustomAttributes(typeof (EventAttribute), false);
 
 					foreach (object attr in attrs)
 					{
-						EventAttribute aEventAttribute = (EventAttribute)attr;
+						EventAttribute aEventAttribute = (EventAttribute) attr;
 
 						object obj = Activator.CreateInstance(type);
 						if (!this.allEvents.ContainsKey(aEventAttribute.Type))
@@ -200,31 +200,32 @@ namespace Model
 				}
 			}
 		}
-        public void Run<A, B, C, D, E,F>(EventIdType type, A a, B b, C c, D d, E e,F f)
-        {
-            List<object> iEvents = null;
-            if (!this.allEvents.TryGetValue(type, out iEvents))
-            {
-                return;
-            }
 
-            foreach (object obj in iEvents)
-            {
-                try
-                {
-                    var iEvent = obj as IEvent<A, B, C, D, E,F>;
-                    if (iEvent == null)
-                    {
-                        throw new Exception(
-                                $"event type: {type} is not IEvent<{typeof(A).Name}, {typeof(B).Name}, {typeof(C).Name}, {typeof(D).Name}, {typeof(E).Name}>");
-                    }
-                    iEvent.Run(a, b, c, d, e,f);
-                }
-                catch (Exception err)
-                {
-                    Log.Error(err.ToString());
-                }
-            }
-        }
-    }
+		public void Run<A, B, C, D, E, F>(EventIdType type, A a, B b, C c, D d, E e, F f)
+		{
+			List<object> iEvents = null;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
+			{
+				return;
+			}
+
+			foreach (object obj in iEvents)
+			{
+				try
+				{
+					var iEvent = obj as IEvent<A, B, C, D, E, F>;
+					if (iEvent == null)
+					{
+						throw new Exception(
+								$"event type: {type} is not IEvent<{typeof (A).Name}, {typeof (B).Name}, {typeof (C).Name}, {typeof (D).Name}, {typeof (E).Name}>");
+					}
+					iEvent.Run(a, b, c, d, e, f);
+				}
+				catch (Exception err)
+				{
+					Log.Error(err.ToString());
+				}
+			}
+		}
+	}
 }

@@ -3,7 +3,7 @@
 namespace Model
 {
 	[BsonIgnoreExtraElements]
-	public class BuffConfig : AConfig
+	public class BuffConfig: AConfig
 	{
 		public string Name { get; set; }
 		public int Time { get; set; }
@@ -18,7 +18,7 @@ namespace Model
 	}
 
 	[Config(AppType.Client | AppType.Gate)]
-	public class BuffCategory : ACategory<BuffConfig>
+	public class BuffCategory: ACategory<BuffConfig>
 	{
 	}
 }

@@ -12,7 +12,7 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[EntityEvent(typeof(TimerComponent))]
+	[EntityEvent(typeof (TimerComponent))]
 	public class TimerComponent: Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
@@ -70,10 +70,7 @@ namespace Model
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
-			cancellationToken.Register(() =>
-			{
-				this.Remove(timer.Id);
-			});
+			cancellationToken.Register(() => { this.Remove(timer.Id); });
 			return tcs.Task;
 		}
 
@@ -89,30 +86,17 @@ namespace Model
 		public Task WaitAsync(long time, CancellationToken cancellationToken)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			Timer timer = new Timer
-			{
-				Id = IdGenerater.GenerateId(),
-				Time = TimeHelper.Now() + time,
-				tcs = tcs
-			};
+			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
-			cancellationToken.Register(() =>
-			{
-				this.Remove(timer.Id);
-			});
+			cancellationToken.Register(() => { this.Remove(timer.Id); });
 			return tcs.Task;
 		}
 
 		public Task WaitAsync(long time)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			Timer timer = new Timer
-			{
-				Id = IdGenerater.GenerateId(),
-				Time = TimeHelper.Now() + time,
-				tcs = tcs
-			};
+			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
 			return tcs.Task;

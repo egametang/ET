@@ -18,7 +18,7 @@ namespace MyEditor
 		{
 		}
 
-		public BehaviorTreeData(long id) : base(id, EntityType.Config)
+		public BehaviorTreeData(long id): base(id, EntityType.Config)
 		{
 		}
 

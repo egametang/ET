@@ -1,8 +1,5 @@
-﻿using System;
-using Base;
-using Model;
+﻿using Model;
 using UnityEditor;
-using UnityEngine;
 
 namespace MyEditor
 {
@@ -11,8 +8,8 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
-			Game.EntityEventManager.Register("Editor", typeof(EditorInit).Assembly);
+			Game.EntityEventManager.Register("Model", typeof (Game).Assembly);
+			Game.EntityEventManager.Register("Editor", typeof (EditorInit).Assembly);
 		}
 	}
 }

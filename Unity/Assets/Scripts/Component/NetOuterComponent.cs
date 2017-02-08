@@ -2,8 +2,8 @@
 
 namespace Model
 {
-	[EntityEvent(typeof(NetOuterComponent))]
-	public class NetOuterComponent : NetworkComponent
+	[EntityEvent(typeof (NetOuterComponent))]
+	public class NetOuterComponent: NetworkComponent
 	{
 		private void Awake()
 		{

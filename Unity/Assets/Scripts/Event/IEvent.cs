@@ -29,8 +29,9 @@
 	{
 		void Run(A a, B b, C c, D d, E e);
 	}
-    public interface IEvent<in A, in B, in C, in D, in E,in F>
-    {
-        void Run(A a, B b, C c, D d, E e,F f);
-    }
+
+	public interface IEvent<in A, in B, in C, in D, in E, in F>
+	{
+		void Run(A a, B b, C c, D d, E e, F f);
+	}
 }

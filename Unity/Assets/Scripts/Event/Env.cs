@@ -35,11 +35,11 @@ namespace Model
 			object value = values[key];
 			try
 			{
-				return (T)value;
+				return (T) value;
 			}
 			catch (InvalidCastException e)
 			{
-				throw new Exception($"不能把{value.GetType()}转换为{typeof(T)}", e);
+				throw new Exception($"不能把{value.GetType()}转换为{typeof (T)}", e);
 			}
 		}
 

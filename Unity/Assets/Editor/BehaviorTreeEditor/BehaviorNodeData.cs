@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Model;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ namespace MyEditor
 		Error,
 		Normal
 	}
- 
+
 	public class BehaviorNodeData
 	{
 		public int nodeId;
@@ -21,38 +20,25 @@ namespace MyEditor
 		public string name;
 
 		public string describe = "";
-  
+
 		public List<BehaviorNodeData> children = new List<BehaviorNodeData>();
 
 		public BehaviorTreeArgsDict args_dict = new BehaviorTreeArgsDict();
-        /// <summary>
-        ///  
-        /// </summary>
+
+		/// <summary>
+		///  
+		/// </summary>
 		public string error = "";
-
-		private ClientNodeTypeProto mProto;
-
-		private BehaviorNodeData mParent;
 
 		private string mClassify = "";
 
 		public NodeDesigner NodeDesigner { get; set; }
-		
+
 		public Vector2 Pos;
 		public DebugState NodeDeubgState { get; set; }
 		public string time;
 
-		public ClientNodeTypeProto Proto
-		{
-			get
-			{
-				return mProto;
-			}
-			set
-			{
-				mProto = value;
-			}
-		}
+		public ClientNodeTypeProto Proto { get; set; }
 
 		public List<BehaviorNodeData> Children
 		{
@@ -62,17 +48,7 @@ namespace MyEditor
 			}
 		}
 
-		public BehaviorNodeData Parent
-		{
-			get
-			{
-				return mParent;
-			}
-			set
-			{
-				mParent = value;
-			}
-		}
+		public BehaviorNodeData Parent { get; set; }
 
 		public string Classify
 		{
@@ -89,15 +65,15 @@ namespace MyEditor
 		public BehaviorNodeData(string proto_name)
 		{
 			name = proto_name;
-			mProto = BehaviorManager.GetInstance().GetNodeTypeProto(proto_name);
-			if (mProto == null)
+			this.Proto = BehaviorManager.GetInstance().GetNodeTypeProto(proto_name);
+			if (this.Proto == null)
 			{
-				mProto = BehaviorManager.GetInstance().GetNodeTypeProto("Unknow");
+				this.Proto = BehaviorManager.GetInstance().GetNodeTypeProto("Unknow");
 				return;
 			}
-			mClassify = mProto.classify;
+			mClassify = this.Proto.classify;
 
-			foreach (var args_desc in mProto.new_args_desc)
+			foreach (var args_desc in this.Proto.new_args_desc)
 			{
 				args_dict.SetKeyValueComp(args_desc.type, args_desc.name, args_desc.value);
 			}
@@ -117,7 +93,7 @@ namespace MyEditor
 		{
 			index = index == -1? this.Children.Count : index;
 			children.Insert(index, node);
-			node.mParent = this;
+			node.Parent = this;
 		}
 
 		public BehaviorNodeData RemoveChild(BehaviorNodeData node)
@@ -136,12 +112,12 @@ namespace MyEditor
 		{
 			return Parent == null;
 		}
- 
+
 		public bool CanAddChild()
 		{
 			return children.Count < Proto.child_limit;
 		}
-         
+
 		public void ResetId()
 		{
 			this.nodeId = BehaviorManager.GetInstance().AutoNodeId();

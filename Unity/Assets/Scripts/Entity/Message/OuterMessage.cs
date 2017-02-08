@@ -11,6 +11,7 @@ namespace Model
 	{
 		[BsonElement("A")]
 		public string Account;
+
 		[BsonElement("P")]
 		public string Password;
 	}
@@ -21,6 +22,7 @@ namespace Model
 	{
 		[BsonElement("A")]
 		public string Address { get; set; }
+
 		[BsonElement("K")]
 		public long Key { get; set; }
 	}
@@ -31,17 +33,20 @@ namespace Model
 	{
 		[BsonElement("AT")]
 		public AppType AppType { get; set; }
+
 		[BsonElement("A")]
 		public int AppId { get; set; }
+
 		[BsonElement("T")]
 		public LogType Type { get; set; }
+
 		[BsonElement("L")]
 		public string Log { get; set; }
 	}
-	
+
 	[Message(8)]
 	[BsonIgnoreExtraElements]
-	public class C2G_LoginGate : ARequest
+	public class C2G_LoginGate: ARequest
 	{
 		[BsonElement("K")]
 		public long Key;
@@ -54,32 +59,32 @@ namespace Model
 
 	[Message(9)]
 	[BsonIgnoreExtraElements]
-	public class G2C_LoginGate : AResponse
+	public class G2C_LoginGate: AResponse
 	{
 	}
 
 	[Message(10)]
 	[BsonIgnoreExtraElements]
-	public class C2M_Reload : ARequest
+	public class C2M_Reload: ARequest
 	{
 		public AppType AppType;
 	}
 
 	[Message(11)]
 	[BsonIgnoreExtraElements]
-	public class M2C_Reload : AResponse
+	public class M2C_Reload: AResponse
 	{
 	}
-	
+
 	[Message(14)]
 	[BsonIgnoreExtraElements]
-	public class C2R_Ping : ARequest
+	public class C2R_Ping: ARequest
 	{
 	}
 
 	[Message(15)]
 	[BsonIgnoreExtraElements]
-	public class R2C_Ping : AResponse
+	public class R2C_Ping: AResponse
 	{
 	}
 }

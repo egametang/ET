@@ -3,8 +3,8 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(typeof(NetInnerComponent))]
-	public class NetInnerComponent : NetworkComponent
+	[EntityEvent(typeof (NetInnerComponent))]
+	public class NetInnerComponent: NetworkComponent
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 

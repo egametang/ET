@@ -14,7 +14,7 @@ namespace Model
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
 		private readonly AChannel channel;
 
-		public Session(NetworkComponent network, AChannel channel) : base(EntityType.Session)
+		public Session(NetworkComponent network, AChannel channel): base(EntityType.Session)
 		{
 			this.network = network;
 			this.channel = channel;
@@ -118,9 +118,8 @@ namespace Model
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken)
-			where Request : ARequest
-			where Response : AResponse
+		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) where Request : ARequest
+				where Response : AResponse
 		{
 			this.SendMessage(++RpcId, request);
 
@@ -140,7 +139,7 @@ namespace Model
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {typeof (Response).FullName}", e));
 				}
 			};
 
@@ -152,9 +151,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request)
-			where Request : ARequest
-			where Response : AResponse
+		public Task<Response> Call<Request, Response>(Request request) where Request : ARequest where Response : AResponse
 		{
 			this.SendMessage(++RpcId, request);
 
@@ -173,7 +170,7 @@ namespace Model
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {typeof (Response).FullName}", e));
 				}
 			};
 
@@ -233,7 +230,7 @@ namespace Model
 			long id = this.Id;
 
 			base.Dispose();
-			
+
 			this.channel.Dispose();
 			this.network.Remove(id);
 		}

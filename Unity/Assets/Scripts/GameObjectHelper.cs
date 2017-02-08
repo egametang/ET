@@ -5,7 +5,7 @@ namespace Model
 {
 	public static class GameObjectHelper
 	{
-		public static T Get<T>(this GameObject gameObject, string key) where T: class 
+		public static T Get<T>(this GameObject gameObject, string key) where T : class
 		{
 			try
 			{

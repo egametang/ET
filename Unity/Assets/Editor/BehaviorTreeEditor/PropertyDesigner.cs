@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Base;
 using Model;
@@ -39,7 +39,7 @@ namespace MyEditor
 					{
 						mDragingBorder = true;
 					}
-                    break;
+					break;
 				case EventType.MouseDrag:
 					if (mDragingBorder)
 					{
@@ -290,7 +290,7 @@ namespace MyEditor
 
 		private string searchNodeName = "";
 		private BehaviorTreeConfig searchTree;
-		private GameObject[] searchGoArr = new GameObject[0];
+		private readonly GameObject[] searchGoArr = new GameObject[0];
 		private Rect mBorderRect; //边框
 		private Vector2 mScrollPosition = Vector2.zero;
 		private Rect mGraphRect = new Rect(0, 0, 50, 50); //绘图区域
@@ -325,7 +325,7 @@ namespace MyEditor
 			EditorGUILayout.EndHorizontal();
 			return value;
 		}
-		
+
 		private void DrawValueView()
 		{
 			if (mCurBehaviorNode == null || mCurBehaviorNode.Proto == null)
@@ -393,26 +393,26 @@ namespace MyEditor
 			{
 				NodeFieldDesc desc = fieldList[i];
 				Type fieldType = ExportNodeTypeConfig.GetFieldType(nodeName, desc.name);
-                ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
-                object newValue = null;
+				ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
+				object newValue = null;
 				if (!mCurBehaviorNode.args_dict.ContainsKey(desc.name))
 				{
 					mCurBehaviorNode.args_dict.Add(desc.name, new ValueBase());
 				}
 				if (BehaviorTreeArgsDict.IsStringType(fieldType))
 				{
-                    if (nodeParamType == NodeParamType.Input)
-                    {
-                        newValue = InputEnumFieldValue(desc);
-                    }
-                    else if (nodeParamType == NodeParamType.Output && clientNode.classify == NodeClassifyType.Root.ToString())
-                    { 
-                        newValue = ConstTextFieldValue(desc);   
-                    }
-                    else
-                    {
-                        newValue = TextFieldValue(desc);
-                    }
+					if (nodeParamType == NodeParamType.Input)
+					{
+						newValue = InputEnumFieldValue(desc);
+					}
+					else if (nodeParamType == NodeParamType.Output && clientNode.classify == NodeClassifyType.Root.ToString())
+					{
+						newValue = ConstTextFieldValue(desc);
+					}
+					else
+					{
+						newValue = TextFieldValue(desc);
+					}
 				}
 				else if (BehaviorTreeArgsDict.IsFloatType(fieldType))
 				{
@@ -501,14 +501,16 @@ namespace MyEditor
 			}
 			return newValue;
 		}
-        private object ConstTextFieldValue(NodeFieldDesc desc)
-        {
-            string oldValue =  desc.value.ToString();
-            EditorGUILayout.LabelField(GetPropDesc(desc));
-            EditorGUILayout.LabelField("", oldValue);
-            return oldValue;
-        }
-        private object TextFieldValue(NodeFieldDesc desc)
+
+		private object ConstTextFieldValue(NodeFieldDesc desc)
+		{
+			string oldValue = desc.value.ToString();
+			EditorGUILayout.LabelField(GetPropDesc(desc));
+			EditorGUILayout.LabelField("", oldValue);
+			return oldValue;
+		}
+
+		private object TextFieldValue(NodeFieldDesc desc)
 		{
 			string oldValue = (string) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
@@ -618,7 +620,7 @@ namespace MyEditor
 				oldValue = BTEnvKey.None;
 			}
 			string[] enumValueArr;
-			if (mCurBehaviorNode.IsRoot() && desc.value.ToString() != BTEnvKey.None.ToString())
+			if (mCurBehaviorNode.IsRoot() && desc.value.ToString() != BTEnvKey.None)
 			{
 				enumValueArr = new string[1] { desc.value.ToString() };
 			}
@@ -627,9 +629,9 @@ namespace MyEditor
 				enumValueArr = BehaviorTreeInOutConstrain.GetEnvKeyEnum(typeof (BTEnvKey));
 				if (enumValueArr.Length == 0)
 				{
-					enumValueArr = new string[1] { BTEnvKey.None.ToString() };
+					enumValueArr = new string[1] { BTEnvKey.None };
 				}
-				if (oldValue == BTEnvKey.None.ToString())
+				if (oldValue == BTEnvKey.None)
 				{
 					oldValue = desc.value.ToString();
 				}
@@ -649,12 +651,12 @@ namespace MyEditor
 			string[] enumValueArr = BehaviorManager.GetInstance().GetCanInPutEnvKeyArray(mCurBehaviorNode, desc);
 			if (enumValueArr.Length == 0)
 			{
-				enumValueArr = new string[1] { BTEnvKey.None.ToString() };
+				enumValueArr = new string[1] { BTEnvKey.None };
 			}
-            else if(string.IsNullOrEmpty(oldValue))
-            {
-                oldValue = enumValueArr[0];
-            }
+			else if (string.IsNullOrEmpty(oldValue))
+			{
+				oldValue = enumValueArr[0];
+			}
 			int oldSelect = IndexInStringArr(enumValueArr, oldValue);
 			string label = desc.name + (desc.desc == ""? "" : $"({desc.desc})") + $"({desc.envKeyType})";
 			EditorGUILayout.LabelField(label);
@@ -678,14 +680,14 @@ namespace MyEditor
 		private object EnumFieldValue(NodeFieldDesc desc)
 		{
 			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
-            if (string.IsNullOrEmpty(oldValue))
+			if (string.IsNullOrEmpty(oldValue))
 			{
 				oldValue = GetDefaultEnumValue(desc.type);
 			}
-            Enum oldValueEnum = (Enum)Enum.Parse(desc.type, oldValue);
-            Enum newValueEnum;
+			Enum oldValueEnum = (Enum) Enum.Parse(desc.type, oldValue);
+			Enum newValueEnum;
 			EditorGUILayout.LabelField(desc.type.ToString());
-            newValueEnum = EditorGUILayout.EnumPopup(oldValueEnum);
+			newValueEnum = EditorGUILayout.EnumPopup(oldValueEnum);
 			return newValueEnum.ToString();
 		}
 

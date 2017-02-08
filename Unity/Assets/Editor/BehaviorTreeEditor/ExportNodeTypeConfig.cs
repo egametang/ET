@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Base;
 using Model;
-using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -44,7 +43,6 @@ namespace MyEditor
 			}
 			return name2NodeProtoDict;
 		}
-		
 
 		public static Assembly GetControllerAssembly()
 		{
@@ -112,7 +110,7 @@ namespace MyEditor
 			List<NodeFieldDesc> filterList = new List<NodeFieldDesc>();
 			foreach (var item in list)
 			{
-				if (item.envKeyType == paramType ||  item.envKeyType.IsSubclassOf(paramType) || paramType.IsAssignableFrom(item.envKeyType))
+				if (item.envKeyType == paramType || item.envKeyType.IsSubclassOf(paramType) || paramType.IsAssignableFrom(item.envKeyType))
 				{
 					filterList.Add(item);
 				}
@@ -160,7 +158,7 @@ namespace MyEditor
 		{
 			if (att.DefaultValue != null)
 			{
-				if ((BehaviorTreeArgsDict.IsEnumType(type) && BTEnvKey.None.ToString() != att.DefaultValue.ToString()) || !BehaviorTreeArgsDict.IsEnumType(type))
+				if ((BehaviorTreeArgsDict.IsEnumType(type) && BTEnvKey.None != att.DefaultValue.ToString()) || !BehaviorTreeArgsDict.IsEnumType(type))
 				{
 					return att.DefaultValue;
 				}
@@ -230,10 +228,10 @@ namespace MyEditor
 			{
 				value = default(Object[]);
 			}
-            else if (BehaviorTreeArgsDict.IsConvertble(type))
-            {
-                value = 1f;
-            }
+			else if (BehaviorTreeArgsDict.IsConvertble(type))
+			{
+				value = 1f;
+			}
 			else
 			{
 				Log.Error($"行为树节点暂时未支持此类型:{type}！");
@@ -252,12 +250,13 @@ namespace MyEditor
 			}
 			return fieldInfo.FieldType;
 		}
-        public static bool NodeHasField(string nodeName, string fieldName)
-        {
-            Type nodeType = GetNodeType(nodeName);
-            FieldInfo fieldInfo = nodeType.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            return fieldInfo != null;
-        }
+
+		public static bool NodeHasField(string nodeName, string fieldName)
+		{
+			Type nodeType = GetNodeType(nodeName);
+			FieldInfo fieldInfo = nodeType.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			return fieldInfo != null;
+		}
 
 		public static FieldInfo[] GetFieldInfos(string nodeName)
 		{

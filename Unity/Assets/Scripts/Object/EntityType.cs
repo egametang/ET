@@ -7,6 +7,6 @@
 		Session,
 		UI,
 		Config,
-		Unit,
+		Unit
 	}
 }

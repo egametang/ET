@@ -8,7 +8,7 @@ namespace Model
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[EntityEvent(typeof(MessageDispatherComponent))]
+	[EntityEvent(typeof (MessageDispatherComponent))]
 	public class MessageDispatherComponent: Component
 	{
 		private AppType AppType;
@@ -35,13 +35,13 @@ namespace Model
 				Type[] types = assembly.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
+					object[] attrs = type.GetCustomAttributes(typeof (MessageAttribute), false);
 					if (attrs.Length == 0)
 					{
 						continue;
 					}
 
-					MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
+					MessageAttribute messageAttribute = (MessageAttribute) attrs[0];
 					this.messageOpcode[type] = messageAttribute;
 					this.opcodeType[messageAttribute.Opcode] = type;
 				}
@@ -52,13 +52,13 @@ namespace Model
 				Type[] types = assembly.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+					object[] attrs = type.GetCustomAttributes(typeof (MessageHandlerAttribute), false);
 					if (attrs.Length == 0)
 					{
 						continue;
 					}
 
-					MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
+					MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute) attrs[0];
 					if (!messageHandlerAttribute.Type.Is(this.AppType))
 					{
 						continue;
@@ -130,7 +130,7 @@ namespace Model
 				}
 			}
 		}
-		
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)

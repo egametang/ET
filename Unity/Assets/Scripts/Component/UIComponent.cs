@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Base;
 using UnityEngine;
 
 namespace Model
@@ -10,10 +9,10 @@ namespace Model
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
-	[EntityEvent(typeof(UIComponent))]
+	[EntityEvent(typeof (UIComponent))]
 	public class UIComponent: Component
 	{
-        private UI Root;
+		private UI Root;
 		private Dictionary<UIType, IUIFactory> UiTypes;
 		private readonly Dictionary<UIType, UI> uis = new Dictionary<UIType, UI>();
 
@@ -56,7 +55,7 @@ namespace Model
 				Type[] types = assembly.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(UIFactoryAttribute), false);
+					object[] attrs = type.GetCustomAttributes(typeof (UIFactoryAttribute), false);
 					if (attrs.Length == 0)
 					{
 						continue;
@@ -120,7 +119,7 @@ namespace Model
 				ui.Dispose();
 			}
 		}
-		
+
 		public UI Get(UIType type)
 		{
 			UI ui;

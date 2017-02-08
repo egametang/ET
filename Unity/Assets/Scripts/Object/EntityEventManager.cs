@@ -16,7 +16,7 @@ namespace Model
 		Awake3 = 8,
 		Update = 16,
 		Load = 32,
-		LateUpdate = 64,
+		LateUpdate = 64
 	}
 
 	public class EntityTypeInfo
@@ -71,7 +71,7 @@ namespace Model
 
 		public EntityEventManager()
 		{
-			foreach (EntityEventType t in Enum.GetValues(typeof(EntityEventType)))
+			foreach (EntityEventType t in Enum.GetValues(typeof (EntityEventType)))
 			{
 				this.disposers.Add(t, new HashSet<Disposer>());
 			}
@@ -88,7 +88,7 @@ namespace Model
 				Type[] types = ass.GetTypes();
 				foreach (Type type in types)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(EntityEventAttribute), true);
+					object[] attrs = type.GetCustomAttributes(typeof (EntityEventAttribute), true);
 					if (attrs.Length == 0)
 					{
 						continue;
@@ -103,15 +103,18 @@ namespace Model
 						this.eventInfo.Add(type2, new EntityTypeInfo());
 					}
 
-					foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly))
+					foreach (
+							MethodInfo methodInfo in
+									type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public |
+									                BindingFlags.DeclaredOnly))
 					{
 						int n = methodInfo.GetParameters().Length;
 						if (methodInfo.IsStatic)
 						{
 							--n;
 						}
-						string sn = n > 0 ? $"{methodInfo.Name}{n}" : methodInfo.Name;
-						foreach (string s in Enum.GetNames(typeof(EntityEventType)))
+						string sn = n > 0? $"{methodInfo.Name}{n}" : methodInfo.Name;
+						foreach (string s in Enum.GetNames(typeof (EntityEventType)))
 						{
 							if (s != sn)
 							{
@@ -242,7 +245,7 @@ namespace Model
 		{
 			UpdateAddDisposer();
 			UpdateRemoveDisposer();
-			
+
 			HashSet<Disposer> list;
 			if (!this.disposers.TryGetValue(EntityEventType.Update, out list))
 			{

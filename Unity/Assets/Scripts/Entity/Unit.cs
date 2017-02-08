@@ -1,17 +1,15 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Model
 {
 	public enum UnitType
 	{
 		Hero,
-		Npc,
+		Npc
 	}
 
 	public sealed class Unit: Entity
 	{
 		public UnitType UnitType { get; }
-		
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)
@@ -21,8 +19,8 @@ namespace Model
 
 			base.Dispose();
 		}
-		
-		public Unit(UnitType unitType) : base(EntityType.UI)
+
+		public Unit(UnitType unitType): base(EntityType.UI)
 		{
 			this.UnitType = unitType;
 		}

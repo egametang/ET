@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	public class BTEnv : IEnumerable
+	public class BTEnv: IEnumerable
 	{
 		public Dictionary<string, object> Values
 		{
@@ -13,7 +13,7 @@ namespace Model
 				return values;
 			}
 		}
-		
+
 		private Dictionary<string, object> values = new Dictionary<string, object>();
 
 		public virtual void BeginInit()
@@ -57,11 +57,11 @@ namespace Model
 			object value = values[key];
 			try
 			{
-				return (T)value;
+				return (T) value;
 			}
 			catch (InvalidCastException e)
 			{
-				throw new GameException($"不能把{value.GetType()}转换为{typeof(T)}", e);
+				throw new GameException($"不能把{value.GetType()}转换为{typeof (T)}", e);
 			}
 		}
 

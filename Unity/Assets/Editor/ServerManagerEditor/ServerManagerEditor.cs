@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	public class ServerManagerEditor : EditorWindow
+	public class ServerManagerEditor: EditorWindow
 	{
 		private string managerAddress;
 
@@ -18,7 +18,7 @@ namespace MyEditor
 		[MenuItem("Tools/服务器管理")]
 		private static void ShowWindow()
 		{
-			GetWindow(typeof(ServerManagerEditor));
+			GetWindow(typeof (ServerManagerEditor));
 		}
 
 		private void OnEnable()
@@ -33,7 +33,6 @@ namespace MyEditor
 				GUILayout.Label("请启动游戏!");
 				return;
 			}
-
 
 			AppType reloadType = AppType.None;
 			this.isAll = GUILayout.Toggle(this.isAll, "All");
@@ -53,12 +52,12 @@ namespace MyEditor
 					this.isAll = false;
 				}
 			}
-			
+
 			this.managerAddress = EditorGUILayout.TextField("Manager Address: ", this.managerAddress);
 
 			if (GUILayout.Button("Reload"))
 			{
-				for(int i = 0; i < this.isCheck.Length; ++i)
+				for (int i = 0; i < this.isCheck.Length; ++i)
 				{
 					if (this.isCheck[i])
 					{

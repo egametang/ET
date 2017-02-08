@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Base;
 using UnityEngine;
 
 namespace Model
@@ -8,7 +7,7 @@ namespace Model
 	{
 		public static Assembly GetController()
 		{
-			GameObject code = (GameObject)Resources.Load("Code");
+			GameObject code = (GameObject) Resources.Load("Code");
 			byte[] assBytes = code.Get<TextAsset>("Controller.dll").bytes;
 			byte[] mdbBytes = code.Get<TextAsset>("Controller.dll.mdb").bytes;
 			Assembly assembly = Assembly.Load(assBytes, mdbBytes);

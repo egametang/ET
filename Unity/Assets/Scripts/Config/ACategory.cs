@@ -9,14 +9,14 @@ namespace Model
 	/// 管理该所有的配置
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class ACategory<T> : ICategory where T : AConfig
+	public abstract class ACategory<T>: ICategory where T : AConfig
 	{
 		protected Dictionary<long, T> dict;
 
 		public virtual void BeginInit()
 		{
 			this.dict = new Dictionary<long, T>();
-			
+
 			string configStr = ConfigHelper.GetText(typeof (T).Name);
 
 			foreach (string str in configStr.Split(new[] { "\n" }, StringSplitOptions.None))
@@ -42,7 +42,7 @@ namespace Model
 		{
 			get
 			{
-				return typeof(T);
+				return typeof (T);
 			}
 		}
 
@@ -57,7 +57,7 @@ namespace Model
 				T t;
 				if (!this.dict.TryGetValue(type, out t))
 				{
-					throw new KeyNotFoundException($"{typeof(T)} 没有找到配置, key: {type}");
+					throw new KeyNotFoundException($"{typeof (T)} 没有找到配置, key: {type}");
 				}
 				return t;
 			}

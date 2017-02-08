@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Base;
 using Model;
 using UnityEditor;
 using UnityEngine;
-using System.Reflection;
-using Base;
+using Component = UnityEngine.Component;
 using Object = UnityEngine.Object;
 
 namespace MyEditor
@@ -13,9 +14,9 @@ namespace MyEditor
 	{
 		public GameObject CurTreeGO { get; set; }
 		public BehaviorTreeData CurTree { get; set; }
-        public const int NodeIdStartIndex = 100000;
-        private int AutoID = NodeIdStartIndex;
-        private Dictionary<string, ClientNodeTypeProto> mName2NodeProtoDict = new Dictionary<string, ClientNodeTypeProto>(); //节点类型 name索引
+		public const int NodeIdStartIndex = 100000;
+		private int AutoID = NodeIdStartIndex;
+		private Dictionary<string, ClientNodeTypeProto> mName2NodeProtoDict = new Dictionary<string, ClientNodeTypeProto>(); //节点类型 name索引
 		private Dictionary<string, List<ClientNodeTypeProto>> mClassify2NodeProtoList = new Dictionary<string, List<ClientNodeTypeProto>>(); //节点分类 分类名索引
 		private readonly Dictionary<int, NodeDesignerProto> mId2DesignerDict = new Dictionary<int, NodeDesignerProto>();
 		private static BehaviorManager mInstance = new BehaviorManager();
@@ -40,7 +41,7 @@ namespace MyEditor
 			}
 			return mInstance;
 		}
-         
+
 		public Dictionary<string, List<ClientNodeTypeProto>> Classify2NodeProtoList
 		{
 			get
@@ -48,25 +49,25 @@ namespace MyEditor
 				return mClassify2NodeProtoList;
 			}
 		}
-       
-        public List<ClientNodeTypeProto> AllNodeProtoList
-        {
-            get
-            {
-                List<ClientNodeTypeProto> list = new List<ClientNodeTypeProto>();
-                foreach (var item in BehaviorManager.GetInstance().Classify2NodeProtoList)
-                {
-                    foreach (var proto in item.Value)
-                    {
-                        list.Add(proto);
-                    }
-                }
-                return list;
-            }
-        }
 
-        //节点配置 get set
-        public ClientNodeTypeProto GetNodeTypeProto(string name)
+		public List<ClientNodeTypeProto> AllNodeProtoList
+		{
+			get
+			{
+				List<ClientNodeTypeProto> list = new List<ClientNodeTypeProto>();
+				foreach (var item in GetInstance().Classify2NodeProtoList)
+				{
+					foreach (var proto in item.Value)
+					{
+						list.Add(proto);
+					}
+				}
+				return list;
+			}
+		}
+
+		//节点配置 get set
+		public ClientNodeTypeProto GetNodeTypeProto(string name)
 		{
 			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
 			return proto;
@@ -96,38 +97,37 @@ namespace MyEditor
 
 		public int AutoNodeId()
 		{
-            return ++AutoID;
+			return ++AutoID;
 		}
-         
-        public void NewLoadData()
-        {
+
+		public void NewLoadData()
+		{
 			Game.EntityEventManager.Register("Controller", DllHelper.GetController());
 
 			LoadNodeTypeProto();
-            NewLoadPrefabTree();
-            FilterClassify();
-        }
+			NewLoadPrefabTree();
+			FilterClassify();
+		}
 
-        public void LoadNodeTypeProto()
+		public void LoadNodeTypeProto()
 		{
 			mName2NodeProtoDict = ExportNodeTypeConfig.ExportToDict();
 		}
-         
-        public void NewLoadPrefabTree()
-        {
-            BehaviorTreeConfig config = CurTreeGO.GetComponent<BehaviorTreeConfig>();
-            CurTree = BehaviorTreeConfigToTreeData(config);
-        }
-        
-      
-        public BehaviorTreeData BehaviorTreeConfigToTreeData(BehaviorTreeConfig config)
-        {
-            BehaviorTreeData tree = new BehaviorTreeData();
-            tree.Root = NodeConfigToNodeData(config.RootNodeConfig);
-            return tree;
-        }
 
-        public void printTree(BehaviorNodeData nodeData)
+		public void NewLoadPrefabTree()
+		{
+			BehaviorTreeConfig config = CurTreeGO.GetComponent<BehaviorTreeConfig>();
+			CurTree = BehaviorTreeConfigToTreeData(config);
+		}
+
+		public BehaviorTreeData BehaviorTreeConfigToTreeData(BehaviorTreeConfig config)
+		{
+			BehaviorTreeData tree = new BehaviorTreeData();
+			tree.Root = NodeConfigToNodeData(config.RootNodeConfig);
+			return tree;
+		}
+
+		public void printTree(BehaviorNodeData nodeData)
 		{
 			Log.Info($"printTree  :  {nodeData.nodeId} {nodeData}");
 			foreach (var data in nodeData.children)
@@ -135,12 +135,13 @@ namespace MyEditor
 				printTree(data);
 			}
 		}
-        public bool CheckSatisfyInput()
-        {
-            NodeProto rootNode = NodeDataToNodeProto(CurTree.BehaviorNodeData);
-            return CheckNodeInput(rootNode);
-        }
-       
+
+		public bool CheckSatisfyInput()
+		{
+			NodeProto rootNode = NodeDataToNodeProto(CurTree.BehaviorNodeData);
+			return CheckNodeInput(rootNode);
+		}
+
 		public bool CheckNodeInput(NodeProto nodeProto)
 		{
 			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof (NodeInputAttribute));
@@ -164,39 +165,41 @@ namespace MyEditor
 			}
 			return true;
 		}
- 
-        public void SaveAll()
-        {
-            if (!CheckHasTreeDesc())
-            {
-                return;
-            }
-            if (!CheckSatisfyInput())
-            {
-                return;
-            }
-            SavePrefabTree();
-            Log.Info("保存成功！");
-            BehaviorTreeTipsHelper.ShowMessage("保存成功！");
-        }
-        private void SavePrefabTree()
-        {
-            ResetTreeId();
-           
-            BehaviorTreeConfig config = BehaviorTreeDataToConfig(CurTree);
-            RenameTree(config);
-            GameObject.DestroyImmediate(config.gameObject);
-        }
-        public void ResetTreeId()
+
+		public void SaveAll()
 		{
-            AutoID = NodeIdStartIndex;
-            CurTree.Root.ResetId();
-        }
-        public void TransformTree(GameObject go)
-        {
- 
-        }
- 
+			if (!CheckHasTreeDesc())
+			{
+				return;
+			}
+			if (!CheckSatisfyInput())
+			{
+				return;
+			}
+			SavePrefabTree();
+			Log.Info("保存成功！");
+			BehaviorTreeTipsHelper.ShowMessage("保存成功！");
+		}
+
+		private void SavePrefabTree()
+		{
+			ResetTreeId();
+
+			BehaviorTreeConfig config = BehaviorTreeDataToConfig(CurTree);
+			RenameTree(config);
+			GameObject.DestroyImmediate(config.gameObject);
+		}
+
+		public void ResetTreeId()
+		{
+			AutoID = NodeIdStartIndex;
+			CurTree.Root.ResetId();
+		}
+
+		public void TransformTree(GameObject go)
+		{
+		}
+
 		public void RemoveUnusedArgs(NodeProto nodeProto)
 		{
 			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeProto.name);
@@ -218,129 +221,130 @@ namespace MyEditor
 			}
 		}
 
- 
-        private bool CheckHasTreeDesc()
-        {
-            if (string.IsNullOrEmpty(CurTree.Root.describe))
-            {
-                Log.Error("行为树描述不可以不填！！！！！！");
-                return false;
-            }
-            return true;
-        }
- 
-        public void RenameTree(BehaviorTreeConfig config)
-        {
-            string newName = $"{config.RootNodeConfig.describe}";
-            if (!config.RootNodeConfig.describe.StartsWith("BT_"))
-            {
-                newName = $"BT_{config.RootNodeConfig.describe}";
-            }
-            config.gameObject.name = newName;
-            CurTreeGO =  PrefabUtility.ReplacePrefab(config.gameObject, CurTreeGO,ReplacePrefabOptions.ReplaceNameBased);
-            string prefabPath = AssetDatabase.GetAssetPath(CurTreeGO);
-            string result = AssetDatabase.RenameAsset(prefabPath, newName);
-            if (result.Contains("Invalid file name"))
-            {
-                Log.Error(result);
-            }
-            EditorUtility.SetDirty(config.gameObject);
-        }
-        public BehaviorTreeConfig BehaviorTreeDataToConfig(BehaviorTreeData tree)
-        {
-           GameObject curTreeGo = GameObject.Instantiate(CurTreeGO);
-           BehaviorTreeConfig config = curTreeGo.GetComponent<BehaviorTreeConfig>();
-            if (config == null)
-            {
-                config = curTreeGo.AddComponent<BehaviorTreeConfig>();
-            }
-           foreach (Transform child in config.gameObject.transform)
-           {
-                GameObject.DestroyImmediate(child.gameObject);
-           }
-           try
-           {
-                config.RootNodeConfig = NodeDataToNodeConfig(tree.Root);
-            }
-           catch
-           {
-                Debug.LogError($"tree name : {tree.BehaviorNodeData.name}");
-           }
-            
-            config.RootNodeConfig.gameObject.transform.parent = config.gameObject.transform;
-            return config;
-        }
+		private bool CheckHasTreeDesc()
+		{
+			if (string.IsNullOrEmpty(CurTree.Root.describe))
+			{
+				Log.Error("行为树描述不可以不填！！！！！！");
+				return false;
+			}
+			return true;
+		}
 
-        public BehaviorNodeData NodeConfigToNodeData(BehaviorNodeConfig nodeProto)
-        {
-            BehaviorNodeData nodeData = new BehaviorNodeData();
-            nodeData.nodeId = nodeProto.id;
-            nodeData.name = ((Object) nodeProto).name;
-            nodeData.describe = nodeProto.describe;
-            nodeData.args_dict = nodeProto.GetArgsDict();
-            nodeData.children = new List<BehaviorNodeData>();
-//             foreach (var item in nodeData.args_dict)
-//             {
-//                 Log.Info($"key :{item.Key} value :{item.Value}");
-//             }
-            foreach (Transform child in nodeProto.gameObject.transform)
-            {
-                BehaviorNodeConfig nodeConfig = child.gameObject.GetComponent<BehaviorNodeConfig>();
-                BehaviorNodeData childData = NodeConfigToNodeData(nodeConfig);
-                nodeData.children.Add(childData);
-            }
-            return nodeData;
-        }
-        public BehaviorNodeConfig NodeDataToNodeConfig(BehaviorNodeData nodeData)
-        {
-            GameObject go = new GameObject();
-            BehaviorNodeConfig nodeConfig = go.AddComponent<BehaviorNodeConfig>();
-            nodeConfig.id = nodeData.nodeId;
-            ((Object) nodeConfig).name = nodeData.name;
-            go.name = nodeData.name;
-            nodeConfig.describe = nodeData.describe;
-            List<string> unUseList = new List<string>();
-            foreach (var args in nodeData.args_dict)
-            {
-                if (!ExportNodeTypeConfig.NodeHasField(nodeData.name,args.Key))
-                {
-                    unUseList.Add(args.Key);
-                    continue;
-                }
-                Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
-                try
-                {
-                    string fieldName = args.Key;
-                    object fieldValue = args.Value.GetValueByType(originType);
-                    Type type = BTTypeManager.GetBTType(originType);
-                    UnityEngine.Component comp = go.AddComponent(type);
-                    FieldInfo fieldNameInfo = type.GetField("fieldName");
-                    fieldNameInfo.SetValue(comp, fieldName);
-                    FieldInfo fieldValueinfo = type.GetField("fieldValue");
-                    if (BehaviorTreeArgsDict.IsEnumType(originType))
-                    {
-                        fieldValue = fieldValue.ToString();
-                    }
-                    fieldValueinfo.SetValue(comp, fieldValue);
-                }
-                catch (Exception e)
-                {
-                     throw new Exception($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType}", e);
-                }
-            }
-            foreach (string key in unUseList)
-            {
-                nodeData.args_dict.Remove(key);
-            }
-            foreach (var child in nodeData.children)
-            {
-                BehaviorNodeConfig childConfig = NodeDataToNodeConfig(child);
-                childConfig.gameObject.transform.parent = nodeConfig.gameObject.transform;
-            }
-            return nodeConfig;
-        }
-        
-        public BehaviorNodeData NodeProtoToNodeData(NodeProto nodeProto)
+		public void RenameTree(BehaviorTreeConfig config)
+		{
+			string newName = $"{config.RootNodeConfig.describe}";
+			if (!config.RootNodeConfig.describe.StartsWith("BT_"))
+			{
+				newName = $"BT_{config.RootNodeConfig.describe}";
+			}
+			config.gameObject.name = newName;
+			CurTreeGO = PrefabUtility.ReplacePrefab(config.gameObject, CurTreeGO, ReplacePrefabOptions.ReplaceNameBased);
+			string prefabPath = AssetDatabase.GetAssetPath(CurTreeGO);
+			string result = AssetDatabase.RenameAsset(prefabPath, newName);
+			if (result.Contains("Invalid file name"))
+			{
+				Log.Error(result);
+			}
+			EditorUtility.SetDirty(config.gameObject);
+		}
+
+		public BehaviorTreeConfig BehaviorTreeDataToConfig(BehaviorTreeData tree)
+		{
+			GameObject curTreeGo = GameObject.Instantiate(CurTreeGO);
+			BehaviorTreeConfig config = curTreeGo.GetComponent<BehaviorTreeConfig>();
+			if (config == null)
+			{
+				config = curTreeGo.AddComponent<BehaviorTreeConfig>();
+			}
+			foreach (Transform child in config.gameObject.transform)
+			{
+				GameObject.DestroyImmediate(child.gameObject);
+			}
+			try
+			{
+				config.RootNodeConfig = NodeDataToNodeConfig(tree.Root);
+			}
+			catch
+			{
+				Debug.LogError($"tree name : {tree.BehaviorNodeData.name}");
+			}
+
+			config.RootNodeConfig.gameObject.transform.parent = config.gameObject.transform;
+			return config;
+		}
+
+		public BehaviorNodeData NodeConfigToNodeData(BehaviorNodeConfig nodeProto)
+		{
+			BehaviorNodeData nodeData = new BehaviorNodeData();
+			nodeData.nodeId = nodeProto.id;
+			nodeData.name = ((Object) nodeProto).name;
+			nodeData.describe = nodeProto.describe;
+			nodeData.args_dict = nodeProto.GetArgsDict();
+			nodeData.children = new List<BehaviorNodeData>();
+			//             foreach (var item in nodeData.args_dict)
+			//             {
+			//                 Log.Info($"key :{item.Key} value :{item.Value}");
+			//             }
+			foreach (Transform child in nodeProto.gameObject.transform)
+			{
+				BehaviorNodeConfig nodeConfig = child.gameObject.GetComponent<BehaviorNodeConfig>();
+				BehaviorNodeData childData = NodeConfigToNodeData(nodeConfig);
+				nodeData.children.Add(childData);
+			}
+			return nodeData;
+		}
+
+		public BehaviorNodeConfig NodeDataToNodeConfig(BehaviorNodeData nodeData)
+		{
+			GameObject go = new GameObject();
+			BehaviorNodeConfig nodeConfig = go.AddComponent<BehaviorNodeConfig>();
+			nodeConfig.id = nodeData.nodeId;
+			((Object) nodeConfig).name = nodeData.name;
+			go.name = nodeData.name;
+			nodeConfig.describe = nodeData.describe;
+			List<string> unUseList = new List<string>();
+			foreach (var args in nodeData.args_dict)
+			{
+				if (!ExportNodeTypeConfig.NodeHasField(nodeData.name, args.Key))
+				{
+					unUseList.Add(args.Key);
+					continue;
+				}
+				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
+				try
+				{
+					string fieldName = args.Key;
+					object fieldValue = args.Value.GetValueByType(originType);
+					Type type = BTTypeManager.GetBTType(originType);
+					Component comp = go.AddComponent(type);
+					FieldInfo fieldNameInfo = type.GetField("fieldName");
+					fieldNameInfo.SetValue(comp, fieldName);
+					FieldInfo fieldValueinfo = type.GetField("fieldValue");
+					if (BehaviorTreeArgsDict.IsEnumType(originType))
+					{
+						fieldValue = fieldValue.ToString();
+					}
+					fieldValueinfo.SetValue(comp, fieldValue);
+				}
+				catch (Exception e)
+				{
+					throw new Exception($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType}", e);
+				}
+			}
+			foreach (string key in unUseList)
+			{
+				nodeData.args_dict.Remove(key);
+			}
+			foreach (var child in nodeData.children)
+			{
+				BehaviorNodeConfig childConfig = NodeDataToNodeConfig(child);
+				childConfig.gameObject.transform.parent = nodeConfig.gameObject.transform;
+			}
+			return nodeConfig;
+		}
+
+		public BehaviorNodeData NodeProtoToNodeData(NodeProto nodeProto)
 		{
 			BehaviorNodeData nodeData = new BehaviorNodeData();
 			nodeData.nodeId = nodeProto.nodeId;
@@ -368,7 +372,7 @@ namespace MyEditor
 			foreach (var child in nodeData.children)
 			{
 				nodeProto.children.Add(NodeDataToNodeProto(child));
-                nodeProto.nodeIdList.Add(child.nodeId);
+				nodeProto.nodeIdList.Add(child.nodeId);
 			}
 			return nodeProto;
 		}
@@ -405,7 +409,7 @@ namespace MyEditor
 			copyNode.args_dict = new BehaviorTreeArgsDict();
 			foreach (var item in node.args_dict)
 			{
-                ValueBase valueBase = ValueBase.Clone(item.Value);
+				ValueBase valueBase = ValueBase.Clone(item.Value);
 				copyNode.args_dict.Add(item.Key, valueBase);
 			}
 			List<BehaviorNodeData> list = new List<BehaviorNodeData>();
@@ -415,31 +419,31 @@ namespace MyEditor
 			}
 			foreach (var child in list)
 			{
-			    copyNode.AddChild(CopyNode(child));
+				copyNode.AddChild(CopyNode(child));
 			}
-            copyNode.ResetId();
+			copyNode.ResetId();
 			return copyNode;
 		}
- 
-        public void OpenBehaviorEditor(GameObject go)
-        {
-            if (go == null)
-            {
-                return;
-            }
-            selectNodeName = "";
-            CurTreeGO = go;
-            NewLoadData();
-            BehaviorDesignerWindow.ShowWindow();
-            Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
-        }
-        
-        public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)
+
+		public void OpenBehaviorEditor(GameObject go)
+		{
+			if (go == null)
+			{
+				return;
+			}
+			selectNodeName = "";
+			CurTreeGO = go;
+			NewLoadData();
+			BehaviorDesignerWindow.ShowWindow();
+			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
+		}
+
+		public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)
 		{
 			List<string> list1 = new List<string>();
 			list1.AddRange(GetInstance().GetNodeOutPutEnvKeyList(nodeData, desc));
-            list1.Add(BTEnvKey.None);
-            HashSet<string> hashSet = new HashSet<string>();
+			list1.Add(BTEnvKey.None);
+			HashSet<string> hashSet = new HashSet<string>();
 			foreach (var item in list1)
 			{
 				hashSet.Add(item);
@@ -472,13 +476,13 @@ namespace MyEditor
 
 		public List<string> GetNodeOutPutEnvKeyList(BehaviorNodeData nodeData, NodeFieldDesc desc = null)
 		{
-            NodeProto rootNode = NodeDataToNodeProto(CurTree.Root);
+			NodeProto rootNode = NodeDataToNodeProto(CurTree.Root);
 			NodeProto inputNode = NodeDataToNodeProto(nodeData);
 			List<NodeFieldDesc> descList = _GetNodeOutPutEnvKeyList(rootNode, inputNode, desc);
 			List<string> list = new List<string>();
 			foreach (var item in descList)
 			{
-                string str = item.value?.ToString() ?? "";
+				string str = item.value?.ToString() ?? "";
 				list.Add(str);
 			}
 			return list;
@@ -527,7 +531,7 @@ namespace MyEditor
 				}
 				if (string.IsNullOrEmpty(nodeProto.args_dict[desc.name].enumValue))
 				{
-					nodeProto.args_dict[desc.name].enumValue = BTEnvKey.None.ToString();
+					nodeProto.args_dict[desc.name].enumValue = BTEnvKey.None;
 				}
 				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
 				resultList.Add(value);
@@ -551,10 +555,10 @@ namespace MyEditor
 			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof (NodeOutputAttribute));
 			foreach (var desc in list)
 			{
-                if (!nodeProto.args_dict.ContainsKey(desc.name))
-                {
-                    continue;
-                }
+				if (!nodeProto.args_dict.ContainsKey(desc.name))
+				{
+					continue;
+				}
 				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
 				List<string> resultList = inputValueList.FindAll(str => { return str == value; });
 				if (resultList.Count > 0)

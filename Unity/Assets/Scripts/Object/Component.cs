@@ -1,15 +1,14 @@
-﻿using Base;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	[BsonKnownTypes(typeof(AConfigComponent))]
-	public abstract class Component : Disposer
+	[BsonKnownTypes(typeof (AConfigComponent))]
+	public abstract class Component: Disposer
 	{
 		[BsonIgnore]
 		public Entity Owner { get; set; }
 
-		public T GetOwner<T>() where T: Entity
+		public T GetOwner<T>() where T : Entity
 		{
 			return this.Owner as T;
 		}
@@ -24,7 +23,7 @@ namespace Model
 			Game.EntityEventManager.Add(this);
 		}
 
-		public T GetComponent<T>() where T: Component
+		public T GetComponent<T>() where T : Component
 		{
 			return this.Owner.GetComponent<T>();
 		}

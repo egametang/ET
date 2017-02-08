@@ -1,6 +1,4 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Model
 {
 	public enum SceneType
 	{
@@ -14,7 +12,7 @@ namespace Model
 		BehaviorTreeScene,
 		RobotClient,
 
-		Realm,
+		Realm
 	}
 
 	public sealed class Scene: Entity

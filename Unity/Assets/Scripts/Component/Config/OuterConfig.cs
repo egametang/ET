@@ -3,7 +3,7 @@
 namespace Model
 {
 	[BsonIgnoreExtraElements]
-	public class OuterConfig : AConfigComponent
+	public class OuterConfig: AConfigComponent
 	{
 		public string Host { get; set; }
 		public int Port { get; set; }

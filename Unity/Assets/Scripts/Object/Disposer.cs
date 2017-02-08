@@ -3,7 +3,7 @@ using Base;
 
 namespace Model
 {
-	public abstract class Disposer : Object, IDisposable 
+	public abstract class Disposer: Object, IDisposable
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{

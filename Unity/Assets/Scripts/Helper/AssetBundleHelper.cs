@@ -1,9 +1,7 @@
-﻿using Model;
-
-namespace Model
+﻿namespace Model
 {
-    public static class AssetBundleHelper
-    {
+	public static class AssetBundleHelper
+	{
 		public static string GetBundleNameById(string id, EntityType entityType = EntityType.None)
 		{
 			string subString = id.Substring(0, 3);

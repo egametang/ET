@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
 
 namespace Model
@@ -17,10 +18,10 @@ namespace Model
 		private readonly Dictionary<string, AssetBundle> bundleCaches = new Dictionary<string, AssetBundle>();
 
 		public K GetUnitRefrenceById<K>(string unitId, EntityType entityType) where K : class
-        {
-            string assetBundleName = $"unit/{AssetBundleHelper.GetBundleNameById(unitId, entityType)}";
+		{
+			string assetBundleName = $"unit/{AssetBundleHelper.GetBundleNameById(unitId, entityType)}";
 			return GetAsset<K>(assetBundleName, unitId);
-        }
+		}
 
 		public K GetReference<K>(string bundle, string prefab, string key) where K : class
 		{
@@ -64,19 +65,19 @@ namespace Model
 			return resource as K;
 		}
 
-	    public override void Dispose()
-	    {
-		    if (this.Id == 0)
-		    {
-			    return;
-		    }
-
-	        base.Dispose();
-
-	        foreach (var assetBundle in bundleCaches)
-	        {
-                assetBundle.Value?.Unload(true);
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
 			}
-        }
+
+			base.Dispose();
+
+			foreach (var assetBundle in bundleCaches)
+			{
+				assetBundle.Value?.Unload(true);
+			}
+		}
 	}
 }

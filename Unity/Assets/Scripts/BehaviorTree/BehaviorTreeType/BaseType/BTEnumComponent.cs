@@ -1,8 +1,7 @@
-﻿using System;
-namespace Model
+﻿namespace Model
 {
-    public class BTEnumComponent : BTTypeBaseComponent
-    {
-        public string fieldValue;  // unity do not support enum Serialization
-    }
+	public class BTEnumComponent: BTTypeBaseComponent
+	{
+		public string fieldValue; // unity do not support enum Serialization
+	}
 }
