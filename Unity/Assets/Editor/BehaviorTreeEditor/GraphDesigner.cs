@@ -129,6 +129,7 @@ namespace MyEditor
 						mSelectedNode = null;
 						//重新选中
 						CheckMouseInNode();
+
 						//右键菜单
 						PopMenu();
 					}
