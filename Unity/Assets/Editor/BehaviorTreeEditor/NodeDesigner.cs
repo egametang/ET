@@ -98,8 +98,6 @@ namespace MyEditor
 		private Texture2D mBoxTex;
 		private Texture2D mLeftConnectTex;
 		private Texture2D mRightConnectTex;
-		private Texture2D mFoldTrueTex = null;
-		private Texture2D mFoldFalseTex = null;
 
 		public void Init()
 		{
@@ -154,8 +152,6 @@ namespace MyEditor
 
 			mLeftConnectTex = BehaviorDesignerUtility.GetTexture("LeftConnect");
 			mRightConnectTex = BehaviorDesignerUtility.GetTexture("RightConnect");
-			mFoldTrueTex = BehaviorDesignerUtility.GetTexture("FoldTrue");
-			mFoldFalseTex = BehaviorDesignerUtility.GetTexture("FoldFalse");
 		}
 
 		public void Draw()

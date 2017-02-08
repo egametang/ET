@@ -36,7 +36,7 @@ namespace MyEditor
 		public static void DrawConnection(Vector2 src, Vector2 dst)
 		{
 			Vector3[] linePoints = { src, dst };
-			Handles.DrawAAPolyLine(GetTexture("DarkTaskIdentifyCompact"), 3f, linePoints);
+			Handles.DrawAAPolyLine(GetTexture("default"), 3f, linePoints);
 		}
 	}
 }

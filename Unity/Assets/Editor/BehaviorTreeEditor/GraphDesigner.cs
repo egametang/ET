@@ -101,8 +101,6 @@ namespace MyEditor
 			switch (e.type)
 			{
 				case EventType.MouseDown:
-
-                   
                     GUI.FocusControl("");
 					mMousePos = e.mousePosition;
                     if (!BehaviorDesignerWindow.windowRect.Contains(mMousePos))
