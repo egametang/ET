@@ -51,15 +51,6 @@ namespace MyEditor
 			return Game.EntityEventManager.GetAssembly("Controller");
 		}
 
-
-		public static Assembly LoadAssembly()
-		{
-			AssetDatabase.Refresh();
-			Assembly assembly = DllHelper.GetController();
-			Game.EntityEventManager.Register("Controller", assembly);
-			return assembly;
-		}
-
 		public static ClientNodeTypeProto GetNodeTypeProtoFromDll(string name)
 		{
 			Type type = GetNodeType(name);
@@ -281,7 +272,7 @@ namespace MyEditor
 			Type nodeType = assembly.GetType("Controller." + nodeName);
 			if (nodeType == null)
 			{
-				Log.Error(string.Format("不存在此节点:{0}", nodeName));
+				Log.Error($"不存在此节点:{nodeName}");
 				return null;
 			}
 			return nodeType;

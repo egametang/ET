@@ -34,14 +34,13 @@ namespace Model
         }
         private static BehaviorNodeConfig CreateNodeConfig(this BehaviorTreeConfig treeConfig, string name)
         {
-            ExportNodeTypeConfig.LoadAssembly();
             ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
             GameObject go = new GameObject();
             go.name = name;
             go.transform.parent = treeConfig.gameObject.transform;
             BehaviorNodeConfig node = go.AddComponent<BehaviorNodeConfig>();
-            ((UnityEngine.Object) node).name = name;
-            //node.describe = proto.describe;
+            node.name = name;
+            node.describe = proto.describe;
 
             foreach (var args in proto.new_args_desc)
             {

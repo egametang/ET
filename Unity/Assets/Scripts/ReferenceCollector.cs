@@ -106,15 +106,6 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
         {
             return null;
         }
-        if (typeof(T) == typeof(GameObject))
-        {
-            return dictGo as T;
-        }
-        var go = dictGo as GameObject;
-        if (go != null)
-        {
-            return (dictGo as GameObject).GetComponent<T>();
-        }
         return dictGo as T;
     }
 

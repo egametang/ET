@@ -101,7 +101,9 @@ namespace MyEditor
          
         public void NewLoadData()
         {
-            LoadNodeTypeProto();
+			Game.EntityEventManager.Register("Controller", DllHelper.GetController());
+
+			LoadNodeTypeProto();
             NewLoadPrefabTree();
             FilterClassify();
         }
@@ -426,7 +428,6 @@ namespace MyEditor
                 return;
             }
             selectNodeName = "";
-            ExportNodeTypeConfig.LoadAssembly();
             CurTreeGO = go;
             NewLoadData();
             BehaviorDesignerWindow.ShowWindow();

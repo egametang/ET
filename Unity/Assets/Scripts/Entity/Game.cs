@@ -12,22 +12,15 @@ namespace Model
 
 		private static Scene scene;
 
-		static Game()
-		{
-			disposers = new HashSet<Disposer>();
-
-			entityEventManager = new EntityEventManager();
-			entityEventManager.Register("Model", typeof(Game).Assembly);
-			entityEventManager.Register("Controller", DllHelper.GetController());
-
-			scene = new Scene();
-			scene.AddComponent<EventComponent>();
-		}
-
 		public static Scene Scene
 		{
 			get
 			{
+				if (scene == null)
+				{
+					scene = new Scene();
+					scene.AddComponent<EventComponent>();
+				}
 				return scene;
 			}
 		}
@@ -36,6 +29,10 @@ namespace Model
 		{
 			get
 			{
+				if (disposers == null)
+				{
+					disposers = new HashSet<Disposer>();
+				}
 				return disposers;
 			}
 		}
@@ -60,6 +57,10 @@ namespace Model
 		{
 			get
 			{
+				if (entityEventManager == null)
+				{
+					entityEventManager = new EntityEventManager();
+				}
 				return entityEventManager;
 			}
 			set

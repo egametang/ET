@@ -103,7 +103,9 @@ namespace MyEditor
             GameObject prefab = null;
             try
             {
-                GameObject go = new GameObject();
+				Game.EntityEventManager.Register("Controller", DllHelper.GetController());
+
+				GameObject go = new GameObject();
                 BehaviorTreeConfig newConfig = go.AddComponent<BehaviorTreeConfig>();
                 BehaviorNodeConfig root = newConfig.AddRootNode(rootNodeName);
 

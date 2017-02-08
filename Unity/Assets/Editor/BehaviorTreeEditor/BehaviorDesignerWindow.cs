@@ -48,9 +48,10 @@ namespace MyEditor
         }
 		public static void ShowWindow()
 		{
-            BehaviorDesignerWindow target = GetWindow<BehaviorDesignerWindow>("行为树编辑器", false);
+			BehaviorDesignerWindow target = GetWindow<BehaviorDesignerWindow>("行为树编辑器", false);
             target.minSize = new Vector2(600f, 500f);
         }
+
         public void ShowSubWin(Vector2 pos,SubWinType subWinType)
         {
             mShowSubWin = true;

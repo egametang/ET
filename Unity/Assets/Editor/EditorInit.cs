@@ -11,6 +11,8 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
+			Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
+			Game.EntityEventManager.Register("Editor", typeof(EditorInit).Assembly);
 		}
 	}
 }
