@@ -24,8 +24,6 @@ namespace App
 
 				Log.Info("server start........................");
 				
-				Game.Scene.AddComponent<EventComponent>();
-				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
