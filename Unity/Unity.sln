@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Editor", "Unity.Edito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Controller", "Controller\Unity.Controller.csproj", "{E875513C-291C-4378-815E-85D7DFB8C1A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Hotfix", "Hotfix\Unity.Hotfix.csproj", "{40533600-4E69-4F7D-A924-E1A3B4127255}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E875513C-291C-4378-815E-85D7DFB8C1A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40533600-4E69-4F7D-A924-E1A3B4127255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40533600-4E69-4F7D-A924-E1A3B4127255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40533600-4E69-4F7D-A924-E1A3B4127255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40533600-4E69-4F7D-A924-E1A3B4127255}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

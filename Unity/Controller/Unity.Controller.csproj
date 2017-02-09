@@ -36,13 +36,13 @@
   <ItemGroup>
     <Reference Include="AsyncBridge.Net35, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b3b1c0202c0d6a87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assets\CSharp 6.0 Support\AsyncTools\Plugins\AsyncBridge.Net35.dll</HintPath>
+      <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assets\CSharp 6.0 Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
+      <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
@@ -81,9 +81,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CSharp60Support\Roslyn\pdb2mdb.exe" $(TargetFileName)
-echo f | xcopy /y $(TargetDir)$(TargetFileName) $(SolutionDir)Assets\Res\Code\$(TargetFileName).bytes
-echo f | xcopy /y $(TargetDir)$(TargetFileName).mdb $(SolutionDir)Assets\Res\Code\$(TargetFileName).mdb.bytes</PostBuildEvent>
+    <PostBuildEvent>echo A | xcopy $(TargetName).pdb $(SolutionDir)Assets\Res\Code\$(TargetFileName).mdb.bytes</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
