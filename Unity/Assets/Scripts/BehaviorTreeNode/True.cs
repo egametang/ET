@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Controller
+﻿namespace Model
 {
 	[Node(NodeClassifyType.Decorator)]
 	public class True: Node
@@ -11,8 +9,6 @@ namespace Controller
 
 		protected override bool Run(BehaviorTree behaviorTree, BTEnv env)
 		{
-			
-
 			foreach (Node child in children)
 			{
 				child.DoRun(behaviorTree, env);

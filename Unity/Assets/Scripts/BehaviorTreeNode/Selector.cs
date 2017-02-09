@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Controller
+﻿namespace Model
 {
 	[Node(NodeClassifyType.Composite)]
 	public class Selector: Node
@@ -11,8 +9,6 @@ namespace Controller
 
 		protected override bool Run(BehaviorTree behaviorTree, BTEnv env)
 		{
-			
-
 			foreach (Node child in this.children)
 			{
 				if (child.DoRun(behaviorTree, env))

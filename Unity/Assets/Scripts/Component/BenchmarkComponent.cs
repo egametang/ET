@@ -9,6 +9,24 @@ namespace Model
 
 		private long time1 = TimeHelper.ClientNow();
 
+		private async void Awake(string address)
+		{
+			try
+			{
+				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
+
+				for (int i = 0; i < 100; i++)
+				{
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
+					this.TestAsync(networkComponent, address, i);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
+		}
+
 		public async void TestAsync(NetOuterComponent networkComponent, string address, int j)
 		{
 			try

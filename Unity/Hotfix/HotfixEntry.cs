@@ -2,15 +2,16 @@
 using Base;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
-	/// <summary>
-	/// 初始化游戏
-	/// </summary>
-	[Event(EventIdType.InitSceneStart)]
-	public class InitSceneStartEvent_InitGame: IEvent
+	public static class HotfixEntry
 	{
-		public async void Run()
+		public static void Start()
+		{
+			Login();
+		}
+
+		public static async void Login()
 		{
 			try
 			{
@@ -27,7 +28,7 @@ namespace Controller
 					{
 						await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(s2CLogin.Key));
 					}
-					
+
 					Log.Info("连接Gate验证成功!");
 				}
 			}

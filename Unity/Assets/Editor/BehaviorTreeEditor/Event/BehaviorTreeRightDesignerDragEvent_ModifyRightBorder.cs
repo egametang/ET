@@ -1,7 +1,6 @@
 ﻿using Model;
-using MyEditor;
 
-namespace Controller
+namespace MyEditor
 {
 	[Event(EventIdType.BehaviorTreeRightDesignerDrag)]
 	public class BehaviorTreeRightDesignerDragEvent_ModifyRightBorder: IEvent<float>

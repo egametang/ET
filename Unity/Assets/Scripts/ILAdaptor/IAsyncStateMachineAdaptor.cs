@@ -9,6 +9,7 @@ namespace Model
 	/// <summary>
 	/// 用于async await适配
 	/// </summary>
+	[ILAdapter]
 	public class IAsyncStateMachineClassInheritanceAdaptor : CrossBindingAdaptor
 	{
 		public override Type BaseCLRType

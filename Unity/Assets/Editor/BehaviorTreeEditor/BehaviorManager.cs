@@ -102,8 +102,6 @@ namespace MyEditor
 
 		public void NewLoadData()
 		{
-			Game.EntityEventManager.Register("Controller", DllHelper.GetController());
-
 			LoadNodeTypeProto();
 			NewLoadPrefabTree();
 			FilterClassify();

@@ -46,7 +46,7 @@ namespace MyEditor
 
 		public static Assembly GetControllerAssembly()
 		{
-			return Game.EntityEventManager.GetAssembly("Controller");
+			return Game.EntityEventManager.GetAssembly("Model");
 		}
 
 		public static ClientNodeTypeProto GetNodeTypeProtoFromDll(string name)
@@ -268,7 +268,7 @@ namespace MyEditor
 		public static Type GetNodeType(string nodeName)
 		{
 			Assembly assembly = GetControllerAssembly();
-			Type nodeType = assembly.GetType("Controller." + nodeName);
+			Type nodeType = assembly.GetType("Model." + nodeName);
 			if (nodeType == null)
 			{
 				Log.Error($"不存在此节点:{nodeName}");

@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Controller
+﻿namespace Model
 {
 	[Node(NodeClassifyType.Composite)]
 	internal class Sequence: Node
