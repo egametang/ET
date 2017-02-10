@@ -2,7 +2,7 @@
 using Base;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[MessageHandler(AppType.AllServer)]
 	public class M2A_ReloadHandler : AMRpcHandler<M2A_Reload, A2M_Reload>
@@ -12,7 +12,7 @@ namespace Controller
 			A2M_Reload response = new A2M_Reload();
 			try
 			{
-				Game.EntityEventManager.Register("Controller", DllHelper.GetController());
+				Game.EntityEventManager.Register("Controller", DllHelper.GetHotfixAssembly());
 				reply(response);
 			}
 			catch (Exception e)

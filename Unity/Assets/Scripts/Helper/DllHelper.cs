@@ -5,7 +5,7 @@ namespace Model
 {
 	public static class DllHelper
 	{
-		public static Assembly GetController()
+		public static Assembly GetHotfixAssembly()
 		{
 			GameObject code = (GameObject) Resources.Load("Code");
 			byte[] assBytes = code.Get<TextAsset>("Controller.dll").bytes;

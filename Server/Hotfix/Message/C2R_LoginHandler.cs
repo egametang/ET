@@ -2,7 +2,7 @@
 using Base;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[MessageHandler(AppType.Realm)]
 	public class C2R_LoginHandler: AMRpcHandler<C2R_Login, R2C_Login>

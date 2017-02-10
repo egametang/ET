@@ -12,7 +12,7 @@ namespace App
 			try
 			{
 				Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
-				Game.EntityEventManager.Register("Controller", DllHelper.GetController());
+				Game.EntityEventManager.Register("Hotfix", DllHelper.GetHotfixAssembly());
 
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;

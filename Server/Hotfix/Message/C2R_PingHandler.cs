@@ -1,7 +1,7 @@
 ﻿using System;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[MessageHandler(AppType.Realm)]
 	public class C2R_PingHandler : AMRpcHandler<C2R_Ping, R2C_Ping>

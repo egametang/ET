@@ -2,7 +2,7 @@
 using Base;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[MessageHandler(AppType.Gate)]
 	public class G2G_LockRequestHandler : AMRpcHandler<G2G_LockRequest, G2G_LockResponse>

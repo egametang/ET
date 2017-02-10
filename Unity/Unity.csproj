@@ -322,10 +322,6 @@
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BTEnv.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BTEnvKey.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BehaviorNodeConfig.cs" />
@@ -376,7 +372,10 @@
     <Compile Include="Assets\Scripts\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\ValueBase.cs" />
-    <Compile Include="Assets\Scripts\Component\ILRuntimeComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
     <Compile Include="Assets\Scripts\Component\BenchmarkComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
@@ -387,6 +386,7 @@
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\ILRuntimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
@@ -442,10 +442,10 @@
     <Compile Include="Assets\Scripts\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\GameException.cs" />
+    <Compile Include="Assets\Scripts\Other\ILAdapterAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
     <Compile Include="Assets\Scripts\Other\LayerNames.cs" />
     <Compile Include="Assets\Scripts\Other\Options.cs" />
-    <Compile Include="Assets\Scripts\Other\ILAdapterAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
@@ -454,7 +454,6 @@
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

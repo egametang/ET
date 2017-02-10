@@ -1,6 +1,6 @@
 ﻿using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[EntityEvent(typeof(RealmGateAddressComponent))]
 	public static class RealmGateAddressComponentE

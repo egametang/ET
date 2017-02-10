@@ -2,7 +2,7 @@
 using Base;
 using Model;
 
-namespace Controller
+namespace Hotfix
 {
 	[MessageHandler(AppType.Manager)]
 	public class C2M_ReloadHandler: AMRpcHandler<C2M_Reload, M2C_Reload>

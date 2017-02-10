@@ -7,8 +7,8 @@
     <ProjectGuid>{3878BD71-2F75-4EDF-882F-BC708154B1B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Controller</RootNamespace>
-    <AssemblyName>Controller</AssemblyName>
+    <RootNamespace>Hotfix</RootNamespace>
+    <AssemblyName>Hotfix</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,9 +34,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Controller\Component\BenchmarkComponentE.cs">
-      <Link>Component\BenchmarkComponentE.cs</Link>
-    </Compile>
     <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Message\C2G_LoginGateHandler.cs" />
     <Compile Include="Message\C2R_PingHandler.cs" />
