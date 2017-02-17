@@ -5,7 +5,7 @@
 		Hero,
 		Npc
 	}
-
+	
 	public sealed class Unit: Entity
 	{
 		public UnitType UnitType { get; }

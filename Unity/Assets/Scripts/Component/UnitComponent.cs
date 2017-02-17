@@ -2,6 +2,7 @@
 
 namespace Model
 {
+	[EntityEvent(EntityEventId.UnitComponent)]
 	public class UnitComponent: Component
 	{
 		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();

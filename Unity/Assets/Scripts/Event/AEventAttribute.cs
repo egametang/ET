@@ -5,9 +5,9 @@ namespace Model
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public abstract class AEventAttribute: Attribute
 	{
-		public EventIdType Type { get; private set; }
+		public int Type { get; private set; }
 
-		protected AEventAttribute(EventIdType type)
+		protected AEventAttribute(int type)
 		{
 			this.Type = type;
 		}

@@ -3,7 +3,7 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(typeof(GateSessionKeyComponent))]
+	[EntityEvent(EntityEventId.GateSessionKeyComponent)]
 	public class GateSessionKeyComponent : Component
 	{
 		private TimerComponent timerComponent;

@@ -6,7 +6,7 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(typeof(AppManagerComponent))]
+	[EntityEvent(EntityEventId.AppManagerComponent)]
 	public class AppManagerComponent: Component
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();

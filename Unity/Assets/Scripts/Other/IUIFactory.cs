@@ -2,6 +2,6 @@
 {
 	public interface IUIFactory
 	{
-		UI Create(Scene scene, UIType type, UI parent);
+		UI Create(Scene scene, int type, UI parent);
 	}
 }

@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Base;
+
+#if !SERVER
+using ILRuntime.CLR.Method;
+using ILRuntime.CLR.TypeSystem;
+using ILRuntime.Runtime.Enviorment;
+using UnityEngine;
+#endif
 
 namespace Model
 {
@@ -18,12 +26,13 @@ namespace Model
 		Load = 32,
 		LateUpdate = 64
 	}
+	
 
 	public class EntityTypeInfo
 	{
-		private readonly Dictionary<EntityEventType, MethodInfo> infos = new Dictionary<EntityEventType, MethodInfo>();
+		private readonly Dictionary<EntityEventType, ICommonMethod> infos = new Dictionary<EntityEventType, ICommonMethod>();
 
-		public void Add(EntityEventType type, MethodInfo methodInfo)
+		public void Add(EntityEventType type, ICommonMethod methodInfo)
 		{
 			try
 			{
@@ -35,9 +44,9 @@ namespace Model
 			}
 		}
 
-		public MethodInfo Get(EntityEventType type)
+		public ICommonMethod Get(EntityEventType type)
 		{
-			MethodInfo methodInfo;
+			ICommonMethod methodInfo;
 			this.infos.TryGetValue(type, out methodInfo);
 			return methodInfo;
 		}
@@ -67,7 +76,12 @@ namespace Model
 		private readonly HashSet<Disposer> addDisposers = new HashSet<Disposer>();
 		private readonly HashSet<Disposer> removeDisposers = new HashSet<Disposer>();
 
-		private Dictionary<Type, EntityTypeInfo> eventInfo;
+		private Dictionary<int, EntityTypeInfo> eventInfo;
+		private Dictionary<Type, int> typeToEntityEventId;
+
+#if !SERVER
+		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
+#endif
 
 		public EntityEventManager()
 		{
@@ -79,56 +93,160 @@ namespace Model
 
 		public void Register(string name, Assembly assembly)
 		{
-			this.eventInfo = new Dictionary<Type, EntityTypeInfo>();
-
 			this.assemblies[name] = assembly;
 
-			foreach (Assembly ass in this.assemblies.Values)
+			LoadAssemblyInfo();
+
+			this.Load();
+		}
+
+		public void LoadAssemblyInfo()
+		{
+			this.eventInfo = new Dictionary<int, EntityTypeInfo>();
+			this.typeToEntityEventId = new Dictionary<Type, int>();
+
+			Type[] types = DllHelper.GetBaseTypes();
+			List<string> allEntityType = Enum.GetNames(typeof(EntityEventType)).ToList();
+			foreach (Type type in types)
 			{
-				Type[] types = ass.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = type.GetCustomAttributes(typeof(EntityEventAttribute), true);
+				if (attrs.Length == 0)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof (EntityEventAttribute), true);
-					if (attrs.Length == 0)
+					continue;
+				}
+
+				EntityEventAttribute entityEventAttribute = attrs[0] as EntityEventAttribute;
+
+				int entityEventId = entityEventAttribute.ClassType;
+
+				this.typeToEntityEventId[type] = entityEventId;
+
+				if (!this.eventInfo.ContainsKey(entityEventId))
+				{
+					this.eventInfo.Add(entityEventId, new EntityTypeInfo());
+				}
+
+				MethodInfo[] methodInfos = type.GetMethods(
+					BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | 
+					BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly);
+				foreach (MethodInfo methodInfo in methodInfos)
+				{
+					int n = methodInfo.GetParameters().Length;
+					if (methodInfo.IsStatic)
+					{
+						--n;
+					}
+
+					string sn = n > 0 ? $"{methodInfo.Name}{n}" : methodInfo.Name;
+					if (!allEntityType.Contains(sn))
 					{
 						continue;
 					}
 
-					EntityEventAttribute entityEventAttribute = attrs[0] as EntityEventAttribute;
-
-					Type type2 = entityEventAttribute.ClassType;
-
-					if (!this.eventInfo.ContainsKey(type2))
-					{
-						this.eventInfo.Add(type2, new EntityTypeInfo());
-					}
-
-					foreach (
-							MethodInfo methodInfo in
-									type.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Public |
-									                BindingFlags.DeclaredOnly))
-					{
-						int n = methodInfo.GetParameters().Length;
-						if (methodInfo.IsStatic)
-						{
-							--n;
-						}
-						string sn = n > 0? $"{methodInfo.Name}{n}" : methodInfo.Name;
-						foreach (string s in Enum.GetNames(typeof (EntityEventType)))
-						{
-							if (s != sn)
-							{
-								continue;
-							}
-							EntityEventType t = EnumHelper.FromString<EntityEventType>(s);
-							this.eventInfo[type2].Add(t, methodInfo);
-							break;
-						}
-					}
+					EntityEventType t = EnumHelper.FromString<EntityEventType>(sn);
+					this.eventInfo[entityEventId].Add(t, new MonoCommonMethod(methodInfo));
 				}
 			}
 
-			this.Load();
+#if !SERVER
+			if (this.appDomain == null)
+			{
+				return;
+			}
+
+			IType[] ilTypes = this.appDomain.LoadedTypes.Values.ToArray();
+			foreach (IType itype in ilTypes)
+			{
+				Type type = itype.ReflectionType;
+				object[] attrs = type.GetCustomAttributes(typeof(EntityEventAttribute), true);
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+
+				EntityEventAttribute entityEventAttribute = attrs[0] as EntityEventAttribute;
+
+				int entityEventId = entityEventAttribute.ClassType;
+
+				if (!this.eventInfo.ContainsKey(entityEventId))
+				{
+					this.eventInfo.Add(entityEventId, new EntityTypeInfo());
+				}
+
+				foreach (IMethod methodInfo in itype.GetMethods())
+				{
+					int n = methodInfo.ParameterCount;
+					if (methodInfo.IsStatic)
+					{
+						--n;
+					}
+
+					string sn = n > 0 ? $"{methodInfo.Name}{n}" : methodInfo.Name;
+					if (!allEntityType.Contains(sn))
+					{
+						continue;
+					}
+
+					EntityEventType t = EnumHelper.FromString<EntityEventType>(sn);
+					this.eventInfo[entityEventId].Add(t, new ILCommonMethod(methodInfo, n));
+				}
+			}
+#endif
+		}
+
+
+#if !SERVER
+		public void RegisterILRuntime()
+		{
+			appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
+			ILRuntime.Runtime.Generated.CLRBindings.Initialize(appDomain);
+
+			GameObject code = (GameObject)Resources.Load("Code");
+			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+
+			using (MemoryStream fs = new MemoryStream(assBytes))
+			using (MemoryStream p = new MemoryStream(mdbBytes))
+			{
+				appDomain.LoadAssembly(fs, p, new Mono.Cecil.Pdb.PdbReaderProvider());
+			}
+		}
+
+		public void RegisterILAdapter()
+		{
+			Assembly assembly = Game.EntityEventManager.GetAssembly("Model");
+
+			foreach (Type type in assembly.GetTypes())
+			{
+				object[] attrs = type.GetCustomAttributes(typeof(ILAdapterAttribute), false);
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+				object obj = Activator.CreateInstance(type);
+				CrossBindingAdaptor adaptor = obj as CrossBindingAdaptor;
+				if (adaptor == null)
+				{
+					continue;
+				}
+				appDomain.RegisterCrossBindingAdaptor(adaptor);
+			}
+		}
+
+		public ILRuntime.Runtime.Enviorment.AppDomain AppDomain
+		{
+			get
+			{
+				return this.appDomain;
+			}
+		}
+#endif
+
+		private int GetEntityEventIdByType(Type type)
+		{
+			int entityEventId = 0;
+			this.typeToEntityEventId.TryGetValue(type, out entityEventId);
+			return entityEventId;
 		}
 
 		public void Add(Disposer disposer)
@@ -146,7 +264,7 @@ namespace Model
 			foreach (Disposer disposer in this.addDisposers)
 			{
 				EntityTypeInfo entityTypeInfo;
-				if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+				if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 				{
 					continue;
 				}
@@ -164,7 +282,7 @@ namespace Model
 			foreach (Disposer disposer in this.removeDisposers)
 			{
 				EntityTypeInfo entityTypeInfo;
-				if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+				if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 				{
 					continue;
 				}
@@ -196,7 +314,7 @@ namespace Model
 			}
 			foreach (Disposer disposer in list)
 			{
-				EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+				EntityTypeInfo entityTypeInfo = this.eventInfo[this.GetEntityEventIdByType(disposer.GetType())];
 				entityTypeInfo.Get(EntityEventType.Load).Run(disposer);
 			}
 		}
@@ -204,7 +322,7 @@ namespace Model
 		public void Awake(Disposer disposer)
 		{
 			EntityTypeInfo entityTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+			if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 			{
 				return;
 			}
@@ -214,7 +332,7 @@ namespace Model
 		public void Awake(Disposer disposer, object p1)
 		{
 			EntityTypeInfo entityTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+			if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 			{
 				return;
 			}
@@ -224,7 +342,7 @@ namespace Model
 		public void Awake(Disposer disposer, object p1, object p2)
 		{
 			EntityTypeInfo entityTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+			if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 			{
 				return;
 			}
@@ -234,7 +352,7 @@ namespace Model
 		public void Awake(Disposer disposer, object p1, object p2, object p3)
 		{
 			EntityTypeInfo entityTypeInfo;
-			if (!this.eventInfo.TryGetValue(disposer.GetType(), out entityTypeInfo))
+			if (!this.eventInfo.TryGetValue(this.GetEntityEventIdByType(disposer.GetType()), out entityTypeInfo))
 			{
 				return;
 			}
@@ -259,7 +377,7 @@ namespace Model
 					{
 						continue;
 					}
-					EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+					EntityTypeInfo entityTypeInfo = this.eventInfo[this.GetEntityEventIdByType(disposer.GetType())];
 					entityTypeInfo.Get(EntityEventType.Update).Run(disposer);
 				}
 				catch (Exception e)
@@ -280,7 +398,7 @@ namespace Model
 			{
 				try
 				{
-					EntityTypeInfo entityTypeInfo = this.eventInfo[disposer.GetType()];
+					EntityTypeInfo entityTypeInfo = this.eventInfo[this.GetEntityEventIdByType(disposer.GetType())];
 					entityTypeInfo.Get(EntityEventType.LateUpdate).Run(disposer);
 				}
 				catch (Exception e)
@@ -288,16 +406,6 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-		}
-
-		public string MethodInfo()
-		{
-			StringBuilder sb = new StringBuilder();
-			foreach (Type type in this.eventInfo.Keys.ToArray())
-			{
-				sb.Append($"{type.Name} {this.eventInfo[type]}\n");
-			}
-			return sb.ToString();
 		}
 	}
 }

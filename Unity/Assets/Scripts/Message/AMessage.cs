@@ -2,6 +2,7 @@
 {
 	public abstract class AMessage
 	{
+		public long Id { get; set; }
 	}
 
 	public abstract class ARequest: AMessage

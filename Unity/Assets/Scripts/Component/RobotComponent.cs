@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	[EntityEvent(typeof (RobotComponent))]
+	[EntityEvent(EntityEventId.RobotComponent)]
 	public class RobotComponent: Component
 	{
 		public override void Dispose()

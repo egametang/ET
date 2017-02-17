@@ -4,51 +4,22 @@ namespace Base
 {
 	public static class MethodInfoHelper
 	{
-		public static void Run(this MethodInfo methodInfo, object obj)
+		public static void Run(this MethodInfo methodInfo, object obj, params object[] param)
 		{
-			if (methodInfo.IsStatic)
-			{
-				methodInfo.Invoke(null, new object[] { obj });
-			}
-			else
-			{
-				methodInfo.Invoke(obj, new object[] { });
-			}
-		}
 
-		public static void Run(this MethodInfo methodInfo, object obj, object p1)
-		{
 			if (methodInfo.IsStatic)
 			{
-				methodInfo.Invoke(null, new object[] { obj, p1 });
+				object[] p = new object[param.Length + 1];
+				p[0] = obj;
+				for (int i = 0; i < param.Length; ++i)
+				{
+					p[i + 1] = param[i];
+				}
+				methodInfo.Invoke(null, p);
 			}
 			else
 			{
-				methodInfo.Invoke(obj, new object[] { p1 });
-			}
-		}
-
-		public static void Run(this MethodInfo methodInfo, object obj, object p1, object p2)
-		{
-			if (methodInfo.IsStatic)
-			{
-				methodInfo.Invoke(null, new object[] { obj, p1, p2 });
-			}
-			else
-			{
-				methodInfo.Invoke(obj, new object[] { p1, p2 });
-			}
-		}
-
-		public static void Run(this MethodInfo methodInfo, object obj, object p1, object p2, object p3)
-		{
-			if (methodInfo.IsStatic)
-			{
-				methodInfo.Invoke(null, new object[] { obj, p1, p2, p3 });
-			}
-			else
-			{
-				methodInfo.Invoke(obj, new object[] { p1, p2, p3 });
+				methodInfo.Invoke(obj, param);
 			}
 		}
 	}

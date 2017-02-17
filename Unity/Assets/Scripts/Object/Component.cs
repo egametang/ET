@@ -2,6 +2,7 @@
 
 namespace Model
 {
+	[ILBinding]
 	[BsonKnownTypes(typeof (AConfigComponent))]
 	public abstract class Component: Disposer
 	{

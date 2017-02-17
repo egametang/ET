@@ -14,7 +14,7 @@
 
 		Realm
 	}
-
+	
 	public sealed class Scene: Entity
 	{
 		public Scene Parent { get; set; }

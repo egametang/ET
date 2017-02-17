@@ -1,20 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using ILRuntime.CLR.Method;
+using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
 namespace Model
 {
+	public class IUIFactoryMethod: IUIFactory
+	{
+		private readonly ILRuntime.Runtime.Enviorment.AppDomain appDomain;
+		private readonly ILTypeInstance instance;
+		private readonly IMethod method;
+		private readonly object[] params3 = new object[3];
+
+		public IUIFactoryMethod(Type type)
+		{
+			appDomain = Game.EntityEventManager.AppDomain;
+			this.instance = this.appDomain.Instantiate(type.FullName);
+			this.method = this.instance.Type.GetMethod("Create", 3);
+		}
+
+		public UI Create(Scene scene, int type, UI parent)
+		{
+			this.params3[0] = scene;
+			this.params3[1] = type;
+			this.params3[2] = parent;
+			object obj = this.appDomain.Invoke(this.method, this.instance, this.params3);
+			return (UI) obj;
+		}
+	}
+
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
-	[EntityEvent(typeof (UIComponent))]
+	[EntityEvent(EntityEventId.UIComponent)]
 	public class UIComponent: Component
 	{
 		private UI Root;
-		private Dictionary<UIType, IUIFactory> UiTypes;
-		private readonly Dictionary<UIType, UI> uis = new Dictionary<UIType, UI>();
+		private Dictionary<int, IUIFactory> UiTypes;
+		private readonly Dictionary<int, UI> uis = new Dictionary<int, UI>();
 
 		public override void Dispose()
 		{
@@ -25,7 +50,7 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (UIType type in uis.Keys.ToArray())
+			foreach (int type in uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!uis.TryGetValue(type, out ui))
@@ -39,44 +64,38 @@ namespace Model
 
 		private void Awake()
 		{
-			GameObject uiCanvas = GameObject.Find("/UICanvas");
-			uiCanvas.GetComponent<Canvas>().worldCamera = GameObject.Find("/Camera").GetComponent<Camera>();
+			GameObject uiCanvas = GameObject.Find("Global/UI/UICanvas");
 			this.Root = new UI(this.GetOwner<Scene>(), UIType.Root, null, uiCanvas);
 			this.Load();
 		}
 
 		private void Load()
 		{
-			this.UiTypes = new Dictionary<UIType, IUIFactory>();
+			this.UiTypes = new Dictionary<int, IUIFactory>();
 
-			Assembly[] assemblies = Game.EntityEventManager.GetAssemblies();
-			foreach (Assembly assembly in assemblies)
+			Type[] types = DllHelper.GetHotfixTypes();
+
+			foreach (Type type in types)
 			{
-				Type[] types = assembly.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = type.GetCustomAttributes(typeof (UIFactoryAttribute), false);
+				if (attrs.Length == 0)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof (UIFactoryAttribute), false);
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					UIFactoryAttribute attribute = attrs[0] as UIFactoryAttribute;
-					if (this.UiTypes.ContainsKey(attribute.Type))
-					{
-						throw new GameException($"已经存在同类UI Factory: {attribute.Type}");
-					}
-					IUIFactory iIuiFactory = Activator.CreateInstance(type) as IUIFactory;
-					if (iIuiFactory == null)
-					{
-						throw new GameException("UI Factory没有继承IUIFactory");
-					}
-					this.UiTypes.Add(attribute.Type, iIuiFactory);
+					continue;
 				}
+
+				UIFactoryAttribute attribute = attrs[0] as UIFactoryAttribute;
+				if (this.UiTypes.ContainsKey(attribute.Type))
+				{
+					throw new GameException($"已经存在同类UI Factory: {attribute.Type}");
+				}
+
+				IUIFactory iuiFactory = new IUIFactoryMethod(type);
+
+				this.UiTypes.Add(attribute.Type, iuiFactory);
 			}
 		}
 
-		public UI Create(UIType type)
+		public UI Create(int type)
 		{
 			try
 			{
@@ -90,12 +109,12 @@ namespace Model
 			}
 		}
 
-		public void Add(UIType type, UI ui)
+		public void Add(int type, UI ui)
 		{
 			this.uis.Add(type, ui);
 		}
 
-		public void Remove(UIType type)
+		public void Remove(int type)
 		{
 			UI ui;
 			if (!this.uis.TryGetValue(type, out ui))
@@ -108,7 +127,7 @@ namespace Model
 
 		public void RemoveAll()
 		{
-			foreach (UIType type in this.uis.Keys.ToArray())
+			foreach (int type in this.uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!this.uis.TryGetValue(type, out ui))
@@ -120,16 +139,16 @@ namespace Model
 			}
 		}
 
-		public UI Get(UIType type)
+		public UI Get(int type)
 		{
 			UI ui;
 			this.uis.TryGetValue(type, out ui);
 			return ui;
 		}
 
-		public List<UIType> GetUITypeList()
+		public List<int> GetUITypeList()
 		{
-			return new List<UIType>(this.uis.Keys);
+			return new List<int>(this.uis.Keys);
 		}
 	}
 }

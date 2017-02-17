@@ -8,7 +8,7 @@ namespace Model
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[EntityEvent(typeof (MessageDispatherComponent))]
+	[EntityEvent(EntityEventId.MessageDispatherComponent)]
 	public class MessageDispatherComponent: Component
 	{
 		private AppType AppType;

@@ -5,9 +5,9 @@ namespace Model
 	[AttributeUsage(AttributeTargets.Class)]
 	public class UIFactoryAttribute: Attribute
 	{
-		public UIType Type { get; private set; }
+		public int Type { get; private set; }
 
-		public UIFactoryAttribute(UIType type)
+		public UIFactoryAttribute(int type)
 		{
 			this.Type = type;
 		}

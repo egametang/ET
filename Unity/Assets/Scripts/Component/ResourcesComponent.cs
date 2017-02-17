@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Base;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 namespace Model
 {
-	// 用来实例化资源,暂时直接加载,之后可以预先加载
+	[EntityEvent(EntityEventId.ResourcesComponent)]
 	public class ResourcesComponent: Component
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
@@ -16,13 +17,7 @@ namespace Model
 		private readonly Dictionary<string, UnityEngine.Object> resourceCache = new Dictionary<string, UnityEngine.Object>();
 
 		private readonly Dictionary<string, AssetBundle> bundleCaches = new Dictionary<string, AssetBundle>();
-
-		public K GetUnitRefrenceById<K>(string unitId, EntityType entityType) where K : class
-		{
-			string assetBundleName = $"unit/{AssetBundleHelper.GetBundleNameById(unitId, entityType)}";
-			return GetAsset<K>(assetBundleName, unitId);
-		}
-
+		
 		public K GetReference<K>(string bundle, string prefab, string key) where K : class
 		{
 			GameObject gameObject = this.GetAsset<GameObject>(bundle, prefab);
@@ -63,6 +58,65 @@ namespace Model
 			}
 
 			return resource as K;
+		}
+
+		public async Task DownloadAndCacheAsync(string uri, string assetBundleName)
+		{
+			assetBundleName = (assetBundleName + ".unity3d").ToLower();
+
+			AssetBundle assetBundle;
+			// 异步下载资源
+			string url = uri + "StreamingAssets/" + assetBundleName;
+			int count = 0;
+			while (true)
+			{
+				try
+				{
+					++count;
+					if (count > 1)
+					{
+						await Game.Scene.GetComponent<TimerComponent>().WaitAsync(2000);
+					}
+
+					if (this.Id == 0)
+					{
+						return;
+					}
+
+					using (WWWAsync wwwAsync = new WWWAsync())
+					{
+						await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
+						assetBundle = wwwAsync.www.assetBundle;
+					}
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
+			}
+
+			if (!assetBundle.isStreamedSceneAssetBundle)
+			{
+				// 异步load资源到内存cache住
+				UnityEngine.Object[] assets;
+				using (AssetBundleLoaderAsync assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle))
+				{
+					assets = await assetBundleLoaderAsync.LoadAllAssetsAsync();
+				}
+
+				foreach (UnityEngine.Object asset in assets)
+				{
+					string path = $"{assetBundleName}/{asset.name}".ToLower();
+					this.resourceCache[path] = asset;
+				}
+			}
+
+			if (this.bundleCaches.ContainsKey(assetBundleName))
+			{
+				throw new GameException($"重复加载资源: {assetBundleName}");
+			}
+			this.bundleCaches[assetBundleName] = assetBundle;
 		}
 
 		public override void Dispose()

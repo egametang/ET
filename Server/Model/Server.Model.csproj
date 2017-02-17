@@ -188,6 +188,18 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Object\Object.cs">
       <Link>Object\Object.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityEventId.cs">
+      <Link>Other\EntityEventId.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\IInstanceMethod.cs">
+      <Link>Other\IInstanceMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\ILBindingAttribute.cs">
+      <Link>Other\ILBindingAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Other\MonoMethod.cs">
+      <Link>Other\MonoMethod.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>

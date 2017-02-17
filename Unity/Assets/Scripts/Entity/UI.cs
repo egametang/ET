@@ -6,7 +6,7 @@ namespace Model
 	{
 		public Scene Scene { get; set; }
 
-		public UIType UIType { get; }
+		public int UIType { get; }
 
 		public string Name
 		{
@@ -33,12 +33,15 @@ namespace Model
 			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject): base(EntityType.UI)
+		public UI(Scene scene, int uiType, UI parent, GameObject gameObject): base(EntityType.UI)
 		{
 			this.Scene = scene;
 			this.UIType = uiType;
 
-			gameObject.transform.SetParent(parent?.GameObject.transform);
+			if (parent != null)
+			{
+				gameObject.transform.SetParent(parent.GameObject.transform, false);
+			}
 			this.GameObject = gameObject;
 			this.AddComponent<ChildrenComponent<UI>>();
 		}

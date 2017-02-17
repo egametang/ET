@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Text;
+using Base;
 using ILRuntime.Runtime.Enviorment;
 
 namespace ILRuntime.Runtime.CLRBinding
@@ -27,6 +28,7 @@ namespace ILRuntime.Runtime.CLRBinding
                     continue;
                 GetClassName(i, out clsName, out realClsName, out isByRef);
                 clsNames.Add(clsName);
+				Log.Debug("class " + clsName);
                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(outputPath + "/" + clsName + ".cs", false, Encoding.UTF8))
                 {
                     sw.Write(@"using System;

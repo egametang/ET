@@ -2,7 +2,7 @@
 
 namespace Hotfix
 {
-	[EntityEvent(typeof(RealmGateAddressComponent))]
+	[EntityEvent(EntityEventId.RealmGateAddressComponent)]
 	public static class RealmGateAddressComponentE
 	{
 		public static void Awake(this RealmGateAddressComponent component)

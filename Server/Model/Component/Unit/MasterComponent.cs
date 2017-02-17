@@ -16,7 +16,7 @@ namespace Model
 		}
 	}
 
-	[EntityEvent(typeof(MasterComponent))]
+	[EntityEvent(EntityEventId.MasterComponent)]
 	public class MasterComponent : Component
 	{
 		/// 镜像的地址

@@ -19,7 +19,11 @@ namespace Model
 				if (scene == null)
 				{
 					scene = new Scene();
+#if SERVER
 					scene.AddComponent<EventComponent>();
+#else
+					scene.AddComponent<ILEventComponent>();
+#endif
 					scene.AddComponent<TimerComponent>();
 				}
 				return scene;

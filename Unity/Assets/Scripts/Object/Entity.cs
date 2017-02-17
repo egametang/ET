@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
+	[ILBinding]
 	public class Entity: Disposer
 	{
 		public EntityType Type { get; set; }
@@ -16,6 +17,12 @@ namespace Model
 
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+
+		protected Entity()
+		{
+			this.Type = EntityType.None;
+			Game.EntityEventManager.Add(this);
+		}
 
 		protected Entity(EntityType entityType)
 		{

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Model
@@ -15,6 +17,16 @@ namespace Model
 #endif
 			Assembly assembly = Assembly.Load(dllBytes, pdbBytes);
 			return assembly;
+		}
+
+		public static Type[] GetBaseTypes()
+		{
+			List<Type> types = new List<Type>();
+			foreach (Assembly assembly in Game.EntityEventManager.GetAssemblies())
+			{
+				types.AddRange(assembly.GetTypes());
+			}
+			return types.ToArray();
 		}
 	}
 }

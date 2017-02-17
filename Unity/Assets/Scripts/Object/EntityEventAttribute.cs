@@ -5,9 +5,9 @@ namespace Model
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class EntityEventAttribute: Attribute
 	{
-		public Type ClassType;
+		public int ClassType;
 
-		public EntityEventAttribute(Type classType)
+		public EntityEventAttribute(int classType)
 		{
 			this.ClassType = classType;
 		}
