@@ -24,5 +24,6 @@
 		public const int LockComponent = 19;
 		public const int MasterComponent = 20;
 		public const int RealmGateAddressComponent = 21;
+		public const int UILobbyComponent = 22;
 	}
 }

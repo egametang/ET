@@ -15,6 +15,8 @@ namespace Hotfix
 
 			UI ui = new UI(scene, type, parent, lobby);
 			parent.AddChild(ui);
+
+	        ui.AddComponent<UILobbyComponent>();
             
             return ui;
         }

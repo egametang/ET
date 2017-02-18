@@ -397,6 +397,7 @@
     <Compile Include="Assets\Scripts\Component\TimeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\UIComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\UI\UILobbyComponent.cs" />
     <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
     <Compile Include="Assets\Scripts\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Config\AConfig.cs" />
@@ -425,6 +426,7 @@
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\AssetBundleHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\EventHelper.cs" />
     <Compile Include="Assets\Scripts\ILAdaptor\IAsyncStateMachineAdaptor.cs" />
     <Compile Include="Assets\Scripts\ILAdaptor\IUIFactoryAdaptor.cs" />
@@ -486,6 +488,7 @@
     <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_oks_strings.xml" />
     <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_strings.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>
