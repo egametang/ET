@@ -30,9 +30,9 @@ namespace Model
 
 	public class EntityTypeInfo
 	{
-		private readonly Dictionary<EntityEventType, ICommonMethod> infos = new Dictionary<EntityEventType, ICommonMethod>();
+		private readonly Dictionary<EntityEventType, IStaticMethod> infos = new Dictionary<EntityEventType, IStaticMethod>();
 
-		public void Add(EntityEventType type, ICommonMethod methodInfo)
+		public void Add(EntityEventType type, IStaticMethod methodInfo)
 		{
 			try
 			{
@@ -44,9 +44,9 @@ namespace Model
 			}
 		}
 
-		public ICommonMethod Get(EntityEventType type)
+		public IStaticMethod Get(EntityEventType type)
 		{
-			ICommonMethod methodInfo;
+			IStaticMethod methodInfo;
 			this.infos.TryGetValue(type, out methodInfo);
 			return methodInfo;
 		}
@@ -105,7 +105,7 @@ namespace Model
 			this.eventInfo = new Dictionary<int, EntityTypeInfo>();
 			this.typeToEntityEventId = new Dictionary<Type, int>();
 
-			Type[] types = DllHelper.GetBaseTypes();
+			Type[] types = DllHelper.GetMonoTypes();
 			List<string> allEntityType = Enum.GetNames(typeof(EntityEventType)).ToList();
 			foreach (Type type in types)
 			{
@@ -144,7 +144,7 @@ namespace Model
 					}
 
 					EntityEventType t = EnumHelper.FromString<EntityEventType>(sn);
-					this.eventInfo[entityEventId].Add(t, new MonoCommonMethod(methodInfo));
+					this.eventInfo[entityEventId].Add(t, new MonoStaticMethod(methodInfo));
 				}
 			}
 
@@ -188,7 +188,7 @@ namespace Model
 					}
 
 					EntityEventType t = EnumHelper.FromString<EntityEventType>(sn);
-					this.eventInfo[entityEventId].Add(t, new ILCommonMethod(methodInfo, n));
+					this.eventInfo[entityEventId].Add(t, new ILStaticMethod(methodInfo, n));
 				}
 			}
 #endif

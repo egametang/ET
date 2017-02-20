@@ -19,7 +19,7 @@ namespace Model
 			return assembly;
 		}
 
-		public static Type[] GetBaseTypes()
+		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();
 			foreach (Assembly assembly in Game.EntityEventManager.GetAssemblies())

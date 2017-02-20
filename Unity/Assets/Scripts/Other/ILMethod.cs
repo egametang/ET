@@ -24,13 +24,13 @@ namespace Model
 		}
 	}
 
-	public class ILCommonMethod : ICommonMethod
+	public class ILStaticMethod : IStaticMethod
 	{
 		private readonly ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		private readonly IMethod method;
 		private readonly object[] param;
 
-		public ILCommonMethod(IMethod method, int paramsCount)
+		public ILStaticMethod(IMethod method, int paramsCount)
 		{
 			this.param = new object[paramsCount + 1];
 			this.Name = method.Name;

@@ -21,11 +21,11 @@ namespace Model
 		}
 	}
 
-	public class MonoCommonMethod : ICommonMethod
+	public class MonoStaticMethod : IStaticMethod
 	{
 		private readonly MethodInfo methodInfo;
 
-		public MonoCommonMethod(MethodInfo methodInfo)
+		public MonoStaticMethod(MethodInfo methodInfo)
 		{
 			this.methodInfo = methodInfo;
 			this.Name = methodInfo.Name;

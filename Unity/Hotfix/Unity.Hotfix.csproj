@@ -56,10 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\UnitComponentE.cs" />
-    <Compile Include="UI\UILogin\Component\UILobbyComponentE.cs" />
-    <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLobbyUI.cs" />
+    <Compile Include="UI\UILobby\Component\UILobbyComponentE.cs" />
+    <Compile Include="UI\UILobby\Event\InitSceneStart_CreateLobbyUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\UILogin\Factory\UILobbyFactory.cs" />
+    <Compile Include="UI\UILobby\Factory\UILobbyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity.csproj">
@@ -70,6 +70,9 @@
       <Project>{d1fdb199-0fb7-099d-3771-c6a942e4e326}</Project>
       <Name>Unity.Plugins</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Handler\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

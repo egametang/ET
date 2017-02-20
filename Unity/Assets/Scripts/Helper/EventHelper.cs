@@ -7,7 +7,7 @@
 #if SERVER
 			Game.Scene.GetComponent<EventComponent>().Run(eventId);
 #else
-			Game.Scene.GetComponent<ILEventComponent>().Run(eventId);
+			Game.Scene.GetComponent<EventComponent>().Run(eventId);
 #endif
 		}
 
@@ -16,7 +16,7 @@
 #if SERVER
 			Game.Scene.GetComponent<EventComponent>().Run(eventId, a);
 #else
-			Game.Scene.GetComponent<ILEventComponent>().Run(eventId, a);
+			Game.Scene.GetComponent<EventComponent>().Run(eventId, a);
 #endif
 		}
 
@@ -25,7 +25,7 @@
 #if SERVER
 			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b);
 #else
-			Game.Scene.GetComponent<ILEventComponent>().Run(eventId, a, b);
+			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b);
 #endif
 		}
 
@@ -34,7 +34,7 @@
 #if SERVER
 			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b, c);
 #else
-			Game.Scene.GetComponent<ILEventComponent>().Run(eventId, a, b, c);
+			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b, c);
 #endif
 		}
 
@@ -43,7 +43,7 @@
 #if SERVER
 			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b, c, d);
 #else
-			Game.Scene.GetComponent<ILEventComponent>().Run(eventId, a, b, c, d);
+			Game.Scene.GetComponent<EventComponent>().Run(eventId, a, b, c, d);
 #endif
 		}
 	}

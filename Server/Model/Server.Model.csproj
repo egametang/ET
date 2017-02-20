@@ -56,14 +56,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs">
       <Link>Component\Config\OuterConfig.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
-      <Link>Component\EventComponent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\KVComponent.cs">
       <Link>Component\KVComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\MessageDispatherComponent.cs">
-      <Link>Component\MessageDispatherComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\NetInnerComponent.cs">
       <Link>Component\NetInnerComponent.cs</Link>
@@ -143,23 +137,17 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Message\AMessage.cs">
       <Link>Message\AMessage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\AMHandler.cs">
-      <Link>Message\AMHandler.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\AppType.cs">
       <Link>Message\AppType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\ErrorCode.cs">
       <Link>Message\ErrorCode.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\IMHandler.cs">
-      <Link>Message\IMHandler.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageAttribute.cs">
       <Link>Message\MessageAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageHandlerAttribute.cs">
-      <Link>Message\MessageHandlerAttribute.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageInfo.cs">
+      <Link>Message\MessageInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
       <Link>Message\OpcodeHelper.cs</Link>
@@ -203,6 +191,8 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
       <Link>Other\Options.cs</Link>
     </Compile>
+    <Compile Include="Component\EventComponent.cs" />
+    <Compile Include="Component\MessageDispatherComponent.cs" />
     <Compile Include="Component\Unit\MasterComponent.cs" />
     <Compile Include="Component\Unit\LockComponent.cs" />
     <Compile Include="Component\AppManagerComponent.cs" />
@@ -212,6 +202,9 @@
     <Compile Include="Component\StartConfigComponent.cs" />
     <Compile Include="Config\ConfigHelper.cs" />
     <Compile Include="Helper\DllHelper.cs" />
+    <Compile Include="Message\AMHandler.cs" />
+    <Compile Include="Message\IMHandler.cs" />
+    <Compile Include="Message\MessageHandlerAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

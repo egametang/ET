@@ -7,7 +7,7 @@ namespace Model
 {
 	public static class DllHelper
 	{
-		public static Type[] GetBaseTypes()
+		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();
 			Assembly[] assemblies = Game.EntityEventManager.GetAssemblies();

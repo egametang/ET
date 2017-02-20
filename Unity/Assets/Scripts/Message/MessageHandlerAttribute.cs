@@ -7,11 +7,11 @@ namespace Model
 	/// </summary>
 	public class MessageHandlerAttribute: Attribute
 	{
-		public AppType Type { get; }
+		public ushort Opcode { get; }
 
-		public MessageHandlerAttribute(AppType appType)
+		public MessageHandlerAttribute(ushort opcode)
 		{
-			this.Type = appType;
+			this.Opcode = opcode;
 		}
 	}
 }

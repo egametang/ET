@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Base;
 
 namespace Model
@@ -12,9 +11,8 @@ namespace Model
 	public class MessageDispatherComponent: Component
 	{
 		private AppType AppType;
-		private Dictionary<ushort, List<IMHandler>> handlers;
-		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
-		private Dictionary<ushort, Type> opcodeType { get; set; }
+		private Dictionary<ushort, List<IInstanceMethod>> handlers;
+		private DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
 
 		private void Awake(AppType appType)
 		{
@@ -24,105 +22,65 @@ namespace Model
 
 		private void Load()
 		{
-			this.handlers = new Dictionary<ushort, List<IMHandler>>();
-			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
-			this.opcodeType = new Dictionary<ushort, Type>();
+			this.handlers = new Dictionary<ushort, List<IInstanceMethod>>();
+			this.opcodeTypes = new DoubleMap<ushort, Type>();
 
-			Assembly[] assemblies = Game.EntityEventManager.GetAssemblies();
-
-			foreach (Assembly assembly in assemblies)
+			Type[] monoTypes = DllHelper.GetMonoTypes();
+			foreach (Type monoType in monoTypes)
 			{
-				Type[] types = assembly.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = monoType.GetCustomAttributes(typeof(MessageAttribute), false);
+				if (attrs.Length == 0)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof (MessageAttribute), false);
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					MessageAttribute messageAttribute = (MessageAttribute) attrs[0];
-					this.messageOpcode[type] = messageAttribute;
-					this.opcodeType[messageAttribute.Opcode] = type;
+					continue;
 				}
+
+				MessageAttribute messageAttribute = attrs[0] as MessageAttribute;
+				if (messageAttribute == null)
+				{
+					continue;
+				}
+
+				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
 			}
 
-			foreach (Assembly assembly in assemblies)
+			Type[] ilTypes = DllHelper.GetHotfixTypes();
+			foreach (Type type in ilTypes)
 			{
-				Type[] types = assembly.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+
+				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
+				IInstanceMethod method = new ILInstanceMethod(type, "Handle");
+				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
 				{
-					object[] attrs = type.GetCustomAttributes(typeof (MessageHandlerAttribute), false);
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute) attrs[0];
-					if (!messageHandlerAttribute.Type.Is(this.AppType))
-					{
-						continue;
-					}
-
-					object obj = Activator.CreateInstance(type);
-
-					IMHandler imHandler = obj as IMHandler;
-					if (imHandler == null)
-					{
-						throw new Exception($"message handler not inherit AMEvent or AMRpcEvent abstract class: {obj.GetType().FullName}");
-					}
-
-					Type messageType = imHandler.GetMessageType();
-					ushort opcode = this.GetOpcode(messageType);
-					List<IMHandler> list;
-					if (!this.handlers.TryGetValue(opcode, out list))
-					{
-						list = new List<IMHandler>();
-						this.handlers.Add(opcode, list);
-					}
-					list.Add(imHandler);
+					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IInstanceMethod>());
 				}
+				this.handlers[messageHandlerAttribute.Opcode].Add(method);
 			}
 		}
 
 		public ushort GetOpcode(Type type)
 		{
-			MessageAttribute messageAttribute;
-			if (!this.messageOpcode.TryGetValue(type, out messageAttribute))
-			{
-				throw new Exception($"查找Opcode失败: {type.Name}");
-			}
-			return messageAttribute.Opcode;
-		}
-
-		public Type GetType(ushort opcode)
-		{
-			Type messageType;
-			if (!this.opcodeType.TryGetValue(opcode, out messageType))
-			{
-				throw new Exception($"查找Opcode Type失败: {opcode}");
-			}
-			return messageType;
+			return this.opcodeTypes.GetKeyByValue(type);
 		}
 
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			List<IMHandler> actions;
+			List<IInstanceMethod> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
 				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;
 			}
 
-			Type messageType = this.GetType(messageInfo.Opcode);
+			Type messageType = this.opcodeTypes.GetValueByKey(messageInfo.Opcode);
 			object message = MongoHelper.FromBson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
 			messageInfo.Message = message;
 
-			foreach (IMHandler ev in actions)
+			foreach (IInstanceMethod ev in actions)
 			{
 				try
 				{
-					ev.Handle(session, messageInfo);
+					ev.Run(session, messageInfo);
 				}
 				catch (Exception e)
 				{

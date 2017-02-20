@@ -22,7 +22,7 @@ namespace Model
 #if SERVER
 					scene.AddComponent<EventComponent>();
 #else
-					scene.AddComponent<ILEventComponent>();
+					scene.AddComponent<EventComponent>();
 #endif
 					scene.AddComponent<TimerComponent>();
 				}
