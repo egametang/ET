@@ -2,11 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace Model
 {
 	public static class DllHelper
 	{
+		public static Assembly LoadHotfixAssembly()
+		{
+			GameObject code = (GameObject)Resources.Load("Code");
+			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
+			return assembly;
+		}
+
 		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();

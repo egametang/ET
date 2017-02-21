@@ -42,14 +42,21 @@ namespace Model
 
 				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
 			}
-
-			Type[] ilTypes = DllHelper.GetHotfixTypes();
-			foreach (Type type in ilTypes)
+#if ILRuntime
+			Type[] types = DllHelper.GetHotfixTypes();
+#else
+			Type[] types = DllHelper.GetMonoTypes();
+#endif
+			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
 
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
+#if ILRuntime
 				IInstanceMethod method = new ILInstanceMethod(type, "Handle");
+#else
+				IInstanceMethod method = new MonoInstanceMethod(type, "Handle");
+#endif
 				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
 				{
 					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IInstanceMethod>());

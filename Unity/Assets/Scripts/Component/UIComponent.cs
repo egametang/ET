@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
 namespace Model
 {
-	public class IUIFactoryMethod: IUIFactory
+	public class IILUIFactoryMethod: IUIFactory
 	{
 		private readonly ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		private readonly ILTypeInstance instance;
 		private readonly IMethod method;
 		private readonly object[] params3 = new object[3];
 
-		public IUIFactoryMethod(Type type)
+		public IILUIFactoryMethod(Type type)
 		{
 			appDomain = Game.EntityEventManager.AppDomain;
 			this.instance = this.appDomain.Instantiate(type.FullName);
@@ -28,6 +29,26 @@ namespace Model
 			this.params3[2] = parent;
 			object obj = this.appDomain.Invoke(this.method, this.instance, this.params3);
 			return (UI) obj;
+		}
+	}
+
+	public class IMonoUIFactoryMethod : IUIFactory
+	{
+		private readonly object instance;
+		private readonly MethodInfo methodInfo;
+		private readonly object[] params3 = new object[3];
+		public IMonoUIFactoryMethod(Type type)
+		{
+			this.instance = Activator.CreateInstance(type);
+			this.methodInfo = type.GetMethod("Create");
+		}
+
+		public UI Create(Scene scene, int type, UI parent)
+		{
+			this.params3[0] = scene;
+			this.params3[1] = type;
+			this.params3[2] = parent;
+			return (UI)this.methodInfo.Invoke(this.instance, params3);
 		}
 	}
 
@@ -73,8 +94,11 @@ namespace Model
 		{
 			this.UiTypes = new Dictionary<int, IUIFactory>();
 
+#if ILRuntime
 			Type[] types = DllHelper.GetHotfixTypes();
-
+#else
+			Type[] types = DllHelper.GetMonoTypes();
+#endif
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof (UIFactoryAttribute), false);
@@ -89,7 +113,11 @@ namespace Model
 					throw new GameException($"已经存在同类UI Factory: {attribute.Type}");
 				}
 
-				IUIFactory iuiFactory = new IUIFactoryMethod(type);
+#if ILRuntime
+				IUIFactory iuiFactory = new IILUIFactoryMethod(type);
+#else
+				IUIFactory iuiFactory = new IMonoUIFactoryMethod(type);
+#endif
 
 				this.UiTypes.Add(attribute.Type, iuiFactory);
 			}

@@ -8,7 +8,7 @@ namespace Hotfix
 	{
 		public static void Awake(this UnitComponent component)
 		{
-			Log.Debug("测试IL层EntityEvent");
+			Log.Debug("UnitComponent Awake");
 		}
 	}
 }

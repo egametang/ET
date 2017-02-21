@@ -37,7 +37,7 @@ namespace Model
 					this.allEvents[aEventAttribute.Type].Add(method);
 				}
 			}
-
+#if ILRuntime
 			types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
@@ -54,6 +54,7 @@ namespace Model
 					this.allEvents[aEventAttribute.Type].Add(method);
 				}
 			}
+#endif
 		}
 
 		public void Run(int type, params object[] param)

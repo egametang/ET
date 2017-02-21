@@ -384,8 +384,8 @@
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\GameObjectComponent.cs" />
     <Compile Include="Assets\Scripts\Component\KVComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
