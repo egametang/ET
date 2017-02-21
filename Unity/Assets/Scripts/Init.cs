@@ -18,6 +18,7 @@ namespace Model
 			Game.Scene.AddComponent<ResourcesComponent>();
 			Game.Scene.AddComponent<UIComponent>();
 			Game.Scene.AddComponent<UnitComponent>();
+			Game.Scene.AddComponent<BehaviorTreeComponent>();
 
 			EventHelper.Run(EventIdType.InitSceneStart);
 		}

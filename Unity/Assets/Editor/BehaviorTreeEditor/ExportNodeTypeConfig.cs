@@ -30,8 +30,7 @@ namespace MyEditor
 		public static Dictionary<string, ClientNodeTypeProto> ExportToDict()
 		{
 			Dictionary<string, ClientNodeTypeProto> name2NodeProtoDict = new Dictionary<string, ClientNodeTypeProto>();
-			Assembly assembly = GetControllerAssembly();
-			Type[] types = assembly.GetTypes();
+			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
 				ClientNodeTypeProto proto = GetNodeTypeProtoFromType(type);
@@ -44,7 +43,7 @@ namespace MyEditor
 			return name2NodeProtoDict;
 		}
 
-		public static Assembly GetControllerAssembly()
+		public static Assembly GetModelAssembly()
 		{
 			return Game.EntityEventManager.GetAssembly("Model");
 		}
@@ -267,7 +266,7 @@ namespace MyEditor
 
 		public static Type GetNodeType(string nodeName)
 		{
-			Assembly assembly = GetControllerAssembly();
+			Assembly assembly = GetModelAssembly();
 			Type nodeType = assembly.GetType("Model." + nodeName);
 			if (nodeType == null)
 			{

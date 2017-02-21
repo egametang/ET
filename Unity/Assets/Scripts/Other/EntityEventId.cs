@@ -25,5 +25,6 @@
 		public const int MasterComponent = 20;
 		public const int RealmGateAddressComponent = 21;
 		public const int UILobbyComponent = 22;
+		public const int BehaviorTreeComponent = 23;
 	}
 }

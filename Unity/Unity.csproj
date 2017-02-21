@@ -322,6 +322,9 @@
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BTEnv.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BTEnvKey.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BehaviorNodeConfig.cs" />
@@ -372,10 +375,11 @@
     <Compile Include="Assets\Scripts\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\ValueBase.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
+    <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\BenchmarkComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ChildrenComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientConfigComponent.cs" />
@@ -442,6 +446,7 @@
     <Compile Include="Assets\Scripts\ILGenerated\System_Single_Binding.cs" />
     <Compile Include="Assets\Scripts\ILGenerated\System_String_Binding.cs" />
     <Compile Include="Assets\Scripts\ILGenerated\System_Type_Binding.cs" />
+    <Compile Include="Assets\Scripts\UIConfig.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\Message\AMHandler.cs" />
     <Compile Include="Assets\Scripts\Message\AMessage.cs" />

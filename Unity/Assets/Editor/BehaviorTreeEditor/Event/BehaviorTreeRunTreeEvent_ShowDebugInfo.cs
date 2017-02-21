@@ -2,7 +2,7 @@
 using Model;
 using MyEditor;
 
-namespace Controller
+namespace MyEditor
 {
 	[Event(EventIdType.BehaviorTreeRunTreeEvent)]
 	public class BehaviorTreeRunTreeEvent_ShowDebugInfo: IEvent<BehaviorTree, List<long>>

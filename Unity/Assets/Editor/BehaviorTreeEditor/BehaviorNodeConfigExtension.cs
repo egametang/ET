@@ -13,7 +13,7 @@ namespace Model
 			GameObject go = new GameObject();
 			BehaviorNodeConfig nodeConfig = go.AddComponent<BehaviorNodeConfig>();
 			nodeConfig.id = nodeData.nodeId;
-			((UnityEngine.Object) nodeConfig).name = nodeData.name;
+			nodeConfig.name = nodeData.name;
 			go.name = nodeData.name;
 			nodeConfig.describe = nodeData.describe;
 			foreach (var args in nodeData.args_dict)
@@ -51,7 +51,7 @@ namespace Model
 		{
 			NodeProto nodeData = new NodeProto();
 			nodeData.nodeId = nodeProto.id;
-			nodeData.name = ((UnityEngine.Object) nodeProto).name;
+			nodeData.name = nodeProto.name;
 			nodeData.describe = nodeProto.describe;
 			nodeData.args_dict = nodeProto.GetArgsDict();
 			nodeData.children = new List<NodeProto>();

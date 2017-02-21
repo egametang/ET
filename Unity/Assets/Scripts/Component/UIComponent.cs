@@ -129,6 +129,19 @@ namespace Model
 			{
 				UI ui = this.UiTypes[type].Create(this.GetOwner<Scene>(), type, this.Root);
 				this.uis.Add(type, ui);
+
+				// 假如UI有配置行为树,执行之
+				UIConfig uiConfig = ui.GameObject.GetComponent<UIConfig>();
+				if (uiConfig != null)
+				{
+					BehaviorTree behaviorTree = Game.Scene.GetComponent<BehaviorTreeComponent>().CreateTree(this.GetOwner<Scene>(), uiConfig.CreateBT);
+					BTEnv env = new BTEnv
+					{
+						{"UI", ui}
+					};
+					behaviorTree.Run(env);
+				}
+
 				return ui;
 			}
 			catch (Exception e)

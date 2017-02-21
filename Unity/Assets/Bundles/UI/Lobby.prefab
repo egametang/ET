@@ -175,6 +175,7 @@ GameObject:
   - 222: {fileID: 222000012393644854}
   - 114: {fileID: 114000012430220302}
   - 114: {fileID: 114000011231987512}
+  - 114: {fileID: 114000010131133460}
   m_Layer: 5
   m_Name: Lobby
   m_TagString: Untagged
@@ -328,6 +329,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000010131133460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012140906046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92184f0259e287441a0abea0928c2057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CreateBT: {fileID: 1000012987241756, guid: 5dfe2c32bf2efc044a7f3f57c34ab334, type: 2}
 --- !u!114 &114000010390865150
 MonoBehaviour:
   m_ObjectHideFlags: 1

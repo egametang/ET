@@ -9,8 +9,6 @@ namespace Model
 	{
 		public int id;
 
-		public string name;
-
 		public string describe;
 
 		public BehaviorNodeConfig(string name, string _desc, int _id = 0)

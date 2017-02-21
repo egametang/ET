@@ -276,7 +276,7 @@ namespace MyEditor
 		{
 			BehaviorNodeData nodeData = new BehaviorNodeData();
 			nodeData.nodeId = nodeProto.id;
-			nodeData.name = ((Object) nodeProto).name;
+			nodeData.name = nodeProto.name;
 			nodeData.describe = nodeProto.describe;
 			nodeData.args_dict = nodeProto.GetArgsDict();
 			nodeData.children = new List<BehaviorNodeData>();
