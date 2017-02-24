@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Base;
 using Model;
 using NLog;
@@ -66,6 +67,7 @@ namespace App
 				{
 					try
 					{
+						Thread.Sleep(1);
 						Game.EntityEventManager.Update();
 					}
 					catch (Exception e)
