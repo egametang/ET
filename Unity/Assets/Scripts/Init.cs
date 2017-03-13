@@ -19,6 +19,8 @@ namespace Model
 			Game.Scene.AddComponent<UIComponent>();
 			Game.Scene.AddComponent<UnitComponent>();
 			Game.Scene.AddComponent<BehaviorTreeComponent>();
+			Game.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
+			Game.Scene.AddComponent<NetOuterComponent>();
 
 			EventHelper.Run(EventIdType.InitSceneStart);
 		}

@@ -3,6 +3,7 @@ using Base;
 
 namespace Model
 {
+	[EntityEvent(EntityEventId.RealmGateAddressComponent)]
 	public class RealmGateAddressComponent : Component
 	{
 		public readonly List<StartConfig> GateAddress = new List<StartConfig>();

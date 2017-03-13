@@ -52,11 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-  - key: Controller.dll
-    gameObject: {fileID: 4900000, guid: fdef0d53cf2085a43ab2dcc9b319a674, type: 3}
-  - key: Controller.dll.mdb
-    gameObject: {fileID: 4900000, guid: b4ce1a1a05d3b76499cb91dd11faf399, type: 3}
   - key: Hotfix.dll
     gameObject: {fileID: 4900000, guid: ae44b218243cfc347af99a6875e9e11c, type: 3}
   - key: Hotfix.pdb
     gameObject: {fileID: 4900000, guid: dd08ff64f788e7a4ba0f918632ff8d0f, type: 3}
+  - key: Hotfix.dll.mdb
+    gameObject: {fileID: 4900000, guid: 23e92275d463b2145ba2a28b5f1bb7dc, type: 3}

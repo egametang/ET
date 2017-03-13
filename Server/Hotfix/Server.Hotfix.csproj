@@ -34,7 +34,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\RealmGateAddressComponent.cs" />
+    <Compile Include="Component\RealmGateAddressComponentE.cs" />
     <Compile Include="Message\C2G_LoginGateHandler.cs" />
     <Compile Include="Message\C2R_PingHandler.cs" />
     <Compile Include="Message\G2G_LockReleaseRequestHandler.cs" />

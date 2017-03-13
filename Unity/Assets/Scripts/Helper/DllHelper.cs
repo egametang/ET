@@ -12,7 +12,7 @@ namespace Model
 		{
 			GameObject code = (GameObject)Resources.Load("Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.dll.mdb").bytes;
 			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
 			return assembly;
 		}

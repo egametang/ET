@@ -50,7 +50,10 @@ namespace Model
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
-
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
 #if ILRuntime
 				IInstanceMethod method = new ILInstanceMethod(type, "Handle");

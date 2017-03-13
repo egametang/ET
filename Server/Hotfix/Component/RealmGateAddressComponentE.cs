@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Base;
+using Model;
 
 namespace Hotfix
 {
@@ -14,6 +15,7 @@ namespace Hotfix
 				{
 					continue;
 				}
+				
 				component.GateAddress.Add(config);
 			}
 		}
