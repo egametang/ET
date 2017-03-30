@@ -435,8 +435,12 @@ PlayerSettings:
   intPropertyNames:
   - Android::ScriptingBackend
   - Standalone::ScriptingBackend
+  - iOS::Architecture
+  - iOS::ScriptingBackend
   Android::ScriptingBackend: 0
   Standalone::ScriptingBackend: 0
+  iOS::Architecture: 2
+  iOS::ScriptingBackend: 1
   boolPropertyNames:
   - Android::VR::enable
   - Metro::VR::enable

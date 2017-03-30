@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Base;
 
 namespace Model
 {
@@ -9,6 +10,8 @@ namespace Model
 		private static HashSet<Disposer> disposers;
 
 		private static EntityEventManager entityEventManager;
+
+		public static TPoller Poller { get; } = new TPoller();
 
 		private static Scene scene;
 

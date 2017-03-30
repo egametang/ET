@@ -3,7 +3,7 @@
 --- !u!30 &1
 GraphicsSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 9
   m_Deferred:
     m_Mode: 1
     m_Shader: {fileID: 69, guid: 0000000000000000f000000000000000, type: 0}
@@ -38,22 +38,18 @@ GraphicsSettings:
   m_PreloadedShaders: []
   m_SpritesDefaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000,
     type: 0}
-  m_ShaderSettings_Tier1:
+  m_TierSettings_Tier1:
+    renderingPath: 1
     useCascadedShadowMaps: 1
-    standardShaderQuality: 2
-    useReflectionProbeBoxProjection: 1
-    useReflectionProbeBlending: 1
-  m_ShaderSettings_Tier2:
+  m_TierSettings_Tier2:
+    renderingPath: 1
     useCascadedShadowMaps: 1
-    standardShaderQuality: 2
-    useReflectionProbeBoxProjection: 1
-    useReflectionProbeBlending: 1
-  m_ShaderSettings_Tier3:
+  m_TierSettings_Tier3:
+    renderingPath: 1
     useCascadedShadowMaps: 1
-    standardShaderQuality: 2
-    useReflectionProbeBoxProjection: 1
-    useReflectionProbeBlending: 1
-  m_BuildTargetShaderSettings: []
+  m_DefaultRenderingPath: 1
+  m_DefaultMobileRenderingPath: 1
+  m_TierSettings: []
   m_LightmapStripping: 0
   m_FogStripping: 0
   m_LightmapKeepPlain: 1

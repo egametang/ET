@@ -42,6 +42,7 @@ namespace Model
 
 				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
 			}
+
 #if ILRuntime
 			Type[] types = DllHelper.GetHotfixTypes();
 #else
@@ -90,7 +91,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Run(session, messageInfo);
+					ev.Run(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

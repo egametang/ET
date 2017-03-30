@@ -7,14 +7,15 @@ using MongoDB.Bson;
 
 namespace Model
 {
-	public sealed class Session: Entity
+	public sealed class Session : Entity
 	{
 		private static uint RpcId { get; set; }
 		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<byte[], int, int>> requestCallback = new Dictionary<uint, Action<byte[], int, int>>();
 		private readonly AChannel channel;
+		private bool isRpc;
 
-		public Session(NetworkComponent network, AChannel channel): base(EntityType.Session)
+		public Session(NetworkComponent network, AChannel channel)
 		{
 			this.network = network;
 			this.channel = channel;
@@ -39,6 +40,7 @@ namespace Model
 
 		private async void StartRecv()
 		{
+			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)
@@ -49,6 +51,11 @@ namespace Model
 				byte[] messageBytes;
 				try
 				{
+					if (this.isRpc)
+					{
+						this.isRpc = false;
+						await timerComponent.WaitAsync(0);
+					}
 					messageBytes = await channel.Recv();
 				}
 				catch (Exception e)
@@ -63,6 +70,7 @@ namespace Model
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+
 				try
 				{
 					this.Run(opcode, messageBytes);
@@ -121,6 +129,7 @@ namespace Model
 		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) where Request : ARequest
 				where Response : AResponse
 		{
+
 			this.SendMessage(++RpcId, request);
 
 			var tcs = new TaskCompletionSource<Response>();
@@ -135,11 +144,13 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
+					//Log.Debug($"recv: {response.ToJson()}");
+					this.isRpc = true;
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof (Response).FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
 				}
 			};
 
@@ -166,11 +177,13 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
+					//Log.Info($"recv: {response.ToJson()}");
+					this.isRpc = true;
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof (Response).FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
 				}
 			};
 
@@ -197,6 +210,7 @@ namespace Model
 
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
+			//Log.Debug($"send: {message.ToJson()}");
 			ushort opcode = this.network.Owner.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)

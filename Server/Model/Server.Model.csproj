@@ -104,6 +104,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\InnerMessage.cs">
       <Link>Entity\Message\InnerMessage.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
+      <Link>Message\Opcode.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
       <Link>Entity\Message\OuterMessage.cs</Link>
     </Compile>
@@ -205,6 +208,7 @@
     <Compile Include="Message\AMHandler.cs" />
     <Compile Include="Message\IMHandler.cs" />
     <Compile Include="Message\MessageHandlerAttribute.cs" />
+    <Compile Include="Other\OneThreadSynchronizationContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

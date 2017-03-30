@@ -10,6 +10,9 @@ namespace App
 	{
 		private static void Main(string[] args)
 		{
+			// 异步方法全部会回掉到主线程
+			SynchronizationContext.SetSynchronizationContext(new OneThreadSynchronizationContext());
+
 			try
 			{
 				Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
@@ -68,6 +71,7 @@ namespace App
 					try
 					{
 						Thread.Sleep(1);
+						Game.Poller.Update();
 						Game.EntityEventManager.Update();
 					}
 					catch (Exception e)

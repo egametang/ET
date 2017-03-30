@@ -14,5 +14,6 @@ namespace Model
 		public const ushort G2C_LoginGate = 5;
 		public const ushort C2G_GetPlayerInfo = 6;
 		public const ushort G2C_GetPlayerInfo = 7;
+		public const ushort C2M_Reload = 8;
 	}
 }

@@ -5,7 +5,6 @@
 
 *.pyc
 *.suo
-*.user
 
 .settings/
 .localhistory/

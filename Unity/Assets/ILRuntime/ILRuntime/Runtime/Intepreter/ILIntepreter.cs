@@ -80,7 +80,7 @@ namespace ILRuntime.Runtime.Intepreter
                 throw new NullReferenceException();
 #if UNITY_EDITOR
             if(System.Threading.Thread.CurrentThread.ManagedThreadId == AppDomain.UnityMainThreadID)
-                UnityEngine.Profiler.BeginSample(method.ToString());
+                UnityEngine.Profiling.Profiler.BeginSample(method.ToString());
 #endif
             OpCode[] body = method.Body;
             StackFrame frame;
@@ -1697,12 +1697,12 @@ namespace ILRuntime.Runtime.Intepreter
 #endif
 #if UNITY_EDITOR
                                                     if(System.Threading.Thread.CurrentThread.ManagedThreadId == AppDomain.UnityMainThreadID)
-                                                        UnityEngine.Profiler.BeginSample(cm.ToString());
+														UnityEngine.Profiling.Profiler.BeginSample(cm.ToString());
 #endif
                                                     object result = cm.Invoke(this, esp, mStack);
 #if UNITY_EDITOR
                                                     if(System.Threading.Thread.CurrentThread.ManagedThreadId == AppDomain.UnityMainThreadID)
-                                                        UnityEngine.Profiler.EndSample();
+														UnityEngine.Profiling.Profiler.EndSample();
 #endif
                                                     if (result is CrossBindingAdaptorType)
                                                         result = ((CrossBindingAdaptorType)result).ILInstance;
@@ -3707,7 +3707,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
 #if UNITY_EDITOR
             if(System.Threading.Thread.CurrentThread.ManagedThreadId == AppDomain.UnityMainThreadID)
-                UnityEngine.Profiler.EndSample();
+				UnityEngine.Profiling.Profiler.EndSample();
 #endif
             //ClearStack
             return stack.PopFrame(ref frame, esp, mStack);

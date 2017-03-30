@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\UnitComponentE.cs" />
+    <Compile Include="Handler\R2C_ServerLogHandler.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponentE.cs" />
     <Compile Include="UI\UILobby\Event\InitSceneStart_CreateLobbyUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,9 +72,7 @@
       <Name>Unity.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handler\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(ProjectDir)..\CSharp60Support\Roslyn\pdb2mdb.exe" $(TargetFileName)

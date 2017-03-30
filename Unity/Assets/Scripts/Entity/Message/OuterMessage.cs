@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	[Message(1)]
+	[Message(Opcode.C2R_Login)]
 	[BsonIgnoreExtraElements]
 	public class C2R_Login: ARequest
 	{
@@ -16,7 +16,7 @@ namespace Model
 		public string Password;
 	}
 
-	[Message(2)]
+	[Message(Opcode.R2C_Login)]
 	[BsonIgnoreExtraElements]
 	public class R2C_Login: AResponse
 	{
@@ -27,7 +27,7 @@ namespace Model
 		public long Key { get; set; }
 	}
 
-	[Message(3)]
+	[Message(Opcode.R2C_ServerLog)]
 	[BsonIgnoreExtraElements]
 	public class R2C_ServerLog: AMessage
 	{
@@ -44,7 +44,7 @@ namespace Model
 		public string Log { get; set; }
 	}
 
-	[Message(8)]
+	[Message(Opcode.C2G_LoginGate)]
 	[BsonIgnoreExtraElements]
 	public class C2G_LoginGate: ARequest
 	{
@@ -57,13 +57,13 @@ namespace Model
 		}
 	}
 
-	[Message(9)]
+	[Message(Opcode.G2C_LoginGate)]
 	[BsonIgnoreExtraElements]
 	public class G2C_LoginGate: AResponse
 	{
 	}
 
-	[Message(10)]
+	[Message(Opcode.C2M_Reload)]
 	[BsonIgnoreExtraElements]
 	public class C2M_Reload: ARequest
 	{
