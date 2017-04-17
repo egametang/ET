@@ -65,7 +65,7 @@ namespace Base
 			}
 
 			poller.USocketManager.Remove(this.PeerPtr);
-			NativeMethods.ENetPeerDisconnectNow(this.PeerPtr, 0);
+			NativeMethods.enet_peer_disconnect_now(this.PeerPtr, 0);
 			this.PeerPtr = IntPtr.Zero;
 		}
 
@@ -109,7 +109,7 @@ namespace Base
 			UAddress address = new UAddress(host, port);
 			ENetAddress nativeAddress = address.Struct;
 
-			this.PeerPtr = NativeMethods.ENetHostConnect(this.poller.Host, ref nativeAddress, 2, 0);
+			this.PeerPtr = NativeMethods.enet_host_connect(this.poller.Host, ref nativeAddress, 2, 0);
 			if (this.PeerPtr == IntPtr.Zero)
 			{
 				throw new Exception($"host connect call failed, {host}:{port}");
@@ -129,7 +129,7 @@ namespace Base
 				return;
 			}
 			UPacket packet = new UPacket(data, flags);
-			NativeMethods.ENetPeerSend(this.PeerPtr, channelID, packet.PacketPtr);
+			NativeMethods.enet_peer_send(this.PeerPtr, channelID, packet.PacketPtr);
 			// enet_peer_send函数会自动删除packet,设置为0,防止Dispose或者析构函数再次删除
 			packet.PacketPtr = IntPtr.Zero;
 		}

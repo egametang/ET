@@ -35,7 +35,7 @@ namespace Base
 
 	// ENetEvent
 	[StructLayout(LayoutKind.Sequential)]
-	internal class ENetEvent
+	internal struct ENetEvent
 	{
 		public EventType Type;
 		public IntPtr Peer;

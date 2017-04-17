@@ -16,7 +16,7 @@ namespace Base
 			{
 				throw new ArgumentNullException(nameof(data));
 			}
-			this.PacketPtr = NativeMethods.ENetPacketCreate(data, (uint) data.Length, flags);
+			this.PacketPtr = NativeMethods.enet_packet_create(data, (uint) data.Length, flags);
 			if (this.PacketPtr == IntPtr.Zero)
 			{
 				throw new Exception("Packet creation call failed");
@@ -40,7 +40,7 @@ namespace Base
 				return;
 			}
 
-			NativeMethods.ENetPacketDestroy(this.PacketPtr);
+			NativeMethods.enet_packet_destroy(this.PacketPtr);
 			this.PacketPtr = IntPtr.Zero;
 		}
 

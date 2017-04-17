@@ -12,7 +12,7 @@ namespace Base
 		}
 
 		public USocketManager USocketManager { get; }
-		private readonly QueueDictionary<IntPtr, ENetEvent> connQueue = new QueueDictionary<IntPtr, ENetEvent>();
+		private readonly Queue<IntPtr> connQueue = new Queue<IntPtr>();
 
 		private IntPtr host;
 
@@ -27,33 +27,40 @@ namespace Base
 
 		public UPoller(string hostName, ushort port)
 		{
-			this.USocketManager = new USocketManager();
-			
-			UAddress address = new UAddress(hostName, port);
-			ENetAddress nativeAddress = address.Struct;
-			this.host = NativeMethods.ENetHostCreate(ref nativeAddress,
-					NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
-
-			if (this.host == IntPtr.Zero)
+			try
 			{
-				throw new Exception("Host creation call failed.");
-			}
+				this.USocketManager = new USocketManager();
 
-			NativeMethods.ENetHostCompressWithRangeCoder(this.host);
+				UAddress address = new UAddress(hostName, port);
+				ENetAddress nativeAddress = address.Struct;
+				this.host = NativeMethods.enet_host_create(ref nativeAddress,
+						NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+
+				if (this.host == IntPtr.Zero)
+				{
+					throw new Exception("Host creation call failed.");
+				}
+
+				NativeMethods.enet_host_compress_with_range_coder(this.host);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"UPoll construct error, address: {hostName}:{port}", e);
+			}
 		}
 
 		public UPoller()
 		{
 			this.USocketManager = new USocketManager();
 
-			this.host = NativeMethods.ENetHostCreate(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
+			this.host = NativeMethods.enet_host_create(IntPtr.Zero, NativeMethods.ENET_PROTOCOL_MAXIMUM_PEER_ID, 0, 0, 0);
 
 			if (this.host == IntPtr.Zero)
 			{
 				throw new Exception("Host creation call failed.");
 			}
 
-			NativeMethods.ENetHostCompressWithRangeCoder(this.host);
+			NativeMethods.enet_host_compress_with_range_coder(this.host);
 		}
 
 		public void Dispose()
@@ -63,7 +70,7 @@ namespace Base
 				return;
 			}
 
-			NativeMethods.ENetHostDestroy(this.host);
+			NativeMethods.enet_host_destroy(this.host);
 
 			this.host = IntPtr.Zero;
 		}
@@ -76,24 +83,9 @@ namespace Base
 			}
 		}
 
-		private ENetEvent TryGetEvent()
-		{
-			if (this.eNetEventCache == null)
-			{
-				this.eNetEventCache = new ENetEvent();
-			}
-			if (NativeMethods.ENetHostCheckEvents(this.host, this.eNetEventCache) <= 0)
-			{
-				return null;
-			}
-			ENetEvent eNetEvent = this.eNetEventCache;
-			this.eNetEventCache = null;
-			return eNetEvent;
-		}
-
 		public void Flush()
 		{
-			NativeMethods.ENetHostFlush(this.host);
+			NativeMethods.enet_host_flush(this.host);
 		}
 
 		public void Add(Action action)
@@ -116,8 +108,7 @@ namespace Base
 			// 如果有请求连接缓存的包,从缓存中取
 			if (this.connQueue.Count > 0)
 			{
-				IntPtr ptr = this.connQueue.FirstKey;
-				this.connQueue.Remove(ptr);
+				IntPtr ptr = this.connQueue.Dequeue();
 
 				USocket socket = new USocket(ptr, this);
 				this.USocketManager.Add(ptr, socket);
@@ -136,7 +127,7 @@ namespace Base
 			{
 				this.AcceptTcs.TrySetException(new Exception("socket disconnected in accpet"));
 			}
-			
+
 			USocket socket = new USocket(eEvent.Peer, this);
 			this.USocketManager.Add(socket.PeerPtr, socket);
 			socket.OnAccepted();
@@ -163,7 +154,7 @@ namespace Base
 
 		private int Service()
 		{
-			int ret = NativeMethods.ENetHostService(this.host, null, 0);
+			int ret = NativeMethods.enet_host_service(this.host, IntPtr.Zero, 0);
 			return ret;
 		}
 
@@ -178,20 +169,19 @@ namespace Base
 
 			while (true)
 			{
-				ENetEvent eNetEvent = this.TryGetEvent();
-				if (eNetEvent == null)
+				if (NativeMethods.enet_host_check_events(this.host, ref this.eNetEventCache) <= 0)
 				{
 					return;
 				}
 
-				switch (eNetEvent.Type)
+				switch (this.eNetEventCache.Type)
 				{
 					case EventType.Connect:
 						{
 							// 这是一个connect peer
-							if (this.USocketManager.ContainsKey(eNetEvent.Peer))
+							if (this.USocketManager.ContainsKey(this.eNetEventCache.Peer))
 							{
-								USocket uSocket = this.USocketManager[eNetEvent.Peer];
+								USocket uSocket = this.USocketManager[this.eNetEventCache.Peer];
 								uSocket.OnConnected();
 								break;
 							}
@@ -199,26 +189,26 @@ namespace Base
 							// 这是accept peer
 							if (this.AcceptTcs != null)
 							{
-								this.OnAccepted(eNetEvent);
+								this.OnAccepted(this.eNetEventCache);
 								break;
 							}
 
 							// 如果server端没有acceptasync,则请求放入队列
-							this.connQueue.Add(eNetEvent.Peer, eNetEvent);
+							this.connQueue.Enqueue(this.eNetEventCache.Peer);
 							break;
 						}
 					case EventType.Receive:
 						{
-							USocket uSocket = this.USocketManager[eNetEvent.Peer];
-							uSocket.OnReceived(eNetEvent);
+							USocket uSocket = this.USocketManager[this.eNetEventCache.Peer];
+							uSocket.OnReceived(this.eNetEventCache);
 							break;
 						}
 					case EventType.Disconnect:
 						{
-							USocket uSocket = this.USocketManager[eNetEvent.Peer];
+							USocket uSocket = this.USocketManager[this.eNetEventCache.Peer];
 							this.USocketManager.Remove(uSocket.PeerPtr);
 							uSocket.PeerPtr = IntPtr.Zero;
-							uSocket.OnDisconnect(eNetEvent);
+							uSocket.OnDisconnect(this.eNetEventCache);
 							break;
 						}
 				}
