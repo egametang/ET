@@ -197,6 +197,12 @@ namespace Base
 				this.OnError(this, error);
 				return;
 			}
+
+			if (n == 0)
+			{
+				this.OnError(this, error);
+				return;
+			}
 			
 			this.recvBuffer.LastIndex += n;
 			if (this.recvBuffer.LastIndex == TBuffer.ChunkSize)
