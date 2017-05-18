@@ -11,17 +11,14 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile>Assets\mcs.rsp</CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
-    <UnityVersion>5.5.2f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2017.1.0b5</UnityVersion>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +27,8 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_2;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,17 +37,19 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_2;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
-    <Reference Include="Boo.Lang" />
-    <Reference Include="UnityScript.Lang" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
@@ -59,8 +59,14 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.PlaymodeTestsRunner">
-      <HintPath>Library\UnityAssemblies\UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>Library\UnityAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
@@ -68,23 +74,11 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.VR">
-      <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Common">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="AsyncBridge.Net35">
-      <HintPath>Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading">
-      <HintPath>Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -270,11 +264,11 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IConventionPack.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ICreatorMapConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IDiscriminatorConvention.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IMemberMapConvention.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IPostProcessingConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreExtraElementsConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfDefaultConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfNullConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IMemberMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IPostProcessingConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\LookupIdGeneratorConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberDefaultValueConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberNameElementNameConvention.cs" />
@@ -311,7 +305,6 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\ICreatorSelector.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\AscendingGuidGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonBinaryDataGuidGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonObjectIdGenerator.cs" />
@@ -321,6 +314,7 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ObjectIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\StringObjectIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ZeroIdChecker.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\MostArgumentsCreatorSelector.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\ArraySerializationOptions.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\BsonBaseSerializationOptions.cs" />
@@ -370,16 +364,16 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionaryGenericSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionarySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DoubleSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\GuidSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPAddressSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPEndPointSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int16Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int32Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int64Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\InterfaceSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPAddressSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPEndPointSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\KeyValuePairSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonDocumentSerializer.cs" />
@@ -411,16 +405,6 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableStruct.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\Hasher.cs" />
     <Compile Include="Assets\Plugins\MongoDB\ReaderWriterLockExtension.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\Android\AndroidImpl.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ContentType.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\MiniJSON.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\PlatformType.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ResponseState.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareContent.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDK.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKDevInfo.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKImpl.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\iOS\iOSImpl.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BclHelpers.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BufferExtension.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BufferPool.cs" />
@@ -473,13 +457,13 @@
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\EnumSerializer.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\FieldDecorator.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\GuidSerializer.cs" />
-    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoSerializer.cs" />
-    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
-    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ISerializerProxy.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int16Serializer.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int32Serializer.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int64Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ISerializerProxy.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\KeyValuePairDecorator.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\ListDecorator.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
@@ -509,10 +493,18 @@
     <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\SubItemToken.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\Android\AndroidImpl.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ContentType.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\iOS\iOSImpl.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\MiniJSON.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\PlatformType.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ResponseState.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ShareContent.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ShareSDK.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKDevInfo.cs" />
+    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKImpl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
-    <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
     <None Include="Assets\Plugins\Android\ShareSDK\AndroidManifest.xml" />
     <None Include="Assets\Plugins\Android\ShareSDK\res\drawable\ssdk_oks_classic_platform_cell_back.xml" />
     <None Include="Assets\Plugins\Android\ShareSDK\res\drawable\ssdk_oks_classic_progressbar.xml" />
