@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -267,9 +267,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 575235020}
-  - component: {fileID: 575235019}
-  - component: {fileID: 575235021}
   - component: {fileID: 575235022}
+  - component: {fileID: 575235019}
   m_Layer: 0
   m_Name: Global
   m_TagString: Untagged
@@ -285,7 +284,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 575235018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4584863b50234f545845625d81d494da, type: 3}
+  m_Script: {fileID: 11500000, guid: ff906ecbbd0163f4094f8fa4e305d39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &575235020
@@ -303,93 +302,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &575235021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 575235018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a0ddde4b6006fa4a912bec7ca093d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  appKey: androidv1101
-  devInfo:
-    sinaweibo:
-      Enable: 1
-    tencentweibo:
-      Enable: 1
-    facebook:
-      Enable: 1
-    twitter:
-      Enable: 1
-    email:
-      Enable: 1
-    shortMessage:
-      Enable: 1
-    douban:
-      Enable: 1
-    renren:
-      Enable: 1
-    googlePlus:
-      Enable: 1
-    kaiXin:
-      Enable: 1
-    pocket:
-      Enable: 1
-    instagram:
-      Enable: 1
-    linkedIn:
-      Enable: 1
-    tumblr:
-      Enable: 1
-    youDao:
-      Enable: 1
-    flickr:
-      Enable: 1
-    evernote:
-      Enable: 1
-    whatsApp:
-      Enable: 1
-    line:
-      Enable: 1
-    dropbox:
-      Enable: 1
-    vkontakte:
-      Enable: 1
-    pinterest:
-      Enable: 1
-    mingdao:
-      Enable: 1
-    kakaoTalk:
-      Enable: 1
-    kakaoStory:
-      Enable: 1
-    qq:
-      Enable: 1
-    qzone:
-      Enable: 1
-    wechat:
-      Enable: 1
-    wechatMoments:
-      Enable: 1
-    wechatFavorites:
-      Enable: 1
-    yixin:
-      Enable: 1
-    yixinMoments:
-      Enable: 1
-    facebookMessenger:
-      Enable: 1
-    instapaper:
-      Enable: 1
-    alipay:
-      Enable: 1
-    alipayMoments:
-      Enable: 1
-    dingTalk:
-      Enable: 1
 --- !u!114 &575235022
 MonoBehaviour:
   m_ObjectHideFlags: 0
