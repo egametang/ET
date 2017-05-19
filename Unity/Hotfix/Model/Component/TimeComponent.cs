@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Model
+﻿namespace Model
 {
 	/// <summary>
 	/// 用于同步服务端和客户端时间

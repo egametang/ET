@@ -1,6 +1,4 @@
-﻿using Model;
-
-namespace Model
+﻿namespace Model
 {
 	[EntityEvent(EntityEventId.NetOuterComponent)]
 	public class NetOuterComponent: NetworkComponent

@@ -1,7 +1,4 @@
-﻿using System;
-using Model;
-
-namespace Model
+﻿namespace Model
 {
 	public abstract class Disposer: Object
 	{

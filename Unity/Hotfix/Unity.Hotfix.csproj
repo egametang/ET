@@ -122,7 +122,6 @@
     <Compile Include="Model\Object\EntityType.cs" />
     <Compile Include="Model\Object\Object.cs" />
     <Compile Include="Model\Other\EntityEventId.cs" />
-    <Compile Include="Model\Other\IEvent.cs" />
     <Compile Include="Model\Other\ILBindingAttribute.cs" />
     <Compile Include="Model\Other\IUIFactory.cs" />
     <Compile Include="Model\Other\LayerNames.cs" />

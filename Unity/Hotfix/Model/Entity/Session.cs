@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Model;
 using MongoDB.Bson;
 
 namespace Model

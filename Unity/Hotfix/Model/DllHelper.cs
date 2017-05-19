@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Hotfix;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using UnityEngine;
