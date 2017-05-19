@@ -77,7 +77,6 @@
     <Compile Include="Model\Component\UIComponent.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="Model\Component\UnitComponent.cs" />
-    <Compile Include="Model\Component\UnitComponentE.cs" />
     <Compile Include="Handler\R2C_ServerLogHandler.cs" />
     <Compile Include="Model\Config\ACategory.cs" />
     <Compile Include="Model\Config\AConfig.cs" />

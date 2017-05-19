@@ -31,6 +31,7 @@ namespace Model
 
 				this.RegisterAssembly();
 				this.RegisterILAdapter();
+				this.RegisterDelegate();
 				this.RegisterRedirection();
 
 				IType hotfixInitType = AppDomain.LoadedTypes["Hotfix.HotfixInit"];
@@ -72,6 +73,13 @@ namespace Model
 
 		public unsafe void RegisterRedirection()
 		{
+		}
+
+		public void RegisterDelegate()
+		{
+			AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
+			AppDomain.DelegateManager.RegisterMethodDelegate<System.Byte[], System.Int32, System.Int32>();
+
 		}
 
 		public void RegisterILAdapter()

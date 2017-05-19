@@ -47,7 +47,6 @@ namespace Model
 			{
 				try
 				{
-					Log.Debug(obj.GetType().FullName);
 					IEvent iEvent = (IEvent)obj;
 					iEvent.Run();
 				}
