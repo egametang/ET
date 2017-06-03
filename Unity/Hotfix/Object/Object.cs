@@ -25,10 +25,5 @@ namespace Hotfix
 		public virtual void Dispose()
 		{
 		}
-
-		public object Clone()
-		{
-			return MongoHelper.FromBson(this.GetType(), this.ToBson());
-		}
 	}
 }

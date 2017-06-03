@@ -28,7 +28,7 @@ namespace Hotfix
 					{
 						continue;
 					}
-					T t = MongoHelper.FromJson<T>(str2);
+					T t = JsonHelper.FromJson<T>(str2);
 					this.dict.Add(t.Id, t);
 				}
 				catch (Exception e)

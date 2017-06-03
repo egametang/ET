@@ -138,7 +138,6 @@
     <Compile Include="Other\ILBindingAttribute.cs" />
     <Compile Include="Other\IUIFactory.cs" />
     <Compile Include="Other\LayerNames.cs" />
-    <Compile Include="Other\Options.cs" />
     <Compile Include="Other\UIFactoryAttribute.cs" />
     <Compile Include="Other\UIType.cs" />
     <Compile Include="UI\UILobby\Event\InitSceneStart_CreateLobbyUI.cs" />

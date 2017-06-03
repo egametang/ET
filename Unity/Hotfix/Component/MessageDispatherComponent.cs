@@ -79,7 +79,7 @@ namespace Hotfix
 			}
 
 			Type messageType = this.opcodeTypes.GetValueByKey(messageInfo.Opcode);
-			object message = MongoHelper.FromBson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+			object message = JsonHelper.FromJson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
 			messageInfo.Message = message;
 
 			foreach (IInstanceMethod ev in actions)
