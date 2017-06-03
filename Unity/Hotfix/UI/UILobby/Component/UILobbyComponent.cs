@@ -1,11 +1,12 @@
 ﻿using System;
+using Model;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Model
+namespace Hotfix
 {
 	[EntityEvent(EntityEventId.UILobbyComponent)]
-	public class UILobbyComponent: Component
+	public class UILobbyComponent: Component, IAwake
 	{
 		public void Awake()
 		{

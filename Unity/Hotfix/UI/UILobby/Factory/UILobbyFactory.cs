@@ -10,7 +10,7 @@ namespace Hotfix
         public UI Create(Scene scene, int type, UI parent)
         {
 			GameObject bundleGameObject = scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("uilobby", "Lobby");
-			GameObject lobby = Object.Instantiate(bundleGameObject);
+			GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
 			lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
 			UI ui = new UI(scene, type, parent, lobby);
 			parent.Add(ui);

@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0b7</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -455,27 +458,6 @@
     <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\SubItemToken.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\Android\AndroidImpl.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ContentType.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\iOS\iOSImpl.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\MiniJSON.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\PlatformType.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ResponseState.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareContent.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDK.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKDevInfo.cs" />
-    <Compile Include="Assets\Plugins\ShareSDK\ShareSDKImpl.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Plugins\Android\ShareSDK\AndroidManifest.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\drawable\ssdk_oks_classic_platform_cell_back.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\drawable\ssdk_oks_classic_progressbar.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values-en\ssdk_oks_strings.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values-en\ssdk_strings.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_instapaper_strings.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_oks_color_drawables.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_oks_strings.xml" />
-    <None Include="Assets\Plugins\Android\ShareSDK\res\values\ssdk_strings.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

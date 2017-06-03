@@ -50,6 +50,11 @@ namespace Model
 			return Encoding.UTF8.GetString(bytes);
 		}
 
+		public static string Utf8ToStr(this byte[] bytes, int index, int count)
+		{
+			return Encoding.UTF8.GetString(bytes, index, count);
+		}
+
 		public static byte[] Reverse(this byte[] bytes)
 		{
 			Array.Reverse(bytes);

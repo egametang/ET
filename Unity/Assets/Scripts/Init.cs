@@ -61,8 +61,8 @@ namespace Model
 		public void RegisterAssembly()
 		{
 			GameObject code = (GameObject)Resources.Load("Code");
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			byte[] assBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] mdbBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.pdb").bytes;
 
 			using (MemoryStream fs = new MemoryStream(assBytes))
 			using (MemoryStream p = new MemoryStream(mdbBytes))
