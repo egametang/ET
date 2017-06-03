@@ -18,20 +18,25 @@ namespace Model
 
 		private async void OnCreateRoom()
 		{
+			Session session = null;
 			try
 			{
-				using (Session session = Game.Scene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10001"))
-				{
-					R2C_Login r2CLogin = await session.Call<C2R_Login, R2C_Login>(new C2R_Login() { Account = "abcdef", Password = "111111" });
-					Session gateSession = Game.Scene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
-					G2C_LoginGate g2CLoginGate = await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
+				session = Game.Scene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10001");
+				
+				R2C_Login r2CLogin = await session.Call<C2R_Login, R2C_Login>(new C2R_Login() { Account = "abcdef", Password = "111111" });
+				Session gateSession = Game.Scene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
+				G2C_LoginGate g2CLoginGate = await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
 
-					Log.Info("登陆gate成功!");
-				}
+				Log.Info("登陆gate成功!");
+				
 			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());
+			}
+			finally
+			{
+				session?.Dispose();
 			}
 		}
 

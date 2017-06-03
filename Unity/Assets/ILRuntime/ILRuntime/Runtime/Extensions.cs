@@ -9,6 +9,89 @@ namespace ILRuntime.Runtime
 {
     static class Extensions
     {
+        public static void GetClassName(this Type type, out string clsName, out string realClsName, out bool isByRef, bool simpleClassName = false)
+        {
+            isByRef = type.IsByRef;
+            bool isArray = type.IsArray;
+            if (isByRef)
+                type = type.GetElementType();
+            if (isArray)
+                type = type.GetElementType();
+            string realNamespace = null;
+            bool isNestedGeneric = false;
+            if (type.IsNested)
+            {
+                string bClsName, bRealClsName;
+                bool tmp;
+                var rt = type.ReflectedType;
+                if(rt.IsGenericType && rt.IsGenericTypeDefinition)
+                {
+                    if (type.IsGenericType)
+                    {
+                        rt = rt.MakeGenericType(type.GetGenericArguments());
+                        isNestedGeneric = true;
+                    }
+                }
+                GetClassName(rt, out bClsName, out bRealClsName, out tmp);
+                clsName = simpleClassName ? "" : bClsName + "_";
+                realNamespace = bRealClsName + ".";
+            }
+            else
+            {
+                clsName = simpleClassName ? "" : (!string.IsNullOrEmpty(type.Namespace) ? type.Namespace.Replace(".", "_") + "_" : "");
+                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : null;
+            }
+            clsName = clsName + type.Name.Replace(".", "_").Replace("`", "_").Replace("<", "_").Replace(">", "_");
+            bool isGeneric = false;
+            string ga = null;
+            if (type.IsGenericType && !isNestedGeneric)
+            {
+                isGeneric = true;
+                clsName += "_";
+                ga = "<";
+                var args = type.GetGenericArguments();
+                bool first = true;
+                foreach (var j in args)
+                {
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        clsName += "_";
+                        ga += ", ";
+                    }
+                    string a, b;
+                    bool tmp;
+                    GetClassName(j, out a, out b, out tmp, true);
+                    clsName += a;
+                    ga += b;
+                }
+                ga += ">";
+            }
+            if (!simpleClassName)
+                clsName += "_Binding";
+            if (isArray)
+                clsName += "_Array";
+
+            realClsName = realNamespace;
+            if (isGeneric)
+            {
+                int idx = type.Name.IndexOf("`");
+                if (idx > 0)
+                {
+                    realClsName += type.Name.Substring(0, idx);
+                    realClsName += ga;
+                }
+                else
+                    realClsName += type.Name;
+            }
+            else
+                realClsName += type.Name;
+
+            if (isArray)
+                realClsName += "[]";
+
+        }
         public static int ToInt32(this object obj)
         {
             if (obj is int)
@@ -121,6 +204,16 @@ namespace ILRuntime.Runtime
             if (obj is sbyte)
                 return (double)(sbyte)obj;
             throw new InvalidCastException();
+        }
+
+        public static Type GetActualType(this object value)
+        {
+            if (value is ILRuntime.Runtime.Enviorment.CrossBindingAdaptorType)
+                return ((ILRuntime.Runtime.Enviorment.CrossBindingAdaptorType)value).ILInstance.Type.ReflectionType;
+            if (value is ILRuntime.Runtime.Intepreter.ILTypeInstance)
+                return ((ILRuntime.Runtime.Intepreter.ILTypeInstance)value).Type.ReflectionType;
+            else
+                return value.GetType();
         }
     }
 }

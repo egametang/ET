@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hotfix</RootNamespace>
     <AssemblyName>Hotfix</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -75,6 +75,9 @@
     <Compile Include="Model\Component\TimeComponent.cs" />
     <Compile Include="Model\Component\TimerComponent.cs" />
     <Compile Include="Model\Component\UIComponent.cs" />
+    <Compile Include="Model\Object\IAwake.cs" />
+    <Compile Include="Model\Object\ILoad.cs" />
+    <Compile Include="Model\Object\IUpdate.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="Model\Component\UnitComponent.cs" />
     <Compile Include="Handler\R2C_ServerLogHandler.cs" />

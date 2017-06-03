@@ -73,6 +73,8 @@ namespace Model
 
 		public unsafe void RegisterRedirection()
 		{
+			var mi = typeof(Log).GetMethod("Debug", new System.Type[] { typeof(string) });
+			this.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
 		}
 
 		public void RegisterDelegate()

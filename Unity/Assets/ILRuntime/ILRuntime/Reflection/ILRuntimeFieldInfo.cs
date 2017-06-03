@@ -17,7 +17,7 @@ namespace ILRuntime.Reflection
 {
     public class ILRuntimeFieldInfo : FieldInfo
     {
-        System.Reflection.FieldAttributes attr = System.Reflection.FieldAttributes.Public;
+        System.Reflection.FieldAttributes attr;
         ILRuntimeType dType;
         ILType ilType;
         IType fieldType;
@@ -42,6 +42,12 @@ namespace ILRuntime.Reflection
             this.fieldIdx = fieldIdx; 
             if (isStatic)
                 attr |= System.Reflection.FieldAttributes.Static;
+            if (def.IsPublic)
+            {
+                attr |= System.Reflection.FieldAttributes.Public;
+            }
+            else
+                attr |= System.Reflection.FieldAttributes.Private;
             fieldType = isStatic ? ilType.StaticFieldTypes[fieldIdx] : ilType.FieldTypes[fieldIdx];
         }
 
@@ -56,6 +62,12 @@ namespace ILRuntime.Reflection
             this.fieldIdx = fieldIdx;
             if (isStatic)
                 attr |= System.Reflection.FieldAttributes.Static;
+            if (def.IsPublic)
+            {
+                attr |= System.Reflection.FieldAttributes.Public;
+            }
+            else
+                attr |= System.Reflection.FieldAttributes.Private;
             this.fieldType = fieldType;
         }
 
@@ -80,6 +92,7 @@ namespace ILRuntime.Reflection
                 }
             }
         }
+
         public override System.Reflection.FieldAttributes Attributes
         {
             get
@@ -166,13 +179,20 @@ namespace ILRuntime.Reflection
                     else
                         ins = ((CrossBindingAdaptorType)obj).ILInstance;
                 }
-                return ins[fieldIdx];
+                return fieldType.TypeForCLR.CheckCLRTypes(ins[fieldIdx]);
             }
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            throw new NotImplementedException();
+            if (customAttributes == null)
+                InitializeCustomAttribute();
+            for (int i = 0; i < customAttributes.Length; i++)
+            {
+                if (attributeTypes[i] == attributeType)
+                    return true;
+            }
+            return false;
         }
 
         public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, CultureInfo culture)

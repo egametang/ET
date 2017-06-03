@@ -12,9 +12,44 @@ namespace ILRuntime.Reflection
     public class ILRuntimeMethodInfo : MethodInfo
     {
         ILMethod method;
+        ILRuntimeParameterInfo[] parameters;
+        Mono.Cecil.MethodDefinition definition;
+        ILRuntime.Runtime.Enviorment.AppDomain appdomain;
+
+        object[] customAttributes;
+        Type[] attributeTypes;
         public ILRuntimeMethodInfo(ILMethod m)
         {
             method = m;
+            definition = m.Definition;
+            appdomain = m.DeclearingType.AppDomain;
+            parameters = new ILRuntimeParameterInfo[m.ParameterCount];
+            for (int i = 0; i < m.ParameterCount; i++)
+            {
+                parameters[i] = new ILRuntimeParameterInfo(m.Parameters[i]);
+            }
+        }
+
+        void InitializeCustomAttribute()
+        {
+            customAttributes = new object[definition.CustomAttributes.Count];
+            attributeTypes = new Type[customAttributes.Length];
+            for (int i = 0; i < definition.CustomAttributes.Count; i++)
+            {
+                var attribute = definition.CustomAttributes[i];
+                var at = appdomain.GetType(attribute.AttributeType, null, null);
+                try
+                {
+                    object ins = attribute.CreateInstance(at, appdomain);
+
+                    attributeTypes[i] = at.ReflectionType;
+                    customAttributes[i] = ins;
+                }
+                catch
+                {
+                    attributeTypes[i] = typeof(Attribute);
+                }
+            }
         }
 
         internal ILMethod ILMethod { get { return method; } }
@@ -73,12 +108,23 @@ namespace ILRuntime.Reflection
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            throw new NotImplementedException();
+            if (customAttributes == null)
+                InitializeCustomAttribute();
+
+            return customAttributes;
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            throw new NotImplementedException();
+            if (customAttributes == null)
+                InitializeCustomAttribute();
+            List<object> res = new List<object>();
+            for (int i = 0; i < customAttributes.Length; i++)
+            {
+                if (attributeTypes[i] == attributeType)
+                    res.Add(customAttributes[i]);
+            }
+            return res.ToArray();
         }
 
         public override MethodImplAttributes GetMethodImplementationFlags()
@@ -95,16 +141,23 @@ namespace ILRuntime.Reflection
         {
             if (method.HasThis)
             {
-                var res = method.DeclearingType.AppDomain.Invoke(method, obj, parameters);
+                var res = appdomain.Invoke(method, obj, parameters);
                 return res;
             }
             else
-                return method.DeclearingType.AppDomain.Invoke(method, null, parameters);
+                return appdomain.Invoke(method, null, parameters);
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            throw new NotImplementedException();
+            if (customAttributes == null)
+                InitializeCustomAttribute();
+            for (int i = 0; i < customAttributes.Length; i++)
+            {
+                if (attributeTypes[i] == attributeType)
+                    return true;
+            }
+            return false;
         }
     }
 }

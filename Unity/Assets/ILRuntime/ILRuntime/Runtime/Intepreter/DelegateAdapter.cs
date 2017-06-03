@@ -47,6 +47,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new FunctionDelegateAdapter<TResult>(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new FunctionDelegateAdapter<TResult>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             action += (Func<TResult>)dele;
@@ -92,6 +99,13 @@ namespace ILRuntime.Runtime.Intepreter
         public override IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method)
         {
             return new FunctionDelegateAdapter<T1, TResult>(appdomain, instance, method);
+        }
+
+        public override IDelegateAdapter Clone()
+        {
+            var res = new FunctionDelegateAdapter<T1, TResult>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
         }
 
         public override void Combine(Delegate dele)
@@ -141,6 +155,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new FunctionDelegateAdapter<T1, T2, TResult>(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new FunctionDelegateAdapter<T1, T2, TResult>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             action += (Func<T1, T2, TResult>)dele;
@@ -188,6 +209,12 @@ namespace ILRuntime.Runtime.Intepreter
             return new FunctionDelegateAdapter<T1, T2, T3, TResult>(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new FunctionDelegateAdapter<T1, T2, T3, TResult>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
         public override void Combine(Delegate dele)
         {
             action += (Func<T1, T2, T3, TResult>)dele;
@@ -233,6 +260,13 @@ namespace ILRuntime.Runtime.Intepreter
         public override IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method)
         {
             return new FunctionDelegateAdapter<T1, T2, T3, T4, TResult>(appdomain, instance, method);
+        }
+
+        public override IDelegateAdapter Clone()
+        {
+            var res = new FunctionDelegateAdapter<T1, T2, T3, T4, TResult>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
         }
 
         public override void Combine(Delegate dele)
@@ -284,6 +318,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new MethodDelegateAdapter<T1>(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new MethodDelegateAdapter<T1>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             action += (Action<T1>)dele;
@@ -329,6 +370,13 @@ namespace ILRuntime.Runtime.Intepreter
         public override IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method)
         {
             return new MethodDelegateAdapter<T1, T2>(appdomain, instance, method);
+        }
+
+        public override IDelegateAdapter Clone()
+        {
+            var res = new MethodDelegateAdapter<T1, T2>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
         }
 
         public override void Combine(Delegate dele)
@@ -378,6 +426,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new MethodDelegateAdapter<T1, T2, T3>(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new MethodDelegateAdapter<T1, T2, T3>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             action += (Action<T1, T2, T3>)dele;
@@ -423,6 +478,13 @@ namespace ILRuntime.Runtime.Intepreter
         public override IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method)
         {
             return new MethodDelegateAdapter<T1, T2, T3, T4>(appdomain, instance, method);
+        }
+
+        public override IDelegateAdapter Clone()
+        {
+            var res = new MethodDelegateAdapter<T1, T2, T3, T4>(appdomain, instance, method);
+            res.isClone = true;
+            return res;
         }
 
         public override void Combine(Delegate dele)
@@ -472,6 +534,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new MethodDelegateAdapter(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new MethodDelegateAdapter(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             action += (Action)dele;
@@ -518,6 +587,13 @@ namespace ILRuntime.Runtime.Intepreter
             return new DummyDelegateAdapter(appdomain, instance, method);
         }
 
+        public override IDelegateAdapter Clone()
+        {
+            var res = new DummyDelegateAdapter(appdomain, instance, method);
+            res.isClone = true;
+            return res;
+        }
+
         public override void Combine(Delegate dele)
         {
             ThrowAdapterNotFound(method);
@@ -536,6 +612,7 @@ namespace ILRuntime.Runtime.Intepreter
         protected Enviorment.AppDomain appdomain;
         Dictionary<Type, Delegate> converters;
         IDelegateAdapter next;
+        protected bool isClone;
 
         public abstract Delegate Delegate { get; }
 
@@ -552,6 +629,7 @@ namespace ILRuntime.Runtime.Intepreter
             this.appdomain = appdomain;
             this.instance = instance;
             this.method = method;
+            CLRInstance = this;
         }
 
         public override bool IsValueType
@@ -632,6 +710,16 @@ namespace ILRuntime.Runtime.Intepreter
 
         public abstract IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method);
 
+        public new abstract IDelegateAdapter Clone();
+
+        public bool IsClone
+        {
+            get
+            {
+                return isClone;
+            }
+        }
+
         public virtual void Combine(IDelegateAdapter adapter)
         {
             if (next != null)
@@ -662,10 +750,7 @@ namespace ILRuntime.Runtime.Intepreter
             if (adapter is DelegateAdapter)
             {
                 DelegateAdapter b = (DelegateAdapter)adapter;
-                if (adapter is DummyDelegateAdapter)
-                    return instance == b.instance && next == b.next && method == b.method;
-                else
-                    return instance == b.instance && next == b.next && method == b.method && Delegate == b.Delegate;
+                return instance == b.instance && method == b.method;
             }
             else
                 return false;
@@ -761,6 +846,8 @@ namespace ILRuntime.Runtime.Intepreter
         ILMethod Method { get; }
         StackObject* ILInvoke(ILIntepreter intp, StackObject* esp, List<object> mStack);
         IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method);
+        bool IsClone { get; }
+        IDelegateAdapter Clone();
         Delegate GetConvertor(Type type);
         void Combine(IDelegateAdapter adapter);
         void Combine(Delegate dele);

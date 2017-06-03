@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace Model
 {
 	[EntityEvent(EntityEventId.EventComponent)]
-	public class EventComponent : Component
+	public class EventComponent : Component, IAwake
 	{
 		private Dictionary<int, List<object>> allEvents;
 
-		private void Awake()
+		public void Awake()
 		{
 			this.Load();
 		}
 
-		private void Load()
+		public void Load()
 		{
 			this.allEvents = new Dictionary<int, List<object>>();
 

@@ -16,7 +16,7 @@ namespace ILRuntime.Runtime.Stack
         IntPtr nativePointer;
         List<object> managedStack = new List<object>(32);
         Stack<StackFrame> frames = new Stack<StackFrame>();
-        const int MAXIMAL_STACK_OBJECTS = 1024 * 128;
+        const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
 
         public Stack<StackFrame> Frames { get { return frames; } }
         public RuntimeStack(ILIntepreter intepreter)

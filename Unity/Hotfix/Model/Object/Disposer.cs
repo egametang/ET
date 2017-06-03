@@ -4,18 +4,18 @@
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{
-			Game.Disposers.Add(this);
+			Game.EntityEventManager.Add(this);
 		}
 
 		protected Disposer(long id): base(id)
 		{
-			Game.Disposers.Add(this);
+			Game.EntityEventManager.Add(this);
 		}
 
 		public override void Dispose()
 		{
 			this.Id = 0;
-			Game.Disposers.Remove(this);
+			Game.EntityEventManager.Remove(this);
 		}
 	}
 }

@@ -106,7 +106,7 @@ namespace ILRuntime.CLR.Utils
             return sb.ToString();
         }
 
-        public static object CheckCLRTypes(this Type pt, Runtime.Enviorment.AppDomain domain, object obj)
+        public static object CheckCLRTypes(this Type pt, object obj)
         {
             if (obj == null)
                 return null;
@@ -133,6 +133,10 @@ namespace ILRuntime.CLR.Utils
                     obj = (ulong)(long)obj;
                 }
             }
+            else if (obj is ILRuntime.Reflection.ILRuntimeWrapperType)
+            {
+                obj = ((ILRuntime.Reflection.ILRuntimeWrapperType)obj).RealType;
+            }
             else if (pt == typeof(Delegate) || pt.IsSubclassOf(typeof(Delegate)))
             {
                 if (obj is Delegate)
@@ -143,7 +147,7 @@ namespace ILRuntime.CLR.Utils
             }
             else if (pt.IsByRef)
             {
-                return CheckCLRTypes(pt.GetElementType(), domain, obj);
+                return CheckCLRTypes(pt.GetElementType(), obj);
             }
             else if (pt.IsEnum)
             {
@@ -151,6 +155,10 @@ namespace ILRuntime.CLR.Utils
             }
             else if (obj is ILTypeInstance)
             {
+                if (obj is IDelegateAdapter && pt != typeof(ILTypeInstance))
+                {
+                    return ((IDelegateAdapter)obj).Delegate;
+                }
                 if (!(obj is ILEnumTypeInstance))
                 {
                     var ins = (ILTypeInstance)obj;

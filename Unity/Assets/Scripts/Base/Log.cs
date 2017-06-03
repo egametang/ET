@@ -29,7 +29,7 @@ namespace Model
 		public static void Warning(string msg)
 		{
 			DateTime dateTime = DateTime.Now;
-			string s = $"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} {msg}";
+			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {msg}";
 
 			info.WriteLine(s);
 			if (IsNeedFlush)
@@ -45,7 +45,7 @@ namespace Model
 		public static void Info(string msg)
 		{
 			DateTime dateTime = DateTime.Now;
-			string s = $"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} {msg}";
+			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {msg}";
 
 			info.WriteLine(s);
 			if (IsNeedFlush)
@@ -61,7 +61,7 @@ namespace Model
 		public static void Error(string msg)
 		{
 			DateTime dateTime = DateTime.Now;
-			string s = $"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} {TimeHelper.ClientNow()} {msg}";
+			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {TimeHelper.ClientNow()} {msg}";
 
 			error.WriteLine(s);
 			if (IsNeedFlush)
@@ -84,7 +84,7 @@ namespace Model
 		{
 #if UNITY_EDITOR
 			DateTime dateTime = DateTime.Now;
-			string s = $"{dateTime.ToString("yyyy-MM-dd HH:mm:ss")} {TimeHelper.ClientNow()} {msg}";
+			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {TimeHelper.ClientNow()} {msg}";
 			UnityEngine.Debug.Log(s);
 
 			info.WriteLine(s);

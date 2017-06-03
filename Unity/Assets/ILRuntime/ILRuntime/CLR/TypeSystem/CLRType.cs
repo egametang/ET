@@ -6,6 +6,7 @@ using System.Reflection;
 
 using Mono.Cecil;
 using ILRuntime.CLR.Method;
+using ILRuntime.Reflection;
 namespace ILRuntime.CLR.TypeSystem
 {
     public class CLRType : IType
@@ -14,16 +15,21 @@ namespace ILRuntime.CLR.TypeSystem
         Dictionary<string, List<CLRMethod>> methods;
         ILRuntime.Runtime.Enviorment.AppDomain appdomain;
         List<CLRMethod> constructors;
-        KeyValuePair<string,IType>[] genericArguments;
+        KeyValuePair<string, IType>[] genericArguments;
         List<CLRType> genericInstances;
         Dictionary<string, int> fieldMapping;
         Dictionary<int, FieldInfo> fieldInfoCache;
         Dictionary<int, int> fieldTokenMapping;
-        IType byRefType, arrayType;
+        IType byRefType, arrayType, elementType;
+        IType[] interfaces;
         bool isDelegate;
         IType baseType;
-        bool isBaseTypeInitialized = false;
+        bool isBaseTypeInitialized = false, interfaceInitialized = false;
         MethodInfo memberwiseClone;
+        ILRuntimeWrapperType wraperType;
+
+        int hashCode = -1;
+        static int instance_id = 0x20000000;
 
         public Dictionary<int, FieldInfo> Fields
         {
@@ -48,7 +54,7 @@ namespace ILRuntime.CLR.TypeSystem
             this.appdomain = appdomain;
             isDelegate = clrType.BaseType == typeof(MulticastDelegate);
         }
-        
+
         public bool IsGenericInstance
         {
             get
@@ -64,6 +70,9 @@ namespace ILRuntime.CLR.TypeSystem
                 return genericArguments;
             }
         }
+
+        public IType ElementType { get { return elementType; } }
+
         public bool HasGenericParameter
         {
             get
@@ -84,7 +93,9 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return clrType;
+                if (wraperType == null)
+                    wraperType = new ILRuntimeWrapperType(this);
+                return wraperType;
             }
         }
         public IType ByRefType
@@ -101,6 +112,12 @@ namespace ILRuntime.CLR.TypeSystem
                 return arrayType;
             }
         }
+
+        public bool IsArray
+        {
+            get;private set;
+        }
+
         public bool IsValueType
         {
             get
@@ -140,11 +157,21 @@ namespace ILRuntime.CLR.TypeSystem
             }
         }
 
+        public IType[] Implements
+        {
+            get
+            {
+                if (!interfaceInitialized)
+                    InitializeInterfaces();
+                return interfaces;
+            }
+        }
+
         public new MethodInfo MemberwiseClone
         {
             get
             {
-                if(clrType.IsValueType && memberwiseClone == null)
+                if (clrType.IsValueType && memberwiseClone == null)
                 {
                     memberwiseClone = clrType.GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
                 }
@@ -160,6 +187,20 @@ namespace ILRuntime.CLR.TypeSystem
                 baseType = null;
             }
             isBaseTypeInitialized = true;
+        }
+
+        void InitializeInterfaces()
+        {
+            interfaceInitialized = true;
+            var arr = clrType.GetInterfaces();
+            if (arr.Length >0)
+            {
+                interfaces = new IType[arr.Length];
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    interfaces[i] = appdomain.GetType(arr[i]);
+                }
+            }
         }
 
         public FieldInfo GetField(int hash)
@@ -314,15 +355,22 @@ namespace ILRuntime.CLR.TypeSystem
                                     break;
                                 }
                             }
-                            if (match)
+                            if (match && genericMethod == null)
                             {
                                 genericMethod = i;
-                                break;
-                            }                            
+                            }
                         }
                         else
                         {
-                            match = genericArguments == null;
+                            if (genericArguments == null)
+                                match = i.GenericArguments == null;
+                            else
+                            {
+                                if (i.GenericArguments == null)
+                                    match = false;
+                                else
+                                    match = i.GenericArguments.Length == genericArguments.Length;
+                            }
                             for (int j = 0; j < param.Count; j++)
                             {
                                 var typeA = param[j].TypeForCLR.IsByRef ? param[j].TypeForCLR.GetElementType() : param[j].TypeForCLR;
@@ -340,14 +388,14 @@ namespace ILRuntime.CLR.TypeSystem
                             }
                             if (match)
                             {
-                                
+
                                 if (i.IsGenericInstance)
                                 {
                                     if (i.GenericArguments.Length == genericArguments.Length)
                                     {
                                         for (int j = 0; j < genericArguments.Length; j++)
                                         {
-                                            if(i.GenericArguments[j] != genericArguments[j])
+                                            if (i.GenericArguments[j] != genericArguments[j])
                                             {
                                                 match = false;
                                                 break;
@@ -406,7 +454,7 @@ namespace ILRuntime.CLR.TypeSystem
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -456,6 +504,8 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 Type t = clrType.MakeArrayType();
                 arrayType = new CLRType(t, appdomain);
+                ((CLRType)arrayType).elementType = this;
+                ((CLRType)arrayType).IsArray = true;
             }
             return arrayType;
         }
@@ -463,6 +513,13 @@ namespace ILRuntime.CLR.TypeSystem
         public IType ResolveGenericType(IType contextType)
         {
             throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            if (hashCode == -1)
+                hashCode = System.Threading.Interlocked.Add(ref instance_id, 1);
+            return hashCode;
         }
     }
 }

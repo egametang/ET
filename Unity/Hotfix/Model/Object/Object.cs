@@ -1,13 +1,14 @@
-﻿using System;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
 
 namespace Model
 {
-	public abstract class Object: IDisposable
+	public interface IDisposable2
 	{
-		[BsonId]
-		[BsonIgnoreIfDefault]
+		void Dispose();
+	}
+
+	public abstract class Object: IDisposable2
+	{
 		public long Id { get; protected set; }
 
 		protected Object()

@@ -3173,11 +3173,66 @@ namespace Mono.Cecil
 
         object ReadCustomAttributeEnum(TypeReference enum_type)
         {
-            var type = Mixin.CheckedResolve(enum_type);
-            if (!type.IsEnum)
-                throw new ArgumentException();
+            try
+            {
+                TypeDefinition type = null;
+                type = Mixin.CheckedResolve(enum_type);
+                if (!type.IsEnum)
+                    throw new ArgumentException();
+                return ReadCustomAttributeElementValue(Mixin.GetEnumUnderlyingType(type));
+            }
+            catch
+            {
+                //Resolve failed
+                string name = enum_type.FullName + ", " + enum_type.scope.Name;
+                Type type = Type.GetType(name);
+                if (type == null || !type.IsEnum)
+                    return new ArgumentException();
+                var fields = type.GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public);
+                Type eType = null;
+                foreach(var i in fields)
+                {
+                    eType = i.FieldType;
+                    break;
+                }
 
-            return ReadCustomAttributeElementValue(Mixin.GetEnumUnderlyingType(type));
+                object val;
+                if(eType == typeof(int))
+                {
+                    val = ReadPrimitiveValue(ElementType.I4);
+                }
+                else if (eType == typeof(long))
+                {
+                    val = ReadPrimitiveValue(ElementType.I8);
+                }
+                else if (eType == typeof(short))
+                {
+                    val = ReadPrimitiveValue(ElementType.I2);
+                }
+                else if (eType == typeof(byte))
+                {
+                    val = ReadPrimitiveValue(ElementType.U1);
+                }
+                else if (eType == typeof(uint))
+                {
+                    val = ReadPrimitiveValue(ElementType.U4);
+                }
+                else if (eType == typeof(ulong))
+                {
+                    val = ReadPrimitiveValue(ElementType.U8);
+                }
+                else if (eType == typeof(ushort))
+                {
+                    val = ReadPrimitiveValue(ElementType.U2);
+                }
+                else
+                {
+                    val = ReadPrimitiveValue(ElementType.Void);
+                }
+
+                return Enum.ToObject(type, val);
+            }
+            
         }
 
         public SecurityAttribute ReadSecurityAttribute()

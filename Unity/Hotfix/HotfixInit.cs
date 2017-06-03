@@ -14,7 +14,6 @@ namespace Hotfix
 				Game.Scene.AddComponent<UnitComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
 				Game.Scene.AddComponent<NetOuterComponent>();
-
 				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)

@@ -30,7 +30,8 @@ namespace ILRuntime.CLR.TypeSystem
         int fieldStartIdx = -1;
         int totalFieldCnt = -1;
         KeyValuePair<string, IType>[] genericArguments;
-        IType baseType, byRefType, arrayType, enumType;
+        IType baseType, byRefType, arrayType, enumType, elementType;
+        Type arrayCLRType, byRefCLRType;
         IType[] interfaces;
         bool baseTypeInitialized = false;
         bool interfaceInitialized = false;
@@ -38,6 +39,8 @@ namespace ILRuntime.CLR.TypeSystem
         bool isDelegate;
         ILRuntimeType reflectionType;
         IType firstCLRBaseType, firstCLRInterface;
+        int hashCode = -1;
+        static int instance_id = 0x10000000;
         public TypeDefinition TypeDefinition { get { return definition; } }
 
         public TypeReference TypeReference
@@ -131,7 +134,7 @@ namespace ILRuntime.CLR.TypeSystem
             }
         }
 
-        IType FirstCLRInterface
+        public IType FirstCLRInterface
         {
             get
             {
@@ -221,28 +224,13 @@ namespace ILRuntime.CLR.TypeSystem
         /// <param name="def"></param>
         void RetriveDefinitino(TypeReference def)
         {
-            TypeReference res;
-            if (def is GenericInstanceType)
+            if (!def.IsGenericParameter)
             {
-                res = ((GenericInstanceType)def).ElementType;
+                if (def is TypeSpecification)
+                    RetriveDefinitino(def.GetElementType());
+                else
+                    definition = def as TypeDefinition;
             }
-            else if (def is ByReferenceType)
-            {
-                res = ((ByReferenceType)def).ElementType;
-            }
-            else if (def.IsArray)
-            {
-                res = (TypeDefinition)def.GetElementType();
-            }
-            else
-                res = (TypeDefinition)def;
-
-
-            if (!res.IsGenericParameter)
-            {
-                definition = res as TypeDefinition;
-            }
-
         }
 
         public bool IsGenericInstance
@@ -258,6 +246,13 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 return genericArguments;
             }
+        }
+
+        public IType ElementType { get { return elementType; } }
+
+        public bool IsArray
+        {
+            get; private set;
         }
 
         public bool IsValueType
@@ -288,11 +283,15 @@ namespace ILRuntime.CLR.TypeSystem
                 {
                     if (enumType == null)
                         InitializeFields();
-                    if (enumType == null)
-                    {
-
-                    }
                     return enumType.TypeForCLR;
+                }
+                else if (typeRef is ArrayType)
+                {
+                    return arrayCLRType;
+                }
+                else if (typeRef is ByReferenceType)
+                {
+                    return byRefCLRType;
                 }
                 else if (FirstCLRBaseType != null && FirstCLRBaseType is CrossBindingAdaptor)
                 {
@@ -375,7 +374,8 @@ namespace ILRuntime.CLR.TypeSystem
                 for (int i = 0; i < interfaces.Length; i++)
                 {
                     interfaces[i] = appdomain.GetType(definition.Interfaces[i], this, null);
-                    if (interfaces[i] is CLRType)
+                    //only one clrInterface is valid
+                    if (interfaces[i] is CLRType && firstCLRInterface == null)
                     {
                         CrossBindingAdaptor adaptor;
                         if (appdomain.CrossBindingAdaptors.TryGetValue(interfaces[i].TypeForCLR, out adaptor))
@@ -391,34 +391,89 @@ namespace ILRuntime.CLR.TypeSystem
         }
         void InitializeBaseType()
         {
-            baseTypeInitialized = true;
             if (definition.BaseType != null)
             {
-                baseType = appdomain.GetType(definition.BaseType, this, null);
-                if (baseType is CLRType)
+                bool specialProcess = false;
+                List<int> spIdx = null;
+                if (definition.BaseType.IsGenericInstance)
                 {
-                    if (baseType.TypeForCLR == typeof(Enum) || baseType.TypeForCLR == typeof(object) || baseType.TypeForCLR == typeof(ValueType) || baseType.TypeForCLR == typeof(System.Enum))
-                    {//都是这样，无所谓
-                        baseType = null;
-                    }
-                    else if (baseType.TypeForCLR == typeof(MulticastDelegate))
+                    GenericInstanceType git = definition.BaseType as GenericInstanceType;
+                    var elementType = appdomain.GetType(definition.BaseType.GetElementType(), this, null);
+                    if (elementType is CLRType)
                     {
-                        baseType = null;
-                        isDelegate = true;
-                    }
-                    else
-                    {
-                        CrossBindingAdaptor adaptor;
-                        if (appdomain.CrossBindingAdaptors.TryGetValue(baseType.TypeForCLR, out adaptor))
+                        for (int i = 0; i < git.GenericArguments.Count; i++)
                         {
-                            baseType = adaptor;
+                            var ga = git.GenericArguments[i];
+                            if (ga == typeRef)
+                            {
+                                specialProcess = true;
+                                if (spIdx == null)
+                                    spIdx = new List<int>();
+                                spIdx.Add(i);
+                            }
+                        }
+                    }
+                }
+                if (specialProcess)
+                {
+                    //如果泛型参数是自身，则必须要特殊处理，否则会StackOverflow
+                    var elementType = appdomain.GetType(definition.BaseType.GetElementType(), this, null);
+                    foreach (var i in appdomain.CrossBindingAdaptors)
+                    {
+                        if (i.Key.IsGenericType && !i.Key.IsGenericTypeDefinition)
+                        {
+                            var gd = i.Key.GetGenericTypeDefinition();
+                            if (gd == elementType.TypeForCLR)
+                            {
+                                var ga = i.Key.GetGenericArguments();
+                                bool match = true;
+                                foreach (var j in spIdx)
+                                {
+                                    if (ga[j] != i.Value.AdaptorType)
+                                    {
+                                        match = false;
+                                        break;
+                                    }
+                                }
+                                if (match)
+                                {
+                                    baseType = i.Value;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (baseType == null)
+                        throw new TypeLoadException("Cannot find Adaptor for:" + definition.BaseType.FullName);
+                }
+                else
+                {
+                    baseType = appdomain.GetType(definition.BaseType, this, null);
+                    if (baseType is CLRType)
+                    {
+                        if (baseType.TypeForCLR == typeof(Enum) || baseType.TypeForCLR == typeof(object) || baseType.TypeForCLR == typeof(ValueType) || baseType.TypeForCLR == typeof(System.Enum))
+                        {//都是这样，无所谓
+                            baseType = null;
+                        }
+                        else if (baseType.TypeForCLR == typeof(MulticastDelegate))
+                        {
+                            baseType = null;
+                            isDelegate = true;
                         }
                         else
-                            throw new TypeLoadException("Cannot find Adaptor for:" + baseType.TypeForCLR.ToString());
-                        //继承了其他系统类型
-                        //env.logger.Log_Error("ScriptType:" + Name + " Based On a SystemType:" + BaseType.Name);
-                        //HasSysBase = true;
-                        //throw new Exception("不得继承系统类型，脚本类型系统和脚本类型系统是隔离的");
+                        {
+                            CrossBindingAdaptor adaptor;
+                            if (appdomain.CrossBindingAdaptors.TryGetValue(baseType.TypeForCLR, out adaptor))
+                            {
+                                baseType = adaptor;
+                            }
+                            else
+                                throw new TypeLoadException("Cannot find Adaptor for:" + baseType.TypeForCLR.ToString());
+                            //继承了其他系统类型
+                            //env.logger.Log_Error("ScriptType:" + Name + " Based On a SystemType:" + BaseType.Name);
+                            //HasSysBase = true;
+                            //throw new Exception("不得继承系统类型，脚本类型系统和脚本类型系统是隔离的");
+                        }
                     }
                 }
             }
@@ -428,6 +483,7 @@ namespace ILRuntime.CLR.TypeSystem
                 curBase = curBase.BaseType;
             }
             firstCLRBaseType = curBase;
+            baseTypeInitialized = true;
         }
 
         public IMethod GetMethod(string name)
@@ -484,7 +540,7 @@ namespace ILRuntime.CLR.TypeSystem
                 }
             }
 
-            if (staticConstructor != null)
+            if (staticConstructor != null && (!TypeReference.HasGenericParameters || IsGenericInstance))
             {
                 appdomain.Invoke(staticConstructor, null, null);
             }
@@ -492,7 +548,16 @@ namespace ILRuntime.CLR.TypeSystem
 
         public IMethod GetVirtualMethod(IMethod method)
         {
-            var m = GetMethod(method.Name, method.Parameters, null, method.ReturnType);
+            IType[] genericArguments = null;
+            if (method is ILMethod)
+            {
+                genericArguments = ((ILMethod)method).GenericArugmentsArray;
+            }
+            else
+            {
+                genericArguments = ((CLRMethod)method).GenericArguments;
+            }
+            var m = GetMethod(method.Name, method.Parameters, genericArguments, method.ReturnType);
             if (m == null)
             {
                 if (BaseType != null)
@@ -525,12 +590,12 @@ namespace ILRuntime.CLR.TypeSystem
                         if (genericArguments != null && i.GenericParameterCount == genericArguments.Length)
                         {
                             genericMethod = CheckGenericParams(i, param, ref match);
-                            if (genericMethod != null)
-                                break;
                         }
                         else
                         {
-                            match = genericArguments == null;
+                            match = CheckGenericArguments(i, genericArguments);
+                            if (!match)
+                                continue;
                             for (int j = 0; j < pCnt; j++)
                             {
                                 if (param[j] != i.Parameters[j])
@@ -558,22 +623,51 @@ namespace ILRuntime.CLR.TypeSystem
             return null;
         }
 
+        bool CheckGenericArguments(ILMethod i, IType[] genericArguments)
+        {
+            if (genericArguments == null)
+            {
+                return i.GenericArguments == null;
+            }
+            else
+            {
+                if (i.GenericArguments == null)
+                    return false;
+                else if (i.GenericArguments.Length != genericArguments.Length)
+                    return false;
+                if (i.GenericArguments.Length == genericArguments.Length)
+                {
+                    for (int j = 0; j < genericArguments.Length; j++)
+                    {
+                        if (i.GenericArguments[j].Value != genericArguments[j])
+                            return false;
+                    }
+                    return true;
+                }
+                else
+                    return false;
+            }
+        }
+
         ILMethod CheckGenericParams(ILMethod i, List<IType> param, ref bool match)
         {
             ILMethod genericMethod = null;
-            for (int j = 0; j < param.Count; j++)
+            if (param != null)
             {
-                var p = i.Parameters[j];
-                if (p.HasGenericParameter)
+                for (int j = 0; j < param.Count; j++)
                 {
-                    //TODO should match the generic parameters;
-                    continue;
-                }
+                    var p = i.Parameters[j];
+                    if (p.HasGenericParameter)
+                    {
+                        //TODO should match the generic parameters;
+                        continue;
+                    }
 
-                if (param[j] != p)
-                {
-                    match = false;
-                    break;
+                    if (param[j] != p)
+                    {
+                        match = false;
+                        break;
+                    }
                 }
             }
             if (match)
@@ -581,6 +675,13 @@ namespace ILRuntime.CLR.TypeSystem
                 genericMethod = i;
             }
             return genericMethod;
+        }
+
+        public List<ILMethod> GetConstructors()
+        {
+            if (constructors == null)
+                InitializeMethods();
+            return constructors;
         }
 
         public IMethod GetConstructor(int paramCnt)
@@ -688,21 +789,25 @@ namespace ILRuntime.CLR.TypeSystem
                 var field = fields[i];
                 if (field.IsStatic)
                 {
-                    if (staticFieldTypes == null)
+                    //It makes no sence to initialize
+                    if (!TypeReference.HasGenericParameters || IsGenericInstance)
                     {
-                        staticFieldTypes = new IType[definition.Fields.Count];
-                        staticFieldDefinitions = new FieldDefinition[definition.Fields.Count];
-                        staticFieldMapping = new Dictionary<string, int>();
+                        if (staticFieldTypes == null)
+                        {
+                            staticFieldTypes = new IType[definition.Fields.Count];
+                            staticFieldDefinitions = new FieldDefinition[definition.Fields.Count];
+                            staticFieldMapping = new Dictionary<string, int>();
+                        }
+                        staticFieldMapping[field.Name] = idxStatic;
+                        staticFieldDefinitions[idxStatic] = field;
+                        if (field.FieldType.IsGenericParameter)
+                        {
+                            staticFieldTypes[idxStatic] = FindGenericArgument(field.FieldType.Name);
+                        }
+                        else
+                            staticFieldTypes[idxStatic] = appdomain.GetType(field.FieldType, this, null);
+                        idxStatic++;
                     }
-                    staticFieldMapping[field.Name] = idxStatic;
-                    staticFieldDefinitions[idxStatic] = field;
-                    if (field.FieldType.IsGenericParameter)
-                    {
-                        staticFieldTypes[idxStatic] = FindGenericArgument(field.FieldType.Name);
-                    }
-                    else
-                        staticFieldTypes[idxStatic] = appdomain.GetType(field.FieldType, this, null);
-                    idxStatic++;
                 }
                 else
                 {
@@ -747,18 +852,19 @@ namespace ILRuntime.CLR.TypeSystem
 
         public bool CanAssignTo(IType type)
         {
+            bool res = false;
             if (this == type)
             {
                 return true;
             }
             else if (BaseType != null)
-                return BaseType.CanAssignTo(type);
-            else if (Implements != null)
+                res = BaseType.CanAssignTo(type);
+            if (!res && Implements != null)
             {
                 for (int i = 0; i < interfaces.Length; i++)
                 {
                     var im = interfaces[i];
-                    bool res = im.CanAssignTo(type);
+                    res = im.CanAssignTo(type);
                     if (res)
                         return true;
                 }
@@ -810,6 +916,8 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 var def = new ByReferenceType(typeRef);
                 byRefType = new ILType(def, appdomain);
+                ((ILType)byRefType).elementType = this;
+                ((ILType)byRefType).byRefCLRType = this.TypeForCLR.MakeByRefType();
             }
             return byRefType;
         }
@@ -820,6 +928,9 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 var def = new ArrayType(typeRef);
                 arrayType = new ILType(def, appdomain);
+                ((ILType)arrayType).IsArray = true;
+                ((ILType)arrayType).elementType = this;
+                ((ILType)arrayType).arrayCLRType = this.TypeForCLR.MakeArrayType();
             }
             return arrayType;
         }
@@ -858,6 +969,13 @@ namespace ILRuntime.CLR.TypeSystem
             }
 
             return null;
+        }
+
+        public override int GetHashCode()
+        {
+            if (hashCode == -1)
+                hashCode = System.Threading.Interlocked.Add(ref instance_id, 1);
+            return hashCode;
         }
     }
 }

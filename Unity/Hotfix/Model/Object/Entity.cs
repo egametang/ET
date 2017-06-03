@@ -1,38 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace Model
 {
 	[ILBinding]
 	public class Entity: Disposer
 	{
 		public EntityType Type { get; set; }
-
-		[BsonElement]
-		[BsonIgnoreIfNull]
+		
 		private HashSet<Component> components = new HashSet<Component>();
-
-		[BsonIgnore]
+		
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		protected Entity()
 		{
 			this.Type = EntityType.None;
-			Game.EntityEventManager.Add(this);
 		}
 
 		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
-			Game.EntityEventManager.Add(this);
 		}
 
 		protected Entity(long id, EntityType entityType): base(id)
 		{
 			this.Type = entityType;
-			Game.EntityEventManager.Add(this);
 		}
 
 		public override void Dispose()
@@ -55,28 +47,24 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-
-			Game.EntityEventManager.Remove(this);
 		}
 
 		public K AddComponent<K>() where K : Component, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
-
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof (K).Name}");
 			}
-
 			if (this.components == null)
 			{
 				this.components = new HashSet<Component>();
 			}
-
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component);
+			IAwake awake = component as IAwake;
+			awake?.Awake();
 			return component;
 		}
 
@@ -97,7 +85,8 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1);
+			IAwake<P1> awake = component as IAwake<P1>;
+			awake?.Awake(p1);
 			return component;
 		}
 
@@ -118,7 +107,8 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1, p2);
+			IAwake<P1, P2> awake = component as IAwake<P1, P2>;
+			awake?.Awake(p1, p2);
 			return component;
 		}
 
@@ -139,24 +129,9 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1, p2, p3);
+			IAwake<P1, P2, P3> awake = component as IAwake<P1, P2, P3>;
+			awake?.Awake(p1, p2, p3);
 			return component;
-		}
-
-		public void AddComponent(Component component)
-		{
-			if (this.componentDict.ContainsKey(component.GetType()))
-			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {component.GetType().Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-			this.components.Add(component);
-			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component

@@ -63,6 +63,7 @@ namespace Model
 			int count = 0;
 			while (true)
 			{
+				WWWAsync wwwAsync = null;
 				try
 				{
 					++count;
@@ -76,16 +77,20 @@ namespace Model
 						return;
 					}
 
-					using (WWWAsync wwwAsync = new WWWAsync())
-					{
-						await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
-						assetBundle = wwwAsync.www.assetBundle;
-					}
+					wwwAsync = new WWWAsync();
+					
+					await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
+					assetBundle = wwwAsync.www.assetBundle;
+					
 					break;
 				}
 				catch (Exception e)
 				{
 					Log.Error(e.ToString());
+				}
+				finally
+				{
+					wwwAsync?.Dispose();
 				}
 			}
 
@@ -93,10 +98,19 @@ namespace Model
 			{
 				// 异步load资源到内存cache住
 				UnityEngine.Object[] assets;
-				using (AssetBundleLoaderAsync assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle))
+				AssetBundleLoaderAsync assetBundleLoaderAsync = null;
+				try
 				{
+					assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle);
+					
 					assets = await assetBundleLoaderAsync.LoadAllAssetsAsync();
+					
 				}
+				finally
+				{
+					assetBundleLoaderAsync?.Dispose();
+				}
+
 
 				foreach (UnityEngine.Object asset in assets)
 				{

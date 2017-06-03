@@ -30,7 +30,7 @@ namespace Model
 	/// 管理所有UI
 	/// </summary>
 	[EntityEvent(EntityEventId.UIComponent)]
-	public class UIComponent: Component
+	public class UIComponent: Component, IAwake, ILoad
 	{
 		private UI Root;
 		private Dictionary<int, IUIFactory> UiTypes;
@@ -57,14 +57,14 @@ namespace Model
 			}
 		}
 
-		private void Awake()
+		public void Awake()
 		{
 			GameObject uiCanvas = GameObject.Find("Global/UI/UICanvas");
 			this.Root = new UI(this.GetOwner<Scene>(), UIType.Root, null, uiCanvas);
 			this.Load();
 		}
 
-		private void Load()
+		public void Load()
 		{
 			this.UiTypes = new Dictionary<int, IUIFactory>();
 			

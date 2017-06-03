@@ -21,10 +21,15 @@ namespace ILRuntime.CLR.Method
         ILType declaringType;
         ExceptionHandler[] exceptionHandler;
         KeyValuePair<string, IType>[] genericParameters;
+        IType[] genericArguments;
         Dictionary<int, int[]> jumptables;
         bool isDelegateInvoke;
         ILRuntimeMethodInfo refletionMethodInfo;
+        ILRuntimeConstructorInfo reflectionCtorInfo;
         int paramCnt, localVarCnt;
+        Mono.Collections.Generic.Collection<Mono.Cecil.Cil.VariableDefinition> variables;
+        int hashCode = -1;
+        static int instance_id = 0x10000000;
 
         public MethodDefinition Definition { get { return def; } }
 
@@ -40,9 +45,23 @@ namespace ILRuntime.CLR.Method
         {
             get
             {
+                if (IsConstructor)
+                    throw new NotSupportedException();
                 if (refletionMethodInfo == null)
                     refletionMethodInfo = new ILRuntimeMethodInfo(this);
                 return refletionMethodInfo;
+            }
+        }
+
+        public ConstructorInfo ReflectionConstructorInfo
+        {
+            get
+            {
+                if (!IsConstructor)
+                    throw new NotSupportedException();
+                if (reflectionCtorInfo == null)
+                    reflectionCtorInfo = new ILRuntimeConstructorInfo(this);
+                return reflectionCtorInfo;
             }
         }
 
@@ -83,6 +102,8 @@ namespace ILRuntime.CLR.Method
         {
             get
             {
+                if (IsGenericInstance)
+                    return 0;
                 return def.GenericParameters.Count;
             }
         }
@@ -93,6 +114,17 @@ namespace ILRuntime.CLR.Method
                 return genericParameters != null;
             }
         }
+        public Mono.Collections.Generic.Collection<Mono.Cecil.Cil.VariableDefinition> Variables
+        {
+            get
+            {
+                return variables;
+            }
+        }
+
+        public KeyValuePair<string, IType>[] GenericArguments { get { return genericParameters; } }
+
+        public IType[] GenericArugmentsArray { get { return genericArguments; } }
         public ILMethod(MethodDefinition def, ILType type, ILRuntime.Runtime.Enviorment.AppDomain domain)
         {
             this.def = def;
@@ -107,7 +139,6 @@ namespace ILRuntime.CLR.Method
                 isDelegateInvoke = true;
             this.appdomain = domain;
             paramCnt = def.HasParameters ? def.Parameters.Count : 0;
-            localVarCnt = def.HasBody ? def.Body.Variables.Count : 0;
 #if DEBUG
             if (def.HasBody)
             {
@@ -210,6 +241,7 @@ namespace ILRuntime.CLR.Method
         {
             if (def.HasBody)
             {
+                localVarCnt = def.Body.Variables.Count;
                 body = new OpCode[def.Body.Instructions.Count];
                 Dictionary<Mono.Cecil.Cil.Instruction, int> addr = new Dictionary<Mono.Cecil.Cil.Instruction, int>();
                 for (int i = 0; i < body.Length; i++)
@@ -254,6 +286,9 @@ namespace ILRuntime.CLR.Method
                     exceptionHandler[i] = e;
                     //Mono.Cecil.Cil.ExceptionHandlerType.
                 }
+                //Release Method body to save memory
+                variables = def.Body.Variables;
+                def.Body = null;
             }
             else
                 body = new OpCode[0];
@@ -418,7 +453,7 @@ namespace ILRuntime.CLR.Method
         int GetTypeTokenHashCode(object token)
         {
             var t = appdomain.GetType(token, declaringType, this);
-            bool isGenericParameter = token is TypeReference && ((TypeReference)token).IsGenericParameter;
+            bool isGenericParameter = CheckHasGenericParamter(token);
             if (t == null && isGenericParameter)
             {
                 t = FindGenericArgument(((TypeReference)token).Name);
@@ -427,16 +462,43 @@ namespace ILRuntime.CLR.Method
             {
                 if (t is ILType)
                 {
-                    return ((ILType)t).TypeReference.GetHashCode();
+                    if (((ILType)t).TypeReference.HasGenericParameters)
+                        return t.GetHashCode();
+                    else
+                        return ((ILType)t).TypeReference.GetHashCode();
                 }
                 else if (isGenericParameter)
                 {
-                    return t.TypeForCLR.GetHashCode();
+                    return t.GetHashCode();
                 }
                 else
                     return token.GetHashCode();
             }
             return 0;
+        }
+
+        bool CheckHasGenericParamter(object token)
+        {
+            if (token is TypeReference)
+            {
+                TypeReference _ref = ((TypeReference)token);
+                if (_ref.IsGenericParameter)
+                    return true;
+                if (_ref.IsGenericInstance)
+                {
+                    GenericInstanceType gi = (GenericInstanceType)_ref;
+                    foreach(var i in gi.GenericArguments)
+                    {
+                        if (CheckHasGenericParamter(i))
+                            return true;
+                    }
+                    return false;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
         }
 
         void PrepareJumpTable(object token, Dictionary<Mono.Cecil.Cil.Instruction, int> addr)
@@ -521,6 +583,7 @@ namespace ILRuntime.CLR.Method
 
             ILMethod m = new ILMethod(def, declaringType, appdomain);
             m.genericParameters = genericParameters;
+            m.genericArguments = genericArguments;
             if (m.def.ReturnType.IsGenericParameter)
             {
                 m.ReturnType = m.FindGenericArgument(m.def.ReturnType.Name);
@@ -550,6 +613,13 @@ namespace ILRuntime.CLR.Method
             }
             sb.Append(')');
             return sb.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            if (hashCode == -1)
+                hashCode = System.Threading.Interlocked.Add(ref instance_id, 1);
+            return hashCode;
         }
     }
 }

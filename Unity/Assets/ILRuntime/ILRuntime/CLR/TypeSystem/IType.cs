@@ -16,6 +16,8 @@ namespace ILRuntime.CLR.TypeSystem
 
         IType BaseType { get; }
 
+        IType[] Implements { get; }
+
         IType ByRefType { get; }
 
         IType ArrayType { get; }
@@ -23,6 +25,8 @@ namespace ILRuntime.CLR.TypeSystem
         string FullName { get; }
 
         string Name { get; }
+
+        bool IsArray { get; }
 
         bool IsValueType { get; }
 

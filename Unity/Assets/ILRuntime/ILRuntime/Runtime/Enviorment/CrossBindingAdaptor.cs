@@ -23,6 +23,17 @@ namespace ILRuntime.Runtime.Enviorment
         /// </summary>
         public abstract Type BaseCLRType { get; }
 
+        /// <summary>
+        /// If this Adaptor is capable to impelement multuple interfaces, use this Property, AND BaseCLRType should return null
+        /// </summary>
+        public virtual Type[] BaseCLRTypes
+        {
+            get
+            {
+                return null;
+            }
+        }
+
         public abstract Type AdaptorType { get; }
 
         public abstract object CreateCLRInstance(Enviorment.AppDomain appdomain, ILTypeInstance instance);
@@ -58,7 +69,21 @@ namespace ILRuntime.Runtime.Enviorment
 
         public bool CanAssignTo(IType type)
         {
-            return type.CanAssignTo(type);
+            bool res = false;
+            if (BaseType != null)
+                res = BaseType.CanAssignTo(type);
+            var interfaces = Implements;
+            if (!res && interfaces != null)
+            {
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    var im = interfaces[i];
+                    res = im.CanAssignTo(type);
+                    if (res)
+                        return true;
+                }
+            }
+            return false;
         }
 
         public IType MakeGenericInstance(KeyValuePair<string, IType>[] genericArguments)
@@ -187,12 +212,24 @@ namespace ILRuntime.Runtime.Enviorment
             }
         }
 
+        public IType[] Implements
+        {
+            get
+            {
+                return type.Implements;
+            }
+        }
+
         public bool HasGenericParameter
         {
             get
             {
                 return type.HasGenericParameter;
             }
+        }
+        public bool IsArray
+        {
+            get { return false; }
         }
         #endregion
     }

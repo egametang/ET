@@ -1,19 +1,19 @@
 ﻿namespace Model
 {
 	[EntityEvent(EntityEventId.NetOuterComponent)]
-	public class NetOuterComponent: NetworkComponent
+	public class NetOuterComponent: NetworkComponent, IAwake, IAwake<string, int>, IUpdate
 	{
-		private void Awake()
+		public void Awake()
 		{
 			this.Awake(NetworkProtocol.UDP);
 		}
 
-		private void Awake(string host, int port)
+		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.UDP, host, port);
 		}
 
-		private new void Update()
+		public new void Update()
 		{
 			base.Update();
 		}

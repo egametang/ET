@@ -16,12 +16,10 @@ namespace Model
 
 		protected Component()
 		{
-			Game.EntityEventManager.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
-			Game.EntityEventManager.Add(this);
 		}
 
 		public T GetComponent<T>() where T : Component
@@ -39,8 +37,6 @@ namespace Model
 			base.Dispose();
 
 			this.Owner.RemoveComponent(this.GetType());
-
-			Game.EntityEventManager.Remove(this);
 		}
 	}
 }

@@ -89,7 +89,7 @@ namespace ILRuntime.Runtime.Debugger
             return false;
         }
 
-        internal string GetStackTrance(ILIntepreter intepreper)
+        public string GetStackTrance(ILIntepreter intepreper)
         {
             StringBuilder sb = new StringBuilder();
             ILRuntime.CLR.Method.ILMethod m;
@@ -120,14 +120,16 @@ namespace ILRuntime.Runtime.Debugger
             return sb.ToString();
         }
 
-        internal unsafe string GetThisInfo(ILIntepreter intepreter)
+        public unsafe string GetThisInfo(ILIntepreter intepreter)
         {
             var topFrame = intepreter.Stack.Frames.Peek();
             var arg = Minus(topFrame.LocalVarPointer, topFrame.Method.ParameterCount);
             if (topFrame.Method.HasThis)
                 arg--;
             if (arg->ObjectType == ObjectTypes.StackObjectReference)
+            {
                 arg = *(StackObject**)&arg->Value;
+            }
             ILTypeInstance instance = arg->ObjectType != ObjectTypes.Null ? intepreter.Stack.ManagedStack[arg->Value] as ILTypeInstance : null;
             if (instance == null)
                 return "null";
@@ -154,7 +156,7 @@ namespace ILRuntime.Runtime.Debugger
             return sb.ToString();
         }
 
-        internal unsafe string GetLocalVariableInfo(ILIntepreter intepreter)
+        public unsafe string GetLocalVariableInfo(ILIntepreter intepreter)
         {
             StackFrame topFrame = intepreter.Stack.Frames.Peek();
             var m = topFrame.Method;
@@ -403,7 +405,7 @@ namespace ILRuntime.Runtime.Debugger
                         name = string.IsNullOrEmpty(lv.Name) ? "arg" + lv.Index : lv.Name;
                         typeName = lv.ParameterType.FullName;
                         if (v != null)
-                            v = m.Parameters[argIdx].TypeForCLR.CheckCLRTypes(intp.AppDomain, v);
+                            v = m.Parameters[argIdx].TypeForCLR.CheckCLRTypes(v);
                     }
                     else
                     {
@@ -429,7 +431,7 @@ namespace ILRuntime.Runtime.Debugger
                     if (v == null)
                         v = "null";
                     else
-                        v = intp.AppDomain.GetType(lv.VariableType, m.DeclearingType, m).TypeForCLR.CheckCLRTypes(intp.AppDomain, v);
+                        v = intp.AppDomain.GetType(lv.VariableType, m.DeclearingType, m).TypeForCLR.CheckCLRTypes(v);
                     string name = string.IsNullOrEmpty(lv.Name) ? "v" + lv.Index : lv.Name;
                     VariableInfo vinfo = new Debugger.VariableInfo();
                     vinfo.Address = (long)val;

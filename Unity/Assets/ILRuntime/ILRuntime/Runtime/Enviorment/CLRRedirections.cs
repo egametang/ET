@@ -6,6 +6,7 @@ using System.Reflection;
 
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
+using ILRuntime.CLR.Utils;
 using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
@@ -91,6 +92,37 @@ namespace ILRuntime.Runtime.Enviorment
                 return ILIntepreter.PushObject(p, mStack, t.ReflectionType);
             else
                 return ILIntepreter.PushNull(p);
+        }
+
+        public static StackObject* TypeEquals(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+        {
+            var ret = ILIntepreter.Minus(esp, 2);
+            var p = esp - 1;
+            AppDomain dommain = intp.AppDomain;
+            var other = StackObject.ToObject(p, dommain, mStack);
+            intp.Free(p);
+            p = ILIntepreter.Minus(esp, 2);
+            var instance = StackObject.ToObject(p, dommain, mStack);
+            intp.Free(p);
+            if(instance is ILRuntimeType)
+            {
+                if (other is ILRuntimeType)
+                {
+                    if(((ILRuntimeType)instance).ILType == ((ILRuntimeType)other).ILType)
+                        return ILIntepreter.PushOne(ret);
+                    else
+                        return ILIntepreter.PushZero(ret);
+                }
+                else
+                    return ILIntepreter.PushZero(ret);
+            }
+            else
+            {
+                if(((Type)typeof(Type).CheckCLRTypes(instance)).Equals(((Type)typeof(Type).CheckCLRTypes(other))))
+                    return ILIntepreter.PushOne(ret);
+                else
+                    return ILIntepreter.PushZero(ret);
+            }
         }
 
         /*public static object GetType(ILContext ctx, object instance, object[] param, IType[] genericArguments)
@@ -379,16 +411,24 @@ namespace ILRuntime.Runtime.Enviorment
                         if (dele2 is IDelegateAdapter)
                         {
                             var dele = ((IDelegateAdapter)dele1);
-                            //This means it's the default delegate which should be singleton to support == operator
-                            if (dele.Next == null)
+                            //This means it's the original delegate which should be untouch
+                            if (!dele.IsClone)
                             {
-                                dele = dele.Instantiate(domain, dele.Instance, dele.Method);
+                                dele = dele.Clone();
+                            }
+                            if(!((IDelegateAdapter)dele2).IsClone)
+                            {
+                                dele2 = ((IDelegateAdapter)dele2).Clone();
                             }
                             dele.Combine((IDelegateAdapter)dele2);
                             return ILIntepreter.PushObject(ret, mStack, dele);
                         }
                         else
                         {
+                            if (!((IDelegateAdapter)dele1).IsClone)
+                            {
+                                dele1 = ((IDelegateAdapter)dele1).Clone();
+                            }
                             ((IDelegateAdapter)dele1).Combine((Delegate)dele2);
                             return ILIntepreter.PushObject(ret, mStack, dele1);
                         }

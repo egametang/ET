@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Text;
-using Model;
 using ILRuntime.Runtime.Enviorment;
 
 namespace ILRuntime.Runtime.CLRBinding
@@ -26,9 +25,8 @@ namespace ILRuntime.Runtime.CLRBinding
                 bool isByRef;
                 if (i.GetCustomAttributes(typeof(ObsoleteAttribute), true).Length > 0)
                     continue;
-                GetClassName(i, out clsName, out realClsName, out isByRef);
+                i.GetClassName(out clsName, out realClsName, out isByRef);
                 clsNames.Add(clsName);
-				Log.Debug("class " + clsName);
                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(outputPath + "/" + clsName + ".cs", false, Encoding.UTF8))
                 {
                     sw.Write(@"using System;
@@ -160,7 +158,7 @@ namespace ILRuntime.Runtime.Generated
                     sb2.Append("typeof(");
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(j.ParameterType, out tmp, out clsName, out isByRef);
+                    j.ParameterType.GetClassName(out tmp, out clsName, out isByRef);
                     sb2.Append(clsName);
                     sb2.Append(")");
                     if (isByRef)
@@ -199,7 +197,7 @@ namespace ILRuntime.Runtime.Generated
                     sb2.Append("typeof(");
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(j.ParameterType, out tmp, out clsName, out isByRef);
+                    j.ParameterType.GetClassName(out tmp, out clsName, out isByRef);
                     sb2.Append(clsName);
                     sb2.Append(")");
                     if (isByRef)
@@ -362,7 +360,7 @@ namespace ILRuntime.Runtime.Generated
                     sb.AppendLine(string.Format("            ptr_of_this_method = ILIntepreter.Minus(__esp, {0});", param.Length - j + 1));
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(p.ParameterType, out tmp, out clsName, out isByRef);
+                    p.ParameterType.GetClassName(out tmp, out clsName, out isByRef);
                     if (isByRef)
                         sb.AppendLine("            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);");
                     sb.AppendLine(string.Format("            {0} {1} = {2};", clsName, p.Name, GetRetrieveValueCode(p.ParameterType, clsName)));
@@ -374,7 +372,7 @@ namespace ILRuntime.Runtime.Generated
                 {
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(type, out tmp, out clsName, out isByRef);
+                    type.GetClassName(out tmp, out clsName, out isByRef);
                     sb.Append(string.Format("new {0}(", clsName));
                     AppendParameters(param, sb);
                     sb.AppendLine(");");
@@ -399,13 +397,13 @@ namespace ILRuntime.Runtime.Generated
                         continue;
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(p.ParameterType.GetElementType(), out tmp, out clsName, out isByRef);
+                    p.ParameterType.GetElementType().GetClassName(out tmp, out clsName, out isByRef);
                     sb.AppendLine(string.Format("            ptr_of_this_method = ILIntepreter.Minus(__esp, {0});", param.Length - j + 1));
                     sb.AppendLine(@"            switch(ptr_of_this_method->ObjectType)
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var dst = *(StackObject**)&ptr_of_this_method->Value;");
+                        var ___dst = *(StackObject**)&ptr_of_this_method->Value;");
                     GetRefWriteBackValueCode(p.ParameterType.GetElementType(), sb, p.Name);
                     sb.Append(@"                    }
                     break;
@@ -494,7 +492,7 @@ namespace ILRuntime.Runtime.Generated
                     sb.AppendLine(string.Format("            ptr_of_this_method = ILIntepreter.Minus(__esp, {0});", param.Length - j + 1));
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(p.ParameterType, out tmp, out clsName, out isByRef);
+                    p.ParameterType.GetClassName(out tmp, out clsName, out isByRef);
                     if (isByRef)
                         sb.AppendLine("            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);");
                     sb.AppendLine(string.Format("            {0} {1} = {2};", clsName, p.Name, GetRetrieveValueCode(p.ParameterType, clsName)));
@@ -592,7 +590,7 @@ namespace ILRuntime.Runtime.Generated
                                     {
                                         string tmp, clsName;
                                         bool isByRef;
-                                        GetClassName(i.ReturnType, out tmp, out clsName, out isByRef);
+                                        i.ReturnType.GetClassName(out tmp, out clsName, out isByRef);
                                         sb.AppendLine(string.Format("({1}){0};", param[0].Name, clsName));
                                     }
                                     break;
@@ -663,13 +661,13 @@ namespace ILRuntime.Runtime.Generated
                         continue;
                     string tmp, clsName;
                     bool isByRef;
-                    GetClassName(p.ParameterType.GetElementType(), out tmp, out clsName, out isByRef);
+                    p.ParameterType.GetElementType().GetClassName(out tmp, out clsName, out isByRef);
                     sb.AppendLine(string.Format("            ptr_of_this_method = ILIntepreter.Minus(__esp, {0});", param.Length - j + 1));
                     sb.AppendLine(@"            switch(ptr_of_this_method->ObjectType)
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var dst = *(StackObject**)&ptr_of_this_method->Value;");
+                        var ___dst = *(StackObject**)&ptr_of_this_method->Value;");
                     GetRefWriteBackValueCode(p.ParameterType.GetElementType(), sb, p.Name);
                     sb.Append(@"                    }
                     break;
@@ -758,74 +756,74 @@ namespace ILRuntime.Runtime.Generated
             {
                 if (type == typeof(int))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(long))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Long;");
-                    sb.Append("                        *(long*)&dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Long;");
+                    sb.Append("                        *(long*)&___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(short))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(bool))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName + " ? 1 : 0;");
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName + " ? 1 : 0;");
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(ushort))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(float))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Float;");
-                    sb.Append("                        *(float*)&dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Float;");
+                    sb.Append("                        *(float*)&___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(double))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Double;");
-                    sb.Append("                        *(double*)&dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Double;");
+                    sb.Append("                        *(double*)&___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(byte))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(sbyte))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(uint))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = (int)" + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = (int)" + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(char))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Integer;");
-                    sb.Append("                        dst->Value = (int)" + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Integer;");
+                    sb.Append("                        ___dst->Value = (int)" + paramName);
                     sb.AppendLine(";");
                 }
                 else if (type == typeof(ulong))
                 {
-                    sb.AppendLine("                        dst->ObjectType = ObjectTypes.Long;");
-                    sb.Append("                        *(ulong*)&dst->Value = " + paramName);
+                    sb.AppendLine("                        ___dst->ObjectType = ObjectTypes.Long;");
+                    sb.Append("                        *(ulong*)&___dst->Value = " + paramName);
                     sb.AppendLine(";");
                 }
                 else
@@ -841,11 +839,11 @@ namespace ILRuntime.Runtime.Generated
 
                     sb.AppendLine(@"                        if (___obj is CrossBindingAdaptorType)
                             ___obj = ((CrossBindingAdaptorType)___obj).ILInstance;
-                        __mStack[dst->Value] = ___obj; ");
+                        __mStack[___dst->Value] = ___obj; ");
                 }
                 else
                 {
-                    sb.Append("                        __mStack[dst->Value] = ");
+                    sb.Append("                        __mStack[___dst->Value] = ");
                     sb.Append(paramName);
                     sb.AppendLine(";");
                 }
@@ -994,83 +992,8 @@ namespace ILRuntime.Runtime.Generated
             }
             else
             {
-                return string.Format("({0})typeof({0}).CheckCLRTypes(__domain, StackObject.ToObject(ptr_of_this_method, __domain, __mStack))", realClsName);
+                return string.Format("({0})typeof({0}).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack))", realClsName);
             }
         }
-
-        static void GetClassName(Type type, out string clsName, out string realClsName, out bool isByRef, bool simpleClassName = false)
-        {
-            isByRef = type.IsByRef;
-            bool isArray = type.IsArray;
-            if (isByRef)
-                type = type.GetElementType();
-            if (isArray)
-                type = type.GetElementType();
-            string realNamespace = null;
-            if (type.IsNested)
-            {
-                string bClsName, bRealClsName;
-                bool tmp;
-                GetClassName(type.ReflectedType, out bClsName, out bRealClsName, out tmp);
-                clsName = simpleClassName ? "" : bClsName + "_";
-                realNamespace = bRealClsName + ".";
-            }
-            else
-            {
-                clsName = simpleClassName ? "" : (!string.IsNullOrEmpty(type.Namespace) ? type.Namespace.Replace(".", "_") + "_" : "");
-                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : null;
-            }
-            clsName = clsName + type.Name.Replace(".", "_").Replace("`", "_").Replace("<", "_").Replace(">", "_");
-            bool isGeneric = false;
-            string ga = null;
-            if (type.IsGenericType)
-            {
-                isGeneric = true;
-                clsName += "_";
-                ga = "<";
-                var args = type.GetGenericArguments();
-                bool first = true;
-                foreach (var j in args)
-                {
-                    if (first)
-                        first = false;
-                    else
-                    {
-                        clsName += "_";
-                        ga += ", ";
-                    }
-                    string a, b;
-                    bool tmp;
-                    GetClassName(j, out a, out b, out tmp, true);
-                    clsName += a;
-                    ga += b;
-                }
-                ga += ">";
-            }
-            if (!simpleClassName)
-                clsName += "_Binding";
-            if (!simpleClassName && isArray)
-                clsName += "_Array";
-
-            realClsName = realNamespace;
-            if (isGeneric)
-            {
-                int idx = type.Name.IndexOf("`");
-                if (idx > 0)
-                {
-                    realClsName += type.Name.Substring(0, idx);
-                    realClsName += ga;
-                }
-                else
-                    realClsName += type.Name;
-            }
-            else
-                realClsName += type.Name;
-
-            if (isArray)
-                realClsName += "[]";
-
-        }
-
     }
 }
