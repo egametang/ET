@@ -23,13 +23,13 @@ namespace Hotfix
 
 		public static T FromJson<T>(byte[] bytes, int index, int count)
 		{
-			string str = bytes.Utf8ToStr(index, count);
+			string str = bytes.ToStr();
 			return JsonMapper.ToObject<T>(str);
 		}
 
 		public static object FromJson(Type type, byte[] bytes, int index, int count)
 		{
-			string str = bytes.Utf8ToStr(index, count);
+			string str = bytes.ToStr(index, count);
 			return JsonMapper.ToObject(type, str);
 		}
 	}

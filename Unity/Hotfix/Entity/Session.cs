@@ -219,7 +219,7 @@ namespace Hotfix
 				rpcId = rpcId | 0x40000000;
 			}
 
-			byte[] messageBytes = message.ToBson();
+			byte[] messageBytes = JsonHelper.ToJson(message).ToByteArray();
 			if (messageBytes.Length > 100)
 			{
 				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);
