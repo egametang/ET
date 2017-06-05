@@ -41,161 +41,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\BenchmarkComponent.cs">
-      <Link>Component\BenchmarkComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
-      <Link>Component\ConfigComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs">
-      <Link>Component\Config\ClientConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs">
-      <Link>Component\Config\InnerConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs">
-      <Link>Component\Config\OuterConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\KVComponent.cs">
-      <Link>Component\KVComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetInnerComponent.cs">
-      <Link>Component\NetInnerComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetOuterComponent.cs">
-      <Link>Component\NetOuterComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
-      <Link>Component\NetworkComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\RobotComponent.cs">
-      <Link>Component\RobotComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
-      <Link>Component\TimerComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\UnitComponent.cs">
-      <Link>Component\UnitComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Config\ACategory.cs">
-      <Link>Config\ACategory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Config\AConfig.cs">
-      <Link>Config\AConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Config\AConfigComponent.cs">
-      <Link>Config\AConfigComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Config\ConfigAttribute.cs">
-      <Link>Config\ConfigAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Config\ICategory.cs">
-      <Link>Config\ICategory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Config\BuffConfig.cs">
-      <Link>Entity\Config\BuffConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Config\StartConfig.cs">
-      <Link>Entity\Config\StartConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Game.cs">
-      <Link>Entity\Game.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\InnerMessage.cs">
-      <Link>Entity\Message\InnerMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
-      <Link>Message\Opcode.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
-      <Link>Entity\Message\OuterMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Scene.cs">
-      <Link>Entity\Scene.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs">
-      <Link>Entity\Session.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Unit.cs">
-      <Link>Entity\Unit.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\AEventAttribute.cs">
-      <Link>Event\AEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\Env.cs">
-      <Link>Event\Env.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\EnvKey.cs">
-      <Link>Event\EnvKey.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\EventAttribute.cs">
-      <Link>Event\EventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\EventIdType.cs">
-      <Link>Event\EventIdType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Event\IEvent.cs">
-      <Link>Event\IEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\AMessage.cs">
-      <Link>Message\AMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\AppType.cs">
-      <Link>Message\AppType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\ErrorCode.cs">
-      <Link>Message\ErrorCode.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageAttribute.cs">
-      <Link>Message\MessageAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\MessageInfo.cs">
-      <Link>Message\MessageInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\OpcodeHelper.cs">
-      <Link>Message\OpcodeHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\RpcException.cs">
-      <Link>Message\RpcException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\Component.cs">
-      <Link>Object\Component.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\Disposer.cs">
-      <Link>Object\Disposer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\Entity.cs">
-      <Link>Object\Entity.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\EntityEventAttribute.cs">
-      <Link>Object\EntityEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\EntityEventManager.cs">
-      <Link>Object\EntityEventManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\EntityType.cs">
-      <Link>Object\EntityType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Object\Object.cs">
-      <Link>Object\Object.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\EntityEventId.cs">
-      <Link>Other\EntityEventId.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\IInstanceMethod.cs">
-      <Link>Other\IInstanceMethod.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\ILBindingAttribute.cs">
-      <Link>Other\ILBindingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\MonoMethod.cs">
-      <Link>Other\MonoMethod.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\Options.cs">
-      <Link>Other\Options.cs</Link>
-    </Compile>
+    <Compile Include="Component\BenchmarkComponent.cs" />
+    <Compile Include="Component\ConfigComponent.cs" />
+    <Compile Include="Component\Config\ClientConfig.cs" />
+    <Compile Include="Component\Config\InnerConfig.cs" />
+    <Compile Include="Component\Config\OuterConfig.cs" />
     <Compile Include="Component\EventComponent.cs" />
+    <Compile Include="Component\KVComponent.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
+    <Compile Include="Component\NetInnerComponent.cs" />
+    <Compile Include="Component\NetOuterComponent.cs" />
+    <Compile Include="Component\NetworkComponent.cs" />
+    <Compile Include="Component\RobotComponent.cs" />
+    <Compile Include="Component\TimerComponent.cs" />
+    <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Component\Unit\MasterComponent.cs" />
     <Compile Include="Component\Unit\LockComponent.cs" />
     <Compile Include="Component\AppManagerComponent.cs" />
@@ -203,12 +62,50 @@
     <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Component\OptionComponent.cs" />
     <Compile Include="Component\StartConfigComponent.cs" />
+    <Compile Include="Config\ACategory.cs" />
+    <Compile Include="Config\AConfig.cs" />
+    <Compile Include="Config\AConfigComponent.cs" />
+    <Compile Include="Config\ConfigAttribute.cs" />
     <Compile Include="Config\ConfigHelper.cs" />
+    <Compile Include="Config\ICategory.cs" />
+    <Compile Include="Entity\Config\BuffConfig.cs" />
+    <Compile Include="Entity\Config\StartConfig.cs" />
+    <Compile Include="Entity\Game.cs" />
+    <Compile Include="Entity\Message\InnerMessage.cs" />
+    <Compile Include="Entity\Message\Opcode.cs" />
+    <Compile Include="Entity\Message\OuterMessage.cs" />
+    <Compile Include="Entity\Scene.cs" />
+    <Compile Include="Entity\Session.cs" />
+    <Compile Include="Entity\Unit.cs" />
+    <Compile Include="Event\AEventAttribute.cs" />
+    <Compile Include="Event\Env.cs" />
+    <Compile Include="Event\EnvKey.cs" />
+    <Compile Include="Event\EventAttribute.cs" />
+    <Compile Include="Event\EventIdType.cs" />
+    <Compile Include="Event\IEvent.cs" />
     <Compile Include="Helper\DllHelper.cs" />
+    <Compile Include="Message\AMessage.cs" />
     <Compile Include="Message\AMHandler.cs" />
+    <Compile Include="Message\AppType.cs" />
+    <Compile Include="Message\ErrorCode.cs" />
     <Compile Include="Message\IMHandler.cs" />
+    <Compile Include="Message\MessageAttribute.cs" />
     <Compile Include="Message\MessageHandlerAttribute.cs" />
+    <Compile Include="Message\MessageInfo.cs" />
+    <Compile Include="Message\OpcodeHelper.cs" />
+    <Compile Include="Message\RpcException.cs" />
+    <Compile Include="Object\Component.cs" />
+    <Compile Include="Object\Disposer.cs" />
+    <Compile Include="Object\Entity.cs" />
+    <Compile Include="Object\EntityEventAttribute.cs" />
+    <Compile Include="Object\EntityEventManager.cs" />
+    <Compile Include="Object\EntityType.cs" />
+    <Compile Include="Object\Object.cs" />
+    <Compile Include="Other\EntityEventId.cs" />
+    <Compile Include="Other\IInstanceMethod.cs" />
+    <Compile Include="Other\MonoMethod.cs" />
     <Compile Include="Other\OneThreadSynchronizationContext.cs" />
+    <Compile Include="Other\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
