@@ -136,8 +136,9 @@ namespace MyEditor
 			return result2;
 		}
 
-		private readonly Color textColor = new Color(200f / 255f, 200f / 255f, 200f / 255f);
-		private readonly Color textHighLightColor = new Color(200f / 255f, 200f / 255f, 0);
+		//private readonly Color textColor = new Color(200f / 255f, 200f / 255f, 200f / 255f);
+		private readonly Color textColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
+		private readonly Color textHighLightColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
 
 		public GUIStyle GetButtonStyle()
 		{
@@ -145,12 +146,12 @@ namespace MyEditor
 			style.fontSize = 15;
 			style.alignment = TextAnchor.MiddleLeft;
 			GUIStyleState onHoverStyleState = new GUIStyleState();
-			onHoverStyleState.textColor = textHighLightColor;
+			//onHoverStyleState.textColor = textHighLightColor;
 			onHoverStyleState.background = BehaviorDesignerUtility.GetTexture("blue");
 			style.hover = onHoverStyleState;
 
 			GUIStyleState onNormalStyleState = new GUIStyleState();
-			onNormalStyleState.textColor = textColor;
+			//onNormalStyleState.textColor = textColor;
 			style.normal = onNormalStyleState;
 			return style;
 		}
