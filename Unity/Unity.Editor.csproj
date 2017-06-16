@@ -166,6 +166,7 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\PropertyDesigner.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\RightDesigner.cs" />
     <Compile Include="Assets\Editor\EditorInit.cs" />
+    <Compile Include="Assets\Editor\ExportNavmesh.cs" />
     <Compile Include="Assets\Editor\ILRuntimeEditor\ILRuntimeEditor.cs" />
     <Compile Include="Assets\Editor\ObjectManagerToolsEditor\ObjectManagerToolsWindow.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
