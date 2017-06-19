@@ -49,7 +49,7 @@ namespace MyEditor
 			Array strArr = Enum.GetValues(typeof (NodeClassifyType));
 			List<string> strList = new List<string>();
 			strList.Add("All");
-			foreach (var str in strArr)
+			foreach (object str in strArr)
 			{
 				strList.Add(str.ToString());
 			}
@@ -68,7 +68,7 @@ namespace MyEditor
 			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, topSpace, windowRect.width, windowRect.height - topSpace), this.mTreeScrollPos,
 					new Rect(0f, 0f, windowRect.width - 20f, nodeNameList.Count * 19), false, true);
 
-			foreach (var name in nodeNameList)
+			foreach (string name in nodeNameList)
 			{
 				ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
 				if (GUILayout.Button(name + $"({proto.describe})", GetButtonStyle()))
@@ -109,7 +109,7 @@ namespace MyEditor
 			else
 			{
 				selectType = Enum.GetName(typeof (NodeClassifyType), mEnumNodeTypeSelection - 1);
-				foreach (var name in list)
+				foreach (string name in list)
 				{
 					ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
 					if (selectType == proto.classify)
@@ -125,7 +125,7 @@ namespace MyEditor
 			}
 
 			List<string> result2 = new List<string>();
-			foreach (var name in result1)
+			foreach (string name in result1)
 			{
 				ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
 				if (name.ToUpper().Contains(text.ToUpper()) || proto.describe.ToUpper().Contains(text.ToUpper()))

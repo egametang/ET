@@ -14,7 +14,7 @@ namespace MyEditor
 
 			if (GUILayout.Button("打开行为树"))
 			{
-				BehaviorManager.GetInstance().OpenBehaviorEditor(config.gameObject);
+				BehaviorManager.Instance.OpenBehaviorEditor(config.gameObject);
 			}
 			EditorUtility.SetDirty(config);
 		}

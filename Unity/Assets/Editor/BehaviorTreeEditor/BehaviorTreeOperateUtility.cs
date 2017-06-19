@@ -42,7 +42,7 @@ namespace MyEditor
 
 		public void UpdateData()
 		{
-			foreach (var argsItem in Proto.args_dict)
+			foreach (KeyValuePair<string, ValueBase> argsItem in Proto.args_dict)
 			{
 				FieldInfo fieldInfo = typeof (T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				fieldInfo.SetValue(Node, argsItem.Value.GetValueByType(fieldInfo.FieldType));
@@ -60,7 +60,7 @@ namespace MyEditor
 		public static NodeProto NodeProtoParamClone(NodeProto p)
 		{
 			NodeProto newP = new NodeProto();
-			foreach (var dict in p.args_dict)
+			foreach (KeyValuePair<string, ValueBase> dict in p.args_dict)
 			{
 				string key = dict.Key;
 				ValueBase value = ValueBase.Clone(dict.Value);

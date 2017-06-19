@@ -65,15 +65,15 @@ namespace MyEditor
 		public BehaviorNodeData(string proto_name)
 		{
 			name = proto_name;
-			this.Proto = BehaviorManager.GetInstance().GetNodeTypeProto(proto_name);
+			this.Proto = BehaviorManager.Instance.GetNodeTypeProto(proto_name);
 			if (this.Proto == null)
 			{
-				this.Proto = BehaviorManager.GetInstance().GetNodeTypeProto("Unknow");
+				this.Proto = BehaviorManager.Instance.GetNodeTypeProto("Unknow");
 				return;
 			}
 			mClassify = this.Proto.classify;
 
-			foreach (var args_desc in this.Proto.new_args_desc)
+			foreach (NodeFieldDesc args_desc in this.Proto.new_args_desc)
 			{
 				args_dict.SetKeyValueComp(args_desc.type, args_desc.name, args_desc.value);
 			}
@@ -120,8 +120,8 @@ namespace MyEditor
 
 		public void ResetId()
 		{
-			this.nodeId = BehaviorManager.GetInstance().AutoNodeId();
-			foreach (var child in children)
+			this.nodeId = BehaviorManager.Instance.AutoNodeId();
+			foreach (BehaviorNodeData child in children)
 			{
 				child.ResetId();
 			}

@@ -107,7 +107,7 @@ namespace MyEditor
 		{
 			List<NodeFieldDesc> list = GetNodeFieldInOutPutDescList(nodeName, fieldAttributeType);
 			List<NodeFieldDesc> filterList = new List<NodeFieldDesc>();
-			foreach (var item in list)
+			foreach (NodeFieldDesc item in list)
 			{
 				if (item.envKeyType == paramType || item.envKeyType.IsSubclassOf(paramType) || paramType.IsAssignableFrom(item.envKeyType))
 				{

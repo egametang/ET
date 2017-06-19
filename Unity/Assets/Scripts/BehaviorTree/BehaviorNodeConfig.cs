@@ -21,7 +21,7 @@ namespace Model
 		public BehaviorTreeArgsDict GetArgsDict()
 		{
 			BehaviorTreeArgsDict dict = new BehaviorTreeArgsDict();
-			foreach (var item in gameObject.GetComponents<BTTypeBaseComponent>())
+			foreach (BTTypeBaseComponent item in gameObject.GetComponents<BTTypeBaseComponent>())
 			{
 				FieldInfo info = item.GetType().GetField("fieldValue");
 				ValueBase valueBase = new ValueBase();
@@ -72,24 +72,26 @@ namespace Model
 
 		public NodeProto ToNodeProto()
 		{
-			return NodeConfigToNodeProto(this);
+			return BehaviorNodeConfigToNodeProto(this);
 		}
 
-		private static NodeProto NodeConfigToNodeProto(BehaviorNodeConfig nodeProto)
+		private static NodeProto BehaviorNodeConfigToNodeProto(BehaviorNodeConfig behaviorNodeConfig)
 		{
-			NodeProto nodeData = new NodeProto();
-			nodeData.nodeId = nodeProto.id;
-			nodeData.name = nodeProto.name;
-			nodeData.describe = nodeProto.describe;
-			nodeData.args_dict = nodeProto.GetArgsDict();
-			nodeData.children = new List<NodeProto>();
-			foreach (Transform child in nodeProto.gameObject.transform)
+			NodeProto nodeProto = new NodeProto
+			{
+				nodeId = behaviorNodeConfig.id,
+				name = behaviorNodeConfig.name,
+				describe = behaviorNodeConfig.describe,
+				args_dict = behaviorNodeConfig.GetArgsDict(),
+				children = new List<NodeProto>()
+			};
+			foreach (Transform child in behaviorNodeConfig.gameObject.transform)
 			{
 				BehaviorNodeConfig nodeConfig = child.gameObject.GetComponent<BehaviorNodeConfig>();
-				NodeProto childData = NodeConfigToNodeProto(nodeConfig);
-				nodeData.children.Add(childData);
+				NodeProto childData = BehaviorNodeConfigToNodeProto(nodeConfig);
+				nodeProto.children.Add(childData);
 			}
-			return nodeData;
+			return nodeProto;
 		}
 	}
 }

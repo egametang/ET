@@ -68,7 +68,7 @@ namespace MyEditor
 		public static bool HasNodeField(NodeProto node, Type searchType, string prefabPath)
 		{
 			FieldInfo[] fieldInfos = ExportNodeTypeConfig.GetFieldInfos(node.name);
-			foreach (var fieldInfo in fieldInfos)
+			foreach (FieldInfo fieldInfo in fieldInfos)
 			{
 				if (fieldInfo.FieldType == searchType)
 				{

@@ -106,17 +106,17 @@ namespace MyEditor
 
 		public void HandleEvents()
 		{
-			var e = Event.current;
+			Event e = Event.current;
 			switch (e.type)
 			{
 				case EventType.KeyUp:
 					if (e.keyCode == KeyCode.Escape || (e.keyCode == KeyCode.S && e.control))
 					{
-						BehaviorManager.GetInstance().SaveAll();
+						BehaviorManager.Instance.SaveAll();
 					}
 					else if (e.keyCode == KeyCode.F4)
 					{
-						BehaviorManager.GetInstance().SaveAll();
+						BehaviorManager.Instance.SaveAll();
 					}
 					break;
 				case EventType.MouseDown:
@@ -127,7 +127,7 @@ namespace MyEditor
 
 		public void OnDestroy()
 		{
-			BehaviorManager.GetInstance().Clear();
+			BehaviorManager.Instance.Clear();
 		}
 
 		public void onUpdatePropList(params object[] list)

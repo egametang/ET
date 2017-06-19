@@ -41,7 +41,7 @@ namespace Model
 			node.name = name;
 			node.describe = proto.describe;
 
-			foreach (var args in proto.new_args_desc)
+			foreach (NodeFieldDesc args in proto.new_args_desc)
 			{
 				Type type = BTTypeManager.GetBTType(args.type);
 				UnityEngine.Component comp = go.AddComponent(type);

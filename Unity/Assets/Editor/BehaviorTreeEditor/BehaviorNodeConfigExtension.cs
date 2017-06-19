@@ -16,7 +16,7 @@ namespace Model
 			nodeConfig.name = nodeData.name;
 			go.name = nodeData.name;
 			nodeConfig.describe = nodeData.describe;
-			foreach (var args in nodeData.args_dict)
+			foreach (KeyValuePair<string, ValueBase> args in nodeData.args_dict)
 			{
 				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
 				try
@@ -39,7 +39,7 @@ namespace Model
 					throw new GameException($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType}");
 				}
 			}
-			foreach (var child in nodeData.children)
+			foreach (NodeProto child in nodeData.children)
 			{
 				BehaviorNodeConfig childConfig = ProtoToConfig(child);
 				childConfig.gameObject.transform.parent = nodeConfig.gameObject.transform;

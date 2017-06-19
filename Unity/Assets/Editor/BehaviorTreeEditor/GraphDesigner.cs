@@ -64,7 +64,7 @@ namespace MyEditor
 		public void DrawNodes()
 		{
 			RootNode?.Draw();
-			foreach (var node in mDetachedNodes)
+			foreach (NodeDesigner node in mDetachedNodes)
 			{
 				node.Draw();
 			}
@@ -77,7 +77,7 @@ namespace MyEditor
 			{
 				return;
 			}
-			var curPos = Event.current.mousePosition; //MousePosToGraphPos(Event.current.mousePosition);
+			Vector2 curPos = Event.current.mousePosition; //MousePosToGraphPos(Event.current.mousePosition);
 			if (mState == State.ConnectLeft)
 			{
 				BehaviorDesignerUtility.DrawConnection(mSelectedNode.LeftPos, curPos);
@@ -96,7 +96,7 @@ namespace MyEditor
 
 		public void HandleEvents()
 		{
-			var e = Event.current;
+			Event e = Event.current;
 			switch (e.type)
 			{
 				case EventType.MouseDown:
@@ -253,11 +253,11 @@ namespace MyEditor
 
 		public void CheckMouseInNode()
 		{
-			var pos = MousePosToGraphPos(Event.current.mousePosition);
+			Vector2 pos = MousePosToGraphPos(Event.current.mousePosition);
 			RootNode?.OnMousePos(pos);
 			for (int i = 0; i < mDetachedNodes.Count; i++)
 			{
-				var node = mDetachedNodes[i];
+				NodeDesigner node = mDetachedNodes[i];
 				node.OnMousePos(pos);
 			}
 		}
@@ -299,7 +299,7 @@ namespace MyEditor
 
 		public Vector2 CenterPosInBorder()
 		{
-			var pos = new Vector2();
+			Vector2 pos = new Vector2();
 			pos.x = mScrollPosition.x + mBorderRect.width / 2;
 			pos.y = mScrollPosition.y + mBorderRect.height / 2;
 			return pos;
@@ -308,10 +308,10 @@ namespace MyEditor
 		public void DrawBackground()
 		{
 			float width = 15f;
-			var bgTex = BehaviorDesignerUtility.GetTexture("Bg");
+			Texture2D bgTex = BehaviorDesignerUtility.GetTexture("Bg");
 			GUI.DrawTexture(new Rect(0, 0, mGraphRect.width, mGraphRect.height), bgTex);
 
-			var lineTex = BehaviorDesignerUtility.GetTexture("BgLine");
+			Texture2D lineTex = BehaviorDesignerUtility.GetTexture("BgLine");
 			for (int i = 0; i < mGraphRect.width / width; i++)
 			{
 				GUI.DrawTexture(new Rect(width * i, 0, 1f, mGraphRect.height), lineTex);
@@ -328,9 +328,9 @@ namespace MyEditor
 			if (mSelectedNode != null)
 			{
 				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
-				    BehaviorManager.GetInstance().CurTree.Root.nodeId == mSelectedNode.NodeData.nodeId)
+				    BehaviorManager.Instance.CurTree.Root.nodeId == mSelectedNode.NodeData.nodeId)
 				{
-					List<ClientNodeTypeProto> list = BehaviorManager.GetInstance().Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
+					List<ClientNodeTypeProto> list = BehaviorManager.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
 					foreach (ClientNodeTypeProto nodeType in list)
 					{
 						result.Add(nodeType.name);
@@ -340,7 +340,7 @@ namespace MyEditor
 				else
 				{
 					// NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
-					List<ClientNodeTypeProto> canSubtituteList = BehaviorManager.GetInstance().AllNodeProtoList;
+					List<ClientNodeTypeProto> canSubtituteList = BehaviorManager.Instance.AllNodeProtoList;
 					canSubtituteList.Sort(CompareShowName);
 					foreach (ClientNodeTypeProto nodeType in canSubtituteList)
 					{
@@ -363,7 +363,7 @@ namespace MyEditor
 		{
 			List<string> result = new List<string>();
 
-			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.GetInstance().Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
 				List<ClientNodeTypeProto> nodeProtoList = kv.Value;
@@ -372,7 +372,7 @@ namespace MyEditor
 				{
 					continue;
 				}
-				foreach (var node in nodeProtoList)
+				foreach (ClientNodeTypeProto node in nodeProtoList)
 				{
 					if (mSelectedNode != null && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
 					{
@@ -386,12 +386,12 @@ namespace MyEditor
 		///菜单相关
 		public void PopMenu()
 		{
-			var menu = new GenericMenu();
+			GenericMenu menu = new GenericMenu();
 
 			menu.AddItem(new GUIContent("创建子节点"), false, this.PopUpCreate);
 			menu.AddItem(new GUIContent("替换当前节点"), false, this.PopUpReplace);
-			string selectNodeName = BehaviorManager.GetInstance().selectNodeName;
-			string selectNodeType = BehaviorManager.GetInstance().selectNodeType;
+			string selectNodeName = BehaviorManager.Instance.selectNodeName;
+			string selectNodeType = BehaviorManager.Instance.selectNodeType;
 			if (mSelectedNode != null && selectNodeName != "")
 			{
 				if (selectNodeType != NodeClassifyType.Root.ToString() && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
@@ -469,16 +469,16 @@ namespace MyEditor
 		private void AddNodeMenuCallback(object obj)
 		{
 			string nodeType = (string) obj;
-			var nodeProto = BehaviorManager.GetInstance().GetNodeTypeProto(nodeType);
-			var nodeData = BehaviorManager.GetInstance().CreateNode((int) BehaviorManager.GetInstance().CurTree.Id, nodeProto.name);
-			var node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
+			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(nodeType);
+			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeDesigner node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
 
 		private void CreateNode()
 		{
-			var nodeProto = BehaviorManager.GetInstance().GetNodeTypeProto(BehaviorManager.GetInstance().selectNodeName);
-			var nodeData = BehaviorManager.GetInstance().CreateNode((int) BehaviorManager.GetInstance().CurTree.Id, nodeProto.name);
-			var node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
+			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(BehaviorManager.Instance.selectNodeName);
+			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeDesigner node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
 
 		public void CopyNode()
@@ -509,9 +509,9 @@ namespace MyEditor
 			}
 			if (mCopyNode != null && mCopyNode != mSelectedNode)
 			{
-				var data = BehaviorManager.GetInstance().CopyNode(mCopyNode.NodeData);
-				BehaviorManager.GetInstance().ResetTreeId();
-				var node = CreateNode(data, Vector2.zero);
+				BehaviorNodeData data = BehaviorManager.Instance.CopyNode(mCopyNode.NodeData);
+				BehaviorManager.Instance.ResetTreeId();
+				NodeDesigner node = CreateNode(data, Vector2.zero);
 				ConnectNode(node, mSelectedNode);
 			}
 		}
@@ -523,7 +523,7 @@ namespace MyEditor
 				return;
 			}
 
-			foreach (var node in mDetachedNodes)
+			foreach (NodeDesigner node in mDetachedNodes)
 			{
 				if (node == mSelectedNode)
 				{
@@ -546,32 +546,32 @@ namespace MyEditor
 				return;
 			}
 			mDetachedNodes.Remove(mSelectedNode);
-			BehaviorManager.GetInstance().ResetTreeId();
+			BehaviorManager.Instance.ResetTreeId();
 		}
 
 		private void ChangeNodeType()
 		{
-			ChangeNodeType(BehaviorManager.GetInstance().selectNodeName);
+			ChangeNodeType(BehaviorManager.Instance.selectNodeName);
 		}
 
 		//有待优化
 		private void ChangeNodeType(object obj)
 		{
 			string nodeType = (string) obj;
-			var nodeProto = BehaviorManager.GetInstance().GetNodeTypeProto(nodeType);
-			var nodeData = BehaviorManager.GetInstance().CreateNode((int) BehaviorManager.GetInstance().CurTree.Id, nodeProto.name);
-			var oldNode = mSelectedNode;
-			var newNode = new NodeDesigner(nodeData);
+			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(nodeType);
+			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeDesigner oldNode = mSelectedNode;
+			NodeDesigner newNode = new NodeDesigner(nodeData);
 
 			if (oldNode == RootNode)
 			{
 				newNode.NodeData.nodeId = RootNode.NodeData.nodeId;
 				RootNode = newNode;
-				var oldTree = BehaviorManager.GetInstance().CurTree;
-				var newTree = new BehaviorTreeData(oldTree.Id);
+				BehaviorTreeData oldTree = BehaviorManager.Instance.CurTree;
+				BehaviorTreeData newTree = new BehaviorTreeData(oldTree.Id);
 				newTree.classify = oldTree.classify;
 				newTree.Root = nodeData;
-				BehaviorManager.GetInstance().CurTree = newTree;
+				BehaviorManager.Instance.CurTree = newTree;
 			}
 			else
 			{
@@ -580,11 +580,11 @@ namespace MyEditor
 				oldNode.Parent.RemoveChild(oldNode);
 			}
 
-			foreach (var child in oldNode.Children)
+			foreach (NodeDesigner child in oldNode.Children)
 			{
 				newNode.AddChild(child);
 			}
-			BehaviorManager.GetInstance().ResetTreeId();
+			BehaviorManager.Instance.ResetTreeId();
 			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeAfterChangeNodeType);
 		}
 
@@ -626,7 +626,7 @@ namespace MyEditor
 			{
 				mDetachedNodes.Add(node);
 			}
-			BehaviorManager.GetInstance().ResetTreeId();
+			BehaviorManager.Instance.ResetTreeId();
 			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeCreateNode, node);
 			return node;
 		}
@@ -634,12 +634,12 @@ namespace MyEditor
 		/// 事件相关
 		public NodeDesigner onCreateTree(params object[] list)
 		{
-			if (BehaviorManager.GetInstance().CurTree == null)
+			if (BehaviorManager.Instance.CurTree == null)
 			{
 				Log.Error($"CurTree can not be null");
 				return null;
 			}
-			RootNode = new NodeDesigner(BehaviorManager.GetInstance().CurTree.Root);
+			RootNode = new NodeDesigner(BehaviorManager.Instance.CurTree.Root);
 			CalcGraphRect();
 			return RootNode;
 		}
@@ -656,15 +656,15 @@ namespace MyEditor
 			string name = (string) list[0];
 			Vector2 pos = (Vector2) list[1];
 
-			var nodeProto = BehaviorManager.GetInstance().GetNodeTypeProto(name);
-			var nodeData = BehaviorManager.GetInstance().CreateNode((int) BehaviorManager.GetInstance().CurTree.Id, nodeProto.name);
+			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(name);
+			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
 			CreateNode(nodeData, pos);
 		}
 
 		public void onStartConnect(params object[] list)
 		{
-			var node = (NodeDesigner) list[0];
-			var state = (State) list[1];
+			NodeDesigner node = (NodeDesigner) list[0];
+			State state = (State) list[1];
 			if (node == RootNode && state == State.ConnectLeft) //根节点不让左连接
 			{
 				return;
@@ -674,7 +674,7 @@ namespace MyEditor
 
 		public void onMouseInNode(params object[] list)
 		{
-			var dstNode = (NodeDesigner) list[1];
+			NodeDesigner dstNode = (NodeDesigner) list[1];
 			if (dstNode == mSelectedNode || dstNode == null)
 			{
 				return;
@@ -715,7 +715,7 @@ namespace MyEditor
 				return;
 			}
 
-			var parent = srcNode.Parent;
+			NodeDesigner parent = srcNode.Parent;
 			if (parent != null)
 			{
 				parent.RemoveChild(srcNode);
@@ -739,10 +739,10 @@ namespace MyEditor
 			{
 				return;
 			}
-			var node1 = dstNode;
-			var node2 = mSelectedNode;
-			var parent1 = node1.Parent;
-			var parent2 = node2.Parent;
+			NodeDesigner node1 = dstNode;
+			NodeDesigner node2 = mSelectedNode;
+			NodeDesigner parent1 = node1.Parent;
+			NodeDesigner parent2 = node2.Parent;
 			//根节点不可交换
 			if (parent2 == null)
 			{
@@ -777,10 +777,10 @@ namespace MyEditor
 			{
 				return;
 			}
-			var node1 = dstNode;
-			var node2 = mSelectedNode;
-			var parent1 = node1.Parent;
-			var parent2 = node2.Parent;
+			NodeDesigner node1 = dstNode;
+			NodeDesigner node2 = mSelectedNode;
+			NodeDesigner parent1 = node1.Parent;
+			NodeDesigner parent2 = node2.Parent;
 			//根节点不可交换
 			if (parent2 == null)
 			{

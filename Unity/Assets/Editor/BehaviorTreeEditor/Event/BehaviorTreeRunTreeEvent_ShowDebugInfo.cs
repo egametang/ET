@@ -9,12 +9,12 @@ namespace MyEditor
 	{
 		public void Run(BehaviorTree tree, List<long> pathList)
 		{
-			if (BehaviorManager.GetInstance().BehaviorTreeConfig != null &&
-			    tree.behaviorTreeConfig.name == BehaviorManager.GetInstance().BehaviorTreeConfig.name)
+			if (BehaviorManager.Instance.BehaviorTreeConfig != null &&
+			    tree.behaviorTreeConfig.name == BehaviorManager.Instance.BehaviorTreeConfig.name)
 			{
 				BehaviorManager.treePathList.Add(pathList);
-				BehaviorManager.GetInstance().ClearDebugState();
-				BehaviorManager.GetInstance().SetDebugState(tree, pathList);
+				BehaviorManager.Instance.ClearDebugState();
+				BehaviorManager.Instance.SetDebugState(tree, pathList);
 			}
 		}
 	}

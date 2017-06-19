@@ -109,7 +109,7 @@ namespace MyEditor
 			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof (GameObject), false);
 			if (value.GetComponent<BehaviorTreeConfig>() != null && GUILayout.Button("打开行为树"))
 			{
-				BehaviorManager.GetInstance().OpenBehaviorEditor(value);
+				BehaviorManager.Instance.OpenBehaviorEditor(value);
 				SetToolBar(2);
 			}
 			EditorGUILayout.EndHorizontal();
@@ -137,7 +137,7 @@ namespace MyEditor
 			Array strArr = Enum.GetValues(typeof (NodeClassifyType));
 			List<string> strList = new List<string>();
 			strList.Add("All");
-			foreach (var str in strArr)
+			foreach (object str in strArr)
 			{
 				strList.Add(str.ToString());
 			}
@@ -167,7 +167,7 @@ namespace MyEditor
 
 		private void ClearNodes()
 		{
-			BehaviorManager.GetInstance().selectNodeName = "";
+			BehaviorManager.Instance.selectNodeName = "";
 			mEnumNodeTypeSelection = 0;
 			mSearchNode = "";
 			foreach (FoldoutFolder folder in mNodeFoldout.Folders)
@@ -183,13 +183,13 @@ namespace MyEditor
 		{
 			Rect boxRect = new Rect(0f, Screen.height - offset + 15f, this.mWidth, 200f);
 			GUILayout.BeginArea(boxRect);
-			BehaviorManager.GetInstance().selectNodeName = "";
+			BehaviorManager.Instance.selectNodeName = "";
 			if (mCurNode != null)
 			{
 				string[] arr = mCurNode.Text.Split(' ');
 				string name = arr[0];
-				BehaviorManager.GetInstance().selectNodeName = name;
-				BehaviorManager.GetInstance().selectNodeType = mCurNode.folderName;
+				BehaviorManager.Instance.selectNodeName = name;
+				BehaviorManager.Instance.selectNodeType = mCurNode.folderName;
 				if (mCurNode.folderName != NodeClassifyType.Root.ToString())
 				{
 					if (GUILayout.Button("新建"))
@@ -208,9 +208,9 @@ namespace MyEditor
 
 				if (GUILayout.Button("保存"))
 				{
-					BehaviorManager.GetInstance().SaveAll();
+					BehaviorManager.Instance.SaveAll();
 				}
-				var node = BehaviorManager.GetInstance().GetNodeTypeProto(name);
+				ClientNodeTypeProto node = BehaviorManager.Instance.GetNodeTypeProto(name);
 				GUILayout.Label("节点名:" + node.name);
 				GUILayout.Label("描述:" + node.describe);
 			}
@@ -223,15 +223,15 @@ namespace MyEditor
 			mNodeFoldout = new FoldoutFolder("所有节点", SelectNodeFolderCallback);
 			mNodeFoldout.Fold = true;
 
-			foreach (var kv in BehaviorManager.GetInstance().Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
-				var nodeTypeList = kv.Value;
+				List<ClientNodeTypeProto> nodeTypeList = kv.Value;
 				FoldoutFolder folder = mNodeFoldout.AddFolder(classify, SelectNodeFolderCallback);
 				folder.Fold = true;
 
 				mNodeCount++;
-				foreach (var nodeType in nodeTypeList)
+				foreach (ClientNodeTypeProto nodeType in nodeTypeList)
 				{
 					folder.AddNode(classify, nodeType.name + " (" + nodeType.describe + ")", SelectNodeCallback);
 					mNodeCount++;

@@ -9,7 +9,7 @@ namespace MyEditor
 		[MenuItem("Assets/Create/创建行为树")]
 		private static void CreateBehaviorTree()
 		{
-			var folderPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+			string folderPath = AssetDatabase.GetAssetPath(Selection.activeObject);
 			if ((File.GetAttributes(folderPath) & FileAttributes.Directory) != FileAttributes.Directory)
 			{
 				GUILayout.Label("请选择一个文件夹");

@@ -26,7 +26,7 @@ namespace Model
 				NodeProto p = protoStack.Dequeue();
 				Node node = nodeStack.Dequeue();
 
-				foreach (var argsItem in p.args_dict)
+				foreach (KeyValuePair<string, ValueBase> argsItem in p.args_dict)
 				{
 					FieldInfo fieldInfo = node.GetType().GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 					fieldInfo.SetValue(node, argsItem.Value.GetValueByType(fieldInfo.FieldType));
@@ -153,12 +153,12 @@ namespace Model
 		{
 			if (IsPrefab(this.BTConfig.gameObject))
 			{
-				GameObject go = GameObject.Instantiate(this.BTConfig.gameObject);
+				GameObject go = UnityEngine.Object.Instantiate(this.BTConfig.gameObject);
 				go.name = this.BTConfig.gameObject.name;
 				BehaviorTreeConfig newConfig = go.GetComponent<BehaviorTreeConfig>();
 				_root.Serialize(newConfig);
 				PrefabUtility.ReplacePrefab(go, this.BTConfig, ReplacePrefabOptions.ReplaceNameBased);
-				GameObject.DestroyImmediate(go);
+				UnityEngine.Object.DestroyImmediate(go);
 			}
 			else
 			{

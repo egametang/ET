@@ -42,9 +42,9 @@ namespace MyEditor
 			if (!DesignerData.fold)
 			{
 				this.Children.Clear();
-				foreach (var childData in NodeData.Children)
+				foreach (BehaviorNodeData childData in NodeData.Children)
 				{
-					var child = new NodeDesigner(childData);
+					NodeDesigner child = new NodeDesigner(childData);
 					this.Children.Add(child);
 					child.Parent = this;
 				}
@@ -101,7 +101,7 @@ namespace MyEditor
 
 		public void Init()
 		{
-			NodeData.Proto = BehaviorManager.GetInstance().GetNodeTypeProto(NodeData.name);
+			NodeData.Proto = BehaviorManager.Instance.GetNodeTypeProto(NodeData.name);
 			string[] arr = NodeData.Proto.style.Split('/');
 			if (arr.Length > 1 && arr[1] == "value")
 			{
@@ -156,7 +156,7 @@ namespace MyEditor
 
 		public void Draw()
 		{
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				//先画子节点，让线条在最低层
 				BehaviorDesignerUtility.DrawConnection(this.RightPos, child.LeftPos);
@@ -164,8 +164,8 @@ namespace MyEditor
 			}
 
 			//左链接
-			var tex = mLeftConnectTex;
-			var rect = new Rect(Pos.x - Width / 2 - tex.width / 6, Pos.y - tex.height / 4, tex.width / 2, tex.height / 2);
+			Texture2D tex = mLeftConnectTex;
+			Rect rect = new Rect(Pos.x - Width / 2 - tex.width / 6, Pos.y - tex.height / 4, tex.width / 2, tex.height / 2);
 			GUI.DrawTexture(rect, tex);
 			//右链接
 			if (NodeData.Proto.child_limit > 0)
@@ -193,7 +193,7 @@ namespace MyEditor
 			{
 				GUI.DrawTexture(rect, mBoxSelectHighLight);
 			}
-			else if (BehaviorManager.GetInstance().IsHighLight(this.NodeData))
+			else if (BehaviorManager.Instance.IsHighLight(this.NodeData))
 			{
 				GUI.DrawTexture(rect, mBoxHighLight);
 			}
@@ -258,20 +258,20 @@ namespace MyEditor
 			{
 				return;
 			}
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				child.UpdateSize();
 			}
 
 			float max = 0;
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				max = max < child.Size.width? child.Size.width : max;
 			}
 			Size.width += max;
 
 			Size.height = 0;
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				Size.height += child.Size.height;
 			}
@@ -281,7 +281,7 @@ namespace MyEditor
 		{
 			UpdateSize();
 			float y = this.Pos.y - this.Size.height / 2;
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				child.Pos.x = this.Pos.x + Width * 1.5f + child.Offset.x;
 				child.Pos.y = y + child.Size.height / 2 + child.Offset.y;
@@ -320,7 +320,7 @@ namespace MyEditor
 			isSelected = flag;
 			if (flag)
 			{
-				BehaviorManager.GetInstance().SelectNode(this.NodeData);
+				BehaviorManager.Instance.SelectNode(this.NodeData);
 			}
 		}
 
@@ -343,7 +343,7 @@ namespace MyEditor
 		public void AutoSort()
 		{
 			this.Offset = Vector2.zero;
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				child.AutoSort();
 			}
@@ -356,7 +356,7 @@ namespace MyEditor
 			{
 				return true;
 			}
-			foreach (var child in this.Children)
+			foreach (NodeDesigner child in this.Children)
 			{
 				if (child.FindChild(dstNode))
 				{
