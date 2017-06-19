@@ -508,13 +508,11 @@ namespace MyEditor
 			}
 			return resultList;
 		}
-
-		private BehaviorNodeData selectedNode;
+		
 		private List<string> inputValueList;
 
 		public void SelectNode(BehaviorNodeData node)
 		{
-			selectedNode = node;
 			NodeProto nodeProto = this.BehaviorNodeDataToNodeProto(node);
 			inputValueList = GetSelectNodeInputValueList(nodeProto);
 		}

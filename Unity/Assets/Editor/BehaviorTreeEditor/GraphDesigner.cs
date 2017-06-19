@@ -458,27 +458,19 @@ namespace MyEditor
 			{
 				Log.Error("字符串输入参数有误");
 			}
-			return string.Compare(clientNodeType1.name, clientNodeType2.name);
+			return String.CompareOrdinal(clientNodeType1.name, clientNodeType2.name);
 		}
 
 		public void AutoSort()
 		{
 			RootNode?.AutoSort();
 		}
-
-		private void AddNodeMenuCallback(object obj)
-		{
-			string nodeType = (string) obj;
-			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(nodeType);
-			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
-			NodeDesigner node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
-		}
-
+		
 		private void CreateNode()
 		{
 			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(BehaviorManager.Instance.selectNodeName);
 			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
-			NodeDesigner node = CreateNode(nodeData, MousePosToGraphPos(mMousePos));
+			CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
 
 		public void CopyNode()

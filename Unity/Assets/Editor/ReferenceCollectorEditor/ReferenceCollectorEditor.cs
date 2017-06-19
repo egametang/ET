@@ -115,7 +115,7 @@ public class ReferenceCollectorEditor: Editor
 			dataProperty.DeleteArrayElementAtIndex(i);
 		}
 		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfDirtyOrScript();
+		serializedObject.UpdateIfRequiredOrScript();
 	}
 
 	private void AddReference(SerializedProperty dataProperty, string key, Object obj)

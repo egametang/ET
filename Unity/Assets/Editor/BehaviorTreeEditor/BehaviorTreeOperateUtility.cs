@@ -97,7 +97,7 @@ namespace MyEditor
 			{
 				GameObject go = new GameObject();
 				BehaviorTreeConfig newConfig = go.AddComponent<BehaviorTreeConfig>();
-				BehaviorNodeConfig root = newConfig.AddRootNode(rootNodeName);
+				newConfig.AddRootNode(rootNodeName);
 
 				prefab = PrefabUtility.CreatePrefab($"{path}/BT_{desc}.prefab", go, ReplacePrefabOptions.ReplaceNameBased);
 				EditorUtility.SetDirty(newConfig);
@@ -110,11 +110,7 @@ namespace MyEditor
 			}
 			return prefab;
 		}
-
-		private static void SortBehaviorTree(BehaviorNodeConfig nodeConfig)
-		{
-		}
-
+		
 		public static BehaviourTreeNodeProxy<T> AddNodeToLast<T>(BehaviorTreeConfig tree) where T : Node
 		{
 			BehaviorNodeConfig parent = tree.RootNodeConfig;

@@ -84,8 +84,7 @@ namespace MyEditor
 		}
 
 		public Rect Size;
-
-		private bool mShowValue;
+		
 		private Texture2D mBoxTex;
 		private Texture2D mLeftConnectTex;
 		private Texture2D mRightConnectTex;
@@ -94,10 +93,6 @@ namespace MyEditor
 		{
 			NodeData.Proto = BehaviorManager.Instance.GetNodeTypeProto(NodeData.name);
 			string[] arr = NodeData.Proto.style.Split('/');
-			if (arr.Length > 1 && arr[1] == "value")
-			{
-				mShowValue = true;
-			}
 			string style = arr.Length > 0? arr[0] : "";
 			if (style == "")
 			{

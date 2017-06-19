@@ -41,7 +41,6 @@ namespace MyEditor
 			GUILayout.EndHorizontal();
 			//
 			toolbarRect = new Rect(0f, 15f + 20, mWidth, 25f);
-			Rect boxRect = new Rect(0f, toolbarRect.height, this.mWidth, (Screen.height - toolbarRect.height) - 21f + 10);
 			GUILayout.BeginArea(toolbarRect, EditorStyles.toolbar);
 			GUILayout.BeginHorizontal();
 
@@ -135,12 +134,7 @@ namespace MyEditor
 			}
 			return result2;
 		}
-
-		//private readonly Color textColor = new Color(200f / 255f, 200f / 255f, 200f / 255f);
-		private readonly Color textColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
-
-		private readonly Color textHighLightColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
-
+		
 		public GUIStyle GetButtonStyle()
 		{
 			GUIStyle style = new GUIStyle();

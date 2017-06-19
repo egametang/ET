@@ -145,9 +145,7 @@ namespace MyEditor
 			DrawSearchList(offset);
 			DrawNodeFunctions(offset);
 		}
-
-		private int mNodeTypeSelection;
-		private string[] mNodeTypeToolbarStrings = { "All", "Composite", "Decorator", "Action", "Condition", "Root", "DataTrans" };
+		
 		private int mEnumNodeTypeSelection;
 		string[] mEnumNodeTypeArr;
 
@@ -159,7 +157,6 @@ namespace MyEditor
 			GUILayout.EndHorizontal();
 
 			toolbarRect = new Rect(0f, 15f, mWidth, 25f);
-			Rect boxRect = new Rect(0f, toolbarRect.height, this.mWidth, (Screen.height - toolbarRect.height) - 21f + 10);
 			GUILayout.BeginArea(toolbarRect, EditorStyles.toolbar);
 			GUILayout.BeginHorizontal();
 
@@ -287,13 +284,8 @@ namespace MyEditor
 				}
 			}
 		}
-
-		private string searchNodeName = "";
-		private BehaviorTreeConfig searchTree;
+		
 		private readonly GameObject[] searchGoArr = new GameObject[0];
-		private Rect mBorderRect; //边框
-		private Vector2 mScrollPosition = Vector2.zero;
-		private Rect mGraphRect = new Rect(0, 0, 50, 50); //绘图区域
 		private Vector2 scrollPosition = Vector2.zero;
 
 		private void ShowResult()
@@ -310,9 +302,7 @@ namespace MyEditor
 			GUI.EndScrollView();
 			GUILayout.EndArea();
 		}
-
-		private BehaviorTreeConfig treeConfig;
-
+		
 		public GameObject BehaviourTreeField(string desc, GameObject value)
 		{
 			EditorGUILayout.BeginHorizontal();
@@ -681,9 +671,8 @@ namespace MyEditor
 				oldValue = GetDefaultEnumValue(desc.type);
 			}
 			Enum oldValueEnum = (Enum) Enum.Parse(desc.type, oldValue);
-			Enum newValueEnum;
 			EditorGUILayout.LabelField(desc.type.ToString());
-			newValueEnum = EditorGUILayout.EnumPopup(oldValueEnum);
+			Enum newValueEnum = EditorGUILayout.EnumPopup(oldValueEnum);
 			return newValueEnum.ToString();
 		}
 

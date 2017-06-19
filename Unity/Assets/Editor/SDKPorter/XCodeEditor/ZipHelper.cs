@@ -38,60 +38,52 @@ namespace cn.sharesdk.unity3d
 
 		private void UnzipFile(ZipEntry zip, ZipInputStream zipInStream, string dirPath)
 		{
-			try
+			//文件名不为空  
+			if (!string.IsNullOrEmpty(zip.Name))
 			{
-				//文件名不为空  
-				if (!string.IsNullOrEmpty(zip.Name))
-				{
-					string filePath = dirPath;
-					filePath += ("/" + zip.Name);
+				string filePath = dirPath;
+				filePath += ("/" + zip.Name);
 
-					//如果是一个新的文件路径　这里需要创建这个文件路径  
-					if (IsDirectory(filePath))
+				//如果是一个新的文件路径　这里需要创建这个文件路径  
+				if (IsDirectory(filePath))
+				{
+					if (!Directory.Exists(filePath))
 					{
-						if (!Directory.Exists(filePath))
-						{
-							Directory.CreateDirectory(filePath);
-						}
-					}
-					else
-					{
-						FileStream fs = null;
-						//当前文件夹下有该文件  删掉  重新创建  
-						if (File.Exists(filePath))
-						{
-							File.Delete(filePath);
-						}
-						fs = File.Create(filePath);
-						int size = 2048;
-						byte[] data = new byte[2048];
-						//每次读取2MB  直到把这个内容读完  
-						while (true)
-						{
-							size = zipInStream.Read(data, 0, data.Length);
-							//小于0， 也就读完了当前的流  
-							if (size > 0)
-							{
-								fs.Write(data, 0, size);
-							}
-							else
-							{
-								break;
-							}
-						}
-						fs.Close();
+						Directory.CreateDirectory(filePath);
 					}
 				}
-			}
-			catch (Exception e)
-			{
-				throw new Exception();
+				else
+				{
+					FileStream fs = null;
+					//当前文件夹下有该文件  删掉  重新创建  
+					if (File.Exists(filePath))
+					{
+						File.Delete(filePath);
+					}
+					fs = File.Create(filePath);
+					int size = 2048;
+					byte[] data = new byte[2048];
+					//每次读取2MB  直到把这个内容读完  
+					while (true)
+					{
+						size = zipInStream.Read(data, 0, data.Length);
+						//小于0， 也就读完了当前的流  
+						if (size > 0)
+						{
+							fs.Write(data, 0, size);
+						}
+						else
+						{
+							break;
+						}
+					}
+					fs.Close();
+				}
 			}
 		}
 			
 		private bool IsDirectory(string path)
 		{
-
 			if (path[path.Length - 1] == '/')
 			{
 				return true;

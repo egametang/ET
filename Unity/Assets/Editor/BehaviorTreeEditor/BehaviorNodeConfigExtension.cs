@@ -34,9 +34,9 @@ namespace Model
 					}
 					fieldValueinfo.SetValue(comp, fieldValue);
 				}
-				catch (Exception ex)
+				catch (Exception e)
 				{
-					throw new GameException($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType}");
+					throw new GameException($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType} {e}");
 				}
 			}
 			foreach (NodeProto child in nodeData.children)
