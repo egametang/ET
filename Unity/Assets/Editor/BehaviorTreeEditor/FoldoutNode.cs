@@ -11,7 +11,7 @@ namespace MyEditor
 
 		private readonly DelegateMethod mCallback;
 
-		public string Text { get; } = "...";
+		public string Text { get; }
 
 		public bool Hide { get; set; } = false;
 
@@ -52,25 +52,13 @@ namespace MyEditor
 
 	public class FoldoutFolder //折叠的目录
 	{
-		private bool mHide;
-
 		public delegate void DelegateMethod(FoldoutFolder self);
 
 		private readonly DelegateMethod mCallback;
 
-		public string Text { get; } = "...";
+		public string Text { get; }
 
-		public bool Hide
-		{
-			get
-			{
-				return mHide;
-			}
-			set
-			{
-				mHide = value;
-			}
-		}
+		public bool Hide { get; set; }
 
 		public bool Fold { get; set; }
 

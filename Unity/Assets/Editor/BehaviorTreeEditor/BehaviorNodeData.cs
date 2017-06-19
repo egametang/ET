@@ -30,8 +30,6 @@ namespace MyEditor
 		/// </summary>
 		public string error = "";
 
-		private string mClassify = "";
-
 		public NodeDesigner NodeDesigner { get; set; }
 
 		public Vector2 Pos;
@@ -50,17 +48,7 @@ namespace MyEditor
 
 		public BehaviorNodeData Parent { get; set; }
 
-		public string Classify
-		{
-			get
-			{
-				return mClassify;
-			}
-			set
-			{
-				mClassify = value;
-			}
-		}
+		public string Classify { get; set; } = "";
 
 		public BehaviorNodeData(string proto_name)
 		{
@@ -71,7 +59,7 @@ namespace MyEditor
 				this.Proto = BehaviorManager.Instance.GetNodeTypeProto("Unknow");
 				return;
 			}
-			mClassify = this.Proto.classify;
+			this.Classify = this.Proto.classify;
 
 			foreach (NodeFieldDesc args_desc in this.Proto.new_args_desc)
 			{

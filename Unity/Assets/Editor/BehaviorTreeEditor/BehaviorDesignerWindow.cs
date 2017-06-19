@@ -17,20 +17,12 @@ namespace MyEditor
 
 	public class BehaviorDesignerWindow: EditorWindow
 	{
-		private GraphDesigner mGraphDesigner;
 		private PropertyDesigner mPropDesigner;
 		private RightDesigner mRightDesigner;
-		private static bool mShowSubWin;
 		private SubWinType mSubWinType;
 		private BehaviorTreeNodeClassPopup popUpMenu;
 
-		public GraphDesigner GraphDesigner
-		{
-			get
-			{
-				return this.mGraphDesigner;
-			}
-		}
+		public GraphDesigner GraphDesigner { get; private set; }
 
 		public static BehaviorDesignerWindow Instance
 		{
@@ -40,13 +32,7 @@ namespace MyEditor
 			}
 		}
 
-		public static bool IsShowSubWin
-		{
-			get
-			{
-				return mShowSubWin;
-			}
-		}
+		public static bool IsShowSubWin { get; private set; }
 
 		public static void ShowWindow()
 		{
@@ -56,14 +42,14 @@ namespace MyEditor
 
 		public void ShowSubWin(Vector2 pos, SubWinType subWinType)
 		{
-			mShowSubWin = true;
+			IsShowSubWin = true;
 			popUpMenu.Show(windowRect, subWinType);
 			windowRect.position = pos;
 		}
 
 		public void CloseSubWin()
 		{
-			mShowSubWin = false;
+			IsShowSubWin = false;
 		}
 
 		public static Rect windowRect = new Rect(400, 250, 400, 550); //子窗口的大小和位置
@@ -83,11 +69,11 @@ namespace MyEditor
 
 		public void Awake()
 		{
-			mGraphDesigner = CreateInstance<GraphDesigner>();
+			this.GraphDesigner = CreateInstance<GraphDesigner>();
 			mPropDesigner = CreateInstance<PropertyDesigner>();
 			// mRightDesigner = new RightDesigner();
 			popUpMenu = new BehaviorTreeNodeClassPopup();
-			popUpMenu.GraphDesigner = mGraphDesigner;
+			popUpMenu.GraphDesigner = this.GraphDesigner;
 			//mGraphDesigner.onSelectTree();
 		}
 
@@ -95,9 +81,9 @@ namespace MyEditor
 		{
 			HandleEvents();
 			mPropDesigner?.Draw();
-			mGraphDesigner?.Draw(this.position);
+			this.GraphDesigner?.Draw(this.position);
 			//  mRightDesigner?.Draw();
-			if (mShowSubWin)
+			if (IsShowSubWin)
 			{
 				DrawSubWindow();
 			}
@@ -119,9 +105,7 @@ namespace MyEditor
 						BehaviorManager.Instance.SaveAll();
 					}
 					break;
-				case EventType.MouseDown:
-
-					break;
+				case EventType.MouseDown: break;
 			}
 		}
 
@@ -148,34 +132,34 @@ namespace MyEditor
 				Debug.LogError(" node list can not be null");
 				return;
 			}
-			mGraphDesigner.onSelectNode(list);
+			this.GraphDesigner.onSelectNode(list);
 			mPropDesigner.onSelectNode(list);
 			//      mRightDesigner.onSelectNode(list);
 		}
 
 		public void onStartConnect(NodeDesigner nodeDesigner, State state)
 		{
-			mGraphDesigner.onStartConnect(nodeDesigner, state);
+			this.GraphDesigner.onStartConnect(nodeDesigner, state);
 		}
 
 		public void onMouseInNode(BehaviorNodeData nodeData, NodeDesigner nodeDesigner)
 		{
-			mGraphDesigner.onMouseInNode(nodeData, nodeDesigner);
+			this.GraphDesigner.onMouseInNode(nodeData, nodeDesigner);
 		}
 
 		public void onCreateNode(string name, Vector2 pos)
 		{
-			mGraphDesigner.onCreateNode(name, pos);
+			this.GraphDesigner.onCreateNode(name, pos);
 		}
 
 		public void onChangeNodeType(string name, Vector2 pos)
 		{
-			mGraphDesigner.onChangeNodeType(name, pos);
+			this.GraphDesigner.onChangeNodeType(name, pos);
 		}
 
 		public NodeDesigner onCreateTree()
 		{
-			return mGraphDesigner.onCreateTree();
+			return this.GraphDesigner.onCreateTree();
 		}
 
 		public void onDraggingRightDesigner(float deltaX)

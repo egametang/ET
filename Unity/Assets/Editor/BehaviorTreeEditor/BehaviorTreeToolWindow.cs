@@ -17,7 +17,7 @@ namespace MyEditor
 		public static void ShowWindow()
 		{
 			Type[] a = new Type[1];
-			a[0] = typeof (BehaviorDesignerWindow);
+			a[0] = typeof(BehaviorDesignerWindow);
 			//BehaviorDesignerWindow target = GetWindow<BehaviorDesignerWindow>(false, "行为树编辑器",a);
 			BehaviorTreeToolWindow target = GetWindow<BehaviorTreeToolWindow>("工具箱", true, a);
 			target.ShowTab();

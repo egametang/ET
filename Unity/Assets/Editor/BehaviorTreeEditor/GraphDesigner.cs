@@ -33,7 +33,7 @@ namespace MyEditor
 		{
 			mBorderRect = new Rect(mLeftWidth, 0, windowRect.width - mLeftWidth - 16 - mRightWidth, windowRect.height - 16);
 			mScrollPosition = GUI.BeginScrollView(new Rect(mBorderRect.x, mBorderRect.y, mBorderRect.width + 15f, mBorderRect.height + 15f), mScrollPosition,
-					mGraphRect, true, true);
+			                                      mGraphRect, true, true);
 
 			DrawBackground();
 			DrawConnectingLine();
@@ -248,7 +248,7 @@ namespace MyEditor
 		public void DrawMouseIcon(string resName)
 		{
 			GUI.DrawTexture(new Rect(Event.current.mousePosition.x - 10, Event.current.mousePosition.y - 20, 17, 20),
-					BehaviorDesignerUtility.GetTexture(resName));
+			                BehaviorDesignerUtility.GetTexture(resName));
 		}
 
 		public void CheckMouseInNode()
@@ -417,7 +417,7 @@ namespace MyEditor
 				else
 				{
 					string menuName = string.Format($"替换成{selectNodeName}");
-					NodeClassifyType value = (NodeClassifyType) Enum.Parse(typeof (NodeClassifyType), selectNodeType);
+					NodeClassifyType value = (NodeClassifyType) Enum.Parse(typeof(NodeClassifyType), selectNodeType);
 					int count = ExportNodeTypeConfig.NodeTypeCountDict[value];
 					if (selectNodeType == NodeClassifyType.Root.ToString() || (count == 0 && mSelectedNode.NodeData.Proto.child_limit > 0))
 					{
@@ -596,22 +596,11 @@ namespace MyEditor
 		/// 节点逻辑相关
 		private readonly List<NodeDesigner> mDetachedNodes = new List<NodeDesigner>();
 
-		private NodeDesigner mRootNode;
 		private NodeDesigner mSelectedNode;
 		private NodeDesigner mCopyNode;
 		private NodeDesigner mCutNode;
 
-		public NodeDesigner RootNode
-		{
-			get
-			{
-				return mRootNode;
-			}
-			set
-			{
-				mRootNode = value;
-			}
-		}
+		public NodeDesigner RootNode { get; set; }
 
 		public NodeDesigner CreateNode(BehaviorNodeData nodeData, Vector2 pos)
 		{
@@ -684,8 +673,7 @@ namespace MyEditor
 				case State.Normal:
 					ClickNode(dstNode);
 					break;
-				case State.Drag:
-					break;
+				case State.Drag: break;
 				case State.Shift:
 					ShiftNode(dstNode);
 					break;

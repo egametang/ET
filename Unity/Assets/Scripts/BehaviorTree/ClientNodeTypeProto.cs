@@ -16,7 +16,7 @@ namespace Model
 		public Type envKeyType;
 	}
 
-	public class ClientNodeTypeProto: AConfig
+	public class ClientNodeTypeProto
 	{
 		public string type = "";
 		public string name = "";
@@ -32,11 +32,7 @@ namespace Model
 		public List<string> game_object_desc = new List<string>();
 		public bool isDeprecated;
 		public string deprecatedDesc;
-
-		public ClientNodeTypeProto(): base(EntityType.Config)
-		{
-		}
-
+		
 		public override string ToString()
 		{
 			return $"Type:{type}, Desc:{describe}";

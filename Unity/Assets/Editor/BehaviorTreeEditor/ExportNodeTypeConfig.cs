@@ -60,12 +60,12 @@ namespace MyEditor
 
 		public static ClientNodeTypeProto GetNodeTypeProtoFromType(Type type)
 		{
-			object[] nodeAttrs = type.GetCustomAttributes(typeof (NodeAttribute), false);
+			object[] nodeAttrs = type.GetCustomAttributes(typeof(NodeAttribute), false);
 			if (nodeAttrs.Length == 0)
 			{
 				return null;
 			}
-			object[] nodeDeprecatedAttrs = type.GetCustomAttributes(typeof (NodeDeprecatedAttribute), false);
+			object[] nodeDeprecatedAttrs = type.GetCustomAttributes(typeof(NodeDeprecatedAttribute), false);
 			NodeAttribute nodeAttribute = nodeAttrs[0] as NodeAttribute;
 			NodeDeprecatedAttribute nodeDeprecatedAttribute = null;
 			if (nodeDeprecatedAttrs.Length != 0)
@@ -83,9 +83,9 @@ namespace MyEditor
 				proto.deprecatedDesc = nodeDeprecatedAttribute.Desc;
 			}
 
-			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof (NodeInputAttribute)));
-			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof (NodeOutputAttribute)));
-			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof (NodeFieldAttribute)));
+			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof(NodeInputAttribute)));
+			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof(NodeOutputAttribute)));
+			proto.new_args_desc.AddRange(GetNodeFieldDesc(type, typeof(NodeFieldAttribute)));
 
 			proto.child_limit = NodeTypeCountDict[nodeAttribute.ClassifytType];
 			proto.classify = nodeAttribute.ClassifytType.ToString();
@@ -135,12 +135,12 @@ namespace MyEditor
 					desc.value = GetDefaultValue(field.FieldType, attri);
 					desc.attributeType = fieldAttributeType;
 					desc.envKeyType = attri.envKeyType;
-					if ((typeof (NodeInputAttribute) == fieldAttributeType || typeof (NodeInputAttribute) == fieldAttributeType) && desc.envKeyType == null)
+					if ((typeof(NodeInputAttribute) == fieldAttributeType || typeof(NodeInputAttribute) == fieldAttributeType) && desc.envKeyType == null)
 					{
 						Log.Error($"Node:{type.Name} Field:{desc.name}  _envKeyType can not be null");
 						return null;
 					}
-					object[] constraints = field.GetCustomAttributes(typeof (NodeFieldConstraintAttribute), false);
+					object[] constraints = field.GetCustomAttributes(typeof(NodeFieldConstraintAttribute), false);
 					if (constraints.Length > 0)
 					{
 						NodeFieldConstraintAttribute constraint = constraints[0] as NodeFieldConstraintAttribute;

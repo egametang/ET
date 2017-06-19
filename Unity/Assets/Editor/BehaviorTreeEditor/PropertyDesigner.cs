@@ -164,7 +164,7 @@ namespace MyEditor
 			GUILayout.BeginHorizontal();
 
 			GUILayout.Label("Filter");
-			Array strArr = Enum.GetValues(typeof (NodeClassifyType));
+			Array strArr = Enum.GetValues(typeof(NodeClassifyType));
 			List<string> strList = new List<string>();
 			strList.Add("All");
 			foreach (object str in strArr)
@@ -182,7 +182,7 @@ namespace MyEditor
 
 			GUILayout.BeginArea(new Rect(0f, 15f + 20, this.mWidth, Screen.height - offset));
 			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
-					new Rect(0f, 0f, this.mWidth - 20f, mNodeCount * 19), false, false);
+			                                          new Rect(0f, 0f, this.mWidth - 20f, mNodeCount * 19), false, false);
 			mNodeFoldout.Draw();
 			GUI.EndScrollView();
 			GUILayout.EndArea();
@@ -259,7 +259,7 @@ namespace MyEditor
 				}
 				else
 				{
-					selectType = Enum.GetName(typeof (NodeClassifyType), mEnumNodeTypeSelection - 1);
+					selectType = Enum.GetName(typeof(NodeClassifyType), mEnumNodeTypeSelection - 1);
 				}
 
 				if (selectType == folder.Text || selectType == "All")
@@ -316,7 +316,7 @@ namespace MyEditor
 		public GameObject BehaviourTreeField(string desc, GameObject value)
 		{
 			EditorGUILayout.BeginHorizontal();
-			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof (GameObject), false);
+			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof(GameObject), false);
 			if (value.GetComponent<BehaviorTreeConfig>() != null && GUILayout.Button("打开行为树"))
 			{
 				BehaviorManager.Instance.OpenBehaviorEditor(value);
@@ -354,9 +354,9 @@ namespace MyEditor
 
 		private void DrawAllValue(ClientNodeTypeProto proto)
 		{
-			List<NodeFieldDesc> paramFieldList = GetFieldDescList(proto.new_args_desc, typeof (NodeFieldAttribute));
-			List<NodeFieldDesc> inputFieldList = GetFieldDescList(proto.new_args_desc, typeof (NodeInputAttribute));
-			List<NodeFieldDesc> outputFieldList = GetFieldDescList(proto.new_args_desc, typeof (NodeOutputAttribute));
+			List<NodeFieldDesc> paramFieldList = GetFieldDescList(proto.new_args_desc, typeof(NodeFieldAttribute));
+			List<NodeFieldDesc> inputFieldList = GetFieldDescList(proto.new_args_desc, typeof(NodeInputAttribute));
+			List<NodeFieldDesc> outputFieldList = GetFieldDescList(proto.new_args_desc, typeof(NodeOutputAttribute));
 			mFoldParam = EditorGUILayout.Foldout(mFoldParam, "参数");
 			if (mFoldParam)
 			{
@@ -622,7 +622,7 @@ namespace MyEditor
 			}
 			else
 			{
-				enumValueArr = BehaviorTreeInOutConstrain.GetEnvKeyEnum(typeof (BTEnvKey));
+				enumValueArr = BehaviorTreeInOutConstrain.GetEnvKeyEnum(typeof(BTEnvKey));
 				if (enumValueArr.Length == 0)
 				{
 					enumValueArr = new string[1] { BTEnvKey.None };
@@ -731,7 +731,7 @@ namespace MyEditor
 			float offset = 55f;
 			GUILayout.BeginArea(new Rect(0f, 20f, this.mWidth, Screen.height - offset));
 			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
-					new Rect(0f, 0f, this.mWidth - 20f, BehaviorManager.treePathList.Count * 22), false, false);
+			                                          new Rect(0f, 0f, this.mWidth - 20f, BehaviorManager.treePathList.Count * 22), false, false);
 
 			for (int i = 0; i < BehaviorManager.treePathList.Count; i++)
 			{

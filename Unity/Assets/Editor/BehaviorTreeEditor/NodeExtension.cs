@@ -46,7 +46,7 @@ namespace Model
 
 		public T CreateNode<T>(Node parent) where T : Node
 		{
-			T node = (T) Activator.CreateInstance(typeof (T), new NodeProto());
+			T node = (T) Activator.CreateInstance(typeof(T), new NodeProto());
 			AddChild(node, parent);
 			return node;
 		}
@@ -84,7 +84,7 @@ namespace Model
 			{
 				sourceTree = source.AddComponent<BehaviorTreeConfig>();
 			}
-			Node root = (Node) Activator.CreateInstance(typeof (T), new NodeProto());
+			Node root = (Node) Activator.CreateInstance(typeof(T), new NodeProto());
 			BTEditorTree tree = new BTEditorTree(root, sourceTree);
 			return tree;
 		}
@@ -106,7 +106,7 @@ namespace Model
 			while (nodeStack.Count > 0)
 			{
 				Node c = nodeStack.Dequeue();
-				if (c.GetType() == typeof (T))
+				if (c.GetType() == typeof(T))
 				{
 					return c as T;
 				}
@@ -132,7 +132,7 @@ namespace Model
 			while (nodeStack.Count > 0)
 			{
 				Node c = nodeStack.Dequeue();
-				if (c.GetType() == typeof (T))
+				if (c.GetType() == typeof(T))
 				{
 					list.Add(c as T);
 				}
@@ -196,7 +196,7 @@ namespace Model
 				Node c = nodeStack.Dequeue();
 				foreach (Node child in c.GetChildren)
 				{
-					if (child.GetType() == typeof (T))
+					if (child.GetType() == typeof(T))
 					{
 						return child as T;
 					}
@@ -216,7 +216,7 @@ namespace Model
 				Node c = nodeStack.Dequeue();
 				foreach (Node child in c.GetChildren)
 				{
-					if (child.GetType() == typeof (T))
+					if (child.GetType() == typeof(T))
 					{
 						list.Add(child as T);
 					}

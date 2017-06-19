@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Model;
-using MyEditor;
 
 namespace MyEditor
 {
@@ -9,8 +8,7 @@ namespace MyEditor
 	{
 		public void Run(BehaviorTree tree, List<long> pathList)
 		{
-			if (BehaviorManager.Instance.BehaviorTreeConfig != null &&
-			    tree.behaviorTreeConfig.name == BehaviorManager.Instance.BehaviorTreeConfig.name)
+			if (BehaviorManager.Instance.BehaviorTreeConfig != null && tree.behaviorTreeConfig.name == BehaviorManager.Instance.BehaviorTreeConfig.name)
 			{
 				BehaviorManager.treePathList.Add(pathList);
 				BehaviorManager.Instance.ClearDebugState();

@@ -7,7 +7,6 @@ namespace MyEditor
 {
 	public class NodeDesigner
 	{
-		private NodeDesigner mParent;
 		private Texture2D mBoxHighLight;
 		private Texture2D mBoxSelectHighLight;
 		private bool isSelected;
@@ -25,17 +24,7 @@ namespace MyEditor
 
 		public List<NodeDesigner> Children { get; } = new List<NodeDesigner>();
 
-		public NodeDesigner Parent
-		{
-			get
-			{
-				return mParent;
-			}
-			set
-			{
-				mParent = value;
-			}
-		}
+		public NodeDesigner Parent { get; set; }
 
 		public void UpdateChildren()
 		{
@@ -58,8 +47,10 @@ namespace MyEditor
 		}
 
 		public BehaviorNodeData NodeData { get; set; }
+
 		//坐标位置相关
 		public float Width;
+
 		public float Height;
 		public Vector2 Pos = Vector2.zero; //中心点
 

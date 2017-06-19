@@ -46,7 +46,7 @@ namespace MyEditor
 			GUILayout.BeginHorizontal();
 
 			GUILayout.Label("Filter");
-			Array strArr = Enum.GetValues(typeof (NodeClassifyType));
+			Array strArr = Enum.GetValues(typeof(NodeClassifyType));
 			List<string> strList = new List<string>();
 			strList.Add("All");
 			foreach (object str in strArr)
@@ -66,7 +66,7 @@ namespace MyEditor
 			GUILayout.BeginArea(new Rect(0, 0, windowRect.width, windowRect.height));
 			float topSpace = 60;
 			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, topSpace, windowRect.width, windowRect.height - topSpace), this.mTreeScrollPos,
-					new Rect(0f, 0f, windowRect.width - 20f, nodeNameList.Count * 19), false, true);
+			                                          new Rect(0f, 0f, windowRect.width - 20f, nodeNameList.Count * 19), false, true);
 
 			foreach (string name in nodeNameList)
 			{
@@ -108,7 +108,7 @@ namespace MyEditor
 			}
 			else
 			{
-				selectType = Enum.GetName(typeof (NodeClassifyType), mEnumNodeTypeSelection - 1);
+				selectType = Enum.GetName(typeof(NodeClassifyType), mEnumNodeTypeSelection - 1);
 				foreach (string name in list)
 				{
 					ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
@@ -138,6 +138,7 @@ namespace MyEditor
 
 		//private readonly Color textColor = new Color(200f / 255f, 200f / 255f, 200f / 255f);
 		private readonly Color textColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
+
 		private readonly Color textHighLightColor = new Color(100f / 255f, 100f / 255f, 0f, 1);
 
 		public GUIStyle GetButtonStyle()

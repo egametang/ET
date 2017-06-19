@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	[CustomEditor(typeof (BehaviorTreeConfig))]
+	[CustomEditor(typeof(BehaviorTreeConfig))]
 	public class BehaviorTreeConfigEditor: Editor
 	{
 		public override void OnInspectorGUI()

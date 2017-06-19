@@ -16,7 +16,7 @@ namespace MyEditor
 
 		public BehaviourTreeNodeProxy(NodeProto p)
 		{
-			Node = (T) Activator.CreateInstance(typeof (T), p);
+			Node = (T) Activator.CreateInstance(typeof(T), p);
 			Proto = p;
 			UpdateData();
 		}
@@ -44,7 +44,7 @@ namespace MyEditor
 		{
 			foreach (KeyValuePair<string, ValueBase> argsItem in Proto.args_dict.Dict())
 			{
-				FieldInfo fieldInfo = typeof (T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+				FieldInfo fieldInfo = typeof(T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				fieldInfo.SetValue(Node, argsItem.Value.GetValue());
 			}
 		}
@@ -66,7 +66,7 @@ namespace MyEditor
 		public static GameObject CreateTreeWithType<T>(string path, string desc = "默认行为树")
 		{
 			desc = desc.Replace("BT_", "");
-			return CreateTree(path, typeof (T).Name, desc);
+			return CreateTree(path, typeof(T).Name, desc);
 		}
 
 		public static GameObject CreateTree(string path, string rootNodeName, string desc = "默认行为树")
@@ -118,7 +118,7 @@ namespace MyEditor
 		public static BehaviourTreeNodeProxy<T> AddNodeToLast<T>(BehaviorTreeConfig tree) where T : Node
 		{
 			BehaviorNodeConfig parent = tree.RootNodeConfig;
-			string name = typeof (T).Name;
+			string name = typeof(T).Name;
 			BehaviorNodeConfig p = tree.AddChild(parent, name);
 			BehaviourTreeNodeProxy<T> proxy = new BehaviourTreeNodeProxy<T>(p.ToNodeProto());
 			return proxy;
@@ -127,7 +127,7 @@ namespace MyEditor
 		public static BehaviourTreeNodeProxy<T> CreateNode<T>() where T : Node
 		{
 			NodeProto p = new NodeProto();
-			p.name = typeof (T).Name;
+			p.name = typeof(T).Name;
 			BehaviourTreeNodeProxy<T> proxy = new BehaviourTreeNodeProxy<T>(p);
 			return proxy;
 		}

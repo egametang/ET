@@ -16,10 +16,9 @@ namespace MyEditor
 		private string mSearchNode = "";
 		private FoldoutNode mCurNode;
 
-		private int mNodeTypeSelection;
-		private string[] mNodeTypeToolbarStrings = { "All", "Composite", "Decorator", "Action", "Condition", "Root", "DataTrans" };
 		private int mEnumNodeTypeSelection;
-		string[] mEnumNodeTypeArr;
+
+		private string[] mEnumNodeTypeArr;
 		// private FoldoutFolder mNodeFoldout;
 
 		private Vector2 mTreeScrollPos = Vector2.zero;
@@ -74,12 +73,7 @@ namespace MyEditor
 			DrawNodeFunctions(offset);
 		}
 
-		private string searchNodeName = "";
-		private BehaviorTreeConfig searchTree;
 		private readonly GameObject[] searchGoArr = new GameObject[0];
-		private Rect mBorderRect; //边框
-		private Vector2 mScrollPosition = Vector2.zero;
-		private Rect mGraphRect = new Rect(0, 0, 50, 50); //绘图区域
 		private Vector2 scrollPosition = Vector2.zero;
 
 		private void DrawTools()
@@ -101,12 +95,10 @@ namespace MyEditor
 			GUILayout.EndArea();
 		}
 
-		private BehaviorTreeConfig treeConfig;
-
 		public GameObject BehaviourTreeField(string desc, GameObject value)
 		{
 			EditorGUILayout.BeginHorizontal();
-			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof (GameObject), false);
+			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof(GameObject), false);
 			if (value.GetComponent<BehaviorTreeConfig>() != null && GUILayout.Button("打开行为树"))
 			{
 				BehaviorManager.Instance.OpenBehaviorEditor(value);
@@ -129,12 +121,11 @@ namespace MyEditor
 			GUILayout.EndHorizontal();
 
 			toolbarRect = new Rect(0f, 15f, mWidth, 25f);
-			Rect boxRect = new Rect(0f, toolbarRect.height, this.mWidth, (Screen.height - toolbarRect.height) - 21f + 10);
 			GUILayout.BeginArea(toolbarRect, EditorStyles.toolbar);
 			GUILayout.BeginHorizontal();
 
 			GUILayout.Label("Filter");
-			Array strArr = Enum.GetValues(typeof (NodeClassifyType));
+			Array strArr = Enum.GetValues(typeof(NodeClassifyType));
 			List<string> strList = new List<string>();
 			strList.Add("All");
 			foreach (object str in strArr)
@@ -152,7 +143,7 @@ namespace MyEditor
 
 			GUILayout.BeginArea(new Rect(0f, 15f + 20, this.mWidth, Screen.height - offset));
 			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
-					new Rect(0f, 0f, this.mWidth - 20f, mNodeCount * 19), false, false);
+			                                          new Rect(0f, 0f, this.mWidth - 20f, mNodeCount * 19), false, false);
 			mNodeFoldout.Draw();
 			GUI.EndScrollView();
 			GUILayout.EndArea();
@@ -250,7 +241,7 @@ namespace MyEditor
 				}
 				else
 				{
-					selectType = Enum.GetName(typeof (NodeClassifyType), mEnumNodeTypeSelection - 1);
+					selectType = Enum.GetName(typeof(NodeClassifyType), mEnumNodeTypeSelection - 1);
 				}
 
 				if (selectType == folder.Text || selectType == "All")
