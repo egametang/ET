@@ -395,10 +395,6 @@ namespace MyEditor
 				Type fieldType = ExportNodeTypeConfig.GetFieldType(nodeName, desc.name);
 				ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
 				object newValue = null;
-				if (!mCurBehaviorNode.args_dict.ContainsKey(desc.name))
-				{
-					mCurBehaviorNode.args_dict.Add(desc.name, new ValueBase());
-				}
 				if (BehaviorTreeArgsDict.IsStringType(fieldType))
 				{
 					if (nodeParamType == NodeParamType.Input)

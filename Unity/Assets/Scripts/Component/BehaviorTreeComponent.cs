@@ -57,7 +57,7 @@ namespace Model
 		{
 			Type type = Game.EntityEventManager.GetAssembly("Model").GetType("Model." + nodeProto.name);
 
-			foreach (var args_item in nodeProto.args_dict)
+			foreach (var args_item in nodeProto.args_dict.Dict())
 			{
 				FieldInfo fieldInfo = type.GetField(args_item.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				if (fieldInfo == null)
@@ -70,7 +70,7 @@ namespace Model
 
 		private static void NewSetValue(ref Node node, FieldInfo field, ValueBase valueBase, string nodeName)
 		{
-			field.SetValue(node, valueBase.GetValueByType(field.FieldType));
+			field.SetValue(node, valueBase.GetValue());
 		}
 
 		private Node CreateOneNode(NodeProto proto)

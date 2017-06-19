@@ -42,10 +42,10 @@ namespace MyEditor
 
 		public void UpdateData()
 		{
-			foreach (KeyValuePair<string, ValueBase> argsItem in Proto.args_dict)
+			foreach (KeyValuePair<string, ValueBase> argsItem in Proto.args_dict.Dict())
 			{
 				FieldInfo fieldInfo = typeof (T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-				fieldInfo.SetValue(Node, argsItem.Value.GetValueByType(fieldInfo.FieldType));
+				fieldInfo.SetValue(Node, argsItem.Value.GetValue());
 			}
 		}
 	}
@@ -59,13 +59,7 @@ namespace MyEditor
 		/// <returns></returns>
 		public static NodeProto NodeProtoParamClone(NodeProto p)
 		{
-			NodeProto newP = new NodeProto();
-			foreach (KeyValuePair<string, ValueBase> dict in p.args_dict)
-			{
-				string key = dict.Key;
-				ValueBase value = ValueBase.Clone(dict.Value);
-				newP.args_dict.Add(key, value);
-			}
+			NodeProto newP = new NodeProto(p.args_dict.Clone());
 			return newP;
 		}
 

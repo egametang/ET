@@ -202,7 +202,7 @@ namespace MyEditor
 		{
 			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeProto.name);
 			List<string> unUsedList = new List<string>();
-			foreach (KeyValuePair<string, ValueBase> item in nodeProto.args_dict)
+			foreach (KeyValuePair<string, ValueBase> item in nodeProto.args_dict.Dict())
 			{
 				if (!proto.new_args_desc.Exists(a => (a.name == item.Key)))
 				{
@@ -263,9 +263,9 @@ namespace MyEditor
 			{
 				config.RootNodeConfig = NodeDataToNodeConfig(tree.Root);
 			}
-			catch
+			catch (Exception e)
 			{
-				Debug.LogError($"tree name : {tree.BehaviorNodeData.name}");
+				Log.Error($"tree name : {tree.BehaviorNodeData.name} {e}");
 			}
 
 			config.RootNodeConfig.gameObject.transform.parent = config.gameObject.transform;
@@ -302,7 +302,7 @@ namespace MyEditor
 			go.name = nodeData.name;
 			nodeConfig.describe = nodeData.describe;
 			List<string> unUseList = new List<string>();
-			foreach (KeyValuePair<string, ValueBase> args in nodeData.args_dict)
+			foreach (KeyValuePair<string, ValueBase> args in nodeData.args_dict.Dict())
 			{
 				if (!ExportNodeTypeConfig.NodeHasField(nodeData.name, args.Key))
 				{
@@ -313,7 +313,7 @@ namespace MyEditor
 				try
 				{
 					string fieldName = args.Key;
-					object fieldValue = args.Value.GetValueByType(originType);
+					object fieldValue = args.Value.GetValue();
 					Type type = BTTypeManager.GetBTType(originType);
 					Component comp = go.AddComponent(type);
 					FieldInfo fieldNameInfo = type.GetField("fieldName");
@@ -406,9 +406,9 @@ namespace MyEditor
 			copyNode.describe = node.describe;
 			copyNode.Pos = node.Pos;
 			copyNode.args_dict = new BehaviorTreeArgsDict();
-			foreach (KeyValuePair<string, ValueBase> item in node.args_dict)
+			foreach (KeyValuePair<string, ValueBase> item in node.args_dict.Dict())
 			{
-				ValueBase valueBase = ValueBase.Clone(item.Value);
+				ValueBase valueBase = item.Value.Clone();
 				copyNode.args_dict.Add(item.Key, valueBase);
 			}
 			List<BehaviorNodeData> list = new List<BehaviorNodeData>();
@@ -523,15 +523,6 @@ namespace MyEditor
 
 			foreach (NodeFieldDesc desc in list)
 			{
-				if (!nodeProto.args_dict.ContainsKey(desc.name))
-				{
-					ValueBase valueBase = new ValueBase();
-					nodeProto.args_dict.Add(desc.name, valueBase);
-				}
-				if (string.IsNullOrEmpty(nodeProto.args_dict[desc.name].enumValue))
-				{
-					nodeProto.args_dict[desc.name].enumValue = BTEnvKey.None;
-				}
 				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
 				resultList.Add(value);
 			}

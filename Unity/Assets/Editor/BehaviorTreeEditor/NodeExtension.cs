@@ -26,10 +26,10 @@ namespace Model
 				NodeProto p = protoStack.Dequeue();
 				Node node = nodeStack.Dequeue();
 
-				foreach (KeyValuePair<string, ValueBase> argsItem in p.args_dict)
+				foreach (KeyValuePair<string, ValueBase> argsItem in p.args_dict.Dict())
 				{
 					FieldInfo fieldInfo = node.GetType().GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-					fieldInfo.SetValue(node, argsItem.Value.GetValueByType(fieldInfo.FieldType));
+					fieldInfo.SetValue(node, argsItem.Value.GetValue());
 				}
 				foreach (NodeProto child in p.Children)
 				{

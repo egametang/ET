@@ -24,14 +24,14 @@ namespace Model
 			foreach (BTTypeBaseComponent item in gameObject.GetComponents<BTTypeBaseComponent>())
 			{
 				FieldInfo info = item.GetType().GetField("fieldValue");
-				ValueBase valueBase = new ValueBase();
+				ValueBase valueBase;
 				if (item.GetType() == typeof (BTEnumComponent))
 				{
-					valueBase.SetValueByType(typeof (Enum), info.GetValue(item));
+					valueBase = new ValueBase(info.GetValue(item));
 				}
 				else
 				{
-					valueBase.SetValueByType(info.FieldType, info.GetValue(item));
+					valueBase = new ValueBase(info.GetValue(item));
 				}
 
 				dict.Add(item.fieldName, valueBase);

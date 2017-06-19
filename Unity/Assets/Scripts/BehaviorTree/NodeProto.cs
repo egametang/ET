@@ -10,7 +10,7 @@ namespace Model
 
 		public string describe = "";
 		
-		public BehaviorTreeArgsDict args_dict = new BehaviorTreeArgsDict();
+		public BehaviorTreeArgsDict args_dict;
 		
 		public List<NodeProto> children = new List<NodeProto>();
 
@@ -24,6 +24,16 @@ namespace Model
 			{
 				this.children = value;
 			}
+		}
+
+		public NodeProto()
+		{
+			this.args_dict = new BehaviorTreeArgsDict();
+		}
+
+		public NodeProto(BehaviorTreeArgsDict dict)
+		{
+			this.args_dict = dict;
 		}
 	}
 }

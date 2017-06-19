@@ -245,7 +245,7 @@ namespace MyEditor
 			FieldInfo fieldInfo = nodeType.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 			if (fieldInfo == null)
 			{
-				Log.Error(string.Format("{0}节点不存在此属性:{1}", nodeName, fieldName));
+				Log.Error($"{nodeName}节点不存在此属性:{fieldName}");
 			}
 			return fieldInfo.FieldType;
 		}
