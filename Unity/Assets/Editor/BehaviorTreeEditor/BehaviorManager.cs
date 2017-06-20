@@ -130,7 +130,7 @@ namespace MyEditor
 			foreach (NodeFieldDesc desc in list)
 			{
 				List<string> canInputList = GetCanInPutEnvKeyList(this.NodeProtoToBehaviorNodeData(nodeProto), desc);
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
 				List<string> resultList = canInputList.FindAll(str => { return str == value; });
 				if (resultList.Count == 0)
 				{
@@ -182,7 +182,7 @@ namespace MyEditor
 		{
 			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeProto.name);
 			List<string> unUsedList = new List<string>();
-			foreach (KeyValuePair<string, ValueBase> item in nodeProto.args_dict.Dict())
+			foreach (KeyValuePair<string, object> item in nodeProto.args_dict.Dict())
 			{
 				if (!proto.new_args_desc.Exists(a => (a.name == item.Key)))
 				{
@@ -282,7 +282,7 @@ namespace MyEditor
 			go.name = nodeData.name;
 			nodeConfig.describe = nodeData.describe;
 			List<string> unUseList = new List<string>();
-			foreach (KeyValuePair<string, ValueBase> args in nodeData.args_dict.Dict())
+			foreach (KeyValuePair<string, object> args in nodeData.args_dict.Dict())
 			{
 				if (!ExportNodeTypeConfig.NodeHasField(nodeData.name, args.Key))
 				{
@@ -293,7 +293,7 @@ namespace MyEditor
 				try
 				{
 					string fieldName = args.Key;
-					object fieldValue = args.Value.GetValue();
+					object fieldValue = args.Value;
 					Type type = BTTypeManager.GetBTType(originType);
 					Component comp = go.AddComponent(type);
 					FieldInfo fieldNameInfo = type.GetField("fieldName");
@@ -385,12 +385,7 @@ namespace MyEditor
 			copyNode.name = node.name;
 			copyNode.describe = node.describe;
 			copyNode.Pos = node.Pos;
-			copyNode.args_dict = new BehaviorTreeArgsDict();
-			foreach (KeyValuePair<string, ValueBase> item in node.args_dict.Dict())
-			{
-				ValueBase valueBase = item.Value.Clone();
-				copyNode.args_dict.Add(item.Key, valueBase);
-			}
+			copyNode.args_dict = node.args_dict.Clone();
 			List<BehaviorNodeData> list = new List<BehaviorNodeData>();
 			foreach (BehaviorNodeData item in node.children)
 			{
@@ -485,7 +480,7 @@ namespace MyEditor
 			}
 			for (int i = 0; i < list.Count; i++)
 			{
-				object value = nodeProto.args_dict.GetTreeDictValue(list[i].type, list[i].name);
+				object value = nodeProto.args_dict.GetTreeDictValue(list[i].name);
 				list[i].value = value;
 			}
 
@@ -503,7 +498,7 @@ namespace MyEditor
 
 			foreach (NodeFieldDesc desc in list)
 			{
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
 				resultList.Add(value);
 			}
 			return resultList;
@@ -527,7 +522,7 @@ namespace MyEditor
 				{
 					continue;
 				}
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
 				List<string> resultList = inputValueList.FindAll(str => { return str == value; });
 				if (resultList.Count > 0)
 				{

@@ -52,7 +52,7 @@ namespace MyEditor
 			}
 		}
 
-		Rect toolbarRect = new Rect(0f, 0f, 0, 0);
+		private Rect toolbarRect = new Rect(0f, 0f, 0, 0);
 
 		public void Draw()
 		{
@@ -264,7 +264,7 @@ namespace MyEditor
 					folder.Hide = false;
 					foreach (FoldoutNode node in folder.Nodes)
 					{
-						if (node.Text.ToUpper().IndexOf(mSearchNode.ToUpper()) == -1)
+						if (node.Text.ToUpper().IndexOf(mSearchNode.ToUpper(), StringComparison.Ordinal) == -1)
 						{
 							node.Hide = true;
 						}
@@ -318,7 +318,7 @@ namespace MyEditor
 
 		private void DrawValueView()
 		{
-			if (mCurBehaviorNode == null || mCurBehaviorNode.Proto == null)
+			if (mCurBehaviorNode?.Proto == null)
 			{
 				return;
 			}
@@ -385,6 +385,7 @@ namespace MyEditor
 				Type fieldType = ExportNodeTypeConfig.GetFieldType(nodeName, desc.name);
 				ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
 				object newValue = null;
+
 				if (BehaviorTreeArgsDict.IsStringType(fieldType))
 				{
 					if (nodeParamType == NodeParamType.Input)
@@ -468,13 +469,13 @@ namespace MyEditor
 					Log.Error($"行为树节点暂时未支持此类型:{fieldType}！");
 					return;
 				}
-				mCurBehaviorNode.args_dict.SetKeyValueComp(fieldType, desc.name, newValue);
+				mCurBehaviorNode.args_dict.SetKeyValueComp(desc.name, newValue);
 			}
 		}
 
 		private object ObjectFieldValue(NodeFieldDesc desc)
 		{
-			Object oldValue = (Object) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			Object oldValue = (Object) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			Object newValue = EditorGUILayout.ObjectField("", oldValue, desc.type, false);
 			if (newValue == null)
@@ -498,7 +499,13 @@ namespace MyEditor
 
 		private object TextFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = (string) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? "";
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			string oldValue = (string)obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.TextField("", oldValue);
 			return newValue;
@@ -506,7 +513,13 @@ namespace MyEditor
 
 		private object BoolFieldValue(NodeFieldDesc desc)
 		{
-			bool oldValue = (bool) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? false;
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			bool oldValue = (bool)obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.Toggle("", oldValue);
 			return newValue;
@@ -514,7 +527,13 @@ namespace MyEditor
 
 		private object IntFieldValue(NodeFieldDesc desc)
 		{
-			int oldValue = (int) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? default(int);
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			int oldValue = (int)obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.IntField("", oldValue);
 			return newValue;
@@ -522,7 +541,13 @@ namespace MyEditor
 
 		private object LongFieldValue(NodeFieldDesc desc)
 		{
-			long oldValue = (long) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? default(long);
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			long oldValue = (long)obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.LongField("", oldValue);
 			return newValue;
@@ -530,7 +555,13 @@ namespace MyEditor
 
 		private object FloatFieldValue(NodeFieldDesc desc)
 		{
-			float oldValue = (float) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? default(float);
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			float oldValue = (float) obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.FloatField("", oldValue);
 			return newValue;
@@ -538,7 +569,13 @@ namespace MyEditor
 
 		private object DoubletFieldValue(NodeFieldDesc desc)
 		{
-			double oldValue = (double) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? default(double);
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			double oldValue = (double)obj;
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.DoubleField("", oldValue);
 			return newValue;
@@ -548,7 +585,13 @@ namespace MyEditor
 
 		private object StrArrFieldValue(NodeFieldDesc desc)
 		{
-			string[] oldValue = (string[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new string[]{};
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			string[] oldValue = (string[])obj;
 			string[] newValue = CustomArrayField.StringArrFieldValue(ref foldStrArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -557,7 +600,13 @@ namespace MyEditor
 
 		private object IntArrFieldValue(NodeFieldDesc desc)
 		{
-			int[] oldValue = (int[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new int[] { };
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			int[] oldValue = (int[])obj;
 			int[] newValue = CustomArrayField.IntArrFieldValue(ref foldIntArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -566,7 +615,13 @@ namespace MyEditor
 
 		private object LongArrFieldValue(NodeFieldDesc desc)
 		{
-			long[] oldValue = (long[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new long[] { };
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			long[] oldValue = (long[])obj;
 			long[] newValue = CustomArrayField.LongArrFieldValue(ref foldLongArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -575,7 +630,13 @@ namespace MyEditor
 
 		private object FloatArrFieldValue(NodeFieldDesc desc)
 		{
-			float[] oldValue = (float[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new float[] { };
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			float[] oldValue = (float[])obj;
 			float[] newValue = CustomArrayField.FloatArrFieldValue(ref foldFloatArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -584,7 +645,13 @@ namespace MyEditor
 
 		private object DoubleArrFieldValue(NodeFieldDesc desc)
 		{
-			double[] oldValue = (double[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new double[] { };
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			double[] oldValue = (double[])obj;
 			double[] newValue = CustomArrayField.DoubleArrFieldValue(ref foldDoubleArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -593,14 +660,20 @@ namespace MyEditor
 
 		private object ObjectArrFieldValue(NodeFieldDesc desc)
 		{
-			Object[] oldValue = (Object[]) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name);
+			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			if (obj == null)
+			{
+				obj = desc.value ?? new Object[] { };
+				mCurBehaviorNode.args_dict.Add(desc.name, obj);
+			}
+			Object[] oldValue = (Object[])obj;
 			Object[] newValue = CustomArrayField.ObjectArrFieldValue(ref foldObjectArr, GetPropDesc(desc), oldValue, desc);
 			return newValue;
 		}
 
 		private object OutPutEnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
 			if (string.IsNullOrEmpty(oldValue))
 			{
 				oldValue = BTEnvKey.None;
@@ -633,7 +706,7 @@ namespace MyEditor
 
 		private object InputEnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
 			string[] enumValueArr = BehaviorManager.Instance.GetCanInPutEnvKeyArray(mCurBehaviorNode, desc);
 			if (enumValueArr.Length == 0)
 			{
@@ -665,7 +738,7 @@ namespace MyEditor
 
 		private object EnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.type, desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
 			if (string.IsNullOrEmpty(oldValue))
 			{
 				oldValue = GetDefaultEnumValue(desc.type);

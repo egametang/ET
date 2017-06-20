@@ -24,50 +24,9 @@ namespace Model
 			foreach (BTTypeBaseComponent item in gameObject.GetComponents<BTTypeBaseComponent>())
 			{
 				FieldInfo info = item.GetType().GetField("fieldValue");
-				ValueBase valueBase;
-				if (item.GetType() == typeof (BTEnumComponent))
-				{
-					valueBase = new ValueBase(info.GetValue(item));
-				}
-				else
-				{
-					valueBase = new ValueBase(info.GetValue(item));
-				}
-
-				dict.Add(item.fieldName, valueBase);
+				dict.Add(item.fieldName, info.GetValue(item));
 			}
 			return dict;
-		}
-
-		public void SetValue(Type type, string fieldName, object value)
-		{
-			foreach (BTTypeBaseComponent item in gameObject.GetComponents<BTTypeBaseComponent>())
-			{
-				if (fieldName == item.fieldName)
-				{
-					object fieldValue = value;
-					FieldInfo fieldValueinfo = item.GetType().GetField("fieldValue");
-					if (BehaviorTreeArgsDict.IsEnumType(type))
-					{
-						fieldValue = value.ToString();
-					}
-					fieldValueinfo.SetValue(item, fieldValue);
-				}
-			}
-		}
-
-		public object GetValue(string fieldName)
-		{
-			object fieldValue = null;
-			foreach (BTTypeBaseComponent item in gameObject.GetComponents<BTTypeBaseComponent>())
-			{
-				if (fieldName == item.fieldName)
-				{
-					FieldInfo fieldValueinfo = item.GetType().GetField("fieldValue");
-					fieldValue = fieldValueinfo.GetValue(item);
-				}
-			}
-			return fieldValue;
 		}
 
 		public NodeProto ToNodeProto()

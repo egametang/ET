@@ -68,9 +68,9 @@ namespace Model
 			}
 		}
 
-		private static void NewSetValue(ref Node node, FieldInfo field, ValueBase valueBase, string nodeName)
+		private static void NewSetValue(ref Node node, FieldInfo field, object value, string nodeName)
 		{
-			field.SetValue(node, valueBase.GetValue());
+			field.SetValue(node, value);
 		}
 
 		private Node CreateOneNode(NodeProto proto)

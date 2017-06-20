@@ -31,7 +31,7 @@ namespace MyEditor
 			FieldInfo[] mems = Node.GetType().GetFields();
 			foreach (FieldInfo mem in mems)
 			{
-				Proto.args_dict.SetKeyValueComp(mem.FieldType, mem.Name, mem.GetValue(Node));
+				Proto.args_dict.SetKeyValueComp(mem.Name, mem.GetValue(Node));
 			}
 		}
 
@@ -42,10 +42,10 @@ namespace MyEditor
 
 		public void UpdateData()
 		{
-			foreach (KeyValuePair<string, ValueBase> argsItem in Proto.args_dict.Dict())
+			foreach (KeyValuePair<string, object> argsItem in Proto.args_dict.Dict())
 			{
 				FieldInfo fieldInfo = typeof(T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-				fieldInfo.SetValue(Node, argsItem.Value.GetValue());
+				fieldInfo.SetValue(Node, argsItem.Value);
 			}
 		}
 	}

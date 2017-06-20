@@ -153,7 +153,7 @@ namespace MyEditor
 			return list;
 		}
 
-		private static object GetDefaultValue(Type type, NodeFieldBaseAttribute att)
+		public static object GetDefaultValue(Type type, NodeFieldBaseAttribute att)
 		{
 			if (att.DefaultValue != null)
 			{

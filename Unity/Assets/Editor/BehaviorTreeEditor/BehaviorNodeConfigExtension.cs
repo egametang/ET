@@ -16,13 +16,13 @@ namespace Model
 			nodeConfig.name = nodeData.name;
 			go.name = nodeData.name;
 			nodeConfig.describe = nodeData.describe;
-			foreach (KeyValuePair<string, ValueBase> args in nodeData.args_dict.Dict())
+			foreach (KeyValuePair<string, object> args in nodeData.args_dict.Dict())
 			{
 				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
 				try
 				{
 					string fieldName = args.Key;
-					object fieldValue = args.Value.GetValue();
+					object fieldValue = args.Value;
 					Type type = BTTypeManager.GetBTType(originType);
 					UnityEngine.Component comp = go.AddComponent(type);
 					FieldInfo fieldNameInfo = type.GetField("fieldName");

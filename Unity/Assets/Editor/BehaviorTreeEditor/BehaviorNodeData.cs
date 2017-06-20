@@ -63,7 +63,7 @@ namespace MyEditor
 
 			foreach (NodeFieldDesc args_desc in this.Proto.new_args_desc)
 			{
-				args_dict.SetKeyValueComp(args_desc.type, args_desc.name, args_desc.value);
+				args_dict.SetKeyValueComp(args_desc.name, args_desc.value);
 			}
 
 			foreach (BehaviorNodeData child in children)

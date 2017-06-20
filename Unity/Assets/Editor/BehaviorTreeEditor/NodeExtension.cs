@@ -26,10 +26,10 @@ namespace Model
 				NodeProto p = protoStack.Dequeue();
 				Node node = nodeStack.Dequeue();
 
-				foreach (KeyValuePair<string, ValueBase> argsItem in p.args_dict.Dict())
+				foreach (KeyValuePair<string, object> argsItem in p.args_dict.Dict())
 				{
 					FieldInfo fieldInfo = node.GetType().GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-					fieldInfo.SetValue(node, argsItem.Value.GetValue());
+					fieldInfo.SetValue(node, argsItem.Value);
 				}
 				foreach (NodeProto child in p.Children)
 				{
@@ -277,7 +277,7 @@ namespace Model
 			np.name = node.GetType().Name;
 			foreach (FieldInfo men in mens)
 			{
-				np.args_dict.SetKeyValueComp(men.FieldType, men.Name, men.GetValue(node));
+				np.args_dict.SetKeyValueComp(men.Name, men.GetValue(node));
 			}
 			return np;
 		}

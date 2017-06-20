@@ -9,9 +9,9 @@ namespace Model
 	[Serializable]
 	public class BehaviorTreeArgsDict
 	{
-		private readonly Dictionary<string, ValueBase> dict = new Dictionary<string, ValueBase>();
+		private readonly Dictionary<string, object> dict = new Dictionary<string, object>();
 
-		public void Add(string key, ValueBase value)
+		public void Add(string key, object value)
 		{
 			this.dict.Add(key, value);
 		}
@@ -26,7 +26,7 @@ namespace Model
 			return this.dict.ContainsKey(key);
 		}
 
-		public Dictionary<string, ValueBase> Dict()
+		public Dictionary<string, object> Dict()
 		{
 			 return this.dict;
 		}
@@ -34,25 +34,33 @@ namespace Model
 		public BehaviorTreeArgsDict Clone()
 		{
 			BehaviorTreeArgsDict behaviorTreeArgsDict = new BehaviorTreeArgsDict();
-			foreach (KeyValuePair<string, ValueBase> keyValuePair in this.dict)
+			foreach (KeyValuePair<string, object> keyValuePair in this.dict)
 			{
-				behaviorTreeArgsDict.Add(keyValuePair.Key, keyValuePair.Value.Clone());
+				behaviorTreeArgsDict.Add(keyValuePair.Key, Clone(keyValuePair.Value));
 			}
 			return behaviorTreeArgsDict;
 		}
 
+		public static object Clone(object obj)
+		{
+			Type vType = obj.GetType();
+			if (!vType.IsSubclassOf(typeof(Array)))
+			{
+				return obj;
+			}
 
-		public void SetKeyValueComp(Type type, string fieldName, object value)
+			Array sourceArray = (Array)obj;
+			Array dest = Array.CreateInstance(vType.GetElementType(), sourceArray.Length);
+			Array.Copy(sourceArray, dest, dest.Length);
+			return dest;
+		}
+
+
+		public void SetKeyValueComp(string fieldName, object value)
 		{
 			try
 			{
-				ValueBase valueBase;
-				if (!this.dict.TryGetValue(fieldName, out valueBase))
-				{
-					valueBase = new ValueBase();
-					this.dict.Add(fieldName, valueBase);
-				}
-				valueBase.SetValue(value);
+				this.dict[fieldName] = value;
 			}
 			catch (Exception e)
 			{
@@ -61,15 +69,14 @@ namespace Model
 
 		}
 
-		public object GetTreeDictValue(Type fieldType, string fieldName)
+		public object GetTreeDictValue(string fieldName)
 		{
 			if (!this.dict.ContainsKey(fieldName))
 			{
-				Log.Error($"fieldName:{fieldName} 不存在！！！！");
+				//Log.Error($"fieldName:{fieldName} 不存在！！！！");
 				return null;
 			}
-			ValueBase obj = this.dict[fieldName];
-			return obj.GetValue();
+			return this.dict[fieldName];
 		}
 
 		/// <summary>
