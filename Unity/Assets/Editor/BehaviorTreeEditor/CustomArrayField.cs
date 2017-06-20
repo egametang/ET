@@ -206,7 +206,7 @@ namespace MyEditor
 					for (int i = 0; i < oldValue.Length; i++)
 					{
 						newValue[i] = EditorGUILayout.ObjectField(i.ToString(), oldValue[i], desc.type.GetElementType(), false);
-						if (BehaviorTreeArgsDict.IsGameObjectArrayType(desc.type) &&
+						if (TypeHelper.IsGameObjectArrayType(desc.type) &&
 						    !BehaviorTreeArgsDict.SatisfyCondition((GameObject) newValue[i], desc.constraintTypes))
 						{
 							newValue[i] = null;
@@ -215,7 +215,7 @@ namespace MyEditor
 					for (int i = oldValue.Length; i < size; i++)
 					{
 						newValue[i] = EditorGUILayout.ObjectField(i.ToString(), newValue[i], desc.type.GetElementType(), false);
-						if (BehaviorTreeArgsDict.IsGameObjectArrayType(desc.type) &&
+						if (TypeHelper.IsGameObjectArrayType(desc.type) &&
 						    !BehaviorTreeArgsDict.SatisfyCondition((GameObject) newValue[i], desc.constraintTypes))
 						{
 							newValue[i] = null;
@@ -227,7 +227,7 @@ namespace MyEditor
 					for (int i = 0; i < size; i++)
 					{
 						newValue[i] = EditorGUILayout.ObjectField(i.ToString(), oldValue[i], desc.type.GetElementType(), false);
-						if (BehaviorTreeArgsDict.IsGameObjectArrayType(desc.type) &&
+						if (TypeHelper.IsGameObjectArrayType(desc.type) &&
 						    !BehaviorTreeArgsDict.SatisfyCondition((GameObject) newValue[i], desc.constraintTypes))
 						{
 							newValue[i] = null;

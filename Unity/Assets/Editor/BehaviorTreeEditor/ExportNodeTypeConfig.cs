@@ -157,77 +157,77 @@ namespace MyEditor
 		{
 			if (att.DefaultValue != null)
 			{
-				if ((BehaviorTreeArgsDict.IsEnumType(type) && BTEnvKey.None != att.DefaultValue.ToString()) || !BehaviorTreeArgsDict.IsEnumType(type))
+				if ((TypeHelper.IsEnumType(type) && BTEnvKey.None != att.DefaultValue.ToString()) || !TypeHelper.IsEnumType(type))
 				{
 					return att.DefaultValue;
 				}
 			}
 			object value = null;
-			if (BehaviorTreeArgsDict.IsDoubleType(type))
+			if (TypeHelper.IsDoubleType(type))
 			{
 				value = default(double);
 			}
-			else if (BehaviorTreeArgsDict.IsStringType(type))
+			else if (TypeHelper.IsStringType(type))
 			{
 				value = default(string);
 			}
-			else if (BehaviorTreeArgsDict.IsFloatType(type))
+			else if (TypeHelper.IsFloatType(type))
 			{
 				value = default(float);
 			}
-			else if (BehaviorTreeArgsDict.IsBoolType(type))
+			else if (TypeHelper.IsBoolType(type))
 			{
 				value = default(bool);
 			}
-			else if (BehaviorTreeArgsDict.IsIntType(type))
+			else if (TypeHelper.IsIntType(type))
 			{
 				value = default(int);
 			}
-			else if (BehaviorTreeArgsDict.IsLongType(type))
+			else if (TypeHelper.IsLongType(type))
 			{
 				value = default(long);
 			}
-			else if (BehaviorTreeArgsDict.IsIntArrType(type))
+			else if (TypeHelper.IsIntArrType(type))
 			{
 				value = default(int[]);
 			}
-			else if (BehaviorTreeArgsDict.IsLongArrType(type))
+			else if (TypeHelper.IsLongArrType(type))
 			{
 				value = default(long[]);
 			}
-			else if (BehaviorTreeArgsDict.IsDoubleArrType(type))
+			else if (TypeHelper.IsDoubleArrType(type))
 			{
 				value = default(double[]);
 			}
-			else if (BehaviorTreeArgsDict.IsFloatArrType(type))
+			else if (TypeHelper.IsFloatArrType(type))
 			{
 				value = default(float[]);
 			}
-			else if (BehaviorTreeArgsDict.IsStringArrType(type))
+			else if (TypeHelper.IsStringArrType(type))
 			{
 				value = default(string[]);
 			}
-			else if (BehaviorTreeArgsDict.IsObjectType(type))
+			else if (TypeHelper.IsObjectType(type))
 			{
 				value = default(Object);
 			}
-			else if (BehaviorTreeArgsDict.IsEnumType(type))
+			else if (TypeHelper.IsEnumType(type))
 			{
 				Array array = Enum.GetValues(type);
 				value = array.GetValue(0).ToString();
 			}
-			else if (BehaviorTreeArgsDict.IsUnitConfigArrayType(type))
+			else if (TypeHelper.IsUnitConfigArrayType(type))
 			{
 			}
-			else if (BehaviorTreeArgsDict.IsSpriteArrayType(type))
+			else if (TypeHelper.IsSpriteArrayType(type))
 			{
 				value = default(Sprite[]);
 			}
-			else if (BehaviorTreeArgsDict.IsObjectArrayType(type))
+			else if (TypeHelper.IsObjectArrayType(type))
 			{
 				value = default(Object[]);
 			}
-			else if (BehaviorTreeArgsDict.IsConvertble(type))
+			else if (TypeHelper.IsConvertble(type))
 			{
 				value = 1f;
 			}

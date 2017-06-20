@@ -328,7 +328,7 @@ namespace MyEditor
 			if (mSelectedNode != null)
 			{
 				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
-				    BehaviorManager.Instance.CurTree.Root.nodeId == mSelectedNode.NodeData.nodeId)
+				    BehaviorManager.Instance.CurTree.Root.Id == mSelectedNode.NodeData.Id)
 				{
 					List<ClientNodeTypeProto> list = BehaviorManager.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
 					foreach (ClientNodeTypeProto nodeType in list)
@@ -479,7 +479,7 @@ namespace MyEditor
 			mCopyNode = mSelectedNode;
 			if (mSelectedNode != null)
 			{
-				BehaviorTreeTipsHelper.ShowMessage("复制节点" + mSelectedNode.NodeData.nodeId);
+				BehaviorTreeTipsHelper.ShowMessage("复制节点" + mSelectedNode.NodeData.Id);
 			}
 		}
 
@@ -489,7 +489,7 @@ namespace MyEditor
 			mCutNode = mSelectedNode;
 			if (mSelectedNode != null)
 			{
-				BehaviorTreeTipsHelper.ShowMessage("剪切节点" + mSelectedNode.NodeData.nodeId);
+				BehaviorTreeTipsHelper.ShowMessage("剪切节点" + mSelectedNode.NodeData.Id);
 			}
 		}
 
@@ -557,7 +557,7 @@ namespace MyEditor
 
 			if (oldNode == RootNode)
 			{
-				newNode.NodeData.nodeId = RootNode.NodeData.nodeId;
+				newNode.NodeData.Id = RootNode.NodeData.Id;
 				RootNode = newNode;
 				BehaviorTreeData oldTree = BehaviorManager.Instance.CurTree;
 				BehaviorTreeData newTree = new BehaviorTreeData(oldTree.Id);

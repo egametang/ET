@@ -38,10 +38,43 @@ namespace Model
 			{ typeof (Sprite[]), typeof (BTArraySpriteComponent) }
 		};
 
-		public static Type GetBTType(string name)
+		public static Dictionary<Type, object> BTTypeDefaultValue { get; } = new Dictionary<Type, object>
 		{
-			Type type = Type.GetType($"Base.{name}");
-			return null;
+			{ typeof (int), 0 },
+			{ typeof (long), 0L },
+			{ typeof (string), "" },
+			{ typeof (Enum), "" },
+			{ typeof (bool), false },
+			{ typeof (float), 0f },
+			{ typeof (double), default(double) },
+			{ typeof (int[]), new int[] {}},
+			{ typeof (long[]), new long[] {} },
+			{ typeof (string[]), new string[] {} },
+			{ typeof (float[]), new float[] {} },
+			{ typeof (double[]), new double[] {} },
+			{ typeof (GameObject), null },
+			{ typeof (AudioClip), null },
+			{ typeof (Material), null },
+			{ typeof (Shader), null },
+			{ typeof (Texture), null },
+			{ typeof (Texture2D), null },
+			{ typeof (Texture3D), null },
+			{ typeof (Sprite), null },
+			{ typeof (GameObject[]), new GameObject[] {}},
+			{ typeof (AudioClip[]), new AudioClip[] {} },
+			{ typeof (Material[]), new Material[] {} },
+			{ typeof (Shader[]), new Shader[] {} },
+			{ typeof (Texture[]), new Texture[] {} },
+			{ typeof (Texture2D[]), new Texture2D[] {} },
+			{ typeof (Texture3D[]), new Texture3D[] {} },
+			{ typeof (Sprite[]), new Sprite[] {} }
+		};
+
+		public static object GetDefaultValue(Type originType)
+		{
+			object value = null;
+			BTTypeDefaultValue.TryGetValue(originType, out value);
+			return value;
 		}
 
 		public static Type GetBTType(Type originType)
@@ -49,7 +82,7 @@ namespace Model
 			Type type = null;
 			try
 			{
-				if (BehaviorTreeArgsDict.IsEnumType(originType))
+				if (TypeHelper.IsEnumType(originType))
 				{
 					type = BTTypeDict[typeof (Enum)];
 				}

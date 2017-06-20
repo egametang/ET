@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Base;
 using UnityEngine;
 
 namespace Model
@@ -55,31 +56,36 @@ namespace Model
 
 		private static void InitFieldValue(ref Node node, NodeProto nodeProto)
 		{
-			Type type = Game.EntityEventManager.GetAssembly("Model").GetType("Model." + nodeProto.name);
+			Type type = Game.EntityEventManager.GetAssembly("Model").GetType("Model." + nodeProto.Name);
 
-			foreach (var args_item in nodeProto.args_dict.Dict())
+			foreach (var args_item in nodeProto.Args.Dict())
 			{
 				FieldInfo fieldInfo = type.GetField(args_item.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				if (fieldInfo == null)
 				{
 					continue;
 				}
-				NewSetValue(ref node, fieldInfo, args_item.Value, nodeProto.name);
+				NewSetValue(ref node, fieldInfo, args_item.Value);
 			}
 		}
 
-		private static void NewSetValue(ref Node node, FieldInfo field, object value, string nodeName)
+		private static void NewSetValue(ref Node node, FieldInfo field, object value)
 		{
+			// unity enum无法序列化，保存的string形式
+			if (field.FieldType.IsEnum)
+			{
+				value = Enum.Parse(field.FieldType, (string) value);
+			}
 			field.SetValue(node, value);
 		}
 
 		private Node CreateOneNode(NodeProto proto)
 		{
-			if (!this.dictionary.ContainsKey(proto.name))
+			if (!this.dictionary.ContainsKey(proto.Name))
 			{
-				throw new KeyNotFoundException($"NodeType没有定义该节点: {proto.name}");
+				throw new KeyNotFoundException($"NodeType没有定义该节点: {proto.Name}");
 			}
-			return this.dictionary[proto.name](proto);
+			return this.dictionary[proto.Name](proto);
 		}
 
 		private Node CreateTreeNode(NodeProto proto)

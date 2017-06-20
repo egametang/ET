@@ -12,13 +12,13 @@ namespace Model
 		{
 			GameObject go = new GameObject();
 			BehaviorNodeConfig nodeConfig = go.AddComponent<BehaviorNodeConfig>();
-			nodeConfig.id = nodeData.nodeId;
-			nodeConfig.name = nodeData.name;
-			go.name = nodeData.name;
-			nodeConfig.describe = nodeData.describe;
-			foreach (KeyValuePair<string, object> args in nodeData.args_dict.Dict())
+			nodeConfig.id = nodeData.Id;
+			nodeConfig.name = nodeData.Name;
+			go.name = nodeData.Name;
+			nodeConfig.describe = nodeData.Desc;
+			foreach (KeyValuePair<string, object> args in nodeData.Args.Dict())
 			{
-				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
+				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.Name, args.Key);
 				try
 				{
 					string fieldName = args.Key;
@@ -28,7 +28,7 @@ namespace Model
 					FieldInfo fieldNameInfo = type.GetField("fieldName");
 					fieldNameInfo.SetValue(comp, fieldName);
 					FieldInfo fieldValueinfo = type.GetField("fieldValue");
-					if (BehaviorTreeArgsDict.IsEnumType(originType))
+					if (TypeHelper.IsEnumType(originType))
 					{
 						fieldValue = fieldValue.ToString();
 					}
@@ -36,7 +36,7 @@ namespace Model
 				}
 				catch (Exception e)
 				{
-					throw new GameException($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType} {e}");
+					throw new GameException($"transform failed,nodeName:{nodeData.Name}  fieldName:{args.Key} fieldType:{originType} {e}");
 				}
 			}
 			foreach (NodeProto child in nodeData.children)
@@ -50,10 +50,10 @@ namespace Model
 		public static NodeProto ConfigToNode(BehaviorNodeConfig nodeProto)
 		{
 			NodeProto nodeData = new NodeProto();
-			nodeData.nodeId = nodeProto.id;
-			nodeData.name = nodeProto.name;
-			nodeData.describe = nodeProto.describe;
-			nodeData.args_dict = nodeProto.GetArgsDict();
+			nodeData.Id = nodeProto.id;
+			nodeData.Name = nodeProto.name;
+			nodeData.Desc = nodeProto.describe;
+			nodeData.Args = nodeProto.GetArgsDict();
 			nodeData.children = new List<NodeProto>();
 			foreach (Transform child in nodeProto.gameObject.transform)
 			{

@@ -15,20 +15,20 @@ namespace MyEditor
 
 	public class BehaviorNodeData
 	{
-		public int nodeId;
+		public int Id;
 
-		public string name;
+		public string Name;
 
-		public string describe = "";
+		public string Desc = "";
 
 		public List<BehaviorNodeData> children = new List<BehaviorNodeData>();
 
-		public BehaviorTreeArgsDict args_dict = new BehaviorTreeArgsDict();
+		public BehaviorTreeArgsDict Args = new BehaviorTreeArgsDict();
 
 		/// <summary>
 		///  
 		/// </summary>
-		public string error = "";
+		public string Error = "";
 
 		public NodeDesigner NodeDesigner { get; set; }
 
@@ -52,7 +52,7 @@ namespace MyEditor
 
 		public BehaviorNodeData(string proto_name)
 		{
-			name = proto_name;
+			this.Name = proto_name;
 			this.Proto = BehaviorManager.Instance.GetNodeTypeProto(proto_name);
 			if (this.Proto == null)
 			{
@@ -63,7 +63,7 @@ namespace MyEditor
 
 			foreach (NodeFieldDesc args_desc in this.Proto.new_args_desc)
 			{
-				args_dict.SetKeyValueComp(args_desc.name, args_desc.value);
+				this.Args.SetKeyValueComp(args_desc.name, args_desc.value);
 			}
 
 			foreach (BehaviorNodeData child in children)
@@ -108,7 +108,7 @@ namespace MyEditor
 
 		public void ResetId()
 		{
-			this.nodeId = BehaviorManager.Instance.AutoNodeId();
+			this.Id = BehaviorManager.Instance.AutoNodeId();
 			foreach (BehaviorNodeData child in children)
 			{
 				child.ResetId();

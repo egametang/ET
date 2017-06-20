@@ -14,7 +14,7 @@ namespace Model
 
 		public BTEditorTree(BehaviorTreeConfig config)
 		{
-			Type rootType = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{config.RootNodeProto.name}");
+			Type rootType = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{config.RootNodeProto.Name}");
 			Node root = (Node) Activator.CreateInstance(rootType, config.RootNodeProto);
 			root.Id = BehaviorManager.NodeIdStartIndex;
 			Queue<NodeProto> protoStack = new Queue<NodeProto>();
@@ -26,14 +26,14 @@ namespace Model
 				NodeProto p = protoStack.Dequeue();
 				Node node = nodeStack.Dequeue();
 
-				foreach (KeyValuePair<string, object> argsItem in p.args_dict.Dict())
+				foreach (KeyValuePair<string, object> argsItem in p.Args.Dict())
 				{
 					FieldInfo fieldInfo = node.GetType().GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 					fieldInfo.SetValue(node, argsItem.Value);
 				}
 				foreach (NodeProto child in p.Children)
 				{
-					Type t = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{child.name}");
+					Type t = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{child.Name}");
 					Node childNode = (Node) Activator.CreateInstance(t, child);
 					AddChild(childNode, node);
 					protoStack.Enqueue(child);
@@ -271,13 +271,13 @@ namespace Model
 		private static NodeProto GetNodeProtoFromNode(Node node)
 		{
 			NodeProto np = new NodeProto();
-			np.nodeId = (int) node.Id;
+			np.Id = (int) node.Id;
 			FieldInfo[] mens = node.GetType().GetFields();
-			np.describe = node.Description;
-			np.name = node.GetType().Name;
+			np.Desc = node.Description;
+			np.Name = node.GetType().Name;
 			foreach (FieldInfo men in mens)
 			{
-				np.args_dict.SetKeyValueComp(men.Name, men.GetValue(node));
+				np.Args.SetKeyValueComp(men.Name, men.GetValue(node));
 			}
 			return np;
 		}

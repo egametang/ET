@@ -12,8 +12,8 @@ namespace Model
 
 		protected Node(NodeProto nodeProto)
 		{
-			this.id = nodeProto.nodeId;
-			this.description = nodeProto.describe;
+			this.id = nodeProto.Id;
+			this.description = nodeProto.Desc;
 			this.NodeProto = nodeProto;
 		}
 
@@ -61,7 +61,7 @@ namespace Model
 		{
 			get
 			{
-				return this.NodeProto.name;
+				return this.NodeProto.Name;
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Model
 				env.Add(BTEnvKey.NodePath, new List<long>());
 			}
 
-			env.Get<List<long>>(BTEnvKey.NodePath).Add(this.NodeProto.nodeId);
+			env.Get<List<long>>(BTEnvKey.NodePath).Add(this.NodeProto.Id);
 			return this.Run(behaviorTree, env);
 		}
 

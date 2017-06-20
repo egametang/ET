@@ -328,12 +328,12 @@ namespace MyEditor
 			}
 			ClientNodeTypeProto proto = mCurBehaviorNode.Proto;
 			GUILayout.Space(10f);
-			GUILayout.Label("节点ID:" + mCurBehaviorNode.nodeId);
-			GUILayout.Label("节点名:" + mCurBehaviorNode.name);
+			GUILayout.Label("节点ID:" + mCurBehaviorNode.Id);
+			GUILayout.Label("节点名:" + mCurBehaviorNode.Name);
 			GUILayout.Label("说明:");
 			GUILayout.Label(proto.describe);
 			GUILayout.Label("描述:");
-			mCurBehaviorNode.describe = EditorGUILayout.TextArea(mCurBehaviorNode.describe, GUILayout.Height(50f));
+			mCurBehaviorNode.Desc = EditorGUILayout.TextArea(mCurBehaviorNode.Desc, GUILayout.Height(50f));
 
 			DrawAllValue(proto);
 		}
@@ -384,9 +384,16 @@ namespace MyEditor
 				NodeFieldDesc desc = fieldList[i];
 				Type fieldType = ExportNodeTypeConfig.GetFieldType(nodeName, desc.name);
 				ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
-				object newValue = null;
 
-				if (BehaviorTreeArgsDict.IsStringType(fieldType))
+				// 如果不存在这个参数，给一个默认的
+				if (!mCurBehaviorNode.Args.ContainsKey(desc.name))
+				{
+					object obj = desc.value ?? BTTypeManager.GetDefaultValue(fieldType);
+					mCurBehaviorNode.Args.Add(desc.name, obj);
+				}
+
+				object newValue = null;
+				if (TypeHelper.IsStringType(fieldType))
 				{
 					if (nodeParamType == NodeParamType.Input)
 					{
@@ -401,66 +408,55 @@ namespace MyEditor
 						newValue = TextFieldValue(desc);
 					}
 				}
-				else if (BehaviorTreeArgsDict.IsFloatType(fieldType))
+				else if (TypeHelper.IsFloatType(fieldType))
 				{
 					newValue = FloatFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsDoubleType(fieldType))
+				else if (TypeHelper.IsDoubleType(fieldType))
 				{
 					newValue = DoubletFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsIntType(fieldType))
+				else if (TypeHelper.IsIntType(fieldType))
 				{
 					newValue = IntFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsLongType(fieldType))
+				else if (TypeHelper.IsLongType(fieldType))
 				{
 					newValue = LongFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsBoolType(fieldType))
+				else if (TypeHelper.IsBoolType(fieldType))
 				{
 					newValue = BoolFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsObjectType(fieldType))
+				else if (TypeHelper.IsObjectType(fieldType))
 				{
 					newValue = ObjectFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsIntArrType(fieldType))
+				else if (TypeHelper.IsIntArrType(fieldType))
 				{
 					newValue = IntArrFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsLongArrType(fieldType))
+				else if (TypeHelper.IsLongArrType(fieldType))
 				{
 					newValue = LongArrFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsStringArrType(fieldType))
+				else if (TypeHelper.IsStringArrType(fieldType))
 				{
 					newValue = StrArrFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsFloatArrType(fieldType))
+				else if (TypeHelper.IsFloatArrType(fieldType))
 				{
 					newValue = FloatArrFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsDoubleArrType(fieldType))
+				else if (TypeHelper.IsDoubleArrType(fieldType))
 				{
 					newValue = DoubleArrFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsEnumType(fieldType))
+				else if (TypeHelper.IsEnumType(fieldType))
 				{
-					if (nodeParamType == NodeParamType.Input)
-					{
-						newValue = InputEnumFieldValue(desc);
-					}
-					else if (nodeParamType == NodeParamType.Output)
-					{
-						newValue = OutPutEnumFieldValue(desc);
-					}
-					else
-					{
-						newValue = EnumFieldValue(desc);
-					}
+					newValue = EnumFieldValue(desc);
 				}
-				else if (BehaviorTreeArgsDict.IsObjectArrayType(fieldType))
+				else if (TypeHelper.IsObjectArrayType(fieldType))
 				{
 					newValue = ObjectArrFieldValue(desc);
 				}
@@ -469,20 +465,20 @@ namespace MyEditor
 					Log.Error($"行为树节点暂时未支持此类型:{fieldType}！");
 					return;
 				}
-				mCurBehaviorNode.args_dict.SetKeyValueComp(desc.name, newValue);
+				mCurBehaviorNode.Args.SetKeyValueComp(desc.name, newValue);
 			}
 		}
 
 		private object ObjectFieldValue(NodeFieldDesc desc)
 		{
-			Object oldValue = (Object) mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
+			Object oldValue = (Object) mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			Object newValue = EditorGUILayout.ObjectField("", oldValue, desc.type, false);
 			if (newValue == null)
 			{
 				return null;
 			}
-			if (BehaviorTreeArgsDict.IsGameObjectType(desc.type) && !BehaviorTreeArgsDict.SatisfyCondition((GameObject) newValue, desc.constraintTypes))
+			if (TypeHelper.IsGameObjectType(desc.type) && !BehaviorTreeArgsDict.SatisfyCondition((GameObject) newValue, desc.constraintTypes))
 			{
 				return null;
 			}
@@ -499,13 +495,7 @@ namespace MyEditor
 
 		private object TextFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? "";
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			string oldValue = (string)obj;
+			string oldValue = (string)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.TextField("", oldValue);
 			return newValue;
@@ -513,13 +503,7 @@ namespace MyEditor
 
 		private object BoolFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? false;
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			bool oldValue = (bool)obj;
+			bool oldValue = (bool)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.Toggle("", oldValue);
 			return newValue;
@@ -527,13 +511,7 @@ namespace MyEditor
 
 		private object IntFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? default(int);
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			int oldValue = (int)obj;
+			int oldValue = (int)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.IntField("", oldValue);
 			return newValue;
@@ -541,13 +519,7 @@ namespace MyEditor
 
 		private object LongFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? default(long);
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			long oldValue = (long)obj;
+			long oldValue = (long)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.LongField("", oldValue);
 			return newValue;
@@ -555,13 +527,7 @@ namespace MyEditor
 
 		private object FloatFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? default(float);
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			float oldValue = (float) obj;
+			float oldValue = (float)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.FloatField("", oldValue);
 			return newValue;
@@ -569,13 +535,7 @@ namespace MyEditor
 
 		private object DoubletFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? default(double);
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			double oldValue = (double)obj;
+			double oldValue = (double)mCurBehaviorNode.Args.Get(desc.name);
 			EditorGUILayout.LabelField(GetPropDesc(desc));
 			object newValue = EditorGUILayout.DoubleField("", oldValue);
 			return newValue;
@@ -585,13 +545,7 @@ namespace MyEditor
 
 		private object StrArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new string[]{};
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			string[] oldValue = (string[])obj;
+			string[] oldValue = (string[])mCurBehaviorNode.Args.Get(desc.name);
 			string[] newValue = CustomArrayField.StringArrFieldValue(ref foldStrArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -600,13 +554,7 @@ namespace MyEditor
 
 		private object IntArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new int[] { };
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			int[] oldValue = (int[])obj;
+			int[] oldValue = (int[])mCurBehaviorNode.Args.Get(desc.name);
 			int[] newValue = CustomArrayField.IntArrFieldValue(ref foldIntArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -615,13 +563,7 @@ namespace MyEditor
 
 		private object LongArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new long[] { };
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			long[] oldValue = (long[])obj;
+			long[] oldValue = (long[])mCurBehaviorNode.Args.Get(desc.name);
 			long[] newValue = CustomArrayField.LongArrFieldValue(ref foldLongArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -630,13 +572,7 @@ namespace MyEditor
 
 		private object FloatArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new float[] { };
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			float[] oldValue = (float[])obj;
+			float[] oldValue = (float[])mCurBehaviorNode.Args.Get(desc.name);
 			float[] newValue = CustomArrayField.FloatArrFieldValue(ref foldFloatArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -645,13 +581,7 @@ namespace MyEditor
 
 		private object DoubleArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new double[] { };
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			double[] oldValue = (double[])obj;
+			double[] oldValue = (double[])mCurBehaviorNode.Args.Get(desc.name);
 			double[] newValue = CustomArrayField.DoubleArrFieldValue(ref foldDoubleArr, GetPropDesc(desc), oldValue);
 			return newValue;
 		}
@@ -660,20 +590,14 @@ namespace MyEditor
 
 		private object ObjectArrFieldValue(NodeFieldDesc desc)
 		{
-			object obj = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name);
-			if (obj == null)
-			{
-				obj = desc.value ?? new Object[] { };
-				mCurBehaviorNode.args_dict.Add(desc.name, obj);
-			}
-			Object[] oldValue = (Object[])obj;
+			Object[] oldValue = (Object[])mCurBehaviorNode.Args.Get(desc.name);
 			Object[] newValue = CustomArrayField.ObjectArrFieldValue(ref foldObjectArr, GetPropDesc(desc), oldValue, desc);
 			return newValue;
 		}
 
 		private object OutPutEnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.Args.Get(desc.name)?.ToString();
 			if (string.IsNullOrEmpty(oldValue))
 			{
 				oldValue = BTEnvKey.None;
@@ -706,7 +630,7 @@ namespace MyEditor
 
 		private object InputEnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.Args.Get(desc.name)?.ToString();
 			string[] enumValueArr = BehaviorManager.Instance.GetCanInPutEnvKeyArray(mCurBehaviorNode, desc);
 			if (enumValueArr.Length == 0)
 			{
@@ -738,7 +662,7 @@ namespace MyEditor
 
 		private object EnumFieldValue(NodeFieldDesc desc)
 		{
-			string oldValue = mCurBehaviorNode.args_dict.GetTreeDictValue(desc.name)?.ToString();
+			string oldValue = mCurBehaviorNode.Args.Get(desc.name)?.ToString();
 			if (string.IsNullOrEmpty(oldValue))
 			{
 				oldValue = GetDefaultEnumValue(desc.type);

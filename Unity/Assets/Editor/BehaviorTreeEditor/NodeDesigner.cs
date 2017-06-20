@@ -91,7 +91,7 @@ namespace MyEditor
 
 		public void Init()
 		{
-			NodeData.Proto = BehaviorManager.Instance.GetNodeTypeProto(NodeData.name);
+			NodeData.Proto = BehaviorManager.Instance.GetNodeTypeProto(NodeData.Name);
 			string[] arr = NodeData.Proto.style.Split('/');
 			string style = arr.Length > 0? arr[0] : "";
 			if (style == "")
@@ -108,7 +108,7 @@ namespace MyEditor
 						style = "orange";
 						break;
 				}
-				switch (NodeData.name)
+				switch (NodeData.Name)
 				{
 					case "Sequence":
 						style = "blue";
@@ -131,7 +131,7 @@ namespace MyEditor
 			}
 			if (mBoxTex == null)
 			{
-				Log.Info("mBoxTex null " + NodeData.nodeId);
+				Log.Info("mBoxTex null " + NodeData.Id);
 			}
 			Width = mBoxTex.width / 2;
 			Height = mBoxTex.height / 2;
@@ -198,7 +198,7 @@ namespace MyEditor
 			style.fontSize = 12;
 			style.wordWrap = true;
 			string deprecatedDesc = NodeData.Proto.isDeprecated? $"({NodeData.Proto.deprecatedDesc})" : "";
-			GUI.Label(new Rect(Pos.x - Width / 2 + 6f, Pos.y, Width - 12f, Height / 2.1f), NodeData.describe + deprecatedDesc, style);
+			GUI.Label(new Rect(Pos.x - Width / 2 + 6f, Pos.y, Width - 12f, Height / 2.1f), NodeData.Desc + deprecatedDesc, style);
 
 			tex = null;
 			switch (NodeData.NodeDeubgState)

@@ -17,17 +17,17 @@ namespace MyEditor
 
 		public static void HasUseNode(NodeProto node, string treePath)
 		{
-			if (string.IsNullOrEmpty(node.name))
+			if (string.IsNullOrEmpty(node.Name))
 			{
 				Log.Error($"node name can not be empty!! {treePath}");
 			}
-			if (!mUseNodeDict.ContainsKey(node.name))
+			if (!mUseNodeDict.ContainsKey(node.Name))
 			{
-				Log.Warning($"{node.name} not exist!!!");
+				Log.Warning($"{node.Name} not exist!!!");
 			}
 			else
 			{
-				mUseNodeDict[node.name] = true;
+				mUseNodeDict[node.Name] = true;
 			}
 			for (int i = 0; i < node.children.Count; i++)
 			{
@@ -51,7 +51,7 @@ namespace MyEditor
 
 		public static bool HasNode(NodeProto node, string name)
 		{
-			if (node.name == name)
+			if (node.Name == name)
 			{
 				return true;
 			}
@@ -67,7 +67,7 @@ namespace MyEditor
 
 		public static bool HasNodeField(NodeProto node, Type searchType, string prefabPath)
 		{
-			FieldInfo[] fieldInfos = ExportNodeTypeConfig.GetFieldInfos(node.name);
+			FieldInfo[] fieldInfos = ExportNodeTypeConfig.GetFieldInfos(node.Name);
 			foreach (FieldInfo fieldInfo in fieldInfos)
 			{
 				if (fieldInfo.FieldType == searchType)

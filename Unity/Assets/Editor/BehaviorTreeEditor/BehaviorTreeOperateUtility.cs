@@ -23,7 +23,7 @@ namespace MyEditor
 
 		public void SetDescribe(string desc)
 		{
-			Proto.describe = desc;
+			Proto.Desc = desc;
 		}
 
 		public void Apply()
@@ -31,7 +31,7 @@ namespace MyEditor
 			FieldInfo[] mems = Node.GetType().GetFields();
 			foreach (FieldInfo mem in mems)
 			{
-				Proto.args_dict.SetKeyValueComp(mem.Name, mem.GetValue(Node));
+				Proto.Args.SetKeyValueComp(mem.Name, mem.GetValue(Node));
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace MyEditor
 
 		public void UpdateData()
 		{
-			foreach (KeyValuePair<string, object> argsItem in Proto.args_dict.Dict())
+			foreach (KeyValuePair<string, object> argsItem in Proto.Args.Dict())
 			{
 				FieldInfo fieldInfo = typeof(T).GetField(argsItem.Key, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 				fieldInfo.SetValue(Node, argsItem.Value);
@@ -59,7 +59,7 @@ namespace MyEditor
 		/// <returns></returns>
 		public static NodeProto NodeProtoParamClone(NodeProto p)
 		{
-			NodeProto newP = new NodeProto(p.args_dict.Clone());
+			NodeProto newP = new NodeProto(p.Args.Clone());
 			return newP;
 		}
 
@@ -123,7 +123,7 @@ namespace MyEditor
 		public static BehaviourTreeNodeProxy<T> CreateNode<T>() where T : Node
 		{
 			NodeProto p = new NodeProto();
-			p.name = typeof(T).Name;
+			p.Name = typeof(T).Name;
 			BehaviourTreeNodeProxy<T> proxy = new BehaviourTreeNodeProxy<T>(p);
 			return proxy;
 		}
@@ -139,7 +139,7 @@ namespace MyEditor
 		{
 			foreach (NodeProto proto in list)
 			{
-				if (proto.describe == name)
+				if (proto.Desc == name)
 				{
 					p = proto;
 					return true;

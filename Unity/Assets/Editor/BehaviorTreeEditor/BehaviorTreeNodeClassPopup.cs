@@ -10,14 +10,13 @@ namespace MyEditor
 	{
 		private string mSearchNode = "";
 		private Vector2 mTreeScrollPos = Vector2.zero;
-		private int mNodeCount;
-		private readonly float mWidth = 400f;
+		private const float mWidth = 400f;
 
 		public GraphDesigner GraphDesigner;
 		private SubWinType mSubWinType;
 		public Rect windowRect; //子窗口的大小和位置
-		string[] mEnumNodeTypeArr;
-		Rect toolbarRect = new Rect(0f, 0f, 0, 0);
+		private string[] mEnumNodeTypeArr;
+		private Rect toolbarRect = new Rect(0f, 0f, 0, 0);
 		private int mEnumNodeTypeSelection;
 
 		public string DrawSearchList()

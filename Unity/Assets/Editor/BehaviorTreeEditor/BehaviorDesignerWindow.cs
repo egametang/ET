@@ -17,9 +17,7 @@ namespace MyEditor
 
 	public class BehaviorDesignerWindow: EditorWindow
 	{
-		private PropertyDesigner mPropDesigner;
-		private RightDesigner mRightDesigner;
-		private SubWinType mSubWinType;
+		private PropertyDesigner propDesigner;
 		private BehaviorTreeNodeClassPopup popUpMenu;
 
 		public GraphDesigner GraphDesigner { get; private set; }
@@ -61,7 +59,7 @@ namespace MyEditor
 			EndWindows(); //标记结束
 		}
 
-		void DoWindow(int unusedWindowID)
+		private void DoWindow(int unusedWindowID)
 		{
 			popUpMenu.DrawSearchList();
 			GUI.DragWindow(); //画出子窗口
@@ -70,19 +68,18 @@ namespace MyEditor
 		public void Awake()
 		{
 			this.GraphDesigner = CreateInstance<GraphDesigner>();
-			mPropDesigner = CreateInstance<PropertyDesigner>();
-			// mRightDesigner = new RightDesigner();
-			popUpMenu = new BehaviorTreeNodeClassPopup();
-			popUpMenu.GraphDesigner = this.GraphDesigner;
-			//mGraphDesigner.onSelectTree();
+			this.propDesigner = CreateInstance<PropertyDesigner>();
+			popUpMenu = new BehaviorTreeNodeClassPopup
+			{
+				GraphDesigner = this.GraphDesigner
+			};
 		}
 
 		public void OnGUI()
 		{
 			HandleEvents();
-			mPropDesigner?.Draw();
+			this.propDesigner?.Draw();
 			this.GraphDesigner?.Draw(this.position);
-			//  mRightDesigner?.Draw();
 			if (IsShowSubWin)
 			{
 				DrawSubWindow();
@@ -105,7 +102,8 @@ namespace MyEditor
 						BehaviorManager.Instance.SaveAll();
 					}
 					break;
-				case EventType.MouseDown: break;
+				case EventType.MouseDown:
+					break;
 			}
 		}
 
@@ -116,7 +114,7 @@ namespace MyEditor
 
 		public void onUpdatePropList(params object[] list)
 		{
-			mPropDesigner.SetToolBar(0);
+			this.propDesigner.SetToolBar(0);
 		}
 
 		public void onShowMessage(params object[] list)
@@ -133,7 +131,7 @@ namespace MyEditor
 				return;
 			}
 			this.GraphDesigner.onSelectNode(list);
-			mPropDesigner.onSelectNode(list);
+			this.propDesigner.onSelectNode(list);
 			//      mRightDesigner.onSelectNode(list);
 		}
 

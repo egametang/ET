@@ -38,10 +38,10 @@ namespace Model
 		{
 			NodeProto nodeProto = new NodeProto
 			{
-				nodeId = behaviorNodeConfig.id,
-				name = behaviorNodeConfig.name,
-				describe = behaviorNodeConfig.describe,
-				args_dict = behaviorNodeConfig.GetArgsDict(),
+				Id = behaviorNodeConfig.id,
+				Name = behaviorNodeConfig.name,
+				Desc = behaviorNodeConfig.describe,
+				Args = behaviorNodeConfig.GetArgsDict(),
 				children = new List<NodeProto>()
 			};
 			foreach (Transform child in behaviorNodeConfig.gameObject.transform)

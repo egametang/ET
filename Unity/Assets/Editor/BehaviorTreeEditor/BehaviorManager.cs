@@ -111,7 +111,7 @@ namespace MyEditor
 
 		public void printTree(BehaviorNodeData nodeData)
 		{
-			Log.Info($"printTree  :  {nodeData.nodeId} {nodeData}");
+			Log.Info($"printTree  :  {nodeData.Id} {nodeData}");
 			foreach (BehaviorNodeData data in nodeData.children)
 			{
 				printTree(data);
@@ -126,15 +126,15 @@ namespace MyEditor
 
 		public bool CheckNodeInput(NodeProto nodeProto)
 		{
-			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof(NodeInputAttribute));
+			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.Name, typeof(NodeInputAttribute));
 			foreach (NodeFieldDesc desc in list)
 			{
 				List<string> canInputList = GetCanInPutEnvKeyList(this.NodeProtoToBehaviorNodeData(nodeProto), desc);
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
+				string value = nodeProto.Args.Get(desc.name)?.ToString();
 				List<string> resultList = canInputList.FindAll(str => { return str == value; });
 				if (resultList.Count == 0)
 				{
-					Log.Error($"{nodeProto.name}节点(id:{nodeProto.nodeId})的{value}输入值非法!");
+					Log.Error($"{nodeProto.Name}节点(id:{nodeProto.Id})的{value}输入值非法!");
 					return false;
 				}
 			}
@@ -180,9 +180,9 @@ namespace MyEditor
 		
 		public void RemoveUnusedArgs(NodeProto nodeProto)
 		{
-			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeProto.name);
+			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeProto.Name);
 			List<string> unUsedList = new List<string>();
-			foreach (KeyValuePair<string, object> item in nodeProto.args_dict.Dict())
+			foreach (KeyValuePair<string, object> item in nodeProto.Args.Dict())
 			{
 				if (!proto.new_args_desc.Exists(a => (a.name == item.Key)))
 				{
@@ -191,7 +191,7 @@ namespace MyEditor
 			}
 			foreach (string item in unUsedList)
 			{
-				nodeProto.args_dict.Remove(item);
+				nodeProto.Args.Remove(item);
 			}
 			for (int i = 0; i < nodeProto.children.Count; i++)
 			{
@@ -201,7 +201,7 @@ namespace MyEditor
 
 		private bool CheckHasTreeDesc()
 		{
-			if (string.IsNullOrEmpty(CurTree.Root.describe))
+			if (string.IsNullOrEmpty(CurTree.Root.Desc))
 			{
 				Log.Error("行为树描述不可以不填！！！！！！");
 				return false;
@@ -245,7 +245,7 @@ namespace MyEditor
 			}
 			catch (Exception e)
 			{
-				Log.Error($"tree name : {tree.BehaviorNodeData.name} {e}");
+				Log.Error($"tree name : {tree.BehaviorNodeData.Name} {e}");
 			}
 
 			config.RootNodeConfig.gameObject.transform.parent = config.gameObject.transform;
@@ -255,12 +255,12 @@ namespace MyEditor
 		public BehaviorNodeData NodeConfigToNodeData(BehaviorNodeConfig nodeProto)
 		{
 			BehaviorNodeData nodeData = new BehaviorNodeData();
-			nodeData.nodeId = nodeProto.id;
-			nodeData.name = nodeProto.name;
-			nodeData.describe = nodeProto.describe;
-			nodeData.args_dict = nodeProto.GetArgsDict();
+			nodeData.Id = nodeProto.id;
+			nodeData.Name = nodeProto.name;
+			nodeData.Desc = nodeProto.describe;
+			nodeData.Args = nodeProto.GetArgsDict();
 			nodeData.children = new List<BehaviorNodeData>();
-			//             foreach (var item in nodeData.args_dict)
+			//             foreach (var item in nodeData.Args)
 			//             {
 			//                 Log.Info($"key :{item.Key} value :{item.Value}");
 			//             }
@@ -277,19 +277,19 @@ namespace MyEditor
 		{
 			GameObject go = new GameObject();
 			BehaviorNodeConfig nodeConfig = go.AddComponent<BehaviorNodeConfig>();
-			nodeConfig.id = nodeData.nodeId;
-			nodeConfig.name = nodeData.name;
-			go.name = nodeData.name;
-			nodeConfig.describe = nodeData.describe;
+			nodeConfig.id = nodeData.Id;
+			nodeConfig.name = nodeData.Name;
+			go.name = nodeData.Name;
+			nodeConfig.describe = nodeData.Desc;
 			List<string> unUseList = new List<string>();
-			foreach (KeyValuePair<string, object> args in nodeData.args_dict.Dict())
+			foreach (KeyValuePair<string, object> args in nodeData.Args.Dict())
 			{
-				if (!ExportNodeTypeConfig.NodeHasField(nodeData.name, args.Key))
+				if (!ExportNodeTypeConfig.NodeHasField(nodeData.Name, args.Key))
 				{
 					unUseList.Add(args.Key);
 					continue;
 				}
-				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.name, args.Key);
+				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.Name, args.Key);
 				try
 				{
 					string fieldName = args.Key;
@@ -299,7 +299,7 @@ namespace MyEditor
 					FieldInfo fieldNameInfo = type.GetField("fieldName");
 					fieldNameInfo.SetValue(comp, fieldName);
 					FieldInfo fieldValueinfo = type.GetField("fieldValue");
-					if (BehaviorTreeArgsDict.IsEnumType(originType))
+					if (TypeHelper.IsEnumType(originType))
 					{
 						fieldValue = fieldValue.ToString();
 					}
@@ -307,12 +307,12 @@ namespace MyEditor
 				}
 				catch (Exception e)
 				{
-					throw new Exception($"transform failed,nodeName:{nodeData.name}  fieldName:{args.Key} fieldType:{originType}", e);
+					throw new Exception($"transform failed,nodeName:{nodeData.Name}  fieldName:{args.Key} fieldType:{originType}", e);
 				}
 			}
 			foreach (string key in unUseList)
 			{
-				nodeData.args_dict.Remove(key);
+				nodeData.Args.Remove(key);
 			}
 			foreach (BehaviorNodeData child in nodeData.children)
 			{
@@ -326,10 +326,10 @@ namespace MyEditor
 		{
 			BehaviorNodeData nodeData = new BehaviorNodeData
 			{
-				nodeId = nodeProto.nodeId,
-				name = nodeProto.name,
-				describe = nodeProto.describe,
-				args_dict = nodeProto.args_dict,
+				Id = nodeProto.Id,
+				Name = nodeProto.Name,
+				Desc = nodeProto.Desc,
+				Args = nodeProto.Args,
 				children = new List<BehaviorNodeData>()
 			};
 			foreach (NodeProto child in nodeProto.children)
@@ -343,10 +343,10 @@ namespace MyEditor
 		{
 			NodeProto nodeProto = new NodeProto
 			{
-				nodeId = nodeData.nodeId,
-				name = nodeData.name,
-				describe = nodeData.describe,
-				args_dict = nodeData.args_dict,
+				Id = nodeData.Id,
+				Name = nodeData.Name,
+				Desc = nodeData.Desc,
+				Args = nodeData.Args,
 				children = new List<NodeProto>()
 			};
 			foreach (BehaviorNodeData child in nodeData.children)
@@ -374,18 +374,18 @@ namespace MyEditor
 				return null;
 			}
 			BehaviorNodeData node = new BehaviorNodeData(nodeName);
-			node.nodeId = AutoNodeId();
-			node.name = nodeName;
+			node.Id = AutoNodeId();
+			node.Name = nodeName;
 			return node;
 		}
 
 		public BehaviorNodeData CopyNode(BehaviorNodeData node)
 		{
 			BehaviorNodeData copyNode = new BehaviorNodeData();
-			copyNode.name = node.name;
-			copyNode.describe = node.describe;
+			copyNode.Name = node.Name;
+			copyNode.Desc = node.Desc;
 			copyNode.Pos = node.Pos;
-			copyNode.args_dict = node.args_dict.Clone();
+			copyNode.Args = node.Args.Clone();
 			List<BehaviorNodeData> list = new List<BehaviorNodeData>();
 			foreach (BehaviorNodeData item in node.children)
 			{
@@ -464,7 +464,7 @@ namespace MyEditor
 
 		private static List<NodeFieldDesc> _GetNodeOutPutEnvKeyList(NodeProto nodeProto, NodeProto inputNode, NodeFieldDesc desc = null)
 		{
-			if (nodeProto.nodeId >= inputNode.nodeId)
+			if (nodeProto.Id >= inputNode.Id)
 			{
 				return new List<NodeFieldDesc>();
 			}
@@ -472,15 +472,15 @@ namespace MyEditor
 
 			if (desc == null)
 			{
-				list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof(NodeOutputAttribute));
+				list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.Name, typeof(NodeOutputAttribute));
 			}
 			else
 			{
-				list = ExportNodeTypeConfig.GetNodeFieldInOutPutFilterDescList(nodeProto.name, typeof(NodeOutputAttribute), desc.envKeyType);
+				list = ExportNodeTypeConfig.GetNodeFieldInOutPutFilterDescList(nodeProto.Name, typeof(NodeOutputAttribute), desc.envKeyType);
 			}
 			for (int i = 0; i < list.Count; i++)
 			{
-				object value = nodeProto.args_dict.GetTreeDictValue(list[i].name);
+				object value = nodeProto.Args.Get(list[i].name);
 				list[i].value = value;
 			}
 
@@ -494,11 +494,11 @@ namespace MyEditor
 		public List<string> GetSelectNodeInputValueList(NodeProto nodeProto)
 		{
 			List<string> resultList = new List<string>();
-			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof(NodeInputAttribute));
+			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.Name, typeof(NodeInputAttribute));
 
 			foreach (NodeFieldDesc desc in list)
 			{
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
+				string value = nodeProto.Args.Get(desc.name)?.ToString();
 				resultList.Add(value);
 			}
 			return resultList;
@@ -515,14 +515,14 @@ namespace MyEditor
 		public bool IsHighLight(BehaviorNodeData node)
 		{
 			NodeProto nodeProto = this.BehaviorNodeDataToNodeProto(node);
-			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.name, typeof(NodeOutputAttribute));
+			List<NodeFieldDesc> list = ExportNodeTypeConfig.GetNodeFieldInOutPutDescList(nodeProto.Name, typeof(NodeOutputAttribute));
 			foreach (NodeFieldDesc desc in list)
 			{
-				if (!nodeProto.args_dict.ContainsKey(desc.name))
+				if (!nodeProto.Args.ContainsKey(desc.name))
 				{
 					continue;
 				}
-				string value = nodeProto.args_dict.GetTreeDictValue(desc.name)?.ToString();
+				string value = nodeProto.Args.Get(desc.name)?.ToString();
 				List<string> resultList = inputValueList.FindAll(str => { return str == value; });
 				if (resultList.Count > 0)
 				{
@@ -570,7 +570,7 @@ namespace MyEditor
 		public BehaviorNodeData GetNodeData(BehaviorNodeData nodeData, int nodeId)
 		{
 			BehaviorNodeData result = null;
-			if (nodeData.nodeId == nodeId)
+			if (nodeData.Id == nodeId)
 			{
 				return nodeData;
 			}
@@ -587,7 +587,7 @@ namespace MyEditor
 
 		public BehaviorNodeData GetNode(BehaviorNodeData nodeData, int nodeId)
 		{
-			if (nodeData.nodeId == nodeId)
+			if (nodeData.Id == nodeId)
 			{
 				return nodeData;
 			}

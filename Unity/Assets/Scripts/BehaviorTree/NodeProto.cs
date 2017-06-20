@@ -4,13 +4,13 @@ namespace Model
 {
 	public class NodeProto
 	{
-		public int nodeId;
+		public int Id;
 
-		public string name;
+		public string Name;
 
-		public string describe = "";
+		public string Desc = "";
 		
-		public BehaviorTreeArgsDict args_dict;
+		public BehaviorTreeArgsDict Args;
 		
 		public List<NodeProto> children = new List<NodeProto>();
 
@@ -28,12 +28,12 @@ namespace Model
 
 		public NodeProto()
 		{
-			this.args_dict = new BehaviorTreeArgsDict();
+			this.Args = new BehaviorTreeArgsDict();
 		}
 
 		public NodeProto(BehaviorTreeArgsDict dict)
 		{
-			this.args_dict = dict;
+			this.Args = dict;
 		}
 	}
 }
