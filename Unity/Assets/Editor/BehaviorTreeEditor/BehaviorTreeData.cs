@@ -1,25 +1,29 @@
 ﻿using System;
-using Model;
+using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace MyEditor
 {
 	[BsonIgnoreExtraElements]
 	[Serializable]
-	public class BehaviorTreeData: AConfig
+	public class BehaviorTreeData
 	{
+		public long Id;
+
 		[BsonElement, BsonIgnoreIfNull]
 		public BehaviorNodeData BehaviorNodeData;
 
 		[BsonElement]
 		public string classify = "";
 
-		public BehaviorTreeData(): base(EntityType.Config)
+		public BehaviorTreeData()
 		{
+			this.Id = IdGenerater.GenerateId();
 		}
 
-		public BehaviorTreeData(long id): base(id, EntityType.Config)
+		public BehaviorTreeData(long id)
 		{
+			this.Id = id;
 		}
 
 		[BsonIgnore]
