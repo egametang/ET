@@ -15,7 +15,7 @@ namespace MyEditor
 		All
 	}
 
-	public static class ExportNodeTypeConfig
+	public static class NodeMetaHelper
 	{
 		public static Dictionary<NodeClassifyType, int> NodeTypeCountDict { get; } = new Dictionary<NodeClassifyType, int>
 		{
@@ -27,13 +27,13 @@ namespace MyEditor
 			{ NodeClassifyType.DataTransform, 0 }
 		};
 
-		public static Dictionary<string, ClientNodeTypeProto> ExportToDict()
+		public static Dictionary<string, NodeMeta> ExportToDict()
 		{
-			Dictionary<string, ClientNodeTypeProto> name2NodeProtoDict = new Dictionary<string, ClientNodeTypeProto>();
+			Dictionary<string, NodeMeta> name2NodeProtoDict = new Dictionary<string, NodeMeta>();
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
-				ClientNodeTypeProto proto = GetNodeTypeProtoFromType(type);
+				NodeMeta proto = GetNodeTypeProtoFromType(type);
 				if (proto == null)
 				{
 					continue;
@@ -48,17 +48,7 @@ namespace MyEditor
 			return Game.EntityEventManager.GetAssembly("Model");
 		}
 
-		public static ClientNodeTypeProto GetNodeTypeProtoFromDll(string name)
-		{
-			Type type = GetNodeType(name);
-			if (type == null)
-			{
-				Log.Error($"不存在类型type:{name}");
-			}
-			return GetNodeTypeProtoFromType(type);
-		}
-
-		public static ClientNodeTypeProto GetNodeTypeProtoFromType(Type type)
+		public static NodeMeta GetNodeTypeProtoFromType(Type type)
 		{
 			object[] nodeAttrs = type.GetCustomAttributes(typeof(NodeAttribute), false);
 			if (nodeAttrs.Length == 0)
@@ -73,7 +63,7 @@ namespace MyEditor
 				nodeDeprecatedAttribute = nodeDeprecatedAttrs[0] as NodeDeprecatedAttribute;
 			}
 
-			ClientNodeTypeProto proto = new ClientNodeTypeProto();
+			NodeMeta proto = new NodeMeta();
 			proto.type = nodeAttribute.ClassifytType.ToString();
 			proto.name = type.Name;
 			proto.describe = nodeAttribute.Desc;

@@ -91,7 +91,7 @@ namespace MyEditor
 
 		public void Init()
 		{
-			NodeData.Proto = BehaviorManager.Instance.GetNodeTypeProto(NodeData.Name);
+			NodeData.Proto = BehaviorManager.Instance.GetNodeMeta(NodeData.Name);
 			string[] arr = NodeData.Proto.style.Split('/');
 			string style = arr.Length > 0? arr[0] : "";
 			if (style == "")

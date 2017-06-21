@@ -18,7 +18,7 @@ namespace Model
 			nodeConfig.describe = nodeData.Desc;
 			foreach (KeyValuePair<string, object> args in nodeData.Args.Dict())
 			{
-				Type originType = ExportNodeTypeConfig.GetFieldType(nodeData.Name, args.Key);
+				Type originType = NodeMetaHelper.GetFieldType(nodeData.Name, args.Key);
 				try
 				{
 					string fieldName = args.Key;

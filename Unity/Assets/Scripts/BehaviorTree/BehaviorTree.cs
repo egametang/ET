@@ -7,7 +7,6 @@ namespace Model
 	public class BehaviorTree
 	{
 		private readonly Node node;
-		public BehaviorTreeConfig behaviorTreeConfig { get; set; }
 		public Scene Scene { get; }
 
 		public string Discription

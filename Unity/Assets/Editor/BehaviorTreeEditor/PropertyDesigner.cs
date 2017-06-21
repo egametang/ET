@@ -114,15 +114,15 @@ namespace MyEditor
 			mNodeFoldout = new FoldoutFolder("所有节点", SelectNodeFolderCallback);
 			mNodeFoldout.Fold = true;
 
-			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<NodeMeta>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
-				List<ClientNodeTypeProto> nodeTypeList = kv.Value;
+				List<NodeMeta> nodeTypeList = kv.Value;
 				FoldoutFolder folder = mNodeFoldout.AddFolder(classify, SelectNodeFolderCallback);
 				folder.Fold = true;
 
 				mNodeCount++;
-				foreach (ClientNodeTypeProto nodeType in nodeTypeList)
+				foreach (NodeMeta nodeType in nodeTypeList)
 				{
 					folder.AddNode(classify, nodeType.name + " (" + nodeType.describe + ")", SelectNodeCallback);
 					mNodeCount++;
@@ -223,7 +223,7 @@ namespace MyEditor
 				{
 					BehaviorManager.Instance.SaveAll();
 				}
-				ClientNodeTypeProto node = BehaviorManager.Instance.GetNodeTypeProto(name);
+				NodeMeta node = BehaviorManager.Instance.GetNodeMeta(name);
 				GUILayout.Label("节点名:" + node.name);
 				GUILayout.Label("描述:" + node.describe);
 			}
@@ -326,7 +326,7 @@ namespace MyEditor
 			{
 				BehaviorManager.Instance.SaveAll();
 			}
-			ClientNodeTypeProto proto = mCurBehaviorNode.Proto;
+			NodeMeta proto = mCurBehaviorNode.Proto;
 			GUILayout.Space(10f);
 			GUILayout.Label("节点ID:" + mCurBehaviorNode.Id);
 			GUILayout.Label("节点名:" + mCurBehaviorNode.Name);
@@ -342,7 +342,7 @@ namespace MyEditor
 		private bool mFoldInput = true;
 		private bool mFoldOutput = true;
 
-		private void DrawAllValue(ClientNodeTypeProto proto)
+		private void DrawAllValue(NodeMeta proto)
 		{
 			List<NodeFieldDesc> paramFieldList = GetFieldDescList(proto.new_args_desc, typeof(NodeFieldAttribute));
 			List<NodeFieldDesc> inputFieldList = GetFieldDescList(proto.new_args_desc, typeof(NodeInputAttribute));
@@ -382,8 +382,8 @@ namespace MyEditor
 			for (int i = 0; i < fieldList.Count; i++)
 			{
 				NodeFieldDesc desc = fieldList[i];
-				Type fieldType = ExportNodeTypeConfig.GetFieldType(nodeName, desc.name);
-				ClientNodeTypeProto clientNode = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(nodeName);
+				Type fieldType = NodeMetaHelper.GetFieldType(nodeName, desc.name);
+				NodeMeta nodeMeta = BehaviorManager.Instance.GetNodeMeta(nodeName);
 
 				// 如果不存在这个参数，给一个默认的
 				if (!mCurBehaviorNode.Args.ContainsKey(desc.name))
@@ -399,7 +399,7 @@ namespace MyEditor
 					{
 						newValue = InputEnumFieldValue(desc);
 					}
-					else if (nodeParamType == NodeParamType.Output && clientNode.classify == NodeClassifyType.Root.ToString())
+					else if (nodeParamType == NodeParamType.Output && nodeMeta.classify == NodeClassifyType.Root.ToString())
 					{
 						newValue = ConstTextFieldValue(desc);
 					}
@@ -605,14 +605,14 @@ namespace MyEditor
 			string[] enumValueArr;
 			if (mCurBehaviorNode.IsRoot() && desc.value.ToString() != BTEnvKey.None)
 			{
-				enumValueArr = new string[1] { desc.value.ToString() };
+				enumValueArr = new string[] { desc.value.ToString() };
 			}
 			else
 			{
 				enumValueArr = BehaviorTreeInOutConstrain.GetEnvKeyEnum(typeof(BTEnvKey));
 				if (enumValueArr.Length == 0)
 				{
-					enumValueArr = new string[1] { BTEnvKey.None };
+					enumValueArr = new string[] { BTEnvKey.None };
 				}
 				if (oldValue == BTEnvKey.None)
 				{
@@ -705,26 +705,29 @@ namespace MyEditor
 
 		public void DrawDebugView()
 		{
-			if (BehaviorManager.Instance.CurBehaviorTree == null)
+			BehaviorTree behaviorTree = BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().BehaviorTree;
+			List<List<long>> treePathList = BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().TreePathList;
+			if (behaviorTree == null)
 			{
 				return;
 			}
-			if (GUILayout.Button($"清空执行记录"))
+			if (GUILayout.Button("清空执行记录"))
 			{
-				BehaviorManager.treePathList.Clear();
+				treePathList.Clear();
 				BehaviorManager.Instance.ClearDebugState();
 			}
-			float offset = 55f;
+			const float offset = 55f;
 			GUILayout.BeginArea(new Rect(0f, 20f, this.mWidth, Screen.height - offset));
-			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
-			                                          new Rect(0f, 0f, this.mWidth - 20f, BehaviorManager.treePathList.Count * 22), false, false);
+			this.mTreeScrollPos = GUI.BeginScrollView(
+				new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
+			    new Rect(0f, 0f, this.mWidth - 20f, treePathList.Count * 22), false, false);
 
-			for (int i = 0; i < BehaviorManager.treePathList.Count; i++)
+			for (int i = 0; i < BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().TreePathList.Count; i++)
 			{
 				if (GUILayout.Button($"frame{i}"))
 				{
 					BehaviorManager.Instance.ClearDebugState();
-					BehaviorManager.Instance.SetDebugState(BehaviorManager.Instance.CurBehaviorTree, BehaviorManager.treePathList[i]);
+					BehaviorManager.Instance.SetDebugState(treePathList[i]);
 				}
 			}
 			GUI.EndScrollView();

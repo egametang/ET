@@ -16,7 +16,7 @@ namespace Model
 		public Type envKeyType;
 	}
 
-	public class ClientNodeTypeProto
+	public class NodeMeta
 	{
 		public string type = "";
 		public string name = "";

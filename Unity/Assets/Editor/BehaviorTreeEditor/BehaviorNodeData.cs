@@ -36,7 +36,7 @@ namespace MyEditor
 		public DebugState NodeDeubgState { get; set; }
 		public string time;
 
-		public ClientNodeTypeProto Proto { get; set; }
+		public NodeMeta Proto { get; set; }
 
 		public List<BehaviorNodeData> Children
 		{
@@ -53,10 +53,10 @@ namespace MyEditor
 		public BehaviorNodeData(string proto_name)
 		{
 			this.Name = proto_name;
-			this.Proto = BehaviorManager.Instance.GetNodeTypeProto(proto_name);
+			this.Proto = BehaviorManager.Instance.GetNodeMeta(proto_name);
 			if (this.Proto == null)
 			{
-				this.Proto = BehaviorManager.Instance.GetNodeTypeProto("Unknow");
+				this.Proto = BehaviorManager.Instance.GetNodeMeta("Unknow");
 				return;
 			}
 			this.Classify = this.Proto.classify;

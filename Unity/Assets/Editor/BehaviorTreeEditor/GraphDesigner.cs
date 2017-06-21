@@ -330,8 +330,8 @@ namespace MyEditor
 				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
 				    BehaviorManager.Instance.CurTree.Root.Id == mSelectedNode.NodeData.Id)
 				{
-					List<ClientNodeTypeProto> list = BehaviorManager.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
-					foreach (ClientNodeTypeProto nodeType in list)
+					List<NodeMeta> list = BehaviorManager.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
+					foreach (NodeMeta nodeType in list)
 					{
 						result.Add(nodeType.name);
 						// menu.AddItem(new GUIContent(string.Format("{0}/{1}", "替换为", nodeType.name)), false, new GenericMenu.MenuFunction2(this.ChangeNodeType), nodeType.name);
@@ -340,9 +340,9 @@ namespace MyEditor
 				else
 				{
 					// NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
-					List<ClientNodeTypeProto> canSubtituteList = BehaviorManager.Instance.AllNodeProtoList;
+					List<NodeMeta> canSubtituteList = BehaviorManager.Instance.AllNodeProtoList;
 					canSubtituteList.Sort(CompareShowName);
-					foreach (ClientNodeTypeProto nodeType in canSubtituteList)
+					foreach (NodeMeta nodeType in canSubtituteList)
 					{
 						if (nodeType.classify == NodeClassifyType.Root.ToString())
 						{
@@ -363,16 +363,16 @@ namespace MyEditor
 		{
 			List<string> result = new List<string>();
 
-			foreach (KeyValuePair<string, List<ClientNodeTypeProto>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<NodeMeta>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
-				List<ClientNodeTypeProto> nodeProtoList = kv.Value;
+				List<NodeMeta> nodeProtoList = kv.Value;
 				nodeProtoList.Sort(CompareShowName);
 				if (classify == NodeClassifyType.Root.ToString())
 				{
 					continue;
 				}
-				foreach (ClientNodeTypeProto node in nodeProtoList)
+				foreach (NodeMeta node in nodeProtoList)
 				{
 					if (mSelectedNode != null && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
 					{
@@ -418,7 +418,7 @@ namespace MyEditor
 				{
 					string menuName = string.Format($"替换成{selectNodeName}");
 					NodeClassifyType value = (NodeClassifyType) Enum.Parse(typeof(NodeClassifyType), selectNodeType);
-					int count = ExportNodeTypeConfig.NodeTypeCountDict[value];
+					int count = NodeMetaHelper.NodeTypeCountDict[value];
 					if (selectNodeType == NodeClassifyType.Root.ToString() || (count == 0 && mSelectedNode.NodeData.Proto.child_limit > 0))
 					{
 						menu.AddDisabledItem(new GUIContent(menuName));
@@ -452,13 +452,13 @@ namespace MyEditor
 			BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.ReplaceNode);
 		}
 
-		private static int CompareShowName(ClientNodeTypeProto clientNodeType1, ClientNodeTypeProto clientNodeType2)
+		private static int CompareShowName(NodeMeta nodeType1, NodeMeta nodeType2)
 		{
-			if (string.IsNullOrEmpty(clientNodeType1.name) || string.IsNullOrEmpty(clientNodeType2.name))
+			if (string.IsNullOrEmpty(nodeType1.name) || string.IsNullOrEmpty(nodeType2.name))
 			{
 				Log.Error("字符串输入参数有误");
 			}
-			return String.CompareOrdinal(clientNodeType1.name, clientNodeType2.name);
+			return String.CompareOrdinal(nodeType1.name, nodeType2.name);
 		}
 
 		public void AutoSort()
@@ -468,7 +468,7 @@ namespace MyEditor
 		
 		private void CreateNode()
 		{
-			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(BehaviorManager.Instance.selectNodeName);
+			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(BehaviorManager.Instance.selectNodeName);
 			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
 			CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
@@ -550,7 +550,7 @@ namespace MyEditor
 		private void ChangeNodeType(object obj)
 		{
 			string nodeType = (string) obj;
-			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(nodeType);
+			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(nodeType);
 			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
 			NodeDesigner oldNode = mSelectedNode;
 			NodeDesigner newNode = new NodeDesigner(nodeData);
@@ -637,7 +637,7 @@ namespace MyEditor
 			string name = (string) list[0];
 			Vector2 pos = (Vector2) list[1];
 
-			ClientNodeTypeProto nodeProto = BehaviorManager.Instance.GetNodeTypeProto(name);
+			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(name);
 			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
 			CreateNode(nodeData, pos);
 		}

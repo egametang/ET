@@ -33,7 +33,7 @@ namespace Model
 
 		private static BehaviorNodeConfig CreateNodeConfig(this BehaviorTreeConfig treeConfig, string name)
 		{
-			ClientNodeTypeProto proto = ExportNodeTypeConfig.GetNodeTypeProtoFromDll(name);
+			NodeMeta proto = BehaviorManager.Instance.GetNodeMeta(name);
 			GameObject go = new GameObject();
 			go.name = name;
 			go.transform.parent = treeConfig.gameObject.transform;

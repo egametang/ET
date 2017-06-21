@@ -12,7 +12,7 @@ namespace MyEditor
 		public delegate void ExcuteTreeOperate(BehaviorTreeConfig treeConfig, string treePath);
 
 		public static Dictionary<int, BehaviorTreeConfig> mId2TreeDict = new Dictionary<int, BehaviorTreeConfig>();
-		public static Dictionary<string, ClientNodeTypeProto> mCientNodeDict;
+		public static Dictionary<string, NodeMeta> mCientNodeDict;
 		public static Dictionary<string, bool> mUseNodeDict = new Dictionary<string, bool>();
 
 		public static void HasUseNode(NodeProto node, string treePath)
@@ -67,7 +67,7 @@ namespace MyEditor
 
 		public static bool HasNodeField(NodeProto node, Type searchType, string prefabPath)
 		{
-			FieldInfo[] fieldInfos = ExportNodeTypeConfig.GetFieldInfos(node.Name);
+			FieldInfo[] fieldInfos = NodeMetaHelper.GetFieldInfos(node.Name);
 			foreach (FieldInfo fieldInfo in fieldInfos)
 			{
 				if (fieldInfo.FieldType == searchType)

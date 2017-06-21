@@ -8,11 +8,12 @@ namespace MyEditor
 	{
 		public void Run(BehaviorTree tree, List<long> pathList)
 		{
-			if (BehaviorManager.Instance.BehaviorTreeConfig != null && tree.behaviorTreeConfig.name == BehaviorManager.Instance.BehaviorTreeConfig.name)
+			if (BehaviorManager.Instance.BehaviorTreeConfig != null)
 			{
-				BehaviorManager.treePathList.Add(pathList);
 				BehaviorManager.Instance.ClearDebugState();
-				BehaviorManager.Instance.SetDebugState(tree, pathList);
+				BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().TreePathList.Add(pathList);
+				BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().BehaviorTree = tree;
+				BehaviorManager.Instance.SetDebugState(pathList);
 			}
 		}
 	}

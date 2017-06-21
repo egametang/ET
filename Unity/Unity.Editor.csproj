@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0b8</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -148,6 +145,7 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeOperateUtility.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeTipsHelper.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeToolWindow.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Component\BehaviorTreeDebugComponent.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\CustomArrayField.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeAfterChangeNodeTypeEvent_SelectNode.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeClickNodeEvent_SelectNode.cs" />
@@ -161,11 +159,11 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeReplaceClickEvent_ReplaceNode.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeRightDesignerDragEvent_ModifyRightBorder.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeRunTreeEvent_ShowDebugInfo.cs" />
-    <Compile Include="Assets\Editor\BehaviorTreeEditor\ExportNodeTypeConfig.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\FoldoutNode.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\GraphDesigner.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeDesigner.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeExtension.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMetaHelper.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\PropertyDesigner.cs" />
     <Compile Include="Assets\Editor\EditorInit.cs" />
     <Compile Include="Assets\Editor\ExportNavmesh.cs" />
@@ -196,64 +194,6 @@
     <Compile Include="Assets\Editor\SDKPorter\XCPlist.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
     <Compile Include="Assets\Editor\ServerManagerEditor\ServerManagerEditor.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Demo\DemoWindow.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Button.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\ColorField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\CurveField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\DisplayObject.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\DoubleField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\EnumMaskField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\EnumMaskPopup.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\EnumPopup.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\FloatField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Foldout.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\HelpBox.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\HorizontalSlider.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\InspectorTitlebar.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\IntField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\IntPopup.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\IntSlider.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\LabelField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\LayerField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Line.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\LongField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\MaskField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\ObjectField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\PasswordField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Popup.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\ProgressBar.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\RectField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\RepeatButton.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\ScrollView.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\SelectableLabel.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\SelectionGrid.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Stage.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\TagField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\TextArea.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\TextField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Texture.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Toggle.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\ToggleLeft.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Toolbar.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\UESBezier.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\UESBoundsField.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\UESBox.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Vector2Field.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Vector3Field.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\Vector4Field.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Display\VerticalSlider.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\DragAndDropEvent.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\Event.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\EventManager.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\IEventDispatcher.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\KeyboardEvent.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\MouseEvent.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Event\TimerEvent.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Object.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Tool.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Utils\EETimer.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Window\UESWindow\ElementWindow.cs" />
-    <Compile Include="Assets\RedScarf\UnityEditorScript\Editor\Window\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Android\ShareSDK\AndroidManifest.xml" />
