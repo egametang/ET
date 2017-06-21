@@ -11,8 +11,8 @@ namespace MyEditor
 	{
 		static EditorInit()
 		{
-			Game.EntityEventManager.Register("Model", typeof (Game).Assembly);
-			Game.EntityEventManager.Register("Editor", typeof (EditorInit).Assembly);
+			ObjectEvents.Instance.Register("Model", typeof (Game).Assembly);
+			ObjectEvents.Instance.Register("Editor", typeof (EditorInit).Assembly);
 
 			EditorApplication.update += Update;
 		}
@@ -26,7 +26,7 @@ namespace MyEditor
 
 			try
 			{
-				Game.EntityEventManager.Update();
+				ObjectEvents.Instance.Update();
 			}
 			catch (Exception e)
 			{

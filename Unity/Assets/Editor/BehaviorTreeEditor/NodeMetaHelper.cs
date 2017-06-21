@@ -45,7 +45,7 @@ namespace MyEditor
 
 		public static Assembly GetModelAssembly()
 		{
-			return Game.EntityEventManager.GetAssembly("Model");
+			return ObjectEvents.Instance.GetAssembly("Model");
 		}
 
 		public static NodeMeta GetNodeTypeProtoFromType(Type type)
@@ -63,10 +63,12 @@ namespace MyEditor
 				nodeDeprecatedAttribute = nodeDeprecatedAttrs[0] as NodeDeprecatedAttribute;
 			}
 
-			NodeMeta proto = new NodeMeta();
-			proto.type = nodeAttribute.ClassifytType.ToString();
-			proto.name = type.Name;
-			proto.describe = nodeAttribute.Desc;
+			NodeMeta proto = new NodeMeta()
+			{
+				type = nodeAttribute.ClassifytType.ToString(),
+				name = type.Name,
+				describe = nodeAttribute.Desc
+			};
 			if (nodeDeprecatedAttribute != null)
 			{
 				proto.isDeprecated = true;

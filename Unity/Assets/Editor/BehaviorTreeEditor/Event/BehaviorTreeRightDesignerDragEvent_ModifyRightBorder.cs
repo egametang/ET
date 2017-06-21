@@ -7,7 +7,7 @@ namespace MyEditor
 	{
 		public void Run(float deltaX)
 		{
-			BehaviorDesignerWindow.Instance.onDraggingRightDesigner(deltaX);
+			BTEditorWindow.Instance.onDraggingRightDesigner(deltaX);
 		}
 	}
 }

@@ -25,11 +25,7 @@ namespace Model
 		public string classify = "";
 		public string style = "";
 		public int child_limit = 0;
-		public List<string> args_desc = new List<string>();
 		public List<NodeFieldDesc> new_args_desc = new List<NodeFieldDesc>();
-		public List<string> input_keys_desc = new List<string>();
-		public List<string> output_keys_desc = new List<string>();
-		public List<string> game_object_desc = new List<string>();
 		public bool isDeprecated;
 		public string deprecatedDesc;
 		

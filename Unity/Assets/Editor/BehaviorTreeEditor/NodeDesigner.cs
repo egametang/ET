@@ -91,7 +91,7 @@ namespace MyEditor
 
 		public void Init()
 		{
-			NodeData.Proto = BehaviorManager.Instance.GetNodeMeta(NodeData.Name);
+			NodeData.Proto = BTEntity.Instance.GetNodeMeta(NodeData.Name);
 			string[] arr = NodeData.Proto.style.Split('/');
 			string style = arr.Length > 0? arr[0] : "";
 			if (style == "")
@@ -121,13 +121,13 @@ namespace MyEditor
 						break;
 				}
 			}
-			mBoxTex = BehaviorDesignerUtility.GetTexture(style);
-			mBoxHighLight = BehaviorDesignerUtility.GetTexture("HighLight");
-			mBoxSelectHighLight = BehaviorDesignerUtility.GetTexture("SelectHighLight");
+			mBoxTex = BTDesignerUtility.GetTexture(style);
+			mBoxHighLight = BTDesignerUtility.GetTexture("HighLight");
+			mBoxSelectHighLight = BTDesignerUtility.GetTexture("SelectHighLight");
 
 			if (mBoxTex == null)
 			{
-				mBoxTex = BehaviorDesignerUtility.GetTexture("default");
+				mBoxTex = BTDesignerUtility.GetTexture("default");
 			}
 			if (mBoxTex == null)
 			{
@@ -136,8 +136,8 @@ namespace MyEditor
 			Width = mBoxTex.width / 2;
 			Height = mBoxTex.height / 2;
 
-			mLeftConnectTex = BehaviorDesignerUtility.GetTexture("LeftConnect");
-			mRightConnectTex = BehaviorDesignerUtility.GetTexture("RightConnect");
+			mLeftConnectTex = BTDesignerUtility.GetTexture("LeftConnect");
+			mRightConnectTex = BTDesignerUtility.GetTexture("RightConnect");
 		}
 
 		public void Draw()
@@ -145,7 +145,7 @@ namespace MyEditor
 			foreach (NodeDesigner child in this.Children)
 			{
 				//先画子节点，让线条在最低层
-				BehaviorDesignerUtility.DrawConnection(this.RightPos, child.LeftPos);
+				BTDesignerUtility.DrawConnection(this.RightPos, child.LeftPos);
 				child.Draw();
 			}
 
@@ -179,7 +179,7 @@ namespace MyEditor
 			{
 				GUI.DrawTexture(rect, mBoxSelectHighLight);
 			}
-			else if (BehaviorManager.Instance.IsHighLight(this.NodeData))
+			else if (BTEntity.Instance.IsHighLight(this.NodeData))
 			{
 				GUI.DrawTexture(rect, mBoxHighLight);
 			}
@@ -204,13 +204,13 @@ namespace MyEditor
 			switch (NodeData.NodeDeubgState)
 			{
 				case DebugState.True:
-					tex = BehaviorDesignerUtility.GetTexture("Execute");
+					tex = BTDesignerUtility.GetTexture("Execute");
 					break;
 				//                 case DebugState.False:
-				//                     tex = BehaviorDesignerUtility.GetTexture("False");
+				//                     tex = BTDesignerUtility.GetTexture("False");
 				//                     break;
 				//                 case DebugState.Error:
-				//                     tex = BehaviorDesignerUtility.GetTexture("Error");
+				//                     tex = BTDesignerUtility.GetTexture("Error");
 				//                     break;
 			}
 			if (tex != null)
@@ -306,7 +306,7 @@ namespace MyEditor
 			isSelected = flag;
 			if (flag)
 			{
-				BehaviorManager.Instance.SelectNode(this.NodeData);
+				BTEntity.Instance.SelectNode(this.NodeData);
 			}
 		}
 

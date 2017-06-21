@@ -17,7 +17,7 @@ namespace Model
 
 		public IILUIFactoryMethod(Type type)
 		{
-			appDomain = Game.EntityEventManager.AppDomain;
+			appDomain = ObjectEvents.Instance.AppDomain;
 			this.instance = this.appDomain.Instantiate(type.FullName);
 			this.method = this.instance.Type.GetMethod("Create", 3);
 		}

@@ -7,7 +7,7 @@ namespace MyEditor
 		public static void ShowMessage(params object[] list)
 		{
 			string msg = list[0].ToString();
-			BehaviorDesignerWindow.Instance.ShowNotification(new GUIContent(msg));
+			BTEditorWindow.Instance.ShowNotification(new GUIContent(msg));
 		}
 	}
 }

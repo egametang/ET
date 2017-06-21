@@ -7,7 +7,7 @@ namespace MyEditor
 	{
 		public void Run(BehaviorNodeData nodeData, NodeDesigner nodeDesigner)
 		{
-			BehaviorDesignerWindow.Instance.onMouseInNode(nodeData, nodeDesigner);
+			BTEditorWindow.Instance.onMouseInNode(nodeData, nodeDesigner);
 		}
 	}
 }

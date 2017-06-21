@@ -13,7 +13,7 @@ namespace Model
 		public ILInstanceMethod(Type type, string methodName)
 		{
 			this.Name = methodName;
-			appDomain = Game.EntityEventManager.AppDomain;
+			appDomain = ObjectEvents.Instance.AppDomain;
 			this.instance = this.appDomain.Instantiate(type.FullName);
 			this.method = this.instance.Type.GetMethod(methodName);
 		}
@@ -34,7 +34,7 @@ namespace Model
 		{
 			this.param = new object[paramsCount + 1];
 			this.Name = method.Name;
-			appDomain = Game.EntityEventManager.AppDomain;
+			appDomain = ObjectEvents.Instance.AppDomain;
 			this.method = method;
 		}
 

@@ -80,11 +80,11 @@ namespace MyEditor
 			Vector2 curPos = Event.current.mousePosition; //MousePosToGraphPos(Event.current.mousePosition);
 			if (mState == State.ConnectLeft)
 			{
-				BehaviorDesignerUtility.DrawConnection(mSelectedNode.LeftPos, curPos);
+				BTDesignerUtility.DrawConnection(mSelectedNode.LeftPos, curPos);
 			}
 			if (mState == State.ConnectRight)
 			{
-				BehaviorDesignerUtility.DrawConnection(mSelectedNode.RightPos, curPos);
+				BTDesignerUtility.DrawConnection(mSelectedNode.RightPos, curPos);
 			}
 		}
 
@@ -102,11 +102,11 @@ namespace MyEditor
 				case EventType.MouseDown:
 					GUI.FocusControl("");
 					mMousePos = e.mousePosition;
-					if (!BehaviorDesignerWindow.windowRect.Contains(mMousePos))
+					if (!BTEditorWindow.windowRect.Contains(mMousePos))
 					{
-						BehaviorDesignerWindow.Instance.CloseSubWin();
+						BTEditorWindow.Instance.CloseSubWin();
 					}
-					if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
+					if (BTEditorWindow.windowRect.Contains(mMousePos) && BTEditorWindow.IsShowSubWin)
 					{
 						break;
 					}
@@ -144,7 +144,7 @@ namespace MyEditor
 
 					break;
 				case EventType.MouseUp:
-					if (BehaviorDesignerWindow.windowRect.Contains(mMousePos) && BehaviorDesignerWindow.IsShowSubWin)
+					if (BTEditorWindow.windowRect.Contains(mMousePos) && BTEditorWindow.IsShowSubWin)
 					{
 						break;
 					}
@@ -248,7 +248,7 @@ namespace MyEditor
 		public void DrawMouseIcon(string resName)
 		{
 			GUI.DrawTexture(new Rect(Event.current.mousePosition.x - 10, Event.current.mousePosition.y - 20, 17, 20),
-			                BehaviorDesignerUtility.GetTexture(resName));
+			                BTDesignerUtility.GetTexture(resName));
 		}
 
 		public void CheckMouseInNode()
@@ -308,10 +308,10 @@ namespace MyEditor
 		public void DrawBackground()
 		{
 			float width = 15f;
-			Texture2D bgTex = BehaviorDesignerUtility.GetTexture("Bg");
+			Texture2D bgTex = BTDesignerUtility.GetTexture("Bg");
 			GUI.DrawTexture(new Rect(0, 0, mGraphRect.width, mGraphRect.height), bgTex);
 
-			Texture2D lineTex = BehaviorDesignerUtility.GetTexture("BgLine");
+			Texture2D lineTex = BTDesignerUtility.GetTexture("BgLine");
 			for (int i = 0; i < mGraphRect.width / width; i++)
 			{
 				GUI.DrawTexture(new Rect(width * i, 0, 1f, mGraphRect.height), lineTex);
@@ -328,9 +328,9 @@ namespace MyEditor
 			if (mSelectedNode != null)
 			{
 				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
-				    BehaviorManager.Instance.CurTree.Root.Id == mSelectedNode.NodeData.Id)
+				    BTEntity.Instance.CurTree.Root.Id == mSelectedNode.NodeData.Id)
 				{
-					List<NodeMeta> list = BehaviorManager.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
+					List<NodeMeta> list = BTEntity.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
 					foreach (NodeMeta nodeType in list)
 					{
 						result.Add(nodeType.name);
@@ -340,7 +340,7 @@ namespace MyEditor
 				else
 				{
 					// NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
-					List<NodeMeta> canSubtituteList = BehaviorManager.Instance.AllNodeProtoList;
+					List<NodeMeta> canSubtituteList = BTEntity.Instance.AllNodeProtoList;
 					canSubtituteList.Sort(CompareShowName);
 					foreach (NodeMeta nodeType in canSubtituteList)
 					{
@@ -363,7 +363,7 @@ namespace MyEditor
 		{
 			List<string> result = new List<string>();
 
-			foreach (KeyValuePair<string, List<NodeMeta>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<NodeMeta>> kv in BTEntity.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
 				List<NodeMeta> nodeProtoList = kv.Value;
@@ -390,8 +390,8 @@ namespace MyEditor
 
 			menu.AddItem(new GUIContent("创建子节点"), false, this.PopUpCreate);
 			menu.AddItem(new GUIContent("替换当前节点"), false, this.PopUpReplace);
-			string selectNodeName = BehaviorManager.Instance.selectNodeName;
-			string selectNodeType = BehaviorManager.Instance.selectNodeType;
+			string selectNodeName = BTEntity.Instance.selectNodeName;
+			string selectNodeType = BTEntity.Instance.selectNodeType;
 			if (mSelectedNode != null && selectNodeName != "")
 			{
 				if (selectNodeType != NodeClassifyType.Root.ToString() && mSelectedNode.NodeData.Children.Count < mSelectedNode.NodeData.Proto.child_limit)
@@ -444,12 +444,12 @@ namespace MyEditor
 
 		private void PopUpCreate()
 		{
-			BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.CreateNode);
+			BTEditorWindow.Instance.ShowSubWin(mMousePos, SubWinType.CreateNode);
 		}
 
 		private void PopUpReplace()
 		{
-			BehaviorDesignerWindow.Instance.ShowSubWin(mMousePos, SubWinType.ReplaceNode);
+			BTEditorWindow.Instance.ShowSubWin(mMousePos, SubWinType.ReplaceNode);
 		}
 
 		private static int CompareShowName(NodeMeta nodeType1, NodeMeta nodeType2)
@@ -468,8 +468,8 @@ namespace MyEditor
 		
 		private void CreateNode()
 		{
-			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(BehaviorManager.Instance.selectNodeName);
-			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEntity.Instance.GetNodeMeta(BTEntity.Instance.selectNodeName);
+			BehaviorNodeData nodeData = BTEntity.Instance.CreateNode((int) BTEntity.Instance.CurTree.Id, nodeProto.name);
 			CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
 
@@ -501,8 +501,8 @@ namespace MyEditor
 			}
 			if (mCopyNode != null && mCopyNode != mSelectedNode)
 			{
-				BehaviorNodeData data = BehaviorManager.Instance.CopyNode(mCopyNode.NodeData);
-				BehaviorManager.Instance.ResetTreeId();
+				BehaviorNodeData data = BTEntity.Instance.CopyNode(mCopyNode.NodeData);
+				BTEntity.Instance.ResetTreeId();
 				NodeDesigner node = CreateNode(data, Vector2.zero);
 				ConnectNode(node, mSelectedNode);
 			}
@@ -538,20 +538,20 @@ namespace MyEditor
 				return;
 			}
 			mDetachedNodes.Remove(mSelectedNode);
-			BehaviorManager.Instance.ResetTreeId();
+			BTEntity.Instance.ResetTreeId();
 		}
 
 		private void ChangeNodeType()
 		{
-			ChangeNodeType(BehaviorManager.Instance.selectNodeName);
+			ChangeNodeType(BTEntity.Instance.selectNodeName);
 		}
 
 		//有待优化
 		private void ChangeNodeType(object obj)
 		{
 			string nodeType = (string) obj;
-			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(nodeType);
-			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEntity.Instance.GetNodeMeta(nodeType);
+			BehaviorNodeData nodeData = BTEntity.Instance.CreateNode((int) BTEntity.Instance.CurTree.Id, nodeProto.name);
 			NodeDesigner oldNode = mSelectedNode;
 			NodeDesigner newNode = new NodeDesigner(nodeData);
 
@@ -559,11 +559,11 @@ namespace MyEditor
 			{
 				newNode.NodeData.Id = RootNode.NodeData.Id;
 				RootNode = newNode;
-				BehaviorTreeData oldTree = BehaviorManager.Instance.CurTree;
+				BehaviorTreeData oldTree = BTEntity.Instance.CurTree;
 				BehaviorTreeData newTree = new BehaviorTreeData(oldTree.Id);
 				newTree.classify = oldTree.classify;
 				newTree.Root = nodeData;
-				BehaviorManager.Instance.CurTree = newTree;
+				BTEntity.Instance.CurTree = newTree;
 			}
 			else
 			{
@@ -576,7 +576,7 @@ namespace MyEditor
 			{
 				newNode.AddChild(child);
 			}
-			BehaviorManager.Instance.ResetTreeId();
+			BTEntity.Instance.ResetTreeId();
 			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeAfterChangeNodeType);
 		}
 
@@ -607,7 +607,7 @@ namespace MyEditor
 			{
 				mDetachedNodes.Add(node);
 			}
-			BehaviorManager.Instance.ResetTreeId();
+			BTEntity.Instance.ResetTreeId();
 			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeCreateNode, node);
 			return node;
 		}
@@ -615,12 +615,12 @@ namespace MyEditor
 		/// 事件相关
 		public NodeDesigner onCreateTree(params object[] list)
 		{
-			if (BehaviorManager.Instance.CurTree == null)
+			if (BTEntity.Instance.CurTree == null)
 			{
 				Log.Error($"CurTree can not be null");
 				return null;
 			}
-			RootNode = new NodeDesigner(BehaviorManager.Instance.CurTree.Root);
+			RootNode = new NodeDesigner(BTEntity.Instance.CurTree.Root);
 			CalcGraphRect();
 			return RootNode;
 		}
@@ -637,8 +637,8 @@ namespace MyEditor
 			string name = (string) list[0];
 			Vector2 pos = (Vector2) list[1];
 
-			NodeMeta nodeProto = BehaviorManager.Instance.GetNodeMeta(name);
-			BehaviorNodeData nodeData = BehaviorManager.Instance.CreateNode((int) BehaviorManager.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEntity.Instance.GetNodeMeta(name);
+			BehaviorNodeData nodeData = BTEntity.Instance.CreateNode((int) BTEntity.Instance.CurTree.Id, nodeProto.name);
 			CreateNode(nodeData, pos);
 		}
 
@@ -735,7 +735,7 @@ namespace MyEditor
 				int idx = parent1.Children.IndexOf(node1);
 				parent1.AddChild(node2, idx);
 				parent1.AutoSort();
-				//BehaviorManager.GetInstance().ResetTreeId();
+				//BTEntity.GetInstance().ResetTreeId();
 			}
 
 			//             //不同父，插到node1的子节点
@@ -746,7 +746,7 @@ namespace MyEditor
 			//             parent2.AutoSort();
 			//             node1.AddChild(node2);
 			//             node1.AutoSort();
-			//             BehaviorManager.GetInstance().ResetTreeId();
+			//             BTEntity.GetInstance().ResetTreeId();
 		}
 
 		public void MoveNode(NodeDesigner dstNode)
@@ -777,7 +777,7 @@ namespace MyEditor
 			parent2.AutoSort();
 			node1.AddChild(node2);
 			node1.AutoSort();
-			//BehaviorManager.GetInstance().ResetTreeId();
+			//BTEntity.GetInstance().ResetTreeId();
 		}
 	}
 }

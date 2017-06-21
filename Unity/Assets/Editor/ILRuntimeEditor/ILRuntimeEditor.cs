@@ -27,7 +27,7 @@ namespace MyEditor
 			//因此List<A> List<B>，如果A与B都是ILRuntime中的类型，只需要添加List<ILRuntime.Runtime.Intepreter.ILTypeInstance>即可
 			types.Add(typeof(Dictionary<ILRuntime.Runtime.Intepreter.ILTypeInstance, int>));
 
-			Assembly assemby = Game.EntityEventManager.GetAssembly("Model");
+			Assembly assemby = ObjectEvents.Instance.GetAssembly("Model");
 			foreach (Type type in assemby.GetTypes())
 			{
 				if (type.GetCustomAttributes(typeof (ILBindingAttribute), false).Length == 0)

@@ -11,9 +11,9 @@ using Object = UnityEngine.Object;
 
 namespace MyEditor
 {
-	public class BehaviorManager: Entity
+	public class BTEntity: Entity
 	{
-		private static BehaviorManager instance;
+		private static BTEntity instance;
 
 		public const int NodeIdStartIndex = 100000;
 		private int AutoID = NodeIdStartIndex;
@@ -35,15 +35,17 @@ namespace MyEditor
 			}
 		}
 
-		public static BehaviorManager Instance
+		public static BTEntity Instance
 		{
 			get
 			{
-				if (instance == null)
+				if (instance != null)
 				{
-					instance = new BehaviorManager();
-					instance.AddComponent<BehaviorTreeDebugComponent>();
+					return instance;
 				}
+
+				instance = new BTEntity();
+				instance.AddComponent<BTDebugComponent>();
 				return instance;
 			}
 		}
@@ -141,7 +143,7 @@ namespace MyEditor
 			{
 				List<string> canInputList = GetCanInPutEnvKeyList(this.NodeProtoToBehaviorNodeData(nodeProto), desc);
 				string value = nodeProto.Args.Get(desc.name)?.ToString();
-				List<string> resultList = canInputList.FindAll(str => { return str == value; });
+				List<string> resultList = canInputList.FindAll(str => str == value);
 				if (resultList.Count == 0)
 				{
 					Log.Error($"{nodeProto.Name}节点(id:{nodeProto.Id})的{value}输入值非法!");
@@ -190,7 +192,7 @@ namespace MyEditor
 		
 		public void RemoveUnusedArgs(NodeProto nodeProto)
 		{
-			NodeMeta proto = BehaviorManager.Instance.GetNodeMeta(nodeProto.Name);
+			NodeMeta proto = BTEntity.Instance.GetNodeMeta(nodeProto.Name);
 			List<string> unUsedList = new List<string>();
 			foreach (KeyValuePair<string, object> item in nodeProto.Args.Dict())
 			{
@@ -420,7 +422,7 @@ namespace MyEditor
 			selectNodeName = "";
 			CurTreeGO = go;
 			NewLoadData();
-			BehaviorDesignerWindow.ShowWindow();
+			BTEditorWindow.ShowWindow();
 			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
 		}
 
@@ -607,11 +609,6 @@ namespace MyEditor
 				return GetNode(data, nodeId);
 			}
 			return null;
-		}
-
-		public void Clear()
-		{
-			instance = null;
 		}
 	}
 }

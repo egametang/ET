@@ -10,7 +10,7 @@ namespace Model
 
 		private void Load()
 		{
-			Assembly assembly = Game.EntityEventManager.GetAssembly("Base");
+			Assembly assembly = ObjectEvents.Instance.GetAssembly("Base");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();

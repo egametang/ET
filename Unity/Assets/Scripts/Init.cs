@@ -9,12 +9,12 @@ namespace Model
 		private void Start()
 		{
 #if ILRuntime
-			Game.EntityEventManager.RegisterILRuntime();
-			Game.EntityEventManager.RegisterILAdapter();
+			ObjectEvents.Instance.RegisterILRuntime();
+			ObjectEvents.Instance.RegisterILAdapter();
 #else
-			Game.EntityEventManager.Register("Hotfix", DllHelper.LoadHotfixAssembly());
+			ObjectEvents.Instance.Register("Hotfix", DllHelper.LoadHotfixAssembly());
 #endif
-			Game.EntityEventManager.Register("Model", typeof (Game).Assembly);
+			ObjectEvents.Instance.Register("Model", typeof (Game).Assembly);
 			Game.Scene.AddComponent<ResourcesComponent>();
 			Game.Scene.AddComponent<UIComponent>();
 			Game.Scene.AddComponent<UnitComponent>();
@@ -29,7 +29,7 @@ namespace Model
 		{
 			try
 			{
-				Game.EntityEventManager.Update();
+				ObjectEvents.Instance.Update();
 			}
 			catch (Exception e)
 			{
@@ -39,7 +39,7 @@ namespace Model
 
 		private void OnApplicationQuit()
 		{
-			Game.CloseScene();
+			Game.Close();
 		}
 	}
 }

@@ -15,18 +15,18 @@ namespace MyEditor
 		public string msg;
 	}
 
-	public class BehaviorDesignerWindow: EditorWindow
+	public class BTEditorWindow: EditorWindow
 	{
 		private PropertyDesigner propDesigner;
 		private BehaviorTreeNodeClassPopup popUpMenu;
 
 		public GraphDesigner GraphDesigner { get; private set; }
 
-		public static BehaviorDesignerWindow Instance
+		public static BTEditorWindow Instance
 		{
 			get
 			{
-				return GetWindow<BehaviorDesignerWindow>(false, "行为树编辑器");
+				return GetWindow<BTEditorWindow>(false, "行为树编辑器");
 			}
 		}
 
@@ -34,7 +34,7 @@ namespace MyEditor
 
 		public static void ShowWindow()
 		{
-			BehaviorDesignerWindow target = GetWindow<BehaviorDesignerWindow>("行为树编辑器", false);
+			BTEditorWindow target = GetWindow<BTEditorWindow>("行为树编辑器", false);
 			target.minSize = new Vector2(600f, 500f);
 		}
 
@@ -95,11 +95,11 @@ namespace MyEditor
 				case EventType.KeyUp:
 					if (e.keyCode == KeyCode.Escape || (e.keyCode == KeyCode.S && e.control))
 					{
-						BehaviorManager.Instance.SaveAll();
+						BTEntity.Instance.SaveAll();
 					}
 					else if (e.keyCode == KeyCode.F4)
 					{
-						BehaviorManager.Instance.SaveAll();
+						BTEntity.Instance.SaveAll();
 					}
 					break;
 				case EventType.MouseDown:
@@ -109,7 +109,7 @@ namespace MyEditor
 
 		public void OnDestroy()
 		{
-			BehaviorManager.Instance.Clear();
+			BTEntity.Reset();
 		}
 
 		public void onUpdatePropList(params object[] list)

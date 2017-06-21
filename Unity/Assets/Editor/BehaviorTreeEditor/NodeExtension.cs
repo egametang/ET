@@ -9,14 +9,14 @@ namespace Model
 {
 	public class BTEditorTree
 	{
-		private int _id = BehaviorManager.NodeIdStartIndex;
+		private int _id = BTEntity.NodeIdStartIndex;
 		private readonly Node _root;
 
 		public BTEditorTree(BehaviorTreeConfig config)
 		{
-			Type rootType = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{config.RootNodeProto.Name}");
+			Type rootType = ObjectEvents.Instance.GetAssembly("Model").GetType($"Model.{config.RootNodeProto.Name}");
 			Node root = (Node) Activator.CreateInstance(rootType, config.RootNodeProto);
-			root.Id = BehaviorManager.NodeIdStartIndex;
+			root.Id = BTEntity.NodeIdStartIndex;
 			Queue<NodeProto> protoStack = new Queue<NodeProto>();
 			Queue<Node> nodeStack = new Queue<Node>();
 			protoStack.Enqueue(config.RootNodeProto);
@@ -33,7 +33,7 @@ namespace Model
 				}
 				foreach (NodeProto child in p.Children)
 				{
-					Type t = Game.EntityEventManager.GetAssembly("Model").GetType($"Model.{child.Name}");
+					Type t = ObjectEvents.Instance.GetAssembly("Model").GetType($"Model.{child.Name}");
 					Node childNode = (Node) Activator.CreateInstance(t, child);
 					AddChild(childNode, node);
 					protoStack.Enqueue(child);
@@ -73,7 +73,7 @@ namespace Model
 		private BTEditorTree(Node root, BehaviorTreeConfig config)
 		{
 			_root = root;
-			_root.Id = BehaviorManager.NodeIdStartIndex;
+			_root.Id = BTEntity.NodeIdStartIndex;
 			this.BTConfig = config;
 		}
 

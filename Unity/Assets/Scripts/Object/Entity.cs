@@ -21,19 +21,19 @@ namespace Model
 		protected Entity()
 		{
 			this.Type = EntityType.None;
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Entity(EntityType entityType)
 		{
 			this.Type = entityType;
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Entity(long id, EntityType entityType): base(id)
 		{
 			this.Type = entityType;
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 		}
 
 		public override void Dispose()
@@ -57,7 +57,7 @@ namespace Model
 				}
 			}
 
-			Game.EntityEventManager.Remove(this);
+			ObjectEvents.Instance.Remove(this);
 		}
 
 		public K AddComponent<K>() where K : Component, new()
@@ -77,7 +77,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component);
+			ObjectEvents.Instance.Awake(component);
 			return component;
 		}
 
@@ -98,7 +98,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1);
+			ObjectEvents.Instance.Awake(component, p1);
 			return component;
 		}
 
@@ -119,7 +119,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1, p2);
+			ObjectEvents.Instance.Awake(component, p1, p2);
 			return component;
 		}
 
@@ -140,7 +140,7 @@ namespace Model
 
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component, p1, p2, p3);
+			ObjectEvents.Instance.Awake(component, p1, p2, p3);
 			return component;
 		}
 
@@ -157,7 +157,7 @@ namespace Model
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
-			Game.EntityEventManager.Awake(component);
+			ObjectEvents.Instance.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component
@@ -220,7 +220,7 @@ namespace Model
 		{
 			base.EndInit();
 
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 
 			if (this.components.Count == 0)
 			{

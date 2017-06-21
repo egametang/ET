@@ -8,7 +8,7 @@ namespace MyEditor
 	{
 		public void Run(string name, Vector2 pos)
 		{
-			BehaviorDesignerWindow.Instance.onCreateNode(name, pos);
+			BTEditorWindow.Instance.onCreateNode(name, pos);
 		}
 	}
 }

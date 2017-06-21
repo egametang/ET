@@ -7,7 +7,7 @@ namespace MyEditor
 	{
 		public void Run()
 		{
-			BehaviorDesignerWindow.Instance.onUpdatePropList();
+			BTEditorWindow.Instance.onUpdatePropList();
 		}
 	}
 }

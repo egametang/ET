@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace MyEditor
 {
-	public class BehaviorBatchOperation
+	public class BTBatchOperation
 	{
 		public delegate void ExcuteTreeOperate(BehaviorTreeConfig treeConfig, string treePath);
 

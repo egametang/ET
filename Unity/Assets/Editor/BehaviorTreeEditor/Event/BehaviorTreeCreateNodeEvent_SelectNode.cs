@@ -7,7 +7,7 @@ namespace MyEditor
 	{
 		public void Run(NodeDesigner dstNode)
 		{
-			BehaviorDesignerWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
+			BTEditorWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
 		}
 	}
 }

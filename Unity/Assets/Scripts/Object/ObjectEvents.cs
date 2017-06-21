@@ -67,8 +67,10 @@ namespace Model
 		}
 	}
 
-	public sealed class EntityEventManager
+	public sealed class ObjectEvents
 	{
+		private static ObjectEvents instance;
+
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
 		private readonly Dictionary<EntityEventType, HashSet<Disposer>> disposers = new Dictionary<EntityEventType, HashSet<Disposer>>();
@@ -83,12 +85,25 @@ namespace Model
 		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 #endif
 
-		public EntityEventManager()
+		public ObjectEvents()
 		{
 			foreach (EntityEventType t in Enum.GetValues(typeof (EntityEventType)))
 			{
 				this.disposers.Add(t, new HashSet<Disposer>());
 			}
+		}
+
+		public static ObjectEvents Instance
+		{
+			get
+			{
+				return instance ?? (instance = new ObjectEvents());
+			}
+		}
+
+		public void Reset()
+		{
+			instance = null;
 		}
 
 		public void Register(string name, Assembly assembly)
@@ -214,7 +229,7 @@ namespace Model
 
 		public void RegisterILAdapter()
 		{
-			Assembly assembly = Game.EntityEventManager.GetAssembly("Model");
+			Assembly assembly = ObjectEvents.Instance.GetAssembly("Model");
 
 			foreach (Type type in assembly.GetTypes())
 			{

@@ -114,7 +114,7 @@ namespace MyEditor
 			mNodeFoldout = new FoldoutFolder("所有节点", SelectNodeFolderCallback);
 			mNodeFoldout.Fold = true;
 
-			foreach (KeyValuePair<string, List<NodeMeta>> kv in BehaviorManager.Instance.Classify2NodeProtoList)
+			foreach (KeyValuePair<string, List<NodeMeta>> kv in BTEntity.Instance.Classify2NodeProtoList)
 			{
 				string classify = kv.Key;
 				List<NodeMeta> nodeTypeList = kv.Value;
@@ -196,13 +196,13 @@ namespace MyEditor
 		{
 			Rect boxRect = new Rect(0f, Screen.height - offset + 15f, this.mWidth, 200f);
 			GUILayout.BeginArea(boxRect);
-			BehaviorManager.Instance.selectNodeName = "";
+			BTEntity.Instance.selectNodeName = "";
 			if (mCurNode != null)
 			{
 				string[] arr = mCurNode.Text.Split(' ');
 				string name = arr[0];
-				BehaviorManager.Instance.selectNodeName = name;
-				BehaviorManager.Instance.selectNodeType = mCurNode.folderName;
+				BTEntity.Instance.selectNodeName = name;
+				BTEntity.Instance.selectNodeType = mCurNode.folderName;
 				if (mCurNode.folderName != NodeClassifyType.Root.ToString())
 				{
 					if (GUILayout.Button("新建"))
@@ -221,9 +221,9 @@ namespace MyEditor
 
 				if (GUILayout.Button("保存"))
 				{
-					BehaviorManager.Instance.SaveAll();
+					BTEntity.Instance.SaveAll();
 				}
-				NodeMeta node = BehaviorManager.Instance.GetNodeMeta(name);
+				NodeMeta node = BTEntity.Instance.GetNodeMeta(name);
 				GUILayout.Label("节点名:" + node.name);
 				GUILayout.Label("描述:" + node.describe);
 			}
@@ -233,7 +233,7 @@ namespace MyEditor
 
 		private void ClearNodes()
 		{
-			BehaviorManager.Instance.selectNodeName = "";
+			BTEntity.Instance.selectNodeName = "";
 			mEnumNodeTypeSelection = 0;
 			mSearchNode = "";
 			foreach (FoldoutFolder folder in mNodeFoldout.Folders)
@@ -309,7 +309,7 @@ namespace MyEditor
 			value = (GameObject) EditorGUILayout.ObjectField(desc, value, typeof(GameObject), false);
 			if (value.GetComponent<BehaviorTreeConfig>() != null && GUILayout.Button("打开行为树"))
 			{
-				BehaviorManager.Instance.OpenBehaviorEditor(value);
+				BTEntity.Instance.OpenBehaviorEditor(value);
 				SetToolBar(2);
 			}
 			EditorGUILayout.EndHorizontal();
@@ -324,7 +324,7 @@ namespace MyEditor
 			}
 			if (GUILayout.Button("保存行为树"))
 			{
-				BehaviorManager.Instance.SaveAll();
+				BTEntity.Instance.SaveAll();
 			}
 			NodeMeta proto = mCurBehaviorNode.Proto;
 			GUILayout.Space(10f);
@@ -383,7 +383,7 @@ namespace MyEditor
 			{
 				NodeFieldDesc desc = fieldList[i];
 				Type fieldType = NodeMetaHelper.GetFieldType(nodeName, desc.name);
-				NodeMeta nodeMeta = BehaviorManager.Instance.GetNodeMeta(nodeName);
+				NodeMeta nodeMeta = BTEntity.Instance.GetNodeMeta(nodeName);
 
 				// 如果不存在这个参数，给一个默认的
 				if (!mCurBehaviorNode.Args.ContainsKey(desc.name))
@@ -631,7 +631,7 @@ namespace MyEditor
 		private object InputEnumFieldValue(NodeFieldDesc desc)
 		{
 			string oldValue = mCurBehaviorNode.Args.Get(desc.name)?.ToString();
-			string[] enumValueArr = BehaviorManager.Instance.GetCanInPutEnvKeyArray(mCurBehaviorNode, desc);
+			string[] enumValueArr = BTEntity.Instance.GetCanInPutEnvKeyArray(mCurBehaviorNode, desc);
 			if (enumValueArr.Length == 0)
 			{
 				enumValueArr = new string[1] { BTEnvKey.None };
@@ -705,8 +705,8 @@ namespace MyEditor
 
 		public void DrawDebugView()
 		{
-			BehaviorTree behaviorTree = BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().BehaviorTree;
-			List<List<long>> treePathList = BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().TreePathList;
+			BehaviorTree behaviorTree = BTEntity.Instance.GetComponent<BTDebugComponent>().BehaviorTree;
+			List<List<long>> treePathList = BTEntity.Instance.GetComponent<BTDebugComponent>().TreePathList;
 			if (behaviorTree == null)
 			{
 				return;
@@ -714,7 +714,7 @@ namespace MyEditor
 			if (GUILayout.Button("清空执行记录"))
 			{
 				treePathList.Clear();
-				BehaviorManager.Instance.ClearDebugState();
+				BTEntity.Instance.ClearDebugState();
 			}
 			const float offset = 55f;
 			GUILayout.BeginArea(new Rect(0f, 20f, this.mWidth, Screen.height - offset));
@@ -722,12 +722,12 @@ namespace MyEditor
 				new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
 			    new Rect(0f, 0f, this.mWidth - 20f, treePathList.Count * 22), false, false);
 
-			for (int i = 0; i < BehaviorManager.Instance.GetComponent<BehaviorTreeDebugComponent>().TreePathList.Count; i++)
+			for (int i = 0; i < BTEntity.Instance.GetComponent<BTDebugComponent>().TreePathList.Count; i++)
 			{
 				if (GUILayout.Button($"frame{i}"))
 				{
-					BehaviorManager.Instance.ClearDebugState();
-					BehaviorManager.Instance.SetDebugState(treePathList[i]);
+					BTEntity.Instance.ClearDebugState();
+					BTEntity.Instance.SetDebugState(treePathList[i]);
 				}
 			}
 			GUI.EndScrollView();

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	public static class BehaviorDesignerUtility
+	public static class BTDesignerUtility
 	{
 		private static readonly string ImagePathName = "Assets/Editor/BehaviorTreeEditor/Pic/";
 

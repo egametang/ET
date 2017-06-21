@@ -8,13 +8,13 @@ namespace MyEditor
 	{
 		public void Run()
 		{
-			NodeDesigner dstNode = BehaviorDesignerWindow.Instance.onCreateTree();
+			NodeDesigner dstNode = BTEditorWindow.Instance.onCreateTree();
 			if (dstNode == null)
 			{
 				Debug.LogError($"RootNode can not be null");
 				return;
 			}
-			BehaviorDesignerWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
+			BTEditorWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
 		}
 	}
 }

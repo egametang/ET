@@ -7,7 +7,7 @@ namespace MyEditor
 	{
 		public void Run(NodeDesigner nodeDesigner, State state)
 		{
-			BehaviorDesignerWindow.Instance.onStartConnect(nodeDesigner, state);
+			BTEditorWindow.Instance.onStartConnect(nodeDesigner, state);
 		}
 	}
 }
