@@ -1,4 +1,4 @@
-﻿namespace Hotfix
+﻿namespace Model
 {
 	public static class Opcode
 	{

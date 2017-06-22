@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="HotfixInit.cs" />
     <Compile Include="LitJson\IJsonWrapper.cs" />
     <Compile Include="LitJson\JsonData.cs" />
@@ -82,9 +83,6 @@
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Handler\R2C_ServerLogHandler.cs" />
     <Compile Include="Entity\Hotfix.cs" />
-    <Compile Include="Entity\Message\InnerMessage.cs" />
-    <Compile Include="Entity\Message\Opcode.cs" />
-    <Compile Include="Entity\Message\OuterMessage.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\UI.cs" />
     <Compile Include="Entity\Unit.cs" />
@@ -120,9 +118,7 @@
       <Name>Unity.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes

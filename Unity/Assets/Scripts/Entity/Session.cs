@@ -40,7 +40,7 @@ namespace Model
 
 		private async void StartRecv()
 		{
-			TimerComponent timerComponent = Hotfix.Scene.GetComponent<TimerComponent>();
+			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)

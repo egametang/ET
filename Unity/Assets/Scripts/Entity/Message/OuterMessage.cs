@@ -1,9 +1,8 @@
-using Model;
 using MongoDB.Bson.Serialization.Attributes;
 
 // 服务器与客户端之间的消息 Opcode从1-9999
 
-namespace Hotfix
+namespace Model
 {
 	[Message(Opcode.C2R_Login)]
 	[BsonIgnoreExtraElements]
