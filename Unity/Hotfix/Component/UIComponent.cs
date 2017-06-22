@@ -69,7 +69,7 @@ namespace Hotfix
 		{
 			this.UiTypes = new Dictionary<int, IUIFactory>();
 			
-			Type[] types = DllHelper.GetAllTypes();
+			Type[] types = DllHelper.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

@@ -18,7 +18,7 @@ namespace Hotfix
 		{
 			this.allEvents = new Dictionary<int, List<object>>();
 
-			Type[] types = DllHelper.GetAllTypes();
+			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);

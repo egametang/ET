@@ -20,7 +20,7 @@ namespace Model
 			return assembly;
 		}
 
-		public static Type[] GetAllTypes()
+		public static Type[] GetHotfixTypes()
 		{
 			ILRuntime.Runtime.Enviorment.AppDomain appDomain = Init.Instance.AppDomain;
 			if (appDomain == null)
@@ -34,6 +34,11 @@ namespace Model
 				types.Add(type.ReflectionType);
 			}
 			return types.ToArray();
+		}
+
+		public static Type[] GetMonoTypes()
+		{
+			return typeof(Game).Assembly.GetTypes();
 		}
 
 		public static IMethod[] GetMethodInfo(string typeName)

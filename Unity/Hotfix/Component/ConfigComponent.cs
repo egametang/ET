@@ -11,7 +11,7 @@ namespace Hotfix
 		private void Load()
 		{
 			this.allConfig = new Dictionary<Type, ICategory>();
-			Type[] types = DllHelper.GetAllTypes();
+			Type[] types = DllHelper.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

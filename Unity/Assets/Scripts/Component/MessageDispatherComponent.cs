@@ -24,7 +24,7 @@ namespace Model
 			this.handlers = new Dictionary<ushort, List<IInstanceMethod>>();
 			this.opcodeTypes = new DoubleMap<ushort, Type>();
 
-			Type[] monoTypes = DllHelper.GetAllTypes();
+			Type[] monoTypes = DllHelper.GetMonoTypes();
 			foreach (Type monoType in monoTypes)
 			{
 				object[] attrs = monoType.GetCustomAttributes(typeof(MessageAttribute), false);
@@ -42,7 +42,7 @@ namespace Model
 				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
 			}
 			
-			Type[] types = DllHelper.GetAllTypes();
+			Type[] types = DllHelper.GetMonoTypes();
 
 			foreach (Type type in types)
 			{
