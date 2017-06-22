@@ -8,7 +8,7 @@ using MongoDB.Bson;
 
 namespace Hotfix
 {
-	public sealed class Session : Entity
+	public sealed class Session : HotfixEntity
 	{
 		private static uint RpcId { get; set; }
 		private readonly NetworkComponent network;
@@ -41,7 +41,7 @@ namespace Hotfix
 
 		private async void StartRecv()
 		{
-			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
+			TimerComponent timerComponent = Hotfix.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)

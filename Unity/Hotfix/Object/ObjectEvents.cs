@@ -2,13 +2,23 @@
 
 namespace Hotfix
 {
-	public sealed class EntityEventManager
+	public sealed class ObjectEvents
 	{
+		private static ObjectEvents instance;
+
 		public Queue<Disposer> adds = new Queue<Disposer>();
 		public Queue<Disposer> removes = new Queue<Disposer>();
 
 		public HashSet<IUpdate> updates = new HashSet<IUpdate>();
 		public HashSet<ILoad> loads = new HashSet<ILoad>();
+
+		public static ObjectEvents Instance
+		{
+			get
+			{
+				return instance ?? (instance = new ObjectEvents());
+			}
+		}
 
 		public void Add(Disposer disposer)
 		{

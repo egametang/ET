@@ -13,7 +13,7 @@ namespace Hotfix
 	}
 
 	[EntityEvent(EntityEventId.TimerComponent)]
-	public class TimerComponent: Component, IUpdate
+	public class TimerComponent: HotfixComponent, IUpdate
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
 

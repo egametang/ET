@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Hotfix
 {
-	public class AssetBundleLoaderAsync : Entity
+	public class AssetBundleLoaderAsync : HotfixEntity
 	{
 		private AssetBundle assetBundle;
 

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Hotfix
 {
 	[EntityEvent(EntityEventId.WWWAsync)]
-	public class WWWAsync: Entity
+	public class WWWAsync: HotfixEntity
 	{
 		public WWW www;
 

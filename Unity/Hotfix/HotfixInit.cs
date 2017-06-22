@@ -9,12 +9,12 @@ namespace Hotfix
 		{
 			try
 			{
-				Game.Scene.AddComponent<ResourcesComponent>();
-				Game.Scene.AddComponent<UIComponent>();
-				Game.Scene.AddComponent<UnitComponent>();
-				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
-				Game.Scene.AddComponent<NetOuterComponent>();
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
+				Hotfix.Scene.AddComponent<ResourcesComponent>();
+				Hotfix.Scene.AddComponent<UIComponent>();
+				Hotfix.Scene.AddComponent<UnitComponent>();
+				Hotfix.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
+				Hotfix.Scene.AddComponent<NetOuterComponent>();
+				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
@@ -26,7 +26,7 @@ namespace Hotfix
 		{
 			try
 			{
-				Game.EntityEventManager.Update();
+				ObjectEvents.Instance.Update();
 			}
 			catch (Exception e)
 			{
@@ -36,7 +36,7 @@ namespace Hotfix
 
 		private static void OnApplicationQuit()
 		{
-			Game.CloseScene();
+			Hotfix.Close();
 		}
 	}
 }

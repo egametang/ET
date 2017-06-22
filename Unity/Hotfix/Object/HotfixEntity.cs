@@ -5,26 +5,25 @@ using Model;
 
 namespace Hotfix
 {
-	[ILBinding]
-	public class Entity: Disposer
+	public class HotfixEntity: Disposer
 	{
 		public EntityType Type { get; set; }
 		
-		private HashSet<Component> components = new HashSet<Component>();
+		private HashSet<HotfixComponent> components = new HashSet<HotfixComponent>();
 		
-		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+		private readonly Dictionary<Type, HotfixComponent> componentDict = new Dictionary<Type, HotfixComponent>();
 
-		protected Entity()
+		protected HotfixEntity()
 		{
 			this.Type = EntityType.None;
 		}
 
-		protected Entity(EntityType entityType)
+		protected HotfixEntity(EntityType entityType)
 		{
 			this.Type = entityType;
 		}
 
-		protected Entity(long id, EntityType entityType): base(id)
+		protected HotfixEntity(long id, EntityType entityType): base(id)
 		{
 			this.Type = entityType;
 		}
@@ -38,7 +37,7 @@ namespace Hotfix
 
 			base.Dispose();
 
-			foreach (Component component in this.GetComponents())
+			foreach (HotfixComponent component in this.GetComponents())
 			{
 				try
 				{
@@ -51,7 +50,7 @@ namespace Hotfix
 			}
 		}
 
-		public K AddComponent<K>() where K : Component, new()
+		public K AddComponent<K>() where K : HotfixComponent, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
@@ -61,7 +60,7 @@ namespace Hotfix
 			}
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component>();
+				this.components = new HashSet<HotfixComponent>();
 			}
 			this.components.Add(component);
 			this.componentDict.Add(component.GetType(), component);
@@ -70,7 +69,7 @@ namespace Hotfix
 			return component;
 		}
 
-		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
+		public K AddComponent<K, P1>(P1 p1) where K : HotfixComponent, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
@@ -82,7 +81,7 @@ namespace Hotfix
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component>();
+				this.components = new HashSet<HotfixComponent>();
 			}
 
 			this.components.Add(component);
@@ -92,7 +91,7 @@ namespace Hotfix
 			return component;
 		}
 
-		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
+		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : HotfixComponent, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
@@ -104,7 +103,7 @@ namespace Hotfix
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component>();
+				this.components = new HashSet<HotfixComponent>();
 			}
 
 			this.components.Add(component);
@@ -114,7 +113,7 @@ namespace Hotfix
 			return component;
 		}
 
-		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
+		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : HotfixComponent, new()
 		{
 			K component = (K) Activator.CreateInstance(typeof (K));
 			component.Owner = this;
@@ -126,7 +125,7 @@ namespace Hotfix
 
 			if (this.components == null)
 			{
-				this.components = new HashSet<Component>();
+				this.components = new HashSet<HotfixComponent>();
 			}
 
 			this.components.Add(component);
@@ -136,9 +135,9 @@ namespace Hotfix
 			return component;
 		}
 
-		public void RemoveComponent<K>() where K : Component
+		public void RemoveComponent<K>() where K : HotfixComponent
 		{
-			Component component;
+			HotfixComponent component;
 			if (!this.componentDict.TryGetValue(typeof (K), out component))
 			{
 				return;
@@ -155,7 +154,7 @@ namespace Hotfix
 
 		public void RemoveComponent(Type type)
 		{
-			Component component;
+			HotfixComponent component;
 			if (!this.componentDict.TryGetValue(type, out component))
 			{
 				return;
@@ -170,9 +169,9 @@ namespace Hotfix
 			component.Dispose();
 		}
 
-		public K GetComponent<K>() where K : Component
+		public K GetComponent<K>() where K : HotfixComponent
 		{
-			Component component;
+			HotfixComponent component;
 			if (!this.componentDict.TryGetValue(typeof (K), out component))
 			{
 				return default(K);
@@ -180,7 +179,7 @@ namespace Hotfix
 			return (K) component;
 		}
 
-		public Component[] GetComponents()
+		public HotfixComponent[] GetComponents()
 		{
 			return components.ToArray();
 		}

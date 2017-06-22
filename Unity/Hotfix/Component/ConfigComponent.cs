@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Hotfix
 {
-	public class ConfigComponent: Component
+	public class ConfigComponent: HotfixComponent
 	{
 		private Dictionary<Type, ICategory> allConfig;
 

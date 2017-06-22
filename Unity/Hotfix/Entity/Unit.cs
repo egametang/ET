@@ -6,7 +6,7 @@
 		Npc
 	}
 	
-	public sealed class Unit: Entity
+	public sealed class Unit: HotfixEntity
 	{
 		public UnitType UnitType { get; }
 

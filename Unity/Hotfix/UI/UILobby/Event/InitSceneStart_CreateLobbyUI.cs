@@ -7,7 +7,7 @@ namespace Hotfix
 	{
 		public void Run()
 		{
-			UI ui = Game.Scene.GetComponent<UIComponent>().Create(UIType.Lobby);
+			UI ui = Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.Lobby);
 		}
 	}
 }

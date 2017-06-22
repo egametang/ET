@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Hotfix
 {
-	public sealed class UI: Entity
+	public sealed class UI: HotfixEntity
 	{
 		public Scene Scene { get; set; }
 

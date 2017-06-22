@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Hotfix
 {
 	[EntityEvent(EntityEventId.ResourcesComponent)]
-	public class ResourcesComponent: Component
+	public class ResourcesComponent: HotfixComponent
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
 
@@ -70,7 +70,7 @@ namespace Hotfix
 					++count;
 					if (count > 1)
 					{
-						await Game.Scene.GetComponent<TimerComponent>().WaitAsync(2000);
+						await Hotfix.Scene.GetComponent<TimerComponent>().WaitAsync(2000);
 					}
 
 					if (this.Id == 0)

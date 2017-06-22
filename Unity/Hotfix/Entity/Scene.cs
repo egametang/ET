@@ -15,7 +15,7 @@
 		Realm
 	}
 	
-	public sealed class Scene: Entity
+	public sealed class Scene: HotfixEntity
 	{
 		public Scene Parent { get; set; }
 

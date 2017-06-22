@@ -3,7 +3,7 @@
 	/// <summary>
 	/// 每个Config的基类
 	/// </summary>
-	public abstract class AConfig: Entity
+	public abstract class AConfig: HotfixEntity
 	{
 		protected AConfig(EntityType entityType): base(entityType)
 		{

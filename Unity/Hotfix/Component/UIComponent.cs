@@ -31,7 +31,7 @@ namespace Hotfix
 	/// 管理所有UI
 	/// </summary>
 	[EntityEvent(EntityEventId.UIComponent)]
-	public class UIComponent: Component, IAwake, ILoad
+	public class UIComponent: HotfixComponent, IAwake, ILoad
 	{
 		private UI Root;
 		private Dictionary<int, IUIFactory> UiTypes;

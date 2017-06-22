@@ -102,7 +102,7 @@
     <Compile Include="Entity\AssetBundleLoaderAsync.cs" />
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
-    <Compile Include="Entity\Game.cs" />
+    <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Message\InnerMessage.cs" />
     <Compile Include="Entity\Message\Opcode.cs" />
     <Compile Include="Entity\Message\OuterMessage.cs" />
@@ -127,15 +127,14 @@
     <Compile Include="Message\MessageInfo.cs" />
     <Compile Include="Message\OpcodeHelper.cs" />
     <Compile Include="Message\RpcException.cs" />
-    <Compile Include="Object\Component.cs" />
+    <Compile Include="Object\HotfixComponent.cs" />
     <Compile Include="Object\Disposer.cs" />
-    <Compile Include="Object\Entity.cs" />
+    <Compile Include="Object\HotfixEntity.cs" />
     <Compile Include="Object\EntityEventAttribute.cs" />
-    <Compile Include="Object\EntityEventManager.cs" />
+    <Compile Include="Object\ObjectEvents.cs" />
     <Compile Include="Object\EntityType.cs" />
     <Compile Include="Object\Object.cs" />
     <Compile Include="Other\EntityEventId.cs" />
-    <Compile Include="Other\ILBindingAttribute.cs" />
     <Compile Include="Other\IUIFactory.cs" />
     <Compile Include="Other\LayerNames.cs" />
     <Compile Include="Other\UIFactoryAttribute.cs" />

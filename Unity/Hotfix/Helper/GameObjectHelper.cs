@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Model
+namespace Hotfix
 {
 	public static class GameObjectHelper
 	{

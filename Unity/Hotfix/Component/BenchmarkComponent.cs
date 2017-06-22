@@ -3,7 +3,7 @@ using Model;
 
 namespace Hotfix
 {
-	public class BenchmarkComponent: Component
+	public class BenchmarkComponent: HotfixComponent
 	{
 		private int k;
 
@@ -13,11 +13,11 @@ namespace Hotfix
 		{
 			try
 			{
-				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
+				NetOuterComponent networkComponent = Hotfix.Scene.GetComponent<NetOuterComponent>();
 
 				for (int i = 0; i < 100; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
+					await Hotfix.Scene.GetComponent<TimerComponent>().WaitAsync(10);
 					this.TestAsync(networkComponent, address, i);
 				}
 			}

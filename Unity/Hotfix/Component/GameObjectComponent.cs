@@ -3,7 +3,7 @@
 namespace Hotfix
 {
 	[EntityEvent(EntityEventId.GameObjectComponent)]
-	public class GameObjectComponent: Component
+	public class GameObjectComponent: HotfixComponent
 	{
 		public GameObject GameObject { get; private set; }
 

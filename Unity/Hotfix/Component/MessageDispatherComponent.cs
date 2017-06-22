@@ -8,7 +8,7 @@ namespace Hotfix
 	/// 消息分发组件
 	/// </summary>
 	[EntityEvent(EntityEventId.MessageDispatherComponent)]
-	public class MessageDispatherComponent: Component, IAwake<AppType>, ILoad
+	public class MessageDispatherComponent: HotfixComponent, IAwake<AppType>, ILoad
 	{
 		private AppType AppType;
 		private Dictionary<ushort, List<IInstanceMethod>> handlers;

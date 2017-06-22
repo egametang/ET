@@ -2,27 +2,26 @@
 
 namespace Hotfix
 {
-	[ILBinding]
 	[BsonKnownTypes(typeof (AConfigComponent))]
-	public abstract class Component: Disposer
+	public abstract class HotfixComponent: Disposer
 	{
 		[BsonIgnore]
-		public Entity Owner { get; set; }
+		public HotfixEntity Owner { get; set; }
 
-		public T GetOwner<T>() where T : Entity
+		public T GetOwner<T>() where T : HotfixEntity
 		{
 			return this.Owner as T;
 		}
 
-		protected Component()
+		protected HotfixComponent()
 		{
 		}
 
-		protected Component(long id): base(id)
+		protected HotfixComponent(long id): base(id)
 		{
 		}
 
-		public T GetComponent<T>() where T : Component
+		public T GetComponent<T>() where T : HotfixComponent
 		{
 			return this.Owner.GetComponent<T>();
 		}

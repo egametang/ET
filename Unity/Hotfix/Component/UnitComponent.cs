@@ -3,7 +3,7 @@
 namespace Hotfix
 {
 	[EntityEvent(EntityEventId.UnitComponent)]
-	public class UnitComponent: Component
+	public class UnitComponent: HotfixComponent
 	{
 		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
 

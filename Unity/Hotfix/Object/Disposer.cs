@@ -6,18 +6,18 @@ namespace Hotfix
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Disposer(long id): base(id)
 		{
-			Game.EntityEventManager.Add(this);
+			ObjectEvents.Instance.Add(this);
 		}
 
 		public override void Dispose()
 		{
 			this.Id = 0;
-			Game.EntityEventManager.Remove(this);
+			ObjectEvents.Instance.Remove(this);
 		}
 	}
 }

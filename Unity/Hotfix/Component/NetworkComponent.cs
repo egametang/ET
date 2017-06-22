@@ -6,7 +6,7 @@ using Model;
 
 namespace Hotfix
 {
-	public abstract class NetworkComponent: Component
+	public abstract class NetworkComponent: HotfixComponent
 	{
 		private AService Service;
 
