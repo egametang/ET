@@ -5,7 +5,7 @@ namespace Hotfix
 	/// <summary>
 	/// 用于同步服务端和客户端时间
 	/// </summary>
-	public class TimeComponent: HotfixComponent
+	public class TimeComponent: Component
 	{
 		private long syncTime;
 

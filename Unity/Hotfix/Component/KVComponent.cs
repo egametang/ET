@@ -6,7 +6,7 @@ namespace Hotfix
 	/// <summary>
 	/// Key Value组件用于保存一些数据
 	/// </summary>
-	public class KVComponent: HotfixComponent
+	public class KVComponent: Component
 	{
 		[BsonElement]
 		private readonly Dictionary<string, object> kv = new Dictionary<string, object>();

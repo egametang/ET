@@ -2,8 +2,8 @@
 
 namespace Hotfix
 {
-	[EntityEvent(EntityEventId.GameObjectComponent)]
-	public class GameObjectComponent: HotfixComponent
+	[ObjectEvent(EntityEventId.GameObjectComponent)]
+	public class GameObjectComponent: Component
 	{
 		public GameObject GameObject { get; private set; }
 

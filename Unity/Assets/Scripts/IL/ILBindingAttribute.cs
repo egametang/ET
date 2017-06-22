@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hotfix
+namespace Model
 {
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class ILBindingAttribute : Attribute

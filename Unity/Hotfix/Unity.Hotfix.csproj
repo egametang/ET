@@ -55,8 +55,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\GameObjectHelper.cs" />
-    <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="HotfixInit.cs" />
     <Compile Include="LitJson\IJsonWrapper.cs" />
     <Compile Include="LitJson\JsonData.cs" />
@@ -68,19 +66,10 @@
     <Compile Include="LitJson\Lexer.cs" />
     <Compile Include="LitJson\ParserToken.cs" />
     <Compile Include="AssetBundleHelper.cs" />
-    <Compile Include="Component\BenchmarkComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
-    <Compile Include="Component\Config\ClientConfig.cs" />
-    <Compile Include="Component\Config\InnerConfig.cs" />
-    <Compile Include="Component\Config\OuterConfig.cs" />
-    <Compile Include="Component\Config\RunServerConfig.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\MessageDispatherComponent.cs" />
-    <Compile Include="Component\NetInnerComponent.cs" />
-    <Compile Include="Component\NetOuterComponent.cs" />
-    <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\ResourcesComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\TimeComponent.cs" />
@@ -92,45 +81,23 @@
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Handler\R2C_ServerLogHandler.cs" />
-    <Compile Include="Config\ACategory.cs" />
-    <Compile Include="Config\AConfig.cs" />
-    <Compile Include="Config\AConfigComponent.cs" />
-    <Compile Include="Config\ConfigAttribute.cs" />
-    <Compile Include="Config\ConfigHelper.cs" />
-    <Compile Include="Config\ICategory.cs" />
-    <Compile Include="DllHelper.cs" />
-    <Compile Include="Entity\AssetBundleLoaderAsync.cs" />
-    <Compile Include="Entity\Config\BuffConfig.cs" />
-    <Compile Include="Entity\Config\StartConfig.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Message\InnerMessage.cs" />
     <Compile Include="Entity\Message\Opcode.cs" />
     <Compile Include="Entity\Message\OuterMessage.cs" />
     <Compile Include="Entity\Scene.cs" />
-    <Compile Include="Entity\Session.cs" />
     <Compile Include="Entity\UI.cs" />
     <Compile Include="Entity\Unit.cs" />
-    <Compile Include="Entity\WWWAsync.cs" />
     <Compile Include="Event\AEventAttribute.cs" />
     <Compile Include="Event\Env.cs" />
     <Compile Include="Event\EnvKey.cs" />
     <Compile Include="Event\EventAttribute.cs" />
     <Compile Include="Event\EventIdType.cs" />
     <Compile Include="Event\IEvent.cs" />
-    <Compile Include="Message\AMessage.cs" />
-    <Compile Include="Message\AMHandler.cs" />
-    <Compile Include="Message\AppType.cs" />
-    <Compile Include="Message\ErrorCode.cs" />
-    <Compile Include="Message\IMHandler.cs" />
-    <Compile Include="Message\MessageAttribute.cs" />
-    <Compile Include="Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Message\MessageInfo.cs" />
-    <Compile Include="Message\OpcodeHelper.cs" />
-    <Compile Include="Message\RpcException.cs" />
-    <Compile Include="Object\HotfixComponent.cs" />
+    <Compile Include="Object\Component.cs" />
     <Compile Include="Object\Disposer.cs" />
-    <Compile Include="Object\HotfixEntity.cs" />
-    <Compile Include="Object\EntityEventAttribute.cs" />
+    <Compile Include="Object\Entity.cs" />
+    <Compile Include="Object\ObjectEventAttribute.cs" />
     <Compile Include="Object\ObjectEvents.cs" />
     <Compile Include="Object\EntityType.cs" />
     <Compile Include="Object\Object.cs" />
@@ -153,7 +120,9 @@
       <Name>Unity.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes

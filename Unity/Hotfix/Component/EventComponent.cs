@@ -4,8 +4,8 @@ using Model;
 
 namespace Hotfix
 {
-	[EntityEvent(EntityEventId.EventComponent)]
-	public class EventComponent : HotfixComponent, IAwake
+	[ObjectEvent(EntityEventId.EventComponent)]
+	public class EventComponent : Component, IAwake
 	{
 		private Dictionary<int, List<object>> allEvents;
 

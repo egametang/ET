@@ -12,8 +12,6 @@ namespace Hotfix
 				Hotfix.Scene.AddComponent<ResourcesComponent>();
 				Hotfix.Scene.AddComponent<UIComponent>();
 				Hotfix.Scene.AddComponent<UnitComponent>();
-				Hotfix.Scene.AddComponent<MessageDispatherComponent, AppType>(AppType.Client);
-				Hotfix.Scene.AddComponent<NetOuterComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)

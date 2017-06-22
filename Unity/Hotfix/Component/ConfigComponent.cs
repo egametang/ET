@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Model;
 
 namespace Hotfix
 {
-	public class ConfigComponent: HotfixComponent
+	public class ConfigComponent: Component
 	{
 		private Dictionary<Type, ICategory> allConfig;
 

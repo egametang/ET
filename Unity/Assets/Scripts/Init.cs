@@ -50,6 +50,8 @@ namespace Model
 
 		private void Update()
 		{
+			ObjectEvents.Instance.Update();
+
 			this.AppDomain.Invoke(this.update, null, this.param0);
 		}
 

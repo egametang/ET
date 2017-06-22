@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Hotfix
 {
-	[EntityEvent(EntityEventId.ResourcesComponent)]
-	public class ResourcesComponent: HotfixComponent
+	[ObjectEvent(EntityEventId.ResourcesComponent)]
+	public class ResourcesComponent: Component
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
 
