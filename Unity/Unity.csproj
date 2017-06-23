@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0b8</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -365,6 +368,62 @@
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorNodeConfig.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTree.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeArgsDict.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeConfig.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTArrayDoubleComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTArrayFloatComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTArrayInt64Component.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTArrayIntComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTArrayStringComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTBoolComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTDoubleComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTEnumComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTFloatComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTInt64Component.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTIntComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BaseType\BTStringComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BTTypeBaseComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\BTTypeManager.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayAudioClipComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayGameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayMaterialComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayShaderComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArraySpriteComponent..cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture2DComponent..cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture3DComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTextureComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTAudioClipComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTGameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTMaterialComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTShaderComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTSpriteComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTTexture2DComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTTexture3DComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeType\UnityType\BTTextureComponent.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BTEnv.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\BTEnvKey.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\Node.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeClassifyType.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeDeprecatedAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeDesignerProto.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeEngineObjectAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeFieldBaseAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeFieldConstraintAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeInputAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeOutputAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodePropAttribute.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\NodeProto.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTree\TypeHelper.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
@@ -438,6 +497,7 @@
     <Compile Include="Assets\Scripts\Object\ObjectEvents.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

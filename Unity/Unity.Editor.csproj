@@ -128,6 +128,40 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorNodeConfigExtension.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorNodeData.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeConfigEditor.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeConfigExtension.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeData.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeMenu.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeNodeClassPopup.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeOperateUtility.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BehaviorTreeTipsHelper.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTBatchOperation.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTDesignerUtility.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTEditorWindow.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTEntity.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Component\BTDebugComponent.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\CustomArrayField.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeAfterChangeNodeTypeEvent_SelectNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeClickNodeEvent_SelectNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeConnectStateEvent_HandleConnectLines.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeCreateNodeEvent_SelectNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeMouseInNodeEvent_HandleOperate.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeNewCreateClickEvent_CreateNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeOpenEditorEvent_SelectNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeOpenEditorEvent_SelectTree.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeOpenEditorEvent_UpdatePropList.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeReplaceClickEvent_ReplaceNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeRightDesignerDragEvent_ModifyRightBorder.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeRunTreeEvent_ShowDebugInfo.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\FoldoutNode.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\GraphDesigner.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeDesigner.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeExtension.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMeta.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMetaHelper.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\PropertyDesigner.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
