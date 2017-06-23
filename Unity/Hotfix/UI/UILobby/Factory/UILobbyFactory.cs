@@ -1,6 +1,5 @@
 ﻿using Model;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Hotfix
 {
@@ -9,7 +8,7 @@ namespace Hotfix
     {
         public UI Create(Scene scene, int type, UI parent)
         {
-			GameObject bundleGameObject = scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("uilobby", "Lobby");
+			GameObject bundleGameObject = scene.ModelScene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("uilobby", "Lobby");
 			GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
 			lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
 			UI ui = new UI(scene, type, parent, lobby);

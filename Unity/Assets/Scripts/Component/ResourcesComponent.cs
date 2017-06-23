@@ -99,17 +99,9 @@ namespace Model
 			{
 				// 异步load资源到内存cache住
 				UnityEngine.Object[] assets;
-				AssetBundleLoaderAsync assetBundleLoaderAsync = null;
-				try
-				{
-					assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle);
-					
-					assets = await assetBundleLoaderAsync.LoadAllAssetsAsync();
-					
-				}
-				finally
-				{
-					assetBundleLoaderAsync?.Dispose();
+				using (AssetBundleLoaderAsync assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle))
+				{ 
+					assets = await assetBundleLoaderAsync.LoadAllAssetsAsync();	
 				}
 
 

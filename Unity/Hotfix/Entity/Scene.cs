@@ -19,9 +19,9 @@
 	{
 		public Scene Parent { get; set; }
 
-		public string Name { get; set; }
+		public Model.Scene ModelScene { get; set; } = new Model.Scene();
 
-		public SceneType SceneType { get; private set; }
+		public string Name { get; set; }
 
 		public Scene(): base(EntityType.Scene)
 		{
@@ -39,6 +39,8 @@
 			}
 
 			base.Dispose();
+
+			this.ModelScene.Dispose();
 		}
 	}
 }

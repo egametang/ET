@@ -3,13 +3,14 @@ using Model;
 
 namespace Hotfix
 {
-	public static class HotfixInit
+	public static class Init
 	{
 		private static void Start()
 		{
 			try
 			{
-				Hotfix.Scene.AddComponent<ResourcesComponent>();
+				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
+				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
 				Hotfix.Scene.AddComponent<UIComponent>();
 				Hotfix.Scene.AddComponent<UnitComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);

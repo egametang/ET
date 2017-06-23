@@ -7,15 +7,13 @@ namespace Model
 	/// 消息分发组件
 	/// </summary>
 	[ObjectEvent(EntityEventId.MessageDispatherComponent)]
-	public class MessageDispatherComponent: Component, IAwake<AppType>, ILoad
+	public class MessageDispatherComponent: Component, IAwake, ILoad
 	{
-		private AppType AppType;
 		private Dictionary<ushort, List<IInstanceMethod>> handlers;
 		private DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
 
-		public void Awake(AppType appType)
+		public void Awake()
 		{
-			this.AppType = appType;
 			this.Load();
 		}
 

@@ -23,7 +23,7 @@ namespace Hotfix
 			this.params3[0] = scene;
 			this.params3[1] = type;
 			this.params3[2] = parent;
-			return (UI)Init.Instance.AppDomain.Invoke(this.methodInfo, this.instance, this.params3);
+			return (UI)Model.Init.Instance.AppDomain.Invoke(this.methodInfo, this.instance, this.params3);
 		}
 	}
 

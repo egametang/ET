@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\JsonHelper.cs" />
-    <Compile Include="HotfixInit.cs" />
+    <Compile Include="Init.cs" />
     <Compile Include="LitJson\IJsonWrapper.cs" />
     <Compile Include="LitJson\JsonData.cs" />
     <Compile Include="LitJson\JsonException.cs" />
@@ -71,7 +71,6 @@
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\ResourcesComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\TimeComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />

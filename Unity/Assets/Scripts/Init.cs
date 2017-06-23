@@ -34,7 +34,7 @@ namespace Model
 				this.RegisterDelegate();
 				this.RegisterRedirection();
 
-				IType hotfixInitType = AppDomain.LoadedTypes["Hotfix.HotfixInit"];
+				IType hotfixInitType = AppDomain.LoadedTypes["Hotfix.Init"];
 				start = hotfixInitType.GetMethod("Start", 0);
 				update = hotfixInitType.GetMethod("Update", 0);
 				onApplicationQuit = hotfixInitType.GetMethod("OnApplicationQuit", 0);
@@ -50,9 +50,9 @@ namespace Model
 
 		private void Update()
 		{
-			ObjectEvents.Instance.Update();
-
 			this.AppDomain.Invoke(this.update, null, this.param0);
+
+			ObjectEvents.Instance.Update();
 		}
 
 		private void OnApplicationQuit()
@@ -75,14 +75,14 @@ namespace Model
 
 		public unsafe void RegisterRedirection()
 		{
-			var mi = typeof(Log).GetMethod("Debug", new System.Type[] { typeof(string) });
+			MethodInfo mi = typeof(Log).GetMethod("Debug", new Type[] { typeof(string) });
 			this.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
 		}
 
 		public void RegisterDelegate()
 		{
 			AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
-			AppDomain.DelegateManager.RegisterMethodDelegate<System.Byte[], System.Int32, System.Int32>();
+			AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 
 		}
 

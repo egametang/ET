@@ -21,8 +21,6 @@
 
 		public string Name { get; set; }
 
-		public SceneType SceneType { get; private set; }
-
 		public Scene(): base(EntityType.Scene)
 		{
 		}
