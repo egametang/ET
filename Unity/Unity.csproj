@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0b8</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -330,6 +327,9 @@
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
+    <Compile Include="Assets\PSD2UGUI\Effects\Collections\ListPool.cs" />
+    <Compile Include="Assets\PSD2UGUI\Effects\Collections\Pool.cs" />
+    <Compile Include="Assets\PSD2UGUI\Effects\Mirror.cs" />
     <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ArrayHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ByteHelper.cs" />
@@ -368,13 +368,6 @@
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BehaviorNodeConfig.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTree.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\BehaviorTreeArgsDict.cs" />
@@ -424,6 +417,13 @@
     <Compile Include="Assets\Scripts\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\TypeHelper.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
     <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
@@ -499,7 +499,17 @@
     <Compile Include="Assets\Scripts\Object\ObjectEvents.cs" />
     <Compile Include="Assets\Scripts\ReferenceCollector.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Assets\PSD2UGUI\Doc\version.txt" />
+    <None Include="Assets\PSD2UGUI\JSCode\ReadMe.txt" />
+    <None Include="Assets\PSD2UGUI\Samples\9slice\9slice.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\button\button.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\grid\grid.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\halftest\halftest.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\scrollpanel\scrollpanel.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\slider\slider.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\texttest\texttest.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

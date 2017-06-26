@@ -450,6 +450,17 @@
     <Compile Include="Assets\Plugins\protobuf-net\SubItemToken.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\PSD2UGUI\Doc\version.txt" />
+    <None Include="Assets\PSD2UGUI\JSCode\ReadMe.txt" />
+    <None Include="Assets\PSD2UGUI\Samples\9slice\9slice.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\button\button.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\grid\grid.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\halftest\halftest.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\scrollpanel\scrollpanel.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\slider\slider.xml" />
+    <None Include="Assets\PSD2UGUI\Samples\texttest\texttest.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>
