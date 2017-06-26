@@ -64,34 +64,30 @@ namespace Model
 			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
-				WWWAsync wwwAsync = null;
-				try
+				using (WWWAsync wwwAsync = new WWWAsync())
 				{
-					++count;
-					if (count > 1)
-					{
-						await timerComponent.WaitAsync(2000);
-					}
+					try
+					{ 
+						++count;
+						if (count > 1)
+						{
+							await timerComponent.WaitAsync(1000);
+						}
 
-					if (this.Id == 0)
-					{
-						return;
-					}
+						if (this.Id == 0)
+						{
+							return;
+						}
 
-					wwwAsync = new WWWAsync();
-					
-					await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
-					assetBundle = wwwAsync.www.assetBundle;
-					
-					break;
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
-				finally
-				{
-					wwwAsync?.Dispose();
+						await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
+						assetBundle = wwwAsync.www.assetBundle;
+
+						break;
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
 			}
 

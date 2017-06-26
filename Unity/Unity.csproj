@@ -424,6 +424,7 @@
     <Compile Include="Assets\Scripts\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\BehaviorTree\TypeHelper.cs" />
+    <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />

@@ -11,6 +11,7 @@ namespace Hotfix
 			{
 				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
+				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  
 				Hotfix.Scene.AddComponent<UIComponent>();
 				Hotfix.Scene.AddComponent<UnitComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
