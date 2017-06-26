@@ -484,6 +484,7 @@
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\MonoMethod.cs" />
+    <Compile Include="Assets\Scripts\Object\AssemblyManager.cs" />
     <Compile Include="Assets\Scripts\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Object\Entity.cs" />

@@ -9,14 +9,14 @@ namespace Model
 {
 	public class BTEditorTree
 	{
-		private int _id = BTEntity.NodeIdStartIndex;
+		private int _id = BTEditor.NodeIdStartIndex;
 		private readonly Node _root;
 
 		public BTEditorTree(BehaviorTreeConfig config)
 		{
 			Type rootType = typeof(Game).Assembly.GetType($"Model.{config.RootNodeProto.Name}");
 			Node root = (Node) Activator.CreateInstance(rootType, config.RootNodeProto);
-			root.Id = BTEntity.NodeIdStartIndex;
+			root.Id = BTEditor.NodeIdStartIndex;
 			Queue<NodeProto> protoStack = new Queue<NodeProto>();
 			Queue<Node> nodeStack = new Queue<Node>();
 			protoStack.Enqueue(config.RootNodeProto);
@@ -73,7 +73,7 @@ namespace Model
 		private BTEditorTree(Node root, BehaviorTreeConfig config)
 		{
 			_root = root;
-			_root.Id = BTEntity.NodeIdStartIndex;
+			_root.Id = BTEditor.NodeIdStartIndex;
 			this.BTConfig = config;
 		}
 

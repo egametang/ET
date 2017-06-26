@@ -55,7 +55,7 @@ namespace Model
 
 		private static void InitFieldValue(ref Node node, NodeProto nodeProto)
 		{
-			Type type = typeof(Game).Assembly.GetType("Model." + nodeProto.Name);
+			Type type = AssemblyManager.Instance.Get("Model").GetType("Model." + nodeProto.Name);
 
 			foreach (var args_item in nodeProto.Args.Dict())
 			{

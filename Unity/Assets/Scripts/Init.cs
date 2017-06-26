@@ -29,6 +29,8 @@ namespace Model
 			{
 				Instance = this;
 
+				AssemblyManager.Instance.Add("Model", typeof(Model.Init).Assembly);
+
 				this.RegisterAssembly();
 				this.RegisterILAdapter();
 				this.RegisterDelegate();

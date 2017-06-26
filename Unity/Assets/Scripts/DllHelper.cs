@@ -38,7 +38,12 @@ namespace Model
 
 		public static Type[] GetMonoTypes()
 		{
-			return typeof(Game).Assembly.GetTypes();
+			List<Type> types = new List<Type>();
+			foreach (Assembly assembly in AssemblyManager.Instance.GetAll())
+			{
+				types.AddRange(assembly.GetTypes());
+			}
+			return types.ToArray();
 		}
 
 		public static IMethod[] GetMethodInfo(string typeName)

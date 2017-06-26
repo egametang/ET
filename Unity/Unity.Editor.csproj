@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Editor:5</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0b8</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -140,7 +143,7 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BTBatchOperation.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BTDesignerUtility.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\BTEditorWindow.cs" />
-    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTEntity.cs" />
+    <Compile Include="Assets\Editor\BehaviorTreeEditor\BTEditor.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Component\BTDebugComponent.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\CustomArrayField.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\Event\BehaviorTreeAfterChangeNodeTypeEvent_SelectNode.cs" />

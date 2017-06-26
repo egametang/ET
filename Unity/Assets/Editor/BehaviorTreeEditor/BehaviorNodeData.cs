@@ -53,10 +53,10 @@ namespace MyEditor
 		public BehaviorNodeData(string proto_name)
 		{
 			this.Name = proto_name;
-			this.Proto = BTEntity.Instance.GetNodeMeta(proto_name);
+			this.Proto = BTEditor.Instance.GetNodeMeta(proto_name);
 			if (this.Proto == null)
 			{
-				this.Proto = BTEntity.Instance.GetNodeMeta("Unknow");
+				this.Proto = BTEditor.Instance.GetNodeMeta("Unknow");
 				return;
 			}
 			this.Classify = this.Proto.classify;
@@ -108,7 +108,7 @@ namespace MyEditor
 
 		public void ResetId()
 		{
-			this.Id = BTEntity.Instance.AutoNodeId();
+			this.Id = BTEditor.Instance.AutoNodeId();
 			foreach (BehaviorNodeData child in children)
 			{
 				child.ResetId();

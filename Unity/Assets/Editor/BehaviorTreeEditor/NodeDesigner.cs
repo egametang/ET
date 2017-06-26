@@ -90,7 +90,7 @@ namespace MyEditor
 
 		public void Init()
 		{
-			NodeData.Proto = BTEntity.Instance.GetNodeMeta(NodeData.Name);
+			NodeData.Proto = BTEditor.Instance.GetNodeMeta(NodeData.Name);
 			string[] arr = NodeData.Proto.style.Split('/');
 			string style = arr.Length > 0? arr[0] : "";
 			if (style == "")
@@ -178,7 +178,7 @@ namespace MyEditor
 			{
 				GUI.DrawTexture(rect, mBoxSelectHighLight);
 			}
-			else if (BTEntity.Instance.IsHighLight(this.NodeData))
+			else if (BTEditor.Instance.IsHighLight(this.NodeData))
 			{
 				GUI.DrawTexture(rect, mBoxHighLight);
 			}
@@ -281,17 +281,17 @@ namespace MyEditor
 			if (!isSelected && mouse.x > Pos.x - Width / 2 - 30f && mouse.x < Pos.x + Width / 2 + 30f && mouse.y > Pos.y - Height / 2 &&
 			    mouse.y < Pos.y + Height / 2)
 			{
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
+				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
 			}
 			//并判断是否点中了连线柄
 			if (mouse.x > LeftPos.x - 30f && mouse.x < LeftPos.x + 10f && mouse.y > LeftPos.y - 30f && mouse.y < LeftPos.y + 30f)
 			{
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
+				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
 			}
 
 			if (mouse.x > RightPos.x - 10f && mouse.x < RightPos.x + 30f && mouse.y > RightPos.y - 30f && mouse.y < RightPos.y + 30f && NodeData.CanAddChild())
 			{
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
+				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
 			}
 
 			for (int i = 0; i < this.Children.Count; i++)
@@ -305,7 +305,7 @@ namespace MyEditor
 			isSelected = flag;
 			if (flag)
 			{
-				BTEntity.Instance.SelectNode(this.NodeData);
+				BTEditor.Instance.SelectNode(this.NodeData);
 			}
 		}
 

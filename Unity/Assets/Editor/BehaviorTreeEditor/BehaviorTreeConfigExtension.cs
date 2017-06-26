@@ -11,7 +11,7 @@ namespace Model
 		{
 			BehaviorNodeConfig go = treeConfig.CreateNodeConfig(rootName);
 			treeConfig.RootNodeConfig = go.GetComponent<BehaviorNodeConfig>();
-			treeConfig.RootNodeConfig.id = BTEntity.NodeIdStartIndex;
+			treeConfig.RootNodeConfig.id = BTEditor.NodeIdStartIndex;
 			go.gameObject.name = rootName;
 			return go;
 		}
@@ -33,9 +33,11 @@ namespace Model
 
 		private static BehaviorNodeConfig CreateNodeConfig(this BehaviorTreeConfig treeConfig, string name)
 		{
-			NodeMeta proto = BTEntity.Instance.GetNodeMeta(name);
-			GameObject go = new GameObject();
-			go.name = name;
+			NodeMeta proto = BTEditor.Instance.GetNodeMeta(name);
+			GameObject go = new GameObject()
+			{
+				name = name
+			};
 			go.transform.parent = treeConfig.gameObject.transform;
 			BehaviorNodeConfig node = go.AddComponent<BehaviorNodeConfig>();
 			node.name = name;

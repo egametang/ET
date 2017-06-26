@@ -95,11 +95,11 @@ namespace MyEditor
 				case EventType.KeyUp:
 					if (e.keyCode == KeyCode.Escape || (e.keyCode == KeyCode.S && e.control))
 					{
-						BTEntity.Instance.SaveAll();
+						BTEditor.Instance.SaveAll();
 					}
 					else if (e.keyCode == KeyCode.F4)
 					{
-						BTEntity.Instance.SaveAll();
+						BTEditor.Instance.SaveAll();
 					}
 					break;
 				case EventType.MouseDown:
@@ -109,7 +109,7 @@ namespace MyEditor
 
 		public void OnDestroy()
 		{
-			BTEntity.Reset();
+			BTEditor.Reset();
 		}
 
 		public void onUpdatePropList(params object[] list)

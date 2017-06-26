@@ -10,9 +10,9 @@ using Object = UnityEngine.Object;
 
 namespace MyEditor
 {
-	public class BTEntity: Entity
+	public class BTEditor: Entity
 	{
-		private static BTEntity instance;
+		private static BTEditor instance;
 
 		public const int NodeIdStartIndex = 100000;
 		private int AutoID = NodeIdStartIndex;
@@ -34,7 +34,7 @@ namespace MyEditor
 			}
 		}
 
-		public static BTEntity Instance
+		public static BTEditor Instance
 		{
 			get
 			{
@@ -43,7 +43,15 @@ namespace MyEditor
 					return instance;
 				}
 
-				instance = new BTEntity();
+				instance = new BTEditor();
+
+				AssemblyManager.Instance.Add("Model", typeof(Init).Assembly);
+				AssemblyManager.Instance.Add("Editor", typeof(BTEditor).Assembly);
+
+				instance.LoadNodeTypeProto();
+
+				instance.AddComponent<EventComponent>();
+				instance.AddComponent<TimerComponent>();
 				instance.AddComponent<BTDebugComponent>();
 				return instance;
 			}
@@ -98,7 +106,6 @@ namespace MyEditor
 
 		public void NewLoadData()
 		{
-			LoadNodeTypeProto();
 			NewLoadPrefabTree();
 			FilterClassify();
 		}
@@ -191,7 +198,7 @@ namespace MyEditor
 		
 		public void RemoveUnusedArgs(NodeProto nodeProto)
 		{
-			NodeMeta proto = BTEntity.Instance.GetNodeMeta(nodeProto.Name);
+			NodeMeta proto = BTEditor.Instance.GetNodeMeta(nodeProto.Name);
 			List<string> unUsedList = new List<string>();
 			foreach (KeyValuePair<string, object> item in nodeProto.Args.Dict())
 			{
@@ -420,9 +427,11 @@ namespace MyEditor
 			}
 			selectNodeName = "";
 			CurTreeGO = go;
+
 			NewLoadData();
+
 			BTEditorWindow.ShowWindow();
-			Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
+			BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
 		}
 
 		public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)
