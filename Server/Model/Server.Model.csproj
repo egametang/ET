@@ -105,9 +105,6 @@
     <Compile Include="Object\EntityType.cs" />
     <Compile Include="Object\Object.cs" />
     <Compile Include="Object\ObjectEvents.cs" />
-    <Compile Include="Other\EntityEventId.cs" />
-    <Compile Include="Other\IInstanceMethod.cs" />
-    <Compile Include="Other\MonoMethod.cs" />
     <Compile Include="Other\OneThreadSynchronizationContext.cs" />
     <Compile Include="Other\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
