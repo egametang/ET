@@ -54,10 +54,9 @@ namespace Model
 		{
 			get
 			{
-				T t;
-				if (!this.dict.TryGetValue(type, out t))
+				if (!this.dict.TryGetValue(type, out T t))
 				{
-					throw new KeyNotFoundException($"{typeof (T)} 没有找到配置, key: {type}");
+					throw new KeyNotFoundException($"{typeof(T)} 没有找到配置, key: {type}");
 				}
 				return t;
 			}
@@ -65,8 +64,7 @@ namespace Model
 
 		public T TryGet(int type)
 		{
-			T t;
-			if (!this.dict.TryGetValue(type, out t))
+			if (!this.dict.TryGetValue(type, out T t))
 			{
 				return null;
 			}

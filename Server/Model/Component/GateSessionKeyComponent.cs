@@ -3,14 +3,22 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.GateSessionKeyComponent)]
+	[ObjectEvent]
+	public class GateSessionKeyComponentEvent : ObjectEvent<GateSessionKeyComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+	
 	public class GateSessionKeyComponent : Component
 	{
 		private TimerComponent timerComponent;
 
 		private readonly HashSet<long> sessionKey = new HashSet<long>();
 
-		private void Awake()
+		public void Awake()
 		{
 			this.timerComponent = Game.Scene.GetComponent<TimerComponent>();
 		}

@@ -15,8 +15,7 @@ namespace Model
 			this.Tcs = tcs;
 		}
 	}
-
-	[EntityEvent(EntityEventId.MasterComponent)]
+	
 	public class MasterComponent : Component
 	{
 		/// 镜像的地址

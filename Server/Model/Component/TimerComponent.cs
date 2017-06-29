@@ -5,6 +5,15 @@ using Base;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class TimerComponentEvent: ObjectEvent<TimerComponent>, IUpdate
+	{
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+
 	public class Timer
 	{
 		public long Id { get; set; }
@@ -12,7 +21,6 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[EntityEvent(EntityEventId.TimerComponent)]
 	public class TimerComponent: Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
@@ -42,8 +50,7 @@ namespace Model
 				long[] timeOutId = this.timeId.GetAll(key);
 				foreach (long id in timeOutId)
 				{
-					Timer timer;
-					if (!this.timers.TryGetValue(id, out timer))
+					if (!this.timers.TryGetValue(id, out Timer timer))
 					{
 						continue;
 					}
@@ -55,8 +62,7 @@ namespace Model
 
 		private void Remove(long id)
 		{
-			Timer timer;
-			if (!this.timers.TryGetValue(id, out timer))
+			if (!this.timers.TryGetValue(id, out Timer timer))
 			{
 				return;
 			}

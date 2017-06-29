@@ -8,7 +8,7 @@ namespace Model
 	[BsonKnownTypes(typeof (ClientConfig))]
 	[BsonKnownTypes(typeof (InnerConfig))]
 	[BsonKnownTypes(typeof (OuterConfig))]
-	public abstract class AConfigComponent: Component
+	public abstract class AConfigComponent: ComponentDB
 	{
 	}
 }

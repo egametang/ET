@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using Base;
-using MongoDB.Bson;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.StartConfigComponent)]
+	[ObjectEvent]
+	public class StartConfigComponentEvent : ObjectEvent<StartConfigComponent>, IAwake<string, int>
+	{
+		public void Awake(string a, int b)
+		{
+			this.Get().Awake(a, b);
+		}
+	}
+	
 	public class StartConfigComponent: Component
 	{
 		private readonly List<StartConfig> allConfigs = new List<StartConfig>();
@@ -15,7 +22,7 @@ namespace Model
 		
 		public StartConfig StartConfig { get; private set; }
 
-		private void Awake(string path, int appId)
+		public void Awake(string path, int appId)
 		{
 			string[] ss = File.ReadAllText(path).Split('\n');
 			foreach (string s in ss)

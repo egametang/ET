@@ -6,12 +6,20 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.AppManagerComponent)]
+	[ObjectEvent]
+	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+
 	public class AppManagerComponent: Component
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		private void Awake()
+		public void Awake()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();

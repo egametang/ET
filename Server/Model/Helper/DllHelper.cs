@@ -22,7 +22,7 @@ namespace Model
 		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in Game.EntityEventManager.GetAssemblies())
+			foreach (Assembly assembly in ObjectEvents.Instance.GetAssemblies())
 			{
 				types.AddRange(assembly.GetTypes());
 			}

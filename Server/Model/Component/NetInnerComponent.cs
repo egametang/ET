@@ -3,22 +3,40 @@ using Base;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.NetInnerComponent)]
+	[ObjectEvent]
+	public class NetInnerComponentEvent : ObjectEvent<NetInnerComponent>, IAwake, IAwake<string, int>, IUpdate
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Awake(string a, int b)
+		{
+			this.Get().Awake(a, b);
+		}
+
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+	
 	public class NetInnerComponent: NetworkComponent
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
-		private void Awake()
+		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
 		}
 
-		private void Awake(string host, int port)
+		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
 		}
 
-		private new void Update()
+		public new void Update()
 		{
 			base.Update();
 		}
@@ -40,8 +58,7 @@ namespace Model
 		/// </summary>
 		public Session Get(string address)
 		{
-			Session session;
-			if (this.adressSessions.TryGetValue(address, out session))
+			if (this.adressSessions.TryGetValue(address, out Session session))
 			{
 				return session;
 			}

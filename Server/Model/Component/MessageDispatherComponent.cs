@@ -4,10 +4,23 @@ using Base;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake<AppType>, ILoad
+	{
+		public void Awake(AppType appType)
+		{
+			this.Get().Awake(appType);
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[EntityEvent(EntityEventId.MessageDispatherComponent)]
 	public class MessageDispatherComponent : Component
 	{
 		private AppType AppType;
@@ -15,13 +28,13 @@ namespace Model
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
 		private Dictionary<ushort, Type> opcodeType { get; set; }
 
-		private void Awake(AppType appType)
+		public void Awake(AppType appType)
 		{
 			this.AppType = appType;
 			this.Load();
 		}
 
-		private void Load()
+		public void Load()
 		{
 			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
@@ -65,8 +78,7 @@ namespace Model
 
 				Type messageType = imHandler.GetMessageType();
 				ushort opcode = this.GetOpcode(messageType);
-				List<IMHandler> list;
-				if (!this.handlers.TryGetValue(opcode, out list))
+				if (!this.handlers.TryGetValue(opcode, out List<IMHandler> list))
 				{
 					list = new List<IMHandler>();
 					this.handlers.Add(opcode, list);
@@ -77,8 +89,7 @@ namespace Model
 
 		public ushort GetOpcode(Type type)
 		{
-			MessageAttribute messageAttribute;
-			if (!this.messageOpcode.TryGetValue(type, out messageAttribute))
+			if (!this.messageOpcode.TryGetValue(type, out MessageAttribute messageAttribute))
 			{
 				throw new Exception($"查找Opcode失败: {type.Name}");
 			}
@@ -87,8 +98,7 @@ namespace Model
 
 		public Type GetType(ushort opcode)
 		{
-			Type messageType;
-			if (!this.opcodeType.TryGetValue(opcode, out messageType))
+			if (!this.opcodeType.TryGetValue(opcode, out Type messageType))
 			{
 				throw new Exception($"查找Opcode Type失败: {opcode}");
 			}
@@ -97,8 +107,7 @@ namespace Model
 
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			List<IMHandler> actions;
-			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
+			if (!this.handlers.TryGetValue(messageInfo.Opcode, out List<IMHandler> actions))
 			{
 				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;

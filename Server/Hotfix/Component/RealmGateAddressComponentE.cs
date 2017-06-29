@@ -1,9 +1,16 @@
-﻿using Base;
-using Model;
+﻿using Model;
 
 namespace Hotfix
 {
-	[EntityEvent(EntityEventId.RealmGateAddressComponent)]
+	[ObjectEvent]
+	public class RealmGateAddressComponentEvent : ObjectEvent<RealmGateAddressComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+	
 	public static class RealmGateAddressComponentE
 	{
 		public static void Awake(this RealmGateAddressComponent component)

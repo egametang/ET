@@ -113,9 +113,8 @@ namespace Model
 			}
 
 			// rpcFlag>0 表示这是一个rpc响应消息
-			Action<byte[], int, int> action;
 			// Rpc回调有找不着的可能，因为client可能取消Rpc调用
-			if (!this.requestCallback.TryGetValue(rpcId, out action))
+			if (!this.requestCallback.TryGetValue(rpcId, out Action<byte[], int, int> action))
 			{
 				return;
 			}

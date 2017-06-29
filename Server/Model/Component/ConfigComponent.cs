@@ -4,13 +4,22 @@ using System.Reflection;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class ConfigComponentEvent : ObjectEvent<ConfigComponent>, ILoad
+	{
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	public class ConfigComponent: Component
 	{
 		private Dictionary<Type, ICategory> allConfig;
 
-		private void Load()
+		public void Load()
 		{
-			Assembly assembly = Game.EntityEventManager.GetAssembly("Base");
+			Assembly assembly = ObjectEvents.Instance.GetAssembly("Model");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();
@@ -39,8 +48,7 @@ namespace Model
 		public T GetOne<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -50,8 +58,7 @@ namespace Model
 		public T Get<T>(long id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -61,8 +68,7 @@ namespace Model
 		public T TryGet<T>(int id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				return default(T);
 			}
@@ -72,8 +78,7 @@ namespace Model
 		public T[] GetAll<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -84,8 +89,7 @@ namespace Model
 		{
 			T t = new T();
 			Type type = t.ConfigType;
-			ICategory category;
-			bool ret = this.allConfig.TryGetValue(type, out category);
+			bool ret = this.allConfig.TryGetValue(type, out ICategory category);
 			return ret? (T) category : null;
 		}
 	}

@@ -2,20 +2,38 @@
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.NetOuterComponent)]
+	[ObjectEvent]
+	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>, IUpdate
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Awake(string a, int b)
+		{
+			this.Get().Awake(a, b);
+		}
+
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+	
 	public class NetOuterComponent: NetworkComponent
 	{
-		private void Awake()
+		public void Awake()
 		{
 			this.Awake(NetworkProtocol.UDP);
 		}
 
-		private void Awake(string host, int port)
+		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.UDP, host, port);
 		}
 
-		private new void Update()
+		public new void Update()
 		{
 			base.Update();
 		}

@@ -4,20 +4,33 @@ using Base;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class EventComponentEvent : ObjectEvent<EventComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 事件分发
 	/// </summary>
-	[EntityEvent(EntityEventId.EventComponent)]
 	public class EventComponent: Component
 	{
 		private Dictionary<int, List<object>> allEvents;
 
-		private void Awake()
+		public void Awake()
 		{
 			this.Load();
 		}
 
-		private void Load()
+		public void Load()
 		{
 			this.allEvents = new Dictionary<int, List<object>>();
 
@@ -42,8 +55,7 @@ namespace Model
 
 		public void Run(int type)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -68,8 +80,7 @@ namespace Model
 
 		public void Run<A>(int type, A a)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -94,8 +105,7 @@ namespace Model
 
 		public void Run<A, B>(int type, A a, B b)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -120,8 +130,7 @@ namespace Model
 
 		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -146,8 +155,7 @@ namespace Model
 
 		public void Run<A, B, C, D>(int type, A a, B b, C c, D d)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -172,8 +180,7 @@ namespace Model
 
 		public void Run<A, B, C, D, E>(int type, A a, B b, C c, D d, E e)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -199,8 +206,7 @@ namespace Model
 
 		public void Run<A, B, C, D, E, F>(int type, A a, B b, C c, D d, E e, F f)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}

@@ -23,8 +23,7 @@ namespace Model
 
 		public T Get<T>(string key)
 		{
-			object k;
-			if (!this.kv.TryGetValue(key, out k))
+			if (!this.kv.TryGetValue(key, out object k))
 			{
 				return default(T);
 			}

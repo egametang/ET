@@ -2,7 +2,6 @@
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.UnitComponent)]
 	public class UnitComponent: Component
 	{
 		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
@@ -14,8 +13,7 @@ namespace Model
 
 		public Unit Get(long id)
 		{
-			Unit unit;
-			this.idUnits.TryGetValue(id, out unit);
+			this.idUnits.TryGetValue(id, out Unit unit);
 			return unit;
 		}
 

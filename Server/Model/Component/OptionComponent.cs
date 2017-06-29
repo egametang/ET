@@ -3,12 +3,20 @@ using CommandLine;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.OptionComponent)]
+	[ObjectEvent]
+	public class OptionComponentEvent : ObjectEvent<OptionComponent>, IAwake<string[]>
+	{
+		public void Awake(string[] args)
+		{
+			this.Get().Awake(args);
+		}
+	}
+	
 	public class OptionComponent : Component
 	{
 		public Options Options { get; } = new Options();
 
-		private void Awake(string[] args)
+		public void Awake(string[] args)
 		{
 			if (!Parser.Default.ParseArguments(args, this.Options))
 			{

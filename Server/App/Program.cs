@@ -15,8 +15,8 @@ namespace App
 
 			try
 			{
-				Game.EntityEventManager.Register("Model", typeof(Game).Assembly);
-				Game.EntityEventManager.Register("Hotfix", DllHelper.GetHotfixAssembly());
+				ObjectEvents.Instance.Register("Model", typeof(Game).Assembly);
+				ObjectEvents.Instance.Register("Hotfix", DllHelper.GetHotfixAssembly());
 
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
@@ -72,7 +72,7 @@ namespace App
 					{
 						Thread.Sleep(1);
 						Game.Poller.Update();
-						Game.EntityEventManager.Update();
+						ObjectEvents.Instance.Update();
 					}
 					catch (Exception e)
 					{

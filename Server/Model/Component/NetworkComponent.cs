@@ -68,8 +68,7 @@ namespace Model
 
 		public virtual void Remove(long id)
 		{
-			Session session;
-			if (!this.sessions.TryGetValue(id, out session))
+			if (!this.sessions.TryGetValue(id, out Session session))
 			{
 				return;
 			}
@@ -79,8 +78,7 @@ namespace Model
 
 		public Session Get(long id)
 		{
-			Session session;
-			this.sessions.TryGetValue(id, out session);
+			this.sessions.TryGetValue(id, out Session session);
 			return session;
 		}
 

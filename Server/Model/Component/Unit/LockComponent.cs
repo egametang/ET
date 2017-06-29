@@ -12,10 +12,18 @@ namespace Model
 		Locked,
 	}
 
+	[ObjectEvent]
+	public class LockComponentEvent : ObjectEvent<LockComponent>, IAwake<string>
+	{
+		public void Awake(string a)
+		{
+			this.Get().Awake(a);
+		}
+	}
+
 	/// <summary>
 	/// 分布式锁组件,Unit对象可能在不同进程上有镜像,访问该对象的时候需要对他加锁
 	/// </summary>
-	[EntityEvent(EntityEventId.LockComponent)]
 	public class LockComponent: Component
 	{
 		private LockStatus status = LockStatus.LockedNot;
