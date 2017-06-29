@@ -39,18 +39,15 @@ namespace Model
 
 		public Task<bool> Lock(string address)
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			
 			if (this.lockedAddress == "")
 			{
 				this.lockedAddress = address;
-				tcs.SetResult(true);
+				return Task.FromResult(true);
 			}
-			else
-			{
-				LockInfo lockInfo = new LockInfo(address, tcs);
-				this.queue.Enqueue(lockInfo);
-			}
+
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			LockInfo lockInfo = new LockInfo(address, tcs);
+			this.queue.Enqueue(lockInfo);
 			return tcs.Task;
 		}
 

@@ -67,13 +67,12 @@ namespace Model
 
 		private Task<bool> WaitLock()
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			if (this.status == LockStatus.Locked)
 			{
-				tcs.SetResult(true);
-				return tcs.Task;
+				return Task.FromResult(true);
 			}
 
+			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 			this.queue.Enqueue(tcs);
 			return tcs.Task;
 		}

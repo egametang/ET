@@ -102,9 +102,7 @@ namespace Base
 			{
 				throw new Exception("do not accept twice!");
 			}
-
-			var tcs = new TaskCompletionSource<USocket>();
-
+			
 			// 如果有请求连接缓存的包,从缓存中取
 			if (this.connQueue.Count > 0)
 			{
@@ -112,13 +110,11 @@ namespace Base
 
 				USocket socket = new USocket(ptr, this);
 				this.USocketManager.Add(ptr, socket);
-				tcs.SetResult(socket);
+				return Task.FromResult(socket);
 			}
-			else
-			{
-				this.AcceptTcs = tcs;
-			}
-			return tcs.Task;
+
+			this.AcceptTcs = new TaskCompletionSource<USocket>();
+			return this.AcceptTcs.Task;
 		}
 
 		private void OnAccepted(ENetEvent eEvent)
