@@ -48,12 +48,15 @@ namespace Model
 
 		private Dictionary<Type, IObjectEvent> disposerEvents;
 
-		private readonly HashSet<Disposer> updates = new HashSet<Disposer>();
-		private readonly HashSet<Disposer> loaders = new HashSet<Disposer>();
+		private Queue<Disposer> updates = new Queue<Disposer>();
+		private Queue<Disposer> updates2 = new Queue<Disposer>();
 
-		private readonly Queue<Disposer> adds = new Queue<Disposer>();
-		private readonly Queue<Disposer> removes = new Queue<Disposer>();
+		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
+		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
+		private Queue<Disposer> loaders = new Queue<Disposer>();
+		private Queue<Disposer> loaders2 = new Queue<Disposer>();
+		
 		public void Register(string name, Assembly assembly)
 		{
 			this.assemblies[name] = assembly;
@@ -95,79 +98,26 @@ namespace Model
 			return this.assemblies.Values.ToArray();
 		}
 
-		private void Load()
-		{
-			foreach (Disposer disposer in this.loaders)
-			{
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
-				{
-					continue;
-				}
-				ILoad iLoader = objectEvent as ILoad;
-				if (iLoader == null)
-				{
-					continue;
-				}
-				objectEvent.Set(disposer);
-				iLoader.Load();
-			}
-		}
-
 		public void Add(Disposer disposer)
 		{
-			this.adds.Enqueue(disposer);
-		}
-
-		public void Remove(Disposer disposer)
-		{
-			this.removes.Enqueue(disposer);
-		}
-
-		public void UpdateAdd()
-		{
-			while (this.adds.Count > 0)
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
-				Disposer disposer = this.adds.Dequeue();
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
-				{
-					continue;
-				}
-
-				IUpdate iUpdate = objectEvent as IUpdate;
-				if (iUpdate != null)
-				{
-					this.updates.Add(disposer);
-				}
-
-				ILoad iLoader = objectEvent as ILoad;
-				if (iLoader != null)
-				{
-					this.loaders.Add(disposer);
-				}
+				return;
 			}
-		}
 
-		public void UpdateRemove()
-		{
-			while (this.removes.Count > 0)
+			if (objectEvent is ILoad)
 			{
-				Disposer disposer = this.removes.Dequeue();
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
-				{
-					continue;
-				}
+				this.loaders.Enqueue(disposer);
+			}
 
-				IUpdate iUpdate = objectEvent as IUpdate;
-				if (iUpdate != null)
-				{
-					this.updates.Remove(disposer);
-				}
+			if (objectEvent is IUpdate)
+			{
+				this.updates.Enqueue(disposer);
+			}
 
-				ILoad iLoader = objectEvent as ILoad;
-				if (iLoader != null)
-				{
-					this.loaders.Remove(disposer);
-				}
+			if (objectEvent is ILateUpdate)
+			{
+				this.lateUpdates.Enqueue(disposer);
 			}
 		}
 
@@ -231,17 +181,58 @@ namespace Model
 			iAwake.Awake(p1, p2, p3);
 		}
 
-		public void Update()
+		public void Load()
 		{
-			this.UpdateAdd();
-			this.UpdateRemove();
-
-			foreach (Disposer disposer in updates)
+			while (this.loaders.Count > 0)
 			{
+				Disposer disposer = this.loaders.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 				{
 					continue;
 				}
+
+				this.loaders2.Enqueue(disposer);
+
+				ILoad iLoad = objectEvent as ILoad;
+				if (iLoad == null)
+				{
+					continue;
+				}
+				objectEvent.Set(disposer);
+				try
+				{
+					iLoad.Load();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
+			}
+
+			ObjectHelper.Swap(ref this.loaders, ref this.loaders2);
+		}
+
+		public void Update()
+		{
+			while (this.updates.Count > 0)
+			{
+				Disposer disposer = this.updates.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				{
+					continue;
+				}
+
+				this.updates2.Enqueue(disposer);
+
 				IUpdate iUpdate = objectEvent as IUpdate;
 				if (iUpdate == null)
 				{
@@ -257,6 +248,43 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
+			
+			ObjectHelper.Swap(ref this.updates, ref this.updates2);
+		}
+
+		public void LateUpdate()
+		{
+			while (this.lateUpdates.Count > 0)
+			{
+				Disposer disposer = this.lateUpdates.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				{
+					continue;
+				}
+
+				this.lateUpdates2.Enqueue(disposer);
+
+				ILateUpdate iLateUpdate = objectEvent as ILateUpdate;
+				if (iLateUpdate == null)
+				{
+					continue;
+				}
+				objectEvent.Set(disposer);
+				try
+				{
+					iLateUpdate.LateUpdate();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
+			}
+
+			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 	}
 }

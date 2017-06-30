@@ -55,8 +55,6 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-
-			ObjectEvents.Instance.Remove(this);
 		}
 
 		public K AddComponent<K>() where K : Component, new()

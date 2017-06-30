@@ -38,8 +38,6 @@ namespace Model
 			base.Dispose();
 
 			this.Owner.RemoveComponent(this.GetType());
-
-			ObjectEvents.Instance.Remove(this);
 		}
 
 		public override void EndInit()

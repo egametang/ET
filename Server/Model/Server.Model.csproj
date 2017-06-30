@@ -100,6 +100,7 @@
     <Compile Include="Object\Entity.cs" />
     <Compile Include="Object\IAwake.cs" />
     <Compile Include="Object\ILoad.cs" />
+    <Compile Include="Object\ILateUpdate.cs" />
     <Compile Include="Object\IUpdate.cs" />
     <Compile Include="Object\ObjectEventAttribute.cs" />
     <Compile Include="Object\EntityType.cs" />
