@@ -14,5 +14,7 @@
 		public const int BehaviorTreeConnectState = 9;
 		public const int BehaviorTreeReplaceClick = 10;
 		public const int BehaviorTreeRightDesignerDrag = 11;
+
+		public const int SessionRecvMessage = 12;
 	}
 }

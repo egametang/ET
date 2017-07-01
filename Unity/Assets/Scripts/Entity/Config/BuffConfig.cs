@@ -1,8 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Model
+﻿namespace Model
 {
-	[BsonIgnoreExtraElements]
 	public class BuffConfig: AConfig
 	{
 		public string Name { get; set; }

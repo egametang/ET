@@ -5,12 +5,15 @@ namespace Model
 	public sealed class ObjectEvents
 	{
 		private static ObjectEvents instance;
+		
+		private Queue<Disposer> loads = new Queue<Disposer>();
+		private Queue<Disposer> loads2 = new Queue<Disposer>();
 
-		public Queue<Disposer> adds = new Queue<Disposer>();
-		public Queue<Disposer> removes = new Queue<Disposer>();
+		private Queue<Disposer> updates = new Queue<Disposer>();
+		private Queue<Disposer> updates2 = new Queue<Disposer>();
 
-		public HashSet<IUpdate> updates = new HashSet<IUpdate>();
-		public HashSet<ILoad> loads = new HashSet<ILoad>();
+		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
+		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
 		public static ObjectEvents Instance
 		{
@@ -22,77 +25,74 @@ namespace Model
 
 		public void Add(Disposer disposer)
 		{
-			adds.Enqueue(disposer);
-		}
-
-		public void Remove(Disposer disposer)
-		{
-			removes.Enqueue(disposer);
-		}
-
-		public void Update()
-		{
-			while(adds.Count > 0)
+			if (disposer is ILoad)
 			{
-				Disposer disposer = adds.Dequeue();
-
-				IUpdate update = disposer as IUpdate;
-				if (update == null)
-				{
-					continue;
-				}
-				updates.Add(update);
-
-				ILoad load = disposer as ILoad;
-				if (load == null)
-				{
-					continue;
-				}
-				loads.Add(load);
+				loads.Enqueue(disposer);
 			}
 
-			while (removes.Count > 0)
+			if (disposer is IUpdate)
 			{
-				Disposer disposer = removes.Dequeue();
-
-				IUpdate update = disposer as IUpdate;
-				if (update == null)
-				{
-					continue;
-				}
-				updates.Remove(update);
-
-				ILoad load = disposer as ILoad;
-				if (load == null)
-				{
-					continue;
-				}
-				loads.Remove(load);
+				updates.Enqueue(disposer);
 			}
 
-
-			foreach(IUpdate update in updates)
+			if (disposer is ILateUpdate)
 			{
-				Disposer disposer = (Disposer)update;
-				if (removes.Contains(disposer))
-				{
-					continue;
-				}
-				update.Update();
+				lateUpdates.Enqueue(disposer);
 			}
 		}
 
 		public void Load()
 		{
-			foreach (ILoad load in loads)
+			while (this.loads.Count > 0)
 			{
-				Disposer disposer = (Disposer)load;
-				if (removes.Contains(disposer))
+				Disposer disposer = this.loads.Dequeue();
+				if (disposer.Id == 0)
 				{
 					continue;
 				}
-				load.Load();
+
+				this.loads2.Enqueue(disposer);
+
+				((ILoad)disposer).Load();
 			}
+
+			ObjectHelper.Swap(ref this.loads, ref this.loads2);
+		}
+
+		public void Update()
+		{
+			while (this.updates.Count > 0)
+			{
+				Disposer disposer = this.updates.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				this.updates2.Enqueue(disposer);
+
+				((IUpdate)disposer).Update();
+			}
+
+			ObjectHelper.Swap(ref this.updates, ref this.updates2);
+		}
+
+		public void LateUpdate()
+		{
+			while (this.lateUpdates.Count > 0)
+			{
+				Disposer disposer = this.lateUpdates.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				this.lateUpdates2.Enqueue(disposer);
+
+				((ILateUpdate)disposer).LateUpdate();
+			}
+
+			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 	}
 }

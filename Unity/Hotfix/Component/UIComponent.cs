@@ -48,8 +48,7 @@ namespace Hotfix
 
 			foreach (int type in uis.Keys.ToArray())
 			{
-				UI ui;
-				if (!uis.TryGetValue(type, out ui))
+				if (!uis.TryGetValue(type, out UI ui))
 				{
 					continue;
 				}
@@ -113,8 +112,7 @@ namespace Hotfix
 
 		public void Remove(int type)
 		{
-			UI ui;
-			if (!this.uis.TryGetValue(type, out ui))
+			if (!this.uis.TryGetValue(type, out UI ui))
 			{
 				return;
 			}
@@ -126,8 +124,7 @@ namespace Hotfix
 		{
 			foreach (int type in this.uis.Keys.ToArray())
 			{
-				UI ui;
-				if (!this.uis.TryGetValue(type, out ui))
+				if (!this.uis.TryGetValue(type, out UI ui))
 				{
 					continue;
 				}
@@ -138,8 +135,7 @@ namespace Hotfix
 
 		public UI Get(int type)
 		{
-			UI ui;
-			this.uis.TryGetValue(type, out ui);
+			this.uis.TryGetValue(type, out UI ui);
 			return ui;
 		}
 

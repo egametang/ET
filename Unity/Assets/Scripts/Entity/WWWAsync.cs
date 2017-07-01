@@ -55,7 +55,7 @@ namespace Model
 				return;
 			}
 
-			if (this.www.error != null)
+			if (!string.IsNullOrEmpty(this.www.error))
 			{
 				this.tcs.SetException(new Exception($"WWWAsync error: {this.www.error}"));
 				return;

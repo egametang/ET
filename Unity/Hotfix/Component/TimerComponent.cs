@@ -42,8 +42,7 @@ namespace Hotfix
 				long[] timeOutId = this.timeId.GetAll(key);
 				foreach (long id in timeOutId)
 				{
-					Timer timer;
-					if (!this.timers.TryGetValue(id, out timer))
+					if (!this.timers.TryGetValue(id, out Timer timer))
 					{
 						continue;
 					}
@@ -55,8 +54,7 @@ namespace Hotfix
 
 		private void Remove(long id)
 		{
-			Timer timer;
-			if (!this.timers.TryGetValue(id, out timer))
+			if (!this.timers.TryGetValue(id, out Timer timer))
 			{
 				return;
 			}

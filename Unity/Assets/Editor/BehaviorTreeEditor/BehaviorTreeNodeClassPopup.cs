@@ -68,7 +68,7 @@ namespace MyEditor
 
 			foreach (string name in nodeNameList)
 			{
-				NodeMeta proto = BTEditor.Instance.GetNodeMeta(name);
+				NodeMeta proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(name);
 				if (GUILayout.Button(name + $"({proto.describe})", GetButtonStyle()))
 				{
 					if (SubWinType.CreateNode == mSubWinType)
@@ -109,7 +109,7 @@ namespace MyEditor
 				selectType = Enum.GetName(typeof(NodeClassifyType), mEnumNodeTypeSelection - 1);
 				foreach (string name in list)
 				{
-					NodeMeta proto = BTEditor.Instance.GetNodeMeta(name);
+					NodeMeta proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(name);
 					if (selectType == proto.classify)
 					{
 						result1.Add(name);
@@ -125,7 +125,7 @@ namespace MyEditor
 			List<string> result2 = new List<string>();
 			foreach (string name in result1)
 			{
-				NodeMeta proto = BTEditor.Instance.GetNodeMeta(name);
+				NodeMeta proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(name);
 				if (name.ToUpper().Contains(text.ToUpper()) || proto.describe.ToUpper().Contains(text.ToUpper()))
 				{
 					result2.Add(name);

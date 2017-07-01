@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Model;
-using MongoDB.Bson;
 
 namespace Model
 {
@@ -108,7 +106,12 @@ namespace Model
 			if (rpcFlag == 0)
 			{
 				MessageInfo messageInfo = new MessageInfo(opcode, messageBytes, offset, rpcId);
-				this.network.Owner.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
+
+				Type messageType = this.network.GetComponent<OpcodeTypeComponent>().GetType(messageInfo.Opcode);
+				object message = JsonHelper.FromJson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+				messageInfo.Message = message;
+
+				Game.Scene.GetComponent<CrossComponent>().Run(EventIdType.SessionRecvMessage, messageInfo);
 				return;
 			}
 
@@ -210,8 +213,7 @@ namespace Model
 
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
-			//Log.Debug($"send: {message.ToJson()}");
-			ushort opcode = this.network.Owner.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
+			ushort opcode = this.network.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)
 			{

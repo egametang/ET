@@ -21,6 +21,10 @@ namespace MyEditor
 
 		public string Desc = "";
 
+		public string Classify { get; set; } = "";
+
+		public BehaviorNodeData Parent { get; set; }
+
 		public List<BehaviorNodeData> children = new List<BehaviorNodeData>();
 
 		public BehaviorTreeArgsDict Args = new BehaviorTreeArgsDict();
@@ -29,8 +33,6 @@ namespace MyEditor
 		///  
 		/// </summary>
 		public string Error = "";
-
-		public NodeDesigner NodeDesigner { get; set; }
 
 		public Vector2 Pos;
 		public DebugState NodeDeubgState { get; set; }
@@ -46,17 +48,13 @@ namespace MyEditor
 			}
 		}
 
-		public BehaviorNodeData Parent { get; set; }
-
-		public string Classify { get; set; } = "";
-
 		public BehaviorNodeData(string proto_name)
 		{
 			this.Name = proto_name;
-			this.Proto = BTEditor.Instance.GetNodeMeta(proto_name);
+			this.Proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(proto_name);
 			if (this.Proto == null)
 			{
-				this.Proto = BTEditor.Instance.GetNodeMeta("Unknow");
+				this.Proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta("Unknow");
 				return;
 			}
 			this.Classify = this.Proto.classify;

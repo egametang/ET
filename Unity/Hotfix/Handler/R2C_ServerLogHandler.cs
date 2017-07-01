@@ -3,9 +3,9 @@
 namespace Hotfix
 {
 	[MessageHandler(Opcode.R2C_ServerLog)]
-	public class R2C_ServerLogHandler
+	public class R2C_ServerLogHandler: AMHandler<R2C_ServerLog>
 	{
-		public void Handle(Session session, R2C_ServerLog message)
+		protected override void Run(Session session, R2C_ServerLog message)
 		{
 			Log.Debug("111111111111111111111111");
 		}

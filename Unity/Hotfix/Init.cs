@@ -9,6 +9,7 @@ namespace Hotfix
 		{
 			try
 			{
+				Hotfix.Scene.ModelScene.AddComponent<OpcodeTypeComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  

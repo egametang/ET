@@ -15,7 +15,6 @@
 		public override void Dispose()
 		{
 			this.Id = 0;
-			ObjectEvents.Instance.Remove(this);
 		}
 	}
 }

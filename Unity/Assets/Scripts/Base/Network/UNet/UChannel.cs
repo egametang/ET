@@ -79,18 +79,15 @@ namespace Model
 			{
 				throw new Exception("UChannel已经被Dispose, 不能接收消息");
 			}
-			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
+
 			var recvQueue = this.socket.RecvQueue;
 			if (recvQueue.Count > 0)
 			{
-				tcs.SetResult(recvQueue.Dequeue());
+				return Task.FromResult(recvQueue.Dequeue());
 			}
-			else
-			{
-				recvTcs = tcs;
-			}
-			
-			return tcs.Task;
+
+			recvTcs = new TaskCompletionSource<byte[]>();		
+			return recvTcs.Task;
 		}
 
 		private void OnRecv()

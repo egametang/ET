@@ -37,8 +37,7 @@ namespace Hotfix
 		public T GetOne<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -48,8 +47,7 @@ namespace Hotfix
 		public T Get<T>(long id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -59,8 +57,7 @@ namespace Hotfix
 		public T TryGet<T>(int id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				return default(T);
 			}
@@ -70,8 +67,7 @@ namespace Hotfix
 		public T[] GetAll<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
-			if (!this.allConfig.TryGetValue(type, out configCategory))
+			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -82,8 +78,7 @@ namespace Hotfix
 		{
 			T t = new T();
 			Type type = t.ConfigType;
-			ICategory category;
-			bool ret = this.allConfig.TryGetValue(type, out category);
+			bool ret = this.allConfig.TryGetValue(type, out ICategory category);
 			return ret? (T) category : null;
 		}
 	}

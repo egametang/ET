@@ -14,8 +14,7 @@ namespace Hotfix
 
 		public Unit Get(long id)
 		{
-			Unit unit;
-			this.idUnits.TryGetValue(id, out unit);
+			this.idUnits.TryGetValue(id, out Unit unit);
 			return unit;
 		}
 

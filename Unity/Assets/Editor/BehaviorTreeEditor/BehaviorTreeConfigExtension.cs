@@ -33,7 +33,7 @@ namespace Model
 
 		private static BehaviorNodeConfig CreateNodeConfig(this BehaviorTreeConfig treeConfig, string name)
 		{
-			NodeMeta proto = BTEditor.Instance.GetNodeMeta(name);
+			NodeMeta proto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(name);
 			GameObject go = new GameObject()
 			{
 				name = name

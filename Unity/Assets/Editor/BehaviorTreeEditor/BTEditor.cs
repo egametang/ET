@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Model;
 using UnityEditor;
@@ -19,9 +18,6 @@ namespace MyEditor
 
 		public GameObject CurTreeGO { get; set; }
 		public BehaviorTreeData CurTree { get; set; }
-
-		private Dictionary<string, NodeMeta> name2NodeProtoDict = new Dictionary<string, NodeMeta>(); //节点类型 name索引
-		public Dictionary<string, List<NodeMeta>> Classify2NodeProtoList { get; private set; } = new Dictionary<string, List<NodeMeta>>();
 
 		public string selectNodeName;
 		public string selectNodeType;
@@ -43,16 +39,16 @@ namespace MyEditor
 					return instance;
 				}
 
-				instance = new BTEditor();
-
 				AssemblyManager.Instance.Add("Model", typeof(Init).Assembly);
 				AssemblyManager.Instance.Add("Editor", typeof(BTEditor).Assembly);
 
-				instance.LoadNodeTypeProto();
+				instance = new BTEditor();
 
 				instance.AddComponent<EventComponent>();
 				instance.AddComponent<TimerComponent>();
+				instance.AddComponent<BTNodeInfoComponent>();
 				instance.AddComponent<BTDebugComponent>();
+				
 				return instance;
 			}
 		}
@@ -62,57 +58,9 @@ namespace MyEditor
 			instance = null;
 		}
 
-		public NodeMeta GetNodeMeta(string nodeName)
-		{
-			NodeMeta nodeMeta = null;
-			this.name2NodeProtoDict.TryGetValue(nodeName, out nodeMeta);
-			return nodeMeta;
-		}
-
-		public List<NodeMeta> AllNodeProtoList
-		{
-			get
-			{
-				return name2NodeProtoDict.Values.ToList();
-			}
-		}
-
-		public void FilterClassify()
-		{
-			this.Classify2NodeProtoList = new Dictionary<string, List<NodeMeta>>();
-			foreach (NodeMeta nodeType in this.name2NodeProtoDict.Values)
-			{
-				if (nodeType.isDeprecated)
-				{
-					continue;
-				}
-				string classify = nodeType.classify;
-				if (classify == "")
-				{
-					classify = "未分类";
-				}
-				if (!this.Classify2NodeProtoList.ContainsKey(classify))
-				{
-					this.Classify2NodeProtoList.Add(classify, new List<NodeMeta>());
-				}
-				this.Classify2NodeProtoList[classify].Add(nodeType);
-			}
-		}
-
 		public int AutoNodeId()
 		{
 			return ++AutoID;
-		}
-
-		public void NewLoadData()
-		{
-			NewLoadPrefabTree();
-			FilterClassify();
-		}
-
-		public void LoadNodeTypeProto()
-		{
-			this.name2NodeProtoDict = NodeMetaHelper.ExportToDict();
 		}
 
 		public void NewLoadPrefabTree()
@@ -198,7 +146,7 @@ namespace MyEditor
 		
 		public void RemoveUnusedArgs(NodeProto nodeProto)
 		{
-			NodeMeta proto = BTEditor.Instance.GetNodeMeta(nodeProto.Name);
+			NodeMeta proto = this.GetComponent<BTNodeInfoComponent>().GetNodeMeta(nodeProto.Name);
 			List<string> unUsedList = new List<string>();
 			foreach (KeyValuePair<string, object> item in nodeProto.Args.Dict())
 			{
@@ -272,16 +220,15 @@ namespace MyEditor
 
 		public BehaviorNodeData NodeConfigToNodeData(BehaviorNodeConfig nodeProto)
 		{
-			BehaviorNodeData nodeData = new BehaviorNodeData();
-			nodeData.Id = nodeProto.id;
-			nodeData.Name = nodeProto.name;
-			nodeData.Desc = nodeProto.describe;
-			nodeData.Args = nodeProto.GetArgsDict();
-			nodeData.children = new List<BehaviorNodeData>();
-			//             foreach (var item in nodeData.Args)
-			//             {
-			//                 Log.Info($"key :{item.Key} value :{item.Value}");
-			//             }
+			BehaviorNodeData nodeData = new BehaviorNodeData()
+			{
+				Id = nodeProto.id,
+				Name = nodeProto.name,
+				Desc = nodeProto.describe,
+				Args = nodeProto.GetArgsDict(),
+				children = new List<BehaviorNodeData>()
+			};
+
 			foreach (Transform child in nodeProto.gameObject.transform)
 			{
 				BehaviorNodeConfig nodeConfig = child.gameObject.GetComponent<BehaviorNodeConfig>();
@@ -384,16 +331,18 @@ namespace MyEditor
 		//	return list;
 		//}
 
-		public BehaviorNodeData CreateNode(int treeId, string nodeName)
+		public BehaviorNodeData CreateNode(string nodeName)
 		{
-			if (!this.name2NodeProtoDict.ContainsKey(nodeName))
+			if (!this.GetComponent<BTNodeInfoComponent>().ContainsKey(nodeName))
 			{
 				Debug.LogError($"节点类型:{nodeName}不存在");
 				return null;
 			}
-			BehaviorNodeData node = new BehaviorNodeData(nodeName);
-			node.Id = AutoNodeId();
-			node.Name = nodeName;
+			BehaviorNodeData node = new BehaviorNodeData(nodeName)
+			{
+				Id = AutoNodeId(),
+				Name = nodeName
+			};
 			return node;
 		}
 
@@ -428,10 +377,10 @@ namespace MyEditor
 			selectNodeName = "";
 			CurTreeGO = go;
 
-			NewLoadData();
+			this.NewLoadPrefabTree();
 
 			BTEditorWindow.ShowWindow();
-			BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
+			this.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
 		}
 
 		public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)

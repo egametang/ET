@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
-using Model;
 using UnityEngine;
 
 namespace Model

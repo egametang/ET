@@ -8,7 +8,7 @@ namespace Model
 	public abstract class NetworkComponent: Component
 	{
 		private AService Service;
-
+		
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 
 		protected void Awake(NetworkProtocol protocol)

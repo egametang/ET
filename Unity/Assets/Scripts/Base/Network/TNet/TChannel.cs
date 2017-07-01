@@ -231,17 +231,15 @@ namespace Model
 			{
 				throw new Exception("TChannel已经被Dispose, 不能接收消息");
 			}
-			TaskCompletionSource<byte[]> tcs = new TaskCompletionSource<byte[]>();
+			
 			byte[] packet = this.parser.GetPacket();
 			if (packet != null)
 			{
-				tcs.SetResult(packet);
+				return Task.FromResult(packet);
 			}
-			else
-			{
-				recvTcs = tcs;
-			}
-			return tcs.Task;
+
+			recvTcs = new TaskCompletionSource<byte[]>();
+			return recvTcs.Task;
 		}
 	}
 }

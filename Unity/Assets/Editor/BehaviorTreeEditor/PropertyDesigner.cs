@@ -113,10 +113,10 @@ namespace MyEditor
 			mNodeFoldout = new FoldoutFolder("所有节点", SelectNodeFolderCallback);
 			mNodeFoldout.Fold = true;
 
-			foreach (KeyValuePair<string, List<NodeMeta>> kv in BTEditor.Instance.Classify2NodeProtoList)
-			{
-				string classify = kv.Key;
-				List<NodeMeta> nodeTypeList = kv.Value;
+			BTNodeInfoComponent btNodeInfoComponent = BTEditor.Instance.GetComponent<BTNodeInfoComponent>();
+			foreach (string classify in btNodeInfoComponent.GetAllClassify())
+			{ 
+				List<NodeMeta> nodeTypeList = btNodeInfoComponent.GetNodeMetas(classify);
 				FoldoutFolder folder = mNodeFoldout.AddFolder(classify, SelectNodeFolderCallback);
 				folder.Fold = true;
 
@@ -222,7 +222,7 @@ namespace MyEditor
 				{
 					BTEditor.Instance.SaveAll();
 				}
-				NodeMeta node = BTEditor.Instance.GetNodeMeta(name);
+				NodeMeta node = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(name);
 				GUILayout.Label("节点名:" + node.name);
 				GUILayout.Label("描述:" + node.describe);
 			}
@@ -382,7 +382,7 @@ namespace MyEditor
 			{
 				NodeFieldDesc desc = fieldList[i];
 				Type fieldType = NodeMetaHelper.GetFieldType(nodeName, desc.name);
-				NodeMeta nodeMeta = BTEditor.Instance.GetNodeMeta(nodeName);
+				NodeMeta nodeMeta = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(nodeName);
 
 				// 如果不存在这个参数，给一个默认的
 				if (!mCurBehaviorNode.Args.ContainsKey(desc.name))

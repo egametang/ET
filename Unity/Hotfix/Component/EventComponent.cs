@@ -38,8 +38,7 @@ namespace Hotfix
 
 		public void Run(int type)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -59,8 +58,7 @@ namespace Hotfix
 
 		public void Run<A>(int type, A a)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -81,8 +79,7 @@ namespace Hotfix
 
 		public void Run<A, B>(int type, A a, B b)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}
@@ -103,8 +100,7 @@ namespace Hotfix
 
 		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
-			List<object> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
 			{
 				return;
 			}

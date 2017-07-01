@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.EventComponent)]
+	[ObjectEvent(EntityEventId.EventComponent)]
 	public class EventComponent : Component, IAwake
 	{
 		private Dictionary<int, List<object>> allEvents;
@@ -38,7 +37,7 @@ namespace Model
 
 		public void Run(int type)
 		{
-			List<object> iEvents = null;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
@@ -59,7 +58,7 @@ namespace Model
 
 		public void Run<A>(int type, A a)
 		{
-			List<object> iEvents = null;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
@@ -81,7 +80,7 @@ namespace Model
 
 		public void Run<A, B>(int type, A a, B b)
 		{
-			List<object> iEvents = null;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
@@ -103,7 +102,7 @@ namespace Model
 
 		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
-			List<object> iEvents = null;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;

@@ -31,8 +31,9 @@ namespace MyEditor
 		public void Draw(Rect windowRect)
 		{
 			mBorderRect = new Rect(mLeftWidth, 0, windowRect.width - mLeftWidth - 16 - mRightWidth, windowRect.height - 16);
-			mScrollPosition = GUI.BeginScrollView(new Rect(mBorderRect.x, mBorderRect.y, mBorderRect.width + 15f, mBorderRect.height + 15f), mScrollPosition,
-			                                      mGraphRect, true, true);
+			mScrollPosition = GUI.BeginScrollView(
+				new Rect(mBorderRect.x, mBorderRect.y, mBorderRect.width + 15f, mBorderRect.height + 15f), 
+				mScrollPosition, mGraphRect, true, true);
 
 			DrawBackground();
 			DrawConnectingLine();
@@ -326,10 +327,12 @@ namespace MyEditor
 			List<string> result = new List<string>();
 			if (mSelectedNode != null)
 			{
+				BTNodeInfoComponent btNodeInfoComponent = BTEditor.Instance.GetComponent<BTNodeInfoComponent>();
 				if (mSelectedNode.NodeData.Proto.classify == NodeClassifyType.Root.ToString() ||
 				    BTEditor.Instance.CurTree.Root.Id == mSelectedNode.NodeData.Id)
 				{
-					List<NodeMeta> list = BTEditor.Instance.Classify2NodeProtoList[NodeClassifyType.Root.ToString()];
+					
+					List<NodeMeta> list = btNodeInfoComponent.GetNodeMetas(NodeClassifyType.Root.ToString());
 					foreach (NodeMeta nodeType in list)
 					{
 						result.Add(nodeType.name);
@@ -339,7 +342,7 @@ namespace MyEditor
 				else
 				{
 					// NodeChildLimitType nodeChildLimitType = mSelectedNode.NodeData.IsLeaf() ? NodeChildLimitType.All : NodeChildLimitType.WithChild;
-					List<NodeMeta> canSubtituteList = BTEditor.Instance.AllNodeProtoList;
+					List<NodeMeta> canSubtituteList = btNodeInfoComponent.AllNodeMeta;
 					canSubtituteList.Sort(CompareShowName);
 					foreach (NodeMeta nodeType in canSubtituteList)
 					{
@@ -362,10 +365,10 @@ namespace MyEditor
 		{
 			List<string> result = new List<string>();
 
-			foreach (KeyValuePair<string, List<NodeMeta>> kv in BTEditor.Instance.Classify2NodeProtoList)
+			BTNodeInfoComponent btNodeInfoComponent = BTEditor.Instance.GetComponent<BTNodeInfoComponent>();
+			foreach (string classify in btNodeInfoComponent.GetAllClassify())
 			{
-				string classify = kv.Key;
-				List<NodeMeta> nodeProtoList = kv.Value;
+				List<NodeMeta> nodeProtoList = btNodeInfoComponent.GetNodeMetas(classify);
 				nodeProtoList.Sort(CompareShowName);
 				if (classify == NodeClassifyType.Root.ToString())
 				{
@@ -467,8 +470,8 @@ namespace MyEditor
 		
 		private void CreateNode()
 		{
-			NodeMeta nodeProto = BTEditor.Instance.GetNodeMeta(BTEditor.Instance.selectNodeName);
-			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode((int) BTEditor.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(BTEditor.Instance.selectNodeName);
+			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode(nodeProto.name);
 			CreateNode(nodeData, MousePosToGraphPos(mMousePos));
 		}
 
@@ -549,8 +552,8 @@ namespace MyEditor
 		private void ChangeNodeType(object obj)
 		{
 			string nodeType = (string) obj;
-			NodeMeta nodeProto = BTEditor.Instance.GetNodeMeta(nodeType);
-			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode((int) BTEditor.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(nodeType);
+			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode(nodeProto.name);
 			NodeDesigner oldNode = mSelectedNode;
 			NodeDesigner newNode = new NodeDesigner(nodeData);
 
@@ -559,9 +562,11 @@ namespace MyEditor
 				newNode.NodeData.Id = RootNode.NodeData.Id;
 				RootNode = newNode;
 				BehaviorTreeData oldTree = BTEditor.Instance.CurTree;
-				BehaviorTreeData newTree = new BehaviorTreeData(oldTree.Id);
-				newTree.classify = oldTree.classify;
-				newTree.Root = nodeData;
+				BehaviorTreeData newTree = new BehaviorTreeData()
+				{
+					classify = oldTree.classify,
+					Root = nodeData
+				};
 				BTEditor.Instance.CurTree = newTree;
 			}
 			else
@@ -595,8 +600,10 @@ namespace MyEditor
 
 		public NodeDesigner CreateNode(BehaviorNodeData nodeData, Vector2 pos)
 		{
-			NodeDesigner node = new NodeDesigner(nodeData);
-			node.Pos = pos == Vector2.zero? CenterPosInBorder() : pos;
+			NodeDesigner node = new NodeDesigner(nodeData)
+			{
+				Pos = pos == Vector2.zero ? CenterPosInBorder() : pos
+			};
 			if (mSelectedNode != null)
 			{
 				mSelectedNode.AddChild(node);
@@ -633,11 +640,11 @@ namespace MyEditor
 
 		public void onCreateNode(params object[] list)
 		{
-			string name = (string) list[0];
+			string nodeName = (string) list[0];
 			Vector2 pos = (Vector2) list[1];
 
-			NodeMeta nodeProto = BTEditor.Instance.GetNodeMeta(name);
-			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode((int) BTEditor.Instance.CurTree.Id, nodeProto.name);
+			NodeMeta nodeProto = BTEditor.Instance.GetComponent<BTNodeInfoComponent>().GetNodeMeta(nodeName);
+			BehaviorNodeData nodeData = BTEditor.Instance.CreateNode(nodeProto.name);
 			CreateNode(nodeData, pos);
 		}
 
