@@ -1,7 +1,10 @@
-﻿namespace Model
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Model
 {
 	public abstract class Component: Disposer
 	{
+		[BsonIgnore]
 		public Entity Owner { get; set; }
 
 		public T GetOwner<T>() where T : Entity

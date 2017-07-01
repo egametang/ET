@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
@@ -10,6 +11,7 @@ namespace Model
 		
 		private HashSet<Component> components = new HashSet<Component>();
 		
+		[BsonIgnore]
 		private readonly Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		protected Entity()
