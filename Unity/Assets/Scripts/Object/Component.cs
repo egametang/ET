@@ -2,6 +2,7 @@
 
 namespace Model
 {
+	[BsonKnownTypes(typeof(AConfigComponent))]
 	public abstract class Component: Disposer
 	{
 		[BsonIgnore]
@@ -34,7 +35,7 @@ namespace Model
 
 			base.Dispose();
 
-			this.Owner.RemoveComponent(this.GetType());
+			this.Owner?.RemoveComponent(this.GetType());
 		}
 	}
 }

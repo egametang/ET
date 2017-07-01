@@ -181,10 +181,6 @@
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
-    <Compile Include="Assets\Editor\ServerCommandLineEditor\Config\ClientConfig.cs" />
-    <Compile Include="Assets\Editor\ServerCommandLineEditor\Config\InnerConfig.cs" />
-    <Compile Include="Assets\Editor\ServerCommandLineEditor\Config\OuterConfig.cs" />
-    <Compile Include="Assets\Editor\ServerCommandLineEditor\Config\RunServerConfig.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
     <Compile Include="Assets\PSD2UGUI\Editor\Const\PSDImporterConst.cs" />
     <Compile Include="Assets\PSD2UGUI\Editor\Core\PSDImportCtrl.cs" />

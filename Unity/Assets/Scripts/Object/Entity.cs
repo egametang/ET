@@ -9,6 +9,7 @@ namespace Model
 	{
 		public EntityType Type { get; set; }
 		
+		[BsonElement]
 		private HashSet<Component> components = new HashSet<Component>();
 		
 		[BsonIgnore]
