@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 
 namespace Model
 {
-	public abstract class Object: IDisposable
+	public abstract class Object: ISupportInitialize
 	{
 		public long Id { get; protected set; }
 
@@ -16,7 +16,11 @@ namespace Model
 			this.Id = id;
 		}
 
-		public virtual void Dispose()
+		public virtual void BeginInit()
+		{
+		}
+
+		public virtual void EndInit()
 		{
 		}
 	}

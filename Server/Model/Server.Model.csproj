@@ -34,8 +34,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Bson">
+    <Reference Include="MongoDB.Bson, Version=2.3.0.157, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\Lib\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\Lib\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,8 +51,13 @@
     <Compile Include="Component\BenchmarkComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\Config\ClientConfig.cs" />
+    <Compile Include="Component\Config\DBConfig.cs" />
+    <Compile Include="Component\Config\HttpConfig.cs" />
     <Compile Include="Component\Config\InnerConfig.cs" />
     <Compile Include="Component\Config\OuterConfig.cs" />
+    <Compile Include="Component\DBCacheComponent.cs" />
+    <Compile Include="Component\DBComponent.cs" />
+    <Compile Include="Component\DBProxyComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
@@ -70,7 +82,11 @@
     <Compile Include="Config\ICategory.cs" />
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
+    <Compile Include="Entity\DBEntity.cs" />
+    <Compile Include="Entity\DBTask.cs" />
+    <Compile Include="Entity\DBTaskQueue.cs" />
     <Compile Include="Entity\Game.cs" />
+    <Compile Include="Entity\Http.cs" />
     <Compile Include="Entity\Message\InnerMessage.cs" />
     <Compile Include="Entity\Message\Opcode.cs" />
     <Compile Include="Entity\Message\OuterMessage.cs" />

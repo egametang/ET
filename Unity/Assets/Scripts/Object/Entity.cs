@@ -7,8 +7,6 @@ namespace Model
 {
 	public class Entity: Disposer
 	{
-		public EntityType Type { get; set; }
-		
 		[BsonElement]
 		private HashSet<Component> components = new HashSet<Component>();
 		
@@ -17,17 +15,10 @@ namespace Model
 
 		protected Entity()
 		{
-			this.Type = EntityType.None;
 		}
 
-		protected Entity(EntityType entityType)
+		protected Entity(long id): base(id)
 		{
-			this.Type = entityType;
-		}
-
-		protected Entity(long id, EntityType entityType): base(id)
-		{
-			this.Type = entityType;
 		}
 
 		public override void Dispose()

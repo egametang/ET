@@ -22,6 +22,10 @@ namespace Model
 		
 		public StartConfig StartConfig { get; private set; }
 
+		public StartConfig DBStartConfig { get; private set; }
+
+		public StartConfig RealmConfig { get; private set; }
+
 		public void Awake(string path, int appId)
 		{
 			string[] ss = File.ReadAllText(path).Split('\n');

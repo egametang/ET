@@ -11,9 +11,5 @@ namespace Model
 		public AppType AppType { get; set; }
 
 		public string ServerIP { get; set; }
-
-		public StartConfig(): base(EntityType.Config)
-		{
-		}
 	}
 }

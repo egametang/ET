@@ -11,7 +11,7 @@ namespace Model
 
 		private TaskCompletionSource<bool> tcs;
 
-		public AssetBundleLoaderAsync(AssetBundle assetBundle): base(EntityType.None)
+		public AssetBundleLoaderAsync(AssetBundle assetBundle)
 		{
 			this.assetBundle = assetBundle;
 		}

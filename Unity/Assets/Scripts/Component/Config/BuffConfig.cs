@@ -5,11 +5,11 @@
 		public string Name { get; set; }
 		public int Time { get; set; }
 
-		public BuffConfig(): base(EntityType.Config)
+		public BuffConfig()
 		{
 		}
 
-		public BuffConfig(long id): base(id, EntityType.Config)
+		public BuffConfig(long id): base(id)
 		{
 		}
 	}

@@ -5,11 +5,11 @@
 	/// </summary>
 	public abstract class AConfig: Entity
 	{
-		protected AConfig(EntityType entityType): base(entityType)
+		protected AConfig()
 		{
 		}
 
-		protected AConfig(long id, EntityType entityType): base(id, entityType)
+		protected AConfig(long id): base(id)
 		{
 		}
 	}

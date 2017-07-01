@@ -14,10 +14,6 @@ namespace Model
 
 		public TaskCompletionSource<bool> tcs;
 
-		public WWWAsync() : base(EntityType.None)
-		{
-		}
-
 		public float Progress
 		{
 			get

@@ -19,19 +19,11 @@ namespace Model
 
 		protected Entity()
 		{
-			this.Type = EntityType.None;
 			ObjectEvents.Instance.Add(this);
 		}
 
-		protected Entity(EntityType entityType)
+		protected Entity(long id): base(id)
 		{
-			this.Type = entityType;
-			ObjectEvents.Instance.Add(this);
-		}
-
-		protected Entity(long id, EntityType entityType): base(id)
-		{
-			this.Type = entityType;
 			ObjectEvents.Instance.Add(this);
 		}
 

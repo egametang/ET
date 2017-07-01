@@ -21,11 +21,11 @@
 
 		public string Name { get; set; }
 
-		public Scene(): base(EntityType.Scene)
+		public Scene()
 		{
 		}
 
-		public Scene(long id): base(id, EntityType.Scene)
+		public Scene(long id): base(id)
 		{
 		}
 

@@ -24,7 +24,7 @@ namespace MyEditor
 
 		private int copyNum = 1;
 
-		private AppType AppType = AppType.Manager;
+		private AppType AppType = AppType.None;
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 
@@ -199,6 +199,8 @@ namespace MyEditor
 				{
 					GUILayout.Label($"OuterHost:");
 					outerConfig.Host = EditorGUILayout.TextField(outerConfig.Host);
+					GUILayout.Label($"OuterHost2:");
+					outerConfig.Host2 = EditorGUILayout.TextField(outerConfig.Host2);
 					GUILayout.Label($"OuterPort:");
 					outerConfig.Port = EditorGUILayout.IntField(outerConfig.Port);
 				}
@@ -210,6 +212,29 @@ namespace MyEditor
 					clientConfig.Host = EditorGUILayout.TextField(clientConfig.Host);
 					GUILayout.Label($"Port:");
 					clientConfig.Port = EditorGUILayout.IntField(clientConfig.Port);
+				}
+
+				HttpConfig httpConfig = startConfig.GetComponent<HttpConfig>();
+				if (httpConfig != null)
+				{
+					GUILayout.Label($"AppId:");
+					httpConfig.AppId = EditorGUILayout.IntField(httpConfig.AppId);
+					GUILayout.Label($"AppKey:");
+					httpConfig.AppKey = EditorGUILayout.TextField(httpConfig.AppKey);
+					GUILayout.Label($"Url:");
+					httpConfig.Url = EditorGUILayout.TextField(httpConfig.Url);
+					GUILayout.Label($"ManagerSystemUrl:");
+					httpConfig.ManagerSystemUrl = EditorGUILayout.TextField(httpConfig.ManagerSystemUrl);
+				}
+
+				DBConfig dbConfig = startConfig.GetComponent<DBConfig>();
+				if (dbConfig != null)
+				{
+					GUILayout.Label($"Connection:");
+					dbConfig.ConnectionString = EditorGUILayout.TextField(dbConfig.ConnectionString);
+
+					GUILayout.Label($"DBName:");
+					dbConfig.DBName = EditorGUILayout.TextField(dbConfig.DBName);
 				}
 
 				if (GUILayout.Button("删除"))
@@ -226,6 +251,36 @@ namespace MyEditor
 						this.startConfigs.Add(newStartConfig);
 					}
 					break;
+				}
+
+				if (i > 0)
+				{
+					if (GUILayout.Button("上移"))
+					{
+						StartConfig s = this.startConfigs[i];
+						this.startConfigs.RemoveAt(i);
+						this.startConfigs.Insert(i - 1, s);
+						for (int j = 0; j < startConfigs.Count; ++j)
+						{
+							this.startConfigs[j].AppId = j + 1;
+						}
+						break;
+					}
+				}
+
+				if (i < this.startConfigs.Count - 1)
+				{
+					if (GUILayout.Button("下移"))
+					{
+						StartConfig s = this.startConfigs[i];
+						this.startConfigs.RemoveAt(i);
+						this.startConfigs.Insert(i + 1, s);
+						for (int j = 0; j < startConfigs.Count; ++j)
+						{
+							this.startConfigs[j].AppId = j + 1;
+						}
+						break;
+					}
 				}
 				GUILayout.EndHorizontal();
 			}
@@ -246,13 +301,27 @@ namespace MyEditor
 
 				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager))
 				{
-					newStartConfig.AddComponent<InnerConfig>();
 					newStartConfig.AddComponent<OuterConfig>();
+				}
+
+				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB))
+				{
+					newStartConfig.AddComponent<InnerConfig>();
 				}
 
 				if (this.AppType.Is(AppType.Benchmark))
 				{
 					newStartConfig.AddComponent<ClientConfig>();
+				}
+
+				if (this.AppType.Is(AppType.Http))
+				{
+					newStartConfig.AddComponent<HttpConfig>();
+				}
+
+				if (this.AppType.Is(AppType.DB))
+				{
+					newStartConfig.AddComponent<DBConfig>();
 				}
 
 				this.startConfigs.Add(newStartConfig);
