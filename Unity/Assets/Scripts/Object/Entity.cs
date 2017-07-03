@@ -176,5 +176,15 @@ namespace Model
 		{
 			return components.ToArray();
 		}
+
+		public override void EndInit()
+		{
+			base.EndInit();
+
+			foreach (Component component in this.components)
+			{
+				this.componentDict.Add(component.GetType(), component);
+			}
+		}
 	}
 }
