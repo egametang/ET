@@ -72,9 +72,9 @@ namespace MyEditor
 				File.WriteAllText($@"..\Tools\cwRsync\Config\rsync.secrets", this.rsyncConfig.Password);
 				File.WriteAllText($@"..\Tools\cwRsync\Config\rsyncd.secrets", $"{this.rsyncConfig.Account}:{this.rsyncConfig.Password}");
 
-				string rsyncdConf = "uid = root\n" + "gid = root\n" + "use chroot = no\n" + "max connections = 100\n" + "read only = no\n" + "write only = no\n" +
-				                    "log file =/var/log/rsyncd.log\n" + "[Upload]\n" + $"path = /home/{this.rsyncConfig.Account}/\n" +
-				                    $"auth users = {this.rsyncConfig.Account}\n" + "secrets file = /etc/rsyncd.secrets\n" + "list = yes";
+				string rsyncdConf = "uid = 0\n" + "gid = 0\n" + "use chroot = no\n" + "max connections = 100\n" + "read only = no\n" + "write only = no\n" +
+				                    "log file =/var/log/rsyncd.log\n" + "fake super = yes\n" + "[Upload]\n" + $"path = /home/{this.rsyncConfig.Account}/\n" + 
+									$"auth users = {this.rsyncConfig.Account}\n" + "secrets file = /etc/rsyncd.secrets\n" + "list = yes";
 				File.WriteAllText($@"..\Tools\cwRsync\Config\rsyncd.conf", rsyncdConf);
 			}
 

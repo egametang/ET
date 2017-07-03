@@ -8,3 +8,4 @@ Server/Server.sdf
 Unity/Library/
 Unity/Temp/
 */obj
+Unity/
