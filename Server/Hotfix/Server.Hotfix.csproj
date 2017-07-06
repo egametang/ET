@@ -38,6 +38,11 @@
     <Compile Include="Message\C2G_LoginGateHandler.cs" />
     <Compile Include="Message\C2R_PingHandler.cs" />
     <Compile Include="Message\G2G_LockReleaseRequestHandler.cs" />
+    <Compile Include="Message\ObjectGetRequestHandler.cs" />
+    <Compile Include="Message\ObjectUnLockRequestHandler.cs" />
+    <Compile Include="Message\ObjectLockRequestHandler.cs" />
+    <Compile Include="Message\ObjectRemoveRequestHandler.cs" />
+    <Compile Include="Message\ObjectAddRequestHandler.cs" />
     <Compile Include="Message\M2A_ReloadHandler.cs" />
     <Compile Include="Message\C2M_ReloadHandler.cs" />
     <Compile Include="Message\G2G_LockRequestHandler.cs" />

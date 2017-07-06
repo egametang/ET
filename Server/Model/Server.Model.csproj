@@ -66,6 +66,7 @@
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
+    <Compile Include="Component\LocationComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Component\Unit\MasterComponent.cs" />
     <Compile Include="Component\Unit\LockComponent.cs" />
@@ -82,6 +83,8 @@
     <Compile Include="Config\ICategory.cs" />
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
+    <Compile Include="Entity\SceneEntity.cs" />
+    <Compile Include="Entity\DBSceneEntity.cs" />
     <Compile Include="Entity\DBEntity.cs" />
     <Compile Include="Entity\DBTask.cs" />
     <Compile Include="Entity\DBTaskQueue.cs" />

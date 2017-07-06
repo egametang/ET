@@ -21,6 +21,17 @@
 		public const ushort DBQueryJsonRequest = 65;
 		public const ushort DBQueryJsonResponse = 66;
 
+		public const ushort ObjectAddRequest = 70;
+		public const ushort ObjectAddResponse = 71;
+		public const ushort ObjectRemoveRequest = 72;
+		public const ushort ObjectRemoveResponse = 73;
+		public const ushort ObjectLockRequest = 74;
+		public const ushort ObjectLockResponse = 75;
+		public const ushort ObjectUnLockRequest = 76;
+		public const ushort ObjectUnLockResponse = 77;
+		public const ushort ObjectGetRequest = 78;
+		public const ushort ObjectGetResponse = 79;
+
 		public const ushort C2R_Login = 1000;
 		public const ushort R2C_Login = 1002;
 		public const ushort R2C_ServerLog = 1003;
