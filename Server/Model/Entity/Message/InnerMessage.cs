@@ -16,12 +16,12 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.A2M_Reload)]	[BsonIgnoreExtraElements]	public class A2M_Reload : AResponse	{	}
 
-	[Message(Opcode.G2G_LockRequest)]	[BsonIgnoreExtraElements]	public class G2G_LockRequest : ARequest	{		public string Address;	}
+	[Message(Opcode.G2G_LockRequest)]	[BsonIgnoreExtraElements]	public class G2G_LockRequest : ARequest	{		public long Id;		public string Address;	}
 
 	[Message(Opcode.G2G_LockResponse)]	[BsonIgnoreExtraElements]
 	public class G2G_LockResponse : AResponse	{	}
 
-	[Message(Opcode.G2G_LockReleaseRequest)]	[BsonIgnoreExtraElements]	public class G2G_LockReleaseRequest : ARequest	{		public string Address;	}
+	[Message(Opcode.G2G_LockReleaseRequest)]	[BsonIgnoreExtraElements]	public class G2G_LockReleaseRequest : ARequest	{		public long Id;		public string Address;	}
 
 	[Message(Opcode.G2G_LockReleaseResponse)]	[BsonIgnoreExtraElements]	public class G2G_LockReleaseResponse : AResponse	{	}
 	[Message(Opcode.DBSaveRequest)]	[BsonIgnoreExtraElements]	public class DBSaveRequest : ARequest	{		public bool NeedCache = true;
@@ -36,7 +36,7 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.DBSaveResponse)]	[BsonIgnoreExtraElements]	public class DBSaveResponse : AResponse	{	}
 
-	[Message(Opcode.DBQueryRequest)]	[BsonIgnoreExtraElements]	public class DBQueryRequest : ARequest	{		public string CollectionName { get; set; }		public bool NeedCache = true;	}
+	[Message(Opcode.DBQueryRequest)]	[BsonIgnoreExtraElements]	public class DBQueryRequest : ARequest	{		public long Id;		public string CollectionName { get; set; }		public bool NeedCache = true;	}
 
 	[Message(Opcode.DBQueryResponse)]	[BsonIgnoreExtraElements]	public class DBQueryResponse : AResponse	{		public Entity Entity;	}
 
@@ -48,22 +48,22 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.DBQueryJsonResponse)]	[BsonIgnoreExtraElements]	public class DBQueryJsonResponse : AResponse	{		public List<Entity> Entitys;	}
 
-	[Message(Opcode.ObjectAddRequest)]	[BsonIgnoreExtraElements]	public class ObjectAddRequest : ARequest	{		public string Key { get; set; }	}
+	[Message(Opcode.ObjectAddRequest)]	[BsonIgnoreExtraElements]	public class ObjectAddRequest : ARequest	{		public long Key { get; set; }	}
 
 	[Message(Opcode.ObjectAddResponse)]	[BsonIgnoreExtraElements]	public class ObjectAddResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectRemoveRequest)]	[BsonIgnoreExtraElements]	public class ObjectRemoveRequest : ARequest	{		public string Key { get; set; }	}
+	[Message(Opcode.ObjectRemoveRequest)]	[BsonIgnoreExtraElements]	public class ObjectRemoveRequest : ARequest	{		public long Key { get; set; }	}
 
 	[Message(Opcode.ObjectRemoveResponse)]	[BsonIgnoreExtraElements]	public class ObjectRemoveResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public string Key { get; set; }	}
+	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public long Key { get; set; }	}
 
 	[Message(Opcode.ObjectLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectLockResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public string Key { get; set; }	}
+	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }	}
 
 	[Message(Opcode.ObjectUnLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectUnLockResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectGetRequest)]	[BsonIgnoreExtraElements]	public class ObjectGetRequest : ARequest	{		public string Key { get; set; }	}
+	[Message(Opcode.ObjectGetRequest)]	[BsonIgnoreExtraElements]	public class ObjectGetRequest : ARequest	{		public long Key { get; set; }	}
 
 	[Message(Opcode.ObjectGetResponse)]	[BsonIgnoreExtraElements]	public class ObjectGetResponse : AResponse	{		public string Location { get; set; }	}}

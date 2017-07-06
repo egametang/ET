@@ -86,8 +86,7 @@ namespace Model
 		{
 			int offset = 0;
 			uint flag = BitConverter.ToUInt32(messageBytes, 2);
-			uint rpcFlag = flag & 0x40000000;
-			uint rpcId = flag & 0x3fffffff;
+
 			bool isCompressed = (flag & 0x80000000) > 0;
 			if (isCompressed) // 最高位为1,表示有压缩,需要解压缩
 			{
@@ -99,16 +98,29 @@ namespace Model
 				offset = 6;
 			}
 
-			this.RunDecompressedBytes(opcode, rpcId, rpcFlag, messageBytes, offset);
+			this.RunDecompressedBytes(opcode, flag, messageBytes, offset);
 		}
 
-		private void RunDecompressedBytes(ushort opcode, uint rpcId, uint rpcFlag, byte[] messageBytes, int offset)
+		private void RunDecompressedBytes(ushort opcode, uint flag, byte[] messageBytes, int offset)
 		{
+			uint rpcFlag = flag & 0x40000000;
+			uint rpcId = flag & 0x3fffffff;
+
 			// 普通消息或者是Rpc请求消息
 			if (rpcFlag == 0)
 			{
 				MessageInfo messageInfo = new MessageInfo(opcode, messageBytes, offset, rpcId);
-				this.network.Owner.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
+				Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(messageInfo.Opcode);
+				object message = MongoHelper.FromBson(messageType, messageInfo.MessageBytes, messageInfo.Offset, messageInfo.Count);
+				messageInfo.Message = message;
+				if (message is AActorMessage)
+				{
+					this.network.Owner.GetComponent<ActorMessageDispatherComponent>().Handle(this, messageInfo);
+				}
+				else
+				{
+					this.network.Owner.GetComponent<MessageDispatherComponent>().Handle(this, messageInfo);
+				}
 				return;
 			}
 
@@ -198,7 +210,7 @@ namespace Model
 			this.SendMessage(0, message);
 		}
 
-		public void Reply<Response>(uint rpcId, Response message) where Response : AResponse
+		public void Reply<Response>(uint rpcId, Response message)
 		{
 			if (this.Id == 0)
 			{
@@ -210,7 +222,7 @@ namespace Model
 		private void SendMessage(uint rpcId, object message, bool isCall = true)
 		{
 			//Log.Debug($"send: {message.ToJson()}");
-			ushort opcode = this.network.Owner.GetComponent<MessageDispatherComponent>().GetOpcode(message.GetType());
+			ushort opcode = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			if (!isCall)
 			{

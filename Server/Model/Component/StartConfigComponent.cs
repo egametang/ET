@@ -26,6 +26,8 @@ namespace Model
 
 		public StartConfig RealmConfig { get; private set; }
 
+		public StartConfig LocationConfig { get; private set; }
+
 		public void Awake(string path, int appId)
 		{
 			string[] ss = File.ReadAllText(path).Split('\n');
@@ -41,6 +43,11 @@ namespace Model
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
 					this.allConfigs.Add(startConfig);
 					this.configDict.Add(startConfig.AppId, startConfig);
+
+					if (startConfig.AppType == AppType.Location)
+					{
+						LocationConfig = startConfig;
+					}
 				}
 				catch (Exception)
 				{

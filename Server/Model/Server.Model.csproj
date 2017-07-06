@@ -48,6 +48,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\OpcodeTypeComponent.cs" />
+    <Compile Include="Component\ActorManagerComponent.cs" />
     <Compile Include="Component\BenchmarkComponent.cs" />
     <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\Config\ClientConfig.cs" />
@@ -60,6 +62,8 @@
     <Compile Include="Component\DBProxyComponent.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
+    <Compile Include="Component\LocationProxyComponent.cs" />
+    <Compile Include="Component\ActorMessageDispatherComponent.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
     <Compile Include="Component\NetInnerComponent.cs" />
     <Compile Include="Component\NetOuterComponent.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\LocationComponent.cs" />
+    <Compile Include="Component\ActorComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Component\Unit\MasterComponent.cs" />
     <Compile Include="Component\Unit\LockComponent.cs" />
@@ -103,12 +108,17 @@
     <Compile Include="Event\EventIdType.cs" />
     <Compile Include="Event\IEvent.cs" />
     <Compile Include="Helper\DllHelper.cs" />
+    <Compile Include="Message\AActorMessage.cs" />
     <Compile Include="Message\AMessage.cs" />
+    <Compile Include="Message\AMActorHandler.cs" />
     <Compile Include="Message\AMHandler.cs" />
     <Compile Include="Message\AppType.cs" />
     <Compile Include="Message\ErrorCode.cs" />
+    <Compile Include="Message\IMActorHandler.cs" />
     <Compile Include="Message\IMHandler.cs" />
+    <Compile Include="Message\ActorMessageAttribute.cs" />
     <Compile Include="Message\MessageAttribute.cs" />
+    <Compile Include="Message\ActorMessageHandlerAttribute.cs" />
     <Compile Include="Message\MessageHandlerAttribute.cs" />
     <Compile Include="Message\MessageInfo.cs" />
     <Compile Include="Message\OpcodeHelper.cs" />

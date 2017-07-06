@@ -19,11 +19,11 @@ namespace Model
 
 	public sealed class LocationLockTask : LocationTask
 	{
-		private readonly string key;
+		private readonly long key;
 
 		private readonly TaskCompletionSource<bool> tcs;
 
-		public LocationLockTask(string key)
+		public LocationLockTask(long key)
 		{
 			this.key = key;
 			this.tcs = new TaskCompletionSource<bool>();
@@ -53,11 +53,11 @@ namespace Model
 
 	public sealed class LocationQueryTask : LocationTask
 	{
-		private readonly string key;
+		private readonly long key;
 
 		private readonly TaskCompletionSource<string> tcs;
 
-		public LocationQueryTask(string key)
+		public LocationQueryTask(long key)
 		{
 			this.key = key;
 			this.tcs = new TaskCompletionSource<string>();
@@ -87,29 +87,29 @@ namespace Model
 
 	public class LocationComponent : Component
 	{
-		private readonly Dictionary<string, string> locations = new Dictionary<string, string>();
+		private readonly Dictionary<long, string> locations = new Dictionary<long, string>();
 
-		private readonly HashSet<string> lockSet = new HashSet<string>();
+		private readonly HashSet<long> lockSet = new HashSet<long>();
 
-		private readonly Dictionary<string, Queue<LocationTask>> taskQueues = new Dictionary<string,Queue<LocationTask>>();
+		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
 
-		public void Add(string key, string address)
+		public void Add(long key, string address)
 		{
 			this.locations[key] = address;
 		}
 
-		public void Remove(string key)
+		public void Remove(long key)
 		{
 			this.locations.Remove(key);
 		}
 
-		public string Get(string key)
+		public string Get(long key)
 		{
 			this.locations.TryGetValue(key, out string location);
 			return location;
 		}
 
-		public void Lock(string key)
+		public void Lock(long key)
 		{
 			if (this.lockSet.Contains(key))
 			{
@@ -118,7 +118,7 @@ namespace Model
 			this.lockSet.Add(key);
 		}
 
-		public void UnLock(string key)
+		public void UnLock(long key)
 		{
 			this.lockSet.Remove(key);
 
@@ -144,7 +144,7 @@ namespace Model
 			}
 		}
 
-		public Task<bool> LockAsync(string key)
+		public Task<bool> LockAsync(long key)
 		{
 			if (!this.lockSet.Contains(key))
 			{
@@ -157,7 +157,7 @@ namespace Model
 			return task.Task;
 		}
 
-		public Task<string> GetAsync(string key)
+		public Task<string> GetAsync(long key)
 		{
 			if (!this.lockSet.Contains(key))
 			{
@@ -170,7 +170,7 @@ namespace Model
 			return task.Task;
 		}
 
-		public void AddTask(string key, LocationTask task)
+		public void AddTask(long key, LocationTask task)
 		{
 			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
 			{

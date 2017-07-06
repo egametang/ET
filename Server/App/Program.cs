@@ -27,7 +27,8 @@ namespace App
 				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
 
 				Log.Info("server start........................");
-				
+
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
 
 				// 根据不同的AppType添加不同的组件
@@ -42,11 +43,17 @@ namespace App
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
 					case AppType.Realm:
+						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
+						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
@@ -56,9 +63,12 @@ namespace App
 						Game.Scene.AddComponent<LocationComponent>();
 						break;
 					case AppType.AllServer:
+						Game.Scene.AddComponent<LocationComponent>();
+						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
-						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();

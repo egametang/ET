@@ -5,7 +5,7 @@ using Base;
 namespace Model
 {
 	[ObjectEvent]
-	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake<AppType>, ILoad
+	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IAwake<AppType>, ILoad
 	{
 		public void Awake(AppType appType)
 		{
@@ -19,13 +19,13 @@ namespace Model
 	}
 
 	/// <summary>
-	/// 消息分发组件
+	/// Actor消息分发组件
 	/// </summary>
-	public class MessageDispatherComponent : Component
+	public class ActorMessageDispatherComponent : Component
 	{
 		private AppType AppType;
-		private Dictionary<Type, List<IMHandler>> handlers;
-
+		private Dictionary<Type, IMActorHandler> handlers;
+		
 		public void Awake(AppType appType)
 		{
 			this.AppType = appType;
@@ -34,18 +34,19 @@ namespace Model
 
 		public void Load()
 		{
-			this.handlers = new Dictionary<Type, List<IMHandler>>();
-			
+			this.handlers = new Dictionary<Type, IMActorHandler>();
+
 			Type[] types = DllHelper.GetMonoTypes();
+
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), false);
 				if (attrs.Length == 0)
 				{
 					continue;
 				}
 
-				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
+				ActorMessageHandlerAttribute messageHandlerAttribute = (ActorMessageHandlerAttribute)attrs[0];
 				if (!messageHandlerAttribute.Type.Is(this.AppType))
 				{
 					continue;
@@ -53,41 +54,26 @@ namespace Model
 
 				object obj = Activator.CreateInstance(type);
 
-				IMHandler imHandler = obj as IMHandler;
+				IMActorHandler imHandler = obj as IMActorHandler;
 				if (imHandler == null)
 				{
 					throw new Exception($"message handler not inherit AMEvent or AMRpcEvent abstract class: {obj.GetType().FullName}");
 				}
 
 				Type messageType = imHandler.GetMessageType();
-				if (!this.handlers.TryGetValue(messageType, out List<IMHandler> list))
-				{
-					list = new List<IMHandler>();
-					this.handlers.Add(messageType, list);
-				}
-				list.Add(imHandler);
+				handlers.Add(messageType, imHandler);
 			}
 		}
 
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			if (!this.handlers.TryGetValue(messageInfo.Message.GetType(), out List<IMHandler> actions))
+			if (!this.handlers.TryGetValue(messageInfo.Message.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
+				Log.Error($"not found message handler: {messageInfo.Message.GetType()}");
 				return;
 			}
-			
-			foreach (IMHandler ev in actions)
-			{
-				try
-				{
-					ev.Handle(session, messageInfo);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
-			}
+			Entity entity = this.GetComponent<ActorManagerComponent>().Get(((AActorMessage)messageInfo.Message).Id);
+			handler.Handle(session, entity, messageInfo);
 		}
 
 		public override void Dispose()
