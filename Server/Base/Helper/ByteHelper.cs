@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Base
+namespace Model
 {
 	public static class ByteHelper
 	{
@@ -45,9 +45,14 @@ namespace Base
 			return Encoding.Default.GetString(bytes);
 		}
 
-		public static string Utf8ToStr(this byte[] bytes)
+		public static string ToStr(this byte[] bytes, int offset, int count)
 		{
-			return Encoding.UTF8.GetString(bytes);
+			return Encoding.Default.GetString(bytes, offset, count);
+		}
+
+		public static string Utf8ToStr(this byte[] bytes, int offset, int count)
+		{
+			return Encoding.UTF8.GetString(bytes, offset, count);
 		}
 
 		public static byte[] Reverse(this byte[] bytes)

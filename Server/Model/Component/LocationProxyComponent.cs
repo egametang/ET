@@ -31,7 +31,14 @@ namespace Model
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
 			await session.Call<ObjectRemoveRequest, ObjectRemoveResponse>(new ObjectRemoveRequest() { Key = key });
 		}
-		
+
+		public async Task<string> Get(long key)
+		{
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
+			ObjectGetResponse response = await session.Call<ObjectGetRequest, ObjectGetResponse>(new ObjectGetRequest() { Key = key });
+			return response.Location;
+		}
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)

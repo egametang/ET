@@ -12,6 +12,10 @@ namespace Hotfix
 			try
 			{
 				string location = await Game.Scene.GetComponent<LocationComponent>().GetAsync(message.Key);
+				if (location == "")
+				{
+					response.Error = ErrorCode.ERR_ActorLocationNotFound;
+				}
 				response.Location = location;
 				reply(response);
 			}

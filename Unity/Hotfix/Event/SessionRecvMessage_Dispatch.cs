@@ -3,11 +3,12 @@
 namespace Hotfix
 {
 	// 订阅mono层的Session发出的事件
-	public class SessionRecvMessage_Dispatch
+	[CrossEvent(CrossIdType.MessageDeserializeFinish)]
+	public class MessageDeserializeFinish_Dispatch
 	{
-		public void Run(Session session, MessageInfo messageInfo)
+		public void Run(MessageInfo messageInfo)
 		{
-			Hotfix.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
+			Hotfix.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
 		}
 	}
 }

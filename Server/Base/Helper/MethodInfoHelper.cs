@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Base
+namespace Model
 {
 	public static class MethodInfoHelper
 	{

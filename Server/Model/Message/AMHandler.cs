@@ -1,29 +1,28 @@
 ﻿using System;
-using Base;
 
 namespace Model
 {
-	public abstract class AMHandler<Message>: IMHandler where Message : AMessage
+	public abstract class AMHandler<Message> : IMHandler where Message : AMessage
 	{
 		protected abstract void Run(Session session, Message message);
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(Session session, object msg)
 		{
-			Message message = messageInfo.Message as Message;
+			Message message = msg as Message;
 			if (message == null)
 			{
-				Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof (Message).Name}");
+				Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof(Message).Name}");
 			}
 			this.Run(session, message);
 		}
 
 		public Type GetMessageType()
 		{
-			return typeof (Message);
+			return typeof(Message);
 		}
 	}
 
-	public abstract class AMRpcHandler<Request, Response>: IMHandler where Request : ARequest where Response : AResponse
+	public abstract class AMRpcHandler<Request, Response> : IMHandler where Request : ARequest where Response : AResponse
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -35,14 +34,14 @@ namespace Model
 
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(Session session, object message)
 		{
 			try
 			{
-				Request request = messageInfo.Message as Request;
+				Request request = message as Request;
 				if (request == null)
 				{
-					Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof (Request).Name}");
+					Log.Error($"消息类型转换错误: {message.GetType().Name} to {typeof(Request).Name}");
 				}
 				this.Run(session, request, response =>
 				{
@@ -51,18 +50,19 @@ namespace Model
 					{
 						return;
 					}
-					session.Reply(messageInfo.RpcId, response);
+					response.RpcId = request.RpcId;
+					session.Reply(response);
 				});
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {messageInfo.Opcode}", e);
+				throw new Exception($"解释消息失败: {message.GetType().FullName}", e);
 			}
 		}
 
 		public Type GetMessageType()
 		{
-			return typeof (Request);
+			return typeof(Request);
 		}
 	}
 }

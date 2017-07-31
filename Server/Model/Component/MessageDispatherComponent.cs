@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Base;
 
 namespace Model
 {
@@ -35,7 +34,7 @@ namespace Model
 		public void Load()
 		{
 			this.handlers = new Dictionary<Type, List<IMHandler>>();
-			
+
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
@@ -69,19 +68,19 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(Session session, object message)
 		{
-			if (!this.handlers.TryGetValue(messageInfo.Message.GetType(), out List<IMHandler> actions))
+			if (!this.handlers.TryGetValue(message.GetType(), out List<IMHandler> actions))
 			{
-				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
+				Log.Error($"消息 {message.GetType().FullName} 没有处理");
 				return;
 			}
-			
+
 			foreach (IMHandler ev in actions)
 			{
 				try
 				{
-					ev.Handle(session, messageInfo);
+					ev.Handle(session, message);
 				}
 				catch (Exception e)
 				{

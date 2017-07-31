@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -438,7 +441,6 @@
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\CrossComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\NetInnerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
     <Compile Include="Assets\Scripts\Component\OpcodeTypeComponent.cs" />
@@ -461,6 +463,8 @@
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Scripts\Event\AEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Event\CrossEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Event\CrossIdType.cs" />
     <Compile Include="Assets\Scripts\Event\Env.cs" />
     <Compile Include="Assets\Scripts\Event\EnvKey.cs" />
     <Compile Include="Assets\Scripts\Event\EventAttribute.cs" />
@@ -469,6 +473,7 @@
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\JsonHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\MongoHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
     <Compile Include="Assets\Scripts\IInstanceMethod.cs" />
     <Compile Include="Assets\Scripts\IL\IAsyncStateMachineAdaptor.cs" />
@@ -481,10 +486,15 @@
     <Compile Include="Assets\Scripts\Message\AMessage.cs" />
     <Compile Include="Assets\Scripts\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Message\ErrorCode.cs" />
+    <Compile Include="Assets\Scripts\Message\IMessagePacker.cs" />
+    <Compile Include="Assets\Scripts\Message\JsondotnetPacker.cs" />
     <Compile Include="Assets\Scripts\Message\MessageAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Message\MessageInfo.cs" />
+    <Compile Include="Assets\Scripts\Message\MongoPacker.cs" />
+    <Compile Include="Assets\Scripts\Message\NumericType.cs" />
     <Compile Include="Assets\Scripts\Message\OpcodeHelper.cs" />
+    <Compile Include="Assets\Scripts\Message\ProtobufPacker.cs" />
     <Compile Include="Assets\Scripts\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\MonoMethod.cs" />
     <Compile Include="Assets\Scripts\Object\AssemblyManager.cs" />

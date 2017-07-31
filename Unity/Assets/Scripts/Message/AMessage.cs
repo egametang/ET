@@ -2,19 +2,26 @@
 {
 	public abstract class AMessage
 	{
-		public long Id { get; set; }
 	}
 
-	public abstract class ARequest: AMessage
+	public abstract class ARequest
 	{
+		public uint RpcId;
 	}
 
 	/// <summary>
 	/// 服务端回的RPC消息需要继承这个抽象类
 	/// </summary>
-	public abstract class AResponse: AMessage
+	public abstract class AResponse
 	{
+		public uint RpcId;
+
 		public int Error = 0;
 		public string Message = "";
+	}
+
+	public abstract class AFrameMessage : AMessage
+	{
+		public long Id;
 	}
 }

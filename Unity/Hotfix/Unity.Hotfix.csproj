@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Hotfix</RootNamespace>
     <AssemblyName>Hotfix</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -27,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -55,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Base\Message\AMHandler.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Base\Object\IUpdate.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
-    <Compile Include="Handler\R2C_ServerLogHandler.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\UI.cs" />
@@ -123,7 +123,9 @@
       <Name>Unity.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Handler\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes

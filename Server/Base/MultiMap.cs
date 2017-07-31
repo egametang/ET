@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Base
+namespace Model
 {
 	public class MultiMap<T, K>
 	{

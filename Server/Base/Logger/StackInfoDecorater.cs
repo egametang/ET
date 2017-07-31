@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 
-namespace Base
+namespace Model
 {
 	internal class StackInfoDecorater: ALogDecorater
 	{

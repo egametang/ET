@@ -1,18 +1,17 @@
 ﻿using System;
-using Base;
 
 namespace Model
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AActorMessage
+	public abstract class AMActorHandler<E, Message> : IMActorHandler where E : Entity where Message : AActorMessage
 	{
 		protected abstract void Run(E entity, Message message);
 
-		public void Handle(Session session, Entity entity, MessageInfo messageInfo)
+		public void Handle(Session session, Entity entity, object msg)
 		{
-			Message message = messageInfo.Message as Message;
+			Message message = msg as Message;
 			if (message == null)
 			{
-				Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof (Message).Name}");
+				Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof(Message).Name}");
 			}
 			E e = entity as E;
 			if (e == null)
@@ -24,11 +23,11 @@ namespace Model
 
 		public Type GetMessageType()
 		{
-			return typeof (Message);
+			return typeof(Message);
 		}
 	}
 
-	public abstract class AMActorRpcHandler<Request, Response>: IMActorHandler where Request : AActorRequest where Response : AActorResponse
+	public abstract class AMActorRpcHandler<Request, Response> : IMActorHandler where Request : AActorRequest where Response : AActorResponse
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -40,14 +39,14 @@ namespace Model
 
 		protected abstract void Run(Entity entity, Request message, Action<Response> reply);
 
-		public void Handle(Session session, Entity entity,  MessageInfo messageInfo)
+		public void Handle(Session session, Entity entity, object message)
 		{
 			try
 			{
-				Request request = messageInfo.Message as Request;
+				Request request = message as Request;
 				if (request == null)
 				{
-					Log.Error($"消息类型转换错误: {messageInfo.Message.GetType().Name} to {typeof (Request).Name}");
+					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof(Request).Name}");
 				}
 				this.Run(session, request, response =>
 				{
@@ -56,18 +55,19 @@ namespace Model
 					{
 						return;
 					}
-					session.Reply(messageInfo.RpcId, response);
+					response.RpcId = request.RpcId;
+					session.Reply(response);
 				});
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {messageInfo.Opcode}", e);
+				throw new Exception($"解释消息失败: {message.GetType().FullName}", e);
 			}
 		}
 
 		public Type GetMessageType()
 		{
-			return typeof (Request);
+			return typeof(Request);
 		}
 	}
 }

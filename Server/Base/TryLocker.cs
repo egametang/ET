@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Base
+namespace Model
 {
 	public class TryLock : IDisposable
 	{

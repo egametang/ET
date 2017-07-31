@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Base;
 
 namespace Model
 {
@@ -44,9 +43,14 @@ namespace Model
 					this.allConfigs.Add(startConfig);
 					this.configDict.Add(startConfig.AppId, startConfig);
 
-					if (startConfig.AppType == AppType.Location)
+					if (startConfig.AppType.Is(AppType.Realm))
 					{
-						LocationConfig = startConfig;
+						this.RealmConfig = startConfig;
+					}
+
+					if (startConfig.AppType.Is(AppType.Location))
+					{
+						this.LocationConfig = startConfig;
 					}
 				}
 				catch (Exception)

@@ -4,7 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 
-namespace Base
+namespace Model
 {
 	public static class MongoHelper
 	{

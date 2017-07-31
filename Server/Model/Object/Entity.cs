@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
@@ -9,6 +8,8 @@ namespace Model
 	public class Entity: Disposer
 	{
 		public EntityType Type { get; set; }
+
+		public Entity Parent { get; set; }
 
 		[BsonElement]
 		[BsonIgnoreIfNull]

@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public abstract class NetworkComponent: Component
+	public abstract class NetworkComponent : Component
 	{
 		private AService Service;
-		
+
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
+
+		protected IMessagePacker messagePacker;
 
 		protected void Awake(NetworkProtocol protocol)
 		{
@@ -59,7 +61,7 @@ namespace Model
 		private async Task<Session> Accept()
 		{
 			AChannel channel = await this.Service.AcceptChannel();
-			Session session = new Session(this, channel);
+			Session session = new Session(this, channel, messagePacker);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;
@@ -92,7 +94,7 @@ namespace Model
 			int port = int.Parse(ss[1]);
 			string host = ss[0];
 			AChannel channel = this.Service.ConnectChannel(host, port);
-			Session session = new Session(this, channel);
+			Session session = new Session(this, channel, this.messagePacker);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;

@@ -1,6 +1,4 @@
-﻿using Base;
-
-namespace Model
+﻿namespace Model
 {
 	[ObjectEvent]
 	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>, IUpdate
@@ -20,17 +18,19 @@ namespace Model
 			this.Get().Update();
 		}
 	}
-	
-	public class NetOuterComponent: NetworkComponent
+
+	public class NetOuterComponent : NetworkComponent
 	{
 		public void Awake()
 		{
-			this.Awake(NetworkProtocol.UDP);
+			this.Awake(NetworkProtocol.TCP);
+			this.messagePacker = new JsondotnetPacker();
 		}
 
 		public void Awake(string host, int port)
 		{
-			this.Awake(NetworkProtocol.UDP, host, port);
+			this.Awake(NetworkProtocol.TCP, host, port);
+			this.messagePacker = new JsondotnetPacker();
 		}
 
 		public new void Update()

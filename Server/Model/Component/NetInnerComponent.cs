@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Base;
 
 namespace Model
 {
@@ -21,19 +20,21 @@ namespace Model
 			this.Get().Update();
 		}
 	}
-	
-	public class NetInnerComponent: NetworkComponent
+
+	public class NetInnerComponent : NetworkComponent
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
+			this.messagePacker = new MongoPacker();
 		}
 
 		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
+			this.messagePacker = new MongoPacker();
 		}
 
 		public new void Update()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Base
+namespace Model
 {
 	internal struct UAddress
 	{

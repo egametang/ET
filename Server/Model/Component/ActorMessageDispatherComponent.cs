@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Base;
 
 namespace Model
 {
@@ -65,15 +64,15 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(Session session, object message)
 		{
-			if (!this.handlers.TryGetValue(messageInfo.Message.GetType(), out IMActorHandler handler))
+			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"not found message handler: {messageInfo.Message.GetType()}");
+				Log.Error($"not found message handler: {message.GetType()}");
 				return;
 			}
-			Entity entity = this.GetComponent<ActorManagerComponent>().Get(((AActorMessage)messageInfo.Message).Id);
-			handler.Handle(session, entity, messageInfo);
+			Entity entity = this.GetComponent<ActorManagerComponent>().Get(((AActorMessage)message).Id);
+			handler.Handle(session, entity, message);
 		}
 
 		public override void Dispose()

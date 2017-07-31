@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	public class OpcodeTypeComponent : Component
+	public class OpcodeTypeComponent : Component, IAwake
 	{
 		private readonly DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
 

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Base
+namespace Model
 {
 	public static class NativeMethods
 	{

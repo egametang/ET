@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Base
+namespace Model
 {
 	[Flags]
 	public enum PacketFlags

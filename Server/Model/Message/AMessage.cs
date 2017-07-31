@@ -4,8 +4,9 @@
 	{
 	}
 
-	public abstract class ARequest: AMessage
+	public abstract class ARequest
 	{
+		public uint RpcId;
 	}
 
 	/// <summary>
@@ -13,7 +14,14 @@
 	/// </summary>
 	public abstract class AResponse
 	{
+		public uint RpcId;
+
 		public int Error = 0;
 		public string Message = "";
+	}
+
+	public abstract class AFrameMessage : AMessage
+	{
+		public long Id;
 	}
 }

@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Base
+namespace Model
 {
 	/// <summary>
 	/// 封装Socket,将回调push到主线程处理

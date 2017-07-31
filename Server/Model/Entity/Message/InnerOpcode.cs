@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	public static class Opcode
+	public static partial class Opcode
 	{
 		public const ushort G2G_LockRequest = 10;
 		public const ushort G2G_LockResponse = 11;
@@ -31,16 +31,7 @@
 		public const ushort ObjectUnLockResponse = 77;
 		public const ushort ObjectGetRequest = 78;
 		public const ushort ObjectGetResponse = 79;
-
-		public const ushort C2R_Login = 1000;
-		public const ushort R2C_Login = 1002;
-		public const ushort R2C_ServerLog = 1003;
-		public const ushort C2G_LoginGate = 1004;
-		public const ushort G2C_LoginGate = 1005;
-		public const ushort C2G_GetPlayerInfo = 1006;
-		public const ushort G2C_GetPlayerInfo = 1007;
-		public const ushort C2M_Reload = 1008;
-
+		
 		public const ushort R2G_GetLoginKey = 10001;
 		public const ushort G2R_GetLoginKey = 10002;
 	}

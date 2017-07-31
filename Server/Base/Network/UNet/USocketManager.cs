@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Base
+namespace Model
 {
 	internal class USocketManager
 	{

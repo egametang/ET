@@ -1,5 +1,4 @@
 ﻿using System;
-using Base;
 using Model;
 
 namespace Hotfix
@@ -33,8 +32,6 @@ namespace Hotfix
 				response.Address = outerAddress;
 				response.Key = g2RGetLoginKey.Key;
 				reply(response);
-
-				session.Send(new R2C_ServerLog());
 			}
 			catch (Exception e)
 			{

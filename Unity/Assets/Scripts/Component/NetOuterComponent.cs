@@ -5,12 +5,14 @@
 	{
 		public void Awake()
 		{
-			this.Awake(NetworkProtocol.UDP);
+			this.Awake(NetworkProtocol.TCP);
+			this.messagePacker = new JsondotnetPacker();
 		}
 
 		public void Awake(string host, int port)
 		{
-			this.Awake(NetworkProtocol.UDP, host, port);
+			this.Awake(NetworkProtocol.TCP, host, port);
+			this.messagePacker = new JsondotnetPacker();
 		}
 
 		public new void Update()

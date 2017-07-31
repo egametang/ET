@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Base
+namespace Model
 {
 	internal sealed class UPoller : IDisposable
 	{

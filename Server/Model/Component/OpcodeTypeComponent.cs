@@ -19,8 +19,8 @@ namespace Model
 	
 	public class OpcodeTypeComponent : Component
 	{
-		private Dictionary<ushort, Type> opcodeType { get; set; }
-		private Dictionary<Type, ActorMessageAttribute> messageOpcode { get; set; }
+		private Dictionary<ushort, Type> opcodeType;
+		private Dictionary<Type, MessageAttribute> messageOpcode;
 
 		public void Awake()
 		{
@@ -30,17 +30,18 @@ namespace Model
 		public void Load()
 		{
 			this.opcodeType = new Dictionary<ushort, Type>();
+			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(ActorMessageAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
 				if (attrs.Length == 0)
 				{
 					continue;
 				}
 
-				ActorMessageAttribute messageAttribute = (ActorMessageAttribute)attrs[0];
+				MessageAttribute messageAttribute = (MessageAttribute)attrs[0];
 				this.messageOpcode[type] = messageAttribute;
 				this.opcodeType[messageAttribute.Opcode] = type;
 			}
@@ -48,7 +49,7 @@ namespace Model
 
 		public ushort GetOpcode(Type type)
 		{
-			if (!this.messageOpcode.TryGetValue(type, out ActorMessageAttribute messageAttribute))
+			if (!this.messageOpcode.TryGetValue(type, out MessageAttribute messageAttribute))
 			{
 				throw new Exception($"查找Opcode失败: {type.Name}");
 			}

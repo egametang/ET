@@ -59,11 +59,5 @@ namespace Model
 		{
 			return Encoding.UTF8.GetString(bytes, index, count);
 		}
-
-		public static byte[] Reverse(this byte[] bytes)
-		{
-			Array.Reverse(bytes);
-			return bytes;
-		}
 	}
 }

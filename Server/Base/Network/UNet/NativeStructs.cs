@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Base
+namespace Model
 {
 	internal enum EventType
 	{

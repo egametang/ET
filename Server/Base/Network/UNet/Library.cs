@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Base
+namespace Model
 {
 	internal static class Library
 	{

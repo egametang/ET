@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Base;
 using Model;
 using NLog;
 
@@ -65,11 +64,12 @@ namespace App
 					case AppType.AllServer:
 						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
-						Game.Scene.AddComponent<ActorManagerComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<AppManagerComponent>();
+						Game.Scene.AddComponent<LocationProxyComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;

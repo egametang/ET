@@ -4,7 +4,7 @@ namespace Model
 {
 	public interface IMHandler
 	{
-		void Handle(Session session, MessageInfo messageInfo);
+		void Handle(Session session, object message);
 		Type GetMessageType();
 	}
 }

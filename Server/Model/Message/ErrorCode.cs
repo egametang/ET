@@ -8,5 +8,6 @@ namespace Model
 		public const int ERR_ConnectGateKeyError = 3;
 		public const int ERR_ReloadFail = 4;
 		public const int ERR_NotFoundUnit = 5;
+		public const int ERR_ActorLocationNotFound = 6;
 	}
 }

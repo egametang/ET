@@ -18,18 +18,6 @@ namespace Model
 		public long Key { get; set; }
 	}
 
-	[Message(Opcode.R2C_ServerLog)]
-	public class R2C_ServerLog: AMessage
-	{
-		public AppType AppType { get; set; }
-		
-		public int AppId { get; set; }
-		
-		public LogType Type { get; set; }
-		
-		public string Log { get; set; }
-	}
-
 	[Message(Opcode.C2G_LoginGate)]
 	public class C2G_LoginGate: ARequest
 	{

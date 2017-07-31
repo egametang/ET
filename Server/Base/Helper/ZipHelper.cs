@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
-namespace Base
+namespace Model
 {
 	public static class ZipHelper
 	{

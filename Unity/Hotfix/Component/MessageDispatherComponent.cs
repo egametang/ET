@@ -7,11 +7,11 @@ namespace Hotfix
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ObjectEvent(EntityEventId.MessageDispatherComponent)]
-	public class MessageDispatherComponent: Component, IAwake, ILoad
+	[ObjectEvent((int)EntityEventId.MessageDispatherComponent)]
+	public class MessageDispatherComponent : Component, IAwake, ILoad
 	{
 		private Dictionary<ushort, List<IMHandler>> handlers;
-		
+
 
 		public void Awake()
 		{
@@ -20,8 +20,8 @@ namespace Hotfix
 
 		public void Load()
 		{
-			this.handlers = new Dictionary<ushort, List<IMHandler>>();
-			
+			handlers = new Dictionary<ushort, List<IMHandler>>();
+
 			Type[] types = DllHelper.GetHotfixTypes();
 
 			foreach (Type type in types)
@@ -41,7 +41,7 @@ namespace Hotfix
 			}
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(MessageInfo messageInfo)
 		{
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out List<IMHandler> actions))
 			{
@@ -53,11 +53,11 @@ namespace Hotfix
 			{
 				try
 				{
-					ev.Handle(session, messageInfo);
+					ev.Handle(messageInfo.Message);
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e.ToStr());
 				}
 			}
 		}

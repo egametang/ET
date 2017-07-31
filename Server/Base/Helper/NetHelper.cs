@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 
-namespace Base
+namespace Model
 {
 	public static class NetHelper
 	{

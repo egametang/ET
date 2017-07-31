@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace Base
+namespace Model
 {
 	internal class BufferInfo
 	{

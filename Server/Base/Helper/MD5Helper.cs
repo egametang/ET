@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 
-namespace Base
+namespace Model
 {
 	public static class MD5Helper
 	{

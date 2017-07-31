@@ -44,10 +44,26 @@
     <Reference Include="MongoDB.Driver.Core">
       <HintPath>..\Lib\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\X1\X1\client\trunk\Server\Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
+      <Link>Entity\Message\Opcode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
+      <Link>Entity\Message\OuterMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\JsondotnetPacker.cs">
+      <Link>Message\JsondotnetPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\MongoPacker.cs">
+      <Link>Message\MongoPacker.cs</Link>
+    </Compile>
+    <Compile Include="Component\ActorProxyComponent.cs" />
     <Compile Include="Component\OpcodeTypeComponent.cs" />
     <Compile Include="Component\ActorManagerComponent.cs" />
     <Compile Include="Component\BenchmarkComponent.cs" />
@@ -88,6 +104,8 @@
     <Compile Include="Config\ICategory.cs" />
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
+    <Compile Include="Entity\ActorProxy.cs" />
+    <Compile Include="Entity\Message\InnerOpcode.cs" />
     <Compile Include="Entity\SceneEntity.cs" />
     <Compile Include="Entity\DBSceneEntity.cs" />
     <Compile Include="Entity\DBEntity.cs" />
@@ -96,8 +114,6 @@
     <Compile Include="Entity\Game.cs" />
     <Compile Include="Entity\Http.cs" />
     <Compile Include="Entity\Message\InnerMessage.cs" />
-    <Compile Include="Entity\Message\Opcode.cs" />
-    <Compile Include="Entity\Message\OuterMessage.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\Session.cs" />
     <Compile Include="Entity\Unit.cs" />
@@ -115,6 +131,7 @@
     <Compile Include="Message\AppType.cs" />
     <Compile Include="Message\ErrorCode.cs" />
     <Compile Include="Message\IMActorHandler.cs" />
+    <Compile Include="Message\IMessagePacker.cs" />
     <Compile Include="Message\IMHandler.cs" />
     <Compile Include="Message\ActorMessageAttribute.cs" />
     <Compile Include="Message\MessageAttribute.cs" />
