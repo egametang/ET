@@ -21,7 +21,7 @@ namespace Model
 		}
 
 		public async Task Add(long key)
-		{			
+		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
 			await session.Call<ObjectAddRequest, ObjectAddResponse>(new ObjectAddRequest() { Key = key });
 		}

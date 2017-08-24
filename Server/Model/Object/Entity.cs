@@ -7,9 +7,10 @@ namespace Model
 {
 	public class Entity: Disposer
 	{
-		public EntityType Type { get; set; }
-
+		[BsonIgnore]
 		public Entity Parent { get; set; }
+
+		public EntityType Type { get; set; }
 
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -208,7 +209,7 @@ namespace Model
 
 		public Component[] GetComponents()
 		{
-			return components.ToArray();
+			return this.componentDict.Values.ToArray();
 		}
 
 		public override void BeginInit()

@@ -10,7 +10,8 @@ namespace App
 		private static void Main(string[] args)
 		{
 			// 异步方法全部会回掉到主线程
-			SynchronizationContext.SetSynchronizationContext(new OneThreadSynchronizationContext());
+			OneThreadSynchronizationContext contex = new OneThreadSynchronizationContext();
+			SynchronizationContext.SetSynchronizationContext(contex);
 
 			try
 			{
@@ -42,19 +43,22 @@ namespace App
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
 					case AppType.Realm:
+						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
+						Game.Scene.AddComponent<LocationProxyComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
+						Game.Scene.AddComponent<LocationProxyComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					case AppType.Location:
@@ -62,14 +66,16 @@ namespace App
 						Game.Scene.AddComponent<LocationComponent>();
 						break;
 					case AppType.AllServer:
+						Game.Scene.AddComponent<GamerComponent>();
+						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
-						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<ActorComponent>();
+						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
@@ -86,7 +92,7 @@ namespace App
 					try
 					{
 						Thread.Sleep(1);
-						Game.Poller.Update();
+						contex.Update();
 						ObjectEvents.Instance.Update();
 					}
 					catch (Exception e)

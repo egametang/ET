@@ -32,9 +32,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\RealmGateAddressComponentE.cs" />
+    <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Message\C2G_LoginGateHandler.cs" />
     <Compile Include="Message\C2R_PingHandler.cs" />
     <Compile Include="Message\G2G_LockReleaseRequestHandler.cs" />

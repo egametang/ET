@@ -20,21 +20,23 @@ namespace Model
 			this.Get().Update();
 		}
 	}
-
-	public class NetInnerComponent : NetworkComponent
+	
+	public class NetInnerComponent: NetworkComponent
 	{
 		private readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
 
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
-			this.messagePacker = new MongoPacker();
+			this.MessagePacker = new MongoPacker();
+			this.MessageDispatcher = new InnerMessageDispatcher();
 		}
 
 		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
-			this.messagePacker = new MongoPacker();
+			this.MessagePacker = new MongoPacker();
+			this.MessageDispatcher = new InnerMessageDispatcher();
 		}
 
 		public new void Update()

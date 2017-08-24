@@ -34,7 +34,7 @@ namespace Model
 		public void Load()
 		{
 			this.handlers = new Dictionary<Type, List<IMHandler>>();
-
+			
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
@@ -75,7 +75,7 @@ namespace Model
 				Log.Error($"消息 {message.GetType().FullName} 没有处理");
 				return;
 			}
-
+			
 			foreach (IMHandler ev in actions)
 			{
 				try

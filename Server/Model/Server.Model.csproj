@@ -45,25 +45,32 @@
       <HintPath>..\Lib\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\X1\X1\client\trunk\Server\Lib\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\JsondotnetPacker.cs">
+      <Link>Message\JsondotnetPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs">
+      <Link>Message\MongoPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs">
+      <Link>Message\ProtobufPacker.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
       <Link>Entity\Message\Opcode.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
       <Link>Entity\Message\OuterMessage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\JsondotnetPacker.cs">
-      <Link>Message\JsondotnetPacker.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Message\MongoPacker.cs">
-      <Link>Message\MongoPacker.cs</Link>
-    </Compile>
     <Compile Include="Component\ActorProxyComponent.cs" />
+    <Compile Include="Component\GamerComponent.cs" />
+    <Compile Include="Entity\Gamer.cs" />
+    <Compile Include="Message\IEntityActorHandler.cs" />
     <Compile Include="Component\OpcodeTypeComponent.cs" />
     <Compile Include="Component\ActorManagerComponent.cs" />
     <Compile Include="Component\BenchmarkComponent.cs" />
@@ -85,10 +92,12 @@
     <Compile Include="Component\NetOuterComponent.cs" />
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
+    <Compile Include="Component\Session\SessionGamerComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\LocationComponent.cs" />
     <Compile Include="Component\ActorComponent.cs" />
     <Compile Include="Component\UnitComponent.cs" />
+    <Compile Include="Component\Unit\SessionInfoComponent.cs" />
     <Compile Include="Component\Unit\MasterComponent.cs" />
     <Compile Include="Component\Unit\LockComponent.cs" />
     <Compile Include="Component\AppManagerComponent.cs" />
@@ -105,15 +114,14 @@
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
     <Compile Include="Entity\ActorProxy.cs" />
-    <Compile Include="Entity\Message\InnerOpcode.cs" />
     <Compile Include="Entity\SceneEntity.cs" />
-    <Compile Include="Entity\DBSceneEntity.cs" />
     <Compile Include="Entity\DBEntity.cs" />
     <Compile Include="Entity\DBTask.cs" />
     <Compile Include="Entity\DBTaskQueue.cs" />
     <Compile Include="Entity\Game.cs" />
     <Compile Include="Entity\Http.cs" />
     <Compile Include="Entity\Message\InnerMessage.cs" />
+    <Compile Include="Entity\Message\InnerOpcode.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\Session.cs" />
     <Compile Include="Entity\Unit.cs" />
@@ -131,13 +139,14 @@
     <Compile Include="Message\AppType.cs" />
     <Compile Include="Message\ErrorCode.cs" />
     <Compile Include="Message\IMActorHandler.cs" />
-    <Compile Include="Message\IMessagePacker.cs" />
+    <Compile Include="Message\OuterMessageDispatcher.cs" />
+    <Compile Include="Message\InnerMessageDispatcher.cs" />
+    <Compile Include="Message\IMessageDispatcher.cs" />
     <Compile Include="Message\IMHandler.cs" />
     <Compile Include="Message\ActorMessageAttribute.cs" />
     <Compile Include="Message\MessageAttribute.cs" />
     <Compile Include="Message\ActorMessageHandlerAttribute.cs" />
     <Compile Include="Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Message\MessageInfo.cs" />
     <Compile Include="Message\OpcodeHelper.cs" />
     <Compile Include="Message\RpcException.cs" />
     <Compile Include="Object\ComponentDB.cs" />
@@ -152,6 +161,7 @@
     <Compile Include="Object\EntityType.cs" />
     <Compile Include="Object\Object.cs" />
     <Compile Include="Object\ObjectEvents.cs" />
+    <Compile Include="Message\IMessagePacker.cs" />
     <Compile Include="Other\OneThreadSynchronizationContext.cs" />
     <Compile Include="Other\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

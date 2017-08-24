@@ -1,12 +1,20 @@
-﻿namespace Model
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Model
 {
-	public abstract class AActorMessage: AMessage
+	public interface IActorMessage
+	{
+		long Id { get; set; }
+	}
+
+	public abstract class AActorMessage: AMessage, IActorMessage
 	{
 		public long Id { get; set; }
 	}
 
-	public abstract class AActorRequest : ARequest
+	public abstract class AActorRequest : ARequest, IActorMessage
 	{
+		[BsonIgnoreIfDefault]
 		public long Id { get; set; }
 	}
 

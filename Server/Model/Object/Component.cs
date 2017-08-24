@@ -37,7 +37,10 @@ namespace Model
 
 			base.Dispose();
 
-			this.Owner.RemoveComponent(this.GetType());
+			if (this.Owner.Id != 0)
+			{
+				this.Owner?.RemoveComponent(this.GetType());
+			}
 		}
 
 		public override void EndInit()

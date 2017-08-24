@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -20,6 +21,19 @@ namespace Model
 		public void Remove(long id)
 		{
 			this.idUnits.Remove(id);
+		}
+
+		public int Count
+		{
+			get
+			{
+				return this.idUnits.Count;
+			}
+		}
+
+		public Unit[] GetAll()
+		{
+			return this.idUnits.Values.ToArray();
 		}
 
 		public override void Dispose()

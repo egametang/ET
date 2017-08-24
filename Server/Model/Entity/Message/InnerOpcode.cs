@@ -31,8 +31,8 @@
 		public const ushort ObjectUnLockResponse = 77;
 		public const ushort ObjectGetRequest = 78;
 		public const ushort ObjectGetResponse = 79;
-		
-		public const ushort R2G_GetLoginKey = 10001;
-		public const ushort G2R_GetLoginKey = 10002;
+
+		public const ushort R2G_GetLoginKey = 101;
+		public const ushort G2R_GetLoginKey = 102;
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	public abstract class AMActorHandler<E, Message> : IMActorHandler where E : Entity where Message : AActorMessage
+	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AActorMessage
 	{
 		protected abstract void Run(E entity, Message message);
 
@@ -11,23 +11,25 @@ namespace Model
 			Message message = msg as Message;
 			if (message == null)
 			{
-				Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof(Message).Name}");
+				Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof (Message).Name}");
+				return;
 			}
 			E e = entity as E;
 			if (e == null)
 			{
 				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
+				return;
 			}
 			this.Run(e, message);
 		}
 
 		public Type GetMessageType()
 		{
-			return typeof(Message);
+			return typeof (Message);
 		}
 	}
 
-	public abstract class AMActorRpcHandler<Request, Response> : IMActorHandler where Request : AActorRequest where Response : AActorResponse
+	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request : AActorRequest where Response : AActorResponse
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -37,18 +39,25 @@ namespace Model
 			reply(response);
 		}
 
-		protected abstract void Run(Entity entity, Request message, Action<Response> reply);
+		protected abstract void Run(E entity, Request message, Action<Response> reply);
 
-		public void Handle(Session session, Entity entity, object message)
+		public void Handle(Session session, Entity entity,  object message)
 		{
 			try
 			{
 				Request request = message as Request;
 				if (request == null)
 				{
-					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof(Request).Name}");
+					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
+					return;
 				}
-				this.Run(session, request, response =>
+				E e = entity as E;
+				if (e == null)
+				{
+					Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
+					return;
+				}
+				this.Run(e, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
 					if (session.Id == 0)
@@ -67,7 +76,7 @@ namespace Model
 
 		public Type GetMessageType()
 		{
-			return typeof(Request);
+			return typeof (Request);
 		}
 	}
 }

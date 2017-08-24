@@ -20,7 +20,6 @@ namespace Model
 
 		public void Awake()
 		{
-			
 		}
 
 		public void Add(Entity entity)

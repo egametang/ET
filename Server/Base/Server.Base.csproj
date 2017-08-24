@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetworkHelper.cs">
+      <Link>Helper\NetworkHelper.cs</Link>
+    </Compile>
     <Compile Include="DoubleMap.cs" />
     <Compile Include="Helper\ArrayHelper.cs" />
     <Compile Include="Helper\ByteHelper.cs" />
@@ -74,9 +77,7 @@
     <Compile Include="Network\TNet\PacketParser.cs" />
     <Compile Include="Network\TNet\TBuffer.cs" />
     <Compile Include="Network\TNet\TChannel.cs" />
-    <Compile Include="Network\TNet\TPoller.cs" />
     <Compile Include="Network\TNet\TService.cs" />
-    <Compile Include="Network\TNet\TSocket.cs" />
     <Compile Include="Network\UNet\Library.cs" />
     <Compile Include="Network\UNet\NativeMethods.cs" />
     <Compile Include="Network\UNet\NativeStructs.cs" />

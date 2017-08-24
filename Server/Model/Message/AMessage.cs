@@ -20,7 +20,7 @@
 		public string Message = "";
 	}
 
-	public abstract class AFrameMessage : AMessage
+	public abstract class AFrameMessage: AMessage
 	{
 		public long Id;
 	}

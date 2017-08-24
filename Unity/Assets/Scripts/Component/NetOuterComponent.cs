@@ -1,18 +1,19 @@
 ﻿namespace Model
 {
-	[EntityEvent(EntityEventId.NetOuterComponent)]
-	public class NetOuterComponent: NetworkComponent, IAwake, IAwake<string, int>, IUpdate
+	public class NetOuterComponent : NetworkComponent, IAwake, IAwake<string, int>
 	{
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
-			this.messagePacker = new JsondotnetPacker();
+			this.MessagePacker = new JsondotnetPacker();
+			this.MessageDispatcher = new ClientDispatcher();
 		}
 
 		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
-			this.messagePacker = new JsondotnetPacker();
+			this.MessagePacker = new JsondotnetPacker();
+			this.MessageDispatcher = new ClientDispatcher();
 		}
 
 		public new void Update()

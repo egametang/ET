@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System.Numerics;
+
+namespace Model
 {
 	public enum UnitType
 	{
@@ -10,6 +12,10 @@
 	{
 		public UnitType UnitType { get; }
 
+		public Gamer Gamer;
+
+		public Vector3 Position;
+
 		public override void Dispose()
 		{
 			if (this.Id == 0)
@@ -20,8 +26,9 @@
 			base.Dispose();
 		}
 
-		public Unit(UnitType unitType)
+		public Unit(Gamer gamer, UnitType unitType)
 		{
+			this.Gamer = gamer;
 			this.UnitType = unitType;
 		}
 	}

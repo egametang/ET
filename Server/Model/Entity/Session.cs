@@ -11,15 +11,11 @@ namespace Model
 		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
 		private readonly AChannel channel;
-		private bool isRpc;
 
-		private readonly IMessagePacker messagePacker;
-
-		public Session(NetworkComponent network, AChannel channel, IMessagePacker messagePacker)
+		public Session(NetworkComponent network, AChannel channel)
 		{
 			this.network = network;
 			this.channel = channel;
-			this.messagePacker = messagePacker;
 			this.StartRecv();
 		}
 
@@ -41,7 +37,6 @@ namespace Model
 
 		private async void StartRecv()
 		{
-			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)
@@ -52,12 +47,11 @@ namespace Model
 				byte[] messageBytes;
 				try
 				{
-					if (this.isRpc)
-					{
-						this.isRpc = false;
-						await timerComponent.WaitAsync(0);
-					}
 					messageBytes = await channel.Recv();
+					if (this.Id == 0)
+					{
+						return;
+					}
 				}
 				catch (Exception e)
 				{
@@ -71,6 +65,7 @@ namespace Model
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+				opcode = NetworkHelper.NetworkToHostOrder(opcode);
 				try
 				{
 					this.Run(opcode, messageBytes);
@@ -105,24 +100,15 @@ namespace Model
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
 			Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-			object message = messagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
-			
-			if (message is AActorMessage)
-			{
-				this.network.Owner.GetComponent<ActorMessageDispatherComponent>().Handle(this, message);
-				return;
-			}
-			if (message is AMessage || message is ARequest)
-			{
-				this.network.Owner.GetComponent<MessageDispatherComponent>().Handle(this, message);
-				return;
-			}
+			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
-			if (message is AResponse response)
+			AResponse response = message as AResponse;
+			if (response != null)
 			{
 				// rpcFlag>0 表示这是一个rpc响应消息
 				// Rpc回调有找不着的可能，因为client可能取消Rpc调用
-				if (!this.requestCallback.TryGetValue(response.RpcId, out Action<object> action))
+				Action<object> action;
+				if (!this.requestCallback.TryGetValue(response.RpcId, out action))
 				{
 					return;
 				}
@@ -131,7 +117,7 @@ namespace Model
 				return;
 			}
 
-			throw new Exception($"message type error: {message.GetType().FullName}");
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, message);
 		}
 
 		/// <summary>
@@ -150,13 +136,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
 					//Log.Debug($"recv: {response.ToJson()}");
-					this.isRpc = true;
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -184,13 +169,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
 					//Log.Debug($"recv: {response.ToJson()}");
-					this.isRpc = true;
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -224,9 +208,10 @@ namespace Model
 		{
 			//Log.Debug($"send: {message.ToJson()}");
 			ushort opcode = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			opcode = NetworkHelper.HostToNetworkOrder(opcode);
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 
-			byte[] messageBytes = messagePacker.SerializeToByteArray(message);
+			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 			byte flag = 0;
 			if (messageBytes.Length > 100)
 			{

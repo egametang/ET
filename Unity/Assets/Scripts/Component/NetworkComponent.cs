@@ -11,9 +11,11 @@ namespace Model
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 
-		protected IMessagePacker messagePacker;
+		public IMessagePacker MessagePacker { get; protected set; }
 
-		protected void Awake(NetworkProtocol protocol)
+		public IMessageDispatcher MessageDispatcher { get; protected set; }
+
+		public void Awake(NetworkProtocol protocol)
 		{
 			switch (protocol)
 			{
@@ -58,10 +60,10 @@ namespace Model
 			}
 		}
 
-		private async Task<Session> Accept()
+		public virtual async Task<Session> Accept()
 		{
 			AChannel channel = await this.Service.AcceptChannel();
-			Session session = new Session(this, channel, messagePacker);
+			Session session = new Session(this, channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;
@@ -88,16 +90,24 @@ namespace Model
 		/// <summary>
 		/// 创建一个新Session
 		/// </summary>
-		public Session Create(string address)
+		public virtual Session Create(string address)
 		{
-			string[] ss = address.Split(':');
-			int port = int.Parse(ss[1]);
-			string host = ss[0];
-			AChannel channel = this.Service.ConnectChannel(host, port);
-			Session session = new Session(this, channel, this.messagePacker);
-			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-			this.sessions.Add(session.Id, session);
-			return session;
+			try
+			{
+				string[] ss = address.Split(':');
+				int port = int.Parse(ss[1]);
+				string host = ss[0];
+				AChannel channel = this.Service.ConnectChannel(host, port);
+				Session session = new Session(this, channel);
+				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+				this.sessions.Add(session.Id, session);
+				return session;
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+				return null;
+			}
 		}
 
 		protected void Update()

@@ -64,14 +64,19 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, object message)
+		public IMActorHandler GetActorHandler(Type type)
+		{
+			this.handlers.TryGetValue(type, out IMActorHandler actorHandler);
+			return actorHandler;
+		}
+
+		public void Handle(Session session, Entity entity, IActorMessage message)
 		{
 			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"not found message handler: {message.GetType()}");
+				Log.Error($"not found message handler: {message.GetType().FullName}");
 				return;
 			}
-			Entity entity = this.GetComponent<ActorManagerComponent>().Get(((AActorMessage)message).Id);
 			handler.Handle(session, entity, message);
 		}
 

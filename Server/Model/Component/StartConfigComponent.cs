@@ -50,7 +50,7 @@ namespace Model
 
 					if (startConfig.AppType.Is(AppType.Location))
 					{
-						this.LocationConfig = startConfig;
+						LocationConfig = startConfig;
 					}
 				}
 				catch (Exception)
@@ -64,7 +64,14 @@ namespace Model
 
 		public StartConfig Get(int id)
 		{
-			return this.configDict[id];
+			try
+			{
+				return this.configDict[id];
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"not found startconfig: {id}", e);
+			}
 		}
 
 		public StartConfig[] GetAll()
