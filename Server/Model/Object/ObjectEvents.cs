@@ -50,8 +50,7 @@ namespace Model
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
 
-		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
-		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
+		private Queue<Disposer> starts = new Queue<Disposer>();
 
 		private Queue<Disposer> loaders = new Queue<Disposer>();
 		private Queue<Disposer> loaders2 = new Queue<Disposer>();
@@ -114,9 +113,9 @@ namespace Model
 				this.updates.Enqueue(disposer);
 			}
 
-			if (objectEvent is ILateUpdate)
+			if (objectEvent is IStart)
 			{
-				this.lateUpdates.Enqueue(disposer);
+				this.starts.Enqueue(disposer);
 			}
 		}
 
@@ -216,8 +215,29 @@ namespace Model
 			ObjectHelper.Swap(ref this.loaders, ref this.loaders2);
 		}
 
+		private void Start()
+		{
+			while (this.starts.Count > 0)
+			{
+				Disposer disposer = this.starts.Dequeue();
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				{
+					continue;
+				}
+				IStart iStart = objectEvent as IStart;
+				if (iStart == null)
+				{
+					continue;
+				}
+				objectEvent.Set(disposer);
+				iStart.Start();
+			}
+		}
+
 		public void Update()
 		{
+			this.Start();
+
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();
@@ -249,41 +269,6 @@ namespace Model
 			}
 			
 			ObjectHelper.Swap(ref this.updates, ref this.updates2);
-		}
-
-		public void LateUpdate()
-		{
-			while (this.lateUpdates.Count > 0)
-			{
-				Disposer disposer = this.lateUpdates.Dequeue();
-				if (disposer.Id == 0)
-				{
-					continue;
-				}
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
-				{
-					continue;
-				}
-
-				this.lateUpdates2.Enqueue(disposer);
-
-				ILateUpdate iLateUpdate = objectEvent as ILateUpdate;
-				if (iLateUpdate == null)
-				{
-					continue;
-				}
-				objectEvent.Set(disposer);
-				try
-				{
-					iLateUpdate.LateUpdate();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
-			}
-
-			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 	}
 }

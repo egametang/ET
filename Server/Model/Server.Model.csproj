@@ -71,6 +71,7 @@
     <Compile Include="Component\GamerComponent.cs" />
     <Compile Include="Entity\Gamer.cs" />
     <Compile Include="Entity\Location.cs" />
+    <Compile Include="Helper\ObjectFactory.cs" />
     <Compile Include="Message\IEntityActorHandler.cs" />
     <Compile Include="Component\OpcodeTypeComponent.cs" />
     <Compile Include="Component\ActorManagerComponent.cs" />
@@ -156,7 +157,7 @@
     <Compile Include="Object\Entity.cs" />
     <Compile Include="Object\IAwake.cs" />
     <Compile Include="Object\ILoad.cs" />
-    <Compile Include="Object\ILateUpdate.cs" />
+    <Compile Include="Object\IStart.cs" />
     <Compile Include="Object\IUpdate.cs" />
     <Compile Include="Object\ObjectEventAttribute.cs" />
     <Compile Include="Object\EntityType.cs" />

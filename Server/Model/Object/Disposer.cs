@@ -6,10 +6,12 @@ namespace Model
 	{
 		protected Disposer(): base(IdGenerater.GenerateId())
 		{
+			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Disposer(long id): base(id)
 		{
+			ObjectEvents.Instance.Add(this);
 		}
 
 		public virtual void Dispose()

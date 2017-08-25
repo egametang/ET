@@ -15,12 +15,10 @@ namespace Model
 
 		protected Component()
 		{
-			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Component(long id): base(id)
 		{
-			ObjectEvents.Instance.Add(this);
 		}
 
 		public T GetComponent<T>() where T : Component

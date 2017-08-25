@@ -8,6 +8,7 @@ namespace Hotfix
 	{
 		protected override async void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
 		{
+			Log.Debug("11111111111111111111");
 			R2C_Login response = new R2C_Login();
 			try
 			{

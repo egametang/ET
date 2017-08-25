@@ -21,12 +21,10 @@ namespace Model
 
 		protected Entity()
 		{
-			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Entity(long id): base(id)
 		{
-			ObjectEvents.Instance.Add(this);
 		}
 
 		public override void Dispose()
@@ -53,7 +51,7 @@ namespace Model
 
 		public K AddComponent<K>() where K : Component, new()
 		{
-			K component = (K) Activator.CreateInstance(typeof (K));
+			K component = ObjectFactory.Create<K>();
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
@@ -71,13 +69,12 @@ namespace Model
 				this.components.Add(component);
 			}
 			this.componentDict.Add(component.GetType(), component);
-			ObjectEvents.Instance.Awake(component);
 			return component;
 		}
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = (K) Activator.CreateInstance(typeof (K));
+			K component = ObjectFactory.Create<K, P1>(p1);
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
@@ -95,13 +92,12 @@ namespace Model
 				this.components.Add(component);
 			}
 			this.componentDict.Add(component.GetType(), component);
-			ObjectEvents.Instance.Awake(component, p1);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = (K) Activator.CreateInstance(typeof (K));
+			K component = ObjectFactory.Create<K, P1, P2>(p1, p2);
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
@@ -119,13 +115,12 @@ namespace Model
 				this.components.Add(component);
 			}
 			this.componentDict.Add(component.GetType(), component);
-			ObjectEvents.Instance.Awake(component, p1, p2);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = (K) Activator.CreateInstance(typeof (K));
+			K component = ObjectFactory.Create<K, P1, P2, P3>(p1, p2, p3);
 			component.Owner = this;
 
 			if (this.componentDict.ContainsKey(component.GetType()))
@@ -143,27 +138,7 @@ namespace Model
 				this.components.Add(component);
 			}
 			this.componentDict.Add(component.GetType(), component);
-			ObjectEvents.Instance.Awake(component, p1, p2, p3);
 			return component;
-		}
-
-		public void AddComponent(Component component)
-		{
-			if (this.componentDict.ContainsKey(component.GetType()))
-			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {component.GetType().Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-			if (component is ComponentDB)
-			{
-				this.components.Add(component);
-			}
-			this.componentDict.Add(component.GetType(), component);
-			ObjectEvents.Instance.Awake(component);
 		}
 
 		public void RemoveComponent<K>() where K : Component
