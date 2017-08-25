@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
+
 namespace Model
 {
 	public interface IEntityActorHandler
 	{
-		void Handle(Session session, Entity entity, IActorMessage message);
+		Task<bool> Handle(Session session, Entity entity, IActorMessage message);
 	}
 
 	/// <summary>
@@ -10,18 +12,19 @@ namespace Model
 	/// </summary>
 	public class GateSessionEntityActorHandler : IEntityActorHandler
 	{
-		public void Handle(Session session, Entity entity, IActorMessage message)
+		public async Task<bool> Handle(Session session, Entity entity, IActorMessage message)
 		{
 			message.Id = 0;
 			((Session)entity).Send((AMessage)message);
+			return true;
 		}
 	}
 
 	public class CommonEntityActorHandler : IEntityActorHandler
 	{
-		public void Handle(Session session, Entity entity, IActorMessage message)
+		public async Task<bool> Handle(Session session, Entity entity, IActorMessage message)
 		{
-			Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
+			return await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
 		}
 	}
 }

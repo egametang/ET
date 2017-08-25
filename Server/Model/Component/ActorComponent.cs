@@ -79,7 +79,7 @@ namespace Model
 			while (true)
 			{
 				ActorMessageInfo info = await this.GetAsync();
-				this.entityActorHandler.Handle(info.Session, this.Owner, info.Message);
+				await this.entityActorHandler.Handle(info.Session, this.Owner, info.Message);
 			}
 		}
 

@@ -11,7 +11,7 @@ namespace Hotfix
 			ObjectLockResponse response = new ObjectLockResponse();
 			try
 			{
-				Game.Scene.GetComponent<LocationComponent>().Add(message.Key, session.RemoteAddress);
+				Game.Scene.GetComponent<LocationComponent>().LockAsync(message.Key, message.Time);
 				reply(response);
 			}
 			catch (Exception e)

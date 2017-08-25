@@ -70,6 +70,7 @@
     <Compile Include="Component\ActorProxyComponent.cs" />
     <Compile Include="Component\GamerComponent.cs" />
     <Compile Include="Entity\Gamer.cs" />
+    <Compile Include="Entity\Location.cs" />
     <Compile Include="Message\IEntityActorHandler.cs" />
     <Compile Include="Component\OpcodeTypeComponent.cs" />
     <Compile Include="Component\ActorManagerComponent.cs" />

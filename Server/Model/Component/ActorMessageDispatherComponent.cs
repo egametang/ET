@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Model
 {
@@ -70,14 +71,14 @@ namespace Model
 			return actorHandler;
 		}
 
-		public void Handle(Session session, Entity entity, IActorMessage message)
+		public async Task<bool> Handle(Session session, Entity entity, IActorMessage message)
 		{
 			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{
 				Log.Error($"not found message handler: {message.GetType().FullName}");
-				return;
+				return false;
 			}
-			handler.Handle(session, entity, message);
+			return await handler.Handle(session, entity, message);
 		}
 
 		public override void Dispose()

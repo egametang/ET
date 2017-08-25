@@ -21,11 +21,14 @@ namespace Model
 	{
 		private readonly long key;
 
+		private readonly int time;
+
 		private readonly TaskCompletionSource<bool> tcs;
 
-		public LocationLockTask(long key)
+		public LocationLockTask(long key, int time)
 		{
 			this.key = key;
+			this.time = time;
 			this.tcs = new TaskCompletionSource<bool>();
 		}
 
@@ -41,7 +44,7 @@ namespace Model
 		{
 			try
 			{
-				Scene.GetComponent<LocationComponent>().Lock(this.key);
+				Scene.GetComponent<LocationComponent>().Lock(this.key, this.time);
 				this.tcs.SetResult(true);
 			}
 			catch (Exception e)
@@ -89,13 +92,16 @@ namespace Model
 	{
 		private readonly Dictionary<long, string> locations = new Dictionary<long, string>();
 
-		private readonly HashSet<long> lockSet = new HashSet<long>();
+		private readonly Dictionary<long, int> lockDict = new Dictionary<long, int>();
 
 		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
 
-		public void Add(long key, string address)
+		public async void Add(long key, string address)
 		{
 			this.locations[key] = address;
+
+			// 更新db
+			await Game.Scene.GetComponent<DBProxyComponent>().Save(new Location(key, address));
 		}
 
 		public void Remove(long key)
@@ -109,20 +115,46 @@ namespace Model
 			return location;
 		}
 
-		public void Lock(long key)
+		public async void Lock(long key, int appId, int time = 0)
 		{
-			if (this.lockSet.Contains(key))
+			if (this.lockDict.ContainsKey(key))
 			{
 				return;
 			}
-			this.lockSet.Add(key);
+			this.lockDict.Add(key, appId);
+
+			// 超时则解锁
+			if (time > 0)
+			{
+				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(time);
+
+				int saveAppId = 0;
+				this.lockDict.TryGetValue(key, out saveAppId);
+				if (saveAppId != appId)
+				{
+					Log.Warning($"unlock appid is different {saveAppId} {appId}");
+					return;
+				}
+				this.UnLock(key);
+			}
 		}
 
-		public void UnLock(long key, string value)
+		public void UpdateAndUnLock(long key, int appId, string value)
 		{
-			this.lockSet.Remove(key);
+			int saveAppId = 0;
+			this.lockDict.TryGetValue(key, out saveAppId);
+			if (saveAppId != appId)
+			{
+				Log.Warning($"unlock appid is different {saveAppId} {appId}" );
+				return;
+			}
+			this.Add(key, value);
+			this.UnLock(key);
+		}
 
-			this.locations[key] = value;
+		private void UnLock(long key)
+		{
+			this.lockDict.Remove(key);
 
 			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
 			{
@@ -136,7 +168,7 @@ namespace Model
 					this.taskQueues.Remove(key);
 					return;
 				}
-				if (this.lockSet.Contains(key))
+				if (this.lockDict.ContainsKey(key))
 				{
 					return;
 				}
@@ -146,22 +178,22 @@ namespace Model
 			}
 		}
 
-		public Task<bool> LockAsync(long key)
+		public Task<bool> LockAsync(long key, int time)
 		{
-			if (!this.lockSet.Contains(key))
+			if (!this.lockDict.ContainsKey(key))
 			{
-				this.Lock(key);
+				this.Lock(key, time);
 				return Task.FromResult(true);
 			}
 
-			LocationLockTask task = new LocationLockTask(key);
+			LocationLockTask task = new LocationLockTask(key, time);
 			this.AddTask(key, task);
 			return task.Task;
 		}
 
 		public Task<string> GetAsync(long key)
 		{
-			if (!this.lockSet.Contains(key))
+			if (!this.lockDict.ContainsKey(key))
 			{
 				this.locations.TryGetValue(key, out string location);
 				return Task.FromResult(location);

@@ -15,15 +15,31 @@ namespace Model
 	{
 		public string LocationAddress;
 
+		public int AppId;
+
 		public void Awake()
 		{
-			this.LocationAddress = Game.Scene.GetComponent<StartConfigComponent>().LocationConfig.GetComponent<InnerConfig>().Address;
+			StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().LocationConfig;
+			this.AppId = startConfig.AppId;
+			this.LocationAddress = startConfig.GetComponent<InnerConfig>().Address;
 		}
 
 		public async Task Add(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
 			await session.Call<ObjectAddResponse>(new ObjectAddRequest() { Key = key });
+		}
+
+		public async Task Lock(long key, int time = 1000)
+		{
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
+			await session.Call<ObjectLockResponse>(new ObjectLockRequest() { Key = key, AppId = this.AppId, Time = time });
+		}
+
+		public async Task UnLock(long key, string value)
+		{
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
+			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, AppId = this.AppId, Value = value});
 		}
 
 		public async Task Remove(long key)

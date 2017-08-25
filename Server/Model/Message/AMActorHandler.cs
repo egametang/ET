@@ -1,26 +1,27 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Model
 {
 	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AActorMessage
 	{
-		protected abstract void Run(E entity, Message message);
+		protected abstract Task<bool> Run(E entity, Message message);
 
-		public void Handle(Session session, Entity entity, object msg)
+		public async Task<bool> Handle(Session session, Entity entity, object msg)
 		{
 			Message message = msg as Message;
 			if (message == null)
 			{
 				Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof (Message).Name}");
-				return;
+				return false;
 			}
 			E e = entity as E;
 			if (e == null)
 			{
 				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-				return;
+				return false;
 			}
-			this.Run(e, message);
+			return await this.Run(e, message);
 		}
 
 		public Type GetMessageType()
@@ -39,9 +40,9 @@ namespace Model
 			reply(response);
 		}
 
-		protected abstract void Run(E entity, Request message, Action<Response> reply);
+		protected abstract Task<bool> Run(E entity, Request message, Action<Response> reply);
 
-		public void Handle(Session session, Entity entity,  object message)
+		public async Task<bool> Handle(Session session, Entity entity,  object message)
 		{
 			try
 			{
@@ -49,15 +50,15 @@ namespace Model
 				if (request == null)
 				{
 					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
-					return;
+					return false;
 				}
 				E e = entity as E;
 				if (e == null)
 				{
 					Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-					return;
+					return false;
 				}
-				this.Run(e, request, response =>
+				return await this.Run(e, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
 					if (session.Id == 0)
