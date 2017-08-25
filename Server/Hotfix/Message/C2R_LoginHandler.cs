@@ -25,7 +25,7 @@ namespace Hotfix
 				Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);
 
 				// 向gate请求一个key,客户端可以拿着这个key连接gate
-				G2R_GetLoginKey g2RGetLoginKey = await gateSession.Call<R2G_GetLoginKey, G2R_GetLoginKey>(new R2G_GetLoginKey());
+				G2R_GetLoginKey g2RGetLoginKey = await gateSession.Call<G2R_GetLoginKey>(new R2G_GetLoginKey());
 
 				string outerAddress = $"{config.GetComponent<OuterConfig>().Host}:{config.GetComponent<OuterConfig>().Port}";
 

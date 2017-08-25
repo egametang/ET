@@ -11,7 +11,7 @@ namespace Hotfix
 			ObjectUnLockResponse response = new ObjectUnLockResponse();
 			try
 			{
-				Game.Scene.GetComponent<LocationComponent>().UnLock(message.Key);
+				Game.Scene.GetComponent<LocationComponent>().UnLock(message.Key, message.Value);
 				reply(response);
 			}
 			catch (Exception e)

@@ -21,7 +21,7 @@ namespace Hotfix
 					}
 					InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 					Session serverSession = netInnerComponent.Get(innerConfig.Address);
-					await serverSession.Call<M2A_Reload, A2M_Reload>(new M2A_Reload());
+					await serverSession.Call<A2M_Reload>(new M2A_Reload());
 				}
 				reply(response);
 			}

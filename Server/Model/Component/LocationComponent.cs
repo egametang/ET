@@ -118,9 +118,11 @@ namespace Model
 			this.lockSet.Add(key);
 		}
 
-		public void UnLock(long key)
+		public void UnLock(long key, string value)
 		{
 			this.lockSet.Remove(key);
+
+			this.locations[key] = value;
 
 			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
 			{

@@ -1,68 +1,222 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Model
 {
+	public abstract class ActorTask
+	{
+		public abstract Task<AResponse> Run();
+
+		public abstract void RunFail(int error);
+	}
+
+	/// <summary>
+	/// 普通消息，不需要response
+	/// </summary>
+	public class ActorMessageTask: ActorTask
+	{
+		private readonly ActorProxy proxy;
+		private readonly ARequest message;
+
+		public ActorMessageTask(ActorProxy proxy, ARequest message)
+		{
+			this.proxy = proxy;
+			this.message = message;
+		}
+
+		public override async Task<AResponse> Run()
+		{
+			AResponse response = await this.proxy.RealCall<ActorMessageResponse>(this.message, this.proxy.CancellationTokenSource.Token);
+			return response;
+		}
+
+		public override void RunFail(int error)
+		{
+		}
+	}
+
+	/// <summary>
+	/// Rpc消息，需要等待返回
+	/// </summary>
+	/// <typeparam name="Response"></typeparam>
+	public class ActorRpcTask<Response> : ActorTask where Response: AActorResponse
+	{
+		private readonly ActorProxy proxy;
+		private readonly AActorRequest message;
+
+		public readonly TaskCompletionSource<Response> Tcs = new TaskCompletionSource<Response>();
+
+		public ActorRpcTask(ActorProxy proxy, AActorRequest message)
+		{
+			this.proxy = proxy;
+			this.message = message;
+		}
+
+		public override async Task<AResponse> Run()
+		{
+			Response response = await this.proxy.RealCall<Response>(this.message, this.proxy.CancellationTokenSource.Token);
+			if (response.Error != ErrorCode.ERR_NotFoundActor)
+			{
+				this.Tcs.SetResult(response);
+			}
+			return response;
+		}
+
+		public override void RunFail(int error)
+		{
+			this.Tcs.SetException(new RpcException(error, ""));
+		}
+	}
+
 	public sealed class ActorProxy : Entity
 	{
+		// actor的地址
 		public string Address;
+
+		// 已发送等待回应的消息
+		public Queue<ActorTask> RunningTasks;
+
+		// 还没发送的消息
+		public Queue<ActorTask> WaitingTasks;
+
+		// 发送窗口大小
+		public int WindowSize = 1;
+
+		// 最大窗口
+		public const int MaxWindowSize = 100;
+
+		private TaskCompletionSource<ActorTask> tcs;
+
+		public CancellationTokenSource CancellationTokenSource;
+
+		private int failTimes;
 		
 		public ActorProxy(long id): base(id)
 		{
+			this.UpdateAsync();
 		}
 
-		public void Send<Message>(Message message) where Message : AActorMessage
+		private void Add(ActorTask task)
 		{
-			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
-			session.Send(message);
+			this.WaitingTasks.Enqueue(task);
+			this.AllowGet();
 		}
 
-		public async Task<Response> Call<Request, Response>(Request request) where Request : AActorRequest where Response: AActorResponse
+		private void Remove()
+		{
+			this.RunningTasks.Dequeue();
+			this.AllowGet();
+		}
+
+		private void AllowGet()
+		{
+			if (this.tcs == null || this.WaitingTasks.Count <= 0 || this.RunningTasks.Count >= this.WindowSize)
+			{
+				return;
+			}
+
+			var t = this.tcs;
+			this.tcs = null;
+			ActorTask task = this.WaitingTasks.Dequeue();
+			this.RunningTasks.Enqueue(task);
+			t.SetResult(task);
+		}
+
+		private Task<ActorTask> GetAsync()
+		{
+			if (this.WaitingTasks.Count > 0)
+			{
+				ActorTask task = this.WaitingTasks.Dequeue();
+				this.RunningTasks.Enqueue(task);
+				return Task.FromResult(task);
+			}
+
+			this.tcs = new TaskCompletionSource<ActorTask>();
+			return this.tcs.Task;
+		}
+
+		private async void UpdateAsync()
+		{
+			while (true)
+			{
+				ActorTask actorTask = await this.GetAsync();
+				this.RunTask(actorTask);
+			}
+		}
+
+		private async void RunTask(ActorTask task)
+		{
+			AResponse response = await task.Run();
+
+			// 如果没找到Actor,发送窗口减少为1,重试
+			if (response.Error == ErrorCode.ERR_NotFoundActor)
+			{
+				this.CancellationTokenSource.Cancel();
+				this.WindowSize = 1;
+				++this.failTimes;
+
+				while (this.WaitingTasks.Count > 0)
+				{
+					ActorTask actorTask = this.WaitingTasks.Dequeue();
+					this.RunningTasks.Enqueue(actorTask);
+				}
+				ObjectHelper.Swap(ref this.RunningTasks, ref this.WaitingTasks);
+
+				// 失败3次则清空actor发送队列，返回失败
+				if (this.failTimes > 3)
+				{
+					while (this.WaitingTasks.Count > 0)
+					{
+						ActorTask actorTask = this.WaitingTasks.Dequeue();
+						actorTask.RunFail(response.Error);
+					}
+					return;
+				}
+
+				// 等待一会再发送
+				await this.Parent.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
+				this.Address = await this.Parent.GetComponent<LocationProxyComponent>().Get(this.Id);
+				this.CancellationTokenSource = new CancellationTokenSource();
+				this.AllowGet();
+				return;
+			}
+
+			// 发送成功
+			this.failTimes = 0;
+			if (this.WindowSize < MaxWindowSize)
+			{
+				++this.WindowSize;
+			}
+			this.Remove();
+		}
+
+		public void Send(AActorMessage message)
+		{
+			ActorMessageTask task = new ActorMessageTask(this, message);
+			this.Add(task);
+		}
+
+		public Task<Response> Call<Response>(AActorRequest request)where Response : AActorResponse
+		{
+			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
+			this.Add(task);
+			return task.Tcs.Task;
+		}
+
+		public async Task<Response> RealCall<Response>(ARequest request, CancellationToken cancellationToken) where Response: AResponse
 		{
 			try
 			{
-				Response response = null;
-				if (this.Address == "")
-				{
-					this.Address = await this.Parent.GetComponent<LocationProxyComponent>().Get(this.Id);
-				}
-				response = await OnceCall<Request, Response>(0, request);
+				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
+				Response response = await session.Call<Response>(request, cancellationToken);
 				return response;
 			}
 			catch (RpcException e)
 			{
-				Console.WriteLine(e);
+				Log.Error(e.ToString());
 				throw;
 			}
-		}
-
-		public async Task<Response> OnceCall<Request, Response>(int retryTime, Request request) where Request : AActorRequest where Response : AActorResponse
-		{
-			Response response = null;
-			if (retryTime > 0)
-			{
-				await this.Parent.GetComponent<TimerComponent>().WaitAsync(retryTime * 500);
-				this.Address = await this.Parent.GetComponent<LocationProxyComponent>().Get(this.Id);
-			}
-			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
-			response = await session.Call<Request, Response>(request);
-
-			if (response.Error == ErrorCode.ERR_Success)
-			{
-				return response;
-			}
-
-			if (retryTime >= 3)
-			{
-				throw new RpcException(response.Error, response.Message);
-			}
-
-			if (response.Error == ErrorCode.ERR_NotFoundActor)
-			{
-				response = await OnceCall<Request, Response>(++retryTime, request);
-			}
-
-			throw new RpcException(response.Error, response.Message);
 		}
 
 		public override void Dispose()

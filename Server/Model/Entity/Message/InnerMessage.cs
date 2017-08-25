@@ -60,7 +60,7 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.ObjectLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectLockResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }	}
+	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }		public string Value { get; set; }	}
 
 	[Message(Opcode.ObjectUnLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectUnLockResponse : AResponse	{	}
 

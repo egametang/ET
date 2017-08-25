@@ -21,7 +21,7 @@ namespace Model
 				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(aActorRequest.Id);
 				aActorRequest.Id = session.GetComponent<SessionGamerComponent>().Gamer.Id;
 				uint rpcId = aActorRequest.RpcId;
-				AActorResponse aActorResponse = await actorProxy.Call<AActorRequest, AActorResponse>(aActorRequest);
+				AActorResponse aActorResponse = await actorProxy.Call<AActorResponse>(aActorRequest);
 				aActorResponse.RpcId = rpcId;
 				session.Reply(aActorResponse);
 				return;

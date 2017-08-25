@@ -83,7 +83,7 @@ namespace Model
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.address);
 				string serverAddress = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.ServerIP;
 				G2G_LockRequest request = new G2G_LockRequest { Id = this.Owner.Id, Address = serverAddress };
-				await session.Call<G2G_LockRequest, G2G_LockResponse>(request);
+				await session.Call<G2G_LockResponse>(request);
 
 				this.status = LockStatus.Locked;
 
@@ -110,7 +110,7 @@ namespace Model
 			this.status = LockStatus.LockedNot;
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.address);
 			G2G_LockReleaseRequest request = new G2G_LockReleaseRequest();
-			await session.Call<G2G_LockReleaseRequest, G2G_LockReleaseResponse>(request);
+			await session.Call<G2G_LockReleaseResponse>(request);
 		}
 	}
 }

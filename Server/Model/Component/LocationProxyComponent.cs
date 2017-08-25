@@ -23,19 +23,19 @@ namespace Model
 		public async Task Add(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectAddRequest, ObjectAddResponse>(new ObjectAddRequest() { Key = key });
+			await session.Call<ObjectAddResponse>(new ObjectAddRequest() { Key = key });
 		}
 
 		public async Task Remove(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectRemoveRequest, ObjectRemoveResponse>(new ObjectRemoveRequest() { Key = key });
+			await session.Call<ObjectRemoveResponse>(new ObjectRemoveRequest() { Key = key });
 		}
 
 		public async Task<string> Get(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			ObjectGetResponse response = await session.Call<ObjectGetRequest, ObjectGetResponse>(new ObjectGetRequest() { Key = key });
+			ObjectGetResponse response = await session.Call<ObjectGetResponse>(new ObjectGetRequest() { Key = key });
 			return response.Location;
 		}
 

@@ -7,9 +7,13 @@ namespace Model
 		long Id { get; set; }
 	}
 
-	public abstract class AActorMessage: AMessage, IActorMessage
+	public abstract class AActorMessage: ARequest, IActorMessage
 	{
 		public long Id { get; set; }
+	}
+
+	public abstract class ActorMessageResponse : AResponse
+	{
 	}
 
 	public abstract class AActorRequest : ARequest, IActorMessage
