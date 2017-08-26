@@ -21,11 +21,13 @@ namespace Model
 		
 		public StartConfig StartConfig { get; private set; }
 
-		public StartConfig DBStartConfig { get; private set; }
+		public StartConfig DBConfig { get; private set; }
 
 		public StartConfig RealmConfig { get; private set; }
 
 		public StartConfig LocationConfig { get; private set; }
+
+		public StartConfig MapConfig { get; private set; }
 
 		public void Awake(string path, int appId)
 		{
@@ -51,6 +53,11 @@ namespace Model
 					if (startConfig.AppType.Is(AppType.Location))
 					{
 						LocationConfig = startConfig;
+					}
+
+					if (startConfig.AppType.Is(AppType.Map))
+					{
+						MapConfig = startConfig;
 					}
 				}
 				catch (Exception)

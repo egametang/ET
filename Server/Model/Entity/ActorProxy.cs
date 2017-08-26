@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -69,6 +70,21 @@ namespace Model
 		}
 	}
 
+
+	[ObjectEvent]
+	public class ActorProxyEvent : ObjectEvent<ActorProxy>, IAwake, IStart
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Start()
+		{
+			this.Get().Start();
+		}
+	}
+
 	public sealed class ActorProxy : Entity
 	{
 		// actor的地址
@@ -92,7 +108,15 @@ namespace Model
 
 		private int failTimes;
 		
-		public ActorProxy(long id): base(id)
+		public void Awake()
+		{
+			this.RunningTasks = new Queue<ActorTask>();
+			this.WaitingTasks = new Queue<ActorTask>();
+			this.WindowSize = 1;
+			this.CancellationTokenSource = new CancellationTokenSource();
+		}
+		
+		public void Start()
 		{
 			this.UpdateAsync();
 		}
@@ -138,6 +162,11 @@ namespace Model
 
 		private async void UpdateAsync()
 		{
+			if (this.Address == null)
+			{
+				int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
+				this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
+			}
 			while (true)
 			{
 				ActorTask actorTask = await this.GetAsync();
@@ -147,48 +176,56 @@ namespace Model
 
 		private async void RunTask(ActorTask task)
 		{
-			AResponse response = await task.Run();
-
-			// 如果没找到Actor,发送窗口减少为1,重试
-			if (response.Error == ErrorCode.ERR_NotFoundActor)
+			try
 			{
-				this.CancellationTokenSource.Cancel();
-				this.WindowSize = 1;
-				++this.failTimes;
+				AResponse response = await task.Run();
 
-				while (this.WaitingTasks.Count > 0)
+				// 如果没找到Actor,发送窗口减少为1,重试
+				if (response.Error == ErrorCode.ERR_NotFoundActor)
 				{
-					ActorTask actorTask = this.WaitingTasks.Dequeue();
-					this.RunningTasks.Enqueue(actorTask);
-				}
-				ObjectHelper.Swap(ref this.RunningTasks, ref this.WaitingTasks);
+					this.CancellationTokenSource.Cancel();
+					this.WindowSize = 1;
+					++this.failTimes;
 
-				// 失败3次则清空actor发送队列，返回失败
-				if (this.failTimes > 3)
-				{
 					while (this.WaitingTasks.Count > 0)
 					{
 						ActorTask actorTask = this.WaitingTasks.Dequeue();
-						actorTask.RunFail(response.Error);
+						this.RunningTasks.Enqueue(actorTask);
 					}
+					ObjectHelper.Swap(ref this.RunningTasks, ref this.WaitingTasks);
+
+					// 失败3次则清空actor发送队列，返回失败
+					if (this.failTimes > 3)
+					{
+						while (this.WaitingTasks.Count > 0)
+						{
+							ActorTask actorTask = this.WaitingTasks.Dequeue();
+							actorTask.RunFail(response.Error);
+						}
+						return;
+					}
+
+					// 等待一会再发送
+					await this.Parent.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
+					int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
+					this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
+					this.CancellationTokenSource = new CancellationTokenSource();
+					this.AllowGet();
 					return;
 				}
 
-				// 等待一会再发送
-				await this.Parent.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
-				this.Address = await this.Parent.GetComponent<LocationProxyComponent>().Get(this.Id);
-				this.CancellationTokenSource = new CancellationTokenSource();
-				this.AllowGet();
-				return;
-			}
-
-			// 发送成功
-			this.failTimes = 0;
-			if (this.WindowSize < MaxWindowSize)
+				// 发送成功
+				this.failTimes = 0;
+				if (this.WindowSize < MaxWindowSize)
+				{
+					++this.WindowSize;
+				}
+				this.Remove();
+				}
+			catch (Exception e)
 			{
-				++this.WindowSize;
+				Log.Error(e.ToString());
 			}
-			this.Remove();
 		}
 
 		public void Send(AActorMessage message)
@@ -214,7 +251,7 @@ namespace Model
 			}
 			catch (RpcException e)
 			{
-				Log.Error(e.ToString());
+				Log.Error($"{this.Address} {e}");
 				throw;
 			}
 		}

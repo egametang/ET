@@ -34,28 +34,32 @@ namespace Model
 
 		public static T CreateWithId<T>(long id) where T : Disposer
 		{
-			T disposer = (T)Activator.CreateInstance(typeof(T), id);
+			T disposer = (T)Activator.CreateInstance(typeof(T));
+			disposer.Id = id;
 			ObjectEvents.Instance.Awake(disposer);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A>(long id, A a) where T : Disposer
 		{
-			T disposer = (T)Activator.CreateInstance(typeof(T), id);
+			T disposer = (T)Activator.CreateInstance(typeof(T));
+			disposer.Id = id;
 			ObjectEvents.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : Disposer
 		{
-			T disposer = (T)Activator.CreateInstance(typeof(T), id);
+			T disposer = (T)Activator.CreateInstance(typeof(T));
+			disposer.Id = id;
 			ObjectEvents.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : Disposer
 		{
-			T disposer = (T)Activator.CreateInstance(typeof(T), id);
+			T disposer = (T)Activator.CreateInstance(typeof(T));
+			disposer.Id = id;
 			ObjectEvents.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}

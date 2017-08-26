@@ -1,18 +1,8 @@
-using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;using MongoDB.Bson.Serialization.Attributes;
 
 
 // 服务器内部消息 Opcode从10000开始
-
-
-namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]	public class R2G_GetLoginKey : ARequest	{	}
-
-	[Message(Opcode.G2R_GetLoginKey)]	[BsonIgnoreExtraElements]	public class G2R_GetLoginKey : AResponse	{		public long Key;
-		public G2R_GetLoginKey()		{		}
-
-		public G2R_GetLoginKey(long key)		{			this.Key = key;		}	}
-
-	[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
+namespace Model{	[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
 
 	[Message(Opcode.A2M_Reload)]	[BsonIgnoreExtraElements]	public class A2M_Reload : AResponse	{	}
 
@@ -48,7 +38,7 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.DBQueryJsonResponse)]	[BsonIgnoreExtraElements]	public class DBQueryJsonResponse : AResponse	{		public List<Entity> Entitys;	}
 
-	[Message(Opcode.ObjectAddRequest)]	[BsonIgnoreExtraElements]	public class ObjectAddRequest : ARequest	{		public long Key { get; set; }	}
+	[Message(Opcode.ObjectAddRequest)]	[BsonIgnoreExtraElements]	public class ObjectAddRequest : ARequest	{		public long Key { get; set; }		public int AppId { get; set; }	}
 
 	[Message(Opcode.ObjectAddResponse)]	[BsonIgnoreExtraElements]	public class ObjectAddResponse : AResponse	{	}
 
@@ -56,14 +46,14 @@ namespace Model{	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]
 
 	[Message(Opcode.ObjectRemoveResponse)]	[BsonIgnoreExtraElements]	public class ObjectRemoveResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public long Key { get; set; }		public int AppId { get; set; }		public int Time { get; set; }	}
+	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public long Key { get; set; }		public int LockAppId { get; set; }		public int AppId { get; set; }		public int Time { get; set; }	}
 
 	[Message(Opcode.ObjectLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectLockResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }		public int AppId { get; set; }		public string Value { get; set; }	}
+	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }		public int LockAppId { get; set; }		public int AppId { get; set; }	}
 
 	[Message(Opcode.ObjectUnLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectUnLockResponse : AResponse	{	}
 
 	[Message(Opcode.ObjectGetRequest)]	[BsonIgnoreExtraElements]	public class ObjectGetRequest : ARequest	{		public long Key { get; set; }	}
 
-	[Message(Opcode.ObjectGetResponse)]	[BsonIgnoreExtraElements]	public class ObjectGetResponse : AResponse	{		public string Location { get; set; }	}}
+	[Message(Opcode.ObjectGetResponse)]	[BsonIgnoreExtraElements]	public class ObjectGetResponse : AResponse	{		public int AppId { get; set; }	}	[Message(Opcode.R2G_GetLoginKey)]	[BsonIgnoreExtraElements]	public class R2G_GetLoginKey : ARequest	{		public string Account;	}	[Message(Opcode.G2R_GetLoginKey)]	[BsonIgnoreExtraElements]	public class G2R_GetLoginKey : AResponse	{		public long Key;		public G2R_GetLoginKey()		{		}		public G2R_GetLoginKey(long key)		{			this.Key = key;		}	}	[Message(Opcode.G2M_CreateUnit)]	[BsonIgnoreExtraElements]	public class G2M_CreateUnit : ARequest	{		public long PlayerId;	}	[Message(Opcode.M2G_CreateUnit)]	[BsonIgnoreExtraElements]	public class M2G_CreateUnit : AResponse	{		public long UnitId;	}}

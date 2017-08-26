@@ -12,8 +12,8 @@ namespace Model
 			{
 				return actorProxy;
 			}
-			
-			actorProxy = new ActorProxy(id);
+
+			actorProxy = ObjectFactory.CreateWithId<ActorProxy>(id);
 			this.dictionary[id] = actorProxy;
 			return actorProxy;
 		}

@@ -11,7 +11,8 @@ namespace Hotfix
 			G2R_GetLoginKey response = new G2R_GetLoginKey();
 			try
 			{
-				long key = Game.Scene.GetComponent<GateSessionKeyComponent>().Get();
+				long key = RandomHelper.RandInt64();
+				Game.Scene.GetComponent<GateSessionKeyComponent>().Add(key, message.Account);
 				response.Key = key;
 				reply(response);
 			}

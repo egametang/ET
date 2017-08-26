@@ -27,19 +27,19 @@ namespace Model
 		public async Task Add(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectAddResponse>(new ObjectAddRequest() { Key = key });
+			await session.Call<ObjectAddResponse>(new ObjectAddRequest() { Key = key, AppId = this.AppId });
 		}
 
 		public async Task Lock(long key, int time = 1000)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectLockResponse>(new ObjectLockRequest() { Key = key, AppId = this.AppId, Time = time });
+			await session.Call<ObjectLockResponse>(new ObjectLockRequest() { Key = key, LockAppId = this.AppId, Time = time });
 		}
 
-		public async Task UnLock(long key, string value)
+		public async Task UnLock(long key, int value)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, AppId = this.AppId, Value = value});
+			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, LockAppId = this.AppId, AppId = value});
 		}
 
 		public async Task Remove(long key)
@@ -48,11 +48,11 @@ namespace Model
 			await session.Call<ObjectRemoveResponse>(new ObjectRemoveRequest() { Key = key });
 		}
 
-		public async Task<string> Get(long key)
+		public async Task<int> Get(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
 			ObjectGetResponse response = await session.Call<ObjectGetResponse>(new ObjectGetRequest() { Key = key });
-			return response.Location;
+			return response.AppId;
 		}
 
 		public override void Dispose()

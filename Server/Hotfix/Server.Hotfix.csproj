@@ -36,21 +36,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\RealmGateAddressComponentE.cs" />
+    <Compile Include="Handler\Actor_TestHandler.cs" />
+    <Compile Include="Handler\G2M_CreateUnitHandler.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
-    <Compile Include="Message\C2G_LoginGateHandler.cs" />
-    <Compile Include="Message\C2R_PingHandler.cs" />
-    <Compile Include="Message\G2G_LockReleaseRequestHandler.cs" />
-    <Compile Include="Message\ObjectGetRequestHandler.cs" />
-    <Compile Include="Message\ObjectUnLockRequestHandler.cs" />
-    <Compile Include="Message\ObjectLockRequestHandler.cs" />
-    <Compile Include="Message\ObjectRemoveRequestHandler.cs" />
-    <Compile Include="Message\ObjectAddRequestHandler.cs" />
-    <Compile Include="Message\M2A_ReloadHandler.cs" />
-    <Compile Include="Message\C2M_ReloadHandler.cs" />
-    <Compile Include="Message\G2G_LockRequestHandler.cs" />
-    <Compile Include="Message\R2G_GetLoginKeyHandler.cs" />
+    <Compile Include="Handler\C2G_LoginGateHandler.cs" />
+    <Compile Include="Handler\C2R_PingHandler.cs" />
+    <Compile Include="Handler\G2G_LockReleaseRequestHandler.cs" />
+    <Compile Include="Handler\ObjectGetRequestHandler.cs" />
+    <Compile Include="Handler\ObjectUnLockRequestHandler.cs" />
+    <Compile Include="Handler\ObjectLockRequestHandler.cs" />
+    <Compile Include="Handler\ObjectRemoveRequestHandler.cs" />
+    <Compile Include="Handler\ObjectAddRequestHandler.cs" />
+    <Compile Include="Handler\M2A_ReloadHandler.cs" />
+    <Compile Include="Handler\C2M_ReloadHandler.cs" />
+    <Compile Include="Handler\G2G_LockRequestHandler.cs" />
+    <Compile Include="Handler\R2G_GetLoginKeyHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Message\C2R_LoginHandler.cs" />
+    <Compile Include="Handler\C2R_LoginHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Base\Server.Base.csproj">

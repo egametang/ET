@@ -10,7 +10,8 @@ namespace Model
 			if (message is AActorMessage aActorMessage)
 			{
 				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(aActorMessage.Id);
-				aActorMessage.Id = session.GetComponent<SessionGamerComponent>().Gamer.Id;
+				long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
+				aActorMessage.Id = unitId;
 				actorProxy.Send(aActorMessage);
 				return;
 			}
@@ -19,7 +20,7 @@ namespace Model
 			if (message is AActorRequest aActorRequest)
 			{
 				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(aActorRequest.Id);
-				aActorRequest.Id = session.GetComponent<SessionGamerComponent>().Gamer.Id;
+				aActorRequest.Id = session.GetComponent<SessionPlayerComponent>().Player.Id;
 				uint rpcId = aActorRequest.RpcId;
 				AActorResponse aActorResponse = await actorProxy.Call<AActorResponse>(aActorRequest);
 				aActorResponse.RpcId = rpcId;
@@ -27,7 +28,7 @@ namespace Model
 				return;
 			}
 
-			if (message is AMessage || message is ARequest)
+			if (message is AMessage)
 			{
 				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, message);
 				return;

@@ -6,7 +6,6 @@ namespace Model
 	public class C2R_Login: ARequest
 	{
 		public string Account;
-		
 		public string Password;
 	}
 
@@ -32,7 +31,20 @@ namespace Model
 	[Message(Opcode.G2C_LoginGate)]
 	public class G2C_LoginGate: AResponse
 	{
+		public long PlayerId;
+		public long UnitId;
 	}
+
+
+	[Message(Opcode.Actor_Test)]
+	public class Actor_Test : AActorMessage
+	{
+		public string Info;
+	}
+
+
+
+
 
 	[Message(Opcode.C2M_Reload)]
 	public class C2M_Reload: ARequest

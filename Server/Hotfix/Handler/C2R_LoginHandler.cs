@@ -8,7 +8,6 @@ namespace Hotfix
 	{
 		protected override async void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
 		{
-			Log.Debug("11111111111111111111");
 			R2C_Login response = new R2C_Login();
 			try
 			{
@@ -26,7 +25,7 @@ namespace Hotfix
 				Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);
 
 				// 向gate请求一个key,客户端可以拿着这个key连接gate
-				G2R_GetLoginKey g2RGetLoginKey = await gateSession.Call<G2R_GetLoginKey>(new R2G_GetLoginKey());
+				G2R_GetLoginKey g2RGetLoginKey = await gateSession.Call<G2R_GetLoginKey>(new R2G_GetLoginKey() {Account = message.Account});
 
 				string outerAddress = $"{config.GetComponent<OuterConfig>().Host}:{config.GetComponent<OuterConfig>().Port}";
 

@@ -6,8 +6,8 @@ namespace Hotfix
 	{
 		public static void Broadcast<Message>(Message message) where Message: AMessage
 		{
-			Gamer[] gamers = Game.Scene.GetComponent<GamerComponent>().GetAll();
-			foreach (Gamer gamer in gamers)
+			Player[] players = Game.Scene.GetComponent<PlayerComponent>().GetAll();
+			foreach (Player gamer in players)
 			{
 				gamer.GetComponent<SessionInfoComponent>().Session.Send(message);
 			}

@@ -1,0 +1,26 @@
+﻿using System;
+using Model;
+
+namespace Hotfix
+{
+	[MessageHandler(AppType.Map)]
+	public class G2M_CreateUnitHandler : AMRpcHandler<G2M_CreateUnit, M2G_CreateUnit>
+	{
+		protected override void Run(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)
+		{
+			M2G_CreateUnit response = new M2G_CreateUnit();
+			try
+			{
+				Unit unit = ObjectFactory.Create<Unit, UnitType>(UnitType.Hero);
+				unit.AddComponent<ActorComponent, IEntityActorHandler>(new CommonEntityActorHandler());
+				Game.Scene.GetComponent<UnitComponent>().Add(unit);
+				response.UnitId = unit.Id;
+				reply(response);
+			}
+			catch (Exception e)
+			{
+				ReplyError(response, e, reply);
+			}
+		}
+	}
+}

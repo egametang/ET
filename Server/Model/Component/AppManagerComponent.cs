@@ -6,11 +6,11 @@ using System.Linq;
 namespace Model
 {
 	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IAwake
+	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IStart
 	{
-		public void Awake()
+		public void Start()
 		{
-			this.Get().Awake();
+			this.Get().Start();
 		}
 	}
 
@@ -18,7 +18,7 @@ namespace Model
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		public void Awake()
+		public void Start()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();

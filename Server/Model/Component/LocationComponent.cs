@@ -58,15 +58,15 @@ namespace Model
 	{
 		private readonly long key;
 
-		private readonly TaskCompletionSource<string> tcs;
+		private readonly TaskCompletionSource<int> tcs;
 
 		public LocationQueryTask(long key)
 		{
 			this.key = key;
-			this.tcs = new TaskCompletionSource<string>();
+			this.tcs = new TaskCompletionSource<int>();
 		}
 
-		public Task<string> Task
+		public Task<int> Task
 		{
 			get
 			{
@@ -78,7 +78,7 @@ namespace Model
 		{
 			try
 			{
-				string location = Scene.GetComponent<LocationComponent>().Get(key);
+				int location = Scene.GetComponent<LocationComponent>().Get(key);
 				this.tcs.SetResult(location);
 			}
 			catch (Exception e)
@@ -90,28 +90,31 @@ namespace Model
 
 	public class LocationComponent : Component
 	{
-		private readonly Dictionary<long, string> locations = new Dictionary<long, string>();
+		private readonly Dictionary<long, int> locations = new Dictionary<long, int>();
 
 		private readonly Dictionary<long, int> lockDict = new Dictionary<long, int>();
 
 		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
 
-		public async void Add(long key, string address)
+		public void Add(long key, int appId)
 		{
-			this.locations[key] = address;
+			this.locations[key] = appId;
+
+			Log.Info($"location add key: {key} appid: {appId}");
 
 			// 更新db
-			await Game.Scene.GetComponent<DBProxyComponent>().Save(new Location(key, address));
+			//await Game.Scene.GetComponent<DBProxyComponent>().Save(new Location(key, address));
 		}
 
 		public void Remove(long key)
 		{
+			Log.Info($"location remove key: {key}");
 			this.locations.Remove(key);
 		}
 
-		public string Get(long key)
+		public int Get(long key)
 		{
-			this.locations.TryGetValue(key, out string location);
+			this.locations.TryGetValue(key, out int location);
 			return location;
 		}
 
@@ -139,7 +142,7 @@ namespace Model
 			}
 		}
 
-		public void UpdateAndUnLock(long key, int appId, string value)
+		public void UpdateAndUnLock(long key, int appId, int value)
 		{
 			int saveAppId = 0;
 			this.lockDict.TryGetValue(key, out saveAppId);
@@ -191,11 +194,12 @@ namespace Model
 			return task.Task;
 		}
 
-		public Task<string> GetAsync(long key)
+		public Task<int> GetAsync(long key)
 		{
 			if (!this.lockDict.ContainsKey(key))
 			{
-				this.locations.TryGetValue(key, out string location);
+				Log.Info($"location get key: {key}");
+				this.locations.TryGetValue(key, out int location);
 				return Task.FromResult(location);
 			}
 

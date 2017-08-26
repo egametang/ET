@@ -4,7 +4,7 @@
 	{
 	}
 
-	public abstract class ARequest
+	public abstract class ARequest: AMessage
 	{
 		public uint RpcId;
 	}

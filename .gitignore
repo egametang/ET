@@ -36,3 +36,4 @@ _ReSharper.CSharp/
 /.vs
 /Server/.vs/
 /Unity/.vs/
+/Tools/MongoDB

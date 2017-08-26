@@ -8,18 +8,19 @@ namespace Model
 	{
 		None = 0,
 		Manager = 1,
-		Realm = 2,
-		Gate = 4,
-		Http = 8,
-		DB = 16,
-		Location = 32,
+		Realm = 1 << 1,
+		Gate = 1 << 2,
+		Http = 1 << 3,
+		DB = 1 << 4,
+		Location = 1 << 5,
+		Map = 1 << 6,
 
-		Robot = 64,
-		Benchmark = 128,
-		Client = 256,
+		Robot = 1 << 29,
+		Benchmark = 1 << 30,
+		Client = 1 << 31,
 
 		// 7
-		AllServer = Manager | Realm | Gate | Http | DB | Location
+		AllServer = Manager | Realm | Gate | Http | DB | Location | Map
 	}
 
 	public static class AppTypeHelper

@@ -7,14 +7,26 @@ namespace Model
 		Hero,
 		Npc
 	}
-	
+
+	[ObjectEvent]
+	public class UnitEvent : ObjectEvent<Unit>, IAwake<UnitType>
+	{
+		public void Awake(UnitType unitType)
+		{
+			this.Get().Awake(unitType);
+		}
+	}
+
 	public sealed class Unit: Entity
 	{
-		public UnitType UnitType { get; }
-
-		public Gamer Gamer;
+		public UnitType UnitType { get; private set; }
 
 		public Vector3 Position;
+
+		public void Awake(UnitType unitType)
+		{
+			this.UnitType = unitType;
+		}
 
 		public override void Dispose()
 		{
@@ -24,12 +36,6 @@ namespace Model
 			}
 
 			base.Dispose();
-		}
-
-		public Unit(Gamer gamer, UnitType unitType)
-		{
-			this.Gamer = gamer;
-			this.UnitType = unitType;
 		}
 	}
 }

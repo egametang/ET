@@ -11,7 +11,7 @@ namespace Hotfix
 			ObjectAddResponse response = new ObjectAddResponse();
 			try
 			{
-				Game.Scene.GetComponent<LocationComponent>().Add(message.Key, session.RemoteAddress);
+				Game.Scene.GetComponent<LocationComponent>().Add(message.Key, message.AppId);
 				reply(response);
 			}
 			catch (Exception e)

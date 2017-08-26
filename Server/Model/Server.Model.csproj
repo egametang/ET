@@ -68,8 +68,8 @@
       <Link>Entity\Message\OuterMessage.cs</Link>
     </Compile>
     <Compile Include="Component\ActorProxyComponent.cs" />
-    <Compile Include="Component\GamerComponent.cs" />
-    <Compile Include="Entity\Gamer.cs" />
+    <Compile Include="Component\PlayerComponent.cs" />
+    <Compile Include="Entity\Player.cs" />
     <Compile Include="Entity\Location.cs" />
     <Compile Include="Helper\ObjectFactory.cs" />
     <Compile Include="Message\IEntityActorHandler.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Component\NetOuterComponent.cs" />
     <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
-    <Compile Include="Component\Session\SessionGamerComponent.cs" />
+    <Compile Include="Component\Session\SessionPlayerComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\LocationComponent.cs" />
     <Compile Include="Component\ActorComponent.cs" />

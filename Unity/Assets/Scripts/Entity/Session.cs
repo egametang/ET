@@ -123,7 +123,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) where Request : ARequest
+		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
 			where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
@@ -158,7 +158,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request) where Request : ARequest where Response : AResponse
+		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
 			this.SendMessage(request);
@@ -186,7 +186,7 @@ namespace Model
 			return tcs.Task;
 		}
 
-		public void Send<Message>(Message message) where Message : AMessage
+		public void Send(AMessage message)
 		{
 			if (this.Id == 0)
 			{

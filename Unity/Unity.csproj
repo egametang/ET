@@ -372,6 +372,7 @@
     <Compile Include="Assets\Scripts\Base\IL\ILRedirection.cs" />
     <Compile Include="Assets\Scripts\Base\Log.cs" />
     <Compile Include="Assets\Scripts\Base\LogType.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\AActorMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ClientDispatcher.cs" />

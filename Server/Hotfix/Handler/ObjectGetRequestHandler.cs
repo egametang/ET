@@ -11,12 +11,12 @@ namespace Hotfix
 			ObjectGetResponse response = new ObjectGetResponse();
 			try
 			{
-				string location = await Game.Scene.GetComponent<LocationComponent>().GetAsync(message.Key);
-				if (location == "")
+				int appId = await Game.Scene.GetComponent<LocationComponent>().GetAsync(message.Key);
+				if (appId == 0)
 				{
 					response.Error = ErrorCode.ERR_ActorLocationNotFound;
 				}
-				response.Location = location;
+				response.AppId = appId;
 				reply(response);
 			}
 			catch (Exception e)

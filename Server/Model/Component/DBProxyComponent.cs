@@ -13,7 +13,7 @@ namespace Model
 
 		public void Awake()
 		{
-			StartConfig dbStartConfig = Game.Scene.GetComponent<StartConfigComponent>().DBStartConfig;
+			StartConfig dbStartConfig = Game.Scene.GetComponent<StartConfigComponent>().DBConfig;
 			dbAddress = dbStartConfig.GetComponent<InnerConfig>().Address;
 		}
 

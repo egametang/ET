@@ -11,11 +11,21 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class ActorComponentEvent : ObjectEvent<ActorComponent>, IAwake<IEntityActorHandler>
+	public class ActorComponentEvent : ObjectEvent<ActorComponent>, IAwake, IAwake<IEntityActorHandler>, IStart
 	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
 		public void Awake(IEntityActorHandler iEntityActorHandler)
 		{
 			this.Get().Awake(iEntityActorHandler);
+		}
+
+		public void Start()
+		{
+			this.Get().Start();
 		}
 	}
 
@@ -33,20 +43,21 @@ namespace Model
 
 		private TaskCompletionSource<ActorMessageInfo> tcs;
 
-		public async void Awake(IEntityActorHandler iEntityActorHandler)
+		public void Awake()
 		{
-			try
-			{
-				this.entityActorHandler = iEntityActorHandler;
-				this.actorId = this.Owner.Id;
-				Game.Scene.GetComponent<ActorManagerComponent>().Add(this.Owner);
-				await Game.Scene.GetComponent<LocationProxyComponent>().Add(this.actorId);
-			}
-			catch (Exception)
-			{
-				Log.Error($"register actor fail: {this.actorId}");
-			}
+			this.entityActorHandler = new CommonEntityActorHandler();
+		}
 
+		public void Awake(IEntityActorHandler iEntityActorHandler)
+		{
+			this.entityActorHandler = iEntityActorHandler;
+		}
+		
+		public async void Start()
+		{
+			this.actorId = this.Owner.Id;
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(this.Owner);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Add(this.actorId);
 			this.HandleAsync();
 		}
 
@@ -78,8 +89,15 @@ namespace Model
 		{
 			while (true)
 			{
-				ActorMessageInfo info = await this.GetAsync();
-				await this.entityActorHandler.Handle(info.Session, this.Owner, info.Message);
+				try
+				{
+					ActorMessageInfo info = await this.GetAsync();
+					await this.entityActorHandler.Handle(info.Session, this.Owner, info.Message);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
 			}
 		}
 

@@ -8,6 +8,8 @@ namespace Model
 	[BsonKnownTypes(typeof(ClientConfig))]
 	[BsonKnownTypes(typeof(InnerConfig))]
 	[BsonKnownTypes(typeof(OuterConfig))]
+	[BsonKnownTypes(typeof(HttpConfig))]
+	[BsonKnownTypes(typeof(DBConfig))]
 	[BsonKnownTypes(typeof(RunServerConfig))]
 	public abstract class AConfigComponent: Component
 	{

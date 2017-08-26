@@ -43,7 +43,6 @@ namespace App
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
 					case AppType.Realm:
-						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
@@ -53,6 +52,7 @@ namespace App
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
+						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
@@ -65,11 +65,21 @@ namespace App
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<LocationComponent>();
 						break;
-					case AppType.AllServer:
-						Game.Scene.AddComponent<GamerComponent>();
-						Game.Scene.AddComponent<UnitComponent>();
+					case AppType.Map:
+						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<LocationComponent>();
-						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<UnitComponent>();
+						Game.Scene.AddComponent<LocationProxyComponent>();
+						Game.Scene.AddComponent<ActorComponent>();
+						break;
+					case AppType.AllServer:
+						Game.Scene.AddComponent<ActorProxyComponent>();
+						Game.Scene.AddComponent<PlayerComponent>();
+						Game.Scene.AddComponent<UnitComponent>();
+						Game.Scene.AddComponent<DBComponent>();
+						Game.Scene.AddComponent<DBProxyComponent>();
+						Game.Scene.AddComponent<LocationComponent>();
+						Game.Scene.AddComponent<ActorMessageDispatherComponent, AppType>(AppType.AllServer);
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);

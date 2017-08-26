@@ -34,5 +34,8 @@
 
 		public const ushort R2G_GetLoginKey = 101;
 		public const ushort G2R_GetLoginKey = 102;
+
+		public const ushort G2M_CreateUnit = 103;
+		public const ushort M2G_CreateUnit = 104;
 	}
 }
