@@ -16,6 +16,10 @@ namespace Model
 				{
 					Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.MessageDeserializeFinish, messageInfo);
 				}
+				else
+				{
+					Game.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
+				}
 				return;
 			}
 

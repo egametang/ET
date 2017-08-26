@@ -230,12 +230,14 @@ namespace Model
 
 		public void Send(AActorMessage message)
 		{
+			message.Id = this.Id;
 			ActorMessageTask task = new ActorMessageTask(this, message);
 			this.Add(task);
 		}
 
 		public Task<Response> Call<Response>(AActorRequest request)where Response : AActorResponse
 		{
+			request.Id = this.Id;
 			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
 			this.Add(task);
 			return task.Tcs.Task;

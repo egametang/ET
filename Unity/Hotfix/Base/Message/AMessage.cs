@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Model
+﻿namespace Hotfix
 {
 	public abstract class AMessage
 	{
@@ -8,7 +6,6 @@ namespace Model
 
 	public abstract class ARequest: AMessage
 	{
-		[BsonIgnoreIfDefault]
 		public uint RpcId;
 	}
 
@@ -23,7 +20,7 @@ namespace Model
 		public string Message = "";
 	}
 
-	public abstract class AFrameMessage: AMessage
+	public abstract class AFrameMessage : AMessage
 	{
 		public long Id;
 	}

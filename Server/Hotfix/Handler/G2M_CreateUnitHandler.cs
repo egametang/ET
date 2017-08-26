@@ -13,6 +13,7 @@ namespace Hotfix
 			{
 				Unit unit = ObjectFactory.Create<Unit, UnitType>(UnitType.Hero);
 				unit.AddComponent<ActorComponent, IEntityActorHandler>(new CommonEntityActorHandler());
+				unit.AddComponent<UnitGateComponent, long>(message.GateSessionId);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
 				response.UnitId = unit.Id;
 				reply(response);

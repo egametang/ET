@@ -32,7 +32,7 @@ namespace Hotfix
 				Log.Info("登陆gate成功!");
 
 				// 发送一个actor消息
-				gateSession.Send(new Actor_Test() { Info = "send to actor" });
+				gateSession.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
 			}
 			catch (Exception e)
 			{

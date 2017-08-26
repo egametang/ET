@@ -4,11 +4,13 @@ namespace Model
 {
 	public interface IActorMessage
 	{
+		[BsonIgnoreIfDefault]
 		long Id { get; set; }
 	}
 
 	public abstract class AActorMessage: ARequest, IActorMessage
 	{
+		[BsonIgnoreIfDefault]
 		public long Id { get; set; }
 	}
 

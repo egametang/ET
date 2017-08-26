@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Component\ActorProxyComponent.cs" />
     <Compile Include="Component\PlayerComponent.cs" />
+    <Compile Include="Component\Unit\UnitGateComponent.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Entity\Location.cs" />
     <Compile Include="Helper\ObjectFactory.cs" />

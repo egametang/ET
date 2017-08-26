@@ -11,6 +11,6 @@
 		public const ushort G2C_GetPlayerInfo = 1007;
 		public const ushort C2M_Reload = 1008;
 
-		public const ushort Actor_Test = 1009;
+		public const ushort Actor_Test = 2001;
 	}
 }

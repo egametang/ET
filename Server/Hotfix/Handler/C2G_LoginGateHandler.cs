@@ -22,11 +22,12 @@ namespace Hotfix
 				Player player = ObjectFactory.Create<Player, string>(account);
 				Game.Scene.GetComponent<PlayerComponent>().Add(player);
 				session.AddComponent<SessionPlayerComponent>().Player = player;
+				session.AddComponent<ActorComponent, IEntityActorHandler>(new GateSessionEntityActorHandler());
 
 				// 在map服务器上创建战斗Unit
 				string mapAddress = Game.Scene.GetComponent<StartConfigComponent>().MapConfig.GetComponent<InnerConfig>().Address;
 				Session mapSession = Game.Scene.GetComponent<NetInnerComponent>().Get(mapAddress);
-				M2G_CreateUnit createUnit = await mapSession.Call<M2G_CreateUnit>(new G2M_CreateUnit() { PlayerId = player.Id });
+				M2G_CreateUnit createUnit = await mapSession.Call<M2G_CreateUnit>(new G2M_CreateUnit() { PlayerId = player.Id, GateSessionId = session.Id });
 				player.UnitId = createUnit.UnitId;
 
 				response.PlayerId = player.Id;

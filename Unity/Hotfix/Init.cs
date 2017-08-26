@@ -11,6 +11,7 @@ namespace Hotfix
 			{
 				Hotfix.Scene.ModelScene = Game.Scene;
 				Hotfix.Scene.ModelScene.AddComponent<OpcodeTypeComponent>();
+				Hotfix.Scene.ModelScene.AddComponent<Model.MessageDispatherComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  

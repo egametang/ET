@@ -1,7 +1,6 @@
 ﻿using System;
-using Model;
 
-namespace Hotfix
+namespace Model
 {
 	public abstract class AMHandler<Message> : IMHandler where Message : AMessage
 	{
