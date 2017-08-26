@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,5 +28,24 @@ namespace MongoDB.Bson.Serialization
         /// <param name="type">The type.</param>
         /// <returns>A serializer.</returns>
         IBsonSerializer GetSerializer(Type type);
+    }
+
+    /// <summary>
+    /// An interface implemented by serialization providers that are aware of registries.
+    /// </summary>
+    /// <remarks>
+    /// This interface was added to preserve backward compatability (changing IBsonSerializationProvider would have been a backward breaking change).
+    /// </remarks>
+    public interface IRegistryAwareBsonSerializationProvider : IBsonSerializationProvider
+    {
+        /// <summary>
+        /// Gets a serializer for a type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="serializerRegistry">The serializer registry.</param>
+        /// <returns>
+        /// A serializer.
+        /// </returns>
+        IBsonSerializer GetSerializer(Type type, IBsonSerializerRegistry serializerRegistry);
     }
 }

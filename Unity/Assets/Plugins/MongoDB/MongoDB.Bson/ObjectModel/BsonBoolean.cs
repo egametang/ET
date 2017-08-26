@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,14 +14,16 @@
 */
 
 using System;
-using System.Xml;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON boolean value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonBoolean : BsonValue, IComparable<BsonBoolean>, IEquatable<BsonBoolean>
     {
         // private static fields
@@ -29,7 +31,7 @@ namespace MongoDB.Bson
         private static BsonBoolean __trueInstance = new BsonBoolean(true);
 
         // private fields
-        private bool _value;
+        private readonly bool _value;
 
         // constructors
         /// <summary>
@@ -37,7 +39,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">The value.</param>
         public BsonBoolean(bool value)
-            : base(BsonType.Boolean)
         {
             _value = value;
         }
@@ -60,6 +61,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.Boolean; }
+        }
+
         /// <summary>
         /// Gets the BsonBoolean as a bool.
         /// </summary>
@@ -115,29 +124,16 @@ namespace MongoDB.Bson
         /// <summary>
         /// Returns one of the two possible BsonBoolean values.
         /// </summary>
-        /// <param name="value">The bool value.</param>
-        /// <returns>The corresponding BsonBoolean value.</returns>
-        [Obsolete("Use implicit conversion to BsonBoolean or new BsonBoolean(bool value) instead.")]
-        public static BsonBoolean Create(bool value)
-        {
-            return value ? __trueInstance : __falseInstance;
-        }
-
-        /// <summary>
-        /// Returns one of the two possible BsonBoolean values.
-        /// </summary>
         /// <param name="value">An object to be mapped to a BsonBoolean.</param>
         /// <returns>A BsonBoolean or null.</returns>
         public new static BsonBoolean Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonBoolean)BsonTypeMapper.MapToBsonValue(value, BsonType.Boolean);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonBoolean)BsonTypeMapper.MapToBsonValue(value, BsonType.Boolean);
         }
 
         // public methods
@@ -217,7 +213,100 @@ namespace MongoDB.Bson
         /// <returns>A string representation of the value.</returns>
         public override string ToString()
         {
-            return XmlConvert.ToString(_value);
+            return JsonConvert.ToString(_value);
         }
+
+        // protected methods
+        /// <inheritdoc/>
+        protected override TypeCode IConvertibleGetTypeCodeImplementation()
+        {
+            return TypeCode.Boolean;
+        }
+
+        /// <inheritdoc/>
+        protected override bool IConvertibleToBooleanImplementation(IFormatProvider provider)
+        {
+            return _value;
+        }
+
+        /// <inheritdoc/>
+        protected override byte IConvertibleToByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToByte(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override decimal IConvertibleToDecimalImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDecimal(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override double IConvertibleToDoubleImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDouble(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override short IConvertibleToInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt16(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override int IConvertibleToInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt32(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override long IConvertibleToInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt64(_value, provider);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override sbyte IConvertibleToSByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSByte(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+        protected override float IConvertibleToSingleImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSingle(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override string IConvertibleToStringImplementation(IFormatProvider provider)
+        {
+            return Convert.ToString(_value, provider);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ushort IConvertibleToUInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt16(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override uint IConvertibleToUInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt32(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ulong IConvertibleToUInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt64(_value, provider);
+        }
+#pragma warning restore
     }
 }

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,11 +20,13 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON JavaScript value with a scope.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonJavaScriptWithScope : BsonJavaScript, IComparable<BsonJavaScriptWithScope>, IEquatable<BsonJavaScriptWithScope>
     {
         // private fields
-        private BsonDocument _scope;
+        private readonly BsonDocument _scope;
 
         // constructors
         /// <summary>
@@ -33,7 +35,7 @@ namespace MongoDB.Bson
         /// <param name="code">The JavaScript code.</param>
         /// <param name="scope">A scope (a set of variables with values).</param>
         public BsonJavaScriptWithScope(string code, BsonDocument scope)
-            : base(code, BsonType.JavaScriptWithScope)
+            : base(code)
         {
             if (scope == null)
             {
@@ -68,6 +70,14 @@ namespace MongoDB.Bson
 
         // public properties
         /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.JavaScriptWithScope; }
+        }
+
+        /// <summary>
         /// Gets the scope (a set of variables with values).
         /// </summary>
         public BsonDocument Scope
@@ -83,33 +93,12 @@ namespace MongoDB.Bson
         /// <returns>A BsonJavaScriptWithScope or null.</returns>
         public new static BsonJavaScriptWithScope Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonJavaScriptWithScope)BsonTypeMapper.MapToBsonValue(value, BsonType.JavaScriptWithScope);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        /// <summary>
-        /// Creates a new instance of the BsonJavaScript class.
-        /// </summary>
-        /// <param name="code">A string containing JavaScript code.</param>
-        /// <param name="scope">A scope (a set of variable with values).</param>
-        /// <returns>A BsonJavaScript.</returns>
-        [Obsolete("Use new BsonJavaScriptWithScope(string code, BsonDocument scope) instead.")]
-        public static BsonJavaScriptWithScope Create(string code, BsonDocument scope)
-        {
-            if (code != null)
-            {
-                return new BsonJavaScriptWithScope(code, scope);
-            }
-            else
-            {
-                return null;
-            }
+            return (BsonJavaScriptWithScope)BsonTypeMapper.MapToBsonValue(value, BsonType.JavaScriptWithScope);
         }
 
         // public methods

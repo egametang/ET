@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents the BSON MaxKey value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonMaxKey : BsonValue, IComparable<BsonMaxKey>, IEquatable<BsonMaxKey>
     {
         // private static fields
@@ -29,7 +31,6 @@ namespace MongoDB.Bson
         // constructors
         // private so only the singleton instance can be created
         private BsonMaxKey()
-            : base(BsonType.MaxKey)
         {
         }
 
@@ -62,6 +63,15 @@ namespace MongoDB.Bson
         /// Gets the singleton instance of BsonMaxKey.
         /// </summary>
         public static BsonMaxKey Value { get { return __value; } }
+
+        // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.MaxKey; }
+        }
 
         // public methods
         /// <summary>

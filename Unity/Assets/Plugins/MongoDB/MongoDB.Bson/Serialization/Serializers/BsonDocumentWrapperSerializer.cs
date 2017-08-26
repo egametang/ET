@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,15 +13,12 @@
 * limitations under the License.
 */
 
-using System;
-using MongoDB.Bson.IO;
-
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for BsonDocumentWrappers.
     /// </summary>
-    public class BsonDocumentWrapperSerializer : BsonBaseSerializer
+    public class BsonDocumentWrapperSerializer : BsonValueSerializerBase<BsonDocumentWrapper>
     {
         // private static fields
         private static BsonDocumentWrapperSerializer __instance = new BsonDocumentWrapperSerializer();
@@ -31,6 +28,7 @@ namespace MongoDB.Bson.Serialization.Serializers
         /// Initializes a new instance of the BsonDocumentWrapperSerializer class.
         /// </summary>
         public BsonDocumentWrapperSerializer()
+            : base(BsonType.Document)
         {
         }
 
@@ -45,65 +43,37 @@ namespace MongoDB.Bson.Serialization.Serializers
 
         // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a class.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        public override BsonDocumentWrapper Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            throw new NotSupportedException();
+            throw CreateCannotBeDeserializedException();
+        }
+
+        // protected methods
+        /// <summary>
+        /// Deserializes a class.
+        /// </summary>
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>An object.</returns>
+        protected override BsonDocumentWrapper DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
+        {
+            throw CreateCannotBeDeserializedException();
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, BsonDocumentWrapper value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-
-            var wrapper = (BsonDocumentWrapper)value;
-            var wrappedObject = wrapper.WrappedObject;
-            var wrappedActualType = (wrappedObject == null) ? wrapper.WrappedNominalType : wrappedObject.GetType();
-            var serializer = (wrappedActualType == wrapper.WrappedNominalType) ? wrapper.Serializer : BsonSerializer.LookupSerializer(wrappedActualType);
-
-            if (wrapper.IsUpdateDocument)
-            {
-                var savedCheckElementNames = bsonWriter.CheckElementNames;
-                var savedCheckUpdateDocument = bsonWriter.CheckUpdateDocument;
-                try
-                {
-                    bsonWriter.CheckElementNames = false;
-                    bsonWriter.CheckUpdateDocument = true;
-                    serializer.Serialize(bsonWriter, wrapper.WrappedNominalType, wrapper.WrappedObject, wrapper.SerializationOptions);
-                }
-                finally
-                {
-                    bsonWriter.CheckElementNames = savedCheckElementNames;
-                    bsonWriter.CheckUpdateDocument = savedCheckUpdateDocument;
-                }
-            }
-            else
-            {
-                serializer.Serialize(bsonWriter, wrapper.WrappedNominalType, wrapper.WrappedObject, wrapper.SerializationOptions);
-            }
+            value.Serializer.Serialize(context, value.Wrapped);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace MongoDB.Bson.Serialization
     public class CreatorMapDelegateCompiler : ExpressionVisitor
     {
         // private fields
-	    private ParameterExpression _prototypeParameter;
+        private ParameterExpression _prototypeParameter;
         private Dictionary<MemberInfo, ParameterExpression> _parameters;
 
         // public methods
@@ -59,7 +59,7 @@ namespace MongoDB.Bson.Serialization
             // transform c => expression (where c is the prototype parameter)
             // to (p1, p2, ...) => expression' where expression' is expression with every c.X replaced by p#
 
-	        _prototypeParameter = creatorLambda.Parameters[0];
+            _prototypeParameter = creatorLambda.Parameters[0];
             _parameters = new Dictionary<MemberInfo, ParameterExpression>();
             var body = Visit(creatorLambda.Body);
             var lambda = Expression.Lambda(body, _parameters.Values.ToArray());

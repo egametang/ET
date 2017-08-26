@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,74 +25,51 @@ namespace MongoDB.Bson.IO
     public static class ByteBufferFactory
     {
         /// <summary>
-        /// Creates a buffer of the specified fixed capacity. Depending on the required capacity, either a SingleChunkBuffer or a MultiChunkBuffer will be created.
+        /// Creates a buffer of the specified length. Depending on the length, either a SingleChunkBuffer or a MultiChunkBuffer will be created.
         /// </summary>
-        /// <param name="chunkPool">The chunk pool.</param>
-        /// <param name="fixedCapacity">The required capacity.</param>
-        /// <returns>A buffer.</returns>
-        public static IByteBuffer Create(BsonChunkPool chunkPool, int fixedCapacity)
+        /// <param name="chunkSource">The chunk pool.</param>
+        /// <param name="minimumCapacity">The minimum capacity.</param>
+        /// <returns>A buffer with at least the minimum capacity.</returns>
+        public static IByteBuffer Create(IBsonChunkSource chunkSource, int minimumCapacity)
         {
-            if (chunkPool == null)
+            if (chunkSource == null)
             {
-                throw new ArgumentNullException("pool");
+                throw new ArgumentNullException("chunkSource");
             }
-            if (fixedCapacity <= 0)
+            if (minimumCapacity <= 0)
             {
-                throw new ArgumentOutOfRangeException("capacity");
+                throw new ArgumentOutOfRangeException("minimumCapacity");
             }
 
-            if (fixedCapacity < chunkPool.ChunkSize)
+            var capacity = 0;
+            var chunks = new List<IBsonChunk>();
+            while (capacity < minimumCapacity)
             {
-                var chunk = chunkPool.AcquireChunk();
-                return new SingleChunkBuffer(chunk, 0, 0, false);
+                var chunk = chunkSource.GetChunk(minimumCapacity - capacity);
+                chunks.Add(chunk);
+                capacity += chunk.Bytes.Count;
+            }
+
+            if (chunks.Count == 1)
+            {
+                var chunk = chunks[0];
+
+                ByteArrayChunk byteArrayChunk;
+                if ((byteArrayChunk = chunk as ByteArrayChunk) != null)
+                {
+                    var segment = byteArrayChunk.Bytes;
+                    if (segment.Offset == 0)
+                    {
+                        return new ByteArrayBuffer(segment.Array, segment.Count, isReadOnly: false);
+                    }
+                }
+
+                return new SingleChunkBuffer(chunk, 0, isReadOnly: false);
             }
             else
             {
-                var chunksNeeded = ((fixedCapacity - 1) / chunkPool.ChunkSize) + 1;
-                var chunks = new List<BsonChunk>(chunksNeeded);
-                for (int i = 0; i < chunksNeeded; i++)
-                {
-                    chunks.Add(chunkPool.AcquireChunk());
-                }
-                return new MultiChunkBuffer(chunks, 0, 0, false);
+                return new MultiChunkBuffer(chunks, 0, isReadOnly: false);
             }
-        }
-
-        /// <summary>
-        /// Loads a byte buffer from a stream (the first 4 bytes in the stream are the length of the data).
-        /// Depending on the required capacity, either a SingleChunkBuffer or a MultiChunkBuffer will be created.
-        /// </summary>
-        /// <param name="stream">The stream.</param>
-        /// <returns>A buffer.</returns>
-        /// <exception cref="System.ArgumentNullException">stream</exception>
-        public static IByteBuffer LoadFrom(Stream stream)
-        {
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
-            }
-
-            var lengthBytes = new byte[4];
-            var offset = 0;
-            var count = 4;
-            while (count > 0)
-            {
-                var bytesRead = stream.Read(lengthBytes, offset, count);
-                if (bytesRead == 0)
-                {
-                    throw new EndOfStreamException();
-                }
-                offset += bytesRead;
-                count -= bytesRead;
-            }
-            var length = BitConverter.ToInt32(lengthBytes, 0);
-
-            var buffer = Create(BsonChunkPool.Default, length);
-            buffer.WriteBytes(lengthBytes);
-            buffer.LoadFrom(stream, length - 4);
-            buffer.Position = 0;
-
-            return buffer;
         }
     }
 }

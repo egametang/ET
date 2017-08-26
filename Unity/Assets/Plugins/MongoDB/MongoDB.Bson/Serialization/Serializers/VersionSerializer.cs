@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,157 +14,181 @@
 */
 
 using System;
-using System.IO;
 using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for Versions.
     /// </summary>
-    public class VersionSerializer : BsonBaseSerializer
+    public class VersionSerializer : SealedClassSerializerBase<Version>, IRepresentationConfigurable<VersionSerializer>
     {
-        // private static fields
-        private static VersionSerializer __instance = new VersionSerializer();
+        // private constants
+        private static class Flags
+        {
+            public const long Major = 1;
+            public const long Minor = 2;
+            public const long Build = 4;
+            public const long Revision = 8;
+            public const long All = Major | Minor | Build | Revision;
+            public const long MajorMinor = Major | Minor;
+            public const long MajorMinorBuild = Major | Minor | Build;
+        }
+
+        // private fields
+        private readonly SerializerHelper _helper;
+        private readonly Int32Serializer _int32Serializer = new Int32Serializer();
+        private readonly BsonType _representation;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the VersionSerializer class.
+        /// Initializes a new instance of the <see cref="VersionSerializer"/> class.
         /// </summary>
         public VersionSerializer()
-            : base(new RepresentationSerializationOptions(BsonType.String))
+            : this(BsonType.String)
         {
         }
 
-        // public static properties
         /// <summary>
-        /// Gets an instance of the VersionSerializer class.
+        /// Initializes a new instance of the <see cref="VersionSerializer"/> class.
         /// </summary>
-        [Obsolete("Use constructor instead.")]
-        public static VersionSerializer Instance
+        /// <param name="representation">The representation.</param>
+        public VersionSerializer(BsonType representation)
         {
-            get { return __instance; }
+            switch (representation)
+            {
+                case BsonType.Document:
+                case BsonType.String:
+                    break;
+
+                default:
+                    var message = string.Format("{0} is not a valid representation for a VersionSerializer.", representation);
+                    throw new ArgumentException(message);
+            }
+
+            _representation = representation;
+
+            _helper = new SerializerHelper
+            (
+                new SerializerHelper.Member("Major", Flags.Major),
+                new SerializerHelper.Member("Minor", Flags.Minor),
+                new SerializerHelper.Member("Build", Flags.Build, isOptional: true),
+                new SerializerHelper.Member("Revision", Flags.Revision, isOptional: true)
+            );
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets the representation.
+        /// </summary>
+        /// <value>
+        /// The representation.
+        /// </value>
+        public BsonType Representation
+        {
+            get { return _representation; }
         }
 
         // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override Version DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(Version));
+            var bsonReader = context.Reader;
 
             BsonType bsonType = bsonReader.GetCurrentBsonType();
-            string message;
             switch (bsonType)
             {
-                case BsonType.Null:
-                    bsonReader.ReadNull();
-                    return null;
                 case BsonType.Document:
-                    bsonReader.ReadStartDocument();
-                    int major = -1, minor = -1, build = -1, revision = -1;
-                    while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
+                    int major = 0, minor = 0, build = 0, revision = 0;
+                    var foundMemberFlags = _helper.DeserializeMembers(context, (elementName, flag) =>
                     {
-                        var name = bsonReader.ReadName();
-                        switch (name)
+                        switch (flag)
                         {
-                            case "Major": major = bsonReader.ReadInt32(); break;
-                            case "Minor": minor = bsonReader.ReadInt32(); break;
-                            case "Build": build = bsonReader.ReadInt32(); break;
-                            case "Revision": revision = bsonReader.ReadInt32(); break;
-                            default:
-                                message = string.Format("Unrecognized element '{0}' while deserializing a Version value.", name);
-                                throw new Exception(message);
+                            case Flags.Major: major = _int32Serializer.Deserialize(context); break;
+                            case Flags.Minor: minor = _int32Serializer.Deserialize(context); break;
+                            case Flags.Build: build = _int32Serializer.Deserialize(context); break;
+                            case Flags.Revision: revision = _int32Serializer.Deserialize(context); break;
                         }
-                    }
-                    bsonReader.ReadEndDocument();
-                    if (major == -1)
+                    });
+                    switch (foundMemberFlags)
                     {
-                        message = string.Format("Version missing Major element.");
-                        throw new Exception(message);
+                        case Flags.MajorMinor: return new Version(major, minor);
+                        case Flags.MajorMinorBuild: return new Version(major, minor, build);
+                        case Flags.All: return new Version(major, minor, build, revision);
+                        default: throw new BsonInternalException();
                     }
-                    else if (minor == -1)
-                    {
-                        message = string.Format("Version missing Minor element.");
-                        throw new Exception(message);
-                    }
-                    else if (build == -1)
-                    {
-                        return new Version(major, minor);
-                    }
-                    else if (revision == -1)
-                    {
-                        return new Version(major, minor, build);
-                    }
-                    else
-                    {
-                        return new Version(major, minor, build, revision);
-                    }
+
                 case BsonType.String:
                     return new Version(bsonReader.ReadString());
+
                 default:
-                    message = string.Format("Cannot deserialize Version from BsonType {0}.", bsonType);
-                    throw new Exception(message);
+                    throw CreateCannotDeserializeFromBsonTypeException(bsonType);
             }
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, Version value)
         {
-            if (value == null)
+            var bsonWriter = context.Writer;
+
+            switch (_representation)
             {
-                bsonWriter.WriteNull();
+                case BsonType.Document:
+                    bsonWriter.WriteStartDocument();
+                    bsonWriter.WriteInt32("Major", value.Major);
+                    bsonWriter.WriteInt32("Minor", value.Minor);
+                    if (value.Build != -1)
+                    {
+                        bsonWriter.WriteInt32("Build", value.Build);
+                        if (value.Revision != -1)
+                        {
+                            bsonWriter.WriteInt32("Revision", value.Revision);
+                        }
+                    }
+                    bsonWriter.WriteEndDocument();
+                    break;
+
+                case BsonType.String:
+                    bsonWriter.WriteString(value.ToString());
+                    break;
+
+                default:
+                    var message = string.Format("'{0}' is not a valid Version representation.", _representation);
+                    throw new BsonSerializationException(message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified representation.
+        /// </summary>
+        /// <param name="representation">The representation.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public VersionSerializer WithRepresentation(BsonType representation)
+        {
+            if (representation == _representation)
+            {
+                return this;
             }
             else
             {
-                var version = (Version)value;
-                var representationSerializationOptions = EnsureSerializationOptions<RepresentationSerializationOptions>(options);
-
-                switch (representationSerializationOptions.Representation)
-                {
-                    case BsonType.Document:
-                        bsonWriter.WriteStartDocument();
-                        bsonWriter.WriteInt32("Major", version.Major);
-                        bsonWriter.WriteInt32("Minor", version.Minor);
-                        if (version.Build != -1)
-                        {
-                            bsonWriter.WriteInt32("Build", version.Build);
-                            if (version.Revision != -1)
-                            {
-                                bsonWriter.WriteInt32("Revision", version.Revision);
-                            }
-                        }
-                        bsonWriter.WriteEndDocument();
-                        break;
-                    case BsonType.String:
-                        bsonWriter.WriteString(version.ToString());
-                        break;
-                    default:
-                        var message = string.Format("'{0}' is not a valid Version representation.", representationSerializationOptions.Representation);
-                        throw new BsonSerializationException(message);
-                }
+                return new VersionSerializer(representation);
             }
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IRepresentationConfigurable.WithRepresentation(BsonType representation)
+        {
+            return WithRepresentation(representation);
         }
     }
 }

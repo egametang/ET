@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,8 +17,6 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization
@@ -39,10 +37,7 @@ namespace MongoDB.Bson.Serialization
         private int _order;
         private Func<object, object> _getter;
         private Action<object, object> _setter;
-        private IBsonSerializationOptions _serializationOptions;
-        private IBsonSerializer _serializer;
-        private volatile IDiscriminatorConvention _cachedDiscriminatorConvention;
-        private volatile IBsonSerializer _cachedSerializer;
+        private volatile IBsonSerializer _serializer;
         private IIdGenerator _idGenerator;
         private bool _isRequired;
         private Func<object, bool> _shouldSerializeMethod;
@@ -63,7 +58,7 @@ namespace MongoDB.Bson.Serialization
             _classMap = classMap;
             _memberInfo = memberInfo;
             _memberType = BsonClassMap.GetMemberInfoType(memberInfo);
-            _memberTypeIsBsonValue = typeof(BsonValue).IsAssignableFrom(_memberType);
+            _memberTypeIsBsonValue = typeof(BsonValue).GetTypeInfo().IsAssignableFrom(_memberType);
 
             Reset();
         }
@@ -141,14 +136,6 @@ namespace MongoDB.Bson.Serialization
         }
 
         /// <summary>
-        /// Gets the serialization options.
-        /// </summary>
-        public IBsonSerializationOptions SerializationOptions
-        {
-            get { return _serializationOptions; }
-        }
-
-        /// <summary>
         /// Gets the setter function.
         /// </summary>
         public Action<object, object> Setter
@@ -157,7 +144,7 @@ namespace MongoDB.Bson.Serialization
             {
                 if (_setter == null)
                 {
-                    if (_memberInfo.MemberType == MemberTypes.Field)
+                    if (_memberInfo is FieldInfo)
                     {
                         _setter = GetFieldSetter();
                     }
@@ -236,20 +223,23 @@ namespace MongoDB.Bson.Serialization
         {
             get
             {
-                switch(_memberInfo.MemberType)
+                if (_memberInfo is FieldInfo)
                 {
-                    case MemberTypes.Field:
-                        var field = (FieldInfo)_memberInfo;
-                        return field.IsInitOnly || field.IsLiteral;
-                    case MemberTypes.Property:
-                        var property = (PropertyInfo)_memberInfo;
-                        return !property.CanWrite;
-                    default:
-                        throw new NotSupportedException(
-                            string.Format("Only fields and properties are supported by BsonMemberMap. The member {0} of class {1} is a {2}.",
-                            _memberInfo.Name,
-                            _memberInfo.DeclaringType.Name,
-                            _memberInfo.MemberType));
+                    var field = (FieldInfo)_memberInfo;
+                    return field.IsInitOnly || field.IsLiteral;
+                }
+                else if (_memberInfo is PropertyInfo)
+                {
+                    var property = (PropertyInfo)_memberInfo;
+                    return !property.CanWrite;
+                }
+                else
+                {
+                    throw new NotSupportedException(
+                       string.Format("Only fields and properties are supported by BsonMemberMap. The member {0} of class {1} is a {2}.",
+                       _memberInfo.Name,
+                       _memberInfo.DeclaringType.Name,
+                       _memberInfo is FieldInfo ? "field" : "property"));
                 }
             }
         }
@@ -278,40 +268,46 @@ namespace MongoDB.Bson.Serialization
         /// <summary>
         /// Gets the serializer.
         /// </summary>
-        /// <param name="actualType">The actual type of the member's value.</param>
-        /// <returns>The member map.</returns>
-        public IBsonSerializer GetSerializer(Type actualType)
+        /// <returns>The serializer.</returns>
+        public IBsonSerializer GetSerializer()
         {
-            // if a custom serializer is configured always return it
-            if (_serializer != null)
-            {
-                return _serializer;
-            }
-            else
+            if (_serializer == null)
             {
                 // return special serializer for BsonValue members that handles the _csharpnull representation
                 if (_memberTypeIsBsonValue)
                 {
-                    return BsonValueCSharpNullSerializer.Instance;
-                }
+                    var wrappedSerializer = BsonSerializer.LookupSerializer(_memberType);
+                    var isBsonArraySerializer = wrappedSerializer is IBsonArraySerializer;
+                    var isBsonDocumentSerializer = wrappedSerializer is IBsonDocumentSerializer;
 
-                // return a cached serializer when possible
-                if (actualType == _memberType)
-                {
-                    var serializer = _cachedSerializer;
-                    if (serializer == null)
+                    Type csharpNullSerializerDefinition;
+                    if (isBsonArraySerializer && isBsonDocumentSerializer)
                     {
-                        // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                        serializer = BsonSerializer.LookupSerializer(_memberType);
-                        _cachedSerializer = serializer;
+                        csharpNullSerializerDefinition = typeof(BsonValueCSharpNullArrayAndDocumentSerializer<>);
                     }
-                    return serializer;
+                    else if (isBsonArraySerializer)
+                    {
+                        csharpNullSerializerDefinition = typeof(BsonValueCSharpNullArraySerializer<>);
+                    }
+                    else if (isBsonDocumentSerializer)
+                    {
+                        csharpNullSerializerDefinition = typeof(BsonValueCSharpNullDocumentSerializer<>);
+                    }
+                    else
+                    {
+                        csharpNullSerializerDefinition = typeof(BsonValueCSharpNullSerializer<>);
+                    }
+
+                    var csharpNullSerializerType = csharpNullSerializerDefinition.MakeGenericType(_memberType);
+                    var csharpNullSerializer = (IBsonSerializer)Activator.CreateInstance(csharpNullSerializerType, wrappedSerializer);
+                    _serializer = csharpNullSerializer;
                 }
                 else
                 {
-                    return BsonSerializer.LookupSerializer(actualType);
+                    _serializer = BsonSerializer.LookupSerializer(_memberType);
                 }
             }
+            return _serializer;
         }
 
         /// <summary>
@@ -331,7 +327,6 @@ namespace MongoDB.Bson.Serialization
             _ignoreIfNull = false;
             _isRequired = false;
             _order = int.MaxValue;
-            _serializationOptions = null;
             _serializer = null;
             _shouldSerializeMethod = null;
 
@@ -462,36 +457,26 @@ namespace MongoDB.Bson.Serialization
         }
 
         /// <summary>
-        /// Sets the external representation.
-        /// </summary>
-        /// <param name="representation">The external representation.</param>
-        /// <returns>The member map.</returns>
-        public BsonMemberMap SetRepresentation(BsonType representation)
-        {
-            if (_frozen) { ThrowFrozenException(); }
-            _serializationOptions = new RepresentationSerializationOptions(representation);
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the serialization options.
-        /// </summary>
-        /// <param name="serializationOptions">The serialization options.</param>
-        /// <returns>The member map.</returns>
-        public BsonMemberMap SetSerializationOptions(IBsonSerializationOptions serializationOptions)
-        {
-            if (_frozen) { ThrowFrozenException(); }
-            _serializationOptions = serializationOptions;
-            return this;
-        }
-
-        /// <summary>
         /// Sets the serializer.
         /// </summary>
         /// <param name="serializer">The serializer.</param>
-        /// <returns>The member map.</returns>
+        /// <returns>
+        /// The member map.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">serializer</exception>
+        /// <exception cref="System.ArgumentException">serializer</exception>
         public BsonMemberMap SetSerializer(IBsonSerializer serializer)
         {
+            if (serializer == null)
+            {
+                throw new ArgumentNullException("serializer");
+            }
+            if (serializer.ValueType != _memberType)
+            {
+                var message = string.Format("Value type of serializer is {0} and does not match member type {1}.", serializer.ValueType.FullName, _memberType.FullName);
+                throw new ArgumentException(message, "serializer");
+            }
+
             if (_frozen) { ThrowFrozenException(); }
             _serializer = serializer;
             return this;
@@ -542,28 +527,11 @@ namespace MongoDB.Bson.Serialization
             return true;
         }
 
-        // internal methods
-        /// <summary>
-        /// Gets the discriminator convention for the member type.
-        /// </summary>
-        /// <returns>The discriminator convention for the member type.</returns>
-        internal IDiscriminatorConvention GetDiscriminatorConvention()
-        {
-            // return a cached discriminator convention when possible
-            var discriminatorConvention = _cachedDiscriminatorConvention;
-            if (discriminatorConvention == null)
-            {
-                // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                discriminatorConvention = BsonSerializer.LookupDiscriminatorConvention(_memberType);
-                _cachedDiscriminatorConvention = discriminatorConvention;
-            }
-            return discriminatorConvention;
-        }
-
         // private methods
         private static object GetDefaultValue(Type type)
         {
-            if (type.IsEnum)
+            var typeInfo = type.GetTypeInfo();
+            if (typeInfo.IsEnum)
             {
                 return Enum.ToObject(type, 0);
             }
@@ -571,11 +539,13 @@ namespace MongoDB.Bson.Serialization
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Empty:
+#if NET45
                 case TypeCode.DBNull:
+#endif
                 case TypeCode.String:
                     break;
                 case TypeCode.Object:
-                    if (type.IsValueType)
+                    if (typeInfo.IsValueType)
                     {
                         return Activator.CreateInstance(type);
                     }
@@ -629,7 +599,7 @@ namespace MongoDB.Bson.Serialization
             var propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
-                var getMethodInfo = propertyInfo.GetGetMethod(true);
+                var getMethodInfo = propertyInfo.GetMethod;
                 if (getMethodInfo == null)
                 {
                     var message = string.Format(
@@ -658,7 +628,7 @@ namespace MongoDB.Bson.Serialization
         private Action<object, object> GetPropertySetter()
         {
             var propertyInfo = (PropertyInfo)_memberInfo;
-            var setMethodInfo = propertyInfo.GetSetMethod(true);
+            var setMethodInfo = propertyInfo.SetMethod;
             if (IsReadOnly)
             {
                 var message = string.Format(

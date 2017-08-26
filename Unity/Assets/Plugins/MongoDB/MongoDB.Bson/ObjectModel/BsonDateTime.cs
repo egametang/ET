@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,18 +14,20 @@
 */
 
 using System;
-using System.Xml;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON DateTime value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonDateTime : BsonValue, IComparable<BsonDateTime>, IEquatable<BsonDateTime>
     {
         // private fields
-        private long _millisecondsSinceEpoch;
+        private readonly long _millisecondsSinceEpoch;
 
         // constructors
         /// <summary>
@@ -33,7 +35,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">A DateTime.</param>
         public BsonDateTime(DateTime value)
-            : base(BsonType.DateTime)
         {
             _millisecondsSinceEpoch = BsonUtils.ToMillisecondsSinceEpoch(value);
         }
@@ -43,12 +44,19 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="millisecondsSinceEpoch">Milliseconds since Unix Epoch.</param>
         public BsonDateTime(long millisecondsSinceEpoch)
-            : base(BsonType.DateTime)
         {
             _millisecondsSinceEpoch = millisecondsSinceEpoch;
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.DateTime; }
+        }
+
         /// <summary>
         /// Gets whether this BsonDateTime is a valid .NET DateTime.
         /// </summary>
@@ -129,40 +137,16 @@ namespace MongoDB.Bson
         /// <summary>
         /// Creates a new BsonDateTime.
         /// </summary>
-        /// <param name="value">A DateTime.</param>
-        /// <returns>A BsonDateTime.</returns>
-        [Obsolete("Use new BsonDateTime(DateTime value) instead.")]
-        public static BsonDateTime Create(DateTime value)
-        {
-            return new BsonDateTime(value);
-        }
-
-        /// <summary>
-        /// Creates a new BsonDateTime.
-        /// </summary>
-        /// <param name="millisecondsSinceEpoch">A DateTime.</param>
-        /// <returns>Milliseconds since Unix Epoch.</returns>
-        [Obsolete("Use new BsonDateTime(long millisecondsSinceEpoch) instead.")]
-        public static BsonDateTime Create(long millisecondsSinceEpoch)
-        {
-            return new BsonDateTime(millisecondsSinceEpoch);
-        }
-
-        /// <summary>
-        /// Creates a new BsonDateTime.
-        /// </summary>
         /// <param name="value">An object to be mapped to a BsonDateTime.</param>
         /// <returns>A BsonDateTime or null.</returns>
         public new static BsonDateTime Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonDateTime)BsonTypeMapper.MapToBsonValue(value, BsonType.DateTime);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonDateTime)BsonTypeMapper.MapToBsonValue(value, BsonType.DateTime);
         }
 
         // public methods
@@ -280,8 +264,21 @@ namespace MongoDB.Bson
             }
             else
             {
-                return XmlConvert.ToString(_millisecondsSinceEpoch);
+                return JsonConvert.ToString(_millisecondsSinceEpoch);
             }
+        }
+
+        // protected methods
+        /// <inheritdoc/>
+        protected override TypeCode IConvertibleGetTypeCodeImplementation()
+        {
+            return TypeCode.DateTime;
+        }
+
+        /// <inheritdoc/>
+        protected override DateTime IConvertibleToDateTimeImplementation(IFormatProvider provider)
+        {
+            return ToUniversalTime();
         }
     }
 }

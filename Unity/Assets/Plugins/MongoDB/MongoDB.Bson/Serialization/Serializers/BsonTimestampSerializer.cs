@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
 * limitations under the License.
 */
 
-using System;
-using System.IO;
-using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for BsonTimestamps.
     /// </summary>
-    public class BsonTimestampSerializer : BsonBaseSerializer
+    public class BsonTimestampSerializer : BsonValueSerializerBase<BsonTimestamp>
     {
         // private static fields
         private static BsonTimestampSerializer __instance = new BsonTimestampSerializer();
@@ -32,6 +29,7 @@ namespace MongoDB.Bson.Serialization.Serializers
         /// Initializes a new instance of the BsonTimestampSerializer class.
         /// </summary>
         public BsonTimestampSerializer()
+            : base(BsonType.Timestamp)
         {
         }
 
@@ -44,54 +42,29 @@ namespace MongoDB.Bson.Serialization.Serializers
             get { return __instance; }
         }
 
-        // public methods
+        // protected methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override BsonTimestamp DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(BsonTimestamp));
-
-            var bsonType = bsonReader.GetCurrentBsonType();
-            switch (bsonType)
-            {
-                case BsonType.Timestamp:
-                    return new BsonTimestamp(bsonReader.ReadTimestamp());
-                default:
-                    var message = string.Format("Cannot deserialize BsonTimestamp from BsonType {0}.", bsonType);
-                    throw new Exception(message);
-            }
+            var bsonReader = context.Reader;
+            return new BsonTimestamp(bsonReader.ReadTimestamp());
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, BsonTimestamp value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-
-            var timestamp = (BsonTimestamp)value;
-            bsonWriter.WriteTimestamp(timestamp.Value);
+            var bsonWriter = context.Writer;
+            bsonWriter.WriteTimestamp(value.Value);
         }
     }
 }

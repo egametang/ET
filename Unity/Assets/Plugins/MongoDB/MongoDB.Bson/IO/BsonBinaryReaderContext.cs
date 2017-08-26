@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
 */
 
 using System;
-using System.IO;
 
 namespace MongoDB.Bson.IO
 {
     internal class BsonBinaryReaderContext
     {
         // private fields
-        private BsonBinaryReaderContext _parentContext;
-        private ContextType _contextType;
-        private int _startPosition;
-        private int _size;
+        private readonly BsonBinaryReaderContext _parentContext;
+        private readonly ContextType _contextType;
+        private readonly long _startPosition;
+        private readonly long _size;
+        private string _currentElementName;
+        private int _currentArrayIndex = -1;
 
         // constructors
         internal BsonBinaryReaderContext(
             BsonBinaryReaderContext parentContext,
             ContextType contextType,
-            int startPosition, 
-            int size)
+            long startPosition,
+            long size)
         {
             _parentContext = parentContext;
             _contextType = contextType;
@@ -39,10 +40,27 @@ namespace MongoDB.Bson.IO
             _size = size;
         }
 
-        // internal properties
-        internal ContextType ContextType
+        // public properties
+        public ContextType ContextType
         {
             get { return _contextType; }
+        }
+
+        public int CurrentArrayIndex
+        {
+            get { return _currentArrayIndex; }
+            set { _currentArrayIndex = value; }
+        }
+
+        public string CurrentElementName
+        {
+            get { return _currentElementName; }
+            set { _currentElementName = value; }
+        }
+
+        public BsonBinaryReaderContext ParentContext
+        {
+            get { return _parentContext; }
         }
 
         // public methods
@@ -55,13 +73,13 @@ namespace MongoDB.Bson.IO
             return new BsonBinaryReaderContext(_parentContext, _contextType, _startPosition, _size);
         }
 
-        public BsonBinaryReaderContext PopContext(int position)
+        public BsonBinaryReaderContext PopContext(long position)
         {
-            int actualSize = position - _startPosition;
+            var actualSize = position - _startPosition;
             if (actualSize != _size)
             {
                 var message = string.Format("Expected size to be {0}, not {1}.", _size, actualSize);
-                throw new Exception(message);
+                throw new FormatException(message);
             }
             return _parentContext;
         }

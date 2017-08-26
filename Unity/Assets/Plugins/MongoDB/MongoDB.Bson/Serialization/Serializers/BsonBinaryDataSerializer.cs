@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
 * limitations under the License.
 */
 
-using System;
-using System.IO;
-using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for BsonBinaryDatas.
     /// </summary>
-    public class BsonBinaryDataSerializer : BsonBaseSerializer
+    public class BsonBinaryDataSerializer : BsonValueSerializerBase<BsonBinaryData>
     {
         // private static fields
         private static BsonBinaryDataSerializer __instance = new BsonBinaryDataSerializer();
@@ -32,6 +29,7 @@ namespace MongoDB.Bson.Serialization.Serializers
         /// Initializes a new instance of the BsonBinaryDataSerializer class.
         /// </summary>
         public BsonBinaryDataSerializer()
+            : base(BsonType.Binary)
         {
         }
 
@@ -44,62 +42,37 @@ namespace MongoDB.Bson.Serialization.Serializers
             get { return __instance; }
         }
 
-        // public methods
+        // protected methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override BsonBinaryData DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(BsonBinaryData));
-
-            var bsonType = bsonReader.GetCurrentBsonType();
-            switch (bsonType)
-            {
-                case BsonType.Binary:
-                    return bsonReader.ReadBinaryData();
-                default:
-                    var message = string.Format("Cannot deserialize BsonBinaryData from BsonType {0}.", bsonType);
-                    throw new Exception(message);
-            }
+            var bsonReader = context.Reader;
+            return bsonReader.ReadBinaryData();
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, BsonBinaryData value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
+            var bsonWriter = context.Writer;
 
-            var binaryData = (BsonBinaryData)value;
-
-            var subType = binaryData.SubType;
+            var subType = value.SubType;
             if (subType == BsonBinarySubType.UuidStandard || subType == BsonBinarySubType.UuidLegacy)
             {
                 var writerGuidRepresentation = bsonWriter.Settings.GuidRepresentation;
                 if (writerGuidRepresentation != GuidRepresentation.Unspecified)
                 {
-                    var bytes = binaryData.Bytes;
-                    var guidRepresentation = binaryData.GuidRepresentation;
+                    var bytes = value.Bytes;
+                    var guidRepresentation = value.GuidRepresentation;
 
                     if (guidRepresentation == GuidRepresentation.Unspecified)
                     {
@@ -114,12 +87,12 @@ namespace MongoDB.Bson.Serialization.Serializers
                         bytes = GuidConverter.ToBytes(guid, writerGuidRepresentation);
                         subType = (writerGuidRepresentation == GuidRepresentation.Standard) ? BsonBinarySubType.UuidStandard : BsonBinarySubType.UuidLegacy;
                         guidRepresentation = writerGuidRepresentation;
-                        binaryData = new BsonBinaryData(bytes, subType, guidRepresentation);
+                        value = new BsonBinaryData(bytes, subType, guidRepresentation);
                     }
                 }
             }
 
-            bsonWriter.WriteBinaryData(binaryData);
+            bsonWriter.WriteBinaryData(value);
         }
     }
 }

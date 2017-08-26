@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,44 +14,61 @@
 */
 
 using System;
-using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson.Serialization
 {
     /// <summary>
-    /// An interface implemented by BSON serializers.
+    /// An interface implemented by a serializer.
     /// </summary>
     public interface IBsonSerializer
     {
+        // properties
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Gets the type of the value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options);
+        /// <value>
+        /// The type of the value.
+        /// </value>
+        Type ValueType { get; }
+
+        // methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        object Deserialize(BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options);
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        object Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args);
+
         /// <summary>
-        /// Gets the default serialization options for this serializer.
+        /// Serializes a value.
         /// </summary>
-        /// <returns>The default serialization options for this serializer.</returns>
-        IBsonSerializationOptions GetDefaultSerializationOptions();
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
+        /// <param name="value">The value.</param>
+        void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value);
+    }
+
+    /// <summary>
+    /// An interface implemented by a serializer for values of type TValue.
+    /// </summary>
+    /// <typeparam name="TValue">The type that this serializer knows how to serialize.</typeparam>
+    public interface IBsonSerializer<TValue> : IBsonSerializer
+    {
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
-        /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        void Serialize(BsonWriter bsonWriter, Type nominalType, object value, IBsonSerializationOptions options);
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        new TValue Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args);
+
+        /// <summary>
+        /// Serializes a value.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
+        /// <param name="value">The value.</param>
+        void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TValue value);
     }
 }

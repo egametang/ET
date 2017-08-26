@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,210 +15,162 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for two-dimensional arrays.
     /// </summary>
-    /// <typeparam name="T">The type of the elements.</typeparam>
-    public class TwoDimensionalArraySerializer<T> : BsonBaseSerializer
+    /// <typeparam name="TItem">The type of the elements.</typeparam>
+    public class TwoDimensionalArraySerializer<TItem> :
+        SealedClassSerializerBase<TItem[,]>,
+        IChildSerializerConfigurable
     {
+        // private fields
+        private readonly Lazy<IBsonSerializer<TItem>> _lazyItemSerializer;
+
         // constructors
         /// <summary>
-        /// Initializes a new instance of the TwoDimensionalArraySerializer class.
+        /// Initializes a new instance of the <see cref="TwoDimensionalArraySerializer{TItem}"/> class.
         /// </summary>
         public TwoDimensionalArraySerializer()
-            : base(new ArraySerializationOptions())
+            : this(BsonSerializer.SerializerRegistry)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TwoDimensionalArraySerializer{TItem}"/> class.
+        /// </summary>
+        /// <param name="itemSerializer">The item serializer.</param>
+        public TwoDimensionalArraySerializer(IBsonSerializer<TItem> itemSerializer)
+        {
+            if (itemSerializer == null)
+            {
+                throw new ArgumentNullException("itemSerializer");
+            }
+
+            _lazyItemSerializer = new Lazy<IBsonSerializer<TItem>>(() => itemSerializer);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TwoDimensionalArraySerializer{TItem}" /> class.
+        /// </summary>
+        /// <param name="serializerRegistry">The serializer registry.</param>
+        public TwoDimensionalArraySerializer(IBsonSerializerRegistry serializerRegistry)
+        {
+            if (serializerRegistry == null)
+            {
+                throw new ArgumentNullException("serializerRegistry");
+            }
+
+            _lazyItemSerializer = new Lazy<IBsonSerializer<TItem>>(() => serializerRegistry.GetSerializer<TItem>());
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets the item serializer.
+        /// </summary>
+        /// <value>
+        /// The item serializer.
+        /// </value>
+        public IBsonSerializer<TItem> ItemSerializer
+        {
+            get { return _lazyItemSerializer.Value; }
         }
 
         // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override TItem[,] DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(T[,]));
-            var arraySerializationOptions = EnsureSerializationOptions<ArraySerializationOptions>(options);
-            var itemSerializationOptions = arraySerializationOptions.ItemSerializationOptions;
+            var bsonReader = context.Reader;
+            EnsureBsonTypeEquals(bsonReader, BsonType.Array);
 
-            var bsonType = bsonReader.GetCurrentBsonType();
-            string message;
-            switch (bsonType)
+            bsonReader.ReadStartArray();
+            var outerList = new List<List<TItem>>();
+            while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
             {
-                case BsonType.Null:
-                    bsonReader.ReadNull();
-                    return null;
-                case BsonType.Array:
-                    var itemNominalType = typeof(T);
-                    var itemNominalTypeIsValueType = itemNominalType.IsValueType;
-                    var itemNominalTypeSerializer = BsonSerializer.LookupSerializer(itemNominalType);
-                    var itemDiscriminatorConvention = BsonSerializer.LookupDiscriminatorConvention(itemNominalType);
-                    Type lastItemType = null;
-                    IBsonSerializer lastItemSerializer = null;
-
-                    // if itemNominalType is a value type then these assignments are final
-                    var itemActualType = itemNominalType;
-                    var itemActualTypeSerializer = itemNominalTypeSerializer;
-
-                    bsonReader.ReadStartArray();
-                    var outerList = new List<List<T>>();
-                    while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
-                    {
-                        bsonReader.ReadStartArray();
-                        var innerList = new List<T>();
-                        while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
-                        {
-                            if (!itemNominalTypeIsValueType)
-                            {
-                                itemActualType = itemDiscriminatorConvention.GetActualType(bsonReader, itemNominalType);
-                                if (itemActualType == itemNominalType)
-                                {
-                                    itemActualTypeSerializer = itemNominalTypeSerializer;
-                                }
-                                else if (itemActualType == lastItemType)
-                                {
-                                    itemActualTypeSerializer = lastItemSerializer;
-                                }
-                                else
-                                {
-                                    itemActualTypeSerializer = BsonSerializer.LookupSerializer(itemActualType);
-                                    lastItemType = itemActualType;
-                                    lastItemSerializer = itemActualTypeSerializer;
-                                }
-                            }
-                            var item = (T)itemActualTypeSerializer.Deserialize(bsonReader, itemNominalType, itemActualType, itemSerializationOptions);
-                            innerList.Add(item);
-                        }
-                        bsonReader.ReadEndArray();
-                        outerList.Add(innerList);
-                    }
-                    bsonReader.ReadEndArray();
-
-                    var length1 = outerList.Count;
-                    var length2 = (length1 == 0) ? 0 : outerList[0].Count;
-                    var array = new T[length1, length2];
-                    for (int i = 0; i < length1; i++)
-                    {
-                        var innerList = outerList[i];
-                        if (innerList.Count != length2)
-                        {
-                            message = string.Format("Inner list {0} is of length {1} but should be of length {2}.", i, innerList.Count, length2);
-                            throw new Exception(message);
-                        }
-                        for (int j = 0; j < length2; j++)
-                        {
-                            array[i, j] = innerList[j];
-                        }
-                    }
-
-                    return array;
-                case BsonType.Document:
-                    bsonReader.ReadStartDocument();
-                    bsonReader.ReadString("_t"); // skip over discriminator
-                    bsonReader.ReadName("_v");
-                    var value = Deserialize(bsonReader, actualType, actualType, options);
-                    bsonReader.ReadEndDocument();
-                    return value;
-                default:
-                    message = string.Format("Can't deserialize a {0} from BsonType {1}.", actualType.FullName, bsonType);
-                    throw new Exception(message);
+                bsonReader.ReadStartArray();
+                var innerList = new List<TItem>();
+                while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
+                {
+                    innerList.Add(_lazyItemSerializer.Value.Deserialize(context));
+                }
+                bsonReader.ReadEndArray();
+                outerList.Add(innerList);
             }
+            bsonReader.ReadEndArray();
+
+            var length1 = outerList.Count;
+            var length2 = (length1 == 0) ? 0 : outerList[0].Count;
+            var array = new TItem[length1, length2];
+
+            for (int i = 0; i < length1; i++)
+            {
+                var innerList = outerList[i];
+                if (innerList.Count != length2)
+                {
+                    var message = string.Format("Inner list {0} is of length {1} but should be of length {2}.", i, innerList.Count, length2);
+                    throw new FormatException(message);
+                }
+                for (int j = 0; j < length2; j++)
+                {
+                    array[i, j] = innerList[j];
+                }
+            }
+
+            return array;
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, TItem[,] value)
         {
-            if (value == null)
+            var bsonWriter = context.Writer;
+
+            var length1 = value.GetLength(0);
+            var length2 = value.GetLength(1);
+
+            bsonWriter.WriteStartArray();
+            for (int i = 0; i < length1; i++)
             {
-                bsonWriter.WriteNull();
-            }
-            else
-            {
-                var actualType = value.GetType();
-                VerifyTypes(nominalType, actualType, typeof(T[,]));
-
-                if (nominalType == typeof(object))
-                {
-                    bsonWriter.WriteStartDocument();
-                    bsonWriter.WriteString("_t", TypeNameDiscriminator.GetDiscriminator(actualType));
-                    bsonWriter.WriteName("_v");
-                    Serialize(bsonWriter, actualType, value, options);
-                    bsonWriter.WriteEndDocument();
-                    return;
-                }
-
-                var array = (T[,])value;
-                var arraySerializationOptions = EnsureSerializationOptions<ArraySerializationOptions>(options);
-                var itemSerializationOptions = arraySerializationOptions.ItemSerializationOptions;
-
-                var itemNominalType = typeof(T);
-                var itemNominalTypeIsValueType = itemNominalType.IsValueType;
-                var itemNominalTypeSerializer = BsonSerializer.LookupSerializer(itemNominalType);
-                BsonSerializer.LookupDiscriminatorConvention(itemNominalType);
-                Type lastItemType = null;
-                IBsonSerializer lastItemSerializer = null;
-
-                // if itemNominalType is a value type then these assignments are final
-                var itemActualType = itemNominalType;
-                var itemActualTypeSerializer = itemNominalTypeSerializer;
-
                 bsonWriter.WriteStartArray();
-                var length1 = array.GetLength(0);
-                var length2 = array.GetLength(1);
-                for (int i = 0; i < length1; i++)
+                for (int j = 0; j < length2; j++)
                 {
-                    bsonWriter.WriteStartArray();
-                    for (int j = 0; j < length2; j++)
-                    {
-                        var item = array[i, j];
-                        if (!itemNominalTypeIsValueType)
-                        {
-                            itemActualType = item == null ? itemNominalType : item.GetType();
-                            if (itemActualType == itemNominalType)
-                            {
-                                itemActualTypeSerializer = itemNominalTypeSerializer;
-                            }
-                            else if (itemActualType == lastItemType)
-                            {
-                                itemActualTypeSerializer = lastItemSerializer;
-                            }
-                            else
-                            {
-                                itemActualTypeSerializer = BsonSerializer.LookupSerializer(itemActualType);
-                                lastItemType = itemActualType;
-                                lastItemSerializer = itemActualTypeSerializer;
-                            }
-                        }
-                        itemActualTypeSerializer.Serialize(bsonWriter, itemNominalType, item, itemSerializationOptions);
-                    }
-                    bsonWriter.WriteEndArray();
+                    _lazyItemSerializer.Value.Serialize(context, value[i, j]);
                 }
                 bsonWriter.WriteEndArray();
             }
+            bsonWriter.WriteEndArray();
+        }
+
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified item serializer.
+        /// </summary>
+        /// <param name="itemSerializer">The item serializer.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public TwoDimensionalArraySerializer<TItem> WithItemSerializer(IBsonSerializer<TItem> itemSerializer)
+        {
+            return new TwoDimensionalArraySerializer<TItem>(itemSerializer);
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IChildSerializerConfigurable.ChildSerializer
+        {
+            get { return ItemSerializer; }
+        }
+
+        IBsonSerializer IChildSerializerConfigurable.WithChildSerializer(IBsonSerializer childSerializer)
+        {
+            return WithItemSerializer((IBsonSerializer<TItem>)childSerializer);
         }
     }
 }

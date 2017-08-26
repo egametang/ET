@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents an immutable BSON document that is represented using only the raw bytes.
     /// </summary>
-    [Serializable]
     [BsonSerializer(typeof(RawBsonDocumentSerializer))]
     public class RawBsonDocument : BsonDocument, IDisposable
     {
@@ -60,7 +59,7 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         public RawBsonDocument(byte[] bytes)
-            : this(new ByteArrayBuffer(bytes, 0, bytes.Length, true))
+            : this(new ByteArrayBuffer(bytes, isReadOnly: true))
         {
         }
 
@@ -73,7 +72,8 @@ namespace MongoDB.Bson
             get
             {
                 ThrowIfDisposed();
-                using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+                using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+                using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
                 {
                     var elementCount = 0;
 
@@ -99,13 +99,16 @@ namespace MongoDB.Bson
             get
             {
                 ThrowIfDisposed();
-                using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+                using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+                using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
                 {
+                    var context = BsonDeserializationContext.CreateRoot(bsonReader); 
+
                     bsonReader.ReadStartDocument();
                     while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                     {
                         var name = bsonReader.ReadName();
-                        var value = DeserializeBsonValue(bsonReader);
+                        var value = DeserializeBsonValue(context);
                         yield return new BsonElement(name, value);
                     }
                     bsonReader.ReadEndDocument();
@@ -121,7 +124,8 @@ namespace MongoDB.Bson
             get
             {
                 ThrowIfDisposed();
-                using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+                using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+                using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
                 {
                     bsonReader.ReadStartDocument();
                     while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
@@ -143,13 +147,16 @@ namespace MongoDB.Bson
             get
             {
                 ThrowIfDisposed();
-                using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+                using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+                using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
                 {
+                    var context = BsonDeserializationContext.CreateRoot(bsonReader);
+
                     bsonReader.ReadStartDocument();
                     while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                     {
                         bsonReader.SkipName();
-                        yield return DeserializeBsonValue(bsonReader).RawValue;
+                        yield return DeserializeBsonValue(context).RawValue;
                     }
                     bsonReader.ReadEndDocument();
                 }
@@ -175,13 +182,16 @@ namespace MongoDB.Bson
             get
             {
                 ThrowIfDisposed();
-                using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+                using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+                using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
                 {
+                    var context = BsonDeserializationContext.CreateRoot(bsonReader);
+
                     bsonReader.ReadStartDocument();
                     while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                     {
                         bsonReader.SkipName();
-                        yield return DeserializeBsonValue(bsonReader);
+                        yield return DeserializeBsonValue(context);
                     }
                     bsonReader.ReadEndDocument();
                 }
@@ -435,7 +445,8 @@ namespace MongoDB.Bson
             }
             ThrowIfDisposed();
 
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
                 bsonReader.ReadStartDocument();
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
@@ -462,13 +473,16 @@ namespace MongoDB.Bson
         public override bool ContainsValue(BsonValue value)
         {
             ThrowIfDisposed();
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+
                 bsonReader.ReadStartDocument();
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                 {
                     bsonReader.SkipName();
-                    if (DeserializeBsonValue(bsonReader).Equals(value))
+                    if (DeserializeBsonValue(context).Equals(value))
                     {
                         return true;
                     }
@@ -515,8 +529,11 @@ namespace MongoDB.Bson
             }
             ThrowIfDisposed();
 
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+                
                 bsonReader.ReadStartDocument();
                 var i = 0;
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
@@ -524,7 +541,7 @@ namespace MongoDB.Bson
                     if (i == index)
                     {
                         var name = bsonReader.ReadName();
-                        var value = DeserializeBsonValue(bsonReader);
+                        var value = DeserializeBsonValue(context);
                         return new BsonElement(name, value);
                     }
 
@@ -567,13 +584,16 @@ namespace MongoDB.Bson
         public override IEnumerator<BsonElement> GetEnumerator()
         {
             ThrowIfDisposed();
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+
                 bsonReader.ReadStartDocument();
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                 {
                     var name = bsonReader.ReadName();
-                    var value = DeserializeBsonValue(bsonReader);
+                    var value = DeserializeBsonValue(context);
                     yield return new BsonElement(name, value);
                 }
                 bsonReader.ReadEndDocument();
@@ -595,8 +615,11 @@ namespace MongoDB.Bson
             }
             ThrowIfDisposed();
 
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+                
                 bsonReader.ReadStartDocument();
                 var i = 0;
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
@@ -604,7 +627,7 @@ namespace MongoDB.Bson
                     bsonReader.SkipName();
                     if (i == index)
                     {
-                        return DeserializeBsonValue(bsonReader);
+                        return DeserializeBsonValue(context);
                     }
 
                     bsonReader.SkipValue();
@@ -664,6 +687,22 @@ namespace MongoDB.Bson
         public override void InsertAt(int index, BsonElement element)
         {
             throw new NotSupportedException("RawBsonDocument instances are immutable.");
+        }
+
+        /// <summary>
+        /// Materializes the RawBsonDocument into a regular BsonDocument.
+        /// </summary>
+        /// <param name="binaryReaderSettings">The binary reader settings.</param>
+        /// <returns>A BsonDocument.</returns>
+        public BsonDocument Materialize(BsonBinaryReaderSettings binaryReaderSettings)
+        {
+            ThrowIfDisposed();
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var reader = new BsonBinaryReader(stream, binaryReaderSettings))
+            {
+                var context = BsonDeserializationContext.CreateRoot(reader);
+                return BsonDocumentSerializer.Instance.Deserialize(context);
+            }
         }
 
         /// <summary>
@@ -781,14 +820,17 @@ namespace MongoDB.Bson
         public override bool TryGetElement(string name, out BsonElement element)
         {
             ThrowIfDisposed();
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+                
                 bsonReader.ReadStartDocument();
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                 {
                     if (bsonReader.ReadName() == name)
                     {
-                        var value = DeserializeBsonValue(bsonReader);
+                        var value = DeserializeBsonValue(context);
                         element = new BsonElement(name, value);
                         return true;
                     }
@@ -797,7 +839,7 @@ namespace MongoDB.Bson
                 }
                 bsonReader.ReadEndDocument();
 
-                element = null;
+                element = default(BsonElement);
                 return false;
             }
         }
@@ -813,14 +855,17 @@ namespace MongoDB.Bson
         public override bool TryGetValue(string name, out BsonValue value)
         {
             ThrowIfDisposed();
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, _readerSettings))
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+                
                 bsonReader.ReadStartDocument();
                 while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
                 {
                     if (bsonReader.ReadName() == name)
                     {
-                        value = DeserializeBsonValue(bsonReader);
+                        value = DeserializeBsonValue(context);
                         return true;
                     }
 
@@ -877,7 +922,7 @@ namespace MongoDB.Bson
             return _slice.GetSlice(0, _slice.Length);
         }
 
-        private RawBsonArray DeserializeRawBsonArray(BsonBinaryReader bsonReader)
+        private RawBsonArray DeserializeRawBsonArray(IBsonReader bsonReader)
         {
             var slice = bsonReader.ReadRawBsonArray();
             var nestedArray = new RawBsonArray(slice);
@@ -885,7 +930,7 @@ namespace MongoDB.Bson
             return nestedArray;
         }
 
-        private RawBsonDocument DeserializeRawBsonDocument(BsonBinaryReader bsonReader)
+        private RawBsonDocument DeserializeRawBsonDocument(IBsonReader bsonReader)
         {
             var slice = bsonReader.ReadRawBsonDocument();
             var nestedDocument = new RawBsonDocument(slice);
@@ -893,13 +938,14 @@ namespace MongoDB.Bson
             return nestedDocument;
         }
 
-        private BsonValue DeserializeBsonValue(BsonBinaryReader bsonReader)
+        private BsonValue DeserializeBsonValue(BsonDeserializationContext context)
         {
+            var bsonReader = context.Reader;
             switch (bsonReader.GetCurrentBsonType())
             {
                 case BsonType.Array: return DeserializeRawBsonArray(bsonReader);
                 case BsonType.Document: return DeserializeRawBsonDocument(bsonReader);
-                default: return (BsonValue)BsonValueSerializer.Instance.Deserialize(bsonReader, typeof(BsonValue), null);
+                default: return BsonValueSerializer.Instance.Deserialize(context);
             }
         }
     }

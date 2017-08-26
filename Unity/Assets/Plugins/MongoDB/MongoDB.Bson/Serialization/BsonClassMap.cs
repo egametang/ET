@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+#if NET45
 using System.Runtime.Serialization;
+#endif
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization.Conventions;
 
@@ -29,32 +31,41 @@ namespace MongoDB.Bson.Serialization
     /// <summary>
     /// Represents a mapping between a class and a BSON document.
     /// </summary>
-    public abstract class BsonClassMap
+    public class BsonClassMap
     {
         // private static fields
         private readonly static Dictionary<Type, BsonClassMap> __classMaps = new Dictionary<Type, BsonClassMap>();
         private readonly static Queue<Type> __knownTypesQueue = new Queue<Type>();
 
+        private static readonly MethodInfo __getUninitializedObjectMethodInfo =
+            typeof(string)
+            .GetTypeInfo()
+            .Assembly
+            .GetType("System.Runtime.Serialization.FormatterServices")
+            .GetTypeInfo()
+            ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+
         private static int __freezeNestingLevel = 0;
 
         // private fields
-        private bool _frozen; // once a class map has been frozen no further changes are allowed
-        private BsonClassMap _baseClassMap; // null for class object and interfaces
-        private Type _classType;
-        private volatile IDiscriminatorConvention _cachedDiscriminatorConvention;
+        private readonly Type _classType;
         private readonly List<BsonCreatorMap> _creatorMaps;
-        private Func<object> _creator;
-        private IConventionPack _conventionPack;
-        private string _discriminator;
-        private bool _discriminatorIsRequired;
-        private bool _hasRootClass;
-        private bool _isRootClass;
-        private bool _isAnonymous;
-        private BsonMemberMap _idMemberMap;
+        private readonly IConventionPack _conventionPack;
+        private readonly bool _isAnonymous;
         private readonly List<BsonMemberMap> _allMemberMaps; // includes inherited member maps
         private readonly ReadOnlyCollection<BsonMemberMap> _allMemberMapsReadonly;
         private readonly List<BsonMemberMap> _declaredMemberMaps; // only the members declared in this class
         private readonly BsonTrie<int> _elementTrie;
+
+        private bool _frozen; // once a class map has been frozen no further changes are allowed
+        private BsonClassMap _baseClassMap; // null for class object and interfaces
+        private volatile IDiscriminatorConvention _discriminatorConvention;
+        private Func<object> _creator;
+        private string _discriminator;
+        private bool _discriminatorIsRequired;
+        private bool _hasRootClass;
+        private bool _isRootClass;
+        private BsonMemberMap _idMemberMap;
         private bool _ignoreExtraElements;
         private bool _ignoreExtraElementsIsInherited;
         private BsonMemberMap _extraElementsMemberMap;
@@ -66,7 +77,7 @@ namespace MongoDB.Bson.Serialization
         /// Initializes a new instance of the BsonClassMap class.
         /// </summary>
         /// <param name="classType">The class type.</param>
-        protected BsonClassMap(Type classType)
+        public BsonClassMap(Type classType)
         {
             _classType = classType;
             _creatorMaps = new List<BsonCreatorMap>();
@@ -78,6 +89,17 @@ namespace MongoDB.Bson.Serialization
             _elementTrie = new BsonTrie<int>();
 
             Reset();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BsonClassMap"/> class.
+        /// </summary>
+        /// <param name="classType">Type of the class.</param>
+        /// <param name="baseClassMap">The base class map.</param>
+        public BsonClassMap(Type classType, BsonClassMap baseClassMap)
+            : this(classType)
+        {
+            _baseClassMap = baseClassMap;
         }
 
         // public properties
@@ -119,24 +141,6 @@ namespace MongoDB.Bson.Serialization
         public IConventionPack ConventionPack
         {
             get { return _conventionPack; }
-        }
-
-        /// <summary>
-        /// Gets the conventions used with this class.
-        /// </summary>
-        [Obsolete("Use ConventionPack instead.")]
-        public ConventionProfile Conventions
-        {
-            get 
-            {
-                var profile = _conventionPack as ConventionProfile;
-                if (profile != null)
-                {
-                    return profile;
-                }
-
-                throw new NotSupportedException("This class map was setup using an IConventionPack, part of the new conventions api. Use the ConventionPack property for access to the conventions.");
-            }
         }
 
         /// <summary>
@@ -273,11 +277,11 @@ namespace MongoDB.Bson.Serialization
                 throw new ArgumentNullException("memberInfo");
             }
 
-            if (memberInfo.MemberType == MemberTypes.Field)
+            if (memberInfo is FieldInfo)
             {
                 return ((FieldInfo)memberInfo).FieldType;
             }
-            else if (memberInfo.MemberType == MemberTypes.Property)
+            else if (memberInfo is PropertyInfo)
             {
                 return ((PropertyInfo)memberInfo).PropertyType;
             }
@@ -291,7 +295,15 @@ namespace MongoDB.Bson.Serialization
         /// <returns>All registered class maps.</returns>
         public static IEnumerable<BsonClassMap> GetRegisteredClassMaps()
         {
-            return __classMaps.Values;
+            BsonSerializer.ConfigLock.EnterReadLock();
+            try
+            {
+                return __classMaps.Values.ToList(); // return a copy for thread safety
+            }
+            finally
+            {
+                BsonSerializer.ConfigLock.ExitReadLock();
+            }
         }
 
         /// <summary>
@@ -368,25 +380,6 @@ namespace MongoDB.Bson.Serialization
         }
 
         /// <summary>
-        /// Looks up the conventions profile for a type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The conventions profile for that type.</returns>
-        [Obsolete("Use ConventionRegistry.Lookup instead.")]
-        public static ConventionProfile LookupConventions(Type type)
-        {
-            var pack = ConventionRegistry.Lookup(type);
-            var profile = pack as ConventionProfile;
-            if (profile != null)
-            {
-                return profile;
-            }
-
-            var message = string.Format("Type {0} was setup using an IConventionPack, part of the new conventions api. Use the ConventionPack property for access to the conventions.", type);
-            throw new NotSupportedException(message);
-        }
-
-        /// <summary>
         /// Creates and registers a class map.
         /// </summary>
         /// <typeparam name="TClass">The class.</typeparam>
@@ -431,17 +424,6 @@ namespace MongoDB.Bson.Serialization
             {
                 BsonSerializer.ConfigLock.ExitWriteLock();
             }
-        }
-
-        /// <summary>
-        /// Registers a conventions profile.
-        /// </summary>
-        /// <param name="conventions">The conventions profile.</param>
-        /// <param name="filter">The filter function that determines which types this profile applies to.</param>
-        [Obsolete("Use ConventionRegistry.Register instead.")]
-        public static void RegisterConventions(ConventionProfile conventions, Func<Type, bool> filter)
-        {
-            ConventionRegistry.Register("conventions", conventions, filter);
         }
 
         // public methods
@@ -492,10 +474,13 @@ namespace MongoDB.Bson.Serialization
                     __freezeNestingLevel++;
                     try
                     {
-                        var baseType = _classType.BaseType;
+                        var baseType = _classType.GetTypeInfo().BaseType;
                         if (baseType != null)
                         {
-                            _baseClassMap = LookupClassMap(baseType);
+                            if (_baseClassMap == null)
+                            {
+                                _baseClassMap = LookupClassMap(baseType);
+                            }
                             _discriminatorIsRequired |= _baseClassMap._discriminatorIsRequired;
                             _hasRootClass |= (_isRootClass || _baseClassMap.HasRootClass);
                             _allMemberMaps.AddRange(_baseClassMap.AllMemberMaps);
@@ -545,8 +530,8 @@ namespace MongoDB.Bson.Serialization
                             else
                             {
                                 var conflictingMemberMap = _allMemberMaps[conflictingMemberIndex];
-                                var fieldOrProperty = (memberMap.MemberInfo.MemberType == MemberTypes.Field) ? "field" : "property";
-                                var conflictingFieldOrProperty = (conflictingMemberMap.MemberInfo.MemberType == MemberTypes.Field) ? "field" : "property";
+                                var fieldOrProperty = (memberMap.MemberInfo is FieldInfo) ? "field" : "property";
+                                var conflictingFieldOrProperty = (conflictingMemberMap.MemberInfo is FieldInfo) ? "field" : "property";
                                 var conflictingType = conflictingMemberMap.MemberInfo.DeclaringType;
 
                                 string message;
@@ -822,7 +807,7 @@ namespace MongoDB.Bson.Serialization
             }
 
             if (_frozen) { ThrowFrozenException(); }
-            var fieldInfo = _classType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            var fieldInfo = _classType.GetTypeInfo().GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             if (fieldInfo == null)
             {
                 var message = string.Format("The class '{0}' does not have a field named '{1}'.", _classType.FullName, fieldName);
@@ -925,7 +910,7 @@ namespace MongoDB.Bson.Serialization
             }
 
             if (_frozen) { ThrowFrozenException(); }
-            var propertyInfo = _classType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            var propertyInfo = _classType.GetTypeInfo().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             if (propertyInfo == null)
             {
                 var message = string.Format("The class '{0}' does not have a property named '{1}'.", _classType.FullName, propertyName);
@@ -1003,7 +988,7 @@ namespace MongoDB.Bson.Serialization
             EnsureMemberMapIsForThisClass(memberMap);
 
             if (_frozen) { ThrowFrozenException(); }
-            if (memberMap.MemberType != typeof(BsonDocument) && !typeof(IDictionary<string, object>).IsAssignableFrom(memberMap.MemberType))
+            if (memberMap.MemberType != typeof(BsonDocument) && !typeof(IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(memberMap.MemberType))
             {
                 var message = string.Format("Type of ExtraElements member must be BsonDocument or implement IDictionary<string, object>.");
                 throw new InvalidOperationException(message);
@@ -1018,7 +1003,7 @@ namespace MongoDB.Bson.Serialization
         /// <param name="type">The known type.</param>
         public void AddKnownType(Type type)
         {
-            if (!_classType.IsAssignableFrom(type))
+            if (!_classType.GetTypeInfo().IsAssignableFrom(type))
             {
                 string message = string.Format("Class {0} cannot be assigned to Class {1}.  Ensure that known types are derived from the mapped class.", type.FullName, _classType.FullName);
                 throw new ArgumentNullException("type", message);
@@ -1126,7 +1111,7 @@ namespace MongoDB.Bson.Serialization
             }
 
             if (_frozen) { ThrowFrozenException(); }
-            var fieldInfo = _classType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            var fieldInfo = _classType.GetTypeInfo().GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             if (fieldInfo == null)
             {
                 var message = string.Format("The class '{0}' does not have a field named '{1}'.", _classType.FullName, fieldName);
@@ -1175,7 +1160,7 @@ namespace MongoDB.Bson.Serialization
             }
 
             if (_frozen) { ThrowFrozenException(); }
-            var propertyInfo = _classType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            var propertyInfo = _classType.GetTypeInfo().GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
             if (propertyInfo == null)
             {
                 var message = string.Format("The class '{0}' does not have a property named '{1}'.", _classType.FullName, propertyName);
@@ -1192,12 +1177,12 @@ namespace MongoDB.Bson.Serialization
         internal IDiscriminatorConvention GetDiscriminatorConvention()
         {
             // return a cached discriminator convention when possible
-            var discriminatorConvention = _cachedDiscriminatorConvention;
+            var discriminatorConvention = _discriminatorConvention;
             if (discriminatorConvention == null)
             {
                 // it's possible but harmless for multiple threads to do the initial lookup at the same time
                 discriminatorConvention = BsonSerializer.LookupDiscriminatorConvention(_classType);
-                _cachedDiscriminatorConvention = discriminatorConvention;
+                _discriminatorConvention = discriminatorConvention;
             }
             return discriminatorConvention;
         }
@@ -1288,18 +1273,26 @@ namespace MongoDB.Bson.Serialization
             {
                 Expression body;
                 var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-                var defaultConstructor = _classType.GetConstructor(bindingFlags, null, new Type[0], null);
+                var classTypeInfo = _classType.GetTypeInfo();
+                var defaultConstructor = classTypeInfo.GetConstructors(bindingFlags)
+                    .Where(c => c.GetParameters().Length == 0)
+                    .SingleOrDefault();
                 if (defaultConstructor != null)
                 {
                     // lambdaExpression = () => (object) new TClass()
                     body = Expression.New(defaultConstructor);
                 }
-                else
+                else if (__getUninitializedObjectMethodInfo != null)
                 {
                     // lambdaExpression = () => FormatterServices.GetUninitializedObject(classType)
-                    var getUnitializedObjectMethodInfo = typeof(FormatterServices).GetMethod("GetUninitializedObject", BindingFlags.Public | BindingFlags.Static);
-                    body = Expression.Call(getUnitializedObjectMethodInfo, Expression.Constant(_classType));
+                    body = Expression.Call(__getUninitializedObjectMethodInfo, Expression.Constant(_classType));
                 }
+                else
+                {
+                    var message = $"Type '{_classType.GetType().Name}' does not have a default constructor.";
+                    throw new BsonSerializationException(message);
+                }
+
                 var lambdaExpression = Expression.Lambda<Func<object>>(body);
                 _creator = lambdaExpression.Compile();
             }
@@ -1309,7 +1302,7 @@ namespace MongoDB.Bson.Serialization
         private Func<object, bool> GetShouldSerializeMethod(MemberInfo memberInfo)
         {
             var shouldSerializeMethodName = "ShouldSerialize" + memberInfo.Name;
-            var shouldSerializeMethodInfo = _classType.GetMethod(shouldSerializeMethodName, new Type[] { });
+            var shouldSerializeMethodInfo = _classType.GetTypeInfo().GetMethod(shouldSerializeMethodName, new Type[] { });
             if (shouldSerializeMethodInfo != null &&
                 shouldSerializeMethodInfo.IsPublic &&
                 shouldSerializeMethodInfo.ReturnType == typeof(bool))
@@ -1328,9 +1321,10 @@ namespace MongoDB.Bson.Serialization
         private bool IsAnonymousType(Type type)
         {
             // don't test for too many things in case implementation details change in the future
+            var typeInfo = type.GetTypeInfo();
             return
-                Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false) &&
-                type.IsGenericType &&
+                typeInfo.GetCustomAttributes<CompilerGeneratedAttribute>(false).Any() &&
+                typeInfo.IsGenericType &&
                 type.Name.Contains("Anon"); // don't check for more than "Anon" so it works in mono also
         }
 
@@ -1373,6 +1367,15 @@ namespace MongoDB.Bson.Serialization
         }
 
         // public methods
+        /// <summary>
+        /// Creates an instance.
+        /// </summary>
+        /// <returns>An instance.</returns>
+        public new TClass CreateInstance()
+        {
+            return (TClass)base.CreateInstance();
+        }
+
         /// <summary>
         /// Gets a member map.
         /// </summary>
@@ -1548,6 +1551,11 @@ namespace MongoDB.Bson.Serialization
         }
 
         // private static methods
+        private static MethodInfo[] GetPropertyAccessors(PropertyInfo propertyInfo)
+        {
+            return propertyInfo.GetAccessors(true);
+        }
+
         private static MemberInfo GetMemberInfoFromLambda<TMember>(Expression<Func<TClass, TMember>> memberLambda)
         {
             var body = memberLambda.Body;
@@ -1565,21 +1573,14 @@ namespace MongoDB.Bson.Serialization
                     throw new BsonSerializationException("Invalid lambda expression");
             }
             var memberInfo = memberExpression.Member;
-            switch (memberInfo.MemberType)
+            if (memberInfo is PropertyInfo)
             {
-                case MemberTypes.Field:
-                    break;
-                case MemberTypes.Property:
-                    if (memberInfo.DeclaringType.IsInterface)
-                    {
-                        memberInfo = FindPropertyImplementation((PropertyInfo)memberInfo, typeof(TClass));
-                    }
-                    break;
-                default:
-                    memberInfo = null;
-                    break;
+                if (memberInfo.DeclaringType.GetTypeInfo().IsInterface)
+                {
+                    memberInfo = FindPropertyImplementation((PropertyInfo)memberInfo, typeof(TClass));
+                }
             }
-            if (memberInfo == null)
+            else if (!(memberInfo is FieldInfo))
             {
                 throw new BsonSerializationException("Invalid lambda expression");
             }
@@ -1595,12 +1596,36 @@ namespace MongoDB.Bson.Serialization
         {
             var interfaceType = interfacePropertyInfo.DeclaringType;
 
+#if NETSTANDARD1_5 || NETSTANDARD1_6
+            var actualTypeInfo = actualType.GetTypeInfo();
+            var bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            var actualTypePropertyInfos = actualTypeInfo.GetMembers(bindingFlags).OfType<PropertyInfo>();
+
+            var explicitlyImplementedPropertyName = $"{interfacePropertyInfo.DeclaringType.FullName}.{interfacePropertyInfo.Name}".Replace("+", ".");
+            var explicitlyImplementedPropertyInfo = actualTypePropertyInfos
+                .Where(p => p.Name == explicitlyImplementedPropertyName)
+                .SingleOrDefault();
+            if (explicitlyImplementedPropertyInfo != null)
+            {
+                return explicitlyImplementedPropertyInfo;
+            }
+
+            var implicitlyImplementedPropertyInfo = actualTypePropertyInfos
+                .Where(p => p.Name == interfacePropertyInfo.Name && p.PropertyType == interfacePropertyInfo.PropertyType)
+                .SingleOrDefault();
+            if (implicitlyImplementedPropertyInfo != null)
+            {
+                return implicitlyImplementedPropertyInfo;
+            }
+
+            throw new BsonSerializationException($"Unable to find property info for property: '{interfacePropertyInfo.Name}'.");
+#else
             // An interface map must be used because because there is no
             // other officially documented way to derive the explicitly
             // implemented property name.
             var interfaceMap = actualType.GetInterfaceMap(interfaceType);
 
-            var interfacePropertyAccessors = interfacePropertyInfo.GetAccessors(true);
+            var interfacePropertyAccessors = GetPropertyAccessors(interfacePropertyInfo);
 
             var actualPropertyAccessors = interfacePropertyAccessors.Select(interfacePropertyAccessor =>
             {
@@ -1611,13 +1636,14 @@ namespace MongoDB.Bson.Serialization
 
             // Binding must be done by accessor methods because interface
             // maps only map accessor methods and do not map properties.
-            return actualType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            return actualType.GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Single(propertyInfo =>
                 {
                     // we are looking for a property that implements all the required accessors
-                    var propertyAccessors = propertyInfo.GetAccessors(true);
+                    var propertyAccessors = GetPropertyAccessors(propertyInfo);
                     return actualPropertyAccessors.All(x => propertyAccessors.Contains(x));
                 });
+#endif
         }
     }
 }

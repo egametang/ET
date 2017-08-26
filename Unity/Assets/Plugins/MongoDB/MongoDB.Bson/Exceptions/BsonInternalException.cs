@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,14 +14,18 @@
 */
 
 using System;
+#if NET45
 using System.Runtime.Serialization;
+#endif
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON internal exception (almost surely the result of a bug).
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonInternalException : BsonException
     {
         // constructors
@@ -52,6 +56,7 @@ namespace MongoDB.Bson
         {
         }
 
+#if NET45
         /// <summary>
         /// Initializes a new instance of the BsonInternalException class (this overload used by deserialization).
         /// </summary>
@@ -61,5 +66,6 @@ namespace MongoDB.Bson
             : base(info, context)
         {
         }
+#endif
     }
 }

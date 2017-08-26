@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON value (this is an abstract class, see the various subclasses).
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public abstract class BsonValue : IComparable<BsonValue>, IConvertible, IEquatable<BsonValue>
     {
         // private static fields
@@ -33,6 +33,7 @@ namespace MongoDB.Bson
             { BsonType.MinKey, 1 },
             { BsonType.Undefined, 2 },
             { BsonType.Null, 3 },
+            { BsonType.Decimal128, 4 },
             { BsonType.Double, 4 },
             { BsonType.Int32, 4 },
             { BsonType.Int64, 4 },
@@ -50,19 +51,6 @@ namespace MongoDB.Bson
             { BsonType.JavaScriptWithScope, 14 },
             { BsonType.MaxKey, 15 }
         };
-
-        // private fields
-        private BsonType _bsonType;
-
-        // constructors
-        /// <summary>
-        /// Initializes a new instance of the BsonValue class.
-        /// </summary>
-        /// <param name="bsonType">The BsonType of this BsonValue.</param>
-        protected BsonValue(BsonType bsonType)
-        {
-            _bsonType = bsonType;
-        }
 
         // public properties
         /// <summary>
@@ -203,6 +191,22 @@ namespace MongoDB.Bson
         }
 
         /// <summary>
+        /// Casts the BsonValue to a <see cref="decimal"/> (throws an InvalidCastException if the cast is not valid).
+        /// </summary>
+        public decimal AsDecimal
+        {
+            get { return (decimal)((BsonDecimal128)this).Value; }
+        }
+
+        /// <summary>
+        /// Casts the BsonValue to a <see cref="Decimal128"/> (throws an InvalidCastException if the cast is not valid).
+        /// </summary>
+        public Decimal128 AsDecimal128
+        {
+            get { return ((BsonDecimal128)this).Value; }
+        }
+
+        /// <summary>
         /// Casts the BsonValue to a Double (throws an InvalidCastException if the cast is not valid).
         /// </summary>
         public double AsDouble
@@ -248,7 +252,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool? AsNullableBoolean
         {
-            get { return (_bsonType == BsonType.Null) ? null : (bool?)AsBoolean; }
+            get { return (BsonType == BsonType.Null) ? null : (bool?)AsBoolean; }
         }
 
         /// <summary>
@@ -257,7 +261,23 @@ namespace MongoDB.Bson
         [Obsolete("Use ToNullableUniversalTime instead.")]
         public DateTime? AsNullableDateTime
         {
-            get { return (_bsonType == BsonType.Null) ? null : (DateTime?)AsDateTime; }
+            get { return (BsonType == BsonType.Null) ? null : (DateTime?)AsDateTime; }
+        }
+
+        /// <summary>
+        /// Casts the BsonValue to a Nullable{Decimal} (throws an InvalidCastException if the cast is not valid).
+        /// </summary>
+        public decimal? AsNullableDecimal
+        {
+            get { return (BsonType == BsonType.Null) ? null : (decimal?)AsDecimal128; }
+        }
+
+        /// <summary>
+        /// Casts the BsonValue to a Nullable{Decimal128} (throws an InvalidCastException if the cast is not valid).
+        /// </summary>
+        public Decimal128? AsNullableDecimal128
+        {
+            get { return (BsonType == BsonType.Null) ? null : (Decimal128?)AsDecimal128; }
         }
 
         /// <summary>
@@ -265,7 +285,7 @@ namespace MongoDB.Bson
         /// </summary>
         public double? AsNullableDouble
         {
-            get { return (_bsonType == BsonType.Null) ? null : (double?)AsDouble; }
+            get { return (BsonType == BsonType.Null) ? null : (double?)AsDouble; }
         }
 
         /// <summary>
@@ -273,7 +293,7 @@ namespace MongoDB.Bson
         /// </summary>
         public Guid? AsNullableGuid
         {
-            get { return (_bsonType == BsonType.Null) ? null : (Guid?)AsGuid; }
+            get { return (BsonType == BsonType.Null) ? null : (Guid?)AsGuid; }
         }
 
         /// <summary>
@@ -281,7 +301,7 @@ namespace MongoDB.Bson
         /// </summary>
         public int? AsNullableInt32
         {
-            get { return (_bsonType == BsonType.Null) ? null : (int?)AsInt32; }
+            get { return (BsonType == BsonType.Null) ? null : (int?)AsInt32; }
         }
 
         /// <summary>
@@ -289,7 +309,7 @@ namespace MongoDB.Bson
         /// </summary>
         public long? AsNullableInt64
         {
-            get { return (_bsonType == BsonType.Null) ? null : (long?)AsInt64; }
+            get { return (BsonType == BsonType.Null) ? null : (long?)AsInt64; }
         }
 
         /// <summary>
@@ -297,7 +317,7 @@ namespace MongoDB.Bson
         /// </summary>
         public ObjectId? AsNullableObjectId
         {
-            get { return (_bsonType == BsonType.Null) ? null : (ObjectId?)AsObjectId; }
+            get { return (BsonType == BsonType.Null) ? null : (ObjectId?)AsObjectId; }
         }
 
         /// <summary>
@@ -336,17 +356,14 @@ namespace MongoDB.Bson
         /// <summary>
         /// Gets the BsonType of this BsonValue.
         /// </summary>
-        public BsonType BsonType
-        {
-            get { return _bsonType; }
-        }
+        public abstract BsonType BsonType { get; }
 
         /// <summary>
         /// Tests whether this BsonValue is a Boolean.
         /// </summary>
         public bool IsBoolean
         {
-            get { return _bsonType == BsonType.Boolean; }
+            get { return BsonType == BsonType.Boolean; }
         }
 
         /// <summary>
@@ -354,7 +371,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonArray
         {
-            get { return _bsonType == BsonType.Array; }
+            get { return BsonType == BsonType.Array; }
         }
 
         /// <summary>
@@ -362,7 +379,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonBinaryData
         {
-            get { return _bsonType == BsonType.Binary; }
+            get { return BsonType == BsonType.Binary; }
         }
 
         /// <summary>
@@ -370,7 +387,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonDateTime
         {
-            get { return _bsonType == BsonType.DateTime; }
+            get { return BsonType == BsonType.DateTime; }
         }
 
         /// <summary>
@@ -378,7 +395,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonDocument
         {
-            get { return _bsonType == BsonType.Document; }
+            get { return BsonType == BsonType.Document; }
         }
 
         /// <summary>
@@ -386,7 +403,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonJavaScript
         {
-            get { return _bsonType == BsonType.JavaScript || _bsonType == BsonType.JavaScriptWithScope; }
+            get { return BsonType == BsonType.JavaScript || BsonType == BsonType.JavaScriptWithScope; }
         }
 
         /// <summary>
@@ -394,7 +411,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonJavaScriptWithScope
         {
-            get { return _bsonType == BsonType.JavaScriptWithScope; }
+            get { return BsonType == BsonType.JavaScriptWithScope; }
         }
 
         /// <summary>
@@ -402,7 +419,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonMaxKey
         {
-            get { return _bsonType == BsonType.MaxKey; }
+            get { return BsonType == BsonType.MaxKey; }
         }
 
         /// <summary>
@@ -410,7 +427,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonMinKey
         {
-            get { return _bsonType == BsonType.MinKey; }
+            get { return BsonType == BsonType.MinKey; }
         }
 
         /// <summary>
@@ -418,7 +435,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonNull
         {
-            get { return _bsonType == BsonType.Null; }
+            get { return BsonType == BsonType.Null; }
         }
 
         /// <summary>
@@ -426,7 +443,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonRegularExpression
         {
-            get { return _bsonType == BsonType.RegularExpression; }
+            get { return BsonType == BsonType.RegularExpression; }
         }
 
         /// <summary>
@@ -434,7 +451,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonSymbol
         {
-            get { return _bsonType == BsonType.Symbol; }
+            get { return BsonType == BsonType.Symbol; }
         }
 
         /// <summary>
@@ -442,7 +459,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonTimestamp
         {
-            get { return _bsonType == BsonType.Timestamp; }
+            get { return BsonType == BsonType.Timestamp; }
         }
 
         /// <summary>
@@ -450,7 +467,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsBsonUndefined
         {
-            get { return _bsonType == BsonType.Undefined; }
+            get { return BsonType == BsonType.Undefined; }
         }
 
         /// <summary>
@@ -463,11 +480,19 @@ namespace MongoDB.Bson
         }
 
         /// <summary>
+        /// Tests whether this BsonValue is a Decimal128.
+        /// </summary>
+        public bool IsDecimal128
+        {
+            get { return BsonType == BsonType.Decimal128; }
+        }
+
+        /// <summary>
         /// Tests whether this BsonValue is a Double.
         /// </summary>
         public bool IsDouble
         {
-            get { return _bsonType == BsonType.Double; }
+            get { return BsonType == BsonType.Double; }
         }
 
         /// <summary>
@@ -477,7 +502,7 @@ namespace MongoDB.Bson
         {
             get
             {
-                if (_bsonType == BsonType.Binary)
+                if (BsonType == BsonType.Binary)
                 {
                     var subType = ((BsonBinaryData)this).SubType;
                     return subType == BsonBinarySubType.UuidStandard || subType == BsonBinarySubType.UuidLegacy;
@@ -494,7 +519,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsInt32
         {
-            get { return _bsonType == BsonType.Int32; }
+            get { return BsonType == BsonType.Int32; }
         }
 
         /// <summary>
@@ -502,7 +527,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsInt64
         {
-            get { return _bsonType == BsonType.Int64; }
+            get { return BsonType == BsonType.Int64; }
         }
 
         /// <summary>
@@ -513,9 +538,10 @@ namespace MongoDB.Bson
             get
             {
                 return
-                    _bsonType == BsonType.Double ||
-                    _bsonType == BsonType.Int32 ||
-                    _bsonType == BsonType.Int64;
+                    BsonType == BsonType.Decimal128 ||
+                    BsonType == BsonType.Double ||
+                    BsonType == BsonType.Int32 ||
+                    BsonType == BsonType.Int64;
             }
         }
 
@@ -524,7 +550,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsObjectId
         {
-            get { return _bsonType == BsonType.ObjectId; }
+            get { return BsonType == BsonType.ObjectId; }
         }
 
         /// <summary>
@@ -532,7 +558,7 @@ namespace MongoDB.Bson
         /// </summary>
         public bool IsString
         {
-            get { return _bsonType == BsonType.String; }
+            get { return BsonType == BsonType.String; }
         }
 
         /// <summary>
@@ -585,7 +611,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(bool value)
         {
-            return value ? BsonBoolean.True : BsonBoolean.False;
+            return (BsonBoolean)value;
         }
 
         /// <summary>
@@ -595,7 +621,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(bool? value)
         {
-            return value.HasValue ? (BsonValue)(value.Value ? BsonBoolean.True : BsonBoolean.False) : BsonNull.Value;
+            return value.HasValue ? (BsonValue)(BsonBoolean)value.Value : BsonNull.Value;
         }
 
         /// <summary>
@@ -629,13 +655,53 @@ namespace MongoDB.Bson
         }
 
         /// <summary>
+        /// Converts a decimal to a BsonValue.
+        /// </summary>
+        /// <param name="value">A decimal.</param>
+        /// <returns>A BsonValue.</returns>
+        public static implicit operator BsonValue(decimal value)
+        {
+            return (BsonDecimal128)(Decimal128)value;
+        }
+
+        /// <summary>
+        /// Converts a decimal? to a BsonValue.
+        /// </summary>
+        /// <param name="value">A decimal?.</param>
+        /// <returns>A BsonValue.</returns>
+        public static implicit operator BsonValue(decimal? value)
+        {
+            return value.HasValue ? (BsonValue)(BsonDecimal128)(Decimal128)value.Value : BsonNull.Value;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="Decimal128"/> to a BsonValue.
+        /// </summary>
+        /// <param name="value">A Decimal128.</param>
+        /// <returns>A BsonValue.</returns>
+        public static implicit operator BsonValue(Decimal128 value)
+        {
+            return (BsonDecimal128)value;
+        }
+
+        /// <summary>
+        /// Converts a nullable <see cref="Decimal128"/> to a BsonValue.
+        /// </summary>
+        /// <param name="value">A Decimal128?.</param>
+        /// <returns>A BsonValue.</returns>
+        public static implicit operator BsonValue(Decimal128? value)
+        {
+            return value.HasValue ? (BsonValue)(BsonDecimal128)value.Value : BsonNull.Value;
+        }
+
+        /// <summary>
         /// Converts a double to a BsonValue.
         /// </summary>
         /// <param name="value">A double.</param>
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(double value)
         {
-            return new BsonDouble(value);
+            return (BsonDouble)value;
         }
 
         /// <summary>
@@ -645,7 +711,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(double? value)
         {
-            return value.HasValue ? (BsonValue)new BsonDouble(value.Value) : BsonNull.Value;
+            return value.HasValue ? (BsonValue)(BsonDouble)value.Value : BsonNull.Value;
         }
 
         /// <summary>
@@ -685,7 +751,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(int value)
         {
-            return new BsonInt32(value);
+            return (BsonInt32)value;
         }
 
         /// <summary>
@@ -695,7 +761,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(int? value)
         {
-            return value.HasValue ? (BsonValue)new BsonInt32(value.Value) : BsonNull.Value;
+            return value.HasValue ? (BsonValue)(BsonInt32)value.Value : BsonNull.Value;
         }
 
         /// <summary>
@@ -705,7 +771,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(long value)
         {
-            return new BsonInt64(value);
+            return (BsonInt64)value;
         }
 
         /// <summary>
@@ -715,7 +781,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(long? value)
         {
-            return value.HasValue ? (BsonValue)new BsonInt64(value.Value) : BsonNull.Value;
+            return value.HasValue ? (BsonValue)(BsonInt64)value.Value : BsonNull.Value;
         }
 
         /// <summary>
@@ -755,7 +821,7 @@ namespace MongoDB.Bson
         /// <returns>A BsonValue.</returns>
         public static implicit operator BsonValue(string value)
         {
-            return (value != null) ? (BsonValue)new BsonString(value) : null;
+            return (value != null) ? (BsonValue)(BsonString)value : null;
         }
 
         /// <summary>
@@ -798,6 +864,54 @@ namespace MongoDB.Bson
                 throw new InvalidCastException();
             }
             return (value == null) ? null : value.ToNullableUniversalTime();
+        }
+
+        /// <summary>
+        /// Casts a BsonValue to a decimal.
+        /// </summary>
+        /// <param name="value">The BsonValue.</param>
+        /// <returns>A decimal.</returns>
+        public static explicit operator decimal(BsonValue value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            return value.AsDecimal;
+        }
+
+        /// <summary>
+        /// Casts a BsonValue to a decimal?.
+        /// </summary>
+        /// <param name="value">The BsonValue.</param>
+        /// <returns>A decimal?.</returns>
+        public static explicit operator decimal?(BsonValue value)
+        {
+            return (value == null) ? null : value.AsNullableDecimal;
+        }
+
+        /// <summary>
+        /// Casts a BsonValue to a <see cref="Decimal128"/>.
+        /// </summary>
+        /// <param name="value">The BsonValue.</param>
+        /// <returns>A <see cref="Decimal128"/>.</returns>
+        public static explicit operator Decimal128(BsonValue value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            return value.AsDecimal128;
+        }
+
+        /// <summary>
+        /// Casts a BsonValue to a nullable <see cref="Decimal128"/>?.
+        /// </summary>
+        /// <param name="value">The BsonValue.</param>
+        /// <returns>A nullable <see cref="Decimal128"/>.</returns>
+        public static explicit operator Decimal128?(BsonValue value)
+        {
+            return (value == null) ? null : value.AsNullableDecimal128;
         }
 
         /// <summary>
@@ -1054,8 +1168,6 @@ namespace MongoDB.Bson
         }
 
         // public static methods
-        // TODO: implement more Create methods for .NET types (int, string, etc...)? Not sure... already have implicit conversions
-
         /// <summary>
         /// Creates a new instance of the BsonValue class.
         /// </summary>
@@ -1066,7 +1178,7 @@ namespace MongoDB.Bson
             // optimize away the call to MapToBsonValue for the most common cases
             if (value == null)
             {
-                return null; // not BsonNull.Value to be consistent with other Create methods
+                return BsonNull.Value;
             }
             else if (value is BsonValue)
             {
@@ -1074,11 +1186,11 @@ namespace MongoDB.Bson
             }
             else if (value is int)
             {
-                return new BsonInt32((int)value);
+                return (BsonInt32)(int)value;
             }
             else if (value is string)
             {
-                return new BsonString((string)value);
+                return (BsonString)(string)value;
             }
             else if (value is bool)
             {
@@ -1090,27 +1202,16 @@ namespace MongoDB.Bson
             }
             else if (value is long)
             {
-                return new BsonInt64((long)value);
+                return (BsonInt64)(long)value;
             }
             else if (value is double)
             {
-                return new BsonDouble((double)value);
+                return (BsonDouble)(double)value;
             }
             else
             {
                 return BsonTypeMapper.MapToBsonValue(value);
             }
-        }
-
-        /// <summary>
-        /// Reads one BsonValue from a BsonReader.
-        /// </summary>
-        /// <param name="bsonReader">The reader.</param>
-        /// <returns>A BsonValue.</returns>
-        [Obsolete("Use BsonSerializer.Deserialize<BsonValue> instead.")]
-        public static BsonValue ReadFrom(BsonReader bsonReader)
-        {
-            return BsonSerializer.Deserialize<BsonValue>(bsonReader);
         }
 
         // public methods
@@ -1138,7 +1239,7 @@ namespace MongoDB.Bson
         public int CompareTypeTo(BsonValue other)
         {
             if (object.ReferenceEquals(other, null)) { return 1; }
-            return __bsonTypeSortOrder[_bsonType].CompareTo(__bsonTypeSortOrder[other._bsonType]);
+            return __bsonTypeSortOrder[BsonType].CompareTo(__bsonTypeSortOrder[other.BsonType]);
         }
 
         /// <summary>
@@ -1165,19 +1266,13 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="obj">The other object.</param>
         /// <returns>True if the other object is a BsonValue and equal to this one.</returns>
-        public override bool Equals(object obj)
-        {
-            throw new BsonInternalException("A subclass of BsonValue did not override Equals.");
-        }
+        public abstract override bool Equals(object obj);
 
         /// <summary>
         /// Gets the hash code.
         /// </summary>
         /// <returns>The hash code.</returns>
-        public override int GetHashCode()
-        {
-            throw new BsonInternalException("A subclass of BsonValue did not override GetHashCode.");
-        }
+        public abstract override int GetHashCode();
 
         /// <summary>
         /// Converts this BsonValue to a Boolean (using the JavaScript definition of truthiness).
@@ -1187,6 +1282,26 @@ namespace MongoDB.Bson
         {
             // some subclasses override as appropriate
             return true; // everything else is true        
+        }
+
+        /// <summary>
+        /// Converts this BsonValue to a Decimal.
+        /// </summary>
+        /// <returns>A Decimal.</returns>
+        public virtual decimal ToDecimal()
+        {
+            var message = string.Format("{0} does not support ToDecimal.", this.GetType().Name);
+            throw new NotSupportedException(message);
+        }
+
+        /// <summary>
+        /// Converts this BsonValue to a Decimal128.
+        /// </summary>
+        /// <returns>A Decimal128.</returns>
+        public virtual Decimal128 ToDecimal128()
+        {
+            var message = string.Format("{0} does not support ToDecimal128.", this.GetType().Name);
+            throw new NotSupportedException(message);
         }
 
         /// <summary>
@@ -1259,17 +1374,174 @@ namespace MongoDB.Bson
             throw new NotSupportedException(message);
         }
 
+        // protected methods
         /// <summary>
-        /// Writes the BsonValue to a BsonWriter.
+        /// Implementation of the IConvertible GetTypeCode method.
         /// </summary>
-        /// <param name="bsonWriter">The writer.</param>
-        [Obsolete("Use BsonSerializer.Serialize<BsonValue> instead.")]
-        public void WriteTo(BsonWriter bsonWriter)
+        /// <returns>The TypeCode.</returns>
+        protected virtual TypeCode IConvertibleGetTypeCodeImplementation()
         {
-            BsonSerializer.Serialize(bsonWriter, this);
+            return TypeCode.Object;
         }
 
-        // protected methods
+        /// <summary>
+        /// Implementation of the IConvertible ToBoolean method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A bool.</returns>
+        protected virtual bool IConvertibleToBooleanImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToByte method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A byte.</returns>
+        protected virtual byte IConvertibleToByteImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToChar method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A char.</returns>
+        protected virtual char IConvertibleToCharImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToDateTime method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A DateTime.</returns>
+        protected virtual DateTime IConvertibleToDateTimeImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToDecimal method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A decimal.</returns>
+        protected virtual decimal IConvertibleToDecimalImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToDouble method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A double.</returns>
+        protected virtual double IConvertibleToDoubleImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToInt16 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A short.</returns>
+        protected virtual short IConvertibleToInt16Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToInt32 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>An int.</returns>
+        protected virtual int IConvertibleToInt32Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToInt64 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A long.</returns>
+        protected virtual long IConvertibleToInt64Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToSByte method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>An sbyte.</returns>
+#pragma warning disable 3002
+        protected virtual sbyte IConvertibleToSByteImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+#pragma warning restore
+
+        /// <summary>
+        /// Implementation of the IConvertible ToSingle method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A float.</returns>
+        protected virtual float IConvertibleToSingleImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToString method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A string.</returns>
+        protected virtual string IConvertibleToStringImplementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+
+        /// <summary>
+        /// Implementation of the IConvertible ToUInt16 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A ushort.</returns>
+#pragma warning disable 3002
+        protected virtual ushort IConvertibleToUInt16Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+#pragma warning restore
+
+        /// <summary>
+        /// Implementation of the IConvertible ToUInt32 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A uint.</returns>
+#pragma warning disable 3002
+        protected virtual uint IConvertibleToUInt32Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+#pragma warning restore
+
+        /// <summary>
+        /// Implementation of the IConvertible ToUInt64 method.
+        /// </summary>
+        /// <param name="provider">The format provider.</param>
+        /// <returns>A ulong.</returns>
+#pragma warning disable 3002
+        protected virtual ulong IConvertibleToUInt64Implementation(IFormatProvider provider)
+        {
+            throw new InvalidCastException();
+        }
+#pragma warning restore
+
         /// <summary>
         /// Implementation of operator ==.
         /// </summary>
@@ -1283,168 +1555,67 @@ namespace MongoDB.Bson
         // explicit IConvertible implementation
         TypeCode IConvertible.GetTypeCode()
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return TypeCode.Boolean;
-                case BsonType.DateTime: return TypeCode.DateTime;
-                case BsonType.Double: return TypeCode.Double;
-                case BsonType.Int32: return TypeCode.Int32;
-                case BsonType.Int64: return TypeCode.Int64;
-                case BsonType.String: return TypeCode.String;
-                default: return TypeCode.Object;
-            }
+            return IConvertibleGetTypeCodeImplementation();
         }
 
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return this.AsBoolean;
-                case BsonType.Double: return Convert.ToBoolean(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToBoolean(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToBoolean(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToBoolean(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToBooleanImplementation(provider);
         }
 
         byte IConvertible.ToByte(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToByte(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToByte(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToByte(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToByte(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToByte(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToByteImplementation(provider);
         }
 
         char IConvertible.ToChar(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Int32: return Convert.ToChar(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToChar(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToChar(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToCharImplementation(provider);
         }
 
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.DateTime: return this.ToUniversalTime();
-                case BsonType.String: return Convert.ToDateTime(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToDateTimeImplementation(provider);
         }
 
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToDecimal(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToDecimal(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToDecimal(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToDecimal(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToDecimal(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToDecimalImplementation(provider);
         }
 
         double IConvertible.ToDouble(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToDouble(this.AsBoolean, provider);
-                case BsonType.Double: return this.AsDouble;
-                case BsonType.Int32: return Convert.ToDouble(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToDouble(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToDouble(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToDoubleImplementation(provider);
         }
 
         short IConvertible.ToInt16(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToInt16(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToInt16(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToInt16(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToInt16(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToInt16(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToInt16Implementation(provider);
         }
 
         int IConvertible.ToInt32(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToInt32(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToInt32(this.AsDouble, provider);
-                case BsonType.Int32: return this.AsInt32;
-                case BsonType.Int64: return Convert.ToInt32(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToInt32(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToInt32Implementation(provider);
         }
 
         long IConvertible.ToInt64(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToInt64(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToInt64(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToInt64(this.AsInt32, provider);
-                case BsonType.Int64: return this.AsInt64;
-                case BsonType.String: return Convert.ToInt64(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToInt64Implementation(provider);
         }
 
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToSByte(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToSByte(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToSByte(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToSByte(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToSByte(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToSByteImplementation(provider);
         }
 
         float IConvertible.ToSingle(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToSingle(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToSingle(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToSingle(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToSingle(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToSingle(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToSingleImplementation(provider);
         }
 
         string IConvertible.ToString(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToString(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToString(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToString(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToString(this.AsInt64, provider);
-                case BsonType.ObjectId: return this.AsObjectId.ToString();
-                case BsonType.String: return this.AsString;
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToStringImplementation(provider);
         }
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
@@ -1454,10 +1625,11 @@ namespace MongoDB.Bson
                 return this;
             }
 
-            switch (_bsonType)
+            switch (BsonType)
             {
                 case BsonType.Boolean: return Convert.ChangeType(this.AsBoolean, conversionType, provider);
                 case BsonType.DateTime: return Convert.ChangeType(this.ToUniversalTime(), conversionType, provider);
+                case BsonType.Decimal128: return Convert.ChangeType(this.AsDecimal128, conversionType, provider);
                 case BsonType.Double: return Convert.ChangeType(this.AsDouble, conversionType, provider);
                 case BsonType.Int32: return Convert.ChangeType(this.AsInt32, conversionType, provider);
                 case BsonType.Int64: return Convert.ChangeType(this.AsInt64, conversionType, provider);
@@ -1469,41 +1641,17 @@ namespace MongoDB.Bson
 
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToUInt16(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToUInt16(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToUInt16(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToUInt16(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToUInt16(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToUInt16Implementation(provider);
         }
 
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToUInt32(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToUInt32(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToUInt16(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToUInt32(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToUInt32(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToUInt32Implementation(provider);
         }
 
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
-            switch (_bsonType)
-            {
-                case BsonType.Boolean: return Convert.ToUInt64(this.AsBoolean, provider);
-                case BsonType.Double: return Convert.ToUInt64(this.AsDouble, provider);
-                case BsonType.Int32: return Convert.ToUInt64(this.AsInt32, provider);
-                case BsonType.Int64: return Convert.ToUInt16(this.AsInt64, provider);
-                case BsonType.String: return Convert.ToUInt64(this.AsString, provider);
-                default: throw new InvalidCastException();
-            }
+            return IConvertibleToUInt64Implementation(provider);
         }
     }
 }

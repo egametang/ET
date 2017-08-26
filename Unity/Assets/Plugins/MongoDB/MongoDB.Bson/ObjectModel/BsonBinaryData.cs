@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,13 +21,15 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents BSON binary data.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonBinaryData : BsonValue, IComparable<BsonBinaryData>, IEquatable<BsonBinaryData>
     {
         // private fields
-        private byte[] _bytes;
-        private BsonBinarySubType _subType;
-        private GuidRepresentation _guidRepresentation; // only relevant if subType is UuidStandard or UuidLegacy
+        private readonly byte[] _bytes;
+        private readonly BsonBinarySubType _subType;
+        private readonly GuidRepresentation _guidRepresentation; // only relevant if subType is UuidStandard or UuidLegacy
 
         // constructors
         /// <summary>
@@ -45,7 +47,7 @@ namespace MongoDB.Bson
         /// <param name="bytes">The binary data.</param>
         /// <param name="subType">The binary data subtype.</param>
         public BsonBinaryData(byte[] bytes, BsonBinarySubType subType)
-            : this(bytes, subType, GuidRepresentation.Unspecified)
+            : this(bytes, subType, subType == BsonBinarySubType.UuidStandard ? GuidRepresentation.Standard : GuidRepresentation.Unspecified)
         {
         }
 
@@ -56,7 +58,6 @@ namespace MongoDB.Bson
         /// <param name="subType">The binary data subtype.</param>
         /// <param name="guidRepresentation">The representation for Guids.</param>
         public BsonBinaryData(byte[] bytes, BsonBinarySubType subType, GuidRepresentation guidRepresentation)
-            : base(BsonType.Binary)
         {
             if (bytes == null)
             {
@@ -115,6 +116,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.Binary; }
+        }
+
         /// <summary>
         /// Gets the binary data.
         /// </summary>
@@ -212,94 +221,16 @@ namespace MongoDB.Bson
         /// <summary>
         /// Creates a new BsonBinaryData.
         /// </summary>
-        /// <param name="bytes">The binary data.</param>
-        /// <returns>A BsonBinaryData or null.</returns>
-        [Obsolete("Use new BsonBinaryData(byte[] bytes) instead.")]
-        public static BsonBinaryData Create(byte[] bytes)
-        {
-            return Create(bytes, BsonBinarySubType.Binary);
-        }
-
-        /// <summary>
-        /// Creates a new BsonBinaryData.
-        /// </summary>
-        /// <param name="bytes">The binary data.</param>
-        /// <param name="subType">The binary data subtype.</param>
-        /// <returns>A BsonBinaryData or null.</returns>
-        [Obsolete("Use new BsonBinaryData(byte[] bytes, BsonBinarySubtype subType) instead.")]
-        public static BsonBinaryData Create(byte[] bytes, BsonBinarySubType subType)
-        {
-            if (bytes != null)
-            {
-                return new BsonBinaryData(bytes, subType);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new BsonBinaryData.
-        /// </summary>
-        /// <param name="bytes">The binary data.</param>
-        /// <param name="subType">The binary data subtype.</param>
-        /// <param name="guidRepresentation">The representation for Guids.</param>
-        /// <returns>A BsonBinaryData or null.</returns>
-        [Obsolete("Use new BsonBinaryData(byte[] bytes, BsonBinarySubtype subType, GuidRepresentation guidRepresentation) instead.")]
-        public static BsonBinaryData Create(
-            byte[] bytes,
-            BsonBinarySubType subType,
-            GuidRepresentation guidRepresentation)
-        {
-            if (bytes != null)
-            {
-                return new BsonBinaryData(bytes, subType, guidRepresentation);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new BsonBinaryData.
-        /// </summary>
-        /// <param name="guid">A Guid.</param>
-        /// <returns>A BsonBinaryData.</returns>
-        [Obsolete("Use new BsonBinaryData(Guid guid) instead.")]
-        public static BsonBinaryData Create(Guid guid)
-        {
-            return new BsonBinaryData(guid);
-        }
-
-        /// <summary>
-        /// Creates a new BsonBinaryData.
-        /// </summary>
-        /// <param name="guid">A Guid.</param>
-        /// <param name="guidRepresentation">The representation for Guids.</param>
-        /// <returns>A BsonBinaryData.</returns>
-        [Obsolete("Use new BsonBinaryData(Guid guid, GuidRepresentation guidRepresentation) instead.")]
-        public static BsonBinaryData Create(Guid guid, GuidRepresentation guidRepresentation)
-        {
-            return new BsonBinaryData(guid, guidRepresentation);
-        }
-
-        /// <summary>
-        /// Creates a new BsonBinaryData.
-        /// </summary>
         /// <param name="value">An object to be mapped to a BsonBinaryData.</param>
         /// <returns>A BsonBinaryData or null.</returns>
         public new static BsonBinaryData Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonBinaryData)BsonTypeMapper.MapToBsonValue(value, BsonType.Binary);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonBinaryData)BsonTypeMapper.MapToBsonValue(value, BsonType.Binary);
         }
 
         // public methods

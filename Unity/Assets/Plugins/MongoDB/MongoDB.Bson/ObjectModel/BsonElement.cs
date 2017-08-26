@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,20 +20,17 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON element.
     /// </summary>
+#if NET45
     [Serializable]
-    public class BsonElement : IComparable<BsonElement>, IEquatable<BsonElement>
+#endif
+    public struct BsonElement : IComparable<BsonElement>, IEquatable<BsonElement>
     {
         // private fields
-        private string _name;
-        private BsonValue _value;
+        private readonly string _name;
+        private readonly BsonValue _value;
 
         // constructors
         // NOTE: for every public BsonElement constructor there is a matching constructor, Add and Set method in BsonDocument
-
-        // used when cloning an existing element, caller will set name and value
-        private BsonElement()
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the BsonElement class.
@@ -70,14 +67,6 @@ namespace MongoDB.Bson
         public BsonValue Value
         {
             get { return _value; }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                _value = value;
-            }
         }
 
         // public operators
@@ -89,7 +78,7 @@ namespace MongoDB.Bson
         /// <returns>True if the two BsonElements are equal (or both null).</returns>
         public static bool operator ==(BsonElement lhs, BsonElement rhs)
         {
-            return object.Equals(lhs, rhs);
+            return Equals(lhs, rhs);
         }
 
         /// <summary>
@@ -101,54 +90,6 @@ namespace MongoDB.Bson
         public static bool operator !=(BsonElement lhs, BsonElement rhs)
         {
             return !(lhs == rhs);
-        }
-
-        // public static methods
-        /// <summary>
-        /// Creates a new instance of the BsonElement class.
-        /// </summary>
-        /// <param name="condition">Whether to create the BsonElement or return null.</param>
-        /// <param name="name">The name of the element.</param>
-        /// <param name="value">The value of the element.</param>
-        /// <returns>A BsonElement or null.</returns>
-        [Obsolete("Use new BsonElement(string name, BsonValue value) instead.")]
-        public static BsonElement Create(bool condition, string name, BsonValue value)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            if (condition && value != null)
-            {
-                return new BsonElement(name, value);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonElement class.
-        /// </summary>
-        /// <param name="name">The name of the element.</param>
-        /// <param name="value">The value of the element.</param>
-        /// <returns>A BsonElement or null.</returns>
-        [Obsolete("Use new BsonElement(string name, BsonValue value) instead.")]
-        public static BsonElement Create(string name, BsonValue value)
-        {
-            if (name == null)
-            {
-                throw new ArgumentNullException("name");
-            }
-            if (value != null)
-            {
-                return new BsonElement(name, value);
-            }
-            else
-            {
-                return null;
-            }
         }
 
         // private static methods
@@ -167,10 +108,7 @@ namespace MongoDB.Bson
         /// <returns>A shallow clone of the element.</returns>
         public BsonElement Clone()
         {
-            var clone = new BsonElement();
-            clone._name = _name;
-            clone._value = _value;
-            return clone;
+            return new BsonElement(_name, _value);
         }
 
         /// <summary>
@@ -179,10 +117,7 @@ namespace MongoDB.Bson
         /// <returns>A deep clone of the element.</returns>
         public BsonElement DeepClone()
         {
-            var clone = new BsonElement();
-            clone._name = _name;
-            clone._value = _value.DeepClone();
-            return clone;
+            return new BsonElement(_name, _value.DeepClone());
         }
 
         /// <summary>
@@ -192,7 +127,6 @@ namespace MongoDB.Bson
         /// <returns>A 32-bit signed integer that indicates whether this BsonElement is less than, equal to, or greather than the other.</returns>
         public int CompareTo(BsonElement other)
         {
-            if (other == null) { return 1; }
             int r = _name.CompareTo(other._name);
             if (r != 0) { return r; }
             return _value.CompareTo(other._value);
@@ -205,7 +139,6 @@ namespace MongoDB.Bson
         /// <returns>True if the two BsonElement values are equal.</returns>
         public bool Equals(BsonElement rhs)
         {
-            if (object.ReferenceEquals(rhs, null) || GetType() != rhs.GetType()) { return false; }
             return _name == rhs._name && _value == rhs._value;
         }
 
@@ -216,7 +149,8 @@ namespace MongoDB.Bson
         /// <returns>True if the other object is a BsonElement and equal to this one.</returns>
         public override bool Equals(object obj)
         {
-            return Equals(obj as BsonElement); // works even if obj is null or of a different type
+            if (obj == null || obj.GetType() != typeof(BsonElement)) { return false; }
+            return Equals((BsonElement)obj);
         }
 
         /// <summary>

@@ -16,14 +16,13 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Xml;
 
 namespace MongoDB.Bson.IO
 {
     /// <summary>
     /// A static class that represents a JSON scanner.
     /// </summary>
-    public static class JsonScanner
+    internal static class JsonScanner
     {
         // public static methods
         /// <summary>
@@ -71,7 +70,7 @@ namespace MongoDB.Bson.IO
                     else
                     {
                         buffer.UnRead(c);
-                        throw new Exception(FormatMessage("Invalid JSON input", buffer, buffer.Position));
+                        throw new FormatException(FormatMessage("Invalid JSON input", buffer, buffer.Position));
                     }
             }
         }
@@ -79,16 +78,8 @@ namespace MongoDB.Bson.IO
         // private methods
         private static string FormatMessage(string message, JsonBuffer buffer, int start)
         {
-            var length = 20;
-            string snippet;
-            if (buffer.Position + length >= buffer.Length)
-            {
-                snippet = buffer.Substring(start);
-            }
-            else
-            {
-                snippet = buffer.Substring(start, length) + "...";
-            }
+            var maxLength = 20;
+            var snippet = buffer.GetSnippet(start, maxLength);
             return string.Format("{0} '{1}'.", message, snippet);
         }
 
@@ -339,15 +330,15 @@ namespace MongoDB.Bson.IO
                 {
                     case NumberState.Done:
                         buffer.UnRead(c);
-                        var lexeme = buffer.Substring(start, buffer.Position - start);
+                        var lexeme = buffer.GetSubstring(start, buffer.Position - start);
                         if (type == JsonTokenType.Double)
                         {
-                            var value = XmlConvert.ToDouble(lexeme);
+                            var value = JsonConvert.ToDouble(lexeme);
                             return new DoubleJsonToken(lexeme, value);
                         }
                         else
                         {
-                            var value = XmlConvert.ToInt64(lexeme);
+                            var value = JsonConvert.ToInt64(lexeme);
                             if (value < int.MinValue || value > int.MaxValue)
                             {
                                 return new Int64JsonToken(lexeme, value);
@@ -358,7 +349,7 @@ namespace MongoDB.Bson.IO
                             }
                         }
                     case NumberState.Invalid:
-                        throw new Exception(FormatMessage("Invalid JSON number", buffer, start));
+                        throw new FormatException(FormatMessage("Invalid JSON number", buffer, start));
                 }
             }
         }
@@ -418,11 +409,11 @@ namespace MongoDB.Bson.IO
                 {
                     case RegularExpressionState.Done:
                         buffer.UnRead(c);
-                        var lexeme = buffer.Substring(start, buffer.Position - start);
+                        var lexeme = buffer.GetSubstring(start, buffer.Position - start);
                         var regex = new BsonRegularExpression(lexeme);
                         return new RegularExpressionJsonToken(lexeme, regex);
                     case RegularExpressionState.Invalid:
-                        throw new Exception(FormatMessage("Invalid JSON regular expression", buffer, start));
+                        throw new FormatException(FormatMessage("Invalid JSON regular expression", buffer, start));
                 }
             }
         }
@@ -466,7 +457,7 @@ namespace MongoDB.Bson.IO
                                 if (c != -1)
                                 {
                                     var message = string.Format("Invalid escape sequence in JSON string '\\{0}'.", (char)c);
-                                    throw new Exception(message);
+                                    throw new FormatException(message);
                                 }
                                 break;
                         }
@@ -474,7 +465,7 @@ namespace MongoDB.Bson.IO
                     default:
                         if (c == quoteCharacter)
                         {
-                            var lexeme = buffer.Substring(start, buffer.Position - start);
+                            var lexeme = buffer.GetSubstring(start, buffer.Position - start);
                             return new StringJsonToken(JsonTokenType.String, lexeme, sb.ToString());
                         }
                         if (c != -1)
@@ -485,7 +476,7 @@ namespace MongoDB.Bson.IO
                 }
                 if (c == -1)
                 {
-                    throw new Exception(FormatMessage("End of file in JSON string.", buffer, start));
+                    throw new FormatException(FormatMessage("End of file in JSON string.", buffer, start));
                 }
             }
         }
@@ -500,7 +491,7 @@ namespace MongoDB.Bson.IO
                 c = buffer.Read();
             }
             buffer.UnRead(c);
-            var lexeme = buffer.Substring(start, buffer.Position - start);
+            var lexeme = buffer.GetSubstring(start, buffer.Position - start);
             return new StringJsonToken(JsonTokenType.UnquotedString, lexeme, lexeme);
         }
 

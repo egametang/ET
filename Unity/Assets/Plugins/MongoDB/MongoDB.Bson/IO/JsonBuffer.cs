@@ -13,86 +13,191 @@
 * limitations under the License.
 */
 
+using System;
+using System.IO;
+using System.Text;
+
 namespace MongoDB.Bson.IO
 {
     /// <summary>
-    /// This class represents a JSON string buffer.
+    /// Represents a wrapper around a TextReader to provide some buffering functionality.
     /// </summary>
-    public class JsonBuffer
+    internal class JsonBuffer
     {
         // private fields
-        private string _buffer;
+        private readonly StringBuilder _buffer;
         private int _position;
+        private readonly TextReader _reader;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the JsonBuffer class.
+        /// Initializes a new instance of the <see cref="JsonBuffer"/> class.
         /// </summary>
-        /// <param name="buffer">The string.</param>
-        public JsonBuffer(string buffer)
+        /// <param name="json">The json.</param>
+        public JsonBuffer(string json)
         {
-            _buffer = buffer;
-            _position = 0;
+            if (json == null)
+            {
+                throw new ArgumentNullException("json");
+            }
+            _buffer = new StringBuilder(json);
         }
 
-        // internal properties
         /// <summary>
-        /// Gets the length of the JSON string.
+        /// Initializes a new instance of the <see cref="JsonBuffer" /> class.
         /// </summary>
-        public int Length
+        /// <param name="reader">The reader.</param>
+        public JsonBuffer(TextReader reader)
         {
-            get { return _buffer.Length; }
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            _buffer = new StringBuilder(256); // start out with a reasonable initial capacity
+            _reader = reader;
         }
 
+        // public properties
         /// <summary>
         /// Gets or sets the current position.
         /// </summary>
         public int Position
         {
             get { return _position; }
-            set { _position = value; }
+            set
+            {
+                if (value < 0 || value > _buffer.Length)
+                {
+                    var message = string.Format("Invalid position: {0}.", value);
+                    throw new ArgumentOutOfRangeException("value", message);
+                }
+                _position = value;
+            }
         }
 
         // public methods
         /// <summary>
-        /// Reads a character from the buffer.
+        /// Gets a snippet of a maximum length from the buffer (usually to include in an error message).
         /// </summary>
-        /// <returns>The next character (or -1 if at the end of the buffer).</returns>
+        /// <param name="start">The start.</param>
+        /// <param name="maxLength">The maximum length.</param>
+        /// <returns>The snippet.</returns>
+        public string GetSnippet(int start, int maxLength)
+        {
+            if (start < 0)
+            {
+                throw new ArgumentOutOfRangeException("start", "Start cannot be negative.");
+            }
+            if (maxLength < 0)
+            {
+                throw new ArgumentOutOfRangeException("maxLength", "MaxLength cannot be negative.");
+            }
+            if (start > _position)
+            {
+                throw new ArgumentOutOfRangeException("start", "Start is beyond current position.");
+            }
+            var availableCount = _position - start;
+            var count = Math.Min(availableCount, maxLength);
+            return _buffer.ToString(start, count);
+        }
+
+        /// <summary>
+        /// Gets a substring from the buffer.
+        /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="count">The count.</param>
+        /// <returns>The substring.</returns>
+        public string GetSubstring(int start, int count)
+        {
+            if (start < 0)
+            {
+                throw new ArgumentOutOfRangeException("start", "Start cannot be negative.");
+            }
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException("count", "Count cannot be negative.");
+            }
+            if (start > _position)
+            {
+                throw new ArgumentOutOfRangeException("start", "Start is beyond current position.");
+            }
+            if (start + count > _position)
+            {
+                throw new ArgumentOutOfRangeException("start", "End of substring is beyond current position.");
+            }
+            return _buffer.ToString(start, count);
+        }
+
+        /// <summary>
+        /// Reads the next character from the text reader and advances the character position by one character.
+        /// </summary>
+        /// <returns>
+        /// The next character from the text reader, or -1 if no more characters are available. The default implementation returns -1.
+        /// </returns>
         public int Read()
         {
-            return (_position >= _buffer.Length) ? -1 : _buffer[_position++];
+            ReadMoreIfAtEndOfBuffer();
+            return _position >= _buffer.Length ? -1 : _buffer[_position++];
         }
 
         /// <summary>
-        /// Reads a substring from the buffer.
+        /// Resets the buffer (clears everything up to the current position).
         /// </summary>
-        /// <param name="start">The zero based index of the start of the substring.</param>
-        /// <returns>The substring.</returns>
-        public string Substring(int start)
+        public void ResetBuffer()
         {
-            return _buffer.Substring(start);
+            // only trim the buffer if enough space will be reclaimed to make it worthwhile
+            var minimumTrimCount = 256; // TODO: make configurable?
+            if (_position >= minimumTrimCount)
+            {
+                _buffer.Remove(0, _position);
+                _position = 0;
+            }
         }
 
         /// <summary>
-        /// Reads a substring from the buffer.
+        /// Unreads one character (moving the current Position back one position).
         /// </summary>
-        /// <param name="start">The zero based index of the start of the substring.</param>
-        /// <param name="count">The number of characters in the substring.</param>
-        /// <returns>The substring.</returns>
-        public string Substring(int start, int count)
-        {
-            return _buffer.Substring(start, count);
-        }
-
-        /// <summary>
-        /// Returns one character to the buffer (if the character matches the one at the current position the current position is moved back by one).
-        /// </summary>
-        /// <param name="c">The character to return.</param>
+        /// <param name="c">The character.</param>
         public void UnRead(int c)
         {
-            if (c != -1 && _buffer[_position - 1] == c)
+            if (_position == 0)
             {
+                throw new InvalidOperationException("Unread called when nothing has been read.");
+            }
+
+            if (c == -1)
+            {
+                if (_position != _buffer.Length)
+                {
+                    throw new InvalidOperationException("Unread called with -1 when position is not at the end of the buffer.");
+                }
+            }
+            else
+            {
+                if (_buffer[_position - 1] != c)
+                {
+                    throw new InvalidOperationException("Unread called with a character that does not match what is in the buffer.");
+                }
                 _position -= 1;
+            }
+        }
+
+        // private methods
+        private void ReadMoreIfAtEndOfBuffer()
+        {
+            if (_position >= _buffer.Length)
+            {
+                if (_reader != null)
+                {
+                    var blockSize = 1024; // TODO: make configurable?
+                    var block = new char[blockSize];
+                    var actualCount = _reader.ReadBlock(block, 0, blockSize);
+
+                    if (actualCount > 0)
+                    {
+                        _buffer.Append(block, 0, actualCount);
+                    }
+                }
             }
         }
     }

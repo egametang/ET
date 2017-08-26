@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ namespace MongoDB.Bson
     /// <summary>
     /// Indicates that an attribute restricted to one member has been applied to multiple members.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class DuplicateBsonMemberMapAttributeException : BsonException
     {
         // constructors 
@@ -43,6 +45,7 @@ namespace MongoDB.Bson
         {
         }
 
+#if NET45
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateBsonMemberMapAttributeException" /> class.
         /// </summary>
@@ -54,5 +57,6 @@ namespace MongoDB.Bson
             : base(info, context)
         {
         }
+#endif
     }
 }

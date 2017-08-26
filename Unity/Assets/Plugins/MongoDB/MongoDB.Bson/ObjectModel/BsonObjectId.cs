@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,14 +20,16 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON ObjectId value (see also ObjectId).
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonObjectId : BsonValue, IComparable<BsonObjectId>, IEquatable<BsonObjectId>
     {
         // private static fields
         private static BsonObjectId __emptyInstance = new BsonObjectId(ObjectId.Empty);
 
         // private fields
-        private ObjectId _value;
+        private readonly ObjectId _value;
 
         // constructors
         /// <summary>
@@ -35,7 +37,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">The value.</param>
         public BsonObjectId(ObjectId value)
-            : base(BsonType.ObjectId)
         {
             _value = value;
         }
@@ -46,7 +47,6 @@ namespace MongoDB.Bson
         /// <param name="bytes">The bytes.</param>
         [Obsolete("Use new BsonObjectId(byte[] bytes) instead.")]
         public BsonObjectId(byte[] bytes)
-            : base(BsonType.ObjectId)
         {
             _value = new ObjectId(bytes);
         }
@@ -60,7 +60,6 @@ namespace MongoDB.Bson
         /// <param name="increment">The increment.</param>
         [Obsolete("Use new BsonObjectId(new ObjectId(DateTime timestamp, int machine, short pid, int increment)) instead.")]
         public BsonObjectId(DateTime timestamp, int machine, short pid, int increment)
-            : base(BsonType.ObjectId)
         {
             _value = new ObjectId(timestamp, machine, pid, increment);
         }
@@ -74,7 +73,6 @@ namespace MongoDB.Bson
         /// <param name="increment">The increment.</param>
         [Obsolete("Use new BsonObjectId(new ObjectId(int timestamp, int machine, short pid, int increment)) instead.")]
         public BsonObjectId(int timestamp, int machine, short pid, int increment)
-            : base(BsonType.ObjectId)
         {
             _value = new ObjectId(timestamp, machine, pid, increment);
         }
@@ -85,7 +83,6 @@ namespace MongoDB.Bson
         /// <param name="value">The value.</param>
         [Obsolete("Use new BsonObjectId(new ObjectId(string value)) instead.")]
         public BsonObjectId(string value)
-            : base(BsonType.ObjectId)
         {
             _value = new ObjectId(value);
         }
@@ -100,6 +97,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.ObjectId; }
+        }
+
         /// <summary>
         /// Gets the timestamp.
         /// </summary>
@@ -198,81 +203,18 @@ namespace MongoDB.Bson
 
         // public static methods
         /// <summary>
-        /// Creates a new instance of the BsonObjectId class.
-        /// </summary>
-        /// <param name="value">An ObjectId.</param>
-        /// <returns>A BsonObjectId.</returns>
-        [Obsolete("Use new BsonObjectId(ObjectId value) instead.")]
-        public static BsonObjectId Create(ObjectId value)
-        {
-            return new BsonObjectId(value);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonObjectId class.
-        /// </summary>
-        /// <param name="value">A byte array.</param>
-        /// <returns>A BsonObjectId.</returns>
-        [Obsolete("Use new BsonObjectId(byte[] value) instead.")]
-        public static BsonObjectId Create(byte[] value)
-        {
-            if (value != null)
-            {
-                return new BsonObjectId(value);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonObjectId class.
-        /// </summary>
-        /// <param name="timestamp">The timestamp.</param>
-        /// <param name="machine">The machine hash.</param>
-        /// <param name="pid">The pid.</param>
-        /// <param name="increment">The increment.</param>
-        /// <returns>A BsonObjectId.</returns>
-        [Obsolete("Use new BsonObjectId(int timestamp, int machine, short pid, int increment) instead.")]
-        public static BsonObjectId Create(int timestamp, int machine, short pid, int increment)
-        {
-            return new BsonObjectId(timestamp, machine, pid, increment);
-        }
-
-        /// <summary>
         /// Creates a new BsonObjectId.
         /// </summary>
         /// <param name="value">An object to be mapped to a BsonObjectId.</param>
         /// <returns>A BsonObjectId or null.</returns>
         public new static BsonObjectId Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonObjectId)BsonTypeMapper.MapToBsonValue(value, BsonType.ObjectId);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        /// <summary>
-        /// Creates a new instance of the BsonObjectId class.
-        /// </summary>
-        /// <param name="value">A string.</param>
-        /// <returns>A BsonObjectId.</returns>
-        [Obsolete("Use new BsonObjectId(string value) instead.")]
-        public static BsonObjectId Create(string value)
-        {
-            if (value != null)
-            {
-                return new BsonObjectId(value);
-            }
-            else
-            {
-                return null;
-            }
+            return (BsonObjectId)BsonTypeMapper.MapToBsonValue(value, BsonType.ObjectId);
         }
 
         /// <summary>
@@ -417,6 +359,13 @@ namespace MongoDB.Bson
         /// </summary>
         /// <returns>A string representation of the value.</returns>
         public override string ToString()
+        {
+            return _value.ToString();
+        }
+
+        // protected methods
+        /// <inheritdoc/>
+        protected override string IConvertibleToStringImplementation(IFormatProvider provider)
         {
             return _value.ToString();
         }

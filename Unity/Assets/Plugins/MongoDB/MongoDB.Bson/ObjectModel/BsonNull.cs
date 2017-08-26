@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents the BSON Null value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonNull : BsonValue, IComparable<BsonNull>, IEquatable<BsonNull>
     {
         // private static fields
@@ -29,7 +31,6 @@ namespace MongoDB.Bson
         // constructors
         // private so only the singleton instance can be created
         private BsonNull()
-            : base(BsonType.Null)
         {
         }
 
@@ -62,6 +63,15 @@ namespace MongoDB.Bson
         /// Gets the singleton instance of BsonNull.
         /// </summary>
         public static BsonNull Value { get { return __value; } }
+
+        // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.Null; }
+        }
 
         // public methods
         /// <summary>

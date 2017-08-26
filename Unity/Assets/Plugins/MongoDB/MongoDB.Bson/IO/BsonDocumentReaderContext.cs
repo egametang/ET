@@ -92,27 +92,31 @@ namespace MongoDB.Bson.IO
             return new BsonDocumentReaderContext(_parentContext, _contextType, _document, _array, _index);
         }
 
-        public BsonElement GetNextElement()
+        public bool TryGetNextElement(out BsonElement element)
         {
             if (_index < _document.ElementCount)
             {
-                return _document.GetElement(_index++);
+                element = _document.GetElement(_index++);
+                return true;
             }
             else
             {
-                return null;
+                element = default(BsonElement);
+                return false;
             }
         }
 
-        public BsonValue GetNextValue()
+        public bool TryGetNextValue(out BsonValue value)
         {
             if (_index < _array.Count)
             {
-                return _array[_index++];
+                value = _array[_index++];
+                return true;
             }
             else
             {
-                return null;
+                value = null;
+                return false;
             }
         }
 

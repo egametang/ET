@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,9 +21,12 @@ namespace MongoDB.Bson.Serialization
     public interface IBsonArraySerializer : IBsonSerializer
     {
         /// <summary>
-        /// Gets the serialization info for individual items of the array.
+        /// Tries to get the serialization info for the individual items of the array.
         /// </summary>
-        /// <returns>The serialization info for the items.</returns>
-        BsonSerializationInfo GetItemSerializationInfo();
+        /// <param name="serializationInfo">The serialization information.</param>
+        /// <returns>
+        ///   <c>true</c> if the serialization info exists; otherwise <c>false</c>.
+        ///</returns>
+        bool TryGetItemSerializationInfo(out BsonSerializationInfo serializationInfo);
     }
 }

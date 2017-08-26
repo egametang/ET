@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Attributes
     /// Specifies the discriminator and related options for a class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-#pragma warning disable 618 // obsoleted by IBsonClassMapModifier
-    public class BsonDiscriminatorAttribute : Attribute, IBsonClassMapAttribute, IBsonClassMapModifier
-#pragma warning restore 618
+    public class BsonDiscriminatorAttribute : Attribute, IBsonClassMapAttribute
     {
         // private fields
         private string _discriminator;

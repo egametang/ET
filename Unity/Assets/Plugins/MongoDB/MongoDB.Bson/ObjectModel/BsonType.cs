@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents the type of a BSON element.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public enum BsonType
     {
         /// <summary>
@@ -95,6 +97,10 @@ namespace MongoDB.Bson
         /// A BSON 64-bit integer.
         /// </summary>
         Int64 = 0x12,
+        /// <summary>
+        /// A BSON 128-bit decimal.
+        /// </summary>
+        Decimal128 = 0x13,
         /// <summary>
         /// A BSON MinKey value.
         /// </summary>

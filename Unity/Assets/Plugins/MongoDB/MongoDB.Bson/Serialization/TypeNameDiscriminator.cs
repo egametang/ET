@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ namespace MongoDB.Bson.Serialization
         {
             __wellKnownAssemblies = new Assembly[]
             {
-                Assembly.GetAssembly(typeof(object)), // mscorlib
-                Assembly.GetAssembly(typeof(Queue<>)), // System
-                Assembly.GetAssembly(typeof(HashSet<>)) // System.Core
+                typeof(object).GetTypeInfo().Assembly, // mscorlib
+                typeof(Queue<>).GetTypeInfo().Assembly, // System
+                typeof(HashSet<>).GetTypeInfo().Assembly // System.Core
             };
         }
 
@@ -81,7 +81,7 @@ namespace MongoDB.Bson.Serialization
                         typeArguments.Add(typeArgument);
                     }
 
-                    if (typeArguments.Count == genericTypeDefinition.GetGenericArguments().Length)
+                    if (typeArguments.Count == genericTypeDefinition.GetTypeInfo().GetGenericArguments().Length)
                     {
                         return genericTypeDefinition.MakeGenericType(typeArguments.ToArray());
                     }
@@ -102,12 +102,13 @@ namespace MongoDB.Bson.Serialization
             {
                 throw new ArgumentNullException("type");
             }
+            var typeInfo = type.GetTypeInfo();
 
             string typeName;
-            if (type.IsGenericType)
+            if (typeInfo.IsGenericType)
             {
                 var typeArgumentNames = "";
-                foreach (var typeArgument in type.GetGenericArguments())
+                foreach (var typeArgument in type.GetTypeInfo().GetGenericArguments())
                 {
                     var typeArgumentName = GetDiscriminator(typeArgument);
                     if (typeArgumentName.IndexOf(',') != -1)
@@ -127,10 +128,11 @@ namespace MongoDB.Bson.Serialization
                 typeName = type.FullName;
             }
 
+            var assembly = type.GetTypeInfo().Assembly;
             string assemblyName = null;
-            if (!__wellKnownAssemblies.Contains(type.Assembly))
+            if (!__wellKnownAssemblies.Contains(assembly))
             {
-                assemblyName = type.Assembly.FullName;
+                assemblyName = assembly.FullName;
                 Match match = Regex.Match(assemblyName, "(?<dll>[^,]+), Version=[^,]+, Culture=[^,]+, PublicKeyToken=(?<token>[^,]+)");
                 if (match.Success)
                 {

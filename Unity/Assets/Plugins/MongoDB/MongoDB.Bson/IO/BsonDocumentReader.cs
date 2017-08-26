@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,10 +24,19 @@ namespace MongoDB.Bson.IO
     public class BsonDocumentReader : BsonReader
     {
         // private fields
-	    private BsonDocumentReaderContext _context;
+        private BsonDocumentReaderContext _context;
         private BsonValue _currentValue;
 
         // constructors
+        /// <summary>
+        /// Initializes a new instance of the BsonDocumentReader class.
+        /// </summary>
+        /// <param name="document">A BsonDocument.</param>
+        public BsonDocumentReader(BsonDocument document)
+            : this(document, BsonDocumentReaderSettings.Defaults)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the BsonDocumentReader class.
         /// </summary>
@@ -52,10 +61,7 @@ namespace MongoDB.Bson.IO
         public override void Close()
         {
             // Close can be called on Disposed objects
-            if (State != BsonReaderState.Closed)
-            {
-                State = BsonReaderState.Closed;
-            }
+            State = BsonReaderState.Closed;
         }
 
         /// <summary>
@@ -65,6 +71,17 @@ namespace MongoDB.Bson.IO
         public override BsonReaderBookmark GetBookmark()
         {
             return new BsonDocumentReaderBookmark(State, CurrentBsonType, CurrentName, _context, _currentValue);
+        }
+
+        /// <summary>
+        /// Determines whether this reader is at end of file.
+        /// </summary>
+        /// <returns>
+        /// Whether this reader is at end of file.
+        /// </returns>
+        public override bool IsAtEndOfFile()
+        {
+            return State == BsonReaderState.Done;
         }
 
         /// <summary>
@@ -95,16 +112,10 @@ namespace MongoDB.Bson.IO
         /// <summary>
         /// Reads a BsonType from the reader.
         /// </summary>
-        /// <typeparam name="TValue">The type of the BsonTrie values.</typeparam>
-        /// <param name="bsonTrie">An optional trie to search for a value that matches the next element name.</param>
-        /// <param name="found">Set to true if a matching value was found in the trie.</param>
-        /// <param name="value">Set to the matching value found in the trie or null if no matching value was found.</param>
         /// <returns>A BsonType.</returns>
-        public override BsonType ReadBsonType<TValue>(BsonTrie<TValue> bsonTrie, out bool found, out TValue value)
+        public override BsonType ReadBsonType()
         {
             if (Disposed) { ThrowObjectDisposedException(); }
-            found = false;
-            value = default(TValue);
             if (State == BsonReaderState.Initial || State == BsonReaderState.ScopeDocument)
             {
                 // there is an implied type of Document for the top level and for scope documents
@@ -120,8 +131,7 @@ namespace MongoDB.Bson.IO
             switch (_context.ContextType)
             {
                 case ContextType.Array:
-                    _currentValue = _context.GetNextValue();
-                    if (_currentValue == null)
+                    if (!_context.TryGetNextValue(out _currentValue))
                     {
                         State = BsonReaderState.EndOfArray;
                         return BsonType.EndOfDocument;
@@ -129,15 +139,11 @@ namespace MongoDB.Bson.IO
                     State = BsonReaderState.Value;
                     break;
                 case ContextType.Document:
-                    var currentElement = _context.GetNextElement();
-                    if (currentElement == null)
+                    BsonElement currentElement;
+                    if (!_context.TryGetNextElement(out currentElement))
                     {
                         State = BsonReaderState.EndOfDocument;
                         return BsonType.EndOfDocument;
-                    }
-                    if (bsonTrie != null)
-                    {
-                        found = bsonTrie.TryGetValue(currentElement.Name, out value);
                     }
                     CurrentName = currentElement.Name;
                     _currentValue = currentElement.Value;
@@ -167,8 +173,8 @@ namespace MongoDB.Bson.IO
             var subType = binaryData.SubType;
             if (subType != BsonBinarySubType.Binary && subType != BsonBinarySubType.OldBinary)
             {
-                var message = string.Format("ReadBytes requires the binary sub type to be Binary, not {2}.", subType);
-                throw new Exception(message);
+                var message = string.Format("ReadBytes requires the binary sub type to be Binary, not {0}.", subType);
+                throw new FormatException(message);
             }
 
             return binaryData.Bytes;
@@ -185,6 +191,15 @@ namespace MongoDB.Bson.IO
             VerifyBsonType("ReadDateTime", BsonType.DateTime);
             State = GetNextState();
             return _currentValue.AsBsonDateTime.MillisecondsSinceEpoch;
+        }
+
+        /// <inheritdoc />
+        public override Decimal128 ReadDecimal128()
+        {
+            if (Disposed) { ThrowObjectDisposedException(); }
+            VerifyBsonType(nameof(ReadDecimal128), BsonType.Decimal128);
+            State = GetNextState();
+            return _currentValue.AsDecimal128;
         }
 
         /// <summary>
@@ -324,6 +339,35 @@ namespace MongoDB.Bson.IO
             if (Disposed) { ThrowObjectDisposedException(); }
             VerifyBsonType("ReadMinKey", BsonType.MinKey);
             State = GetNextState();
+        }
+
+        /// <summary>
+        /// Reads the name of an element from the reader.
+        /// </summary>
+        /// <param name="nameDecoder">The name decoder.</param>
+        /// <returns>
+        /// The name of the element.
+        /// </returns>
+        public override string ReadName(INameDecoder nameDecoder)
+        {
+            if (nameDecoder == null)
+            {
+                throw new ArgumentNullException("nameDecoder");
+            }
+
+            if (Disposed) { ThrowObjectDisposedException(); }
+            if (State == BsonReaderState.Type)
+            {
+                ReadBsonType();
+            }
+            if (State != BsonReaderState.Name)
+            {
+                ThrowInvalidState("ReadName", BsonReaderState.Name);
+            }
+
+            nameDecoder.Inform(CurrentName);
+            State = BsonReaderState.Value;
+            return CurrentName;
         }
 
         /// <summary>

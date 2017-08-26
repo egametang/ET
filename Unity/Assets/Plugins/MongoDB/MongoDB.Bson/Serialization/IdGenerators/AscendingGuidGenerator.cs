@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ namespace MongoDB.Bson.Serialization.IdGenerators
         // private static fields
         private static readonly AscendingGuidGenerator __instance = new AscendingGuidGenerator();
         private static readonly byte[] __machineProcessId;
-        private static int __increment; 
+        private static int __increment;
 
         // static constructor
         static AscendingGuidGenerator()
@@ -49,7 +49,7 @@ namespace MongoDB.Bson.Serialization.IdGenerators
             try
             {
                 // use low order two bytes only
-                processId = (short)GetCurrentProcessId(); 
+                processId = (short)GetCurrentProcessId();
             }
             catch (SecurityException)
             {
@@ -75,7 +75,7 @@ namespace MongoDB.Bson.Serialization.IdGenerators
         {
             get { return __instance; }
         }
-        
+
         // public methods
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace MongoDB.Bson.Serialization.IdGenerators
             d[5] = (byte)(increment >> 16);
             d[6] = (byte)(increment >> 8);
             d[7] = (byte)(increment);
-            return new Guid (a, b, c, d);
+            return new Guid(a, b, c, d);
         }
 
         /// <summary>
@@ -147,9 +147,14 @@ namespace MongoDB.Bson.Serialization.IdGenerators
         private static byte[] GetMachineHash()
         {
             // use instead of Dns.HostName so it will work offline
-            var hostName = Environment.MachineName; 
+            var machineName = GetMachineName();
             var sha1 = SHA1.Create();
-            return sha1.ComputeHash(Encoding.UTF8.GetBytes(hostName));
+            return sha1.ComputeHash(Encoding.UTF8.GetBytes(machineName));
+        }
+
+        private static string GetMachineName()
+        {
+            return Environment.MachineName;
         }
     }
 }

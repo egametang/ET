@@ -9,9 +9,9 @@ namespace Model
 			// gate session收到actor消息直接转发给actor自己去处理
 			if (message is AActorMessage aActorMessage)
 			{
-				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(aActorMessage.Id);
 				long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
 				aActorMessage.Id = unitId;
+				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(aActorMessage.Id);
 				actorProxy.Send(aActorMessage);
 				return;
 			}

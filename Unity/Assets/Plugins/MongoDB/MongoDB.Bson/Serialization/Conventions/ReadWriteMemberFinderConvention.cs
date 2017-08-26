@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ namespace MongoDB.Bson.Serialization.Conventions
 
             if ((_memberTypes & MemberTypes.Field) == MemberTypes.Field)
             {
-                var fields = classMap.ClassType.GetFields(_bindingFlags);
+                var fields = classMap.ClassType.GetTypeInfo().GetFields(_bindingFlags);
                 foreach (var field in fields)
                 {
                     MapField(classMap, field);
@@ -82,7 +82,7 @@ namespace MongoDB.Bson.Serialization.Conventions
 
             if ((_memberTypes & MemberTypes.Property) == MemberTypes.Property)
             {
-                var properties = classMap.ClassType.GetProperties(_bindingFlags);
+                var properties = classMap.ClassType.GetTypeInfo().GetProperties(_bindingFlags);
                 foreach (var property in properties)
                 {
                     MapProperty(classMap, property);
@@ -117,7 +117,7 @@ namespace MongoDB.Bson.Serialization.Conventions
             }
 
             // skip overridden properties (they are already included by the base class)
-            var getMethodInfo = propertyInfo.GetGetMethod(true);
+            var getMethodInfo = propertyInfo.GetMethod;
             if (getMethodInfo.IsVirtual && getMethodInfo.GetBaseDefinition().DeclaringType != classMap.ClassType)
             {
                 return;

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON document that is deserialized lazily.
     /// </summary>
-    [Serializable]
     [BsonSerializer(typeof(LazyBsonDocumentSerializer))]
     public class LazyBsonDocument : MaterializedOnDemandBsonDocument
     {
@@ -59,7 +58,7 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="bytes">The bytes.</param>
         public LazyBsonDocument(byte[] bytes)
-            : this(new ByteArrayBuffer(bytes, 0, bytes.Length, true))
+            : this(new ByteArrayBuffer(bytes, isReadOnly: true))
         {
         }
 
@@ -181,10 +180,12 @@ namespace MongoDB.Bson
         private IEnumerable<BsonElement> MaterializeThisLevel()
         {
             var elements = new List<BsonElement>();
-            var readerSettings = _readerSettings.Clone();
-            readerSettings.MaxDocumentSize = _slice.Length;
-            using (var bsonReader = new BsonBinaryReader(new BsonBuffer(CloneSlice(), true), true, readerSettings))
+
+            using (var stream = new ByteBufferStream(_slice, ownsBuffer: false))
+            using (var bsonReader = new BsonBinaryReader(stream, _readerSettings))
             {
+                var context = BsonDeserializationContext.CreateRoot(bsonReader);
+
                 bsonReader.ReadStartDocument();
                 BsonType bsonType;
                 while ((bsonType = bsonReader.ReadBsonType()) != BsonType.EndOfDocument)
@@ -195,7 +196,7 @@ namespace MongoDB.Bson
                     {
                         case BsonType.Array: value = DeserializeLazyBsonArray(bsonReader); break;
                         case BsonType.Document: value = DeserializeLazyBsonDocument(bsonReader); break;
-                        default: value = (BsonValue)BsonValueSerializer.Instance.Deserialize(bsonReader, typeof(BsonValue), null); break;
+                        default: value = BsonValueSerializer.Instance.Deserialize(context); break;
                     }
                     elements.Add(new BsonElement(name, value));
                 }

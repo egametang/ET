@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,17 +15,37 @@
 
 using System;
 using System.Globalization;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON double value.
     /// </summary>
+    /// <seealso cref="MongoDB.Bson.BsonValue" />
+#if NET45
     [Serializable]
+#endif
     public class BsonDouble : BsonValue, IComparable<BsonDouble>, IEquatable<BsonDouble>
     {
+         #region static
+        const int __minPrecreatedValue = -100;
+        const int __maxPrecreatedValue = 100;
+        private static readonly BsonDouble[] __precreatedInstances = new BsonDouble[__maxPrecreatedValue - __minPrecreatedValue + 1];
+
+        static BsonDouble()
+        {
+            for (var i = __minPrecreatedValue; i <= __maxPrecreatedValue; i++)
+            {
+                var precreatedInstance = new BsonDouble(i);
+                var index = i - __minPrecreatedValue;
+                __precreatedInstances[index] = precreatedInstance;
+            }
+        }
+        #endregion
+
         // private fields
-        private double _value;
+        private readonly double _value;
 
         // constructors
         /// <summary>
@@ -33,15 +53,18 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">The value.</param>
         public BsonDouble(double value)
-            : base(BsonType.Double)
         {
             _value = value;
         }
 
         // public properties
-        /// <summary>
-        /// Gets the BsonDouble as a double.
-        /// </summary>
+        /// <inheritdoc />
+        public override BsonType BsonType
+        {
+            get { return BsonType.Double; }
+        }
+
+        /// <inheritdoc />
         [Obsolete("Use Value instead.")]
         public override object RawValue
         {
@@ -64,6 +87,12 @@ namespace MongoDB.Bson
         /// <returns>A BsonDouble.</returns>
         public static implicit operator BsonDouble(double value)
         {
+            var intValue = (int)value;
+            if (intValue == value && intValue >= __minPrecreatedValue && intValue <= __maxPrecreatedValue)
+            {
+                var index = intValue - __minPrecreatedValue;
+                return __precreatedInstances[index];
+            }
             return new BsonDouble(value);
         }
 
@@ -94,29 +123,16 @@ namespace MongoDB.Bson
         /// <summary>
         /// Creates a new instance of the BsonDouble class.
         /// </summary>
-        /// <param name="value">A double.</param>
-        /// <returns>A BsonDouble.</returns>
-        [Obsolete("Use new BsonDouble(double value) instead.")]
-        public static BsonDouble Create(double value)
-        {
-            return new BsonDouble(value);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonDouble class.
-        /// </summary>
         /// <param name="value">An object to be mapped to a BsonDouble.</param>
         /// <returns>A BsonDouble.</returns>
         public new static BsonDouble Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonDouble)BsonTypeMapper.MapToBsonValue(value, BsonType.Double);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonDouble)BsonTypeMapper.MapToBsonValue(value, BsonType.Double);
         }
 
         // public methods
@@ -131,29 +147,35 @@ namespace MongoDB.Bson
             return _value.CompareTo(other._value);
         }
 
-        /// <summary>
-        /// Compares the BsonDouble to another BsonValue.
-        /// </summary>
-        /// <param name="other">The other BsonValue.</param>
-        /// <returns>A 32-bit signed integer that indicates whether this BsonDouble is less than, equal to, or greather than the other BsonValue.</returns>
+        /// <inheritdoc />
         public override int CompareTo(BsonValue other)
         {
             if (other == null) { return 1; }
+
             var otherDouble = other as BsonDouble;
             if (otherDouble != null)
             {
                 return _value.CompareTo(otherDouble._value);
             }
+
             var otherInt32 = other as BsonInt32;
             if (otherInt32 != null)
             {
                 return _value.CompareTo((double)otherInt32.Value);
             }
+
             var otherInt64 = other as BsonInt64;
             if (otherInt64 != null)
             {
                 return _value.CompareTo((double)otherInt64.Value);
             }
+
+            var otherDecimal128 = other as BsonDecimal128;
+            if (otherDecimal128 != null)
+            {
+                return ((Decimal128)_value).CompareTo(otherDecimal128.Value);
+            }
+
             return CompareTypeTo(other);
         }
 
@@ -168,20 +190,13 @@ namespace MongoDB.Bson
             return _value.Equals(rhs._value); // use Equals instead of == so NaN is handled correctly
         }
 
-        /// <summary>
-        /// Compares this BsonDouble to another object.
-        /// </summary>
-        /// <param name="obj">The other object.</param>
-        /// <returns>True if the other object is a BsonDouble and equal to this one.</returns>
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             return Equals(obj as BsonDouble); // works even if obj is null or of a different type
         }
 
-        /// <summary>
-        /// Gets the hash code.
-        /// </summary>
-        /// <returns>The hash code.</returns>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             // see Effective Java by Joshua Bloch
@@ -191,57 +206,142 @@ namespace MongoDB.Bson
             return hash;
         }
 
-        /// <summary>
-        /// Converts this BsonValue to a Boolean (using the JavaScript definition of truthiness).
-        /// </summary>
-        /// <returns>A Boolean.</returns>
+        /// <inheritdoc />
         public override bool ToBoolean()
         {
             return !(double.IsNaN(_value) || _value == 0.0);
         }
 
-        /// <summary>
-        /// Converts this BsonValue to a Double.
-        /// </summary>
-        /// <returns>A Double.</returns>
+        /// <inheritdoc />
+        public override decimal ToDecimal()
+        {
+            return (decimal)_value;
+        }
+
+        /// <inheritdoc />
+        public override Decimal128 ToDecimal128()
+        {
+            return (Decimal128)_value;
+        }
+
+        /// <inheritdoc />
         public override double ToDouble()
         {
             return _value;
         }
 
-        /// <summary>
-        /// Converts this BsonValue to an Int32.
-        /// </summary>
-        /// <returns>An Int32.</returns>
+        /// <inheritdoc />
         public override int ToInt32()
         {
             return (int)_value;
         }
 
-        /// <summary>
-        /// Converts this BsonValue to an Int64.
-        /// </summary>
-        /// <returns>An Int32.</returns>
+        /// <inheritdoc />
         public override long ToInt64()
         {
             return (long)_value;
         }
 
-        /// <summary>
-        /// Returns a string representation of the value.
-        /// </summary>
-        /// <returns>A string representation of the value.</returns>
+        /// <inheritdoc />
         public override string ToString()
         {
-            return _value.ToString("R", NumberFormatInfo.InvariantInfo);
+            return JsonConvert.ToString(_value);
         }
 
         // protected methods
-        /// <summary>
-        /// Compares this BsonDouble against another BsonValue.
-        /// </summary>
-        /// <param name="rhs">The other BsonValue.</param>
-        /// <returns>True if this BsonDouble and the other BsonValue are equal according to ==.</returns>
+        /// <inheritdoc/>
+        protected override TypeCode IConvertibleGetTypeCodeImplementation()
+        {
+            return TypeCode.Double;
+        }
+
+        /// <inheritdoc/>
+        protected override bool IConvertibleToBooleanImplementation(IFormatProvider provider)
+        {
+            return Convert.ToBoolean(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override byte IConvertibleToByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToByte(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override decimal IConvertibleToDecimalImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDecimal(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override double IConvertibleToDoubleImplementation(IFormatProvider provider)
+        {
+            return _value;
+        }
+
+        /// <inheritdoc/>
+        protected override short IConvertibleToInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt16(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override int IConvertibleToInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt32(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override long IConvertibleToInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt64(_value, provider);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override sbyte IConvertibleToSByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSByte(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+        protected override float IConvertibleToSingleImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSingle(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override string IConvertibleToStringImplementation(IFormatProvider provider)
+        {
+            return Convert.ToString(_value, provider);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ushort IConvertibleToUInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt16(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override uint IConvertibleToUInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt32(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ulong IConvertibleToUInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt64(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
         protected override bool OperatorEqualsImplementation(BsonValue rhs)
         {
             var rhsDouble = rhs as BsonDouble;
@@ -260,6 +360,12 @@ namespace MongoDB.Bson
             if (rhsInt64 != null)
             {
                 return _value == (double)rhsInt64.Value;
+            }
+
+            var rhsDecimal128 = rhs as BsonDecimal128;
+            if (rhsDecimal128 != null)
+            {
+                return _value == (double)rhsDecimal128.Value; // use == instead of Equals so NaN is handled correctly
             }
 
             return this.Equals(rhs);

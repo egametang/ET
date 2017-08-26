@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Attributes
     /// Indicates whether a field or property equal to the default value should be ignored when serializing this class.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-#pragma warning disable 618 // obsoleted by IBsonMemberMapModifier
-    public class BsonIgnoreIfDefaultAttribute : Attribute, IBsonMemberMapAttribute, IBsonMemberMapModifier
-#pragma warning restore 618
+    public class BsonIgnoreIfDefaultAttribute : Attribute, IBsonMemberMapAttribute
     {
         // private fields
         private bool _value;
