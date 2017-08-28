@@ -83,7 +83,7 @@ namespace ILRuntime.Runtime.Enviorment
                         return true;
                 }
             }
-            return false;
+            return res;
         }
 
         public IType MakeGenericInstance(KeyValuePair<string, IType>[] genericArguments)

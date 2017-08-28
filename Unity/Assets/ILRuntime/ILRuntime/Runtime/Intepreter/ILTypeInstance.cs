@@ -103,7 +103,7 @@ namespace ILRuntime.Runtime.Intepreter
     {
         protected ILType type;
         protected StackObject[] fields;
-        protected List<object> managedObjs;
+        protected IList<object> managedObjs;
         object clrInstance;
         Dictionary<ILMethod, IDelegateAdapter> delegates;
 
@@ -133,7 +133,7 @@ namespace ILRuntime.Runtime.Intepreter
         /// </summary>
         public bool Boxed { get; set; }
 
-        public List<object> ManagedObjects { get { return managedObjs; } }
+        public IList<object> ManagedObjects { get { return managedObjs; } }
 
         public object CLRInstance { get { return clrInstance; } set { clrInstance = value; } }
 
@@ -191,9 +191,7 @@ namespace ILRuntime.Runtime.Intepreter
                     if (Type.FirstCLRBaseType != null && Type.FirstCLRBaseType is Enviorment.CrossBindingAdaptor)
                     {
                         CLRType clrType = type.AppDomain.GetType(((Enviorment.CrossBindingAdaptor)Type.FirstCLRBaseType).BaseCLRType) as CLRType;
-                        var field = clrType.GetField(index);
-                        var obj = field.GetValue(clrInstance);
-                        return obj;
+                        return clrType.GetFieldValue(index, clrInstance);
                     }
                     else
                         throw new TypeLoadException();
@@ -229,8 +227,7 @@ namespace ILRuntime.Runtime.Intepreter
                     if (Type.FirstCLRBaseType != null && Type.FirstCLRBaseType is Enviorment.CrossBindingAdaptor)
                     {
                         CLRType clrType = type.AppDomain.GetType(((Enviorment.CrossBindingAdaptor)Type.FirstCLRBaseType).BaseCLRType) as CLRType;
-                        var field = clrType.GetField(index);
-                        field.SetValue(clrInstance, value);
+                        clrType.SetFieldValue(index, ref clrInstance, value);
                     }
                     else
                         throw new TypeLoadException();
@@ -249,7 +246,7 @@ namespace ILRuntime.Runtime.Intepreter
                 InitializeFields((ILType)type.BaseType);
         }
 
-        internal unsafe void PushFieldAddress(int fieldIdx, StackObject* esp, List<object> managedStack)
+        internal unsafe void PushFieldAddress(int fieldIdx, StackObject* esp, IList<object> managedStack)
         {
             esp->ObjectType = ObjectTypes.FieldReference;
             esp->Value = managedStack.Count;
@@ -257,7 +254,7 @@ namespace ILRuntime.Runtime.Intepreter
             esp->ValueLow = fieldIdx;
         }
 
-        internal unsafe void PushToStack(int fieldIdx, StackObject* esp, Enviorment.AppDomain appdomain, List<object> managedStack)
+        internal unsafe void PushToStack(int fieldIdx, StackObject* esp, Enviorment.AppDomain appdomain, IList<object> managedStack)
         {
             if (fieldIdx < fields.Length && fieldIdx >= 0)
                 PushToStackSub(ref fields[fieldIdx], fieldIdx, esp, managedStack);
@@ -266,16 +263,14 @@ namespace ILRuntime.Runtime.Intepreter
                 if (Type.FirstCLRBaseType != null && Type.FirstCLRBaseType is Enviorment.CrossBindingAdaptor)
                 {
                     CLRType clrType = appdomain.GetType(((Enviorment.CrossBindingAdaptor)Type.FirstCLRBaseType).BaseCLRType) as CLRType;
-                    var field = clrType.GetField(fieldIdx);
-                    var obj = field.GetValue(clrInstance);
-                    ILIntepreter.PushObject(esp, managedStack, obj);
+                    ILIntepreter.PushObject(esp, managedStack, clrType.GetFieldValue(fieldIdx, clrInstance));
                 }
                 else
                     throw new TypeLoadException();
             }
         }
 
-        unsafe void PushToStackSub(ref StackObject field, int fieldIdx, StackObject* esp, List<object> managedStack)
+        unsafe void PushToStackSub(ref StackObject field, int fieldIdx, StackObject* esp, IList<object> managedStack)
         {
             *esp = field;
             if (field.ObjectType >= ObjectTypes.Object)
@@ -290,7 +285,7 @@ namespace ILRuntime.Runtime.Intepreter
             InitializeFields(type);
         }
 
-        internal unsafe void AssignFromStack(int fieldIdx, StackObject* esp, Enviorment.AppDomain appdomain, List<object> managedStack)
+        internal unsafe void AssignFromStack(int fieldIdx, StackObject* esp, Enviorment.AppDomain appdomain, IList<object> managedStack)
         {
             if (fieldIdx < fields.Length && fieldIdx >= 0)
                 AssignFromStackSub(ref fields[fieldIdx], fieldIdx, esp, managedStack);
@@ -300,14 +295,14 @@ namespace ILRuntime.Runtime.Intepreter
                 {
                     CLRType clrType = appdomain.GetType(((Enviorment.CrossBindingAdaptor)Type.FirstCLRBaseType).BaseCLRType) as CLRType;
                     var field = clrType.GetField(fieldIdx);
-                    field.SetValue(clrInstance, field.FieldType.CheckCLRTypes(ILIntepreter.CheckAndCloneValueType(StackObject.ToObject(esp, appdomain, managedStack), appdomain)));
+                    clrType.SetFieldValue(fieldIdx, ref clrInstance, field.FieldType.CheckCLRTypes(ILIntepreter.CheckAndCloneValueType(StackObject.ToObject(esp, appdomain, managedStack), appdomain)));
                 }
                 else
                     throw new TypeLoadException();
             }
         }
 
-        unsafe void AssignFromStackSub(ref StackObject field, int fieldIdx, StackObject* esp, List<object> managedStack)
+        unsafe void AssignFromStackSub(ref StackObject field, int fieldIdx, StackObject* esp, IList<object> managedStack)
         {
             esp = ILIntepreter.GetObjectAndResolveReference(esp);
             field = *esp;

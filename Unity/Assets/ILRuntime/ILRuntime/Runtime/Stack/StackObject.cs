@@ -17,7 +17,7 @@ namespace ILRuntime.Runtime.Stack
         public int ValueLow;
 
         //IL2CPP can't process esp->ToObject() properly, so I can only use static function for this
-        public static unsafe object ToObject(StackObject* esp, ILRuntime.Runtime.Enviorment.AppDomain appdomain, List<object> mStack)
+        public static unsafe object ToObject(StackObject* esp, ILRuntime.Runtime.Enviorment.AppDomain appdomain, IList<object> mStack)
         {
             switch (esp->ObjectType)
             {
@@ -54,8 +54,8 @@ namespace ILRuntime.Runtime.Stack
                             }
                             else
                                 t = appdomain.GetType(obj.GetType());
-                            var fi = ((CLRType)t).GetField(esp->ValueLow);
-                            return fi.GetValue(obj);
+
+                            return ((CLRType)t).GetFieldValue(esp->ValueLow, obj);
                         }
                     }
                 case ObjectTypes.ArrayReference:
@@ -74,8 +74,7 @@ namespace ILRuntime.Runtime.Stack
                         else
                         {
                             CLR.TypeSystem.CLRType type = (CLR.TypeSystem.CLRType)t;
-                            var fi = type.GetField(esp->ValueLow);
-                            return fi.GetValue(null);
+                            return type.GetFieldValue(esp->ValueLow, null);
                         }
                     }
                 case ObjectTypes.StackObjectReference:
@@ -89,7 +88,7 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        public unsafe static void Initialized(ref StackObject esp, int idx, Type t, IType fieldType, List<object> mStack)
+        public unsafe static void Initialized(ref StackObject esp, int idx, Type t, IType fieldType, IList<object> mStack)
         {
             if (t.IsPrimitive)
             {
@@ -128,7 +127,7 @@ namespace ILRuntime.Runtime.Stack
                     esp.Value = idx;
                     if (fieldType is CLRType)
                     {
-                        mStack[idx] = Activator.CreateInstance(t);
+                        mStack[idx] = ((CLRType)fieldType).CreateDefaultInstance();
                     }
                     else
                     {

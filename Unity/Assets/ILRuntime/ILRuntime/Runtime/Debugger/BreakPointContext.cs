@@ -34,7 +34,7 @@ namespace ILRuntime.Runtime.Debugger
             return null;
         }
 
-        string GetStackObjectValue(StackObject val, List<object> mStack)
+        string GetStackObjectValue(StackObject val, IList<object> mStack)
         {
             string v;
             switch (val.ObjectType)

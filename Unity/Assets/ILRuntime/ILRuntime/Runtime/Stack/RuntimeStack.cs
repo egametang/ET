@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using ILRuntime.CLR.Method;
+using ILRuntime.Other;
 using ILRuntime.Runtime.Intepreter;
 
 namespace ILRuntime.Runtime.Stack
@@ -13,8 +14,15 @@ namespace ILRuntime.Runtime.Stack
         ILIntepreter intepreter;
         StackObject* pointer;
         StackObject* endOfMemory;
+
         IntPtr nativePointer;
-        List<object> managedStack = new List<object>(32);
+
+#if DEBUG
+        IList<object> managedStack = new List<object>(32);
+#else
+        IList<object> managedStack = new UncheckedList<object>(32);
+#endif
+
         Stack<StackFrame> frames = new Stack<StackFrame>();
         const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
 
@@ -41,7 +49,7 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        public List<object> ManagedStack { get { return managedStack; } }
+        public IList<object> ManagedStack { get { return managedStack; } }
 
         public void InitializeFrame(ILMethod method, StackObject* esp, out StackFrame res)
         {
@@ -69,18 +77,19 @@ namespace ILRuntime.Runtime.Stack
             frames.Push(frame);
         }
 
-        public StackObject* PopFrame(ref StackFrame frame, StackObject* esp, List<object> mStack)
+        public StackObject* PopFrame(ref StackFrame frame, StackObject* esp, IList<object> mStack)
         {
             if (frames.Count > 0 && frames.Peek().BasePointer == frame.BasePointer)
                 frames.Pop();
             else
                 throw new NotSupportedException();
             StackObject* returnVal = esp - 1;
-            StackObject* ret = frame.LocalVarPointer - frame.Method.ParameterCount;
+            var method = frame.Method;
+            StackObject* ret = ILIntepreter.Minus(frame.LocalVarPointer, method.ParameterCount);
             int mStackBase = frame.ManagedStackBase;
-            if (frame.Method.HasThis)
+            if (method.HasThis)
                 ret--;
-            if(frame.Method.ReturnType != intepreter.AppDomain.VoidType)
+            if(method.ReturnType != intepreter.AppDomain.VoidType)
             {
                 *ret = *returnVal;
                 if(ret->ObjectType == ObjectTypes.Object)
@@ -91,7 +100,11 @@ namespace ILRuntime.Runtime.Stack
                 }
                 ret++;
             }
-            mStack.RemoveRange(mStackBase, mStack.Count - mStackBase);
+#if DEBUG
+            ((List<object>)mStack).RemoveRange(mStackBase, mStack.Count - mStackBase);
+#else
+            ((UncheckedList<object>)mStack).RemoveRange(mStackBase, mStack.Count - mStackBase);
+#endif
             return ret;
         }
 

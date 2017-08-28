@@ -8,7 +8,7 @@ namespace Model
 {
 	public static class ILRedirection
 	{
-		public static unsafe StackObject* LogDebug(ILIntepreter __intp, StackObject* __esp, List<object> __mStack, CLRMethod __method, bool isNewObj)
+		public static unsafe StackObject* LogDebug(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
 		{
 			//ILRuntime的调用约定为被调用者清理堆栈，因此执行这个函数后需要将参数从堆栈清理干净，并把返回值放在栈顶，具体请看ILRuntime实现原理文档
 			ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;

@@ -5,6 +5,7 @@ using System.Text;
 
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
+using ILRuntime.Other;
 using Mono.Cecil;
 using ILRuntime.Runtime.Intepreter;
 namespace ILRuntime.CLR.Utils
@@ -106,11 +107,84 @@ namespace ILRuntime.CLR.Utils
             return sb.ToString();
         }
 
+        [Flags]
+        public enum TypeFlags
+        {
+            Default = 0,
+            IsPrimitive = 0x1,
+            IsByRef = 0x2,
+            IsEnum = 0x4,
+            IsDelegate = 0x8,
+            IsValueType = 0x10,
+        }
+
+        private static readonly Dictionary<Type, TypeFlags> typeFlags = new Dictionary<Type, TypeFlags>(new ByReferenceKeyComparer<Type>());
+
+        public static bool FastIsEnum(this Type pt)
+        {
+            return (pt.GetTypeFlags() & TypeFlags.IsEnum) != 0;
+        }
+
+        public static bool FastIsByRef(this Type pt)
+        {
+            return (pt.GetTypeFlags() & TypeFlags.IsByRef) != 0;
+        }
+
+        public static bool FastIsPrimitive(this Type pt)
+        {
+            return (pt.GetTypeFlags() & TypeFlags.IsPrimitive) != 0;
+        }
+
+        public static bool FastIsValueType(this Type pt)
+        {
+            return (pt.GetTypeFlags() & TypeFlags.IsValueType) != 0;
+        }
+
+        public static TypeFlags GetTypeFlags(this Type pt)
+        {
+            var result = TypeFlags.Default;
+
+            if (!typeFlags.TryGetValue(pt, out result))
+            {
+                if (pt.IsPrimitive)
+                {
+                    result |= TypeFlags.IsPrimitive;
+                }
+
+                if (pt == typeof(Delegate) || pt.IsSubclassOf(typeof(Delegate)))
+                {
+                    result |= TypeFlags.IsDelegate;
+                }
+
+                if (pt.IsByRef)
+                {
+                    result |= TypeFlags.IsByRef;
+                }
+
+                if (pt.IsEnum)
+                {
+                    result |= TypeFlags.IsEnum;
+                }
+
+                if (pt.IsValueType)
+                {
+                    result |= TypeFlags.IsValueType;
+                }
+
+                typeFlags[pt] = result;
+            }
+
+            return result;
+        }
+
         public static object CheckCLRTypes(this Type pt, object obj)
         {
             if (obj == null)
                 return null;
-            if (pt.IsPrimitive && pt != typeof(int))
+
+            var typeFlags = GetTypeFlags(pt);
+
+            if ((typeFlags & TypeFlags.IsPrimitive) != 0 && pt != typeof(int))
             {
                 if (pt == typeof(bool) && !(obj is bool))
                 {
@@ -137,7 +211,7 @@ namespace ILRuntime.CLR.Utils
             {
                 obj = ((ILRuntime.Reflection.ILRuntimeWrapperType)obj).RealType;
             }
-            else if (pt == typeof(Delegate) || pt.IsSubclassOf(typeof(Delegate)))
+            else if ((typeFlags & TypeFlags.IsDelegate) != 0)
             {
                 if (obj is Delegate)
                     return obj;
@@ -145,20 +219,23 @@ namespace ILRuntime.CLR.Utils
                     return ((IDelegateAdapter)obj).Delegate;
                 return ((IDelegateAdapter)obj).GetConvertor(pt);
             }
-            else if (pt.IsByRef)
+            else if ((typeFlags & TypeFlags.IsByRef) != 0)
             {
                 return CheckCLRTypes(pt.GetElementType(), obj);
             }
-            else if (pt.IsEnum)
+            else if ((typeFlags & TypeFlags.IsEnum) != 0)
             {
                 return Enum.ToObject(pt, obj);
             }
             else if (obj is ILTypeInstance)
             {
-                if (obj is IDelegateAdapter && pt != typeof(ILTypeInstance))
+                var adapter = obj as IDelegateAdapter;
+
+                if (adapter != null && pt != typeof(ILTypeInstance))
                 {
-                    return ((IDelegateAdapter)obj).Delegate;
+                    return adapter.Delegate;
                 }
+
                 if (!(obj is ILEnumTypeInstance))
                 {
                     var ins = (ILTypeInstance)obj;

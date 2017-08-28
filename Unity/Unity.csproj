@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -100,8 +97,11 @@
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\TypeSystem\ILType.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\TypeSystem\IType.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\Utils\Extensions.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Other\ByReferenceKeyComparer.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Other\DelegateExportAttribute.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Other\NeedAdaptorAttribute.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Other\ThreadSafeDictionary.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Other\UncheckedList.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Reflection\Extensions.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Reflection\ILRuntimeConstructorInfo.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Reflection\ILRuntimeFieldInfo.cs" />
@@ -112,6 +112,12 @@
     <Compile Include="Assets\ILRuntime\ILRuntime\Reflection\ILRuntimeWrapperType.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Adaptors\CLRCrossBindingAdaptors.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingCodeGenerator.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingGeneratorExtensions.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\CommonBindingGenerator.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\ConstructorBindingGenerator.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\FieldBindingGenerator.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\MethodBindingGenerator.cs" />
+    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\CLRBinding\ValueTypeBindingGenerator.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Debugger\BreakPointContext.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Debugger\BreakpointInfo.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
@@ -137,7 +143,6 @@
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Enviorment\CLRRedirections.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Enviorment\CrossBindingAdaptor.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Enviorment\DelegateManager.cs" />
-    <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Enviorment\ILContext.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Extensions.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Intepreter\DelegateAdapter.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\Runtime\Intepreter\ILIntepreter.cs" />
@@ -333,9 +338,6 @@
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
     <Compile Include="Assets\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
-    <Compile Include="Assets\PSD2UGUI\Effects\Collections\ListPool.cs" />
-    <Compile Include="Assets\PSD2UGUI\Effects\Collections\Pool.cs" />
-    <Compile Include="Assets\PSD2UGUI\Effects\Mirror.cs" />
     <Compile Include="Assets\Scripts\Base\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Base\Config\AConfig.cs" />
     <Compile Include="Assets\Scripts\Base\Config\AConfigComponent.cs" />
@@ -524,15 +526,6 @@
     <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.XML" />
     <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
     <None Include="Assets\JsonDotNet\link.xml" />
-    <None Include="Assets\PSD2UGUI\Doc\version.txt" />
-    <None Include="Assets\PSD2UGUI\JSCode\ReadMe.txt" />
-    <None Include="Assets\PSD2UGUI\Samples\9slice\9slice.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\button\button.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\grid\grid.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\halftest\halftest.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\scrollpanel\scrollpanel.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\slider\slider.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\texttest\texttest.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
