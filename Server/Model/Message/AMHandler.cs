@@ -6,7 +6,7 @@ namespace Model
 	{
 		protected abstract void Run(Session session, Message message);
 
-		public void Handle(Session session, object msg)
+		public void Handle(Session session, AMessage msg)
 		{
 			Message message = msg as Message;
 			if (message == null)
@@ -34,7 +34,7 @@ namespace Model
 
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, object message)
+		public void Handle(Session session, AMessage message)
 		{
 			try
 			{

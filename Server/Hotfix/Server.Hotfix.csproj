@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\RealmGateAddressComponentE.cs" />
+    <Compile Include="Handler\ActorRpc_TestHandler.cs" />
     <Compile Include="Handler\Actor_TestHandler.cs" />
     <Compile Include="Handler\G2M_CreateUnitHandler.cs" />
     <Compile Include="Helper\MessageHelper.cs" />

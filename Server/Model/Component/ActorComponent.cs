@@ -7,7 +7,7 @@ namespace Model
 	public struct ActorMessageInfo
 	{
 		public Session Session;
-		public IActorMessage Message;
+		public ActorRequest Message;
 	}
 
 	[ObjectEvent]
@@ -64,14 +64,15 @@ namespace Model
 		public void Add(ActorMessageInfo info)
 		{
 			this.queue.Enqueue(info);
-
+			
 			if (this.tcs == null)
 			{
 				return;
 			}
-			
-			this.tcs?.SetResult(this.queue.Dequeue());
+
+			var t = this.tcs;
 			this.tcs = null;
+			t.SetResult(this.queue.Dequeue());
 		}
 
 		private Task<ActorMessageInfo> GetAsync()

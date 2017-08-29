@@ -4,13 +4,14 @@ namespace Model
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, object message)
+		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
 		{
 			// 收到actor消息分发给actor自己去处理
-			if (message is IActorMessage actorMessage)
+			if (message is ActorRequest actorRequest)
 			{
-				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorMessage.Id);
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorMessage });
+				//Log.Info(MongoHelper.ToJson(actorRequest));
+				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorRequest.Id);
+				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorRequest });
 				return;
 			}
 

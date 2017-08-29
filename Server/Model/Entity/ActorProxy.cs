@@ -18,9 +18,9 @@ namespace Model
 	public class ActorMessageTask: ActorTask
 	{
 		private readonly ActorProxy proxy;
-		private readonly ARequest message;
+		private readonly AMessage message;
 
-		public ActorMessageTask(ActorProxy proxy, ARequest message)
+		public ActorMessageTask(ActorProxy proxy, AMessage message)
 		{
 			this.proxy = proxy;
 			this.message = message;
@@ -28,7 +28,8 @@ namespace Model
 
 		public override async Task<AResponse> Run()
 		{
-			AResponse response = await this.proxy.RealCall<ActorMessageResponse>(this.message, this.proxy.CancellationTokenSource.Token);
+			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
+			ActorResponse response = await this.proxy.RealCall<ActorResponse>(request, this.proxy.CancellationTokenSource.Token);
 			return response;
 		}
 
@@ -41,14 +42,14 @@ namespace Model
 	/// Rpc消息，需要等待返回
 	/// </summary>
 	/// <typeparam name="Response"></typeparam>
-	public class ActorRpcTask<Response> : ActorTask where Response: AActorResponse
+	public class ActorRpcTask<Response> : ActorTask where Response: AResponse
 	{
 		private readonly ActorProxy proxy;
-		private readonly AActorRequest message;
+		private readonly ARequest message;
 
 		public readonly TaskCompletionSource<Response> Tcs = new TaskCompletionSource<Response>();
 
-		public ActorRpcTask(ActorProxy proxy, AActorRequest message)
+		public ActorRpcTask(ActorProxy proxy, ARequest message)
 		{
 			this.proxy = proxy;
 			this.message = message;
@@ -56,7 +57,8 @@ namespace Model
 
 		public override async Task<AResponse> Run()
 		{
-			Response response = await this.proxy.RealCall<Response>(this.message, this.proxy.CancellationTokenSource.Token);
+			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
+			Response response = await this.proxy.RealCall<Response>(request, this.proxy.CancellationTokenSource.Token);
 			if (response.Error != ErrorCode.ERR_NotFoundActor)
 			{
 				this.Tcs.SetResult(response);
@@ -221,32 +223,31 @@ namespace Model
 					++this.WindowSize;
 				}
 				this.Remove();
-				}
+			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());
 			}
 		}
 
-		public void Send(AActorMessage message)
+		public void Send(AMessage message)
 		{
-			message.Id = this.Id;
 			ActorMessageTask task = new ActorMessageTask(this, message);
 			this.Add(task);
 		}
 
-		public Task<Response> Call<Response>(AActorRequest request)where Response : AActorResponse
+		public Task<Response> Call<Response>(ARequest request)where Response : AResponse
 		{
-			request.Id = this.Id;
 			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
 			this.Add(task);
 			return task.Tcs.Task;
 		}
 
-		public async Task<Response> RealCall<Response>(ARequest request, CancellationToken cancellationToken) where Response: AResponse
+		public async Task<Response> RealCall<Response>(ActorRequest request, CancellationToken cancellationToken) where Response: AResponse
 		{
 			try
 			{
+				request.Id = this.Id;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
 				Response response = await session.Call<Response>(request, cancellationToken);
 				return response;

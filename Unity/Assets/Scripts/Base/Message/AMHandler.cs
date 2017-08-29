@@ -6,7 +6,7 @@ namespace Model
 	{
 		protected abstract void Run(Message message);
 
-		public void Handle(object msg)
+		public void Handle(AMessage msg)
 		{
 			Message message = msg as Message;
 			if (message == null)

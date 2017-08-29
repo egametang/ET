@@ -32,7 +32,10 @@ namespace Hotfix
 				Log.Info("登陆gate成功!");
 
 				// 发送一个actor消息
-				gateSession.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
+				//gateSession.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
+
+				ActorRpc_TestResponse response = await gateSession.Call<ActorRpc_TestResponse>(new ActorRpc_TestRequest() { request = "request actor test rpc" });
+				Log.Info($"recv response: {JsonHelper.ToJson(response)}");
 			}
 			catch (Exception e)
 			{

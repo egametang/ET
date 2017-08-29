@@ -1,31 +1,14 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Model
+﻿namespace Model
 {
-	public interface IActorMessage
-	{
-		long Id { get; set; }
-	}
-
-	public abstract class AActorMessage: ARequest, IActorMessage
-	{
-		public long Id { get; set; }
-	}
-
-	public abstract class ActorMessageResponse : AResponse
+	public abstract class AActorMessage : AMessage
 	{
 	}
 
-	public abstract class AActorRequest : ARequest, IActorMessage
+	public abstract class AActorRequest : ARequest
 	{
-		[BsonIgnoreIfDefault]
-		public long Id { get; set; }
 	}
 
-	/// <summary>
-	/// 服务端回的RPC消息需要继承这个抽象类
-	/// </summary>
-	public abstract class AActorResponse: AResponse
+	public abstract class AActorResponse : AResponse
 	{
 	}
 }

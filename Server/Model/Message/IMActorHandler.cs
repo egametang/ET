@@ -5,7 +5,7 @@ namespace Model
 {
 	public interface IMActorHandler
 	{
-		Task<bool> Handle(Session session, Entity entity, object message);
+		Task<bool> Handle(Session session, Entity entity, AMessage message);
 		Type GetMessageType();
 	}
 }

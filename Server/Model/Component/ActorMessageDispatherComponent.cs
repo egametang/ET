@@ -71,14 +71,23 @@ namespace Model
 			return actorHandler;
 		}
 
-		public async Task<bool> Handle(Session session, Entity entity, IActorMessage message)
+		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
 		{
-			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
+			ARequest request = message.AMessage as ARequest;
+			if (request == null)
+			{
+				Log.Error($"ActorRequest.AMessage as ARequest fail: {message.AMessage.GetType().FullName}");
+				return false;
+			}
+
+			request.RpcId = message.RpcId;
+
+			if (!this.handlers.TryGetValue(request.GetType(), out IMActorHandler handler))
 			{
 				Log.Error($"not found message handler: {message.GetType().FullName}");
 				return false;
 			}
-			return await handler.Handle(session, entity, message);
+			return await handler.Handle(session, entity, request);
 		}
 
 		public override void Dispose()

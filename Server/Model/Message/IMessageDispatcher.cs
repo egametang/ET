@@ -2,6 +2,6 @@
 {
 	public interface IMessageDispatcher
 	{
-		void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, object message);
+		void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message);
 	}
 }

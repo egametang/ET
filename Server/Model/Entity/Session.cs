@@ -117,7 +117,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, message);
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
@@ -127,6 +127,7 @@ namespace Model
 			where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
+			//Log.Debug($"{request.GetType().FullName} {request.RpcId}");
 			this.SendMessage(request);
 
 			var tcs = new TaskCompletionSource<Response>();
@@ -141,7 +142,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {response.ToJson()}");
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)

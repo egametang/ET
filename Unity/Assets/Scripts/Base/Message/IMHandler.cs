@@ -4,7 +4,7 @@ namespace Model
 {
 	public interface IMHandler
 	{
-		void Handle(object message);
+		void Handle(AMessage message);
 		Type GetMessageType();
 	}
 }

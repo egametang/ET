@@ -2,6 +2,9 @@
 {
 	public static partial class Opcode
 	{
+		public const ushort ActorRequest = 1;
+		public const ushort ActorResponse = 2;
+		public const ushort ActorResponseWithM = 3;
 		public const ushort G2G_LockRequest = 10;
 		public const ushort G2G_LockResponse = 11;
 		public const ushort G2G_LockReleaseRequest = 12;

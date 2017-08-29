@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AActorMessage
+	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AMessage
 	{
 		protected abstract Task<bool> Run(E entity, Message message);
 
-		public async Task<bool> Handle(Session session, Entity entity, object msg)
+		public async Task<bool> Handle(Session session, Entity entity, AMessage msg)
 		{
 			Message message = msg as Message;
 			if (message == null)
@@ -42,7 +42,7 @@ namespace Model
 
 		protected abstract Task<bool> Run(E entity, Request message, Action<Response> reply);
 
-		public async Task<bool> Handle(Session session, Entity entity,  object message)
+		public async Task<bool> Handle(Session session, Entity entity, AMessage message)
 		{
 			try
 			{

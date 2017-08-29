@@ -42,10 +42,18 @@ namespace Model
 		public string Info;
 	}
 
+	[Message(Opcode.ActorRpc_TestRequest)]
+	public class ActorRpc_TestRequest : AActorRequest
+	{
+		public string request;
+	}
 
-
-
-
+	[Message(Opcode.ActorRpc_TestResponse)]
+	public class ActorRpc_TestResponse : AActorResponse
+	{
+		public string response;
+	}
+	
 	[Message(Opcode.C2M_Reload)]
 	public class C2M_Reload: ARequest
 	{

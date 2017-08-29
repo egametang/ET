@@ -68,7 +68,7 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, object message)
+		public void Handle(Session session, AMessage message)
 		{
 			if (!this.handlers.TryGetValue(message.GetType(), out List<IMHandler> actions))
 			{

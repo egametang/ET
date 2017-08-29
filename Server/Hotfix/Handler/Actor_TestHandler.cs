@@ -8,7 +8,7 @@ namespace Hotfix
 	{
 		protected override async Task<bool> Run(Unit unit, Actor_Test message)
 		{
-			Log.Info(message.Info);
+			Log.Debug(message.Info);
 
 			unit.GetComponent<UnitGateComponent>().GetActorProxy().Send(message);
 			return true;

@@ -210,6 +210,10 @@ namespace Model
 			catch (ObjectDisposedException)
 			{
 			}
+			catch (System.IO.IOException)
+			{
+				this.OnError(this, SocketError.NetworkReset);
+			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());

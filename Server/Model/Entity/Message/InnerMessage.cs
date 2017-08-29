@@ -2,7 +2,10 @@ using System.Collections.Generic;using MongoDB.Bson.Serialization.Attributes;
 
 
 // 服务器内部消息 Opcode从10000开始
-namespace Model{	[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
+namespace Model{
+	/// <summary>	/// 用来包装actor消息	/// </summary>	[Message(Opcode.ActorRequest)]	[BsonIgnoreExtraElements]	public class ActorRequest : ARequest	{		public long Id { get; set; }		public AMessage AMessage { get; set; }	}
+
+	/// <summary>	/// actor RPC消息响应	/// </summary>	[Message(Opcode.ActorResponse)]	[BsonIgnoreExtraElements]	public class ActorResponse : AResponse	{	}	[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
 
 	[Message(Opcode.A2M_Reload)]	[BsonIgnoreExtraElements]	public class A2M_Reload : AResponse	{	}
 
