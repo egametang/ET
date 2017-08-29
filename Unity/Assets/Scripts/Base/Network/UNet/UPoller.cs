@@ -122,7 +122,6 @@ namespace Model
 			if (eEvent.Type == EventType.Disconnect)
 			{
 				this.AcceptTcs.TrySetException(new Exception("socket disconnected in accpet"));
-				return;
 			}
 
 			USocket socket = new USocket(eEvent.Peer, this);

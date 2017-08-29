@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public sealed class TService : AService
+	public sealed class TService: AService
 	{
 		private TcpListener acceptor;
 
@@ -91,7 +91,7 @@ namespace Model
 			this.idChannels.Remove(id);
 			channel.Dispose();
 		}
-
+		
 		public override void Update()
 		{
 		}

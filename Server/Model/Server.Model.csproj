@@ -61,11 +61,17 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs">
       <Link>Message\ProtobufPacker.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
+      <Link>Component\NetworkComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
       <Link>Entity\Message\Opcode.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
       <Link>Entity\Message\OuterMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs">
+      <Link>Helper\MongoHelper.cs</Link>
     </Compile>
     <Compile Include="Component\ActorProxyComponent.cs" />
     <Compile Include="Component\PlayerComponent.cs" />
@@ -93,7 +99,6 @@
     <Compile Include="Component\MessageDispatherComponent.cs" />
     <Compile Include="Component\NetInnerComponent.cs" />
     <Compile Include="Component\NetOuterComponent.cs" />
-    <Compile Include="Component\NetworkComponent.cs" />
     <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\Session\SessionPlayerComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
