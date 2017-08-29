@@ -44,7 +44,6 @@ namespace Model
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
 					this.allConfigs.Add(startConfig);
 					this.configDict.Add(startConfig.AppId, startConfig);
-
 					if (startConfig.AppType.Is(AppType.Realm))
 					{
 						this.RealmConfig = startConfig;

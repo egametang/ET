@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IAwake<AppType>, ILoad
+	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IStart, ILoad
 	{
-		public void Awake(AppType appType)
+		public void Start()
 		{
-			this.Get().Awake(appType);
+			this.Get().Start();
 		}
 
 		public void Load()
@@ -26,9 +26,10 @@ namespace Model
 		private AppType AppType;
 		private Dictionary<Type, IMActorHandler> handlers;
 		
-		public void Awake(AppType appType)
+		public void Start()
 		{
-			this.AppType = appType;
+			StartConfig startConfig = this.GetComponent<StartConfigComponent>().StartConfig;
+			this.AppType = startConfig.AppType;
 			this.Load();
 		}
 
@@ -73,21 +74,18 @@ namespace Model
 
 		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
 		{
-			ARequest request = message.AMessage as ARequest;
-			if (request == null)
-			{
-				Log.Error($"ActorRequest.AMessage as ARequest fail: {message.AMessage.GetType().FullName}");
-				return false;
-			}
-
-			request.RpcId = message.RpcId;
-
-			if (!this.handlers.TryGetValue(request.GetType(), out IMActorHandler handler))
+			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
 			{
 				Log.Error($"not found message handler: {message.GetType().FullName}");
 				return false;
 			}
-			return await handler.Handle(session, entity, request);
+			
+			if (message.AMessage is ARequest request)
+			{
+				request.RpcId = message.RpcId;
+			}
+
+			return await handler.Handle(session, entity, message.AMessage);
 		}
 
 		public override void Dispose()

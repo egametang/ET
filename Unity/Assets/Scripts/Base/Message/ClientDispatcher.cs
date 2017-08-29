@@ -6,8 +6,6 @@ namespace Model
 	{
 		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, object message)
 		{
-			//Log.Debug($"recv {JsonHelper.ToJson(message)}");
-
 			// 普通消息或者是Rpc请求消息
 			if (message is AMessage || message is ARequest)
 			{

@@ -102,6 +102,8 @@ namespace Model
 			Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
+			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+
 			AResponse response = message as AResponse;
 			if (response != null)
 			{
@@ -174,7 +176,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {response.ToJson()}");
+					//Log.Debug($"recv: {JsonHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)

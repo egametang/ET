@@ -59,6 +59,7 @@ namespace App
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorComponent>();
+						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					case AppType.Location:
@@ -67,10 +68,12 @@ namespace App
 						break;
 					case AppType.Map:
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
-						Game.Scene.AddComponent<LocationComponent>();
+						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorComponent>();
+						Game.Scene.AddComponent<ActorProxyComponent>();
+						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorProxyComponent>();
@@ -79,7 +82,7 @@ namespace App
 						Game.Scene.AddComponent<DBComponent>();
 						Game.Scene.AddComponent<DBProxyComponent>();
 						Game.Scene.AddComponent<LocationComponent>();
-						Game.Scene.AddComponent<ActorMessageDispatherComponent, AppType>(AppType.AllServer);
+						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);

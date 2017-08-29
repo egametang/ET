@@ -9,7 +9,6 @@ namespace Model
 			// 收到actor消息分发给actor自己去处理
 			if (message is ActorRequest actorRequest)
 			{
-				//Log.Info(MongoHelper.ToJson(actorRequest));
 				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorRequest.Id);
 				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorRequest });
 				return;

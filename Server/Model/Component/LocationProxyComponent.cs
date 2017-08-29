@@ -19,8 +19,10 @@ namespace Model
 
 		public void Awake()
 		{
-			StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().LocationConfig;
-			this.AppId = startConfig.AppId;
+			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+			this.AppId = startConfigComponent.StartConfig.AppId;
+
+			StartConfig startConfig = startConfigComponent.LocationConfig;
 			this.LocationAddress = startConfig.GetComponent<InnerConfig>().Address;
 		}
 

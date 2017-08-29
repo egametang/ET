@@ -1,5 +1,7 @@
 // 服务器与客户端之间的消息 Opcode从1-9999
 
+using MongoDB.Bson.Serialization;
+
 namespace Model
 {
 	[Message(Opcode.C2R_Login)]

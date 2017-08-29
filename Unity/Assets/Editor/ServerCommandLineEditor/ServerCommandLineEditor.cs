@@ -304,7 +304,7 @@ namespace MyEditor
 					newStartConfig.AddComponent<OuterConfig>();
 				}
 
-				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB | AppType.Map))
+				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB | AppType.Map | AppType.Location))
 				{
 					newStartConfig.AddComponent<InnerConfig>();
 				}

@@ -2,6 +2,8 @@
 
 namespace Model
 {
+	[BsonKnownTypes(typeof(AActorMessage))]
+	[BsonKnownTypes(typeof(AActorRequest))]
 	public abstract class AMessage
 	{
 	}
