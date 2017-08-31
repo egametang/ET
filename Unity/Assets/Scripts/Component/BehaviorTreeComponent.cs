@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.BehaviorTreeComponent)]
+	[EntityEvent((int)EntityEventId.BehaviorTreeComponent)]
 	public class BehaviorTreeComponent : Component
 	{
 		private Dictionary<string, Func<NodeProto, Node>> dictionary;

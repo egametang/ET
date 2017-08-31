@@ -11,12 +11,12 @@ namespace Hotfix
 			R2C_Login response = new R2C_Login();
 			try
 			{
-				if (message.Account != "abcdef" || message.Password != "111111")
-				{
-					response.Error = ErrorCode.ERR_AccountOrPasswordError;
-					reply(response);
-					return;
-				}
+				//if (message.Account != "abcdef" || message.Password != "111111")
+				//{
+				//	response.Error = ErrorCode.ERR_AccountOrPasswordError;
+				//	reply(response);
+				//	return;
+				//}
 
 				// 随机分配一个Gate
 				StartConfig config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();

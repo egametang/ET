@@ -1,6 +1,8 @@
-﻿namespace Hotfix
+﻿using Model;
+
+namespace Hotfix
 {
-	[ObjectEvent(EntityEventId.RobotComponent)]
+	[ObjectEvent((int)EntityEventId.RobotComponent)]
 	public class RobotComponent: Component
 	{
 		public override void Dispose()

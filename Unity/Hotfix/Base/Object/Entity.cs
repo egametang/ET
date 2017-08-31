@@ -137,7 +137,8 @@ namespace Hotfix
 
 		public void RemoveComponent<K>() where K : Component
 		{
-			if (!this.componentDict.TryGetValue(typeof(K), out Component component))
+			Component component;
+			if (!this.componentDict.TryGetValue(typeof(K), out component))
 			{
 				return;
 			}
@@ -153,7 +154,8 @@ namespace Hotfix
 
 		public void RemoveComponent(Type type)
 		{
-			if (!this.componentDict.TryGetValue(type, out Component component))
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
 			{
 				return;
 			}
@@ -169,7 +171,8 @@ namespace Hotfix
 
 		public K GetComponent<K>() where K : Component
 		{
-			if (!this.componentDict.TryGetValue(typeof(K), out Component component))
+			Component component;
+			if (!this.componentDict.TryGetValue(typeof(K), out component))
 			{
 				return default(K);
 			}

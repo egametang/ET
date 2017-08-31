@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent(EntityEventId.ResourcesComponent)]
+	[ObjectEvent((int)EntityEventId.ResourcesComponent)]
 	public class ResourcesComponent: Component
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }

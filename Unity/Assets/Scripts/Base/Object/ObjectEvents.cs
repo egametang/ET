@@ -1,20 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Model
 {
 	public sealed class ObjectEvents
 	{
 		private static ObjectEvents instance;
-		
+
+
 		private Queue<Disposer> loads = new Queue<Disposer>();
 		private Queue<Disposer> loads2 = new Queue<Disposer>();
+
+		private Queue<Disposer> starts = new Queue<Disposer>();
 
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
 
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
-
+		
 		public static ObjectEvents Instance
 		{
 			get
@@ -23,21 +28,54 @@ namespace Model
 			}
 		}
 
+		public static void Close()
+		{
+			instance = null;
+		}
+
+		private readonly Dictionary<string, Assembly> dictionary = new Dictionary<string, Assembly>();
+
+		public void Add(string name, Assembly assembly)
+		{
+			this.dictionary[name] = assembly;
+			this.Load();
+		}
+
+		public void Remove(string name)
+		{
+			this.dictionary.Remove(name);
+		}
+
+		public Assembly[] GetAll()
+		{
+			return this.dictionary.Values.ToArray();
+		}
+
+		public Assembly Get(string name)
+		{
+			return this.dictionary[name];
+		}
+
 		public void Add(Disposer disposer)
 		{
 			if (disposer is ILoad)
 			{
-				loads.Enqueue(disposer);
+				this.loads.Enqueue(disposer);
+			}
+
+			if (disposer is IStart)
+			{
+				this.starts.Enqueue(disposer);
 			}
 
 			if (disposer is IUpdate)
 			{
-				updates.Enqueue(disposer);
+				this.updates.Enqueue(disposer);
 			}
 
 			if (disposer is ILateUpdate)
 			{
-				lateUpdates.Enqueue(disposer);
+				this.lateUpdates.Enqueue(disposer);
 			}
 		}
 
@@ -59,8 +97,24 @@ namespace Model
 			ObjectHelper.Swap(ref this.loads, ref this.loads2);
 		}
 
+		private void Start()
+		{
+			while (this.starts.Count > 0)
+			{
+				Disposer disposer = this.starts.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				((IStart)disposer).Start();
+			}
+		}
+
 		public void Update()
 		{
+			this.Start();
+
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();

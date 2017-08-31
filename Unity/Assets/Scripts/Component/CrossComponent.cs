@@ -6,7 +6,7 @@ namespace Model
 	/// <summary>
 	/// 事件分发,可以将事件分发到IL层
 	/// </summary>
-	[EntityEvent(EntityEventId.CrossComponent)]
+	[EntityEvent((int)EntityEventId.CrossComponent)]
 	public class CrossComponent : Component, IAwake
 	{
 		private static object[] args0 = new object[0];

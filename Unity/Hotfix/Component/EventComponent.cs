@@ -4,10 +4,10 @@ using Model;
 
 namespace Hotfix
 {
-	[ObjectEvent(EntityEventId.EventComponent)]
+	[ObjectEvent((int)EntityEventId.EventComponent)]
 	public class EventComponent : Component, IAwake
 	{
-		private Dictionary<int, List<object>> allEvents;
+		private Dictionary<EventIdType, List<object>> allEvents;
 
 		public void Awake()
 		{
@@ -16,29 +16,29 @@ namespace Hotfix
 
 		public void Load()
 		{
-			this.allEvents = new Dictionary<int, List<object>>();
-
+			this.allEvents = new Dictionary<EventIdType, List<object>>();
+			
 			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
-
 				foreach (object attr in attrs)
-				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
+                {
+                    EventAttribute aEventAttribute = (EventAttribute)attr;
 					object obj = Activator.CreateInstance(type);
-					if (!this.allEvents.ContainsKey(aEventAttribute.Type))
+					if (!this.allEvents.ContainsKey((EventIdType)aEventAttribute.Type))
 					{
-						this.allEvents.Add(aEventAttribute.Type, new List<object>());
+						this.allEvents.Add((EventIdType)aEventAttribute.Type, new List<object>());
 					}
-					this.allEvents[aEventAttribute.Type].Add(obj);
+					this.allEvents[(EventIdType)aEventAttribute.Type].Add(obj);
 				}
 			}
 		}
 
-		public void Run(int type)
+		public void Run(EventIdType type)
 		{
-			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
+			List<object> iEvents;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -51,14 +51,15 @@ namespace Hotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e.ToStr());
 				}
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(EventIdType type, A a)
 		{
-			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
+			List<object> iEvents;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -77,9 +78,10 @@ namespace Hotfix
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(EventIdType type, A a, B b)
 		{
-			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
+			List<object> iEvents;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -98,9 +100,10 @@ namespace Hotfix
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(EventIdType type, A a, B b, C c)
 		{
-			if (!this.allEvents.TryGetValue(type, out List<object> iEvents))
+			List<object> iEvents;
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}

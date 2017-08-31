@@ -5,14 +5,14 @@ using Model;
 
 namespace Hotfix
 {
-	public class Timer
+	public struct Timer
 	{
 		public long Id { get; set; }
 		public long Time { get; set; }
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent(EntityEventId.TimerComponent)]
+	[ObjectEvent((int)EntityEventId.TimerComponent)]
 	public class TimerComponent: Component, IUpdate
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
@@ -42,7 +42,8 @@ namespace Hotfix
 				long[] timeOutId = this.timeId.GetAll(key);
 				foreach (long id in timeOutId)
 				{
-					if (!this.timers.TryGetValue(id, out Timer timer))
+					Timer timer;
+					if (!this.timers.TryGetValue(id, out timer))
 					{
 						continue;
 					}
@@ -54,7 +55,8 @@ namespace Hotfix
 
 		private void Remove(long id)
 		{
-			if (!this.timers.TryGetValue(id, out Timer timer))
+			Timer timer;
+			if (!this.timers.TryGetValue(id, out timer))
 			{
 				return;
 			}

@@ -3,7 +3,7 @@ using Model;
 
 namespace Hotfix
 {
-	public abstract class AMHandler<Message> : IMHandler where Message : AMessage
+	public abstract class AMHandler<Message> : IMHandler where Message: AMessage 
 	{
 		protected abstract void Run(Message message);
 

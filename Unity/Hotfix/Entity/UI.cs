@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Model;
 using UnityEngine;
 
 namespace Hotfix
@@ -7,7 +8,7 @@ namespace Hotfix
 	{
 		public Scene Scene { get; set; }
 
-		public int UIType { get; }
+		public UIType UIType { get; }
 
 		public string Name
 		{
@@ -36,7 +37,7 @@ namespace Hotfix
 			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(Scene scene, int uiType, UI parent, GameObject gameObject): base(EntityType.UI)
+		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject): base(EntityType.UI)
 		{
 			this.Scene = scene;
 			this.UIType = uiType;

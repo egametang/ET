@@ -3,7 +3,7 @@ using Model;
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeRunTreeEvent)]
+	[Event((int)EventIdType.BehaviorTreeRunTreeEvent)]
 	public class BehaviorTreeRunTreeEvent_ShowDebugInfo: IEvent<BehaviorTree, List<long>>
 	{
 		public void Run(BehaviorTree tree, List<long> pathList)

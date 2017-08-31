@@ -6,7 +6,7 @@ namespace Model
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ObjectEvent(EntityEventId.MessageDispatherComponent)]
+	[ObjectEvent((int)EntityEventId.MessageDispatherComponent)]
 	public class MessageDispatherComponent : Component, IAwake, ILoad
 	{
 		private Dictionary<ushort, List<IMHandler>> handlers;

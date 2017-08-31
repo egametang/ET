@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Model;
+using UnityEngine;
 
 namespace Hotfix
 {
-	[ObjectEvent(EntityEventId.GameObjectComponent)]
+	[ObjectEvent((int)EntityEventId.GameObjectComponent)]
 	public class GameObjectComponent: Component
 	{
 		public GameObject GameObject { get; private set; }

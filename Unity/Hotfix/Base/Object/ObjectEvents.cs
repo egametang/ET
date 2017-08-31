@@ -15,6 +15,9 @@ namespace Hotfix
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
+		private Queue<Disposer> frameUpdates = new Queue<Disposer>();
+		private Queue<Disposer> frameUpdates2 = new Queue<Disposer>();
+
 		public static ObjectEvents Instance
 		{
 			get

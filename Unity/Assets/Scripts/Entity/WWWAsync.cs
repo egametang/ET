@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[EntityEvent(EntityEventId.WWWAsync)]
+	[EntityEvent((int)EntityEventId.WWWAsync)]
 	public class WWWAsync: Entity
 	{
 		public WWW www;

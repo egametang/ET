@@ -5,7 +5,7 @@ namespace Hotfix
 {
 	public static class Init
 	{
-		private static void Start()
+		public static void Start()
 		{
 			try
 			{
@@ -16,16 +16,15 @@ namespace Hotfix
 				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  
 				Hotfix.Scene.AddComponent<UIComponent>();
-				Hotfix.Scene.AddComponent<UnitComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e.ToStr());
 			}
 		}
 
-		private static void Update()
+		public static void Update()
 		{
 			try
 			{
@@ -37,7 +36,7 @@ namespace Hotfix
 			}
 		}
 
-		private static void OnApplicationQuit()
+		public static void OnApplicationQuit()
 		{
 			Hotfix.Close();
 		}
