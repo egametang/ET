@@ -1,13 +1,21 @@
 ﻿using System;
+using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 
 namespace Model
 {
-	public class JsondotnetPacker: IMessagePacker
+	public class JsondotnetPacker : IMessagePacker
 	{
 		public byte[] SerializeToByteArray(object obj)
 		{
-			return JsonConvert.SerializeObject(obj).ToByteArray();
+			using (MemoryStream ms = new MemoryStream())
+			using (BsonWriter writer = new BsonWriter(ms))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				serializer.Serialize(writer, obj);
+				return ms.ToArray();
+			}
 		}
 
 		public string SerializeToText(object obj)
@@ -17,22 +25,42 @@ namespace Model
 
 		public object DeserializeFrom(Type type, byte[] bytes)
 		{
-			return JsonConvert.DeserializeObject(bytes.ToStr(), type);
+			using (MemoryStream ms = new MemoryStream(bytes))
+			using (BsonReader reader = new BsonReader(ms))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				return serializer.Deserialize(reader, type);
+			}
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes, int index, int count)
 		{
-			return JsonConvert.DeserializeObject(bytes.ToStr(index, count), type);
+			using (MemoryStream ms = new MemoryStream(bytes, index, count))
+			using (BsonReader reader = new BsonReader(ms))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				return serializer.Deserialize(reader, type);
+			}
 		}
 
 		public T DeserializeFrom<T>(byte[] bytes)
 		{
-			return JsonConvert.DeserializeObject<T>(bytes.ToStr());
+			using (MemoryStream ms = new MemoryStream(bytes))
+			using (BsonReader reader = new BsonReader(ms))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				return serializer.Deserialize<T>(reader);
+			}
 		}
 
 		public T DeserializeFrom<T>(byte[] bytes, int index, int count)
 		{
-			return JsonConvert.DeserializeObject<T>(bytes.ToStr(index, count));
+			using (MemoryStream ms = new MemoryStream(bytes, index, count))
+			using (BsonReader reader = new BsonReader(ms))
+			{
+				JsonSerializer serializer = new JsonSerializer();
+				return serializer.Deserialize<T>(reader);
+			}
 		}
 
 		public T DeserializeFrom<T>(string str)
