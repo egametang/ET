@@ -50,6 +50,7 @@ namespace Hotfix
 
 		public static void OnApplicationQuit()
 		{
+			ObjectEvents.Close();
 			Hotfix.Close();
 		}
 	}

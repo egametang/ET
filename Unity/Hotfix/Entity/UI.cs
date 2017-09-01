@@ -56,7 +56,8 @@ namespace Hotfix
 
 		public void Remove(string name)
 		{
-			if (!this.children.TryGetValue(name, out UI ui))
+			UI ui;
+			if (!this.children.TryGetValue(name, out ui))
 			{
 				return;
 			}

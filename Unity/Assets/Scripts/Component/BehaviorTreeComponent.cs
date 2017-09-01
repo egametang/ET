@@ -68,7 +68,7 @@ namespace Model
 
 		private static void InitFieldValue(ref Node node, NodeProto nodeProto)
 		{
-			Type type = AssemblyManager.Instance.Get("Model").GetType("Model." + nodeProto.Name);
+			Type type = ObjectEvents.Instance.Get("Model").GetType("Model." + nodeProto.Name);
 
 			foreach (var args_item in nodeProto.Args.Dict())
 			{

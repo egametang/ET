@@ -67,8 +67,12 @@ namespace Model
 		{
 			this.assemblies[name] = assembly;
 
-			this.disposerEvents.Clear();
-			Type[] types = DllHelper.GetMonoTypes();
+			if (name != "Model")
+			{
+				return;
+			}
+
+			Type[] types = assembly.GetTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
@@ -87,8 +91,6 @@ namespace Model
 				}
 				this.disposerEvents[objectEvent.Type()] = objectEvent;
 			}
-			
-			this.Load();
 		}
 
 		public Assembly Get(string name)
