@@ -37,7 +37,7 @@ namespace Hotfix
 			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject): base(EntityType.UI)
+		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject)
 		{
 			this.Scene = scene;
 			this.UIType = uiType;

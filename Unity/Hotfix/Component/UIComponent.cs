@@ -6,11 +6,24 @@ using UnityEngine;
 
 namespace Hotfix
 {
+	[ObjectEvent]
+	public class UIComponentEvent : ObjectEvent<UIComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
-	[ObjectEvent((int)EntityEventId.UIComponent)]
-	public class UIComponent: Component, IAwake, ILoad
+	public class UIComponent: Component
 	{
 		private GameObject Root;
 		private Dictionary<UIType, IUIFactory> UiTypes;
@@ -70,7 +83,6 @@ namespace Hotfix
 					Log.Error($"{o.GetType().FullName} 没有继承 IUIFactory");
 					continue;
 				}
-
 				this.UiTypes.Add((UIType)attribute.Type, factory);
 			}
 		}

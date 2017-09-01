@@ -4,8 +4,21 @@ using Model;
 
 namespace Hotfix
 {
-	[ObjectEvent((int)EntityEventId.EventComponent)]
-	public class EventComponent : Component, IAwake
+	[ObjectEvent]
+	public class EventComponentEvent : ObjectEvent<EventComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+	
+	public class EventComponent : Component
 	{
 		private Dictionary<EventIdType, List<object>> allEvents;
 

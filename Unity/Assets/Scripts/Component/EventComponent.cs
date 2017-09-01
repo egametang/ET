@@ -3,8 +3,21 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	[ObjectEvent((int)EntityEventId.EventComponent)]
-	public class EventComponent : Component, IAwake, ILoad
+	[ObjectEvent]
+	public class EventComponentEvent : ObjectEvent<EventComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+	
+	public class EventComponent : Component
 	{
 		public static EventComponent Instance;
 

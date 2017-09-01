@@ -3,11 +3,24 @@ using System.Collections.Generic;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ObjectEvent((int)EntityEventId.MessageDispatherComponent)]
-	public class MessageDispatherComponent : Component, IAwake, ILoad
+	public class MessageDispatherComponent : Component
 	{
 		private Dictionary<ushort, List<IMHandler>> handlers;
 
@@ -39,7 +52,7 @@ namespace Model
 			}
 		}
 
-		public void Handle(MessageInfo messageInfo)
+		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
@@ -52,7 +65,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Handle(messageInfo.Message);
+					ev.Handle(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

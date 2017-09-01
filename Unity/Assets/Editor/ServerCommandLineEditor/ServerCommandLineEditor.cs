@@ -359,11 +359,7 @@ namespace MyEditor
 			}
 			GUILayout.EndHorizontal();
 		}
-
-		private void OnDisable()
-		{
-		}
-
+		
 		private void OnDestroy()
 		{
 			this.ClearConfig();

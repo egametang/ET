@@ -5,8 +5,16 @@ using UnityEngine.UI;
 
 namespace Hotfix
 {
-	[ObjectEvent((int)EntityEventId.UILoginComponent)]
-	public class UILoginComponent: Component, IAwake
+	[ObjectEvent]
+	public class UILoginComponentEvent : ObjectEvent<UILoginComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+	
+	public class UILoginComponent: Component
 	{
 		private GameObject account;
 		private GameObject loginBtn;

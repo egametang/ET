@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Model
+namespace Hotfix
 {
-	public static class ObjectFactory
+	public static class EntityFactory
 	{
 		public static T Create<T>() where T : Disposer
 		{

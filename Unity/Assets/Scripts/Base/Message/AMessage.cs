@@ -12,7 +12,7 @@
 	/// <summary>
 	/// 服务端回的RPC消息需要继承这个抽象类
 	/// </summary>
-	public abstract class AResponse
+	public abstract class AResponse: AMessage
 	{
 		public uint RpcId;
 

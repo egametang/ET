@@ -5,7 +5,15 @@ using UnityEngine;
 
 namespace Model
 {
-	[EntityEvent((int)EntityEventId.WWWAsync)]
+	[ObjectEvent]
+	public class WWWAsyncEvent : ObjectEvent<WWWAsync>, IUpdate
+	{
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+	
 	public class WWWAsync: Entity
 	{
 		public WWW www;

@@ -9,7 +9,7 @@ namespace Hotfix
 
 	public abstract class Object: IDisposable2
 	{
-		public long Id { get; protected set; }
+		public long Id { get; set; }
 
 		protected Object()
 		{

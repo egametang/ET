@@ -119,7 +119,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, message);
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>

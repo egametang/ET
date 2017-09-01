@@ -40,17 +40,13 @@ namespace Model
 				Log.Debug("run in ilruntime mode");
 
 				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-				
-				DllHelper.LoadHotfixAssembly();			
-				ILHelper.RegisterILAdapter();
-				ILHelper.RegisterDelegate();
-				ILHelper.RegisterRedirection();
+				DllHelper.LoadHotfixAssembly();
+				ILHelper.InitILRuntime();
 				
 				this.start = new ILStaticMethod("Hotfix.Init", "Start", 0);
 				this.update = new ILStaticMethod("Hotfix.Init", "Update", 0);
 				this.lateUpdate = new ILStaticMethod("Hotfix.Init", "LateUpdate", 0);
 				this.onApplicationQuit = new ILStaticMethod("Hotfix.Init", "OnApplicationQuit", 0);
-
 #else
 				Log.Debug("run in mono mode");
 				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);

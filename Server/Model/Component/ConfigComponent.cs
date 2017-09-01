@@ -19,7 +19,7 @@ namespace Model
 
 		public void Load()
 		{
-			Assembly assembly = ObjectEvents.Instance.GetAssembly("Model");
+			Assembly assembly = ObjectEvents.Instance.Get("Model");
 
 			this.allConfig = new Dictionary<Type, ICategory>();
 			Type[] types = assembly.GetTypes();

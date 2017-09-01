@@ -12,8 +12,16 @@ namespace Hotfix
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent((int)EntityEventId.TimerComponent)]
-	public class TimerComponent: Component, IUpdate
+	[ObjectEvent]
+	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	{
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+	
+	public class TimerComponent: Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
 

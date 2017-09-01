@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using ILRuntime.CLR.Method;
-using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
-using UnityEngine;
-using AppDomain = System.AppDomain;
 
 namespace Model
 {
 	public static class ILHelper
 	{
-		public static unsafe void RegisterRedirection()
+		public static unsafe void InitILRuntime()
 		{
+			// 注册重定向函数
 			MethodInfo mi = typeof(Log).GetMethod("Debug", new Type[] { typeof(string) });
 			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
 
@@ -23,19 +17,14 @@ namespace Model
 
 			MethodInfo mi3 = typeof(Log).GetMethod("Error", new Type[] { typeof(string) });
 			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
-		}
 
-		public static unsafe void RegisterDelegate()
-		{
+			// 注册委托
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 
-		}
 
-		public static unsafe void RegisterILAdapter()
-		{
+			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;
-
 			foreach (Type type in assembly.GetTypes())
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ILAdapterAttribute), false);

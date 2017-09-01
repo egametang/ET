@@ -1,6 +1,20 @@
 ﻿namespace Model
 {
-	public class NetOuterComponent : NetworkComponent, IAwake, IAwake<string, int>
+	[ObjectEvent]
+	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Awake(string host, int port)
+		{
+			this.Get().Awake();
+		}
+	}
+
+	public class NetOuterComponent : NetworkComponent
 	{
 		public void Awake()
 		{

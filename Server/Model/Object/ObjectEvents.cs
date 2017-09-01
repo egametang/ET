@@ -55,7 +55,7 @@ namespace Model
 		private Queue<Disposer> loaders = new Queue<Disposer>();
 		private Queue<Disposer> loaders2 = new Queue<Disposer>();
 		
-		public void Register(string name, Assembly assembly)
+		public void Add(string name, Assembly assembly)
 		{
 			this.assemblies[name] = assembly;
 
@@ -86,12 +86,12 @@ namespace Model
 			this.Load();
 		}
 
-		public Assembly GetAssembly(string name)
+		public Assembly Get(string name)
 		{
 			return this.assemblies[name];
 		}
 
-		public Assembly[] GetAssemblies()
+		public Assembly[] GetAll()
 		{
 			return this.assemblies.Values.ToArray();
 		}

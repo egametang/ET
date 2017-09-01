@@ -15,8 +15,8 @@ namespace App
 
 			try
 			{
-				ObjectEvents.Instance.Register("Model", typeof(Game).Assembly);
-				ObjectEvents.Instance.Register("Hotfix", DllHelper.GetHotfixAssembly());
+				ObjectEvents.Instance.Add("Model", typeof(Game).Assembly);
+				ObjectEvents.Instance.Add("Hotfix", DllHelper.GetHotfixAssembly());
 
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;

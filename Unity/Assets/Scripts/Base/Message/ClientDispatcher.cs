@@ -4,7 +4,7 @@ namespace Model
 {
 	public class ClientDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, object message)
+		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
 		{
 			// 普通消息或者是Rpc请求消息
 			if (message is AMessage || message is ARequest)
@@ -16,7 +16,7 @@ namespace Model
 				}
 				else
 				{
-					Game.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
+					Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
 				}
 				return;
 			}

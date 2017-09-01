@@ -414,10 +414,10 @@
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\AssemblyManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentDB.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\EntityEventId.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
@@ -427,6 +427,8 @@
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEvents.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Base\UI\LayerNames.cs" />

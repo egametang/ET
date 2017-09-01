@@ -4,7 +4,7 @@ namespace Model
 {
 	public abstract class Object: ISupportInitialize
 	{
-		public long Id { get; protected set; }
+		public long Id { get; set; }
 
 		protected Object()
 		{

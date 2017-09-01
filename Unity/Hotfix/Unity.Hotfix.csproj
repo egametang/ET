@@ -62,8 +62,11 @@
     <Compile Include="Base\Message\AMHandler.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
     <Compile Include="Base\Object\Component.cs" />
+    <Compile Include="Base\Object\ComponentDB.cs" />
+    <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Disposer.cs" />
     <Compile Include="Base\Object\Entity.cs" />
+    <Compile Include="Base\Object\EntityFactory.cs" />
     <Compile Include="Base\Object\EntityType.cs" />
     <Compile Include="Base\Object\IAwake.cs" />
     <Compile Include="Base\Object\ILateUpdate.cs" />
@@ -76,7 +79,6 @@
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
-    <Compile Include="Component\RobotComponent.cs" />
     <Compile Include="Component\TimeComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UIComponent.cs" />

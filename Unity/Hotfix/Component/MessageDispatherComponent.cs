@@ -4,10 +4,23 @@ using Model;
 
 namespace Hotfix
 {
+	[ObjectEvent]
+	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ObjectEvent((int)EntityEventId.MessageDispatherComponent)]
 	public class MessageDispatherComponent: Component, IAwake, ILoad
 	{
 		private Dictionary<ushort, List<IMHandler>> handlers;
