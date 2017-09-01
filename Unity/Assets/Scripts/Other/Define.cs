@@ -1,19 +1,11 @@
 ﻿namespace Model
 {
-	public enum LoadResourceType
-	{
-		Async,
-		Sync
-	}
-
 	public static class Define
 	{
-		public const int FlyStartV = 7;
-		public const int GravityAcceleration = 36;
 #if UNITY_EDITOR && !ASYNC
-		public static LoadResourceType LoadResourceType = LoadResourceType.Sync;
+		public static bool IsAsync = false;
 #else
-        public static LoadResourceType LoadResourceType = LoadResourceType.Async;
+        public static bool IsAsync = true;
 #endif
 
 #if UNITY_EDITOR
@@ -26,6 +18,12 @@
 		public static bool IsDevelopmentBuild = true;
 #else
 		public static bool IsDevelopmentBuild = false;
+#endif
+
+#if ILRuntime
+		public static bool IsILRuntime = true;
+#else
+		public static bool IsILRuntime = false;
 #endif
 	}
 }

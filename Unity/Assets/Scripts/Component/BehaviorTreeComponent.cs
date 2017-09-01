@@ -118,7 +118,7 @@ namespace Model
 				BehaviorTreeConfig behaviorTreeConfig = treeGo.GetComponent<BehaviorTreeConfig>();
 				Node node = this.CreateTreeNode(behaviorTreeConfig.RootNodeProto);
 				tree = new BehaviorTree(scene, node);
-				if (Define.LoadResourceType == LoadResourceType.Async)
+				if (Define.IsAsync)
 				{
 					this.treeCache.Add(treeGo, tree);
 				}

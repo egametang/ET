@@ -1,55 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using ILRuntime.CLR.Method;
 using Model;
 using UnityEngine;
 
 namespace Hotfix
 {
-#if ILRuntime
-	public class IILUIFactoryMethod : IUIFactory
-	{
-		private readonly object instance;
-		private readonly IMethod methodInfo;
-		private readonly object[] params3 = new object[3];
-		public IILUIFactoryMethod(Type type)
-		{
-			this.instance = Activator.CreateInstance(type);
-			this.methodInfo = DllHelper.GetType(type.FullName).GetMethod("Create", 3);
-		}
-
-		public UI Create(Scene scene, UIType type, GameObject parent)
-		{
-			this.params3[0] = scene;
-			this.params3[1] = type;
-			this.params3[2] = parent;
-			return (UI)Model.Init.Instance.AppDomain.Invoke(methodInfo, instance, params3);
-		}
-	}
-#else
-	public class IMonoUIFactoryMethod : IUIFactory
-	{
-		private readonly object instance;
-		private readonly MethodInfo methodInfo;
-		private readonly object[] params3 = new object[3];
-		public IMonoUIFactoryMethod(Type type)
-		{
-			this.instance = Activator.CreateInstance(type);
-			this.methodInfo = type.GetMethod("Create");
-		}
-
-		public UI Create(Scene scene, UIType type, GameObject parent)
-		{
-			this.params3[0] = scene;
-			this.params3[1] = type;
-			this.params3[2] = parent;
-			return (UI)this.methodInfo.Invoke(this.instance, this.params3);
-		}
-	}
-#endif
-
 	/// <summary>
 	/// 管理所有UI
 	/// </summary>
@@ -107,13 +63,15 @@ namespace Hotfix
                     Log.Debug($"已经存在同类UI Factory: {attribute.Type}");
 					throw new Exception($"已经存在同类UI Factory: {attribute.Type}");
 				}
-#if ILRuntime
-				IUIFactory iuiFactory = new IILUIFactoryMethod(type);
-#else
-				IUIFactory iuiFactory = new IMonoUIFactoryMethod(type);
-#endif
+				object o = Activator.CreateInstance(type);
+				IUIFactory factory = o as IUIFactory;
+				if (factory == null)
+				{
+					Log.Error($"{o.GetType().FullName} 没有继承 IUIFactory");
+					continue;
+				}
 
-				this.UiTypes.Add((UIType)attribute.Type, iuiFactory);
+				this.UiTypes.Add((UIType)attribute.Type, factory);
 			}
 		}
 

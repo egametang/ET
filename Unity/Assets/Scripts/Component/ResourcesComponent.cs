@@ -30,7 +30,7 @@ namespace Model
 				return resource as K;
 			}
 			
-			if (Define.LoadResourceType == LoadResourceType.Async)
+			if (Define.IsAsync)
 			{
 				if (!this.bundleCaches.ContainsKey($"{bundleName}.unity3d".ToLower()))
 				{
