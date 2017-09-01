@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -415,9 +412,11 @@
     <Compile Include="Assets\Scripts\Base\Object\AssemblyManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentDB.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
@@ -427,8 +426,6 @@
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEvents.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Base\UI\LayerNames.cs" />

@@ -59,15 +59,11 @@ namespace Model
 			return ObjectEvents.Instance.Get("Hotfix").GetTypes();
 #endif
 		}
-
+		
 		public static Type[] GetMonoTypes()
 		{
-			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in ObjectEvents.Instance.GetAll())
-			{
-				types.AddRange(assembly.GetTypes());
-			}
-			return types.ToArray();
+			Assembly model = ObjectEvents.Instance.Get("Model");
+			return model.GetTypes();
 		}
 
 #if ILRuntime

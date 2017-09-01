@@ -68,29 +68,26 @@ namespace Model
 			this.assemblies[name] = assembly;
 
 			this.disposerEvents.Clear();
-			foreach (Assembly ass in this.assemblies.Values)
+			Type[] types = DllHelper.GetMonoTypes();
+			foreach (Type type in types)
 			{
-				Type[] types = ass.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
+
+				if (attrs.Length == 0)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
-
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					object obj = Activator.CreateInstance(type);
-					IObjectEvent objectEvent = obj as IObjectEvent;
-					if (objectEvent == null)
-					{
-						Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
-						continue;
-					}
-					this.disposerEvents[objectEvent.Type()] = objectEvent;
+					continue;
 				}
-			}
 
+				object obj = Activator.CreateInstance(type);
+				IObjectEvent objectEvent = obj as IObjectEvent;
+				if (objectEvent == null)
+				{
+					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
+					continue;
+				}
+				this.disposerEvents[objectEvent.Type()] = objectEvent;
+			}
+			
 			this.Load();
 		}
 

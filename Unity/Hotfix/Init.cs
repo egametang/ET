@@ -36,6 +36,18 @@ namespace Hotfix
 			}
 		}
 
+		public static void LateUpdate()
+		{
+			try
+			{
+				ObjectEvents.Instance.LateUpdate();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
+		}
+
 		public static void OnApplicationQuit()
 		{
 			Hotfix.Close();
