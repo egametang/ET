@@ -1,3 +1,10 @@
+2017-09-04 ET 1.0版本发布！增加了两个功能：
+1.客户端无缝衔接热更与不热更，只需要使用一个ILRuntime编译选项即可切换成ILRuntime热更（支持IOS），不需要修改任何代码。平常开发使用加载动态库形式，
+方便进行单步调试，发布的时候开启ILRuntime即可进行热更新动态库。
+
+2.服务端增加类似erlang的Actor分布式消息模型，任何一个实体对象挂上ActorComponent组件，其它任何进程只需要知道实体对象的id都可以对其发送消息。实体对象
+位置完全是透明的，并且对象可以十分方便的在进程中迁移。大家可以通过Unity Tools->命令行工具->选择127.0.0.1.txt启动一组服务器，运行unity测试
+
 2017-4-17: IOS il2cpp p/invoke调用有很多bug，必须修改代码绕过去，增加了安卓和ios使用的enet库，安卓和ios都测试通过，方便大家使用
 
 2017-3-30: unity升级到5.5.2，增加vs调试启动参数，很多人问我，所以加上去了。增加主线程同步上下文，mongodb异步函数就能回调到主线程
@@ -25,4 +32,4 @@ ET框架：一个Unity客户端和分布式游戏服务器框架
 linux工具安装命令: sudo aptitude install git-core screen cmake build-essential pkg-config
 
 Email: egametang@gmail.com
-QQ   : 80081771
+QQ群 : 474643097
