@@ -14,7 +14,7 @@ namespace Hotfix
 				Hotfix.Scene.ModelScene.AddComponent<Model.MessageDispatherComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
 				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
-				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  
+				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();
 				Hotfix.Scene.AddComponent<UIComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
@@ -32,7 +32,7 @@ namespace Hotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e.ToStr());
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace Hotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e.ToStr());
 			}
 		}
 

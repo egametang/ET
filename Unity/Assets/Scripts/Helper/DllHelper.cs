@@ -29,14 +29,11 @@ namespace Model
 		{
 			GameObject code = (GameObject)Resources.Load("Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
 			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
 			return assembly;
 		}
 #endif
-
-		private static List<Type> _typeBuffer = new List<Type>();
-
 
 		public static Type[] GetHotfixTypes()
 		{
@@ -46,15 +43,8 @@ namespace Model
 			{
 				return new Type[0];
 			}
-            
-			foreach (IType type in appDomain.LoadedTypes.Values.ToArray())
-			{
-                if (!_typeBuffer.Contains(type.ReflectionType))
-                {
-                    _typeBuffer.Add(type.ReflectionType);
-                }
-			}
-			return _typeBuffer.ToArray();
+
+			return appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
 #else
 			return ObjectEvents.Instance.Get("Hotfix").GetTypes();
 #endif
