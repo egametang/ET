@@ -80,12 +80,7 @@ namespace Model
 				return false;
 			}
 			
-			if (message.AMessage is ARequest request)
-			{
-				request.RpcId = message.RpcId;
-			}
-
-			return await handler.Handle(session, entity, message.AMessage);
+			return await handler.Handle(session, entity, message);
 		}
 
 		public override void Dispose()

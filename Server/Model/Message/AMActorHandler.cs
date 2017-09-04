@@ -7,12 +7,12 @@ namespace Model
 	{
 		protected abstract Task<bool> Run(E entity, Message message);
 
-		public async Task<bool> Handle(Session session, Entity entity, AMessage msg)
+		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
 		{
-			Message message = msg as Message;
-			if (message == null)
+			Message msg = message.AMessage as Message;
+			if (msg == null)
 			{
-				Log.Error($"消息类型转换错误: {msg.GetType().FullName} to {typeof (Message).Name}");
+				Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Message).Name}");
 				return false;
 			}
 			E e = entity as E;
@@ -21,7 +21,20 @@ namespace Model
 				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
 				return false;
 			}
-			return await this.Run(e, message);
+
+			await this.Run(e, msg);
+
+			// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
+			if (session.Id == 0)
+			{
+				return false;
+			}
+			ActorResponse response = new ActorResponse
+			{
+				RpcId = message.RpcId
+			};
+			session.Reply(response);
+			return true;
 		}
 
 		public Type GetMessageType()
@@ -42,11 +55,11 @@ namespace Model
 
 		protected abstract Task<bool> Run(E entity, Request message, Action<Response> reply);
 
-		public async Task<bool> Handle(Session session, Entity entity, AMessage message)
+		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
 		{
 			try
 			{
-				Request request = message as Request;
+				Request request = message.AMessage as Request;
 				if (request == null)
 				{
 					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
@@ -65,7 +78,7 @@ namespace Model
 					{
 						return;
 					}
-					response.RpcId = request.RpcId;
+					response.RpcId = message.RpcId;
 					session.Reply(response);
 				});
 			}

@@ -198,8 +198,8 @@ namespace Model
 		{
 			if (!this.lockDict.ContainsKey(key))
 			{
-				Log.Info($"location get key: {key}");
 				this.locations.TryGetValue(key, out int location);
+				Log.Info($"location get key: {key} {location}");
 				return Task.FromResult(location);
 			}
 

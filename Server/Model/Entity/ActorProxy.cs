@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
 	public abstract class ActorTask
 	{
+		[BsonIgnore]
+		public ActorProxy proxy;
+
+		[BsonElement]
+		public AMessage message;
+
 		public abstract Task<AResponse> Run();
 
 		public abstract void RunFail(int error);
@@ -17,9 +24,6 @@ namespace Model
 	/// </summary>
 	public class ActorMessageTask: ActorTask
 	{
-		private readonly ActorProxy proxy;
-		private readonly AMessage message;
-
 		public ActorMessageTask(ActorProxy proxy, AMessage message)
 		{
 			this.proxy = proxy;
@@ -44,9 +48,7 @@ namespace Model
 	/// <typeparam name="Response"></typeparam>
 	public class ActorRpcTask<Response> : ActorTask where Response: AResponse
 	{
-		private readonly ActorProxy proxy;
-		private readonly ARequest message;
-
+		[BsonIgnore]
 		public readonly TaskCompletionSource<Response> Tcs = new TaskCompletionSource<Response>();
 
 		public ActorRpcTask(ActorProxy proxy, ARequest message)
@@ -102,7 +104,7 @@ namespace Model
 		public int WindowSize = 1;
 
 		// 最大窗口
-		public const int MaxWindowSize = 100;
+		public const int MaxWindowSize = 1;
 
 		private TaskCompletionSource<ActorTask> tcs;
 
@@ -131,7 +133,7 @@ namespace Model
 
 		private void Remove()
 		{
-			this.RunningTasks.Dequeue();
+			ActorTask task = this.RunningTasks.Dequeue();
 			this.AllowGet();
 		}
 
@@ -142,10 +144,12 @@ namespace Model
 				return;
 			}
 
-			var t = this.tcs;
-			this.tcs = null;
+
 			ActorTask task = this.WaitingTasks.Dequeue();
 			this.RunningTasks.Enqueue(task);
+
+			var t = this.tcs;
+			this.tcs = null;
 			t.SetResult(task);
 		}
 
@@ -157,7 +161,7 @@ namespace Model
 				this.RunningTasks.Enqueue(task);
 				return Task.FromResult(task);
 			}
-
+			
 			this.tcs = new TaskCompletionSource<ActorTask>();
 			return this.tcs.Task;
 		}
@@ -247,6 +251,7 @@ namespace Model
 		{
 			try
 			{
+				//Log.Debug($"realcall {MongoHelper.ToJson(request)} {this.Address}");
 				request.Id = this.Id;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
 				Response response = await session.Call<Response>(request, cancellationToken);
@@ -257,6 +262,16 @@ namespace Model
 				Log.Error($"{this.Address} {e}");
 				throw;
 			}
+		}
+
+		public string DebugQueue(Queue<ActorTask> tasks)
+		{
+			string s = "";
+			foreach (ActorTask task in tasks)
+			{
+				s += $" {task.message.GetType().Name}";
+			}
+			return s;
 		}
 
 		public override void Dispose()

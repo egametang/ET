@@ -39,7 +39,7 @@ namespace Hotfix
 				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
 				G2C_LoginGate g2CLoginGate = await gateSession.Call<G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
 				
-				Log.Debug($"{JsonHelper.ToJson(g2CLoginGate)}");
+				//Log.Debug($"{JsonHelper.ToJson(g2CLoginGate)}");
 
 				Log.Info("登陆gate成功!");
 
