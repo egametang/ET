@@ -50,10 +50,8 @@ namespace Model
 				this.onApplicationQuit = new ILStaticMethod("Hotfix.Init", "OnApplicationQuit", 0);
 #else
 				Log.Debug("run in mono mode");
-				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
-				Assembly hotfix = DllHelper.LoadHotfixAssembly();
-				ObjectEvents.Instance.Add("Hotfix", hotfix);
-				Type hotfixInit = hotfix.GetType("Hotfix.Init");
+				ObjectEvents.Instance.HotfixAssembly = DllHelper.LoadHotfixAssembly();
+				Type hotfixInit = ObjectEvents.Instance.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
 				this.update = new MonoStaticMethod(hotfixInit, "Update");
 				this.lateUpdate = new MonoStaticMethod(hotfixInit, "LateUpdate");

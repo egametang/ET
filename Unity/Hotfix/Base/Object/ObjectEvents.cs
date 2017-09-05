@@ -61,9 +61,7 @@ namespace Hotfix
 		{
 			instance = null;
 		}
-
-
-
+		
 		public ObjectEvents()
 		{
 			Type[] types = DllHelper.GetHotfixTypes();

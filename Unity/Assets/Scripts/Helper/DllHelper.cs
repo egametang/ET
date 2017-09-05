@@ -46,7 +46,7 @@ namespace Model
 
 			return appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
 #else
-			return ObjectEvents.Instance.Get("Hotfix").GetTypes();
+			return ObjectEvents.Instance.HotfixAssembly.GetTypes();
 #endif
 		}
 		

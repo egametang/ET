@@ -43,6 +43,8 @@ namespace Model
 			}
 		}
 
+		public Assembly HotfixAssembly;
+
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
 		private readonly Dictionary<Type, IObjectEvent> disposerEvents = new Dictionary<Type, IObjectEvent>();
@@ -67,29 +69,26 @@ namespace Model
 		{
 			this.assemblies[name] = assembly;
 
-			if (name != "Model")
+			foreach (Assembly ass in this.assemblies.Values)
 			{
-				return;
-			}
-
-			Type[] types = assembly.GetTypes();
-			foreach (Type type in types)
-			{
-				object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
-
-				if (attrs.Length == 0)
+				foreach (Type type in ass.GetTypes())
 				{
-					continue;
-				}
+					object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
 
-				object obj = Activator.CreateInstance(type);
-				IObjectEvent objectEvent = obj as IObjectEvent;
-				if (objectEvent == null)
-				{
-					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
-					continue;
+					if (attrs.Length == 0)
+					{
+						continue;
+					}
+
+					object obj = Activator.CreateInstance(type);
+					IObjectEvent objectEvent = obj as IObjectEvent;
+					if (objectEvent == null)
+					{
+						Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
+						continue;
+					}
+					this.disposerEvents[objectEvent.Type()] = objectEvent;
 				}
-				this.disposerEvents[objectEvent.Type()] = objectEvent;
 			}
 		}
 
