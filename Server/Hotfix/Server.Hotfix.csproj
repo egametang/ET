@@ -38,6 +38,11 @@
     <Compile Include="Component\RealmGateAddressComponentE.cs" />
     <Compile Include="Handler\ActorRpc_TestHandler.cs" />
     <Compile Include="Handler\Actor_TestHandler.cs" />
+    <Compile Include="Handler\DBQueryBatchRequestHandler.cs" />
+    <Compile Include="Handler\DBQueryJsonRequestHandler.cs" />
+    <Compile Include="Handler\DBQueryRequestHandler.cs" />
+    <Compile Include="Handler\DBSaveBatchRequestHandler.cs" />
+    <Compile Include="Handler\DBSaveRequestHandler.cs" />
     <Compile Include="Handler\G2M_CreateUnitHandler.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Handler\C2G_LoginGateHandler.cs" />
