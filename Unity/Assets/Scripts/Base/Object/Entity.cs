@@ -203,10 +203,13 @@ namespace Model
 			{
 				this.components = null;
 			}
-			foreach (Component component in this.components)
+			if (this.components != null)
 			{
-				component.Owner = this;
-				this.componentDict.Add(component.GetType(), component);
+				foreach (Component component in this.components)
+				{
+					component.Owner = this;
+					this.componentDict.Add(component.GetType(), component);
+				}
 			}
 		}
 	}
