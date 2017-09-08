@@ -15,6 +15,9 @@ namespace Model
 		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
 		{
 			((Session)entity).Send(message.AMessage);
+			ActorResponse response = new ActorResponse();
+			response.RpcId = message.RpcId;
+			session.Reply(response);
 			return true;
 		}
 	}
