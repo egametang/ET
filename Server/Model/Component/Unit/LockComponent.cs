@@ -82,7 +82,7 @@ namespace Model
 			{
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.address);
 				string serverAddress = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.ServerIP;
-				G2G_LockRequest request = new G2G_LockRequest { Id = this.Owner.Id, Address = serverAddress };
+				G2G_LockRequest request = new G2G_LockRequest { Id = this.Entity.Id, Address = serverAddress };
 				await session.Call<G2G_LockResponse>(request);
 
 				this.status = LockStatus.Locked;
@@ -95,7 +95,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error($"获取锁失败: {this.address} {this.Owner.Id} {e}");
+				Log.Error($"获取锁失败: {this.address} {this.Entity.Id} {e}");
 			}
 		}
 

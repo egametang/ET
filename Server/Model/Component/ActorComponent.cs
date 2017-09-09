@@ -55,8 +55,8 @@ namespace Model
 		
 		public async void Start()
 		{
-			this.actorId = this.Owner.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add(this.Owner);
+			this.actorId = this.Entity.Id;
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(this.Entity);
 			await Game.Scene.GetComponent<LocationProxyComponent>().Add(this.actorId);
 			this.HandleAsync();
 		}
@@ -93,7 +93,7 @@ namespace Model
 				try
 				{
 					ActorMessageInfo info = await this.GetAsync();
-					await this.entityActorHandler.Handle(info.Session, this.Owner, info.Message);
+					await this.entityActorHandler.Handle(info.Session, this.Entity, info.Message);
 				}
 				catch (Exception e)
 				{

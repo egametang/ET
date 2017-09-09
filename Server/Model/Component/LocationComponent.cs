@@ -215,7 +215,7 @@ namespace Model
 				tasks = new Queue<LocationTask>();
 				this.taskQueues[key] = tasks;
 			}
-			task.Scene = this.GetOwner<Scene>();
+			task.Scene = this.GetEntity<Scene>();
 			tasks.Enqueue(task);
 		}
 

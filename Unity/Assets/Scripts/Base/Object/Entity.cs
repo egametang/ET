@@ -207,7 +207,7 @@ namespace Model
 			{
 				foreach (Component component in this.components)
 				{
-					component.Owner = this;
+					component.Entity = this;
 					this.componentDict.Add(component.GetType(), component);
 				}
 			}

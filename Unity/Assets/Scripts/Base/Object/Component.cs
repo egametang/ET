@@ -6,11 +6,11 @@ namespace Model
 	public abstract class Component: Disposer
 	{
 		[BsonIgnore]
-		public Entity Owner { get; set; }
+		public Entity Entity { get; set; }
 
-		public T GetOwner<T>() where T : Entity
+		public T GetEntity<T>() where T : Entity
 		{
-			return this.Owner as T;
+			return this.Entity as T;
 		}
 
 		protected Component()
@@ -23,7 +23,7 @@ namespace Model
 
 		public T GetComponent<T>() where T : Component
 		{
-			return this.Owner.GetComponent<T>();
+			return this.Entity.GetComponent<T>();
 		}
 
 		public override void Dispose()
@@ -35,7 +35,7 @@ namespace Model
 
 			base.Dispose();
 
-			this.Owner?.RemoveComponent(this.GetType());
+			this.Entity?.RemoveComponent(this.GetType());
 		}
 	}
 }
