@@ -6,13 +6,13 @@ namespace Model
 	[BsonKnownTypes(typeof(RechargeRecord))]
 	[BsonKnownTypes(typeof(Recharge))]
 	[BsonKnownTypes(typeof(Location))]
-	public class DBEntity: Entity
+	public class EntityDB: Entity
 	{
-		protected DBEntity()
+		protected EntityDB()
 		{
 		}
 
-		protected DBEntity(long id): base(id)
+		protected EntityDB(long id): base(id)
 		{
 		}
 	}

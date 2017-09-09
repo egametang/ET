@@ -1,20 +1,18 @@
-﻿using Model;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Hotfix
 {
-	public abstract class Disposer: Object
+	public abstract class Disposer : Object, IDisposable2
 	{
-		protected Disposer(): base(IdGenerater.GenerateId())
+		[BsonIgnore]
+		public abstract long Id { get; set; }
+
+		protected Disposer()
 		{
 			ObjectEvents.Instance.Add(this);
 		}
 
-		protected Disposer(long id): base(id)
-		{
-			ObjectEvents.Instance.Add(this);
-		}
-
-		public override void Dispose()
+		public virtual void Dispose()
 		{
 			this.Id = 0;
 		}

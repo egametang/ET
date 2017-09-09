@@ -91,7 +91,7 @@ namespace Hotfix
 		{
 			try
 			{
-				UI ui = UiTypes[type].Create(GetOwner<Scene>(), type, Root);
+				UI ui = UiTypes[type].Create(this.GetEntity<Scene>(), type, Root);
                 uis.Add(type, ui);
 
 				// 设置canvas

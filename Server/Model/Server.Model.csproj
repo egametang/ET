@@ -178,7 +178,7 @@
     <Compile Include="Entity\Config\StartConfig.cs" />
     <Compile Include="Entity\ActorProxy.cs" />
     <Compile Include="Entity\SceneEntity.cs" />
-    <Compile Include="Entity\DBEntity.cs" />
+    <Compile Include="Entity\EntityDB.cs" />
     <Compile Include="Entity\DBTask.cs" />
     <Compile Include="Entity\DBTaskQueue.cs" />
     <Compile Include="Entity\Game.cs" />

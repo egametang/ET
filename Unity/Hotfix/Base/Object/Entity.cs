@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Model;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Hotfix
 {
-	public class Entity : Disposer
+	[BsonIgnoreExtraElements]
+	public class Entity : Disposer, ISupportInitialize
 	{
+		[BsonId]
+		[BsonElement(Order = 1)]
+		public sealed override long Id { get; set; }
+
 		[BsonIgnore]
 		public Entity Parent { get; set; }
-
-		public EntityType Type { get; set; }
 
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -22,10 +26,12 @@ namespace Hotfix
 
 		protected Entity()
 		{
+			this.Id = IdGenerater.GenerateId();
 		}
 
-		protected Entity(long id) : base(id)
+		protected Entity(long id)
 		{
+			this.Id = id;
 		}
 
 		public override void Dispose()
@@ -185,6 +191,30 @@ namespace Hotfix
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
+		}
+
+		public virtual void BeginInit()
+		{
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
+		}
+
+		public virtual void EndInit()
+		{
+			ObjectEvents.Instance.Add(this);
+
+			if (this.components != null && this.components.Count == 0)
+			{
+				this.components = null;
+			}
+			if (this.components != null)
+			{
+				foreach (Component component in this.components)
+				{
+					component.Entity = this;
+					this.componentDict.Add(component.GetType(), component);
+				}
+			}
 		}
 	}
 }

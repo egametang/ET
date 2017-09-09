@@ -21,7 +21,7 @@ namespace Hotfix
 
 		public void Awake()
 		{
-			ReferenceCollector rc = this.GetOwner<UI>().GameObject.GetComponent<ReferenceCollector>();
+			ReferenceCollector rc = this.GetEntity<UI>().GameObject.GetComponent<ReferenceCollector>();
 			loginBtn = rc.Get<GameObject>("LoginBtn");
 			loginBtn.GetComponent<Button>().onClick.Add(OnLogin);
 

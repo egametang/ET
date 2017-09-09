@@ -1,15 +1,14 @@
 ﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
 	public abstract class Disposer : Object, IDisposable
 	{
-		protected Disposer() : base(IdGenerater.GenerateId())
-		{
-			ObjectEvents.Instance.Add(this);
-		}
-
-		protected Disposer(long id) : base(id)
+		[BsonIgnore]
+		public abstract long Id { get; set; }
+		
+		protected Disposer()
 		{
 			ObjectEvents.Instance.Add(this);
 		}
@@ -17,14 +16,6 @@ namespace Model
 		public virtual void Dispose()
 		{
 			this.Id = 0;
-		}
-
-		public override void BeginInit()
-		{
-		}
-
-		public override void EndInit()
-		{
 		}
 	}
 }

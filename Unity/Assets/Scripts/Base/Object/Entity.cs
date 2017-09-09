@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	public class Entity : Disposer
+	[BsonIgnoreExtraElements]
+	public class Entity : Disposer, ISupportInitialize
 	{
+		[BsonId]
+		[BsonElement(Order = 1)]
+		public sealed override long Id { get; set; }
+
 		[BsonIgnore]
 		public Entity Parent { get; set; }
-
-		public EntityType Type { get; set; }
-
+		
 		[BsonElement]
 		[BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
@@ -21,10 +25,12 @@ namespace Model
 
 		protected Entity()
 		{
+			this.Id = IdGenerater.GenerateId();
 		}
 
-		protected Entity(long id) : base(id)
+		protected Entity(long id)
 		{
+			this.Id = id;
 		}
 
 		public override void Dispose()
@@ -186,17 +192,14 @@ namespace Model
 			return this.componentDict.Values.ToArray();
 		}
 
-		public override void BeginInit()
+		public virtual void BeginInit()
 		{
-			base.BeginInit();
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		public override void EndInit()
+		public virtual void EndInit()
 		{
-			base.EndInit();
-
 			ObjectEvents.Instance.Add(this);
 
 			if (this.components != null && this.components.Count == 0)
