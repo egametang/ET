@@ -7,6 +7,6 @@
 		Action,
 		Condition,
 		Root,
-		DataTransform
+		DataTransform,
 	}
 }

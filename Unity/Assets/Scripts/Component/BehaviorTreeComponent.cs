@@ -12,7 +12,7 @@ namespace Model
 		{
 			this.Get().Awake();
 		}
-
+		
 		public void Load()
 		{
 			this.Get().Load();
@@ -21,11 +21,14 @@ namespace Model
 	
 	public class BehaviorTreeComponent : Component
 	{
+		public static BehaviorTreeComponent Instance;
+
 		private Dictionary<string, Func<NodeProto, Node>> dictionary;
 		private Dictionary<GameObject, BehaviorTree> treeCache;
 
 		public void Awake()
 		{
+			Instance = this;
 			this.Load();
 		}
 
@@ -88,6 +91,18 @@ namespace Model
 			{
 				value = Enum.Parse(field.FieldType, (string) value);
 			}
+			if (field.FieldType.IsArray)
+			{
+				if (field.FieldType.GetElementType().IsSubclassOf(typeof(UnityEngine.Object)))
+				{
+					Array sourceArray = (Array) value;
+					Array dest = Array.CreateInstance(field.FieldType.GetElementType(), sourceArray.Length);
+					Array.Copy(sourceArray, dest, dest.Length);
+					field.SetValue(node, dest);
+
+					value = dest;
+				}
+			}
 			field.SetValue(node, value);
 		}
 
@@ -120,17 +135,28 @@ namespace Model
 
 		public BehaviorTree CreateTree(Scene scene, GameObject treeGo)
 		{
+			return this.CreateTree(scene, 0, treeGo);
+		}
+
+		public BehaviorTree CreateTree(Scene scene, long ownerId, GameObject treeGo)
+		{
 			try
 			{
+				if (treeGo == null)
+				{
+					return null;
+				}
 				BehaviorTree tree;
 				if (this.treeCache.TryGetValue(treeGo, out tree))
 				{
 					return tree;
 				}
 
+
 				BehaviorTreeConfig behaviorTreeConfig = treeGo.GetComponent<BehaviorTreeConfig>();
 				Node node = this.CreateTreeNode(behaviorTreeConfig.RootNodeProto);
-				tree = new BehaviorTree(scene, node);
+
+				tree = new BehaviorTree(scene, ownerId, node) {GameObjectId = treeGo.GetInstanceID()};
 				if (Define.IsAsync)
 				{
 					this.treeCache.Add(treeGo, tree);

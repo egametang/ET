@@ -55,6 +55,7 @@ namespace MyEditor
 
 		public static void Reset()
 		{
+			instance?.Dispose();
 			instance = null;
 		}
 

@@ -5,6 +5,9 @@ namespace Model
 {
 	public class BehaviorTree
 	{
+		public long Id;
+		public int GameObjectId;
+		public List<long> PathList = new List<long>();
 		private readonly Node node;
 		public Scene Scene { get; }
 
@@ -16,8 +19,9 @@ namespace Model
 			}
 		}
 
-		public BehaviorTree(Scene scene, Node node)
+		public BehaviorTree(Scene scene, long id, Node node)
 		{
+			this.Id = id;
 			this.Scene = scene;
 			this.node = node;
 		}
@@ -26,9 +30,10 @@ namespace Model
 		{
 			try
 			{
+				this.PathList.Clear();
+				env.Add(BTEnvKey.NodePath, this.PathList);
 				bool ret = this.node.DoRun(this, env);
-				List<long> pathList = env.Get<List<long>>(BTEnvKey.NodePath);
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRunTreeEvent, this, pathList);
+				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRunTreeEvent, this);
 				return ret;
 			}
 			catch (Exception e)

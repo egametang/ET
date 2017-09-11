@@ -19,8 +19,10 @@ namespace Model
 	public static class BTEnvKey
 	{
 		public const string None = "None";
-		public const string OwnerId = "OwnerId";
+		public const string Owner = "Owner";
 		public const string Buff = "Buff";
+		public const string Spell = "Spell";
+		public const string Unit = "Unit";
 		public const string BuffId = "BuffId";
 		public const string Skill = "Skill";
 		public const string SkillConfig = "SkillConfig";

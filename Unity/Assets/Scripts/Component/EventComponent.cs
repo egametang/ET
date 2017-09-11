@@ -19,13 +19,10 @@ namespace Model
 	
 	public class EventComponent : Component
 	{
-		public static EventComponent Instance;
-
 		private Dictionary<EventIdType, List<object>> allEvents;
 
 		public void Awake()
 		{
-			Instance = this;
 			this.Load();
 		}
 

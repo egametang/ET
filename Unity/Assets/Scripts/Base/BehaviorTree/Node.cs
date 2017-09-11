@@ -76,11 +76,6 @@ namespace Model
 
 		public bool DoRun(BehaviorTree behaviorTree, BTEnv env)
 		{
-			if (!env.ContainKey(BTEnvKey.NodePath))
-			{
-				env.Add(BTEnvKey.NodePath, new List<long>());
-			}
-
 			env.Get<List<long>>(BTEnvKey.NodePath).Add(this.NodeProto.Id);
 			return this.Run(behaviorTree, env);
 		}
