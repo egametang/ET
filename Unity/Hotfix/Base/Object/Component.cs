@@ -1,14 +1,9 @@
-﻿using Model;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace Hotfix
 {
 	public abstract class Component : Disposer
 	{
-		[BsonId]
-		[BsonIgnore]
-		public sealed override long Id { get; set; }
-
 		[BsonIgnore]
 		public Entity Entity { get; set; }
 
@@ -19,7 +14,7 @@ namespace Hotfix
 
 		protected Component()
 		{
-			this.Id = IdGenerater.GenerateId();
+			this.Id = 1;
 		}
 
 		public T GetComponent<T>() where T : Component

@@ -9,10 +9,6 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public class Entity : Disposer, ISupportInitialize
 	{
-		[BsonId]
-		[BsonElement(Order = 1)]
-		public sealed override long Id { get; set; }
-
 		[BsonIgnore]
 		public Entity Parent { get; set; }
 		

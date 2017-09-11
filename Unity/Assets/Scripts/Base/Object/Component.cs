@@ -6,10 +6,6 @@ namespace Model
 	[BsonKnownTypes(typeof(AConfigComponent))]
 	public abstract class Component: Disposer
 	{
-		[BsonId]
-		[BsonIgnore]
-		public sealed override long Id { get; set; }
-
 		[BsonIgnore]
 		public Entity Entity { get; set; }
 
@@ -20,7 +16,7 @@ namespace Model
 
 		protected Component()
 		{
-			this.Id = IdGenerater.GenerateId();
+			this.Id = 1;
 		}
 		
 		public T GetComponent<T>() where T : Component

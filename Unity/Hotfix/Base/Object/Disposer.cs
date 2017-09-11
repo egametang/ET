@@ -4,8 +4,10 @@ namespace Hotfix
 {
 	public abstract class Disposer : Object, IDisposable2
 	{
-		[BsonIgnore]
-		public abstract long Id { get; set; }
+		[BsonIgnoreIfDefault]
+		[BsonDefaultValue(1L)]
+		[BsonElement]
+		public long Id { get; set; }
 
 		protected Disposer()
 		{
