@@ -91,6 +91,8 @@ namespace App
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
+						Game.Scene.AddComponent<ConfigComponent>();
+						Log.Debug(Game.Scene.GetComponent<ConfigComponent>().Get<BuffConfig>(1).Name);
 						break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();

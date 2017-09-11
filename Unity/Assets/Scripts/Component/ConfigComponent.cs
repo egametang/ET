@@ -1,28 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Model
 {
 	[ObjectEvent]
-	public class ConfigComponentEvent : ObjectEvent<ConfigComponent>, ILoad
+	public class ConfigComponentEvent : ObjectEvent<ConfigComponent>, IAwake, ILoad
 	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
 		public void Load()
 		{
 			this.Get().Load();
 		}
 	}
 
+	/// <summary>
+	/// Config组件会扫描所有的有ConfigAttribute标签的配置,加载进来
+	/// </summary>
 	public class ConfigComponent: Component
 	{
 		private Dictionary<Type, ICategory> allConfig;
 
+		public void Awake()
+		{
+			this.Load();
+		}
+
 		public void Load()
 		{
-			Assembly assembly = ObjectEvents.Instance.Get("Model");
-
 			this.allConfig = new Dictionary<Type, ICategory>();
-			Type[] types = assembly.GetTypes();
+			Type[] types = DllHelper.GetMonoTypes();
 
 			foreach (Type type in types)
 			{
@@ -48,7 +58,8 @@ namespace Model
 		public T GetOne<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
+			ICategory configCategory;
+			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -58,7 +69,8 @@ namespace Model
 		public T Get<T>(long id) where T : AConfig
 		{
 			Type type = typeof (T);
-			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
+			ICategory configCategory;
+			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -68,7 +80,8 @@ namespace Model
 		public T TryGet<T>(int id) where T : AConfig
 		{
 			Type type = typeof (T);
-			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
+			ICategory configCategory;
+			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				return default(T);
 			}
@@ -78,7 +91,8 @@ namespace Model
 		public T[] GetAll<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			if (!this.allConfig.TryGetValue(type, out ICategory configCategory))
+			ICategory configCategory;
+			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
@@ -89,8 +103,9 @@ namespace Model
 		{
 			T t = new T();
 			Type type = t.ConfigType;
-			bool ret = this.allConfig.TryGetValue(type, out ICategory category);
-			return ret? (T) category : null;
+			ICategory configCategory;
+			bool ret = this.allConfig.TryGetValue(type, out configCategory);
+			return ret? (T)configCategory : null;
 		}
 	}
 }

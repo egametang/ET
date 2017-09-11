@@ -11,10 +11,10 @@ namespace Model
 	{
 		[BsonIgnore]
 		public Entity Parent { get; set; }
-		
+
 		[BsonElement]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components = new HashSet<Component>();
+		private HashSet<Component> components;
 
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();

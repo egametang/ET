@@ -109,6 +109,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs">
       <Link>Object\ObjectEventAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
+      <Link>Component\ConfigComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
       <Link>Component\EventComponent.cs</Link>
     </Compile>
@@ -135,12 +138,11 @@
     <Compile Include="Component\Unit\UnitGateComponent.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Entity\Location.cs" />
-    <Compile Include="Message\AMRpcHandler.cs" />
-    <Compile Include="Message\IEntityActorHandler.cs" />
+    <Compile Include="Base\Message\AMRpcHandler.cs" />
+    <Compile Include="Base\Message\IEntityActorHandler.cs" />
     <Compile Include="Component\OpcodeTypeComponent.cs" />
     <Compile Include="Component\ActorManagerComponent.cs" />
     <Compile Include="Component\BenchmarkComponent.cs" />
-    <Compile Include="Component\ConfigComponent.cs" />
     <Compile Include="Component\Config\ClientConfig.cs" />
     <Compile Include="Component\Config\DBConfig.cs" />
     <Compile Include="Component\Config\HttpConfig.cs" />
@@ -168,12 +170,12 @@
     <Compile Include="Component\RealmGateAddressComponent.cs" />
     <Compile Include="Component\OptionComponent.cs" />
     <Compile Include="Component\StartConfigComponent.cs" />
-    <Compile Include="Config\ACategory.cs" />
-    <Compile Include="Config\AConfig.cs" />
-    <Compile Include="Config\AConfigComponent.cs" />
-    <Compile Include="Config\ConfigAttribute.cs" />
-    <Compile Include="Config\ConfigHelper.cs" />
-    <Compile Include="Config\ICategory.cs" />
+    <Compile Include="Base\Config\ACategory.cs" />
+    <Compile Include="Base\Config\AConfig.cs" />
+    <Compile Include="Base\Config\AConfigComponent.cs" />
+    <Compile Include="Base\Config\ConfigAttribute.cs" />
+    <Compile Include="Base\Config\ConfigHelper.cs" />
+    <Compile Include="Base\Config\ICategory.cs" />
     <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\StartConfig.cs" />
     <Compile Include="Entity\ActorProxy.cs" />
@@ -187,29 +189,29 @@
     <Compile Include="Entity\Message\InnerOpcode.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\Unit.cs" />
-    <Compile Include="Event\AEventAttribute.cs" />
-    <Compile Include="Event\Env.cs" />
-    <Compile Include="Event\EnvKey.cs" />
-    <Compile Include="Event\EventAttribute.cs" />
-    <Compile Include="Event\EventIdType.cs" />
-    <Compile Include="Event\IEvent.cs" />
-    <Compile Include="Helper\DllHelper.cs" />
-    <Compile Include="Message\AActorMessage.cs" />
-    <Compile Include="Message\AMessage.cs" />
-    <Compile Include="Message\AMActorHandler.cs" />
-    <Compile Include="Message\ErrorCode.cs" />
-    <Compile Include="Message\IMActorHandler.cs" />
-    <Compile Include="Message\OuterMessageDispatcher.cs" />
-    <Compile Include="Message\InnerMessageDispatcher.cs" />
-    <Compile Include="Message\IMHandler.cs" />
-    <Compile Include="Message\ActorMessageAttribute.cs" />
-    <Compile Include="Message\MessageAttribute.cs" />
-    <Compile Include="Message\ActorMessageHandlerAttribute.cs" />
-    <Compile Include="Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Message\OpcodeHelper.cs" />
-    <Compile Include="Object\ComponentDB.cs" />
-    <Compile Include="Object\EntityType.cs" />
-    <Compile Include="Object\ObjectEvents.cs" />
+    <Compile Include="Base\Event\AEventAttribute.cs" />
+    <Compile Include="Base\Event\Env.cs" />
+    <Compile Include="Base\Event\EnvKey.cs" />
+    <Compile Include="Base\Event\EventAttribute.cs" />
+    <Compile Include="Base\Event\EventIdType.cs" />
+    <Compile Include="Base\Event\IEvent.cs" />
+    <Compile Include="Base\Helper\DllHelper.cs" />
+    <Compile Include="Base\Message\AActorMessage.cs" />
+    <Compile Include="Base\Message\AMessage.cs" />
+    <Compile Include="Base\Message\AMActorHandler.cs" />
+    <Compile Include="Base\Message\ErrorCode.cs" />
+    <Compile Include="Base\Message\IMActorHandler.cs" />
+    <Compile Include="Base\Message\OuterMessageDispatcher.cs" />
+    <Compile Include="Base\Message\InnerMessageDispatcher.cs" />
+    <Compile Include="Base\Message\IMHandler.cs" />
+    <Compile Include="Base\Message\ActorMessageAttribute.cs" />
+    <Compile Include="Base\Message\MessageAttribute.cs" />
+    <Compile Include="Base\Message\ActorMessageHandlerAttribute.cs" />
+    <Compile Include="Base\Message\MessageHandlerAttribute.cs" />
+    <Compile Include="Base\Message\OpcodeHelper.cs" />
+    <Compile Include="Base\Object\ComponentDB.cs" />
+    <Compile Include="Base\Object\EntityType.cs" />
+    <Compile Include="Base\Object\ObjectEvents.cs" />
     <Compile Include="Other\OneThreadSynchronizationContext.cs" />
     <Compile Include="Other\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

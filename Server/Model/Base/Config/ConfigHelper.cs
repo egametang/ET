@@ -7,15 +7,15 @@ namespace Model
 	{
 		public static string GetText(string key)
 		{
-			string path = $@"../Config/{key}.txt";
+			string path = $"../Config/{key}.txt";
 			try
 			{
 				string configStr = File.ReadAllText(path);
 				return configStr;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
-				throw new Exception($"load config file fail, path: {path}");
+				throw new Exception($"load config file fail, path: {path} {e}");
 			}
 		}
 	}

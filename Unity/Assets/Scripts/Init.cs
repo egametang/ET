@@ -6,6 +6,7 @@ using System.Threading;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
+using MongoDB.Bson.IO;
 using UnityEngine;
 
 namespace Model
@@ -57,6 +58,14 @@ namespace Model
 				this.lateUpdate = new MonoStaticMethod(hotfixInit, "LateUpdate");
 				this.onApplicationQuit = new MonoStaticMethod(hotfixInit, "OnApplicationQuit");
 #endif
+
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
+				Game.Scene.AddComponent<MessageDispatherComponent>();
+				Game.Scene.AddComponent<NetOuterComponent>();
+				Game.Scene.AddComponent<ResourcesComponent>();
+				Game.Scene.AddComponent<BehaviorTreeComponent>();
+				Game.Scene.AddComponent<ConfigComponent>();
+
 				// 进入热更新层
 				this.start.Run();
 			}
