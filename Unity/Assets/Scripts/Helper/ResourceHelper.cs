@@ -7,9 +7,13 @@ namespace Model
 	{
 		public static UnityEngine.Object LoadResource(string bundleName, string prefab)
 		{
+#if  UNITY_EDITOR
 			string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName.ToLower() + ".unity3d", prefab);
 			UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath(realPath[0], typeof(GameObject));
 			return resource;
+#else
+			return null;
+#endif
 		}
 	}
 }
