@@ -29,7 +29,6 @@ namespace Model
 				if (Application.unityVersion != "2017.1.0p5")
 				{
 					Log.Error("请使用Unity2017.1.0p5版本");
-					return;
 				}
 
 				DontDestroyOnLoad(gameObject);
