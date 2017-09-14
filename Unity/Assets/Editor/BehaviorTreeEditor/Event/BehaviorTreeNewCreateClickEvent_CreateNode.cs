@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
+	[Event((int)EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
 	public class BehaviorTreeNewCreateClickEvent_CreateNode: IEvent<string, Vector2>
 	{
 		public void Run(string name, Vector2 pos)

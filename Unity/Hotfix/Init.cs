@@ -5,27 +5,21 @@ namespace Hotfix
 {
 	public static class Init
 	{
-		private static void Start()
+		public static void Start()
 		{
 			try
 			{
 				Hotfix.Scene.ModelScene = Game.Scene;
-				Hotfix.Scene.ModelScene.AddComponent<OpcodeTypeComponent>();
-				Hotfix.Scene.ModelScene.AddComponent<Model.MessageDispatherComponent>();
-				Hotfix.Scene.ModelScene.AddComponent<NetOuterComponent>();
-				Hotfix.Scene.ModelScene.AddComponent<ResourcesComponent>();
-				Hotfix.Scene.ModelScene.AddComponent<BehaviorTreeComponent>();  
 				Hotfix.Scene.AddComponent<UIComponent>();
-				Hotfix.Scene.AddComponent<UnitComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e.ToStr());
 			}
 		}
 
-		private static void Update()
+		public static void Update()
 		{
 			try
 			{
@@ -33,12 +27,25 @@ namespace Hotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e.ToStr());
 			}
 		}
 
-		private static void OnApplicationQuit()
+		public static void LateUpdate()
 		{
+			try
+			{
+				ObjectEvents.Instance.LateUpdate();
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToStr());
+			}
+		}
+
+		public static void OnApplicationQuit()
+		{
+			ObjectEvents.Close();
 			Hotfix.Close();
 		}
 	}

@@ -21,6 +21,11 @@ namespace MyEditor
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
 			string unityDir = System.Environment.GetEnvironmentVariable("Unity");
+			if (string.IsNullOrEmpty(unityDir))
+			{
+				Log.Error("没有设置Unity环境变量!");
+				return;
+			}
 			process.StartInfo.FileName = $@"{unityDir}\Editor\Data\MonoBleedingEdge\bin\mono.exe";
 			process.StartInfo.Arguments = $@"{unityDir}\Editor\Data\MonoBleedingEdge\lib\mono\xbuild\14.0\bin\xbuild.exe .\Hotfix\Unity.Hotfix.csproj";
 			process.StartInfo.UseShellExecute = false;

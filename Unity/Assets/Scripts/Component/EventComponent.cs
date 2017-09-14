@@ -3,10 +3,23 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	[ObjectEvent(EntityEventId.EventComponent)]
-	public class EventComponent : Component, IAwake
+	[ObjectEvent]
+	public class EventComponentEvent : ObjectEvent<EventComponent>, IAwake, ILoad
 	{
-		private Dictionary<int, List<object>> allEvents;
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+	
+	public class EventComponent : Component
+	{
+		private Dictionary<EventIdType, List<object>> allEvents;
 
 		public void Awake()
 		{
@@ -15,7 +28,7 @@ namespace Model
 
 		public void Load()
 		{
-			this.allEvents = new Dictionary<int, List<object>>();
+			this.allEvents = new Dictionary<EventIdType, List<object>>();
 
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
@@ -26,16 +39,16 @@ namespace Model
 				{
 					EventAttribute aEventAttribute = (EventAttribute)attr;
 					object obj = Activator.CreateInstance(type);
-					if (!this.allEvents.ContainsKey(aEventAttribute.Type))
+					if (!this.allEvents.ContainsKey((EventIdType)aEventAttribute.Type))
 					{
-						this.allEvents.Add(aEventAttribute.Type, new List<object>());
+						this.allEvents.Add((EventIdType)aEventAttribute.Type, new List<object>());
 					}
-					this.allEvents[aEventAttribute.Type].Add(obj);
+					this.allEvents[(EventIdType)aEventAttribute.Type].Add(obj);
 				}
 			}
 		}
 
-		public void Run(int type)
+		public void Run(EventIdType type)
 		{
 			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -56,7 +69,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(EventIdType type, A a)
 		{
 			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -78,7 +91,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(EventIdType type, A a, B b)
 		{
 			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -100,7 +113,7 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(EventIdType type, A a, B b, C c)
 		{
 			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))

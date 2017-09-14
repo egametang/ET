@@ -4,14 +4,27 @@ using Model;
 
 namespace Hotfix
 {
+	[ObjectEvent]
+	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake, ILoad
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+
+		public void Load()
+		{
+			this.Get().Load();
+		}
+	}
+
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	[ObjectEvent((int)EntityEventId.MessageDispatherComponent)]
-	public class MessageDispatherComponent : Component, IAwake, ILoad
+	public class MessageDispatherComponent: Component, IAwake, ILoad
 	{
 		private Dictionary<ushort, List<IMHandler>> handlers;
-
+		
 
 		public void Awake()
 		{
@@ -20,9 +33,9 @@ namespace Hotfix
 
 		public void Load()
 		{
-			handlers = new Dictionary<ushort, List<IMHandler>>();
-
-			Type[] types = DllHelper.GetHotfixTypes();
+            handlers = new Dictionary<ushort, List<IMHandler>>();
+            
+            Type[] types = DllHelper.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{
@@ -43,7 +56,8 @@ namespace Hotfix
 
 		public void Handle(MessageInfo messageInfo)
 		{
-			if (!this.handlers.TryGetValue(messageInfo.Opcode, out List<IMHandler> actions))
+			List<IMHandler> actions;
+			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
 				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;

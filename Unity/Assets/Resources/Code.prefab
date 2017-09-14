@@ -5,10 +5,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 425028}
-  - 114: {fileID: 114000012985339954}
+  - component: {fileID: 425028}
+  - component: {fileID: 114000012985339954}
   m_Layer: 0
   m_Name: Code
   m_TagString: Untagged
@@ -25,10 +25,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -56,5 +56,5 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: ae44b218243cfc347af99a6875e9e11c, type: 3}
   - key: Hotfix.pdb
     gameObject: {fileID: 4900000, guid: dd08ff64f788e7a4ba0f918632ff8d0f, type: 3}
-  - key: Hotfix.dll.mdb
-    gameObject: {fileID: 4900000, guid: 23e92275d463b2145ba2a28b5f1bb7dc, type: 3}
+  - key: Hotfix.mdb
+    gameObject: {fileID: 4900000, guid: 23845562ede90da4c8bc06908a4c6667, type: 3}

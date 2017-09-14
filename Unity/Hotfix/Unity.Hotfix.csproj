@@ -41,10 +41,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Library\UnityAssemblies\UnityEngine.dll</HintPath>
@@ -55,54 +51,43 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\Event\IEvent.cs" />
+    <Compile Include="Base\Helper\ArrayHelper.cs" />
+    <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
-    <Compile Include="Base\Message\AMessage.cs" />
     <Compile Include="Base\Message\AMHandler.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
-    <Compile Include="Component\MessageDispatherComponent.cs" />
-    <Compile Include="Base\Helper\ArrayHelper.cs" />
-    <Compile Include="Event\SessionRecvMessage_Dispatch.cs" />
-    <Compile Include="Init.cs" />
-    <Compile Include="AssetBundleHelper.cs" />
-    <Compile Include="Component\ConfigComponent.cs" />
+    <Compile Include="Base\Object\Component.cs" />
+    <Compile Include="Base\Object\ComponentDB.cs" />
+    <Compile Include="Base\Object\ComponentFactory.cs" />
+    <Compile Include="Base\Object\Disposer.cs" />
+    <Compile Include="Base\Object\Entity.cs" />
+    <Compile Include="Base\Object\EntityFactory.cs" />
+    <Compile Include="Base\Object\EntityType.cs" />
+    <Compile Include="Base\Object\IAwake.cs" />
+    <Compile Include="Base\Object\ILateUpdate.cs" />
+    <Compile Include="Base\Object\ILoad.cs" />
+    <Compile Include="Base\Object\IUpdate.cs" />
+    <Compile Include="Base\Object\Object.cs" />
+    <Compile Include="Base\Object\ObjectEvents.cs" />
+    <Compile Include="Base\Other\IUIFactory.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\RobotComponent.cs" />
+    <Compile Include="Component\MessageDispatherComponent.cs" />
     <Compile Include="Component\TimeComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UIComponent.cs" />
-    <Compile Include="Base\Object\IAwake.cs" />
-    <Compile Include="Base\Object\ILoad.cs" />
-    <Compile Include="Base\Object\ILateUpdate.cs" />
-    <Compile Include="Base\Object\IUpdate.cs" />
-    <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
-    <Compile Include="Component\UnitComponent.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\UI.cs" />
     <Compile Include="Entity\Unit.cs" />
-    <Compile Include="Base\Event\AEventAttribute.cs" />
-    <Compile Include="Base\Event\Env.cs" />
-    <Compile Include="Base\Event\EnvKey.cs" />
-    <Compile Include="Base\Event\EventAttribute.cs" />
-    <Compile Include="Base\Event\EventIdType.cs" />
-    <Compile Include="Base\Event\IEvent.cs" />
-    <Compile Include="Base\Object\Component.cs" />
-    <Compile Include="Base\Object\Disposer.cs" />
-    <Compile Include="Base\Object\Entity.cs" />
-    <Compile Include="Base\Object\ObjectEventAttribute.cs" />
-    <Compile Include="Base\Object\ObjectEvents.cs" />
-    <Compile Include="Base\Object\EntityType.cs" />
-    <Compile Include="Base\Object\Object.cs" />
-    <Compile Include="Base\Other\EntityEventId.cs" />
-    <Compile Include="Base\Other\IUIFactory.cs" />
-    <Compile Include="Base\Other\LayerNames.cs" />
-    <Compile Include="Base\Other\UIFactoryAttribute.cs" />
-    <Compile Include="Base\Other\UIType.cs" />
-    <Compile Include="UI\UILobby\Event\InitSceneStart_CreateLobbyUI.cs" />
+    <Compile Include="Event\SessionRecvMessage_Dispatch.cs" />
+    <Compile Include="Init.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\UILobby\Factory\UILobbyFactory.cs" />
+    <Compile Include="UI\UILogin\Component\UILoginComponent.cs" />
+    <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
+    <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity.csproj">
@@ -119,8 +104,16 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes
-echo FA | xcopy $(TargetName).pdb $(SolutionDir)Assets\Res\Code\$(TargetName).pdb.bytes</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)\Tools\pdb2mdb.exe" $(TargetFileName)
+
+
+echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes
+
+
+echo FA | xcopy $(TargetName).pdb $(SolutionDir)Assets\Res\Code\$(TargetName).pdb.bytes
+
+
+echo FA | xcopy $(TargetName).dll.mdb $(SolutionDir)Assets\Res\Code\$(TargetName).mdb.bytes</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

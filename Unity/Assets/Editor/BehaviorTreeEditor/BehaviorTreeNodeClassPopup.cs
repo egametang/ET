@@ -63,7 +63,7 @@ namespace MyEditor
 
 			GUILayout.BeginArea(new Rect(0, 0, windowRect.width, windowRect.height));
 			float topSpace = 60;
-			this.mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, topSpace, windowRect.width, windowRect.height - topSpace), this.mTreeScrollPos,
+            mTreeScrollPos = GUI.BeginScrollView(new Rect(0f, topSpace, windowRect.width, windowRect.height - topSpace), mTreeScrollPos,
 			                                          new Rect(0f, 0f, windowRect.width - 20f, nodeNameList.Count * 19), false, true);
 
 			foreach (string name in nodeNameList)
@@ -136,13 +136,16 @@ namespace MyEditor
 		
 		public GUIStyle GetButtonStyle()
 		{
-			GUIStyle style = new GUIStyle();
-			style.fontSize = 15;
-			style.alignment = TextAnchor.MiddleLeft;
-			GUIStyleState onHoverStyleState = new GUIStyleState();
-			//onHoverStyleState.textColor = textHighLightColor;
-			onHoverStyleState.background = BTDesignerUtility.GetTexture("blue");
-			style.hover = onHoverStyleState;
+            GUIStyle style = new GUIStyle()
+            {
+                fontSize = 15,
+                alignment = TextAnchor.MiddleLeft
+            };
+            GUIStyleState onHoverStyleState = new GUIStyleState()
+            {
+                background = BTDesignerUtility.GetTexture("blue")
+            };
+            style.hover = onHoverStyleState;
 
 			GUIStyleState onNormalStyleState = new GUIStyleState();
 			//onNormalStyleState.textColor = textColor;

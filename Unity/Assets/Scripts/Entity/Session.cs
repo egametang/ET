@@ -99,7 +99,7 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
-			Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(opcode);
+			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
 			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
@@ -119,7 +119,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, message);
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
@@ -209,7 +209,7 @@ namespace Model
 		private void SendMessage(object message)
 		{
 			//Log.Debug($"send: {message.ToJson()}");
-			ushort opcode = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			opcode = NetworkHelper.HostToNetworkOrder(opcode);
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 

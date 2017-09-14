@@ -12,7 +12,15 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[EntityEvent(EntityEventId.TimerComponent)]
+	[ObjectEvent]
+	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	{
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+
 	public class TimerComponent: Component, IUpdate
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
