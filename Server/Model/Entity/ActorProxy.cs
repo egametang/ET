@@ -95,10 +95,10 @@ namespace Model
 		public string Address;
 
 		// 已发送等待回应的消息
-		public Queue<ActorTask> RunningTasks;
+		public EQueue<ActorTask> RunningTasks;
 
 		// 还没发送的消息
-		public Queue<ActorTask> WaitingTasks;
+		public EQueue<ActorTask> WaitingTasks;
 
 		// 发送窗口大小
 		public int WindowSize = 1;
@@ -114,8 +114,8 @@ namespace Model
 		
 		public void Awake()
 		{
-			this.RunningTasks = new Queue<ActorTask>();
-			this.WaitingTasks = new Queue<ActorTask>();
+			this.RunningTasks = new EQueue<ActorTask>();
+			this.WaitingTasks = new EQueue<ActorTask>();
 			this.WindowSize = 1;
 			this.CancellationTokenSource = new CancellationTokenSource();
 		}
@@ -264,7 +264,7 @@ namespace Model
 			}
 		}
 
-		public string DebugQueue(Queue<ActorTask> tasks)
+		public string DebugQueue(EQueue<ActorTask> tasks)
 		{
 			string s = "";
 			foreach (ActorTask task in tasks)

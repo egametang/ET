@@ -94,7 +94,7 @@ namespace Model
 
 		private readonly Dictionary<long, int> lockDict = new Dictionary<long, int>();
 
-		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
+		private readonly Dictionary<long, EQueue<LocationTask>> taskQueues = new Dictionary<long, EQueue<LocationTask>>();
 
 		public void Add(long key, int appId)
 		{
@@ -159,7 +159,7 @@ namespace Model
 		{
 			this.lockDict.Remove(key);
 
-			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
+			if (!this.taskQueues.TryGetValue(key, out EQueue<LocationTask> tasks))
 			{
 				return;
 			}
@@ -210,9 +210,9 @@ namespace Model
 
 		public void AddTask(long key, LocationTask task)
 		{
-			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
+			if (!this.taskQueues.TryGetValue(key, out EQueue<LocationTask> tasks))
 			{
-				tasks = new Queue<LocationTask>();
+				tasks = new EQueue<LocationTask>();
 				this.taskQueues[key] = tasks;
 			}
 			task.Scene = this.GetEntity<Scene>();

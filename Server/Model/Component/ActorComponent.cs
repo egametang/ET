@@ -39,7 +39,7 @@ namespace Model
 		private long actorId;
 
 		// 队列处理消息
-		private readonly Queue<ActorMessageInfo> queue = new Queue<ActorMessageInfo>();
+		private readonly EQueue<ActorMessageInfo> queue = new EQueue<ActorMessageInfo>();
 
 		private TaskCompletionSource<ActorMessageInfo> tcs;
 
