@@ -3,7 +3,7 @@
 	public class BuffConfig: AConfig
 	{
 		public string Name { get; set; }
-		public int Time { get; set; }
+		public int Duration { get; set; }
 
 		public BuffConfig()
 		{
