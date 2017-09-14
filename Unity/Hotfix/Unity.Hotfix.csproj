@@ -104,16 +104,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\Tools\pdb2mdb.exe" $(TargetFileName)
+    <PostBuildEvent>"$(ProjectDir)\..\Tools\pdb2mdb.exe" $(TargetFileName)
+echo FA | xcopy $(TargetName).dll $(ProjectDir)\..\Assets\Res\Code\$(TargetName).dll.bytes
 
 
-echo FA | xcopy $(TargetName).dll $(SolutionDir)Assets\Res\Code\$(TargetName).dll.bytes
-
-
-echo FA | xcopy $(TargetName).pdb $(SolutionDir)Assets\Res\Code\$(TargetName).pdb.bytes
-
-
-echo FA | xcopy $(TargetName).dll.mdb $(SolutionDir)Assets\Res\Code\$(TargetName).mdb.bytes</PostBuildEvent>
+echo FA | xcopy $(TargetName).pdb $(ProjectDir)\..\Assets\Res\Code\$(TargetName).pdb.bytes
+echo FA | xcopy $(TargetName).dll.mdb $(ProjectDir)\..\Assets\Res\Code\$(TargetName).mdb.bytes</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
