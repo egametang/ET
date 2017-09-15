@@ -30,7 +30,7 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly Queue<long> timeoutTimer = new Queue<long>();
+		private readonly EQueue<long> timeoutTimer = new EQueue<long>();
 
 		public void Update()
 		{

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Model
 {
 	public sealed class DBTaskQueue : Entity
 	{
-		public Queue<DBTask> queue = new Queue<DBTask>();
+		public EQueue<DBTask> queue = new EQueue<DBTask>();
 
 		private TaskCompletionSource<DBTask> tcs;
 

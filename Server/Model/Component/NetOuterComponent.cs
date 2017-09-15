@@ -24,14 +24,14 @@
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
-			this.MessagePacker = new JsondotnetPacker();
+			this.MessagePacker = new MongoPacker();
 			this.MessageDispatcher = new OuterMessageDispatcher();
 		}
 
 		public void Awake(string host, int port)
 		{
 			this.Awake(NetworkProtocol.TCP, host, port);
-			this.MessagePacker = new JsondotnetPacker();
+			this.MessagePacker = new MongoPacker();
 			this.MessageDispatcher = new OuterMessageDispatcher();
 		}
 

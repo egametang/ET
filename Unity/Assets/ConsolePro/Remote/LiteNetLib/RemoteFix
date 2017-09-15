@@ -1,0 +1,4 @@
+for file in *.cs; do
+  echo "#if DEBUG && !UNITY_WP_8_1 && !UNITY_WSA_8_1" | cat - $file > tempfile && mv tempfile $file
+  echo '#endif' >> "$file"
+done

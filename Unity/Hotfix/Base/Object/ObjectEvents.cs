@@ -46,16 +46,16 @@ namespace Hotfix
 		
 		private readonly Dictionary<Type, IObjectEvent> disposerEvents = new Dictionary<Type, IObjectEvent>();
 
-		private Queue<Disposer> updates = new Queue<Disposer>();
-		private Queue<Disposer> updates2 = new Queue<Disposer>();
+		private EQueue<Disposer> updates = new EQueue<Disposer>();
+		private EQueue<Disposer> updates2 = new EQueue<Disposer>();
 
-		private readonly Queue<Disposer> starts = new Queue<Disposer>();
+		private readonly EQueue<Disposer> starts = new EQueue<Disposer>();
 
-		private Queue<Disposer> loaders = new Queue<Disposer>();
-		private Queue<Disposer> loaders2 = new Queue<Disposer>();
+		private EQueue<Disposer> loaders = new EQueue<Disposer>();
+		private EQueue<Disposer> loaders2 = new EQueue<Disposer>();
 
-		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
-		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
+		private EQueue<Disposer> lateUpdates = new EQueue<Disposer>();
+		private EQueue<Disposer> lateUpdates2 = new EQueue<Disposer>();
 
 		public static void Close()
 		{
