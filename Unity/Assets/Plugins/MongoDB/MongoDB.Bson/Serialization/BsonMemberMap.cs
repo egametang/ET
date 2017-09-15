@@ -598,6 +598,24 @@ namespace MongoDB.Bson.Serialization
 
         private Func<object, object> GetGetter()
         {
+            #if AOT
+            PropertyInfo propertyInfo = _memberInfo as PropertyInfo;
+            if (propertyInfo != null)
+            {
+                MethodInfo getMethodInfo = propertyInfo.GetGetMethod();
+                if (getMethodInfo == null)
+                {
+                    var message = string.Format(
+                        "The property '{0} {1}' of class '{2}' has no 'get' accessor.",
+                        propertyInfo.PropertyType.FullName, propertyInfo.Name, propertyInfo.DeclaringType.FullName);
+                    throw new BsonSerializationException(message);
+                }
+                return (obj) => { return getMethodInfo.Invoke(obj, null); };
+            }
+
+            FieldInfo fieldInfo = _memberInfo as FieldInfo;
+            return (obj) => { return fieldInfo.GetValue(obj); };
+            #else
             var propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
@@ -625,10 +643,17 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
+            #endif
         }
+
 
         private Action<object, object> GetPropertySetter()
         {
+            #if AOT
+            var propertyInfo = (PropertyInfo) _memberInfo;
+
+            return (obj, value) => { propertyInfo.SetValue(obj, value); };
+            #else
             var propertyInfo = (PropertyInfo)_memberInfo;
             var setMethodInfo = propertyInfo.SetMethod;
             if (IsReadOnly)
@@ -653,6 +678,7 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
+            #endif
         }
 
         private void ThrowFrozenException()
