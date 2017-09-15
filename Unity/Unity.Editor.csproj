@@ -122,6 +122,21 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>Assets\Plugins\npoi\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>Assets\Plugins\npoi\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>Assets\Plugins\npoi\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>Assets\Plugins\npoi\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="ConsolePro.Editor">
+      <HintPath>Assets\ConsolePro\Editor\ConsolePro.Editor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.Plugins.csproj">
@@ -169,6 +184,7 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMetaHelper.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\PropertyDesigner.cs" />
     <Compile Include="Assets\Editor\BuildEditor\BuildEditor.cs" />
+    <Compile Include="Assets\Editor\ExcelExporterEditor\ExcelExporterEditor.cs" />
     <Compile Include="Assets\Editor\ExportNavmesh.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
@@ -181,6 +197,7 @@
     <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

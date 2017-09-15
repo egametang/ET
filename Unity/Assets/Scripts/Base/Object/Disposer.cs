@@ -8,6 +8,7 @@ namespace Model
 		[BsonIgnoreIfDefault]
 		[BsonDefaultValue(1L)]
 		[BsonElement]
+		[BsonId]
 		public long Id { get; set; }
 		
 		protected Disposer()

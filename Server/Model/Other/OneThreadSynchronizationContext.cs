@@ -7,9 +7,9 @@ namespace Model
 	public class OneThreadSynchronizationContext : SynchronizationContext
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
-		private Queue<Action> queue = new Queue<Action>();
+		private EQueue<Action> queue = new EQueue<Action>();
 
-		private Queue<Action> localQueue = new Queue<Action>();
+		private EQueue<Action> localQueue = new EQueue<Action>();
 
 		private readonly object lockObject = new object();
 
@@ -26,7 +26,7 @@ namespace Model
 			lock (lockObject)
 			{
 				localQueue = queue;
-				queue = new Queue<Action>();
+				queue = new EQueue<Action>();
 			}
 
 			while (this.localQueue.Count > 0)

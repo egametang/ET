@@ -16,8 +16,8 @@ namespace Model
 	{
 		private readonly UPoller poller;
 		public IntPtr PeerPtr { get; set; }
-		private readonly Queue<byte[]> recvQueue = new Queue<byte[]>();
-		private readonly Queue<BufferInfo> sendQueue = new Queue<BufferInfo>();
+		private readonly EQueue<byte[]> recvQueue = new EQueue<byte[]>();
+		private readonly EQueue<BufferInfo> sendQueue = new EQueue<BufferInfo>();
 		private bool isConnected;
 		private Action disconnect;
 		private Action received;
@@ -96,7 +96,7 @@ namespace Model
 			}
 		}
 		
-		public Queue<byte[]> RecvQueue
+		public EQueue<byte[]> RecvQueue
 		{
 			get
 			{

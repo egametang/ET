@@ -24,7 +24,7 @@ namespace Model
 		private string lockedAddress = "";
 
 		/// 请求锁的队列
-		private readonly Queue<LockInfo> queue = new Queue<LockInfo>();
+		private readonly EQueue<LockInfo> queue = new EQueue<LockInfo>();
 
 		public void AddGhost(string address)
 		{

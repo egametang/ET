@@ -47,13 +47,13 @@ namespace Model
 
 		private Dictionary<Type, IObjectEvent> disposerEvents;
 
-		private Queue<Disposer> updates = new Queue<Disposer>();
-		private Queue<Disposer> updates2 = new Queue<Disposer>();
+		private EQueue<Disposer> updates = new EQueue<Disposer>();
+		private EQueue<Disposer> updates2 = new EQueue<Disposer>();
 
-		private Queue<Disposer> starts = new Queue<Disposer>();
+		private EQueue<Disposer> starts = new EQueue<Disposer>();
 
-		private Queue<Disposer> loaders = new Queue<Disposer>();
-		private Queue<Disposer> loaders2 = new Queue<Disposer>();
+		private EQueue<Disposer> loaders = new EQueue<Disposer>();
+		private EQueue<Disposer> loaders2 = new EQueue<Disposer>();
 		
 		public void Add(string name, Assembly assembly)
 		{

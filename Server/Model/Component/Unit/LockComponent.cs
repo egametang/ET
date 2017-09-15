@@ -28,7 +28,7 @@ namespace Model
 		private LockStatus status = LockStatus.LockedNot;
 		private string address;
 		private int lockCount;
-		private readonly Queue<TaskCompletionSource<bool>> queue = new Queue<TaskCompletionSource<bool>>();
+		private readonly EQueue<TaskCompletionSource<bool>> queue = new EQueue<TaskCompletionSource<bool>>();
 
 		public void Awake(string addr)	
 		{
