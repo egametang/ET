@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.0p5</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -82,6 +79,18 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>Assets\Plugins\npoi\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>Assets\Plugins\npoi\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>Assets\Plugins\npoi\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>Assets\Plugins\npoi\NPOI.OOXML.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +406,7 @@
     <Compile Include="Assets\Scripts\Base\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
+    <Compile Include="Assets\Scripts\Base\EQueue.cs" />
     <Compile Include="Assets\Scripts\Base\Event\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\CrossEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\CrossIdType.cs" />
@@ -477,7 +487,6 @@
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEvents.cs" />
-    <Compile Include="Assets\Scripts\Base\EQueue.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Base\UI\LayerNames.cs" />
@@ -491,7 +500,6 @@
     <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
     <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\DBConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\HttpConfig.cs" />
@@ -510,6 +518,8 @@
     <Compile Include="Assets\Scripts\Component\ResourcesComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
     <Compile Include="Assets\Scripts\Entity\AssetBundleLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Message\InnerMessage.cs" />
     <Compile Include="Assets\Scripts\Entity\Message\Opcode.cs" />
@@ -539,6 +549,7 @@
     <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

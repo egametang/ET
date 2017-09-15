@@ -14,7 +14,7 @@
 		}
 	}
 
-	[Config(AppType.Client | AppType.Gate)]
+	[Config(AppType.Client)]
 	public class BuffCategory: ACategory<BuffConfig>
 	{
 	}
