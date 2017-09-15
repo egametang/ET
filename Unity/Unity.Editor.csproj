@@ -134,6 +134,9 @@
     <Reference Include="NPOI.OOXML">
       <HintPath>Assets\Plugins\npoi\NPOI.OOXML.dll</HintPath>
     </Reference>
+    <Reference Include="ConsolePro.Editor">
+      <HintPath>Assets\ConsolePro\Editor\ConsolePro.Editor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Unity.Plugins.csproj">

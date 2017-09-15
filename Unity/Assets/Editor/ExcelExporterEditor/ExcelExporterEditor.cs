@@ -149,7 +149,7 @@ public class ExcelExporterEditor : EditorWindow
 				
 				string fieldName = GetCellString(sheet, 3, i);
 
-				if (fieldName == "Id")
+				if (fieldName == "Id" || fieldName == "_id")
 				{
 					continue;
 				}

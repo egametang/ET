@@ -100,6 +100,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ConsolePro\ConsoleProDebug.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\ConsoleProRemoteServer.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\FastBitConverter.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\INetEventListener.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NatPunchModule.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetConstants.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetDataReader.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetDataWriter.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetDebug.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetEndPoint.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetManager.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetPacket.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetPacketPool.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetPeer.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetPeerCollection.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetSerializer.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetSocket.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetThread.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NetUtils.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\NtpSyncModule.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\ReliableChannel.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\SequencedChannel.cs" />
+    <Compile Include="Assets\ConsolePro\Remote\LiteNetLib\SimpleChannel.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\Method\CLRMethod.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\Method\ExceptionHandler.cs" />
     <Compile Include="Assets\ILRuntime\ILRuntime\CLR\Method\ILMethod.cs" />
