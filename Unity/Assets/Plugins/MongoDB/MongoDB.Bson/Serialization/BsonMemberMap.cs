@@ -16,7 +16,9 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-//using System.Reflection.Emit;
+#if !AOT
+using System.Reflection.Emit;		
+#endif
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization
@@ -580,23 +582,25 @@ namespace MongoDB.Bson.Serialization
                 throw new BsonSerializationException(message);
             }
 
-			// ios上不支持Emit
-            //var sourceType = fieldInfo.DeclaringType;
-            //var method = new DynamicMethod("Set" + fieldInfo.Name, null, new[] { typeof(object), typeof(object) }, true);
-            //var gen = method.GetILGenerator();
-			//
-            //gen.Emit(OpCodes.Ldarg_0);
-            //gen.Emit(OpCodes.Castclass, sourceType);
-            //gen.Emit(OpCodes.Ldarg_1);
-            //gen.Emit(OpCodes.Unbox_Any, fieldInfo.FieldType);
-            //gen.Emit(OpCodes.Stfld, fieldInfo);
-            //gen.Emit(OpCodes.Ret);
-			//
-            //return (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));
+#if AOT
 	        return (obj, value) => { fieldInfo.SetValue(obj, value); };
-        }
+#else
+			var sourceType = fieldInfo.DeclaringType;
+			var method = new DynamicMethod("Set" + fieldInfo.Name, null, new[] { typeof(object), typeof(object) }, true);
+			var gen = method.GetILGenerator();
+			
+			gen.Emit(OpCodes.Ldarg_0);
+			gen.Emit(OpCodes.Castclass, sourceType);
+			gen.Emit(OpCodes.Ldarg_1);
+			gen.Emit(OpCodes.Unbox_Any, fieldInfo.FieldType);
+			gen.Emit(OpCodes.Stfld, fieldInfo);
+			gen.Emit(OpCodes.Ret);
+			
+			return (Action<object, object>)method.CreateDelegate(typeof(Action<object, object>));
+#endif
+		}
 
-        private Func<object, object> GetGetter()
+		private Func<object, object> GetGetter()
         {
             #if AOT
             PropertyInfo propertyInfo = _memberInfo as PropertyInfo;
