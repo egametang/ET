@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
@@ -59,11 +58,11 @@ namespace Model
 
 		public override async Task<AResponse> Run()
 		{
-			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
-			Response response = await this.proxy.RealCall<Response>(request, this.proxy.CancellationTokenSource.Token);
+			ActorRpcRequest request = new ActorRpcRequest() { Id = this.proxy.Id, AMessage = this.message };
+			ActorRpcResponse response = await this.proxy.RealCall<ActorRpcResponse>(request, this.proxy.CancellationTokenSource.Token);
 			if (response.Error != ErrorCode.ERR_NotFoundActor)
 			{
-				this.Tcs.SetResult(response);
+				this.Tcs.SetResult((Response)response.AMessage);
 			}
 			return response;
 		}

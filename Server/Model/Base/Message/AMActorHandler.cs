@@ -77,8 +77,12 @@ namespace Model
 					{
 						return;
 					}
-					response.RpcId = message.RpcId;
-					session.Reply(response);
+					ActorRpcResponse actorResponse = new ActorRpcResponse
+					{
+						RpcId = message.RpcId,
+						AMessage = response
+					};
+					session.Reply(actorResponse);
 				});
 			}
 			catch (Exception e)

@@ -5,7 +5,12 @@ using System.Collections.Generic;using MongoDB.Bson.Serialization.Attributes;
 namespace Model{
 	/// <summary>	/// 用来包装actor消息	/// </summary>	[Message(Opcode.ActorRequest)]	[BsonIgnoreExtraElements]	public class ActorRequest : ARequest	{		public long Id { get; set; }		public AMessage AMessage { get; set; }	}
 
-	/// <summary>	/// actor RPC消息响应	/// </summary>	[Message(Opcode.ActorResponse)]	[BsonIgnoreExtraElements]	public class ActorResponse : AResponse	{	}	/// <summary>	/// 传送unit	/// </summary>	[Message(Opcode.M2M_TrasferUnitRequest)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitRequest : ARequest	{		public Unit Unit;	}		[Message(Opcode.M2M_TrasferUnitResponse)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitResponse : AResponse	{	}		[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
+	/// <summary>	/// actor RPC消息响应	/// </summary>	[Message(Opcode.ActorResponse)]	[BsonIgnoreExtraElements]	public class ActorResponse : AResponse	{	}	/// <summary>	/// 用来包装actor消息	/// </summary>	[Message(Opcode.ActorRpcRequest)]	[BsonIgnoreExtraElements]	public class ActorRpcRequest : ActorRequest	{	}
+
+	/// <summary>	/// actor RPC消息响应带回应	/// </summary>    [Message(Opcode.ActorRpcResponse)]	[BsonIgnoreExtraElements]	public class ActorRpcResponse : ActorResponse	{		public AMessage AMessage { get; set; }	}
+
+
+	/// <summary>	/// 传送unit	/// </summary>    [Message(Opcode.M2M_TrasferUnitRequest)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitRequest : ARequest	{		public Unit Unit;	}		[Message(Opcode.M2M_TrasferUnitResponse)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitResponse : AResponse	{	}		[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
 
 	[Message(Opcode.A2M_Reload)]	[BsonIgnoreExtraElements]	public class A2M_Reload : AResponse	{	}
 

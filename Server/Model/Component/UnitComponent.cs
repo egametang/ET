@@ -26,6 +26,11 @@ namespace Model
 			unit?.Dispose();
 		}
 
+		public void RemoveNoDispose(long id)
+		{
+			this.idUnits.Remove(id);
+		}
+
 		public int Count
 		{
 			get

@@ -13,6 +13,8 @@ namespace Model
 	{
 	}
 
+	[BsonKnownTypes(typeof(Actor_TestResponse))]
+	[BsonKnownTypes(typeof(Actor_TransferResponse))]
 	public abstract class AActorResponse : AResponse
 	{
 	}

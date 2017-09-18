@@ -15,7 +15,6 @@ namespace Hotfix
 				Log.Debug(MongoHelper.ToJson(message.Unit));
 				// 这里不需要注册location，因为unlock会更新位置
 				unit.AddComponent<ActorComponent>();
-				Game.Scene.GetComponent<UnitComponent>().Remove(unit.Id);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
 				reply(response);
 			}

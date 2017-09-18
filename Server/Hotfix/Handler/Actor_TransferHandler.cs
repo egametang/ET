@@ -14,9 +14,14 @@ namespace Hotfix
 			try
 			{
 				long unitId = unit.Id;
+
+
 				// 先在location锁住unit的地址
 				await Game.Scene.GetComponent<LocationProxyComponent>().Lock(unitId);
 
+				// 删除unit actorcomponent,让其它进程发送过来的消息找不到actor，重发
+				unit.RemoveComponent<ActorComponent>();
+				
 				int mapIndex = message.MapIndex;
 
 				StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
@@ -31,9 +36,11 @@ namespace Hotfix
 				StartConfig mapConfig = startConfigComponent.MapConfigs[mapIndex];
 				string address = mapConfig.GetComponent<InnerConfig>().Address;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(address);
-				await session.Call<M2M_TrasferUnitResponse>(new M2M_TrasferUnitRequest() { Unit = unit });
 
-				Game.Scene.GetComponent<UnitComponent>().Remove(unitId);
+				// 只删除不disponse否则M2M_TrasferUnitRequest无法序列化Unit
+				Game.Scene.GetComponent<UnitComponent>().RemoveNoDispose(unitId);
+				await session.Call<M2M_TrasferUnitResponse>(new M2M_TrasferUnitRequest() { Unit = unit });
+				unit.Dispose();
 
 				// 解锁unit的地址,并且更新unit的地址
 				await Game.Scene.GetComponent<LocationProxyComponent>().UnLock(unitId, mapConfig.AppId);

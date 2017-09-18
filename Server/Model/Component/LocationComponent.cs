@@ -159,8 +159,8 @@ namespace Model
 			{
 				Log.Error($"unlock appid is different {lockAppId} {unLockAppId}" );
 			}
-			Log.Info($"location unlock key: {key} unLockAppId: {unLockAppId}");
-			this.Add(key, value);
+			Log.Info($"location unlock key: {key} unLockAppId: {unLockAppId} new: {value}");
+			this.locations[key] = value;
 			this.UnLock(key);
 		}
 
