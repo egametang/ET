@@ -10,6 +10,16 @@ namespace Model
 			if (message is ActorRequest actorRequest)
 			{
 				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorRequest.Id);
+				if (entity == null)
+				{
+					ActorResponse response = new ActorResponse
+					{
+						RpcId = actorRequest.RpcId,
+						Error = ErrorCode.ERR_NotFoundActor
+					};
+					session.Reply(response);
+					return;
+				}
 				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorRequest });
 				return;
 			}

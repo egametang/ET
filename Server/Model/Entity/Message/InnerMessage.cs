@@ -5,7 +5,7 @@ using System.Collections.Generic;using MongoDB.Bson.Serialization.Attributes;
 namespace Model{
 	/// <summary>	/// 用来包装actor消息	/// </summary>	[Message(Opcode.ActorRequest)]	[BsonIgnoreExtraElements]	public class ActorRequest : ARequest	{		public long Id { get; set; }		public AMessage AMessage { get; set; }	}
 
-	/// <summary>	/// actor RPC消息响应	/// </summary>	[Message(Opcode.ActorResponse)]	[BsonIgnoreExtraElements]	public class ActorResponse : AResponse	{	}	[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
+	/// <summary>	/// actor RPC消息响应	/// </summary>	[Message(Opcode.ActorResponse)]	[BsonIgnoreExtraElements]	public class ActorResponse : AResponse	{	}	/// <summary>	/// 传送unit	/// </summary>	[Message(Opcode.M2M_TrasferUnitRequest)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitRequest : ARequest	{		public Unit Unit;	}		[Message(Opcode.M2M_TrasferUnitResponse)]	[BsonIgnoreExtraElements]	public class M2M_TrasferUnitResponse : AResponse	{	}		[Message(Opcode.M2A_Reload)]	[BsonIgnoreExtraElements]	public class M2A_Reload : ARequest	{	}
 
 	[Message(Opcode.A2M_Reload)]	[BsonIgnoreExtraElements]	public class A2M_Reload : AResponse	{	}
 
@@ -49,11 +49,11 @@ namespace Model{
 
 	[Message(Opcode.ObjectRemoveResponse)]	[BsonIgnoreExtraElements]	public class ObjectRemoveResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public long Key { get; set; }		public int LockAppId { get; set; }		public int AppId { get; set; }		public int Time { get; set; }	}
+	[Message(Opcode.ObjectLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectLockRequest : ARequest	{		public long Key { get; set; }		public int LockAppId { get; set; }		public int Time { get; set; }	}
 
 	[Message(Opcode.ObjectLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectLockResponse : AResponse	{	}
 
-	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }		public int LockAppId { get; set; }		public int AppId { get; set; }	}
+	[Message(Opcode.ObjectUnLockRequest)]	[BsonIgnoreExtraElements]	public class ObjectUnLockRequest : ARequest	{		public long Key { get; set; }		public int UnLockAppId { get; set; }		public int AppId { get; set; }	}
 
 	[Message(Opcode.ObjectUnLockResponse)]	[BsonIgnoreExtraElements]	public class ObjectUnLockResponse : AResponse	{	}
 

@@ -23,18 +23,17 @@ namespace Model
 	/// </summary>
 	public class ActorMessageDispatherComponent : Component
 	{
-		private AppType AppType;
 		private Dictionary<Type, IMActorHandler> handlers;
 		
 		public void Start()
 		{
-			StartConfig startConfig = this.GetComponent<StartConfigComponent>().StartConfig;
-			this.AppType = startConfig.AppType;
 			this.Load();
 		}
 
 		public void Load()
 		{
+			AppType appType = this.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			Log.Info("apptype: " + appType);
 			this.handlers = new Dictionary<Type, IMActorHandler>();
 
 			Type[] types = DllHelper.GetMonoTypes();
@@ -48,7 +47,7 @@ namespace Model
 				}
 
 				ActorMessageHandlerAttribute messageHandlerAttribute = (ActorMessageHandlerAttribute)attrs[0];
-				if (!messageHandlerAttribute.Type.Is(this.AppType))
+				if (!messageHandlerAttribute.Type.Is(appType))
 				{
 					continue;
 				}
@@ -72,15 +71,15 @@ namespace Model
 			return actorHandler;
 		}
 
-		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
 		{
 			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"not found message handler: {message.GetType().FullName}");
-				return false;
+				Log.Error($"not found message handler: {MongoHelper.ToJson(message)}");
+				return;
 			}
 			
-			return await handler.Handle(session, entity, message);
+			await handler.Handle(session, entity, message);
 		}
 
 		public override void Dispose()

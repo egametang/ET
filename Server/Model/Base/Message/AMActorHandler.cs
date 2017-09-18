@@ -5,21 +5,21 @@ namespace Model
 {
 	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AMessage
 	{
-		protected abstract Task<bool> Run(E entity, Message message);
+		protected abstract Task Run(E entity, Message message);
 
-		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
 		{
 			Message msg = message.AMessage as Message;
 			if (msg == null)
 			{
 				Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Message).Name}");
-				return false;
+				return;
 			}
 			E e = entity as E;
 			if (e == null)
 			{
 				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-				return false;
+				return;
 			}
 
 			await this.Run(e, msg);
@@ -27,14 +27,13 @@ namespace Model
 			// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
 			if (session.Id == 0)
 			{
-				return false;
+				return;
 			}
 			ActorResponse response = new ActorResponse
 			{
 				RpcId = message.RpcId
 			};
 			session.Reply(response);
-			return true;
 		}
 
 		public Type GetMessageType()
@@ -53,9 +52,9 @@ namespace Model
 			reply(response);
 		}
 
-		protected abstract Task<bool> Run(E entity, Request message, Action<Response> reply);
+		protected abstract Task Run(E unit, Request message, Action<Response> reply);
 
-		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
 		{
 			try
 			{
@@ -63,15 +62,15 @@ namespace Model
 				if (request == null)
 				{
 					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
-					return false;
+					return;
 				}
 				E e = entity as E;
 				if (e == null)
 				{
 					Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-					return false;
+					return;
 				}
-				return await this.Run(e, request, response =>
+				await this.Run(e, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
 					if (session.Id == 0)

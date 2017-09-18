@@ -21,6 +21,12 @@ namespace App
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
 
+				if (options.AppType != startConfig.AppType)
+				{
+					Log.Error("命令行参数apptype与配置不一致");
+					return;
+				}
+
 				IdGenerater.AppId = options.AppId;
 
 				LogManager.Configuration.Variables["appType"] = startConfig.AppType.ToString();
@@ -29,7 +35,7 @@ namespace App
 				Log.Info("server start........................");
 
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
-				Game.Scene.AddComponent<MessageDispatherComponent, AppType>(startConfig.AppType);
+				Game.Scene.AddComponent<MessageDispatherComponent>();
 
 				// 根据不同的AppType添加不同的组件
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
@@ -48,7 +54,6 @@ namespace App
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
@@ -58,7 +63,6 @@ namespace App
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
@@ -71,7 +75,6 @@ namespace App
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						break;
@@ -87,7 +90,6 @@ namespace App
 						Game.Scene.AddComponent<NetInnerComponent, string, int>(innerConfig.Host, innerConfig.Port);
 						Game.Scene.AddComponent<NetOuterComponent, string, int>(outerConfig.Host, outerConfig.Port);
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<ActorComponent>();
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();

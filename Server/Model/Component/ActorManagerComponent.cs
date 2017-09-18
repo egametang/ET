@@ -24,7 +24,7 @@ namespace Model
 
 		public void Add(Entity entity)
 		{
-			dictionary.Add(entity.Id, entity);
+			dictionary[entity.Id] = entity;
 		}
 
 		public void Remove(long id)
@@ -34,7 +34,8 @@ namespace Model
 
 		public Entity Get(long id)
 		{
-			this.dictionary.TryGetValue(id, out Entity entity);
+			Entity entity = null;
+			this.dictionary.TryGetValue(id, out entity);
 			return entity;
 		}
 

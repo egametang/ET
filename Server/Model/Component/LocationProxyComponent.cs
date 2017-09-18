@@ -41,7 +41,7 @@ namespace Model
 		public async Task UnLock(long key, int value)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, LockAppId = this.AppId, AppId = value});
+			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, UnLockAppId = this.AppId, AppId = value});
 		}
 
 		public async Task Remove(long key)

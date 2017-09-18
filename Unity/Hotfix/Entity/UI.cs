@@ -30,6 +30,13 @@ namespace Hotfix
 			}
 
 			base.Dispose();
+
+			foreach (UI ui in this.children.Values)
+			{
+				ui.Dispose();
+			}
+
+			UnityEngine.Object.Destroy(this.GameObject);
 		}
 
 		public void SetAsFirstSibling()

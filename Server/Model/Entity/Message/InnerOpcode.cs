@@ -40,5 +40,8 @@
 
 		public const ushort G2M_CreateUnit = 103;
 		public const ushort M2G_CreateUnit = 104;
+
+		public const ushort M2M_TrasferUnitRequest = 105;
+		public const ushort M2M_TrasferUnitResponse = 106;
 	}
 }

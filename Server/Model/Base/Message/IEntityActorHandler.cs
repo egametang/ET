@@ -4,7 +4,7 @@ namespace Model
 {
 	public interface IEntityActorHandler
 	{
-		Task<bool> Handle(Session session, Entity entity, ActorRequest message);
+		Task Handle(Session session, Entity entity, ActorRequest message);
 	}
 
 	/// <summary>
@@ -12,21 +12,22 @@ namespace Model
 	/// </summary>
 	public class GateSessionEntityActorHandler : IEntityActorHandler
 	{
-		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
 		{
 			((Session)entity).Send(message.AMessage);
-			ActorResponse response = new ActorResponse();
-			response.RpcId = message.RpcId;
+			ActorResponse response = new ActorResponse
+			{
+				RpcId = message.RpcId
+			};
 			session.Reply(response);
-			return true;
 		}
 	}
 
 	public class CommonEntityActorHandler : IEntityActorHandler
 	{
-		public async Task<bool> Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
 		{
-			return await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
+			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
 		}
 	}
 }

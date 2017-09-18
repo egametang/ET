@@ -34,21 +34,16 @@ namespace Hotfix
 			try
 			{
 				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10002");
-				string account = this.account.GetComponent<InputField>().text;
-				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = account, Password = "111111" });
+				string text = this.account.GetComponent<InputField>().text;
+				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = text, Password = "111111" });
 				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
-				G2C_LoginGate g2CLoginGate = await gateSession.Call<G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
-				
-				//Log.Debug($"{JsonHelper.ToJson(g2CLoginGate)}");
+				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 
+				G2C_LoginGate g2CLoginGate = await SessionComponent.Instance.Session.Call<G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
 				Log.Info("登陆gate成功!");
 
-				// 发送一个actor消息
-				gateSession.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
-
-				// 向actor发起一次rpc调用
-				ActorRpc_TestResponse response = await gateSession.Call<ActorRpc_TestResponse>(new ActorRpc_TestRequest() { request = "request actor test rpc" });
-				Log.Info($"recv response: {JsonHelper.ToJson(response)}");
+				Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.Lobby);
+				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.Login);
 			}
 			catch (Exception e)
 			{

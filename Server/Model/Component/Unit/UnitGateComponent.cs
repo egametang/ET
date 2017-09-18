@@ -9,7 +9,7 @@
 		}
 	}
 
-	public class UnitGateComponent : Component
+	public class UnitGateComponent : ComponentDB
 	{
 		public long GateSessionId;
 

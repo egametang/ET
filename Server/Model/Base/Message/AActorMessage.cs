@@ -7,7 +7,8 @@ namespace Model
 	{
 	}
 
-	[BsonKnownTypes(typeof(ActorRpc_TestRequest))]
+	[BsonKnownTypes(typeof(Actor_TestRequest))]
+	[BsonKnownTypes(typeof(Actor_TransferRequest))]
 	public abstract class AActorRequest : ARequest
 	{
 	}

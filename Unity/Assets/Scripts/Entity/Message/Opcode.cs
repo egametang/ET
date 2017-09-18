@@ -12,7 +12,9 @@
 		public const ushort C2M_Reload = 1008;
 
 		public const ushort Actor_Test = 2001;
-		public const ushort ActorRpc_TestRequest = 2002;
-		public const ushort ActorRpc_TestResponse = 2003;
+		public const ushort Actor_TestRequest = 2002;
+		public const ushort Actor_TestResponse = 2003;
+		public const ushort Actor_TransferRequest = 2004;
+		public const ushort Actor_TransferResponse = 2005;
 	}
 }

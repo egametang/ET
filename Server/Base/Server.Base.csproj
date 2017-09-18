@@ -33,6 +33,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\Lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\Lib\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -155,6 +158,7 @@
     <Compile Include="Log.cs" />
     <Compile Include="Logger\ALogDecorater.cs" />
     <Compile Include="Logger\ILog.cs" />
+    <Compile Include="Logger\Log4NetAdapter.cs" />
     <Compile Include="Logger\NLogAdapter.cs" />
     <Compile Include="Logger\StackInfoDecorater.cs" />
     <Compile Include="LogType.cs" />

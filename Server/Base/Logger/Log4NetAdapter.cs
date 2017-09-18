@@ -1,12 +1,12 @@
-﻿using NLog;
+﻿using log4net;
 
 namespace Model
 {
-	public class NLogAdapter: ALogDecorater, ILog
+	public class Log4NetAdapter : ALogDecorater, ILog
 	{
-		private readonly Logger logger = LogManager.GetLogger("Logger");
+		private readonly log4net.ILog logger = LogManager.GetLogger("Logger");
 
-		public NLogAdapter(ALogDecorater decorater = null): base(decorater)
+		public Log4NetAdapter(ALogDecorater decorater = null): base(decorater)
 		{
 		}
 

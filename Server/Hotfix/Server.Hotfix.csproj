@@ -32,11 +32,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component\RealmGateAddressComponentE.cs" />
-    <Compile Include="Handler\ActorRpc_TestHandler.cs" />
+    <Compile Include="Handler\M2M_TrasferUnitRequest.cs" />
+    <Compile Include="Handler\Actor_TransferHandler.cs" />
+    <Compile Include="Handler\Actor_TestRequestHandler.cs" />
     <Compile Include="Handler\Actor_TestHandler.cs" />
     <Compile Include="Handler\DBQueryBatchRequestHandler.cs" />
     <Compile Include="Handler\DBQueryJsonRequestHandler.cs" />

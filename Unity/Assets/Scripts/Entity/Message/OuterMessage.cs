@@ -44,18 +44,32 @@ namespace Model
 		public string Info;
 	}
 
-	[Message(Opcode.ActorRpc_TestRequest)]
-	public class ActorRpc_TestRequest : AActorRequest
+	[Message(Opcode.Actor_TestRequest)]
+	public class Actor_TestRequest : AActorRequest
 	{
 		public string request;
 	}
 
-	[Message(Opcode.ActorRpc_TestResponse)]
-	public class ActorRpc_TestResponse : AActorResponse
+	[Message(Opcode.Actor_TestResponse)]
+	public class Actor_TestResponse : AActorResponse
 	{
 		public string response;
 	}
-	
+
+
+	[Message(Opcode.Actor_TransferRequest)]
+	public class Actor_TransferRequest : AActorRequest
+	{
+		public int MapIndex;
+	}
+
+	[Message(Opcode.Actor_TransferResponse)]
+	public class Actor_TransferResponse : AActorResponse
+	{
+	}
+
+
+
 	[Message(Opcode.C2M_Reload)]
 	public class C2M_Reload: ARequest
 	{
