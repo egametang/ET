@@ -22,9 +22,7 @@ namespace MongoDB.Bson.Serialization.Attributes
     /// </summary>
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     [BsonMemberMapAttributeUsage(AllowMultipleMembers = false)]
-#pragma warning disable 618 // obsoleted by IBsonMemberMapModifier
-    public class BsonIdAttribute : Attribute, IBsonMemberMapAttribute, IBsonMemberMapModifier
-#pragma warning restore 618 
+    public class BsonIdAttribute : Attribute, IBsonMemberMapAttribute
     {
         // private fields
         private Type _idGenerator;

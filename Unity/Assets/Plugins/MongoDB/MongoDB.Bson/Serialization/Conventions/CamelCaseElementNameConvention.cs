@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Conventions
     /// <summary>
     /// A convention that sets the element name the same as the member name with the first character lower cased.
     /// </summary>
-#pragma warning disable 618 // about obsolete IElementNameConvention
-    public class CamelCaseElementNameConvention : ConventionBase, IMemberMapConvention, IElementNameConvention
-#pragma warning restore 618
+    public class CamelCaseElementNameConvention : ConventionBase, IMemberMapConvention
     {
         // public methods
         /// <summary>
@@ -35,18 +33,6 @@ namespace MongoDB.Bson.Serialization.Conventions
             string name = memberMap.MemberName;
             name = GetElementName(name);
             memberMap.SetElementName(name);
-        }
-
-        /// <summary>
-        /// Gets the element name for a member.
-        /// </summary>
-        /// <param name="member">The member.</param>
-        /// <returns>The element name.</returns>
-        [Obsolete("Use Apply instead.")]
-        public string GetElementName(MemberInfo member)
-        {
-            string name = member.Name;
-            return GetElementName(name);
         }
 
         // private methods

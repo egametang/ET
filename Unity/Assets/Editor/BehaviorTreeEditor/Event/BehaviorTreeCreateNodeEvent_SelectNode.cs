@@ -2,7 +2,7 @@
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeCreateNode)]
+	[Event((int)EventIdType.BehaviorTreeCreateNode)]
 	public class BehaviorTreeCreateNodeEvent_SelectNode: IEvent<NodeDesigner>
 	{
 		public void Run(NodeDesigner dstNode)

@@ -13,6 +13,9 @@
 * limitations under the License.
 */
 
+using System.Collections.Generic;
+using System.Dynamic;
+using MongoDB.Bson.Serialization;
 namespace MongoDB.Bson
 {
     /// <summary>
@@ -21,11 +24,55 @@ namespace MongoDB.Bson
     public static class BsonDefaults
     {
         // private static fields
+        private static bool __dynamicArraySerializerWasSet;
+        private static IBsonSerializer __dynamicArraySerializer;
+        private static bool __dynamicDocumentSerializerWasSet;
+        private static IBsonSerializer __dynamicDocumentSerializer; 
         private static GuidRepresentation __guidRepresentation = GuidRepresentation.CSharpLegacy;
         private static int __maxDocumentSize = int.MaxValue;
         private static int __maxSerializationDepth = 100;
 
         // public static properties
+        /// <summary>
+        /// Gets or sets the dynamic array serializer.
+        /// </summary>
+        public static IBsonSerializer DynamicArraySerializer
+        {
+            get
+            {
+                if (!__dynamicArraySerializerWasSet)
+                {
+                    __dynamicArraySerializer = BsonSerializer.LookupSerializer<List<object>>();
+                }
+                return __dynamicArraySerializer;
+            }
+            set 
+            {
+                __dynamicArraySerializerWasSet = true;
+                __dynamicArraySerializer = value; 
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the dynamic document serializer.
+        /// </summary>
+        public static IBsonSerializer DynamicDocumentSerializer
+        {
+            get 
+            {
+                if (!__dynamicDocumentSerializerWasSet)
+                {
+                    __dynamicDocumentSerializer = BsonSerializer.LookupSerializer<ExpandoObject>();
+                }
+                return __dynamicDocumentSerializer; 
+            }
+            set 
+            {
+                __dynamicDocumentSerializerWasSet = true;
+                __dynamicDocumentSerializer = value; 
+            }
+        }
+
         /// <summary>
         /// Gets or sets the default representation to be used in serialization of 
         /// Guids to the database. 

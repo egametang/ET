@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,11 +21,9 @@ using System.Reflection;
 namespace MongoDB.Bson.Serialization.Conventions
 {
     /// <summary>
-    /// A convention that finds the extra elements member by name (and that is also of type BsonDocument or an IDictionary&lt;string, object&gt;).
+    /// A convention that finds the extra elements member by name (and that is also of type <see cref="BsonDocument"/> or <see cref="IDictionary{String, Object}"/>).
     /// </summary>
-#pragma warning disable 618 // about obsolete IExtraElementsMemberConvention
-    public class NamedExtraElementsMemberConvention : ConventionBase, IClassMapConvention, IExtraElementsMemberConvention
-#pragma warning restore 618
+    public class NamedExtraElementsMemberConvention : ConventionBase, IClassMapConvention
     {
         // private fields
         private readonly IEnumerable<string> _names;
@@ -86,16 +84,6 @@ namespace MongoDB.Bson.Serialization.Conventions
             _bindingFlags = bindingFlags | BindingFlags.DeclaredOnly;
         }
 
-        // public properties
-        /// <summary>
-        /// Gets the name of the convention.
-        /// </summary>
-        [Obsolete("There is no alternative.")]
-        public new string Name
-        {
-            get { return _names.First(); }
-        }
-
         // public methods
         /// <summary>
         /// Applies a modification to the class map.
@@ -103,9 +91,10 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <param name="classMap">The class map.</param>
         public void Apply(BsonClassMap classMap)
         {
+            var classTypeInfo = classMap.ClassType.GetTypeInfo();
             foreach (var name in _names)
             {
-                var member = classMap.ClassType.GetMember2(name, _memberTypes, _bindingFlags).SingleOrDefault();
+                var member = classTypeInfo.GetMember(name, _memberTypes, _bindingFlags).SingleOrDefault();
 
                 if (member != null)
                 {
@@ -124,25 +113,13 @@ namespace MongoDB.Bson.Serialization.Conventions
                         }
                     }
 
-                    if (memberType != null && (memberType == typeof(BsonDocument) || typeof(IDictionary<string, object>).IsAssignableFrom(memberType)))
+                    if (memberType != null && (memberType == typeof(BsonDocument) || typeof(IDictionary<string, object>).GetTypeInfo().IsAssignableFrom(memberType)))
                     {
                         classMap.MapExtraElementsMember(member);
                         return;
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Finds the extra elements member of a class.
-        /// </summary>
-        /// <param name="type">The class.</param>
-        /// <returns>The extra elements member.</returns>
-        [Obsolete("Use Apply instead.")]
-        public string FindExtraElementsMember(Type type)
-        {
-            var memberInfo = type.GetMember(_names.First()).SingleOrDefault(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-            return (memberInfo != null) ? _names.First() : null;
         }
     }
 }

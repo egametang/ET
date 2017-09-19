@@ -83,41 +83,10 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <param name="bsonReader">The reader.</param>
         /// <param name="nominalType">The nominal type.</param>
         /// <returns>The actual type.</returns>
-        public Type GetActualType(BsonReader bsonReader, Type nominalType)
+        public Type GetActualType(IBsonReader bsonReader, Type nominalType)
         {
             // the BsonReader is sitting at the value whose actual type needs to be found
             var bsonType = bsonReader.GetCurrentBsonType();
-            if (bsonReader.State == BsonReaderState.Value)
-            {
-                Type primitiveType = null;
-                switch (bsonType)
-                {
-                    case BsonType.Boolean: primitiveType = typeof(bool); break;
-                    case BsonType.Binary:
-                        var bookmark = bsonReader.GetBookmark();
-                        var binaryData = bsonReader.ReadBinaryData();
-                        var subType = binaryData.SubType;
-                        if (subType == BsonBinarySubType.UuidStandard || subType == BsonBinarySubType.UuidLegacy)
-                        {
-                            primitiveType = typeof(Guid);
-                        }
-                        bsonReader.ReturnToBookmark(bookmark);
-                        break;
-                    case BsonType.DateTime: primitiveType = typeof(DateTime); break;
-                    case BsonType.Double: primitiveType = typeof(double); break;
-                    case BsonType.Int32: primitiveType = typeof(int); break;
-                    case BsonType.Int64: primitiveType = typeof(long); break;
-                    case BsonType.ObjectId: primitiveType = typeof(ObjectId); break;
-                    case BsonType.String: primitiveType = typeof(string); break;
-                }
-
-                // Type.IsAssignableFrom is extremely expensive, always perform a direct type check before calling Type.IsAssignableFrom
-                if (primitiveType != null && (primitiveType == nominalType || nominalType.IsAssignableFrom(primitiveType)))
-                {
-                    return primitiveType;
-                }
-            }
-
             if (bsonType == BsonType.Document)
             {
                 // ensure KnownTypes of nominalType are registered (so IsTypeDiscriminated returns correct answer)
@@ -131,7 +100,8 @@ namespace MongoDB.Bson.Serialization.Conventions
                     var actualType = nominalType;
                     if (bsonReader.FindElement(_elementName))
                     {
-                        var discriminator = (BsonValue)BsonValueSerializer.Instance.Deserialize(bsonReader, typeof(BsonValue), null);
+                        var context = BsonDeserializationContext.CreateRoot(bsonReader);
+                        var discriminator = BsonValueSerializer.Instance.Deserialize(context);
                         if (discriminator.IsBsonArray)
                         {
                             discriminator = discriminator.AsBsonArray.Last(); // last item is leaf class discriminator

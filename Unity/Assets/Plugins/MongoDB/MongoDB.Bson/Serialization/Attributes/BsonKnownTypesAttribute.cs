@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Attributes
     /// Specifies the known types for this class (the derived classes).
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
-#pragma warning disable 618 // obsoleted by IBsonMemberMapModifier
-    public class BsonKnownTypesAttribute : Attribute, IBsonClassMapAttribute, IBsonClassMapModifier
-#pragma warning restore 618
+    public class BsonKnownTypesAttribute : Attribute, IBsonClassMapAttribute
     {
         // private fields
         private Type[] _knownTypes;

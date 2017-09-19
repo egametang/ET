@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ namespace MongoDB.Bson.Serialization
         private string _elementName;
         private IBsonSerializer _serializer;
         private Type _nominalType;
-        private IBsonSerializationOptions _serializationOptions;
 
         // constructors
         /// <summary>
@@ -37,13 +36,11 @@ namespace MongoDB.Bson.Serialization
         /// <param name="elementName">The element name.</param>
         /// <param name="serializer">The serializer.</param>
         /// <param name="nominalType">The nominal type.</param>
-        /// <param name="serializationOptions">The serialization options.</param>
-        public BsonSerializationInfo(string elementName, IBsonSerializer serializer, Type nominalType, IBsonSerializationOptions serializationOptions)
+        public BsonSerializationInfo(string elementName, IBsonSerializer serializer, Type nominalType)
         {
             _elementName = elementName;
             _serializer = serializer;
             _nominalType = nominalType;
-            _serializationOptions = serializationOptions;
         }
 
         // public properties
@@ -72,29 +69,49 @@ namespace MongoDB.Bson.Serialization
         }
 
         /// <summary>
-        /// Gets or sets the serialization options.
-        /// </summary>
-        public IBsonSerializationOptions SerializationOptions
-        {
-            get { return _serializationOptions; }
-        }
-
-        /// <summary>
         /// Deserializes the value.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>The deserialized value.</returns>
+        /// <returns>A deserialized value.</returns>
         public object DeserializeValue(BsonValue value)
         {
             var tempDocument = new BsonDocument("value", value);
-            using (var reader = BsonReader.Create(tempDocument))
+            using (var reader = new BsonDocumentReader(tempDocument))
             {
+                var context = BsonDeserializationContext.CreateRoot(reader);
                 reader.ReadStartDocument();
                 reader.ReadName("value");
-                var deserializedValue = _serializer.Deserialize(reader, _nominalType, _serializationOptions);
+                var deserializedValue = _serializer.Deserialize(context);
                 reader.ReadEndDocument();
                 return deserializedValue;
             }
+        }
+
+        /// <summary>
+        /// Merges the new BsonSerializationInfo by taking its properties and concatenating its ElementName.
+        /// </summary>
+        /// <param name="newSerializationInfo">The new info.</param>
+        /// <returns>A new BsonSerializationInfo.</returns>
+        public BsonSerializationInfo Merge(BsonSerializationInfo newSerializationInfo)
+        {
+            string elementName = null;
+            if (_elementName != null && newSerializationInfo._elementName != null)
+            {
+                elementName = _elementName + "." + newSerializationInfo._elementName;
+            }
+            else if (_elementName != null)
+            {
+                elementName = _elementName;
+            }
+            else if (newSerializationInfo._elementName != null)
+            {
+                elementName = newSerializationInfo._elementName;
+            }
+
+            return new BsonSerializationInfo(
+                elementName,
+                newSerializationInfo._serializer,
+                newSerializationInfo._nominalType);
         }
 
         /// <summary>
@@ -105,11 +122,12 @@ namespace MongoDB.Bson.Serialization
         public BsonValue SerializeValue(object value)
         {
             var tempDocument = new BsonDocument();
-            using (var bsonWriter = BsonWriter.Create(tempDocument))
+            using (var bsonWriter = new BsonDocumentWriter(tempDocument))
             {
+                var context = BsonSerializationContext.CreateRoot(bsonWriter);
                 bsonWriter.WriteStartDocument();
                 bsonWriter.WriteName("value");
-                Serialize(bsonWriter, value);
+                _serializer.Serialize(context, value);
                 bsonWriter.WriteEndDocument();
                 return tempDocument[0];
             }
@@ -123,31 +141,34 @@ namespace MongoDB.Bson.Serialization
         public BsonArray SerializeValues(IEnumerable values)
         {
             var tempDocument = new BsonDocument();
-            using (var bsonWriter = BsonWriter.Create(tempDocument))
+            using (var bsonWriter = new BsonDocumentWriter(tempDocument))
             {
+                var context = BsonSerializationContext.CreateRoot(bsonWriter);
                 bsonWriter.WriteStartDocument();
                 bsonWriter.WriteName("values");
                 bsonWriter.WriteStartArray();
                 foreach (var value in values)
                 {
-                    Serialize(bsonWriter, value);
+                    _serializer.Serialize(context, value);
                 }
                 bsonWriter.WriteEndArray();
                 bsonWriter.WriteEndDocument();
+
                 return tempDocument[0].AsBsonArray;
             }
         }
 
-        // private methods
-        private void Serialize(BsonWriter bsonWriter, object value)
+        /// <summary>
+        /// Creates a new BsonSerializationInfo object using the elementName provided and copying all other attributes.
+        /// </summary>
+        /// <param name="elementName">Name of the element.</param>
+        /// <returns>A new BsonSerializationInfo.</returns>
+        public BsonSerializationInfo WithNewName(string elementName)
         {
-            var serializer = _serializer;
-            var actualType = (value == null) ? _nominalType : value.GetType();
-            if (actualType != _nominalType)
-            {
-                serializer = BsonSerializer.LookupSerializer(actualType);
-            }
-            serializer.Serialize(bsonWriter, _nominalType, value, _serializationOptions);
+            return new BsonSerializationInfo(
+                elementName,
+                _serializer,
+                _nominalType);
         }
     }
 }

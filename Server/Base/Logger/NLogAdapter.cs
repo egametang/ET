@@ -4,7 +4,7 @@ namespace Model
 {
 	public class NLogAdapter: ALogDecorater, ILog
 	{
-		private readonly Logger logger = LogManager.GetCurrentClassLogger();
+		private readonly Logger logger = LogManager.GetLogger("Logger");
 
 		public NLogAdapter(ALogDecorater decorater = null): base(decorater)
 		{

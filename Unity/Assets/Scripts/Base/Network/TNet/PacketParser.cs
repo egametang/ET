@@ -12,8 +12,8 @@ namespace Model
 	{
 		private readonly TBuffer buffer;
 
-		private uint packetSize;
-		private readonly byte[] packetSizeBuffer = new byte[4];
+		private ushort packetSize;
+		private readonly byte[] packetSizeBuffer = new byte[2];
 		private ParserState state;
 		private byte[] packet;
 		private bool isOK;
@@ -36,15 +36,16 @@ namespace Model
 				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (this.buffer.Count < 4)
+						if (this.buffer.Count < 2)
 						{
 							finish = true;
 						}
 						else
 						{
 							this.buffer.RecvFrom(this.packetSizeBuffer);
-							this.packetSize = BitConverter.ToUInt32(this.packetSizeBuffer, 0);
-							if (packetSize > 1024 * 1024)
+							this.packetSize = BitConverter.ToUInt16(this.packetSizeBuffer, 0);
+							this.packetSize = NetworkHelper.NetworkToHostOrder(this.packetSize);
+							if (packetSize > 60000)
 							{
 								throw new Exception($"packet too large, size: {this.packetSize}");
 							}

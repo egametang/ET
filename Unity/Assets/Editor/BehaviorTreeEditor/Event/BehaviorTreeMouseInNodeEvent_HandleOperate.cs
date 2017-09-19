@@ -2,7 +2,7 @@
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeMouseInNode)]
+	[Event((int)EventIdType.BehaviorTreeMouseInNode)]
 	public class BehaviorTreeMouseInNodeEvent_HandleOperate: IEvent<BehaviorNodeData, NodeDesigner>
 	{
 		public void Run(BehaviorNodeData nodeData, NodeDesigner nodeDesigner)

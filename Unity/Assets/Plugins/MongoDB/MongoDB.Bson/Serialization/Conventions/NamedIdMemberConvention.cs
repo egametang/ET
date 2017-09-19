@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@ namespace MongoDB.Bson.Serialization.Conventions
     /// <summary>
     /// A convention that finds the id member by name.
     /// </summary>
-#pragma warning disable 618 // about obsolete IIdMemberConvention
-    public class NamedIdMemberConvention : ConventionBase, IClassMapConvention, IIdMemberConvention
-#pragma warning restore 618
+    public class NamedIdMemberConvention : ConventionBase, IClassMapConvention
     {
         // private fields
         private readonly IEnumerable<string> _names;
@@ -86,16 +84,6 @@ namespace MongoDB.Bson.Serialization.Conventions
             _bindingFlags = bindingFlags | BindingFlags.DeclaredOnly;
         }
 
-        // public properties
-        /// <summary>
-        /// Gets the set of possible Id member names.
-        /// </summary>
-        [Obsolete("There is no alternative.")]
-        public string[] Names
-        {
-            get { return _names.ToArray(); }
-        }
-
         // public methods
         /// <summary>
         /// Applies a modification to the class map.
@@ -103,13 +91,12 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <param name="classMap">The class map.</param>
         public void Apply(BsonClassMap classMap)
         {
+            var classTypeInfo = classMap.ClassType.GetTypeInfo();
             foreach (var name in _names)
             {
-				Type classType = classMap.ClassType;
-	            var members = classType.GetMember2(name, _memberTypes, _bindingFlags);
-				var member = members.SingleOrDefault();
+                var member = classTypeInfo.GetMember(name, _memberTypes, _bindingFlags).SingleOrDefault();
 
-				if (member != null)
+                if (member != null)
                 {
                     if (IsValidIdMember(classMap, member))
                     {
@@ -122,34 +109,15 @@ namespace MongoDB.Bson.Serialization.Conventions
 
         private bool IsValidIdMember(BsonClassMap classMap, MemberInfo member)
         {
-            if (member.MemberType == MemberTypes.Property)
+            if (member is PropertyInfo)
             {
-                var getMethodInfo = ((PropertyInfo)member).GetGetMethod(true);
+                var getMethodInfo = ((PropertyInfo)member).GetMethod;
                 if (getMethodInfo.IsVirtual && getMethodInfo.GetBaseDefinition().DeclaringType != classMap.ClassType)
                 {
                     return false;
                 }
             }
             return true;
-        }
-
-        /// <summary>
-        /// Finds the Id member of a class.
-        /// </summary>
-        /// <param name="type">The class.</param>
-        /// <returns>The name of the Id member.</returns>
-        [Obsolete("Use Apply instead.")]
-        public string FindIdMember(Type type)
-        {
-            foreach (string name in _names)
-            {
-                var memberInfo = type.GetMember(name).SingleOrDefault(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property);
-                if (memberInfo != null)
-                {
-                    return name;
-                }
-            }
-            return null;
         }
     }
 }

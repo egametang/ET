@@ -3,11 +3,11 @@
 namespace Model
 {
 	[ObjectEvent]
-	public class DBComponentEvent : ObjectEvent<DBComponent>, IAwake
+	public class DBComponentEvent : ObjectEvent<DBComponent>, IStart
 	{
-		public void Awake()
+		public void Start()
 		{
-			this.Get().Awake();
+			this.Get().Start();
 		}
 	}
 
@@ -19,12 +19,12 @@ namespace Model
 		public MongoClient mongoClient;
 		public IMongoDatabase database;
 
-		public void Awake()
+		public void Start()
 		{
-			DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
-			string connectionString = config.ConnectionString;
-			mongoClient = new MongoClient(connectionString);
-			this.database = this.mongoClient.GetDatabase(config.DBName);
+			//DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
+			//string connectionString = config.ConnectionString;
+			//mongoClient = new MongoClient(connectionString);
+			//this.database = this.mongoClient.GetDatabase(config.DBName);
 		}
 
 		public IMongoCollection<Entity> GetCollection(string name)

@@ -3,17 +3,17 @@
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class RealmGateAddressComponentEvent : ObjectEvent<RealmGateAddressComponent>, IAwake
+	public class RealmGateAddressComponentEvent : ObjectEvent<RealmGateAddressComponent>, IStart
 	{
-		public void Awake()
+		public void Start()
 		{
-			this.Get().Awake();
+			this.Get().Start();
 		}
 	}
 	
 	public static class RealmGateAddressComponentE
 	{
-		public static void Awake(this RealmGateAddressComponent component)
+		public static void Start(this RealmGateAddressComponent component)
 		{
 			StartConfig[] startConfigs = component.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig config in startConfigs)

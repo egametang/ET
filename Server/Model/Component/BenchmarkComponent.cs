@@ -36,7 +36,7 @@ namespace Model
 					while (i < 10000000)
 					{
 						++i;
-						await session.Call<C2R_Ping, R2C_Ping>(new C2R_Ping());
+						await session.Call<R2C_Ping>(new C2R_Ping());
 
 						++this.k;
 

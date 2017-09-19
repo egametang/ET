@@ -20,7 +20,7 @@
 			base.Dispose();
 		}
 
-		public Unit(UnitType unitType): base(EntityType.UI)
+		public Unit(UnitType unitType)
 		{
 			this.UnitType = unitType;
 		}

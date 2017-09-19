@@ -5,44 +5,73 @@ using UnityEngine.UI;
 
 namespace Hotfix
 {
-	[ObjectEvent(EntityEventId.UILobbyComponent)]
-	public class UILobbyComponent: Component, IAwake
+	[ObjectEvent]
+	public class UILobbyComponentEvent : ObjectEvent<UILobbyComponent>, IAwake
 	{
 		public void Awake()
 		{
-			ReferenceCollector rc = this.GetOwner<UI>().GameObject.GetComponent<ReferenceCollector>();
-			GameObject createRoom = rc.Get<GameObject>("CreateRoom");
-			GameObject joinRoom = rc.Get<GameObject>("JoinRoom");
-			createRoom.GetComponent<Button>().onClick.Add(() => this.OnCreateRoom());
-			joinRoom.GetComponent<Button>().onClick.Add(() => this.OnJoinRoom());
+			this.Get().Awake();
+		}
+	}
+	
+	public class UILobbyComponent : Component
+	{
+		private GameObject sendBtn;
+		private GameObject sendRpcBtn;
+		private GameObject transfer1Btn;
+		private GameObject transfer2Btn;
+
+		public void Awake()
+		{
+			ReferenceCollector rc = this.GetEntity<UI>().GameObject.GetComponent<ReferenceCollector>();
+			this.sendBtn = rc.Get<GameObject>("Send");
+			this.sendRpcBtn = rc.Get<GameObject>("SendRpc");
+			this.sendBtn.GetComponent<Button>().onClick.Add(this.OnSend);
+			this.sendRpcBtn.GetComponent<Button>().onClick.Add(this.OnSendRpc);
+
+			this.transfer1Btn = rc.Get<GameObject>("Transfer1");
+			this.transfer2Btn = rc.Get<GameObject>("Transfer2");
+			this.transfer1Btn.GetComponent<Button>().onClick.Add(this.OnTransfer1);
+			this.transfer2Btn.GetComponent<Button>().onClick.Add(this.OnTransfer2);
 		}
 
-		private async void OnCreateRoom()
+		private void OnSend()
 		{
-			Session session = null;
+			// 发送一个actor消息
+			SessionComponent.Instance.Session.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
+		}
+
+		private async void OnSendRpc()
+		{
 			try
 			{
-				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10001");
-				R2C_Login r2CLogin = await session.Call<C2R_Login, R2C_Login>(new C2R_Login() { Account = "abcdef", Password = "111111" });
-				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
-				G2C_LoginGate g2CLoginGate = await gateSession.Call<C2G_LoginGate, G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
-
-				Log.Info("登陆gate成功!");
-				
+				// 向actor发起一次rpc调用
+				Actor_TestResponse response = await SessionComponent.Instance.Session.Call<Actor_TestResponse>(new Actor_TestRequest() { request = "request actor test rpc" });
+				Log.Info($"recv response: {MongoHelper.ToJson(response)}");
 			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToStr());
 			}
-			finally
+		}
+
+		private async void OnTransfer1()
+		{
+			try
 			{
-				session?.Dispose();
+				Actor_TransferResponse response = await SessionComponent.Instance.Session.Call<Actor_TransferResponse>(new Actor_TransferRequest() {MapIndex = 0});
+				Log.Info($"传送成功! {MongoHelper.ToJson(response)}");
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToStr());
 			}
 		}
 
-		private void OnJoinRoom()
+		private async void OnTransfer2()
 		{
-
+			Actor_TransferResponse response = await SessionComponent.Instance.Session.Call<Actor_TransferResponse>(new Actor_TransferRequest() { MapIndex = 1 });
+			Log.Info($"传送成功! {MongoHelper.ToJson(response)}");
 		}
 	}
 }

@@ -14,6 +14,7 @@
 */
 
 using System;
+using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Attributes
 {
@@ -63,6 +64,43 @@ namespace MongoDB.Bson.Serialization.Attributes
         {
             get { return _allowTruncation; }
             set { _allowTruncation = value; }
+        }
+
+        // protected methods
+        /// <summary>
+        /// Reconfigures the specified serializer by applying this attribute to it.
+        /// </summary>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns>A reconfigured serializer.</returns>
+        protected override IBsonSerializer Apply(IBsonSerializer serializer)
+        {
+            var representationConfigurable = serializer as IRepresentationConfigurable;
+            if (representationConfigurable != null)
+            {
+                var reconfiguredSerializer = representationConfigurable.WithRepresentation(_representation);
+
+                var converterConfigurable = reconfiguredSerializer as IRepresentationConverterConfigurable;
+                if (converterConfigurable != null)
+                {
+                    var converter = new RepresentationConverter(_allowOverflow, _allowTruncation);
+                    reconfiguredSerializer = converterConfigurable.WithConverter(converter);
+                }
+
+                return reconfiguredSerializer;
+            }
+
+            // for backward compatibility representations of Array and Document are mapped to DictionaryRepresentations if possible
+            var dictionaryRepresentationConfigurable = serializer as IDictionaryRepresentationConfigurable;
+            if (dictionaryRepresentationConfigurable != null)
+            {
+                if (_representation == BsonType.Array || _representation == BsonType.Document)
+                {
+                    var dictionaryRepresentation = (_representation == BsonType.Array) ? DictionaryRepresentation.ArrayOfArrays: DictionaryRepresentation.Document;
+                    return dictionaryRepresentationConfigurable.WithDictionaryRepresentation(dictionaryRepresentation);
+                }
+            }
+
+            return base.Apply(serializer);
         }
     }
 }

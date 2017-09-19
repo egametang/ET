@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace Hotfix
 {
 	public interface IMHandler
 	{

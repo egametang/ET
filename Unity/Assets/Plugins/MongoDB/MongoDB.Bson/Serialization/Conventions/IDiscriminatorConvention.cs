@@ -34,7 +34,7 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <param name="bsonReader">The reader.</param>
         /// <param name="nominalType">The nominal type.</param>
         /// <returns>The actual type.</returns>
-        Type GetActualType(BsonReader bsonReader, Type nominalType);
+        Type GetActualType(IBsonReader bsonReader, Type nominalType);
 
         /// <summary>
         /// Gets the discriminator value for an actual type.

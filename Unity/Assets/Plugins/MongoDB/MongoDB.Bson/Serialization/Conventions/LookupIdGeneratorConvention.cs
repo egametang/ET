@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Conventions
     /// <summary>
     /// A convention that looks up an id generator for the id member.
     /// </summary>
-#pragma warning disable 618 // about obsolete IIdGeneratorConvention
-    public class LookupIdGeneratorConvention : ConventionBase, IPostProcessingConvention, IIdGeneratorConvention
-#pragma warning restore 618
+    public class LookupIdGeneratorConvention : ConventionBase, IPostProcessingConvention
     {
         // public methods
         /// <summary>
@@ -44,17 +42,6 @@ namespace MongoDB.Bson.Serialization.Conventions
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the Id generator for an Id member.
-        /// </summary>
-        /// <param name="memberInfo">The member.</param>
-        /// <returns>An Id generator.</returns>
-        [Obsolete("Use PostProcess instead.")]
-        public IIdGenerator GetIdGenerator(MemberInfo memberInfo)
-        {
-            return BsonSerializer.LookupIdGenerator(BsonClassMap.GetMemberInfoType(memberInfo));
         }
     }
 }

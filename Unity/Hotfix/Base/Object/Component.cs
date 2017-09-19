@@ -1,25 +1,25 @@
-﻿namespace Hotfix
-{
-	public abstract class Component: Disposer
-	{
-		public Entity Owner { get; set; }
+﻿using MongoDB.Bson.Serialization.Attributes;
 
-		public T GetOwner<T>() where T : Entity
+namespace Hotfix
+{
+	public abstract class Component : Disposer
+	{
+		[BsonIgnore]
+		public Entity Entity { get; set; }
+
+		public T GetEntity<T>() where T : Entity
 		{
-			return this.Owner as T;
+			return this.Entity as T;
 		}
 
 		protected Component()
 		{
-		}
-
-		protected Component(long id): base(id)
-		{
+			this.Id = 1;
 		}
 
 		public T GetComponent<T>() where T : Component
 		{
-			return this.Owner.GetComponent<T>();
+			return this.Entity.GetComponent<T>();
 		}
 
 		public override void Dispose()
@@ -31,7 +31,7 @@
 
 			base.Dispose();
 
-			this.Owner.RemoveComponent(this.GetType());
+			this.Entity?.RemoveComponent(this.GetType());
 		}
 	}
 }

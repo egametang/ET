@@ -451,7 +451,7 @@ namespace ILRuntime.Runtime.Debugger
             return null;
         }
 
-        unsafe bool GetValueExpandable(StackObject* esp, List<object> mStack)
+        unsafe bool GetValueExpandable(StackObject* esp, IList<object> mStack)
         {
             if (esp->ObjectType < ObjectTypes.Object)
                 return false;

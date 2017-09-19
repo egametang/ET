@@ -41,6 +41,7 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <returns>The discriminator value.</returns>
         public override BsonValue GetDiscriminator(Type nominalType, Type actualType)
         {
+            // TODO: this isn't quite right, not all classes are serialized using a class map serializer
             var classMap = BsonClassMap.LookupClassMap(actualType);
             return classMap.Discriminator;
         }

@@ -24,12 +24,11 @@ namespace MongoDB.Bson
     public class BsonSymbol : BsonValue, IComparable<BsonSymbol>, IEquatable<BsonSymbol>
     {
         // private fields
-        private string _name;
+        private readonly string _name;
 
         // constructors
         // internal because only BsonSymbolTable should call this constructor
         internal BsonSymbol(string name)
-            : base(BsonType.Symbol)
         {
             if (name == null)
             {
@@ -39,6 +38,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.Symbol; }
+        }
+
         /// <summary>
         /// Gets the name of the symbol.
         /// </summary>
@@ -89,32 +96,12 @@ namespace MongoDB.Bson
         /// <returns>A BsonSymbol or null.</returns>
         public new static BsonSymbol Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonSymbol)BsonTypeMapper.MapToBsonValue(value, BsonType.Symbol);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        /// <summary>
-        /// Creates a new instance of the BsonSymbol class.
-        /// </summary>
-        /// <param name="name">A string.</param>
-        /// <returns>A BsonSymbol.</returns>
-        [Obsolete("Use BsonSymbolTable.Lookup(string name) instead.")]
-        public static BsonSymbol Create(string name)
-        {
-            if (name != null)
-            {
-                return BsonSymbolTable.Lookup(name);
-            }
-            else
-            {
-                return null;
-            }
+            return (BsonSymbol)BsonTypeMapper.MapToBsonValue(value, BsonType.Symbol);
         }
 
         // public methods

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,21 +14,23 @@
 */
 
 using System;
-using System.Xml;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON string value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonString : BsonValue, IComparable<BsonString>, IEquatable<BsonString>
     {
         // private static fields
         private static BsonString __emptyInstance = new BsonString("");
 
         // private fields
-        private string _value;
+        private readonly string _value;
 
         // constructors
         /// <summary>
@@ -36,7 +38,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">The value.</param>
         public BsonString(string value)
-            : base(BsonType.String)
         {
             if (value == null)
             {
@@ -55,6 +56,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.String; }
+        }
+
         /// <summary>
         /// Gets the BsonString as a string.
         /// </summary>
@@ -80,6 +89,10 @@ namespace MongoDB.Bson
         /// <returns>A BsonString.</returns>
         public static implicit operator BsonString(string value)
         {
+            if (value != null && value.Length == 0)
+            {
+                return __emptyInstance;
+            }
             return new BsonString(value);
         }
 
@@ -114,33 +127,12 @@ namespace MongoDB.Bson
         /// <returns>A BsonString or null.</returns>
         public new static BsonString Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonString)BsonTypeMapper.MapToBsonValue(value, BsonType.String);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        /// <summary>
-        /// Creates a new instance of the BsonString class.
-        /// </summary>
-        /// <param name="value">A string.</param>
-        /// <returns>A BsonString.</returns>
-        [Obsolete("Use new BsonString(string value) instead.")]
-        public static BsonString Create(string value)
-        {
-            if (value != null)
-            {
-                // TODO: are there any other commonly used strings worth checking for?
-                return value == "" ? __emptyInstance : new BsonString(value);
-            }
-            else
-            {
-                return null;
-            }
+            return (BsonString)BsonTypeMapper.MapToBsonValue(value, BsonType.String);
         }
 
         // public methods
@@ -219,13 +211,25 @@ namespace MongoDB.Bson
             return _value != "";
         }
 
+        /// <inheritdoc/>
+        public override decimal ToDecimal()
+        {
+            return JsonConvert.ToDecimal(_value);
+        }
+
+        /// <inheritdoc/>
+        public override Decimal128 ToDecimal128()
+        {
+            return JsonConvert.ToDecimal128(_value);
+        }
+
         /// <summary>
         /// Converts this BsonValue to a Double.
         /// </summary>
         /// <returns>A Double.</returns>
         public override double ToDouble()
         {
-            return XmlConvert.ToDouble(_value);
+            return JsonConvert.ToDouble(_value);
         }
 
         /// <summary>
@@ -234,7 +238,7 @@ namespace MongoDB.Bson
         /// <returns>An Int32.</returns>
         public override int ToInt32()
         {
-            return XmlConvert.ToInt32(_value);
+            return JsonConvert.ToInt32(_value);
         }
 
         /// <summary>
@@ -243,7 +247,7 @@ namespace MongoDB.Bson
         /// <returns>An Int32.</returns>
         public override long ToInt64()
         {
-            return XmlConvert.ToInt64(_value);
+            return JsonConvert.ToInt64(_value);
         }
 
         /// <summary>
@@ -254,5 +258,110 @@ namespace MongoDB.Bson
         {
             return _value;
         }
+
+        // protected methods
+        /// <inheritdoc/>
+        protected override TypeCode IConvertibleGetTypeCodeImplementation()
+        {
+            return TypeCode.String;
+        }
+
+        /// <inheritdoc/>
+        protected override byte IConvertibleToByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToByte(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override bool IConvertibleToBooleanImplementation(IFormatProvider provider)
+        {
+            return Convert.ToBoolean(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override char IConvertibleToCharImplementation(IFormatProvider provider)
+        {
+            return Convert.ToChar(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override DateTime IConvertibleToDateTimeImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDateTime(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override decimal IConvertibleToDecimalImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDecimal(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override double IConvertibleToDoubleImplementation(IFormatProvider provider)
+        {
+            return Convert.ToDouble(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override short IConvertibleToInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt16(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override int IConvertibleToInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt32(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override long IConvertibleToInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToInt64(_value, provider);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override sbyte IConvertibleToSByteImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSByte(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+        protected override float IConvertibleToSingleImplementation(IFormatProvider provider)
+        {
+            return Convert.ToSingle(_value, provider);
+        }
+
+        /// <inheritdoc/>
+        protected override string IConvertibleToStringImplementation(IFormatProvider provider)
+        {
+            return _value;
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ushort IConvertibleToUInt16Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt16(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override uint IConvertibleToUInt32Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt32(_value, provider);
+        }
+#pragma warning restore
+
+        /// <inheritdoc/>
+#pragma warning disable 3002
+        protected override ulong IConvertibleToUInt64Implementation(IFormatProvider provider)
+        {
+            return Convert.ToUInt64(_value, provider);
+        }
+#pragma warning restore
     }
 }

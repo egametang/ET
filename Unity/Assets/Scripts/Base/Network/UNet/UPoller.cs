@@ -12,13 +12,13 @@ namespace Model
 		}
 
 		public USocketManager USocketManager { get; }
-		private readonly Queue<IntPtr> connQueue = new Queue<IntPtr>();
+		private readonly EQueue<IntPtr> connQueue = new EQueue<IntPtr>();
 
 		private IntPtr host;
 
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
-		private Queue<Action> concurrentQueue = new Queue<Action>();
-		private Queue<Action> localQueue;
+		private EQueue<Action> concurrentQueue = new EQueue<Action>();
+		private EQueue<Action> localQueue;
 		private readonly object lockObject = new object();
 
 		private ENetEvent eNetEventCache;
@@ -122,7 +122,6 @@ namespace Model
 			if (eEvent.Type == EventType.Disconnect)
 			{
 				this.AcceptTcs.TrySetException(new Exception("socket disconnected in accpet"));
-				return;
 			}
 
 			USocket socket = new USocket(eEvent.Peer, this);
@@ -139,7 +138,7 @@ namespace Model
 			lock (lockObject)
 			{
 				localQueue = concurrentQueue;
-				concurrentQueue = new Queue<Action>();
+				concurrentQueue = new EQueue<Action>();
 			}
 
 			while (this.localQueue.Count > 0)

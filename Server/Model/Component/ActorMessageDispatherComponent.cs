@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Model
 {
 	[ObjectEvent]
-	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IAwake<AppType>, ILoad
+	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IStart, ILoad
 	{
-		public void Awake(AppType appType)
+		public void Start()
 		{
-			this.Get().Awake(appType);
+			this.Get().Start();
 		}
 
 		public void Load()
@@ -22,17 +23,17 @@ namespace Model
 	/// </summary>
 	public class ActorMessageDispatherComponent : Component
 	{
-		private AppType AppType;
 		private Dictionary<Type, IMActorHandler> handlers;
 		
-		public void Awake(AppType appType)
+		public void Start()
 		{
-			this.AppType = appType;
 			this.Load();
 		}
 
 		public void Load()
 		{
+			AppType appType = this.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			Log.Info("apptype: " + appType);
 			this.handlers = new Dictionary<Type, IMActorHandler>();
 
 			Type[] types = DllHelper.GetMonoTypes();
@@ -46,7 +47,7 @@ namespace Model
 				}
 
 				ActorMessageHandlerAttribute messageHandlerAttribute = (ActorMessageHandlerAttribute)attrs[0];
-				if (!messageHandlerAttribute.Type.Is(this.AppType))
+				if (!messageHandlerAttribute.Type.Is(appType))
 				{
 					continue;
 				}
@@ -64,15 +65,21 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, object message)
+		public IMActorHandler GetActorHandler(Type type)
 		{
-			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
+			this.handlers.TryGetValue(type, out IMActorHandler actorHandler);
+			return actorHandler;
+		}
+
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		{
+			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"not found message handler: {message.GetType()}");
+				Log.Error($"not found message handler: {MongoHelper.ToJson(message)}");
 				return;
 			}
-			Entity entity = this.GetComponent<ActorManagerComponent>().Get(((AActorMessage)message).Id);
-			handler.Handle(session, entity, message);
+			
+			await handler.Handle(session, entity, message);
 		}
 
 		public override void Dispose()

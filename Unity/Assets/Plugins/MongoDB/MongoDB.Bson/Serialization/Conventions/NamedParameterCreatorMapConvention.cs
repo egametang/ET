@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -45,6 +45,8 @@ namespace MongoDB.Bson.Serialization.Conventions
                             var argument = FindMatchingArgument(creatorMap.ClassMap.ClassType, parameter);
                             if (argument == null)
                             {
+                                var message = string.Format("Unable to find a matching member to provide the value for parameter '{0}'.", parameter.Name);
+                                throw new BsonException(message);
                             }
                             arguments.Add(argument);
                         }
@@ -115,8 +117,9 @@ namespace MongoDB.Bson.Serialization.Conventions
 
         private MemberInfo Match(Type classType, MemberTypes memberType, BindingFlags visibility, ParameterInfo parameter)
         {
+            var classTypeInfo = classType.GetTypeInfo();
             var bindingAttr = BindingFlags.IgnoreCase | BindingFlags.Instance;
-            var memberInfos = classType.GetMember(parameter.Name, memberType, bindingAttr | visibility);
+            var memberInfos = classTypeInfo.GetMember(parameter.Name, memberType, bindingAttr | visibility);
             if (memberInfos.Length == 1 && GetMemberType(memberInfos[0]) == parameter.ParameterType)
             {
                 return memberInfos[0];

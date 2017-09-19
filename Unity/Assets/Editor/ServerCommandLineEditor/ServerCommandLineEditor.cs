@@ -304,7 +304,7 @@ namespace MyEditor
 					newStartConfig.AddComponent<OuterConfig>();
 				}
 
-				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB))
+				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB | AppType.Map | AppType.Location))
 				{
 					newStartConfig.AddComponent<InnerConfig>();
 				}
@@ -359,11 +359,7 @@ namespace MyEditor
 			}
 			GUILayout.EndHorizontal();
 		}
-
-		private void OnDisable()
-		{
-		}
-
+		
 		private void OnDestroy()
 		{
 			this.ClearConfig();

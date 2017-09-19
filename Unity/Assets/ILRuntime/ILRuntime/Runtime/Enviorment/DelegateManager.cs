@@ -5,6 +5,7 @@ using System.Text;
 
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
+using ILRuntime.Other;
 using ILRuntime.Runtime.Intepreter;
 
 namespace ILRuntime.Runtime.Enviorment
@@ -15,7 +16,7 @@ namespace ILRuntime.Runtime.Enviorment
         List<DelegateMapNode> functions = new List<DelegateMapNode>();
         IDelegateAdapter zeroParamMethodAdapter = new MethodDelegateAdapter();
         IDelegateAdapter dummyAdapter = new DummyDelegateAdapter();
-        Dictionary<Type, Func<Delegate, Delegate>> clrDelegates = new Dictionary<Type, Func<Delegate, Delegate>>();
+        Dictionary<Type, Func<Delegate, Delegate>> clrDelegates = new Dictionary<Type, Func<Delegate, Delegate>>(new ByReferenceKeyComparer<Type>());
         Func<Delegate, Delegate> defaultConverter;
         Enviorment.AppDomain appdomain;
         public DelegateManager(Enviorment.AppDomain appdomain)
@@ -177,6 +178,10 @@ namespace ILRuntime.Runtime.Enviorment
                         i.ParameterType.GetClassName(out clsName, out rName, out isByRef);
                         sb.Append(rName);
                     }
+                    if (!first)
+                        sb.Append(", ");
+                    mi.ReturnType.GetClassName(out clsName, out rName, out isByRef);
+                    sb.Append(rName);
                 }
                 else
                 {

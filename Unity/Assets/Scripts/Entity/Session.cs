@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,15 +11,11 @@ namespace Model
 		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
 		private readonly AChannel channel;
-		private bool isRpc;
 
-		private readonly IMessagePacker messagePacker;
-
-		public Session(NetworkComponent network, AChannel channel, IMessagePacker messagePacker)
+		public Session(NetworkComponent network, AChannel channel)
 		{
 			this.network = network;
 			this.channel = channel;
-			this.messagePacker = messagePacker;
 			this.StartRecv();
 		}
 
@@ -42,7 +37,6 @@ namespace Model
 
 		private async void StartRecv()
 		{
-			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)
@@ -53,12 +47,11 @@ namespace Model
 				byte[] messageBytes;
 				try
 				{
-					if (this.isRpc)
-					{
-						this.isRpc = false;
-						await timerComponent.WaitAsync(0);
-					}
 					messageBytes = await channel.Recv();
+					if (this.Id == 0)
+					{
+						return;
+					}
 				}
 				catch (Exception e)
 				{
@@ -72,7 +65,7 @@ namespace Model
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
-
+				opcode = NetworkHelper.NetworkToHostOrder(opcode);
 				try
 				{
 					this.Run(opcode, messageBytes);
@@ -106,20 +99,12 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
-			Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-			object message = messagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
-			
+			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
+			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
-			// 普通消息或者是Rpc请求消息
-			if (message is AMessage || message is ARequest)
-			{
-				MessageInfo messageInfo = new MessageInfo(opcode, message);
-				Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.MessageDeserializeFinish, messageInfo);
-				return;
-			}
+			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 
 			AResponse response = message as AResponse;
-			Log.Debug($"aaaaaaaaaaaaaaaaaaaaaaaaaaa {JsonHelper.ToJson(response)}");
 			if (response != null)
 			{
 				// rpcFlag>0 表示这是一个rpc响应消息
@@ -134,13 +119,13 @@ namespace Model
 				return;
 			}
 
-			throw new Exception($"message type error: {message.GetType().FullName}");
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) where Request : ARequest
+		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
 			where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
@@ -153,12 +138,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					this.isRpc = true;
+					//Log.Debug($"recv: {response.ToJson()}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -175,7 +160,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request) where Request : ARequest where Response : AResponse
+		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
 			this.SendMessage(request);
@@ -186,12 +171,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					this.isRpc = true;
+					//Log.Debug($"recv: {JsonHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -203,7 +188,7 @@ namespace Model
 			return tcs.Task;
 		}
 
-		public void Send<Message>(Message message) where Message : AMessage
+		public void Send(AMessage message)
 		{
 			if (this.Id == 0)
 			{
@@ -223,10 +208,12 @@ namespace Model
 
 		private void SendMessage(object message)
 		{
-			ushort opcode = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			//Log.Debug($"send: {message.ToJson()}");
+			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			opcode = NetworkHelper.HostToNetworkOrder(opcode);
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 
-			byte[] messageBytes = messagePacker.SerializeToByteArray(message);
+			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 			byte flag = 0;
 			if (messageBytes.Length > 100)
 			{

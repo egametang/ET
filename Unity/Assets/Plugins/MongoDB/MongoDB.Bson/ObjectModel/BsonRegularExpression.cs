@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,12 +21,14 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON regular expression value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonRegularExpression : BsonValue, IComparable<BsonRegularExpression>, IEquatable<BsonRegularExpression>
     {
         // private fields
-        private string _pattern;
-        private string _options;
+        private readonly string _pattern;
+        private readonly string _options;
 
         // constructors
         /// <summary>
@@ -34,7 +36,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="pattern">A regular expression pattern.</param>
         public BsonRegularExpression(string pattern)
-            : base(BsonType.RegularExpression)
         {
             if (pattern == null)
             {
@@ -61,7 +62,6 @@ namespace MongoDB.Bson
         /// <param name="pattern">A regular expression pattern.</param>
         /// <param name="options">Regular expression options.</param>
         public BsonRegularExpression(string pattern, string options)
-            : base(BsonType.RegularExpression)
         {
             if (pattern == null)
             {
@@ -76,7 +76,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="regex">A Regex.</param>
         public BsonRegularExpression(Regex regex)
-            : base(BsonType.RegularExpression)
         {
             if (regex == null)
             {
@@ -103,6 +102,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.RegularExpression; }
+        }
+
         /// <summary>
         /// Gets the regular expression pattern.
         /// </summary>
@@ -171,69 +178,12 @@ namespace MongoDB.Bson
         /// <returns>A BsonRegularExpression or null.</returns>
         public new static BsonRegularExpression Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonRegularExpression)BsonTypeMapper.MapToBsonValue(value, BsonType.RegularExpression);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
-        }
 
-        /// <summary>
-        /// Creates a new instance of the BsonRegularExpression class.
-        /// </summary>
-        /// <param name="regex">A Regex.</param>
-        /// <returns>A BsonRegularExpression.</returns>
-        [Obsolete("Use new BsonRegularExpression(Regex regex) instead.")]
-        public static BsonRegularExpression Create(Regex regex)
-        {
-            if (regex != null)
-            {
-                return new BsonRegularExpression(regex);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonRegularExpression class.
-        /// </summary>
-        /// <param name="pattern">A regular expression pattern.</param>
-        /// <returns>A BsonRegularExpression.</returns>
-        [Obsolete("Use new BsonRegularExpression(string pattern) instead.")]
-        public static BsonRegularExpression Create(string pattern)
-        {
-            if (pattern != null)
-            {
-                return new BsonRegularExpression(pattern);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonRegularExpression class.
-        /// </summary>
-        /// <param name="pattern">A regular expression pattern.</param>
-        /// <param name="options">Regular expression options.</param>
-        /// <returns>A BsonRegularExpression.</returns>
-        [Obsolete("Use new BsonRegularExpression(string pattern, string options) instead.")]
-        public static BsonRegularExpression Create(string pattern, string options)
-        {
-            if (pattern != null)
-            {
-                return new BsonRegularExpression(pattern, options);
-            }
-            else
-            {
-                return null;
-            }
+            return (BsonRegularExpression)BsonTypeMapper.MapToBsonValue(value, BsonType.RegularExpression);
         }
 
         // public methods
@@ -261,7 +211,7 @@ namespace MongoDB.Bson
             var otherRegularExpression = other as BsonRegularExpression;
             if (otherRegularExpression != null)
             {
-                return _options.CompareTo(otherRegularExpression);
+                return CompareTo(otherRegularExpression);
             }
             return CompareTypeTo(other);
         }

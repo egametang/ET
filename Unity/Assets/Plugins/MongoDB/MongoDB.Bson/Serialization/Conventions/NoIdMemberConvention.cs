@@ -23,9 +23,7 @@ namespace MongoDB.Bson.Serialization.Conventions
     /// <summary>
     /// A convention that sets a class's IdMember to null.
     /// </summary>
-#pragma warning disable 618 // about obsolete IIdMemberConvention
-    public class NoIdMemberConvention : ConventionBase, IPostProcessingConvention, IIdMemberConvention
-#pragma warning restore 618
+    public class NoIdMemberConvention : ConventionBase, IPostProcessingConvention
     {
         // public methods
         /// <summary>
@@ -35,17 +33,6 @@ namespace MongoDB.Bson.Serialization.Conventions
         public void PostProcess(BsonClassMap classMap)
         {
             classMap.SetIdMember(null);
-        }
-
-        /// <summary>
-        /// Finds the Id member of a class.
-        /// </summary>
-        /// <param name="type">The class.</param>
-        /// <returns>The name of the Id member.</returns>
-        [Obsolete("Use Apply instead.")]
-        public string FindIdMember(Type type)
-        {
-            return null;
         }
     }
 }

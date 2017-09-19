@@ -25,7 +25,7 @@ namespace MongoDB.Bson.Serialization.Attributes
     public class BsonDictionaryOptionsAttribute : BsonSerializationOptionsAttribute
     {
         // private fields
-        private DictionaryRepresentation _representation = DictionaryRepresentation.Dynamic;
+        private DictionaryRepresentation _representation = DictionaryRepresentation.Document;
 
         // constructors
         /// <summary>
@@ -52,6 +52,23 @@ namespace MongoDB.Bson.Serialization.Attributes
         {
             get { return _representation; }
             set { _representation = value; }
+        }
+
+        // protected methods
+        /// <summary>
+        /// Reconfigures the specified serializer by applying this attribute to it.
+        /// </summary>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns>A reconfigured serializer.</returns>
+        protected override IBsonSerializer Apply(IBsonSerializer serializer)
+        {
+            var dictionaryRepresentationConfigurable = serializer as IDictionaryRepresentationConfigurable;
+            if (dictionaryRepresentationConfigurable != null)
+            {
+                return dictionaryRepresentationConfigurable.WithDictionaryRepresentation(_representation);
+            }
+
+            return base.Apply(serializer);
         }
     }
 }

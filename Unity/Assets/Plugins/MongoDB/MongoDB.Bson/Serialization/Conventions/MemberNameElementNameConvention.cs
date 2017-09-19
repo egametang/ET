@@ -21,9 +21,7 @@ namespace MongoDB.Bson.Serialization.Conventions
     /// <summary>
     /// A convention that sets the element name the same as the member name.
     /// </summary>
-#pragma warning disable 618 // about obsolete IElementNameConvention
-    public class MemberNameElementNameConvention : ConventionBase, IMemberMapConvention, IElementNameConvention
-#pragma warning restore 618
+    public class MemberNameElementNameConvention : ConventionBase, IMemberMapConvention
     {
         // public methods
         /// <summary>
@@ -33,17 +31,6 @@ namespace MongoDB.Bson.Serialization.Conventions
         public void Apply(BsonMemberMap memberMap)
         {
             memberMap.SetElementName(memberMap.MemberName);
-        }
-
-        /// <summary>
-        /// Gets the element name for a member.
-        /// </summary>
-        /// <param name="member">The member.</param>
-        /// <returns>The element name.</returns>
-        [Obsolete("Use Apply instead.")]
-        public string GetElementName(MemberInfo member)
-        {
-            return member.Name;
         }
     }
 }

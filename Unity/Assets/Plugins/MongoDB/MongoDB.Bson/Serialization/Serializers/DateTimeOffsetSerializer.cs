@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
 
 using System;
 using System.IO;
-using System.Xml;
 using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
@@ -24,50 +24,85 @@ namespace MongoDB.Bson.Serialization.Serializers
     /// <summary>
     /// Represents a serializer for DateTimeOffsets.
     /// </summary>
-    public class DateTimeOffsetSerializer : BsonBaseSerializer
+    public class DateTimeOffsetSerializer : StructSerializerBase<DateTimeOffset>, IRepresentationConfigurable<DateTimeOffsetSerializer>
     {
-        // private static fields
-        private static DateTimeOffsetSerializer __instance = new DateTimeOffsetSerializer();
+        // private constants
+        private static class Flags
+        {
+            public const long DateTime = 1;
+            public const long Ticks = 2;
+            public const long Offset = 4;
+        }
+
+        // private fields
+        private readonly SerializerHelper _helper;
+        private readonly Int32Serializer _int32Serializer = new Int32Serializer();
+        private readonly Int64Serializer _int64Serializer = new Int64Serializer();
+        private readonly BsonType _representation;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the DateTimeOffsetSerializer class.
+        /// Initializes a new instance of the <see cref="DateTimeOffsetSerializer"/> class.
         /// </summary>
         public DateTimeOffsetSerializer()
-            : base(new RepresentationSerializationOptions(BsonType.Array))
+            : this(BsonType.Array)
         {
         }
 
-        // public static properties
         /// <summary>
-        /// Gets an instance of the DateTimeOffsetSerializer class.
+        /// Initializes a new instance of the <see cref="DateTimeOffsetSerializer"/> class.
         /// </summary>
-        [Obsolete("Use constructor instead.")]
-        public static DateTimeOffsetSerializer Instance
+        /// <param name="representation">The representation.</param>
+        public DateTimeOffsetSerializer(BsonType representation)
         {
-            get { return __instance; }
+            switch (representation)
+            {
+                case BsonType.Array:
+                case BsonType.Document:
+                case BsonType.String:
+                    break;
+
+                default:
+                    var message = string.Format("{0} is not a valid representation for a DateTimeOffsetSerializer.", representation);
+                    throw new ArgumentException(message);
+            }
+
+            _representation = representation;
+
+            _helper = new SerializerHelper
+            (
+                new SerializerHelper.Member("DateTime", Flags.DateTime),
+                new SerializerHelper.Member("Ticks", Flags.Ticks),
+                new SerializerHelper.Member("Offset", Flags.Offset)
+            );
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets the representation.
+        /// </summary>
+        /// <value>
+        /// The representation.
+        /// </value>
+        public BsonType Representation
+        {
+            get { return _representation; }
         }
 
         // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        public override DateTimeOffset Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(DateTimeOffset));
-
-            BsonType bsonType = bsonReader.GetCurrentBsonType();
+            var bsonReader = context.Reader;
             long ticks;
             TimeSpan offset;
+
+            BsonType bsonType = bsonReader.GetCurrentBsonType();
             switch (bsonType)
             {
                 case BsonType.Array:
@@ -76,60 +111,89 @@ namespace MongoDB.Bson.Serialization.Serializers
                     offset = TimeSpan.FromMinutes(bsonReader.ReadInt32());
                     bsonReader.ReadEndArray();
                     return new DateTimeOffset(ticks, offset);
-                case BsonType.Document:
-                    bsonReader.ReadStartDocument();
-                    bsonReader.ReadDateTime("DateTime"); // ignore value
-                    ticks = bsonReader.ReadInt64("Ticks");
-                    offset = TimeSpan.FromMinutes(bsonReader.ReadInt32("Offset"));
-                    bsonReader.ReadEndDocument();
+
+                case BsonType.Document:                 
+                    ticks = 0;
+                    offset = TimeSpan.Zero;
+                    _helper.DeserializeMembers(context, (elementName, flag) =>
+                    {
+                        switch (flag)
+                        {
+                            case Flags.DateTime: bsonReader.SkipValue(); break; // ignore value
+                            case Flags.Ticks: ticks = _int64Serializer.Deserialize(context); break;
+                            case Flags.Offset: offset = TimeSpan.FromMinutes(_int32Serializer.Deserialize(context)); break;
+                        }
+                    });
                     return new DateTimeOffset(ticks, offset);
+
                 case BsonType.String:
-                    return XmlConvert.ToDateTimeOffset(bsonReader.ReadString());
+                    return JsonConvert.ToDateTimeOffset(bsonReader.ReadString());
+
                 default:
-                    var message = string.Format("Cannot deserialize DateTimeOffset from BsonType {0}.", bsonType);
-                    throw new Exception(message);
+                    throw CreateCannotDeserializeFromBsonTypeException(bsonType);
             }
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, DateTimeOffset value)
         {
-            // note: the DateTime portion cannot be serialized as a BsonType.DateTime because it is NOT in UTC
-            var dateTimeOffset = (DateTimeOffset)value;
-            var representationSerializationOptions = EnsureSerializationOptions<RepresentationSerializationOptions>(options);
+            var bsonWriter = context.Writer;
 
-            switch (representationSerializationOptions.Representation)
+            // note: the DateTime portion cannot be serialized as a BsonType.DateTime because it is NOT in UTC
+
+            switch (_representation)
             {
                 case BsonType.Array:
                     bsonWriter.WriteStartArray();
-                    bsonWriter.WriteInt64(dateTimeOffset.Ticks);
-                    bsonWriter.WriteInt32((int)dateTimeOffset.Offset.TotalMinutes);
+                    bsonWriter.WriteInt64(value.Ticks);
+                    bsonWriter.WriteInt32((int)value.Offset.TotalMinutes);
                     bsonWriter.WriteEndArray();
                     break;
+
                 case BsonType.Document:
                     bsonWriter.WriteStartDocument();
-                    bsonWriter.WriteDateTime("DateTime", BsonUtils.ToMillisecondsSinceEpoch(dateTimeOffset.UtcDateTime));
-                    bsonWriter.WriteInt64("Ticks", dateTimeOffset.Ticks);
-                    bsonWriter.WriteInt32("Offset", (int)dateTimeOffset.Offset.TotalMinutes);
+                    bsonWriter.WriteDateTime("DateTime", BsonUtils.ToMillisecondsSinceEpoch(value.UtcDateTime));
+                    bsonWriter.WriteInt64("Ticks", value.Ticks);
+                    bsonWriter.WriteInt32("Offset", (int)value.Offset.TotalMinutes);
                     bsonWriter.WriteEndDocument();
                     break;
+
                 case BsonType.String:
-                    bsonWriter.WriteString(XmlConvert.ToString(dateTimeOffset));
+                    bsonWriter.WriteString(JsonConvert.ToString(value));
                     break;
+
                 default:
-                    var message = string.Format("'{0}' is not a valid DateTimeOffset representation.", representationSerializationOptions.Representation);
+                    var message = string.Format("'{0}' is not a valid DateTimeOffset representation.", _representation);
                     throw new BsonSerializationException(message);
             }
+        }
+
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified representation.
+        /// </summary>
+        /// <param name="representation">The representation.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public DateTimeOffsetSerializer WithRepresentation(BsonType representation)
+        {
+            if (representation == _representation)
+            {
+                return this;
+            }
+            else
+            {
+                return new DateTimeOffsetSerializer(representation);
+            }
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IRepresentationConfigurable.WithRepresentation(BsonType representation)
+        {
+            return WithRepresentation(representation);
         }
     }
 }

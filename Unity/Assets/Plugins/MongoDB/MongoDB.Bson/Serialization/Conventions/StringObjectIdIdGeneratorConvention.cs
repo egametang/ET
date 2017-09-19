@@ -15,6 +15,7 @@
 
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Options;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization.Conventions
 {
@@ -35,8 +36,8 @@ namespace MongoDB.Bson.Serialization.Conventions
             {
                 if (idMemberMap.IdGenerator == null)
                 {
-                    var representationOptions = idMemberMap.SerializationOptions as RepresentationSerializationOptions;
-                    if (idMemberMap.MemberType == typeof(string) && representationOptions != null && representationOptions.Representation == BsonType.ObjectId)
+                    var stringSerializer = idMemberMap.GetSerializer() as StringSerializer;
+                    if (stringSerializer != null && stringSerializer.Representation == BsonType.ObjectId)
                     {
                         idMemberMap.SetIdGenerator(StringObjectIdGenerator.Instance);
                     }

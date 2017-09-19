@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,81 +13,55 @@
 * limitations under the License.
 */
 
-using System;
-using System.IO;
-using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for LazyBsonArrays.
     /// </summary>
-    public class LazyBsonArraySerializer : BsonBaseSerializer
+    public class LazyBsonArraySerializer : BsonValueSerializerBase<LazyBsonArray>
     {
-        // public methods
+        // constructors
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Initializes a new instance of the <see cref="LazyBsonArraySerializer"/> class.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        public LazyBsonArraySerializer()
+            : base(BsonType.Array)
         {
-            VerifyTypes(nominalType, actualType, typeof(LazyBsonArray));
+        }
 
-            var bsonType = bsonReader.GetCurrentBsonType();
-            switch (bsonType)
-            {
-                case BsonType.Null:
-                    bsonReader.ReadNull();
-                    return null;
-                case BsonType.Array:
-                    var slice = bsonReader.ReadRawBsonArray();
-                    return new LazyBsonArray(slice);
-                default:
-                    var message = string.Format("Cannot deserialize LazyBsonArray from BsonType {0}.", bsonType);
-                    throw new Exception(message);
-            }
+        // protected methods
+        /// <summary>
+        /// Deserializes a value.
+        /// </summary>
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override LazyBsonArray DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
+        {
+            var bsonReader = context.Reader;
+            var slice = bsonReader.ReadRawBsonArray();
+            return new LazyBsonArray(slice);
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, LazyBsonArray value)
         {
-            if (value == null)
+            var bsonWriter = context.Writer;
+
+            var slice = value.Slice;
+            if (slice == null)
             {
-                bsonWriter.WriteNull();
+                BsonArraySerializer.Instance.Serialize(context, value);
             }
             else
             {
-                var lazyBsonArray = (LazyBsonArray)value;
-                var slice = lazyBsonArray.Slice;
-                if (slice == null)
-                {
-                    BsonArraySerializer.Instance.Serialize(bsonWriter, typeof(BsonArray), lazyBsonArray, options);
-                }
-                else
-                {
-                    using (var clonedSlice = slice.GetSlice(0, slice.Length))
-                    {
-                        bsonWriter.WriteRawBsonArray(clonedSlice);
-                    }
-                }
+                bsonWriter.WriteRawBsonArray(slice);
             }
         }
     }

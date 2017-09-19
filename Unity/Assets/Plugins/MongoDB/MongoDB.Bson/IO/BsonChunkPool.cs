@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,38 +15,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MongoDB.Bson.IO
 {
     /// <summary>
-    /// Represents a pool of chunks used by BsonBuffer.
+    /// Represents a pool of chunks.
     /// </summary>
-    public class BsonChunkPool
+    public sealed class BsonChunkPool : IBsonChunkSource
     {
-        // private static fields
-        private static BsonChunkPool __default = new BsonChunkPool(2048, 16 * 1024); // 32MiB of 16KiB chunks
+        #region static
+        // static fields
+        private static BsonChunkPool __default = new BsonChunkPool(8192, 64 * 1024); // 512MiB of 64KiB chunks
 
-        // private fields
-        private readonly object _lock = new object();
-        private readonly Stack<BsonChunk> _chunks = new Stack<BsonChunk>();
-        private readonly int _maxPoolSize;
-        private readonly int _chunkSize;
-
-        // constructors
+        // static properties
         /// <summary>
-        /// Initializes a new instance of the <see cref="BsonChunkPool"/> class.
-        /// </summary>
-        /// <param name="maxPoolSize">The maximum number of chunks to keep in the pool.</param>
-        /// <param name="chunkSize">The size of each chunk.</param>
-        public BsonChunkPool(int maxPoolSize, int chunkSize)
-        {
-            _maxPoolSize = maxPoolSize;
-            _chunkSize = chunkSize;
-        }
-
-        // public static properties
-        /// <summary>
-        /// Gets the default chunk pool.
+        /// Gets or sets the default chunk pool.
         /// </summary>
         /// <value>
         /// The default chunk pool.
@@ -58,10 +42,39 @@ namespace MongoDB.Bson.IO
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("Default");
+                    throw new ArgumentNullException("value");
                 }
                 __default = value;
             }
+        }
+        #endregion
+
+        // private fields
+        private Stack<ReferenceCountedChunk> _chunks = new Stack<ReferenceCountedChunk>();
+        private readonly int _chunkSize;
+        private bool _disposed;
+        private readonly object _lock = new object();
+        private readonly int _maxChunkCount;
+
+        // constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BsonChunkPool"/> class.
+        /// </summary>
+        /// <param name="maxChunkCount">The maximum number of chunks to keep in the pool.</param>
+        /// <param name="chunkSize">The size of each chunk.</param>
+        public BsonChunkPool(int maxChunkCount, int chunkSize)
+        {
+            if (maxChunkCount < 0)
+            {
+                throw new ArgumentOutOfRangeException("maxChunkCount");
+            }
+            if (chunkSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException("chunkSize");
+            }
+
+            _maxChunkCount = maxChunkCount;
+            _chunkSize = chunkSize;
         }
 
         // public properties
@@ -77,51 +90,169 @@ namespace MongoDB.Bson.IO
         }
 
         /// <summary>
-        /// Gets or sets the max pool size.
+        /// Gets the maximum size of the pool.
         /// </summary>
-        public int MaxPoolSize
+        /// <value>
+        /// The maximum size of the pool.
+        /// </value>
+        public int MaxChunkCount
         {
-            get { return _maxPoolSize; }
+            get { return _maxChunkCount; }
         }
 
-        // internal methods
         /// <summary>
-        /// Acquires a chunk.
+        /// Gets the size of the pool.
         /// </summary>
-        /// <returns></returns>
-        internal  BsonChunk AcquireChunk()
+        /// <value>
+        /// The size of the pool.
+        /// </value>
+        public int ChunkCount
         {
+            get
+            {
+                lock (_lock)
+                {
+                    return _chunks.Count;
+                }
+            }
+        }
+
+        // public methods
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _disposed = true;
+                _chunks = null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public IBsonChunk GetChunk(int requestedSize)
+        {
+            ThrowIfDisposed();
+
+            ReferenceCountedChunk referenceCountedChunk = null;
             lock (_lock)
             {
                 if (_chunks.Count > 0)
                 {
-                    return _chunks.Pop();
+                    referenceCountedChunk = _chunks.Pop();
                 }
             }
 
-            // release the lock before allocating memory
-            var bytes = new byte[_chunkSize];
-            return new BsonChunk(bytes, this);
+            if (referenceCountedChunk == null)
+            {
+                var chunk = new byte[_chunkSize];
+                referenceCountedChunk = new ReferenceCountedChunk(chunk, this);
+            }
+
+            return new DisposableChunk(referenceCountedChunk);
         }
 
-        /// <summary>
-        /// Releases a chunk.
-        /// </summary>
-        /// <param name="chunk">The chunk.</param>
-        internal void ReleaseChunk(BsonChunk chunk)
+        // private methods
+        private void ReleaseChunk(ReferenceCountedChunk chunk)
         {
-            if (chunk.ReferenceCount != 0)
+            if (!_disposed)
             {
-                new BsonInternalException("A chunk is being returned to the pool and the reference count is not zero.");
+                lock (_lock)
+                {
+                    if (_chunks.Count < _maxChunkCount)
+                    {
+                        _chunks.Push(chunk);
+                    }
+                    // otherwise just let it get garbage collected
+                }
+            }
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+            {
+                throw new ObjectDisposedException(GetType().Name);
+            }
+        }
+
+        // nested types
+        private sealed class DisposableChunk : IBsonChunk
+        {
+            // fields
+            private bool _disposed;
+            private readonly ReferenceCountedChunk _referenceCountedChunk;
+
+            // constructors
+            public DisposableChunk(ReferenceCountedChunk referenceCountedChunk)
+            {
+                _referenceCountedChunk = referenceCountedChunk;
+                _referenceCountedChunk.IncrementReferenceCount();
             }
 
-            lock (_lock)
+            // properties
+            public ArraySegment<byte> Bytes
             {
-                if (_chunks.Count < _maxPoolSize)
+                get
                 {
-                    _chunks.Push(chunk);
+                    ThrowIfDisposed();
+                    return new ArraySegment<byte>(_referenceCountedChunk.Chunk);
                 }
-                // otherwise just let it get garbage collected
+            }
+
+            // methods
+            public void Dispose()
+            {
+                if (!_disposed)
+                {
+                    _disposed = true;
+                    _referenceCountedChunk.DecrementReferenceCount();
+                }
+            }
+
+            public IBsonChunk Fork()
+            {
+                ThrowIfDisposed();
+                return new DisposableChunk(_referenceCountedChunk);
+            }
+
+            // private methods
+            private void ThrowIfDisposed()
+            {
+                if (_disposed)
+                {
+                    throw new ObjectDisposedException(GetType().Name);
+                }
+            }
+        }
+
+        private sealed class ReferenceCountedChunk
+        {
+            private byte[] _chunk;
+            private BsonChunkPool _pool;
+            private int _referenceCount;
+
+            public ReferenceCountedChunk(byte[] chunk, BsonChunkPool pool)
+            {
+                _chunk = chunk;
+                _pool = pool;
+            }
+
+            public byte[] Chunk
+            {
+                get { return _chunk; }
+            }
+
+            public void DecrementReferenceCount()
+            {
+                if (Interlocked.Decrement(ref _referenceCount) == 0)
+                {
+                    _pool.ReleaseChunk(this);
+                }
+            }
+
+            public void IncrementReferenceCount()
+            {
+                Interlocked.Increment(ref _referenceCount);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,18 +14,20 @@
 */
 
 using System;
-using System.Xml;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a BSON timestamp value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonTimestamp : BsonValue, IComparable<BsonTimestamp>, IEquatable<BsonTimestamp>
     {
         // private fields
-        private long _value;
+        private readonly long _value;
 
         // constructors
         /// <summary>
@@ -33,7 +35,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="value">The combined timestamp/increment value.</param>
         public BsonTimestamp(long value)
-            : base(BsonType.Timestamp)
         {
             _value = value;
         }
@@ -44,9 +45,8 @@ namespace MongoDB.Bson
         /// <param name="timestamp">The timestamp.</param>
         /// <param name="increment">The increment.</param>
         public BsonTimestamp(int timestamp, int increment)
-            : base(BsonType.Timestamp)
         {
-            _value = ((long)timestamp << 32) + increment;
+            _value = (long)(((ulong)(uint)timestamp << 32) | (ulong)(uint)increment);
         }
 
         // public operators
@@ -75,6 +75,14 @@ namespace MongoDB.Bson
 
         // public properties
         /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.Timestamp; }
+        }
+
+        /// <summary>
         /// Gets the value of this BsonTimestamp.
         /// </summary>
         public long Value
@@ -100,43 +108,18 @@ namespace MongoDB.Bson
 
         // public static methods
         /// <summary>
-        /// Creates a new instance of the BsonTimestamp class.
-        /// </summary>
-        /// <param name="value">The combined timestamp/increment value.</param>
-        /// <returns>A BsonTimestamp.</returns>
-        [Obsolete("Use new BsonTimestamp(long value) instead.")]
-        public static BsonTimestamp Create(long value)
-        {
-            return new BsonTimestamp(value);
-        }
-
-        /// <summary>
-        /// Creates a new instance of the BsonTimestamp class.
-        /// </summary>
-        /// <param name="timestamp">The timestamp.</param>
-        /// <param name="increment">The increment.</param>
-        /// <returns>A BsonTimestamp.</returns>
-        [Obsolete("Use new BsonTimestamp(int timestamp, int increment) instead.")]
-        public static BsonTimestamp Create(int timestamp, int increment)
-        {
-            return new BsonTimestamp(timestamp, increment);
-        }
-
-        /// <summary>
         /// Creates a new BsonTimestamp.
         /// </summary>
         /// <param name="value">An object to be mapped to a BsonTimestamp.</param>
         /// <returns>A BsonTimestamp or null.</returns>
         public new static BsonTimestamp Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonTimestamp)BsonTypeMapper.MapToBsonValue(value, BsonType.Timestamp);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonTimestamp)BsonTypeMapper.MapToBsonValue(value, BsonType.Timestamp);
         }
 
         // public methods
@@ -214,7 +197,7 @@ namespace MongoDB.Bson
         /// <returns>A string representation of the value.</returns>
         public override string ToString()
         {
-            return XmlConvert.ToString(_value);
+            return JsonConvert.ToString(_value);
         }
     }
 }

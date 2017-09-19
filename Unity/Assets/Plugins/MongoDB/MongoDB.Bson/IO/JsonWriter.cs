@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -37,6 +37,15 @@ namespace MongoDB.Bson.IO
         /// Initializes a new instance of the JsonWriter class.
         /// </summary>
         /// <param name="writer">A TextWriter.</param>
+        public JsonWriter(TextWriter writer)
+            : this(writer, JsonWriterSettings.Defaults)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the JsonWriter class.
+        /// </summary>
+        /// <param name="writer">A TextWriter.</param>
         /// <param name="settings">Optional JsonWriter settings.</param>
         public JsonWriter(TextWriter writer, JsonWriterSettings settings)
             : base(settings)
@@ -52,6 +61,18 @@ namespace MongoDB.Bson.IO
             State = BsonWriterState.Initial;
         }
 
+        // public properties
+        /// <summary>
+        /// Gets the base TextWriter.
+        /// </summary>
+        /// <value>
+        /// The base TextWriter.
+        /// </value>
+        public TextWriter BaseTextWriter
+        {
+            get { return _textWriter; }
+        }
+
         // public methods
         /// <summary>
         /// Closes the writer.
@@ -62,10 +83,6 @@ namespace MongoDB.Bson.IO
             if (State != BsonWriterState.Closed)
             {
                 Flush();
-                if (_jsonWriterSettings.CloseOutput)
-                {
-                    _textWriter.Close();
-                }
                 _context = null;
                 State = BsonWriterState.Closed;
             }
@@ -113,7 +130,7 @@ namespace MongoDB.Bson.IO
                             break;
 
                         default:
-                        _textWriter.Write("new BinData({0}, \"{1}\")", (int)subType, Convert.ToBase64String(bytes));
+                            _textWriter.Write("new BinData({0}, \"{1}\")", (int)subType, Convert.ToBase64String(bytes));
                             break;
                     }
                     break;
@@ -181,6 +198,30 @@ namespace MongoDB.Bson.IO
                     {
                         _textWriter.Write("new Date({0})", value);
                     }
+                    break;
+            }
+
+            State = GetNextState();
+        }
+
+        /// <inheritdoc />
+        public override void WriteDecimal128(Decimal128 value)
+        {
+            if (Disposed) { throw new ObjectDisposedException("JsonWriter"); }
+            if (State != BsonWriterState.Value && State != BsonWriterState.Initial)
+            {
+                ThrowInvalidState(nameof(WriteDecimal128), BsonWriterState.Value, BsonWriterState.Initial);
+            }
+
+            WriteNameHelper(Name);
+            switch (_jsonWriterSettings.OutputMode)
+            {
+                case JsonOutputMode.Shell:
+                    _textWriter.Write("NumberDecimal(\"{0}\")", value.ToString());
+                    break;
+
+                default:
+                    _textWriter.Write("{{ \"$numberDecimal\" : \"{0}\" }}", value.ToString());
                     break;
             }
 
@@ -360,7 +401,8 @@ namespace MongoDB.Bson.IO
             }
 
             WriteStartDocument();
-            WriteString("$code", code);
+            WriteName("$code");
+            WriteString(code);
             WriteName("$scope");
 
             State = BsonWriterState.ScopeDocument;
@@ -449,7 +491,7 @@ namespace MongoDB.Bson.IO
                 ThrowInvalidState("WriteObjectId", BsonWriterState.Value, BsonWriterState.Initial);
             }
 
-            var bytes = ObjectId.Pack(objectId.Timestamp, objectId.Machine, objectId.Pid, objectId.Increment);
+            var bytes = objectId.ToByteArray();
 
             WriteNameHelper(Name);
             switch (_jsonWriterSettings.OutputMode)
@@ -644,8 +686,11 @@ namespace MongoDB.Bson.IO
         {
             if (disposing)
             {
-                Close();
-                _textWriter.Dispose();
+                try
+                {
+                    Close();
+                }
+                catch { } // ignore exceptions
             }
             base.Dispose(disposing);
         }
@@ -672,7 +717,7 @@ namespace MongoDB.Bson.IO
                     case '\r': sb.Append("\\r"); break;
                     case '\t': sb.Append("\\t"); break;
                     default:
-                        switch (char.GetUnicodeCategory(c))
+                        switch (CharUnicodeInfo.GetUnicodeCategory(c))
                         {
                             case UnicodeCategory.UppercaseLetter:
                             case UnicodeCategory.LowercaseLetter:
@@ -708,7 +753,7 @@ namespace MongoDB.Bson.IO
 
         private BsonWriterState GetNextState()
         {
-            if (_context.ContextType == ContextType.Array)
+            if (_context.ContextType == ContextType.Array || _context.ContextType == ContextType.TopLevel)
             {
                 return BsonWriterState.Value;
             }
@@ -778,7 +823,7 @@ namespace MongoDB.Bson.IO
                     return true;
 
                 default:
-                    switch (char.GetUnicodeCategory(c))
+                    switch (CharUnicodeInfo.GetUnicodeCategory(c))
                     {
                         case UnicodeCategory.UppercaseLetter:
                         case UnicodeCategory.LowercaseLetter:

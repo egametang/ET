@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
@@ -24,128 +25,195 @@ namespace MongoDB.Bson.Serialization.Serializers
     /// <summary>
     /// Represents a serializer for Stacks.
     /// </summary>
-    public class StackSerializer : EnumerableSerializerBase, IBsonArraySerializer
+    public class StackSerializer :
+        EnumerableSerializerBase<Stack>,
+        IChildSerializerConfigurable,
+        IBsonArraySerializer
     {
-        // private static fields
-        private static StackSerializer __instance = new StackSerializer();
-
         // constructors
         /// <summary>
-        /// Initializes a new instance of the StackSerializer class.
+        /// Initializes a new instance of the <see cref="StackSerializer"/> class.
         /// </summary>
         public StackSerializer()
-            : base(new ArraySerializationOptions())
         {
         }
 
-        // public static properties
         /// <summary>
-        /// Gets an instance of the StackSerializer class.
+        /// Initializes a new instance of the <see cref="StackSerializer"/> class.
         /// </summary>
-        [Obsolete("Use constructor instead.")]
-        public static StackSerializer Instance
+        /// <param name="itemSerializer">The item serializer.</param>
+        public StackSerializer(IBsonSerializer itemSerializer)
+            : base(itemSerializer)
         {
-            get { return __instance; }
         }
 
-        // protected methods
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackSerializer" /> class.
+        /// </summary>
+        /// <param name="serializerRegistry">The serializer registry.</param>
+        public StackSerializer(IBsonSerializerRegistry serializerRegistry)
+            : base(serializerRegistry)
+        {
+        }
+
+        // public methods
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified item serializer.
+        /// </summary>
+        /// <param name="itemSerializer">The item serializer.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public StackSerializer WithItemSerializer(IBsonSerializer itemSerializer)
+        {
+            return new StackSerializer(itemSerializer);
+        }
+
+       // protected methods
         /// <summary>
         /// Adds the item.
         /// </summary>
-        /// <param name="instance">The instance.</param>
+        /// <param name="accumulator">The accumulator.</param>
         /// <param name="item">The item.</param>
-        protected override void AddItem(object instance, object item)
+        protected override void AddItem(object accumulator, object item)
         {
-            ((Stack)instance).Push(item);
+            ((Stack)accumulator).Push(item);
         }
 
         /// <summary>
-        /// Creates the instance.
+        /// Creates the accumulator.
         /// </summary>
-        /// <param name="actualType">The actual type.</param>
-        /// <returns>The instance.</returns>
-        protected override object CreateInstance(Type actualType)
+        /// <returns>The accumulator.</returns>
+        protected override object CreateAccumulator()
         {
             return new Stack();
         }
 
         /// <summary>
-        /// Enumerates the items.
+        /// Enumerates the items in serialization order.
         /// </summary>
-        /// <param name="instance">The instance.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The items.</returns>
-        protected override IEnumerable EnumerateItemsInSerializationOrder(object instance)
+        protected override IEnumerable EnumerateItemsInSerializationOrder(Stack value)
         {
-            return ((IEnumerable)instance).Cast<object>().Reverse();
+            return value.Cast<object>().Reverse();
         }
 
         /// <summary>
         /// Finalizes the result.
         /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="actualType">The actual type.</param>
+        /// <param name="accumulator">The accumulator.</param>
         /// <returns>The result.</returns>
-        protected override object FinalizeResult(object instance, Type actualType)
+        protected override Stack FinalizeResult(object accumulator)
         {
-            return instance;
+            return (Stack)accumulator;
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IChildSerializerConfigurable.ChildSerializer
+        {
+            get { return ItemSerializer; }
+        }
+
+        IBsonSerializer IChildSerializerConfigurable.WithChildSerializer(IBsonSerializer childSerializer)
+        {
+            return WithItemSerializer(childSerializer);
         }
     }
 
     /// <summary>
     /// Represents a serializer for Stacks.
     /// </summary>
-    /// <typeparam name="T">The type of the elements.</typeparam>
-    public class StackSerializer<T> : EnumerableSerializerBase<T>, IBsonArraySerializer
+    /// <typeparam name="TItem">The type of the elements.</typeparam>
+    public class StackSerializer<TItem> :
+        EnumerableSerializerBase<Stack<TItem>, TItem>,
+        IChildSerializerConfigurable,
+        IBsonArraySerializer
     {
         // constructors
         /// <summary>
-        /// Initializes a new instance of the StackSerializer class.
+        /// Initializes a new instance of the <see cref="StackSerializer{TItem}"/> class.
         /// </summary>
         public StackSerializer()
-            : base(new ArraySerializationOptions())
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackSerializer{TItem}"/> class.
+        /// </summary>
+        /// <param name="itemSerializer">The item serializer.</param>
+        public StackSerializer(IBsonSerializer<TItem> itemSerializer)
+            : base(itemSerializer)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StackSerializer{TItem}" /> class.
+        /// </summary>
+        /// <param name="serializerRegistry">The serializer registry.</param>
+        public StackSerializer(IBsonSerializerRegistry serializerRegistry)
+            : base(serializerRegistry)
+        {
+        }
+
+        // public methods
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified item serializer.
+        /// </summary>
+        /// <param name="itemSerializer">The item serializer.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public StackSerializer<TItem> WithItemSerializer(IBsonSerializer<TItem> itemSerializer)
+        {
+            return new StackSerializer<TItem>(itemSerializer);
         }
 
         // protected methods
         /// <summary>
         /// Adds the item.
         /// </summary>
-        /// <param name="instance">The instance.</param>
+        /// <param name="accumulator">The accumulator.</param>
         /// <param name="item">The item.</param>
-        protected override void AddItem(object instance, T item)
+        protected override void AddItem(object accumulator, TItem item)
         {
-            ((Stack<T>)instance).Push(item);
+            ((Stack<TItem>)accumulator).Push(item);
         }
 
         /// <summary>
-        /// Creates the instance.
+        /// Creates the accumulator.
         /// </summary>
-        /// <param name="actualType">The actual type.</param>
-        /// <returns>The instance.</returns>
-        protected override object CreateInstance(Type actualType)
+        /// <returns>The accumulator.</returns>
+        protected override object CreateAccumulator()
         {
-            return new Stack<T>();
+            return new Stack<TItem>();
         }
 
         /// <summary>
-        /// Enumerates the items.
+        /// Enumerates the items in serialization order.
         /// </summary>
-        /// <param name="instance">The instance.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The items.</returns>
-        protected override IEnumerable<T> EnumerateItemsInSerializationOrder(object instance)
+        protected override IEnumerable<TItem> EnumerateItemsInSerializationOrder(Stack<TItem> value)
         {
-            return ((IEnumerable<T>)instance).Reverse();
+            return value.Reverse();
         }
 
         /// <summary>
         /// Finalizes the result.
         /// </summary>
-        /// <param name="instance">The instance.</param>
-        /// <param name="actualType">The actual type.</param>
+        /// <param name="accumulator">The accumulator.</param>
         /// <returns>The result.</returns>
-        protected override object FinalizeResult(object instance, Type actualType)
+        protected override Stack<TItem> FinalizeResult(object accumulator)
         {
-            return instance;
+            return (Stack<TItem>)accumulator;
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IChildSerializerConfigurable.ChildSerializer
+        {
+            get { return ItemSerializer; }
+        }
+
+        IBsonSerializer IChildSerializerConfigurable.WithChildSerializer(IBsonSerializer childSerializer)
+        {
+            return WithItemSerializer((IBsonSerializer<TItem>)childSerializer);
         }
     }
 }

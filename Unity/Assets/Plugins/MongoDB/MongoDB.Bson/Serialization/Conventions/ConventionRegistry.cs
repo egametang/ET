@@ -53,19 +53,10 @@ namespace MongoDB.Bson.Serialization.Conventions
 
                 // append any attribute packs (usually just one) at the end so attributes are processed last
                 var attributePacks = new List<IConventionPack>();
-#pragma warning disable 618 //obsoleted by ConventionProfile
-                ConventionProfile conventionProfile = null;
-#pragma warning restore 618
                 foreach (var container in __conventionPacks)
                 {
                     if (container.Filter(type))
                     {
-#pragma warning disable 618 //obsoleted by ConventionProfile
-                        if (container.Pack is ConventionProfile)
-                        {
-                            conventionProfile = container.Pack as ConventionProfile;
-                        }
-#pragma warning restore 618
 
                         if (container.Name == "__attributes__")
                         {
@@ -76,11 +67,6 @@ namespace MongoDB.Bson.Serialization.Conventions
                             pack.Append(container.Pack);
                         }
                     }
-                }
-                if (conventionProfile != null)
-                {
-                    // already includes the default attribute convention pack
-                    return conventionProfile; 
                 }
 
                 foreach (var attributePack in attributePacks)

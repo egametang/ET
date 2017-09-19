@@ -36,3 +36,6 @@ _ReSharper.CSharp/
 /.vs
 /Server/.vs/
 /Unity/.vs/
+/Tools/MongoDB
+/Excel/md5.txt
+/Release

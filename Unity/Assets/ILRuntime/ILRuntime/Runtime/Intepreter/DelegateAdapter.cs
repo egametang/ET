@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.CLR.Method;
+using ILRuntime.Runtime;
 using ILRuntime.Runtime.Stack;
+using ILRuntime.Other;
 using ILRuntime.Runtime.Enviorment;
 
 namespace ILRuntime.Runtime.Intepreter
@@ -640,14 +641,14 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        public unsafe StackObject* ILInvoke(ILIntepreter intp, StackObject* esp, List<object> mStack)
+        public unsafe StackObject* ILInvoke(ILIntepreter intp, StackObject* esp, IList<object> mStack)
         {
             var ebp = esp;
             esp = ILInvokeSub(intp, esp, mStack);
             return ClearStack(intp, esp, ebp, mStack);
         }
 
-        unsafe StackObject* ILInvokeSub(ILIntepreter intp, StackObject* esp, List<object> mStack)
+        unsafe StackObject* ILInvokeSub(ILIntepreter intp, StackObject* esp, IList<object> mStack)
         {
             var ebp = esp;
             bool unhandled;
@@ -673,7 +674,7 @@ namespace ILRuntime.Runtime.Intepreter
             return ret;
         }
 
-        unsafe StackObject* ClearStack(ILIntepreter intp, StackObject* esp, StackObject* ebp, List<object> mStack)
+        unsafe StackObject* ClearStack(ILIntepreter intp, StackObject* esp, StackObject* ebp, IList<object> mStack)
         {
             int paramCnt = method.ParameterCount;
             object retObj = null;
@@ -769,7 +770,7 @@ namespace ILRuntime.Runtime.Intepreter
         public Delegate GetConvertor(Type type)
         {
             if (converters == null)
-                converters = new Dictionary<System.Type, Delegate>();
+                converters = new Dictionary<System.Type, Delegate>(new ByReferenceKeyComparer<Type>());
             Delegate res;
             if (converters.TryGetValue(type, out res))
                 return res;
@@ -791,6 +792,8 @@ namespace ILRuntime.Runtime.Intepreter
             StringBuilder sb = new StringBuilder();
             sb.Append("Cannot find Delegate Adapter for:");
             sb.Append(method.ToString());
+            string clsName, rName;
+            bool isByRef;
             if (method.ReturnType.Name != "Void" || method.ParameterCount > 0)
             {
                 sb.AppendLine(", Please add following code:");
@@ -807,10 +810,11 @@ namespace ILRuntime.Runtime.Intepreter
                         else
                         {
                             sb.Append(", ");
-                        }                        
-                        sb.Append(i.TypeForCLR.FullName);
+                        }
+                        i.TypeForCLR.GetClassName(out clsName, out rName, out isByRef);
+                        sb.Append(rName);                        
                     }
-                    sb.AppendLine(">");
+                    sb.AppendLine(">();");
                 }
                 else
                 {
@@ -826,12 +830,14 @@ namespace ILRuntime.Runtime.Intepreter
                         {
                             sb.Append(", ");
                         }
-                        sb.Append(i.TypeForCLR.FullName);
+                        i.TypeForCLR.GetClassName(out clsName, out rName, out isByRef);
+                        sb.Append(rName);
                     }
                     if (!first)
                         sb.Append(", ");
-                    sb.Append(method.ReturnType.TypeForCLR.FullName);
-                    sb.AppendLine(">");
+                    method.ReturnType.TypeForCLR.GetClassName(out clsName, out rName, out isByRef);
+                    sb.Append(rName);
+                    sb.AppendLine(">();");
                 }
             }
             throw new KeyNotFoundException(sb.ToString());
@@ -844,7 +850,7 @@ namespace ILRuntime.Runtime.Intepreter
         IDelegateAdapter Next { get; }
         ILTypeInstance Instance { get; }
         ILMethod Method { get; }
-        StackObject* ILInvoke(ILIntepreter intp, StackObject* esp, List<object> mStack);
+        StackObject* ILInvoke(ILIntepreter intp, StackObject* esp, IList<object> mStack);
         IDelegateAdapter Instantiate(Enviorment.AppDomain appdomain, ILTypeInstance instance, ILMethod method);
         bool IsClone { get; }
         IDelegateAdapter Clone();

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,35 +23,44 @@ namespace MongoDB.Bson.IO
     public class BsonDocumentWriter : BsonWriter
     {
         // private fields
-        private BsonDocument _topLevelDocument;
-	    private BsonDocumentWriterContext _context;
+        private BsonDocument _document;
+        private BsonDocumentWriterContext _context;
 
         // constructors
         /// <summary>
         /// Initializes a new instance of the BsonDocumentWriter class.
         /// </summary>
-        /// <param name="topLevelDocument">The document to write to (normally starts out as an empty document).</param>
+        /// <param name="document">The document to write to (normally starts out as an empty document).</param>
+        public BsonDocumentWriter(BsonDocument document)
+            : this(document, BsonDocumentWriterSettings.Defaults)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the BsonDocumentWriter class.
+        /// </summary>
+        /// <param name="document">The document to write to (normally starts out as an empty document).</param>
         /// <param name="settings">The settings.</param>
-        public BsonDocumentWriter(BsonDocument topLevelDocument, BsonDocumentWriterSettings settings)
+        public BsonDocumentWriter(BsonDocument document, BsonDocumentWriterSettings settings)
             : base(settings)
         {
-            if (topLevelDocument == null)
+            if (document == null)
             {
-                throw new ArgumentNullException("topLevelDocument");
+                throw new ArgumentNullException("document");
             }
 
-            _topLevelDocument = topLevelDocument;
-	        _context = null;
+            _document = document;
+            _context = null;
             State = BsonWriterState.Initial;
         }
 
         // public properties
         /// <summary>
-        /// Gets the top level BsonDocument.
+        /// Gets the BsonDocument being written to.
         /// </summary>
-        public BsonDocument TopLevelDocument
+        public BsonDocument Document
         {
-            get { return _topLevelDocument; }
+            get { return _document; }
         }
 
         // public methods
@@ -61,11 +70,8 @@ namespace MongoDB.Bson.IO
         public override void Close()
         {
             // Close can be called on Disposed objects
-            if (State != BsonWriterState.Closed)
-            {
-                _context = null;
-                State = BsonWriterState.Closed;
-            }
+            _context = null;
+            State = BsonWriterState.Closed;
         }
 
         /// <summary>
@@ -137,6 +143,19 @@ namespace MongoDB.Bson.IO
             }
 
             WriteValue(new BsonDateTime(value));
+            State = GetNextState();
+        }
+
+        /// <inheritdoc />
+        public override void WriteDecimal128(Decimal128 value)
+        {
+            if (Disposed) { throw new ObjectDisposedException("BsonDocumentWriter"); }
+            if (State != BsonWriterState.Value)
+            {
+                ThrowInvalidState(nameof(WriteDecimal128), BsonWriterState.Value);
+            }
+
+            WriteValue(new BsonDecimal128(value));
             State = GetNextState();
         }
 
@@ -405,7 +424,7 @@ namespace MongoDB.Bson.IO
             {
                 case BsonWriterState.Initial:
                 case BsonWriterState.Done:
-                    _context = new BsonDocumentWriterContext(null, ContextType.Document, _topLevelDocument);
+                    _context = new BsonDocumentWriterContext(null, ContextType.Document, _document);
                     break;
                 case BsonWriterState.Value:
                     _context = new BsonDocumentWriterContext(_context, ContextType.Document, new BsonDocument());
@@ -492,7 +511,11 @@ namespace MongoDB.Bson.IO
         {
             if (disposing)
             {
-                Close();
+                try
+                {
+                    Close();
+                }
+                catch { } // ignore exceptions
             }
             base.Dispose(disposing);
         }

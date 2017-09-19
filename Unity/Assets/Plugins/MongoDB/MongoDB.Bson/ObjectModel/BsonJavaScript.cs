@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,11 +20,13 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON JavaScript value.
     /// </summary>
+#if NET45
     [Serializable]
+#endif
     public class BsonJavaScript : BsonValue, IComparable<BsonJavaScript>, IEquatable<BsonJavaScript>
     {
         // private fields
-        private string _code;
+        private readonly string _code;
 
         // constructors
         /// <summary>
@@ -32,22 +34,6 @@ namespace MongoDB.Bson
         /// </summary>
         /// <param name="code">The JavaScript code.</param>
         public BsonJavaScript(string code)
-            : base(BsonType.JavaScript)
-        {
-            if (code == null)
-            {
-                throw new ArgumentNullException("code");
-            }
-            _code = code;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the BsonJavaScript class (only called by BsonJavaScriptWithScope).
-        /// </summary>
-        /// <param name="code">The JavaScript code.</param>
-        /// <param name="bsonType">The BsonType (must be JavaScriptWithScope).</param>
-        protected BsonJavaScript(string code, BsonType bsonType)
-            : base(bsonType)
         {
             if (code == null)
             {
@@ -57,6 +43,14 @@ namespace MongoDB.Bson
         }
 
         // public properties
+        /// <summary>
+        /// Gets the BsonType of this BsonValue.
+        /// </summary>
+        public override BsonType BsonType
+        {
+            get { return BsonType.JavaScript; }
+        }
+
         /// <summary>
         /// Gets the JavaScript code.
         /// </summary>
@@ -100,38 +94,18 @@ namespace MongoDB.Bson
         }
 
         /// <summary>
-        /// Creates a new instance of the BsonJavaScript class.
-        /// </summary>
-        /// <param name="code">A string containing JavaScript code.</param>
-        /// <returns>A BsonJavaScript.</returns>
-        [Obsolete("Use new BsonJavaScript(string code) instead.")]
-        public static BsonJavaScript Create(string code)
-        {
-            if (code != null)
-            {
-                return new BsonJavaScript(code);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Creates a new BsonJavaScript.
         /// </summary>
         /// <param name="value">An object to be mapped to a BsonJavaScript.</param>
         /// <returns>A BsonJavaScript or null.</returns>
         public new static BsonJavaScript Create(object value)
         {
-            if (value != null)
+            if (value == null)
             {
-                return (BsonJavaScript)BsonTypeMapper.MapToBsonValue(value, BsonType.JavaScript);
+                throw new ArgumentNullException("value");
             }
-            else
-            {
-                return null;
-            }
+
+            return (BsonJavaScript)BsonTypeMapper.MapToBsonValue(value, BsonType.JavaScript);
         }
 
         // public methods

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,271 +27,254 @@ namespace MongoDB.Bson.Serialization.Serializers
     /// </summary>
     /// <typeparam name="TKey">The type of the keys.</typeparam>
     /// <typeparam name="TValue">The type of the values.</typeparam>
-    public class KeyValuePairSerializer<TKey, TValue> : BsonBaseSerializer
+    public class KeyValuePairSerializer<TKey, TValue> :
+        StructSerializerBase<KeyValuePair<TKey, TValue>>,
+        IBsonDocumentSerializer
     {
-        // private static fields
-        private static readonly BsonTrie<bool> __bsonTrie = BuildBsonTrie();
+        // private constants
+        private static class Flags
+        {
+            public const long Key = 1;
+            public const long Value = 2;
+        }
 
         // private fields
-        private volatile IDiscriminatorConvention _cachedKeyDiscriminatorConvention;
-        private volatile IDiscriminatorConvention _cachedValueDiscriminatorConvention;
-        private volatile IBsonSerializer _cachedKeySerializer;
-        private volatile IBsonSerializer _cachedValueSerializer;
+        private readonly SerializerHelper _helper;
+        private readonly Lazy<IBsonSerializer<TKey>> _lazyKeySerializer;
+        private readonly BsonType _representation;
+        private readonly Lazy<IBsonSerializer<TValue>> _lazyValueSerializer;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the KeyValuePairSerializer class.
+        /// Initializes a new instance of the <see cref="KeyValuePairSerializer{TKey, TValue}"/> class.
         /// </summary>
         public KeyValuePairSerializer()
-            : base(new KeyValuePairSerializationOptions { Representation = BsonType.Document })
+            : this(BsonType.Document)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the KeyValuePairSerializer class.
+        /// Initializes a new instance of the <see cref="KeyValuePairSerializer{TKey, TValue}"/> class.
         /// </summary>
-        /// <param name="defaultSerializationOptions">The default serialization options for this serializer.</param>
-        public KeyValuePairSerializer(IBsonSerializationOptions defaultSerializationOptions)
-            : base(defaultSerializationOptions)
+        /// <param name="representation">The representation.</param>
+        public KeyValuePairSerializer(BsonType representation)
+            : this(representation, BsonSerializer.SerializerRegistry)
         {
         }
 
-        // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Initializes a new instance of the <see cref="KeyValuePairSerializer{TKey, TValue}"/> class.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="representation">The representation.</param>
+        /// <param name="keySerializer">The key serializer.</param>
+        /// <param name="valueSerializer">The value serializer.</param>
+        public KeyValuePairSerializer(BsonType representation, IBsonSerializer<TKey> keySerializer, IBsonSerializer<TValue> valueSerializer)
+            : this(
+                representation,
+                new Lazy<IBsonSerializer<TKey>>(() => keySerializer),
+                new Lazy<IBsonSerializer<TValue>>(() => valueSerializer))
         {
-            VerifyTypes(nominalType, actualType, typeof(KeyValuePair<TKey, TValue>));
-            var keyValuePairSerializationOptions = EnsureSerializationOptions<KeyValuePairSerializationOptions>(options);
-
-            var keyDiscriminatorConvention = GetKeyDiscriminatorConvention();
-            var valueDiscriminatorConvention = GetValueDiscriminatorConvention();
-            TKey key;
-            TValue value;            
-
-            var bsonType = bsonReader.GetCurrentBsonType();
-            if (bsonType == BsonType.Array)
+            if (keySerializer == null)
             {
-                bsonReader.ReadStartArray();
-                bsonReader.ReadBsonType();
-                var keyType = keyDiscriminatorConvention.GetActualType(bsonReader, typeof(TKey));
-                var keySerializer = GetKeySerializer(keyType);
-                key = (TKey)keySerializer.Deserialize(bsonReader, typeof(TKey), keyType, keyValuePairSerializationOptions.KeySerializationOptions);
-                bsonReader.ReadBsonType();
-                var valueType = valueDiscriminatorConvention.GetActualType(bsonReader, typeof(TValue));
-                var valueSerializer = GetValueSerializer(valueType);
-                value = (TValue)valueSerializer.Deserialize(bsonReader, typeof(TValue), valueType, keyValuePairSerializationOptions.ValueSerializationOptions);
-                bsonReader.ReadEndArray();
+                throw new ArgumentNullException("keySerializer");
             }
-            else if (bsonType == BsonType.Document)
+            if (valueSerializer == null)
             {
-                bsonReader.ReadStartDocument();
-                key = default(TKey);
-                value = default(TValue);
-                bool keyFound = false, valueFound = false;
-                bool elementFound;
-                bool elementIsKey;
-                while (bsonReader.ReadBsonType(__bsonTrie, out elementFound, out elementIsKey) != BsonType.EndOfDocument)
-                {
-                    var name = bsonReader.ReadName();
-                    if (elementFound)
-                    {
-                        if (elementIsKey)
-                        {
-                            var keyType = keyDiscriminatorConvention.GetActualType(bsonReader, typeof(TKey));
-                            var keySerializer = GetValueSerializer(keyType);
-                            key = (TKey)keySerializer.Deserialize(bsonReader, typeof(TKey), keyType, keyValuePairSerializationOptions.KeySerializationOptions);
-                            keyFound = true;
-                        }
-                        else
-                        {
-                            var valueType = valueDiscriminatorConvention.GetActualType(bsonReader, typeof(TValue));
-                            var valueSerializer = GetValueSerializer(valueType);
-                            value = (TValue)valueSerializer.Deserialize(bsonReader, typeof(TValue), valueType, keyValuePairSerializationOptions.ValueSerializationOptions);
-                            valueFound = true;
-                        }
-                    }
-                    else
-                    {
-                        var message = string.Format("Element '{0}' is not valid for KeyValuePairs (expecting 'k' or 'v').", name);
-                        throw new BsonSerializationException(message);
-                    }
-                }
-                bsonReader.ReadEndDocument();
-
-                if (!keyFound)
-                {
-                    throw new Exception("KeyValuePair item was missing the 'k' element.");
-                }
-                if (!valueFound)
-                {
-                    throw new Exception("KeyValuePair item was missing the 'v' element.");
-                }
+                throw new ArgumentNullException("valueSerializer");
             }
-            else
-            {
-                var message = string.Format(
-                    "Cannot deserialize '{0}' from BsonType {1}.",
-                    BsonUtils.GetFriendlyTypeName(typeof(KeyValuePair<TKey, TValue>)),
-                    bsonType);
-                throw new Exception(message);
-            }
-
-            return new KeyValuePair<TKey, TValue>(key, value);
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Initializes a new instance of the <see cref="KeyValuePairSerializer{TKey, TValue}" /> class.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
-        /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        /// <param name="representation">The representation.</param>
+        /// <param name="serializerRegistry">The serializer registry.</param>
+        public KeyValuePairSerializer(BsonType representation, IBsonSerializerRegistry serializerRegistry)
+            : this(
+                representation,
+                new Lazy<IBsonSerializer<TKey>>(() => serializerRegistry.GetSerializer<TKey>()),
+                new Lazy<IBsonSerializer<TValue>>(() => serializerRegistry.GetSerializer<TValue>()))
         {
-            var keyValuePair = (KeyValuePair<TKey, TValue>)value;
-            var keyValuePairSerializationOptions = EnsureSerializationOptions<KeyValuePairSerializationOptions>(options);
+            if (serializerRegistry == null)
+            {
+                throw new ArgumentNullException("serializerRegistry");
+            }
+        }
 
-            var keyType = (keyValuePair.Key == null) ? typeof(TKey) : keyValuePair.Key.GetType();
-            var keySerializer = GetKeySerializer(keyType);
-            var valueType = (keyValuePair.Value == null) ? typeof(TValue) : keyValuePair.Value.GetType();
-            var valueSerializer = GetValueSerializer(valueType);
-
-            switch (keyValuePairSerializationOptions.Representation)
+        private KeyValuePairSerializer(BsonType representation, Lazy<IBsonSerializer<TKey>> lazyKeySerializer, Lazy<IBsonSerializer<TValue>> lazyValueSerializer)
+        {
+            switch (representation)
             {
                 case BsonType.Array:
-                    bsonWriter.WriteStartArray();
-                    keySerializer.Serialize(bsonWriter, typeof(TKey), keyValuePair.Key, keyValuePairSerializationOptions.KeySerializationOptions);
-                    valueSerializer.Serialize(bsonWriter, typeof(TValue), keyValuePair.Value, keyValuePairSerializationOptions.ValueSerializationOptions);
-                    bsonWriter.WriteEndArray();
-                    break;
                 case BsonType.Document:
-                    bsonWriter.WriteStartDocument();
-                    bsonWriter.WriteName("k");
-                    keySerializer.Serialize(bsonWriter, typeof(TKey), keyValuePair.Key, keyValuePairSerializationOptions.KeySerializationOptions);
-                    bsonWriter.WriteName("v");
-                    valueSerializer.Serialize(bsonWriter, typeof(TValue), keyValuePair.Value, keyValuePairSerializationOptions.ValueSerializationOptions);
-                    bsonWriter.WriteEndDocument();
                     break;
+
                 default:
-                    var message = string.Format(
-                        "'{0}' is not a valid {1} representation.",
-                        keyValuePairSerializationOptions.Representation,
-                        BsonUtils.GetFriendlyTypeName(typeof(KeyValuePair<TKey, TValue>)));
-                    throw new BsonSerializationException(message);
+                    var message = string.Format("{0} is not a valid representation for a KeyValuePairSerializer.", representation);
+                    throw new ArgumentException(message);
             }
+
+            _representation = representation;
+            _lazyKeySerializer = lazyKeySerializer;
+            _lazyValueSerializer = lazyValueSerializer;
+
+            _helper = new SerializerHelper
+            (
+                new SerializerHelper.Member("k", Flags.Key),
+                new SerializerHelper.Member("v", Flags.Value)
+            );
         }
 
-        // private static methods
-        /// <summary>
-        /// Builds the bson decoding trie.
-        /// </summary>
-        /// <returns>A BsonTrie.</returns>
-        private static BsonTrie<bool> BuildBsonTrie()
-        {
-            var bsonTrie = new BsonTrie<bool>();
-            bsonTrie.Add("k", true); // is key
-            bsonTrie.Add("v", false);
-            return bsonTrie;
-        }
-
-        // private methods
-        /// <summary>
-        /// Gets the discriminator convention for keys.
-        /// </summary>
-        /// <returns>The discriminator convention for the class.</returns>
-        private IDiscriminatorConvention GetKeyDiscriminatorConvention()
-        {
-            // return a cached discriminator convention when possible
-            var discriminatorConvention = _cachedKeyDiscriminatorConvention;
-            if (discriminatorConvention == null)
-            {
-                // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                discriminatorConvention = BsonSerializer.LookupDiscriminatorConvention(typeof(TKey));
-                _cachedKeyDiscriminatorConvention = discriminatorConvention;
-            }
-            return discriminatorConvention;
-        }
-
+        // public properties
         /// <summary>
         /// Gets the key serializer.
         /// </summary>
-        /// <param name="actualType">The actual type of the key.</param>
-        /// <returns>The serializer for the key type.</returns>
-        private IBsonSerializer GetKeySerializer(Type actualType)
+        /// <value>
+        /// The key serializer.
+        /// </value>
+        public IBsonSerializer<TKey> KeySerializer
         {
-            // return a cached serializer when possible
-            if (actualType == typeof(TKey))
-            {
-                var serializer = _cachedKeySerializer;
-                if (serializer == null)
-                {
-                    // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                    serializer = BsonSerializer.LookupSerializer(typeof(TKey));
-                    _cachedKeySerializer = serializer;
-                }
-                return serializer;
-            }
-            else
-            {
-                return BsonSerializer.LookupSerializer(actualType);
-            }
+            get { return _lazyKeySerializer.Value; }
         }
 
         /// <summary>
-        /// Gets the discriminator convention for values.
+        /// Gets the representation.
         /// </summary>
-        /// <returns>The discriminator convention for the class.</returns>
-        private IDiscriminatorConvention GetValueDiscriminatorConvention()
+        /// <value>
+        /// The representation.
+        /// </value>
+        public BsonType Representation
         {
-            // return a cached discriminator convention when possible
-            var discriminatorConvention = _cachedValueDiscriminatorConvention;
-            if (discriminatorConvention == null)
-            {
-                // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                discriminatorConvention = BsonSerializer.LookupDiscriminatorConvention(typeof(TValue));
-                _cachedValueDiscriminatorConvention = discriminatorConvention;
-            }
-            return discriminatorConvention;
+            get { return _representation; }
         }
 
         /// <summary>
         /// Gets the value serializer.
         /// </summary>
-        /// <param name="actualType">The actual type of the value.</param>
-        /// <returns>The serializer for the value type.</returns>
-        private IBsonSerializer GetValueSerializer(Type actualType)
+        /// <value>
+        /// The value serializer.
+        /// </value>
+        public IBsonSerializer<TValue> ValueSerializer
         {
-            // return a cached serializer when possible
-            if (actualType == typeof(TValue))
+            get { return _lazyValueSerializer.Value; }
+        }
+
+        // public methods
+        /// <summary>
+        /// Deserializes a value.
+        /// </summary>
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        public override KeyValuePair<TKey, TValue> Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+        {
+            var bsonReader = context.Reader;
+            var bsonType = bsonReader.GetCurrentBsonType();
+            switch (bsonType)
             {
-                var serializer = _cachedValueSerializer;
-                if (serializer == null)
+                case BsonType.Array:
+                    return DeserializeArrayRepresentation(context);
+                case BsonType.Document:
+                    return DeserializeDocumentRepresentation(context);
+                default:
+                    throw CreateCannotDeserializeFromBsonTypeException(bsonType);
+            }
+        }
+
+        /// <summary>
+        /// Serializes a value.
+        /// </summary>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
+        /// <param name="value">The object.</param>
+        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, KeyValuePair<TKey, TValue> value)
+        {
+            switch (_representation)
+            {
+                case BsonType.Array:
+                    SerializeArrayRepresentation(context, value);
+                    break;
+
+                case BsonType.Document:
+                    SerializeDocumentRepresentation(context, value);
+                    break;
+
+                default:
+                    var message = string.Format(
+                        "'{0}' is not a valid {1} representation.",
+                        _representation,
+                        BsonUtils.GetFriendlyTypeName(typeof(KeyValuePair<TKey, TValue>)));
+                    throw new BsonSerializationException(message);
+            }
+        }
+
+        /// <inheritdoc />
+        public bool TryGetMemberSerializationInfo(string memberName, out BsonSerializationInfo serializationInfo)
+        {
+            if (_representation != BsonType.Document)
+            {
+                serializationInfo = null;
+                return false;
+            }
+
+            switch (memberName)
+            {
+                case "Key":
+                    serializationInfo = new BsonSerializationInfo("k", _lazyKeySerializer.Value, _lazyKeySerializer.Value.ValueType);
+                    return true;
+                case "Value":
+                    serializationInfo = new BsonSerializationInfo("v", _lazyValueSerializer.Value, _lazyValueSerializer.Value.ValueType);
+                    return true;
+            }
+
+            serializationInfo = null;
+            return false;
+        }
+
+        // private methods
+        private KeyValuePair<TKey, TValue> DeserializeArrayRepresentation(BsonDeserializationContext context)
+        {
+            var bsonReader = context.Reader;
+            bsonReader.ReadStartArray();
+            var key = _lazyKeySerializer.Value.Deserialize(context);
+            var value = _lazyValueSerializer.Value.Deserialize(context);
+            bsonReader.ReadEndArray();
+            return new KeyValuePair<TKey, TValue>(key, value);
+        }
+
+        private KeyValuePair<TKey, TValue> DeserializeDocumentRepresentation(BsonDeserializationContext context)
+        {
+            var key = default(TKey);
+            var value = default(TValue);
+            _helper.DeserializeMembers(context, (elementName, flag) =>
+            {
+                switch (flag)
                 {
-                    // it's possible but harmless for multiple threads to do the initial lookup at the same time
-                    serializer = BsonSerializer.LookupSerializer(typeof(TValue));
-                    _cachedValueSerializer = serializer;
+                    case Flags.Key: key = _lazyKeySerializer.Value.Deserialize(context); break;
+                    case Flags.Value: value = _lazyValueSerializer.Value.Deserialize(context); break;
                 }
-                return serializer;
-            }
-            else
-            {
-                return BsonSerializer.LookupSerializer(actualType);
-            }
+            });
+            return new KeyValuePair<TKey, TValue>(key, value);
+        }
+
+        private void SerializeArrayRepresentation(BsonSerializationContext context, KeyValuePair<TKey, TValue> value)
+        {
+            var bsonWriter = context.Writer;
+            bsonWriter.WriteStartArray();
+            _lazyKeySerializer.Value.Serialize(context, value.Key);
+            _lazyValueSerializer.Value.Serialize(context, value.Value);
+            bsonWriter.WriteEndArray();
+        }
+
+        private void SerializeDocumentRepresentation(BsonSerializationContext context, KeyValuePair<TKey, TValue> value)
+        {
+            var bsonWriter = context.Writer;
+            bsonWriter.WriteStartDocument();
+            bsonWriter.WriteName("k");
+            _lazyKeySerializer.Value.Serialize(context, value.Key);
+            bsonWriter.WriteName("v");
+            _lazyValueSerializer.Value.Serialize(context, value.Value);
+            bsonWriter.WriteEndDocument();
         }
     }
 }
