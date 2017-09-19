@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Model
 {
@@ -15,8 +16,6 @@ namespace Model
 	
 	public class StartConfigComponent: Component
 	{
-		private List<StartConfig> allConfigs;
-
 		private Dictionary<int, StartConfig> configDict;
 		
 		public StartConfig StartConfig { get; private set; }
@@ -33,7 +32,6 @@ namespace Model
 
 		public void Awake(string path, int appId)
 		{
-			this.allConfigs = new List<StartConfig>();
 			this.configDict = new Dictionary<int, StartConfig>();
 			this.MapConfigs = new List<StartConfig>();
 			this.GateConfigs = new List<StartConfig>();
@@ -49,7 +47,6 @@ namespace Model
 				try
 				{
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
-					this.allConfigs.Add(startConfig);
 					this.configDict.Add(startConfig.AppId, startConfig);
 
 					if (startConfig.AppType.Is(AppType.Realm))
@@ -100,14 +97,14 @@ namespace Model
 
 		public StartConfig[] GetAll()
 		{
-			return this.allConfigs.ToArray();
+			return this.configDict.Values.ToArray();
 		}
 
 		public int Count
 		{
 			get
 			{
-				return this.allConfigs.Count;
+				return this.configDict.Count;
 			}
 		}
 	}
