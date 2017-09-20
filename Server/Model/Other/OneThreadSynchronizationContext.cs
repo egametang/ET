@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Model
@@ -6,36 +7,22 @@ namespace Model
 	public class OneThreadSynchronizationContext : SynchronizationContext
 	{
 		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
-		private EQueue<Action> queue = new EQueue<Action>();
-
-		private EQueue<Action> localQueue = new EQueue<Action>();
-
-		private readonly object lockObject = new object();
+		private readonly ConcurrentQueue<Action> queue = new ConcurrentQueue<Action>();
 
 		private void Add(Action action)
 		{
-			lock (lockObject)
-			{
-				this.queue.Enqueue(action);
-			}
+			this.queue.Enqueue(action);
 		}
 
 		public void Update()
 		{
-			lock (lockObject)
+			while (this.queue.Count > 0)
 			{
-				if (this.queue.Count == 0)
+				Action a;
+				if (this.queue.TryDequeue(out a))
 				{
-					return;
+					a();
 				}
-				localQueue = queue;
-				queue = new EQueue<Action>();
-			}
-
-			while (this.localQueue.Count > 0)
-			{
-				Action a = this.localQueue.Dequeue();
-				a();
 			}
 		}
 
