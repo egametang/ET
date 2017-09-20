@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Model
@@ -25,6 +24,10 @@ namespace Model
 		{
 			lock (lockObject)
 			{
+				if (this.queue.Count == 0)
+				{
+					return;
+				}
 				localQueue = queue;
 				queue = new EQueue<Action>();
 			}

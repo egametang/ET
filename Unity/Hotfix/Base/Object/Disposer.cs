@@ -1,12 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
-namespace Hotfix
+﻿namespace Hotfix
 {
 	public abstract class Disposer : Object, IDisposable2
 	{
-		[BsonIgnoreIfDefault]
-		[BsonDefaultValue(1L)]
-		[BsonElement]
 		public long Id { get; set; }
 
 		protected Disposer()

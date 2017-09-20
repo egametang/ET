@@ -2,13 +2,22 @@
 
 namespace Model
 {
+	[ObjectEvent]
+	public class BenchmarkComponentEvent : ObjectEvent<BenchmarkComponent>, IAwake<string>
+	{
+		public void Awake(string address)
+		{
+			this.Get().Awake(address);
+		}
+	}
+
 	public class BenchmarkComponent: Component
 	{
 		private int k;
 
 		private long time1 = TimeHelper.ClientNow();
 
-		private async void Awake(string address)
+		public async void Awake(string address)
 		{
 			try
 			{

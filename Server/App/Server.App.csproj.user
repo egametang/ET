@@ -4,4 +4,7 @@
     <StartArguments>--appId=1 --appType=AllServer --config=../Config/StartConfig/LocalAllServer.txt</StartArguments>
     <StartAction>Project</StartAction>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>--appId=1 --appType=AllServer --config=../Config/StartConfig/LocalAllServer.txt</StartArguments>
+  </PropertyGroup>
 </Project>
