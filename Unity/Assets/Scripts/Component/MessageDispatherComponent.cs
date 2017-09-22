@@ -52,7 +52,7 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
@@ -65,7 +65,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Handle(session, messageInfo.Message);
+					ev.Handle(messageInfo.Message);
 				}
 				catch (Exception e)
 				{

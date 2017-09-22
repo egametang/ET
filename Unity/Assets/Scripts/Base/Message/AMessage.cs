@@ -19,9 +19,4 @@
 		public int Error = 0;
 		public string Message = "";
 	}
-
-	public abstract class AFrameMessage : AMessage
-	{
-		public long Id;
-	}
 }

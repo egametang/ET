@@ -30,4 +30,16 @@ namespace Model
 			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
 		}
 	}
+
+	public class MapUnitEntityActorHandler : IEntityActorHandler
+	{
+		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		{
+			if (message.AMessage is AFrameMessage aFrameMessage)
+			{
+				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
+			}
+			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
+		}
+	}
 }

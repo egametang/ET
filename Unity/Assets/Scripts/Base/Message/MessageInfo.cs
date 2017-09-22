@@ -1,8 +1,8 @@
 ﻿namespace Model
 {
-	public class MessageInfo
+	public struct MessageInfo
 	{
-		public ushort Opcode { get; }
+		public ushort Opcode { get; set; }
 		public AMessage Message { get; set; }
 
 		public MessageInfo(ushort opcode, AMessage message)

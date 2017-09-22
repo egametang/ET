@@ -52,8 +52,8 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AMHandler.cs">
-      <Link>Message\AMHandler.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs">
+      <Link>Entity\DoubleMap.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs">
       <Link>Message\AppType.cs</Link>
@@ -66,6 +66,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\JsondotnetPacker.cs">
       <Link>Message\JsondotnetPacker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs">
+      <Link>Base\Message\MessageInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs">
       <Link>Message\MongoPacker.cs</Link>
@@ -137,6 +140,7 @@
       <Link>Helper\MongoHelper.cs</Link>
     </Compile>
     <Compile Include="Component\ActorProxyComponent.cs" />
+    <Compile Include="Component\ServerFrameComponent.cs" />
     <Compile Include="Component\PlayerComponent.cs" />
     <Compile Include="Component\Unit\UnitGateComponent.cs" />
     <Compile Include="Entity\Player.cs" />
@@ -215,6 +219,7 @@
     <Compile Include="Base\Object\ComponentDB.cs" />
     <Compile Include="Base\Object\EntityType.cs" />
     <Compile Include="Base\Object\ObjectEvents.cs" />
+    <Compile Include="Message\AMHandler.cs" />
     <Compile Include="Other\OneThreadSynchronizationContext.cs" />
     <Compile Include="Other\Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,4 +11,9 @@
 	public abstract class AActorResponse : AResponse
 	{
 	}
+
+	public abstract class AFrameMessage : AActorMessage
+	{
+		public long Id;
+	}
 }

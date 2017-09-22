@@ -1,5 +1,6 @@
 // 服务器与客户端之间的消息 Opcode从1-9999
 
+using System.Collections.Generic;
 using MongoDB.Bson.Serialization;
 
 namespace Model
@@ -67,8 +68,26 @@ namespace Model
 	public class Actor_TransferResponse : AActorResponse
 	{
 	}
+	
+	
+	public struct FrameMessageInfo
+	{
+		public long Id;
+		public AMessage Message;
+	}
 
+	// 服务端发给客户端,每帧一条
+	[Message(Opcode.FrameMessage)]
+	public class FrameMessage : AMessage
+	{
+		public int Frame;
+		public List<AFrameMessage> Messages = new List<AFrameMessage>();
+	}
 
+	[Message(Opcode.Actor_ClickMap)]
+	public class Actor_ClickMap: AActorMessage
+	{
+	}
 
 	[Message(Opcode.C2M_Reload)]
 	public class C2M_Reload: ARequest

@@ -2,6 +2,7 @@
 {
 	public static partial class Opcode
 	{
+		public const ushort FrameMessage = 1;
 		public const ushort C2R_Login = 1001;
 		public const ushort R2C_Login = 1002;
 		public const ushort R2C_ServerLog = 1003;
@@ -16,5 +17,6 @@
 		public const ushort Actor_TestResponse = 2003;
 		public const ushort Actor_TransferRequest = 2004;
 		public const ushort Actor_TransferResponse = 2005;
+		public const ushort Actor_ClickMap = 2006;
 	}
 }
