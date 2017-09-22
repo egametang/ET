@@ -55,7 +55,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		}
 		EditorUtility.SetDirty(this);
 		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfDirtyOrScript();
+		serializedObject.UpdateIfRequiredOrScript();
 	}
 
 	public void Remove(string key)
@@ -76,7 +76,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		}
 		EditorUtility.SetDirty(this);
 		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfDirtyOrScript();
+		serializedObject.UpdateIfRequiredOrScript();
 	}
 
 	public void Clear()
@@ -86,7 +86,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		dataProperty.ClearArray();
 		EditorUtility.SetDirty(this);
 		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfDirtyOrScript();
+		serializedObject.UpdateIfRequiredOrScript();
 	}
 
 	public void Sort()
@@ -95,7 +95,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		data.Sort(new ReferenceCollectorDataComparer());
 		EditorUtility.SetDirty(this);
 		serializedObject.ApplyModifiedProperties();
-		serializedObject.UpdateIfDirtyOrScript();
+		serializedObject.UpdateIfRequiredOrScript();
 	}
 #endif
 
