@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.0p5</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -436,6 +439,16 @@
     <Compile Include="Assets\Scripts\Base\IL\ILRedirection.cs" />
     <Compile Include="Assets\Scripts\Base\Log.cs" />
     <Compile Include="Assets\Scripts\Base\LogType.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\AcosLookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\Atan2LookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\IntMath.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\SinCosLookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VFactor.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt2.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt3.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AActorMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AMHandler.cs" />
