@@ -70,6 +70,7 @@
     <Compile Include="Base\Object\IUpdate.cs" />
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\ObjectEvents.cs" />
+    <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
     <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />

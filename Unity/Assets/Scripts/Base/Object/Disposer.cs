@@ -19,6 +19,7 @@ namespace Model
 		public virtual void Dispose()
 		{
 			this.Id = 0;
+			ObjectPool.Instance.Recycle(this);
 		}
 	}
 }
