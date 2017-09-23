@@ -32,8 +32,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handler\C2G_EnterMapHandler.cs" />
     <Compile Include="Handler\M2M_TrasferUnitRequest.cs" />
     <Compile Include="Handler\Actor_TransferHandler.cs" />
     <Compile Include="Handler\Actor_TestRequestHandler.cs" />
@@ -44,6 +46,7 @@
     <Compile Include="Handler\DBSaveBatchRequestHandler.cs" />
     <Compile Include="Handler\DBSaveRequestHandler.cs" />
     <Compile Include="Handler\G2M_CreateUnitHandler.cs" />
+    <Compile Include="Helper\HotfixHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Handler\C2G_LoginGateHandler.cs" />
     <Compile Include="Handler\C2R_PingHandler.cs" />
@@ -62,11 +65,11 @@
     <Compile Include="Other\OuterMessageDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handler\C2R_LoginHandler.cs" />
-    <Compile Include="System\ActorSystem.cs" />
-    <Compile Include="System\NetInnerSystem.cs" />
-    <Compile Include="System\NetOuterSystem.cs" />
-    <Compile Include="System\RealmGateAddressSystem.cs" />
-    <Compile Include="System\ServerFrameSystem.cs" />
+    <Compile Include="System\ActorComponentSystem.cs" />
+    <Compile Include="System\NetInnerComponentSystem.cs" />
+    <Compile Include="System\NetOuterComponentSystem.cs" />
+    <Compile Include="System\RealmGateAddressComponentSystem.cs" />
+    <Compile Include="System\ServerFrameComponentSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Base\Server.Base.csproj">

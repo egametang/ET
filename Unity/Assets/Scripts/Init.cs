@@ -64,6 +64,8 @@ namespace Model
 				Game.Scene.AddComponent<ResourcesComponent>();
 				Game.Scene.AddComponent<BehaviorTreeComponent>();
 				Game.Scene.AddComponent<ConfigComponent>();
+				Game.Scene.AddComponent<PlayerComponent>();
+				Game.Scene.AddComponent<UnitComponent>();
 
 				// 进入热更新层
 				this.start.Run();

@@ -64,9 +64,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs">
       <Link>Message\IMessagePacker.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\JsondotnetPacker.cs">
-      <Link>Message\JsondotnetPacker.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs">
       <Link>Base\Message\MessageInfo.cs</Link>
     </Compile>

@@ -3,10 +3,28 @@ using System.Linq;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class PlayerComponentEvent : ObjectEvent<PlayerComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+	
 	public class PlayerComponent : Component
 	{
+		public static PlayerComponent Instance { get; private set; }
+
+		public Player MyPlayer;
+		
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
 
+		public void Awake()
+		{
+			Instance = this;
+		}
+		
 		public void Add(Player player)
 		{
 			this.idPlayers.Add(player.Id, player);
@@ -42,12 +60,15 @@ namespace Model
 			{
 				return;
 			}
+			
 			base.Dispose();
 
 			foreach (Player player in this.idPlayers.Values)
 			{
 				player.Dispose();
 			}
+
+			Instance = null;
 		}
 	}
 }

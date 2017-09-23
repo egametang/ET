@@ -16,23 +16,26 @@ namespace Hotfix
 	
 	public class UILobbyComponent : Component
 	{
-		private GameObject sendBtn;
-		private GameObject sendRpcBtn;
-		private GameObject transfer1Btn;
-		private GameObject transfer2Btn;
+		private GameObject enterMap;
+		private Text text;
 
 		public void Awake()
 		{
 			ReferenceCollector rc = this.GetEntity<UI>().GameObject.GetComponent<ReferenceCollector>();
-			this.sendBtn = rc.Get<GameObject>("Send");
-			this.sendRpcBtn = rc.Get<GameObject>("SendRpc");
-			this.sendBtn.GetComponent<Button>().onClick.Add(this.OnSend);
-			this.sendRpcBtn.GetComponent<Button>().onClick.Add(this.OnSendRpc);
+			GameObject sendBtn = rc.Get<GameObject>("Send");
+			GameObject sendRpcBtn = rc.Get<GameObject>("SendRpc");
+			sendBtn.GetComponent<Button>().onClick.Add(this.OnSend);
+			sendRpcBtn.GetComponent<Button>().onClick.Add(this.OnSendRpc);
 
-			this.transfer1Btn = rc.Get<GameObject>("Transfer1");
-			this.transfer2Btn = rc.Get<GameObject>("Transfer2");
-			this.transfer1Btn.GetComponent<Button>().onClick.Add(this.OnTransfer1);
-			this.transfer2Btn.GetComponent<Button>().onClick.Add(this.OnTransfer2);
+			GameObject transfer1Btn = rc.Get<GameObject>("Transfer1");
+			GameObject transfer2Btn = rc.Get<GameObject>("Transfer2");
+			transfer1Btn.GetComponent<Button>().onClick.Add(this.OnTransfer1);
+			transfer2Btn.GetComponent<Button>().onClick.Add(this.OnTransfer2);
+			
+			enterMap = rc.Get<GameObject>("EnterMap");
+			enterMap.GetComponent<Button>().onClick.Add(this.EnterMap);
+
+			this.text = rc.Get<GameObject>("Text").GetComponent<Text>();
 		}
 
 		private void OnSend()
@@ -72,6 +75,28 @@ namespace Hotfix
 		{
 			Actor_TransferResponse response = await SessionComponent.Instance.Session.Call<Actor_TransferResponse>(new Actor_TransferRequest() { MapIndex = 1 });
 			Log.Info($"传送成功! {MongoHelper.ToJson(response)}");
+		}
+
+		private async void EnterMap()
+		{
+			try
+			{
+				G2C_EnterMap g2CEnterMap = await SessionComponent.Instance.Session.Call<G2C_EnterMap>(new C2G_EnterMap());
+				UnitFactory.Create(g2CEnterMap.UnitId);
+
+				if (g2CEnterMap.Count < 1)
+				{
+					this.enterMap.SetActive(false);
+					this.text.text = $"房间中已有:{g2CEnterMap.Count}人";
+					return;
+				}
+				
+				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.Lobby);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToStr());
+			}	
 		}
 	}
 }

@@ -79,6 +79,8 @@ namespace App
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+						Game.Scene.AddComponent<ServerFrameComponent>();
+						Game.Scene.AddComponent<UnitComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorProxyComponent>();
@@ -96,7 +98,6 @@ namespace App
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
-						Log.Debug(Game.Scene.GetComponent<ConfigComponent>().Get<BuffConfig>(1).Name);
 						break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();

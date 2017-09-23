@@ -82,7 +82,6 @@
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\UI.cs" />
-    <Compile Include="Entity\Unit.cs" />
     <Compile Include="Event\SessionRecvMessage_Dispatch.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

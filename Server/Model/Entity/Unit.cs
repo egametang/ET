@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System.Numerics;
+
+namespace Model
 {
 	public enum UnitType
 	{
@@ -18,6 +20,8 @@
 	public sealed class Unit: Entity
 	{
 		public UnitType UnitType { get; private set; }
+
+		public Vector3 Position { get; set; }
 		
 		public void Awake(UnitType unitType)
 		{

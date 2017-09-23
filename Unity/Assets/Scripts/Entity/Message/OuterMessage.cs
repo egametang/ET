@@ -35,7 +35,6 @@ namespace Model
 	public class G2C_LoginGate: AResponse
 	{
 		public long PlayerId;
-		public long UnitId;
 	}
 
 
@@ -68,8 +67,32 @@ namespace Model
 	public class Actor_TransferResponse : AActorResponse
 	{
 	}
-	
-	
+
+	[Message(Opcode.C2G_EnterMap)]
+	public class C2G_EnterMap: ARequest
+	{
+	}
+
+	[Message(Opcode.G2C_EnterMap)]
+	public class G2C_EnterMap: AResponse
+	{
+		public long UnitId;
+		public int Count;
+	}
+
+	public class UnitInfo
+	{
+		public long UnitId;
+		public int X;
+		public int Z;
+	}
+
+	[Message(Opcode.Actor_CreateUnits)]
+	public class Actor_CreateUnits : AActorMessage
+	{
+		public List<UnitInfo> Units;
+	}
+
 	public struct FrameMessageInfo
 	{
 		public long Id;
@@ -88,6 +111,8 @@ namespace Model
 	[Message(Opcode.Frame_ClickMap)]
 	public class Frame_ClickMap: AFrameMessage
 	{
+		public int X;
+		public int Z;
 	}
 
 	[Message(Opcode.C2M_Reload)]

@@ -1,0 +1,23 @@
+﻿using UnityEngine;
+
+namespace Model
+{
+	[MessageHandler(Opcode.Actor_CreateUnits)]
+	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
+	{
+		protected override void Run(Actor_CreateUnits message)
+		{
+			foreach (UnitInfo unitInfo in message.Units)
+			{
+				Unit unit = UnitFactory.Create(unitInfo.UnitId);
+				unit.Position = new Vector3(unitInfo.X / 1000f, 0, unitInfo.Z / 1000f);
+				unit.IntPos = new VInt3(unitInfo.X, 0, unitInfo.Z);
+
+				if (PlayerComponent.Instance.MyPlayer.UnitId == unit.Id)
+				{
+					Game.Scene.GetComponent<CameraComponent>().Unit = unit;
+				}
+			}
+		}
+	}
+}
