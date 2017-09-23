@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace Model
+﻿namespace Model
 {
     [ObjectEvent]
-    public class ClientFrameComponentEvent : ObjectEvent<ClientFrameComponent>, IUpdate
+    public class ClientFrameComponentEvent : ObjectEvent<ClientFrameComponent>, IStart
     {
-        public void Update()
+        public void Start()
         {
-            this.Get().Update();
+            this.Get().Start();
         }
     }
 
@@ -15,31 +13,58 @@ namespace Model
     {
         public int Frame;
 
-        public Queue<FrameMessage> Queue = new Queue<FrameMessage>();
+        public EQueue<FrameMessage> Queue = new EQueue<FrameMessage>();
 
         public int count = 1;
+        
+        public int waitTime;
+
+        public const int maxWaitTime = 40;
+
+        public void Start()
+        {
+            UpdateAsync();
+        }
 
         public void Add(FrameMessage frameMessage)
         {
             this.Queue.Enqueue(frameMessage);
         }
 
-        public void Update()
+        public async void UpdateAsync()
         {
-            int queueCount = this.Queue.Count;
-            if (queueCount == 0)
+            TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
+            while (true)
             {
-                return;
-            }
-            this.count = 1 + (queueCount + 3) / 5;
-            for (int i = 0; i < this.count; i++)
-            {
+                // 如果队列中消息多于4个，则加速跑帧
+                this.waitTime = maxWaitTime;
+                if (this.Queue.Count > 4)
+                {
+                    this.waitTime = maxWaitTime - (this.Queue.Count - 4) * 2;
+                }
+                // 最快加速一倍
+                if (this.waitTime < 20)
+                {
+                    this.waitTime = 20;
+                }
+
+                await timerComponent.WaitAsync(waitTime);
+
+                if (this.Id == 0)
+                {
+                    return;
+                }
+                
                 this.UpdateFrame();
             }
         }
 
         private void UpdateFrame()
         {
+            if (this.Queue.Count == 0)
+            {
+                return;
+            }
             FrameMessage frameMessage = this.Queue.Dequeue();
             this.Frame = frameMessage.Frame;
 
@@ -49,8 +74,6 @@ namespace Model
 	            ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
                 Game.Scene.GetComponent<MessageDispatherComponent>().Handle(new MessageInfo() { Opcode= opcode, Message = message });
             }
-
-            Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.FrameUpdate);
         }
     }
 }

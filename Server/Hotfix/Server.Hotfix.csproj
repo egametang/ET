@@ -34,7 +34,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Component\RealmGateAddressComponentE.cs" />
     <Compile Include="Handler\M2M_TrasferUnitRequest.cs" />
     <Compile Include="Handler\Actor_TransferHandler.cs" />
     <Compile Include="Handler\Actor_TestRequestHandler.cs" />
@@ -58,8 +57,16 @@
     <Compile Include="Handler\C2M_ReloadHandler.cs" />
     <Compile Include="Handler\G2G_LockRequestHandler.cs" />
     <Compile Include="Handler\R2G_GetLoginKeyHandler.cs" />
+    <Compile Include="Other\EntityActorHandler.cs" />
+    <Compile Include="Other\InnerMessageDispatcher.cs" />
+    <Compile Include="Other\OuterMessageDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handler\C2R_LoginHandler.cs" />
+    <Compile Include="System\ActorSystem.cs" />
+    <Compile Include="System\NetInnerSystem.cs" />
+    <Compile Include="System\NetOuterSystem.cs" />
+    <Compile Include="System\RealmGateAddressSystem.cs" />
+    <Compile Include="System\ServerFrameSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Base\Server.Base.csproj">

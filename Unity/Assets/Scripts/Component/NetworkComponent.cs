@@ -11,9 +11,9 @@ namespace Model
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 
-		public IMessagePacker MessagePacker { get; protected set; }
+		public IMessagePacker MessagePacker { get; set; }
 
-		public IMessageDispatcher MessageDispatcher { get; protected set; }
+		public IMessageDispatcher MessageDispatcher { get; set; }
 
 		public void Awake(NetworkProtocol protocol)
 		{
@@ -30,7 +30,7 @@ namespace Model
 			}
 		}
 
-		protected void Awake(NetworkProtocol protocol, string host, int port)
+		public void Awake(NetworkProtocol protocol, string host, int port)
 		{
 			switch (protocol)
 			{
@@ -110,7 +110,7 @@ namespace Model
 			}
 		}
 
-		protected void Update()
+		public void Update()
 		{
 			if (this.Service == null)
 			{

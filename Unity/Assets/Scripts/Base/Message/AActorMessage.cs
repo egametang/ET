@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Model
 {
 	public abstract class AActorMessage : AMessage
 	{
@@ -12,6 +14,7 @@
 	{
 	}
 
+	[BsonKnownTypes(typeof(Frame_ClickMap))]
 	public abstract class AFrameMessage : AActorMessage
 	{
 		public long Id;

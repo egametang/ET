@@ -17,7 +17,7 @@ namespace Model
 			// 普通消息或者是Rpc请求消息
 			if (message is AMessage || message is ARequest)
 			{
-				MessageInfo messageInfo = new MessageInfo(opcode, (AMessage)message);
+				MessageInfo messageInfo = new MessageInfo(opcode, message);
 				if (opcode < 2000)
 				{
 					Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.MessageDeserializeFinish, messageInfo);

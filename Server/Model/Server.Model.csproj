@@ -208,8 +208,6 @@
     <Compile Include="Base\Message\AMActorHandler.cs" />
     <Compile Include="Base\Message\ErrorCode.cs" />
     <Compile Include="Base\Message\IMActorHandler.cs" />
-    <Compile Include="Base\Message\OuterMessageDispatcher.cs" />
-    <Compile Include="Base\Message\InnerMessageDispatcher.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
     <Compile Include="Base\Message\ActorMessageAttribute.cs" />
     <Compile Include="Base\Message\MessageAttribute.cs" />

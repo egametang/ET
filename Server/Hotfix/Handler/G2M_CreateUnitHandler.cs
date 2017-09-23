@@ -12,7 +12,7 @@ namespace Hotfix
 			try
 			{
 				Unit unit = EntityFactory.Create<Unit, UnitType>(UnitType.Hero);
-				await unit.AddComponent<ActorComponent>().AddLocation();
+				await unit.AddComponent<ActorComponent, IEntityActorHandler>(new MapUnitEntityActorHandler()).AddLocation();
 				unit.AddComponent<UnitGateComponent, long>(message.GateSessionId);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
 				response.UnitId = unit.Id;

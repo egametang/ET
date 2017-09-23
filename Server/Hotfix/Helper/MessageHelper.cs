@@ -4,12 +4,14 @@ namespace Hotfix
 {
 	public static class MessageHelper
 	{
-		public static void Broadcast<Message>(Message message) where Message: AMessage
+		public static void Broadcast(AActorMessage message)
 		{
-			Player[] players = Game.Scene.GetComponent<PlayerComponent>().GetAll();
-			foreach (Player gamer in players)
+			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
+			ActorProxyComponent actorProxyComponent = Game.Scene.GetComponent<ActorProxyComponent>();
+			foreach (Unit unit in units)
 			{
-				gamer.GetComponent<SessionInfoComponent>().Session.Send(message);
+				long gateSessionId = unit.GetComponent<UnitGateComponent>().GateSessionId;
+				actorProxyComponent.Get(gateSessionId).Send(message);
 			}
 		}
 	}

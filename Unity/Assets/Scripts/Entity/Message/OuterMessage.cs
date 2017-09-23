@@ -78,14 +78,15 @@ namespace Model
 
 	// 服务端发给客户端,每帧一条
 	[Message(Opcode.FrameMessage)]
-	public class FrameMessage : AMessage
+	public class FrameMessage : AActorMessage
 	{
 		public int Frame;
 		public List<AFrameMessage> Messages = new List<AFrameMessage>();
 	}
 
-	[Message(Opcode.Actor_ClickMap)]
-	public class Actor_ClickMap: AActorMessage
+	// 客户端点击地图
+	[Message(Opcode.Frame_ClickMap)]
+	public class Frame_ClickMap: AFrameMessage
 	{
 	}
 

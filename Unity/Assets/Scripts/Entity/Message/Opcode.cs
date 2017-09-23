@@ -17,6 +17,6 @@
 		public const ushort Actor_TestResponse = 2003;
 		public const ushort Actor_TransferRequest = 2004;
 		public const ushort Actor_TransferResponse = 2005;
-		public const ushort Actor_ClickMap = 2006;
+		public const ushort Frame_ClickMap = 2006;
 	}
 }

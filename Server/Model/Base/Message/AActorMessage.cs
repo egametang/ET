@@ -3,6 +3,7 @@
 namespace Model
 {
 	[BsonKnownTypes(typeof(Actor_Test))]
+	[BsonKnownTypes(typeof(AFrameMessage))]
 	public abstract class AActorMessage : AMessage
 	{
 	}
@@ -19,6 +20,10 @@ namespace Model
 	{
 	}
 
+	/// <summary>
+	/// 帧消息，继承这个类的消息会经过服务端转发
+	/// </summary>
+	[BsonKnownTypes(typeof(Frame_ClickMap))]
 	public abstract class AFrameMessage : AActorMessage
 	{
 		public long Id;

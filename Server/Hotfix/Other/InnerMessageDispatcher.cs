@@ -1,6 +1,7 @@
 ﻿using System;
+using Model;
 
-namespace Model
+namespace Hotfix
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
