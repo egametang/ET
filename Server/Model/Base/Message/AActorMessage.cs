@@ -4,6 +4,8 @@ namespace Model
 {
 	[BsonKnownTypes(typeof(Actor_Test))]
 	[BsonKnownTypes(typeof(AFrameMessage))]
+	[BsonKnownTypes(typeof(Actor_CreateUnits))]
+	[BsonKnownTypes(typeof(FrameMessage))]
 	public abstract class AActorMessage : AMessage
 	{
 	}

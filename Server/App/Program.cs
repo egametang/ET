@@ -80,7 +80,6 @@ namespace App
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
-						Game.Scene.AddComponent<UnitComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorProxyComponent>();
