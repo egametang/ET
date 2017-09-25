@@ -211,13 +211,5 @@ namespace Model
 				}
 			}
 		}
-
-		#if AOT
-		private void AvoidAot()
-		{
-			EnumSerializer<EntityType> e = new EnumSerializer<EntityType>();
-		
-		}
-		#endif
 	}
 }
