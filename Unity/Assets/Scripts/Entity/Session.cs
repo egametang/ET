@@ -143,7 +143,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {response.ToJson()}");
+					Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -176,7 +176,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {JsonHelper.ToJson(response)}");
+					Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -208,7 +208,7 @@ namespace Model
 
 		private void SendMessage(object message)
 		{
-			//Log.Debug($"send: {message.ToJson()}");
+			Log.Debug($"send: {MongoHelper.ToJson(message)}");
 			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			opcode = NetworkHelper.HostToNetworkOrder(opcode);
 			byte[] opcodeBytes = BitConverter.GetBytes(opcode);

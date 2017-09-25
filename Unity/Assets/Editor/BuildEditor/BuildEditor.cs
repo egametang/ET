@@ -59,7 +59,7 @@ namespace MyEditor
 			string[] levels2 = {
 				"Assets/Scenes/Init.unity",
 			};
-			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/football.exe", BuildTarget.StandaloneWindows, option);
+			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/et.exe", BuildTarget.StandaloneWindows, option);
 			Log.Info("打包完成");
 		}
 
@@ -71,7 +71,7 @@ namespace MyEditor
 			string[] levels2 = {
 				"Assets/Scenes/Init.unity",
 			};
-			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/football.apk", BuildTarget.Android, option);
+			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/et.apk", BuildTarget.Android, option);
 			Log.Info("打包完成");
 		}
 
@@ -81,7 +81,7 @@ namespace MyEditor
 			string[] levels2 = {
 				"Assets/Scenes/Init.unity",
 			};
-			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/football.apk", BuildTarget.Android, option);
+			BuildPipeline.BuildPlayer(levels2, $"{relativeDirPrefix}/et.apk", BuildTarget.Android, option);
 			Log.Info("打包APK完成");
 		}
 

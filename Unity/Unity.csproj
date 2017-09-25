@@ -553,6 +553,7 @@
     <Compile Include="Assets\Scripts\Factory\PlayerFactory.cs" />
     <Compile Include="Assets\Scripts\Factory\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Handler\Actor_CreateUnitsHandler.cs" />
+    <Compile Include="Assets\Scripts\Handler\Frame_ClickMapHandler.cs" />
     <Compile Include="Assets\Scripts\Handler\Actor_TestHandler.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />

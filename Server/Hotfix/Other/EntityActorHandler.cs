@@ -4,7 +4,7 @@ using Model;
 namespace Hotfix
 {
     /// <summary>
-    /// gate session 收到的消息直接转发给客户端
+    /// gate session收到的消息直接转发给客户端
     /// </summary>
     public class GateSessionEntityActorHandler : IEntityActorHandler
     {
@@ -36,7 +36,15 @@ namespace Hotfix
         {
             if (message.AMessage is AFrameMessage aFrameMessage)
             {
-                Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
+				// 客户端发送不需要设置Frame消息的id，在这里统一设置，防止客户端被破解发个假的id过来
+	            aFrameMessage.Id = entity.Id;
+				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
+	            ActorResponse response = new ActorResponse
+	            {
+		            RpcId = message.RpcId
+	            };
+	            session.Reply(response);
+				return;
             }
             await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
         }

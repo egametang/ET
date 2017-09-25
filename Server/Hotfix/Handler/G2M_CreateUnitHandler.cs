@@ -11,7 +11,7 @@ namespace Hotfix
 			M2G_CreateUnit response = new M2G_CreateUnit();
 			try
 			{
-				Unit unit = EntityFactory.Create<Unit, UnitType>(UnitType.Hero);
+				Unit unit = EntityFactory.Create<Unit>();
 				await unit.AddComponent<ActorComponent, IEntityActorHandler>(new MapUnitEntityActorHandler()).AddLocation();
 				unit.AddComponent<UnitGateComponent, long>(message.GateSessionId);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
@@ -28,7 +28,7 @@ namespace Hotfix
 					{
 						actorCreateUnits.Units.Add(new UnitInfo() {UnitId = u.Id, X = (int)(u.Position.X * 1000), Z = (int)(u.Position.Z * 1000) });
 					}
-
+					Log.Debug($"{MongoHelper.ToJson(actorCreateUnits)}");
 					MessageHelper.Broadcast(actorCreateUnits);
 				}
 			}

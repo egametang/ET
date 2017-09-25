@@ -42,6 +42,11 @@ namespace Hotfix
 				G2C_LoginGate g2CLoginGate = await SessionComponent.Instance.Session.Call<G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
 				Log.Info("登陆gate成功!");
 
+				// 创建Player
+				Player player = Model.EntityFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
+				PlayerComponent playerComponent = Game.Scene.GetComponent<PlayerComponent>();
+				playerComponent.MyPlayer = player;
+
 				Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.Lobby);
 				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.Login);
 			}

@@ -13,17 +13,17 @@ namespace Model
 #if UNITY_EDITOR
 		private static bool IsNeedFlush = true;
 #else
-		private static bool IsNeedFlush = false;
+		private static bool IsNeedFlush = true;
 #endif
 
 		static Log()
 		{
 			if (!Directory.Exists("../Logs"))
 			{
-				Directory.CreateDirectory("../Logs");
+				Directory.CreateDirectory("./Logs");
 			}
-			info = new StreamWriter("../Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
-			error = new StreamWriter("../Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
+			info = new StreamWriter("./Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
+			error = new StreamWriter("./Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
 		}
 
 		public static void Warning(string msg)

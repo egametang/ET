@@ -90,7 +90,7 @@ namespace Model
 	[Message(Opcode.Actor_CreateUnits)]
 	public class Actor_CreateUnits : AActorMessage
 	{
-		public List<UnitInfo> Units;
+		public List<UnitInfo> Units = new List<UnitInfo>();
 	}
 
 	public struct FrameMessageInfo

@@ -9,25 +9,18 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class UnitEvent : ObjectEvent<Unit>, IAwake<UnitType>
+	public class UnitEvent : ObjectEvent<Unit>
 	{
-		public void Awake(UnitType unitType)
-		{
-			this.Get().Awake(unitType);
-		}
 	}
 
 	public sealed class Unit: Entity
 	{
-		public UnitType UnitType { get; private set; }
-
 		public VInt3 IntPos;
 
 		public GameObject GameObject;
 		
-		public void Awake(UnitType unitType)
+		public void Awake()
 		{
-			this.UnitType = unitType;
 		}
 
 		public Vector3 Position

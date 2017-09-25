@@ -75,8 +75,7 @@ namespace Model
 		{
 			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
 			{
-				Log.Error($"not found message handler: {MongoHelper.ToJson(message)}");
-				return;
+				throw new Exception($"not found message handler: {MongoHelper.ToJson(message)}");
 			}
 			
 			await handler.Handle(session, entity, message);

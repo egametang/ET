@@ -82,15 +82,6 @@ namespace Hotfix
 			try
 			{
 				G2C_EnterMap g2CEnterMap = await SessionComponent.Instance.Session.Call<G2C_EnterMap>(new C2G_EnterMap());
-				UnitFactory.Create(g2CEnterMap.UnitId);
-
-				if (g2CEnterMap.Count < 1)
-				{
-					this.enterMap.SetActive(false);
-					this.text.text = $"房间中已有:{g2CEnterMap.Count}人";
-					return;
-				}
-				
 				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.Lobby);
 			}
 			catch (Exception e)
