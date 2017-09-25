@@ -18,7 +18,7 @@ namespace Model
 
 		static Log()
 		{
-			if (!Directory.Exists("../Logs"))
+			if (!Directory.Exists("./Logs"))
 			{
 				Directory.CreateDirectory("./Logs");
 			}
