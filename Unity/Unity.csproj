@@ -531,6 +531,8 @@
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NumericComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NumericWatcherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\OperaComponent.cs" />
     <Compile Include="Assets\Scripts\Component\PlayerComponent.cs" />
@@ -550,6 +552,8 @@
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
     <Compile Include="Assets\Scripts\Entity\Unit.cs" />
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
+    <Compile Include="Assets\Scripts\Event\NumericChangeEvent_NotifyWatcher.cs" />
+    <Compile Include="Assets\Scripts\Event\NumericWatcher_Hp_ShowUI.cs" />
     <Compile Include="Assets\Scripts\Factory\PlayerFactory.cs" />
     <Compile Include="Assets\Scripts\Factory\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Handler\Actor_CreateUnitsHandler.cs" />
@@ -568,8 +572,10 @@
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />
     <Compile Include="Assets\Scripts\Other\ILMethod.cs" />
+    <Compile Include="Assets\Scripts\Other\INumericWatcher.cs" />
     <Compile Include="Assets\Scripts\Other\MonoMethod.cs" />
     <Compile Include="Assets\Scripts\Other\MotionType.cs" />
+    <Compile Include="Assets\Scripts\Other\NumericWatcherAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\ReferenceCollector.cs" />
   </ItemGroup>
   <ItemGroup>
