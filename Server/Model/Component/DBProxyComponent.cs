@@ -1,13 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Model
 {
-	/// <summary>
-	/// 用来与数据库操作代理
-	/// </summary>
-	public class DBProxyComponent : Component
+    [ObjectEvent]
+    public class DBProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
+    {
+        public void Awake()
+        {
+            this.Get().Awake();
+        }
+    }
+
+    /// <summary>
+    /// 用来与数据库操作代理
+    /// </summary>
+    public class DBProxyComponent : Component
 	{
 		public string dbAddress;
 
