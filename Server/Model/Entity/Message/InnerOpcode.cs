@@ -1,5 +1,6 @@
 ﻿namespace Model
 {
+	// 1-999
 	public static partial class Opcode
 	{
 		public const ushort ActorRequest = 1;

@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Model
 {
 	[BsonIgnoreExtraElements]
+	[BsonKnownTypes(typeof(EntityDB))]
 	public class Entity : Disposer, ISupportInitialize
 	{
 		[BsonIgnore]

@@ -488,6 +488,7 @@
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityDB.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
