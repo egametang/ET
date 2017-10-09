@@ -15,9 +15,9 @@ namespace Model
 	[Message(Opcode.R2C_Login)]
 	public class R2C_Login: AResponse
 	{
-		public string Address { get; set; }
-		
-		public long Key { get; set; }
+	    public string Address;
+
+	    public long Key;
 	}
 
 	[Message(Opcode.C2G_LoginGate)]

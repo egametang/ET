@@ -6,6 +6,7 @@ namespace Model
 	[BsonKnownTypes(typeof(RechargeRecord))]
 	[BsonKnownTypes(typeof(Recharge))]
 	[BsonKnownTypes(typeof(Location))]
+	[BsonKnownTypes(typeof(AccountInfo))]
 	public class EntityDB: Entity
 	{
 		protected EntityDB()

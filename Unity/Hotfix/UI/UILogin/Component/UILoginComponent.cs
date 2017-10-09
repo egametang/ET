@@ -17,6 +17,7 @@ namespace Hotfix
 	public class UILoginComponent: Component
 	{
 		private GameObject account;
+		private GameObject password;
 		private GameObject loginBtn;
 
 		public void Awake()
@@ -26,6 +27,7 @@ namespace Hotfix
 			loginBtn.GetComponent<Button>().onClick.Add(OnLogin);
 
 			this.account = rc.Get<GameObject>("Account");
+			this.password = rc.Get<GameObject>("Password");
 		}
 
 		private async void OnLogin()
@@ -35,7 +37,8 @@ namespace Hotfix
 			{
 				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10002");
 				string text = this.account.GetComponent<InputField>().text;
-				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = text, Password = "111111" });
+				string textPwd = this.password.GetComponent<InputField>().text;
+				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = text, Password = textPwd });
 				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
 				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 

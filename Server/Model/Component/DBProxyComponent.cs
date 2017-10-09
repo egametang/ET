@@ -4,10 +4,21 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	/// <summary>
-	/// 用来与数据库操作代理
-	/// </summary>
-	public class DBProxyComponent : Component
+    [ObjectEvent]
+    public class DbProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
+    {
+        public void Awake()
+        {
+            this.Get().Awake();
+        }
+        
+    }
+
+
+    /// <summary>
+    /// 用来与数据库操作代理
+    /// </summary>
+    public class DBProxyComponent : Component
 	{
 		public string dbAddress;
 
@@ -15,6 +26,7 @@ namespace Model
 		{
 			StartConfig dbStartConfig = Game.Scene.GetComponent<StartConfigComponent>().DBConfig;
 			dbAddress = dbStartConfig.GetComponent<InnerConfig>().Address;
+            Log.Debug("---db address--" + this.dbAddress);
 		}
 
 		public async Task Save(Entity entity, bool needCache = true)
