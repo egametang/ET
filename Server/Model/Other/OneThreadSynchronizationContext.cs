@@ -16,7 +16,7 @@ namespace Model
 
 		public void Update()
 		{
-			while (this.queue.Count > 0)
+			while (!this.queue.IsEmpty)
 			{
 				Action a;
 				if (this.queue.TryDequeue(out a))
