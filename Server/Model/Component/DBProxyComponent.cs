@@ -4,23 +4,6 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-<<<<<<< HEAD
-    [ObjectEvent]
-    public class DbProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
-    {
-        public void Awake()
-        {
-            this.Get().Awake();
-        }
-        
-    }
-
-
-    /// <summary>
-    /// 用来与数据库操作代理
-    /// </summary>
-    public class DBProxyComponent : Component
-=======
 	[ObjectEvent]
 	public class DBProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
 	{
@@ -34,7 +17,6 @@ namespace Model
 	/// 用来与数据库操作代理
 	/// </summary>
 	public class DBProxyComponent : Component
->>>>>>> master
 	{
 		public string dbAddress;
 
