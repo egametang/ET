@@ -426,7 +426,6 @@
     <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\NetworkHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\RandomHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\StringHelper.cs" />

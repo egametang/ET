@@ -107,7 +107,6 @@ namespace Model
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
-			size = NetworkHelper.HostToNetworkOrder(size);
 			byte[] sizeBuffer = BitConverter.GetBytes(size);
 			this.sendBuffer.SendTo(sizeBuffer);
 			foreach (byte[] buffer in buffers)

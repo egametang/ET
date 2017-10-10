@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,11 +40,6 @@ namespace Model
 			}
 			
 			this.poller = null;
-		}
-
-		public override void Add(Action action)
-		{
-			this.poller.Add(action);
 		}
 		
 		public override async Task<AChannel> AcceptChannel()

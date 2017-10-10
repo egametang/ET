@@ -44,10 +44,6 @@ namespace Model
 			this.acceptor = null;
 		}
 
-		public override void Add(Action action)
-		{
-		}
-
 		public override AChannel GetChannel(long id)
 		{
 			TChannel channel = null;
