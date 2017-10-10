@@ -32,19 +32,26 @@ namespace Model
 
 		public void Awake(NetworkProtocol protocol, string host, int port)
 		{
-			switch (protocol)
+			try
 			{
-				case NetworkProtocol.TCP:
-					this.Service = new TService(host, port);
-					break;
-				case NetworkProtocol.UDP:
-					this.Service = new UService(host, port);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+				switch (protocol)
+				{
+					case NetworkProtocol.TCP:
+						this.Service = new TService(host, port);
+						break;
+					case NetworkProtocol.UDP:
+						this.Service = new UService(host, port);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 
-			this.StartAccept();
+				this.StartAccept();
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"{host} {port}", e);
+			}
 		}
 
 		private async void StartAccept()

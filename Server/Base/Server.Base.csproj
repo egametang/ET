@@ -1,172 +1,68 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E5078EC6-2B0E-4711-BE8B-D99F69638316}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Base</RootNamespace>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Base</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Model</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SERVER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\Lib\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\Lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\Lib\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\Lib\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>..\Lib\protobuf-net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="DoubleMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\EQueue.cs" Link="EQueue.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs" Link="Helper\ArrayHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Helper\ByteHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Helper\EnumHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\FileHelper.cs" Link="Helper\FileHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\IdGenerater.cs" Link="Helper\IdGenerater.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MD5Helper.cs" Link="Helper\MD5Helper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs" Link="Helper\MethodInfoHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs" Link="Helper\NetHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs" Link="Helper\ProtobufHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\RandomHelper.cs" Link="Helper\RandomHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs" Link="Helper\StringHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Helper\TimeHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Helper\ZipHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="MultiMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AChannel.cs" Link="Network\AChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AService.cs" Link="Network\AService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Network\TNet\PacketParser.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TBuffer.cs" Link="Network\TNet\TBuffer.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Network\TNet\TChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TService.cs" Link="Network\TNet\TService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\Library.cs" Link="Network\UNet\Library.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeMethods.cs" Link="Network\UNet\NativeMethods.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeStructs.cs" Link="Network\UNet\NativeStructs.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UAddress.cs" Link="Network\UNet\UAddress.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UChannel.cs" Link="Network\UNet\UChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPacket.cs" Link="Network\UNet\UPacket.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPoller.cs" Link="Network\UNet\UPoller.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UService.cs" Link="Network\UNet\UService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocket.cs" Link="Network\UNet\USocket.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocketManager.cs" Link="Network\UNet\USocketManager.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="QueueDictionary.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="TryLocker.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs">
-      <Link>DoubleMap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\EQueue.cs">
-      <Link>EQueue.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs">
-      <Link>Helper\ArrayHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs">
-      <Link>Helper\ByteHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs">
-      <Link>Helper\EnumHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\FileHelper.cs">
-      <Link>Helper\FileHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\IdGenerater.cs">
-      <Link>Helper\IdGenerater.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MD5Helper.cs">
-      <Link>Helper\MD5Helper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs">
-      <Link>Helper\MethodInfoHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs">
-      <Link>Helper\NetHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs">
-      <Link>Helper\ProtobufHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\RandomHelper.cs">
-      <Link>Helper\RandomHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs">
-      <Link>Helper\StringHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs">
-      <Link>Helper\TimeHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs">
-      <Link>Helper\ZipHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs">
-      <Link>MultiMap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AChannel.cs">
-      <Link>Network\AChannel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AService.cs">
-      <Link>Network\AService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs">
-      <Link>Network\TNet\PacketParser.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TBuffer.cs">
-      <Link>Network\TNet\TBuffer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs">
-      <Link>Network\TNet\TChannel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TService.cs">
-      <Link>Network\TNet\TService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\Library.cs">
-      <Link>Network\UNet\Library.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeMethods.cs">
-      <Link>Network\UNet\NativeMethods.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeStructs.cs">
-      <Link>Network\UNet\NativeStructs.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UAddress.cs">
-      <Link>Network\UNet\UAddress.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UChannel.cs">
-      <Link>Network\UNet\UChannel.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPacket.cs">
-      <Link>Network\UNet\UPacket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPoller.cs">
-      <Link>Network\UNet\UPoller.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UService.cs">
-      <Link>Network\UNet\UService.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocket.cs">
-      <Link>Network\UNet\USocket.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocketManager.cs">
-      <Link>Network\UNet\USocketManager.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs">
-      <Link>QueueDictionary.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs">
-      <Link>TryLocker.cs</Link>
-    </Compile>
-    <Compile Include="Log.cs" />
-    <Compile Include="Logger\ALogDecorater.cs" />
-    <Compile Include="Logger\ILog.cs" />
-    <Compile Include="Logger\Log4NetAdapter.cs" />
-    <Compile Include="Logger\NLogAdapter.cs" />
-    <Compile Include="Logger\StackInfoDecorater.cs" />
-    <Compile Include="LogType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Folder Include="Helper\" />
+    <Folder Include="Network\TNet\" />
+    <Folder Include="Network\UNet\" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="5.0.0-beta11" />
+    <PackageReference Include="protobuf-net" Version="2.3.2" />
+    <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+  </ItemGroup>
+
 </Project>

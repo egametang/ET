@@ -23,7 +23,7 @@ namespace Model
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 200; i++)
 				{
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
 					this.TestAsync(networkComponent, address, i);
