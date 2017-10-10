@@ -4,6 +4,15 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class DBProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+	
 	/// <summary>
 	/// 用来与数据库操作代理
 	/// </summary>

@@ -1,8 +1,9 @@
 ﻿namespace Model
 {
+	// 1000开始
 	public static partial class Opcode
 	{
-		public const ushort FrameMessage = 1;
+		public const ushort FrameMessage = 1000;
 		public const ushort C2R_Login = 1001;
 		public const ushort R2C_Login = 1002;
 		public const ushort R2C_ServerLog = 1003;

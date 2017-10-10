@@ -44,7 +44,6 @@ namespace Model
 						{
 							this.buffer.RecvFrom(this.packetSizeBuffer);
 							this.packetSize = BitConverter.ToUInt16(this.packetSizeBuffer, 0);
-							this.packetSize = NetworkHelper.NetworkToHostOrder(this.packetSize);
 							if (packetSize > 60000)
 							{
 								throw new Exception($"packet too large, size: {this.packetSize}");

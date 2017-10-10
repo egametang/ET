@@ -7,6 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Model
 {
 	[BsonIgnoreExtraElements]
+	[BsonKnownTypes(typeof(EntityDB))]
 	public class Entity : Disposer, ISupportInitialize
 	{
 		[BsonIgnore]
@@ -211,13 +212,5 @@ namespace Model
 				}
 			}
 		}
-
-		#if AOT
-		private void AvoidAot()
-		{
-			EnumSerializer<EntityType> e = new EnumSerializer<EntityType>();
-		
-		}
-		#endif
 	}
 }

@@ -36,11 +36,11 @@ namespace Model
 			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(CrossEventAttribute), false);
 
 				foreach (object attr in attrs)
 				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
+					CrossEventAttribute aEventAttribute = (CrossEventAttribute)attr;
 					IInstanceMethod method = new ILInstanceMethod(type, "Run");
 					if (!this.allEvents.ContainsKey(aEventAttribute.Type))
 					{
@@ -72,10 +72,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(CrossIdType type, A a)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -93,10 +93,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(CrossIdType type, A a, B b)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -114,10 +114,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(CrossIdType type, A a, B b, C c)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}

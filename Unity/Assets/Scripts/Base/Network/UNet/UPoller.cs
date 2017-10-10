@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Model
@@ -15,12 +14,7 @@ namespace Model
 		private readonly EQueue<IntPtr> connQueue = new EQueue<IntPtr>();
 
 		private IntPtr host;
-
-		// 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
-		private EQueue<Action> concurrentQueue = new EQueue<Action>();
-		private EQueue<Action> localQueue;
-		private readonly object lockObject = new object();
-
+		
 		private ENetEvent eNetEventCache;
 
 		private TaskCompletionSource<USocket> AcceptTcs { get; set; }
@@ -88,14 +82,6 @@ namespace Model
 			NativeMethods.enet_host_flush(this.host);
 		}
 
-		public void Add(Action action)
-		{
-			lock (lockObject)
-			{
-				this.concurrentQueue.Enqueue(action);
-			}
-		}
-
 		public Task<USocket> AcceptAsync()
 		{
 			if (this.AcceptTcs != null)
@@ -133,21 +119,6 @@ namespace Model
 			tcs.SetResult(socket);
 		}
 
-		private void OnEvents()
-		{
-			lock (lockObject)
-			{
-				localQueue = concurrentQueue;
-				concurrentQueue = new EQueue<Action>();
-			}
-
-			while (this.localQueue.Count > 0)
-			{
-				Action a = this.localQueue.Dequeue();
-				a();
-			}
-		}
-
 		private int Service()
 		{
 			int ret = NativeMethods.enet_host_service(this.host, IntPtr.Zero, 0);
@@ -156,8 +127,6 @@ namespace Model
 
 		public void Update()
 		{
-			this.OnEvents();
-
 			if (this.Service() < 0)
 			{
 				return;

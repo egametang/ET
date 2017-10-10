@@ -16,5 +16,6 @@
 		BehaviorTreeRightDesignerDrag,
 
 		SessionRecvMessage,
+		NumbericChange,
 	}
 }

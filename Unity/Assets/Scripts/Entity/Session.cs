@@ -11,6 +11,7 @@ namespace Model
 		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
 		private readonly AChannel channel;
+		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0]};
 
 		public Session(NetworkComponent network, AChannel channel)
 		{
@@ -65,7 +66,6 @@ namespace Model
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
-				opcode = NetworkHelper.NetworkToHostOrder(opcode);
 				try
 				{
 					this.Run(opcode, messageBytes);
@@ -80,20 +80,18 @@ namespace Model
 		private void Run(ushort opcode, byte[] messageBytes)
 		{
 			int offset = 0;
-			byte flag = messageBytes[2];
-
-			bool isCompressed = (flag & 0x80) > 0;
-			const int opcodeAndFlagLength = 3;
+			// opcode最高位表示是否压缩
+			bool isCompressed = (opcode & 0x8000) > 0;
 			if (isCompressed) // 最高位为1,表示有压缩,需要解压缩
 			{
-				messageBytes = ZipHelper.Decompress(messageBytes, opcodeAndFlagLength, messageBytes.Length - opcodeAndFlagLength);
+				messageBytes = ZipHelper.Decompress(messageBytes, 2, messageBytes.Length - 2);
 				offset = 0;
 			}
 			else
 			{
-				offset = opcodeAndFlagLength;
+				offset = 2;
 			}
-
+			opcode &= 0x7fff;
 			this.RunDecompressedBytes(opcode, messageBytes, offset);
 		}
 
@@ -210,24 +208,23 @@ namespace Model
 		{
 			Log.Debug($"send: {MongoHelper.ToJson(message)}");
 			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-			opcode = NetworkHelper.HostToNetworkOrder(opcode);
-			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
-			byte flag = 0;
 			if (messageBytes.Length > 100)
 			{
 				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);
 				if (newMessageBytes.Length < messageBytes.Length)
 				{
 					messageBytes = newMessageBytes;
-					flag |= 0x80;
+					opcode |= 0x8000;
 				}
 			}
 
-			byte[] flagBytes = { flag };
-
-			channel.Send(new List<byte[]> { opcodeBytes, flagBytes, messageBytes });
+			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
+			
+			this.byteses[0] = opcodeBytes;
+			this.byteses[1] = messageBytes;
+			channel.Send(this.byteses);
 		}
 
 		public override void Dispose()

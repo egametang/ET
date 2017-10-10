@@ -58,6 +58,7 @@ namespace Hotfix
             if (!this.dictionary.TryGetValue(type, out queue))
             {
                 queue = new EQueue<Disposer>();
+				this.dictionary.Add(type, queue);
             }
             queue.Enqueue(obj);
         }

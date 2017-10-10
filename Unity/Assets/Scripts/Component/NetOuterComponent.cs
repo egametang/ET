@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
 	[ObjectEvent]
-	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>
+	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>, IUpdate
 	{
 		public void Awake()
 		{
@@ -11,6 +11,11 @@
 		public void Awake(string host, int port)
 		{
 			this.Get().Awake();
+		}
+
+		public void Update()
+		{
+			this.Get().Update();
 		}
 	}
 
