@@ -80,9 +80,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs">
       <Link>Helper\NetHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetworkHelper.cs">
-      <Link>Helper\NetworkHelper.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs">
       <Link>Helper\ProtobufHelper.cs</Link>
     </Compile>
