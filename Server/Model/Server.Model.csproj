@@ -136,7 +136,10 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs">
       <Link>Helper\MongoHelper.cs</Link>
     </Compile>
+    <Compile Include="Base\Other\HttpHandlerAttribute.cs" />
+    <Compile Include="Base\Other\IHttpHandler.cs" />
     <Compile Include="Component\ActorProxyComponent.cs" />
+    <Compile Include="Component\HttpComponent.cs" />
     <Compile Include="Component\ServerFrameComponent.cs" />
     <Compile Include="Component\PlayerComponent.cs" />
     <Compile Include="Component\Unit\UnitGateComponent.cs" />
@@ -225,7 +228,6 @@
       <Name>Server.Base</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
