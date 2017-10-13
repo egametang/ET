@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -59,7 +60,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error($"connect error: {host} {port} {e}");
 			}
 		}
 
@@ -69,13 +70,10 @@ namespace Model
 			{
 				return;
 			}
-
-			long id = this.Id;
-
+			
 			base.Dispose();
 
 			this.tcpClient.Close();
-			this.service.Remove(id);
 		}
 
 		private void OnAccepted()
@@ -96,7 +94,7 @@ namespace Model
 			this.sendBuffer.SendTo(buffer);
 			if (this.isConnected)
 			{
-				this.StartSend();
+				((TService)this.service).Add(this.StartSend);
 			}
 		}
 
@@ -115,7 +113,7 @@ namespace Model
 			}
 			if (this.isConnected)
 			{
-				this.StartSend();
+				((TService)this.service).Add(this.StartSend);
 			}
 		}
 
@@ -123,6 +121,11 @@ namespace Model
 		{
 			try
 			{
+				if (this.Id == 0)
+				{
+					return;
+				}
+
 				// 如果正在发送中,不需要再次发送
 				if (this.isSending)
 				{
@@ -207,6 +210,9 @@ namespace Model
 				}
 			}
 			catch (ObjectDisposedException)
+			{
+			}
+			catch (IOException)
 			{
 			}
 			catch (Exception e)

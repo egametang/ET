@@ -13,6 +13,8 @@ namespace Model
 
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
 
+		private readonly EQueue<Action> actions = new EQueue<Action>();
+		
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
@@ -42,6 +44,11 @@ namespace Model
 			}
 			this.acceptor.Stop();
 			this.acceptor = null;
+		}
+
+		public void Add(Action action)
+		{
+			this.actions.Enqueue(action);
 		}
 
 		public override AChannel GetChannel(long id)
@@ -90,6 +97,11 @@ namespace Model
 		
 		public override void Update()
 		{
+			while (this.actions.Count > 0)
+			{
+				Action action = this.actions.Dequeue();
+				action();
+			}
 		}
 	}
 }
