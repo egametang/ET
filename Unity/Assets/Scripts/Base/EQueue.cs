@@ -5,36 +5,34 @@ namespace Model
 {
 	public class EQueue<T>: IEnumerable
 	{
-		private readonly LinkedList<T> list = new LinkedList<T>();
+		private readonly Queue<T> queue = new Queue<T>();
 
 		public void Enqueue(T t)
 		{
-			this.list.AddLast(t);
+			this.queue.Enqueue(t);
 		}
 
 		public T Dequeue()
 		{
-			T t = this.list.First.Value;
-			this.list.RemoveFirst();
-			return t;
+			return this.queue.Dequeue();
 		}
 		
 		public int Count
 		{
 			get
 			{
-				return this.list.Count;
+				return this.queue.Count;
 			}
 		}
 
 		public IEnumerator GetEnumerator()
 		{
-			return this.list.GetEnumerator();
+			return this.queue.GetEnumerator();
 		}
 
 		public void Clear()
 		{
-			this.list.Clear();
+			this.queue.Clear();
 		}
 	}
 }

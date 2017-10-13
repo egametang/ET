@@ -47,14 +47,15 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs">
-      <Link>Entity\DoubleMap.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs">
       <Link>Message\AppType.cs</Link>
     </Compile>

@@ -1,0 +1,2 @@
+{ "_t" : "StartConfig", "_id" : NumberLong("98813417750535"), "components" : [{ "_t" : "OuterConfig", "Host" : "127.0.0.1", "Port" : 10000, "Host2" : null }, { "_t" : "InnerConfig", "Host" : "127.0.0.1", "Port" : 20003 }], "AppId" : 1, "AppType" : "Manager", "ServerIP" : "*" }
+{ "_t" : "StartConfig", "_id" : NumberLong("98813420503048"), "components" : [{ "_t" : "ClientConfig", "Host" : "127.0.0.1", "Port" : 10002 }], "AppId" : 2, "AppType" : "Benchmark", "ServerIP" : "*" }
