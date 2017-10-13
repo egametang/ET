@@ -1,239 +1,67 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{820D3488-76B9-4EE8-872A-BE06C2350B20}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Model</RootNamespace>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Model</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Model</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SERVER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE;SERVER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\CommandLine.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson, Version=2.3.0.157, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\Lib\MongoDB.Driver.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.Core">
-      <HintPath>..\Lib\MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs" Link="Message\AppType.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs" Link="Message\IMessageDispatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Message\IMessagePacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs" Link="Base\Message\MessageInfo.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs" Link="Message\MongoPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs" Link="Message\ProtobufPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\RpcException.cs" Link="Message\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Object\Component.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs" Link="Base\Object\Disposer.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Object\Entity.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EntityFactory.cs" Link="Base\Object\EntityFactory.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs" Link="Base\Object\IAwake.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdate.cs" Link="Base\Object\ILateUpdate.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs" Link="Base\Object\ILoad.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStart.cs" Link="Base\Object\IStart.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdate.cs" Link="Base\Object\IUpdate.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs" Link="Base\Object\ObjectEventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ConfigComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs" Link="Component\EventComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Component\NetworkComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Entity\Message\OuterMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Entity\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs" Link="Helper\MongoHelper.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs">
-      <Link>Entity\DoubleMap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs">
-      <Link>Message\AppType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs">
-      <Link>Message\IMessageDispatcher.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs">
-      <Link>Message\IMessagePacker.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs">
-      <Link>Base\Message\MessageInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs">
-      <Link>Message\MongoPacker.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs">
-      <Link>Message\ProtobufPacker.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\RpcException.cs">
-      <Link>Message\RpcException.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs">
-      <Link>Base\Object\Component.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs">
-      <Link>Base\Object\ComponentFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs">
-      <Link>Base\Object\Disposer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs">
-      <Link>Base\Object\Entity.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EntityFactory.cs">
-      <Link>Base\Object\EntityFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs">
-      <Link>Base\Object\IAwake.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs">
-      <Link>Base\Object\ILoad.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStart.cs">
-      <Link>Base\Object\IStart.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdate.cs">
-      <Link>Base\Object\IUpdate.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs">
-      <Link>Base\Object\Object.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs">
-      <Link>Base\Object\ObjectEventAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs">
-      <Link>Base\Object\ObjectPool.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs">
-      <Link>Component\ConfigComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\EventComponent.cs">
-      <Link>Component\EventComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs">
-      <Link>Component\NetworkComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs">
-      <Link>Component\TimerComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs">
-      <Link>Entity\Message\Opcode.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs">
-      <Link>Entity\Message\OuterMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs">
-      <Link>Entity\Session.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs">
-      <Link>Helper\MongoHelper.cs</Link>
-    </Compile>
-    <Compile Include="Base\Other\HttpHandlerAttribute.cs" />
-    <Compile Include="Base\Other\IHttpHandler.cs" />
-    <Compile Include="Component\ActorProxyComponent.cs" />
-    <Compile Include="Component\HttpComponent.cs" />
-    <Compile Include="Component\ServerFrameComponent.cs" />
-    <Compile Include="Component\PlayerComponent.cs" />
-    <Compile Include="Component\Unit\UnitGateComponent.cs" />
-    <Compile Include="Entity\Player.cs" />
-    <Compile Include="Entity\Location.cs" />
-    <Compile Include="Base\Message\AMRpcHandler.cs" />
-    <Compile Include="Base\Message\IEntityActorHandler.cs" />
-    <Compile Include="Component\OpcodeTypeComponent.cs" />
-    <Compile Include="Component\ActorManagerComponent.cs" />
-    <Compile Include="Component\BenchmarkComponent.cs" />
-    <Compile Include="Component\Config\ClientConfig.cs" />
-    <Compile Include="Component\Config\DBConfig.cs" />
-    <Compile Include="Component\Config\HttpConfig.cs" />
-    <Compile Include="Component\Config\InnerConfig.cs" />
-    <Compile Include="Component\Config\OuterConfig.cs" />
-    <Compile Include="Component\DBCacheComponent.cs" />
-    <Compile Include="Component\DBComponent.cs" />
-    <Compile Include="Component\DBProxyComponent.cs" />
-    <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\LocationProxyComponent.cs" />
-    <Compile Include="Component\ActorMessageDispatherComponent.cs" />
-    <Compile Include="Component\MessageDispatherComponent.cs" />
-    <Compile Include="Component\NetInnerComponent.cs" />
-    <Compile Include="Component\NetOuterComponent.cs" />
-    <Compile Include="Component\RobotComponent.cs" />
-    <Compile Include="Component\Session\SessionPlayerComponent.cs" />
-    <Compile Include="Component\LocationComponent.cs" />
-    <Compile Include="Component\ActorComponent.cs" />
-    <Compile Include="Component\UnitComponent.cs" />
-    <Compile Include="Component\Player\SessionInfoComponent.cs" />
-    <Compile Include="Component\Unit\MasterComponent.cs" />
-    <Compile Include="Component\Unit\LockComponent.cs" />
-    <Compile Include="Component\AppManagerComponent.cs" />
-    <Compile Include="Component\GateSessionKeyComponent.cs" />
-    <Compile Include="Component\RealmGateAddressComponent.cs" />
-    <Compile Include="Component\OptionComponent.cs" />
-    <Compile Include="Component\StartConfigComponent.cs" />
-    <Compile Include="Base\Config\ACategory.cs" />
-    <Compile Include="Base\Config\AConfig.cs" />
-    <Compile Include="Base\Config\AConfigComponent.cs" />
-    <Compile Include="Base\Config\ConfigAttribute.cs" />
-    <Compile Include="Base\Config\ConfigHelper.cs" />
-    <Compile Include="Base\Config\ICategory.cs" />
-    <Compile Include="Entity\Config\BuffConfig.cs" />
-    <Compile Include="Entity\Config\StartConfig.cs" />
-    <Compile Include="Entity\ActorProxy.cs" />
-    <Compile Include="Entity\SceneEntity.cs" />
-    <Compile Include="Entity\EntityDB.cs" />
-    <Compile Include="Entity\DBTask.cs" />
-    <Compile Include="Entity\DBTaskQueue.cs" />
-    <Compile Include="Entity\Game.cs" />
-    <Compile Include="Entity\Http.cs" />
-    <Compile Include="Entity\Message\InnerMessage.cs" />
-    <Compile Include="Entity\Message\InnerOpcode.cs" />
-    <Compile Include="Entity\Scene.cs" />
-    <Compile Include="Entity\Unit.cs" />
-    <Compile Include="Base\Event\AEventAttribute.cs" />
-    <Compile Include="Base\Event\Env.cs" />
-    <Compile Include="Base\Event\EnvKey.cs" />
-    <Compile Include="Base\Event\EventAttribute.cs" />
-    <Compile Include="Base\Event\EventIdType.cs" />
-    <Compile Include="Base\Event\IEvent.cs" />
-    <Compile Include="Base\Helper\DllHelper.cs" />
-    <Compile Include="Base\Message\AActorMessage.cs" />
-    <Compile Include="Base\Message\AMessage.cs" />
-    <Compile Include="Base\Message\AMActorHandler.cs" />
-    <Compile Include="Base\Message\ErrorCode.cs" />
-    <Compile Include="Base\Message\IMActorHandler.cs" />
-    <Compile Include="Base\Message\IMHandler.cs" />
-    <Compile Include="Base\Message\ActorMessageAttribute.cs" />
-    <Compile Include="Base\Message\MessageAttribute.cs" />
-    <Compile Include="Base\Message\ActorMessageHandlerAttribute.cs" />
-    <Compile Include="Base\Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Base\Message\OpcodeHelper.cs" />
-    <Compile Include="Base\Object\ComponentDB.cs" />
-    <Compile Include="Base\Object\EntityType.cs" />
-    <Compile Include="Base\Object\ObjectEvents.cs" />
-    <Compile Include="Message\AMHandler.cs" />
-    <Compile Include="Other\OneThreadSynchronizationContext.cs" />
-    <Compile Include="Other\Options.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Folder Include="Helper\" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Base\Server.Base.csproj">
-      <Project>{e5078ec6-2b0e-4711-be8b-d99f69638316}</Project>
-      <Name>Server.Base</Name>
-    </ProjectReference>
+    <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\Base\Server.Base.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
+  </ItemGroup>
+
 </Project>

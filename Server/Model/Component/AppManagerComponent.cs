@@ -48,11 +48,11 @@ namespace Model
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 #if __MonoCS__
-			const string exe = @"mono";
-			string arguments = $"--debug App.exe --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
+			const string exe = @"dotnet";
+			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #else
-			const string exe = @"App.exe";
-			string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
+			const string exe = @"dotnet";
+			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #endif
 
 			Log.Info($"{exe} {arguments}");

@@ -184,9 +184,11 @@
     <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMeta.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\NodeMetaHelper.cs" />
     <Compile Include="Assets\Editor\BehaviorTreeEditor\PropertyDesigner.cs" />
+    <Compile Include="Assets\Editor\BuildEditor\BuildABEditor.cs" />
     <Compile Include="Assets\Editor\BuildEditor\BuildEditor.cs" />
     <Compile Include="Assets\Editor\ExcelExporterEditor\ExcelExporterEditor.cs" />
     <Compile Include="Assets\Editor\ExportNavmesh.cs" />
+    <Compile Include="Assets\Editor\Helper\EditorResHelper.cs" />
     <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />

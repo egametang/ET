@@ -14,14 +14,13 @@ namespace Model
 	
 	public class OptionComponent : Component
 	{
-		public Options Options { get; } = new Options();
+		public Options Options { get; set; }
 
 		public void Awake(string[] args)
 		{
-			if (!Parser.Default.ParseArguments(args, this.Options))
-			{
-				throw new Exception($"命令行格式错误!");
-			}
+			Parser.Default.ParseArguments<Options>(args)
+				.WithNotParsed(error => throw new Exception($"命令行格式错误!"))
+				.WithParsed(options => { Options = options; });
 		}
 	}
 }

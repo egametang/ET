@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\..\MongoDB.Driver\**\*.cs;..\..\MongoDB.Shared\ApplicationNameHelper.cs;..\..\MongoDB.Shared\Hasher.cs" Exclude="..\..\MongoDB.Driver\Properties\**;..\..\MongoDB.Driver\obj\**;bin\**;obj\**;**\*.xproj;packages\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+  </ItemGroup>
+</Project>
