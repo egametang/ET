@@ -9,6 +9,7 @@ ET框架使用C#做服务端，现在C#是完全可以跨平台的，在linux上
 ```bash
 ./Run.sh Config/StartConfig/192.168.12.188.txt 
 ```
+（--cmd部署windows server--）dotnet app.dll --appId=1 --appType=AllServer --config=../Config/StartConfig/LocalAllServer.txt
 即可编译启动服务器。  
 ### 4.提供协程支持  
 C#天生支持异步变同步语法 async和await，比lua，python的协程强大的多，新版python以及javascript语言甚至照搬了C#的协程语法。分布式服务端大量服务器之间的远程调用，没有异步语法的支持，开发将非常麻烦。所以java没有异步语法，做单服还行，不适合做大型分布式游戏服务端。例如：  
