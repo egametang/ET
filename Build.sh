@@ -1,5 +1,8 @@
 #!/bin/bash
-xbuild ./Server/Server.sln
+cd Server
+dotnet restore
+cd ../
+dotnet msbuild ./Server/Server.sln
 cd Bin
 cmake ../
 make
