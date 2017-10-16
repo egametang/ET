@@ -106,16 +106,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)\..\Tools\pdb2mdb.exe" $(TargetFileName)
-echo FA | xcopy $(TargetName).dll $(ProjectDir)\..\Assets\Res\Code\$(TargetName).dll.bytes
-echo FA | xcopy $(TargetName).pdb $(ProjectDir)\..\Assets\Res\Code\$(TargetName).pdb.bytes
-echo FA | xcopy $(TargetName).dll.mdb $(ProjectDir)\..\Assets\Res\Code\$(TargetName).mdb.bytes</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)\..\Tools\pdb2mdb.exe" $(TargetFileName)</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
+    <Copy SourceFiles="$(OutDir)$(TargetName).dll" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).dll.bytes" />
+    <Copy SourceFiles="$(OutDir)$(TargetName).pdb" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).pdb.bytes" />
+    <Copy SourceFiles="$(OutDir)$(TargetName).dll.mdb" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).mdb.bytes" />
   </Target>
-  -->
 </Project>
