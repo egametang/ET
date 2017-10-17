@@ -298,6 +298,9 @@
     <Reference Include="NPOI.OOXML">
       <HintPath>Assets/Plugins/npoi/NPOI.OOXML.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI.OpenXml4Net">
       <HintPath>Assets/Plugins/npoi/NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
@@ -386,10 +389,6 @@
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JsonDotNet\Assemblies\AOT\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
   </ItemGroup>

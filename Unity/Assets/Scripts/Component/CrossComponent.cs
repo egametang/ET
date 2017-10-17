@@ -4,16 +4,11 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectEvent]
-	public class CrossComponentEvent : ObjectEvent<CrossComponent>, IAwake, ILoad
+	public class CrossComponentEvent : ObjectEvent<CrossComponent>, IAwake
 	{
 		public void Awake()
 		{
 			this.Get().Awake();
-		}
-
-		public void Load()
-		{
-			this.Get().Load();
 		}
 	}
 
@@ -26,35 +21,38 @@ namespace Model
 
 		public void Awake()
 		{
-			this.Load();
+			Load();
 		}
 
-		public void Load()
+		private void Load()
 		{
-			this.allEvents = new Dictionary<int, List<IInstanceMethod>>();
+			allEvents = new Dictionary<int, List<IInstanceMethod>>();
 
 			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(CrossEventAttribute), false);
-
 				foreach (object attr in attrs)
 				{
 					CrossEventAttribute aEventAttribute = (CrossEventAttribute)attr;
+#if ILRuntime
 					IInstanceMethod method = new ILInstanceMethod(type, "Run");
-					if (!this.allEvents.ContainsKey(aEventAttribute.Type))
+#else
+					IInstanceMethod method = new MonoInstanceMethod(type, "Run");
+#endif
+					if (!allEvents.ContainsKey(aEventAttribute.Type))
 					{
-						this.allEvents.Add(aEventAttribute.Type, new List<IInstanceMethod>());
+						allEvents.Add(aEventAttribute.Type, new List<IInstanceMethod>());
 					}
-					this.allEvents[aEventAttribute.Type].Add(method);
+					allEvents[aEventAttribute.Type].Add(method);
 				}
 			}
 		}
 
-		public void Run(int type)
+		public void Run(CrossIdType type)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}

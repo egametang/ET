@@ -2,7 +2,7 @@
   "profiles": {
     "Server.App": {
       "commandName": "Project",
-      "workingDirectory": "D:\\Xnovae\\Egametang\\netcoreapp2.0"
+      "workingDirectory": "../../netcoreapp2.0"
     }
   }
 }
