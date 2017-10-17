@@ -39,7 +39,7 @@ namespace Hotfix
 				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
 				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 
-				G2C_LoginGate g2CLoginGate = await SessionComponent.Instance.Session.Call<G2C_LoginGate>(new C2G_LoginGate(r2CLogin.Key));
+				G2C_LoginGate g2CLoginGate = await SessionComponent.Instance.Session.Call<G2C_LoginGate>(new C2G_LoginGate() {Key = r2CLogin.Key});
 				Log.Info("登陆gate成功!");
 
 				// 创建Player
