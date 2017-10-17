@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using ProtoBuf;
 
 namespace Model
 {
@@ -25,9 +26,12 @@ namespace Model
 	/// <summary>
 	/// 帧消息，继承这个类的消息会经过服务端转发
 	/// </summary>
+	[ProtoContract]
+	[ProtoInclude(30000, typeof(Frame_ClickMap))]
 	[BsonKnownTypes(typeof(Frame_ClickMap))]
 	public abstract class AFrameMessage : AActorMessage
 	{
+		[ProtoMember(1)]
 		public long Id;
 	}
 }
