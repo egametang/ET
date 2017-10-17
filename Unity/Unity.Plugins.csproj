@@ -74,23 +74,8 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI">
-      <HintPath>Assets\Plugins\npoi\NPOI.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OOXML">
-      <HintPath>Assets\Plugins\npoi\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>Assets\Plugins\npoi\NPOI.OpenXml4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>Assets\Plugins\npoi\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -509,10 +494,6 @@
     <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JsonDotNet\Assemblies\AOT\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
   </ItemGroup>
