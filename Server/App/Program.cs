@@ -21,7 +21,7 @@ namespace App
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
 
-				if (options.AppType != startConfig.AppType)
+				if (!options.AppType.Is(startConfig.AppType))
 				{
 					Log.Error("命令行参数apptype与配置不一致");
 					return;
