@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AMessage.cs" Link="Base\Message\AMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs" Link="Message\AppType.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs" Link="Message\IMessageDispatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Message\IMessagePacker.cs" />

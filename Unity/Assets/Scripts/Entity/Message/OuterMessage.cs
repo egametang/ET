@@ -1,39 +1,45 @@
-// ·þÎñÆ÷Óë¿Í»§¶ËÖ®¼äµÄÏûÏ¢ Opcode´Ó1-9999
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ Opcodeï¿½ï¿½1-9999
 
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization;
+using ProtoBuf;
 
 namespace Model
 {
+	[ProtoContract]
 	[Message(Opcode.C2R_Login)]
 	public class C2R_Login: ARequest
 	{
+		[ProtoMember(1)]
 		public string Account;
+
+		[ProtoMember(2)]
 		public string Password;
 	}
 
+	[ProtoContract]
 	[Message(Opcode.R2C_Login)]
 	public class R2C_Login: AResponse
 	{
-	    public string Address;
+		[ProtoMember(1)]
+		public string Address { get; set; }
 
-	    public long Key;
+		[ProtoMember(2)]
+		public long Key { get; set; }
 	}
 
+	[ProtoContract]
 	[Message(Opcode.C2G_LoginGate)]
 	public class C2G_LoginGate: ARequest
 	{
+		[ProtoMember(1)]
 		public long Key;
-
-		public C2G_LoginGate(long key)
-		{
-			this.Key = key;
-		}
 	}
 
+	[ProtoContract]
 	[Message(Opcode.G2C_LoginGate)]
 	public class G2C_LoginGate: AResponse
 	{
+		[ProtoMember(1)]
 		public long PlayerId;
 	}
 
@@ -68,15 +74,19 @@ namespace Model
 	{
 	}
 
+	[ProtoContract]
 	[Message(Opcode.C2G_EnterMap)]
 	public class C2G_EnterMap: ARequest
 	{
 	}
 
+	[ProtoContract]
 	[Message(Opcode.G2C_EnterMap)]
 	public class G2C_EnterMap: AResponse
 	{
+		[ProtoMember(1)]
 		public long UnitId;
+		[ProtoMember(2)]
 		public int Count;
 	}
 
@@ -99,7 +109,7 @@ namespace Model
 		public AMessage Message;
 	}
 
-	// ·þÎñ¶Ë·¢¸ø¿Í»§¶Ë,Ã¿Ö¡Ò»Ìõ
+	// ï¿½ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½,Ã¿Ö¡Ò»ï¿½ï¿½
 	[Message(Opcode.FrameMessage)]
 	public class FrameMessage : AActorMessage
 	{
@@ -107,7 +117,7 @@ namespace Model
 		public List<AFrameMessage> Messages = new List<AFrameMessage>();
 	}
 
-	// ¿Í»§¶Ëµã»÷µØÍ¼
+	// ï¿½Í»ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Í¼
 	[Message(Opcode.Frame_ClickMap)]
 	public class Frame_ClickMap: AFrameMessage
 	{

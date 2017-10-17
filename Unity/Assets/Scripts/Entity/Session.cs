@@ -100,7 +100,7 @@ namespace Model
 			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
-			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
 
 			AResponse response = message as AResponse;
 			if (response != null)
