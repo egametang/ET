@@ -118,10 +118,13 @@ namespace Model
 	}
 
 	// 客户端点击地图
+	[ProtoContract]
 	[Message(Opcode.Frame_ClickMap)]
 	public class Frame_ClickMap: AFrameMessage
 	{
+		[ProtoMember(1)]
 		public int X;
+		[ProtoMember(2)]
 		public int Z;
 	}
 
