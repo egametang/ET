@@ -63,12 +63,7 @@ namespace Model
 			{
 				return new K[0];
 			}
-			var newList = new List<K>();
-			foreach (K k in list)
-			{
-				newList.Add(k);
-			}
-			return newList.ToArray();
+			return list.ToArray();
 		}
 
 		/// <summary>

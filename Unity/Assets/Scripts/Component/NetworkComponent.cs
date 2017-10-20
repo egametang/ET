@@ -11,9 +11,11 @@ namespace Model
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 
-		protected IMessagePacker messagePacker;
+		public IMessagePacker MessagePacker { get; set; }
 
-		protected void Awake(NetworkProtocol protocol)
+		public IMessageDispatcher MessageDispatcher { get; set; }
+
+		public void Awake(NetworkProtocol protocol)
 		{
 			switch (protocol)
 			{
@@ -28,21 +30,28 @@ namespace Model
 			}
 		}
 
-		protected void Awake(NetworkProtocol protocol, string host, int port)
+		public void Awake(NetworkProtocol protocol, string host, int port)
 		{
-			switch (protocol)
+			try
 			{
-				case NetworkProtocol.TCP:
-					this.Service = new TService(host, port);
-					break;
-				case NetworkProtocol.UDP:
-					this.Service = new UService(host, port);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+				switch (protocol)
+				{
+					case NetworkProtocol.TCP:
+						this.Service = new TService(host, port);
+						break;
+					case NetworkProtocol.UDP:
+						this.Service = new UService(host, port);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 
-			this.StartAccept();
+				this.StartAccept();
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"{host} {port}", e);
+			}
 		}
 
 		private async void StartAccept()
@@ -58,10 +67,10 @@ namespace Model
 			}
 		}
 
-		private async Task<Session> Accept()
+		public virtual async Task<Session> Accept()
 		{
 			AChannel channel = await this.Service.AcceptChannel();
-			Session session = new Session(this, channel, messagePacker);
+			Session session = new Session(this, channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;
@@ -88,19 +97,27 @@ namespace Model
 		/// <summary>
 		/// 创建一个新Session
 		/// </summary>
-		public Session Create(string address)
+		public virtual Session Create(string address)
 		{
-			string[] ss = address.Split(':');
-			int port = int.Parse(ss[1]);
-			string host = ss[0];
-			AChannel channel = this.Service.ConnectChannel(host, port);
-			Session session = new Session(this, channel, this.messagePacker);
-			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
-			this.sessions.Add(session.Id, session);
-			return session;
+			try
+			{
+				string[] ss = address.Split(':');
+				int port = int.Parse(ss[1]);
+				string host = ss[0];
+				AChannel channel = this.Service.ConnectChannel(host, port);
+				Session session = new Session(this, channel);
+				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+				this.sessions.Add(session.Id, session);
+				return session;
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+				return null;
+			}
 		}
 
-		protected void Update()
+		public void Update()
 		{
 			if (this.Service == null)
 			{

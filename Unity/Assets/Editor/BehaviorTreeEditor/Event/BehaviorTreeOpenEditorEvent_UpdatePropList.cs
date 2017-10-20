@@ -2,7 +2,7 @@
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeOpenEditor)]
+	[Event((int)EventIdType.BehaviorTreeOpenEditor)]
 	public class BehaviorTreeOpenEditorEvent_UpdatePropList: IEvent
 	{
 		public void Run()

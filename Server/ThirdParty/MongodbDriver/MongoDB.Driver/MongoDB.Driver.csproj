@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE5166CD-76B0-4911-BD80-CED9521F37A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MongoDB.Driver</RootNamespace>
+    <AssemblyName>MongoDB.Driver</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\..\MongoDB.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MongoDB.Driver.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MongoDB.Driver.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Keys\TemporaryKeyPair.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MongoDB.Shared\ApplicationNameHelper.cs">
+      <Link>ApplicationNameHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MongoDB.Shared\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MongoDB.Shared\Hasher.cs">
+      <Link>Support\Hasher.cs</Link>
+    </Compile>
+    <Compile Include="AggregateBucketAutoGranularity.cs" />
+    <Compile Include="AggregateBucketAutoOptions.cs" />
+    <Compile Include="AggregateBucketAutoResult.cs" />
+    <Compile Include="AggregateBucketAutoResultId.cs" />
+    <Compile Include="AggregateBucketOptions.cs" />
+    <Compile Include="AggregateBucketResult.cs" />
+    <Compile Include="AggregateCountResult.cs" />
+    <Compile Include="AggregateExpressionDefinition.cs" />
+    <Compile Include="AggregateFacet.cs" />
+    <Compile Include="AggregateFacetOptions.cs" />
+    <Compile Include="AggregateFacetResult.cs" />
+    <Compile Include="AggregateFacetResults.cs" />
+    <Compile Include="AggregateFluent.cs" />
+    <Compile Include="AggregateGraphLookupOptions.cs" />
+    <Compile Include="AggregateLookupOptions.cs" />
+    <Compile Include="AggregateSortByCountResult.cs" />
+    <Compile Include="AggregateStringTranslationMode.cs" />
+    <Compile Include="ArrayFilterDefinition.cs" />
+    <Compile Include="AsyncCursorHelper.cs" />
+    <Compile Include="Builders.cs" />
+    <Compile Include="CreateIndexModel.cs" />
+    <Compile Include="CreateViewOptions.cs" />
+    <Compile Include="DeleteOptions.cs" />
+    <Compile Include="FieldValueSerializerHelper.cs" />
+    <Compile Include="FilteredMongoCollectionBase.cs" />
+    <Compile Include="IndexKeysDefinition.cs" />
+    <Compile Include="IndexOptionDefaults.cs" />
+    <Compile Include="InsertOneOptions.cs" />
+    <Compile Include="Linq\AggregateQueryableExecutionModel.cs" />
+    <Compile Include="Linq\ExecutionPlanBuilder.cs" />
+    <Compile Include="Linq\ExpressionHelper.cs" />
+    <Compile Include="Linq\Expressions\AccumulatorExpression.cs" />
+    <Compile Include="Linq\Expressions\AccumulatorType.cs" />
+    <Compile Include="Linq\Expressions\AggregateExpressionExpression.cs" />
+    <Compile Include="Linq\Expressions\SerializedValueExpression.cs" />
+    <Compile Include="Linq\Expressions\InjectedFilterExpression.cs" />
+    <Compile Include="Linq\Expressions\CollectionExpression.cs" />
+    <Compile Include="Linq\Expressions\CorrelatedExpression.cs" />
+    <Compile Include="Linq\Expressions\ConcatExpression.cs" />
+    <Compile Include="Linq\Expressions\DistinctExpression.cs" />
+    <Compile Include="Linq\Expressions\DocumentExpression.cs" />
+    <Compile Include="Linq\Expressions\ExpressionReplacer.cs" />
+    <Compile Include="Linq\Expressions\FieldAsDocumentExpression.cs" />
+    <Compile Include="Linq\Expressions\ExpressionComparer.cs" />
+    <Compile Include="Linq\Expressions\ExtensionExpression.cs" />
+    <Compile Include="Linq\Expressions\ExtensionExpressionType.cs" />
+    <Compile Include="Linq\Expressions\ExtensionExpressionVisitor.cs" />
+    <Compile Include="Linq\Expressions\ArrayIndexExpression.cs" />
+    <Compile Include="Linq\Expressions\FieldExpression.cs" />
+    <Compile Include="Linq\Expressions\GroupByWithResultSelectorExpression.cs" />
+    <Compile Include="Linq\Expressions\GroupingKeyExpression.cs" />
+    <Compile Include="Linq\Expressions\JoinExpression.cs" />
+    <Compile Include="Linq\Expressions\GroupJoinExpression.cs" />
+    <Compile Include="Linq\Expressions\OrderByExpression.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\AggregateResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\HashSetResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\ContainsResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\ListResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\ArrayResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\SingleResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\ResultTransformerHelper.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\StandardDeviationResultOperator.cs" />
+    <Compile Include="Linq\Expressions\SelectManyExpression.cs" />
+    <Compile Include="Linq\Expressions\DefaultIfEmptyExpression.cs" />
+    <Compile Include="Linq\Expressions\SkipExpression.cs" />
+    <Compile Include="Linq\Expressions\SelectExpression.cs" />
+    <Compile Include="Linq\Expressions\IFieldExpression.cs" />
+    <Compile Include="Linq\Expressions\OrderByClause.cs" />
+    <Compile Include="Linq\Expressions\ExceptExpression.cs" />
+    <Compile Include="Linq\Expressions\IntersectExpression.cs" />
+    <Compile Include="Linq\Expressions\SampleExpression.cs" />
+    <Compile Include="Linq\Expressions\ReverseExpression.cs" />
+    <Compile Include="Linq\Expressions\ZipExpression.cs" />
+    <Compile Include="Linq\Expressions\UnionExpression.cs" />
+    <Compile Include="Linq\Expressions\WhereExpression.cs" />
+    <Compile Include="Linq\Expressions\ISerializationExpression.cs" />
+    <Compile Include="Linq\Expressions\GroupByExpression.cs" />
+    <Compile Include="Linq\Expressions\ISourcedExpression.cs" />
+    <Compile Include="Linq\Expressions\TakeExpression.cs" />
+    <Compile Include="Linq\Expressions\PipelineExpression.cs" />
+    <Compile Include="Linq\Expressions\ResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\AllResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\AverageResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\LastResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\FirstResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\MaxResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\SumResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\MinResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\CountResultOperator.cs" />
+    <Compile Include="Linq\Expressions\ResultOperators\AnyResultOperator.cs" />
+    <Compile Include="Linq\Expressions\SerializationExpression.cs" />
+    <Compile Include="Linq\IMongoQueryable.cs" />
+    <Compile Include="Linq\IMongoQueryProvider.cs" />
+    <Compile Include="Linq\IResultTransformer.cs" />
+    <Compile Include="Linq\LinqExtensions.cs" />
+    <Compile Include="Linq\MethodHelper.cs" />
+    <Compile Include="Linq\MongoEnumerable.cs" />
+    <Compile Include="Linq\MongoQueryable.cs" />
+    <Compile Include="Linq\MongoQueryableImpl.cs" />
+    <Compile Include="Linq\MongoQueryProviderImpl.cs" />
+    <Compile Include="Linq\Processors\BinderHelper.cs" />
+    <Compile Include="Linq\Processors\CompositeMethodCallBinder.cs" />
+    <Compile Include="Linq\Processors\CorrelatedAccumulatorRemover.cs" />
+    <Compile Include="Linq\Processors\CorrelatedGroupRewriter.cs" />
+    <Compile Include="Linq\Processors\AccumulatorBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\EmbeddedPipelineBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\EmbeddedPipelineBindingContext.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\AggregateBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\AllBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\AsQueryableBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ConcatBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\OfTypeBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\SkipBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\StandardDeviationBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\TakeBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ToHashSetBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ReverseBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ZipBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\UnionBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\IntersectBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ExceptBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ContainsBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ToListBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\ToArrayBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\DistinctBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\SumBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\LastBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\FirstBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\AverageBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\MaxBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\MinBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\SelectBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\WhereBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\CountBinder.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\AnyBinder.cs" />
+    <Compile Include="Linq\Processors\IBindingContext.cs" />
+    <Compile Include="Linq\Processors\MethodInfoMethodCallBinder.cs" />
+    <Compile Include="Linq\Processors\MultipleWhereMerger.cs" />
+    <Compile Include="Linq\Processors\NameBasedMethodCallBinder.cs" />
+    <Compile Include="Linq\Processors\PartialEvaluator.cs" />
+    <Compile Include="Linq\Processors\EmbeddedPipeline\MethodCallBinders\DefaultIfEmptyBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\GroupByWithResultSelectorBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\JoinBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\JoinSerializer.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\StandardDeviationSampleBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\StandardDeviationPopulationBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SampleBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\ThenByBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\OrderByBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SelectManyBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SumBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SingleBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\MinBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\MaxBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\FirstBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\CountBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\AverageBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\AnyBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\GroupByBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\DistinctBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SelectBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SelectingResultOperatorBinderBase.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\OfTypeBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\TakeBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\SkipBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\MethodCallBinders\WhereBinder.cs" />
+    <Compile Include="Linq\Processors\Pipeline\PipelineBindingContext.cs" />
+    <Compile Include="Linq\Processors\IMethodCallBinder.cs" />
+    <Compile Include="Linq\Processors\PipelineBinderBase.cs" />
+    <Compile Include="Linq\Processors\Pipeline\PipelineBinder.cs" />
+    <Compile Include="Linq\Processors\PreviouslyUsedSerializerFinder.cs" />
+    <Compile Include="Linq\Processors\ProjectionMapper.cs" />
+    <Compile Include="Linq\Processors\SerializationBinder.cs" />
+    <Compile Include="Linq\Processors\SerializerBuilder.cs" />
+    <Compile Include="Linq\Processors\Transformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\ConstantOnRightTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\ExpressionTransformerRegistry.cs" />
+    <Compile Include="Linq\Processors\Transformers\FirstLastNormalizingTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\IExpressionTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\CollectionConstructorTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\EqualsAnyBooleanTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\NullableTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\SelectSelectCombiningTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\VBCoalesceTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\VBCompareStringTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\VBInformationIsNothingTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\VBNothingConversionRemovalTransformer.cs" />
+    <Compile Include="Linq\Processors\Transformers\VBStringIndexComparisonTransformer.cs" />
+    <Compile Include="Linq\QueryableExecutionModel.cs" />
+    <Compile Include="Linq\SerializerHelper.cs" />
+    <Compile Include="Linq\Translators\AggregateExpressionTranslator.cs" />
+    <Compile Include="Linq\Translators\AggregateGroupTranslator.cs" />
+    <Compile Include="Linq\Translators\AggregateLanguageTranslator.cs" />
+    <Compile Include="Linq\Translators\AggregateProjectTranslator.cs" />
+    <Compile Include="Linq\FieldExpressionFlattener.cs" />
+    <Compile Include="Linq\Translators\FieldNamePrefixer.cs" />
+    <Compile Include="Linq\QueryableTranslation.cs" />
+    <Compile Include="Linq\Translators\FindProjectionTranslator.cs" />
+    <Compile Include="Linq\Translators\ProjectedObject.cs" />
+    <Compile Include="Linq\Translators\ProjectedObjectDeserializer.cs" />
+    <Compile Include="Linq\Translators\QueryableTranslator.cs" />
+    <Compile Include="Linq\Translators\PredicateTranslator.cs" />
+    <Compile Include="ExpressionTranslationOptions.cs" />
+    <Compile Include="MongoX509Identity.cs" />
+    <Compile Include="OfTypeSerializer.cs" />
+    <Compile Include="PipelineDefinitionBuilder.cs" />
+    <Compile Include="PipelineStageDefinition.cs" />
+    <Compile Include="PipelineDefinition.cs" />
+    <Compile Include="BulkWriteError.cs" />
+    <Compile Include="ConnectionMode.cs" />
+    <Compile Include="FilterDefinition.cs" />
+    <Compile Include="AggregateFluentBase.cs" />
+    <Compile Include="PipelineStageDefinitionBuilder.cs" />
+    <Compile Include="ProjectionDefinitionBuilder.cs" />
+    <Compile Include="IndexKeysDefinitionBuilder.cs" />
+    <Compile Include="SortDefinitionBuilder.cs" />
+    <Compile Include="FilterDefinitionBuilder.cs" />
+    <Compile Include="IAggregateFluentExtensions.cs" />
+    <Compile Include="AggregateOptions.cs" />
+    <Compile Include="BulkWriteOptions.cs" />
+    <Compile Include="ClusterKey.cs" />
+    <Compile Include="ClusterRegistry.cs" />
+    <Compile Include="CountOptions.cs" />
+    <Compile Include="CreateIndexOptions.cs" />
+    <Compile Include="IAggregateFluent.cs" />
+    <Compile Include="IFindFluent.cs" />
+    <Compile Include="IFindFluentExtensions.cs" />
+    <Compile Include="IInheritableMongoClientSettings.cs" />
+    <Compile Include="IMongoCollectionExtensions.cs" />
+    <Compile Include="IMongoIndexManager.cs" />
+    <Compile Include="InsertManyOptions.cs" />
+    <Compile Include="ListCollectionsOptions.cs" />
+    <Compile Include="MapReduceOptions.cs" />
+    <Compile Include="MongoClientBase.cs" />
+    <Compile Include="MongoCollectionBase.cs" />
+    <Compile Include="MongoDatabaseBase.cs" />
+    <Compile Include="MongoIndexManagerBase.cs" />
+    <Compile Include="FindFluentBase.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Support\ReflectionExtensions.cs" />
+    <Compile Include="AggregateUnwindOptions.cs" />
+    <Compile Include="TextSearchOptions.cs" />
+    <Compile Include="UpdateDefinitionBuilder.cs" />
+    <Compile Include="OfTypeMongoCollection.cs" />
+    <Compile Include="IFilteredMongoCollection.cs" />
+    <Compile Include="RenameCollectionOptions.cs" />
+    <Compile Include="CreateCollectionOptions.cs" />
+    <Compile Include="DistinctOptions.cs" />
+    <Compile Include="FindFluent.cs" />
+    <Compile Include="FindOptions.cs" />
+    <Compile Include="FindOneAndDeleteOptions.cs" />
+    <Compile Include="FindOneAndReplaceOptions.cs" />
+    <Compile Include="FindOneAndUpdateOptions.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonObjectSerializerHelper.cs" />
+    <Compile Include="IMongoClient.cs" />
+    <Compile Include="IMongoCollection.cs" />
+    <Compile Include="IMongoDatabase.cs" />
+    <Compile Include="DeleteResult.cs" />
+    <Compile Include="InsertOneModel.cs" />
+    <Compile Include="ReplaceOneModel.cs" />
+    <Compile Include="CursorType.cs" />
+    <Compile Include="ReturnDocument.cs" />
+    <Compile Include="ProjectionDefinition.cs" />
+    <Compile Include="FieldDefinition.cs" />
+    <Compile Include="SortDefinition.cs" />
+    <Compile Include="UpdateDefinition.cs" />
+    <Compile Include="UpdateOptions.cs" />
+    <Compile Include="UpdateOneModel.cs" />
+    <Compile Include="UpdateManyModel.cs" />
+    <Compile Include="DeleteManyModel.cs" />
+    <Compile Include="DeleteOneModel.cs" />
+    <Compile Include="IOperationExecutor.cs" />
+    <Compile Include="MongoCollectionImpl.cs" />
+    <Compile Include="MongoDatabaseImpl.cs" />
+    <Compile Include="OperationExecutor.cs" />
+    <Compile Include="ReplaceOneResult.cs" />
+    <Compile Include="UpdateResult.cs" />
+    <Compile Include="WriteConcernError.cs" />
+    <Compile Include="BulkWriteResult.cs" />
+    <Compile Include="BulkWriteUpsert.cs" />
+    <Compile Include="MongoBulkWriteException.cs" />
+    <Compile Include="Support\IndexMap.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonBoundingBox.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonCoordinateReferenceSystem.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonFeature.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonFeatureArgs.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonFeatureCollection.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonGeometry.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonGeometryCollection.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonLinearRingCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonLineString.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonLineStringCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonLinkedCoordinateReferenceSystem.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiLineString.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiLineStringCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiPoint.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiPointCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiPolygonCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonMultiPolygon.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonNamedCoordinateReferenceSystem.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonObject.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonObjectArgs.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonObjectType.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonPoint.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonPolygon.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonPolygonCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJsonCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson2DCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson3DCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson2DGeographicCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson3DGeographicCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson2DProjectedCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\GeoJson3DProjectedCoordinates.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson2DGeographicCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson2DProjectedCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson3DCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson3DGeographicCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson3DProjectedCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonBoundingBoxSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonCoordinateReferenceSystemSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonFeatureCollectionSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonFeatureSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonGeometryCollectionSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonGeometrySerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonLinearRingCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonLineStringCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonLineStringSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonLinkedCoordinateReferenceSystemSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiLineStringCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiPointCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiPointSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiLineStringSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiPolygonCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonMultiPolygonSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonNamedCoordinateReferenceSystemSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonObjectSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonPointSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonPolygonCoordinatesSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJsonPolygonSerializer.cs" />
+    <Compile Include="GeoJsonObjectModel\Serializers\GeoJson2DCoordinatesSerializer.cs" />
+    <Compile Include="MongoClient.cs" />
+    <Compile Include="MongoClientSettings.cs" />
+    <Compile Include="MongoCollectionSettings.cs" />
+    <Compile Include="MongoCredentialStore.cs" />
+    <Compile Include="MongoDatabaseSettings.cs" />
+    <Compile Include="MongoDBRef.cs" />
+    <Compile Include="MongoExternalIdentity.cs" />
+    <Compile Include="MongoIdentity.cs" />
+    <Compile Include="MongoIdentityEvidence.cs" />
+    <Compile Include="MongoInternalIdentity.cs" />
+    <Compile Include="MongoUrlBuilder.cs" />
+    <Compile Include="PasswordEvidence.cs" />
+    <Compile Include="Setting.cs" />
+    <Compile Include="SslSettings.cs" />
+    <Compile Include="MongoUtils.cs" />
+    <Compile Include="MongoDefaults.cs" />
+    <Compile Include="MongoCredential.cs" />
+    <Compile Include="MongoServerAddress.cs" />
+    <Compile Include="MongoUrl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExternalEvidence.cs" />
+    <Compile Include="MongoWriteException.cs" />
+    <Compile Include="WriteError.cs" />
+    <Compile Include="WriteModel.cs" />
+    <Compile Include="WriteModelType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MongoDB.Bson\MongoDB.Bson.csproj">
+      <Project>{0E9A3A2A-49CD-4F6C-847C-DC79B4B65CE6}</Project>
+      <Name>MongoDB.Bson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj">
+      <Project>{da56482a-5d8f-41e0-85e6-1f22b310f91b}</Project>
+      <Name>MongoDB.Driver.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\AsyncUsageAnalyzers.1.0.0-alpha003\analyzers\dotnet\AsyncUsageAnalyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

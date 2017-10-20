@@ -1,38 +1,29 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
-	public class ActorComponentEvent : ObjectEvent<ActorComponent>, IAwake
+	public struct ActorMessageInfo
 	{
-		public void Awake()
-		{
-			this.Get().Awake();
-		}
+		public Session Session;
+		public ActorRequest Message;
 	}
 
 	/// <summary>
-	/// 挂上这个组件表示该Entity是一个Actor, 它会将Entity位置注册到Location Server
+	/// 挂上这个组件表示该Entity是一个Actor, 它会将Entity位置注册到Location Server, 接收的消息将会队列处理
 	/// </summary>
 	public class ActorComponent: Component
 	{
-		private long actorId;
+		public IEntityActorHandler entityActorHandler;
 
-		public async void Awake()
-		{
-			try
-			{
-				this.actorId = this.Owner.Id;
-				Game.Scene.GetComponent<ActorManagerComponent>().Add(this.Owner);
-				await Game.Scene.GetComponent<LocationProxyComponent>().Add(this.actorId);
-			}
-			catch (Exception e)
-			{
-				Log.Error(e.ToString());
-			}
-		}
+		public long actorId;
 
-		public override async void Dispose()
+		// 队列处理消息
+		public EQueue<ActorMessageInfo> queue;
+
+		public TaskCompletionSource<ActorMessageInfo> tcs;
+
+		public override void Dispose()
 		{
 			try
 			{
@@ -44,12 +35,10 @@ namespace Model
 				base.Dispose();
 
 				Game.Scene.GetComponent<ActorManagerComponent>().Remove(actorId);
-
-				await Game.Scene.GetComponent<LocationProxyComponent>().Remove(this.actorId);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Log.Error(e.ToString());
+				Log.Error($"unregister actor fail: {this.actorId}");
 			}
 		}
 	}

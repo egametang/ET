@@ -2,7 +2,7 @@
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeRightDesignerDrag)]
+	[Event((int)EventIdType.BehaviorTreeRightDesignerDrag)]
 	public class BehaviorTreeRightDesignerDragEvent_ModifyRightBorder: IEvent<float>
 	{
 		public void Run(float deltaX)

@@ -21,7 +21,8 @@ namespace Hotfix
 
 		public T Get<T>(string key)
 		{
-			if (!this.kv.TryGetValue(key, out object k))
+			object k;
+			if (!this.kv.TryGetValue(key, out k))
 			{
 				return default(T);
 			}

@@ -2,42 +2,21 @@
 
 namespace Model
 {
-	[ObjectEvent]
-	public class GateSessionKeyComponentEvent : ObjectEvent<GateSessionKeyComponent>, IAwake
-	{
-		public void Awake()
-		{
-			this.Get().Awake();
-		}
-	}
-	
 	public class GateSessionKeyComponent : Component
 	{
-		private TimerComponent timerComponent;
-
-		private readonly HashSet<long> sessionKey = new HashSet<long>();
-
-		public void Awake()
+		private readonly Dictionary<long, string> sessionKey = new Dictionary<long, string>();
+		
+		public void Add(long key, string account)
 		{
-			this.timerComponent = Game.Scene.GetComponent<TimerComponent>();
-		}
-
-		public long Get()
-		{
-			long key = RandomHelper.RandInt64();
-			this.sessionKey.Add(key);
+			this.sessionKey.Add(key, account);
 			this.TimeoutRemoveKey(key);
-			return key;
 		}
 
-		public bool Check(long key)
+		public string Get(long key)
 		{
-			bool ret = this.sessionKey.Contains(key);
-			if (ret)
-			{
-				this.sessionKey.Remove(key);
-			}
-			return ret;
+			string account = null;
+			this.sessionKey.TryGetValue(key, out account);
+			return account;
 		}
 
 		public void Remove(long key)
@@ -47,7 +26,7 @@ namespace Model
 
 		private async void TimeoutRemoveKey(long key)
 		{
-			await this.timerComponent.WaitAsync(20000);
+			await Game.Scene.GetComponent<TimerComponent>().WaitAsync(20000);
 			this.sessionKey.Remove(key);
 		}
 	}

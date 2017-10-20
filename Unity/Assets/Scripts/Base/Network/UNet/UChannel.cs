@@ -79,14 +79,14 @@ namespace Model
 			{
 				throw new Exception("UChannel已经被Dispose, 不能接收消息");
 			}
-
+			
 			var recvQueue = this.socket.RecvQueue;
 			if (recvQueue.Count > 0)
 			{
 				return Task.FromResult(recvQueue.Dequeue());
 			}
 
-			recvTcs = new TaskCompletionSource<byte[]>();		
+			recvTcs = new TaskCompletionSource<byte[]>();
 			return recvTcs.Task;
 		}
 

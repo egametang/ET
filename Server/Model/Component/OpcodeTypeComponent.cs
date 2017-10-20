@@ -19,8 +19,8 @@ namespace Model
 	
 	public class OpcodeTypeComponent : Component
 	{
-		private Dictionary<ushort, Type> opcodeType;
-		private Dictionary<Type, MessageAttribute> messageOpcode;
+		private Dictionary<ushort, Type> opcodeType { get; set; }
+		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
 
 		public void Awake()
 		{

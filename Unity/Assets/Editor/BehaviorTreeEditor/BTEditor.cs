@@ -39,8 +39,8 @@ namespace MyEditor
 					return instance;
 				}
 
-				AssemblyManager.Instance.Add("Model", typeof(Init).Assembly);
-				AssemblyManager.Instance.Add("Editor", typeof(BTEditor).Assembly);
+				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
+				ObjectEvents.Instance.Add("Editor", typeof(BTEditor).Assembly);
 
 				instance = new BTEditor();
 
@@ -55,6 +55,7 @@ namespace MyEditor
 
 		public static void Reset()
 		{
+			instance?.Dispose();
 			instance = null;
 		}
 

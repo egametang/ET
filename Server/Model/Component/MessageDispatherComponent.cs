@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectEvent]
-	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake<AppType>, ILoad
+	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake, ILoad
 	{
-		public void Awake(AppType appType)
+		public void Awake()
 		{
-			this.Get().Awake(appType);
+			this.Get().Awake();
 		}
 
 		public void Load()
@@ -22,19 +22,19 @@ namespace Model
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private AppType AppType;
 		private Dictionary<Type, List<IMHandler>> handlers;
 
-		public void Awake(AppType appType)
+		public void Awake()
 		{
-			this.AppType = appType;
 			this.Load();
 		}
 
 		public void Load()
 		{
-			this.handlers = new Dictionary<Type, List<IMHandler>>();
+			AppType appType = this.GetComponent<StartConfigComponent>().StartConfig.AppType;
 
+			this.handlers = new Dictionary<Type, List<IMHandler>>();
+			
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
@@ -45,7 +45,7 @@ namespace Model
 				}
 
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-				if (!messageHandlerAttribute.Type.Is(this.AppType))
+				if (!messageHandlerAttribute.Type.Is(appType))
 				{
 					continue;
 				}
@@ -68,14 +68,14 @@ namespace Model
 			}
 		}
 
-		public void Handle(Session session, object message)
+		public void Handle(Session session, AMessage message)
 		{
 			if (!this.handlers.TryGetValue(message.GetType(), out List<IMHandler> actions))
 			{
 				Log.Error($"消息 {message.GetType().FullName} 没有处理");
 				return;
 			}
-
+			
 			foreach (IMHandler ev in actions)
 			{
 				try

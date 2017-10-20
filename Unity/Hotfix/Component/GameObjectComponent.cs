@@ -1,13 +1,22 @@
-﻿using UnityEngine;
+﻿using Model;
+using UnityEngine;
 
 namespace Hotfix
 {
-	[ObjectEvent(EntityEventId.GameObjectComponent)]
+	[ObjectEvent]
+	public class GameObjectComponentEvent : ObjectEvent<GameObjectComponent>, IAwake<GameObject>
+	{
+		public void Awake(GameObject gameObject)
+		{
+			this.Get().Awake(gameObject);
+		}
+	}
+	
 	public class GameObjectComponent: Component
 	{
 		public GameObject GameObject { get; private set; }
 
-		private void Awake(GameObject gameObject)
+		public void Awake(GameObject gameObject)
 		{
 			this.GameObject = gameObject;
 		}

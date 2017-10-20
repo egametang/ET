@@ -1,4 +1,5 @@
 ﻿using System;
+using Model;
 
 namespace Hotfix
 {
@@ -6,7 +7,12 @@ namespace Hotfix
 	{
 		public static string ToStr(this Exception exception)
 		{
-			return (string)exception.Data["StackTrace"];
+			if (Define.IsILRuntime)
+			{
+				return (string) exception.Data["StackTrace"];
+			}
+
+			return exception.ToString();
 		}
 	}
 }

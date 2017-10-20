@@ -3,51 +3,56 @@ using System.Collections.Generic;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class CrossComponentEvent : ObjectEvent<CrossComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+
 	/// <summary>
 	/// 事件分发,可以将事件分发到IL层
 	/// </summary>
-	[EntityEvent(EntityEventId.CrossComponent)]
-	public class CrossComponent : Component, IAwake
+	public class CrossComponent : Component
 	{
-		private static object[] args0 = new object[0];
-		private static object[] args1 = new object[1];
-		private static object[] args2 = new object[2];
-		private static object[] args3 = new object[3];
-		private static object[] args4 = new object[4];
-
 		private Dictionary<int, List<IInstanceMethod>> allEvents;
 
 		public void Awake()
 		{
-			this.Load();
+			Load();
 		}
 
 		private void Load()
 		{
-			this.allEvents = new Dictionary<int, List<IInstanceMethod>>();
+			allEvents = new Dictionary<int, List<IInstanceMethod>>();
 
 			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
-
+				object[] attrs = type.GetCustomAttributes(typeof(CrossEventAttribute), false);
 				foreach (object attr in attrs)
 				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
+					CrossEventAttribute aEventAttribute = (CrossEventAttribute)attr;
+#if ILRuntime
 					IInstanceMethod method = new ILInstanceMethod(type, "Run");
-					if (!this.allEvents.ContainsKey(aEventAttribute.Type))
+#else
+					IInstanceMethod method = new MonoInstanceMethod(type, "Run");
+#endif
+					if (!allEvents.ContainsKey(aEventAttribute.Type))
 					{
-						this.allEvents.Add(aEventAttribute.Type, new List<IInstanceMethod>());
+						allEvents.Add(aEventAttribute.Type, new List<IInstanceMethod>());
 					}
-					this.allEvents[aEventAttribute.Type].Add(method);
+					allEvents[aEventAttribute.Type].Add(method);
 				}
 			}
 		}
 
-		public void Run(int type)
+		public void Run(CrossIdType type)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -56,7 +61,7 @@ namespace Model
 			{
 				try
 				{
-					obj.Run(args0);
+					obj.Run();
 				}
 				catch (Exception err)
 				{
@@ -65,10 +70,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(CrossIdType type, A a)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -77,8 +82,7 @@ namespace Model
 			{
 				try
 				{
-					args1[0] = a;
-					obj.Run(args1);
+					obj.Run(a);
 				}
 				catch (Exception err)
 				{
@@ -87,10 +91,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(CrossIdType type, A a, B b)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -99,9 +103,7 @@ namespace Model
 			{
 				try
 				{
-					args2[0] = a;
-					args2[1] = b;
-					obj.Run(args2);
+					obj.Run(a, b);
 				}
 				catch (Exception err)
 				{
@@ -110,10 +112,10 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(CrossIdType type, A a, B b, C c)
 		{
 			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
@@ -122,56 +124,7 @@ namespace Model
 			{
 				try
 				{
-					args3[0] = a;
-					args3[1] = b;
-					args3[2] = c;
-					obj.Run(args3);
-				}
-				catch (Exception err)
-				{
-					Log.Error(err.ToString());
-				}
-			}
-		}
-
-		public void Run<A, B, C, D>(int type, A a, B b, C c, D d)
-		{
-			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
-			{
-				return;
-			}
-
-			foreach (IInstanceMethod obj in iEvents)
-			{
-				try
-				{
-					args4[0] = a;
-					args4[1] = b;
-					args4[2] = c;
-					args4[3] = d;
-					obj.Run(args4);
-				}
-				catch (Exception err)
-				{
-					Log.Error(err.ToString());
-				}
-			}
-		}
-
-		public void Run(int type, params object[] param)
-		{
-			List<IInstanceMethod> iEvents = null;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
-			{
-				return;
-			}
-
-			foreach (IInstanceMethod obj in iEvents)
-			{
-				try
-				{
-					obj.Run(param);
+					obj.Run(a, b, c);
 				}
 				catch (Exception err)
 				{

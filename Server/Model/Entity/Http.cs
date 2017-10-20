@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
 	// 充值流水
-	public sealed class RechargeRecord : DBEntity
+	public sealed class RechargeRecord : EntityDB
 	{
 		// 充值玩家
 		public int PlayerNO { get; set; }
@@ -18,7 +18,7 @@
 	}
 
 	// 保存玩家充值记录, 每个玩家只有一条
-	public sealed class Recharge : DBEntity
+	public sealed class Recharge : EntityDB
 	{
 		public int CardNumber { get; set; }
 		

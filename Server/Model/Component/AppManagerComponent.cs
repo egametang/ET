@@ -6,11 +6,11 @@ using System.Linq;
 namespace Model
 {
 	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IAwake
+	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IStart
 	{
-		public void Awake()
+		public void Start()
 		{
-			this.Get().Awake();
+			this.Get().Start();
 		}
 	}
 
@@ -18,7 +18,7 @@ namespace Model
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		public void Awake()
+		public void Start()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
 			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
@@ -48,11 +48,11 @@ namespace Model
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 #if __MonoCS__
-			const string exe = @"mono";
-			string arguments = $"--debug App.exe --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
+			const string exe = @"dotnet";
+			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #else
-			const string exe = @"App.exe";
-			string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
+			const string exe = @"dotnet";
+			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
 #endif
 
 			Log.Info($"{exe} {arguments}");
