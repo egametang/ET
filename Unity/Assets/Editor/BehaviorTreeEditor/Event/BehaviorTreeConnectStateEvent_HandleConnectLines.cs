@@ -2,7 +2,7 @@
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeConnectState)]
+	[Event((int)EventIdType.BehaviorTreeConnectState)]
 	public class BehaviorTreeConnectStateEvent_HandleConnectLines: IEvent<NodeDesigner, State>
 	{
 		public void Run(NodeDesigner nodeDesigner, State state)

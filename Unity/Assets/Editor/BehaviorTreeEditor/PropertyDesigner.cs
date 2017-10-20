@@ -704,27 +704,38 @@ namespace MyEditor
 
 		public void DrawDebugView()
 		{
-			BehaviorTree behaviorTree = BTEditor.Instance.GetComponent<BTDebugComponent>().BehaviorTree;
-			List<List<long>> treePathList = BTEditor.Instance.GetComponent<BTDebugComponent>().TreePathList;
-			if (behaviorTree == null)
-			{
-				return;
-			}
+			BTDebugComponent btDebugComponent = BTEditor.Instance.GetComponent<BTDebugComponent>();
+			List<List<long>> treePathList = btDebugComponent.Get(btDebugComponent.OwnerId);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("行为树Id:");
+			btDebugComponent.OwnerId = EditorGUILayout.LongField(btDebugComponent.OwnerId);
+			GUILayout.EndHorizontal();
+
+			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("清空执行记录"))
 			{
 				treePathList.Clear();
 				BTEditor.Instance.ClearDebugState();
 			}
+
+			if (GUILayout.Button("清除帧选择"))
+			{
+				btDebugComponent.IsFrameSelected = false;
+			}
+			GUILayout.EndHorizontal();
+
 			const float offset = 55f;
-			GUILayout.BeginArea(new Rect(0f, 20f, this.mWidth, Screen.height - offset));
+			GUILayout.BeginArea(new Rect(0f, 60f, this.mWidth, Screen.height - offset));
 			this.mTreeScrollPos = GUI.BeginScrollView(
 				new Rect(0f, 0f, this.mWidth, Screen.height - offset), this.mTreeScrollPos,
 			    new Rect(0f, 0f, this.mWidth - 20f, treePathList.Count * 22), false, false);
 
-			for (int i = 0; i < BTEditor.Instance.GetComponent<BTDebugComponent>().TreePathList.Count; i++)
+			
+			for (int i = 0; i < treePathList.Count; i++)
 			{
 				if (GUILayout.Button($"frame{i}"))
 				{
+					btDebugComponent.IsFrameSelected = true;
 					BTEditor.Instance.ClearDebugState();
 					BTEditor.Instance.SetDebugState(treePathList[i]);
 				}

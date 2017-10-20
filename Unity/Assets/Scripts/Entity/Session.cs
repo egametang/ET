@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,15 +11,12 @@ namespace Model
 		private readonly NetworkComponent network;
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
 		private readonly AChannel channel;
-		private bool isRpc;
+		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0]};
 
-		private readonly IMessagePacker messagePacker;
-
-		public Session(NetworkComponent network, AChannel channel, IMessagePacker messagePacker)
+		public Session(NetworkComponent network, AChannel channel)
 		{
 			this.network = network;
 			this.channel = channel;
-			this.messagePacker = messagePacker;
 			this.StartRecv();
 		}
 
@@ -42,7 +38,6 @@ namespace Model
 
 		private async void StartRecv()
 		{
-			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)
 			{
 				if (this.Id == 0)
@@ -53,12 +48,11 @@ namespace Model
 				byte[] messageBytes;
 				try
 				{
-					if (this.isRpc)
-					{
-						this.isRpc = false;
-						await timerComponent.WaitAsync(0);
-					}
 					messageBytes = await channel.Recv();
+					if (this.Id == 0)
+					{
+						return;
+					}
 				}
 				catch (Exception e)
 				{
@@ -72,7 +66,6 @@ namespace Model
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
-
 				try
 				{
 					this.Run(opcode, messageBytes);
@@ -87,39 +80,29 @@ namespace Model
 		private void Run(ushort opcode, byte[] messageBytes)
 		{
 			int offset = 0;
-			byte flag = messageBytes[2];
-
-			bool isCompressed = (flag & 0x80) > 0;
-			const int opcodeAndFlagLength = 3;
+			// opcode最高位表示是否压缩
+			bool isCompressed = (opcode & 0x8000) > 0;
 			if (isCompressed) // 最高位为1,表示有压缩,需要解压缩
 			{
-				messageBytes = ZipHelper.Decompress(messageBytes, opcodeAndFlagLength, messageBytes.Length - opcodeAndFlagLength);
+				messageBytes = ZipHelper.Decompress(messageBytes, 2, messageBytes.Length - 2);
 				offset = 0;
 			}
 			else
 			{
-				offset = opcodeAndFlagLength;
+				offset = 2;
 			}
-
+			opcode &= 0x7fff;
 			this.RunDecompressedBytes(opcode, messageBytes, offset);
 		}
 
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
-			Type messageType = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-			object message = messagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
-			
+			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
+			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
-			// 普通消息或者是Rpc请求消息
-			if (message is AMessage || message is ARequest)
-			{
-				MessageInfo messageInfo = new MessageInfo(opcode, message);
-				Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.MessageDeserializeFinish, messageInfo);
-				return;
-			}
+			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
 
 			AResponse response = message as AResponse;
-			Log.Debug($"aaaaaaaaaaaaaaaaaaaaaaaaaaa {JsonHelper.ToJson(response)}");
 			if (response != null)
 			{
 				// rpcFlag>0 表示这是一个rpc响应消息
@@ -134,13 +117,13 @@ namespace Model
 				return;
 			}
 
-			throw new Exception($"message type error: {message.GetType().FullName}");
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request, CancellationToken cancellationToken) where Request : ARequest
+		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
 			where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
@@ -153,12 +136,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					this.isRpc = true;
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -175,7 +158,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<Response> Call<Request, Response>(Request request) where Request : ARequest where Response : AResponse
+		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
 			this.SendMessage(request);
@@ -186,12 +169,12 @@ namespace Model
 				try
 				{
 					Response response = (Response)message;
-					if (response.Error != 0)
+					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					this.isRpc = true;
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -203,7 +186,7 @@ namespace Model
 			return tcs.Task;
 		}
 
-		public void Send<Message>(Message message) where Message : AMessage
+		public void Send(AMessage message)
 		{
 			if (this.Id == 0)
 			{
@@ -223,24 +206,25 @@ namespace Model
 
 		private void SendMessage(object message)
 		{
-			ushort opcode = this.network.Owner.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
+			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
+			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 
-			byte[] messageBytes = messagePacker.SerializeToByteArray(message);
-			byte flag = 0;
+			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 			if (messageBytes.Length > 100)
 			{
 				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);
 				if (newMessageBytes.Length < messageBytes.Length)
 				{
 					messageBytes = newMessageBytes;
-					flag |= 0x80;
+					opcode |= 0x8000;
 				}
 			}
 
-			byte[] flagBytes = { flag };
-
-			channel.Send(new List<byte[]> { opcodeBytes, flagBytes, messageBytes });
+			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
+			
+			this.byteses[0] = opcodeBytes;
+			this.byteses[1] = messageBytes;
+			channel.Send(this.byteses);
 		}
 
 		public override void Dispose()

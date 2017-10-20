@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Model
 {
 	public sealed class TService: AService
 	{
-		private TPoller poller = new TPoller();
-		private readonly TSocket acceptor;
+		private TcpListener acceptor;
 
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
 
+		private readonly EQueue<Action> actions = new EQueue<Action>();
+		
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
@@ -19,7 +22,8 @@ namespace Model
 		/// <param name="port"></param>
 		public TService(string host, int port)
 		{
-			this.acceptor = new TSocket(this.poller, host, port);
+			this.acceptor = new TcpListener(new IPEndPoint(IPAddress.Parse(host), port));
+			this.acceptor.Start();
 		}
 
 		public TService()
@@ -28,7 +32,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.poller == null)
+			if (this.acceptor == null)
 			{
 				return;
 			}
@@ -38,13 +42,13 @@ namespace Model
 				TChannel channel = this.idChannels[id];
 				channel.Dispose();
 			}
-			this.acceptor?.Dispose();
-			this.poller = null;
+			this.acceptor.Stop();
+			this.acceptor = null;
 		}
 
-		public override void Add(Action action)
+		public void Add(Action action)
 		{
-			this.poller.Add(action);
+			this.actions.Enqueue(action);
 		}
 
 		public override AChannel GetChannel(long id)
@@ -60,17 +64,16 @@ namespace Model
 			{
 				throw new Exception("service construct must use host and port param");
 			}
-			TSocket socket = new TSocket(this.poller);
-			await this.acceptor.AcceptAsync(socket);
-			TChannel channel = new TChannel(socket, this);
+			TcpClient tcpClient = await this.acceptor.AcceptTcpClientAsync();
+			TChannel channel = new TChannel(tcpClient, this);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
 
 		public override AChannel ConnectChannel(string host, int port)
 		{
-			TSocket newSocket = new TSocket(this.poller);
-			TChannel channel = new TChannel(newSocket, host, port, this);
+			TcpClient tcpClient = new TcpClient();
+			TChannel channel = new TChannel(tcpClient, host, port, this);
 			this.idChannels[channel.Id] = channel;
 
 			return channel;
@@ -94,7 +97,11 @@ namespace Model
 		
 		public override void Update()
 		{
-			this.poller.Update();
+			while (this.actions.Count > 0)
+			{
+				Action action = this.actions.Dequeue();
+				action();
+			}
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace Model
 				return actorProxy;
 			}
 			
-			actorProxy = new ActorProxy(id);
+			actorProxy = EntityFactory.CreateWithId<ActorProxy>(id);
 			this.dictionary[id] = actorProxy;
 			return actorProxy;
 		}

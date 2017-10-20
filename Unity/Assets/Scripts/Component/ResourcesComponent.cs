@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent(EntityEventId.ResourcesComponent)]
 	public class ResourcesComponent: Component
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
@@ -30,7 +29,7 @@ namespace Model
 				return resource as K;
 			}
 			
-			if (Define.LoadResourceType == LoadResourceType.Async)
+			if (Define.IsAsync)
 			{
 				if (!this.bundleCaches.ContainsKey($"{bundleName}.unity3d".ToLower()))
 				{

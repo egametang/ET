@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Model;
 using UnityEngine;
 
 namespace Hotfix
@@ -7,7 +8,7 @@ namespace Hotfix
 	{
 		public Scene Scene { get; set; }
 
-		public int UIType { get; }
+		public UIType UIType { get; }
 
 		public string Name
 		{
@@ -29,6 +30,13 @@ namespace Hotfix
 			}
 
 			base.Dispose();
+
+			foreach (UI ui in this.children.Values)
+			{
+				ui.Dispose();
+			}
+
+			UnityEngine.Object.Destroy(this.GameObject);
 		}
 
 		public void SetAsFirstSibling()
@@ -36,7 +44,7 @@ namespace Hotfix
 			this.GameObject.transform.SetAsFirstSibling();
 		}
 
-		public UI(Scene scene, int uiType, UI parent, GameObject gameObject): base(EntityType.UI)
+		public UI(Scene scene, UIType uiType, UI parent, GameObject gameObject)
 		{
 			this.Scene = scene;
 			this.UIType = uiType;
@@ -55,7 +63,8 @@ namespace Hotfix
 
 		public void Remove(string name)
 		{
-			if (!this.children.TryGetValue(name, out UI ui))
+			UI ui;
+			if (!this.children.TryGetValue(name, out ui))
 			{
 				return;
 			}

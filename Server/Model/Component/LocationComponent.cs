@@ -20,12 +20,16 @@ namespace Model
 	public sealed class LocationLockTask : LocationTask
 	{
 		private readonly long key;
+		private readonly int lockAppId;
+		private readonly int time;
 
 		private readonly TaskCompletionSource<bool> tcs;
 
-		public LocationLockTask(long key)
+		public LocationLockTask(long key, int lockAppId, int time)
 		{
 			this.key = key;
+			this.lockAppId = lockAppId;
+			this.time = time;
 			this.tcs = new TaskCompletionSource<bool>();
 		}
 
@@ -41,7 +45,7 @@ namespace Model
 		{
 			try
 			{
-				Scene.GetComponent<LocationComponent>().Lock(this.key);
+				Scene.GetComponent<LocationComponent>().Lock(this.key, this.lockAppId, this.time);
 				this.tcs.SetResult(true);
 			}
 			catch (Exception e)
@@ -55,15 +59,15 @@ namespace Model
 	{
 		private readonly long key;
 
-		private readonly TaskCompletionSource<string> tcs;
+		private readonly TaskCompletionSource<int> tcs;
 
 		public LocationQueryTask(long key)
 		{
 			this.key = key;
-			this.tcs = new TaskCompletionSource<string>();
+			this.tcs = new TaskCompletionSource<int>();
 		}
 
-		public Task<string> Task
+		public Task<int> Task
 		{
 			get
 			{
@@ -75,7 +79,7 @@ namespace Model
 		{
 			try
 			{
-				string location = Scene.GetComponent<LocationComponent>().Get(key);
+				int location = Scene.GetComponent<LocationComponent>().Get(key);
 				this.tcs.SetResult(location);
 			}
 			catch (Exception e)
@@ -87,42 +91,84 @@ namespace Model
 
 	public class LocationComponent : Component
 	{
-		private readonly Dictionary<long, string> locations = new Dictionary<long, string>();
+		private readonly Dictionary<long, int> locations = new Dictionary<long, int>();
 
-		private readonly HashSet<long> lockSet = new HashSet<long>();
+		private readonly Dictionary<long, int> lockDict = new Dictionary<long, int>();
 
-		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
+		private readonly Dictionary<long, EQueue<LocationTask>> taskQueues = new Dictionary<long, EQueue<LocationTask>>();
 
-		public void Add(long key, string address)
+		public void Add(long key, int appId)
 		{
-			this.locations[key] = address;
+			this.locations[key] = appId;
+
+			Log.Info($"location add key: {key} appid: {appId}");
+
+			// 更新db
+			//await Game.Scene.GetComponent<DBProxyComponent>().Save(new Location(key, address));
 		}
 
 		public void Remove(long key)
 		{
+			Log.Info($"location remove key: {key}");
 			this.locations.Remove(key);
 		}
 
-		public string Get(long key)
+		public int Get(long key)
 		{
-			this.locations.TryGetValue(key, out string location);
+			this.locations.TryGetValue(key, out int location);
 			return location;
 		}
 
-		public void Lock(long key)
+		public async void Lock(long key, int lockAppId, int time = 0)
 		{
-			if (this.lockSet.Contains(key))
+			if (this.lockDict.ContainsKey(key))
 			{
+				Log.Error($"不可能同时存在两次lock, key: {key} lockAppId: {lockAppId}");
 				return;
 			}
-			this.lockSet.Add(key);
+
+			Log.Info($"location lock key: {key} lockAppId: {lockAppId}");
+
+			this.lockDict.Add(key, lockAppId);
+
+			// 超时则解锁
+			if (time > 0)
+			{
+				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(time);
+
+				int saveAppId = 0;
+				if (!this.lockDict.TryGetValue(key, out saveAppId))
+				{
+					return;
+				}
+				if (saveAppId != lockAppId)
+				{
+					Log.Error($"timeout unlock appid is different {saveAppId} {lockAppId}");
+					return;
+				}
+				Log.Info($"location timeout unlock key: {key} time: {time}");
+				this.UnLock(key);
+			}
 		}
 
-		public void UnLock(long key)
+		public void UpdateAndUnLock(long key, int unLockAppId, int value)
 		{
-			this.lockSet.Remove(key);
+			int lockAppId = 0;
+			this.lockDict.TryGetValue(key, out lockAppId);
+			if (lockAppId != unLockAppId)
+			{
+				Log.Error($"unlock appid is different {lockAppId} {unLockAppId}" );
+			}
+			Log.Info($"location unlock key: {key} unLockAppId: {unLockAppId} new: {value}");
+			this.locations[key] = value;
+			this.UnLock(key);
+		}
 
-			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
+		private void UnLock(long key)
+		{
+			this.lockDict.Remove(key);
+
+			if (!this.taskQueues.TryGetValue(key, out EQueue<LocationTask> tasks))
 			{
 				return;
 			}
@@ -134,7 +180,7 @@ namespace Model
 					this.taskQueues.Remove(key);
 					return;
 				}
-				if (this.lockSet.Contains(key))
+				if (this.lockDict.ContainsKey(key))
 				{
 					return;
 				}
@@ -144,24 +190,25 @@ namespace Model
 			}
 		}
 
-		public Task<bool> LockAsync(long key)
+		public Task<bool> LockAsync(long key, int appId, int time)
 		{
-			if (!this.lockSet.Contains(key))
+			if (!this.lockDict.ContainsKey(key))
 			{
-				this.Lock(key);
+				this.Lock(key, appId, time);
 				return Task.FromResult(true);
 			}
 
-			LocationLockTask task = new LocationLockTask(key);
+			LocationLockTask task = new LocationLockTask(key, appId, time);
 			this.AddTask(key, task);
 			return task.Task;
 		}
 
-		public Task<string> GetAsync(long key)
+		public Task<int> GetAsync(long key)
 		{
-			if (!this.lockSet.Contains(key))
+			if (!this.lockDict.ContainsKey(key))
 			{
-				this.locations.TryGetValue(key, out string location);
+				this.locations.TryGetValue(key, out int location);
+				Log.Info($"location get key: {key} {location}");
 				return Task.FromResult(location);
 			}
 
@@ -172,12 +219,12 @@ namespace Model
 
 		public void AddTask(long key, LocationTask task)
 		{
-			if (!this.taskQueues.TryGetValue(key, out Queue<LocationTask> tasks))
+			if (!this.taskQueues.TryGetValue(key, out EQueue<LocationTask> tasks))
 			{
-				tasks = new Queue<LocationTask>();
+				tasks = new EQueue<LocationTask>();
 				this.taskQueues[key] = tasks;
 			}
-			task.Scene = this.GetOwner<Scene>();
+			task.Scene = this.GetEntity<Scene>();
 			tasks.Enqueue(task);
 		}
 

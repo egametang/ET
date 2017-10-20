@@ -4,7 +4,16 @@ using Model;
 
 namespace MyEditor
 {
-	public class BTNodeInfoComponent : Component, IAwake
+	[ObjectEvent]
+	public class BTNodeInfoComponentEvent : ObjectEvent<BTNodeInfoComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+
+	public class BTNodeInfoComponent : Component
 	{
 		private Dictionary<string, NodeMeta> nameNodeMetas = new Dictionary<string, NodeMeta>(); //节点类型 name索引
 		private Dictionary<string, List<NodeMeta>> classifyNodeMetas { get; } = new Dictionary<string, List<NodeMeta>>();

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 */
 
 using System;
-
+using System.Reflection;
 using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Conventions
@@ -51,9 +51,16 @@ namespace MongoDB.Bson.Serialization.Conventions
         /// <param name="memberMap">The member map.</param>
         public void Apply(BsonMemberMap memberMap)
         {
-            if (memberMap.MemberType.IsEnum)
+            var memberTypeInfo = memberMap.MemberType.GetTypeInfo();
+            if (memberTypeInfo.IsEnum)
             {
-                memberMap.SetSerializationOptions(new RepresentationSerializationOptions(_representation));
+                var serializer = memberMap.GetSerializer();
+                var representationConfigurableSerializer = serializer as IRepresentationConfigurable;
+                if (representationConfigurableSerializer != null)
+                {
+                    var reconfiguredSerializer = representationConfigurableSerializer.WithRepresentation(_representation);
+                    memberMap.SetSerializer(reconfiguredSerializer);
+                }
             }
         }
     }

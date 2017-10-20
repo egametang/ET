@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -34,14 +35,15 @@ namespace MongoDB.Bson
         /// <returns>A friendly class name.</returns>
         public static string GetFriendlyTypeName(Type type)
         {
-            if (!type.IsGenericType)
+            var typeInfo = type.GetTypeInfo();
+            if (!typeInfo.IsGenericType)
             {
                 return type.Name;
             }
 
             var sb = new StringBuilder();
             sb.AppendFormat("{0}<", Regex.Replace(type.Name, @"\`\d+$", ""));
-            foreach (var typeParameter in type.GetGenericArguments())
+            foreach (var typeParameter in type.GetTypeInfo().GetGenericArguments())
             {
                 sb.AppendFormat("{0}, ", GetFriendlyTypeName(typeParameter));
             }

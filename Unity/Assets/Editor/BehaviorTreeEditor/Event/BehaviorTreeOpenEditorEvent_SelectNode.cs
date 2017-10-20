@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	[Event(EventIdType.BehaviorTreeOpenEditor)]
+	[Event((int)EventIdType.BehaviorTreeOpenEditor)]
 	public class BehaviorTreeOpenEditorEvent_SelectNode: IEvent
 	{
 		public void Run()

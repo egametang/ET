@@ -304,7 +304,7 @@ namespace MyEditor
 					newStartConfig.AddComponent<OuterConfig>();
 				}
 
-				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB))
+				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB | AppType.Map | AppType.Location))
 				{
 					newStartConfig.AddComponent<InnerConfig>();
 				}
@@ -352,18 +352,14 @@ namespace MyEditor
 					return;
 				}
 
-				string arguments = $"--appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
+				string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
 
-				ProcessStartInfo info = new ProcessStartInfo(@"App.exe", arguments) { UseShellExecute = true, WorkingDirectory = @"..\Bin\" };
+				ProcessStartInfo info = new ProcessStartInfo("dotnet", arguments) { UseShellExecute = true, WorkingDirectory = @"..\netcoreapp2.0\" };
 				Process.Start(info);
 			}
 			GUILayout.EndHorizontal();
 		}
-
-		private void OnDisable()
-		{
-		}
-
+		
 		private void OnDestroy()
 		{
 			this.ClearConfig();

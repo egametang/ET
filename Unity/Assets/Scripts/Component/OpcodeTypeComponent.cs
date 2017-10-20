@@ -2,7 +2,16 @@
 
 namespace Model
 {
-	public class OpcodeTypeComponent : Component, IAwake
+	[ObjectEvent]
+	public class OpcodeTypeComponentEvent : ObjectEvent<OpcodeTypeComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+
+	public class OpcodeTypeComponent : Component
 	{
 		private readonly DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
 

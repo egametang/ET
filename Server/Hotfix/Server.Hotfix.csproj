@@ -1,71 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3878BD71-2F75-4EDF-882F-BC708154B1B0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hotfix</RootNamespace>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Hotfix</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Hotfix</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SERVER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <ProjectReference Include="..\Base\Server.Base.csproj" />
+    <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Component\RealmGateAddressComponentE.cs" />
-    <Compile Include="Message\C2G_LoginGateHandler.cs" />
-    <Compile Include="Message\C2R_PingHandler.cs" />
-    <Compile Include="Message\G2G_LockReleaseRequestHandler.cs" />
-    <Compile Include="Message\ObjectGetRequestHandler.cs" />
-    <Compile Include="Message\ObjectUnLockRequestHandler.cs" />
-    <Compile Include="Message\ObjectLockRequestHandler.cs" />
-    <Compile Include="Message\ObjectRemoveRequestHandler.cs" />
-    <Compile Include="Message\ObjectAddRequestHandler.cs" />
-    <Compile Include="Message\M2A_ReloadHandler.cs" />
-    <Compile Include="Message\C2M_ReloadHandler.cs" />
-    <Compile Include="Message\G2G_LockRequestHandler.cs" />
-    <Compile Include="Message\R2G_GetLoginKeyHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Message\C2R_LoginHandler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Base\Server.Base.csproj">
-      <Project>{e5078ec6-2b0e-4711-be8b-d99f69638316}</Project>
-      <Name>Server.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Model\Server.Model.csproj">
-      <Project>{820d3488-76b9-4ee8-872a-be06c2350b20}</Project>
-      <Name>Server.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -12,7 +12,15 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[EntityEvent(EntityEventId.TimerComponent)]
+	[ObjectEvent]
+	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	{
+		public void Update()
+		{
+			this.Get().Update();
+		}
+	}
+
 	public class TimerComponent: Component, IUpdate
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
@@ -22,7 +30,7 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly Queue<long> timeoutTimer = new Queue<long>();
+		private readonly EQueue<long> timeoutTimer = new EQueue<long>();
 
 		public void Update()
 		{

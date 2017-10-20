@@ -15,8 +15,8 @@
     <TargetFrameworkProfile></TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
-    <UnityVersion>2017.1.0f1</UnityVersion>
+    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
+    <UnityVersion>2017.1.0p5</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
@@ -27,7 +27,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;NET45</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +37,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;NET45</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -74,9 +74,6 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -91,6 +88,7 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\BsonSerializationException.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\DuplicateBsonMemberMapAttributeException.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\TruncationException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ArrayElementNameAccelerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReader.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderBookmark.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderContext.cs" />
@@ -98,8 +96,6 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriter.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterContext.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterSettings.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBuffer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonChunk.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonChunkPool.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReader.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderBookmark.cs" />
@@ -112,15 +108,32 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderBookmark.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderSettings.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderState.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStream.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStreamAdapter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStreamExtensions.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonTrie.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriter.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriterSettings.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriterState.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteArrayBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteArrayChunk.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferFactory.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferSlice.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferStream.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ContextType.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\CStringUtf8Encoding.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonChunk.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonChunkSource.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonReaderExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonWriterExtensions.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IByteBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IElementNameValidator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\INameDecoder.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\InputBufferChunkSource.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonConvert.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonOutputMode.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReader.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReaderBookmark.cs" />
@@ -132,12 +145,19 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonWriterContext.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonWriterSettings.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\MultiChunkBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\NoOpElementNameValidator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\OutputBufferChunkSource.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\SingleChunkBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\TrieNameDecoder.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8Encodings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8Helper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8NameDecoder.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonArray.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBinaryData.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBinarySubType.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBoolean.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDateTime.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDecimal128.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDocument.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDocumentWrapper.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDouble.cs" />
@@ -160,6 +180,7 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonTypeMapperOptions.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonUndefined.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonValue.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\Decimal128.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\GuidConverter.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\GuidRepresentation.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\IConvertibleToBsonDocument.cs" />
@@ -171,6 +192,9 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\ObjectId.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\RawBsonArray.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\RawBsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\UInt128.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\PowerOf2.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\AttributedSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonConstructorAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDateTimeOptionsAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDefaultValueAttribute.cs" />
@@ -193,19 +217,24 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonSerializerAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonTimeSpanOptionsAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonClassMapAttribute.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonClassMapModifier.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonCreatorMapAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonMemberMapAttribute.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonMemberMapModifier.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonPostProcessingAttribute.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonClassMap.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonClassMapSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonCreatorMap.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDefaultSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationArgs.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationContext.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDocumentBackedClass.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonMemberMap.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonObjectModelSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationArgs.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationContext.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationInfo.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationProviderBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializerRegistry.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\CollectionsSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\AttributeConventionPack.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\CamelCaseElementNameConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionBase.cs" />
@@ -227,27 +256,16 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfDefaultConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfNullConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IMemberMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ImmutableTypeClassMapConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IPostProcessingConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\LookupIdGeneratorConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberDefaultValueConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberNameElementNameConvention.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberSerializationOptionsConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedExtraElementsMemberConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedIdMemberConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedParameterCreatorMapConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NoIdMemberConvention.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\ConventionProfile.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\DefaultValueConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\ElementNameConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\ExtraElementsMemberConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\IdGeneratorConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\IdMemberConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\IgnoreExtraElementsConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\IgnoreIfDefaultConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\IgnoreIfNullConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\MemberFinderConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\SerializationOptionsConventions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\Obsolete\SerializeDefaultValueConventions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ObjectDiscriminatorConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ReadWriteMemberFinderConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetClassMapConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetMemberMapsConvention.cs" />
@@ -255,14 +273,18 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\StandardDiscriminatorConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\StringObjectIdIdGeneratorConvention.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\CreatorMapDelegateCompiler.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\DiscriminatedInterfaceSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\ExpressionVisitor.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonDictionarySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonDocumentSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonIdProvider.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializable.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializationOptions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonPolymorphicSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerRegistry.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IChildSerializerConfigurable.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\ICreatorSelector.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\AscendingGuidGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonBinaryDataGuidGenerator.cs" />
@@ -273,31 +295,29 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ObjectIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\StringObjectIdGenerator.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ZeroIdChecker.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IDictionaryRepresentationConfigurable.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IIdGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IRepresentationConfigurable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IRepresentationConverterConfigurable.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\MostArgumentsCreatorSelector.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\ArraySerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\BsonBaseSerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\DateTimeSerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\DictionarySerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\DocumentSerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\KeyValuePairSerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\RepresentationSerializationOptions.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\TimeSpanSerializationOptions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\DictionaryRepresentation.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\RepresentationConverter.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\TimeSpanUnits.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\PrimitiveSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\AbstractClassSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BitArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BooleanSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonArraySerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBaseSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBinaryDataSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBooleanSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonClassMapSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDateTimeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDecimal128Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentBackedClassSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentWrapperSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDoubleSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonIBsonSerializableSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt32Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt64Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonJavaScriptSerializer.cs" />
@@ -313,24 +333,32 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonUndefinedSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueCSharpNullSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializerBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\CharSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ClassSerializerBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\CultureInfoSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeOffsetSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Decimal128Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DecimalSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionaryGenericSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionarySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionaryInterfaceImplementerSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionarySerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedInterfaceSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedWrapperSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DoubleSerializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DynamicDocumentBaseSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializerBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializerBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ExpandoObjectSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\GuidSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ImpliedImplementationInterfaceSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int16Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int32Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int64Serializer.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\InterfaceSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPAddressSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPEndPointSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\KeyValuePairSerializer.cs" />
@@ -339,23 +367,35 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\NullableGenericSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectIdSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\PartiallyRawBsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ProjectingDeserializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\QueueSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonDocumentSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSubclassSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SByteSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SealedClassSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializeAsNominalTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerHelper.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SingleSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StackSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StringSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StructSerializerBase.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ThreeDimensionalArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TupleSerializers.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TwoDimensionalArraySerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt16Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt32Serializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UndiscriminatedActualTypeSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UriSerializer.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\VersionSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\TypeMappingSerializationProvider.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\TypeNameDiscriminator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\ApplicationNameHelper.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableClass.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableDerivedClass.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableStruct.cs" />
@@ -363,7 +403,7 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableDerivedClass.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableStruct.cs" />
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\Hasher.cs" />
-    <Compile Include="Assets\Plugins\MongoDB\ReaderWriterLockExtension.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BclHelpers.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BufferExtension.cs" />
     <Compile Include="Assets\Plugins\protobuf-net\BufferPool.cs" />
@@ -454,19 +494,8 @@
     <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JsonDotNet\Assemblies\AOT\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Standalone\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\Assemblies\Windows\Newtonsoft.Json.XML" />
-    <None Include="Assets\JsonDotNet\link.xml" />
-    <None Include="Assets\PSD2UGUI\Doc\version.txt" />
-    <None Include="Assets\PSD2UGUI\JSCode\ReadMe.txt" />
-    <None Include="Assets\PSD2UGUI\Samples\9slice\9slice.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\button\button.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\grid\grid.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\halftest\halftest.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\scrollpanel\scrollpanel.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\slider\slider.xml" />
-    <None Include="Assets\PSD2UGUI\Samples\texttest\texttest.xml" />
+    <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,11 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization
@@ -28,7 +26,8 @@ namespace MongoDB.Bson.Serialization
     /// <summary>
     /// Represents a serializer for a class map.
     /// </summary>
-    public class BsonClassMapSerializer : IBsonSerializer, IBsonIdProvider, IBsonDocumentSerializer
+    /// <typeparam name="TClass">The type of the class.</typeparam>
+    public class BsonClassMapSerializer<TClass> : SerializerBase<TClass>, IBsonIdProvider, IBsonDocumentSerializer, IBsonPolymorphicSerializer
     {
         // private fields
         private BsonClassMap _classMap;
@@ -40,253 +39,262 @@ namespace MongoDB.Bson.Serialization
         /// <param name="classMap">The class map.</param>
         public BsonClassMapSerializer(BsonClassMap classMap)
         {
+            if (classMap == null)
+            {
+                throw new ArgumentNullException("classMap");
+            }
+            if (classMap.ClassType != typeof(TClass))
+            {
+                var message = string.Format("Must be a BsonClassMap for the type {0}.", typeof(TClass));
+                throw new ArgumentException(message, "classMap");
+            }
+
             _classMap = classMap;
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets a value indicating whether this serializer's discriminator is compatible with the object serializer.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this serializer's discriminator is compatible with the object serializer; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsDiscriminatorCompatibleWithObjectSerializer
+        {
+            get { return true; }
         }
 
         // public methods
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public object Deserialize(BsonReader bsonReader, Type nominalType, IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        public override TClass Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyNominalType(nominalType);
+            var bsonReader = context.Reader;
+
+            if (_classMap.ClassType.GetTypeInfo().IsValueType)
+            {
+                var message = string.Format("Value class {0} cannot be deserialized.", _classMap.ClassType.FullName);
+                throw new BsonSerializationException(message);
+            }
+
             if (bsonReader.GetCurrentBsonType() == Bson.BsonType.Null)
             {
                 bsonReader.ReadNull();
-                return null;
+                return default(TClass);
             }
             else
             {
                 var discriminatorConvention = _classMap.GetDiscriminatorConvention();
-                var actualType = discriminatorConvention.GetActualType(bsonReader, nominalType);
-                if (actualType != nominalType)
+
+                var actualType = discriminatorConvention.GetActualType(bsonReader, args.NominalType);
+                if (actualType == typeof(TClass))
+                {
+                    return DeserializeClass(context);
+                }
+                else
                 {
                     var serializer = BsonSerializer.LookupSerializer(actualType);
-                    if (serializer != this)
-                    {
-                        return serializer.Deserialize(bsonReader, nominalType, actualType, options);
-                    }
+                    return (TClass)serializer.Deserialize(context);
                 }
 
-                return Deserialize(bsonReader, nominalType, actualType, options);
             }
         }
 
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <returns>A deserialized value.</returns>
+        public TClass DeserializeClass(BsonDeserializationContext context)
         {
-            VerifyNominalType(nominalType);
+            var bsonReader = context.Reader;
+
             var bsonType = bsonReader.GetCurrentBsonType();
-            if (bsonType == Bson.BsonType.Null)
+            if (bsonType != BsonType.Document)
             {
-                bsonReader.ReadNull();
-                return null;
+                var message = string.Format(
+                    "Expected a nested document representing the serialized form of a {0} value, but found a value of type {1} instead.",
+                    typeof(TClass).FullName, bsonType);
+                throw new FormatException(message);
+            }
+
+            Dictionary<string, object> values = null;
+            var document = default(TClass);
+#if NET45
+            ISupportInitialize supportsInitialization = null;
+#endif
+            if (_classMap.HasCreatorMaps)
+            {
+                // for creator-based deserialization we first gather the values in a dictionary and then call a matching creator
+                values = new Dictionary<string, object>();
             }
             else
             {
-                if (actualType != _classMap.ClassType)
-                {
-                    var message = string.Format("BsonClassMapSerializer.Deserialize for type {0} was called with actualType {1}.",
-                        BsonUtils.GetFriendlyTypeName(_classMap.ClassType), BsonUtils.GetFriendlyTypeName(actualType));
-                    throw new BsonSerializationException(message);
-                }
+                // for mutable classes we deserialize the values directly into the result object
+                document = (TClass)_classMap.CreateInstance();
 
-                if (actualType.IsValueType)
+#if NET45
+                supportsInitialization = document as ISupportInitialize;
+                if (supportsInitialization != null)
                 {
-                    var message = string.Format("Value class {0} cannot be deserialized.", actualType.FullName);
-                    throw new BsonSerializationException(message);
+                    supportsInitialization.BeginInit();
                 }
+#endif
+            }
 
-                if (_classMap.IsAnonymous)
-                {
-                    throw new InvalidOperationException("An anonymous class cannot be deserialized.");
-                }
+            var discriminatorConvention = _classMap.GetDiscriminatorConvention();
+            var allMemberMaps = _classMap.AllMemberMaps;
+            var extraElementsMemberMapIndex = _classMap.ExtraElementsMemberMapIndex;
+            var memberMapBitArray = FastMemberMapHelper.GetBitArray(allMemberMaps.Count);
 
-                if (bsonType != BsonType.Document)
-                {
-                    var message = string.Format(
-                        "Expected a nested document representing the serialized form of a {0} value, but found a value of type {1} instead.",
-                        actualType.FullName, bsonType);
-                    throw new Exception(message);
-                }
+            bsonReader.ReadStartDocument();
+            var elementTrie = _classMap.ElementTrie;
+            while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
+            {
+                var trieDecoder = new TrieNameDecoder<int>(elementTrie);
+                var elementName = bsonReader.ReadName(trieDecoder);
 
-                Dictionary<string, object> values = null;
-                object obj = null;
-                ISupportInitialize supportsInitialization = null;
-                if (_classMap.HasCreatorMaps)
+                if (trieDecoder.Found)
                 {
-                    // for creator-based deserialization we first gather the values in a dictionary and then call a matching creator
-                    values = new Dictionary<string, object>();
-                }
-                else
-                {
-                    // for mutable classes we deserialize the values directly into the result object
-                    obj = _classMap.CreateInstance();
-
-                    supportsInitialization = obj as ISupportInitialize;
-                    if (supportsInitialization != null)
+                    var memberMapIndex = trieDecoder.Value;
+                    var memberMap = allMemberMaps[memberMapIndex];
+                    if (memberMapIndex != extraElementsMemberMapIndex)
                     {
-                        supportsInitialization.BeginInit();
-                    }
-                }
-
-                var discriminatorConvention = _classMap.GetDiscriminatorConvention();
-                var allMemberMaps = _classMap.AllMemberMaps;
-                var extraElementsMemberMapIndex = _classMap.ExtraElementsMemberMapIndex;
-                var memberMapBitArray = FastMemberMapHelper.GetBitArray(allMemberMaps.Count);
-
-                bsonReader.ReadStartDocument();
-                var elementTrie = _classMap.ElementTrie;
-                bool memberMapFound;
-                int memberMapIndex;
-                while (bsonReader.ReadBsonType(elementTrie, out memberMapFound, out memberMapIndex) != BsonType.EndOfDocument)
-                {
-                    var elementName = bsonReader.ReadName();
-                    if (memberMapFound)
-                    {
-                        var memberMap = allMemberMaps[memberMapIndex];
-                        if (memberMapIndex != extraElementsMemberMapIndex)
+                        if (document != null)
                         {
-                            if (obj != null)
+                            if (memberMap.IsReadOnly)
                             {
-                                if (memberMap.IsReadOnly)
-                                {
-                                    bsonReader.SkipValue();
-                                }
-                                else
-                                {
-                                    var value = DeserializeMemberValue(bsonReader, memberMap);
-                                    memberMap.Setter(obj, value);
-                                }
+                                bsonReader.SkipValue();
                             }
                             else
                             {
-                                var value = DeserializeMemberValue(bsonReader, memberMap);
-                                values[elementName] = value;
+                                var value = DeserializeMemberValue(context, memberMap);
+                                memberMap.Setter(document, value);
                             }
                         }
                         else
                         {
-                            DeserializeExtraElement(bsonReader, obj, elementName, memberMap);
+                            var value = DeserializeMemberValue(context, memberMap);
+                            values[elementName] = value;
                         }
-                        memberMapBitArray[memberMapIndex >> 5] |= 1U << (memberMapIndex & 31);
                     }
                     else
                     {
-                        if (elementName == discriminatorConvention.ElementName)
+                        if (document != null)
                         {
-                            bsonReader.SkipValue(); // skip over discriminator
-                            continue;
-                        }
-
-                        if (extraElementsMemberMapIndex >= 0)
-                        {
-                            DeserializeExtraElement(bsonReader, obj, elementName, _classMap.ExtraElementsMemberMap);
-                            memberMapBitArray[extraElementsMemberMapIndex >> 5] |= 1U << (extraElementsMemberMapIndex & 31);
-                        }
-                        else if (_classMap.IgnoreExtraElements)
-                        {
-                            bsonReader.SkipValue();
+                            DeserializeExtraElementMember(context, document, elementName, memberMap);
                         }
                         else
                         {
-                            var message = string.Format(
-                                "Element '{0}' does not match any field or property of class {1}.",
-                                elementName, _classMap.ClassType.FullName);
-                            throw new Exception(message);
+                            DeserializeExtraElementValue(context, values, elementName, memberMap);
                         }
                     }
-                }
-                bsonReader.ReadEndDocument();
-
-                // check any members left over that we didn't have elements for (in blocks of 32 elements at a time)
-                for (var bitArrayIndex = 0; bitArrayIndex < memberMapBitArray.Length; ++bitArrayIndex)
-                {
-                    memberMapIndex = bitArrayIndex << 5;
-                    var memberMapBlock = ~memberMapBitArray[bitArrayIndex]; // notice that bits are flipped so 1's are now the missing elements
-
-                    // work through this memberMapBlock of 32 elements
-                    while (true)
-                    {
-                        // examine missing elements (memberMapBlock is shifted right as we work through the block)
-                        for (; (memberMapBlock & 1) != 0; ++memberMapIndex, memberMapBlock >>= 1)
-                        {
-                            var memberMap = allMemberMaps[memberMapIndex];
-                            if (memberMap.IsReadOnly)
-                            {
-                                continue;
-                            }
-
-                            if (memberMap.IsRequired)
-                            {
-                                var fieldOrProperty = (memberMap.MemberInfo.MemberType == MemberTypes.Field) ? "field" : "property";
-                                var message = string.Format(
-                                    "Required element '{0}' for {1} '{2}' of class {3} is missing.",
-                                    memberMap.ElementName, fieldOrProperty, memberMap.MemberName, _classMap.ClassType.FullName);
-                                throw new Exception(message);
-                            }
-
-                            if (obj != null)
-                            {
-                                memberMap.ApplyDefaultValue(obj);
-                            }
-                            else if (memberMap.IsDefaultValueSpecified && !memberMap.IsReadOnly)
-                            {
-                                values[memberMap.ElementName] = memberMap.DefaultValue;
-                            }
-                        }
-
-                        if (memberMapBlock == 0)
-                        {
-                            break;
-                        }
-
-                        // skip ahead to the next missing element
-                        var leastSignificantBit = FastMemberMapHelper.GetLeastSignificantBit(memberMapBlock);
-                        memberMapIndex += leastSignificantBit;
-                        memberMapBlock >>= leastSignificantBit;
-                    }
-                }
-
-                if (obj != null)
-                {
-                    if (supportsInitialization != null)
-                    {
-                        supportsInitialization.EndInit();
-                    }
-
-                    return obj;
+                    memberMapBitArray[memberMapIndex >> 5] |= 1U << (memberMapIndex & 31);
                 }
                 else
                 {
-                    return CreateInstanceUsingCreator(values);
+                    if (elementName == discriminatorConvention.ElementName)
+                    {
+                        bsonReader.SkipValue(); // skip over discriminator
+                        continue;
+                    }
+
+                    if (extraElementsMemberMapIndex >= 0)
+                    {
+                        var extraElementsMemberMap = _classMap.ExtraElementsMemberMap;
+                        if (document != null)
+                        {
+                            DeserializeExtraElementMember(context, document, elementName, extraElementsMemberMap);
+                        }
+                        else
+                        {
+                            DeserializeExtraElementValue(context, values, elementName, extraElementsMemberMap);
+                        }
+                        memberMapBitArray[extraElementsMemberMapIndex >> 5] |= 1U << (extraElementsMemberMapIndex & 31);
+                    }
+                    else if (_classMap.IgnoreExtraElements)
+                    {
+                        bsonReader.SkipValue();
+                    }
+                    else
+                    {
+                        var message = string.Format(
+                            "Element '{0}' does not match any field or property of class {1}.",
+                            elementName, _classMap.ClassType.FullName);
+                        throw new FormatException(message);
+                    }
                 }
-
             }
-        }
+            bsonReader.ReadEndDocument();
 
-        /// <summary>
-        /// Get the default serialization options for this serializer.
-        /// </summary>
-        /// <returns>The default serialization options for this serializer.</returns>
-        public IBsonSerializationOptions GetDefaultSerializationOptions()
-        {
-            return null;
+            // check any members left over that we didn't have elements for (in blocks of 32 elements at a time)
+            for (var bitArrayIndex = 0; bitArrayIndex < memberMapBitArray.Length; ++bitArrayIndex)
+            {
+                var memberMapIndex = bitArrayIndex << 5;
+                var memberMapBlock = ~memberMapBitArray[bitArrayIndex]; // notice that bits are flipped so 1's are now the missing elements
+
+                // work through this memberMapBlock of 32 elements
+                while (true)
+                {
+                    // examine missing elements (memberMapBlock is shifted right as we work through the block)
+                    for (; (memberMapBlock & 1) != 0; ++memberMapIndex, memberMapBlock >>= 1)
+                    {
+                        var memberMap = allMemberMaps[memberMapIndex];
+                        if (memberMap.IsReadOnly)
+                        {
+                            continue;
+                        }
+
+                        if (memberMap.IsRequired)
+                        {
+                            var fieldOrProperty = (memberMap.MemberInfo is FieldInfo) ? "field" : "property";
+                            var message = string.Format(
+                                "Required element '{0}' for {1} '{2}' of class {3} is missing.",
+                                memberMap.ElementName, fieldOrProperty, memberMap.MemberName, _classMap.ClassType.FullName);
+                            throw new FormatException(message);
+                        }
+
+                        if (document != null)
+                        {
+                            memberMap.ApplyDefaultValue(document);
+                        }
+                        else if (memberMap.IsDefaultValueSpecified && !memberMap.IsReadOnly)
+                        {
+                            values[memberMap.ElementName] = memberMap.DefaultValue;
+                        }
+                    }
+
+                    if (memberMapBlock == 0)
+                    {
+                        break;
+                    }
+
+                    // skip ahead to the next missing element
+                    var leastSignificantBit = FastMemberMapHelper.GetLeastSignificantBit(memberMapBlock);
+                    memberMapIndex += leastSignificantBit;
+                    memberMapBlock >>= leastSignificantBit;
+                }
+            }
+
+            if (document != null)
+            {
+#if NET45
+                if (supportsInitialization != null)
+                {
+                    supportsInitialization.EndInit();
+                }
+#endif
+
+                return document;
+            }
+            else
+            {
+                return CreateInstanceUsingCreator(values);
+            }
         }
 
         /// <summary>
@@ -321,123 +329,57 @@ namespace MongoDB.Bson.Serialization
         }
 
         /// <summary>
-        /// Gets the serialization info for a member.
+        /// Tries to get the serialization info for a member.
         /// </summary>
-        /// <param name="memberName">The member name.</param>
-        /// <returns>The serialization info for the member.</returns>
-        public BsonSerializationInfo GetMemberSerializationInfo(string memberName)
+        /// <param name="memberName">Name of the member.</param>
+        /// <param name="serializationInfo">The serialization information.</param>
+        /// <returns>
+        ///   <c>true</c> if the serialization info exists; otherwise <c>false</c>.
+        /// </returns>
+        public bool TryGetMemberSerializationInfo(string memberName, out BsonSerializationInfo serializationInfo)
         {
             foreach (var memberMap in _classMap.AllMemberMaps)
             {
                 if (memberMap.MemberName == memberName)
                 {
                     var elementName = memberMap.ElementName;
-                    var serializer = memberMap.GetSerializer(memberMap.MemberType);
+                    var serializer = memberMap.GetSerializer();
                     var nominalType = memberMap.MemberType;
-                    var serializationOptions = memberMap.SerializationOptions;
-                    return new BsonSerializationInfo(elementName, serializer, nominalType, serializationOptions);
+                    serializationInfo = new BsonSerializationInfo(elementName, serializer, serializer.ValueType);
+                    return true;
                 }
             }
 
-            var message = string.Format(
-                "Class {0} does not have a member called {1}.",
-                BsonUtils.GetFriendlyTypeName(_classMap.ClassType),
-                memberName);
-            throw new ArgumentOutOfRangeException("memberName", message);
+            serializationInfo = null;
+            return false;
         }
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        public override void Serialize(BsonSerializationContext context, BsonSerializationArgs args, TClass value)
         {
+            var bsonWriter = context.Writer;
+
             if (value == null)
             {
                 bsonWriter.WriteNull();
             }
             else
             {
-                // Nullable types are weird because they get boxed as their underlying value type
-                // we can best handle that by switching the nominalType to the underlying value type
-                // (so VerifyNominalType doesn't fail and we don't get an unnecessary discriminator)
-                if (nominalType.IsGenericType && nominalType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                var actualType = value.GetType();
+                if (actualType == typeof(TClass))
                 {
-                    nominalType = nominalType.GetGenericArguments()[0];
+                    SerializeClass(context, args, value);
                 }
-
-                VerifyNominalType(nominalType);
-                var actualType = (value == null) ? nominalType : value.GetType();
-                if (actualType != _classMap.ClassType)
+                else
                 {
-                    var message = string.Format("BsonClassMapSerializer.Serialize for type {0} was called with actualType {1}.",
-                        BsonUtils.GetFriendlyTypeName(_classMap.ClassType), BsonUtils.GetFriendlyTypeName(actualType));
-                    throw new BsonSerializationException(message);
+                    var serializer = BsonSerializer.LookupSerializer(actualType);
+                    serializer.Serialize(context, args, value);
                 }
-
-                var documentSerializationOptions = (options ?? DocumentSerializationOptions.Defaults) as DocumentSerializationOptions;
-                if (documentSerializationOptions == null)
-                {
-                    var message = string.Format(
-                        "Serializer BsonClassMapSerializer expected serialization options of type {0}, not {1}.",
-                        BsonUtils.GetFriendlyTypeName(typeof(DocumentSerializationOptions)),
-                        BsonUtils.GetFriendlyTypeName(options.GetType()));
-                    throw new BsonSerializationException(message);
-                }
-
-                bsonWriter.WriteStartDocument();
-                BsonMemberMap idMemberMap = null;
-                if (documentSerializationOptions.SerializeIdFirst)
-                {
-                    idMemberMap = _classMap.IdMemberMap;
-                    if (idMemberMap != null)
-                    {
-                        SerializeMember(bsonWriter, value, idMemberMap);
-                    }
-                }
-
-                if (actualType != nominalType || _classMap.DiscriminatorIsRequired || _classMap.HasRootClass)
-                {
-                    // never write out a discriminator for an anonymous class
-                    if (!_classMap.IsAnonymous)
-                    {
-                        var discriminatorConvention = _classMap.GetDiscriminatorConvention();
-                        var discriminator = discriminatorConvention.GetDiscriminator(nominalType, actualType);
-                        if (discriminator != null)
-                        {
-                            bsonWriter.WriteName(discriminatorConvention.ElementName);
-                            BsonValueSerializer.Instance.Serialize(bsonWriter, typeof(BsonValue), discriminator, null);
-                        }
-                    }
-                }
-
-                var allMemberMaps = _classMap.AllMemberMaps;
-                var extraElementsMemberMapIndex = _classMap.ExtraElementsMemberMapIndex;
-
-                for (var memberMapIndex = 0; memberMapIndex < allMemberMaps.Count; ++memberMapIndex)
-                {
-                    var memberMap = allMemberMaps[memberMapIndex];
-                    // note: if serializeIdFirst is false then idMemberMap will be null (so no property will be skipped)
-                    if (memberMap != idMemberMap)
-                    {
-                        if (memberMapIndex != extraElementsMemberMapIndex)
-                        {
-                            SerializeMember(bsonWriter, value, memberMap);
-                        }
-                        else
-                        {
-                            SerializeExtraElements(bsonWriter, value, memberMap);
-                        }
-                    }
-                }
-                bsonWriter.WriteEndDocument();
             }
         }
 
@@ -449,7 +391,8 @@ namespace MongoDB.Bson.Serialization
         public void SetDocumentId(object document, object id)
         {
             var documentType = document.GetType();
-            if (documentType.IsValueType)
+            var documentTypeInfo = documentType.GetTypeInfo();
+            if (documentTypeInfo.IsValueType)
             {
                 var message = string.Format("SetDocumentId cannot be used with value type {0}.", documentType.FullName);
                 throw new BsonSerializationException(message);
@@ -482,17 +425,18 @@ namespace MongoDB.Bson.Serialization
             return creatorMap;
         }
 
-        private object CreateInstanceUsingCreator(Dictionary<string, object> values)
+        private TClass CreateInstanceUsingCreator(Dictionary<string, object> values)
         {
             var creatorMap = ChooseBestCreator(values);
-            var obj = creatorMap.CreateInstance(values); // removes values consumed
+            var document = creatorMap.CreateInstance(values); // removes values consumed
 
-            var supportsInitialization = obj as ISupportInitialize;
+#if NET45
+            var supportsInitialization = document as ISupportInitialize;
             if (supportsInitialization != null)
             {
                 supportsInitialization.BeginInit();
             }
-
+#endif
             // process any left over values that weren't passed to the creator
             foreach (var keyValuePair in values)
             {
@@ -502,24 +446,28 @@ namespace MongoDB.Bson.Serialization
                 var memberMap = _classMap.GetMemberMapForElement(elementName);
                 if (!memberMap.IsReadOnly)
                 {
-                    memberMap.Setter.Invoke(obj, value);
+                    memberMap.Setter.Invoke(document, value);
                 }
             }
 
+#if NET45
             if (supportsInitialization != null)
             {
                 supportsInitialization.EndInit();
             }
+#endif
 
-            return obj;
+            return (TClass)document;
         }
 
-        private void DeserializeExtraElement(
-            BsonReader bsonReader,
+        private void DeserializeExtraElementMember(
+            BsonDeserializationContext context,
             object obj,
             string elementName,
             BsonMemberMap extraElementsMemberMap)
         {
+            var bsonReader = context.Reader;
+
             if (extraElementsMemberMap.MemberType == typeof(BsonDocument))
             {
                 var extraElements = (BsonDocument)extraElementsMemberMap.Getter(obj);
@@ -528,7 +476,8 @@ namespace MongoDB.Bson.Serialization
                     extraElements = new BsonDocument();
                     extraElementsMemberMap.Setter(obj, extraElements);
                 }
-                var bsonValue = (BsonValue)BsonValueSerializer.Instance.Deserialize(bsonReader, typeof(BsonValue), null);
+
+                var bsonValue = BsonValueSerializer.Instance.Deserialize(context);
                 extraElements[elementName] = bsonValue;
             }
             else
@@ -546,49 +495,119 @@ namespace MongoDB.Bson.Serialization
                     }
                     extraElementsMemberMap.Setter(obj, extraElements);
                 }
-                var bsonValue = (BsonValue)BsonValueSerializer.Instance.Deserialize(bsonReader, typeof(BsonValue), null);
+
+                var bsonValue = BsonValueSerializer.Instance.Deserialize(context);
                 extraElements[elementName] = BsonTypeMapper.MapToDotNetValue(bsonValue);
             }
         }
 
-        private object DeserializeMemberValue(BsonReader bsonReader, BsonMemberMap memberMap)
+        private void DeserializeExtraElementValue(
+            BsonDeserializationContext context,
+            Dictionary<string, object> values,
+            string elementName,
+            BsonMemberMap extraElementsMemberMap)
         {
-            try
+            var bsonReader = context.Reader;
+
+            if (extraElementsMemberMap.MemberType == typeof(BsonDocument))
             {
-                var nominalType = memberMap.MemberType;
-
-                var bsonType = bsonReader.GetCurrentBsonType();
-                if (bsonType == BsonType.Null && nominalType.IsInterface)
+                BsonDocument extraElements;
+                object obj;
+                if (values.TryGetValue(extraElementsMemberMap.ElementName, out obj))
                 {
-                    bsonReader.ReadNull();
-                    return null;
-                }
-
-                Type actualType;
-                if (bsonType == BsonType.Null)
-                {
-                    actualType = nominalType;
+                    extraElements = (BsonDocument)obj;
                 }
                 else
                 {
-                    var discriminatorConvention = memberMap.GetDiscriminatorConvention();
-                    actualType = discriminatorConvention.GetActualType(bsonReader, nominalType); // returns nominalType if no discriminator found
+                    extraElements = new BsonDocument();
+                    values.Add(extraElementsMemberMap.ElementName, extraElements);
                 }
 
-                var serializer = memberMap.GetSerializer(actualType);
-                return serializer.Deserialize(bsonReader, nominalType, actualType, memberMap.SerializationOptions);
+                var bsonValue = BsonValueSerializer.Instance.Deserialize(context);
+                extraElements[elementName] = bsonValue;
+            }
+            else
+            {
+                IDictionary<string, object> extraElements;
+                object obj;
+                if (values.TryGetValue(extraElementsMemberMap.ElementName, out obj))
+                {
+                    extraElements = (IDictionary<string, object>)obj;
+                }
+                else
+                {
+                    if (extraElementsMemberMap.MemberType == typeof(IDictionary<string, object>))
+                    {
+                        extraElements = new Dictionary<string, object>();
+                    }
+                    else
+                    {
+                        extraElements = (IDictionary<string, object>)Activator.CreateInstance(extraElementsMemberMap.MemberType);
+                    }
+                    values.Add(extraElementsMemberMap.ElementName, extraElements);
+                }
+
+                var bsonValue = BsonValueSerializer.Instance.Deserialize(context);
+                extraElements[elementName] = BsonTypeMapper.MapToDotNetValue(bsonValue);
+            }
+        }
+
+        private object DeserializeMemberValue(BsonDeserializationContext context, BsonMemberMap memberMap)
+        {
+            var bsonReader = context.Reader;
+
+            try
+            {
+                return memberMap.GetSerializer().Deserialize(context);
             }
             catch (Exception ex)
             {
                 var message = string.Format(
                     "An error occurred while deserializing the {0} {1} of class {2}: {3}", // terminating period provided by nested message
-                    memberMap.MemberName, (memberMap.MemberInfo.MemberType == MemberTypes.Field) ? "field" : "property", memberMap.ClassMap.ClassType.FullName, ex.Message);
-                throw new Exception(message, ex);
+                    memberMap.MemberName, (memberMap.MemberInfo is FieldInfo) ? "field" : "property", memberMap.ClassMap.ClassType.FullName, ex.Message);
+                throw new FormatException(message, ex);
             }
         }
 
-        private void SerializeExtraElements(BsonWriter bsonWriter, object obj, BsonMemberMap extraElementsMemberMap)
+        private void SerializeClass(BsonSerializationContext context, BsonSerializationArgs args, TClass document)
         {
+            var bsonWriter = context.Writer;
+
+            var remainingMemberMaps = _classMap.AllMemberMaps.ToList();
+
+            bsonWriter.WriteStartDocument();
+
+            var idMemberMap = _classMap.IdMemberMap;
+            if (idMemberMap != null && args.SerializeIdFirst)
+            {
+                SerializeMember(context, document, idMemberMap);
+                remainingMemberMaps.Remove(idMemberMap);
+            }
+
+            //var autoTimeStampMemberMap = _classMap.AutoTimeStampMemberMap;
+            //if (autoTimeStampMemberMap != null)
+            //{
+            //    SerializeNormalMember(context, document, autoTimeStampMemberMap);
+            //    remainingMemberMaps.Remove(autoTimeStampMemberMap);
+            //}
+
+            if (ShouldSerializeDiscriminator(args.NominalType))
+            {
+                SerializeDiscriminator(context, args.NominalType, document);
+            }
+
+            foreach (var memberMap in remainingMemberMaps)
+            {
+                SerializeMember(context, document, memberMap);
+            }
+
+            bsonWriter.WriteEndDocument();
+        }
+
+        private void SerializeExtraElements(BsonSerializationContext context, object obj, BsonMemberMap extraElementsMemberMap)
+        {
+            var bsonWriter = context.Writer;
+
             var extraElements = extraElementsMemberMap.Getter(obj);
             if (extraElements != null)
             {
@@ -598,7 +617,7 @@ namespace MongoDB.Bson.Serialization
                     foreach (var element in bsonDocument)
                     {
                         bsonWriter.WriteName(element.Name);
-                        BsonValueSerializer.Instance.Serialize(bsonWriter, typeof(BsonValue), element.Value, null);
+                        BsonValueSerializer.Instance.Serialize(context, element.Value);
                     }
                 }
                 else
@@ -608,22 +627,44 @@ namespace MongoDB.Bson.Serialization
                     {
                         bsonWriter.WriteName(key);
                         var value = dictionary[key];
-                        if (value == null)
-                        {
-                            bsonWriter.WriteNull();
-                        }
-                        else
-                        {
-                            var bsonValue = BsonTypeMapper.MapToBsonValue(dictionary[key]);
-                            BsonValueSerializer.Instance.Serialize(bsonWriter, typeof(BsonValue), bsonValue, null);
-                        }
+                        var bsonValue = BsonTypeMapper.MapToBsonValue(value);
+                        BsonValueSerializer.Instance.Serialize(context, bsonValue);
                     }
                 }
             }
         }
 
-        private void SerializeMember(BsonWriter bsonWriter, object obj, BsonMemberMap memberMap)
+        private void SerializeDiscriminator(BsonSerializationContext context, Type nominalType, object obj)
         {
+            var discriminatorConvention = _classMap.GetDiscriminatorConvention();
+            if (discriminatorConvention != null)
+            {
+                var actualType = obj.GetType();
+                var discriminator = discriminatorConvention.GetDiscriminator(nominalType, actualType);
+                if (discriminator != null)
+                {
+                    context.Writer.WriteName(discriminatorConvention.ElementName);
+                    BsonValueSerializer.Instance.Serialize(context, discriminator);
+                }
+            }
+        }
+
+        private void SerializeMember(BsonSerializationContext context, object obj, BsonMemberMap memberMap)
+        {
+            if (memberMap != _classMap.ExtraElementsMemberMap)
+            {
+                SerializeNormalMember(context, obj, memberMap);
+            }
+            else
+            {
+                SerializeExtraElements(context, obj, memberMap);
+            }
+        }
+
+        private void SerializeNormalMember(BsonSerializationContext context, object obj, BsonMemberMap memberMap)
+        {
+            var bsonWriter = context.Writer;
+
             var value = memberMap.Getter(obj);
 
             if (!memberMap.ShouldSerialize(obj, value))
@@ -632,27 +673,12 @@ namespace MongoDB.Bson.Serialization
             }
 
             bsonWriter.WriteName(memberMap.ElementName);
-            var nominalType = memberMap.MemberType;
-            if (value == null && nominalType.IsInterface)
-            {
-                bsonWriter.WriteNull();
-            }
-            else
-            {
-                var actualType = (value == null) ? nominalType : value.GetType();
-                var serializer = memberMap.GetSerializer(actualType);
-                serializer.Serialize(bsonWriter, nominalType, value, memberMap.SerializationOptions);
-            }
+            memberMap.GetSerializer().Serialize(context, value);
         }
 
-        private void VerifyNominalType(Type nominalType)
+        private bool ShouldSerializeDiscriminator(Type nominalType)
         {
-            if (!(nominalType.IsClass || (nominalType.IsValueType && !nominalType.IsPrimitive) || nominalType.IsInterface) ||
-                typeof(Array).IsAssignableFrom(nominalType))
-            {
-                string message = string.Format("BsonClassMapSerializer cannot be used with type {0}.", nominalType.FullName);
-                throw new BsonSerializationException(message);
-            }
+            return (nominalType != _classMap.ClassType || _classMap.DiscriminatorIsRequired || _classMap.HasRootClass) && !_classMap.IsAnonymous;
         }
 
         // nested classes

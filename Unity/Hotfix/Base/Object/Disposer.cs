@@ -1,20 +1,15 @@
-﻿using Model;
-
-namespace Hotfix
+﻿namespace Hotfix
 {
-	public abstract class Disposer: Object
+	public abstract class Disposer : Object, IDisposable2
 	{
-		protected Disposer(): base(IdGenerater.GenerateId())
+		public long Id { get; set; }
+
+		protected Disposer()
 		{
 			ObjectEvents.Instance.Add(this);
 		}
 
-		protected Disposer(long id): base(id)
-		{
-			ObjectEvents.Instance.Add(this);
-		}
-
-		public override void Dispose()
+		public virtual void Dispose()
 		{
 			this.Id = 0;
 		}

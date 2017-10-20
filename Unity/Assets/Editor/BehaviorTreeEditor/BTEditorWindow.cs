@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace MyEditor
@@ -9,17 +8,11 @@ namespace MyEditor
 		CreateNode,
 		ReplaceNode
 	}
-
-	public class MessageBoxArgs: EventArgs
-	{
-		public string msg;
-	}
-
+	
 	public class BTEditorWindow: EditorWindow
 	{
 		private PropertyDesigner propDesigner;
 		private BehaviorTreeNodeClassPopup popUpMenu;
-
 		public GraphDesigner GraphDesigner { get; private set; }
 
 		public static BTEditorWindow Instance
@@ -163,6 +156,22 @@ namespace MyEditor
 		public void onDraggingRightDesigner(float deltaX)
 		{
 			//       mRightDesigner.onDraggingBorder(deltaX);
+		}
+
+		private void OnSelectionChange()
+		{
+			GameObject[] selectedGameObjects = Selection.gameObjects;
+			if (selectedGameObjects.Length == 0)
+			{
+				return;
+			}
+			string[] ss = selectedGameObjects[0].name.Split('@');
+			if (ss.Length < 2)
+			{
+				return;
+			}
+			long id = long.Parse(ss[1]);
+			BTEditor.Instance.GetComponent<BTDebugComponent>().OwnerId = id;
 		}
 	}
 }

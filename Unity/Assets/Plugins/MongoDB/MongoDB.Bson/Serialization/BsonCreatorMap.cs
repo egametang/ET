@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+﻿/* Copyright 2010-2016 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -120,8 +120,7 @@ namespace MongoDB.Bson.Serialization
                 {
                     foreach (var argument in _arguments)
                     {
-                        // compare MetadataTokens because ReflectedTypes could be different (see p. 774-5 of C# 5.0 In a Nutshell)
-                        var memberMap = allMemberMaps.FirstOrDefault(m => m.MemberInfo.MetadataToken == argument.MetadataToken);
+                        var memberMap = allMemberMaps.FirstOrDefault(m => IsSameMember(m.MemberInfo, argument));
                         if (memberMap == null)
                         {
                             var message = string.Format("Member '{0}' is not mapped.", argument.Name);
@@ -181,12 +180,14 @@ namespace MongoDB.Bson.Serialization
             }
             if (_isFrozen) { ThrowFrozenException(); }
 
+            var classTypeInfo = _classMap.ClassType.GetTypeInfo();
             var arguments = new List<MemberInfo>();
             foreach (var argumentName in argumentNames)
             {
-                var memberTypes = MemberTypes.Field | MemberTypes.Property;
-                var bindingAttr = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-                var memberInfos = _classMap.ClassType.GetMember2(argumentName, memberTypes, bindingAttr);
+                var bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+                var memberInfos = classTypeInfo.GetMembers(bindingFlags)
+                    .Where(m => m.Name == argumentName && (m is FieldInfo || m is PropertyInfo))
+                    .ToArray();
                 if (memberInfos.Length == 0)
                 {
                     var message = string.Format("Class '{0}' does not have a member named '{1}'.", _classMap.ClassType.FullName, argumentName);
@@ -229,6 +230,12 @@ namespace MongoDB.Bson.Serialization
         }
 
         // private methods
+        private bool IsSameMember(MemberInfo a, MemberInfo b)
+        {
+            // two MemberInfos refer to the same member if the Module and MetadataToken are equal
+            return a.Module == b.Module && a.MetadataToken == b.MetadataToken;
+        }
+
         private void ThrowFrozenException()
         {
             throw new InvalidOperationException("BsonCreatorMap is frozen.");

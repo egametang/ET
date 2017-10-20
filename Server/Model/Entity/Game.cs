@@ -2,8 +2,6 @@
 {
 	public static class Game
 	{
-		public static TPoller Poller { get; } = new TPoller();
-
 		private static Scene scene;
 
 		public static Scene Scene

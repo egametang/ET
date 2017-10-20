@@ -1,21 +1,29 @@
-﻿using Model;
+﻿using System;
+using Model;
 using UnityEngine;
 
 namespace Hotfix
 {
-    [UIFactory(UIType.Lobby)]
+    [UIFactory((int)UIType.Lobby)]
     public class UILobbyFactory : IUIFactory
     {
-        public UI Create(Scene scene, int type, UI parent)
+        public UI Create(Scene scene, UIType type, GameObject gameObject)
         {
-			GameObject bundleGameObject = scene.ModelScene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("uilobby", "Lobby");
-			GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
-			lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
-			UI ui = new UI(scene, type, parent, lobby);
-			parent.Add(ui);
+	        try
+	        {
+				GameObject bundleGameObject = ((GameObject)Resources.Load("UI")).Get<GameObject>("UILobby");
+				GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
+				lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
+				UI ui = new UI(scene, type, null, lobby);
 
-	        ui.AddComponent<UILobbyComponent>();
-			return ui;
-        }
+				ui.AddComponent<UILobbyComponent>();
+				return ui;
+	        }
+	        catch (Exception e)
+	        {
+				Log.Error(e.ToStr());
+		        return null;
+	        }
+		}
     }
 }

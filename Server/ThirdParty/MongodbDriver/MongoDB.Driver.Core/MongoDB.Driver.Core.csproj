@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DA56482A-5D8F-41E0-85E6-1F22B310F91B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MongoDB.Driver</RootNamespace>
+    <AssemblyName>MongoDB.Driver.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\..\MongoDB.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MongoDB.Driver.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS;NET45</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MongoDB.Driver.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\MongoDB.Shared\ApplicationNameHelper.cs">
+      <Link>Core\Configuration\ApplicationNameHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\MongoDB.Shared\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MongoDB.Shared\Hasher.cs">
+      <Link>Core\Misc\Hasher.cs</Link>
+    </Compile>
+    <Compile Include="Collation.cs" />
+    <Compile Include="Core\Authentication\DefaultAuthenticator.cs" />
+    <Compile Include="Core\Authentication\GssapiAuthenticator.cs" />
+    <Compile Include="Core\Authentication\Sspi\AuthIdentity.cs" />
+    <Compile Include="Core\Authentication\Sspi\AuthIdentityFlag.cs" />
+    <Compile Include="Core\Authentication\Sspi\DataRepresentation.cs" />
+    <Compile Include="Core\Authentication\Sspi\EncryptQualityOfProtection.cs" />
+    <Compile Include="Core\Authentication\Sspi\NativeMethods.cs" />
+    <Compile Include="Core\Authentication\Sspi\QueryContextAttribute.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityBuffer.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityBufferDescriptor.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityBufferType.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityContext.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityCredential.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityCredentialUse.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityPackageContextSizes.cs" />
+    <Compile Include="Core\Authentication\Sspi\SecurityPackageInfo.cs" />
+    <Compile Include="Core\Authentication\Sspi\SspiContextFlags.cs" />
+    <Compile Include="Core\Authentication\Sspi\SspiHandle.cs" />
+    <Compile Include="Core\Authentication\Sspi\SspiPackage.cs" />
+    <Compile Include="Core\Authentication\Sspi\Win32Exception.cs" />
+    <Compile Include="Core\Bindings\ChannelChannelSource.cs" />
+    <Compile Include="Core\Bindings\ChannelReadBinding.cs" />
+    <Compile Include="Core\Bindings\ChannelReadWriteBinding.cs" />
+    <Compile Include="Core\Bindings\ChannelSourceReadWriteBinding.cs" />
+    <Compile Include="Core\Connections\ClientDocumentHelper.cs" />
+    <Compile Include="Core\Misc\ArrayFiltersFeature.cs" />
+    <Compile Include="Core\Misc\CachedEnumerable.cs" />
+    <Compile Include="Core\Misc\CollationFeature.cs" />
+    <Compile Include="Core\Misc\CommandsThatWriteAcceptWriteConcernFeature.cs" />
+    <Compile Include="Core\Misc\DefaultRandomStringGenerator.cs" />
+    <Compile Include="Core\Misc\Feature.cs" />
+    <Compile Include="Core\Misc\ReadAheadEnumerable.cs" />
+    <Compile Include="Core\Misc\ReadConcernFeature.cs" />
+    <Compile Include="Core\Misc\TaskExtensions.cs" />
+    <Compile Include="Core\Operations\CreateViewOperation.cs" />
+    <Compile Include="Core\Operations\ReIndexOperation.cs" />
+    <Compile Include="Core\Operations\WriteConcernErrorHelper.cs" />
+    <Compile Include="Core\Servers\IServerMonitor.cs" />
+    <Compile Include="Core\Servers\IServerMonitorFactory.cs" />
+    <Compile Include="Core\Servers\ServerMonitorFactory.cs" />
+    <Compile Include="Core\Servers\ServerMonitor.cs" />
+    <Compile Include="Core\WireProtocol\CommandResponseHandling.cs" />
+    <Compile Include="Core\Bindings\ReadWriteBindingHandle.cs" />
+    <Compile Include="Core\Bindings\ReadBindingHandle.cs" />
+    <Compile Include="Core\Bindings\SingleServerReadBinding.cs" />
+    <Compile Include="Core\Bindings\SingleServerReadWriteBinding.cs" />
+    <Compile Include="Core\Bindings\SplitReadWriteBinding.cs" />
+    <Compile Include="Core\Bindings\IChannelSource.cs" />
+    <Compile Include="Core\Bindings\IChannel.cs" />
+    <Compile Include="Core\Bindings\ReadPreferenceBinding.cs" />
+    <Compile Include="Core\Clusters\ElectionId.cs" />
+    <Compile Include="Core\Configuration\SslStreamSettings.cs" />
+    <Compile Include="Core\Connections\CommandEventHelper.cs" />
+    <Compile Include="Core\Connections\SslStreamFactory.cs" />
+    <Compile Include="Core\Events\ClusterSelectingServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterSelectedServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterSelectingServerFailedEvent.cs" />
+    <Compile Include="Core\Events\ClusterDescriptionChangedEvent.cs" />
+    <Compile Include="Core\Events\ClusterRemovingServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterRemovedServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterClosedEvent.cs" />
+    <Compile Include="Core\Events\ClusterOpenedEvent.cs" />
+    <Compile Include="Core\Events\ClusterAddedServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterAddingServerEvent.cs" />
+    <Compile Include="Core\Events\ClusterOpeningEvent.cs" />
+    <Compile Include="Core\Events\ClusterClosingEvent.cs" />
+    <Compile Include="Core\Events\CommandFailedEvent.cs" />
+    <Compile Include="Core\Events\CommandSucceededEvent.cs" />
+    <Compile Include="Core\Events\CommandStartedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionClosedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionClosingEvent.cs" />
+    <Compile Include="Core\Events\ConnectionOpenedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionOpeningEvent.cs" />
+    <Compile Include="Core\Events\ConnectionOpeningFailedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionReceivedMessageEvent.cs" />
+    <Compile Include="Core\Events\ConnectionReceivingMessageEvent.cs" />
+    <Compile Include="Core\Events\ConnectionReceivingMessageFailedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionSendingMessagesEvent.cs" />
+    <Compile Include="Core\Events\ConnectionSendingMessagesFailedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionSentMessagesEvent.cs" />
+    <Compile Include="Core\Events\Diagnostics\TraceSourceCommandEventSubscriber.cs" />
+    <Compile Include="Core\Events\Diagnostics\TraceSourceEventHelper.cs" />
+    <Compile Include="Core\Events\Diagnostics\TraceSourceEventSubscriber.cs" />
+    <Compile Include="Core\Events\EventAggregator.cs" />
+    <Compile Include="Core\Events\EventContext.cs" />
+    <Compile Include="Core\Events\IEventSubscriber.cs" />
+    <Compile Include="Core\Events\ReflectionEventSubscriber.cs" />
+    <Compile Include="Core\Events\ServerClosedEvent.cs" />
+    <Compile Include="Core\Events\ServerDescriptionChangedEvent.cs" />
+    <Compile Include="Core\Events\ServerHeartbeatFailedEvent.cs" />
+    <Compile Include="Core\Events\ServerOpenedEvent.cs" />
+    <Compile Include="Core\Events\ServerHeartbeatSucceededEvent.cs" />
+    <Compile Include="Core\Events\ServerHeartbeatStartedEvent.cs" />
+    <Compile Include="Core\Events\ServerOpeningEvent.cs" />
+    <Compile Include="Core\Events\ServerClosingEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolCheckedInConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolCheckedOutConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolCheckingInConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolCheckingOutConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolCheckingOutConnectionFailedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolRemovingConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolRemovedConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolOpenedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolClosedEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolAddedConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolAddingConnectionEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolClosingEvent.cs" />
+    <Compile Include="Core\Events\ConnectionPoolOpeningEvent.cs" />
+    <Compile Include="Core\Events\ConnectionFailedEvent.cs" />
+    <Compile Include="Core\Events\SingleEventSubscriber.cs" />
+    <Compile Include="Core\Misc\ExceptionMapper.cs" />
+    <Compile Include="Core\Misc\SemaphoreSlimRequest.cs" />
+    <Compile Include="Core\Operations\AsyncCursorEnumerator.cs" />
+    <Compile Include="Core\Operations\CreateIndexesUsingCommandOperation.cs" />
+    <Compile Include="Core\Operations\CreateIndexesUsingInsertOperation.cs" />
+    <Compile Include="DocumentValidationAction.cs" />
+    <Compile Include="DocumentValidationLevel.cs" />
+    <Compile Include="Core\Operations\AsyncCursorEnumerableOneTimeAdapter.cs" />
+    <Compile Include="Core\Operations\AsyncCursorSourceEnumerableAdapter.cs" />
+    <Compile Include="Core\Operations\GeoSearchOperation.cs" />
+    <Compile Include="Core\Operations\GeoNearOperation.cs" />
+    <Compile Include="Core\Operations\ListCollectionsUsingCommandOperation.cs" />
+    <Compile Include="Core\Operations\ListCollectionsUsingQueryOperation.cs" />
+    <Compile Include="Core\Operations\ListIndexesUsingCommandOperation.cs" />
+    <Compile Include="Core\Operations\ListIndexesUsingQueryOperation.cs" />
+    <Compile Include="Core\Operations\CursorBatchDeserializationHelper.cs" />
+    <Compile Include="Core\Operations\FindCommandOperation.cs" />
+    <Compile Include="Core\Operations\FindOpcodeOperation.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\IMessageEncoderSelector.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\ReplyMessageEncoderSelector.cs" />
+    <Compile Include="Core\WireProtocol\Messages\MongoDBMessageType.cs" />
+    <Compile Include="Core\WireProtocol\Messages\ResponseMessage.cs" />
+    <Compile Include="Optional.cs" />
+    <Compile Include="Core\Misc\ReferenceCounted.cs" />
+    <Compile Include="Core\Bindings\WritableServerBinding.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\WritableServerSelector.cs" />
+    <Compile Include="Core\Misc\StringBuilderExtensionMethods.cs" />
+    <Compile Include="Core\Operations\AggregateExplainOperation.cs" />
+    <Compile Include="Core\Operations\MapReduceLegacyOperation.cs" />
+    <Compile Include="ReadConcern.cs" />
+    <Compile Include="ReadConcernLevel.cs" />
+    <Compile Include="ServerErrorCategory.cs" />
+    <Compile Include="Core\Operations\MongoBulkWriteOperationException.cs" />
+    <Compile Include="Core\Operations\CreateIndexRequest.cs" />
+    <Compile Include="Core\Operations\CursorType.cs" />
+    <Compile Include="Core\Operations\ElementNameValidators\CollectionElementNameValidator.cs" />
+    <Compile Include="Core\Operations\ElementNameValidators\ElementNameValidatorFactory.cs" />
+    <Compile Include="Core\Operations\ElementNameValidators\UpdateElementNameValidator.cs" />
+    <Compile Include="Core\Operations\ElementNameValidators\UpdateOrReplacementElementNameValidator.cs" />
+    <Compile Include="Core\Operations\ExplainOperation.cs" />
+    <Compile Include="Core\Operations\ExplainVerbosity.cs" />
+    <Compile Include="Core\Operations\FindAndModifyOperationBase.cs" />
+    <Compile Include="Core\Operations\FindAndModifyValueDeserializer.cs" />
+    <Compile Include="Core\Operations\FindOneAndUpdateOperation.cs" />
+    <Compile Include="Core\Operations\FindOneAndReplaceOperation.cs" />
+    <Compile Include="Core\Operations\FindOneAndDeleteOperation.cs" />
+    <Compile Include="Core\Operations\ReturnDocument.cs" />
+    <Compile Include="Core\Servers\HeartbeatDelay.cs" />
+    <Compile Include="DeferredAsyncCursor.cs" />
+    <Compile Include="IAsyncCursor.cs" />
+    <Compile Include="Core\Operations\IndexNameHelper.cs" />
+    <Compile Include="Core\Operations\ListIndexesOperation.cs" />
+    <Compile Include="Core\Operations\ListCollectionsOperation.cs" />
+    <Compile Include="Core\Operations\PingOperation.cs" />
+    <Compile Include="Core\Operations\QueryHelper.cs" />
+    <Compile Include="Core\Operations\UpdateType.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\MessageBinaryEncoderBase.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\MessageJsonEncoderBase.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\MessageEncoderSettings.cs" />
+    <Compile Include="CollectionNamespace.cs" />
+    <Compile Include="DatabaseNamespace.cs" />
+    <Compile Include="MongoExecutionTimeoutException.cs" />
+    <Compile Include="Core\Operations\BulkWriteOperationResultConverter.cs" />
+    <Compile Include="Core\Operations\DeleteOpcodeOperationEmulator.cs" />
+    <Compile Include="Core\Operations\InsertOpcodeOperationEmulator.cs" />
+    <Compile Include="Core\Operations\UpdateOpcodeOperationEmulator.cs" />
+    <Compile Include="Core\Misc\BatchableSource.cs" />
+    <Compile Include="Core\Misc\IndexMap.cs" />
+    <Compile Include="Core\Misc\Metronome.cs" />
+    <Compile Include="Core\Async\AsyncQueue.cs" />
+    <Compile Include="Core\Authentication\AuthenticationHelper.cs" />
+    <Compile Include="Core\Authentication\MongoDBX509Authenticator.cs" />
+    <Compile Include="Core\Authentication\PlainAuthenticator.cs" />
+    <Compile Include="Core\Authentication\SaslAuthenticator.cs" />
+    <Compile Include="Core\Authentication\ScramSha1Authenticator.cs" />
+    <Compile Include="Core\Authentication\UsernamePasswordCredential.cs" />
+    <Compile Include="Core\Authentication\IAuthenticator.cs" />
+    <Compile Include="Core\Authentication\MongoDBCRAuthenticator.cs" />
+    <Compile Include="Core\Bindings\ChannelSourceHandle.cs" />
+    <Compile Include="Core\Bindings\IBinding.cs" />
+    <Compile Include="Core\Bindings\ServerChannelSource.cs" />
+    <Compile Include="Core\Clusters\Cluster.cs" />
+    <Compile Include="Core\Clusters\ClusterConnectionMode.cs" />
+    <Compile Include="Core\Clusters\ClusterFactory.cs" />
+    <Compile Include="Core\Clusters\ClusterDescription.cs" />
+    <Compile Include="Core\Clusters\ClusterId.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\DelegateServerSelector.cs" />
+    <Compile Include="Core\Configuration\ClusterSettings.cs" />
+    <Compile Include="Core\Clusters\ClusterState.cs" />
+    <Compile Include="Core\Clusters\ClusterType.cs" />
+    <Compile Include="Core\ConnectionPools\ExclusiveConnectionPool.cs" />
+    <Compile Include="Core\ConnectionPools\ExclusiveConnectionPoolFactory.cs" />
+    <Compile Include="Core\Connections\ConnectionId.cs" />
+    <Compile Include="Core\Connections\IConnectionInitializer.cs" />
+    <Compile Include="Core\Clusters\ClusterDescriptionChangedEventArgs.cs" />
+    <Compile Include="Core\Events\Diagnostics\PerformanceCounterEventSubscriber.cs" />
+    <Compile Include="Core\Events\Diagnostics\PerformanceCounters\ConnectionPerformanceRecorder.cs" />
+    <Compile Include="Core\Events\Diagnostics\PerformanceCounters\PerformanceCounterAttribute.cs" />
+    <Compile Include="Core\Events\Diagnostics\PerformanceCounters\PerformanceCounterPackage.cs" />
+    <Compile Include="Core\Events\Diagnostics\PerformanceCounters\ConnectionPoolPerformanceRecorder.cs" />
+    <Compile Include="Core\Configuration\ClusterBuilder.cs" />
+    <Compile Include="Core\Configuration\ClusterBuilderExtensions.cs" />
+    <Compile Include="Core\Operations\WriteRequestType.cs" />
+    <Compile Include="Core\Servers\ServerDescriptionChangedEventArgs.cs" />
+    <Compile Include="Core\Clusters\ICluster.cs" />
+    <Compile Include="Core\Clusters\IClusterFactory.cs" />
+    <Compile Include="Core\Clusters\MultiServerCluster.cs" />
+    <Compile Include="IAsyncCursorSource.cs" />
+    <Compile Include="MongoClientException.cs" />
+    <Compile Include="MongoCursorNotFoundException.cs" />
+    <Compile Include="MongoIncompatibleDriverException.cs" />
+    <Compile Include="MongoServerException.cs" />
+    <Compile Include="MongoWaitQueueFullException.cs" />
+    <Compile Include="MongoNodeIsRecoveringException.cs" />
+    <Compile Include="MongoNotPrimaryException.cs" />
+    <Compile Include="BatchTransformingAsyncCursor.cs" />
+    <Compile Include="ReadPreference.cs" />
+    <Compile Include="ReadPreferenceMode.cs" />
+    <Compile Include="Core\Clusters\ReplicaSetConfig.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\LatencyLimitingServerSelector.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\CompositeServerSelector.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\EndPointServerSelector.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\IServerSelector.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\RandomServerSelector.cs" />
+    <Compile Include="Core\Clusters\ServerSelectors\ReadPreferenceServerSelector.cs" />
+    <Compile Include="Core\Clusters\SingleServerCluster.cs" />
+    <Compile Include="SingleBatchAsyncCursor.cs" />
+    <Compile Include="Tag.cs" />
+    <Compile Include="TagSet.cs" />
+    <Compile Include="Core\Configuration\ConnectionPoolSettings.cs" />
+    <Compile Include="Core\ConnectionPools\IConnectionPool.cs" />
+    <Compile Include="Core\ConnectionPools\IConnectionPoolFactory.cs" />
+    <Compile Include="Core\Connections\BinaryConnection.cs" />
+    <Compile Include="Core\Connections\BinaryConnectionFactory.cs" />
+    <Compile Include="Core\Connections\ConnectionDescription.cs" />
+    <Compile Include="Core\Connections\ConnectionExtensions.cs" />
+    <Compile Include="Core\Connections\ConnectionInitializer.cs" />
+    <Compile Include="Core\Configuration\ConnectionSettings.cs" />
+    <Compile Include="Core\Connections\IConnection.cs" />
+    <Compile Include="Core\Connections\IConnectionFactory.cs" />
+    <Compile Include="Core\Connections\IStreamFactory.cs" />
+    <Compile Include="Core\Connections\TcpStreamFactory.cs" />
+    <Compile Include="Core\Configuration\TcpStreamSettings.cs" />
+    <Compile Include="Core\Configuration\ConnectionString.cs" />
+    <Compile Include="MongoConfigurationException.cs" />
+    <Compile Include="MongoConnectionClosedException.cs" />
+    <Compile Include="Core\Misc\Range.cs" />
+    <Compile Include="Core\Misc\ToStringComparer.cs" />
+    <Compile Include="Core\Misc\IdGenerator.cs" />
+    <Compile Include="Core\Misc\InterlockedInt32.cs" />
+    <Compile Include="Core\Operations\BulkDeleteOperation.cs" />
+    <Compile Include="Core\Operations\BulkDeleteOperationEmulator.cs" />
+    <Compile Include="Core\Operations\BulkInsertOperation.cs" />
+    <Compile Include="Core\Operations\BulkInsertOperationEmulator.cs" />
+    <Compile Include="Core\Operations\BulkMixedWriteOperation.cs" />
+    <Compile Include="Core\Operations\BulkUnmixedWriteOperationBase.cs" />
+    <Compile Include="Core\Operations\BulkUnmixedWriteOperationEmulatorBase.cs" />
+    <Compile Include="Core\Operations\BulkUpdateOperation.cs" />
+    <Compile Include="Core\Operations\BulkUpdateOperationEmulator.cs" />
+    <Compile Include="Core\Operations\BulkWriteBatchResult.cs" />
+    <Compile Include="Core\Operations\BulkWriteBatchResultCombiner.cs" />
+    <Compile Include="Core\Operations\BulkWriteOperationError.cs" />
+    <Compile Include="Core\Operations\BulkWriteOperationResult.cs" />
+    <Compile Include="Core\Operations\BulkWriteOperationUpsert.cs" />
+    <Compile Include="Core\Operations\InsertRequest.cs" />
+    <Compile Include="Core\Operations\BulkWriteConcernError.cs" />
+    <Compile Include="WriteConcernResult.cs" />
+    <Compile Include="Core\Operations\WriteRequest.cs" />
+    <Compile Include="MongoAuthenticationException.cs" />
+    <Compile Include="MongoConnectionException.cs" />
+    <Compile Include="MongoDuplicateKeyException.cs" />
+    <Compile Include="MongoException.cs" />
+    <Compile Include="MongoInternalException.cs" />
+    <Compile Include="Core\Servers\ServerId.cs" />
+    <Compile Include="MongoQueryException.cs" />
+    <Compile Include="MongoWriteConcernException.cs" />
+    <Compile Include="Core\Misc\EndPointHelper.cs" />
+    <Compile Include="Core\Misc\Ensure.cs" />
+    <Compile Include="Core\Misc\ExponentiallyWeightedMovingAverage.cs" />
+    <Compile Include="Core\Misc\IRandomStringGenerator.cs" />
+    <Compile Include="Core\Misc\SemanticVersion.cs" />
+    <Compile Include="Core\Misc\StreamExtensionMethods.cs" />
+    <Compile Include="Core\Misc\IClock.cs" />
+    <Compile Include="Core\Misc\SystemClock.cs" />
+    <Compile Include="Core\Misc\ThreadStaticRandom.cs" />
+    <Compile Include="Core\Misc\TimeSpanParser.cs" />
+    <Compile Include="MongoCommandException.cs" />
+    <Compile Include="Core\Operations\AggregateOperation.cs" />
+    <Compile Include="Core\Operations\AggregateToCollectionOperation.cs" />
+    <Compile Include="Core\Operations\CommandOperationBase.cs" />
+    <Compile Include="Core\Operations\CountOperation.cs" />
+    <Compile Include="Core\Operations\CreateCollectionOperation.cs" />
+    <Compile Include="Core\Operations\CreateIndexesOperation.cs" />
+    <Compile Include="Core\Operations\AsyncCursor.cs" />
+    <Compile Include="Core\Operations\DatabaseExistsOperation.cs" />
+    <Compile Include="Core\Operations\DeleteOpcodeOperation.cs" />
+    <Compile Include="Core\Operations\DeleteRequest.cs" />
+    <Compile Include="Core\Operations\DistinctOperation.cs" />
+    <Compile Include="Core\Operations\DropCollectionOperation.cs" />
+    <Compile Include="Core\Operations\DropDatabaseOperation.cs" />
+    <Compile Include="Core\Operations\DropIndexOperation.cs" />
+    <Compile Include="Core\Operations\EvalOperation.cs" />
+    <Compile Include="Core\Operations\ElementDeserializer.cs" />
+    <Compile Include="Core\Operations\FindOperation.cs" />
+    <Compile Include="Core\Operations\GroupOperation.cs" />
+    <Compile Include="Core\Operations\InsertOpcodeOperation.cs" />
+    <Compile Include="Core\Operations\IOperation.cs" />
+    <Compile Include="Core\Operations\ListDatabasesOperation.cs" />
+    <Compile Include="Core\Operations\MapReduceOperation.cs" />
+    <Compile Include="Core\Operations\MapReduceOperationBase.cs" />
+    <Compile Include="Core\Operations\MapReduceOutputMode.cs" />
+    <Compile Include="Core\Operations\MapReduceOutputToCollectionOperation.cs" />
+    <Compile Include="Core\Operations\OperationExtensionMethods.cs" />
+    <Compile Include="Core\Operations\ParallelScanOperation.cs" />
+    <Compile Include="Core\Operations\ReadCommandOperation.cs" />
+    <Compile Include="Core\Operations\RenameCollectionOperation.cs" />
+    <Compile Include="Core\Operations\UpdateOpcodeOperation.cs" />
+    <Compile Include="Core\Operations\UpdateRequest.cs" />
+    <Compile Include="Core\Operations\WriteCommandOperation.cs" />
+    <Compile Include="WriteConcern.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Core\Servers\IServer.cs" />
+    <Compile Include="Core\Servers\IClusterableServerFactory.cs" />
+    <Compile Include="Core\Servers\Server.cs" />
+    <Compile Include="Core\Servers\ServerDescription.cs" />
+    <Compile Include="Core\Servers\ServerFactory.cs" />
+    <Compile Include="Core\Configuration\ServerSettings.cs" />
+    <Compile Include="Core\Servers\ServerState.cs" />
+    <Compile Include="Core\Servers\ServerType.cs" />
+    <Compile Include="Core\WireProtocol\CommandWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\CursorBatch.cs" />
+    <Compile Include="Core\WireProtocol\DeleteWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\GetMoreWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\InsertWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\IWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\KillCursorsWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\Messages\DeleteMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\Opcode.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\BinaryMessageEncoderFactory.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\DeleteMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\GetMoreMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\InsertMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\KillCursorsMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\QueryMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\ReplyMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\BinaryEncoders\UpdateMessageBinaryEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\IEncodableMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\IMessageEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\IMessageEncoderFactory.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\DeleteMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\GetMoreMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\InsertMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\JsonMessageEncoderFactory.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\KillCursorsMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\QueryMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\ReplyMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\Encoders\JsonEncoders\UpdateMessageJsonEncoder.cs" />
+    <Compile Include="Core\WireProtocol\Messages\GetMoreMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\InsertMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\KillCursorsMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\MongoDBMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\QueryMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\ReplyMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\RequestMessage.cs" />
+    <Compile Include="Core\WireProtocol\Messages\UpdateMessage.cs" />
+    <Compile Include="Core\WireProtocol\QueryWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\UpdateWireProtocol.cs" />
+    <Compile Include="Core\WireProtocol\WriteWireProtocolBase.cs" />
+    <Compile Include="Core\Connections\BuildInfoResult.cs" />
+    <Compile Include="Core\Connections\IsMasterResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MongoDB.Bson\MongoDB.Bson.csproj">
+      <Project>{0e9a3a2a-49cd-4f6c-847c-dc79b4b65ce6}</Project>
+      <Name>MongoDB.Bson</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\AsyncUsageAnalyzers.1.0.0-alpha003\analyzers\dotnet\AsyncUsageAnalyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

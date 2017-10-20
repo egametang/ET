@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2014 MongoDB Inc.
+/* Copyright 2010-2015 MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,76 +15,84 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Text;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
 {
     /// <summary>
     /// Represents a serializer for ByteArrays.
     /// </summary>
-    public class ByteArraySerializer : BsonBaseSerializer
+    public class ByteArraySerializer : SealedClassSerializerBase<byte[]>, IRepresentationConfigurable<ByteArraySerializer>
     {
-        // private static fields
-        private static ByteArraySerializer __instance = new ByteArraySerializer();
+        // private fields
+        private readonly BsonType _representation;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the ByteArraySerializer class.
+        /// Initializes a new instance of the <see cref="ByteArraySerializer"/> class.
         /// </summary>
         public ByteArraySerializer()
-            : base(new RepresentationSerializationOptions(BsonType.Binary))
+            : this(BsonType.Binary)
         {
         }
 
-        // public static properties
         /// <summary>
-        /// Gets an instance of the ByteArraySerializer class.
+        /// Initializes a new instance of the <see cref="ByteArraySerializer"/> class.
         /// </summary>
-        [Obsolete("Use constructor instead.")]
-        public static ByteArraySerializer Instance
+        /// <param name="representation">The representation.</param>
+        public ByteArraySerializer(BsonType representation)
         {
-            get { return __instance; }
+            switch (representation)
+            {
+                case BsonType.Binary:
+                case BsonType.String:
+                    break;
+
+                default:
+                    var message = string.Format("{0} is not a valid representation for a ByteArraySerializer.", representation);
+                    throw new ArgumentException(message);
+            }
+
+            _representation = representation;
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets the representation.
+        /// </summary>
+        /// <value>
+        /// The representation.
+        /// </value>
+        public BsonType Representation
+        {
+            get { return _representation; }
         }
 
         // public methods
 #pragma warning disable 618 // about obsolete BsonBinarySubType.OldBinary
         /// <summary>
-        /// Deserializes an object from a BsonReader.
+        /// Deserializes a value.
         /// </summary>
-        /// <param name="bsonReader">The BsonReader.</param>
-        /// <param name="nominalType">The nominal type of the object.</param>
-        /// <param name="actualType">The actual type of the object.</param>
-        /// <param name="options">The serialization options.</param>
-        /// <returns>An object.</returns>
-        public override object Deserialize(
-            BsonReader bsonReader,
-            Type nominalType,
-            Type actualType,
-            IBsonSerializationOptions options)
+        /// <param name="context">The deserialization context.</param>
+        /// <param name="args">The deserialization args.</param>
+        /// <returns>A deserialized value.</returns>
+        protected override byte[] DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            VerifyTypes(nominalType, actualType, typeof(byte[]));
+            var bsonReader = context.Reader;
 
             BsonType bsonType = bsonReader.GetCurrentBsonType();
-            byte[] bytes;
-            string message;
             switch (bsonType)
             {
-                case BsonType.Null:
-                    bsonReader.ReadNull();
-                    return null;
                 case BsonType.Binary:
-                    bytes = bsonReader.ReadBytes();
-                    return bytes;
+                    return bsonReader.ReadBytes();
+
                 case BsonType.String:
                     var s = bsonReader.ReadString();
                     if ((s.Length % 2) != 0)
                     {
                         s = "0" + s; // prepend a zero to make length even
                     }
-                    bytes = new byte[s.Length / 2];
+                    var bytes = new byte[s.Length / 2];
                     for (int i = 0; i < s.Length; i += 2)
                     {
                         var hex = s.Substring(i, 2);
@@ -92,53 +100,65 @@ namespace MongoDB.Bson.Serialization.Serializers
                         bytes[i / 2] = b;
                     }
                     return bytes;
+
                 default:
-                    message = string.Format("Cannot deserialize Byte[] from BsonType {0}.", bsonType);
-                    throw new Exception(message);
+                    throw CreateCannotDeserializeFromBsonTypeException(bsonType);
             }
         }
 #pragma warning restore 618
 
         /// <summary>
-        /// Serializes an object to a BsonWriter.
+        /// Serializes a value.
         /// </summary>
-        /// <param name="bsonWriter">The BsonWriter.</param>
-        /// <param name="nominalType">The nominal type.</param>
+        /// <param name="context">The serialization context.</param>
+        /// <param name="args">The serialization args.</param>
         /// <param name="value">The object.</param>
-        /// <param name="options">The serialization options.</param>
-        public override void Serialize(
-            BsonWriter bsonWriter,
-            Type nominalType,
-            object value,
-            IBsonSerializationOptions options)
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, byte[] value)
         {
-            if (value == null)
+            var bsonWriter = context.Writer;
+
+            switch (_representation)
             {
-                bsonWriter.WriteNull();
+                case BsonType.Binary:
+                    bsonWriter.WriteBytes(value);
+                    break;
+
+                case BsonType.String:
+                    var sb = new StringBuilder(value.Length * 2);
+                    for (int i = 0; i < value.Length; i++)
+                    {
+                        sb.Append(string.Format("{0:x2}", value[i]));
+                    }
+                    bsonWriter.WriteString(sb.ToString());
+                    break;
+
+                default:
+                    var message = string.Format("'{0}' is not a valid Byte[] representation.", _representation);
+                    throw new BsonSerializationException(message);
+            }
+        }
+
+        /// <summary>
+        /// Returns a serializer that has been reconfigured with the specified representation.
+        /// </summary>
+        /// <param name="representation">The representation.</param>
+        /// <returns>The reconfigured serializer.</returns>
+        public ByteArraySerializer WithRepresentation(BsonType representation)
+        {
+            if (representation == _representation)
+            {
+                return this;
             }
             else
             {
-                var bytes = (byte[])value;
-                var representationSerializationOptions = EnsureSerializationOptions<RepresentationSerializationOptions>(options);
-
-                switch (representationSerializationOptions.Representation)
-                {
-                    case BsonType.Binary:
-                        bsonWriter.WriteBytes(bytes);
-                        break;
-                    case BsonType.String:
-                        var sb = new StringBuilder(bytes.Length * 2);
-                        for (int i = 0; i < bytes.Length; i++)
-                        {
-                            sb.Append(string.Format("{0:x2}", bytes[i]));
-                        }
-                        bsonWriter.WriteString(sb.ToString());
-                        break;
-                    default:
-                        var message = string.Format("'{0}' is not a valid Byte[] representation.", representationSerializationOptions.Representation);
-                        throw new BsonSerializationException(message);
-                }
+                return new ByteArraySerializer(representation);
             }
+        }
+
+        // explicit interface implementations
+        IBsonSerializer IRepresentationConfigurable.WithRepresentation(BsonType representation)
+        {
+            return WithRepresentation(representation);
         }
     }
 }
