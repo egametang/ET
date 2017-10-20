@@ -10,20 +10,19 @@ namespace Model
 
 		private static readonly StreamWriter error;
 		
-#if UNITY_EDITOR
-		private static bool IsNeedFlush = true;
-#else
-		private static bool IsNeedFlush = true;
-#endif
-
+	    public static bool IsNeedFlush = true;
+        private static string dirName = "Logs";
+        private static string infoFileName = "/Log-Client-Info.txt";
+        private static string errorFileName = "/Log-Client-Error.txt";
 		static Log()
 		{
-			if (!Directory.Exists("./Logs"))
+            string dirPath =PathHelp.AppHotfixResPath + dirName;
+			if (!Directory.Exists(dirPath))
 			{
-				Directory.CreateDirectory("./Logs");
+				Directory.CreateDirectory(dirPath);
 			}
-			info = new StreamWriter("./Logs/Log-Client-Info.txt", false, Encoding.Unicode, 1024);
-			error = new StreamWriter("./Logs/Log-Client-Error.txt", false, Encoding.Unicode, 1024);
+			info = new StreamWriter(dirPath+ infoFileName, false, Encoding.Unicode, 1024);
+			error = new StreamWriter(dirPath+ errorFileName, false, Encoding.Unicode, 1024);
 		}
 
 		public static void Warning(string msg)
