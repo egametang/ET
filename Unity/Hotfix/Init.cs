@@ -9,21 +9,23 @@ namespace Hotfix
 		{
 			try
 			{
-				Hotfix.Scene.ModelScene = Game.Scene;
+                Hotfix.Scene.ModelScene = Game.Scene;
+                Hotfix.Scene.AddComponent<EventComponent>();
+                Hotfix.Scene.AddComponent<TimerComponent>();
 				Hotfix.Scene.AddComponent<UIComponent>();
 				Hotfix.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
-			}
+            }
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				UnityEngine.Debug.LogError(e.ToStr());
 			}
 		}
 
 		public static void Update()
 		{
 			try
-			{
-				ObjectEvents.Instance.Update();
+            {
+                ObjectEvents.Instance.Update();
 			}
 			catch (Exception e)
 			{

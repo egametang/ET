@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<linker>  
+  <assembly fullname="Assembly-CSharp" preserve="all"/>
+  <assembly fullname="Assembly-CSharp-firstpass" preserve="all"/>
+  <assembly fullname="UnityEngine" preserve="all"/>
+  <assembly fullname="System" preserve="all"/>
+</linker>
