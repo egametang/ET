@@ -1,0 +1,13 @@
+ManifestFileVersion: 0
+CRC: 2854823799
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: fromework/code.unity3d
+      Dependencies: {}
+    Info_1:
+      Name: hall/login.unity3d
+      Dependencies: {}
+    Info_2:
+      Name: fromework/config.unity3d
+      Dependencies: {}

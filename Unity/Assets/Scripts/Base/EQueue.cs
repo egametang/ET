@@ -5,16 +5,17 @@ namespace Model
 {
 	public class EQueue<T>: IEnumerable
 	{
-		private readonly Queue<T> list = new Queue<T>();
+		private readonly LinkedList<T> list = new LinkedList<T>();
 
 		public void Enqueue(T t)
 		{
-			this.list.Enqueue(t);
+			this.list.AddLast(t);
 		}
 
 		public T Dequeue()
 		{
-			T t = this.list.Dequeue();
+			T t = this.list.First.Value;
+			this.list.RemoveFirst();
 			return t;
 		}
 		

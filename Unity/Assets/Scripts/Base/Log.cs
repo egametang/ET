@@ -10,7 +10,7 @@ namespace Model
 
 		private static readonly StreamWriter error;
 		
-	    public static bool IsNeedFlush = true;
+		public static bool IsNeedFlush = true;
         private static string dirName = "Logs";
         private static string infoFileName = "/Log-Client-Info.txt";
         private static string errorFileName = "/Log-Client-Error.txt";
@@ -61,13 +61,11 @@ namespace Model
 		{
 			DateTime dateTime = DateTime.Now;
 			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {TimeHelper.ClientNow()} {msg}";
-
 			error.WriteLine(s);
 			if (IsNeedFlush)
 			{
 				error.Flush();
 			}
-
 			info.WriteLine(s);
 			if (IsNeedFlush)
 			{
@@ -81,23 +79,30 @@ namespace Model
 
 		public static void Debug(string msg)
 		{
-#if UNITY_EDITOR
 			DateTime dateTime = DateTime.Now;
 			string s = $"{dateTime:yyyy-MM-dd HH:mm:ss} {TimeHelper.ClientNow()} {msg}";
-			UnityEngine.Debug.Log(s);
-
-			info.WriteLine(s);
+            info.WriteLine(s);
 			if (IsNeedFlush)
 			{
 				info.Flush();
-			}
+            }
+#if UNITY_EDITOR
+            UnityEngine.Debug.Log(s);
 #endif
-		}
+        }
 
-		public static void Flush()
+        public static void Flush()
 		{
 			info.Flush();
 			error.Flush();
 		}
+
+        public static void Close()
+        {
+            info.Close();
+            error.Close();
+            info.Dispose();
+            error.Dispose();
+        }
 	}
 }

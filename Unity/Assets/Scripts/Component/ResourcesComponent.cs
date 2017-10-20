@@ -21,7 +21,7 @@ namespace Model
 
 		public K GetAsset<K>(string bundleName, string prefab) where K : class
 		{
-			string path = $"{bundleName}.unity3d/{prefab}".ToLower();
+			string path = $"{bundleName}{AppConst.AssetBundleExtendName}/{prefab}".ToLower();
 
 			UnityEngine.Object resource = null;
 			if (this.resourceCache.TryGetValue(path, out resource))
@@ -31,7 +31,7 @@ namespace Model
 			
 			if (Define.IsAsync)
 			{
-				if (!this.bundleCaches.ContainsKey($"{bundleName}.unity3d".ToLower()))
+				if (!this.bundleCaches.ContainsKey($"{bundleName}{AppConst.AssetBundleExtendName}".ToLower()))
 				{
 					return null;
 				}
@@ -52,13 +52,12 @@ namespace Model
 			return resource as K;
 		}
 
-		public async Task DownloadAndCacheAsync(string uri, string assetBundleName)
+		public async Task DownloadAndCacheAsync(string url, string assetBundleName)
 		{
-			assetBundleName = (assetBundleName + ".unity3d").ToLower();
+			assetBundleName = (assetBundleName + AppConst.AssetBundleExtendName).ToLower();
 
 			AssetBundle assetBundle;
 			// 异步下载资源
-			string url = uri + "StreamingAssets/" + assetBundleName;
 			int count = 0;
 			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			while (true)

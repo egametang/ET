@@ -100,7 +100,7 @@ namespace Model
 			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
-			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
+			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 
 			AResponse response = message as AResponse;
 			if (response != null)
@@ -141,7 +141,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
+					Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -174,7 +174,7 @@ namespace Model
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
+					Log.Debug($"recv: {MongoHelper.ToJson(response)}");
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
@@ -206,7 +206,7 @@ namespace Model
 
 		private void SendMessage(object message)
 		{
-			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
+			Log.Debug($"send: {MongoHelper.ToJson(message)}");
 			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);

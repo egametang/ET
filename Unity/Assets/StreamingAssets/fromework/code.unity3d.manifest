@@ -1,0 +1,24 @@
+ManifestFileVersion: 0
+CRC: 3902350850
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6c870a17ac6c13223e5aef0214cfc20e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e164b311a9d8f10480abb31db11cae1b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 502d8cafd6a5a0447ab1db9a24cdcb10, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Bundles/fromework/Code.prefab
+Dependencies: []
