@@ -9,6 +9,9 @@
         }
     }
 
+    /// <summary>
+    /// 帧同步消息组件
+    /// </summary>
     public class ClientFrameComponent: Component
     {
         public int Frame;
