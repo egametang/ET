@@ -26,16 +26,12 @@ namespace Model
 		{
 			try
 			{
-				if (Application.unityVersion != "2017.1.0p5")
-				{
-					Log.Error("请使用Unity2017.1.0p5版本");
-				}
-
 				DontDestroyOnLoad(gameObject);
 				Instance = this;
 
 
-				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
+
+                ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
 
 #if ILRuntime
 				Log.Debug("run in ilruntime mode");
@@ -58,19 +54,19 @@ namespace Model
 				this.onApplicationQuit = new MonoStaticMethod(hotfixInit, "OnApplicationQuit");
 #endif
 
-				Game.Scene.AddComponent<OpcodeTypeComponent>();
-				Game.Scene.AddComponent<MessageDispatherComponent>();
-				Game.Scene.AddComponent<NetOuterComponent>();
-				Game.Scene.AddComponent<ResourcesComponent>();
-				Game.Scene.AddComponent<BehaviorTreeComponent>();
-				Game.Scene.AddComponent<ConfigComponent>();
-				Game.Scene.AddComponent<PlayerComponent>();
-				Game.Scene.AddComponent<UnitComponent>();
-				Game.Scene.AddComponent<ClientFrameComponent>();
-				Game.Scene.AddComponent<CrossComponent>();
-
-				// 进入热更新层
-				this.start.Run();
+                Game.Scene.AddComponent<Model.EventComponent>();
+                Game.Scene.AddComponent<Model.TimerComponent>();
+                Game.Scene.AddComponent<Model.OpcodeTypeComponent>();
+                Game.Scene.AddComponent<Model.MessageDispatherComponent>();
+                Game.Scene.AddComponent<NetOuterComponent>();
+                Game.Scene.AddComponent<ResourcesComponent>();
+                Game.Scene.AddComponent<ConfigComponent>();
+                //Game.Scene.AddComponent<PlayerComponent>();
+                Game.Scene.AddComponent<UnitComponent>();
+                Game.Scene.AddComponent<ClientFrameComponent>();
+                Game.Scene.AddComponent<CrossComponent>();
+                // 进入热更新层
+                this.start.Run();
 			}
 			catch (Exception e)
 			{
@@ -96,6 +92,7 @@ namespace Model
 			Game.Close();
 			ObjectEvents.Close();
 			this.onApplicationQuit.Run();
+            Log.Close();
 		}
 	}
 }

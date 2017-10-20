@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace Model
 {
@@ -13,12 +14,13 @@ namespace Model
 	public class VersionConfig : AConfig
 	{
 		public int Version;
-		
+
+		[JsonIgnore]
 		public long TotalSize;
 
 		public List<FileVersionInfo> FileVersionInfos = new List<FileVersionInfo>();
 		
-		[BsonIgnore]
+		[JsonIgnore]
 		public Dictionary<string, FileVersionInfo> FileInfoDict = new Dictionary<string, FileVersionInfo>();
 
 		public override void EndInit()

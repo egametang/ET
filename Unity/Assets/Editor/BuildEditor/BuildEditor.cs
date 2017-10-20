@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Model;
+using Newtonsoft.Json;
 using UnityEditor;
 
 namespace MyEditor
@@ -130,7 +131,7 @@ namespace MyEditor
 
 			using (FileStream fileStream = new FileStream($"{dir}/Version.txt", FileMode.Create))
 			{
-				byte[] bytes = MongoHelper.ToJson(versionProto).ToByteArray();
+				byte[] bytes = JsonConvert.SerializeObject(versionProto).ToByteArray();
 				fileStream.Write(bytes, 0, bytes.Length);
 			}
 		}

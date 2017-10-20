@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Model
 {
@@ -11,7 +12,7 @@ namespace Model
 
 		public string SerializeToText(object obj)
 		{
-			return MongoHelper.ToJson(obj);
+			return JsonConvert.SerializeObject(obj);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes)
@@ -36,12 +37,12 @@ namespace Model
 
 		public T DeserializeFrom<T>(string str)
 		{
-			return MongoHelper.FromJson<T>(str);
+			return JsonConvert.DeserializeObject<T>(str);
 		}
 
 		public object DeserializeFrom(Type type, string str)
 		{
-			return MongoHelper.FromJson(type, str);
+			return JsonConvert.DeserializeObject(str);
 		}
 	}
 }

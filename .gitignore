@@ -42,3 +42,5 @@ _ReSharper.CSharp/
 .idea/
 /Unity/Logs
 /netcoreapp2.0
+
+Unity/Assets/Editor/BehaviorTreeEditor/

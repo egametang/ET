@@ -23,7 +23,7 @@ namespace Model
 
 		public override void Run(object a)
 		{
-			this.param[0] = a;
+            this.param[0] = a;
 			this.methodInfo.Invoke(this.obj, param);
 		}
 

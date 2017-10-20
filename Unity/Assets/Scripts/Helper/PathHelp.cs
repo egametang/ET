@@ -13,7 +13,7 @@ namespace Model
         {
             get
             {
-                string game = Application.productName;
+                string game = AppConst.AppName;
                 string path = AppResPath;
                 if (Application.isMobilePlatform)
                 {
@@ -41,7 +41,7 @@ namespace Model
                         path = $"{Application.dataPath}{"/Raw/"}";
                         break;
                     default:
-                        path = $"{Application.dataPath}{"/StreamingAssets/"}";
+                        path = $"{Application.dataPath}{"/"}{AppConst.StreamingAssetsName}{"/"}";
                         break;
                 }
                 return path;

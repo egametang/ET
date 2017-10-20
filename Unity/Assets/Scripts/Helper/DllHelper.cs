@@ -14,7 +14,8 @@ namespace Model
 #if ILRuntime
 		public static void LoadHotfixAssembly()
 		{
-			GameObject code = (GameObject)Resources.Load("Code");
+			//GameObject code = (GameObject)Resources.Load("Code");
+            GameObject code = (GameObject)ResourceHelper.LoadResource("fromework/code","Code");
 			byte[] assBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.dll").bytes;
 			byte[] mdbBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.pdb").bytes;
 
@@ -25,12 +26,13 @@ namespace Model
 			}
 		}
 #else
-		public static Assembly LoadHotfixAssembly()
+        public static Assembly LoadHotfixAssembly()
 		{
-			GameObject code = (GameObject)Resources.Load("Code");
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
-			Assembly assembly = Assembly.Load(assBytes, mdbBytes);
+            //GameObject code = (GameObject)Resources.Load("Code");
+            GameObject code = (GameObject)ResourceHelper.LoadResource("fromework/code","Code");
+            byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+            byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
+            Assembly assembly = Assembly.Load(assBytes, mdbBytes);
 			return assembly;
 		}
 #endif

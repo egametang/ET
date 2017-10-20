@@ -11,8 +11,11 @@ namespace Hotfix
         {
 	        try
 	        {
-				GameObject bundleGameObject = ((GameObject)Resources.Load("UI")).Get<GameObject>("UILobby");
-				GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
+                string s = string.Empty;
+				//GameObject bundleGameObject = ((GameObject)Resources.Load("UI")).Get<GameObject>("UILobby");
+                GameObject bundleObj = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("hall/login", "UILobby");
+
+				GameObject lobby = UnityEngine.Object.Instantiate(bundleObj);
 				lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
 				UI ui = new UI(scene, type, null, lobby);
 
