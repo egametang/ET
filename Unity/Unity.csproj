@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CF118143-7E37-744F-BE45-3F55345FEC40}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -19,6 +19,11 @@
     <UnityVersion>2017.1.0p5</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,41 +46,56 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="mscorlib">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Xml.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>Library\UnityAssemblies\UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Timeline.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +164,6 @@
     <Compile Include="Assets\Scripts\Base\EQueue.cs" />
     <Compile Include="Assets\Scripts\Base\Event\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\CrossEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Event\CrossIdType.cs" />
     <Compile Include="Assets\Scripts\Base\Event\Env.cs" />
     <Compile Include="Assets\Scripts\Base\Event\EnvKey.cs" />
     <Compile Include="Assets\Scripts\Base\Event\EventAttribute.cs" />
@@ -257,7 +276,6 @@
     <Compile Include="Assets\Scripts\Component\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\CrossComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />

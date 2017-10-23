@@ -569,7 +569,7 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: NET45
+    1: NET45;ILRuntime
   platformArchitecture:
     iOS: 2
   scriptingBackend:

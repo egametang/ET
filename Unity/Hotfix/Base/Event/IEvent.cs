@@ -1,5 +1,6 @@
 ﻿namespace Hotfix
 {
+#if ILRuntime
 	public interface IEvent
 	{
 		void Run();
@@ -34,4 +35,33 @@
 	{
 		void Run(A a, B b, C c, D d, E e, F f);
 	}
+#else
+	public interface IEvent : Model.IEvent
+	{
+	}
+
+	public interface IEvent<in A> : Model.IEvent<A>
+	{
+	}
+
+	public interface IEvent<in A, in B> : Model.IEvent<A, B>
+	{
+	}
+
+	public interface IEvent<in A, in B, in C> : Model.IEvent<A, B, C>
+	{
+	}
+
+	public interface IEvent<in A, in B, in C, in D> : Model.IEvent<A, B, C, D>
+	{
+	}
+
+	public interface IEvent<in A, in B, in C, in D, in E> : Model.IEvent<A, B, C, D, E>
+	{
+	}
+
+	public interface IEvent<in A, in B, in C, in D, in E, in F> : Model.IEvent<A, B, C, D, E, F>
+	{
+	}
+#endif
 }

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -78,7 +78,6 @@
     <Compile Include="Base\Object\ObjectEvents.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
-    <Compile Include="Component\EventComponent.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
     <Compile Include="Component\MessageDispatherComponent.cs" />
