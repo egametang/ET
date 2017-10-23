@@ -17,7 +17,7 @@ namespace Model
                 string path = AppResPath;
                 if (Application.isMobilePlatform)
                 {
-                    path = $"{Application.persistentDataPath} { "/"} {game} {"/"}";
+                    path = $"{Application.persistentDataPath}/{game}/";
                 }
                 return path;
             }
@@ -35,13 +35,13 @@ namespace Model
                 switch (Application.platform)
                 {
                     case RuntimePlatform.Android:
-                        path = $"{"jar:file://"}{Application.dataPath}{"!!/assets/"}";
+                        path = $"jar:file://{Application.dataPath}!!/assets/";
                         break;
                     case RuntimePlatform.IPhonePlayer:
-                        path = $"{Application.dataPath}{"/Raw/"}";
+                        path = $"{Application.dataPath}/Raw/";
                         break;
                     default:
-                        path = $"{Application.dataPath}{"/StreamingAssets/"}";
+                        path = $"{Application.dataPath}/StreamingAssets/";
                         break;
                 }
                 return path;

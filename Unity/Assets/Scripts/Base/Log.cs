@@ -16,7 +16,7 @@ namespace Model
         private static string errorFileName = "/Log-Client-Error.txt";
 		static Log()
 		{
-            string dirPath =PathHelp.AppHotfixResPath + dirName;
+            string dirPath = PathHelp.AppHotfixResPath + dirName;
 			if (!Directory.Exists(dirPath))
 			{
 				Directory.CreateDirectory(dirPath);

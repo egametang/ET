@@ -17,5 +17,9 @@
 
 		SessionRecvMessage,
 		NumbericChange,
+
+		MessageDeserializeFinish,
+		SceneChange,
+		FrameUpdate,
 	}
 }

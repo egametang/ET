@@ -20,7 +20,7 @@ namespace Model
 				MessageInfo messageInfo = new MessageInfo(opcode, message);
 				if (opcode < 2000)
 				{
-					Game.Scene.GetComponent<CrossComponent>().Run(CrossIdType.MessageDeserializeFinish, messageInfo);
+					Game.Scene.GetComponent<EventComponent>().Run(EventIdType.MessageDeserializeFinish, messageInfo);
 				}
 				else
 				{

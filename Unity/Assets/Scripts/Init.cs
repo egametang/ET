@@ -67,7 +67,6 @@ namespace Model
 				Game.Scene.AddComponent<PlayerComponent>();
 				Game.Scene.AddComponent<UnitComponent>();
 				Game.Scene.AddComponent<ClientFrameComponent>();
-				Game.Scene.AddComponent<CrossComponent>();
 
 				// 进入热更新层
 				this.start.Run();
