@@ -296,6 +296,7 @@
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\MongoHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\PathHelp.cs" />
     <Compile Include="Assets\Scripts\Helper\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
@@ -562,6 +563,8 @@
   <ItemGroup>
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

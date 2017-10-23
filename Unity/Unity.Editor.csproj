@@ -119,17 +119,17 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\Plugins\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI">
+      <HintPath>Assets\Plugins\Editor\npoi\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI.OOXML">
       <HintPath>Assets\Plugins\Editor\npoi\NPOI.OOXML.dll</HintPath>
-    </Reference>
-    <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OpenXml4Net">
       <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>Assets\Plugins\Editor\npoi\NPOI.dll</HintPath>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>Assets\Plugins\Editor\npoi\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +194,8 @@
   <ItemGroup>
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
