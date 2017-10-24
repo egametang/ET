@@ -74,9 +74,9 @@ namespace Model
 						this.GateConfigs.Add(startConfig);
 					}
 				}
-				catch (Exception)
+				catch (Exception e)
 				{
-					Log.Error($"config错误: {s2}");
+					Log.Error($"config错误: {s2} {e}");
 				}
 			}
 

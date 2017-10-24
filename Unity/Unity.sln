@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Plugins", "Unity.Plugins.csproj", "{D1FDB199-0FB7-099D-3771-C6A942E4E326}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity", "Unity.csproj", "{CF118143-7E37-744F-BE45-3F55345FEC40}"
@@ -12,10 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Editor.Plugins", "Unity.Editor.Plugins.csproj", "{81A6E58E-BFF2-F1C8-1C4E-6316985F642C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Hotfix", "Hotfix\Unity.Hotfix.csproj", "{40533600-4E69-4F7D-A924-E1A3B4127255}"
-	ProjectSection(ProjectDependencies) = postProject
-		{CF118143-7E37-744F-BE45-3F55345FEC40} = {CF118143-7E37-744F-BE45-3F55345FEC40}
-		{D1FDB199-0FB7-099D-3771-C6A942E4E326} = {D1FDB199-0FB7-099D-3771-C6A942E4E326}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,8 +40,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {13124EA5-9FAE-4741-9767-8033906DCD75}
 	EndGlobalSection
 EndGlobal

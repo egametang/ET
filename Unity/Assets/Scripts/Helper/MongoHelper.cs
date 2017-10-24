@@ -3,11 +3,17 @@ using System.IO;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Model
 {
 	public static class MongoHelper
 	{
+		public static void Init()
+		{
+			BsonSerializer.RegisterSerializer(new EnumSerializer<NumericType>(BsonType.String));
+		}
+
 		public static string ToJson(object obj)
 		{
 			return obj.ToJson();
