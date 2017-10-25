@@ -1,6 +1,6 @@
 # [中文](https://github.com/egametang/Egametang/blob/master/README-CN.md) 
 
-__chinese QQ group : 474643097__  
+__Chinese Tencent QQ group : 474643097__  
 
 ### 1.A distributed server, can use visual studio debugging，N->1  
 Generally speaking, distributed server starts a lot of processes, once the process is more, single step debugging becomes very difficult, leading to server development basically rely on log to find the problem. Common development has opened a lot of game logic process, not only the slow start, and find the problem and not convenient to log pile check problem in a pile, this feeling is very bad, so many years no one can solve the problem. The ET framework uses a component design similar to the watch pioneer, and all server contents are disassembled into components, and the components that need to be mounted according to the type of server are started. It is a bit like a computer, the computer module is split into memory, CPU, motherboard parts and so on, collocation of different parts can be assembled into a different computer, such as home desktop CPU, motherboard, memory, graphics, display, hard disk. And the company uses the server does not need the display and graphics card, the Internet bar computer may not need hard disk, etc.. Because of this design, the ET framework can be all server components are linked in a server process, the server process has all the functions of the server, a process can be used as a whole set of distributed servers. It's also like a computer, which has all the computer components, and it can be used as a company server or as an Internet cafe.  
@@ -37,11 +37,11 @@ Download the ET framework, open the server project, you can see that the server 
 The ET framework not only supports TCP, but also support the reliable UDP protocol, UDP support is a package of ENet library, using the ENet and hero alliance network library, its characteristic is rapid, and the performance of the network packet loss situation is also very good, that we tested TCP in packet loss 5%, MoBa game card no, but the use of ENet, 20% packet loss still don't feel a card. Very powerful.  
 
 ### 10.there are many, I will not detail
-A. and its easy to check CPU occupancy and memory leak check, vs comes with analytical tools, no longer worry about performance and memory leak check
-B. uses NLog library, hits log and its convenience, when develops normally, may hit all the server log to a document, also does not need each document search log again
-C. unified the use of Mongodb bson serialization, the message and configuration files are all bson or JSON, and later use mongodb to do the database, and no longer need to format conversion.
-D. provides a powerful AI behavior tree tool
-E. provides a synchronization tool
+A. and its easy to check CPU occupancy and memory leak check, vs comes with analytical tools, no longer worry about performance and memory leak check  
+B. uses NLog library, hits log and its convenience, when develops normally, may hit all the server log to a document, also does not need each document search log again  
+C. unified the use of Mongodb bson serialization, the message and configuration files are all bson or JSON, and later use mongodb to do the database, and no longer need to format conversion.  
+D. provides a powerful AI behavior tree tool  
+E. provides a synchronization tool  
 F. provides command line configuration tools, configuring the distribution is very simple
 The server side of the ET framework is a powerful and flexible distributed server architecture, which can fully meet the needs of most large games. Using this framework, the client developer can complete the double end development by himself, save a lot of manpower and material resources, and save a lot of communication time.  
 
@@ -50,5 +50,5 @@ Usage method：
 [component-design](https://github.com/egametang/Egametang/blob/master/Doc/component-design.md)   
 [network-design](https://github.com/egametang/Egametang/blob/master/Doc/network-design.md) 
 
-__chinese QQ group: 474643097__  
+__Chinese Tencent QQ group : 474643097__  
 email: egametang@qq.com
