@@ -43,7 +43,20 @@ namespace Model
 			}
 		}
 
-		public Assembly HotfixAssembly;
+		private Assembly hotfixAssembly;
+
+		public Assembly HotfixAssembly
+		{
+			get
+			{
+				return this.hotfixAssembly;
+			}
+			set
+			{
+				this.hotfixAssembly = value;
+				this.Load();
+			}
+		}
 
 		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 
