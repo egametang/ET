@@ -41,14 +41,6 @@ namespace App
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent>();
 
-				Unit unit = new Unit();
-				NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
-				numericComponent.Set(NumericType.Speed, 100);
-
-				Log.Debug(MongoHelper.ToJson(unit));
-				Unit unit2 = MongoHelper.FromJson<Unit>(MongoHelper.ToJson(unit));
-				Log.Debug(MongoHelper.ToJson(unit2));
-
 				// 根据不同的AppType添加不同的组件
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();

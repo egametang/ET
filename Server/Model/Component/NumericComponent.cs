@@ -4,10 +4,24 @@ using MongoDB.Bson.Serialization.Options;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class NumericComponentEvent : ObjectEvent<NumericComponent>, IAwake
+	{
+		public void Awake()
+		{
+			this.Get().Awake();
+		}
+	}
+
 	public class NumericComponent : ComponentDB
 	{
 		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-		public readonly Dictionary<NumericType, int> NumericDic = new Dictionary<NumericType, int>();
+		public Dictionary<NumericType, int> NumericDic;
+
+		public void Awake()
+		{
+			this.NumericDic = new Dictionary<NumericType, int>();
+		}
 
 		public float GetAsFloat(NumericType numericType)
 		{
