@@ -41,7 +41,7 @@ namespace Model
 				Log.Debug("run in ilruntime mode");
 
 				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-				DllHelper.LoadHotfixAssembly();
+				ObjectEvents.Instance.LoadHotfixDll();
 				ILHelper.InitILRuntime();
 				
 				this.start = new ILStaticMethod("Hotfix.Init", "Start", 0);
@@ -50,7 +50,7 @@ namespace Model
 				this.onApplicationQuit = new ILStaticMethod("Hotfix.Init", "OnApplicationQuit", 0);
 #else
 				Log.Debug("run in mono mode");
-				ObjectEvents.Instance.HotfixAssembly = DllHelper.LoadHotfixAssembly();
+				ObjectEvents.Instance.LoadHotfixDll();
 				Type hotfixInit = ObjectEvents.Instance.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
 				this.update = new MonoStaticMethod(hotfixInit, "Update");
