@@ -1,4 +1,5 @@
 ﻿using System;
+using Model;
 
 namespace Hotfix
 {

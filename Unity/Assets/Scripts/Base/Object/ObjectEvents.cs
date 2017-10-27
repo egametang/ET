@@ -54,7 +54,6 @@ namespace Model
 			set
 			{
 				this.hotfixAssembly = value;
-				this.Load();
 			}
 		}
 
@@ -76,6 +75,16 @@ namespace Model
 		public static void Close()
 		{
 			instance = null;
+		}
+
+		public void LoadHotfixDll()
+		{
+#if ILRuntime
+			DllHelper.LoadHotfixAssembly();	
+#else
+			ObjectEvents.Instance.HotfixAssembly = DllHelper.LoadHotfixAssembly();
+#endif
+			this.Load();
 		}
 
 		public void Add(string name, Assembly assembly)
