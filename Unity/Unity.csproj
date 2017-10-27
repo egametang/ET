@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CF118143-7E37-744F-BE45-3F55345FEC40}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2017.1.0p5</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;NET45</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_0;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;NET45</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Unity.Plugins.csproj">
+      <Project>{D1FDB199-0FB7-099D-3771-C6A942E4E326}</Project>
+      <Name>Unity.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorNodeConfig.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTree.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeArgsDict.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeConfig.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTArrayDoubleComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTArrayFloatComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTArrayInt64Component.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTArrayIntComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTArrayStringComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTBoolComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTDoubleComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTEnumComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTFloatComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTInt64Component.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTIntComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BaseType\BTStringComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BTTypeBaseComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\BTTypeManager.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayAudioClipComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayGameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayMaterialComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayShaderComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArraySpriteComponent..cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture2DComponent..cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture3DComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTextureComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTAudioClipComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTGameObjectComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTMaterialComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTShaderComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTSpriteComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTTexture2DComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTTexture3DComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeType\UnityType\BTTextureComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BTEnv.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\BTEnvKey.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\Node.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeClassifyType.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeDeprecatedAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeDesignerProto.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeEngineObjectAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeFieldBaseAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeFieldConstraintAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeInputAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeOutputAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodePropAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\NodeProto.cs" />
+    <Compile Include="Assets\Scripts\Base\BehaviorTree\TypeHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ACategory.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\AConfig.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\AConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ConfigAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ConfigHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Config\ICategory.cs" />
+    <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
+    <Compile Include="Assets\Scripts\Base\EQueue.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\AEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\CrossEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\Env.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\EnvKey.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\EventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\EventIdType.cs" />
+    <Compile Include="Assets\Scripts\Base\Event\IEvent.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ArrayHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ByteHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\EnumHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\FileHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\IdGenerater.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\RandomHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\StringHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\TimeHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ZipHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\IAsyncStateMachineAdaptor.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\IDisposableAdaptor.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\ILAdapterAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\ILBindingAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\ILRedirection.cs" />
+    <Compile Include="Assets\Scripts\Base\Log.cs" />
+    <Compile Include="Assets\Scripts\Base\LogType.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\AcosLookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\Atan2LookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\IntMath.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\SinCosLookupTable.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VFactor.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt2.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VInt3.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
+    <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\AActorMessage.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\AMessage.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\AMHandler.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\AppType.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\ClientDispatcher.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\ErrorCode.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\IMessageDispatcher.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\IMessagePacker.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\IMHandler.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\MessageAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\MessageHandlerAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\MessageInfo.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\MongoPacker.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\NumericType.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\OpcodeHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\ProtobufPacker.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\RpcException.cs" />
+    <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\AService.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\TNet\PacketParser.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\TNet\TBuffer.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\TNet\TChannel.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\TNet\TService.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\Library.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\NativeMethods.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\NativeStructs.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\UAddress.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\UChannel.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\UPacket.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\UPoller.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\UService.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\USocket.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentDB.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\Disposer.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityDB.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ILoad.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\IStart.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\IUpdate.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ObjectEventAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ObjectEvents.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ObjectPool.cs" />
+    <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
+    <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
+    <Compile Include="Assets\Scripts\Base\UI\LayerNames.cs" />
+    <Compile Include="Assets\Scripts\Base\UI\UIFactoryAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\UI\UIType.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
+    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
+    <Compile Include="Assets\Scripts\Component\AnimatorComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\CameraComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\ClientFrameComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\DBConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\HttpConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\StartConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NumericComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\NumericWatcherComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\OpcodeTypeComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\OperaComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\PlayerComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\ResourcesComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\SceneChangeComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\SessionComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
+    <Compile Include="Assets\Scripts\Entity\AssetBundleLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
+    <Compile Include="Assets\Scripts\Entity\Game.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\Opcode.cs" />
+    <Compile Include="Assets\Scripts\Entity\Message\OuterMessage.cs" />
+    <Compile Include="Assets\Scripts\Entity\Player.cs" />
+    <Compile Include="Assets\Scripts\Entity\Scene.cs" />
+    <Compile Include="Assets\Scripts\Entity\Session.cs" />
+    <Compile Include="Assets\Scripts\Entity\Unit.cs" />
+    <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
+    <Compile Include="Assets\Scripts\Event\NumericChangeEvent_NotifyWatcher.cs" />
+    <Compile Include="Assets\Scripts\Event\NumericWatcher_Hp_ShowUI.cs" />
+    <Compile Include="Assets\Scripts\Factory\PlayerFactory.cs" />
+    <Compile Include="Assets\Scripts\Factory\UnitFactory.cs" />
+    <Compile Include="Assets\Scripts\Handler\Actor_CreateUnitsHandler.cs" />
+    <Compile Include="Assets\Scripts\Handler\Actor_TestHandler.cs" />
+    <Compile Include="Assets\Scripts\Handler\Frame_ClickMapHandler.cs" />
+    <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\MongoHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\PathHelp.cs" />
+    <Compile Include="Assets\Scripts\Helper\PositionHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
+    <Compile Include="Assets\Scripts\Init.cs" />
+    <Compile Include="Assets\Scripts\MonoConfig\CanvasConfig.cs" />
+    <Compile Include="Assets\Scripts\Other\Define.cs" />
+    <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />
+    <Compile Include="Assets\Scripts\Other\ILMethod.cs" />
+    <Compile Include="Assets\Scripts\Other\INumericWatcher.cs" />
+    <Compile Include="Assets\Scripts\Other\MonoMethod.cs" />
+    <Compile Include="Assets\Scripts\Other\MotionType.cs" />
+    <Compile Include="Assets\Scripts\Other\NumericWatcherAttribute.cs" />
+    <Compile Include="Assets\Scripts\Other\ReferenceCollector.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\CLRMethod.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ExceptionHandler.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ILMethod.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\IMethod.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\CLRType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\ILGenericParameterType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\ILType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\IType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Utils\Extensions.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\ByReferenceKeyComparer.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\DelegateExportAttribute.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\NeedAdaptorAttribute.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\ThreadSafeDictionary.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\UncheckedList.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\Extensions.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeConstructorInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeFieldInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeMethodInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeParameterInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimePropertyInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeWrapperType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Adaptors\CLRCrossBindingAdaptors.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingCodeGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingGeneratorExtensions.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\CommonBindingGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\ConstructorBindingGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\FieldBindingGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\MethodBindingGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\ValueTypeBindingGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\BreakPointContext.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\BreakpointInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugMessageType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugService.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugSocket.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSBindBreakpoint.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSDeleteBreakpoint.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSExecute.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSResolveVariable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSStep.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCAttachResult.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCBindBreakpointResult.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCBreakpointHit.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCModuleLoaded.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCResolveVariableResult.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCStepComplete.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCThreadStarted.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\StackFrameInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\StepTypes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\VariableInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\AppDomain.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CLRRedirections.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CrossBindingAdaptor.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\DelegateManager.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Extensions.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\DelegateAdapter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILIntepreter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILRuntimeException.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILTypeInstance.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\OpCodes\OpCode.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeEnum.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\RuntimeStack.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackFrame.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackObject.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Code.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Document.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ExceptionHandler.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ILProcessor.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Instruction.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\MethodBody.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCode.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCodes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\SequencePoint.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Symbols.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\BlobHeap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Buffers.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\CodedIndex.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\ElementType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\GuidHeap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Heap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\MetadataToken.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Row.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\StringHeap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TableHeap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TokenType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\UserStringHeap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Utilities.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBuffer.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBufferEqualityComparer.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\DataDirectory.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Image.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Section.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\TextMap.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ArrayType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyFlags.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyHashAlgorithm.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyLinkedResource.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\BaseAssemblyResolver.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\CallSite.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\CustomAttribute.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\DefaultAssemblyResolver.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EmbeddedResource.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ExportedType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FileAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FunctionPointerType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceMethod.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameterAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IConstantProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ICustomAttributeProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericInstance.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericParameterProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMarshalInfoProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMemberDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataScope.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataTokenProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMethodSignature.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Import.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\LinkedResource.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ManifestResourceAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MarshalInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberDefinitionCollection.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataResolver.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataSystem.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodCallingConvention.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodImplAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReturnType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSemanticsAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSpecification.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Modifiers.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleKind.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\NativeType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinitionCollection.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PinnedType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PointerType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ReferenceType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Resource.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\SecurityDeclaration.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\SentinelType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TargetRuntime.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeAttributes.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinition.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinitionCollection.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeParser.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeReference.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSpecification.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSystem.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\VariantType.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\Collection.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\ReadOnlyCollection.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoConvert.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoService.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Actions.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Empty.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Funcs.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.Cecil.Mdb\MdbReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.Cecil.Mdb\MdbReaderProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\AnonymousScopeEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CapturedScope.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CapturedVariable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CodeBlockEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\CompileUnitEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ICompileUnit.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\IMethodDef.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ISourceFile.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LineNumberEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LineNumberTable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\LocalVariableEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MethodEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolFile.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolFileException.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MonoSymbolWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MyBinaryReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\MyBinaryWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\NamespaceEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\NamespaceInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\OffsetTable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\ScopeVariable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceFileEntry.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodBuilder.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SourceMethodImpl.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SymbolDocumentWriterImpl.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Mdb\mdb\Mono.CompilerServices.SymbolWriter\SymbolWriterImpl.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitAccess.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitSet.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\CvInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DataStream.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiDbgHdr.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiHeader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiModuleInfo.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiSecCon.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\Interfaces.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\IntHashTable.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\MsfDirectory.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbConstant.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbDebugException.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbException.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFile.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFileHeader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFunction.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLine.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLines.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbScope.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSlot.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSource.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\SourceLocationProvider.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedDocumentWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedWriter2.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ModuleMetadata.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbHelper.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>

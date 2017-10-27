@@ -13,6 +13,8 @@ namespace App
 			OneThreadSynchronizationContext contex = new OneThreadSynchronizationContext();
 			SynchronizationContext.SetSynchronizationContext(contex);
 
+			MongoHelper.Init();
+			
 			try
 			{
 				ObjectEvents.Instance.Add("Model", typeof(Game).Assembly);
@@ -43,6 +45,7 @@ namespace App
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
+				
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:

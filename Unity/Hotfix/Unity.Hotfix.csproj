@@ -236,14 +236,12 @@
     <Compile Include="Base\Other\IUIFactory.cs" />
     <Compile Include="Component\GameObjectComponent.cs" />
     <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\MessageDispatherComponent.cs" />
     <Compile Include="Component\TimeComponent.cs" />
     <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UIComponent.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Entity\UI.cs" />
-    <Compile Include="Event\SessionRecvMessage_Dispatch.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
@@ -253,6 +251,7 @@
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Event\" />
     <Folder Include="Handler\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

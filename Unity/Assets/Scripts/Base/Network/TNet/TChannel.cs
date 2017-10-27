@@ -94,7 +94,7 @@ namespace Model
 			this.sendBuffer.SendTo(buffer);
 			if (this.isConnected)
 			{
-				((TService)this.service).Add(this.StartSend);
+				this.StartSend();
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace Model
 			}
 			if (this.isConnected)
 			{
-				((TService)this.service).Add(this.StartSend);
+				this.StartSend();
 			}
 		}
 

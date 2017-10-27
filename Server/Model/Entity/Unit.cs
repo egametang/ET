@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
@@ -20,7 +21,8 @@ namespace Model
 	public sealed class Unit: Entity
 	{
 		public UnitType UnitType { get; private set; }
-
+		
+		[BsonIgnore]
 		public Vector3 Position { get; set; }
 		
 		public void Awake(UnitType unitType)

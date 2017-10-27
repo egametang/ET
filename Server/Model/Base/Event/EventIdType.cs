@@ -14,5 +14,7 @@
 		BehaviorTreeConnectState,
 		BehaviorTreeReplaceClick,
 		BehaviorTreeRightDesignerDrag,
+
+		NumbericChange,
 	}
 }

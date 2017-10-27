@@ -18,14 +18,7 @@ namespace Model
 			if (message is AMessage || message is ARequest)
 			{
 				MessageInfo messageInfo = new MessageInfo(opcode, message);
-				if (opcode < 2000)
-				{
-					Game.Scene.GetComponent<EventComponent>().Run(EventIdType.MessageDeserializeFinish, messageInfo);
-				}
-				else
-				{
-					Game.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
-				}
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
 				return;
 			}
 
