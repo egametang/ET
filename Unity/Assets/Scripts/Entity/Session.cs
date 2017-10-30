@@ -97,7 +97,8 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
-			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
+			Opcode op = (Opcode)opcode;
+			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
 			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 
 			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
@@ -117,7 +118,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
+			this.network.MessageDispatcher.Dispatch(this, op, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
@@ -207,8 +208,8 @@ namespace Model
 		private void SendMessage(object message)
 		{
 			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
-			ushort opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-
+			Opcode opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			ushort op = (ushort)opcode;
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 			if (messageBytes.Length > 100)
 			{
@@ -216,11 +217,11 @@ namespace Model
 				if (newMessageBytes.Length < messageBytes.Length)
 				{
 					messageBytes = newMessageBytes;
-					opcode |= 0x8000;
+					op |= 0x8000;
 				}
 			}
 
-			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
+			byte[] opcodeBytes = BitConverter.GetBytes(op);
 			
 			this.byteses[0] = opcodeBytes;
 			this.byteses[1] = messageBytes;

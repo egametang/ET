@@ -5,7 +5,7 @@ namespace Hotfix
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
+		public void Dispatch(Session session, Opcode opcode, int offset, byte[] messageBytes, AMessage message)
 		{
 			// 收到actor rpc request
 			if (message is ActorRpcRequest actorRpcRequest)

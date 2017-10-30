@@ -5,7 +5,7 @@ namespace Hotfix
 {
 	public class OuterMessageDispatcher: IMessageDispatcher
 	{
-		public async void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
+		public async void Dispatch(Session session, Opcode opcode, int offset, byte[] messageBytes, AMessage message)
 		{
 			// gate session收到actor消息直接转发给actor自己去处理
 			if (message is AActorMessage)

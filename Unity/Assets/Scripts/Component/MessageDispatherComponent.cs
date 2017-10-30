@@ -67,40 +67,12 @@ namespace Model
 		}
 	}
 
-	public static class Opcode2Name
-	{
-		private static Dictionary<int, string> _init = new Dictionary<int, string>();
-		public static string GetName(int code)
-		{
-			if (_init.Count == 0)
-			{
-				Type type = typeof(Opcode);
-				FieldInfo[] fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static);
-				foreach (FieldInfo field in fields)
-				{
-					if (!field.IsStatic)
-					{
-						continue;
-					}
-					int codeID = (ushort)field.GetValue(null);
-					if (_init.ContainsKey(codeID))
-					{
-						Log.Warning($"重复的Opcode:{codeID}");
-						continue;
-					}
-					_init.Add(codeID, field.Name);
-				}
-			}
-			return _init[code];
-		}
-	}
-
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private Dictionary<ushort, List<IMessageMethod>> handlers;
+		private Dictionary<Opcode, List<IMessageMethod>> handlers;
 
 
 		public void Awake()
@@ -110,7 +82,7 @@ namespace Model
 
 		public void Load()
 		{
-			handlers = new Dictionary<ushort, List<IMessageMethod>>();
+			handlers = new Dictionary<Opcode, List<IMessageMethod>>();
 
 			Type[] types = DllHelper.GetMonoTypes();
 
@@ -123,11 +95,11 @@ namespace Model
 				}
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
 				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
-				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
+				if (!this.handlers.ContainsKey((Opcode)messageHandlerAttribute.Opcode))
 				{
-					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
+					this.handlers.Add((Opcode)messageHandlerAttribute.Opcode, new List<IMessageMethod>());
 				}
-				this.handlers[messageHandlerAttribute.Opcode].Add(new IMessageMonoMethod(iMHandler));
+				this.handlers[(Opcode)messageHandlerAttribute.Opcode].Add(new IMessageMonoMethod(iMHandler));
 			}
 
 			// hotfix dll
@@ -146,11 +118,11 @@ namespace Model
 				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
 				IMessageMethod iMessageMethod = new IMessageMonoMethod(iMHandler);
 #endif
-				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
+				if (!this.handlers.ContainsKey((Opcode)messageHandlerAttribute.Opcode))
 				{
-					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
+					this.handlers.Add((Opcode)messageHandlerAttribute.Opcode, new List<IMessageMethod>());
 				}
-				this.handlers[messageHandlerAttribute.Opcode].Add(iMessageMethod);
+				this.handlers[(Opcode)messageHandlerAttribute.Opcode].Add(iMessageMethod);
 			}
 		}
 
@@ -159,7 +131,7 @@ namespace Model
 			List<IMessageMethod> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
-				Log.Error($"消息 {Opcode2Name.GetName(messageInfo.Opcode)}({messageInfo.Opcode}) 没有处理");
+				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;
 			}
 

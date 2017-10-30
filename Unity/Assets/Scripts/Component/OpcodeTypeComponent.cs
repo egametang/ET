@@ -13,7 +13,7 @@ namespace Model
 
 	public class OpcodeTypeComponent : Component
 	{
-		private readonly DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
+		private readonly DoubleMap<Opcode, Type> opcodeTypes = new DoubleMap<Opcode, Type>();
 
 		public void Awake()
 		{
@@ -36,12 +36,12 @@ namespace Model
 			}
 		}
 
-		public ushort GetOpcode(Type type)
+		public Opcode GetOpcode(Type type)
 		{
 			return this.opcodeTypes.GetKeyByValue(type);
 		}
 
-		public Type GetType(ushort opcode)
+		public Type GetType(Opcode opcode)
 		{
 			return this.opcodeTypes.GetValueByKey(opcode);
 		}
