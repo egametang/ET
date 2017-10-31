@@ -10,11 +10,14 @@ namespace Hotfix
 		public void Handle(AMessage msg)
 		{
 			Message message = msg as Message;
-			if (message == null)
-			{
-				Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof(Message).Name}");
-			}
-			this.Run(message);
+            if (message == null)
+            {
+                Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof(Message).Name}");
+            }
+            else
+            {
+                this.Run(message);
+            }
 		}
 
 		public Type GetMessageType()

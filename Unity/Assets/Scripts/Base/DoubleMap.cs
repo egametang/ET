@@ -49,7 +49,7 @@ namespace Model
 
 		public void Add(K key, V value)
 		{
-			if (key == null || value == null || kv.ContainsKey(key) || vk.ContainsKey(value))
+			if (key == default(K) || value == default(V) || kv.ContainsKey(key) || vk.ContainsKey(value))
 			{
 				return;
 			}
@@ -59,7 +59,7 @@ namespace Model
 
 		public V GetValueByKey(K key)
 		{
-			if (key != null && kv.ContainsKey(key))
+			if (key != default(K) && kv.ContainsKey(key))
 			{
 				return kv[key];
 			}
@@ -68,7 +68,7 @@ namespace Model
 
 		public K GetKeyByValue(V value)
 		{
-			if (value != null && vk.ContainsKey(value))
+			if (value != default(V) && vk.ContainsKey(value))
 			{
 				return vk[value];
 			}
@@ -77,7 +77,7 @@ namespace Model
 
 		public void RemoveByKey(K key)
 		{
-			if (key == null)
+			if (key == default(K))
 			{
 				return;
 			}
@@ -93,7 +93,7 @@ namespace Model
 
 		public void RemoveByValue(V value)
 		{
-			if (value == null)
+			if (value == default(V))
 			{
 				return;
 			}
@@ -116,7 +116,7 @@ namespace Model
 
 		public bool ContainsKey(K key)
 		{
-			if (key == null)
+			if (key == default(K))
 			{
 				return false;
 			}
@@ -125,7 +125,7 @@ namespace Model
 
 		public bool ContainsValue(V value)
 		{
-			if (value == null)
+			if (value == default(V))
 			{
 				return false;
 			}
@@ -134,7 +134,7 @@ namespace Model
 
 		public bool Contains(K key, V value)
 		{
-			if (key == null || value == null)
+			if (key == default(K) || value == default(V))
 			{
 				return false;
 			}
