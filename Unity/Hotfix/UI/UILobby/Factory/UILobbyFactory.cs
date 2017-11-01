@@ -14,7 +14,7 @@ namespace Hotfix
 				GameObject bundleGameObject = ((GameObject)Resources.Load("UI")).Get<GameObject>("UILobby");
 				GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
 				lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
-				UI ui = new UI(scene, type, null, lobby);
+				UI ui = EntityFactory.Create<UI, Scene, UI, GameObject>(scene, null, lobby);
 
 				ui.AddComponent<UILobbyComponent>();
 				return ui;
