@@ -71,7 +71,7 @@
             for (int i = 0; i < frameMessage.Messages.Count; ++i)
             {
 	            AFrameMessage message = frameMessage.Messages[i];
-	            ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+                Opcode opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
                 Game.Scene.GetComponent<MessageDispatherComponent>().Handle(new MessageInfo() { Opcode= opcode, Message = message });
             }
         }

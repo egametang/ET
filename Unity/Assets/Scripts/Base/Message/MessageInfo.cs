@@ -2,10 +2,10 @@
 {
 	public struct MessageInfo
 	{
-		public ushort Opcode { get; set; }
+		public Opcode Opcode { get; set; }
 		public AMessage Message { get; set; }
 
-		public MessageInfo(ushort opcode, AMessage message)
+		public MessageInfo(Opcode opcode, AMessage message)
 		{
 			this.Opcode = opcode;
 			this.Message = message;

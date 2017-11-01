@@ -1,5 +1,3 @@
-// ��������ͻ���֮�����Ϣ Opcode��1-9999
-
 using System.Collections.Generic;
 using ProtoBuf;
 
@@ -109,7 +107,6 @@ namespace Model
 		public AMessage Message;
 	}
 
-	// ����˷����ͻ���,ÿ֡һ��
 	[Message(Opcode.FrameMessage)]
 	public class FrameMessage : AActorMessage
 	{
@@ -117,7 +114,6 @@ namespace Model
 		public List<AFrameMessage> Messages = new List<AFrameMessage>();
 	}
 
-	// �ͻ��˵����ͼ
 	[ProtoContract]
 	[Message(Opcode.Frame_ClickMap)]
 	public class Frame_ClickMap: AFrameMessage
@@ -134,17 +130,17 @@ namespace Model
 		public AppType AppType;
 	}
 
-	[Message(11)]
+	[Message(Opcode.M2C_Reload)]
 	public class M2C_Reload: AResponse
 	{
 	}
 
-	[Message(14)]
+	[Message(Opcode.C2R_Ping)]
 	public class C2R_Ping: ARequest
 	{
 	}
 
-	[Message(15)]
+	[Message(Opcode.R2C_Ping)]
 	public class R2C_Ping: AResponse
 	{
 	}

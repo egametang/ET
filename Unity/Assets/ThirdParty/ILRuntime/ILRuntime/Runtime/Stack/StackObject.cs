@@ -81,6 +81,26 @@ namespace ILRuntime.Runtime.Stack
                     {
                         return ToObject((*(StackObject**)&esp->Value), appdomain, mStack);
                     }
+                case ObjectTypes.ValueTypeObjectReference:
+                    {
+                        StackObject* dst = *(StackObject**)&esp->Value;
+                        IType type = appdomain.GetType(dst->Value);
+                        if (type is ILType)
+                        {
+                            ILType iltype = (ILType)type;
+                            var ins = iltype.Instantiate(false);
+                            for (int i = 0; i < dst->ValueLow; i++)
+                            {
+                                var addr = ILIntepreter.Minus(dst, i + 1);
+                                ins.AssignFromStack(i, addr, appdomain, mStack);
+                            }
+                            return ins;
+                        }
+                        else
+                        {
+                            return ((CLRType)type).ValueTypeBinder.ToObject(dst, mStack);
+                        }
+                    }
                 case ObjectTypes.Null:
                     return null;
                 default:
@@ -140,9 +160,10 @@ namespace ILRuntime.Runtime.Stack
         }
 
         //IL2CPP can't process esp->Initialized() properly, so I can only use static function for this
-        public unsafe static void Initialized(StackObject* esp, Type t)
+        public unsafe static void Initialized(StackObject* esp, IType type)
         {
-            if (t.IsPrimitive)
+            var t = type.TypeForCLR;
+            if (type.IsPrimitive)
             {
                 if (t == typeof(int) || t == typeof(uint) || t == typeof(short) || t == typeof(ushort) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(char) || t == typeof(bool))
                 {
@@ -187,6 +208,8 @@ namespace ILRuntime.Runtime.Stack
         Double,
         StackObjectReference,//Value = pointer, 
         StaticFieldReference,
+        ValueTypeObjectReference,
+        ValueTypeDescriptor,
         Object,
         FieldReference,//Value = objIdx, ValueLow = fieldIdx
         ArrayReference,//Value = objIdx, ValueLow = elemIdx

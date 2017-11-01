@@ -45,12 +45,12 @@ namespace ILRuntime.CLR.TypeSystem
             get { return null; }
         }
 
-        public Method.IMethod GetMethod(string name, int paramCount)
+        public Method.IMethod GetMethod(string name, int paramCount, bool declaredOnly = false)
         {
             return null;
         }
 
-        public Method.IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null)
+        public Method.IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null, bool declaredOnly = false)
         {
             return null;
         }
@@ -120,6 +120,11 @@ namespace ILRuntime.CLR.TypeSystem
         public bool IsValueType
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public bool IsPrimitive
+        {
+            get { return false; }
         }
 
         public string Name

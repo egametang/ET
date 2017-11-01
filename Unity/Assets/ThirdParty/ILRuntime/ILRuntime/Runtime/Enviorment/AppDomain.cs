@@ -28,6 +28,7 @@ namespace ILRuntime.Runtime.Enviorment
         Queue<ILIntepreter> freeIntepreters = new Queue<ILIntepreter>();
         Dictionary<int, ILIntepreter> intepreters = new Dictionary<int, ILIntepreter>();
         Dictionary<Type, CrossBindingAdaptor> crossAdaptors = new Dictionary<Type, CrossBindingAdaptor>(new ByReferenceKeyComparer<Type>());
+        Dictionary<Type, ValueTypeBinder> valueTypeBinders = new Dictionary<Type, ValueTypeBinder>();
         ThreadSafeDictionary<string, IType> mapType = new ThreadSafeDictionary<string, IType>();
         Dictionary<Type, IType> clrTypeMapping = new Dictionary<Type, IType>(new ByReferenceKeyComparer<Type>());
         ThreadSafeDictionary<int, IType> mapTypeToken = new ThreadSafeDictionary<int, IType>();
@@ -141,6 +142,7 @@ namespace ILRuntime.Runtime.Enviorment
         internal Dictionary<Type, CLRCreateDefaultInstanceDelegate> CreateDefaultInstanceMap { get { return createDefaultInstanceMap; } }
         internal Dictionary<Type, CLRCreateArrayInstanceDelegate> CreateArrayInstanceMap { get { return createArrayInstanceMap; } }
         internal Dictionary<Type, CrossBindingAdaptor> CrossBindingAdaptors { get { return crossAdaptors; } }
+        internal Dictionary<Type, ValueTypeBinder> ValueTypeBinders { get { return valueTypeBinders; } }
         public DebugService DebugService { get { return debugService; } }
         internal Dictionary<int, ILIntepreter> Intepreters { get { return intepreters; } }
         internal Queue<ILIntepreter> FreeIntepreters { get { return freeIntepreters; } }
@@ -435,6 +437,15 @@ namespace ILRuntime.Runtime.Enviorment
         {
             if (!createArrayInstanceMap.ContainsKey(t))
                 createArrayInstanceMap[t] = createArray;
+        }
+
+        public void RegisterValueTypeBinder(Type t, ValueTypeBinder binder)
+        {
+            if (!valueTypeBinders.ContainsKey(t))
+            {
+                valueTypeBinders[t] = binder;
+                binder.RegisterCLRRedirection(this);
+            }
         }
 
         /// <summary>
@@ -1091,7 +1102,7 @@ namespace ILRuntime.Runtime.Enviorment
                 method = type.GetConstructor(paramList);
             else
             {
-                method = type.GetMethod(methodname, paramList, genericArguments, returnType);
+                method = type.GetMethod(methodname, paramList, genericArguments, returnType, true);
             }
 
             if (method == null)
@@ -1193,6 +1204,7 @@ namespace ILRuntime.Runtime.Enviorment
         public void RegisterCrossBindingAdaptor(CrossBindingAdaptor adaptor)
         {
             var bType = adaptor.BaseCLRType;
+            
             if (bType != null)
             {
                 if (!crossAdaptors.ContainsKey(bType))

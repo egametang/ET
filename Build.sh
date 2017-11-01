@@ -1,5 +1,5 @@
 #!/bin/bash
-xbuild ./Server/Server.sln
-cd Bin
+dotnet msbuild ./Server/Server.sln
+cd netcoreapp2.0
 cmake ../
 make
