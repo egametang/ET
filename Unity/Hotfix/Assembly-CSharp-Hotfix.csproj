@@ -70,10 +70,6 @@
     <Compile Include="Base\Object\ObjectEvents.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
-    <Compile Include="Component\GameObjectComponent.cs" />
-    <Compile Include="Component\KVComponent.cs" />
-    <Compile Include="Component\TimeComponent.cs" />
-    <Compile Include="Component\TimerComponent.cs" />
     <Compile Include="Component\UIComponent.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
