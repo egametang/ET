@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{40533600-4E69-4F7D-A924-E1A3B4127255}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hotfix</RootNamespace>
+    <AssemblyName>Hotfix</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Event\IEvent.cs" />
+    <Compile Include="Base\Helper\ArrayHelper.cs" />
+    <Compile Include="Base\Helper\AssetBundleHelper.cs" />
+    <Compile Include="Base\Helper\ExceptionHelper.cs" />
+    <Compile Include="Base\Message\AMHandler.cs" />
+    <Compile Include="Base\Message\IMHandler.cs" />
+    <Compile Include="Base\Object\Component.cs" />
+    <Compile Include="Base\Object\ComponentDB.cs" />
+    <Compile Include="Base\Object\ComponentFactory.cs" />
+    <Compile Include="Base\Object\Disposer.cs" />
+    <Compile Include="Base\Object\Entity.cs" />
+    <Compile Include="Base\Object\EntityFactory.cs" />
+    <Compile Include="Base\Object\EntityType.cs" />
+    <Compile Include="Base\Object\IAwake.cs" />
+    <Compile Include="Base\Object\ILateUpdate.cs" />
+    <Compile Include="Base\Object\ILoad.cs" />
+    <Compile Include="Base\Object\IUpdate.cs" />
+    <Compile Include="Base\Object\Object.cs" />
+    <Compile Include="Base\Object\ObjectEvents.cs" />
+    <Compile Include="Base\Object\ObjectPool.cs" />
+    <Compile Include="Base\Other\IUIFactory.cs" />
+    <Compile Include="Component\GameObjectComponent.cs" />
+    <Compile Include="Component\KVComponent.cs" />
+    <Compile Include="Component\TimeComponent.cs" />
+    <Compile Include="Component\TimerComponent.cs" />
+    <Compile Include="Component\UIComponent.cs" />
+    <Compile Include="Entity\Hotfix.cs" />
+    <Compile Include="Entity\Scene.cs" />
+    <Compile Include="Entity\UI.cs" />
+    <Compile Include="Init.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
+    <Compile Include="UI\UILobby\Factory\UILobbyFactory.cs" />
+    <Compile Include="UI\UILogin\Component\UILoginComponent.cs" />
+    <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
+    <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Assembly-CSharp-firstpass.csproj">
+      <Project>{2662b409-6332-1e56-d797-c9025c53bdd6}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Assembly-CSharp.csproj">
+      <Project>{cd8c9303-404b-fb8d-6b9b-21988d5cac0a}</Project>
+      <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+  </PropertyGroup>
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="$(OutDir)$(TargetName).dll" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).dll.bytes" />
+    <Copy SourceFiles="$(OutDir)$(TargetName).dll.mdb" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).mdb.bytes" />
+  </Target>
+</Project>
