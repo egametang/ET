@@ -14,6 +14,7 @@ namespace ILRuntime.CLR.TypeSystem
     public class CLRType : IType
     {
         Type clrType;
+        bool isPrimitive, isValueType;
         Dictionary<string, List<CLRMethod>> methods;
         ILRuntime.Runtime.Enviorment.AppDomain appdomain;
         List<CLRMethod> constructors;
@@ -23,6 +24,9 @@ namespace ILRuntime.CLR.TypeSystem
         Dictionary<int, FieldInfo> fieldInfoCache;
         Dictionary<int, CLRFieldGetterDelegate> fieldGetterCache;
         Dictionary<int, CLRFieldSetterDelegate> fieldSetterCache;
+        Dictionary<int, int> fieldIdxMapping;
+        IType[] orderedFieldTypes;
+
         CLRMemberwiseCloneDelegate memberwiseCloneDelegate;
         CLRCreateDefaultInstanceDelegate createDefaultInstanceDelegate;
         CLRCreateArrayInstanceDelegate createArrayInstanceDelegate;
@@ -31,8 +35,9 @@ namespace ILRuntime.CLR.TypeSystem
         IType[] interfaces;
         bool isDelegate;
         IType baseType;
-        bool isBaseTypeInitialized = false, interfaceInitialized = false;
+        bool isBaseTypeInitialized = false, interfaceInitialized = false, valueTypeBinderGot = false;
         ILRuntimeWrapperType wraperType;
+        ValueTypeBinder valueTypeBinder;
 
         int hashCode = -1;
         static int instance_id = 0x20000000;
@@ -46,6 +51,32 @@ namespace ILRuntime.CLR.TypeSystem
                 return fieldInfoCache;
             }
         }
+
+        public Dictionary<int, int> FieldIndexMapping
+        {
+            get { return fieldIdxMapping; }
+        }
+
+        public IType[] OrderedFieldTypes
+        {
+            get
+            {
+                if (fieldMapping == null)
+                    InitializeFields();
+                return orderedFieldTypes;
+            }
+        }
+
+        public int TotalFieldCount
+        {
+            get
+            {
+                if (fieldMapping == null)
+                    InitializeFields();
+                return fieldIdxMapping.Count;
+            }
+        }
+
         public ILRuntime.Runtime.Enviorment.AppDomain AppDomain
         {
             get
@@ -58,6 +89,8 @@ namespace ILRuntime.CLR.TypeSystem
         {
             this.clrType = clrType;
             this.appdomain = appdomain;
+            isPrimitive = clrType.IsPrimitive;
+            isValueType = clrType.IsValueType;
             isDelegate = clrType.BaseType == typeof(MulticastDelegate);
         }
 
@@ -128,7 +161,7 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return clrType.IsValueType;
+                return isValueType;
             }
         }
         public bool IsDelegate
@@ -136,6 +169,14 @@ namespace ILRuntime.CLR.TypeSystem
             get
             {
                 return isDelegate;
+            }
+        }
+
+        public bool IsPrimitive
+        {
+            get
+            {
+                return isPrimitive;
             }
         }
         public string FullName
@@ -170,6 +211,25 @@ namespace ILRuntime.CLR.TypeSystem
                 if (!interfaceInitialized)
                     InitializeInterfaces();
                 return interfaces;
+            }
+        }
+
+        public ValueTypeBinder ValueTypeBinder
+        {
+            get
+            {
+                if (clrType.IsValueType)
+                {
+                    if (!valueTypeBinderGot)
+                    {
+                        valueTypeBinderGot = true;
+                        if (appdomain.ValueTypeBinders.TryGetValue(clrType, out valueTypeBinder))
+                            valueTypeBinder.CLRType = this;
+                    }
+                    return valueTypeBinder;
+                }
+                else
+                    return null;
             }
         }
 
@@ -366,14 +426,26 @@ namespace ILRuntime.CLR.TypeSystem
             fieldInfoCache = new Dictionary<int, FieldInfo>();
 
             var fields = clrType.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Static);
+            int idx = 0;
+            bool hasValueTypeBinder = ValueTypeBinder != null;
+            if (hasValueTypeBinder)
+            {
+                fieldIdxMapping = new Dictionary<int, int>();
+                orderedFieldTypes = new IType[fields.Length];
+            }
             foreach (var i in fields)
             {
                 int hashCode = i.GetHashCode();
 
-                if (i.IsPublic || i.IsFamily)
+                if (i.IsPublic || i.IsFamily || hasValueTypeBinder)
                 {
                     fieldMapping[i.Name] = hashCode;
                     fieldInfoCache[hashCode] = i;
+                }
+                if (hasValueTypeBinder && !i.IsStatic)
+                {
+                    orderedFieldTypes[idx] = appdomain.GetType(i.FieldType);
+                    fieldIdxMapping[hashCode] = idx++;
                 }
 
                 CLRFieldGetterDelegate getter;
@@ -422,7 +494,7 @@ namespace ILRuntime.CLR.TypeSystem
             }
             return null;
         }
-        public IMethod GetMethod(string name, int paramCount)
+        public IMethod GetMethod(string name, int paramCount, bool declaredOnly = false)
         {
             if (methods == null)
                 InitializeMethods();
@@ -438,7 +510,7 @@ namespace ILRuntime.CLR.TypeSystem
             return null;
         }
 
-        public IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null)
+        public IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null, bool declaredOnly = false)
         {
             if (methods == null)
                 InitializeMethods();
@@ -660,6 +732,11 @@ namespace ILRuntime.CLR.TypeSystem
             if (hashCode == -1)
                 hashCode = System.Threading.Interlocked.Add(ref instance_id, 1);
             return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return clrType.ToString();
         }
     }
 }

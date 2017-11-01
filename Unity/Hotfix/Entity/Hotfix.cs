@@ -13,7 +13,6 @@
 					return scene;
 				}
 				scene = new Scene();
-				scene.AddComponent<TimerComponent>();
 				return scene;
 			}
 		}

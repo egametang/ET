@@ -409,8 +409,8 @@ namespace ILRuntime.Reflection
                         param.Add(t);
                     }
                 }
-
-                res = type.GetMethod(name, param, null);
+                bool declearedOnly = (bindingAttr & BindingFlags.DeclaredOnly) == BindingFlags.DeclaredOnly;
+                res = type.GetMethod(name, param, null, null, declearedOnly);
             }
             if (res != null)
                 return ((ILMethod)res).ReflectionMethodInfo;

@@ -42,14 +42,14 @@ namespace ILRuntime.Runtime.Enviorment
 
         #region IType Members
 
-        public IMethod GetMethod(string name, int paramCount)
+        public IMethod GetMethod(string name, int paramCount, bool declaredOnly = false)
         {
-            return type.GetMethod(name, paramCount);
+            return type.GetMethod(name, paramCount, declaredOnly);
         }
 
-        public IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null)
+        public IMethod GetMethod(string name, List<IType> param, IType[] genericArguments, IType returnType = null, bool declaredOnly = false)
         {
-            return type.GetMethod(name, param, genericArguments, returnType);
+            return type.GetMethod(name, param, genericArguments, returnType, declaredOnly);
         }
 
         public List<IMethod> GetMethods()
@@ -177,6 +177,14 @@ namespace ILRuntime.Runtime.Enviorment
             get
             {
                 return type.IsValueType;
+            }
+        }
+
+        public bool IsPrimitive
+        {
+            get
+            {
+                return type.IsPrimitive;
             }
         }
 
