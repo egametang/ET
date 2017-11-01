@@ -12,15 +12,18 @@ namespace Hotfix
 			try
 			{
 				Unit unit = Game.Scene.GetComponent<UnitComponent>().Get(message.Id);
-				if (unit == null)
-				{
-					response.Error = ErrorCode.ERR_NotFoundUnit;
-					reply(response);
-				}
+                if (unit == null)
+                {
+                    response.Error = ErrorCode.ERR_NotFoundUnit;
+                    reply(response);
+                }
+                else
+                {
 
-				await unit.GetComponent<MasterComponent>().Lock(message.Address);
+                    await unit.GetComponent<MasterComponent>().Lock(message.Address);
 
-				reply(response);
+                    reply(response);
+                }
 			}
 			catch (Exception e)
 			{
