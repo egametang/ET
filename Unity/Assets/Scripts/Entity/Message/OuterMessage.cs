@@ -88,16 +88,22 @@ namespace Model
 		public int Count;
 	}
 
+	[ProtoContract]
 	public class UnitInfo
 	{
+		[ProtoMember(1)]
 		public long UnitId;
+		[ProtoMember(2)]
 		public int X;
+		[ProtoMember(3)]
 		public int Z;
 	}
 
+	[ProtoContract]
 	[Message(Opcode.Actor_CreateUnits)]
 	public class Actor_CreateUnits : AActorMessage
 	{
+		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 	}
 
@@ -107,10 +113,13 @@ namespace Model
 		public AMessage Message;
 	}
 
+	[ProtoContract]
 	[Message(Opcode.FrameMessage)]
 	public class FrameMessage : AActorMessage
 	{
+		[ProtoMember(1)]
 		public int Frame;
+		[ProtoMember(2)]
 		public List<AFrameMessage> Messages = new List<AFrameMessage>();
 	}
 

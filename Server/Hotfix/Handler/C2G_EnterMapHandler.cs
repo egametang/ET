@@ -11,6 +11,7 @@ namespace Hotfix
 			G2C_EnterMap response = new G2C_EnterMap();
 			try
 			{
+				Log.Debug(MongoHelper.ToJson(message));
 				Player player = session.GetComponent<SessionPlayerComponent>().Player;
 				// 在map服务器上创建战斗Unit
 				string mapAddress = Game.Scene.GetComponent<StartConfigComponent>().MapConfigs[0].GetComponent<InnerConfig>().Address;
