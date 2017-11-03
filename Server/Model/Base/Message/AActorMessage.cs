@@ -3,10 +3,14 @@ using ProtoBuf;
 
 namespace Model
 {
+	[ProtoContract]
 	[BsonKnownTypes(typeof(Actor_Test))]
 	[BsonKnownTypes(typeof(AFrameMessage))]
 	[BsonKnownTypes(typeof(Actor_CreateUnits))]
 	[BsonKnownTypes(typeof(FrameMessage))]
+	[ProtoInclude(10000, typeof(FrameMessage))]
+	[ProtoInclude(10001, typeof(AFrameMessage))]
+	[ProtoInclude(10002, typeof(Actor_CreateUnits))]
 	public abstract class AActorMessage : AMessage
 	{
 	}
