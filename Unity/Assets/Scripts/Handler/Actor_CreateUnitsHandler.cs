@@ -5,7 +5,7 @@ namespace Model
 	[MessageHandler((int)Opcode.Actor_CreateUnits)]
 	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
 	{
-		protected override void Run(Actor_CreateUnits message)
+		protected override void Run(Session session, Actor_CreateUnits message)
 		{
 			UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
 			

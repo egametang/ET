@@ -8,6 +8,10 @@ namespace Model
 	[BsonKnownTypes(typeof(AActorMessage))]
 	public abstract class AMessage
 	{
+		public override string ToString()
+		{
+			return MongoHelper.ToJson(this);
+		}
 	}
 
 	[ProtoContract]

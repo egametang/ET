@@ -10,7 +10,7 @@ namespace Model
 			FrameMessage frameMessage = message as FrameMessage;
 			if (frameMessage != null)
 			{
-				Game.Scene.GetComponent<ClientFrameComponent>().Add(frameMessage);
+				Game.Scene.GetComponent<ClientFrameComponent>().Add(session, frameMessage);
 				return;
 			}
 
@@ -18,7 +18,7 @@ namespace Model
 			if (message is AMessage || message is ARequest)
 			{
 				MessageInfo messageInfo = new MessageInfo(opcode, message);
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(messageInfo);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
 				return;
 			}
 

@@ -5,7 +5,7 @@ namespace Model
 	[MessageHandler((int)Opcode.Frame_ClickMap)]
 	public class Frame_ClickMapHandler : AMHandler<Frame_ClickMap>
 	{
-		protected override void Run(Frame_ClickMap message)
+		protected override void Run(Session session, Frame_ClickMap message)
 		{
 			Unit unit = Game.Scene.GetComponent<UnitComponent>().Get(message.Id);
 			MoveComponent moveComponent = unit.GetComponent<MoveComponent>();

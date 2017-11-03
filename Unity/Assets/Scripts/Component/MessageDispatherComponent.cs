@@ -11,7 +11,7 @@ namespace Model
 	/// </summary>
 	public interface IMessageMethod
 	{
-		void Run(AMessage a);
+		void Run(Session session, AMessage a);
 	}
 
 	public class IMessageMonoMethod : IMessageMethod
@@ -23,9 +23,9 @@ namespace Model
 			this.iMHandler = iMHandler;
 		}
 
-		public void Run(AMessage a)
+		public void Run(Session session, AMessage a)
 		{
-			this.iMHandler.Handle(a);
+			this.iMHandler.Handle(session, a);
 		}
 	}
 
@@ -45,7 +45,7 @@ namespace Model
 			this.param = new object[n];
 		}
 
-		public void Run(AMessage a)
+		public void Run(Session session, AMessage a)
 		{
 			this.param[0] = a;
 			this.appDomain.Invoke(this.method, this.instance, param);
@@ -126,7 +126,7 @@ namespace Model
 			}
 		}
 
-		public void Handle(MessageInfo messageInfo)
+		public void Handle(Session session, MessageInfo messageInfo)
 		{
 			List<IMessageMethod> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
@@ -139,7 +139,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Run(messageInfo.Message);
+					ev.Run(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{
