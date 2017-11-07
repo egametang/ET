@@ -9,7 +9,7 @@ namespace Hotfix
 		protected override async Task Run(Unit unit, Actor_Test message)
 		{
 			Log.Debug(message.Info);
-
+			await Task.CompletedTask;
 			unit.GetComponent<UnitGateComponent>().GetActorProxy().Send(message);
 		}
 	}

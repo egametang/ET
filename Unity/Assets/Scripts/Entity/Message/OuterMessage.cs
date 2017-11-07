@@ -1,8 +1,62 @@
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace Model
 {
+	[BsonKnownTypes(typeof(AActorMessage))]
+	public abstract partial class AMessage
+	{
+	}
+
+	[BsonKnownTypes(typeof(AActorRequest))]
+	[ProtoInclude((int)Opcode.C2R_Login, typeof(C2R_Login))]
+	[ProtoInclude((int)Opcode.C2G_LoginGate, typeof(C2G_LoginGate))]
+	[ProtoInclude((int)Opcode.C2G_EnterMap, typeof(C2G_EnterMap))]
+	public abstract partial class ARequest : AMessage
+	{
+	}
+
+	[BsonKnownTypes(typeof(AActorResponse))]
+	[ProtoInclude((int)Opcode.R2C_Login, typeof(R2C_Login))]
+	[ProtoInclude((int)Opcode.G2C_LoginGate, typeof(G2C_LoginGate))]
+	[ProtoInclude((int)Opcode.G2C_EnterMap, typeof(G2C_EnterMap))]
+	public abstract partial class AResponse : AMessage
+	{
+	}
+
+	[BsonKnownTypes(typeof(Actor_Test))]
+	[BsonKnownTypes(typeof(AFrameMessage))]
+	[BsonKnownTypes(typeof(Actor_CreateUnits))]
+	[BsonKnownTypes(typeof(FrameMessage))]
+	[ProtoInclude((int)Opcode.FrameMessage, typeof(FrameMessage))]
+	[ProtoInclude((int)Opcode.AFrameMessage, typeof(AFrameMessage))]
+	[ProtoInclude((int)Opcode.Actor_CreateUnits, typeof(Actor_CreateUnits))]
+	public abstract partial class AActorMessage : AMessage
+	{
+	}
+
+	[BsonKnownTypes(typeof(Actor_TestRequest))]
+	[BsonKnownTypes(typeof(Actor_TransferRequest))]
+	public abstract partial class AActorRequest : ARequest
+	{
+	}
+
+	[BsonKnownTypes(typeof(Actor_TestResponse))]
+	[BsonKnownTypes(typeof(Actor_TransferResponse))]
+	public abstract partial class AActorResponse : AResponse
+	{
+	}
+
+	/// <summary>
+	/// 帧消息，继承这个类的消息会经过服务端转发
+	/// </summary>
+	[ProtoInclude((int)Opcode.Frame_ClickMap, typeof(Frame_ClickMap))]
+	[BsonKnownTypes(typeof(Frame_ClickMap))]
+	public abstract partial class AFrameMessage : AActorMessage
+	{
+	}
+
 	[ProtoContract]
 	[Message(Opcode.C2R_Login)]
 	public class C2R_Login: ARequest

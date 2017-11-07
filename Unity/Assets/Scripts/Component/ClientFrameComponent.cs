@@ -1,5 +1,11 @@
 ﻿namespace Model
 {
+    public struct SessionFrameMessage
+    {
+        public Session Session;
+        public FrameMessage FrameMessage;
+    }
+    
     [ObjectEvent]
     public class ClientFrameComponentEvent : ObjectEvent<ClientFrameComponent>, IStart
     {
@@ -13,7 +19,7 @@
     {
         public int Frame;
 
-        public EQueue<FrameMessage> Queue = new EQueue<FrameMessage>();
+        public EQueue<SessionFrameMessage> Queue = new EQueue<SessionFrameMessage>();
 
         public int count = 1;
         
@@ -26,9 +32,9 @@
             UpdateAsync();
         }
 
-        public void Add(FrameMessage frameMessage)
+        public void Add(Session session, FrameMessage frameMessage)
         {
-            this.Queue.Enqueue(frameMessage);
+            this.Queue.Enqueue(new SessionFrameMessage() {Session = session, FrameMessage = frameMessage});
         }
 
         public async void UpdateAsync()
@@ -65,14 +71,14 @@
             {
                 return;
             }
-            FrameMessage frameMessage = this.Queue.Dequeue();
-            this.Frame = frameMessage.Frame;
+            SessionFrameMessage sessionFrameMessage = this.Queue.Dequeue();
+            this.Frame = sessionFrameMessage.FrameMessage.Frame;
 
-            for (int i = 0; i < frameMessage.Messages.Count; ++i)
+            for (int i = 0; i < sessionFrameMessage.FrameMessage.Messages.Count; ++i)
             {
-	            AFrameMessage message = frameMessage.Messages[i];
+	            AFrameMessage message = sessionFrameMessage.FrameMessage.Messages[i];
                 Opcode opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(new MessageInfo() { Opcode= opcode, Message = message });
+                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo() { Opcode= opcode, Message = message });
             }
         }
     }
