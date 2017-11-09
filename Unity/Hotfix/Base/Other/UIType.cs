@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace Hotfix
 {
     public enum UIType
     {
