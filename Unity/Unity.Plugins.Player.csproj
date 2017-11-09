@@ -1,0 +1,761 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D1FDB199-0FB7-099D-3771-C6A942E4E326}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp-firstpass.dll-player</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
+    <UnityBuildTarget>WSAPlayer:21</UnityBuildTarget>
+    <UnityVersion>2017.2.0f3</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_2_0;UNITY_2017_2;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_METRO;UNITY_METRO;UNITY_METRO_API;PLATFORM_WINRT;UNITY_WINRT;ENABLE_WINRT_PINVOKE;ENABLE_LAZY_METHOD_CACHING;ENABLE_MOVIES;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_NETWORK;ENABLE_EVENT_QUEUE;UNITY_PLATFORM_THREAD_TO_CORE_MAPPING;ENABLE_SUBSTANCE;PLATFORM_SUPPORTS_ADS_ID;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;CURL_STATICLIB;ENABLE_VR;ENABLE_AR;ENABLE_SPATIALTRACKING;UNITY_WSA;ENABLE_DOTNET;UNITY_WSA_10_0;UNITY_WINRT_10_0;UNITY_PRO_LICENSE;NET45;ENABLE_WINMD_SUPPORT;WINDOWS_UWP</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_2_0;UNITY_2017_2;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;PLATFORM_METRO;UNITY_METRO;UNITY_METRO_API;PLATFORM_WINRT;UNITY_WINRT;ENABLE_WINRT_PINVOKE;ENABLE_LAZY_METHOD_CACHING;ENABLE_MOVIES;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_NETWORK;ENABLE_EVENT_QUEUE;UNITY_PLATFORM_THREAD_TO_CORE_MAPPING;ENABLE_SUBSTANCE;PLATFORM_SUPPORTS_ADS_ID;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;CURL_STATICLIB;ENABLE_VR;ENABLE_AR;ENABLE_SPATIALTRACKING;UNITY_WSA;ENABLE_DOTNET;UNITY_WSA_10_0;UNITY_WINRT_10_0;UNITY_PRO_LICENSE;NET45;ENABLE_WINMD_SUPPORT;WINDOWS_UWP</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.XML.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>X:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>X:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Standalone/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>X:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/Standalone/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Timeline">
+      <HintPath>X:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Timeline/Runtime/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>X:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/Runtime/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Windows">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.16299.0\Facade\Windows.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Calls.CallsVoipContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Calls.CallsVoipContract\2.0.0.0\Windows.ApplicationModel.Calls.CallsVoipContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.SocialInfo.SocialInfoContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.SocialInfo.SocialInfoContract\2.0.0.0\Windows.ApplicationModel.SocialInfo.SocialInfoContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.StartupTaskContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.StartupTaskContract\2.0.0.0\Windows.ApplicationModel.StartupTaskContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Custom.CustomDeviceContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Custom.CustomDeviceContract\1.0.0.0\Windows.Devices.Custom.CustomDeviceContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.DevicesLowLevelContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.DevicesLowLevelContract\3.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Printers.PrintersContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Printers.PrintersContract\1.0.0.0\Windows.Devices.Printers.PrintersContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract\3.0.0.0\Windows.Devices.SmartCards.SmartCardBackgroundTriggerContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.SmartCards.SmartCardEmulatorContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.SmartCards.SmartCardEmulatorContract\5.0.0.0\Windows.Devices.SmartCards.SmartCardEmulatorContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Foundation.FoundationContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Foundation.UniversalApiContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Foundation.UniversalApiContract\5.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Gaming.XboxLive.StorageApiContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Gaming.XboxLive.StorageApiContract\1.0.0.0\Windows.Gaming.XboxLive.StorageApiContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Graphics.Printing3D.Printing3DContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Graphics.Printing3D.Printing3DContract\4.0.0.0\Windows.Graphics.Printing3D.Printing3DContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Networking.Connectivity.WwanContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Networking.Connectivity.WwanContract\1.0.0.0\Windows.Networking.Connectivity.WwanContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Services.Store.StoreContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Services.Store.StoreContract\2.0.0.0\Windows.Services.Store.StoreContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Services.TargetedContent.TargetedContentContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Services.TargetedContent.TargetedContentContract\1.0.0.0\Windows.Services.TargetedContent.TargetedContentContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.Profile.ProfileHardwareTokenContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.Profile.ProfileHardwareTokenContract\1.0.0.0\Windows.System.Profile.ProfileHardwareTokenContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.Profile.ProfileSharedModeContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.Profile.ProfileSharedModeContract\2.0.0.0\Windows.System.Profile.ProfileSharedModeContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.ViewManagement.ViewManagementViewScalingContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.ViewManagement.ViewManagementViewScalingContract\1.0.0.0\Windows.UI.ViewManagement.ViewManagementViewScalingContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Activation.ActivatedEventsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Activation.ActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.ActivatedEventsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Activation.ActivationCameraSettingsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract\1.0.0.0\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Activation.ContactActivatedEventsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Activation.ContactActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.ContactActivatedEventsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract\1.0.0.0\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Calls.Background.CallsBackgroundContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract\1.0.0.0\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Calls.LockScreenCallContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Calls.LockScreenCallContract\1.0.0.0\Windows.ApplicationModel.Calls.LockScreenCallContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.FullTrustAppContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.FullTrustAppContract\1.0.0.0\Windows.ApplicationModel.FullTrustAppContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Preview.InkWorkspace.PreviewInkWorkspaceContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Preview.InkWorkspace.PreviewInkWorkspaceContract\1.0.0.0\Windows.ApplicationModel.Preview.InkWorkspace.PreviewInkWorkspaceContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Preview.Notes.PreviewNotesContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract\2.0.0.0\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Resources.Management.ResourceIndexerContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract\1.0.0.0\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Search.Core.SearchCoreContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Search.Core.SearchCoreContract\1.0.0.0\Windows.ApplicationModel.Search.Core.SearchCoreContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Search.SearchContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Search.SearchContract\1.0.0.0\Windows.ApplicationModel.Search.SearchContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Wallet.WalletContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Wallet.WalletContract\1.0.0.0\Windows.ApplicationModel.Wallet.WalletContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Portable.PortableDeviceContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Portable.PortableDeviceContract\1.0.0.0\Windows.Devices.Portable.PortableDeviceContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Printers.Extensions.ExtensionsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Printers.Extensions.ExtensionsContract\2.0.0.0\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Scanners.ScannerDeviceContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Scanners.ScannerDeviceContract\1.0.0.0\Windows.Devices.Scanners.ScannerDeviceContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Devices.Sms.LegacySmsApiContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Devices.Sms.LegacySmsApiContract\1.0.0.0\Windows.Devices.Sms.LegacySmsApiContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Gaming.Input.GamingInputPreviewContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Gaming.Input.GamingInputPreviewContract\1.0.0.0\Windows.Gaming.Input.GamingInputPreviewContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Gaming.Preview.GamesEnumerationContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Gaming.Preview.GamesEnumerationContract\2.0.0.0\Windows.Gaming.Preview.GamesEnumerationContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Gaming.UI.GameChatOverlayContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Gaming.UI.GameChatOverlayContract\1.0.0.0\Windows.Gaming.UI.GameChatOverlayContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Gaming.UI.GamingUIProviderContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Gaming.UI.GamingUIProviderContract\1.0.0.0\Windows.Gaming.UI.GamingUIProviderContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract\1.0.0.0\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Management.Deployment.Preview.DeploymentPreviewContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Management.Deployment.Preview.DeploymentPreviewContract\1.0.0.0\Windows.Management.Deployment.Preview.DeploymentPreviewContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Management.Workplace.WorkplaceSettingsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Management.Workplace.WorkplaceSettingsContract\1.0.0.0\Windows.Management.Workplace.WorkplaceSettingsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.AppBroadcasting.AppBroadcastingContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.AppBroadcasting.AppBroadcastingContract\1.0.0.0\Windows.Media.AppBroadcasting.AppBroadcastingContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.AppRecording.AppRecordingContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.AppRecording.AppRecordingContract\1.0.0.0\Windows.Media.AppRecording.AppRecordingContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Capture.AppBroadcastContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Capture.AppBroadcastContract\2.0.0.0\Windows.Media.Capture.AppBroadcastContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Capture.AppCaptureContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Capture.AppCaptureContract\4.0.0.0\Windows.Media.Capture.AppCaptureContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Capture.AppCaptureMetadataContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Capture.AppCaptureMetadataContract\1.0.0.0\Windows.Media.Capture.AppCaptureMetadataContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Capture.CameraCaptureUIContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Capture.CameraCaptureUIContract\1.0.0.0\Windows.Media.Capture.CameraCaptureUIContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Capture.GameBarContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Capture.GameBarContract\1.0.0.0\Windows.Media.Capture.GameBarContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Devices.CallControlContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Devices.CallControlContract\1.0.0.0\Windows.Media.Devices.CallControlContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.MediaControlContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.MediaControlContract\1.0.0.0\Windows.Media.MediaControlContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Playlists.PlaylistsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Playlists.PlaylistsContract\1.0.0.0\Windows.Media.Playlists.PlaylistsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Media.Protection.ProtectionRenewalContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Media.Protection.ProtectionRenewalContract\1.0.0.0\Windows.Media.Protection.ProtectionRenewalContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract\1.0.0.0\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Networking.Sockets.ControlChannelTriggerContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Networking.Sockets.ControlChannelTriggerContract\2.0.0.0\Windows.Networking.Sockets.ControlChannelTriggerContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Networking.XboxLive.XboxLiveSecureSocketsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Networking.XboxLive.XboxLiveSecureSocketsContract\1.0.0.0\Windows.Networking.XboxLive.XboxLiveSecureSocketsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Perception.Automation.Core.PerceptionAutomationCoreContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract\1.0.0.0\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Security.EnterpriseData.EnterpriseDataContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Security.EnterpriseData.EnterpriseDataContract\5.0.0.0\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Security.ExchangeActiveSyncProvisioning.EasContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Security.ExchangeActiveSyncProvisioning.EasContract\1.0.0.0\Windows.Security.ExchangeActiveSyncProvisioning.EasContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Services.Maps.GuidanceContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Services.Maps.GuidanceContract\3.0.0.0\Windows.Services.Maps.GuidanceContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Services.Maps.LocalSearchContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Services.Maps.LocalSearchContract\4.0.0.0\Windows.Services.Maps.LocalSearchContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Storage.Provider.CloudFilesContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Storage.Provider.CloudFilesContract\1.0.0.0\Windows.Storage.Provider.CloudFilesContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.Profile.SystemManufacturers.SystemManufacturersContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract\2.0.0.0\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.Profile.ProfileRetailInfoContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.Profile.ProfileRetailInfoContract\1.0.0.0\Windows.System.Profile.ProfileRetailInfoContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.UserProfile.UserProfileContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.UserProfile.UserProfileContract\1.0.0.0\Windows.System.UserProfile.UserProfileContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.UserProfile.UserProfileLockScreenContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.UserProfile.UserProfileLockScreenContract\1.0.0.0\Windows.System.UserProfile.UserProfileLockScreenContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.ApplicationSettings.ApplicationsSettingsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.ApplicationSettings.ApplicationsSettingsContract\1.0.0.0\Windows.UI.ApplicationSettings.ApplicationsSettingsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.Core.AnimationMetrics.AnimationMetricsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract\1.0.0.0\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.Core.CoreWindowDialogsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.Core.CoreWindowDialogsContract\1.0.0.0\Windows.UI.Core.CoreWindowDialogsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.Xaml.Hosting.HostingContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.Xaml.Hosting.HostingContract\2.0.0.0\Windows.UI.Xaml.Hosting.HostingContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Web.Http.Diagnostics.HttpDiagnosticsContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract\2.0.0.0\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.System.SystemManagementContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.System.SystemManagementContract\4.0.0.0\Windows.System.SystemManagementContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.Calls.CallsPhoneContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.Calls.CallsPhoneContract\3.0.0.0\Windows.ApplicationModel.Calls.CallsPhoneContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract\2.0.0.0\Windows.ApplicationModel.CommunicationBlocking.CommunicationBlockingContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Embedded.DeviceLockdown.DeviceLockdownContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Embedded.DeviceLockdown.DeviceLockdownContract\1.0.0.0\Windows.Embedded.DeviceLockdown.DeviceLockdownContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Networking.NetworkOperators.NetworkOperatorsFdnContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Networking.NetworkOperators.NetworkOperatorsFdnContract\1.0.0.0\Windows.Networking.NetworkOperators.NetworkOperatorsFdnContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Phone.PhoneContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Phone.PhoneContract\1.0.0.0\Windows.Phone.PhoneContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.Phone.StartScreen.DualSimTileContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.Phone.StartScreen.DualSimTileContract\1.0.0.0\Windows.Phone.StartScreen.DualSimTileContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows.UI.WebUI.Core.WebUICommandBarContract">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\References\10.0.16299.0\Windows.UI.WebUI.Core.WebUICommandBarContract\1.0.0.0\Windows.UI.WebUI.Core.WebUICommandBarContract.winmd</HintPath>
+    </Reference>
+    <Reference Include="Windows">
+      <HintPath>X:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.16299.0\Facade\Windows.winmd</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.WindowsRuntime">
+      <HintPath>X:\Program Files\Unity\Editor\Data\il2cpp\BCLExtensions\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.WindowsRuntime.UI.Xaml">
+      <HintPath>X:\Program Files\Unity\Editor\Data\il2cpp\BCLExtensions\System.Runtime.WindowsRuntime.UI.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonConstants.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonDefaults.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonExtensionMethods.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\BsonUtils.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\BsonException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\BsonInternalException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\BsonSerializationException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\DuplicateBsonMemberMapAttributeException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Exceptions\TruncationException.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ArrayElementNameAccelerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderBookmark.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonChunkPool.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderBookmark.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentWriterContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonDocumentWriterSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderBookmark.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonReaderState.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStream.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStreamAdapter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonStreamExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonTrie.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriterSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\BsonWriterState.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteArrayBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteArrayChunk.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferFactory.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferSlice.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ByteBufferStream.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\ContextType.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\CStringUtf8Encoding.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonChunk.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonChunkSource.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonReaderExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IBsonWriterExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IByteBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\IElementNameValidator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\INameDecoder.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\InputBufferChunkSource.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonConvert.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonOutputMode.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReader.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReaderBookmark.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReaderContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonReaderSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonScanner.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonToken.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonWriter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonWriterContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\JsonWriterSettings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\MultiChunkBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\NoOpElementNameValidator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\OutputBufferChunkSource.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\SingleChunkBuffer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\TrieNameDecoder.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8Encodings.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8Helper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\IO\Utf8NameDecoder.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonArray.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBinaryData.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBinarySubType.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonBoolean.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDateTime.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDecimal128.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDocumentWrapper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonDouble.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonElement.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonInt32.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonInt64.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonJavaScript.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonJavaScriptWithScope.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonMaxKey.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonMinKey.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonNull.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonObjectId.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonRegularExpression.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonString.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonSymbol.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonSymbolTable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonTimestamp.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonType.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonTypeMapper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonTypeMapperOptions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonUndefined.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\BsonValue.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\Decimal128.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\GuidConverter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\GuidRepresentation.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\IConvertibleToBsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\ICustomBsonTypeMapper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\LazyBsonArray.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\LazyBsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\MaterializedOnDemandBsonArray.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\MaterializedOnDemandBsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\ObjectId.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\RawBsonArray.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\RawBsonDocument.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\ObjectModel\UInt128.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\PowerOf2.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\AttributedSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonConstructorAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDateTimeOptionsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDefaultValueAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDictionaryOptionsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDiscriminatorAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonElementAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonExtraElementsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonFactoryMethodAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIdAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreExtraElementsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreIfDefaultAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreIfNullAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonKnownTypesAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonMemberMapAttributeUsageAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonNoIdAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonRepresentationAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonRequiredAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonSerializationOptionsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonSerializerAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonTimeSpanOptionsAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonClassMapAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonCreatorMapAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonMemberMapAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonPostProcessingAttribute.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonClassMap.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonClassMapSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonCreatorMap.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationArgs.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonDocumentBackedClass.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonMemberMap.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonObjectModelSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationArgs.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationContext.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationInfo.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializationProviderBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\BsonSerializerRegistry.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\CollectionsSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\AttributeConventionPack.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\CamelCaseElementNameConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionPack.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionRegistry.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionRunner.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\DefaultConventionPack.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegateClassMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegateMemberMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegatePostProcessingConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\EnumRepresentationConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\HierarchicalDiscriminatorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IClassMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IConventionPack.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ICreatorMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IDiscriminatorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreExtraElementsConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfDefaultConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfNullConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IMemberMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ImmutableTypeClassMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\IPostProcessingConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\LookupIdGeneratorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberDefaultValueConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberNameElementNameConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedExtraElementsMemberConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedIdMemberConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedParameterCreatorMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\NoIdMemberConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ObjectDiscriminatorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ReadWriteMemberFinderConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetClassMapConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetMemberMapsConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\ScalarDiscriminatorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\StandardDiscriminatorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Conventions\StringObjectIdIdGeneratorConvention.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\CreatorMapDelegateCompiler.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\DiscriminatedInterfaceSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\ExpressionVisitor.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonDictionarySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonIdProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonPolymorphicSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerExtensions.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerRegistry.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IChildSerializerConfigurable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\ICreatorSelector.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\AscendingGuidGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonBinaryDataGuidGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonObjectIdGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\CombGuidGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\GuidGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\NullIdChecker.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ObjectIdGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\StringObjectIdGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ZeroIdChecker.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IDictionaryRepresentationConfigurable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IIdGenerator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IRepresentationConfigurable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\IRepresentationConverterConfigurable.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\MostArgumentsCreatorSelector.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\DictionaryRepresentation.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\RepresentationConverter.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Options\TimeSpanUnits.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\PrimitiveSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\AbstractClassSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BitArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBinaryDataSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBooleanSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonClassMapSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDateTimeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDecimal128Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentBackedClassSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentWrapperSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDoubleSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt32Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt64Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonJavaScriptSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonJavaScriptWithScopeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonMaxKeySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonMinKeySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonNullSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonObjectIdSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonRegularExpressionSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonStringSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonSymbolSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonTimestampSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonUndefinedSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueCSharpNullSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\CharSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ClassSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\CultureInfoSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeOffsetSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Decimal128Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DecimalSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionaryInterfaceImplementerSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionarySerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedInterfaceSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedWrapperSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\DynamicDocumentBaseSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ExpandoObjectSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\GuidSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ImpliedImplementationInterfaceSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int16Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int32Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\Int64Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPAddressSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\IPEndPointSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\KeyValuePairSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\NullableGenericSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectIdSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\PartiallyRawBsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ProjectingDeserializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\QueueSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonDocumentSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSubclassSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SByteSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SealedClassSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializeAsNominalTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerHelper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\SingleSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StackSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StringSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\StructSerializerBase.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\ThreeDimensionalArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TupleSerializers.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\TwoDimensionalArraySerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt16Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt32Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UndiscriminatedActualTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\UriSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\Serializers\VersionSerializer.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\TypeMappingSerializationProvider.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Bson\Serialization\TypeNameDiscriminator.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\ApplicationNameHelper.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableClass.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableDerivedClass.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalDisposableStruct.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableClass.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableDerivedClass.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\CanonicalEquatableStruct.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\Hasher.cs" />
+    <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\BclHelpers.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\BufferExtension.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\BufferPool.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\CallbackAttributes.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Compiler\CompilerContext.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Compiler\CompilerDelegates.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Compiler\Local.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\DataFormat.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Extensible.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ExtensibleUtil.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\GlobalSuppressions.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Helpers.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\IExtensible.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\IExtension.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ImplicitFields.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\KeyValuePairProxy.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\AttributeMap.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\BasicList.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\CallbackSet.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\MetaType.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\RuntimeTypeModel.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\SubType.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\TypeFormatEventArgs.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\TypeModel.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Meta\ValueMember.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\NetObjectCache.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\PrefixStyle.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoContractAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoConverterAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoEnumAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoException.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoIgnoreAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoIncludeAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoMemberAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoReader.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ProtoWriter.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\SerializationContext.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ArrayDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\BlobSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ByteSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\CharSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\CompiledSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\DecimalSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\DefaultValueDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\EnumSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\FieldDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\GuidSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int16Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int32Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\Int64Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ISerializerProxy.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\KeyValuePairDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ListDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\NetObjectSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\NullDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ParseableSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\PropertyDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\ProtoDecoratorBase.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\SByteSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\SingleSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\StringSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\SubItemSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\SurrogateSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\SystemTypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\TagDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\TupleSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\TypeSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\UInt16Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\UInt32Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\Serializers\UriDecorator.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\ProtoEndpointBehavior.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\ProtoOperationBehavior.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\SubItemToken.cs" />
+    <Compile Include="Assets\Plugins\protobuf-net\WireType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
+    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
+</Project>

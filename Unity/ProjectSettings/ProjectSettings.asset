@@ -585,10 +585,12 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: NET45
     7: NET45;ILRuntime
+    14: NET45
   platformArchitecture:
     iOS: 2
   scriptingBackend:
     Android: 0
+    Metro: 2
     Standalone: 0
     iOS: 1
   incrementalIl2cppBuild: {}
