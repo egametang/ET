@@ -1,0 +1,5 @@
+<linker>
+  <assembly fullname="Assembly-CSharp" preserve="all"/>
+  <assembly fullname="Assembly-CSharp-firstpass" preserve="all"/>
+  <assembly fullname="UnityEngine" preserve="all"/>
+</linker>
