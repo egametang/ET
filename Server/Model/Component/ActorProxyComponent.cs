@@ -17,5 +17,15 @@ namespace Model
 			this.dictionary[id] = actorProxy;
 			return actorProxy;
 		}
+
+		public void Remove(long id)
+		{
+			ActorProxy actorProxy;
+			if (!this.dictionary.TryGetValue(id, out actorProxy))
+			{
+				return;
+			}
+			actorProxy.Dispose();
+		}
 	}
 }
