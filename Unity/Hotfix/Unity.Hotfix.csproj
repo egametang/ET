@@ -233,6 +233,8 @@
     <Compile Include="Base\Object\ObjectEvents.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
+    <Compile Include="Base\Other\UIFactoryAttribute.cs" />
+    <Compile Include="Base\Other\UIType.cs" />
     <Compile Include="Component\UIComponent.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />

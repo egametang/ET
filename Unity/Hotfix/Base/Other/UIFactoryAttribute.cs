@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace Hotfix
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class UIFactoryAttribute: Attribute
