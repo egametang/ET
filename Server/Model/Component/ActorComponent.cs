@@ -34,6 +34,8 @@ namespace Model
 
 				base.Dispose();
 
+				this.tcs?.SetException(new Exception($"actor disposed! {this.actorId}"));
+
 				Game.Scene.GetComponent<ActorManagerComponent>().Remove(actorId);
 			}
 			catch (Exception)

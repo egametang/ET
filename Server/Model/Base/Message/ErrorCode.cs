@@ -12,5 +12,7 @@ namespace Model
 		public const int ERR_ReloadFail = 104;
 		public const int ERR_NotFoundUnit = 105;
 		public const int ERR_ActorLocationNotFound = 106;
+		public const int ERR_SessionActorError = 107;
+		public const int ERR_ActorError = 108;
 	}
 }
