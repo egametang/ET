@@ -54,5 +54,6 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 群友源码分析：  
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
+[框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)   
 
 __讨论QQ群 : 474643097__
