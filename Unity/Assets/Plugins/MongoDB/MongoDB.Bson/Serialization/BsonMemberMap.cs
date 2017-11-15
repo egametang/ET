@@ -16,7 +16,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-#if !AOT
+#if !UNITY_IOS
 using System.Reflection.Emit;		
 #endif
 using MongoDB.Bson.Serialization.Serializers;
@@ -582,7 +582,7 @@ namespace MongoDB.Bson.Serialization
                 throw new BsonSerializationException(message);
             }
 
-#if AOT
+#if UNITY_IOS
 	        return (obj, value) => { fieldInfo.SetValue(obj, value); };
 #else
 			var sourceType = fieldInfo.DeclaringType;
@@ -602,7 +602,7 @@ namespace MongoDB.Bson.Serialization
 
 		private Func<object, object> GetGetter()
         {
-            #if AOT
+#if UNITY_IOS
             PropertyInfo propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
@@ -619,7 +619,7 @@ namespace MongoDB.Bson.Serialization
 
             FieldInfo fieldInfo = _memberInfo as FieldInfo;
             return (obj) => { return fieldInfo.GetValue(obj); };
-            #else
+#else
             var propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
@@ -647,17 +647,17 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
-            #endif
+#endif
         }
 
 
         private Action<object, object> GetPropertySetter()
         {
-            #if AOT
+#if UNITY_IOS
             var propertyInfo = (PropertyInfo) _memberInfo;
 
             return (obj, value) => { propertyInfo.SetValue(obj, value); };
-            #else
+#else
             var propertyInfo = (PropertyInfo)_memberInfo;
             var setMethodInfo = propertyInfo.SetMethod;
             if (IsReadOnly)
@@ -682,7 +682,7 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
-            #endif
+#endif
         }
 
         private void ThrowFrozenException()
