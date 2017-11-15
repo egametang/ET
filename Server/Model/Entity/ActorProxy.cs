@@ -132,7 +132,7 @@ namespace Model
 
 		private void Remove()
 		{
-			ActorTask task = this.RunningTasks.Dequeue();
+			this.RunningTasks.Dequeue();
 			this.AllowGet();
 		}
 
@@ -174,8 +174,24 @@ namespace Model
 			}
 			while (true)
 			{
+				if (this.Id == 0)
+				{
+					return;
+				}
 				ActorTask actorTask = await this.GetAsync();
-				this.RunTask(actorTask);
+				if (actorTask == null)
+				{
+					return;
+				}
+				try
+				{
+					this.RunTask(actorTask);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+					return;
+				}
 			}
 		}
 
@@ -207,6 +223,9 @@ namespace Model
 							ActorTask actorTask = this.WaitingTasks.Dequeue();
 							actorTask.RunFail(response.Error);
 						}
+
+						// 失败直接删除actorproxy
+						Game.Scene.GetComponent<ActorProxyComponent>().Remove(this.Id);
 						return;
 					}
 					
@@ -281,6 +300,8 @@ namespace Model
 			}
 
 			base.Dispose();
+
+			this.tcs?.SetResult(null);
 		}
 	}
 }

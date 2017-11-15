@@ -21,7 +21,7 @@
 		{
 			UnityEngine.Debug.Log(msg);
 		}
-
+		
 		public static void Flush()
 		{
 		}

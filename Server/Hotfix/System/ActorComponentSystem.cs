@@ -90,10 +90,14 @@ namespace Hotfix
 		{
 			while (true)
 			{
+				if (self.Id == 0)
+				{
+					return;
+				}
 				try
 				{
 					ActorMessageInfo info = await self.GetAsync();
-					await self.entityActorHandler.Handle(info.Session, self.Entity, info.Message);
+					await self.entityActorHandler.Handle(info.Session, self.Entity, info.Message); 
 				}
 				catch (Exception e)
 				{

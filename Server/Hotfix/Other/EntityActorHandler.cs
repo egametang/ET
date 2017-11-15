@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Model;
 
 namespace Hotfix
@@ -10,12 +11,21 @@ namespace Hotfix
     {
         public async Task Handle(Session session, Entity entity, ActorRequest message)
         {
-            ((Session)entity).Send(message.AMessage);
-            ActorResponse response = new ActorResponse
-            {
-                RpcId = message.RpcId
-            };
-            session.Reply(response);
+	        ActorResponse response = new ActorResponse { RpcId = message.RpcId };
+
+			try
+	        {
+		        ((Session)entity).Send(message.AMessage);
+		        session.Reply(response);
+		        await Task.CompletedTask;
+	        }
+	        catch (Exception e)
+	        {
+		        response.Error = ErrorCode.ERR_SessionActorError;
+		        response.Message = $"session actor error {e}";
+				session.Reply(response);
+				throw;
+	        }
         }
     }
 
