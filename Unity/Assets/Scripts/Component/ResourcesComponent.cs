@@ -1,117 +1,286 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Model
 {
-	public class ResourcesComponent: Component
+	public class ABInfo: Disposer
+	{
+		private int refCount;
+		public string Name { get; }
+
+		public int RefCount
+		{
+			get
+			{
+				return this.refCount;
+			}
+			set
+			{
+				Log.Debug($"{this.Name} refcount: {value}");
+				this.refCount = value;
+			}
+		}
+
+		public AssetBundle AssetBundle { get; }
+
+		public ABInfo(string name, AssetBundle ab)
+		{
+			this.Name = name;
+			this.AssetBundle = ab;
+			this.RefCount = 1;
+			Log.Debug($"load assetbundle: {this.Name}");
+		}
+
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+			
+			base.Dispose();
+			
+			Log.Debug($"desdroy assetbundle: {this.Name}");
+			
+			this.AssetBundle?.Unload(true);
+		}
+	}
+
+	public class ResourcesComponent : Component
 	{
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
 
 		private readonly Dictionary<string, UnityEngine.Object> resourceCache = new Dictionary<string, UnityEngine.Object>();
 
-		private readonly Dictionary<string, AssetBundle> bundleCaches = new Dictionary<string, AssetBundle>();
+		private readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
 		
-		public K GetReference<K>(string bundle, string prefab, string key) where K : class
-		{
-			GameObject gameObject = this.GetAsset<GameObject>(bundle, prefab);
-			return gameObject.GetComponent<ReferenceCollector>().Get<K>(key);
-		}
+		// lru缓存队列
+		private readonly QueueDictionary<string, ABInfo> cacheDictionary = new QueueDictionary<string, ABInfo>();
 
 		public K GetAsset<K>(string bundleName, string prefab) where K : class
 		{
 			string path = $"{bundleName}.unity3d/{prefab}".ToLower();
 
 			UnityEngine.Object resource = null;
-			if (this.resourceCache.TryGetValue(path, out resource))
+			if (!this.resourceCache.TryGetValue(path, out resource))
 			{
-				return resource as K;
+				throw new Exception($"not found asset: {path}");
 			}
 			
-			if (Define.IsAsync)
-			{
-				if (!this.bundleCaches.ContainsKey($"{bundleName}.unity3d".ToLower()))
-				{
-					return null;
-				}
-
-				throw new Exception($"异步加载资源,资源不在resourceCache中: {bundleName} {path}");
-			}
-
-			try
-			{
-				resource = ResourceHelper.LoadResource(bundleName, prefab);
-				this.resourceCache.Add(path, resource);
-			}
-			catch (Exception e)
-			{
-				throw new Exception($"加载资源出错,输入路径:{path}", e);
-			}
-
 			return resource as K;
 		}
 
-		public async Task DownloadAndCacheAsync(string uri, string assetBundleName)
+		public void UnloadBundle(string assetBundleName)
 		{
-			assetBundleName = (assetBundleName + ".unity3d").ToLower();
+			assetBundleName = assetBundleName.ToLower();
+			
+			this.UnloadOneBundle(assetBundleName);
 
-			AssetBundle assetBundle;
-			// 异步下载资源
-			string url = uri + "StreamingAssets/" + assetBundleName;
-			int count = 0;
-			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-			while (true)
+			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+
+			//Log.Debug($"-----------dep unload {assetBundleName} dep: {dependencies.ToList().ListToString()}");
+			foreach (string dependency in dependencies)
 			{
-				using (WWWAsync wwwAsync = new WWWAsync())
-				{
-					try
-					{ 
-						++count;
-						if (count > 1)
-						{
-							await timerComponent.WaitAsync(1000);
-						}
-
-						if (this.Id == 0)
-						{
-							return;
-						}
-
-						await wwwAsync.LoadFromCacheOrDownload(url, ResourcesComponent.AssetBundleManifestObject.GetAssetBundleHash(assetBundleName));
-						assetBundle = wwwAsync.www.assetBundle;
-
-						break;
-					}
-					catch (Exception e)
-					{
-						Log.Error(e.ToString());
-					}
-				}
+				this.UnloadOneBundle(dependency);
 			}
+		}
+
+		private void UnloadOneBundle(string assetBundleName)
+		{
+			assetBundleName = assetBundleName.ToLower();
+			
+			//Log.Debug($"unload bundle {assetBundleName}");
+			ABInfo abInfo;
+			if (!this.bundles.TryGetValue(assetBundleName, out abInfo))
+			{
+				throw new Exception($"not found assetBundle: {assetBundleName}");
+			}
+
+			--abInfo.RefCount;
+			if (abInfo.RefCount > 0)
+			{
+				return;
+			}
+			
+			
+			this.bundles.Remove(assetBundleName);
+			
+			// 缓存10个包
+			this.cacheDictionary.Enqueue(assetBundleName, abInfo);
+			if (this.cacheDictionary.Count > 10)
+			{
+				abInfo = this.cacheDictionary[this.cacheDictionary.FirstKey];
+				this.cacheDictionary.Dequeue();
+				abInfo.Dispose();
+			}
+			Log.Debug($"cache count: {this.cacheDictionary.Count}");
+		}
+		
+		/// <summary>
+		/// 同步加载assetbundle
+		/// </summary>
+		/// <param name="assetBundleName"></param>
+		/// <returns></returns>
+		public void LoadBundle(string assetBundleName)
+		{
+			assetBundleName = assetBundleName.ToLower();
+			this.LoadOneBundle(assetBundleName);
+
+			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+
+			Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
+			foreach (string dependency in dependencies)
+			{
+				if (string.IsNullOrEmpty(dependency))
+				{
+					continue;
+				}
+				this.LoadOneBundle(dependency);
+			}
+		}
+		
+		public void LoadOneBundle(string assetBundleName)
+		{
+			ABInfo abInfo;
+			if (this.bundles.TryGetValue(assetBundleName, out abInfo))
+			{
+				++abInfo.RefCount;
+				return;
+			}
+
+
+			if (this.cacheDictionary.ContainsKey(assetBundleName))
+			{
+				abInfo = this.cacheDictionary[assetBundleName];
+				++abInfo.RefCount;
+				this.bundles[assetBundleName] = abInfo;
+				this.cacheDictionary.Remove(assetBundleName);
+				return;
+			}
+			
+
+			if (!Define.IsAsync)
+			{
+#if UNITY_EDITOR
+				string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+				foreach (string s in realPath)
+				{
+					string assetName = Path.GetFileNameWithoutExtension(s);
+					string path = $"{assetBundleName}/{assetName}".ToLower();
+					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
+					this.resourceCache[path] = resource;
+				}
+				
+				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+				return;
+#endif
+			}
+
+			AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(PathHelper.AppResPath, assetBundleName));
 
 			if (!assetBundle.isStreamedSceneAssetBundle)
 			{
 				// 异步load资源到内存cache住
-				UnityEngine.Object[] assets;
-				using (AssetBundleLoaderAsync assetBundleLoaderAsync = new AssetBundleLoaderAsync(assetBundle))
-				{ 
-					assets = await assetBundleLoaderAsync.LoadAllAssetsAsync();	
-				}
-
-
+				UnityEngine.Object[] assets = assetBundle.LoadAllAssets();
 				foreach (UnityEngine.Object asset in assets)
 				{
 					string path = $"{assetBundleName}/{asset.name}".ToLower();
 					this.resourceCache[path] = asset;
 				}
 			}
+			
+			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
+		}
 
-			if (this.bundleCaches.ContainsKey(assetBundleName))
+		/// <summary>
+		/// 异步加载assetbundle
+		/// </summary>
+		/// <param name="assetBundleName"></param>
+		/// <returns></returns>
+		public async Task LoadBundleAsync(string assetBundleName)
+		{
+			assetBundleName = assetBundleName.ToLower();
+			await this.LoadOneBundleAsync(assetBundleName);
+
+			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+
+			//Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
+			foreach (string dependency in dependencies)
 			{
-				throw new Exception($"重复加载资源: {assetBundleName}");
+				if (string.IsNullOrEmpty(dependency))
+				{
+					continue;
+				}
+				await this.LoadOneBundleAsync(dependency);
 			}
-			this.bundleCaches[assetBundleName] = assetBundle;
+		}
+
+		public async Task LoadOneBundleAsync(string assetBundleName)
+		{
+			ABInfo abInfo;
+			if (this.bundles.TryGetValue(assetBundleName, out abInfo))
+			{
+				++abInfo.RefCount;
+				return;
+			}
+
+
+			if (this.cacheDictionary.ContainsKey(assetBundleName))
+			{
+				abInfo = this.cacheDictionary[assetBundleName];
+				++abInfo.RefCount;
+				this.bundles[assetBundleName] = abInfo;
+				this.cacheDictionary.Remove(assetBundleName);
+				return;
+			}
+			
+
+			if (!Define.IsAsync)
+			{
+#if UNITY_EDITOR
+				string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+				foreach (string s in realPath)
+				{
+					string assetName = Path.GetFileNameWithoutExtension(s);
+					string path = $"{assetBundleName}/{assetName}".ToLower();
+					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
+					this.resourceCache[path] = resource;
+				}
+				
+				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+				return;
+#endif
+			}
+
+			AssetBundle assetBundle;
+			using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.Create<AssetsBundleLoaderAsync>())
+			{
+				assetBundle = await assetsBundleLoaderAsync.LoadAsync(assetBundleName);
+			}
+
+			if (!assetBundle.isStreamedSceneAssetBundle)
+			{
+				// 异步load资源到内存cache住
+				UnityEngine.Object[] assets;
+				using (AssetsLoaderAsync assetsLoaderAsync = EntityFactory.Create<AssetsLoaderAsync, AssetBundle>(assetBundle))
+				{
+					assets = await assetsLoaderAsync.LoadAllAssetsAsync();
+				}
+				foreach (UnityEngine.Object asset in assets)
+				{
+					string path = $"{assetBundleName}/{asset.name}".ToLower();
+					this.resourceCache[path] = asset;
+				}
+			}
+			
+			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
 		}
 
 		public override void Dispose()
@@ -123,10 +292,14 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (var assetBundle in bundleCaches)
+			foreach (var abInfo in this.bundles)
 			{
-				assetBundle.Value?.Unload(true);
+				abInfo.Value?.AssetBundle?.Unload(true);
 			}
+			
+			this.bundles.Clear();
+			this.cacheDictionary.Clear();
+			this.resourceCache.Clear();
 		}
 	}
 }

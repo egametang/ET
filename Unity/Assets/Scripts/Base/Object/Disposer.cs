@@ -10,9 +10,16 @@ namespace Model
 		[BsonElement]
 		[BsonId]
 		public long Id { get; set; }
-		
+	
 		protected Disposer()
 		{
+			this.Id = IdGenerater.GenerateId();
+			ObjectEvents.Instance.Add(this);
+		}
+
+		protected Disposer(long id)
+		{
+			this.Id = id;
 			ObjectEvents.Instance.Add(this);
 		}
 

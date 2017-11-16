@@ -14,9 +14,9 @@ namespace Model
 #if ILRuntime
 		public static void LoadHotfixAssembly()
 		{
-			GameObject code = (GameObject)Resources.Load("Code");
-			byte[] assBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.GetComponent<ReferenceCollector>().Get<TextAsset>("Hotfix.pdb").bytes;
+			GameObject code = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("code", "Code");
+			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
 
 			using (MemoryStream fs = new MemoryStream(assBytes))
 			using (MemoryStream p = new MemoryStream(mdbBytes))
@@ -27,7 +27,7 @@ namespace Model
 #else
 		public static Assembly LoadHotfixAssembly()
 		{
-			GameObject code = (GameObject)Resources.Load("Code");
+			GameObject code = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("code", "Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
 			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
 			Assembly assembly = Assembly.Load(assBytes, mdbBytes);

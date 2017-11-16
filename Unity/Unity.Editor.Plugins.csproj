@@ -316,9 +316,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
-    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
-    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

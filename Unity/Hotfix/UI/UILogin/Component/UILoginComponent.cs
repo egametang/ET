@@ -35,7 +35,7 @@ namespace Hotfix
 			Session session = null;
 			try
 			{
-				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create("127.0.0.1:10002");
+				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(GlobalConfigComponent.Instance.GlobalProto.Address);
 				string text = this.account.GetComponent<InputField>().text;
 				string textPwd = this.password.GetComponent<InputField>().text;
 				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = text, Password = textPwd });
@@ -50,8 +50,8 @@ namespace Hotfix
 				PlayerComponent playerComponent = Game.Scene.GetComponent<PlayerComponent>();
 				playerComponent.MyPlayer = player;
 
-				Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.Lobby);
-				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.Login);
+				Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
+				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.UILogin);
 			}
 			catch (Exception e)
 			{

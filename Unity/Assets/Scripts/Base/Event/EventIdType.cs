@@ -21,5 +21,8 @@
 		MessageDeserializeFinish,
 		SceneChange,
 		FrameUpdate,
+		
+		LoadingBegin,
+		LoadingFinish,
 	}
 }

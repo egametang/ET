@@ -9,12 +9,27 @@ namespace Model
 		{
 			try
 			{
-				string configStr = ((GameObject) Resources.Load("Config")).Get<TextAsset>(key).text;
+				GameObject config = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("config", "Config");
+				string configStr = config.Get<TextAsset>(key).text;
 				return configStr;
 			}
 			catch (Exception e)
 			{
 				throw new Exception($"load config file fail, key: {key}", e);
+			}
+		}
+		
+		public static string GetGlobal()
+		{
+			try
+			{
+				GameObject config = (GameObject)Resources.Load("KV");
+				string configStr = config.Get<TextAsset>("GlobalProto").text;
+				return configStr;
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"load global config file fail", e);
 			}
 		}
 	}

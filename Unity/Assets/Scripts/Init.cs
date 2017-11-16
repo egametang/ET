@@ -22,7 +22,7 @@ namespace Model
 		private IStaticMethod lateUpdate;
 		private IStaticMethod onApplicationQuit;
 
-		private void Start()
+		private async void Start()
 		{
 			try
 			{
@@ -37,11 +37,33 @@ namespace Model
 
 				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
 
+				Game.Scene.AddComponent<GlobalConfigComponent>();
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
+				Game.Scene.AddComponent<NetOuterComponent>();
+				Game.Scene.AddComponent<ResourcesComponent>();
+				Game.Scene.AddComponent<BehaviorTreeComponent>();
+				Game.Scene.AddComponent<PlayerComponent>();
+				Game.Scene.AddComponent<UnitComponent>();
+				Game.Scene.AddComponent<ClientFrameComponent>();
+				Game.Scene.AddComponent<UIComponent>();
+
+
+				// 下载ab包
+				await BundleHelper.DownloadBundle();
+				
+				// 加载配置
+				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
+				Game.Scene.AddComponent<ConfigComponent>();
+				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
+				
+				Game.Scene.AddComponent<MessageDispatherComponent>();
 #if ILRuntime
 				Log.Debug("run in ilruntime mode");
 
 				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
+				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
 				ObjectEvents.Instance.LoadHotfixDll();
+				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 				ILHelper.InitILRuntime();
 				
 				this.start = new ILStaticMethod("Hotfix.Init", "Start", 0);
@@ -50,7 +72,9 @@ namespace Model
 				this.onApplicationQuit = new ILStaticMethod("Hotfix.Init", "OnApplicationQuit", 0);
 #else
 				Log.Debug("run in mono mode");
+				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
 				ObjectEvents.Instance.LoadHotfixDll();
+				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 				Type hotfixInit = ObjectEvents.Instance.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
 				this.update = new MonoStaticMethod(hotfixInit, "Update");
@@ -58,18 +82,10 @@ namespace Model
 				this.onApplicationQuit = new MonoStaticMethod(hotfixInit, "OnApplicationQuit");
 #endif
 
-				Game.Scene.AddComponent<OpcodeTypeComponent>();
-				Game.Scene.AddComponent<MessageDispatherComponent>();
-				Game.Scene.AddComponent<NetOuterComponent>();
-				Game.Scene.AddComponent<ResourcesComponent>();
-				Game.Scene.AddComponent<BehaviorTreeComponent>();
-				Game.Scene.AddComponent<ConfigComponent>();
-				Game.Scene.AddComponent<PlayerComponent>();
-				Game.Scene.AddComponent<UnitComponent>();
-				Game.Scene.AddComponent<ClientFrameComponent>();
-
 				// 进入热更新层
 				this.start.Run();
+				
+				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
@@ -79,13 +95,13 @@ namespace Model
 
 		private void Update()
 		{
-			this.update.Run();
+			this.update?.Run();
 			ObjectEvents.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.lateUpdate.Run();
+			this.lateUpdate?.Run();
 			ObjectEvents.Instance.LateUpdate();
 		}
 
@@ -94,7 +110,7 @@ namespace Model
 			Instance = null;
 			Game.Close();
 			ObjectEvents.Close();
-			this.onApplicationQuit.Run();
+			this.onApplicationQuit?.Run();
 		}
 	}
 }

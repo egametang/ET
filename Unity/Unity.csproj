@@ -404,10 +404,12 @@
     <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
     <Compile Include="Assets\Scripts\Component\AnimatorComponent.cs" />
     <Compile Include="Assets\Scripts\Component\BehaviorTreeComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\BundleDownloaderComponent.cs" />
     <Compile Include="Assets\Scripts\Component\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ClientFrameComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\DBConfig.cs" />
+    <Compile Include="Assets\Scripts\Component\Config\GlobalProto.cs" />
     <Compile Include="Assets\Scripts\Component\Config\HttpConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\InnerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
@@ -416,6 +418,7 @@
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
     <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
@@ -429,8 +432,10 @@
     <Compile Include="Assets\Scripts\Component\SceneChangeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\SessionComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
+    <Compile Include="Assets\Scripts\Component\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
-    <Compile Include="Assets\Scripts\Entity\AssetBundleLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Entity\AssetsBundleLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Entity\AssetsLoaderAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
@@ -439,7 +444,9 @@
     <Compile Include="Assets\Scripts\Entity\Player.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
+    <Compile Include="Assets\Scripts\Entity\UI.cs" />
     <Compile Include="Assets\Scripts\Entity\Unit.cs" />
+    <Compile Include="Assets\Scripts\Entity\UnityWebRequestAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Scripts\Event\NumericChangeEvent_NotifyWatcher.cs" />
     <Compile Include="Assets\Scripts\Event\NumericWatcher_Hp_ShowUI.cs" />
@@ -449,23 +456,32 @@
     <Compile Include="Assets\Scripts\Handler\Actor_TestHandler.cs" />
     <Compile Include="Assets\Scripts\Handler\Frame_ClickMapHandler.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\MongoHelper.cs" />
-    <Compile Include="Assets\Scripts\Helper\PathHelp.cs" />
+    <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\MonoConfig\CanvasConfig.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />
     <Compile Include="Assets\Scripts\Other\ILMethod.cs" />
     <Compile Include="Assets\Scripts\Other\INumericWatcher.cs" />
+    <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
     <Compile Include="Assets\Scripts\Other\MonoMethod.cs" />
     <Compile Include="Assets\Scripts\Other\MotionType.cs" />
     <Compile Include="Assets\Scripts\Other\NumericWatcherAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\ReferenceCollector.cs" />
+    <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
+    <Compile Include="Assets\Scripts\Other\UIType.cs" />
+    <Compile Include="Assets\Scripts\UI\UILoading\Component\UILoadingComponent.cs" />
+    <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingBeginEvent_CreateLoadingUI.cs" />
+    <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingFinishEvent_RemoveLoadingUI.cs" />
+    <Compile Include="Assets\Scripts\UI\UILoading\Factory\UILoadingFactory.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\CLRMethod.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ExceptionHandler.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ILMethod.cs" />
@@ -692,9 +708,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
-    <None Include="Assets\StreamingAssets\Logs\Log-Client-Error.txt" />
-    <None Include="Assets\StreamingAssets\Logs\Log-Client-Info.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

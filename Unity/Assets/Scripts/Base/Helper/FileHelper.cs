@@ -8,6 +8,21 @@ namespace Model
 {
 	public static class FileHelper
 	{
+		public static void GetAllFiles(List<string> files, string dir)
+		{
+			string[] fls = Directory.GetFiles(dir);
+			foreach (string fl in fls)
+			{
+				files.Add(fl);
+			}
+
+			string[] subDirs = Directory.GetDirectories(dir);
+			foreach (string subDir in subDirs)
+			{
+				GetAllFiles(files, subDir);
+			}
+		}
+		
 		public static void CleanDirectory(string dir)
 		{
 			foreach (string subdir in Directory.GetDirectories(dir))
