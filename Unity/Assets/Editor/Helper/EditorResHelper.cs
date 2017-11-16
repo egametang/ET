@@ -6,31 +6,25 @@ namespace Model
     public class EditorResHelper
     {
         /// <summary>
-        /// 获取文件夹内所有的预制路径
+        /// 获取文件夹内所有的预制跟场景路径
         /// </summary>
         /// <param name="srcPath">源文件夹</param>
         /// <param name="subDire">是否获取子文件夹</param>
         /// <returns></returns>
-        public static List<string> GetAllPath(string srcPath, bool subDire)
+        public static List<string> GetPrefabsAndScenes(string srcPath)
         {
             List<string> paths = new List<string>();
-            string[] files = Directory.GetFiles(srcPath);
-            foreach (string str in files)
+            FileHelper.GetAllFiles(paths, srcPath);
+            
+            List<string> files = new List<string>();
+            foreach (string str in paths)
             {
-                if (str.EndsWith(".prefab"))
+                if (str.EndsWith(".prefab") || str.EndsWith(".unity"))
                 {
-                    paths.Add(str);
+                    files.Add(str);
                 }
             }
-            if (subDire)
-            {
-                foreach (string subPath in Directory.GetDirectories(srcPath))
-                {
-                    List<string> subFiles = GetAllPath(subPath, true);
-                    paths.AddRange(subFiles);
-                }
-            }
-            return paths;
+            return files;
         }
         
         /// <summary>

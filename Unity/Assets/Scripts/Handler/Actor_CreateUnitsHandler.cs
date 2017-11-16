@@ -7,6 +7,10 @@ namespace Model
 	{
 		protected override void Run(Session session, Actor_CreateUnits message)
 		{
+			// 加载Unit资源
+			ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
+			resourcesComponent.LoadBundle($"Unit.unity3d");
+			
 			UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)

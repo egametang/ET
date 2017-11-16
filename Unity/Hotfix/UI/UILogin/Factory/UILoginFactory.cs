@@ -4,14 +4,16 @@ using UnityEngine;
 
 namespace Hotfix
 {
-    [UIFactory((int)UIType.Login)]
+    [UIFactory((int)UIType.UILogin)]
     public class UILoginFactory : IUIFactory
     {
         public UI Create(Scene scene, UIType type, GameObject gameObject)
         {
 	        try
-	        {
-				GameObject bundleGameObject = ((GameObject)Resources.Load("UI")).Get<GameObject>("UILogin");
+			{
+				ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
+				resourcesComponent.LoadBundle($"{type}.unity3d");
+				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}", $"{type}");
 				GameObject login = UnityEngine.Object.Instantiate(bundleGameObject);
 				login.layer = LayerMask.NameToLayer(LayerNames.UI);
 		        UI ui = EntityFactory.Create<UI, Scene, UI, GameObject>(scene, null, login);
@@ -25,5 +27,10 @@ namespace Hotfix
 		        return null;
 	        }
 		}
+
+	    public void Remove(UIType type)
+	    {
+			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
+	    }
     }
 }
