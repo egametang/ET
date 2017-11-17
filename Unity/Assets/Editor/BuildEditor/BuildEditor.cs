@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Model;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace MyEditor
 {
@@ -24,7 +26,8 @@ namespace MyEditor
 
 		private PlatformType platformType;
 		private bool isBuildExe;
-		private BuildOptions buildOptions;
+		private BuildOptions buildOptions = BuildOptions.AllowDebugging | BuildOptions.Development;
+		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
@@ -38,17 +41,15 @@ namespace MyEditor
 			{
 				SetPackingTagAndAssetBundle();
 			}
-
-			EditorGUILayout.BeginHorizontal();
+			
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
 			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			EditorGUILayout.EndHorizontal();
-
 			this.buildOptions = (BuildOptions)EditorGUILayout.EnumMaskField("BuildOptions(可多选): ", this.buildOptions);
+			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumMaskField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
 
 			if (GUILayout.Button("开始打包"))
 			{
-				BuildHelper.Build(this.platformType, BuildOptions.None, this.isBuildExe);
+				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe);
 			}
 		}
 
@@ -56,7 +57,21 @@ namespace MyEditor
 		{
 			ClearPackingTagAndAssetBundle();
 			
+			//string[] dirs = Directory.GetDirectories("Assets/Bundles/");
+			//foreach (string dir in dirs)
+			//{
+			//	SetOneDirPackingTagAndAssetBundle(dir);	
+			//}
+
 			SetOneDirPackingTagAndAssetBundle("Assets/Bundles/");
+		}
+
+		private static List<string> CollectDependencies(string o)
+		{
+			string[] paths = AssetDatabase.GetDependencies(o);
+			
+			Log.Info($"{o} dependecies: " + paths.ToList().ListToString());
+			return paths.ToList();
 		}
 
 		private void SetOneDirPackingTagAndAssetBundle(string dir)
@@ -67,7 +82,7 @@ namespace MyEditor
 			foreach (string path in paths)
 			{
 				string path1 = path.Replace('\\', '/');
-				UnityEngine.Object go = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path1);
+				Object go = AssetDatabase.LoadAssetAtPath<Object>(path1);
 				AssetImporter importer = AssetImporter.GetAtPath(path1);
 				if (importer == null || go == null)
 				{
@@ -76,10 +91,9 @@ namespace MyEditor
 				}
 				importer.assetBundleName = $"{go.name}.unity3d";
 
-				UnityEngine.Object[] objects = EditorUtility.CollectDependencies(new[] { go });
-				foreach (UnityEngine.Object o in objects)
+				List<string> pathes = CollectDependencies(path1);
+				foreach (string pt in pathes)
 				{
-					string pt = AssetDatabase.GetAssetPath(o);
 					string extension = Path.GetExtension(pt);
 					if (extension == ".cs" || extension == ".dll")
 					{
@@ -131,14 +145,15 @@ namespace MyEditor
 						continue;
 					}
 
-
-					importer2.assetBundleName = $"share.unity3d";
+					DirectoryInfo dirInfo = new DirectoryInfo(dir);
+					string dirName = dirInfo.Name;
+					importer2.assetBundleName = $"{dirName}-share.unity3d";
 					Log.Warning($"{importer2.assetBundleName}: {pt} {info.ParentPaths.ListToString()}");
 
 					TextureImporter textureImporter = importer2 as TextureImporter;
 					if (textureImporter != null)
 					{
-						textureImporter.spritePackingTag = $"share";
+						textureImporter.spritePackingTag = $"{dirName}-share";
 					}
 				}
 			}
@@ -146,7 +161,7 @@ namespace MyEditor
 
 		private static void ClearPackingTagAndAssetBundle()
 		{
-			List<string> bundlePaths = EditorResHelper.GetAllResourcePath("Assets/Bundles", true);
+			List<string> bundlePaths = EditorResHelper.GetAllResourcePath("Assets/Bundles/", true);
 			foreach (string bundlePath in bundlePaths)
 			{
 				AssetImporter importer = AssetImporter.GetAtPath(bundlePath);

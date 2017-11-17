@@ -45,7 +45,7 @@ namespace MyEditor
 			process.Start();
 		}
 
-		public static void Build(PlatformType type, BuildOptions options, bool isBuildExe)
+		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe)
 		{
 			BuildTarget buildTarget = BuildTarget.StandaloneWindows;
 			string exeName = "ET";
@@ -71,7 +71,7 @@ namespace MyEditor
 			}
 			
 			Log.Info("开始资源打包");
-			BuildPipeline.BuildAssetBundles(fold, BuildAssetBundleOptions.None, buildTarget);
+			BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
 
 			GenerateVersionInfo(fold);
 			Log.Info("完成资源打包");
@@ -82,7 +82,7 @@ namespace MyEditor
 					"Assets/Scenes/Init.unity",
 				};
 				Log.Info("开始EXE打包");
-				BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, options);
+				BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
 				Log.Info("完成exe打包");
 			}
 		}
