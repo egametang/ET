@@ -100,17 +100,17 @@ namespace Model
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
 			object message;
-			Opcode op = (Opcode)opcode;
+			Opcode op;
 
 			try
 			{
-				
+				op = (Opcode)opcode;
 				Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
 				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
 			}
 			catch (Exception e)
 			{
-				Log.Error($"message deserialize error, ip: {this.RemoteAddress} {op} {e}");
+				Log.Error($"message deserialize error, ip: {this.RemoteAddress} {opcode} {e}");
 				this.network.Remove(this.Id);
 				return;
 			}
