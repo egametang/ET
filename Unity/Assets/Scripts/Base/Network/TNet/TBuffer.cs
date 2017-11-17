@@ -75,7 +75,7 @@ namespace Model
 
 		public void RecvFrom(byte[] buffer)
 		{
-			if (this.Count < buffer.Length || buffer.Length == 0)
+			if (this.Count < buffer.Length)
 			{
 				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length}");
 			}

@@ -62,7 +62,9 @@ namespace Model
 
 				if (messageBytes.Length < 3)
 				{
-					continue;
+					Log.Error($"message error length < 3, ip: {this.RemoteAddress}");
+					this.network.Remove(this.Id);
+					return;
 				}
 
 				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
@@ -97,9 +99,21 @@ namespace Model
 
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
 		{
+			object message;
 			Opcode op = (Opcode)opcode;
-			Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
-			object message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
+
+			try
+			{
+				
+				Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
+				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
+			}
+			catch (Exception e)
+			{
+				Log.Error($"message deserialize error, ip: {this.RemoteAddress} {op} {e}");
+				this.network.Remove(this.Id);
+				return;
+			}
 
 			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
 
