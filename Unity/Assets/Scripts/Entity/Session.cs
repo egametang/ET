@@ -188,6 +188,41 @@ namespace Model
 			return tcs.Task;
 		}
 
+		/// <summary>
+		/// Rpc调用
+		/// </summary>
+		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
+			where Response : AResponse
+		{
+			request.RpcId = ++RpcId;
+			this.SendMessage(request);
+
+			var tcs = new TaskCompletionSource<Response>();
+
+			this.requestCallback[RpcId] = (message) =>
+			{
+				try
+				{
+					Response response = (Response)message;
+					if (response.Error > 100)
+					{
+						tcs.SetException(new RpcException(response.Error, response.Message));
+						return;
+					}
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
+				}
+			};
+
+			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+
+			return tcs.Task;
+		}
+
 		public void Send(AMessage message)
 		{
 			if (this.Id == 0)
