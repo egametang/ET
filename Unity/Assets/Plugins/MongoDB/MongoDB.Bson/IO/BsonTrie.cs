@@ -16,6 +16,7 @@
 using System;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace MongoDB.Bson.IO
 {
@@ -240,7 +241,12 @@ namespace MongoDB.Bson.IO
             }
             else if (_children != null)
             {
-                var index = (uint)((int)keyByte - _minChildKeyByte);
+                // 这里做了修改，il2cpp uint跟int比较有bug
+                int index = keyByte - _minChildKeyByte;
+                if (index < 0)
+                {
+                    return null;
+                }
                 if (index < _childrenIndexes.Length)
                 {
                     index = _childrenIndexes[index];

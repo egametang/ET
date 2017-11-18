@@ -183,7 +183,7 @@ namespace Model
 #endif
 			}
 
-			AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(PathHelper.AppResPath, assetBundleName));
+			AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(PathHelper.AppHotfixResPath, assetBundleName));
 
 			if (!assetBundle.isStreamedSceneAssetBundle)
 			{

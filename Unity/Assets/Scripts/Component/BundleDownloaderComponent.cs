@@ -46,10 +46,9 @@ namespace Model
 				Log.Debug(versionUrl);
 				await request.DownloadAsync(versionUrl);
 				this.VersionConfig = MongoHelper.FromJson<VersionConfig>(request.Request.downloadHandler.text);
-				Log.Info(MongoHelper.ToJson(this.VersionConfig));
 			}
 			
-			Log.Debug(MongoHelper.ToJson(this.VersionConfig));
+			Log.Debug("WebVersion:\n" + MongoHelper.ToJson(this.VersionConfig));
 
 			// 对比本地的Version.txt
 			string versionPath = Path.Combine(PathHelper.AppHotfixResPath, "Version.txt");
@@ -69,6 +68,7 @@ namespace Model
 			{
 
 				VersionConfig localVersionConfig = MongoHelper.FromJson<VersionConfig>(File.ReadAllText(versionPath));
+				Log.Debug("LocalVersion:\n" + MongoHelper.ToJson(localVersionConfig));
 				// 先删除服务器端没有的ab
 				foreach (FileVersionInfo fileVersionInfo in localVersionConfig.FileVersionInfos)
 				{
