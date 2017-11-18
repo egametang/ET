@@ -571,7 +571,7 @@ PlayerSettings:
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
     1: NET45
-    4: NET45;ASYNC
+    4: NET45
   platformArchitecture:
     iOS: 2
   scriptingBackend:
