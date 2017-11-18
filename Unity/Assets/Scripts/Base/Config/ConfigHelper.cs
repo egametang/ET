@@ -9,7 +9,7 @@ namespace Model
 		{
 			try
 			{
-				GameObject config = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("config", "Config");
+				GameObject config = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("config.unity3d", "Config");
 				string configStr = config.Get<TextAsset>(key).text;
 				return configStr;
 			}

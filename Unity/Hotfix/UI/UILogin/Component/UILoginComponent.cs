@@ -35,11 +35,11 @@ namespace Hotfix
 			{
 				session = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(GlobalConfigComponent.Instance.GlobalProto.Address);
 				string text = this.account.GetComponent<InputField>().text;
-				R2C_Login r2CLogin = await session.Call<R2C_Login>(new C2R_Login() { Account = text, Password = "111111" });
+				R2C_Login r2CLogin = (R2C_Login)await session.Call(new C2R_Login() { Account = text, Password = "111111" });
 				Session gateSession = Hotfix.Scene.ModelScene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
 				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 
-				G2C_LoginGate g2CLoginGate = await SessionComponent.Instance.Session.Call<G2C_LoginGate>(new C2G_LoginGate() {Key = r2CLogin.Key});
+				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() {Key = r2CLogin.Key});
 				Log.Info("登陆gate成功!");
 
 				// 创建Player

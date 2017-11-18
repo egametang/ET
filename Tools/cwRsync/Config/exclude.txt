@@ -1,6 +1,5 @@
 .git/
 Logs/
-Tools/
 Bin/
 Server/packages/
 Temp/
@@ -8,4 +7,4 @@ Server/Server.sdf
 Unity/Library/
 Unity/Temp/
 */obj
-Unity/
+IOS-Build

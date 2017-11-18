@@ -13,7 +13,7 @@ namespace Hotfix
 			{
 				ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
 				resourcesComponent.LoadBundle($"{type}.unity3d");
-				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}", $"{type}");
+				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
 				GameObject login = UnityEngine.Object.Instantiate(bundleGameObject);
 				login.layer = LayerMask.NameToLayer(LayerNames.UI);
 		        UI ui = EntityFactory.Create<UI, Scene, UI, GameObject>(scene, null, login);

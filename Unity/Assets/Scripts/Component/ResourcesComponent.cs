@@ -66,7 +66,7 @@ namespace Model
 
 		public K GetAsset<K>(string bundleName, string prefab) where K : class
 		{
-			string path = $"{bundleName}.unity3d/{prefab}".ToLower();
+			string path = $"{bundleName}/{prefab}".ToLower();
 
 			UnityEngine.Object resource = null;
 			if (!this.resourceCache.TryGetValue(path, out resource))
