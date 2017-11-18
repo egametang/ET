@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using ILRuntime.Runtime.Enviorment;
+using UnityEngine;
 
 namespace Model
 {
@@ -21,6 +22,7 @@ namespace Model
 			// 注册委托
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
+			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AResponse>();
 
 
 			// 注册适配器
@@ -40,6 +42,11 @@ namespace Model
 				}
 				Init.Instance.AppDomain.RegisterCrossBindingAdaptor(adaptor);
 			}
+		}
+
+		public static void AvoidAot(GameObject gameObject)
+		{
+			Input input = gameObject.Get<Input>("11");
 		}
 	}
 }

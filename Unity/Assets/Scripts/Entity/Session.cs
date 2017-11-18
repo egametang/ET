@@ -136,103 +136,25 @@ namespace Model
 		}
 		
 		/// <summary>
-		/// Rpc调用,发送一个消息,等待返回一个消息
-		/// </summary>
-		public Task<AResponse> Call(ARequest request)
-		{
-			request.RpcId = ++RpcId;
-			this.SendMessage(request);
-
-			var tcs = new TaskCompletionSource<AResponse>();
-			this.requestCallback[RpcId] = (message) =>
-			{
-				try
-				{
-					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
-				}
-			};
-
-			return tcs.Task;
-		}
-		
-		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<AResponse> Call(ARequest request, CancellationToken cancellationToken)
+		public void CallWithAction(ARequest request, Action<AResponse> action)
 		{
 			request.RpcId = ++RpcId;
 			this.SendMessage(request);
-
-			var tcs = new TaskCompletionSource<AResponse>();
 
 			this.requestCallback[RpcId] = (message) =>
 			{
 				try
 				{
 					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
+					action(response);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
+					Log.Error(e.ToString());
 				}
 			};
-
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
-
-			return tcs.Task;
-		}
-
-		/// <summary>
-		/// Rpc调用
-		/// </summary>
-		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
-			where Response : AResponse
-		{
-			request.RpcId = ++RpcId;
-			this.SendMessage(request);
-
-			var tcs = new TaskCompletionSource<Response>();
-
-			this.requestCallback[RpcId] = (message) =>
-			{
-				try
-				{
-					Response response = (Response)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
-				}
-			};
-
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
-
-			return tcs.Task;
 		}
 
 		/// <summary>
