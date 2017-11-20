@@ -88,7 +88,7 @@ namespace Model
 		}
 	}
 
-	public sealed class ActorProxy : Entity
+	public sealed class ActorProxy : Disposer
 	{
 		// actor的地址
 		public string Address;
