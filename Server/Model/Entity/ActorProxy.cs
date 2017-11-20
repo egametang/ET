@@ -105,6 +105,9 @@ namespace Model
 		// 最大窗口
 		public const int MaxWindowSize = 1;
 
+		// 最近发送消息的时间
+		public long LastSendTime;
+
 		private TaskCompletionSource<ActorTask> tcs;
 
 		public CancellationTokenSource CancellationTokenSource;
@@ -113,6 +116,7 @@ namespace Model
 		
 		public void Awake()
 		{
+			this.LastSendTime = TimeHelper.Now();
 			this.RunningTasks = new EQueue<ActorTask>();
 			this.WaitingTasks = new EQueue<ActorTask>();
 			this.WindowSize = 1;
@@ -254,12 +258,14 @@ namespace Model
 
 		public void Send(AMessage message)
 		{
+			this.LastSendTime = TimeHelper.Now();
 			ActorMessageTask task = new ActorMessageTask(this, message);
 			this.Add(task);
 		}
 
 		public Task<Response> Call<Response>(ARequest request)where Response : AResponse
 		{
+			this.LastSendTime = TimeHelper.Now();
 			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
 			this.Add(task);
 			return task.Tcs.Task;
