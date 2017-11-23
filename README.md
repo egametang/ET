@@ -1,55 +1,65 @@
-# [中文](https://github.com/egametang/Egametang/blob/master/README-CN.md) 
+# [English](https://github.com/egametang/Egametang/blob/master/README.md) 
 
-__Chinese Tencent QQ group : 474643097__  
-[google group](https://groups.google.com/forum/#!forum/et-game-framework) 
+__讨论QQ群 : 474643097__
 
-### 1.A distributed server, can use visual studio debugging，N->1  
-Generally speaking, distributed server starts a lot of processes, once the process is more, single step debugging becomes very difficult, leading to server development basically rely on log to find the problem. Common development has opened a lot of game logic process, not only the slow start, and find the problem and not convenient to log pile check problem in a pile, this feeling is very bad, so many years no one can solve the problem. The ET framework uses a component design similar to the watch pioneer, and all server contents are disassembled into components, and the components that need to be mounted according to the type of server are started. It is a bit like a computer, the computer module is split into memory, CPU, motherboard parts and so on, collocation of different parts can be assembled into a different computer, such as home desktop CPU, motherboard, memory, graphics, display, hard disk. And the company uses the server does not need the display and graphics card, the Internet bar computer may not need hard disk, etc.. Because of this design, the ET framework can be all server components are linked in a server process, the server process has all the functions of the server, a process can be used as a whole set of distributed servers. It's also like a computer, which has all the computer components, and it can be used as a company server or as an Internet cafe.  
-### 2.A Distributed server, can freely split function，1->N  
-Distributed server to develop various types of server processes, such as Login server, gate server, battle server, chat server friend server, a server, the traditional development mode need to know in advance the function which should be put in the server, when more and more functions, such as chat on a central server then, need to split out into a separate server, this will involve a large number of code migration work, tired. The ET framework does not really need to be concerned about what kind of functionality the current development will place on server, and only uses one process to develop it, and the function is developed into a component. Is it convenient to use a multi process configuration to publish it into multiple processes when you publish it? How do you split the server?. You can split it with very few code changes. Different server hangs different components on it?!
-### 3.Cross platform distributed server 
-ET framework uses C# as server-side, and now C# is completely cross platform, install.Netcore on Linux, you can do without modifying any code, you can run. Performance, now.Netcore performance is very strong, faster than Lua, python, JS faster. The game server completely be nothing difficult. We usually use VS to develop debugging on windows, and release it to Linux on the time of release. ET framework also provides a key synchronization tool, open unity->tools->rsync synchronization, you can synchronize the code to the linux  
+### 1.可用VS单步调试的分布式服务端，N变1  
+一般来说，分布式服务端要启动很多进程，一旦进程多了，单步调试就变得非常困难，导致服务端开发基本上靠打log来查找问题。平常开发游戏逻辑也得开启一大堆进程，不仅启动慢，而且查找问题及其不方便，要在一堆堆日志里面查问题，这感觉非常糟糕，这么多年也没人解决这个问题。ET框架使用了类似守望先锋的组件设计，所有服务端内容都拆成了一个个组件，启动时根据服务器类型挂载自己所需要的组件。这有点类似电脑，电脑都模块化的拆成了内存，CPU，主板等等零件，搭配不同的零件就能组装成一台不同的电脑，例如家用台式机需要内存，CPU，主板，显卡，显示器，硬盘。而公司用的服务器却不需要显示器和显卡，网吧的电脑可能不需要硬盘等。正因为这样的设计，ET框架可以将所有的服务器组件都挂在一个服务器进程上，那么这个服务器进程就有了所有服务器的功能，一个进程就可以作为整组分布式服务器使用。这也类似电脑，台式机有所有的电脑组件，那它也完全可以当作公司服务器使用，也可以当作网吧电脑。  
+### 2.随意可拆分功能的分布式服务端，1变N  
+分布式服务端要开发多种类型的服务器进程，比如Login server，gate server，battle server，chat server friend server等等一大堆各种server，传统开发方式需要预先知道当前的功能要放在哪个服务器上，当功能越来越多的时候，比如聊天功能之前在一个中心服务器上，之后需要拆出来单独做成一个服务器，这时会牵扯到大量迁移代码的工作，烦不胜烦。ET框架在平常开发的时候根本不太需要关心当前开发的这个功能会放在什么server上，只用一个进程进行开发，功能开发成组件的形式。发布的时候使用一份多进程的配置即可发布成多进程的形式，是不是很方便呢？随便你怎么拆分服务器。只需要修改极少的代码就可以进行拆分。不同的server挂上不同的组件就行了嘛！  
+### 3.跨平台的分布式服务端  
+ET框架使用C#做服务端，现在C#是完全可以跨平台的，在linux上安装.netcore，即可，不需要修改任何代码，就能跑起来。性能方面，现在.netcore的性能非常强，比lua，python，js什么快的多了。做游戏服务端完全不在话下。平常我们开发的时候用VS在windows上开发调试，发布的时候发布到linux上即可。ET框架还提供了一键同步工具，打开unity->tools->rsync同步，即可同步代码到linux上，  
 ```bash
 ./Run.sh Config/StartConfig/192.168.12.188.txt 
 ```
-You can compile and start the server.  
-### 4.Provide Coroutine support  
-C# naturally supports asynchronous variable synchronous syntax async and await, much more powerful than Lua and python, and the new version of Python and JavaScript language even copy the C#'s co - operation grammar. There is no asynchronous syntax to support remote calls between distributed servers and a large number of servers, and development will be very troublesome. So Java does not have asynchronous syntax, doing single service is OK, not suitable for large-scale distributed game server. For example:  
+即可编译启动服务器。  
+### 4.提供协程支持  
+C#天生支持异步变同步语法 async和await，比lua，python的协程强大的多，新版python以及javascript语言甚至照搬了C#的协程语法。分布式服务端大量服务器之间的远程调用，没有异步语法的支持，开发将非常麻烦。所以java没有异步语法，做单服还行，不适合做大型分布式游戏服务端。例如：  
 
 ```c#
-// Send C2R_Ping and wait for response message R2C_Ping
+// 发送C2R_Ping并且等待响应消息R2C_Ping
 R2C_Ping pong = await session.Call<R2C_Ping>(new C2R_Ping());
-Log.Debug("recv R2C_Ping");
+Log.Debug("收到R2C_Ping");
 
-// Query mongodb for a ID of 1 Player and wait for return
+// 向mongodb查询一个id为1的Player，并且等待返回
 Player player = await Game.Scene.GetComponent<DBProxyComponent>().Query<Player>(1);
-Log.Debug($"print player name: {player.Name}")
+Log.Debug($"打印player name: {player.Name}")
 ```
-It can be seen that with async await, asynchronous operations between all servers will become very coherent, without disassembling into multiple sections of logic. Greatly simplifies the development of distributed servers 
-### 5.Provide actor message mechanism similar to Erlang  
-One of the advantages of Erlang language is the location transparent message mechanism. The user does not care about which process the object is in, and when you get the ID, you can send the message to the object. The ET framework also provides a actor message mechanism, the entity object need only hang ActorComponent components, the object becomes a Actor, any server only needs to know the object ID can send a message to it, totally do not care about this entity in which server, in which physical machine. This principle is actually very simple, the ET framework provides a location server, all mounted ActorComoponet object will own ID with location registration to the location server, the other server when sending the message object if you don't know the real position of the object, will go to the location server query, query to the position to be transmitted.
-### 6.Provide server with dynamic update logic function   
-hotfix is an indispensable component of game server function, design using the ET framework, the design can be made to watch the pioneer, only component members, no way, all the way into an expansion method in hotfix DLL, when reload DLL can reload all logic more hot.
-### 7.Client can hotfix
-Because of the IOS restrictions, the previous unity hot update generally use Lua, leading to unity3d developers to write two kinds of code, trouble to death. Fortunately, the ILRuntime library comes out, using the ILRuntime library, unity3d can use the C# language to load the hot update DLL for thermal update. One drawback of ILRuntime is that it doesn't support VS debug at development time, which is a little uncomfortable. The ET framework uses a pre compiled instruction ILRuntime to seamlessly switch. ILRuntime is not used when developing, but using Assembly.Load to load the hot update dynamic library, so that it can be easily used VS single step debugging. At the time of release, defining the precompiled instruction ILRuntime can seamlessly switch to using ILRuntime to load the hot update dynamic library. So it's easy to develop and convenient
-### 8.The client server uses the same language and shares the code  
-Download the ET framework, open the server project, you can see that the server referenced a lot of client code, through the client code approach to achieve a double end shared code. For example, the network message between the client and server can share a file on both sides, adding a message only needs to be modified.  
-### 9.The UDP TCP protocol seamlessly switches
-The ET framework not only supports TCP, but also support the reliable UDP protocol, UDP support is a package of ENet library, using the ENet and hero alliance network library, its characteristic is rapid, and the performance of the network packet loss situation is also very good, that we tested TCP in packet loss 5%, MoBa game card no, but the use of ENet, 20% packet loss still don't feel a card. Very powerful.  
+可以看出，有了async await，所有的服务器间的异步操作将变得非常连贯，不用再拆成多段逻辑。大大简化了分布式服务器开发  
+### 5.提供类似erlang的actor消息机制  
+erlang语言一大优势就是位置透明的消息机制，用户完全不用关心对象在哪个进程，拿到id就可以对对象发送消息。ET框架也提供了actor消息机制，实体对象只需要挂上ActorComponent组件，这个实体对象就成了一个Actor，任何服务器只需要知道这个实体对象的id就可以向其发送消息，完全不用关心这个实体对象在哪个server，在哪台物理机器上。其实现原理也很简单，ET框架提供了一个位置服务器，所有挂载ActorComoponet的实体对象都会将自己的id跟位置注册到这个位置服务器，其它服务器向这个实体对象发送消息的时候如果不知道这个实体对象的位置，会先去位置服务器查询，查询到位置再进行发送。
+### 6.提供服务器不停服动态更新逻辑功能  
+热更是游戏服务器不可缺少的功能，ET框架使用的组件设计，可以做成守望先锋的设计，组件只有成员，无方法，将所有方法做成扩展方法放到热更dll中，运行时重新加载dll即可热更所有逻辑。
+### 7.客户端热更新一键切换  
+因为ios的限制，之前unity热更新一般使用lua，导致unity3d开发人员要写两种代码，麻烦的要死。之后幸好出了ILRuntime库，利用ILRuntime库，unity3d可以利用C#语言加载热更新dll进行热更新。ILRuntime一个缺陷就是开发时候不支持VS debug，这有点不爽。ET框架使用了一个预编译指令ILRuntime，可以无缝切换。平常开发的时候不使用ILRuntime，而是使用Assembly.Load加载热更新动态库，这样可以方便用VS单步调试。在发布的时候，定义预编译指令ILRuntime就可以无缝切换成使用ILRuntime加载热更新动态库。这样开发起来及其方便，再也不用使用狗屎lua了
+### 8.客户端服务端用同一种语言，并且共享代码  
+下载ET框架，打开服务端工程，可以看到服务端引用了客户端很多代码，通过引用客户端代码的方式实现了双端共享代码。例如客户端服务端之间的网络消息两边完全共用一个文件即可，添加一个消息只需要修改一遍。  
+### 9.UDP TCP协议无缝切换  
+ET框架不但支持TCP，而且支持可靠的UDP协议，UDP支持是封装了ENet库，ENet也是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。  
+### 10.打包工具  
+ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
 
-### 10.there are many, I will not detail
-A. and its easy to check CPU occupancy and memory leak check, vs comes with analytical tools, no longer worry about performance and memory leak check  
-B. uses NLog library, hits log and its convenience, when develops normally, may hit all the server log to a document, also does not need each document search log again  
-C. unified the use of Mongodb bson serialization, the message and configuration files are all bson or JSON, and later use mongodb to do the database, and no longer need to format conversion.  
-D. provides a powerful AI behavior tree tool  
-E. provides a synchronization tool  
-F. provides command line configuration tools, configuring the distribution is very simple
-The server side of the ET framework is a powerful and flexible distributed server architecture, which can fully meet the needs of most large games. Using this framework, the client developer can complete the double end development by himself, save a lot of manpower and material resources, and save a lot of communication time.  
+### 11.还有很多很多功能，我就不详细介绍了  
+a.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼  
+b.使用NLog库，打log及其方便，平常开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了  
+c.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。  
+d.提供一个强大的ai行为树工具  
+e.提供一个同步工具  
+f.提供命令行配置工具，配置分布式非常简单  
 
-Usage method：  
-[start-guide](https://github.com/egametang/Egametang/blob/master/Doc/start-guide.md)    
-[component-design](https://github.com/egametang/Egametang/blob/master/Doc/component-design.md)   
-[network-design](https://github.com/egametang/Egametang/blob/master/Doc/network-design.md) 
+ET框架的服务端是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
-__Chinese Tencent QQ group : 474643097__  
-email: egametang@qq.com
+使用方法：  
+[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)    
+[组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
+[网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
+
+群友源码分析：  
+[框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
+[ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
+[框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
+[linux部署](http://gad.qq.com/article/detail/35973)  
+
+群友demo：  
+[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)   
+
+__讨论QQ群 : 474643097__

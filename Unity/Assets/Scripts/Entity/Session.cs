@@ -160,6 +160,71 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
+		public Task<AResponse> Call(ARequest request, bool isHotfix)
+		{
+			request.RpcId = ++RpcId;
+			this.SendMessage(request);
+
+			var tcs = new TaskCompletionSource<AResponse>();
+			this.requestCallback[RpcId] = (message) =>
+			{
+				try
+				{
+					AResponse response = (AResponse)message;
+					if (response.Error > 100)
+					{
+						tcs.SetException(new RpcException(response.Error, response.Message));
+						return;
+					}
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
+				}
+			};
+
+			return tcs.Task;
+		}
+
+		/// <summary>
+		/// Rpc调用
+		/// </summary>
+		public Task<AResponse> Call(ARequest request, bool isHotfix, CancellationToken cancellationToken)
+		{
+			request.RpcId = ++RpcId;
+			this.SendMessage(request);
+
+			var tcs = new TaskCompletionSource<AResponse>();
+
+			this.requestCallback[RpcId] = (message) =>
+			{
+				try
+				{
+					AResponse response = (AResponse)message;
+					if (response.Error > 100)
+					{
+						tcs.SetException(new RpcException(response.Error, response.Message));
+						return;
+					}
+					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
+				}
+			};
+
+			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+
+			return tcs.Task;
+		}
+
+		/// <summary>
+		/// Rpc调用,发送一个消息,等待返回一个消息
+		/// </summary>
 		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
 		{
 			request.RpcId = ++RpcId;

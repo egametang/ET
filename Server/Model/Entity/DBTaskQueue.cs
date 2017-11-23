@@ -3,26 +3,33 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public sealed class DBTaskQueue : Entity
+	[ObjectEvent]
+	public class DBTaskQueueEvent : ObjectEvent<DBTaskQueue>, IAwake, IStart
 	{
-		public EQueue<DBTask> queue = new EQueue<DBTask>();
-
-		private TaskCompletionSource<DBTask> tcs;
+		public void Awake()
+		{
+			DBTaskQueue self = this.Get();
+			self.queue.Clear();
+		}
 
 		public async void Start()
 		{
+			DBTaskQueue self = this.Get();
+
 			while (true)
 			{
-				if (this.Id == 0)
+				if (self.Id == 0)
 				{
 					return;
 				}
-				
-				DBTask task = await this.Get();
+
+				DBTask task = await self.Get();
 
 				try
 				{
 					await task.Run();
+
+					task.Dispose();
 				}
 				catch (Exception e)
 				{
@@ -30,6 +37,14 @@ namespace Model
 				}
 			}
 		}
+	}
+
+	public sealed class DBTaskQueue : Disposer
+	{
+		public EQueue<DBTask> queue = new EQueue<DBTask>();
+
+		public TaskCompletionSource<DBTask> tcs;
+
 		public void Add(DBTask task)
 		{
 			if (this.tcs != null)
@@ -45,16 +60,14 @@ namespace Model
 
 		public Task<DBTask> Get()
 		{
-			TaskCompletionSource<DBTask> t = new TaskCompletionSource<DBTask>();
 			if (this.queue.Count > 0)
 			{
 				DBTask task = this.queue.Dequeue();
-				t.SetResult(task);
+				return Task.FromResult(task);
 			}
-			else
-			{
-				this.tcs = t;
-			}
+
+			TaskCompletionSource<DBTask> t = new TaskCompletionSource<DBTask>();
+			this.tcs = t;
 			return t.Task;
 		}
 	}

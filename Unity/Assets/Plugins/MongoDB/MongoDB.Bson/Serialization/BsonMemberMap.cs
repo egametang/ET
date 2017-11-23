@@ -16,7 +16,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-#if !UNITY_IOS
+#if !ENABLE_IL2CPP
 using System.Reflection.Emit;		
 #endif
 using MongoDB.Bson.Serialization.Serializers;
@@ -582,7 +582,7 @@ namespace MongoDB.Bson.Serialization
                 throw new BsonSerializationException(message);
             }
 
-#if UNITY_IOS
+#if ENABLE_IL2CPP
 	        return (obj, value) => { fieldInfo.SetValue(obj, value); };
 #else
 			var sourceType = fieldInfo.DeclaringType;
@@ -602,7 +602,7 @@ namespace MongoDB.Bson.Serialization
 
 		private Func<object, object> GetGetter()
         {
-#if UNITY_IOS
+#if ENABLE_IL2CPP
             PropertyInfo propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
@@ -620,7 +620,7 @@ namespace MongoDB.Bson.Serialization
             FieldInfo fieldInfo = _memberInfo as FieldInfo;
             return (obj) => { return fieldInfo.GetValue(obj); };
 #else
-            var propertyInfo = _memberInfo as PropertyInfo;
+			var propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
                 var getMethodInfo = propertyInfo.GetMethod;
@@ -653,12 +653,12 @@ namespace MongoDB.Bson.Serialization
 
         private Action<object, object> GetPropertySetter()
         {
-#if UNITY_IOS
+#if ENABLE_IL2CPP
             var propertyInfo = (PropertyInfo) _memberInfo;
 
             return (obj, value) => { propertyInfo.SetValue(obj, value); };
 #else
-            var propertyInfo = (PropertyInfo)_memberInfo;
+			var propertyInfo = (PropertyInfo)_memberInfo;
             var setMethodInfo = propertyInfo.SetMethod;
             if (IsReadOnly)
             {

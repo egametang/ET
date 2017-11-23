@@ -26,9 +26,8 @@ namespace Model
 		{
 			for (int i = 0; i < taskCount; ++i)
 			{
-				DBTaskQueue taskQueue = new DBTaskQueue();
+				DBTaskQueue taskQueue = EntityFactory.Create<DBTaskQueue>();
 				this.tasks.Add(taskQueue);
-				taskQueue.Start();
 			}
 		}
 
@@ -42,7 +41,7 @@ namespace Model
 			{
 				collectionName = entity.GetType().Name;
 			}
-			DBSaveTask task = new DBSaveTask(entity, collectionName, tcs);
+			DBSaveTask task = EntityFactory.CreateWithId<DBSaveTask, Entity, string, TaskCompletionSource<bool>>(entity.Id, entity, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 
 			return tcs.Task;
@@ -51,7 +50,7 @@ namespace Model
 		public Task<bool> AddBatch(List<Entity> entitys, string collectionName)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			DBSaveBatchTask task = new DBSaveBatchTask(entitys, collectionName, tcs);
+			DBSaveBatchTask task = EntityFactory.Create<DBSaveBatchTask, List<Entity>, string, TaskCompletionSource<bool>>(entitys, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 			return tcs.Task;
 		}
@@ -105,7 +104,8 @@ namespace Model
 			}
 
 			TaskCompletionSource<Entity> tcs = new TaskCompletionSource<Entity>();
-			this.tasks[(int)((ulong)id % taskCount)].Add(new DBQueryTask(id, collectionName, tcs));
+			DBQueryTask dbQueryTask = EntityFactory.CreateWithId<DBQueryTask, string, TaskCompletionSource<Entity>>(id, collectionName, tcs);
+			this.tasks[(int)((ulong)id % taskCount)].Add(dbQueryTask);
 
 			return tcs.Task;
 		}
@@ -131,7 +131,7 @@ namespace Model
 			}
 
 			TaskCompletionSource<List<Entity>> tcs = new TaskCompletionSource<List<Entity>>();
-			DBQueryBatchTask dbQueryBatchTask = new DBQueryBatchTask(idList, collectionName, tcs);
+			DBQueryBatchTask dbQueryBatchTask = EntityFactory.Create<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Entity>>>(idList, collectionName, tcs);
 			this.tasks[(int)((ulong)dbQueryBatchTask.Id % taskCount)].Add(dbQueryBatchTask);
 
 			return tcs.Task;
@@ -141,7 +141,7 @@ namespace Model
 		{
 			TaskCompletionSource<List<Entity>> tcs = new TaskCompletionSource<List<Entity>>();
 			
-			DBQueryJsonTask dbQueryJsonTask = new DBQueryJsonTask(collectionName, json, tcs);
+			DBQueryJsonTask dbQueryJsonTask = EntityFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource< List < Entity >>>(collectionName, json, tcs);
 			this.tasks[(int)((ulong)dbQueryJsonTask.Id % taskCount)].Add(dbQueryJsonTask);
 
 			return tcs.Task;
