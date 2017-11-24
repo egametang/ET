@@ -25,6 +25,10 @@ namespace Model
 		public string CollectionName { get; set; }
 
 		public TaskCompletionSource<bool> Tcs;
+		
+		public DBSaveTask()
+		{
+		}
 
 		public DBSaveTask(long id): base(id)
 		{
