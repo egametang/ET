@@ -47,16 +47,16 @@ namespace Model
 			this.socket.Dispose();
 		}
 
-		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(byte[] buffer)
 		{
 			if (this.Id == 0)
 			{
 				throw new Exception("UChannel已经被Dispose, 不能发送消息");
 			}
-			this.socket.SendAsync(buffer, channelID, flags);
+			this.socket.SendAsync(buffer);
 		}
 
-		public override void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(List<byte[]> buffers)
 		{
 			if (this.Id == 0)
 			{
@@ -70,7 +70,7 @@ namespace Model
 				Array.Copy(bytes, 0, buffer, index, bytes.Length);
 				index += bytes.Length;
 			}
-			this.socket.SendAsync(buffer, channelID, flags);
+			this.socket.SendAsync(buffer);
 		}
 
 		public override Task<byte[]> Recv()

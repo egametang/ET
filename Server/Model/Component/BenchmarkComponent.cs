@@ -24,9 +24,9 @@ namespace Model
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 
-				for (int i = 0; i < 200; i++)
+				for (int i = 0; i < 100; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
 					this.TestAsync(networkComponent, address, i);
 				}
 			}
@@ -46,6 +46,7 @@ namespace Model
 					while (i < 100000000)
 					{
 						++i;
+						await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
 						await this.Send(session, j);
 					}
 				}
@@ -67,7 +68,7 @@ namespace Model
 				await session.Call<R2C_Ping>(new C2R_Ping());
 				++this.k;
 
-				if (this.k % 100000 != 0)
+				if (this.k % 10000 != 0)
 				{
 					return;
 				}

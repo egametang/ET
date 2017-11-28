@@ -46,7 +46,7 @@ namespace Model
 			this.acceptor = null;
 		}
 
-		public void Add(Action action)
+		public override void Add(Action action)
 		{
 			this.actions.Enqueue(action);
 		}

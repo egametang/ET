@@ -25,6 +25,9 @@ namespace Model
 				case NetworkProtocol.UDP:
 					this.Service = new UService();
 					break;
+				case NetworkProtocol.KCP:
+					this.Service = new KService();
+					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -41,6 +44,9 @@ namespace Model
 						break;
 					case NetworkProtocol.UDP:
 						this.Service = new UService(host, port);
+						break;
+					case NetworkProtocol.KCP:
+						this.Service = new KService(host, port);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

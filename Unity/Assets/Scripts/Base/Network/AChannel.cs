@@ -22,7 +22,7 @@ namespace Model
 
 	public abstract class AChannel: IDisposable
 	{
-		public long Id { get; private set; }
+		public long Id { get; set; }
 
 		public ChannelType ChannelType { get; }
 
@@ -46,7 +46,7 @@ namespace Model
 
 		protected void OnError(AChannel channel, SocketError e)
 		{
-			this.errorCallback(channel, e);
+			this.errorCallback?.Invoke(channel, e);
 		}
 
 
@@ -60,9 +60,9 @@ namespace Model
 		/// <summary>
 		/// 发送消息
 		/// </summary>
-		public abstract void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
+		public abstract void Send(byte[] buffer);
 
-		public abstract void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
+		public abstract void Send(List<byte[]> buffers);
 
 		/// <summary>
 		/// 接收消息

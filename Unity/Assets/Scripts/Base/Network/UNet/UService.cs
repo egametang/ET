@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,6 +57,10 @@ namespace Model
 			UChannel channel = new UChannel(newSocket, host, port, this);
 			this.idChannels[channel.Id] = channel;
 			return channel;
+		}
+
+		public override void Add(Action action)
+		{
 		}
 
 		public override AChannel GetChannel(long id)

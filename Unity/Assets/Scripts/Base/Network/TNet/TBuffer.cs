@@ -5,7 +5,7 @@ namespace Model
 {
 	public class TBuffer
 	{
-		public const int ChunkSize = 8192;
+		public int ChunkSize = 8192;
 
 		private readonly LinkedList<byte[]> bufferList = new LinkedList<byte[]>();
 
@@ -15,6 +15,12 @@ namespace Model
 
 		public TBuffer()
 		{
+			this.bufferList.AddLast(new byte[ChunkSize]);
+		}
+
+		public TBuffer(int chunkSize)
+		{
+			this.ChunkSize = chunkSize;
 			this.bufferList.AddLast(new byte[ChunkSize]);
 		}
 
@@ -120,6 +126,33 @@ namespace Model
 				else
 				{
 					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, ChunkSize - this.LastIndex);
+					alreadyCopyCount += ChunkSize - this.LastIndex;
+					this.LastIndex = ChunkSize;
+				}
+			}
+		}
+		
+		public void SendTo(byte[] buffer, int offset, int count)
+		{
+			int alreadyCopyCount = 0;
+			while (alreadyCopyCount < count)
+			{
+				if (this.LastIndex == ChunkSize)
+				{
+					this.bufferList.AddLast(new byte[ChunkSize]);
+					this.LastIndex = 0;
+				}
+
+				int n = count - alreadyCopyCount;
+				if (ChunkSize - this.LastIndex > n)
+				{
+					Array.Copy(buffer, alreadyCopyCount + offset, this.bufferList.Last.Value, this.LastIndex, n);
+					this.LastIndex += count - alreadyCopyCount;
+					alreadyCopyCount += n;
+				}
+				else
+				{
+					Array.Copy(buffer, alreadyCopyCount + offset, this.bufferList.Last.Value, this.LastIndex, ChunkSize - this.LastIndex);
 					alreadyCopyCount += ChunkSize - this.LastIndex;
 					this.LastIndex = ChunkSize;
 				}

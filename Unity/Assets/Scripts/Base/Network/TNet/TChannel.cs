@@ -83,7 +83,7 @@ namespace Model
 			this.StartRecv();
 		}
 
-		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(byte[] buffer)
 		{
 			if (this.Id == 0)
 			{
@@ -98,7 +98,7 @@ namespace Model
 			}
 		}
 
-		public override void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(List<byte[]> buffers)
 		{
 			if (this.Id == 0)
 			{
@@ -148,14 +148,14 @@ namespace Model
 
 					this.isSending = true;
 
-					int sendSize = TBuffer.ChunkSize - this.sendBuffer.FirstIndex;
+					int sendSize = sendBuffer.ChunkSize - this.sendBuffer.FirstIndex;
 					if (sendSize > this.sendBuffer.Count)
 					{
 						sendSize = this.sendBuffer.Count;
 					}
 					await this.tcpClient.GetStream().WriteAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
 					this.sendBuffer.FirstIndex += sendSize;
-					if (this.sendBuffer.FirstIndex == TBuffer.ChunkSize)
+					if (this.sendBuffer.FirstIndex == sendBuffer.ChunkSize)
 					{
 						this.sendBuffer.FirstIndex = 0;
 						this.sendBuffer.RemoveFirst();
@@ -179,7 +179,7 @@ namespace Model
 					{
 						return;
 					}
-					int size = TBuffer.ChunkSize - this.recvBuffer.LastIndex;
+					int size = this.recvBuffer.ChunkSize - this.recvBuffer.LastIndex;
 
 					int n = await this.tcpClient.GetStream().ReadAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size);
 
@@ -191,7 +191,7 @@ namespace Model
 
 					this.recvBuffer.LastIndex += n;
 
-					if (this.recvBuffer.LastIndex == TBuffer.ChunkSize)
+					if (this.recvBuffer.LastIndex == this.recvBuffer.ChunkSize)
 					{
 						this.recvBuffer.AddLast();
 						this.recvBuffer.LastIndex = 0;

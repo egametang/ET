@@ -35,6 +35,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="MultiMap.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AChannel.cs" Link="Network\AChannel.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AService.cs" Link="Network\AService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KChannel.cs" Link="Network\KNet\KChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\Kcp.cs" Link="Network\KNet\Kcp.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KService.cs" Link="Network\KNet\KService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Network\TNet\PacketParser.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TBuffer.cs" Link="Network\TNet\TBuffer.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Network\TNet\TChannel.cs" />
@@ -57,6 +60,7 @@
     <Folder Include="Helper\" />
     <Folder Include="Network\TNet\" />
     <Folder Include="Network\UNet\" />
+    <Folder Include="Network\KNet\" />
   </ItemGroup>
 
   <ItemGroup>

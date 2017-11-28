@@ -59,5 +59,23 @@ namespace Model
 		{
 			return Encoding.UTF8.GetString(bytes, index, count);
 		}
+
+		public static void WriteTo(this byte[] bytes, int offset, int num)
+		{
+			byte[] numBytes = BitConverter.GetBytes(num);
+			for (int i = 0; i < numBytes.Length; ++i)
+			{
+				bytes[offset + i] = numBytes[i];
+			}
+		}
+		
+		public static void WriteTo(this byte[] bytes, int offset, uint num)
+		{
+			byte[] numBytes = BitConverter.GetBytes(num);
+			for (int i = 0; i < numBytes.Length; ++i)
+			{
+				bytes[offset + i] = numBytes[i];
+			}
+		}
 	}
 }

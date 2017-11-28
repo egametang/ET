@@ -81,7 +81,7 @@ namespace Model
 
 		private void Run(ushort opcode, byte[] messageBytes)
 		{
-			int offset = 0;
+			int offset;
 			// opcode最高位表示是否压缩
 			bool isCompressed = (opcode & 0x8000) > 0;
 			if (isCompressed) // 最高位为1,表示有压缩,需要解压缩
@@ -339,7 +339,7 @@ namespace Model
 			long id = this.Id;
 
 			base.Dispose();
-
+			
 			this.channel.Dispose();
 			this.network.Remove(id);
 		}
