@@ -19,7 +19,7 @@
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
-			this.MessagePacker = new MongoPacker();
+			this.MessagePacker = new ProtobufPacker();
 			this.MessageDispatcher = new ClientDispatcher();
 		}
 
