@@ -76,9 +76,10 @@ namespace Model
 				return;
 			}
 
-			this.service.Remove(this.Id);
-
+			long id = this.Id;
 			this.Id = 0;
+
+			this.service.Remove(id);
 		}
 	}
 }

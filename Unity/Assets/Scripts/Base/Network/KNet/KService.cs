@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+	public static class KcpProtocalType
+	{
+		public const uint SYN = 1;
+		public const uint ACK = 2;
+	}
+
 	public sealed class KService: AService
 	{
+		private uint IdGenerater = 1000;
+
+		public uint TimeNow { get; set; }
+
 		private UdpClient socket;
 		
 		private readonly Dictionary<long, KChannel> idChannels = new Dictionary<long, KChannel>();
@@ -16,27 +26,25 @@ namespace Model
 
 		private TaskCompletionSource<AChannel> acceptTcs;
 
-		private uint IdGenerater = 1000;
-
-		public uint TimeNow;
-
-		private uint lastUpdateTime;
-
 		private readonly Queue<long> removedChannels = new Queue<long>();
 
-		/// <summary>
-		/// 即可做client也可做server
-		/// </summary>
+		// 下帧要更新的channel
+		private readonly HashSet<long> updateChannels = new HashSet<long>();
+
+		// 下次时间更新的channel
+		private readonly MultiMap<long, long> timerMap = new MultiMap<long, long>();
+		private readonly Queue<long> timeoutTimer = new Queue<long>();
+
 		public KService(string host, int port)
 		{
-			this.TimeNow = (uint)(TimeHelper.Now() & 0x00000000ffffffff);
+			this.TimeNow = (uint)TimeHelper.Now();
 			this.socket = new UdpClient(new IPEndPoint(IPAddress.Parse(host), port));
 			this.StartRecv();
 		}
 
 		public KService()
 		{
-			this.TimeNow = (uint)(TimeHelper.Now() & 0x00000000ffffffff);
+			this.TimeNow = (uint)TimeHelper.Now();
 			this.socket = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
 			this.StartRecv();
 		}
@@ -64,17 +72,24 @@ namespace Model
 
 				// accept
 				uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
+				
 				// conn从1000开始，如果为1，2则是特殊包
-				if (conn == 1)
+				if (conn == KcpProtocalType.SYN)
 				{
 					this.HandleAccept(udpReceiveResult);
 					continue;
 				}
 				
 				// connect response
-				if (conn == 2)
+				if (conn == KcpProtocalType.ACK)
 				{
 					this.HandleConnect(udpReceiveResult);
+					continue;
+				}
+
+				if (conn < 1000)
+				{
+					Log.Error($"error conn: {conn} {udpReceiveResult.RemoteEndPoint}");
 					continue;
 				}
 
@@ -118,6 +133,7 @@ namespace Model
 			}
 
 			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
+			
 			// 如果已经连接上,则重新响应请求
 			KChannel kChannel;
 			if (this.idChannels.TryGetValue(requestConn, out kChannel))
@@ -125,7 +141,7 @@ namespace Model
 				kChannel.HandleAccept(requestConn);
 				return;
 			}
-
+			
 			TaskCompletionSource<AChannel> t = this.acceptTcs;
 			this.acceptTcs = null;
 			kChannel = this.CreateAcceptChannel(udpReceiveResult.RemoteEndPoint, requestConn);
@@ -145,6 +161,16 @@ namespace Model
 			KChannel channel = new KChannel(++this.IdGenerater, this.socket, remoteEndPoint, this);
 			this.idChannels[channel.Id] = channel;
 			return channel;
+		}
+
+		public void AddToUpdate(long id)
+		{
+			this.updateChannels.Add(id);
+		}
+
+		public void AddToNextTimeUpdate(long time, long id)
+		{
+			this.timerMap.Add(time, id);
 		}
 
 		public override void Add(Action action)
@@ -169,7 +195,6 @@ namespace Model
 			}
 
 			acceptTcs = new TaskCompletionSource<AChannel>();
-
 			return this.acceptTcs.Task;
 		}
 
@@ -198,22 +223,41 @@ namespace Model
 		
 		public override void Update()
 		{
-			this.TimeNow = (uint)(TimeHelper.Now() & 0x00000000ffffffff);
-			if (this.TimeNow - lastUpdateTime < 5)
+			this.TimeNow = (uint)TimeHelper.Now();
+			
+			foreach (long time in this.timerMap.Keys)
 			{
-				return;
+				if (time > this.TimeNow)
+				{
+					break;
+				}
+				this.timeoutTimer.Enqueue(time);
+			}
+			while (this.timeoutTimer.Count > 0)
+			{
+				long key = this.timeoutTimer.Dequeue();
+				List<long> timeOutId = this.timerMap[key];
+				foreach (long id in timeOutId)
+				{
+					this.updateChannels.Add(id);
+				}
+				this.timerMap.Remove(key);
 			}
 
-			this.lastUpdateTime = this.TimeNow;
-
-			foreach (KChannel channel in this.idChannels.Values)
+			foreach (long id in updateChannels)
 			{
-				if (channel.Id == 0)
+				KChannel kChannel;
+				if (!this.idChannels.TryGetValue(id, out kChannel))
 				{
 					continue;
 				}
-				channel.Update(this.TimeNow);
+				if (kChannel.Id == 0)
+				{
+					continue;
+				}
+				kChannel.Update(this.TimeNow);
 			}
+			this.updateChannels.Clear();
 
 			while (true)
 			{

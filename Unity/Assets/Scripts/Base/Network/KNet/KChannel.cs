@@ -26,13 +26,9 @@ namespace Model
 
 		private readonly byte[] cacheBytes = new byte[1400];
 
-		private bool isNeedUpdate;
-
 		public uint Conn;
 
 		public uint RemoteConn;
-
-		public uint lastUpdateTime;
 
 		// accept
 		public KChannel(uint conn, uint remoteConn, UdpClient socket, IPEndPoint remoteEndPoint, KService kService): base(kService, ChannelType.Accept)
@@ -48,7 +44,6 @@ namespace Model
 			kcp.NoDelay(1, 10, 2, 1);  //fast
 			this.isConnected = true;
 			this.lastRecvTime = kService.TimeNow;
-			this.lastUpdateTime = kService.TimeNow;
 		}
 
 		// connect
@@ -60,17 +55,24 @@ namespace Model
 			this.parser = new PacketParser(this.recvBuffer);
 			this.remoteEndPoint = remoteEndPoint;
 			this.lastRecvTime = kService.TimeNow;
-			this.lastUpdateTime = kService.TimeNow;
+			this.Connect(kService.TimeNow);
 		}
 
 		public override void Dispose()
 		{
-			if (this.socket == null)
+			if (this.Id == 0)
 			{
 				return;
 			}
+
 			base.Dispose();
+
 			this.socket = null;
+		}
+
+		private KService GetService()
+		{
+			return (KService)this.service;
 		}
 
 		public void HandleConnnect(uint responseConn)
@@ -84,14 +86,29 @@ namespace Model
 			this.kcp = new Kcp(responseConn, this.Output);
 			kcp.SetMtu(512);
 			kcp.NoDelay(1, 10, 2, 1);  //fast
+
+			HandleSend();
 		}
 
 		public void HandleAccept(uint requestConn)
 		{
-			cacheBytes.WriteTo(0, 2);
+			cacheBytes.WriteTo(0, KcpProtocalType.ACK);
 			cacheBytes.WriteTo(4, requestConn);
 			cacheBytes.WriteTo(8, this.Conn);
 			this.socket.Send(cacheBytes, 12, remoteEndPoint);
+		}
+
+		/// <summary>
+		/// 发送请求连接消息
+		/// </summary>
+		private void Connect(uint timeNow)
+		{
+			cacheBytes.WriteTo(0, KcpProtocalType.SYN);
+			cacheBytes.WriteTo(4, this.Conn);
+			this.socket.Send(cacheBytes, 8, remoteEndPoint);
+
+			// 200毫秒后再次update发送connect请求
+			this.GetService().AddToNextTimeUpdate(timeNow + 200, this.Id);
 		}
 
 		public void Update(uint timeNow)
@@ -99,22 +116,21 @@ namespace Model
 			// 如果还没连接上，发送连接请求
 			if (!this.isConnected)
 			{
-				cacheBytes[0] = 1;
-				cacheBytes.WriteTo(4, this.Conn);
-				this.socket.Send(cacheBytes, 8, remoteEndPoint);
+				Connect(timeNow);
 				return;
 			}
 
 			// 超时断开连接
-			if (timeNow - this.lastRecvTime > 10 * 1000)
+			if (timeNow - this.lastRecvTime > 20 * 1000)
 			{
 				this.OnError(this, SocketError.Disconnecting);
 				return;
 			}
 
-			HandleSend();
-
 			this.kcp.Update(timeNow);
+
+			uint nextUpdateTime = this.kcp.Check(timeNow);
+			this.GetService().AddToNextTimeUpdate(nextUpdateTime, this.Id);
 		}
 
 		private void HandleSend()
@@ -126,13 +142,15 @@ namespace Model
 					break;
 				}
 				byte[] buffer = this.sendBuffer.Dequeue();
-				this.kcp.Send(buffer);
+				this.KcpSend(buffer);
 			}
 		}
 
 		public void HandleRecv(byte[] date, uint timeNow)
 		{
 			this.kcp.Input(date);
+			// 加入update队列
+			this.GetService().AddToUpdate(this.Id);
 
 			lastRecvTime = timeNow;
 
@@ -149,6 +167,7 @@ namespace Model
 				{
 					return;
 				}
+				
 				// 收到的数据放入缓冲区
 				this.recvBuffer.SendTo(this.cacheBytes, 0, count);
 
@@ -169,23 +188,45 @@ namespace Model
 		{
 			this.socket.Send(bytes, count, this.remoteEndPoint);
 		}
+
+		private void KcpSend(byte[] buffers)
+		{
+			this.kcp.Send(buffers);
+			this.GetService().AddToUpdate(this.Id);
+		}
 		
 		public override void Send(byte[] buffer)
 		{
+			if (isConnected)
+			{
+				this.KcpSend(buffer);
+				return;
+			}
 			this.sendBuffer.Enqueue(buffer);
-			this.isNeedUpdate = true;
 		}
 
 		public override void Send(List<byte[]> buffers)
 		{
 			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
 			byte[] sizeBuffer = BitConverter.GetBytes(size);
-			this.sendBuffer.Enqueue(sizeBuffer);
+			if (isConnected)
+			{
+				this.KcpSend(sizeBuffer);
+			}
+			else
+			{
+				this.sendBuffer.Enqueue(sizeBuffer);
+			}
+
 			foreach (byte[] buffer in buffers)
 			{
+				if (isConnected)
+				{
+					this.KcpSend(buffer);
+					continue;
+				}
 				this.sendBuffer.Enqueue(buffer);
 			}
-			this.isNeedUpdate = true;
 		}
 
 		public override Task<byte[]> Recv()
