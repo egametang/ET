@@ -23,13 +23,13 @@ namespace Model
 		/// <summary>
 		/// connect
 		/// </summary>
-		public TChannel(TcpClient tcpClient, string host, int port, TService service) : base(service, ChannelType.Connect)
+		public TChannel(TcpClient tcpClient, IPEndPoint ipEndPoint, TService service) : base(service, ChannelType.Connect)
 		{
 			this.tcpClient = tcpClient;
 			this.parser = new PacketParser(this.recvBuffer);
-			this.RemoteAddress = host + ":" + port;
+			this.RemoteAddress = ipEndPoint;
 
-			this.ConnectAsync(host, port);
+			this.ConnectAsync(ipEndPoint);
 		}
 
 		/// <summary>
@@ -41,15 +41,15 @@ namespace Model
 			this.parser = new PacketParser(this.recvBuffer);
 
 			IPEndPoint ipEndPoint = (IPEndPoint)this.tcpClient.Client.RemoteEndPoint;
-			this.RemoteAddress = ipEndPoint.Address + ":" + ipEndPoint.Port;
+			this.RemoteAddress = ipEndPoint;
 			this.OnAccepted();
 		}
 
-		private async void ConnectAsync(string host, int port)
+		private async void ConnectAsync(IPEndPoint ipEndPoint)
 		{
 			try
 			{
-				await this.tcpClient.ConnectAsync(host, port);
+				await this.tcpClient.ConnectAsync(ipEndPoint.Address, ipEndPoint.Port);
 				this.isConnected = true;
 				this.StartSend();
 				this.StartRecv();
@@ -60,7 +60,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error($"connect error: {host} {port} {e}");
+				Log.Error($"connect error: {ipEndPoint} {e}");
 			}
 		}
 

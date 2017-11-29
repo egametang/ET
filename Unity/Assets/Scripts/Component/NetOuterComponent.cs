@@ -1,18 +1,13 @@
 ﻿namespace Model
 {
 	[ObjectEvent]
-	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>, IUpdate
+	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IUpdate
 	{
 		public void Awake()
 		{
 			this.Get().Awake();
 		}
-
-		public void Awake(string host, int port)
-		{
-			this.Get().Awake();
-		}
-
+		
 		public void Update()
 		{
 			this.Get().Update();
@@ -24,13 +19,6 @@
 		public void Awake()
 		{
 			this.Awake(NetworkProtocol.TCP);
-			this.MessagePacker = new MongoPacker();
-			this.MessageDispatcher = new ClientDispatcher();
-		}
-
-		public void Awake(string host, int port)
-		{
-			this.Awake(NetworkProtocol.TCP, host, port);
 			this.MessagePacker = new MongoPacker();
 			this.MessageDispatcher = new ClientDispatcher();
 		}

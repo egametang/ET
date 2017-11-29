@@ -21,6 +21,7 @@ namespace Model
 		private bool isConnected;
 		private Action disconnect;
 		private Action received;
+		private IPEndPoint ipEndPoint;
 
 		public event Action Received
 		{
@@ -69,13 +70,18 @@ namespace Model
 			this.PeerPtr = IntPtr.Zero;
 		}
 
-		public string RemoteAddress
+		public IPEndPoint RemoteAddress
 		{
 			get
 			{
+				if (ipEndPoint != null)
+				{
+					return this.ipEndPoint;
+				}
+
 				ENetPeer peer = this.Struct;
-				IPAddress ipaddr = new IPAddress(peer.Address.Host);
-				return $"{ipaddr}:{peer.Address.Port}";
+				this.ipEndPoint = new IPEndPoint(peer.Address.Host, peer.Address.Port);
+				return this.ipEndPoint;
 			}
 		}
 
@@ -104,15 +110,15 @@ namespace Model
 			}
 		}
 
-		public void ConnectAsync(string host, ushort port)
+		public void ConnectAsync(IPEndPoint ipEndPoint)
 		{
-			UAddress address = new UAddress(host, port);
+			UAddress address = new UAddress(ipEndPoint.Address.ToString(), ipEndPoint.Port);
 			ENetAddress nativeAddress = address.Struct;
 
 			this.PeerPtr = NativeMethods.enet_host_connect(this.poller.Host, ref nativeAddress, 2, 0);
 			if (this.PeerPtr == IntPtr.Zero)
 			{
-				throw new Exception($"host connect call failed, {host}:{port}");
+				throw new Exception($"host connect call failed, {ipEndPoint}");
 			}
 			this.poller.USocketManager.Add(this.PeerPtr, this);
 		}

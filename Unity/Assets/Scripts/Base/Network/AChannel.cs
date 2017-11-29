@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace Model
 
 		protected AService service;
 
-		public string RemoteAddress { get; protected set; }
+		public IPEndPoint RemoteAddress { get; protected set; }
 
 		private event Action<AChannel, SocketError> errorCallback;
 

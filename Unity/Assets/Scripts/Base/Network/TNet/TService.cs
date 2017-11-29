@@ -18,11 +18,9 @@ namespace Model
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
-		/// <param name="host"></param>
-		/// <param name="port"></param>
-		public TService(string host, int port)
+		public TService(IPEndPoint ipEndPoint)
 		{
-			this.acceptor = new TcpListener(new IPEndPoint(IPAddress.Parse(host), port));
+			this.acceptor = new TcpListener(ipEndPoint);
 			this.acceptor.Start();
 		}
 
@@ -70,10 +68,10 @@ namespace Model
 			return channel;
 		}
 
-		public override AChannel ConnectChannel(string host, int port)
+		public override AChannel ConnectChannel(IPEndPoint ipEndPoint)
 		{
 			TcpClient tcpClient = new TcpClient();
-			TChannel channel = new TChannel(tcpClient, host, port, this);
+			TChannel channel = new TChannel(tcpClient, ipEndPoint, this);
 			this.idChannels[channel.Id] = channel;
 
 			return channel;

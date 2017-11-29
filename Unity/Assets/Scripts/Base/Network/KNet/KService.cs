@@ -35,10 +35,10 @@ namespace Model
 		private readonly MultiMap<long, long> timerMap = new MultiMap<long, long>();
 		private readonly Queue<long> timeoutTimer = new Queue<long>();
 
-		public KService(string host, int port)
+		public KService(IPEndPoint ipEndPoint)
 		{
 			this.TimeNow = (uint)TimeHelper.Now();
-			this.socket = new UdpClient(new IPEndPoint(IPAddress.Parse(host), port));
+			this.socket = new UdpClient(ipEndPoint);
 			this.StartRecv();
 		}
 
@@ -198,9 +198,8 @@ namespace Model
 			return this.acceptTcs.Task;
 		}
 
-		public override AChannel ConnectChannel(string host, int port)
+		public override AChannel ConnectChannel(IPEndPoint ipEndPoint)
 		{
-			IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(host), port);
 			KChannel channel = this.CreateConnectChannel(ipEndPoint);
 			return channel;
 		}

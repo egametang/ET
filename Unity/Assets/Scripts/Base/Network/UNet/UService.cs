@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Model
@@ -14,9 +15,9 @@ namespace Model
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
-		public UService(string host, int port)
+		public UService(IPEndPoint ipEndPoint)
 		{
-			this.poller = new UPoller(host, (ushort)port);
+			this.poller = new UPoller(ipEndPoint.Address.ToString(), (ushort)ipEndPoint.Port);
 		}
 
 		/// <summary>
@@ -51,10 +52,10 @@ namespace Model
 			return channel;
 		}
 
-		public override AChannel ConnectChannel(string host, int port)
+		public override AChannel ConnectChannel(IPEndPoint ipEndPoint)
 		{
 			USocket newSocket = new USocket(this.poller);
-			UChannel channel = new UChannel(newSocket, host, port, this);
+			UChannel channel = new UChannel(newSocket, ipEndPoint, this);
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}

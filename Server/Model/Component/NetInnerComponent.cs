@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 
 namespace Model
 {
@@ -13,7 +14,7 @@ namespace Model
 			{
 				return;
 			}
-			this.adressSessions.Remove(session.RemoteAddress);
+			this.adressSessions.Remove(session.RemoteAddress.ToString());
 
 			base.Remove(id);
 		}
@@ -28,7 +29,10 @@ namespace Model
 				return session;
 			}
 
-			session = this.Create(address);
+			string[] ss = address.Split(':');
+			IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ss[0]), int.Parse(ss[1]));
+			session = this.Create(ipEndPoint);
+
 			this.adressSessions.Add(address, session);
 			return session;
 		}

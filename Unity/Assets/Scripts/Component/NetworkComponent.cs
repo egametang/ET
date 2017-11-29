@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Model
@@ -33,20 +34,20 @@ namespace Model
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, string host, int port)
+		public void Awake(NetworkProtocol protocol, IPEndPoint ipEndPoint)
 		{
 			try
 			{
 				switch (protocol)
 				{
 					case NetworkProtocol.TCP:
-						this.Service = new TService(host, port);
+						this.Service = new TService(ipEndPoint);
 						break;
 					case NetworkProtocol.UDP:
-						this.Service = new UService(host, port);
+						this.Service = new UService(ipEndPoint);
 						break;
 					case NetworkProtocol.KCP:
-						this.Service = new KService(host, port);
+						this.Service = new KService(ipEndPoint);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -56,7 +57,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"{host} {port}", e);
+				throw new Exception($"{ipEndPoint}", e);
 			}
 		}
 
@@ -103,14 +104,11 @@ namespace Model
 		/// <summary>
 		/// 创建一个新Session
 		/// </summary>
-		public virtual Session Create(string address)
+		public virtual Session Create(IPEndPoint ipEndPoint)
 		{
 			try
 			{
-				string[] ss = address.Split(':');
-				int port = int.Parse(ss[1]);
-				string host = ss[0];
-				AChannel channel = this.Service.ConnectChannel(host, port);
+				AChannel channel = this.Service.ConnectChannel(ipEndPoint);
 				Session session = new Session(this, channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.sessions.Add(session.Id, session);

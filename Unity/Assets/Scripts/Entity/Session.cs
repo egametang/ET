@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Model
 			this.StartRecv();
 		}
 
-		public string RemoteAddress
+		public IPEndPoint RemoteAddress
 		{
 			get
 			{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -15,12 +16,12 @@ namespace Model
 		/// <summary>
 		/// connect
 		/// </summary>
-		public UChannel(USocket socket, string host, int port, UService service): base(service, ChannelType.Connect)
+		public UChannel(USocket socket, IPEndPoint ipEndPoint, UService service): base(service, ChannelType.Connect)
 		{
 			this.socket = socket;
 			this.service = service;
-			this.RemoteAddress = host + ":" + port;
-			this.socket.ConnectAsync(host, (ushort)port);
+			this.RemoteAddress = ipEndPoint;
+			this.socket.ConnectAsync(ipEndPoint);
 			this.socket.Received += this.OnRecv;
 			this.socket.Disconnect += () => { this.OnError(this, SocketError.SocketError); };
 		}

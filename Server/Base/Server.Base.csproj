@@ -38,6 +38,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KChannel.cs" Link="Network\KNet\KChannel.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\Kcp.cs" Link="Network\KNet\Kcp.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KService.cs" Link="Network\KNet\KService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\NetworkHelper.cs" Link="Network\NetworkHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Network\TNet\PacketParser.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TBuffer.cs" Link="Network\TNet\TBuffer.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Network\TNet\TChannel.cs" />
