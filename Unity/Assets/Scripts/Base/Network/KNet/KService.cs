@@ -10,19 +10,19 @@ namespace Model
 	{
 		public const uint SYN = 1;
 		public const uint ACK = 2;
+		public const uint FIN = 3;
 	}
 
 	public sealed class KService: AService
 	{
 		private uint IdGenerater = 1000;
+		private uint IdAccept = 2000000000;
 
 		public uint TimeNow { get; set; }
 
 		private UdpClient socket;
 		
 		private readonly Dictionary<long, KChannel> idChannels = new Dictionary<long, KChannel>();
-
-		private readonly Queue<UdpReceiveResult> udpResults = new Queue<UdpReceiveResult>();
 
 		private TaskCompletionSource<AChannel> acceptTcs;
 
@@ -39,6 +39,12 @@ namespace Model
 		{
 			this.TimeNow = (uint)TimeHelper.Now();
 			this.socket = new UdpClient(ipEndPoint);
+
+			uint IOC_IN = 0x80000000;
+			uint IOC_VENDOR = 0x18000000;
+			uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+			this.socket.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+
 			this.StartRecv();
 		}
 
@@ -68,7 +74,17 @@ namespace Model
 				{
 					return;
 				}
-				UdpReceiveResult udpReceiveResult = await this.socket.ReceiveAsync();
+
+				UdpReceiveResult udpReceiveResult;
+				try
+				{
+					udpReceiveResult = await this.socket.ReceiveAsync();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+					continue;
+				}
 
 				// accept
 				uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
@@ -87,13 +103,13 @@ namespace Model
 					continue;
 				}
 
-				if (conn < 1000)
+				if (conn == KcpProtocalType.FIN)
 				{
-					Log.Error($"error conn: {conn} {udpReceiveResult.RemoteEndPoint}");
+					this.HandleDisConnect(udpReceiveResult);
 					continue;
 				}
 
-				this.HandleRecv(udpReceiveResult);
+				this.HandleRecv(udpReceiveResult, conn);
 			}
 		}
 
@@ -101,6 +117,7 @@ namespace Model
 		{
 			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
 			uint responseConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
+			
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
 			{
@@ -110,11 +127,22 @@ namespace Model
 			kChannel.HandleConnnect(responseConn);
 		}
 
-		private void HandleRecv(UdpReceiveResult udpReceiveResult)
+		private void HandleDisConnect(UdpReceiveResult udpReceiveResult)
 		{
-			uint conn = 0;
-			Kcp.ikcp_decode32u(udpReceiveResult.Buffer, 0, ref conn);
+			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
+			
+			KChannel kChannel;
+			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
+			{
+				return;
+			}
+			// 处理chanel
+			this.idChannels.Remove(requestConn);
+			kChannel.Dispose();
+		}
 
+		private void HandleRecv(UdpReceiveResult udpReceiveResult, uint conn)
+		{
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(conn, out kChannel))
 			{
@@ -128,7 +156,6 @@ namespace Model
 		{
 			if (this.acceptTcs == null)
 			{
-				this.udpResults.Enqueue(udpReceiveResult);
 				return;
 			}
 
@@ -151,7 +178,13 @@ namespace Model
 
 		private KChannel CreateAcceptChannel(IPEndPoint remoteEndPoint, uint remoteConn)
 		{
-			KChannel channel = new KChannel(++this.IdGenerater, remoteConn, this.socket, remoteEndPoint, this);
+			KChannel channel = new KChannel(--this.IdAccept, remoteConn, this.socket, remoteEndPoint, this);
+			KChannel oldChannel;
+			if (this.idChannels.TryGetValue(channel.Id, out oldChannel))
+			{
+				this.idChannels.Remove(oldChannel.Id);
+				oldChannel.Dispose();
+			}
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
@@ -159,6 +192,12 @@ namespace Model
 		private KChannel CreateConnectChannel(IPEndPoint remoteEndPoint)
 		{
 			KChannel channel = new KChannel(++this.IdGenerater, this.socket, remoteEndPoint, this);
+			KChannel oldChannel;
+			if (this.idChannels.TryGetValue(channel.Id, out oldChannel))
+			{
+				this.idChannels.Remove(oldChannel.Id);
+				oldChannel.Dispose();
+			}
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
@@ -186,14 +225,6 @@ namespace Model
 
 		public override Task<AChannel> AcceptChannel()
 		{
-			if (this.udpResults.Count > 0)
-			{
-				UdpReceiveResult udpReceiveResult = this.udpResults.Dequeue();
-				uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
-				KChannel kChannel = this.CreateAcceptChannel(udpReceiveResult.RemoteEndPoint, requestConn);
-				return Task.FromResult<AChannel>(kChannel);
-			}
-
 			acceptTcs = new TaskCompletionSource<AChannel>();
 			return this.acceptTcs.Task;
 		}

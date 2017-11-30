@@ -526,8 +526,9 @@ public class Kcp
 
 			offset += ikcp_decode32u(data, offset, ref conv_);
 
-			if (conv != conv_)
-				return -1;
+			// 这里我做了修改，不判断两端kcp conv相等，因为客户端也需要一个socket支持多个client连接
+			//if (conv != conv_)
+			//	return -1;
 
 			offset += ikcp_decode8u(data, offset, ref cmd);
 			offset += ikcp_decode8u(data, offset, ref frg);

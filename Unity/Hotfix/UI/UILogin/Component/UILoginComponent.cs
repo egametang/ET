@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Model;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,11 +34,13 @@ namespace Hotfix
 			IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
 			session = Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
 			string text = this.account.GetComponent<InputField>().text;
-			session.CallWithAction(new C2R_Login() { Account = text, Password = "111111" }, (response) => LoginOK(response));
+			session.CallWithAction(new C2R_Login() { Account = text, Password = "111111" }, (response) => LoginOK(session, response));
 		}
 
-		private void LoginOK(AResponse response)
+		private void LoginOK(Session loginSession, AResponse response)
 		{
+			loginSession.Dispose();
+
 			R2C_Login r2CLogin = (R2C_Login) response;
 			if (r2CLogin.Error != ErrorCode.ERR_Success)
 			{

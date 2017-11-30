@@ -39,7 +39,7 @@ namespace Model
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
-			kcp = new Kcp(this.Conn, this.Output);
+			kcp = new Kcp(this.RemoteConn, this.Output);
 			kcp.SetMtu(512);
 			kcp.NoDelay(1, 10, 2, 1);  //fast
 			this.isConnected = true;
@@ -53,6 +53,7 @@ namespace Model
 			this.Conn = conn;
 			this.socket = socket;
 			this.parser = new PacketParser(this.recvBuffer);
+
 			this.remoteEndPoint = remoteEndPoint;
 			this.lastRecvTime = kService.TimeNow;
 			this.Connect(kService.TimeNow);
@@ -66,6 +67,11 @@ namespace Model
 			}
 
 			base.Dispose();
+
+			for (int i = 0; i < 4; i++)
+			{
+				this.DisConnect();
+			}
 
 			this.socket = null;
 		}
@@ -82,6 +88,7 @@ namespace Model
 				return;
 			}
 			this.isConnected = true;
+
 			this.RemoteConn = responseConn;
 			this.kcp = new Kcp(responseConn, this.Output);
 			kcp.SetMtu(512);
@@ -105,10 +112,20 @@ namespace Model
 		{
 			cacheBytes.WriteTo(0, KcpProtocalType.SYN);
 			cacheBytes.WriteTo(4, this.Conn);
+			Log.Debug($"client connect: {this.Conn}");
 			this.socket.Send(cacheBytes, 8, remoteEndPoint);
 
 			// 200毫秒后再次update发送connect请求
 			this.GetService().AddToNextTimeUpdate(timeNow + 200, this.Id);
+		}
+
+		private void DisConnect()
+		{
+			cacheBytes.WriteTo(0, KcpProtocalType.FIN);
+			cacheBytes.WriteTo(4, this.Conn);
+			cacheBytes.WriteTo(8, this.RemoteConn);
+			Log.Debug($"client disconnect: {this.Conn}");
+			this.socket.Send(cacheBytes, 12, remoteEndPoint);
 		}
 
 		public void Update(uint timeNow)
@@ -152,8 +169,6 @@ namespace Model
 			// 加入update队列
 			this.GetService().AddToUpdate(this.Id);
 
-			lastRecvTime = timeNow;
-
 			while (true)
 			{
 				int n = kcp.PeekSize();
@@ -170,6 +185,8 @@ namespace Model
 				
 				// 收到的数据放入缓冲区
 				this.recvBuffer.SendTo(this.cacheBytes, 0, count);
+
+				lastRecvTime = timeNow;
 
 				if (this.recvTcs != null)
 				{
