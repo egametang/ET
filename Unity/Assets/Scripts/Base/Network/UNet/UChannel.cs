@@ -11,8 +11,8 @@ namespace Model
 	{
 		private readonly USocket socket;
 
-		private TaskCompletionSource<byte[]> recvTcs;
-
+		private TaskCompletionSource<Packet> recvTcs;
+		
 		/// <summary>
 		/// connect
 		/// </summary>
@@ -74,7 +74,7 @@ namespace Model
 			this.socket.SendAsync(buffer);
 		}
 
-		public override Task<byte[]> Recv()
+		public override Task<Packet> Recv()
 		{
 			if (this.Id == 0)
 			{
@@ -84,10 +84,11 @@ namespace Model
 			var recvQueue = this.socket.RecvQueue;
 			if (recvQueue.Count > 0)
 			{
-				return Task.FromResult(recvQueue.Dequeue());
+				byte[] recvByte = recvQueue.Dequeue();
+				return Task.FromResult(new Packet(recvByte));
 			}
 
-			recvTcs = new TaskCompletionSource<byte[]>();
+			recvTcs = new TaskCompletionSource<Packet>();
 			return recvTcs.Task;
 		}
 
@@ -95,7 +96,8 @@ namespace Model
 		{
 			var tcs = this.recvTcs;
 			this.recvTcs = null;
-			tcs?.SetResult(this.socket.RecvQueue.Dequeue());
+			byte[] recvByte = this.socket.RecvQueue.Dequeue();
+			tcs?.SetResult(new Packet(recvByte));
 		}
 	}
 }

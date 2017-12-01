@@ -92,16 +92,16 @@ namespace Model
 			}
 		}
 
-		public void RecvFrom(byte[] buffer)
+		public void RecvFrom(byte[] buffer, int count)
 		{
-			if (this.Count < buffer.Length)
+			if (this.Count < count)
 			{
-				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length}");
+				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length} {count}");
 			}
 			int alreadyCopyCount = 0;
-			while (alreadyCopyCount < buffer.Length)
+			while (alreadyCopyCount < count)
 			{
-				int n = buffer.Length - alreadyCopyCount;
+				int n = count - alreadyCopyCount;
 				if (ChunkSize - this.FirstIndex > n)
 				{
 					Array.Copy(this.bufferQueue.First(), this.FirstIndex, buffer, alreadyCopyCount, n);

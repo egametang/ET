@@ -68,7 +68,7 @@ namespace Model
 		/// <summary>
 		/// 接收消息
 		/// </summary>
-		public abstract Task<byte[]> Recv();
+		public abstract Task<Packet> Recv();
 
 		public virtual void Dispose()
 		{

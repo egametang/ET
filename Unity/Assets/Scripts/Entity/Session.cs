@@ -47,10 +47,10 @@ namespace Model
 					return;
 				}
 
-				byte[] messageBytes;
+				Packet packet;
 				try
 				{
-					messageBytes = await channel.Recv();
+					packet = await this.channel.Recv();
 					if (this.Id == 0)
 					{
 						return;
@@ -62,17 +62,17 @@ namespace Model
 					continue;
 				}
 
-				if (messageBytes.Length < 2)
+				if (packet.Length < 2)
 				{
 					Log.Error($"message error length < 2, ip: {this.RemoteAddress}");
 					this.network.Remove(this.Id);
 					return;
 				}
 
-				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+				ushort opcode = BitConverter.ToUInt16(packet.Bytes, 0);
 				try
 				{
-					this.Run(opcode, messageBytes);
+					this.RunDecompressedBytes(opcode, packet.Bytes, 2, packet.Length);
 				}
 				catch (Exception e)
 				{
@@ -81,12 +81,7 @@ namespace Model
 			}
 		}
 
-		private void Run(ushort opcode, byte[] messageBytes)
-		{
-			this.RunDecompressedBytes(opcode, messageBytes, 2);
-		}
-
-		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
+		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset, int count)
 		{
 			object message;
 			Opcode op;
@@ -95,7 +90,7 @@ namespace Model
 			{
 				op = (Opcode)opcode;
 				Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
-				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
+				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, count - offset);
 			}
 			catch (Exception e)
 			{
@@ -311,7 +306,7 @@ namespace Model
 			if (this.network.AppType == AppType.AllServer)
 			{
 				Session session = this.network.GetComponent<NetInnerComponent>().Get(this.RemoteAddress.ToString());
-				session.RunDecompressedBytes(op, messageBytes, 0);
+				session.RunDecompressedBytes(op, messageBytes, 0, messageBytes.Length);
 				return;
 			}
 #endif

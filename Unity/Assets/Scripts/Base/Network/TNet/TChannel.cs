@@ -18,7 +18,7 @@ namespace Model
 		private bool isSending;
 		private readonly PacketParser parser;
 		private bool isConnected;
-		private TaskCompletionSource<byte[]> recvTcs;
+		private TaskCompletionSource<Packet> recvTcs;
 
 		/// <summary>
 		/// connect
@@ -199,9 +199,11 @@ namespace Model
 
 					if (this.recvTcs != null)
 					{
-						byte[] packet = this.parser.GetPacket();
-						if (packet != null)
+						bool isOK = this.parser.Parse();
+						if (isOK)
 						{
+							Packet packet = this.parser.GetPacket();
+
 							var tcs = this.recvTcs;
 							this.recvTcs = null;
 							tcs.SetResult(packet);
@@ -222,20 +224,21 @@ namespace Model
 			}
 		}
 
-		public override Task<byte[]> Recv()
+		public override Task<Packet> Recv()
 		{
 			if (this.Id == 0)
 			{
 				throw new Exception("TChannel已经被Dispose, 不能接收消息");
 			}
 
-			byte[] packet = this.parser.GetPacket();
-			if (packet != null)
+			bool isOK = this.parser.Parse();
+			if (isOK)
 			{
+				Packet packet = this.parser.GetPacket();
 				return Task.FromResult(packet);
 			}
 
-			recvTcs = new TaskCompletionSource<byte[]>();
+			recvTcs = new TaskCompletionSource<Packet>();
 			return recvTcs.Task;
 		}
 	}
