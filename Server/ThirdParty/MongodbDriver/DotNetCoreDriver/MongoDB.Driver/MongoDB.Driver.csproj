@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+    <OutputPath>bin\Debug\..\..\..\..\..\..\..\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+    <OutputPath>bin\Release\..\..\..\..\..\..\..\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
   
   <ItemGroup>
