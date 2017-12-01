@@ -112,7 +112,7 @@ namespace Model
 		{
 			cacheBytes.WriteTo(0, KcpProtocalType.SYN);
 			cacheBytes.WriteTo(4, this.Conn);
-			Log.Debug($"client connect: {this.Conn}");
+			//Log.Debug($"client connect: {this.Conn}");
 			this.socket.Send(cacheBytes, 8, remoteEndPoint);
 
 			// 200毫秒后再次update发送connect请求
@@ -124,7 +124,7 @@ namespace Model
 			cacheBytes.WriteTo(0, KcpProtocalType.FIN);
 			cacheBytes.WriteTo(4, this.Conn);
 			cacheBytes.WriteTo(8, this.RemoteConn);
-			Log.Debug($"client disconnect: {this.Conn}");
+			//Log.Debug($"client disconnect: {this.Conn}");
 			this.socket.Send(cacheBytes, 12, remoteEndPoint);
 		}
 
