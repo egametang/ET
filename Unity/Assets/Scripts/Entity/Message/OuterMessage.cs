@@ -13,6 +13,7 @@ namespace Model
 	[ProtoInclude((int)Opcode.C2R_Login, typeof(C2R_Login))]
 	[ProtoInclude((int)Opcode.C2G_LoginGate, typeof(C2G_LoginGate))]
 	[ProtoInclude((int)Opcode.C2G_EnterMap, typeof(C2G_EnterMap))]
+	[ProtoInclude((int)Opcode.C2R_Ping, typeof(C2R_Ping))]
 	public abstract partial class ARequest : AMessage
 	{
 	}
@@ -21,6 +22,7 @@ namespace Model
 	[ProtoInclude((int)Opcode.R2C_Login, typeof(R2C_Login))]
 	[ProtoInclude((int)Opcode.G2C_LoginGate, typeof(G2C_LoginGate))]
 	[ProtoInclude((int)Opcode.G2C_EnterMap, typeof(G2C_EnterMap))]
+	[ProtoInclude((int)Opcode.R2C_Ping, typeof(R2C_Ping))]
 	public abstract partial class AResponse : AMessage
 	{
 	}
@@ -198,11 +200,13 @@ namespace Model
 	{
 	}
 
+	[ProtoContract]
 	[Message(Opcode.C2R_Ping)]
 	public class C2R_Ping: ARequest
 	{
 	}
 
+	[ProtoContract]
 	[Message(Opcode.R2C_Ping)]
 	public class R2C_Ping: AResponse
 	{

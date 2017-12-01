@@ -62,9 +62,9 @@ namespace Model
 					continue;
 				}
 
-				if (messageBytes.Length < 3)
+				if (messageBytes.Length < 2)
 				{
-					Log.Error($"message error length < 3, ip: {this.RemoteAddress}");
+					Log.Error($"message error length < 2, ip: {this.RemoteAddress}");
 					this.network.Remove(this.Id);
 					return;
 				}
@@ -131,7 +131,7 @@ namespace Model
 		{
 			request.RpcId = ++RpcId;
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -155,7 +155,7 @@ namespace Model
 			request.RpcId = ++RpcId;
 
 			var tcs = new TaskCompletionSource<AResponse>();
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -187,7 +187,7 @@ namespace Model
 			
 			var tcs = new TaskCompletionSource<AResponse>();
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -206,7 +206,7 @@ namespace Model
 				}
 			};
 
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
 
 			this.SendMessage(request);
 
@@ -221,7 +221,7 @@ namespace Model
 			request.RpcId = ++RpcId;
 			
 			var tcs = new TaskCompletionSource<Response>();
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -255,7 +255,7 @@ namespace Model
 			
 			var tcs = new TaskCompletionSource<Response>();
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -274,7 +274,7 @@ namespace Model
 				}
 			};
 
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
 
 			this.SendMessage(request);
 
