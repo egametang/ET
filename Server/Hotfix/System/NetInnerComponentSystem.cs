@@ -29,6 +29,7 @@ namespace Hotfix
 			self.Awake(NetworkProtocol.TCP);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
+			self.AppType = self.GetComponent<StartConfigComponent>().StartConfig.AppType;
 		}
 
 		public static void Awake(this NetInnerComponent self, IPEndPoint ipEndPoint)
@@ -36,6 +37,7 @@ namespace Hotfix
 			self.Awake(NetworkProtocol.TCP, ipEndPoint);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
+			self.AppType = self.GetComponent<StartConfigComponent>().StartConfig.AppType;
 		}
 
 		public static void Update(this NetInnerComponent self)
