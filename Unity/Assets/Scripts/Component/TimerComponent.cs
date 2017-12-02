@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Model;
 
 namespace Model
 {
-	public class Timer
+	public struct Timer
 	{
 		public long Id { get; set; }
 		public long Time { get; set; }
@@ -47,7 +46,7 @@ namespace Model
 			while (this.timeoutTimer.Count > 0)
 			{
 				long key = this.timeoutTimer.Dequeue();
-				long[] timeOutId = this.timeId.GetAll(key);
+				List<long> timeOutId = this.timeId[key];
 				foreach (long id in timeOutId)
 				{
 					Timer timer;
@@ -55,9 +54,9 @@ namespace Model
 					{
 						continue;
 					}
-					this.Remove(id);
 					timer.tcs.SetResult(true);
 				}
+				this.timeId.Remove(key);
 			}
 		}
 
@@ -69,7 +68,6 @@ namespace Model
 				return;
 			}
 			this.timers.Remove(id);
-			this.timeId.Remove(timer.Time, timer.Id);
 		}
 
 		public Task WaitTillAsync(long tillTime, CancellationToken cancellationToken)
