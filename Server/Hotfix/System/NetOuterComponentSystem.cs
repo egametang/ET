@@ -1,18 +1,19 @@
-﻿using Model;
+﻿using System.Net;
+using Model;
 
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<string, int>, IUpdate
+	public class NetOuterComponentEvent : ObjectEvent<NetOuterComponent>, IAwake, IAwake<IPEndPoint>, IUpdate
 	{
 		public void Awake()
 		{
 			this.Get().Awake();
 		}
 
-		public void Awake(string a, int b)
+		public void Awake(IPEndPoint ipEndPoint)
 		{
-			this.Get().Awake(a, b);
+			this.Get().Awake(ipEndPoint);
 		}
 
 		public void Update()
@@ -26,14 +27,14 @@ namespace Hotfix
 		public static void Awake(this NetOuterComponent self)
 		{
 			self.Awake(NetworkProtocol.TCP);
-			self.MessagePacker = new MongoPacker();
+			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 
-		public static void Awake(this NetOuterComponent self, string host, int port)
+		public static void Awake(this NetOuterComponent self, IPEndPoint ipEndPoint)
 		{
-			self.Awake(NetworkProtocol.TCP, host, port);
-			self.MessagePacker = new MongoPacker();
+			self.Awake(NetworkProtocol.TCP, ipEndPoint);
+			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 

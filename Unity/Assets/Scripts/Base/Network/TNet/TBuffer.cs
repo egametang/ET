@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
 	public class TBuffer
 	{
-		public const int ChunkSize = 8192;
+		public int ChunkSize = 8192;
 
-		private readonly LinkedList<byte[]> bufferList = new LinkedList<byte[]>();
+		private readonly Queue<byte[]> bufferQueue = new Queue<byte[]>();
+
+		private readonly Queue<byte[]> bufferCache = new Queue<byte[]>();
 
 		public int LastIndex { get; set; }
 
@@ -15,7 +18,13 @@ namespace Model
 
 		public TBuffer()
 		{
-			this.bufferList.AddLast(new byte[ChunkSize]);
+			this.AddLast();
+		}
+
+		public TBuffer(int chunkSize)
+		{
+			this.ChunkSize = chunkSize;
+			this.AddLast();
 		}
 
 		public int Count
@@ -23,17 +32,17 @@ namespace Model
 			get
 			{
 				int c = 0;
-				if (this.bufferList.Count == 0)
+				if (this.bufferQueue.Count == 0)
 				{
 					c = 0;
 				}
 				else
 				{
-					c = (this.bufferList.Count - 1) * ChunkSize + this.LastIndex - this.FirstIndex;
+					c = (this.bufferQueue.Count - 1) * ChunkSize + this.LastIndex - this.FirstIndex;
 				}
 				if (c < 0)
 				{
-					Log.Error("TBuffer count < 0: {0}, {1}, {2}".Fmt(bufferList.Count, this.LastIndex, this.FirstIndex));
+					Log.Error("TBuffer count < 0: {0}, {1}, {2}".Fmt(this.bufferQueue.Count, this.LastIndex, this.FirstIndex));
 				}
 				return c;
 			}
@@ -41,23 +50,33 @@ namespace Model
 
 		public void AddLast()
 		{
-			this.bufferList.AddLast(new byte[ChunkSize]);
+			byte[] buffer;
+			if (this.bufferCache.Count > 0)
+			{
+				buffer = this.bufferCache.Dequeue();
+			}
+			else
+			{
+				buffer = new byte[ChunkSize];
+			}
+			this.bufferQueue.Enqueue(buffer);
 		}
 
 		public void RemoveFirst()
 		{
-			this.bufferList.RemoveFirst();
+			this.bufferCache.Enqueue(this.bufferQueue.First());
+			this.bufferQueue.Dequeue();
 		}
 
 		public byte[] First
 		{
 			get
 			{
-				if (this.bufferList.First == null)
+				if (this.bufferQueue.Count == 0)
 				{
 					this.AddLast();
 				}
-				return this.bufferList.First.Value;
+				return this.bufferQueue.First();
 			}
 		}
 
@@ -65,36 +84,36 @@ namespace Model
 		{
 			get
 			{
-				if (this.bufferList.Last == null)
+				if (this.bufferQueue.Count == 0)
 				{
 					this.AddLast();
 				}
-				return this.bufferList.Last.Value;
+				return this.bufferQueue.Last();
 			}
 		}
 
-		public void RecvFrom(byte[] buffer)
+		public void RecvFrom(byte[] buffer, int count)
 		{
-			if (this.Count < buffer.Length)
+			if (this.Count < count)
 			{
-				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length}");
+				throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length} {count}");
 			}
 			int alreadyCopyCount = 0;
-			while (alreadyCopyCount < buffer.Length)
+			while (alreadyCopyCount < count)
 			{
-				int n = buffer.Length - alreadyCopyCount;
+				int n = count - alreadyCopyCount;
 				if (ChunkSize - this.FirstIndex > n)
 				{
-					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount, n);
+					Array.Copy(this.bufferQueue.First(), this.FirstIndex, buffer, alreadyCopyCount, n);
 					this.FirstIndex += n;
 					alreadyCopyCount += n;
 				}
 				else
 				{
-					Array.Copy(this.bufferList.First.Value, this.FirstIndex, buffer, alreadyCopyCount, ChunkSize - this.FirstIndex);
+					Array.Copy(this.bufferQueue.First(), this.FirstIndex, buffer, alreadyCopyCount, ChunkSize - this.FirstIndex);
 					alreadyCopyCount += ChunkSize - this.FirstIndex;
 					this.FirstIndex = 0;
-					this.bufferList.RemoveFirst();
+					this.bufferQueue.Dequeue();
 				}
 			}
 		}
@@ -106,20 +125,47 @@ namespace Model
 			{
 				if (this.LastIndex == ChunkSize)
 				{
-					this.bufferList.AddLast(new byte[ChunkSize]);
+					this.AddLast();
 					this.LastIndex = 0;
 				}
 
 				int n = buffer.Length - alreadyCopyCount;
 				if (ChunkSize - this.LastIndex > n)
 				{
-					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, n);
+					Array.Copy(buffer, alreadyCopyCount, this.bufferQueue.Last(), this.LastIndex, n);
 					this.LastIndex += buffer.Length - alreadyCopyCount;
 					alreadyCopyCount += n;
 				}
 				else
 				{
-					Array.Copy(buffer, alreadyCopyCount, this.bufferList.Last.Value, this.LastIndex, ChunkSize - this.LastIndex);
+					Array.Copy(buffer, alreadyCopyCount, this.bufferQueue.Last(), this.LastIndex, ChunkSize - this.LastIndex);
+					alreadyCopyCount += ChunkSize - this.LastIndex;
+					this.LastIndex = ChunkSize;
+				}
+			}
+		}
+		
+		public void SendTo(byte[] buffer, int offset, int count)
+		{
+			int alreadyCopyCount = 0;
+			while (alreadyCopyCount < count)
+			{
+				if (this.LastIndex == ChunkSize)
+				{
+					this.AddLast();
+					this.LastIndex = 0;
+				}
+
+				int n = count - alreadyCopyCount;
+				if (ChunkSize - this.LastIndex > n)
+				{
+					Array.Copy(buffer, alreadyCopyCount + offset, this.bufferQueue.Last(), this.LastIndex, n);
+					this.LastIndex += count - alreadyCopyCount;
+					alreadyCopyCount += n;
+				}
+				else
+				{
+					Array.Copy(buffer, alreadyCopyCount + offset, this.bufferQueue.Last(), this.LastIndex, ChunkSize - this.LastIndex);
 					alreadyCopyCount += ChunkSize - this.LastIndex;
 					this.LastIndex = ChunkSize;
 				}

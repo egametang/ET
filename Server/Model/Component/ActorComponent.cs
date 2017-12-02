@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public struct ActorMessageInfo
+	public class ActorMessageInfo
 	{
 		public Session Session;
 		public ActorRequest Message;
@@ -34,7 +34,9 @@ namespace Model
 
 				base.Dispose();
 
-				this.tcs?.SetException(new Exception($"actor disposed! {this.actorId}"));
+				var t = this.tcs;
+				this.tcs = null;
+				t?.SetResult(null);
 
 				Game.Scene.GetComponent<ActorManagerComponent>().Remove(actorId);
 			}

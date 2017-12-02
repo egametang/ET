@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -10,17 +11,17 @@ namespace Model
 	{
 		private readonly USocket socket;
 
-		private TaskCompletionSource<byte[]> recvTcs;
-
+		private TaskCompletionSource<Packet> recvTcs;
+		
 		/// <summary>
 		/// connect
 		/// </summary>
-		public UChannel(USocket socket, string host, int port, UService service): base(service, ChannelType.Connect)
+		public UChannel(USocket socket, IPEndPoint ipEndPoint, UService service): base(service, ChannelType.Connect)
 		{
 			this.socket = socket;
 			this.service = service;
-			this.RemoteAddress = host + ":" + port;
-			this.socket.ConnectAsync(host, (ushort)port);
+			this.RemoteAddress = ipEndPoint;
+			this.socket.ConnectAsync(ipEndPoint);
 			this.socket.Received += this.OnRecv;
 			this.socket.Disconnect += () => { this.OnError(this, SocketError.SocketError); };
 		}
@@ -47,16 +48,16 @@ namespace Model
 			this.socket.Dispose();
 		}
 
-		public override void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(byte[] buffer)
 		{
 			if (this.Id == 0)
 			{
 				throw new Exception("UChannel已经被Dispose, 不能发送消息");
 			}
-			this.socket.SendAsync(buffer, channelID, flags);
+			this.socket.SendAsync(buffer);
 		}
 
-		public override void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable)
+		public override void Send(List<byte[]> buffers)
 		{
 			if (this.Id == 0)
 			{
@@ -70,10 +71,10 @@ namespace Model
 				Array.Copy(bytes, 0, buffer, index, bytes.Length);
 				index += bytes.Length;
 			}
-			this.socket.SendAsync(buffer, channelID, flags);
+			this.socket.SendAsync(buffer);
 		}
 
-		public override Task<byte[]> Recv()
+		public override Task<Packet> Recv()
 		{
 			if (this.Id == 0)
 			{
@@ -83,10 +84,11 @@ namespace Model
 			var recvQueue = this.socket.RecvQueue;
 			if (recvQueue.Count > 0)
 			{
-				return Task.FromResult(recvQueue.Dequeue());
+				byte[] recvByte = recvQueue.Dequeue();
+				return Task.FromResult(new Packet(recvByte));
 			}
 
-			recvTcs = new TaskCompletionSource<byte[]>();
+			recvTcs = new TaskCompletionSource<Packet>();
 			return recvTcs.Task;
 		}
 
@@ -94,7 +96,8 @@ namespace Model
 		{
 			var tcs = this.recvTcs;
 			this.recvTcs = null;
-			tcs?.SetResult(this.socket.RecvQueue.Dequeue());
+			byte[] recvByte = this.socket.RecvQueue.Dequeue();
+			tcs?.SetResult(new Packet(recvByte));
 		}
 	}
 }

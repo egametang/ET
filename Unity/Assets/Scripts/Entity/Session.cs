@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,15 +13,16 @@ namespace Model
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
 		private readonly AChannel channel;
 		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0]};
-
+		
 		public Session(NetworkComponent network, AChannel channel)
 		{
 			this.network = network;
 			this.channel = channel;
+			
 			this.StartRecv();
 		}
 
-		public string RemoteAddress
+		public IPEndPoint RemoteAddress
 		{
 			get
 			{
@@ -45,10 +47,10 @@ namespace Model
 					return;
 				}
 
-				byte[] messageBytes;
+				Packet packet;
 				try
 				{
-					messageBytes = await channel.Recv();
+					packet = await this.channel.Recv();
 					if (this.Id == 0)
 					{
 						return;
@@ -60,17 +62,17 @@ namespace Model
 					continue;
 				}
 
-				if (messageBytes.Length < 3)
+				if (packet.Length < 2)
 				{
-					Log.Error($"message error length < 3, ip: {this.RemoteAddress}");
+					Log.Error($"message error length < 2, ip: {this.RemoteAddress}");
 					this.network.Remove(this.Id);
 					return;
 				}
 
-				ushort opcode = BitConverter.ToUInt16(messageBytes, 0);
+				ushort opcode = BitConverter.ToUInt16(packet.Bytes, 0);
 				try
 				{
-					this.Run(opcode, messageBytes);
+					this.RunDecompressedBytes(opcode, packet.Bytes, 2, packet.Length);
 				}
 				catch (Exception e)
 				{
@@ -79,25 +81,7 @@ namespace Model
 			}
 		}
 
-		private void Run(ushort opcode, byte[] messageBytes)
-		{
-			int offset = 0;
-			// opcode最高位表示是否压缩
-			bool isCompressed = (opcode & 0x8000) > 0;
-			if (isCompressed) // 最高位为1,表示有压缩,需要解压缩
-			{
-				messageBytes = ZipHelper.Decompress(messageBytes, 2, messageBytes.Length - 2);
-				offset = 0;
-			}
-			else
-			{
-				offset = 2;
-			}
-			opcode &= 0x7fff;
-			this.RunDecompressedBytes(opcode, messageBytes, offset);
-		}
-
-		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset)
+		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset, int count)
 		{
 			object message;
 			Opcode op;
@@ -106,7 +90,7 @@ namespace Model
 			{
 				op = (Opcode)opcode;
 				Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
-				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, messageBytes.Length - offset);
+				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, count - offset);
 			}
 			catch (Exception e)
 			{
@@ -141,9 +125,8 @@ namespace Model
 		public void CallWithAction(ARequest request, Action<AResponse> action)
 		{
 			request.RpcId = ++RpcId;
-			this.SendMessage(request);
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -155,6 +138,8 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			};
+			
+			this.SendMessage(request);
 		}
 
 		/// <summary>
@@ -163,10 +148,9 @@ namespace Model
 		public Task<AResponse> Call(ARequest request, bool isHotfix)
 		{
 			request.RpcId = ++RpcId;
-			this.SendMessage(request);
 
 			var tcs = new TaskCompletionSource<AResponse>();
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -185,6 +169,7 @@ namespace Model
 				}
 			};
 
+			this.SendMessage(request);
 			return tcs.Task;
 		}
 
@@ -194,11 +179,10 @@ namespace Model
 		public Task<AResponse> Call(ARequest request, bool isHotfix, CancellationToken cancellationToken)
 		{
 			request.RpcId = ++RpcId;
-			this.SendMessage(request);
-
+			
 			var tcs = new TaskCompletionSource<AResponse>();
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -217,7 +201,9 @@ namespace Model
 				}
 			};
 
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
+
+			this.SendMessage(request);
 
 			return tcs.Task;
 		}
@@ -228,10 +214,9 @@ namespace Model
 		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
-			this.SendMessage(request);
-
+			
 			var tcs = new TaskCompletionSource<Response>();
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -249,6 +234,8 @@ namespace Model
 					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
 				}
 			};
+
+			this.SendMessage(request);
 
 			return tcs.Task;
 		}
@@ -260,11 +247,10 @@ namespace Model
 			where Response : AResponse
 		{
 			request.RpcId = ++RpcId;
-			this.SendMessage(request);
-
+			
 			var tcs = new TaskCompletionSource<Response>();
 
-			this.requestCallback[RpcId] = (message) =>
+			this.requestCallback[request.RpcId] = (message) =>
 			{
 				try
 				{
@@ -283,7 +269,9 @@ namespace Model
 				}
 			};
 
-			cancellationToken.Register(() => { this.requestCallback.Remove(RpcId); });
+			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
+
+			this.SendMessage(request);
 
 			return tcs.Task;
 		}
@@ -309,23 +297,25 @@ namespace Model
 		private void SendMessage(object message)
 		{
 			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
-			Opcode opcode = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			Opcode opcode = this.network.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			ushort op = (ushort)opcode;
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
-			if (messageBytes.Length > 100)
+
+#if SERVER
+			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
+			if (this.network.AppType == AppType.AllServer)
 			{
-				byte[] newMessageBytes = ZipHelper.Compress(messageBytes);
-				if (newMessageBytes.Length < messageBytes.Length)
-				{
-					messageBytes = newMessageBytes;
-					op |= 0x8000;
-				}
+				Session session = this.network.GetComponent<NetInnerComponent>().Get(this.RemoteAddress.ToString());
+				session.RunDecompressedBytes(op, messageBytes, 0, messageBytes.Length);
+				return;
 			}
+#endif
 
 			byte[] opcodeBytes = BitConverter.GetBytes(op);
 			
 			this.byteses[0] = opcodeBytes;
 			this.byteses[1] = messageBytes;
+
 			channel.Send(this.byteses);
 		}
 
@@ -339,7 +329,7 @@ namespace Model
 			long id = this.Id;
 
 			base.Dispose();
-
+			
 			this.channel.Dispose();
 			this.network.Remove(id);
 		}

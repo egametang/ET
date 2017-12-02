@@ -8,14 +8,31 @@ namespace Model
 		PacketBody
 	}
 
+	public struct Packet
+	{
+		public byte[] Bytes { get; set; }
+		public int Length { get; set; }
+
+		public Packet(int length)
+		{
+			this.Length = 0;
+			this.Bytes = new byte[length];
+		}
+
+		public Packet(byte[] bytes)
+		{
+			this.Bytes = bytes;
+			this.Length = bytes.Length;
+		}
+	}
+
 	internal class PacketParser
 	{
 		private readonly TBuffer buffer;
 
 		private ushort packetSize;
-		private readonly byte[] packetSizeBuffer = new byte[2];
 		private ParserState state;
-		private byte[] packet;
+		private Packet packet = new Packet(8 * 1024);
 		private bool isOK;
 
 		public PacketParser(TBuffer buffer)
@@ -23,11 +40,11 @@ namespace Model
 			this.buffer = buffer;
 		}
 
-		private void Parse()
+		public bool Parse()
 		{
 			if (this.isOK)
 			{
-				return;
+				return true;
 			}
 
 			bool finish = false;
@@ -42,8 +59,8 @@ namespace Model
 						}
 						else
 						{
-							this.buffer.RecvFrom(this.packetSizeBuffer);
-							this.packetSize = BitConverter.ToUInt16(this.packetSizeBuffer, 0);
+							this.buffer.RecvFrom(this.packet.Bytes, 2);
+							this.packetSize = BitConverter.ToUInt16(this.packet.Bytes, 0);
 							if (packetSize > 60000)
 							{
 								throw new Exception($"packet too large, size: {this.packetSize}");
@@ -58,8 +75,8 @@ namespace Model
 						}
 						else
 						{
-							this.packet = new byte[this.packetSize];
-							this.buffer.RecvFrom(this.packet);
+							this.buffer.RecvFrom(this.packet.Bytes, this.packetSize);
+							this.packet.Length = this.packetSize;
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
 							finish = true;
@@ -67,18 +84,13 @@ namespace Model
 						break;
 				}
 			}
+			return this.isOK;
 		}
 
-		public byte[] GetPacket()
+		public Packet GetPacket()
 		{
-			this.Parse();
-			if (!this.isOK)
-			{
-				return null;
-			}
-			byte[] result = this.packet;
 			this.isOK = false;
-			return result;
+			return this.packet;
 		}
 	}
 }

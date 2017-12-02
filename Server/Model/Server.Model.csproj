@@ -8,12 +8,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>..\..\</OutputPath>
+    <OutputPath>bin\Debug\..\..\..\..\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>..\..\</OutputPath>
+    <OutputPath>bin\Release\..\..\..\..\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

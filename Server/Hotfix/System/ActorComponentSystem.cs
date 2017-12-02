@@ -97,7 +97,12 @@ namespace Hotfix
 				try
 				{
 					ActorMessageInfo info = await self.GetAsync();
-					await self.entityActorHandler.Handle(info.Session, self.Entity, info.Message); 
+					// 返回null表示actor已经删除,协程要终止
+					if (info == null)
+					{
+						return;
+					}
+					await self.entityActorHandler.Handle(info.Session, self.Entity, info.Message);
 				}
 				catch (Exception e)
 				{

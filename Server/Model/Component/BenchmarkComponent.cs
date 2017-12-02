@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Model
 {
 	[ObjectEvent]
-	public class BenchmarkComponentEvent : ObjectEvent<BenchmarkComponent>, IAwake<string>
+	public class BenchmarkComponentEvent : ObjectEvent<BenchmarkComponent>, IAwake<IPEndPoint>
 	{
-		public void Awake(string address)
+		public void Awake(IPEndPoint ipEndPoint)
 		{
-			this.Get().Awake(address);
+			this.Get().Awake(ipEndPoint);
 		}
 	}
 
@@ -18,16 +19,15 @@ namespace Model
 
 		private long time1 = TimeHelper.ClientNow();
 
-		public async void Awake(string address)
+		public async void Awake(IPEndPoint ipEndPoint)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-
-				for (int i = 0; i < 200; i++)
+				for (int i = 0; i < 1000; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
-					this.TestAsync(networkComponent, address, i);
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
+					this.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
 			catch (Exception e)
@@ -36,14 +36,14 @@ namespace Model
 			}
 		}
 
-		public async void TestAsync(NetOuterComponent networkComponent, string address, int j)
+		public async void TestAsync(NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{
-				using (Session session = networkComponent.Create(address))
+				using (Session session = networkComponent.Create(ipEndPoint))
 				{
 					int i = 0;
-					while (i < 100000000)
+					while (i < 1000000000)
 					{
 						++i;
 						await this.Send(session, j);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -22,13 +23,13 @@ namespace Model
 
 	public abstract class AChannel: IDisposable
 	{
-		public long Id { get; private set; }
+		public long Id { get; set; }
 
 		public ChannelType ChannelType { get; }
 
 		protected AService service;
 
-		public string RemoteAddress { get; protected set; }
+		public IPEndPoint RemoteAddress { get; protected set; }
 
 		private event Action<AChannel, SocketError> errorCallback;
 
@@ -46,7 +47,7 @@ namespace Model
 
 		protected void OnError(AChannel channel, SocketError e)
 		{
-			this.errorCallback(channel, e);
+			this.errorCallback?.Invoke(channel, e);
 		}
 
 
@@ -60,14 +61,14 @@ namespace Model
 		/// <summary>
 		/// 发送消息
 		/// </summary>
-		public abstract void Send(byte[] buffer, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
+		public abstract void Send(byte[] buffer);
 
-		public abstract void Send(List<byte[]> buffers, byte channelID = 0, PacketFlags flags = PacketFlags.Reliable);
+		public abstract void Send(List<byte[]> buffers);
 
 		/// <summary>
 		/// 接收消息
 		/// </summary>
-		public abstract Task<byte[]> Recv();
+		public abstract Task<Packet> Recv();
 
 		public virtual void Dispose()
 		{
@@ -76,9 +77,10 @@ namespace Model
 				return;
 			}
 
-			this.service.Remove(this.Id);
-
+			long id = this.Id;
 			this.Id = 0;
+
+			this.service.Remove(id);
 		}
 	}
 }

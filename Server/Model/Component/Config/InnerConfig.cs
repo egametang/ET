@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Net;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
@@ -14,6 +15,15 @@ namespace Model
 			get
 			{
 				return $"{this.Host}:{this.Port}";
+			}
+		}
+
+		[BsonIgnore]
+		public IPEndPoint IPEndPoint
+		{
+			get
+			{
+				return NetworkHelper.ToIPEndPoint(this.Host, this.Port);
 			}
 		}
 	}
