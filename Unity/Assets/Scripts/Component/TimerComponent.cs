@@ -20,7 +20,7 @@ namespace Model
 		}
 	}
 
-	public class TimerComponent: Component, IUpdate
+	public class TimerComponent: Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
 

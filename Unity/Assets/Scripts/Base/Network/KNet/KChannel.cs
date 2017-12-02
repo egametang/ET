@@ -13,7 +13,7 @@ namespace Model
 
 		private Kcp kcp;
 
-		private readonly TBuffer recvBuffer = new TBuffer(8 * 1024);
+		private readonly Circularbuffer recvBuffer = new Circularbuffer(8 * 1024);
 		private readonly Queue<byte[]> sendBuffer = new Queue<byte[]>();
 
 		private readonly PacketParser parser;

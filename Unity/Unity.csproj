@@ -233,7 +233,7 @@
     <Compile Include="Assets\Scripts\Base\Network\KNet\KService.cs" />
     <Compile Include="Assets\Scripts\Base\Network\NetworkHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\PacketParser.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\TNet\TBuffer.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\Circularbuffer.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TService.cs" />
     <Compile Include="Assets\Scripts\Base\Network\UNet\Library.cs" />
