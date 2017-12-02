@@ -74,5 +74,24 @@
 
 		M2M_TrasferUnitRequest,
 		M2M_TrasferUnitResponse,
-	}
+
+        DBInsertRequest,
+        DBInsertResponse,
+        DBInsertBatchRequest,
+        DBInsertBatchResponse,
+        DBDeleteRequest,
+        DBDeleteResponse,
+        DBDeleteBatchRequest,
+        DBDeleteBatchResponse,
+        DBUpdateRequest,
+        DBUpdateResponse,
+        DBUpdateBatchRequest,
+        DBUpdateBatchResponse,
+        DBFindRequest,
+        DBFindResponse,
+        DBFindBatchRequest,
+        DBFindBatchResponse,
+        DBFindAndDeleteRequest,
+        DBFindAndDeleteResponse,
+    }
 }

@@ -6,7 +6,8 @@ namespace Model
 	[BsonKnownTypes(typeof(RechargeRecord))]
 	[BsonKnownTypes(typeof(Recharge))]
 	[BsonKnownTypes(typeof(Location))]
-	public class EntityDB: Entity
+    [BsonKnownTypes(typeof(DBProxyTestEntity))]
+    public class EntityDB: Entity
 	{
 		protected EntityDB()
 		{

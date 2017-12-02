@@ -21,10 +21,6 @@ namespace Model
 
 		public TaskCompletionSource<Entity> Tcs { get; set; }
 
-		public DBQueryTask(long id): base(id)
-		{
-		}
-
 		public override async Task Run()
 		{
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
