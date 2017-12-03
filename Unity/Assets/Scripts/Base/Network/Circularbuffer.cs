@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Model
 {
-	public class TBuffer
+	public class Circularbuffer
 	{
 		public int ChunkSize = 8192;
 
@@ -16,12 +16,12 @@ namespace Model
 
 		public int FirstIndex { get; set; }
 
-		public TBuffer()
+		public Circularbuffer()
 		{
 			this.AddLast();
 		}
 
-		public TBuffer(int chunkSize)
+		public Circularbuffer(int chunkSize)
 		{
 			this.ChunkSize = chunkSize;
 			this.AddLast();
