@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
 	[BsonIgnoreExtraElements]
-	[BsonKnownTypes(typeof(EntityDB))]
-	public class Entity : Disposer, ISupportInitialize
+	public partial class Entity : Disposer
 	{
 		[BsonIgnore]
 		public Entity Parent { get; set; }
@@ -66,7 +64,7 @@ namespace Model
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -88,7 +86,7 @@ namespace Model
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -110,7 +108,7 @@ namespace Model
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -132,7 +130,7 @@ namespace Model
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -189,27 +187,34 @@ namespace Model
 			return this.componentDict.Values.ToArray();
 		}
 
-		public virtual void BeginInit()
+		public override void BeginInit()
 		{
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		public virtual void EndInit()
+		public override void EndInit()
 		{
-			ObjectEvents.Instance.Add(this);
-
-			if (this.components != null && this.components.Count == 0)
+			try
 			{
-				this.components = null;
-			}
-			if (this.components != null)
-			{
-				foreach (Component component in this.components)
+				ObjectEvents.Instance.Add(this);
+				if (this.components != null && this.components.Count == 0)
 				{
-					component.Entity = this;
-					this.componentDict.Add(component.GetType(), component);
+					this.components = null;
 				}
+				this.componentDict.Clear();
+				if (this.components != null)
+				{
+					foreach (Component component in this.components)
+					{
+						component.Entity = this;
+						this.componentDict.Add(component.GetType(), component);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
 			}
 		}
 	}

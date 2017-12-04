@@ -34,6 +34,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs" Link="Base\Object\IAwake.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdate.cs" Link="Base\Object\ILateUpdate.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs" Link="Base\Object\ILoad.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ISerializeToEntity.cs" Link="Base\Object\ISerializeToEntity.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStart.cs" Link="Base\Object\IStart.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdate.cs" Link="Base\Object\IUpdate.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />

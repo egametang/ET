@@ -9,7 +9,7 @@
 		}
 	}
 
-	public class UnitGateComponent : ComponentDB
+	public class UnitGateComponent : Component, ISerializeToEntity
 	{
 		public long GateSessionId;
 
