@@ -26,35 +26,35 @@ namespace Model
 			dbAddress = dbStartConfig.GetComponent<InnerConfig>().Address;
 		}
 
-		public async Task Save(Entity entity, bool needCache = true)
+		public async Task Save(Disposer disposer, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
-			await session.Call<DBSaveResponse>(new DBSaveRequest { Entity = entity, NeedCache = needCache});
+			await session.Call<DBSaveResponse>(new DBSaveRequest { Disposer = disposer, NeedCache = needCache});
 		}
 
-		public async Task SaveBatch(List<Entity> entitys, bool needCache = true)
+		public async Task SaveBatch(List<Disposer> disposers, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
-			await session.Call<DBSaveBatchResponse>(new DBSaveBatchRequest { Entitys = entitys, NeedCache = needCache});
+			await session.Call<DBSaveBatchResponse>(new DBSaveBatchRequest { Disposers = disposers, NeedCache = needCache});
 		}
 
-		public async Task Save(Entity entity, bool needCache, CancellationToken cancellationToken)
+		public async Task Save(Disposer disposer, bool needCache, CancellationToken cancellationToken)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
-			await session.Call<DBSaveResponse>(new DBSaveRequest { Entity = entity, NeedCache = needCache}, cancellationToken);
+			await session.Call<DBSaveResponse>(new DBSaveRequest { Disposer = disposer, NeedCache = needCache}, cancellationToken);
 		}
 
-		public async void SaveLog(Entity entity)
+		public async void SaveLog(Disposer disposer)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
-			await session.Call<DBSaveResponse>(new DBSaveRequest { Entity = entity,  NeedCache = false, CollectionName = "Log" });
+			await session.Call<DBSaveResponse>(new DBSaveRequest { Disposer = disposer,  NeedCache = false, CollectionName = "Log" });
 		}
 
 		public async Task<T> Query<T>(long id, bool needCache = true) where T: Entity
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryResponse dbQueryResponse = await session.Call<DBQueryResponse>(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id, NeedCache = needCache });
-			return (T)dbQueryResponse.Entity;
+			return (T)dbQueryResponse.Disposer;
 		}
 
 		public async Task<List<T>> QueryBatch<T>(List<long> ids, bool needCache = true) where T : Entity
@@ -62,9 +62,9 @@ namespace Model
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryBatchResponse dbQueryBatchResponse = await session.Call<DBQueryBatchResponse>(new DBQueryBatchRequest { CollectionName = typeof(T).Name, IdList = ids, NeedCache = needCache});
-			foreach (Entity entity in dbQueryBatchResponse.Entitys)
+			foreach (Disposer disposer in dbQueryBatchResponse.Disposers)
 			{
-				list.Add((T)entity);
+				list.Add((T)disposer);
 			}
 			return list;
 		}
@@ -74,9 +74,9 @@ namespace Model
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryJsonResponse dbQueryJsonResponse = await session.Call<DBQueryJsonResponse>(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json, NeedCache = needCache});
-			foreach (Entity entity in dbQueryJsonResponse.Entitys)
+			foreach (Disposer disposer in dbQueryJsonResponse.Disposers)
 			{
-				list.Add((T)entity);
+				list.Add((T)disposer);
 			}
 			return list;
 		}

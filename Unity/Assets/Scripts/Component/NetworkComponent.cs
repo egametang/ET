@@ -79,7 +79,7 @@ namespace Model
 		public virtual async Task<Session> Accept()
 		{
 			AChannel channel = await this.Service.AcceptChannel();
-			Session session = new Session(this, channel);
+			Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;
@@ -111,7 +111,7 @@ namespace Model
 			try
 			{
 				AChannel channel = this.Service.ConnectChannel(ipEndPoint);
-				Session session = new Session(this, channel);
+				Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.sessions.Add(session.Id, session);
 				return session;

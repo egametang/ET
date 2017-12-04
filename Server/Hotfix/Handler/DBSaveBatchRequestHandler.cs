@@ -15,18 +15,18 @@ namespace Hotfix
 
 				if (message.CollectionName == "")
 				{
-					message.CollectionName = message.Entitys[0].GetType().Name;
+					message.CollectionName = message.Disposers[0].GetType().Name;
 				}
 
 				if (message.NeedCache)
 				{
-					foreach (Entity entity in message.Entitys)
+					foreach (Disposer disposer in message.Disposers)
 					{
-						dbCacheComponent.AddToCache(entity, message.CollectionName);
+						dbCacheComponent.AddToCache(disposer, message.CollectionName);
 					}
 				}
 
-				await dbCacheComponent.AddBatch(message.Entitys, message.CollectionName);
+				await dbCacheComponent.AddBatch(message.Disposers, message.CollectionName);
 
 				reply(response);
 			}

@@ -6,20 +6,55 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+	[ObjectEvent]
+	public class SessionEvent : ObjectEvent<Session>, IAwake<NetworkComponent, AChannel>, IStart
+	{
+		public void Awake(NetworkComponent network, AChannel channel)
+		{
+			this.Get().Awake(network, channel);
+		}
+
+		public void Start()
+		{
+			this.Get().Start();
+		}
+	}
+
 	public sealed class Session : Entity
 	{
 		private static uint RpcId { get; set; }
-		private readonly NetworkComponent network;
+		private NetworkComponent network;
+		private AChannel channel;
+
 		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
-		private readonly AChannel channel;
 		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0]};
 		
-		public Session(NetworkComponent network, AChannel channel)
+		public void Awake(NetworkComponent net, AChannel c)
 		{
-			this.network = network;
-			this.channel = channel;
-			
+			this.network = net;
+			this.channel = c;
+			this.requestCallback.Clear();
+		}
+
+		public void Start()
+		{
 			this.StartRecv();
+		}
+
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+
+			long id = this.Id;
+
+			base.Dispose();
+
+			this.channel.Dispose();
+			this.network.Remove(id);
+			this.requestCallback.Clear();
 		}
 
 		public IPEndPoint RemoteAddress
@@ -317,21 +352,6 @@ namespace Model
 			this.byteses[1] = messageBytes;
 
 			channel.Send(this.byteses);
-		}
-
-		public override void Dispose()
-		{
-			if (this.Id == 0)
-			{
-				return;
-			}
-
-			long id = this.Id;
-
-			base.Dispose();
-			
-			this.channel.Dispose();
-			this.network.Remove(id);
 		}
 	}
 }

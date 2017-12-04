@@ -47,8 +47,10 @@ namespace Model
 
         public T Fetch<T>() where T: Disposer
 		{
-            return (T) this.Fetch(typeof(T));
-        }
+            T t = (T) this.Fetch(typeof(T));
+			t.IsFromPool = true;
+			return t;
+		}
         
         public void Recycle(Disposer obj)
         {

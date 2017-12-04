@@ -17,7 +17,7 @@ namespace Model
 	/// </summary>
 	public class DBCacheComponent : Component
 	{
-		public Dictionary<string, Dictionary<long, Entity>> cache = new Dictionary<string, Dictionary<long, Entity>>();
+		public Dictionary<string, Dictionary<long, Disposer>> cache = new Dictionary<string, Dictionary<long, Disposer>>();
 
 		public const int taskCount = 32;
 		public List<DBTaskQueue> tasks = new List<DBTaskQueue>(taskCount);
@@ -31,53 +31,53 @@ namespace Model
 			}
 		}
 
-		public Task<bool> Add(Entity entity, string collectionName = "")
+		public Task<bool> Add(Disposer disposer, string collectionName = "")
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-			this.AddToCache(entity, collectionName);
+			this.AddToCache(disposer, collectionName);
 
 			if (collectionName == "")
 			{
-				collectionName = entity.GetType().Name;
+				collectionName = disposer.GetType().Name;
 			}
-			DBSaveTask task = EntityFactory.CreateWithId<DBSaveTask, Entity, string, TaskCompletionSource<bool>>(entity.Id, entity, collectionName, tcs);
+			DBSaveTask task = EntityFactory.CreateWithId<DBSaveTask, Disposer, string, TaskCompletionSource<bool>>(disposer.Id, disposer, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 
 			return tcs.Task;
 		}
 
-		public Task<bool> AddBatch(List<Entity> entitys, string collectionName)
+		public Task<bool> AddBatch(List<Disposer> disposers, string collectionName)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			DBSaveBatchTask task = EntityFactory.Create<DBSaveBatchTask, List<Entity>, string, TaskCompletionSource<bool>>(entitys, collectionName, tcs);
+			DBSaveBatchTask task = EntityFactory.Create<DBSaveBatchTask, List<Disposer>, string, TaskCompletionSource<bool>>(disposers, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 			return tcs.Task;
 		}
 
-		public void AddToCache(Entity entity, string collectionName = "")
+		public void AddToCache(Disposer disposer, string collectionName = "")
 		{
 			if (collectionName == "")
 			{
-				collectionName = entity.GetType().Name;
+				collectionName = disposer.GetType().Name;
 			}
-			Dictionary<long, Entity> collection;
+			Dictionary<long, Disposer> collection;
 			if (!this.cache.TryGetValue(collectionName, out collection))
 			{
-				collection = new Dictionary<long, Entity>();
+				collection = new Dictionary<long, Disposer>();
 				this.cache.Add(collectionName, collection);
 			}
-			collection[entity.Id] = entity;
+			collection[disposer.Id] = disposer;
 		}
 
-		public Entity GetFromCache(string collectionName, long id)
+		public Disposer GetFromCache(string collectionName, long id)
 		{
-			Dictionary<long, Entity> d;
+			Dictionary<long, Disposer> d;
 			if (!this.cache.TryGetValue(collectionName, out d))
 			{
 				return null;
 			}
-			Entity result;
+			Disposer result;
 			if (!d.TryGetValue(id, out result))
 			{
 				return null;
@@ -87,7 +87,7 @@ namespace Model
 
 		public void RemoveFromCache(string collectionName, long id)
 		{
-			Dictionary<long, Entity> d;
+			Dictionary<long, Disposer> d;
 			if (!this.cache.TryGetValue(collectionName, out d))
 			{
 				return;
@@ -95,53 +95,53 @@ namespace Model
 			d.Remove(id);
 		}
 
-		public Task<Entity> Get(string collectionName, long id)
+		public Task<Disposer> Get(string collectionName, long id)
 		{
-			Entity entity = GetFromCache(collectionName, id);
+			Disposer entity = GetFromCache(collectionName, id);
 			if (entity != null)
 			{
 				return Task.FromResult(entity);
 			}
 
-			TaskCompletionSource<Entity> tcs = new TaskCompletionSource<Entity>();
-			DBQueryTask dbQueryTask = EntityFactory.CreateWithId<DBQueryTask, string, TaskCompletionSource<Entity>>(id, collectionName, tcs);
+			TaskCompletionSource<Disposer> tcs = new TaskCompletionSource<Disposer>();
+			DBQueryTask dbQueryTask = EntityFactory.CreateWithId<DBQueryTask, string, TaskCompletionSource<Disposer>>(id, collectionName, tcs);
 			this.tasks[(int)((ulong)id % taskCount)].Add(dbQueryTask);
 
 			return tcs.Task;
 		}
 
-		public Task<List<Entity>> GetBatch(string collectionName, List<long> idList)
+		public Task<List<Disposer>> GetBatch(string collectionName, List<long> idList)
 		{
-			List <Entity> entitys = new List<Entity>();
+			List <Disposer> disposers = new List<Disposer>();
 			bool isAllInCache = true;
 			foreach (long id in idList)
 			{
-				Entity entity = this.GetFromCache(collectionName, id);
+				Disposer entity = this.GetFromCache(collectionName, id);
 				if (entity == null)
 				{
 					isAllInCache = false;
 					break;
 				}
-				entitys.Add(entity);
+				disposers.Add(entity);
 			}
 
 			if (isAllInCache)
 			{
-				return Task.FromResult(entitys);
+				return Task.FromResult(disposers);
 			}
 
-			TaskCompletionSource<List<Entity>> tcs = new TaskCompletionSource<List<Entity>>();
-			DBQueryBatchTask dbQueryBatchTask = EntityFactory.Create<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Entity>>>(idList, collectionName, tcs);
+			TaskCompletionSource<List<Disposer>> tcs = new TaskCompletionSource<List<Disposer>>();
+			DBQueryBatchTask dbQueryBatchTask = EntityFactory.Create<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Disposer>>>(idList, collectionName, tcs);
 			this.tasks[(int)((ulong)dbQueryBatchTask.Id % taskCount)].Add(dbQueryBatchTask);
 
 			return tcs.Task;
 		}
 
-		public Task<List<Entity>> GetJson(string collectionName, string json)
+		public Task<List<Disposer>> GetJson(string collectionName, string json)
 		{
-			TaskCompletionSource<List<Entity>> tcs = new TaskCompletionSource<List<Entity>>();
+			TaskCompletionSource<List<Disposer>> tcs = new TaskCompletionSource<List<Disposer>>();
 			
-			DBQueryJsonTask dbQueryJsonTask = EntityFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource< List < Entity >>>(collectionName, json, tcs);
+			DBQueryJsonTask dbQueryJsonTask = EntityFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource<List<Disposer>>>(collectionName, json, tcs);
 			this.tasks[(int)((ulong)dbQueryJsonTask.Id % taskCount)].Add(dbQueryJsonTask);
 
 			return tcs.Task;

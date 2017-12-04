@@ -14,14 +14,14 @@ namespace Hotfix
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 				if (message.CollectionName == "")
 				{
-					message.CollectionName = message.Entity.GetType().Name;
+					message.CollectionName = message.Disposer.GetType().Name;
 				}
 
 				if (message.NeedCache)
 				{
-					dbCacheComponent.AddToCache(message.Entity, message.CollectionName);
+					dbCacheComponent.AddToCache(message.Disposer, message.CollectionName);
 				}
-				await dbCacheComponent.Add(message.Entity, message.CollectionName);
+				await dbCacheComponent.Add(message.Disposer, message.CollectionName);
 				reply(response);
 			}
 			catch (Exception e)

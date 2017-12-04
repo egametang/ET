@@ -13,15 +13,15 @@ namespace Hotfix
 			try
 			{
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				List<Entity> entitys = await dbCacheComponent.GetJson(message.CollectionName, message.Json);
+				List<Disposer> disposers = await dbCacheComponent.GetJson(message.CollectionName, message.Json);
 
-				response.Entitys = entitys;
+				response.Disposers = disposers;
 
 				if (message.NeedCache)
 				{
-					foreach (Entity entity in entitys)
+					foreach (Disposer disposer in disposers)
 					{
-						dbCacheComponent.AddToCache(entity, message.CollectionName);
+						dbCacheComponent.AddToCache(disposer, message.CollectionName);
 					}
 				}
 

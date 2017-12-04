@@ -7,9 +7,9 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectEvent]
-	public class DBQueryBatchTaskEvent : ObjectEvent<DBQueryBatchTask>, IAwake<List<long>, string, TaskCompletionSource<List<Entity>>>
+	public class DBQueryBatchTaskEvent : ObjectEvent<DBQueryBatchTask>, IAwake<List<long>, string, TaskCompletionSource<List<Disposer>>>
 	{
-		public void Awake(List<long> idList, string collectionName, TaskCompletionSource<List<Entity>> tcs)
+		public void Awake(List<long> idList, string collectionName, TaskCompletionSource<List<Disposer>> tcs)
 		{
 			DBQueryBatchTask self = this.Get();
 
@@ -25,31 +25,31 @@ namespace Model
 
 		public List<long> IdList { get; set; }
 
-		public TaskCompletionSource<List<Entity>> Tcs { get; set; }
+		public TaskCompletionSource<List<Disposer>> Tcs { get; set; }
 		
 		public override async Task Run()
 		{
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
-			List<Entity> result = new List<Entity>();
+			List<Disposer> result = new List<Disposer>();
 
 			try
 			{
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					Entity entity = dbCacheComponent.GetFromCache(this.CollectionName, id);
-					if (entity == null)
+					Disposer disposer = dbCacheComponent.GetFromCache(this.CollectionName, id);
+					if (disposer == null)
 					{
-						entity = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
-						dbCacheComponent.AddToCache(entity);
+						disposer = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
+						dbCacheComponent.AddToCache(disposer);
 					}
 					
-					if (entity == null)
+					if (disposer == null)
 					{
 						continue;
 					}
-					result.Add(entity);
+					result.Add(disposer);
 				}
 				
 				this.Tcs.SetResult(result);
