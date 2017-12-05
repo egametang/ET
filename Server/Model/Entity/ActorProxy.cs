@@ -94,10 +94,10 @@ namespace Model
 		public string Address;
 
 		// 已发送等待回应的消息
-		public EQueue<ActorTask> RunningTasks;
+		public EQueue<ActorTask> RunningTasks = new EQueue<ActorTask>();
 
 		// 还没发送的消息
-		public EQueue<ActorTask> WaitingTasks;
+		public EQueue<ActorTask> WaitingTasks = new EQueue<ActorTask>();
 
 		// 发送窗口大小
 		public int WindowSize = 1;
@@ -117,9 +117,10 @@ namespace Model
 		public void Awake()
 		{
 			this.LastSendTime = TimeHelper.Now();
-			this.RunningTasks = new EQueue<ActorTask>();
-			this.WaitingTasks = new EQueue<ActorTask>();
+			this.RunningTasks.Clear();
+			this.WaitingTasks.Clear();
 			this.WindowSize = 1;
+			this.tcs = null;
 			this.CancellationTokenSource = new CancellationTokenSource();
 		}
 		
@@ -307,7 +308,14 @@ namespace Model
 
 			base.Dispose();
 
-			this.tcs?.SetResult(null);
+			this.LastSendTime = 0;
+			this.Address = "";
+			this.RunningTasks.Clear();
+			this.WaitingTasks.Clear();
+			this.failTimes = 0;
+			var t = this.tcs;
+			this.tcs = null;
+			t?.SetResult(null);
 		}
 	}
 }
