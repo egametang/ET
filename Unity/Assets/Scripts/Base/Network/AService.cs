@@ -13,8 +13,6 @@ namespace Model
 
 	public abstract class AService: IDisposable
 	{
-		public abstract void Add(Action action);
-
 		public abstract AChannel GetChannel(long id);
 
 		public abstract Task<AChannel> AcceptChannel();

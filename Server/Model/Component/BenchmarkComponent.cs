@@ -26,7 +26,7 @@ namespace Model
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
 					this.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
@@ -43,7 +43,7 @@ namespace Model
 				using (Session session = networkComponent.Create(ipEndPoint))
 				{
 					int i = 0;
-					while (i < 1000000000)
+					while (i < 100000000)
 					{
 						++i;
 						await this.Send(session, j);

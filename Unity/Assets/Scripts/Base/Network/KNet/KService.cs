@@ -33,7 +33,6 @@ namespace Model
 
 		// 下次时间更新的channel
 		private readonly MultiMap<long, long> timerMap = new MultiMap<long, long>();
-		private readonly Queue<long> timeoutTimer = new Queue<long>();
 
 		public KService(IPEndPoint ipEndPoint)
 		{
@@ -211,11 +210,7 @@ namespace Model
 		{
 			this.timerMap.Add(time, id);
 		}
-
-		public override void Add(Action action)
-		{
-		}
-
+		
 		public override AChannel GetChannel(long id)
 		{
 			KChannel channel;
@@ -254,26 +249,25 @@ namespace Model
 		public override void Update()
 		{
 			this.TimeNow = (uint)TimeHelper.Now();
-			
-			foreach (long time in this.timerMap.Keys)
+
+			while (true)
 			{
-				if (time > this.TimeNow)
+				if (this.timerMap.Count <= 0)
 				{
 					break;
 				}
-				this.timeoutTimer.Enqueue(time);
-			}
-			while (this.timeoutTimer.Count > 0)
-			{
-				long key = this.timeoutTimer.Dequeue();
-				List<long> timeOutId = this.timerMap[key];
+				var kv = this.timerMap.First();
+				if (kv.Key > TimeNow)
+				{
+					break;
+				}
+				List<long> timeOutId = kv.Value;
 				foreach (long id in timeOutId)
 				{
 					this.updateChannels.Add(id);
 				}
-				this.timerMap.Remove(key);
+				this.timerMap.Remove(kv.Key);
 			}
-
 			foreach (long id in updateChannels)
 			{
 				KChannel kChannel;

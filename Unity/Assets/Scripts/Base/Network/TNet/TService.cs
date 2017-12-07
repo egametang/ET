@@ -43,12 +43,7 @@ namespace Model
 			this.acceptor.Stop();
 			this.acceptor = null;
 		}
-
-		public override void Add(Action action)
-		{
-			this.actions.Enqueue(action);
-		}
-
+		
 		public override AChannel GetChannel(long id)
 		{
 			TChannel channel = null;

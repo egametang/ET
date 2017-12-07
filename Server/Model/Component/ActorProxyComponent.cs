@@ -5,7 +5,7 @@ namespace Model
 	[ObjectEvent]
 	public class ActorProxyComponentEvent : ObjectEvent<ActorProxyComponent>, IStart
 	{
-		// 每分钟扫描一次过期的actorproxy进行回收,过期时间是5分钟
+		// 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟
 		public async void Start()
 		{
 			ActorProxyComponent self = this.Get();
@@ -14,7 +14,7 @@ namespace Model
 
 			while (true)
 			{
-				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(60000);
+				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
 
 				if (self.Id == 0)
 				{
@@ -32,7 +32,7 @@ namespace Model
 						continue;
 					}
 
-					if (timeNow < actorProxy.LastSendTime + 5 * 60000)
+					if (timeNow < actorProxy.LastSendTime + 10000)
 					{
 						continue;
 					}
@@ -51,6 +51,20 @@ namespace Model
 	public class ActorProxyComponent: Component
 	{
 		public readonly Dictionary<long, ActorProxy> ActorProxys = new Dictionary<long, ActorProxy>();
+
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+			base.Dispose();
+			foreach (ActorProxy actorProxy in this.ActorProxys.Values)
+			{
+				actorProxy.Dispose();
+			}
+			this.ActorProxys.Clear();
+		}
 
 		public ActorProxy Get(long id)
 		{
