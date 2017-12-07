@@ -26,14 +26,14 @@ namespace Hotfix
 	{
 		public static void Awake(this NetOuterComponent self)
 		{
-			self.Awake(NetworkProtocol.KCP);
+			self.Awake(NetworkProtocol.TCP);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 
 		public static void Awake(this NetOuterComponent self, IPEndPoint ipEndPoint)
 		{
-			self.Awake(NetworkProtocol.KCP, ipEndPoint);
+			self.Awake(NetworkProtocol.TCP, ipEndPoint);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
