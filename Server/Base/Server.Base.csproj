@@ -6,14 +6,18 @@
     <RootNamespace>Model</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>bin\Debug\..\..\..\..\</OutputPath>
+    <OutputPath>bin\Debug\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>bin\Release\..\..\..\..\</OutputPath>
+    <OutputPath>bin\Release\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,13 +59,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocketManager.cs" Link="Network\UNet\USocketManager.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="QueueDictionary.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="TryLocker.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Helper\" />
-    <Folder Include="Network\TNet\" />
-    <Folder Include="Network\UNet\" />
-    <Folder Include="Network\KNet\" />
   </ItemGroup>
 
   <ItemGroup>

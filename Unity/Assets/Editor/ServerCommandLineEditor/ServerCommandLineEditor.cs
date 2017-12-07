@@ -354,7 +354,7 @@ namespace MyEditor
 
 				string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
 
-				ProcessStartInfo info = new ProcessStartInfo("dotnet", arguments) { UseShellExecute = true, WorkingDirectory = @"../netcoreapp2.0/" };
+				ProcessStartInfo info = new ProcessStartInfo("dotnet", arguments) { UseShellExecute = true, WorkingDirectory = @"../Bin/" };
 				Process.Start(info);
 			}
 			GUILayout.EndHorizontal();

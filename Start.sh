@@ -7,6 +7,6 @@ then
     exit 9
 fi
 
-cd netcoreapp2.0
+cd Bin
 ps -ef | grep App.exe | awk '{print $2}' | xargs kill -9
 dotnet App.dll --appId=1 --appType=Manager --config=../$1
