@@ -57,9 +57,11 @@ namespace Model
 			catch (SocketException e)
 			{
 				Log.Error($"connect error: {e.SocketErrorCode}");
+				this.OnError(this, e.SocketErrorCode);
 			}
 			catch (Exception e)
 			{
+				this.OnError(this, SocketError.SocketError);
 				Log.Error($"connect error: {ipEndPoint} {e}");
 			}
 		}
