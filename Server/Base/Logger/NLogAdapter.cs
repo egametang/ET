@@ -10,6 +10,11 @@ namespace Model
 		{
 		}
 
+		public void Trace(string message)
+		{
+			this.logger.Trace(this.Decorate(message));
+		}
+
 		public void Warning(string message)
 		{
 			this.logger.Warn(this.Decorate(message));

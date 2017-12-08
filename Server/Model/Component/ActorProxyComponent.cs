@@ -85,6 +85,7 @@ namespace Model
 			{
 				return;
 			}
+			this.ActorProxys.Remove(id);
 			actorProxy.Dispose();
 		}
 	}
