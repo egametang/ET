@@ -74,7 +74,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\Platform\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\..\..\netcoreapp2.0</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\Bin</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Temp</IntDir>
     <TargetExt>.dll</TargetExt>
     <TargetName>$(ProjectName)</TargetName>
@@ -84,17 +84,17 @@
     <TargetName>$(ProjectName)</TargetName>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\Platform\;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)..\..\..\netcoreapp2.0</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\Bin</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Temp\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\..\..\netcoreapp2.0</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\Bin</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Temp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\..\..\netcoreapp2.0</OutDir>
+    <OutDir>$(ProjectDir)..\..\..\Bin</OutDir>
     <IntDir>$(ProjectDir)..\..\..\Temp</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

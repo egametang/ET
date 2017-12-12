@@ -7,20 +7,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CF118143-7E37-744F-BE45-3F55345FEC40}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>iOS:9</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -228,12 +225,12 @@
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AService.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\KNet\Kcp.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\Circularbuffer.cs" />
     <Compile Include="Assets\Scripts\Base\Network\KNet\KChannel.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\KNet\Kcp.cs" />
     <Compile Include="Assets\Scripts\Base\Network\KNet\KService.cs" />
     <Compile Include="Assets\Scripts\Base\Network\NetworkHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\PacketParser.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\Circularbuffer.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TService.cs" />
     <Compile Include="Assets\Scripts\Base\Network\UNet\Library.cs" />
@@ -247,17 +244,18 @@
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocket.cs" />
     <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ComponentDB.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Disposer.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\EntityDB.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EntityAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoad.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IStart.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />

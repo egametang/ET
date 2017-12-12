@@ -11,7 +11,7 @@ namespace Model
 	[BsonKnownTypes(typeof(HttpConfig))]
 	[BsonKnownTypes(typeof(DBConfig))]
 	[BsonKnownTypes(typeof(RunServerConfig))]
-	public abstract class AConfigComponent: ComponentDB
+	public abstract class AConfigComponent: Component, ISerializeToEntity
 	{
 	}
 }

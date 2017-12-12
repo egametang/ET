@@ -143,9 +143,7 @@ namespace Model
 				this.OnError(this, SocketError.Disconnecting);
 				return;
 			}
-
 			this.kcp.Update(timeNow);
-
 			uint nextUpdateTime = this.kcp.Check(timeNow);
 			this.GetService().AddToNextTimeUpdate(nextUpdateTime, this.Id);
 		}

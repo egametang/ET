@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Model
 {
@@ -9,12 +10,9 @@ namespace Model
 		// 重用list
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
 
-		public SortedDictionary<T, List<K>>.KeyCollection Keys
+		public SortedDictionary<T, List<K>> GetDictionary()
 		{
-			get
-			{
-				return this.dictionary.Keys;
-			}
+			return this.dictionary;
 		}
 
 		public void Add(T t, K k)
@@ -27,6 +25,19 @@ namespace Model
 			}
 			list.Add(k);
 			this.dictionary[t] = list;
+		}
+
+		public KeyValuePair<T, List<K>> First()
+		{
+			return this.dictionary.First();
+		}
+
+		public int Count
+		{
+			get
+			{
+				return this.dictionary.Count;
+			}
 		}
 
 		private List<K> FetchList()

@@ -94,10 +94,10 @@ namespace Model
 		public string Address;
 
 		// 已发送等待回应的消息
-		public EQueue<ActorTask> RunningTasks;
+		public EQueue<ActorTask> RunningTasks = new EQueue<ActorTask>();
 
 		// 还没发送的消息
-		public EQueue<ActorTask> WaitingTasks;
+		public EQueue<ActorTask> WaitingTasks = new EQueue<ActorTask>();
 
 		// 发送窗口大小
 		public int WindowSize = 1;
@@ -117,21 +117,51 @@ namespace Model
 		public void Awake()
 		{
 			this.LastSendTime = TimeHelper.Now();
-			this.RunningTasks = new EQueue<ActorTask>();
-			this.WaitingTasks = new EQueue<ActorTask>();
+			this.RunningTasks.Clear();
+			this.WaitingTasks.Clear();
 			this.WindowSize = 1;
+			this.tcs = null;
 			this.CancellationTokenSource = new CancellationTokenSource();
 		}
-		
-		public void Start()
+
+		public override void Dispose()
 		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+
+			base.Dispose();
+			this.LastSendTime = 0;
+			this.Address = null;
+			this.RunningTasks.Clear();
+			this.WaitingTasks.Clear();
+			this.failTimes = 0;
+			var t = this.tcs;
+			this.tcs = null;
+			t?.SetResult(null);
+		}
+
+		public async void Start()
+		{
+			int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
+			this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
+
 			this.UpdateAsync();
 		}
 
 		private void Add(ActorTask task)
 		{
+			if (this.Id == 0)
+			{
+				throw new Exception("ActorProxy Disposed! dont hold actorproxy");
+			}
 			this.WaitingTasks.Enqueue(task);
-			this.AllowGet();
+			// failtimes > 0表示正在重试，这时候不能加到正在发送队列
+			if (this.failTimes == 0)
+			{
+				this.AllowGet();
+			}
 		}
 
 		private void Remove()
@@ -146,8 +176,7 @@ namespace Model
 			{
 				return;
 			}
-
-
+			
 			ActorTask task = this.WaitingTasks.Dequeue();
 			this.RunningTasks.Enqueue(task);
 
@@ -171,18 +200,13 @@ namespace Model
 
 		private async void UpdateAsync()
 		{
-			if (this.Address == null)
-			{
-				int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
-				this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
-			}
 			while (true)
 			{
+				ActorTask actorTask = await this.GetAsync();
 				if (this.Id == 0)
 				{
 					return;
 				}
-				ActorTask actorTask = await this.GetAsync();
 				if (actorTask == null)
 				{
 					return;
@@ -232,7 +256,6 @@ namespace Model
 						Game.Scene.GetComponent<ActorProxyComponent>().Remove(this.Id);
 						return;
 					}
-					
 					// 等待一会再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
 					int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
@@ -243,6 +266,7 @@ namespace Model
 				}
 
 				// 发送成功
+				this.LastSendTime = TimeHelper.Now();
 				this.failTimes = 0;
 				if (this.WindowSize < MaxWindowSize)
 				{
@@ -258,14 +282,12 @@ namespace Model
 
 		public void Send(AMessage message)
 		{
-			this.LastSendTime = TimeHelper.Now();
 			ActorMessageTask task = new ActorMessageTask(this, message);
 			this.Add(task);
 		}
 
 		public Task<Response> Call<Response>(ARequest request)where Response : AResponse
 		{
-			this.LastSendTime = TimeHelper.Now();
 			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
 			this.Add(task);
 			return task.Tcs.Task;
@@ -296,18 +318,6 @@ namespace Model
 				s += $" {task.message.GetType().Name}";
 			}
 			return s;
-		}
-
-		public override void Dispose()
-		{
-			if (this.Id == 0)
-			{
-				return;
-			}
-
-			base.Dispose();
-
-			this.tcs?.SetResult(null);
 		}
 	}
 }

@@ -1,4 +1,7 @@
-﻿namespace Model
+﻿using System.Diagnostics;
+using ILRuntime.Runtime;
+
+namespace Model
 {
 	public static class Log
 	{
@@ -20,10 +23,6 @@
 		public static void Debug(string msg)
 		{
 			UnityEngine.Debug.Log(msg);
-		}
-		
-		public static void Flush()
-		{
 		}
 	}
 }

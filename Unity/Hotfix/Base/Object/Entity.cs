@@ -59,7 +59,7 @@ namespace Hotfix
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -81,7 +81,7 @@ namespace Hotfix
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -103,7 +103,7 @@ namespace Hotfix
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -125,7 +125,7 @@ namespace Hotfix
 				this.components = new HashSet<Component>();
 			}
 
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}

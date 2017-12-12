@@ -3,8 +3,7 @@
 namespace Model
 {
 	[BsonIgnoreExtraElements]
-	[BsonKnownTypes(typeof(AConfigComponent))]
-	public abstract class Component: Disposer
+	public abstract partial class Component: Disposer
 	{
 		[BsonIgnore]
 		public Entity Entity { get; set; }

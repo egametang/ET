@@ -13,7 +13,7 @@ namespace Model
 		}
 	}
 
-	public class NumericComponent : ComponentDB
+	public class NumericComponent : Component, ISerializeToEntity
 	{
 		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
 		public Dictionary<NumericType, int> NumericDic;

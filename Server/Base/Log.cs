@@ -4,6 +4,11 @@
 	{
 		private static readonly ILog globalLog = new NLogAdapter();
 
+		public static void Trace(string message)
+		{
+			globalLog.Trace(message);
+		}
+
 		public static void Warning(string message)
 		{
 			globalLog.Warning(message);

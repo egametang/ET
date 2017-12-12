@@ -20,7 +20,7 @@ namespace Model
 		}
 	}
 
-	public class TimerComponent: Component
+	public class TimerComponent : Component
 	{
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
 
@@ -29,24 +29,23 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly EQueue<long> timeoutTimer = new EQueue<long>();
-
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
-			foreach (long time in this.timeId.Keys)
+
+			while (true)
 			{
-				if (time > timeNow)
+				if (this.timeId.Count <= 0)
+				{
+					return;
+				}
+				var kv = this.timeId.First();
+				if (kv.Key > timeNow)
 				{
 					break;
 				}
-				this.timeoutTimer.Enqueue(time);
-			}
 
-			while (this.timeoutTimer.Count > 0)
-			{
-				long key = this.timeoutTimer.Dequeue();
-				List<long> timeOutId = this.timeId[key];
+				List<long> timeOutId = kv.Value;
 				foreach (long id in timeOutId)
 				{
 					Timer timer;
@@ -56,7 +55,8 @@ namespace Model
 					}
 					timer.tcs.SetResult(true);
 				}
-				this.timeId.Remove(key);
+
+				this.timeId.Remove(kv.Key);
 			}
 		}
 

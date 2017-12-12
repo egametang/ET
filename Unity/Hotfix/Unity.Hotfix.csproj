@@ -64,7 +64,6 @@
     <Compile Include="Base\Message\AMHandler.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
     <Compile Include="Base\Object\Component.cs" />
-    <Compile Include="Base\Object\ComponentDB.cs" />
     <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Disposer.cs" />
     <Compile Include="Base\Object\Entity.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Base\Object\IAwake.cs" />
     <Compile Include="Base\Object\ILateUpdate.cs" />
     <Compile Include="Base\Object\ILoad.cs" />
+    <Compile Include="Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Base\Object\IUpdate.cs" />
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\ObjectEvents.cs" />

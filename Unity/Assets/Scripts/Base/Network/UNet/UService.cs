@@ -60,10 +60,6 @@ namespace Model
 			return channel;
 		}
 
-		public override void Add(Action action)
-		{
-		}
-
 		public override AChannel GetChannel(long id)
 		{
 			UChannel channel = null;

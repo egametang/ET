@@ -16,6 +16,7 @@ namespace Hotfix
 				{
 					response.Error = ErrorCode.ERR_NotFoundUnit;
 					reply(response);
+					return;
 				}
 
 				await unit.GetComponent<MasterComponent>().Lock(message.Address);
