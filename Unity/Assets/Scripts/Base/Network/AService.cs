@@ -7,7 +7,6 @@ namespace Model
 	public enum NetworkProtocol
 	{
 		TCP,
-		UDP,
 		KCP,
 	}
 

@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>iOS:9</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -233,16 +236,6 @@
     <Compile Include="Assets\Scripts\Base\Network\TNet\PacketParser.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\TNet\TService.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\Library.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\NativeMethods.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\NativeStructs.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\UAddress.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\UChannel.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\UPacket.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\UPoller.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\UService.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\USocket.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\UNet\USocketManager.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />

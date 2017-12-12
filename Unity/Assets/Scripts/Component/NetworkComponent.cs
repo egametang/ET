@@ -25,9 +25,6 @@ namespace Model
 				case NetworkProtocol.TCP:
 					this.Service = new TService();
 					break;
-				case NetworkProtocol.UDP:
-					this.Service = new UService();
-					break;
 				case NetworkProtocol.KCP:
 					this.Service = new KService();
 					break;
@@ -44,9 +41,6 @@ namespace Model
 				{
 					case NetworkProtocol.TCP:
 						this.Service = new TService(ipEndPoint);
-						break;
-					case NetworkProtocol.UDP:
-						this.Service = new UService(ipEndPoint);
 						break;
 					case NetworkProtocol.KCP:
 						this.Service = new KService(ipEndPoint);

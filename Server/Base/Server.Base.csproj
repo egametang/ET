@@ -47,16 +47,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Network\TNet\PacketParser.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Network\TNet\TChannel.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TService.cs" Link="Network\TNet\TService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\Library.cs" Link="Network\UNet\Library.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeMethods.cs" Link="Network\UNet\NativeMethods.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\NativeStructs.cs" Link="Network\UNet\NativeStructs.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UAddress.cs" Link="Network\UNet\UAddress.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UChannel.cs" Link="Network\UNet\UChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPacket.cs" Link="Network\UNet\UPacket.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UPoller.cs" Link="Network\UNet\UPoller.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\UService.cs" Link="Network\UNet\UService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocket.cs" Link="Network\UNet\USocket.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\UNet\USocketManager.cs" Link="Network\UNet\USocketManager.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="QueueDictionary.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="TryLocker.cs" />
   </ItemGroup>
