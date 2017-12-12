@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	public class Location: EntityDB
+	public class Location: Entity
 	{
 		public string Address;
 
