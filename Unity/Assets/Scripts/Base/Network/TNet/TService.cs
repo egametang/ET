@@ -12,8 +12,6 @@ namespace Model
 		private TcpListener acceptor;
 
 		private readonly Dictionary<long, TChannel> idChannels = new Dictionary<long, TChannel>();
-
-		private readonly EQueue<Action> actions = new EQueue<Action>();
 		
 		/// <summary>
 		/// 即可做client也可做server
@@ -87,14 +85,9 @@ namespace Model
 			this.idChannels.Remove(id);
 			channel.Dispose();
 		}
-		
+
 		public override void Update()
 		{
-			while (this.actions.Count > 0)
-			{
-				Action action = this.actions.Dequeue();
-				action();
-			}
 		}
 	}
 }

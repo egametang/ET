@@ -88,7 +88,7 @@ namespace Model
 				// accept
 				uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
 				
-				// conn从1000开始，如果为1，2则是特殊包
+				// conn从1000开始，如果为1，2，3则是特殊包
 				if (conn == KcpProtocalType.SYN)
 				{
 					this.HandleAccept(udpReceiveResult);
