@@ -13,7 +13,7 @@ namespace Model
 		public const uint FIN = 3;
 	}
 
-	public sealed class KService: AService
+	public sealed class KService : AService
 	{
 		private uint IdGenerater = 1000;
 		private uint IdAccept = 2000000000;
@@ -21,7 +21,7 @@ namespace Model
 		public uint TimeNow { get; set; }
 
 		private UdpClient socket;
-		
+
 		private readonly Dictionary<long, KChannel> idChannels = new Dictionary<long, KChannel>();
 
 		private TaskCompletionSource<AChannel> acceptTcs;
@@ -39,8 +39,8 @@ namespace Model
 			this.TimeNow = (uint)TimeHelper.Now();
 			this.socket = new UdpClient(ipEndPoint);
 
-			uint IOC_IN = 0x80000000;
-			uint IOC_VENDOR = 0x18000000;
+			const uint IOC_IN = 0x80000000;
+			const uint IOC_VENDOR = 0x18000000;
 			uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
 			this.socket.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
 
@@ -85,30 +85,48 @@ namespace Model
 					continue;
 				}
 
+				int messageLength = udpReceiveResult.Buffer.Length;
+
+				// 长度小于4，不是正常的消息
+				if (messageLength < 4)
+				{
+					continue;
+				}
+
 				// accept
 				uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
-				
+
 				// conn从1000开始，如果为1，2，3则是特殊包
-				if (conn == KcpProtocalType.SYN)
+				switch (conn)
 				{
-					this.HandleAccept(udpReceiveResult);
-					continue;
+					case KcpProtocalType.SYN:
+						// 长度!=8，不是accpet消息
+						if (messageLength != 8)
+						{
+							break;
+						}
+						this.HandleAccept(udpReceiveResult);
+						break;
+					case KcpProtocalType.ACK:
+						// 长度!=12，不是connect消息
+						if (messageLength != 12)
+						{
+							break;
+						}
+						this.HandleConnect(udpReceiveResult);
+						break;
+					case KcpProtocalType.FIN:
+						// 长度!=12，不是DisConnect消息
+						if (messageLength != 12)
+						{
+							break;
+						}
+						this.HandleDisConnect(udpReceiveResult);
+						break;
+					default:
+						this.HandleRecv(udpReceiveResult, conn);
+						break;
 				}
-				
-				// connect response
-				if (conn == KcpProtocalType.ACK)
-				{
-					this.HandleConnect(udpReceiveResult);
-					continue;
-				}
-
-				if (conn == KcpProtocalType.FIN)
-				{
-					this.HandleDisConnect(udpReceiveResult);
-					continue;
-				}
-
-				this.HandleRecv(udpReceiveResult, conn);
 			}
 		}
 
@@ -116,7 +134,7 @@ namespace Model
 		{
 			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
 			uint responseConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
-			
+
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
 			{
@@ -129,7 +147,7 @@ namespace Model
 		private void HandleDisConnect(UdpReceiveResult udpReceiveResult)
 		{
 			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
-			
+
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
 			{
@@ -159,7 +177,7 @@ namespace Model
 			}
 
 			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
-			
+
 			// 如果已经连接上,则重新响应请求
 			KChannel kChannel;
 			if (this.idChannels.TryGetValue(requestConn, out kChannel))
@@ -167,7 +185,7 @@ namespace Model
 				kChannel.HandleAccept(requestConn);
 				return;
 			}
-			
+
 			TaskCompletionSource<AChannel> t = this.acceptTcs;
 			this.acceptTcs = null;
 			kChannel = this.CreateAcceptChannel(udpReceiveResult.RemoteEndPoint, requestConn);
@@ -187,7 +205,7 @@ namespace Model
 			this.idChannels[channel.Id] = channel;
 			return channel;
 		}
-		
+
 		private KChannel CreateConnectChannel(IPEndPoint remoteEndPoint)
 		{
 			KChannel channel = new KChannel(++this.IdGenerater, this.socket, remoteEndPoint, this);
@@ -210,7 +228,7 @@ namespace Model
 		{
 			this.timerMap.Add(time, id);
 		}
-		
+
 		public override AChannel GetChannel(long id)
 		{
 			KChannel channel;
@@ -245,7 +263,7 @@ namespace Model
 			this.removedChannels.Enqueue(id);
 			channel.Dispose();
 		}
-		
+
 		public override void Update()
 		{
 			this.TimeNow = (uint)TimeHelper.Now();

@@ -28,14 +28,14 @@ namespace Model
 
 	internal class PacketParser
 	{
-		private readonly Circularbuffer buffer;
+		private readonly CircularBuffer buffer;
 
 		private ushort packetSize;
 		private ParserState state;
 		private Packet packet = new Packet(8 * 1024);
 		private bool isOK;
 
-		public PacketParser(Circularbuffer buffer)
+		public PacketParser(CircularBuffer buffer)
 		{
 			this.buffer = buffer;
 		}

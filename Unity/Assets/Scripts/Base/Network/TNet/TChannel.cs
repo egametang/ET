@@ -12,8 +12,8 @@ namespace Model
 	{
 		private readonly TcpClient tcpClient;
 
-		private readonly Circularbuffer recvBuffer = new Circularbuffer();
-		private readonly Circularbuffer sendBuffer = new Circularbuffer();
+		private readonly CircularBuffer recvBuffer = new CircularBuffer();
+		private readonly CircularBuffer sendBuffer = new CircularBuffer();
 
 		private bool isSending;
 		private readonly PacketParser parser;

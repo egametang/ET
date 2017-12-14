@@ -228,7 +228,7 @@
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AService.cs" />
-    <Compile Include="Assets\Scripts\Base\Network\Circularbuffer.cs" />
+    <Compile Include="Assets\Scripts\Base\Network\CircularBuffer.cs" />
     <Compile Include="Assets\Scripts\Base\Network\KNet\KChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\KNet\Kcp.cs" />
     <Compile Include="Assets\Scripts\Base\Network\KNet\KService.cs" />

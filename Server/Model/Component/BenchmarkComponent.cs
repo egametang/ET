@@ -19,14 +19,13 @@ namespace Model
 
 		private long time1 = TimeHelper.ClientNow();
 
-		public async void Awake(IPEndPoint ipEndPoint)
+		public void Awake(IPEndPoint ipEndPoint)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				for (int i = 0; i < 1000; i++)
+				for (int i = 0; i < 100; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
 					this.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}

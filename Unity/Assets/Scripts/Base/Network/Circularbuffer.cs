@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Model
 {
-    public class Circularbuffer
+    public class CircularBuffer
     {
         public int ChunkSize = 8192;
 
@@ -15,22 +14,18 @@ namespace Model
         public int LastIndex { get; set; }
 
         public int FirstIndex { get; set; }
-
-        private byte[] firstBuffer;
-
+		
         private byte[] lastBuffer;
 
-        public Circularbuffer()
+        public CircularBuffer()
         {
             this.AddLast();
-            this.firstBuffer = bufferQueue.Peek();
         }
 
-        public Circularbuffer(int chunkSize)
+        public CircularBuffer(int chunkSize)
         {
             this.ChunkSize = chunkSize;
             this.AddLast();
-            this.firstBuffer = bufferQueue.Peek();
         }
 
         public int Count
@@ -72,8 +67,6 @@ namespace Model
         public void RemoveFirst()
         {
             this.bufferCache.Enqueue(bufferQueue.Dequeue());
-            if (this.bufferQueue.Count != 0)
-                this.firstBuffer = bufferQueue.Peek();
         }
 
         public byte[] First
@@ -84,8 +77,7 @@ namespace Model
                 {
                     this.AddLast();
                 }
-                this.firstBuffer = this.bufferQueue.Peek();
-                return this.firstBuffer;
+                return this.bufferQueue.Peek();
             }
         }
 
@@ -113,13 +105,13 @@ namespace Model
                 int n = count - alreadyCopyCount;
                 if (ChunkSize - this.FirstIndex > n)
                 {
-                    Array.Copy(this.firstBuffer, this.FirstIndex, buffer, alreadyCopyCount, n);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount, n);
                     this.FirstIndex += n;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    Array.Copy(this.firstBuffer, this.FirstIndex, buffer, alreadyCopyCount, ChunkSize - this.FirstIndex);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount, ChunkSize - this.FirstIndex);
                     alreadyCopyCount += ChunkSize - this.FirstIndex;
                     this.FirstIndex = 0;
                     this.RemoveFirst();
