@@ -138,12 +138,12 @@ namespace Model
 		{
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake1");
 			}
 			IAwake<P1> iAwake = objectEvent as IAwake<P1>;
 			if (iAwake == null)
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake1");
 			}
 			objectEvent.Set(disposer);
 			iAwake.Awake(p1);
@@ -153,12 +153,12 @@ namespace Model
 		{
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake2");
 			}
 			IAwake<P1, P2> iAwake = objectEvent as IAwake<P1, P2>;
 			if (iAwake == null)
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake2");
 			}
 			objectEvent.Set(disposer);
 			iAwake.Awake(p1, p2);
@@ -168,12 +168,12 @@ namespace Model
 		{
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake3");
 			}
 			IAwake<P1, P2, P3> iAwake = objectEvent as IAwake<P1, P2, P3>;
 			if (iAwake == null)
 			{
-				return;
+				throw new Exception($"{disposer.GetType().Name} not found awake3");
 			}
 			objectEvent.Set(disposer);
 			iAwake.Awake(p1, p2, p3);

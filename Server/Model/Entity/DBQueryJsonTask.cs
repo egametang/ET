@@ -6,9 +6,9 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectEvent]
-	public class DBQueryJsonTaskEvent : ObjectEvent<DBQueryJsonTask>, IAwake<string, string, TaskCompletionSource<List<Entity>>>
+	public class DBQueryJsonTaskEvent : ObjectEvent<DBQueryJsonTask>, IAwake<string, string, TaskCompletionSource<List<Disposer>>>
 	{
-		public void Awake(string collectionName, string json, TaskCompletionSource<List<Entity>> tcs)
+		public void Awake(string collectionName, string json, TaskCompletionSource<List<Disposer>> tcs)
 		{
 			DBQueryJsonTask self = this.Get();
 			
@@ -24,7 +24,7 @@ namespace Model
 
 		public string Json { get; set; }
 
-		public TaskCompletionSource<List<Entity>> Tcs { get; set; }
+		public TaskCompletionSource<List<Disposer>> Tcs { get; set; }
 		
 		public override async Task Run()
 		{
@@ -32,9 +32,9 @@ namespace Model
 			try
 			{
 				// 执行查询数据库任务
-				FilterDefinition<Entity> filterDefinition = new JsonFilterDefinition<Entity>(this.Json);
-				List<Entity> entitys = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition).Result.ToListAsync();
-				this.Tcs.SetResult(entitys);
+				FilterDefinition<Disposer> filterDefinition = new JsonFilterDefinition<Disposer>(this.Json);
+				List<Disposer> disposers = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition).Result.ToListAsync();
+				this.Tcs.SetResult(disposers);
 			}
 			catch (Exception e)
 			{

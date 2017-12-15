@@ -6,13 +6,13 @@ namespace Model
 {
 
 	[ObjectEvent]
-	public class DBSaveTaskEvent : ObjectEvent<DBSaveTask>, IAwake<Entity, string, TaskCompletionSource<bool>>
+	public class DBSaveTaskEvent : ObjectEvent<DBSaveTask>, IAwake<Disposer, string, TaskCompletionSource<bool>>
 	{
-		public void Awake(Entity entity, string collectionName, TaskCompletionSource<bool> tcs)
+		public void Awake(Disposer entity, string collectionName, TaskCompletionSource<bool> tcs)
 		{
 			DBSaveTask self = this.Get();
 
-			self.Entity = entity;
+			self.Disposer = entity;
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;
 		}
@@ -20,7 +20,7 @@ namespace Model
 
 	public sealed class DBSaveTask : DBTask
 	{
-		public Entity Entity;
+		public Disposer Disposer;
 
 		public string CollectionName { get; set; }
 
@@ -41,7 +41,7 @@ namespace Model
 			try
 			{
 				// 执行保存数据库任务
-				await dbComponent.GetCollection(this.CollectionName).ReplaceOneAsync(s => s.Id == this.Entity.Id, this.Entity, new UpdateOptions {IsUpsert = true});
+				await dbComponent.GetCollection(this.CollectionName).ReplaceOneAsync(s => s.Id == this.Disposer.Id, this.Disposer, new UpdateOptions {IsUpsert = true});
 				this.Tcs.SetResult(true);
 			}
 			catch (Exception e)
