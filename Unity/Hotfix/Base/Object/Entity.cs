@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Model;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Hotfix
 {
+	[BsonIgnoreExtraElements]
 	public class Entity : Disposer
 	{
+		[BsonIgnore]
 		public Entity Parent { get; set; }
-		
+
+		[BsonElement]
+		[BsonIgnoreIfNull]
 		private HashSet<Component> components = new HashSet<Component>();
-		
+
+		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		protected Entity()
@@ -43,6 +49,9 @@ namespace Hotfix
 					Log.Error(e.ToString());
 				}
 			}
+
+			this.components.Clear();
+			this.componentDict.Clear();
 		}
 
 		public K AddComponent<K>() where K : Component, new()
@@ -52,11 +61,6 @@ namespace Hotfix
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
 			}
 
 			if (component is ISerializeToEntity)
@@ -76,11 +80,6 @@ namespace Hotfix
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
@@ -96,11 +95,6 @@ namespace Hotfix
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
 			}
 
 			if (component is ISerializeToEntity)
@@ -120,11 +114,6 @@ namespace Hotfix
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
@@ -141,12 +130,9 @@ namespace Hotfix
 				return;
 			}
 
-			this.components?.Remove(component);
+			this.components.Remove(component);
 			this.componentDict.Remove(typeof(K));
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 
@@ -160,10 +146,7 @@ namespace Hotfix
 
 			this.components?.Remove(component);
 			this.componentDict.Remove(type);
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 

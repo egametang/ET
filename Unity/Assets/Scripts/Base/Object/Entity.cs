@@ -13,7 +13,7 @@ namespace Model
 
 		[BsonElement]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components;
+		private HashSet<Component> components = new HashSet<Component>();
 
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
@@ -48,6 +48,9 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
+
+			this.components.Clear();
+			this.componentDict.Clear();
 		}
 
 		public K AddComponent<K>() where K : Component, new()
@@ -57,11 +60,6 @@ namespace Model
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
 			}
 
 			if (component is ISerializeToEntity)
@@ -80,12 +78,7 @@ namespace Model
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
@@ -102,12 +95,7 @@ namespace Model
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
@@ -123,11 +111,6 @@ namespace Model
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
-			}
-
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
 			}
 
 			if (component is ISerializeToEntity)
@@ -146,12 +129,9 @@ namespace Model
 				return;
 			}
 
-			this.components?.Remove(component);
+			this.components.Remove(component);
 			this.componentDict.Remove(typeof(K));
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 
@@ -165,10 +145,7 @@ namespace Model
 
 			this.components?.Remove(component);
 			this.componentDict.Remove(type);
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 
@@ -198,11 +175,9 @@ namespace Model
 			try
 			{
 				ObjectEvents.Instance.Add(this);
-				if (this.components != null && this.components.Count == 0)
-				{
-					this.components = null;
-				}
+
 				this.componentDict.Clear();
+
 				if (this.components != null)
 				{
 					foreach (Component component in this.components)
