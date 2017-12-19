@@ -14,7 +14,7 @@ namespace Model
 
 			while (true)
 			{
-				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
+				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10000);
 
 				if (self.Id == 0)
 				{
@@ -32,7 +32,7 @@ namespace Model
 						continue;
 					}
 
-					if (timeNow < actorProxy.LastSendTime + 10000)
+					if (timeNow < actorProxy.LastSendTime + 60 * 1000)
 					{
 						continue;
 					}
