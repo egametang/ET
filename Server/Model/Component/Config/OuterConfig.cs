@@ -10,12 +10,13 @@ namespace Model
 		public int Port { get; set; }
 
 		[BsonIgnore]
-		public string Address
+		public IPEndPoint ipEndPoint;
+
+		public override void EndInit()
 		{
-			get
-			{
-				return $"{this.Host}:{this.Port}";
-			}
+			base.EndInit();
+
+			this.ipEndPoint = NetworkHelper.ToIPEndPoint(this.Host, this.Port);
 		}
 
 		[BsonIgnore]
@@ -23,7 +24,7 @@ namespace Model
 		{
 			get
 			{
-				return NetworkHelper.ToIPEndPoint(this.Host, this.Port);
+				return this.ipEndPoint;
 			}
 		}
 	}
