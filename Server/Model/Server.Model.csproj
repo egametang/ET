@@ -45,6 +45,11 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs" Link="Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ConfigComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Component\Config\DBConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Component\Config\HttpConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Component\Config\InnerConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Component\Config\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Component\NetworkComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
@@ -64,5 +69,9 @@
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Component\Config\" />
   </ItemGroup>
 </Project>

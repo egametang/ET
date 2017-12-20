@@ -19,7 +19,7 @@ namespace Hotfix
 					return;
 				}
 
-				await unit.GetComponent<MasterComponent>().Lock(message.Address);
+				await unit.GetComponent<MasterComponent>().Lock(NetworkHelper.ToIPEndPoint(message.Address));
 
 				reply(response);
 			}

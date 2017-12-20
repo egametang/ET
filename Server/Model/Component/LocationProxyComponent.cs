@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 
 namespace Model
 {
@@ -13,7 +14,7 @@ namespace Model
 
 	public class LocationProxyComponent : Component
 	{
-		public string LocationAddress;
+		public IPEndPoint LocationAddress;
 
 		public int AppId;
 
@@ -23,7 +24,7 @@ namespace Model
 			this.AppId = startConfigComponent.StartConfig.AppId;
 
 			StartConfig startConfig = startConfigComponent.LocationConfig;
-			this.LocationAddress = startConfig.GetComponent<InnerConfig>().Address;
+			this.LocationAddress = startConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 
 		public async Task Add(long key)

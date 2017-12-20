@@ -61,7 +61,7 @@ namespace Model
 				return;
 			}
 
-			this.socket.Dispose();
+			this.socket.Close();
 			this.socket = null;
 		}
 

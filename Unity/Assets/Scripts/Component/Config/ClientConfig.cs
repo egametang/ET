@@ -9,7 +9,7 @@ namespace Model
 		public int Port;
 
 		[BsonIgnore]
-		public IPEndPoint ipEndPoint;
+		private IPEndPoint ipEndPoint;
 
 		public override void EndInit()
 		{

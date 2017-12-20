@@ -5,7 +5,7 @@ namespace Model
 {
 	public class NetInnerComponent: NetworkComponent
 	{
-		public readonly Dictionary<string, Session> adressSessions = new Dictionary<string, Session>();
+		public readonly Dictionary<IPEndPoint, Session> adressSessions = new Dictionary<IPEndPoint, Session>();
 
 		public override void Remove(long id)
 		{
@@ -14,7 +14,7 @@ namespace Model
 			{
 				return;
 			}
-			this.adressSessions.Remove(session.RemoteAddress.ToString());
+			this.adressSessions.Remove(session.RemoteAddress);
 
 			base.Remove(id);
 		}
@@ -22,18 +22,16 @@ namespace Model
 		/// <summary>
 		/// 从地址缓存中取Session,如果没有则创建一个新的Session,并且保存到地址缓存中
 		/// </summary>
-		public Session Get(string address)
+		public Session Get(IPEndPoint ipEndPoint)
 		{
-			if (this.adressSessions.TryGetValue(address, out Session session))
+			if (this.adressSessions.TryGetValue(ipEndPoint, out Session session))
 			{
 				return session;
 			}
-
-			string[] ss = address.Split(':');
-			IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse(ss[0]), int.Parse(ss[1]));
+			
 			session = this.Create(ipEndPoint);
 
-			this.adressSessions.Add(address, session);
+			this.adressSessions.Add(ipEndPoint, session);
 			return session;
 		}
 	}

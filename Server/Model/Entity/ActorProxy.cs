@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
@@ -91,7 +92,7 @@ namespace Model
 	public sealed class ActorProxy : Disposer
 	{
 		// actor的地址
-		public string Address;
+		public IPEndPoint Address;
 
 		// 已发送等待回应的消息
 		public EQueue<ActorTask> RunningTasks = new EQueue<ActorTask>();
@@ -145,7 +146,7 @@ namespace Model
 		public async void Start()
 		{
 			int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
-			this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
+			this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
 
 			this.UpdateAsync();
 		}
@@ -259,7 +260,7 @@ namespace Model
 					// 等待一会再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
 					int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
-					this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().Address;
+					this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
 					this.CancellationTokenSource = new CancellationTokenSource();
 					this.AllowGet();
 					return;

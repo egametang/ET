@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,12 +19,12 @@ namespace Model
 	/// </summary>
 	public class DBProxyComponent : Component
 	{
-		public string dbAddress;
+		public IPEndPoint dbAddress;
 
 		public void Awake()
 		{
 			StartConfig dbStartConfig = Game.Scene.GetComponent<StartConfigComponent>().DBConfig;
-			dbAddress = dbStartConfig.GetComponent<InnerConfig>().Address;
+			dbAddress = dbStartConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 
 		public async Task Save(Disposer disposer, bool needCache = true)

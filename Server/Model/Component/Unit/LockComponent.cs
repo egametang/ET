@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Model
@@ -11,9 +12,9 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class LockComponentEvent : ObjectEvent<LockComponent>, IAwake<string>
+	public class LockComponentEvent : ObjectEvent<LockComponent>, IAwake<IPEndPoint>
 	{
-		public void Awake(string a)
+		public void Awake(IPEndPoint a)
 		{
 			this.Get().Awake(a);
 		}
@@ -25,11 +26,11 @@ namespace Model
 	public class LockComponent: Component
 	{
 		private LockStatus status = LockStatus.LockedNot;
-		private string address;
+		private IPEndPoint address;
 		private int lockCount;
 		private readonly EQueue<TaskCompletionSource<bool>> queue = new EQueue<TaskCompletionSource<bool>>();
 
-		public void Awake(string addr)	
+		public void Awake(IPEndPoint addr)	
 		{
 			this.address = addr;
 		}

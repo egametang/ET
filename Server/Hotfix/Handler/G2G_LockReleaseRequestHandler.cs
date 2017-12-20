@@ -20,7 +20,7 @@ namespace Hotfix
 					return;
 				}
 
-				unit.GetComponent<MasterComponent>().Release(message.Address);
+				unit.GetComponent<MasterComponent>().Release(NetworkHelper.ToIPEndPoint(message.Address));
 				reply(g2GLockReleaseResponse);
 			}
 			catch (Exception e)

@@ -340,7 +340,7 @@ namespace Model
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
 			if (this.network.AppType == AppType.AllServer)
 			{
-				Session session = this.network.GetComponent<NetInnerComponent>().Get(this.RemoteAddress.ToString());
+				Session session = this.network.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
 				session.RunDecompressedBytes(op, messageBytes, 0, messageBytes.Length);
 				return;
 			}

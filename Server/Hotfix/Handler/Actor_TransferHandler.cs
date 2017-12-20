@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Model;
 
@@ -34,7 +35,7 @@ namespace Hotfix
 
 				// 传送到map
 				StartConfig mapConfig = startConfigComponent.MapConfigs[mapIndex];
-				string address = mapConfig.GetComponent<InnerConfig>().Address;
+				IPEndPoint address = mapConfig.GetComponent<InnerConfig>().IPEndPoint;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(address);
 
 				// 只删除不disponse否则M2M_TrasferUnitRequest无法序列化Unit
