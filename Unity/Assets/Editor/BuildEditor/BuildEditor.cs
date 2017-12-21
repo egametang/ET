@@ -57,7 +57,7 @@ namespace MyEditor
 		{
 			ClearPackingTagAndAssetBundle();
 
-			SetIndependentBundleAndAtlas("Assets/Bundles/Share");
+			SetIndependentBundleAndAtlas("Assets/Bundles/Independent");
 
 			SetShareBundleAndAtlas("Assets/Bundles/UI");
 

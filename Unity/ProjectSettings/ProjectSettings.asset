@@ -10,7 +10,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: test
   productName: Unity
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -141,7 +141,7 @@ PlayerSettings:
   targetPixelDensity: 0
   resolutionScalingMode: 0
   applicationIdentifier:
-    Android: com.Company.ProductName
+    Android: com.test.Unity
     Standalone: unity.DefaultCompany.Unity
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
@@ -572,6 +572,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: NET45
     4: NET45
+    7: NET45
   platformArchitecture:
     iOS: 2
   scriptingBackend:
