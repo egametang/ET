@@ -54,13 +54,20 @@ namespace App
 						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
-					case AppType.Realm:
+				    case AppType.DB:
+                        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+                        Game.Scene.AddComponent<DBComponent>();
+                        Game.Scene.AddComponent<DBCacheComponent>();
+                        break;
+                    case AppType.Realm:
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
 						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
+					    Game.Scene.AddComponent<PlayerLoginManagerComponent>();
+					    Game.Scene.AddComponent<DBProxyComponent>();
 						break;
 					case AppType.Gate:
 						Game.Scene.AddComponent<PlayerComponent>();
@@ -71,12 +78,24 @@ namespace App
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
+					    Game.Scene.AddComponent<DBProxyComponent>();
 						break;
 					case AppType.Location:
 						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
 						Game.Scene.AddComponent<LocationComponent>();
 						break;
-					case AppType.Map:
+                    case AppType.Match:
+                        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+                        Game.Scene.AddComponent<ActorManagerComponent>();
+                        Game.Scene.AddComponent<LocationComponent>();
+                        Game.Scene.AddComponent<ActorManagerComponent>();
+                        Game.Scene.AddComponent<ActorMessageDispatherComponent>();
+                        Game.Scene.AddComponent<MatcherComponent>();
+                        Game.Scene.AddComponent<MatchComponent>();
+                        Game.Scene.AddComponent<RoomManagerComponent>();
+                        Game.Scene.AddComponent<RealmDDZAddressComponent>();
+                        break;
+					case AppType.DDZ:
 						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
 						Game.Scene.AddComponent<ActorManagerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
@@ -84,6 +103,8 @@ namespace App
 						Game.Scene.AddComponent<ActorProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
+					    Game.Scene.AddComponent<RoomComponent>();
+					    Game.Scene.AddComponent<DBProxyComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorProxyComponent>();
@@ -91,6 +112,7 @@ namespace App
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<DBComponent>();
 						Game.Scene.AddComponent<DBProxyComponent>();
+					    Game.Scene.AddComponent<DBProxyComponent>();
 						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
@@ -102,7 +124,16 @@ namespace App
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
-						break;
+
+                        Game.Scene.AddComponent<MatcherComponent>();
+                        Game.Scene.AddComponent<MatchComponent>();
+                        Game.Scene.AddComponent<RoomManagerComponent>();
+                        Game.Scene.AddComponent<RealmDDZAddressComponent>();
+                        Game.Scene.AddComponent<RoomComponent>();
+                        Game.Scene.AddComponent<PlayerLoginManagerComponent>();
+
+
+                        break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<BenchmarkComponent, IPEndPoint>(clientConfig.IPEndPoint);

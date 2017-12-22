@@ -44,17 +44,17 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs" Link="Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ConfigComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ET\ConfigComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Component\Config\DBConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Component\Config\HttpConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Component\Config\InnerConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Component\Config\OuterConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Component\NetworkComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Component\ET\NetworkComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\ET\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Entity\Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Entity\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Entity\ET\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs" Link="Helper\MongoHelper.cs" />
   </ItemGroup>
 
@@ -72,6 +72,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Component\Config\" />
+    <Folder Include="Component\Gate\" />
   </ItemGroup>
 </Project>
