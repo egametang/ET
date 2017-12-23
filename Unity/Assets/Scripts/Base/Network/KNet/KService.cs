@@ -16,7 +16,6 @@ namespace Model
 	public sealed class KService : AService
 	{
 		private uint IdGenerater = 1000;
-		private uint IdAccept = 2000000000;
 
 		public uint TimeNow { get; set; }
 
@@ -195,7 +194,7 @@ namespace Model
 
 		private KChannel CreateAcceptChannel(IPEndPoint remoteEndPoint, uint remoteConn)
 		{
-			KChannel channel = new KChannel(--this.IdAccept, remoteConn, this.socket, remoteEndPoint, this);
+			KChannel channel = new KChannel(++this.IdGenerater, remoteConn, this.socket, remoteEndPoint, this);
 			KChannel oldChannel;
 			if (this.idChannels.TryGetValue(channel.Id, out oldChannel))
 			{
@@ -208,7 +207,8 @@ namespace Model
 
 		private KChannel CreateConnectChannel(IPEndPoint remoteEndPoint)
 		{
-			KChannel channel = new KChannel(++this.IdGenerater, this.socket, remoteEndPoint, this);
+			uint conv = (uint)RandomHelper.RandomNumber(1000, int.MaxValue);
+			KChannel channel = new KChannel(conv, this.socket, remoteEndPoint, this);
 			KChannel oldChannel;
 			if (this.idChannels.TryGetValue(channel.Id, out oldChannel))
 			{
