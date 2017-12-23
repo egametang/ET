@@ -214,11 +214,14 @@ namespace Model
 		
 		public override void Send(byte[] buffer)
 		{
+			byte[] size = BitConverter.GetBytes((ushort)buffer.Length);
 			if (isConnected)
 			{
+				this.KcpSend(size);
 				this.KcpSend(buffer);
 				return;
 			}
+			this.sendBuffer.Enqueue(size);
 			this.sendBuffer.Enqueue(buffer);
 		}
 
@@ -240,9 +243,11 @@ namespace Model
 				if (isConnected)
 				{
 					this.KcpSend(buffer);
-					continue;
 				}
-				this.sendBuffer.Enqueue(buffer);
+				else
+				{
+					this.sendBuffer.Enqueue(buffer);
+				}
 			}
 		}
 
