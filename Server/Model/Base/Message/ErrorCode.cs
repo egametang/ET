@@ -6,7 +6,14 @@ namespace Model
 
 		public const int ERR_NotFoundActor = 1;
 
-		public const int ERR_RpcFail = 101;
+        /// <summary>
+        /// 查询用户信息错误
+        /// </summary>
+	    public const int ErrQueryUserInfoError = 12;
+	    public const int ErrStartMatchError = 14;
+	    public const int ErrUserMoneyLessError = 15;
+
+        public const int ERR_RpcFail = 101;
 		public const int ERR_AccountOrPasswordError = 102;
 		public const int ERR_ConnectGateKeyError = 103;
 		public const int ERR_ReloadFail = 104;
