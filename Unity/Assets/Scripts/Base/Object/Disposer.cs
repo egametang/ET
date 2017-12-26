@@ -19,13 +19,11 @@ namespace Model
 		protected Disposer()
 		{
 			this.Id = IdGenerater.GenerateId();
-			ObjectEvents.Instance.Add(this);
 		}
 
 		protected Disposer(long id)
 		{
 			this.Id = id;
-			ObjectEvents.Instance.Add(this);
 		}
 
 		public virtual void Dispose()

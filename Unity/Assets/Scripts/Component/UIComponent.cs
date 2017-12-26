@@ -25,7 +25,7 @@ namespace Model
 	public class UIComponent: Component
 	{
 		private GameObject Root;
-		private Dictionary<UIType, IUIFactory> UiTypes;
+		private readonly Dictionary<UIType, IUIFactory> UiTypes = new Dictionary<UIType, IUIFactory>();
 		private readonly Dictionary<UIType, UI> uis = new Dictionary<UIType, UI>();
 
 		public override void Dispose()
@@ -47,6 +47,9 @@ namespace Model
 				uis.Remove(type);
 				ui.Dispose();
 			}
+
+			this.uis.Clear();
+			this.UiTypes.Clear();
 		}
 
 		public void Awake()
@@ -57,7 +60,7 @@ namespace Model
 
 		public void Load()
 		{
-            UiTypes = new Dictionary<UIType, IUIFactory>();
+            this.UiTypes.Clear();
             
             Type[] types = DllHelper.GetMonoTypes();
 

@@ -25,6 +25,24 @@ namespace Model
 			Instance = this;
 		}
 
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+			base.Dispose();
+
+			foreach (Unit unit in this.idUnits.Values)
+			{
+				unit.Dispose();
+			}
+
+			this.idUnits.Clear();
+
+			Instance = null;
+		}
+
 		public void Add(Unit unit)
 		{
 			this.idUnits.Add(unit.Id, unit);
@@ -61,22 +79,6 @@ namespace Model
 		public Unit[] GetAll()
 		{
 			return this.idUnits.Values.ToArray();
-		}
-
-		public override void Dispose()
-		{
-			if (this.Id == 0)
-			{
-				return;
-			}
-			base.Dispose();
-
-			foreach (Unit unit in this.idUnits.Values)
-			{
-				unit.Dispose();
-			}
-
-			Instance = null;
 		}
 	}
 }

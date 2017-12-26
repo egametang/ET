@@ -121,6 +121,8 @@ namespace Model
 
 		public void Awake(Disposer disposer)
 		{
+			Instance.Add(disposer);
+
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
 				return;
@@ -136,6 +138,8 @@ namespace Model
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
+			Instance.Add(disposer);
+
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake1");
@@ -151,6 +155,8 @@ namespace Model
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
+			Instance.Add(disposer);
+
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake2");
@@ -166,6 +172,8 @@ namespace Model
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
+			Instance.Add(disposer);
+
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake3");

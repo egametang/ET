@@ -150,6 +150,8 @@ namespace Model
 
 		public void Awake(Disposer disposer)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -166,6 +168,8 @@ namespace Model
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -182,6 +186,8 @@ namespace Model
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -198,6 +204,8 @@ namespace Model
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{

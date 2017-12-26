@@ -11,7 +11,7 @@ namespace Model
 	    {
 		    get
 		    {
-			    return instance ?? new ObjectPool();
+			    return instance ?? (instance = new ObjectPool());
 		    }
 	    }
 
@@ -26,7 +26,7 @@ namespace Model
 		    instance = null;
 	    }
 
-        public Disposer Fetch(Type type)
+        private Disposer Fetch(Type type)
         {
 	        EQueue<Disposer> queue;
             if (!this.dictionary.TryGetValue(type, out queue))

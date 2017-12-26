@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Model;
 
 namespace Hotfix
@@ -111,6 +109,8 @@ namespace Hotfix
 
 		public void Awake(Disposer disposer)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -127,6 +127,8 @@ namespace Hotfix
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -143,6 +145,8 @@ namespace Hotfix
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{
@@ -159,6 +163,8 @@ namespace Hotfix
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
+			ObjectEvents.Instance.Add(disposer);
+
 			IObjectEvent objectEvent;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
 			{

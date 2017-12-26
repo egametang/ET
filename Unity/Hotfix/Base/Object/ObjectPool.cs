@@ -12,8 +12,8 @@ namespace Hotfix
 	    {
 		    get
 		    {
-			    return instance ?? new ObjectPool();
-		    }
+				return instance ?? (instance = new ObjectPool());
+			}
 	    }
 
         private readonly Dictionary<Type, EQueue<Disposer>> dictionary = new Dictionary<Type, EQueue<Disposer>>();

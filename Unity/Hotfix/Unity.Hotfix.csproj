@@ -35,14 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=2.0.0.668, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -93,6 +85,16 @@
   <ItemGroup>
     <Folder Include="Event\" />
     <Folder Include="Handler\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Unity.csproj">
+      <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>
+      <Name>Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.Plugins.csproj">
+      <Project>{d1fdb199-0fb7-099d-3771-c6a942e4e326}</Project>
+      <Name>Unity.Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
