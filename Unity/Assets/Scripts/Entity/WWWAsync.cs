@@ -65,7 +65,9 @@ namespace Model
 				return;
 			}
 
-			this.tcs.SetResult(true);
+			var t = this.tcs;
+			this.tcs = null;
+			t?.SetResult(true);
 		}
 
 		public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
@@ -113,6 +115,7 @@ namespace Model
 
             www?.Dispose();
 			this.www = null;
+			this.tcs = null;
 		}
 	}
 }

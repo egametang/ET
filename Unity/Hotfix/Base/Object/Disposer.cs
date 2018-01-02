@@ -3,7 +3,7 @@ using Model;
 
 namespace Hotfix
 {
-	public abstract class Disposer : Object, IDisposable
+	public abstract class Disposer : Object, IDisposable2
 	{
 		public long Id { get; set; }
 
