@@ -40,7 +40,7 @@ namespace Model
 		{
 			appDomain = Init.Instance.AppDomain;
 			this.instance = this.appDomain.Instantiate(type.FullName);
-			this.method = this.instance.Type.GetMethod(methodName);
+			this.method = this.instance.Type.GetMethod(methodName, 2);
 			int n = this.method.ParameterCount;
 			this.param = new object[n];
 		}
@@ -113,7 +113,7 @@ namespace Model
 				}
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
 #if ILRuntime
-				IMessageMethod iMessageMethod = new IMessageILMethod(type, "Run");
+				IMessageMethod iMessageMethod = new IMessageILMethod(type, "Handle");
 #else
 				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
 				IMessageMethod iMessageMethod = new IMessageMonoMethod(iMHandler);
