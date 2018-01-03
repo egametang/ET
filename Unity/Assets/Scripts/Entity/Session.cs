@@ -124,7 +124,7 @@ namespace Model
 			try
 			{
 				op = (Opcode)opcode;
-				Type messageType = this.network.Entity.GetComponent<OpcodeTypeComponent>().GetType(op);
+				Type messageType = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetType(op);
 				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, count - offset);
 			}
 			catch (Exception e)
@@ -332,7 +332,7 @@ namespace Model
 		private void SendMessage(object message)
 		{
 			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
-			Opcode opcode = this.network.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			Opcode opcode = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			ushort op = (ushort)opcode;
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 
@@ -340,7 +340,7 @@ namespace Model
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
 			if (this.network.AppType == AppType.AllServer)
 			{
-				Session session = this.network.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
+				Session session = this.network.Parent.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
 				session.RunDecompressedBytes(op, messageBytes, 0, messageBytes.Length);
 				return;
 			}

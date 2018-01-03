@@ -58,7 +58,7 @@ namespace Model
 				}
 
 				NumericDic[numericType] = value;
-				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.NumbericChange, this.Entity.Id, numericType, value);
+				Game.Scene.GetComponent<EventComponent>().Run(EventIdType.NumbericChange, this.Parent.Id, numericType, value);
 			}
 		}
 

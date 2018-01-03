@@ -31,8 +31,8 @@ namespace Hotfix
 		{
 			self.entityActorHandler = new CommonEntityActorHandler();
 			self.queue = new EQueue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
+			self.actorId = self.Parent.Id;
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Parent);
 			self.HandleAsync();
 		}
 
@@ -40,8 +40,8 @@ namespace Hotfix
 		{
 			self.entityActorHandler = iEntityActorHandler;
 			self.queue = new EQueue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
+			self.actorId = self.Parent.Id;
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Parent);
 			self.HandleAsync();
 		}
 
@@ -102,7 +102,7 @@ namespace Hotfix
 					{
 						return;
 					}
-					await self.entityActorHandler.Handle(info.Session, self.Entity, info.Message);
+					await self.entityActorHandler.Handle(info.Session, self.Parent, info.Message);
 				}
 				catch (Exception e)
 				{

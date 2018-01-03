@@ -31,7 +31,7 @@ namespace Model
 
 		public void Awake()
 		{
-			Animator animator = this.GetEntity<Unit>().GameObject.GetComponent<Animator>();
+			Animator animator = this.GetParent<Unit>().GameObject.GetComponent<Animator>();
 
 			if (animator == null)
 			{

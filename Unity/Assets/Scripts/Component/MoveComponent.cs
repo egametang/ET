@@ -93,7 +93,7 @@ namespace Model
 		public void Awake()
 		{
 			this.mainSpeed = this.AddSpeed(new Vector3());
-			this.animatorComponent = this.GetComponent<AnimatorComponent>();
+			this.animatorComponent = this.Parent.GetComponent<AnimatorComponent>();
 		}
 
 		public void Update()
@@ -110,7 +110,7 @@ namespace Model
 				return;
 			}
 
-			Unit unit = this.GetEntity<Unit>();
+			Unit unit = this.GetParent<Unit>();
 			Vector3 moveVector3 = this.Speed * Time.deltaTime;
 
 			if (this.hasDest)
@@ -138,19 +138,19 @@ namespace Model
 			this.t += Time.deltaTime;
 
 			Quaternion v = Quaternion.Slerp(this.From, this.To, this.t / this.TurnTime);
-			this.GetEntity<Unit>().Rotation = v;
+			this.GetParent<Unit>().Rotation = v;
 		}
 
 		public void MoveToDest(Vector3 dest, float speedValue)
 		{
-			if ((dest - this.GetEntity<Unit>().Position).magnitude < 0.1f)
+			if ((dest - this.GetParent<Unit>().Position).magnitude < 0.1f)
 			{
 				this.IsArrived = true;
 				return;
 			}
 			this.IsArrived = false;
 			this.hasDest = true;
-			Vector3 speed = dest - this.GetEntity<Unit>().Position;
+			Vector3 speed = dest - this.GetParent<Unit>().Position;
 			speed = speed.normalized * speedValue;
 			this.MainSpeed = speed;
 			this.Dest = dest;
@@ -201,7 +201,7 @@ namespace Model
 		/// </summary>
 		public void Turn2D(Vector3 dir, float turnTime = 0.1f)
 		{
-			Vector3 nexpos = this.GetEntity<Unit>().GameObject.transform.position + dir;
+			Vector3 nexpos = this.GetParent<Unit>().GameObject.transform.position + dir;
 			Turn(nexpos, turnTime);
 		}
 
@@ -210,10 +210,10 @@ namespace Model
 		/// </summary>
 		public void Turn(Vector3 target, float turnTime = 0.1f)
 		{
-			Quaternion quaternion = PositionHelper.GetVector3ToQuaternion(this.GetEntity<Unit>().Position, target);
+			Quaternion quaternion = PositionHelper.GetVector3ToQuaternion(this.GetParent<Unit>().Position, target);
 
 			this.To = quaternion;
-			this.From = this.GetEntity<Unit>().Rotation;
+			this.From = this.GetParent<Unit>().Rotation;
 			this.t = 0;
 			this.TurnTime = turnTime;
 		}
@@ -227,7 +227,7 @@ namespace Model
 			Quaternion quaternion = PositionHelper.GetAngleToQuaternion(angle);
 
 			this.To = quaternion;
-			this.From = this.GetEntity<Unit>().Rotation;
+			this.From = this.GetParent<Unit>().Rotation;
 			this.t = 0;
 			this.TurnTime = turnTime;
 		}
@@ -235,32 +235,32 @@ namespace Model
 		public void Turn(Quaternion quaternion, float turnTime = 0.1f)
 		{
 			this.To = quaternion;
-			this.From = this.GetEntity<Unit>().Rotation;
+			this.From = this.GetParent<Unit>().Rotation;
 			this.t = 0;
 			this.TurnTime = turnTime;
 		}
 
 		public void TurnImmediately(Quaternion quaternion)
 		{
-			this.GetEntity<Unit>().Rotation = quaternion;
+			this.GetParent<Unit>().Rotation = quaternion;
 		}
 
 		public void TurnImmediately(Vector3 target)
 		{
-			Vector3 nowPos = this.GetEntity<Unit>().Position;
+			Vector3 nowPos = this.GetParent<Unit>().Position;
 			if (nowPos == target)
 			{
 				return;
 			}
 
-			Quaternion quaternion = PositionHelper.GetVector3ToQuaternion(this.GetEntity<Unit>().Position, target);
-			this.GetEntity<Unit>().Rotation = quaternion;
+			Quaternion quaternion = PositionHelper.GetVector3ToQuaternion(this.GetParent<Unit>().Position, target);
+			this.GetParent<Unit>().Rotation = quaternion;
 		}
 
 		public void TurnImmediately(float angle)
 		{
 			Quaternion quaternion = PositionHelper.GetAngleToQuaternion(angle);
-			this.GetEntity<Unit>().Rotation = quaternion;
+			this.GetParent<Unit>().Rotation = quaternion;
 		}
 
 		public override void Dispose()

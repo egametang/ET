@@ -5,21 +5,16 @@ namespace Hotfix
 	public abstract class Component : Disposer
 	{
 		[BsonIgnore]
-		public Entity Entity { get; set; }
+		public Entity Parent { get; set; }
 
-		public T GetEntity<T>() where T : Entity
+		public T GetParent<T>() where T : Entity
 		{
-			return this.Entity as T;
+			return this.Parent as T;
 		}
 
 		protected Component()
 		{
 			this.Id = 1;
-		}
-
-		public T GetComponent<T>() where T : Component
-		{
-			return this.Entity.GetComponent<T>();
 		}
 
 		public override void Dispose()
@@ -30,8 +25,6 @@ namespace Hotfix
 			}
 
 			base.Dispose();
-
-			this.Entity?.RemoveComponent(this.GetType());
 		}
 	}
 }

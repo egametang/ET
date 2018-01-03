@@ -118,7 +118,7 @@ namespace Model
 		private Node CreateTreeNode(NodeProto proto)
 		{
 			Node node = this.CreateOneNode(proto);
-			node.EndInit(this.GetEntity<Scene>());
+			node.EndInit(this.GetParent<Scene>());
 
 			if (proto.Children == null)
 			{

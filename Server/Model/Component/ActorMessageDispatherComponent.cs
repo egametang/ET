@@ -32,7 +32,7 @@ namespace Model
 
 		public void Load()
 		{
-			AppType appType = this.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			AppType appType = this.Parent.GetComponent<StartConfigComponent>().StartConfig.AppType;
 			Log.Info("apptype: " + appType);
 			this.handlers = new Dictionary<Type, IMActorHandler>();
 

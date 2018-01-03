@@ -7,26 +7,27 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Hotfix
 {
 	[BsonIgnoreExtraElements]
-	public class Entity : Disposer
+	public class Entity : Component
 	{
-		[BsonIgnore]
-		public Entity Parent { get; set; }
-
 		[BsonElement]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components = new HashSet<Component>();
+		private readonly HashSet<Component> components;
 
 		[BsonIgnore]
-		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+		private readonly Dictionary<Type, Component> componentDict;
 
 		protected Entity()
 		{
 			this.Id = IdGenerater.GenerateId();
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		protected Entity(long id)
 		{
 			this.Id = id;
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()

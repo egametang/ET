@@ -93,7 +93,7 @@ namespace Model
 		{
 			try
 			{
-				UI ui = UiTypes[type].Create(this.GetEntity<Scene>(), type, Root);
+				UI ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
                 uis.Add(type, ui);
 
 				// 设置canvas

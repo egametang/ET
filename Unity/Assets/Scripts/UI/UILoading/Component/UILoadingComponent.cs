@@ -9,7 +9,7 @@ namespace Model
 		public void Awake()
 		{
 			UILoadingComponent self = this.Get();
-			self.text = self.GetEntity<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
+			self.text = self.GetParent<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
 		}
 
 		public async void Start()

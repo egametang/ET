@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Model
 {
-	[BsonKnownTypes(typeof(Entity))]
 	[BsonKnownTypes(typeof(Component))]
 	public abstract class Disposer : Object, IDisposable
 	{
