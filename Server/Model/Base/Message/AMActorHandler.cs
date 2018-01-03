@@ -29,10 +29,7 @@ namespace Model
 			{
 				return;
 			}
-			ActorResponse response = new ActorResponse
-			{
-				RpcId = message.RpcId
-			};
+			ActorResponse response = new ActorResponse { RpcId = message.RpcId };
 			session.Reply(response);
 		}
 

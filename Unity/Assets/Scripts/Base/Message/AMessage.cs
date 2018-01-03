@@ -5,6 +5,9 @@ using ProtoBuf;
 namespace Model
 {
 	[ProtoContract]
+	[BsonKnownTypes(typeof(AActorMessage))]
+	[BsonKnownTypes(typeof(ARequest))]
+	[BsonKnownTypes(typeof(AActorResponse))]
 	public abstract partial class AMessage
 	{
 		public override string ToString()
@@ -14,9 +17,10 @@ namespace Model
 	}
 
 	[ProtoContract]
+	[BsonKnownTypes(typeof(AActorRequest))]
 	public abstract partial class ARequest : AMessage
 	{
-		[ProtoMember(1000)]
+		[ProtoMember(90)]
 		[BsonIgnoreIfDefault]
 		public uint RpcId;
 	}
@@ -25,15 +29,16 @@ namespace Model
 	/// 服务端回的RPC消息需要继承这个抽象类
 	/// </summary>
 	[ProtoContract]
+	[BsonKnownTypes(typeof(AActorResponse))]
 	public abstract partial class AResponse : AMessage
 	{
-		[ProtoMember(1000)]
+		[ProtoMember(90)]
 		public uint RpcId;
 
-		[ProtoMember(1001)]
+		[ProtoMember(91)]
 		public int Error = 0;
 
-		[ProtoMember(1002)]
+		[ProtoMember(92)]
 		public string Message = "";
 	}
 }

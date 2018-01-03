@@ -1,0 +1,206 @@
+	/// <summary>
+	/// 用来包装actor消息
+	/// </summary>
+	message ActorRequest // ARequest
+	{
+		required int64 Id = 1;
+		required AMessage AMessage = 2;
+	}
+
+	/// <summary>
+	/// actor RPC消息响应
+	/// </summary>
+	message ActorResponse // AResponse
+	{
+	}
+
+	/// <summary>
+	/// 用来包装actor消息
+	/// </summary>
+	message ActorRpcRequest // ActorRequest
+	{
+	}
+
+	/// <summary>
+	/// actor RPC消息响应带回应
+	/// </summary>
+	message ActorRpcResponse // ActorResponse
+	{
+		required AMessage AMessage = 1;
+	}
+
+
+	/// <summary>
+	/// 传送unit
+	/// </summary>
+	message M2M_TrasferUnitRequest // ARequest
+	{
+		required Unit Unit = 1;
+	}
+	
+	message M2M_TrasferUnitResponse // AResponse
+	{
+	}
+	
+	message M2A_Reload // ARequest
+	{
+	}
+
+	message A2M_Reload // AResponse
+	{
+	}
+
+	message G2G_LockRequest // ARequest
+	{
+		required int64 Id = 1;
+		required string Address = 2;
+	}
+
+	message G2G_LockResponse // AResponse
+	{
+	}
+
+	message G2G_LockReleaseRequest // ARequest
+	{
+		required int64 Id = 1;
+		required string Address = 2;
+	}
+
+	message G2G_LockReleaseResponse // AResponse
+	{
+	}
+
+	message DBSaveRequest // ARequest
+	{
+		required bool NeedCache = 1;
+
+		required string CollectionName = 2;
+
+		required Disposer Disposer = 3;
+	}
+
+
+	message DBSaveBatchResponse // AResponse
+	{
+	}
+
+	message DBSaveBatchRequest // ARequest
+	{
+		required bool NeedCache = 1;
+		required string CollectionName = 2;
+		repeated Disposer Disposers = 3;
+	}
+
+	message DBSaveResponse // AResponse
+	{
+	}
+
+	message DBQueryRequest // ARequest
+	{
+		required int64 Id = 1;
+		required string CollectionName = 2;
+		required bool NeedCache = 3;
+	}
+
+	message DBQueryResponse // AResponse
+	{
+		required Disposer Disposer = 1;
+	}
+
+	message DBQueryBatchRequest // ARequest
+	{
+		required string CollectionName = 1;
+		repeated int64 IdList = 2;
+		required bool NeedCache = 3;
+	}
+
+	message DBQueryBatchResponse // AResponse
+	{
+		repeated Disposer Disposers = 1;
+	}
+
+	message DBQueryJsonRequest // ARequest
+	{
+		required string CollectionName = 1;
+		required string Json = 2;
+		required bool NeedCache = 3;
+	}
+
+	message DBQueryJsonResponse // AResponse
+	{
+		repeated Disposer Disposers = 1;
+	}
+
+	message ObjectAddRequest // ARequest
+	{
+		required int64 Key = 1;
+		required int AppId = 2;
+	}
+
+	message ObjectAddResponse // AResponse
+	{
+	}
+
+	message ObjectRemoveRequest // ARequest
+	{
+		required int64 Key = 1;
+	}
+
+	message ObjectRemoveResponse // AResponse
+	{
+	}
+
+	message ObjectLockRequest // ARequest
+	{
+		required int64 Key = 1;
+		required int LockAppId = 2;
+		required int Time = 3;
+	}
+
+	message ObjectLockResponse // AResponse
+	{
+	}
+
+	message ObjectUnLockRequest // ARequest
+	{
+		required int64 Key = 1;
+		required int UnLockAppId = 2;
+		required int AppId = 3;
+	}
+
+	message ObjectUnLockResponse // AResponse
+	{
+	}
+
+	message ObjectGetRequest // ARequest
+	{
+		required int64 Key = 1;
+	}
+
+	message ObjectGetResponse // AResponse
+	{
+		required int AppId = 1;
+	}
+
+	message R2G_GetLoginKey // ARequest
+	{
+		required string Account = 1;
+	}
+
+	message G2R_GetLoginKey // AResponse
+	{
+		required int64 Key = 1;
+	}
+
+	message G2M_CreateUnit // ARequest
+	{
+		required int64 PlayerId = 1;
+		required int64 GateSessionId = 2;
+	}
+
+	message M2G_CreateUnit // AResponse
+	{
+		required int64 UnitId = 1;
+		required int Count = 2;
+	}
+}
