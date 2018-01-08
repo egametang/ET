@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -26,21 +27,18 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Temp\UnityVS_bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
     </Reference>
@@ -56,7 +54,6 @@
     <Compile Include="Base\Message\AMHandler.cs" />
     <Compile Include="Base\Message\IMHandler.cs" />
     <Compile Include="Base\Object\Component.cs" />
-    <Compile Include="Base\Object\ComponentDB.cs" />
     <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Disposer.cs" />
     <Compile Include="Base\Object\Entity.cs" />
@@ -65,6 +62,7 @@
     <Compile Include="Base\Object\IAwake.cs" />
     <Compile Include="Base\Object\ILateUpdate.cs" />
     <Compile Include="Base\Object\ILoad.cs" />
+    <Compile Include="Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Base\Object\IUpdate.cs" />
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\ObjectEvents.cs" />
@@ -83,6 +81,10 @@
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Event\" />
+    <Folder Include="Handler\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Assembly-CSharp-firstpass.csproj">
       <Project>{2662b409-6332-1e56-d797-c9025c53bdd6}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
@@ -93,8 +95,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-  </PropertyGroup>
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
