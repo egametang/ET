@@ -175,8 +175,6 @@ namespace Model
 		{
 			try
 			{
-				ObjectEvents.Instance.Add(this);
-
 				this.componentDict.Clear();
 
 				if (this.components != null)
