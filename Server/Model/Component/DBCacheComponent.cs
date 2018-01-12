@@ -37,7 +37,7 @@ namespace Model
 
 			this.AddToCache(disposer, collectionName);
 
-			if (collectionName == "")
+			if (string.IsNullOrEmpty(collectionName))
 			{
 				collectionName = disposer.GetType().Name;
 			}
@@ -57,7 +57,7 @@ namespace Model
 
 		public void AddToCache(Disposer disposer, string collectionName = "")
 		{
-			if (collectionName == "")
+			if (string.IsNullOrEmpty(collectionName))
 			{
 				collectionName = disposer.GetType().Name;
 			}

@@ -13,7 +13,7 @@ namespace Hotfix
 			{
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 
-				if (message.CollectionName == "")
+				if (string.IsNullOrEmpty(message.CollectionName))
 				{
 					message.CollectionName = message.Disposers[0].GetType().Name;
 				}
