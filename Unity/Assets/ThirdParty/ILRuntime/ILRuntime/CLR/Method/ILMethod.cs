@@ -139,14 +139,14 @@ namespace ILRuntime.CLR.Method
                 isDelegateInvoke = true;
             this.appdomain = domain;
             paramCnt = def.HasParameters ? def.Parameters.Count : 0;
-#if DEBUG
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
             if (def.HasBody)
             {
-                var sp = DebugService.FindSequencePoint(def.Body.Instructions[0]);
+                var sp = GetValidSequence(0, 1);
                 if (sp != null)
                 {
                     StartLine = sp.StartLine;
-                    sp = DebugService.FindSequencePoint(def.Body.Instructions[def.Body.Instructions.Count - 1]);
+                    sp = GetValidSequence(def.Body.Instructions.Count - 1, -1);
                     if (sp != null)
                     {
                         EndLine = sp.EndLine;
@@ -154,6 +154,23 @@ namespace ILRuntime.CLR.Method
                 }
             }
 #endif
+        }
+
+        Mono.Cecil.Cil.SequencePoint GetValidSequence(int startIdx, int dir)
+        {
+            var cur = DebugService.FindSequencePoint(def.Body.Instructions[startIdx]);
+            while (cur != null && cur.StartLine == 0x0feefee)
+            {
+                startIdx += dir;
+                if (startIdx >= 0 && startIdx < def.Body.Instructions.Count)
+                {
+                    cur = DebugService.FindSequencePoint(def.Body.Instructions[startIdx]);
+                }
+                else
+                    break;
+            }
+
+            return cur;
         }
 
         public IType FindGenericArgument(string name)
@@ -536,6 +553,7 @@ namespace ILRuntime.CLR.Method
                 IType type = null;
                 bool isByRef = false;
                 bool isArray = false;
+                int rank = 1;
                 TypeReference pt = i.ParameterType;
                 if (i.ParameterType.IsByReference)
                 {
@@ -545,6 +563,7 @@ namespace ILRuntime.CLR.Method
                 if (i.ParameterType.IsArray)
                 {
                     isArray = true;
+                    rank = ((ArrayType)pt).Rank;
                     pt = pt.GetElementType();
                 }
                 if (pt.IsGenericParameter)
@@ -572,7 +591,7 @@ namespace ILRuntime.CLR.Method
                     if (isByRef)
                         type = type.MakeByRefType();
                     if (isArray)
-                        type = type.MakeArrayType();
+                        type = type.MakeArrayType(rank);
                 }
                 else
                     type = appdomain.GetType(i.ParameterType, declaringType, this);
@@ -600,28 +619,33 @@ namespace ILRuntime.CLR.Method
             return m;
         }
 
+        string cachedName;
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(declaringType.FullName);
-            sb.Append('.');
-            sb.Append(Name);
-            sb.Append('(');
-            bool isFirst = true;
-            if (parameters == null)
-                InitParameters();
-            for (int i = 0; i < parameters.Count; i++)
+            if (cachedName == null)
             {
-                if (isFirst)
-                    isFirst = false;
-                else
-                    sb.Append(", ");
-                sb.Append(parameters[i].Name);
-                sb.Append(' ');
-                sb.Append(def.Parameters[i].Name);
+                StringBuilder sb = new StringBuilder();
+                sb.Append(declaringType.FullName);
+                sb.Append('.');
+                sb.Append(Name);
+                sb.Append('(');
+                bool isFirst = true;
+                if (parameters == null)
+                    InitParameters();
+                for (int i = 0; i < parameters.Count; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        sb.Append(", ");
+                    sb.Append(parameters[i].Name);
+                    sb.Append(' ');
+                    sb.Append(def.Parameters[i].Name);
+                }
+                sb.Append(')');
+                cachedName = sb.ToString();
             }
-            sb.Append(')');
-            return sb.ToString();
+            return cachedName;
         }
 
         public override int GetHashCode()

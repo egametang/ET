@@ -137,9 +137,15 @@ namespace ILRuntime.Runtime.Debugger
                 int type = br.ReadInt32();
                 msgBuff = br.ReadBytes(lastMsgLength - 4);
 
-                if (OnReciveMessage != null)
-                    OnReciveMessage((DebugMessageType)type, msgBuff);
-
+                try
+                {
+                    if (OnReciveMessage != null)
+                        OnReciveMessage((DebugMessageType)type, msgBuff);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
                 lastMsgLength = -1;
                 remaining = (int)(recvBuffer.Length - recvBuffer.Position);
                 //保留剩余数据

@@ -111,7 +111,9 @@ namespace ILRuntime.CLR.Method
             {
                 if (def.IsGenericMethod && !def.IsGenericMethodDefinition)
                 {
-                    appdomain.RedirectMap.TryGetValue(def.GetGenericMethodDefinition(), out redirect);
+                    //Redirection of Generic method Definition will be prioritized
+                    if(!appdomain.RedirectMap.TryGetValue(def.GetGenericMethodDefinition(), out redirect))
+                        appdomain.RedirectMap.TryGetValue(def, out redirect);
                 }
                 else
                     appdomain.RedirectMap.TryGetValue(def, out redirect);
@@ -296,7 +298,7 @@ namespace ILRuntime.CLR.Method
                             }
                             else
                             {
-                                ILIntepreter.UnboxObject(dst, val);
+                                ILIntepreter.UnboxObject(dst, val, mStack, appdomain);
                             }
                         }
                         break;
@@ -325,6 +327,12 @@ namespace ILRuntime.CLR.Method
                             {
                                 ((CLRType)t).SetStaticFieldValue(p->ValueLow, val);
                             }
+                        }
+                        break;
+                    case ObjectTypes.ArrayReference:
+                        {
+                            var arr = mStack[p->Value] as Array;
+                            arr.SetValue(val, p->ValueLow);
                         }
                         break;
                 }
