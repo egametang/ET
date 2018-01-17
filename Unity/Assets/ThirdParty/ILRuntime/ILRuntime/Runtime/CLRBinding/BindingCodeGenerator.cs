@@ -159,19 +159,32 @@ namespace ILRuntime.Runtime.Generated
 
             HashSet<MethodBase> excludeMethods = null;
             HashSet<FieldInfo> excludeFields = null;
+            HashSet<string> files = new HashSet<string>();
             List<string> clsNames = new List<string>();
             foreach (var info in infos)
             {
                 if (!info.Value.NeedGenerate)
                     continue;
                 Type i = info.Value.Type;
+                if (i.BaseType == typeof(MulticastDelegate))
+                    continue;
                 string clsName, realClsName;
                 bool isByRef;
                 if (i.GetCustomAttributes(typeof(ObsoleteAttribute), true).Length > 0)
                     continue;
                 i.GetClassName(out clsName, out realClsName, out isByRef);
+                if (clsNames.Contains(clsName))
+                    clsName = clsName + "_t";
                 clsNames.Add(clsName);
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(outputPath + "/" + clsName + ".cs", false, Encoding.UTF8))
+                string oFileName = outputPath + "/" + clsName;
+                int len = Math.Min(oFileName.Length, 100);
+                if (len < oFileName.Length)
+                    oFileName = oFileName.Substring(0, len) + "_t";
+                while (files.Contains(oFileName))
+                    oFileName = oFileName + "_t";
+                files.Add(oFileName);
+                oFileName = oFileName + ".cs";
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(oFileName, false, Encoding.UTF8))
                 {
                     sw.Write(@"using System;
 using System.Collections.Generic;
@@ -302,7 +315,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 if (type is CLR.TypeSystem.ILType)
                 {
-                    if (type.HasGenericParameter)
+                    if (type.TypeForCLR.IsByRef || type.HasGenericParameter)
                         continue;
                     var methods = type.GetMethods().ToList();
                     foreach (var i in ((CLR.TypeSystem.ILType)type).GetConstructors())
@@ -449,7 +462,8 @@ namespace ILRuntime.Runtime.Generated
             info.Methods = new HashSet<MethodInfo>();
             info.Fields = new HashSet<FieldInfo>();
             info.Constructors = new HashSet<ConstructorInfo>();
-
+            if (t.IsValueType)
+                info.DefaultInstanceNeeded = true;
             return info;
         }
     }
