@@ -18,7 +18,7 @@ namespace ILRuntime.Runtime.Stack
 
         IntPtr nativePointer;
 
-#if DEBUG
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
         IList<object> managedStack = new List<object>(32);
 #else
         IList<object> managedStack = new UncheckedList<object>(32);
@@ -83,7 +83,7 @@ namespace ILRuntime.Runtime.Stack
             res = new StackFrame();
             res.LocalVarPointer = esp;
             res.Method = method;
-#if DEBUG
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
             res.Address = new IntegerReference();
             for (int i = 0; i < method.LocalVariableCount; i++)
             {
@@ -130,7 +130,7 @@ namespace ILRuntime.Runtime.Stack
                 }
                 ret++;
             }
-#if DEBUG
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
             ((List<object>)managedStack).RemoveRange(mStackBase, managedStack.Count - mStackBase);
 #else
             ((UncheckedList<object>)managedStack).RemoveRange(mStackBase, managedStack.Count - mStackBase);
@@ -218,7 +218,14 @@ namespace ILRuntime.Runtime.Stack
                     {
                         if (ft.IsValueType)
                         {
-                            AllocValueType(val, ft);
+                            if (ft is ILType || ((CLRType)ft).ValueTypeBinder != null)
+                                AllocValueType(val, ft);
+                            else
+                            {
+                                val->ObjectType = ObjectTypes.Object;
+                                val->Value = managedStack.Count;
+                                managedStack.Add(((CLRType)ft).CreateDefaultInstance());
+                            }
                         }
                         else
                         {
@@ -321,7 +328,7 @@ namespace ILRuntime.Runtime.Stack
                             case ObjectTypes.ValueTypeObjectReference:
                                 {
                                     var dst = *(StackObject**)&val->Value;
-                                    ClearValueTypeObject(vt, *(StackObject**)&val->Value);
+                                    ClearValueTypeObject(vt, dst);
                                 }
                                 break;
                             default:
@@ -353,7 +360,7 @@ namespace ILRuntime.Runtime.Stack
             {
                 if (end == managedStack.Count - 1)
                 {
-#if DEBUG
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
                     ((List<object>)managedStack).RemoveRange(start, managedStack.Count - start);
 #else
                     ((UncheckedList<object>)managedStack).RemoveRange(start, managedStack.Count - start);

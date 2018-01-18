@@ -27,7 +27,7 @@ namespace ILRuntime.Runtime.CLRBinding
         {
             if (i.IsPrivate)
                 return true;
-            if (i.IsGenericMethod)
+            if (i.IsGenericMethodDefinition)
                 return true;
             //EventHandler is currently not supported
             var param = i.GetParameters();
@@ -69,20 +69,27 @@ namespace ILRuntime.Runtime.CLRBinding
             return false;
         }
 
-        internal static void AppendParameters(this ParameterInfo[] param, StringBuilder sb)
+        internal static void AppendParameters(this ParameterInfo[] param, StringBuilder sb, bool isMultiArr = false, int skipLast = 0)
         {
             bool first = true;
-            foreach (var j in param)
+            for (int i = 0; i < param.Length - skipLast; i++)
             {
                 if (first)
                     first = false;
                 else
                     sb.Append(", ");
+                var j = param[i];
                 if (j.IsOut && j.ParameterType.IsByRef)
                     sb.Append("out ");
                 else if (j.ParameterType.IsByRef)
                     sb.Append("ref ");
-                sb.Append(j.Name);
+                if (isMultiArr)
+                {
+                    sb.Append("a");
+                    sb.Append(i + 1);
+                }
+                else
+                    sb.Append(j.Name);
             }
         }
 
@@ -230,7 +237,20 @@ namespace ILRuntime.Runtime.CLRBinding
             }
             else
             {
-                if (!type.IsValueType)
+                sb.Append(@"                        object ___obj = ");
+                sb.Append(paramName);
+                sb.AppendLine(";");
+                sb.AppendLine(@"                        if (___dst->ObjectType >= ObjectTypes.Object)
+                        {
+                            if (___obj is CrossBindingAdaptorType)
+                                ___obj = ((CrossBindingAdaptorType)___obj).ILInstance;
+                            __mStack[___dst->Value] = ___obj;
+                        }
+                        else
+                        {
+                            ILIntepreter.UnboxObject(___dst, ___obj, __mStack, __domain);
+                        }");
+                /*if (!type.IsValueType)
                 {
                     sb.Append(@"                        object ___obj = ");
                     sb.Append(paramName);
@@ -245,7 +265,7 @@ namespace ILRuntime.Runtime.CLRBinding
                     sb.Append("                        __mStack[___dst->Value] = ");
                     sb.Append(paramName);
                     sb.AppendLine(";");
-                }
+                }*/
             }
         }
 
@@ -320,15 +340,22 @@ namespace ILRuntime.Runtime.CLRBinding
             }
             else
             {
+                string isBox;
+                if (type == typeof(object))
+                    isBox = ", true";
+                else
+                    isBox = "";
                 if (!type.IsSealed && type != typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance))
                 {
-                    sb.AppendLine(@"            object obj_result_of_this_method = result_of_this_method;
+                    sb.Append(@"            object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
             {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
+                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance");
+                    sb.Append(isBox);
+                    sb.AppendLine(@");
             }");
                 }
-                sb.AppendLine("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);");
+                sb.AppendLine(string.Format("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method{0});", isBox));
             }
         }
     }
