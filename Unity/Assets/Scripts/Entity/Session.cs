@@ -153,29 +153,6 @@ namespace Model
 
 			this.network.MessageDispatcher.Dispatch(this, op, offset, messageBytes, (AMessage)message);
 		}
-		
-		/// <summary>
-		/// Rpc调用
-		/// </summary>
-		public void CallWithAction(ARequest request, Action<AResponse> action)
-		{
-			request.RpcId = ++RpcId;
-
-			this.requestCallback[request.RpcId] = (message) =>
-			{
-				try
-				{
-					AResponse response = (AResponse)message;
-					action(response);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
-				}
-			};
-			
-			this.SendMessage(request);
-		}
 
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息

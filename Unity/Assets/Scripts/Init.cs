@@ -62,7 +62,7 @@ namespace Model
 
 				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
-				ObjectEvents.Instance.LoadHotfixDll();
+				EventSystem.Instance.LoadHotfixDll();
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 				ILHelper.InitILRuntime();
 				

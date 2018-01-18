@@ -142,6 +142,9 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>Assets/Plugins/Editor/npoi/NPOI.dll</HintPath>
     </Reference>
@@ -153,9 +156,6 @@
     </Reference>
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>Assets/Plugins/Editor/npoi/NPOI.OpenXmlFormats.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Apps/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
