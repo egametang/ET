@@ -7,28 +7,28 @@ namespace Hotfix
 		public static T Create<T>() where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer);
+			ObjectSystem.Instance.Awake(disposer);
 			return disposer;
 		}
 
 		public static T Create<T, A>(A a) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a);
+			ObjectSystem.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T Create<T, A, B>(A a, B b) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a, b);
+			ObjectSystem.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T Create<T, A, B, C>(A a, B b, C c) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a, b, c);
+			ObjectSystem.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}
 
@@ -36,7 +36,7 @@ namespace Hotfix
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer);
+			ObjectSystem.Instance.Awake(disposer);
 			return disposer;
 		}
 
@@ -44,7 +44,7 @@ namespace Hotfix
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a);
+			ObjectSystem.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
@@ -52,7 +52,7 @@ namespace Hotfix
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a, b);
+			ObjectSystem.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
@@ -60,7 +60,7 @@ namespace Hotfix
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a, b, c);
+			ObjectSystem.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}
 	}

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Model
 {
 	[ObjectEvent]
-	public class UILoadingComponentEvent : ObjectEvent<UILoadingComponent>, IAwake, IStart
+	public class UiLoadingComponentSystem : ObjectSystem<UILoadingComponent>, IAwake, IStart
 	{
 		public void Awake()
 		{

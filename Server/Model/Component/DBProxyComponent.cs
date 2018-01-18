@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class DBProxyComponentEvent : ObjectEvent<DBProxyComponent>, IAwake
+	public class DbProxyComponentSystem : ObjectSystem<DBProxyComponent>, IAwake
 	{
 		public void Awake()
 		{

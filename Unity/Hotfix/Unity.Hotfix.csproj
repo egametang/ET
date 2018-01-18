@@ -67,7 +67,7 @@
     <Compile Include="Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Base\Object\IUpdate.cs" />
     <Compile Include="Base\Object\Object.cs" />
-    <Compile Include="Base\Object\ObjectEvents.cs" />
+    <Compile Include="Base\Object\ObjectSystem.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
     <Compile Include="Component\UIComponent.cs" />

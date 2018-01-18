@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectEvent]
-	public class ConfigComponentEvent : ObjectEvent<ConfigComponent>, IAwake, ILoad
+	public class ConfigComponentSystem : ObjectSystem<ConfigComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{

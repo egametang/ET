@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 namespace Model
 {
 	[ObjectEvent]
-	public class UnityWebRequestEvent : ObjectEvent<UnityWebRequestAsync>, IUpdate
+	public class UnityWebRequestSystem : ObjectSystem<UnityWebRequestAsync>, IUpdate
 	{
 		public void Update()
 		{

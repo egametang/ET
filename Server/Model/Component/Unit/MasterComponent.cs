@@ -25,7 +25,7 @@ namespace Model
 		private IPEndPoint lockedAddress;
 
 		/// 请求锁的队列
-		private readonly EQueue<LockInfo> queue = new EQueue<LockInfo>();
+		private readonly Queue<LockInfo> queue = new Queue<LockInfo>();
 
 		public void AddGhost(IPEndPoint address)
 		{

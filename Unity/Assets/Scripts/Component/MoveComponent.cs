@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class MoveComponentEvent : ObjectEvent<MoveComponent>, IAwake, IUpdate
+	public class MoveComponentSystem : ObjectSystem<MoveComponent>, IAwake, IUpdate
 	{
 		public void Awake()
 		{

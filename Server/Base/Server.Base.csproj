@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="DoubleMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\EQueue.cs" Link="EQueue.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs" Link="Helper\ArrayHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Helper\ByteHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Helper\EnumHelper.cs" />

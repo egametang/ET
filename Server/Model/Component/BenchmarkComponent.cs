@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class BenchmarkComponentEvent : ObjectEvent<BenchmarkComponent>, IAwake<IPEndPoint>
+	public class BenchmarkComponentSystem : ObjectSystem<BenchmarkComponent>, IAwake<IPEndPoint>
 	{
 		public void Awake(IPEndPoint ipEndPoint)
 		{

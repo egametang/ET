@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
 	[ObjectEvent]
-	public class GlobalConfigComponentEvent : ObjectEvent<GlobalConfigComponent>, IAwake
+	public class GlobalConfigComponentSystem : ObjectSystem<GlobalConfigComponent>, IAwake
 	{
 		public void Awake()
 		{

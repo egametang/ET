@@ -12,7 +12,7 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	public class TimerComponentSystem : ObjectSystem<TimerComponent>, IUpdate
 	{
 		public void Update()
 		{

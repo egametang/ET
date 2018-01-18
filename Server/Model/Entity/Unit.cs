@@ -10,7 +10,7 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class UnitEvent : ObjectEvent<Unit>, IAwake<UnitType>
+	public class UnitSystem : ObjectSystem<Unit>, IAwake<UnitType>
 	{
 		public void Awake(UnitType unitType)
 		{

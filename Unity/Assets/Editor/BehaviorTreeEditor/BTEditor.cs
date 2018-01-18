@@ -39,12 +39,11 @@ namespace MyEditor
 					return instance;
 				}
 
-				ObjectEvents.Instance.Add("Model", typeof(Init).Assembly);
-				ObjectEvents.Instance.Add("Editor", typeof(BTEditor).Assembly);
+				EventSystem.Instance.Add(DLLType.Model, typeof(Init).Assembly);
+				EventSystem.Instance.Add(DLLType.Editor, typeof(BTEditor).Assembly);
 
 				instance = new BTEditor();
-
-				instance.AddComponent<EventComponent>();
+				
 				instance.AddComponent<TimerComponent>();
 				instance.AddComponent<BTNodeInfoComponent>();
 				instance.AddComponent<BTDebugComponent>();
@@ -381,7 +380,7 @@ namespace MyEditor
 			this.NewLoadPrefabTree();
 
 			BTEditorWindow.ShowWindow();
-			this.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeOpenEditor);
+			EventSystem.Instance.Run(EventIdType.BehaviorTreeOpenEditor);
 		}
 
 		public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)

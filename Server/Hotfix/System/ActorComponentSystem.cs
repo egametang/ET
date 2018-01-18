@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Model;
 
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class ActorComponentEvent : ObjectEvent<ActorComponent>, IAwake, IAwake<IEntityActorHandler>, ILoad
+	public class ActorComponentSystem : ObjectSystem<ActorComponent>, IAwake, IAwake<IEntityActorHandler>, ILoad
 	{
 		public void Awake()
 		{
@@ -25,12 +26,12 @@ namespace Hotfix
 	/// <summary>
 	/// 挂上这个组件表示该Entity是一个Actor, 它会将Entity位置注册到Location Server, 接收的消息将会队列处理
 	/// </summary>
-	public static class ActorComponentSystem
+	public static class ActorComponentEx
 	{
 		public static void Awake(this ActorComponent self)
 		{
 			self.entityActorHandler = new CommonEntityActorHandler();
-			self.queue = new EQueue<ActorMessageInfo>();
+			self.queue = new Queue<ActorMessageInfo>();
 			self.actorId = self.Parent.Id;
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Parent);
 			self.HandleAsync();
@@ -39,7 +40,7 @@ namespace Hotfix
 		public static void Awake(this ActorComponent self, IEntityActorHandler iEntityActorHandler)
 		{
 			self.entityActorHandler = iEntityActorHandler;
-			self.queue = new EQueue<ActorMessageInfo>();
+			self.queue = new Queue<ActorMessageInfo>();
 			self.actorId = self.Parent.Id;
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Parent);
 			self.HandleAsync();

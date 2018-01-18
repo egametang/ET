@@ -3,7 +3,7 @@
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class RealmGateAddressComponentEvent : ObjectEvent<RealmGateAddressComponent>, IStart
+	public class RealmGateAddressComponentSystem : ObjectSystem<RealmGateAddressComponent>, IStart
 	{
 		public void Start()
 		{
@@ -11,7 +11,7 @@ namespace Hotfix
 		}
 	}
 	
-	public static class RealmGateAddressComponentSystem
+	public static class RealmGateAddressComponentEx
 	{
 		public static void Start(this RealmGateAddressComponent component)
 		{

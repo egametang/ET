@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class SessionEvent : ObjectEvent<Session>, IAwake<NetworkComponent, AChannel>, IStart
+	public class SessionSystem : ObjectSystem<Session>, IAwake<NetworkComponent, AChannel>, IStart
 	{
 		public void Awake(NetworkComponent network, AChannel channel)
 		{

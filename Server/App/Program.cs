@@ -18,8 +18,8 @@ namespace App
 			
 			try
 			{
-				ObjectEvents.Instance.Add("Model", typeof(Game).Assembly);
-				ObjectEvents.Instance.Add("Hotfix", DllHelper.GetHotfixAssembly());
+				EventSystem.Instance.Add(DLLType.Model, typeof(Game).Assembly);
+				EventSystem.Instance.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
 
 				Options options = Game.Scene.AddComponent<OptionComponent, string[]>(args).Options;
 				StartConfig startConfig = Game.Scene.AddComponent<StartConfigComponent, string, int>(options.Config, options.AppId).StartConfig;
@@ -117,7 +117,7 @@ namespace App
 					{
 						Thread.Sleep(1);
 						contex.Update();
-						ObjectEvents.Instance.Update();
+						EventSystem.Instance.Update();
 					}
 					catch (Exception e)
 					{

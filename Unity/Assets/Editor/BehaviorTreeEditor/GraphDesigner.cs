@@ -200,7 +200,7 @@ namespace MyEditor
 					if (mDragingRightBorder)
 					{
 						mRightWidth -= e.delta.x;
-						BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeRightDesignerDrag, e.delta.x);
+						EventSystem.Instance.Run(EventIdType.BehaviorTreeRightDesignerDrag, e.delta.x);
 						return;
 					}
 
@@ -581,7 +581,7 @@ namespace MyEditor
 				newNode.AddChild(child);
 			}
 			BTEditor.Instance.ResetTreeId();
-			BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeAfterChangeNodeType);
+			EventSystem.Instance.Run(EventIdType.BehaviorTreeAfterChangeNodeType);
 		}
 
 		public void onChangeNodeType(params object[] list)
@@ -614,7 +614,7 @@ namespace MyEditor
 				mDetachedNodes.Add(node);
 			}
 			BTEditor.Instance.ResetTreeId();
-			BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeCreateNode, node);
+			EventSystem.Instance.Run(EventIdType.BehaviorTreeCreateNode, node);
 			return node;
 		}
 
@@ -714,7 +714,7 @@ namespace MyEditor
 
 		public void ClickNode(NodeDesigner dstNode)
 		{
-			BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeClickNode, dstNode);
+			EventSystem.Instance.Run(EventIdType.BehaviorTreeClickNode, dstNode);
 		}
 
 		public void ShiftNode(NodeDesigner dstNode)

@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
 	[ObjectEvent]
-	public class SessionComponentEvent : ObjectEvent<SessionComponent>, IAwake
+	public class SessionComponentSystem : ObjectSystem<SessionComponent>, IAwake
 	{
 		public void Awake()
 		{

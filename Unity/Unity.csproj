@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -97,8 +100,8 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>Assets/Plugins/protobuf-net.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Apps/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
@@ -170,7 +173,6 @@
     <Compile Include="Assets\Scripts\Base\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
-    <Compile Include="Assets\Scripts\Base\EQueue.cs" />
     <Compile Include="Assets\Scripts\Base\Event\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\CrossEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\Env.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\IEventMethod.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoad.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ISerializeToEntity.cs" />
@@ -253,7 +256,7 @@
     <Compile Include="Assets\Scripts\Base\Object\IUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ObjectEvents.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
@@ -280,7 +283,6 @@
     <Compile Include="Assets\Scripts\Component\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\EventComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />

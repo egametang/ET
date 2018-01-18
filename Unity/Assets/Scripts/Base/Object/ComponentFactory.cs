@@ -6,7 +6,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectEvents.Instance.Awake(disposer);
+			EventSystem.Instance.Awake(disposer);
 			return disposer;
 		}
 
@@ -14,7 +14,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectEvents.Instance.Awake(disposer, a);
+			EventSystem.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
@@ -22,7 +22,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectEvents.Instance.Awake(disposer, a, b);
+			EventSystem.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
@@ -30,7 +30,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectEvents.Instance.Awake(disposer, a, b, c);
+			EventSystem.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}
 	}

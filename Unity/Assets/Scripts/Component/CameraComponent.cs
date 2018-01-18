@@ -3,7 +3,7 @@
 namespace Model
 {
 	[ObjectEvent]
-	public class CameraComponentEvent : ObjectEvent<CameraComponent>, IAwake, ILateUpdate
+	public class CameraComponentSystem : ObjectSystem<CameraComponent>, IAwake, ILateUpdate
 	{
 		public void Awake()
 		{

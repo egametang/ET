@@ -4,7 +4,7 @@ using System.Linq;
 namespace Model
 {
 	[ObjectEvent]
-	public class UnitComponentEvent : ObjectEvent<UnitComponent>, IAwake
+	public class UnitComponentSystem : ObjectSystem<UnitComponent>, IAwake
 	{
 		public void Awake()
 		{

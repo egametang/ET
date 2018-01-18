@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Model
 {
 	[ObjectEvent]
-	public class DBTaskQueueEvent : ObjectEvent<DBTaskQueue>, IAwake, IStart
+	public class DbTaskQueueSystem : ObjectSystem<DBTaskQueue>, IAwake, IStart
 	{
 		public void Awake()
 		{
@@ -41,7 +42,7 @@ namespace Model
 
 	public sealed class DBTaskQueue : Disposer
 	{
-		public EQueue<DBTask> queue = new EQueue<DBTask>();
+		public Queue<DBTask> queue = new Queue<DBTask>();
 
 		public TaskCompletionSource<DBTask> tcs;
 

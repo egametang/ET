@@ -4,7 +4,7 @@ using Model;
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class NetInnerComponentEvent : ObjectEvent<NetInnerComponent>, IAwake, IAwake<IPEndPoint>, IUpdate
+	public class NetInnerComponentSystem : ObjectSystem<NetInnerComponent>, IAwake, IAwake<IPEndPoint>, IUpdate
 	{
 		public void Awake()
 		{
@@ -22,7 +22,7 @@ namespace Hotfix
 		}
 	}
 	
-	public static class NetInnerComponentSystem
+	public static class NetInnerComponentEx
 	{
 		public static void Awake(this NetInnerComponent self)
 		{

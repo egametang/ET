@@ -9,6 +9,7 @@ namespace Hotfix
 		{
 			try
 			{
+				ObjectSystem objectSystem = ObjectSystem.Instance;
 				Hotfix.Scene.ModelScene = Game.Scene;
 				Hotfix.Scene.AddComponent<UIComponent>();
 			}
@@ -22,7 +23,7 @@ namespace Hotfix
 		{
 			try
 			{
-				ObjectEvents.Instance.Update();
+				ObjectSystem.Instance.Update();
 			}
 			catch (Exception e)
 			{
@@ -34,7 +35,7 @@ namespace Hotfix
 		{
 			try
 			{
-				ObjectEvents.Instance.LateUpdate();
+				ObjectSystem.Instance.LateUpdate();
 			}
 			catch (Exception e)
 			{
@@ -44,7 +45,7 @@ namespace Hotfix
 
 		public static void OnApplicationQuit()
 		{
-			ObjectEvents.Close();
+			ObjectSystem.Close();
 			Hotfix.Close();
 		}
 	}

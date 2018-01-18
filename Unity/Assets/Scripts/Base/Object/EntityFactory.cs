@@ -5,28 +5,28 @@
 		public static T Create<T>() where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer);
+			EventSystem.Instance.Awake(disposer);
 			return disposer;
 		}
 
 		public static T Create<T, A>(A a) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a);
+			EventSystem.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T Create<T, A, B>(A a, B b) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a, b);
+			EventSystem.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T Create<T, A, B, C>(A a, B b, C c) where T : Disposer
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
-			ObjectEvents.Instance.Awake(disposer, a, b, c);
+			EventSystem.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}
 
@@ -34,7 +34,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer);
+			EventSystem.Instance.Awake(disposer);
 			return disposer;
 		}
 
@@ -42,7 +42,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a);
+			EventSystem.Instance.Awake(disposer, a);
 			return disposer;
 		}
 
@@ -50,7 +50,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a, b);
+			EventSystem.Instance.Awake(disposer, a, b);
 			return disposer;
 		}
 
@@ -58,7 +58,7 @@
 		{
 			T disposer = ObjectPool.Instance.Fetch<T>();
 			disposer.Id = id;
-			ObjectEvents.Instance.Awake(disposer, a, b, c);
+			EventSystem.Instance.Awake(disposer, a, b, c);
 			return disposer;
 		}
 	}

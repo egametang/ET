@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,7 +77,7 @@ namespace Model
 
 
 	[ObjectEvent]
-	public class ActorProxyEvent : ObjectEvent<ActorProxy>, IAwake, IStart
+	public class ActorProxySystem : ObjectSystem<ActorProxy>, IAwake, IStart
 	{
 		public void Awake()
 		{
@@ -95,10 +96,10 @@ namespace Model
 		public IPEndPoint Address;
 
 		// 已发送等待回应的消息
-		public EQueue<ActorTask> RunningTasks = new EQueue<ActorTask>();
+		public Queue<ActorTask> RunningTasks = new Queue<ActorTask>();
 
 		// 还没发送的消息
-		public EQueue<ActorTask> WaitingTasks = new EQueue<ActorTask>();
+		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();
 
 		// 发送窗口大小
 		public int WindowSize = 1;
@@ -311,7 +312,7 @@ namespace Model
 			}
 		}
 
-		public string DebugQueue(EQueue<ActorTask> tasks)
+		public string DebugQueue(Queue<ActorTask> tasks)
 		{
 			string s = "";
 			foreach (ActorTask task in tasks)

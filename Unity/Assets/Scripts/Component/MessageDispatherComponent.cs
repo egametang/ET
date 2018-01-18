@@ -54,7 +54,7 @@ namespace Model
 
 
 	[ObjectEvent]
-	public class MessageDispatherComponentEvent : ObjectEvent<MessageDispatherComponent>, IAwake, ILoad
+	public class MessageDispatherComponentSystem : ObjectSystem<MessageDispatherComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{

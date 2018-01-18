@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System.Collections.Generic;
+
+namespace Model
 {
     public struct SessionFrameMessage
     {
@@ -7,7 +9,7 @@
     }
     
     [ObjectEvent]
-    public class ClientFrameComponentEvent : ObjectEvent<ClientFrameComponent>, IStart
+    public class ClientFrameComponentSystem : ObjectSystem<ClientFrameComponent>, IStart
     {
         public void Start()
         {
@@ -19,7 +21,7 @@
     {
         public int Frame;
 
-        public EQueue<SessionFrameMessage> Queue = new EQueue<SessionFrameMessage>();
+        public Queue<SessionFrameMessage> Queue = new Queue<SessionFrameMessage>();
 
         public int count = 1;
         

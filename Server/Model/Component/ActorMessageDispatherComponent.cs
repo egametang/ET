@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class ActorMessageDispatherComponentEvent : ObjectEvent<ActorMessageDispatherComponent>, IStart, ILoad
+	public class ActorMessageDispatherComponentSystem : ObjectSystem<ActorMessageDispatherComponent>, IStart, ILoad
 	{
 		public void Start()
 		{

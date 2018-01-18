@@ -6,7 +6,7 @@ namespace Model
 {
 
 	[ObjectEvent]
-	public class DBSaveTaskEvent : ObjectEvent<DBSaveTask>, IAwake<Disposer, string, TaskCompletionSource<bool>>
+	public class DbSaveTaskSystem : ObjectSystem<DBSaveTask>, IAwake<Disposer, string, TaskCompletionSource<bool>>
 	{
 		public void Awake(Disposer entity, string collectionName, TaskCompletionSource<bool> tcs)
 		{

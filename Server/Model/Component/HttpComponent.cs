@@ -5,7 +5,7 @@ using System.Net;
 namespace Model
 {
 	[ObjectEvent]
-	public class HttpComponentComponentEvent : ObjectEvent<HttpComponent>, IAwake, ILoad
+	public class HttpComponentComponentSystem : ObjectSystem<HttpComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class AnimatorComponentEvent : ObjectEvent<AnimatorComponent>, IAwake, IUpdate
+	public class AnimatorComponentSystem : ObjectSystem<AnimatorComponent>, IAwake, IUpdate
 	{
 		public void Awake()
 		{

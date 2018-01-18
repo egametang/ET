@@ -9,7 +9,7 @@ namespace Model
 	}
 
 	[ObjectEvent]
-	public class UnitEvent : ObjectEvent<Unit>
+	public class UnitSystem : ObjectSystem<Unit>
 	{
 	}
 

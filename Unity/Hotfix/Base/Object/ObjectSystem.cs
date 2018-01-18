@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using Model;
 
-namespace Model
+namespace Hotfix
 {
 	public interface IObjectEvent
 	{
@@ -31,69 +30,61 @@ namespace Model
 		}
 	}
 
-	public sealed class ObjectEvents
+	public sealed class ObjectSystem
 	{
-		private static ObjectEvents instance;
+		private static ObjectSystem instance;
 
-		public static ObjectEvents Instance
+		public static ObjectSystem Instance
 		{
 			get
 			{
-				return instance ?? (instance = new ObjectEvents());
+				return instance ?? (instance = new ObjectSystem());
 			}
 		}
 
-		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
-
-		private Dictionary<Type, IObjectEvent> disposerEvents;
-
-		private EQueue<Disposer> updates = new EQueue<Disposer>();
-		private EQueue<Disposer> updates2 = new EQueue<Disposer>();
-
-		private EQueue<Disposer> starts = new EQueue<Disposer>();
-
-		private EQueue<Disposer> loaders = new EQueue<Disposer>();
-		private EQueue<Disposer> loaders2 = new EQueue<Disposer>();
-		
-		public void Add(string name, Assembly assembly)
+		public static void Close()
 		{
-			this.assemblies[name] = assembly;
+			instance = null;
+		}
+		
+		private readonly Dictionary<Type, IObjectEvent> disposerEvents = new Dictionary<Type, IObjectEvent>();
 
-			this.disposerEvents = new Dictionary<Type, IObjectEvent>();
-			foreach (Assembly ass in this.assemblies.Values)
+		private Queue<Disposer> updates = new Queue<Disposer>();
+		private Queue<Disposer> updates2 = new Queue<Disposer>();
+
+		private readonly Queue<Disposer> starts = new Queue<Disposer>();
+
+		private Queue<Disposer> loaders = new Queue<Disposer>();
+		private Queue<Disposer> loaders2 = new Queue<Disposer>();
+
+		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
+		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
+
+		public ObjectSystem()
+		{
+			this.disposerEvents.Clear();
+
+			Type[] types = DllHelper.GetHotfixTypes();
+			foreach (Type type in types)
 			{
-				Type[] types = ass.GetTypes();
-				foreach (Type type in types)
+				object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
+
+				if (attrs.Length == 0)
 				{
-					object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
-
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					object obj = Activator.CreateInstance(type);
-					IObjectEvent objectEvent = obj as IObjectEvent;
-					if (objectEvent == null)
-					{
-						Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
-						continue;
-					}
-					this.disposerEvents[objectEvent.Type()] = objectEvent;
+					continue;
 				}
+
+				object obj = Activator.CreateInstance(type);
+				IObjectEvent objectEvent = obj as IObjectEvent;
+				if (objectEvent == null)
+				{
+					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
+					continue;
+				}
+				this.disposerEvents[objectEvent.Type()] = objectEvent;
 			}
 
 			this.Load();
-		}
-
-		public Assembly Get(string name)
-		{
-			return this.assemblies[name];
-		}
-
-		public Assembly[] GetAll()
-		{
-			return this.assemblies.Values.ToArray();
 		}
 
 		public void Add(Disposer disposer)
@@ -275,8 +266,45 @@ namespace Model
 					Log.Error(e.ToString());
 				}
 			}
-			
+
 			ObjectHelper.Swap(ref this.updates, ref this.updates2);
+		}
+
+		public void LateUpdate()
+		{
+			while (this.lateUpdates.Count > 0)
+			{
+				Disposer disposer = this.lateUpdates.Dequeue();
+				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				IObjectEvent objectEvent;
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
+				{
+					continue;
+				}
+
+				this.lateUpdates2.Enqueue(disposer);
+
+				ILateUpdate iLateUpdate = objectEvent as ILateUpdate;
+				if (iLateUpdate == null)
+				{
+					continue;
+				}
+				objectEvent.Set(disposer);
+				try
+				{
+					iLateUpdate.LateUpdate();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e.ToString());
+				}
+			}
+
+			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 	}
 }

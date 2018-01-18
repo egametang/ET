@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectEvent]
-	public class LocationProxyComponentEvent : ObjectEvent<LocationProxyComponent>, IAwake
+	public class LocationProxyComponentSystem : ObjectSystem<LocationProxyComponent>, IAwake
 	{
 		public void Awake()
 		{

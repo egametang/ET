@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class UIComponentEvent : ObjectEvent<UIComponent>, IAwake, ILoad
+	public class UiComponentSystem : ObjectSystem<UIComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{
@@ -60,7 +60,7 @@ namespace Model
 
 		public void Load()
 		{
-            this.UiTypes.Clear();
+			this.UiTypes.Clear();
             
             Type[] types = DllHelper.GetMonoTypes();
 
@@ -94,7 +94,7 @@ namespace Model
 			try
 			{
 				UI ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
-                uis.Add(type, ui);
+				uis.Add(type, ui);
 
 				// 设置canvas
 				string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;

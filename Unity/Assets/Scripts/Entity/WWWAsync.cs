@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class WWWAsyncEvent : ObjectEvent<WWWAsync>, IUpdate
+	public class WwwAsyncSystem : ObjectSystem<WWWAsync>, IUpdate
 	{
 		public void Update()
 		{

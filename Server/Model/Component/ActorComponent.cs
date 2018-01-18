@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Model
@@ -19,7 +20,7 @@ namespace Model
 		public long actorId;
 
 		// 队列处理消息
-		public EQueue<ActorMessageInfo> queue;
+		public Queue<ActorMessageInfo> queue;
 
 		public TaskCompletionSource<ActorMessageInfo> tcs;
 

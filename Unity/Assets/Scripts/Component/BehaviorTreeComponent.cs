@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class BehaviorTreeComponentEvent : ObjectEvent<BehaviorTreeComponent>, IAwake, ILoad
+	public class BehaviorTreeComponentSystem : ObjectSystem<BehaviorTreeComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{
@@ -71,7 +71,7 @@ namespace Model
 
 		private static void InitFieldValue(ref Node node, NodeProto nodeProto)
 		{
-			Type type = ObjectEvents.Instance.Get("Model").GetType("Model." + nodeProto.Name);
+			Type type = EventSystem.Instance.Get(DLLType.Model).GetType("Model." + nodeProto.Name);
 
 			foreach (var args_item in nodeProto.Args.Dict())
 			{

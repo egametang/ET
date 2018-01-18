@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectEvent]
-	public class AssetsBundleLoaderAsyncEvent : ObjectEvent<AssetsBundleLoaderAsync>, IUpdate
+	public class AssetsBundleLoaderAsyncSystem : ObjectSystem<AssetsBundleLoaderAsync>, IUpdate
 	{
 		public void Update()
 		{

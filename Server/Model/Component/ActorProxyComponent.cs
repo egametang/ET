@@ -3,7 +3,7 @@
 namespace Model
 {
 	[ObjectEvent]
-	public class ActorProxyComponentEvent : ObjectEvent<ActorProxyComponent>, IStart
+	public class ActorProxyComponentSystem : ObjectSystem<ActorProxyComponent>, IStart
 	{
 		// 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟
 		public async void Start()

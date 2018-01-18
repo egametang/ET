@@ -6,7 +6,7 @@ using System.Linq;
 namespace Model
 {
 	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IStart
+	public class AppManagerComponentSystem : ObjectSystem<AppManagerComponent>, IStart
 	{
 		public void Start()
 		{

@@ -1,7 +1,7 @@
 ﻿namespace Model
 {
 	[ObjectEvent]
-	public class UnitGateComponentEvent : ObjectEvent<UnitGateComponent>, IAwake<long>
+	public class UnitGateComponentSystem : ObjectSystem<UnitGateComponent>, IAwake<long>
 	{
 		public void Awake(long gateSessionId)
 		{
