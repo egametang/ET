@@ -8,9 +8,9 @@ namespace Model
 	{
 		public static async Task DownloadBundle()
 		{
-			EventSystem.Instance.Run(EventIdType.LoadingBegin);
+			Game.EventSystem.Run(EventIdType.LoadingBegin);
 			await StartDownLoadResources();
-			EventSystem.Instance.Run(EventIdType.LoadingFinish);
+			Game.EventSystem.Run(EventIdType.LoadingFinish);
 		}
 		
 		public static async Task StartDownLoadResources()

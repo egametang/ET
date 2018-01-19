@@ -39,21 +39,6 @@ namespace Model
 
 	public sealed class EventSystem
 	{
-		private static EventSystem instance;
-
-		public static EventSystem Instance
-		{
-			get
-			{
-				return instance ?? (instance = new EventSystem());
-			}
-		}
-
-		public static void Close()
-		{
-			instance = null;
-		}
-
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
 
 		private readonly Dictionary<EventIdType, List<object>> allEvents = new Dictionary<EventIdType, List<object>>();
@@ -150,7 +135,7 @@ namespace Model
 
 		public void Awake(Disposer disposer)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
@@ -167,7 +152,7 @@ namespace Model
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
@@ -184,7 +169,7 @@ namespace Model
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{
@@ -201,7 +186,7 @@ namespace Model
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 			{

@@ -280,17 +280,17 @@ namespace MyEditor
 			if (!isSelected && mouse.x > Pos.x - Width / 2 - 30f && mouse.x < Pos.x + Width / 2 + 30f && mouse.y > Pos.y - Height / 2 &&
 			    mouse.y < Pos.y + Height / 2)
 			{
-				EventSystem.Instance.Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
 			}
 			//并判断是否点中了连线柄
 			if (mouse.x > LeftPos.x - 30f && mouse.x < LeftPos.x + 10f && mouse.y > LeftPos.y - 30f && mouse.y < LeftPos.y + 30f)
 			{
-				EventSystem.Instance.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
 			}
 
 			if (mouse.x > RightPos.x - 10f && mouse.x < RightPos.x + 30f && mouse.y > RightPos.y - 30f && mouse.y < RightPos.y + 30f && NodeData.CanAddChild())
 			{
-				EventSystem.Instance.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
 			}
 
 			for (int i = 0; i < this.Children.Count; i++)

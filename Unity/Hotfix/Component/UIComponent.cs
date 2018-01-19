@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Hotfix
 {
 	[ObjectEvent]
-	public class UIComponentEvent : ObjectEvent<UIComponent>, IAwake, ILoad
+	public class UiComponentSystem : ObjectSystem<UIComponent>, IAwake, ILoad
 	{
 		public void Awake()
 		{

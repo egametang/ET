@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -187,6 +184,7 @@
     <Compile Include="Assets\Scripts\Base\Helper\IdGenerater.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\MongoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\RandomHelper.cs" />
@@ -325,7 +323,6 @@
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\MongoHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />

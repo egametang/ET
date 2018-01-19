@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Hotfix
 {
 	[Model.ObjectEvent]
-	public class UIEvent : ObjectEvent<UI>, IAwake<Scene, UI, GameObject>
+	public class UiSystem : ObjectSystem<UI>, IAwake<Scene, UI, GameObject>
 	{
 		public void Awake(Scene scene, UI parent, GameObject gameObject)
 		{
@@ -68,6 +68,7 @@ namespace Hotfix
 		public void Add(UI ui)
 		{
 			this.children.Add(ui.Name, ui);
+			ui.Parent = this;
 		}
 
 		public void Remove(string name)

@@ -46,18 +46,18 @@ namespace Model
 
 			return appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
 #else
-			if (EventSystem.Instance.HotfixAssembly == null)
+			if (Game.EventSystem.HotfixAssembly == null)
 			{
 				return new Type[0];
 			}
-			return EventSystem.Instance.HotfixAssembly.GetTypes();
+			return Game.EventSystem.HotfixAssembly.GetTypes();
 #endif
 		}
 
 		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in EventSystem.Instance.GetAll())
+			foreach (Assembly assembly in Game.EventSystem.GetAll())
 			{
 				types.AddRange(assembly.GetTypes());
 			}

@@ -40,16 +40,6 @@ namespace Model
 
 	public sealed class EventSystem
 	{
-		private static EventSystem instance;
-
-		public static EventSystem Instance
-		{
-			get
-			{
-				return instance ?? (instance = new EventSystem());
-			}
-		}
-
 		private Assembly hotfixAssembly;
 
 		public Assembly HotfixAssembly
@@ -81,17 +71,12 @@ namespace Model
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
-		public static void Close()
-		{
-			instance = null;
-		}
-
 		public void LoadHotfixDll()
 		{
 #if ILRuntime
 			DllHelper.LoadHotfixAssembly();	
 #else
-			EventSystem.Instance.HotfixAssembly = DllHelper.LoadHotfixAssembly();
+			this.HotfixAssembly = DllHelper.LoadHotfixAssembly();
 #endif
 			this.Register();
 			this.Load();
@@ -202,7 +187,7 @@ namespace Model
 
 		public void Awake(Disposer disposer)
 		{
-			EventSystem.Instance.Add(disposer);
+			this.Add(disposer);
 
 			IObjectSystem objectSystem;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
@@ -220,7 +205,7 @@ namespace Model
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
-			EventSystem.Instance.Add(disposer);
+			this.Add(disposer);
 
 			IObjectSystem objectSystem;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
@@ -238,7 +223,7 @@ namespace Model
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
-			EventSystem.Instance.Add(disposer);
+			this.Add(disposer);
 
 			IObjectSystem objectSystem;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
@@ -256,7 +241,7 @@ namespace Model
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
-			EventSystem.Instance.Add(disposer);
+			this.Add(disposer);
 
 			IObjectSystem objectSystem;
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))

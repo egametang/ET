@@ -11,7 +11,7 @@ namespace Hotfix
 			A2M_Reload response = new A2M_Reload();
 			try
 			{
-				EventSystem.Instance.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
+				Game.EventSystem.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
 				reply(response);
 			}
 			catch (Exception e)

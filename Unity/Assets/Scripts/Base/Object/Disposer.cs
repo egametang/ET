@@ -30,7 +30,7 @@ namespace Model
 			this.Id = 0;
 			if (this.IsFromPool)
 			{
-				ObjectPool.Instance.Recycle(this);
+				Game.ObjectPool.Recycle(this);
 			}
 		}
 	}

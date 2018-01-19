@@ -4,61 +4,61 @@
 	{
 		public static T Create<T>() where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
-			EventSystem.Instance.Awake(disposer);
+			T disposer = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(disposer);
 			return disposer;
 		}
 
 		public static T Create<T, A>(A a) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
-			EventSystem.Instance.Awake(disposer, a);
+			T disposer = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T Create<T, A, B>(A a, B b) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
-			EventSystem.Instance.Awake(disposer, a, b);
+			T disposer = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T Create<T, A, B, C>(A a, B b, C c) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
-			EventSystem.Instance.Awake(disposer, a, b, c);
+			T disposer = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(disposer, a, b, c);
 			return disposer;
 		}
 
 		public static T CreateWithId<T>(long id) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Game.ObjectPool.Fetch<T>();
 			disposer.Id = id;
-			EventSystem.Instance.Awake(disposer);
+			Game.EventSystem.Awake(disposer);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A>(long id, A a) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Game.ObjectPool.Fetch<T>();
 			disposer.Id = id;
-			EventSystem.Instance.Awake(disposer, a);
+			Game.EventSystem.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Game.ObjectPool.Fetch<T>();
 			disposer.Id = id;
-			EventSystem.Instance.Awake(disposer, a, b);
+			Game.EventSystem.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : Disposer
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Game.ObjectPool.Fetch<T>();
 			disposer.Id = id;
-			EventSystem.Instance.Awake(disposer, a, b, c);
+			Game.EventSystem.Awake(disposer, a, b, c);
 			return disposer;
 		}
 	}

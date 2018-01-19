@@ -6,26 +6,7 @@ namespace Hotfix
 {
     public class ObjectPool
     {
-	    private static ObjectPool instance;
-
-	    public static ObjectPool Instance
-	    {
-		    get
-		    {
-				return instance ?? (instance = new ObjectPool());
-			}
-	    }
-
         private readonly Dictionary<Type, Queue<Disposer>> dictionary = new Dictionary<Type, Queue<Disposer>>();
-
-        private ObjectPool()
-        {
-        }
-
-	    public static void Close()
-	    {
-		    instance = null;
-	    }
 
         public Disposer Fetch(Type type)
         {

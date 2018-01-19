@@ -58,7 +58,7 @@ namespace Model
 				}
 
 				NumericDic[numericType] = value;
-				EventSystem.Instance.Run(EventIdType.NumbericChange, this.Parent.Id, numericType, value);
+				Game.EventSystem.Run(EventIdType.NumbericChange, this.Parent.Id, numericType, value);
 			}
 		}
 

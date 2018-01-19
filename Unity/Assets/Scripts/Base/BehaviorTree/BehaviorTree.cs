@@ -33,7 +33,7 @@ namespace Model
 				this.PathList.Clear();
 				env.Add(BTEnvKey.NodePath, this.PathList);
 				bool ret = this.node.DoRun(this, env);
-				EventSystem.Instance.Run(EventIdType.BehaviorTreeRunTreeEvent, this);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeRunTreeEvent, this);
 				return ret;
 			}
 			catch (Exception e)

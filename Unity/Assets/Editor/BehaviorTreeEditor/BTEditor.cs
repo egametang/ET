@@ -39,8 +39,8 @@ namespace MyEditor
 					return instance;
 				}
 
-				EventSystem.Instance.Add(DLLType.Model, typeof(Init).Assembly);
-				EventSystem.Instance.Add(DLLType.Editor, typeof(BTEditor).Assembly);
+				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
+				Game.EventSystem.Add(DLLType.Editor, typeof(BTEditor).Assembly);
 
 				instance = new BTEditor();
 				
@@ -380,7 +380,7 @@ namespace MyEditor
 			this.NewLoadPrefabTree();
 
 			BTEditorWindow.ShowWindow();
-			EventSystem.Instance.Run(EventIdType.BehaviorTreeOpenEditor);
+			Game.EventSystem.Run(EventIdType.BehaviorTreeOpenEditor);
 		}
 
 		public string[] GetCanInPutEnvKeyArray(BehaviorNodeData nodeData, NodeFieldDesc desc)

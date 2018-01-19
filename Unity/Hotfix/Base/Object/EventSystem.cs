@@ -4,13 +4,13 @@ using Model;
 
 namespace Hotfix
 {
-	public interface IObjectEvent
+	public interface IObjectSystem
 	{
 		Type Type();
 		void Set(object value);
 	}
 
-	public abstract class ObjectEvent<T> : IObjectEvent
+	public abstract class ObjectSystem<T> : IObjectSystem
 	{
 		private T value;
 
@@ -30,24 +30,9 @@ namespace Hotfix
 		}
 	}
 
-	public sealed class ObjectSystem
+	public sealed class EventSystem
 	{
-		private static ObjectSystem instance;
-
-		public static ObjectSystem Instance
-		{
-			get
-			{
-				return instance ?? (instance = new ObjectSystem());
-			}
-		}
-
-		public static void Close()
-		{
-			instance = null;
-		}
-		
-		private readonly Dictionary<Type, IObjectEvent> disposerEvents = new Dictionary<Type, IObjectEvent>();
+		private readonly Dictionary<Type, IObjectSystem> disposerEvents = new Dictionary<Type, IObjectSystem>();
 
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
@@ -60,7 +45,7 @@ namespace Hotfix
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
-		public ObjectSystem()
+		public EventSystem()
 		{
 			this.disposerEvents.Clear();
 
@@ -75,13 +60,13 @@ namespace Hotfix
 				}
 
 				object obj = Activator.CreateInstance(type);
-				IObjectEvent objectEvent = obj as IObjectEvent;
-				if (objectEvent == null)
+				IObjectSystem objectSystem = obj as IObjectSystem;
+				if (objectSystem == null)
 				{
 					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
 					continue;
 				}
-				this.disposerEvents[objectEvent.Type()] = objectEvent;
+				this.disposerEvents[objectSystem.Type()] = objectSystem;
 			}
 
 			this.Load();
@@ -89,7 +74,7 @@ namespace Hotfix
 
 		public void Add(Disposer disposer)
 		{
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				return;
 			}
@@ -112,9 +97,9 @@ namespace Hotfix
 
 		public void Awake(Disposer disposer)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				return;
 			}
@@ -129,9 +114,9 @@ namespace Hotfix
 
 		public void Awake<P1>(Disposer disposer, P1 p1)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake1");
 			}
@@ -146,9 +131,9 @@ namespace Hotfix
 
 		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake2");
 			}
@@ -163,9 +148,9 @@ namespace Hotfix
 
 		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
 		{
-			Instance.Add(disposer);
+			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake3");
 			}
@@ -188,7 +173,7 @@ namespace Hotfix
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}
@@ -219,7 +204,7 @@ namespace Hotfix
 			while (this.starts.Count > 0)
 			{
 				Disposer disposer = this.starts.Dequeue();
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}
@@ -244,7 +229,7 @@ namespace Hotfix
 				{
 					continue;
 				}
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}
@@ -280,20 +265,20 @@ namespace Hotfix
 					continue;
 				}
 
-				IObjectEvent objectEvent;
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectEvent))
+				IObjectSystem objectSystem;
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
 				{
 					continue;
 				}
 
 				this.lateUpdates2.Enqueue(disposer);
 
-				ILateUpdate iLateUpdate = objectEvent as ILateUpdate;
+				ILateUpdate iLateUpdate = objectSystem as ILateUpdate;
 				if (iLateUpdate == null)
 				{
 					continue;
 				}
-				objectEvent.Set(disposer);
+				objectSystem.Set(disposer);
 				try
 				{
 					iLateUpdate.LateUpdate();

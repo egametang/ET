@@ -71,7 +71,7 @@ namespace Model
 
 		private static void InitFieldValue(ref Node node, NodeProto nodeProto)
 		{
-			Type type = EventSystem.Instance.Get(DLLType.Model).GetType("Model." + nodeProto.Name);
+			Type type = Game.EventSystem.Get(DLLType.Model).GetType("Model." + nodeProto.Name);
 
 			foreach (var args_item in nodeProto.Args.Dict())
 			{

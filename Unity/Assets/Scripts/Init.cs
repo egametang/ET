@@ -35,7 +35,7 @@ namespace Model
 				Instance = this;
 
 
-				EventSystem.Instance.Add(DLLType.Model, typeof(Init).Assembly);
+				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
 
 				Game.Scene.AddComponent<GlobalConfigComponent>();
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
@@ -62,7 +62,7 @@ namespace Model
 
 				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
-				EventSystem.Instance.LoadHotfixDll();
+				Game.EventSystem.LoadHotfixDll();
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 				ILHelper.InitILRuntime();
 				
@@ -73,9 +73,9 @@ namespace Model
 #else
 				Log.Debug("run in mono mode");
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
-				EventSystem.Instance.LoadHotfixDll();
+				Game.EventSystem.LoadHotfixDll();
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
-				Type hotfixInit = EventSystem.Instance.HotfixAssembly.GetType("Hotfix.Init");
+				Type hotfixInit = Game.EventSystem.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
 				this.update = new MonoStaticMethod(hotfixInit, "Update");
 				this.lateUpdate = new MonoStaticMethod(hotfixInit, "LateUpdate");
@@ -85,7 +85,7 @@ namespace Model
 				// 进入热更新层
 				this.start.Run();
 
-				EventSystem.Instance.Run(EventIdType.InitSceneStart);
+				Game.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
@@ -96,20 +96,19 @@ namespace Model
 		private void Update()
 		{
 			this.update?.Run();
-			EventSystem.Instance.Update();
+			Game.EventSystem.Update();
 		}
 
 		private void LateUpdate()
 		{
 			this.lateUpdate?.Run();
-			EventSystem.Instance.LateUpdate();
+			Game.EventSystem.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
 			Instance = null;
 			Game.Close();
-			EventSystem.Close();
 			this.onApplicationQuit?.Run();
 		}
 	}

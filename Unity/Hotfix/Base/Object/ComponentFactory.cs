@@ -6,33 +6,33 @@ namespace Hotfix
 	{
 		public static T Create<T>(Entity entity) where T : Component
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Hotfix.ObjectPool.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectSystem.Instance.Awake(disposer);
+			Hotfix.EventSystem.Awake(disposer);
 			return disposer;
 		}
 
 		public static T Create<T, A>(Entity entity, A a) where T : Component
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Hotfix.ObjectPool.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectSystem.Instance.Awake(disposer, a);
+			Hotfix.EventSystem.Awake(disposer, a);
 			return disposer;
 		}
 
 		public static T Create<T, A, B>(Entity entity, A a, B b) where T : Component
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Hotfix.ObjectPool.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectSystem.Instance.Awake(disposer, a, b);
+			Hotfix.EventSystem.Awake(disposer, a, b);
 			return disposer;
 		}
 
 		public static T Create<T, A, B, C>(Entity entity, A a, B b, C c) where T : Component
 		{
-			T disposer = ObjectPool.Instance.Fetch<T>();
+			T disposer = Hotfix.ObjectPool.Fetch<T>();
 			disposer.Parent = entity;
-			ObjectSystem.Instance.Awake(disposer, a, b, c);
+			Hotfix.EventSystem.Awake(disposer, a, b, c);
 			return disposer;
 		}
 	}

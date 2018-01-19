@@ -16,11 +16,33 @@
 				return scene;
 			}
 		}
-		
+
+		private static EventSystem eventSystem;
+
+		public static EventSystem EventSystem
+		{
+			get
+			{
+				return eventSystem ?? (eventSystem = new EventSystem());
+			}
+		}
+
+		private static ObjectPool objectPool;
+
+		public static ObjectPool ObjectPool
+		{
+			get
+			{
+				return objectPool ?? (objectPool = new ObjectPool());
+			}
+		}
+
 		public static void Close()
 		{
 			scene.Dispose();
 			scene = null;
+			eventSystem = null;
+			objectPool = null;
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Model;
+﻿using Model;
 
 namespace Hotfix
 {
@@ -24,7 +23,7 @@ namespace Hotfix
 			this.Id = 0;
 			if (this.IsFromPool)
 			{
-				ObjectPool.Instance.Recycle(this);
+				Hotfix.ObjectPool.Recycle(this);
 			}
 		}
 	}
