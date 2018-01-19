@@ -21,15 +21,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs" Link="Base\Helper\ArrayHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Base\Helper\EnumHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\FileHelper.cs" Link="Base\Helper\FileHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\IdGenerater.cs" Link="Base\Helper\IdGenerater.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MD5Helper.cs" Link="Base\Helper\MD5Helper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs" Link="Base\Helper\MethodInfoHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MongoHelper.cs" Link="Base\Helper\MongoHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs" Link="Base\Helper\NetHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs" Link="Base\Helper\ProtobufHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\RandomHelper.cs" Link="Base\Helper\RandomHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs" Link="Base\Helper\StringHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AActorMessage.cs" Link="Base\Message\AActorMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AMessage.cs" Link="Base\Message\AMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs" Link="Message\AppType.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs" Link="Message\IMessageDispatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Message\IMessagePacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs" Link="Other\AppType.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs" Link="Module\Network\IMessageDispatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Module\Network\IMessagePacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs" Link="Base\Message\MessageInfo.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs" Link="Message\MongoPacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs" Link="Message\ProtobufPacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\RpcException.cs" Link="Message\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs" Link="Module\Network\MongoPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs" Link="Module\Network\ProtobufPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\RpcException.cs" Link="Module\Network\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AChannel.cs" Link="Base\Network\AChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AService.cs" Link="Base\Network\AService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\Circularbuffer.cs" Link="Base\Network\Circularbuffer.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KChannel.cs" Link="Base\Network\KNet\KChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\Kcp.cs" Link="Base\Network\KNet\Kcp.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KService.cs" Link="Base\Network\KNet\KService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\NetworkHelper.cs" Link="Base\Network\NetworkHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Base\Network\TNet\PacketParser.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Base\Network\TNet\TChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TService.cs" Link="Base\Network\TNet\TService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Object\Component.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs" Link="Base\Object\Disposer.cs" />
@@ -44,34 +70,37 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectEventAttribute.cs" Link="Base\Object\ObjectEventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ConfigComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Component\Config\DBConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Component\Config\HttpConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Component\Config\InnerConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Component\Config\OuterConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Component\NetworkComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Module\Network\NetworkComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Entity\Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Entity\Session.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Helper\MongoHelper.cs" Link="Helper\MongoHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Network\Session.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.1.1-beta" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="CommandLineParser" Version="2.2.1" />
+    <PackageReference Include="NLog" Version="4.5.0-rc04" />
+    <PackageReference Include="protobuf-net" Version="2.3.4" />
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base\Server.Base.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Base\Network\KNet\" />
+    <Folder Include="Base\Network\TNet\" />
     <Folder Include="Component\Config\" />
   </ItemGroup>
 </Project>

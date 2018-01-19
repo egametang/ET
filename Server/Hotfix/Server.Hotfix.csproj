@@ -21,7 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Base\Server.Base.csproj" />
     <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
 

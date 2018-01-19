@@ -20,6 +20,7 @@ namespace Hotfix
 
 		public void Load()
 		{
+			this.Get().Load();
 		}
 	}
 
