@@ -45,6 +45,8 @@ namespace Model
 					break;
 				}
 
+				this.timeId.Remove(kv.Key);
+
 				List<long> timeOutId = kv.Value;
 				foreach (long id in timeOutId)
 				{
@@ -54,9 +56,7 @@ namespace Model
 						continue;
 					}
 					timer.tcs.SetResult(true);
-				}
-
-				this.timeId.Remove(kv.Key);
+				}				
 			}
 		}
 
