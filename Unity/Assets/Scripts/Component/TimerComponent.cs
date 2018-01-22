@@ -29,6 +29,8 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
+		private readonly List<long> timeOutId = new List<long>();
+
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
@@ -45,9 +47,11 @@ namespace Model
 					break;
 				}
 
-				this.timeId.Remove(kv.Key);
+				timeOutId.Clear();
+				timeOutId.AddRange(kv.Value);
 
-				List<long> timeOutId = kv.Value;
+				this.timeId.Remove(kv.Key);
+				
 				foreach (long id in timeOutId)
 				{
 					Timer timer;
