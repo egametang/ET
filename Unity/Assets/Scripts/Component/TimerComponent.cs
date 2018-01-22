@@ -55,6 +55,7 @@ namespace Model
 					{
 						continue;
 					}
+					this.timers.Remove(id);
 					timer.tcs.SetResult(true);
 				}				
 			}
