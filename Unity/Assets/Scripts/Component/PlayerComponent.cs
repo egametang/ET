@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class PlayerComponentSystem : ObjectSystem<PlayerComponent>, IAwake
 	{
 		public void Awake()

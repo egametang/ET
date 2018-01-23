@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbComponentSystem : ObjectSystem<DBComponent>, IAwake
 	{
 		public void Awake()

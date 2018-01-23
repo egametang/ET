@@ -5,7 +5,7 @@ using MongoDB.Driver;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbQueryJsonTaskSystem : ObjectSystem<DBQueryJsonTask>, IAwake<string, string, TaskCompletionSource<List<Disposer>>>
 	{
 		public void Awake(string collectionName, string json, TaskCompletionSource<List<Disposer>> tcs)

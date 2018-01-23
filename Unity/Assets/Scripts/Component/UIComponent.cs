@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UiComponentSystem : ObjectSystem<UIComponent>, IAwake, ILoad
 	{
 		public void Awake()

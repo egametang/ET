@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class HttpComponentComponentSystem : ObjectSystem<HttpComponent>, IAwake, ILoad
 	{
 		public void Awake()

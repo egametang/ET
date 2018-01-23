@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class AnimatorComponentSystem : ObjectSystem<AnimatorComponent>, IAwake, IUpdate
 	{
 		public void Awake()

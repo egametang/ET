@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UiBundleDownloaderComponentSystem : ObjectSystem<BundleDownloaderComponent>, IAwake
 	{
 		public void Awake()

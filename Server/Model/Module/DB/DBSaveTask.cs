@@ -5,7 +5,7 @@ using MongoDB.Driver;
 namespace Model
 {
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbSaveTaskSystem : ObjectSystem<DBSaveTask>, IAwake<Disposer, string, TaskCompletionSource<bool>>
 	{
 		public void Awake(Disposer entity, string collectionName, TaskCompletionSource<bool> tcs)

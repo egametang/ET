@@ -2,7 +2,7 @@
 
 namespace Hotfix
 {
-    [ObjectEvent]
+    [ObjectSystem]
     public class ServerFrameComponentSystem : ObjectSystem<ServerFrameComponent>, IAwake
     {
         public void Awake()

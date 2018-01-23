@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class StartConfigComponentSystem : ObjectSystem<StartConfigComponent>, IAwake<string, int>
 	{
 		public void Awake(string a, int b)

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class LocationProxyComponentSystem : ObjectSystem<LocationProxyComponent>, IAwake
 	{
 		public void Awake()
@@ -30,31 +30,31 @@ namespace Model
 		public async Task Add(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectAddResponse>(new ObjectAddRequest() { Key = key, AppId = this.AppId });
+			await session.Call(new ObjectAddRequest() { Key = key, AppId = this.AppId });
 		}
 
 		public async Task Lock(long key, int time = 1000)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectLockResponse>(new ObjectLockRequest() { Key = key, LockAppId = this.AppId, Time = time });
+			await session.Call(new ObjectLockRequest() { Key = key, LockAppId = this.AppId, Time = time });
 		}
 
 		public async Task UnLock(long key, int value)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectUnLockResponse>(new ObjectUnLockRequest() { Key = key, UnLockAppId = this.AppId, AppId = value});
+			await session.Call(new ObjectUnLockRequest() { Key = key, UnLockAppId = this.AppId, AppId = value});
 		}
 
 		public async Task Remove(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			await session.Call<ObjectRemoveResponse>(new ObjectRemoveRequest() { Key = key });
+			await session.Call(new ObjectRemoveRequest() { Key = key });
 		}
 
 		public async Task<int> Get(long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.LocationAddress);
-			ObjectGetResponse response = await session.Call<ObjectGetResponse>(new ObjectGetRequest() { Key = key });
+			ObjectGetResponse response = (ObjectGetResponse)await session.Call(new ObjectGetRequest() { Key = key });
 			return response.AppId;
 		}
 

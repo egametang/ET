@@ -2,7 +2,7 @@
 
 namespace Hotfix
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class RealmGateAddressComponentSystem : ObjectSystem<RealmGateAddressComponent>, IStart
 	{
 		public void Start()

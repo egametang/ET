@@ -62,7 +62,7 @@ namespace Model
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(ObjectEventAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
 
 				if (attrs.Length == 0)
 				{

@@ -9,7 +9,7 @@ namespace Model
 		Npc
 	}
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UnitSystem : ObjectSystem<Unit>, IAwake<UnitType>
 	{
 		public void Awake(UnitType unitType)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class MoveComponentSystem : ObjectSystem<MoveComponent>, IAwake, IUpdate
 	{
 		public void Awake()
