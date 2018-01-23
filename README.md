@@ -60,6 +60,8 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [linux部署](http://gad.qq.com/article/detail/35973)  
 
 群友demo：  
-[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)   
+[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 
+视频教程：  
+[肉饼老师主讲](http://www.taikr.com/my/course/972)   
 __讨论QQ群 : 474643097__

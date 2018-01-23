@@ -5,7 +5,7 @@ using Model;
 
 namespace Hotfix
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class ActorComponentSystem : ObjectSystem<ActorComponent>, IAwake, IAwake<IEntityActorHandler>, ILoad
 	{
 		public void Awake()

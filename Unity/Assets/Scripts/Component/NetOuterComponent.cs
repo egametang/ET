@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class NetOuterComponentSystem : ObjectSystem<NetOuterComponent>, IAwake, IUpdate
 	{
 		public void Awake()

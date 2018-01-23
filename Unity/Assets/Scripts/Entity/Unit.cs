@@ -8,7 +8,7 @@ namespace Model
 		Npc
 	}
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UnitSystem : ObjectSystem<Unit>
 	{
 	}

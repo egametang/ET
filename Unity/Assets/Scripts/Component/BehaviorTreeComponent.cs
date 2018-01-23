@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class BehaviorTreeComponentSystem : ObjectSystem<BehaviorTreeComponent>, IAwake, ILoad
 	{
 		public void Awake()

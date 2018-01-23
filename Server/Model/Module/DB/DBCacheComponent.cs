@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbCacheComponentSystem : ObjectSystem<DBCacheComponent>, IAwake
 	{
 		public void Awake()

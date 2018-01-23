@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class AssetsLoaderAsyncSystem : ObjectSystem<AssetsLoaderAsync>, IUpdate, IAwake<AssetBundle>
 	{
 		public void Awake(AssetBundle assetBundle)

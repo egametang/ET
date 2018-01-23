@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class NumericComponentSystem : ObjectSystem<NumericComponent>, IAwake
 	{
 		public void Awake()

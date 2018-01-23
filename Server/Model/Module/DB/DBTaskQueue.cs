@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbTaskQueueSystem : ObjectSystem<DBTaskQueue>, IAwake, IStart
 	{
 		public void Awake()

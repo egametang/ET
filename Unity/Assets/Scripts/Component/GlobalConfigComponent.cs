@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class GlobalConfigComponentSystem : ObjectSystem<GlobalConfigComponent>, IAwake
 	{
 		public void Awake()

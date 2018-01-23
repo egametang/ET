@@ -76,7 +76,7 @@ namespace Model
 	}
 
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class ActorProxySystem : ObjectSystem<ActorProxy>, IAwake, IStart
 	{
 		public void Awake()
@@ -302,7 +302,7 @@ namespace Model
 				//Log.Debug($"realcall {MongoHelper.ToJson(request)} {this.Address}");
 				request.Id = this.Id;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
-				Response response = await session.Call<Response>(request, cancellationToken);
+				Response response = (Response)await session.Call(request, cancellationToken);
 				return response;
 			}
 			catch (RpcException e)

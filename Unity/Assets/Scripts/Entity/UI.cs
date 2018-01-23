@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UiSystem : ObjectSystem<UI>, IAwake<Scene, UI, GameObject>
 	{
 		public void Awake(Scene scene, UI parent, GameObject gameObject)

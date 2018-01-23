@@ -11,7 +11,7 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class TimerComponentSystem : ObjectSystem<TimerComponent>, IUpdate
 	{
 		public void Update()
@@ -29,6 +29,8 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
+		private readonly List<long> timeOutId = new List<long>();
+
 		public void Update()
 		{
 			long timeNow = TimeHelper.Now();
@@ -45,7 +47,11 @@ namespace Model
 					break;
 				}
 
-				List<long> timeOutId = kv.Value;
+				timeOutId.Clear();
+				timeOutId.AddRange(kv.Value);
+
+				this.timeId.Remove(kv.Key);
+				
 				foreach (long id in timeOutId)
 				{
 					Timer timer;
@@ -53,10 +59,9 @@ namespace Model
 					{
 						continue;
 					}
+					this.timers.Remove(id);
 					timer.tcs.SetResult(true);
-				}
-
-				this.timeId.Remove(kv.Key);
+				}				
 			}
 		}
 

@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class ActorManagerComponentSystem : ObjectSystem<ActorManagerComponent>, IAwake
 	{
 		public void Awake()
