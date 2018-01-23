@@ -183,6 +183,11 @@ namespace Model
 			{
 				this.starts.Enqueue(disposer);
 			}
+
+			if (objectSystem is ILateUpdate)
+			{
+				this.lateUpdates.Enqueue(disposer);
+			}
 		}
 
 		public void Awake(Disposer disposer)

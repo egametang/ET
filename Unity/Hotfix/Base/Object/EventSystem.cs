@@ -74,24 +74,29 @@ namespace Hotfix
 
 		public void Add(Disposer disposer)
 		{
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectSystem))
 			{
 				return;
 			}
 
-			if (objectEvent is ILoad)
+			if (objectSystem is ILoad)
 			{
 				this.loaders.Enqueue(disposer);
 			}
 
-			if (objectEvent is IUpdate)
+			if (objectSystem is IUpdate)
 			{
 				this.updates.Enqueue(disposer);
 			}
 
-			if (objectEvent is IStart)
+			if (objectSystem is IStart)
 			{
 				this.starts.Enqueue(disposer);
+			}
+
+			if (objectSystem is ILateUpdate)
+			{
+				this.lateUpdates.Enqueue(disposer);
 			}
 		}
 
