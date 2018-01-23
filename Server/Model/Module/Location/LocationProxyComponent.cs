@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class LocationProxyComponentSystem : ObjectSystem<LocationProxyComponent>, IAwake
 	{
 		public void Awake()

@@ -12,7 +12,7 @@ namespace Model
 		Locked,
 	}
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class LockComponentSystem : ObjectSystem<LockComponent>, IAwake<IPEndPoint>
 	{
 		public void Awake(IPEndPoint a)

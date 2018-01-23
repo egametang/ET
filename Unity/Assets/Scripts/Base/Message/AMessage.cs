@@ -30,6 +30,7 @@ namespace Model
 	/// </summary>
 	[ProtoContract]
 	[BsonKnownTypes(typeof(AActorResponse))]
+	[BsonKnownTypes(typeof(ErrorResponse))]
 	public abstract partial class AResponse : AMessage
 	{
 		[ProtoMember(90)]
@@ -40,5 +41,11 @@ namespace Model
 
 		[ProtoMember(92)]
 		public string Message = "";
+	}
+
+	[ProtoContract]
+	public class ErrorResponse: AResponse
+	{
+		
 	}
 }

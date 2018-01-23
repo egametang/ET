@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class OpcodeTypeComponentSystem : ObjectSystem<OpcodeTypeComponent>, IAwake
 	{
 		public void Awake()

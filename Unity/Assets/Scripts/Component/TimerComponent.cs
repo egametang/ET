@@ -11,7 +11,7 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class TimerComponentSystem : ObjectSystem<TimerComponent>, IUpdate
 	{
 		public void Update()

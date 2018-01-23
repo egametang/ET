@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Hotfix
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UiLoginComponentSystem : ObjectSystem<UILoginComponent>, IAwake
 	{
 		public void Awake()

@@ -4,7 +4,7 @@ using Model;
 
 namespace MyEditor
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class BtNodeInfoComponentSystem : ObjectSystem<BTNodeInfoComponent>, IAwake
 	{
 		public void Awake()

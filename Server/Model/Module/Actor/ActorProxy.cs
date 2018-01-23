@@ -76,7 +76,7 @@ namespace Model
 	}
 
 
-	[ObjectEvent]
+	[ObjectSystem]
 	public class ActorProxySystem : ObjectSystem<ActorProxy>, IAwake, IStart
 	{
 		public void Awake()

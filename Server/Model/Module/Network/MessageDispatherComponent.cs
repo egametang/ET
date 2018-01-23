@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class MessageDispatherComponentSystem : ObjectSystem<MessageDispatherComponent>, IAwake, ILoad
 	{
 		public void Awake()

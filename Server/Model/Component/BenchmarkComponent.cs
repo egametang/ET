@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class BenchmarkComponentSystem : ObjectSystem<BenchmarkComponent>, IAwake<IPEndPoint>
 	{
 		public void Awake(IPEndPoint ipEndPoint)

@@ -8,7 +8,7 @@ namespace Model
         public FrameMessage FrameMessage;
     }
     
-    [ObjectEvent]
+    [ObjectSystem]
     public class ClientFrameComponentSystem : ObjectSystem<ClientFrameComponent>, IStart
     {
         public void Start()

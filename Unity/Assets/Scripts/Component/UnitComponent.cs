@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class UnitComponentSystem : ObjectSystem<UnitComponent>, IAwake
 	{
 		public void Awake()

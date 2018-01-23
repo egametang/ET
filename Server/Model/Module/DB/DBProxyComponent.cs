@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class DbProxyComponentSystem : ObjectSystem<DBProxyComponent>, IAwake
 	{
 		public void Awake()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class NumericWatcherComponentSystem : ObjectSystem<NumericWatcherComponent>, IAwake, ILoad
 	{
 		public void Awake()

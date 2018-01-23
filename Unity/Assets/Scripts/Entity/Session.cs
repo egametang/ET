@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	[ObjectEvent]
+	[ObjectSystem]
 	public class SessionSystem : ObjectSystem<Session>, IAwake<NetworkComponent, AChannel>, IStart
 	{
 		public void Awake(NetworkComponent network, AChannel channel)
@@ -51,6 +51,11 @@ namespace Model
 			long id = this.Id;
 
 			base.Dispose();
+
+			foreach (KeyValuePair<uint, Action<object>> keyValuePair in this.requestCallback)
+			{
+				keyValuePair.Value.Invoke(new ErrorResponse() { Error = ErrorCode.ERR_SocketDisconnected });
+			}
 
 			this.channel.Dispose();
 			this.network.Remove(id);
@@ -232,14 +237,15 @@ namespace Model
 			{
 				try
 				{
-					Response response = (Response)message;
+					AResponse response = (AResponse)message;
 					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
+
 					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
+					tcs.SetResult((Response)response);
 				}
 				catch (Exception e)
 				{
@@ -266,14 +272,15 @@ namespace Model
 			{
 				try
 				{
-					Response response = (Response)message;
+					AResponse response = (AResponse)message;
 					if (response.Error > 100)
 					{
 						tcs.SetException(new RpcException(response.Error, response.Message));
 						return;
 					}
+
 					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
+					tcs.SetResult((Response)response);
 				}
 				catch (Exception e)
 				{
