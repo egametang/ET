@@ -1,0 +1,517 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DemiEditor</name>
+    </assembly>
+    <members>
+        <member name="T:DG.DemiEditor.DeEditorFileUtils">
+            <summary>
+            File utils
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.ADBPathSlash">
+            <summary>Path slash for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.ADBPathSlashToReplace">
+            <summary>Path slash to replace for AssetDatabase format</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.PathSlash">
+            <summary>Current OS path slash</summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeEditorFileUtils.PathSlashToReplace">
+            <summary>Path slash to replace on current OS</summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeEditorFileUtils.projectPath">
+            <summary>
+            Full path to project directory, without final slash.
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeEditorFileUtils.assetsPath">
+            <summary>
+            Full path to project's Assets directory, without final slash.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.ADBPathToFullPath(System.String)">
+            <summary>
+            Converts the given project-relative path to a full path
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.AssetExists(System.String)">
+            <summary>
+            Returns TRUE if the file/directory at the given path exists.
+            </summary>
+            <param name="adbPath">Path, relative to Unity's project folder</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.GUIDToExistingAssetPath(System.String)">
+            <summary>
+            Returns the asset path of the given GUID (relative to Unity project's folder),
+            or an empty string if either the GUID is invalid or the related path doesn't exist.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBPath(UnityEngine.ScriptableObject)">
+            <summary>Returns the adb path to the given ScriptableObject</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBPath(UnityEngine.MonoBehaviour)">
+            <summary>Returns the adb path to the given MonoBehaviour</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBDir(UnityEngine.ScriptableObject)">
+            <summary>Returns the adb directory that contains the given ScriptableObject without final slash</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.MonoInstanceADBDir(UnityEngine.MonoBehaviour)">
+            <summary>Returns the adb directory that contains the given MonoBehaviour without final slash</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.SetScriptExecutionOrder(UnityEngine.MonoBehaviour,System.Int32)">
+            <summary>
+            Sets the script execution order of the given MonoBehaviour
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorFileUtils.GetScriptExecutionOrder(UnityEngine.MonoBehaviour)">
+            <summary>
+            Gets the script execution order of the given MonoBehaviour
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeEditorPanelUtils">
+            <summary>
+            Utilities for Editor Panels.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorPanelUtils.ConnectToSourceAsset``1(System.String,System.Boolean)">
+            <summary>
+            Connects to a <see cref="T:UnityEngine.ScriptableObject"/> asset.
+            If the asset already exists at the given path, loads it and returns it.
+            Otherwise, depending on the given parameters, either returns NULL or automatically creates it before loading and returning it.
+            </summary>
+            <typeparam name="T">Asset type</typeparam>
+            <param name="adbFilePath">File path (relative to Unity's project folder)</param>
+            <param name="createIfMissing">If TRUE and the requested asset doesn't exist, forces its creation</param>
+        </member>
+        <member name="T:DG.DemiEditor.DeGUIDrag">
+            <summary>
+            Manages the dragging of GUI elements
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeGUIDrag.isDragging">
+            <summary>
+            True if a GUI element is currently being dragged
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeGUIDrag.draggedItem">
+            <summary>
+            Return the current item being dragged, or NULL if there is none
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeGUIDrag.draggedItemType">
+            <summary>
+            Type of current item being dragged, or NULL if there is none
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeGUIDrag.draggedItemOriginalIndex">
+            <summary>
+            Starting index of current item being dragged, or NULL if there is none
+            </summary>
+        </member>
+        <member name="P:DG.DemiEditor.DeGUIDrag.optionalDragData">
+            <summary>
+            Retrieves the eventual optional data stored via the StartDrag method
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIDrag.StartDrag(System.Int32,UnityEditor.Editor,System.Collections.IList,System.Int32,System.Object)">
+            <summary>
+            Starts a drag operation on a GUI element.
+            </summary>
+            <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
+            <param name="editor">Reference to the current editor drawing the GUI (used when a Repaint is needed)</param>
+            <param name="draggableList">List containing the dragged item and all other relative draggable items</param>
+            <param name="draggedItemIndex">DraggableList index of the item being dragged</param>
+            <param name="optionalData">Optional data that can be retrieved via the <see cref="P:DG.DemiEditor.DeGUIDrag.optionalDragData"/> static property</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIDrag.StartDrag(System.Int32,UnityEditor.EditorWindow,System.Collections.IList,System.Int32,System.Object)">
+            <summary>
+            Starts a drag operation on a GUI element.
+            </summary>
+            <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
+            <param name="editorWindow">Reference to the current editor drawing the GUI (used when a Repaint is needed)</param>
+            <param name="draggableList">List containing the dragged item and all other relative draggable items</param>
+            <param name="draggedItemIndex">DraggableList index of the item being dragged</param>
+            <param name="optionalData">Optional data that can be retrieved via the <see cref="P:DG.DemiEditor.DeGUIDrag.optionalDragData"/> static property</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Int32,System.Collections.IList,System.Int32)">
+            <summary>
+            Call this after each draggable GUI block, to calculate and draw the current drag state
+            (or complete it if the mouse was released).
+            Returns TRUE if the drag operation was concluded and accepted.
+            </summary>
+            <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
+            <param name="draggableList">List containing the draggable item and all other relative draggable items</param>
+            <param name="currDraggableItemIndex">Current index of the draggable item being drawn</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIDrag.Drag(System.Int32,System.Collections.IList,System.Int32,UnityEngine.Color)">
+            <summary>
+            Call this after each draggable GUI block, to calculate and draw the current drag state
+            (or complete it if the mouse was released).
+            Returns TRUE if the drag operation was concluded and accepted.
+            </summary>
+            <param name="dragId">ID for this drag operation (must be the same for both StartDrag and Drag</param>
+            <param name="draggableList">List containing the draggable item and all other relative draggable items</param>
+            <param name="currDraggableItemIndex">Current index of the draggable item being drawn</param>
+            <param name="dragEvidenceColor">Color to use for drag divider and selection</param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUIDrag.EndDrag(System.Boolean)">
+            <summary>
+            Ends the drag operations, and eventually applies the drag result.
+            Returns TRUE if the position of the dragged item actually changed.
+            Called automatically by Drag method. Use it only if you want to force the end of a drag operation.
+            </summary>
+            <param name="applyDrag">If TRUE applies the drag results, otherwise simply cancels the drag</param>
+        </member>
+        <member name="T:DG.DemiEditor.DeSkinStyle">
+            <summary>
+            Contains both free and pro skins GUIStyle variations,
+            and automatically returns the correct one when converted to GUIStyle
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.Play(UnityEngine.AudioClip)">
+            <summary>
+            Plays the given clip in the Editor
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.Stop(UnityEngine.AudioClip)">
+            <summary>
+            Stops playing the given clip.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeEditorSoundUtils.StopAll">
+            <summary>
+            Stops all clips playing.
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.AssemblyExtensions">
+            <summary>
+            Assembly extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.AssemblyExtensions.ADBDir(System.Reflection.Assembly)">
+            <summary>AssetDatabase path to the assembly directory, without final slash</summary>
+        </member>
+        <member name="T:DG.DemiEditor.GUIStyleExtensions">
+            <summary>
+            GUI extension methods
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Clone(UnityEngine.GUIStyle,System.Object[])">
+            <summary>
+            Clones the style and adds the given formats to it
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Add(UnityEngine.GUIStyle,System.Object[])">
+            <summary>
+            Adds the given formats to the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Border(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the border of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Border(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the border of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Background(UnityEngine.GUIStyle,UnityEngine.Texture2D)">
+            <summary>
+            Sets the background of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffset(UnityEngine.GUIStyle,UnityEngine.Vector2)">
+            <summary>
+            Sets the contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffsetX(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the X contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.ContentOffsetY(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the Y contentOffset of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Margin(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Margin(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginLeft(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the left margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginRight(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the right margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginTop(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the top margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.MarginBottom(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the bottom margin of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Padding(UnityEngine.GUIStyle,UnityEngine.RectOffset)">
+            <summary>
+            Sets the padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Padding(UnityEngine.GUIStyle,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Sets the padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingLeft(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the left padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingRight(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the right padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingTop(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the top padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.PaddingBottom(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the bottom padding of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Width(UnityEngine.GUIStyle,System.Single)">
+            <summary>
+            Sets the Y fixedWidth of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.Height(UnityEngine.GUIStyle,System.Int32)">
+            <summary>
+            Sets the fixedHeight of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.StretchHeight(UnityEngine.GUIStyle,System.Boolean)">
+            <summary>
+            Sets the stretchHeight property of the style
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.GUIStyleExtensions.StretchWidth(UnityEngine.GUIStyle,System.Boolean)">
+            <summary>
+            Sets the stretchWidth property of the style
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeStylePalette">
+            <summary>
+            Stores a GUIStyle palette, which can be passed to default DeGUI layouts when calling <code>DeGUI.BeginGUI</code>,
+            and changed at any time by calling <code>DeGUI.ChangePalette</code>.
+            You can inherit from this class to create custom GUIStyle palettes with more options.
+            Each of the sub-options require a public Init method to initialize the styles, which will be called via Reflection.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeStylePalette.Init">
+            <summary>
+            Called automatically by <code>DeGUI.BeginGUI</code>.
+            Override when adding new style subclasses.
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeStyleSubPalette">
+            <summary>
+            Extend any custom subpalettes from this, so they will be initialized correctly
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeGUILayout">
+            <summary>
+            GUILayout methods
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ColoredButton(UnityEngine.Color,UnityEngine.Color,System.String,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ColoredButton(UnityEngine.Color,UnityEngine.Color,System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ColoredButton(UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIContent,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ColoredButton(UnityEngine.Color,UnityEngine.Color,UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.PressButton(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a button that returns TRUE the first time it's pressed, instead than when its released.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.PressButton(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Draws a button that returns TRUE the first time it's pressed, instead than when its released.
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToolbarFoldoutButton(System.Boolean,System.String)">
+            <summary>Toolbar foldout button</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,System.String,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,System.String,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.ToggleButton(System.Boolean,UnityEngine.GUIContent,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Button that can be toggled on and off</summary>
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.GUILayoutOption[])">
+            <summary>Begins an horizontal toolbar layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Begins an horizontal toolbar layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.Color,UnityEngine.GUILayoutOption[])">
+            <summary>Begins an horizontal toolbar layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginToolbar(UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>Begins an horizontal toolbar layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.EndToolbar">
+            <summary>Ends an horizontal toolbar layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.GUIStyle,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.Color,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.Toolbar(System.String,UnityEngine.Color,UnityEngine.GUIStyle,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
+            <summary>A toolbar with a label</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginVBox(UnityEngine.GUIStyle)">
+            <summary>Vertical box layout with style and color options</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.BeginVBox(System.Nullable{UnityEngine.Color},UnityEngine.GUIStyle)">
+            <summary>Vertical box layout with style and color options</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.EndVBox">
+            <summary>End vertical box layout</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.HorizontalDivider(System.Nullable{UnityEngine.Color},System.Int32,System.Int32,System.Int32)">
+            <summary>Divider</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUILayout.SceneField(System.String,UnityEngine.Object)">
+            <summary>Scene field</summary>
+        </member>
+        <member name="T:DG.DemiEditor.DeGUI">
+            <summary>
+            Global Demigiant GUI manager. Call <see cref="M:DG.DemiEditor.DeGUI.BeginGUI(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)"/> to initialize it inside GUI calls.
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.colors">
+            <summary>
+            Default color palette
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.styles">
+            <summary>
+            Default style palette
+            </summary>
+        </member>
+        <member name="F:DG.DemiEditor.DeGUI.IsProSkin">
+            <summary>
+            TRUE if we're using the PRO skin
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.BeginGUI(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+            <summary>
+            Call this at the beginning of GUI methods
+            </summary>
+            <param name="guiColorPalette"></param>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ChangePalette(DG.DemiLib.DeColorPalette,DG.DemiEditor.DeStylePalette)">
+            <summary>
+            Changes the active palettes to the given ones
+            (or resets them to the default ones if NULL)
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,System.String)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,System.String,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,System.String,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.ToggleButton(UnityEngine.Rect,System.Boolean,UnityEngine.GUIContent,DG.DemiLib.DeColorPalette,UnityEngine.GUIStyle)">
+            <summary>Button that can be toggled on and off</summary>
+            <summary>Button that can be toggled on and off</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.SceneField(UnityEngine.Rect,System.String,UnityEngine.Object)">
+            <summary>Scene field</summary>
+        </member>
+        <member name="M:DG.DemiEditor.DeGUI.FlatDivider(UnityEngine.Rect,System.Nullable{UnityEngine.Color})">
+            <summary>Divider</summary>
+        </member>
+        <member name="T:DG.DemiEditor.StringExtensions">
+            <summary>
+            String extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.StringExtensions.Parent(System.String)">
+            <summary>
+            If the given string is a directory path, returns its parent
+            with or without final slash depending on the original directory format
+            </summary>
+        </member>
+        <member name="T:DG.DemiEditor.TextureExtensions">
+            <summary>
+            Texture extensions
+            </summary>
+        </member>
+        <member name="M:DG.DemiEditor.TextureExtensions.SetFormat(UnityEngine.Texture2D,UnityEngine.FilterMode,System.Int32)">
+            <summary>
+            Checks that the texture uses the correct import settings, and applies them if they're incorrect.
+            </summary>
+        </member>
+    </members>
+</doc>
