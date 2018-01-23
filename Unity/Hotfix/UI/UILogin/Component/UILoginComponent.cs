@@ -33,22 +33,20 @@ namespace Hotfix
 			try
 			{
 				IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
-				Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+
 				string text = this.account.GetComponent<InputField>().text;
 
-
-				R2C_Login r2CLogin = (R2C_Login)await session.Call(new C2R_Login() { Account = text, Password = "111111" }, true);
-				if (r2CLogin.Error != ErrorCode.ERR_Success)
+				R2C_Login r2CLogin;
+				using (Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint))
 				{
-					Log.Error(r2CLogin.Error.ToString());
-					return;
+					r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = text, Password = "111111" });
 				}
 
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
 				Session gateSession = Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
 				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 
-				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key }, true);
+				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
 
 				Log.Info("登陆gate成功!");
 

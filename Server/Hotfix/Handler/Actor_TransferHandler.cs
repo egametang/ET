@@ -40,7 +40,7 @@ namespace Hotfix
 
 				// 只删除不disponse否则M2M_TrasferUnitRequest无法序列化Unit
 				Game.Scene.GetComponent<UnitComponent>().RemoveNoDispose(unitId);
-				await session.Call<M2M_TrasferUnitResponse>(new M2M_TrasferUnitRequest() { Unit = unit });
+				await session.Call(new M2M_TrasferUnitRequest() { Unit = unit });
 				unit.Dispose();
 
 				// 解锁unit的地址,并且更新unit的地址

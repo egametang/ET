@@ -162,7 +162,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用,发送一个消息,等待返回一个消息
 		/// </summary>
-		public Task<AResponse> Call(ARequest request, bool isHotfix)
+		public Task<AResponse> Call(ARequest request)
 		{
 			request.RpcId = ++RpcId;
 
@@ -193,7 +193,7 @@ namespace Model
 		/// <summary>
 		/// Rpc调用
 		/// </summary>
-		public Task<AResponse> Call(ARequest request, bool isHotfix, CancellationToken cancellationToken)
+		public Task<AResponse> Call(ARequest request, CancellationToken cancellationToken)
 		{
 			request.RpcId = ++RpcId;
 			
@@ -215,76 +215,6 @@ namespace Model
 				catch (Exception e)
 				{
 					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
-				}
-			};
-
-			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
-
-			this.SendMessage(request);
-
-			return tcs.Task;
-		}
-
-		/// <summary>
-		/// Rpc调用,发送一个消息,等待返回一个消息
-		/// </summary>
-		public Task<Response> Call<Response>(ARequest request) where Response : AResponse
-		{
-			request.RpcId = ++RpcId;
-			
-			var tcs = new TaskCompletionSource<Response>();
-			this.requestCallback[request.RpcId] = (message) =>
-			{
-				try
-				{
-					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult((Response)response);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
-				}
-			};
-
-			this.SendMessage(request);
-
-			return tcs.Task;
-		}
-
-		/// <summary>
-		/// Rpc调用
-		/// </summary>
-		public Task<Response> Call<Response>(ARequest request, CancellationToken cancellationToken)
-			where Response : AResponse
-		{
-			request.RpcId = ++RpcId;
-			
-			var tcs = new TaskCompletionSource<Response>();
-
-			this.requestCallback[request.RpcId] = (message) =>
-			{
-				try
-				{
-					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult((Response)response);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {typeof(Response).FullName}", e));
 				}
 			};
 

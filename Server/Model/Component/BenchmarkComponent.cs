@@ -63,7 +63,7 @@ namespace Model
 		{
 			try
 			{
-				await session.Call<R2C_Ping>(new C2R_Ping());
+				await session.Call(new C2R_Ping());
 				++this.k;
 
 				if (this.k % 100000 != 0)
