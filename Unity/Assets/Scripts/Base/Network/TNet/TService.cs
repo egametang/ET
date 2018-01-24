@@ -19,6 +19,8 @@ namespace Model
 		public TService(IPEndPoint ipEndPoint)
 		{
 			this.acceptor = new TcpListener(ipEndPoint);
+			this.acceptor.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+			this.acceptor.Server.NoDelay = true;
 			this.acceptor.Start();
 		}
 
