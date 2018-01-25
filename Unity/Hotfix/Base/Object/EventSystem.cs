@@ -45,6 +45,8 @@ namespace Hotfix
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
+		private readonly HashSet<Disposer> unique = new HashSet<Disposer>();
+
 		public EventSystem()
 		{
 			this.disposerEvents.Clear();
@@ -170,10 +172,16 @@ namespace Hotfix
 
 		public void Load()
 		{
+			unique.Clear();
 			while (this.loaders.Count > 0)
 			{
 				Disposer disposer = this.loaders.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}
@@ -206,9 +214,16 @@ namespace Hotfix
 
 		private void Start()
 		{
+			unique.Clear();
 			while (this.starts.Count > 0)
 			{
 				Disposer disposer = this.starts.Dequeue();
+
+				if (!this.unique.Add(disposer))
+				{
+					continue;
+				}
+
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
@@ -227,6 +242,7 @@ namespace Hotfix
 		{
 			this.Start();
 
+			unique.Clear();
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();
@@ -234,6 +250,12 @@ namespace Hotfix
 				{
 					continue;
 				}
+
+				if (!this.unique.Add(disposer))
+				{
+					continue;
+				}
+
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
@@ -262,10 +284,16 @@ namespace Hotfix
 
 		public void LateUpdate()
 		{
+			unique.Clear();
 			while (this.lateUpdates.Count > 0)
 			{
 				Disposer disposer = this.lateUpdates.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}
