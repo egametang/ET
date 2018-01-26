@@ -62,7 +62,7 @@ namespace Model
 
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
-
+		
 		private readonly Queue<Disposer> starts = new Queue<Disposer>();
 
 		private Queue<Disposer> loaders = new Queue<Disposer>();
@@ -70,6 +70,10 @@ namespace Model
 
 		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
+
+		private readonly HashSet<Disposer> unique = new HashSet<Disposer>();
+
+
 
 		public void LoadHotfixDll()
 		{
@@ -264,10 +268,16 @@ namespace Model
 
 		public void Load()
 		{
+			unique.Clear();
 			while (this.loaders.Count > 0)
 			{
 				Disposer disposer = this.loaders.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}
@@ -301,9 +311,15 @@ namespace Model
 
 		private void Start()
 		{
+			unique.Clear();
 			while (this.starts.Count > 0)
 			{
 				Disposer disposer = this.starts.Dequeue();
+
+				if (!this.unique.Add(disposer))
+				{
+					continue;
+				}
 
 				IObjectSystem objectSystem;
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
@@ -324,10 +340,16 @@ namespace Model
 		{
 			this.Start();
 
+			this.unique.Clear();
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}
@@ -361,10 +383,16 @@ namespace Model
 
 		public void LateUpdate()
 		{
+			this.unique.Clear();
 			while (this.lateUpdates.Count > 0)
 			{
 				Disposer disposer = this.lateUpdates.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}

@@ -52,7 +52,9 @@ namespace Model
 
 		private Queue<Disposer> loaders = new Queue<Disposer>();
 		private Queue<Disposer> loaders2 = new Queue<Disposer>();
-		
+
+		private readonly HashSet<Disposer> unique = new HashSet<Disposer>();
+
 		public void Add(DLLType dllType, Assembly assembly)
 		{
 			this.assemblies[dllType] = assembly;
@@ -203,10 +205,16 @@ namespace Model
 
 		public void Load()
 		{
+			unique.Clear();
 			while (this.loaders.Count > 0)
 			{
 				Disposer disposer = this.loaders.Dequeue();
 				if (disposer.Id == 0)
+				{
+					continue;
+				}
+
+				if (!this.unique.Add(disposer))
 				{
 					continue;
 				}
@@ -239,9 +247,16 @@ namespace Model
 
 		private void Start()
 		{
+			unique.Clear();
 			while (this.starts.Count > 0)
 			{
 				Disposer disposer = this.starts.Dequeue();
+
+				if (!this.unique.Add(disposer))
+				{
+					continue;
+				}
+
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 				{
 					continue;
@@ -260,6 +275,7 @@ namespace Model
 		{
 			this.Start();
 
+			unique.Clear();
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();
@@ -267,6 +283,12 @@ namespace Model
 				{
 					continue;
 				}
+
+				if (!this.unique.Add(disposer))
+				{
+					continue;
+				}
+
 				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
 				{
 					continue;
