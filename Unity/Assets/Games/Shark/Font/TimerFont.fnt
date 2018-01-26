@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<font>
+  <info face="Arial" size="32" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="1" aa="1" padding="0,0,0,0" spacing="1,1" outline="0"/>
+  <common lineHeight="32" base="26" scaleW="256" scaleH="256" pages="1" packed="0" alphaChnl="1" redChnl="0" greenChnl="0" blueChnl="0"/>
+  <pages>
+    <page id="0" file="TimerFont_0.png" />
+  </pages>
+  <chars count="10">
+    <char id="48" x="0" y="0" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="49" x="43" y="0" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="50" x="86" y="0" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="51" x="129" y="0" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="52" x="172" y="0" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="53" x="0" y="52" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="54" x="43" y="52" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="55" x="86" y="52" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="56" x="129" y="52" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+    <char id="57" x="172" y="52" width="42" height="51" xoffset="0" yoffset="0" xadvance="42" page="0" chnl="15" />
+  </chars>
+</font>

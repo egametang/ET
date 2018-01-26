@@ -824,6 +824,12 @@
     <None Include="Assets\Demigiant\DOTweenPro\readme.txt" />
     <None Include="Assets\Demigiant\DemiLib\Core\DemiLib.xml" />
     <None Include="Assets\Demigiant\DemiLib\Core\Editor\DemiEditor.xml" />
+    <None Include="Assets\Games\Shark\Font\BetBlueFont.fnt" />
+    <None Include="Assets\Games\Shark\Font\BetRedFont.fnt" />
+    <None Include="Assets\Games\Shark\Font\BetYellowFont.fnt" />
+    <None Include="Assets\Games\Shark\Font\ChipFont.fnt" />
+    <None Include="Assets\Games\Shark\Font\RewardFont.fnt" />
+    <None Include="Assets\Games\Shark\Font\TimerFont.fnt" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
