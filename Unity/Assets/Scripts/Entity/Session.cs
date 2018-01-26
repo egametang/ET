@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,9 +53,9 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (KeyValuePair<uint, Action<object>> keyValuePair in this.requestCallback)
+			foreach (Action<object> action in this.requestCallback.Values.ToArray())
 			{
-				keyValuePair.Value.Invoke(new ErrorResponse() { Error = ErrorCode.ERR_SocketDisconnected });
+				action.Invoke(new ErrorResponse() { Error = ErrorCode.ERR_SocketDisconnected });
 			}
 
 			this.channel.Dispose();
