@@ -99,6 +99,11 @@ namespace Model
             {
                 throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length} {count}");
             }
+
+	        if (buffer.Length < count)
+	        {
+				throw new Exception($"bufferList length < coutn, buffer length: {buffer.Length} {count}");
+	        }
             int alreadyCopyCount = 0;
             while (alreadyCopyCount < count)
             {
