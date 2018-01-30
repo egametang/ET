@@ -83,7 +83,7 @@ namespace Model
 			
 			this.UnloadOneBundle(assetBundleName);
 
-			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
 			//Log.Debug($"-----------dep unload {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 			foreach (string dependency in dependencies)
@@ -133,7 +133,7 @@ namespace Model
 			assetBundleName = assetBundleName.ToLower();
 			this.LoadOneBundle(assetBundleName);
 
-			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
 			Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 			foreach (string dependency in dependencies)
@@ -209,7 +209,7 @@ namespace Model
 			assetBundleName = assetBundleName.ToLower();
 			await this.LoadOneBundleAsync(assetBundleName);
 
-			string[] dependencies = ResourcesHelper.GetDependencies(assetBundleName);
+			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
 			//Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 			foreach (string dependency in dependencies)

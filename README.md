@@ -58,6 +58,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
+[linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
 
 群友demo：  
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
