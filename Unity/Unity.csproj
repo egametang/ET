@@ -355,6 +355,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Demigiant\DOTweenPro\DOTweenAnimation.cs" />
+    <Compile Include="Assets\Games\Shark\Script\SharkTurn.cs" />
     <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorNodeConfig.cs" />
     <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTree.cs" />
     <Compile Include="Assets\Scripts\Base\BehaviorTree\BehaviorTreeArgsDict.cs" />
