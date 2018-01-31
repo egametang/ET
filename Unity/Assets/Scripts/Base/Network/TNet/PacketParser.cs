@@ -32,7 +32,7 @@ namespace Model
 
 		private ushort packetSize;
 		private ParserState state;
-		private Packet packet = new Packet(8 * 1024);
+		private Packet packet = new Packet(ushort.MaxValue);
 		private bool isOK;
 
 		public PacketParser(CircularBuffer buffer)
