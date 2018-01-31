@@ -97,10 +97,10 @@ namespace Model
 
 		public Task<Disposer> Get(string collectionName, long id)
 		{
-			Disposer entity = GetFromCache(collectionName, id);
-			if (entity != null)
+			Disposer disposer = GetFromCache(collectionName, id);
+			if (disposer != null)
 			{
-				return Task.FromResult(entity);
+				return Task.FromResult(disposer);
 			}
 
 			TaskCompletionSource<Disposer> tcs = new TaskCompletionSource<Disposer>();
@@ -116,13 +116,13 @@ namespace Model
 			bool isAllInCache = true;
 			foreach (long id in idList)
 			{
-				Disposer entity = this.GetFromCache(collectionName, id);
-				if (entity == null)
+				Disposer disposer = this.GetFromCache(collectionName, id);
+				if (disposer == null)
 				{
 					isAllInCache = false;
 					break;
 				}
-				disposers.Add(entity);
+				disposers.Add(disposer);
 			}
 
 			if (isAllInCache)
