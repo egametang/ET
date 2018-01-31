@@ -226,6 +226,18 @@
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Editor\ILRuntimeCLRBinding.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\CodeGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\CodeGenerator.OneOfStub.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\CSharpCodeGenerator.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\CustomOptions.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\Descriptor.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\NameNormalizer.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\Parsers.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\Peekable.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\Token.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\TokenExtensions.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\protobuf-net.Reflection\TokenType.cs" />
+    <Compile Include="Assets\ThirdParty\Protobuf\Editor\Protogen.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Res\Config\BuffConfig.txt" />
