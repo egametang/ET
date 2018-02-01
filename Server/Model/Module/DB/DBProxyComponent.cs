@@ -51,14 +51,14 @@ namespace Model
 			await session.Call(new DBSaveRequest { Disposer = disposer,  NeedCache = false, CollectionName = "Log" });
 		}
 
-		public async Task<T> Query<T>(long id, bool needCache = true) where T: Entity
+		public async Task<T> Query<T>(long id, bool needCache = true) where T: Disposer
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id, NeedCache = needCache });
 			return (T)dbQueryResponse.Disposer;
 		}
 
-		public async Task<List<T>> QueryBatch<T>(List<long> ids, bool needCache = true) where T : Entity
+		public async Task<List<T>> QueryBatch<T>(List<long> ids, bool needCache = true) where T : Disposer
 		{
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
@@ -70,7 +70,7 @@ namespace Model
 			return list;
 		}
 
-		public async Task<List<T>> QueryJson<T>(string json, bool needCache = true) where T : Entity
+		public async Task<List<T>> QueryJson<T>(string json, bool needCache = true) where T : Disposer
 		{
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
