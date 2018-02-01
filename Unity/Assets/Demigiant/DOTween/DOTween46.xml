@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DOTween46</name>
+    </assembly>
+    <members>
+        <member name="T:DG.Tweening.DOTweenUtils46">
+            <summary>
+            Various utils that require Unity 4.6 or later
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.DOTweenUtils46.SwitchToRectTransform(UnityEngine.RectTransform,UnityEngine.RectTransform)">
+            <summary>
+            Converts the anchoredPosition of the first RectTransform to the second RectTransform,
+            taking into consideration offset, anchors and pivot, and returns the new anchoredPosition
+            </summary>
+        </member>
+        <member name="T:DG.Tweening.ShortcutExtensions46">
+            <summary>
+            Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
+            These, as all DOTween46 methods, require Unity 4.6 or later.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFade(UnityEngine.CanvasGroup,System.Single,System.Single)">
+            <summary>Tweens a CanvasGroup's alpha color to the given value.
+            Also stores the canvasGroup as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOColor(UnityEngine.UI.Graphic,UnityEngine.Color,System.Single)">
+            <summary>Tweens an Graphic's color to the given value.
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFade(UnityEngine.UI.Graphic,System.Single,System.Single)">
+            <summary>Tweens an Graphic's alpha color to the given value.
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOColor(UnityEngine.UI.Image,UnityEngine.Color,System.Single)">
+            <summary>Tweens an Image's color to the given value.
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFade(UnityEngine.UI.Image,System.Single,System.Single)">
+            <summary>Tweens an Image's alpha color to the given value.
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFillAmount(UnityEngine.UI.Image,System.Single,System.Single)">
+            <summary>Tweens an Image's fillAmount to the given value.
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach (0 to 1)</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOGradientColor(UnityEngine.UI.Image,UnityEngine.Gradient,System.Single)">
+            <summary>Tweens an Image's colors using the given gradient
+            (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFlexibleSize(UnityEngine.UI.LayoutElement,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens an LayoutElement's flexibleWidth/Height to the given value.
+            Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOMinSize(UnityEngine.UI.LayoutElement,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens an LayoutElement's minWidth/Height to the given value.
+            Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOPreferredSize(UnityEngine.UI.LayoutElement,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens an LayoutElement's preferredWidth/Height to the given value.
+            Also stores the LayoutElement as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOColor(UnityEngine.UI.Outline,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Outline's effectColor to the given value.
+            Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFade(UnityEngine.UI.Outline,System.Single,System.Single)">
+            <summary>Tweens a Outline's effectColor alpha to the given value.
+            Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOScale(UnityEngine.UI.Outline,UnityEngine.Vector2,System.Single)">
+            <summary>Tweens a Outline's effectDistance to the given value.
+            Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPos(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPosX(UnityEngine.RectTransform,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition X to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPosY(UnityEngine.RectTransform,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition Y to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOAnchorPos3D(UnityEngine.RectTransform,UnityEngine.Vector3,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition3D to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOSizeDelta(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's sizeDelta to the given value.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOPunchAnchorPos(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Punches a RectTransform's anchoredPosition towards the given direction and then back to the starting one
+            as if it was connected to the starting position via an elastic.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="punch">The direction and strength of the punch (added to the RectTransform's current position)</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="vibrato">Indicates how much will the punch vibrate</param>
+            <param name="elasticity">Represents how much (0 to 1) the vector will go beyond the starting position when bouncing backwards.
+            1 creates a full oscillation between the punch direction and the opposite direction,
+            while 0 oscillates only between the punch and the start position</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Shakes a RectTransform's anchoredPosition with the given values.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="duration">The duration of the tween</param>
+            <param name="strength">The shake strength</param>
+            <param name="vibrato">Indicates how much will the shake vibrate</param>
+            <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+            Setting it to 0 will shake along a single direction.</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOShakeAnchorPos(UnityEngine.RectTransform,System.Single,UnityEngine.Vector2,System.Int32,System.Single,System.Boolean)">
+            <summary>Shakes a RectTransform's anchoredPosition with the given values.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="duration">The duration of the tween</param>
+            <param name="strength">The shake strength on each axis</param>
+            <param name="vibrato">Indicates how much will the shake vibrate</param>
+            <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
+            Setting it to 0 will shake along a single direction.</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOJumpAnchorPos(UnityEngine.RectTransform,UnityEngine.Vector2,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Tweens a RectTransform's anchoredPosition to the given value, while also applying a jump effect along the Y axis.
+            Returns a Sequence instead of a Tweener.
+            Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+            <param name="numJumps">Total number of jumps</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOValue(UnityEngine.UI.Slider,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a Slider's value to the given value.
+            Also stores the Slider as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOColor(UnityEngine.UI.Text,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Text's color to the given value.
+            Also stores the Text as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOFade(UnityEngine.UI.Text,System.Single,System.Single)">
+            <summary>Tweens a Text's alpha color to the given value.
+            Also stores the Text as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOText(UnityEngine.UI.Text,System.String,System.Single,System.Boolean,DG.Tweening.ScrambleMode,System.String)">
+            <summary>Tweens a Text's text to the given value.
+            Also stores the Text as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end string to tween to</param><param name="duration">The duration of the tween</param>
+            <param name="richTextEnabled">If TRUE (default), rich text will be interpreted correctly while animated,
+            otherwise all tags will be considered as normal text</param>
+            <param name="scrambleMode">The type of scramble mode to use, if any</param>
+            <param name="scrambleChars">A string containing the characters to use for scrambling.
+            Use as many characters as possible (minimum 10) because DOTween uses a fast scramble mode which gives better results with more characters.
+            Leave it to NULL (default) to use default ones</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOBlendableColor(UnityEngine.UI.Graphic,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Graphic's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Graphic as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOBlendableColor(UnityEngine.UI.Image,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Image's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Image as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions46.DOBlendableColor(UnityEngine.UI.Text,UnityEngine.Color,System.Single)">
+            <summary>Tweens a Text's color BY the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the Text as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+    </members>
+</doc>

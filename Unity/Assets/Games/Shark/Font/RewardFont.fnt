@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<font>
+  <info face="Arial" size="32" bold="0" italic="0" charset="" unicode="1" stretchH="100" smooth="1" aa="1" padding="0,0,0,0" spacing="1,1" outline="0"/>
+  <common lineHeight="32" base="26" scaleW="256" scaleH="512" pages="1" packed="0" alphaChnl="1" redChnl="0" greenChnl="0" blueChnl="0"/>
+  <pages>
+    <page id="0" file="RewardFont_0.png" />
+  </pages>
+  <chars count="10">
+    <char id="48" x="0" y="0" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="49" x="70" y="0" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="50" x="140" y="0" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="51" x="0" y="88" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="52" x="70" y="88" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="53" x="140" y="88" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="54" x="0" y="176" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="55" x="70" y="176" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="56" x="140" y="176" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+    <char id="57" x="0" y="264" width="69" height="87" xoffset="0" yoffset="0" xadvance="69" page="0" chnl="15" />
+  </chars>
+</font>
