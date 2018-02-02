@@ -44,6 +44,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Module\Network\IMessagePacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs" Link="Base\Message\MessageInfo.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MongoPacker.cs" Link="Module\Network\MongoPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\Opcode.cs" Link="Base\Message\Opcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ProtobufPacker.cs" Link="Module\Network\ProtobufPacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\RpcException.cs" Link="Module\Network\RpcException.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />

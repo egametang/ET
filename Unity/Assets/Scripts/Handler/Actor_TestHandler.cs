@@ -1,6 +1,6 @@
 ﻿namespace Model
 {
-	[MessageHandler((int)Opcode.Actor_Test)]
+	[MessageHandler(Opcode.Actor_Test)]
 	public class Actor_TestHandler : AMHandler<Actor_Test>
 	{
 		protected override void Run(Session session, Actor_Test message)

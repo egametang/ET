@@ -19,7 +19,7 @@ namespace Model
 	
 	public class OpcodeTypeComponent : Component
 	{
-		private Dictionary<Opcode, Type> opcodeType { get; set; }
+		private Dictionary<ushort, Type> opcodeType { get; set; }
 		private Dictionary<Type, MessageAttribute> messageOpcode { get; set; }
 
 		public void Awake()
@@ -29,7 +29,7 @@ namespace Model
 
 		public void Load()
 		{
-			this.opcodeType = new Dictionary<Opcode, Type>();
+			this.opcodeType = new Dictionary<ushort, Type>();
 			this.messageOpcode = new Dictionary<Type, MessageAttribute>();
 
 			Type[] types = DllHelper.GetMonoTypes();
@@ -47,7 +47,7 @@ namespace Model
 			}
 		}
 
-		public Opcode GetOpcode(Type type)
+		public ushort GetOpcode(Type type)
 		{
 			if (!this.messageOpcode.TryGetValue(type, out MessageAttribute messageAttribute))
 			{
@@ -56,7 +56,7 @@ namespace Model
 			return messageAttribute.Opcode;
 		}
 
-		public Type GetType(Opcode opcode)
+		public Type GetType(ushort opcode)
 		{
 			if (!this.opcodeType.TryGetValue(opcode, out Type messageType))
 			{

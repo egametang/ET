@@ -72,7 +72,7 @@ namespace Model
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private Dictionary<Opcode, List<IMessageMethod>> handlers;
+		private Dictionary<ushort, List<IMessageMethod>> handlers;
 
 
 		public void Awake()
@@ -82,7 +82,7 @@ namespace Model
 
 		public void Load()
 		{
-			handlers = new Dictionary<Opcode, List<IMessageMethod>>();
+			handlers = new Dictionary<ushort, List<IMessageMethod>>();
 
 			Type[] types = DllHelper.GetMonoTypes();
 
@@ -95,11 +95,11 @@ namespace Model
 				}
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
 				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
-				if (!this.handlers.ContainsKey((Opcode)messageHandlerAttribute.Opcode))
+				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
 				{
-					this.handlers.Add((Opcode)messageHandlerAttribute.Opcode, new List<IMessageMethod>());
+					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
 				}
-				this.handlers[(Opcode)messageHandlerAttribute.Opcode].Add(new IMessageMonoMethod(iMHandler));
+				this.handlers[messageHandlerAttribute.Opcode].Add(new IMessageMonoMethod(iMHandler));
 			}
 
 			// hotfix dll
@@ -118,11 +118,11 @@ namespace Model
 				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
 				IMessageMethod iMessageMethod = new IMessageMonoMethod(iMHandler);
 #endif
-				if (!this.handlers.ContainsKey((Opcode)messageHandlerAttribute.Opcode))
+				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
 				{
-					this.handlers.Add((Opcode)messageHandlerAttribute.Opcode, new List<IMessageMethod>());
+					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
 				}
-				this.handlers[(Opcode)messageHandlerAttribute.Opcode].Add(iMessageMethod);
+				this.handlers[messageHandlerAttribute.Opcode].Add(iMessageMethod);
 			}
 		}
 

@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[MessageHandler((int)Opcode.Actor_CreateUnits)]
+	[MessageHandler(Opcode.Actor_CreateUnits)]
 	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
 	{
 		protected override void Run(Session session, Actor_CreateUnits message)

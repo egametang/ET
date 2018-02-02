@@ -163,11 +163,11 @@ namespace MyEditor
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine("namespace Model");
 			sb.AppendLine("{");
-			sb.AppendLine("\tpublic enum Opcode: ushort");
+			sb.AppendLine("\tpublic static partial class Opcode");
 			sb.AppendLine("\t{");
 			foreach (OpcodeInfo info in msgOpcode)
 			{
-				sb.AppendLine($"\t\t{info.Name} = {info.Opcode},");
+				sb.AppendLine($"\t\t public const ushort {info.Name} = {info.Opcode};");
 			}
 			sb.AppendLine("\t}");
 			sb.AppendLine("}");

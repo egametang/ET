@@ -4,7 +4,7 @@ namespace Model
 {
 	public class ClientDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, Opcode opcode, int offset, byte[] messageBytes, AMessage message)
+		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
 		{
 			// 如果是帧同步消息,交给ClientFrameComponent处理
 			FrameMessage frameMessage = message as FrameMessage;

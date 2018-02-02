@@ -4,9 +4,9 @@ namespace Model
 {
 	public class MessageAttribute: Attribute
 	{
-		public Opcode Opcode { get; }
+		public ushort Opcode { get; }
 
-		public MessageAttribute(Opcode opcode)
+		public MessageAttribute(ushort opcode)
 		{
 			this.Opcode = opcode;
 		}

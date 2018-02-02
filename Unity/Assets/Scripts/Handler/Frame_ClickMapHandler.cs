@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	[MessageHandler((int)Opcode.Frame_ClickMap)]
+	[MessageHandler(Opcode.Frame_ClickMap)]
 	public class Frame_ClickMapHandler : AMHandler<Frame_ClickMap>
 	{
 		protected override void Run(Session session, Frame_ClickMap message)

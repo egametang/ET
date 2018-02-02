@@ -125,12 +125,10 @@ namespace Model
 		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset, int count)
 		{
 			object message;
-			Opcode op;
 
 			try
 			{
-				op = (Opcode)opcode;
-				Type messageType = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetType(op);
+				Type messageType = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, count - offset);
 			}
 			catch (Exception e)
@@ -157,7 +155,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, op, offset, messageBytes, (AMessage)message);
+			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
 		}
 
 		/// <summary>
@@ -247,8 +245,7 @@ namespace Model
 		private void SendMessage(object message)
 		{
 			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
-			Opcode opcode = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-			ushort op = (ushort)opcode;
+			ushort opcode = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
 
 #if SERVER
@@ -256,12 +253,12 @@ namespace Model
 			if (this.network.AppType == AppType.AllServer)
 			{
 				Session session = this.network.Parent.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				session.RunDecompressedBytes(op, messageBytes, 0, messageBytes.Length);
+				session.RunDecompressedBytes(opcode, messageBytes, 0, messageBytes.Length);
 				return;
 			}
 #endif
 
-			byte[] opcodeBytes = BitConverter.GetBytes(op);
+			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
 			
 			this.byteses[0] = opcodeBytes;
 			this.byteses[1] = messageBytes;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -10,7 +11,7 @@ using UnityEditor;
 
 namespace Model
 {
-	public class ABInfo: Disposer
+	public class ABInfo : Disposer
 	{
 		private int refCount;
 		public string Name { get; }
@@ -23,7 +24,7 @@ namespace Model
 			}
 			set
 			{
-				Log.Debug($"{this.Name} refcount: {value}");
+				//Log.Debug($"{this.Name} refcount: {value}");
 				this.refCount = value;
 			}
 		}
@@ -35,7 +36,7 @@ namespace Model
 			this.Name = name;
 			this.AssetBundle = ab;
 			this.RefCount = 1;
-			Log.Debug($"load assetbundle: {this.Name}");
+			//Log.Debug($"load assetbundle: {this.Name}");
 		}
 
 		public override void Dispose()
@@ -44,11 +45,11 @@ namespace Model
 			{
 				return;
 			}
-			
+
 			base.Dispose();
-			
-			Log.Debug($"desdroy assetbundle: {this.Name}");
-			
+
+			//Log.Debug($"desdroy assetbundle: {this.Name}");
+
 			this.AssetBundle?.Unload(true);
 		}
 	}
@@ -60,9 +61,28 @@ namespace Model
 		private readonly Dictionary<string, UnityEngine.Object> resourceCache = new Dictionary<string, UnityEngine.Object>();
 
 		private readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
-		
+
 		// lru缓存队列
 		private readonly QueueDictionary<string, ABInfo> cacheDictionary = new QueueDictionary<string, ABInfo>();
+
+		public override void Dispose()
+		{
+			if (this.Id == 0)
+			{
+				return;
+			}
+
+			base.Dispose();
+
+			foreach (var abInfo in this.bundles)
+			{
+				abInfo.Value?.AssetBundle?.Unload(true);
+			}
+
+			this.bundles.Clear();
+			this.cacheDictionary.Clear();
+			this.resourceCache.Clear();
+		}
 
 		public K GetAsset<K>(string bundleName, string prefab) where K : class
 		{
@@ -73,15 +93,18 @@ namespace Model
 			{
 				throw new Exception($"not found asset: {path}");
 			}
-			
-			return resource as K;
+
+			K k = resource as K;
+			if (k == null)
+			{
+				throw new Exception($"asset type error, type: {k.GetType().Name}, path: {path}");
+			}
+			return k;
 		}
 
 		public void UnloadBundle(string assetBundleName)
 		{
 			assetBundleName = assetBundleName.ToLower();
-			
-			this.UnloadOneBundle(assetBundleName);
 
 			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
@@ -90,12 +113,14 @@ namespace Model
 			{
 				this.UnloadOneBundle(dependency);
 			}
+
+			this.UnloadOneBundle(assetBundleName);
 		}
 
 		private void UnloadOneBundle(string assetBundleName)
 		{
 			assetBundleName = assetBundleName.ToLower();
-			
+
 			//Log.Debug($"unload bundle {assetBundleName}");
 			ABInfo abInfo;
 			if (!this.bundles.TryGetValue(assetBundleName, out abInfo))
@@ -108,10 +133,10 @@ namespace Model
 			{
 				return;
 			}
-			
-			
+
+
 			this.bundles.Remove(assetBundleName);
-			
+
 			// 缓存10个包
 			this.cacheDictionary.Enqueue(assetBundleName, abInfo);
 			if (this.cacheDictionary.Count > 10)
@@ -120,9 +145,9 @@ namespace Model
 				this.cacheDictionary.Dequeue();
 				abInfo.Dispose();
 			}
-			Log.Debug($"cache count: {this.cacheDictionary.Count}");
+			//Log.Debug($"cache count: {this.cacheDictionary.Count}");
 		}
-		
+
 		/// <summary>
 		/// 同步加载assetbundle
 		/// </summary>
@@ -131,8 +156,6 @@ namespace Model
 		public void LoadBundle(string assetBundleName)
 		{
 			assetBundleName = assetBundleName.ToLower();
-			this.LoadOneBundle(assetBundleName);
-
 			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
 			Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -144,8 +167,9 @@ namespace Model
 				}
 				this.LoadOneBundle(dependency);
 			}
+			this.LoadOneBundle(assetBundleName);
 		}
-		
+
 		public void LoadOneBundle(string assetBundleName)
 		{
 			ABInfo abInfo;
@@ -164,7 +188,7 @@ namespace Model
 				this.cacheDictionary.Remove(assetBundleName);
 				return;
 			}
-			
+
 
 			if (!Define.IsAsync)
 			{
@@ -177,7 +201,7 @@ namespace Model
 					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
 					this.resourceCache[path] = resource;
 				}
-				
+
 				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
 				return;
 #endif
@@ -195,7 +219,7 @@ namespace Model
 					this.resourceCache[path] = asset;
 				}
 			}
-			
+
 			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
 		}
 
@@ -207,8 +231,6 @@ namespace Model
 		public async Task LoadBundleAsync(string assetBundleName)
 		{
 			assetBundleName = assetBundleName.ToLower();
-			await this.LoadOneBundleAsync(assetBundleName);
-
 			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
 			//Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
@@ -220,6 +242,7 @@ namespace Model
 				}
 				await this.LoadOneBundleAsync(dependency);
 			}
+			await this.LoadOneBundleAsync(assetBundleName);
 		}
 
 		public async Task LoadOneBundleAsync(string assetBundleName)
@@ -240,7 +263,7 @@ namespace Model
 				this.cacheDictionary.Remove(assetBundleName);
 				return;
 			}
-			
+
 
 			if (!Define.IsAsync)
 			{
@@ -253,7 +276,7 @@ namespace Model
 					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
 					this.resourceCache[path] = resource;
 				}
-				
+
 				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
 				return;
 #endif
@@ -279,27 +302,18 @@ namespace Model
 					this.resourceCache[path] = asset;
 				}
 			}
-			
+
 			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
 		}
 
-		public override void Dispose()
+		public string DebugString()
 		{
-			if (this.Id == 0)
+			StringBuilder sb = new StringBuilder();
+			foreach (ABInfo abInfo in this.bundles.Values)
 			{
-				return;
+				sb.Append($"{abInfo.Name}:{abInfo.RefCount}\n");
 			}
-
-			base.Dispose();
-
-			foreach (var abInfo in this.bundles)
-			{
-				abInfo.Value?.AssetBundle?.Unload(true);
-			}
-			
-			this.bundles.Clear();
-			this.cacheDictionary.Clear();
-			this.resourceCache.Clear();
+			return sb.ToString();
 		}
 	}
 }
