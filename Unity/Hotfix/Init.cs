@@ -11,6 +11,8 @@ namespace Hotfix
 			{
 				Hotfix.Scene.ModelScene = Game.Scene;
 				Hotfix.Scene.AddComponent<UIComponent>();
+
+				Hotfix.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{

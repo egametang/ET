@@ -84,8 +84,6 @@ namespace Model
 
 				// 进入热更新层
 				this.start.Run();
-
-				Game.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{

@@ -2,7 +2,7 @@
 {
 	public enum EventIdType
 	{
-		InitSceneStart,
+		InitSceneStart = 0,
 
 		BehaviorTreeRunTreeEvent,
 		BehaviorTreeOpenEditor,
@@ -24,5 +24,7 @@
 		
 		LoadingBegin,
 		LoadingFinish,
+
+		MaxModelEvent = 10000,
 	}
 }
