@@ -8,7 +8,7 @@ namespace Hotfix
 		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Header.Opcode);
-			IMessage message = (IMessage)session.network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 
 			// 收到actor rpc request
 			if (message is ActorRequest actorRpcRequest)

@@ -209,7 +209,7 @@ namespace Model
 
 			base.Dispose();
 
-			this.Parent?.RemoveComponent<BundleDownloaderComponent>();
+			this.Entity?.RemoveComponent<BundleDownloaderComponent>();
 		}
 	}
 }

@@ -74,6 +74,7 @@ namespace Model
 		{
 			AChannel channel = await this.Service.AcceptChannel();
 			Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
+			session.Parent = this;
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
 			return session;
@@ -106,6 +107,7 @@ namespace Model
 			{
 				AChannel channel = this.Service.ConnectChannel(ipEndPoint);
 				Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
+				session.Parent = this;
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.sessions.Add(session.Id, session);
 				return session;

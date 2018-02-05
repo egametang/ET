@@ -61,6 +61,19 @@ namespace Model
 			{
 				types.AddRange(assembly.GetTypes());
 			}
+			
+			return types.ToArray();
+		}
+
+		public static Type[] GetAllTypes()
+		{
+			List<Type> types = new List<Type>();
+			foreach (Assembly assembly in Game.EventSystem.GetAll())
+			{
+				types.AddRange(assembly.GetTypes());
+			}
+
+			types.AddRange(GetHotfixTypes());
 			return types.ToArray();
 		}
 

@@ -18,10 +18,10 @@ namespace Hotfix
 
 		public void Awake()
 		{
-			Type[] monoTypes = DllHelper.GetHotfixTypes();
-			foreach (Type monoType in monoTypes)
+			Type[] types = DllHelper.GetHotfixTypes();
+			foreach (Type type in types)
 			{
-				object[] attrs = monoType.GetCustomAttributes(typeof(MessageAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
 				if (attrs.Length == 0)
 				{
 					continue;
@@ -33,7 +33,9 @@ namespace Hotfix
 					continue;
 				}
 
-				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
+				this.opcodeTypes.Add(messageAttribute.Opcode, type);
+
+				ProtoBuf.PType.RegisterType(type.FullName, type);
 			}
 		}
 

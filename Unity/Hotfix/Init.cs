@@ -11,7 +11,10 @@ namespace Hotfix
 			{
 				Hotfix.Scene.ModelScene = Game.Scene;
 				Hotfix.Scene.AddComponent<UIComponent>();
-
+#if ILRuntime
+				Hotfix.Scene.AddComponent<OpcodeTypeComponent>();
+				Hotfix.Scene.AddComponent<MessageDispatherComponent>();
+#endif
 				Hotfix.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)

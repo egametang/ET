@@ -82,10 +82,12 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Component\Config\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\NetworkComponent.cs" Link="Module\Network\NetworkComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Entity\Message\OuterMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Message\Opcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Message\OuterMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Network\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Helper\SessionHelper.cs" Link="Base\Helper\SessionHelper.cs" />
+    <Compile Include="..\..\Unity\Hotfix\Module\HotfixMessage\HotfixMessage.cs" Link="Message\HotfixMessage.cs" />
+    <Compile Include="..\..\Unity\Hotfix\Module\HotfixMessage\HotfixOpcode.cs" Link="Message\HotfixOpcode.cs" />
   </ItemGroup>
 
   <ItemGroup>

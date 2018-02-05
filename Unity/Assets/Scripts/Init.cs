@@ -38,7 +38,6 @@ namespace Model
 				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
 
 				Game.Scene.AddComponent<GlobalConfigComponent>();
-				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<NetOuterComponent>();
 				Game.Scene.AddComponent<ResourcesComponent>();
 				Game.Scene.AddComponent<BehaviorTreeComponent>();
@@ -81,6 +80,8 @@ namespace Model
 				this.lateUpdate = new MonoStaticMethod(hotfixInit, "LateUpdate");
 				this.onApplicationQuit = new MonoStaticMethod(hotfixInit, "OnApplicationQuit");
 #endif
+
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
 
 				// 进入热更新层
 				this.start.Run();

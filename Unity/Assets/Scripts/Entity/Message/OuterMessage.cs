@@ -4,57 +4,6 @@ using Model;
 using MongoDB.Bson.Serialization.Attributes;
 namespace Model
 {
-	[Message(Opcode.C2R_Login)]
-	[ProtoContract]
-	public partial class C2R_Login: MessageObject, IRequest
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public string Account;
-
-		[ProtoMember(2, IsRequired = true)]
-		public string Password;
-	}
-
-	[Message(Opcode.R2C_Login)]
-	[ProtoContract]
-	public partial class R2C_Login : MessageObject, IResponse
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public string Address;
-
-		[ProtoMember(2, IsRequired = true)]
-		public long Key;
-
-		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-	}
-
-	[Message(Opcode.C2G_LoginGate)]
-	[ProtoContract]
-	public partial class C2G_LoginGate : MessageObject, IRequest
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public long Key;
-
-	}
-
-	[Message(Opcode.G2C_LoginGate)]
-	[ProtoContract]
-	public partial class G2C_LoginGate : MessageObject, IResponse
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public long PlayerId;
-
-		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-	}
-
 	[Message(Opcode.Actor_Test)]
 	[ProtoContract]
 	public partial class Actor_Test : MessageObject, IActorMessage
@@ -97,7 +46,6 @@ namespace Model
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public int MapIndex;
-
 	}
 
 	[Message(Opcode.Actor_TransferResponse)]

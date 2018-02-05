@@ -53,7 +53,7 @@ namespace Model
 			this.status = LockStatus.LockRequesting;
 
 			// 真身直接本地请求锁,镜像需要调用Rpc获取锁
-			MasterComponent masterComponent = this.Parent.GetComponent<MasterComponent>();
+			MasterComponent masterComponent = this.Entity.GetComponent<MasterComponent>();
 			if (masterComponent != null)
 			{
 				await masterComponent.Lock(this.address);

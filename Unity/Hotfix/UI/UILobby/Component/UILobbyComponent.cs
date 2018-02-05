@@ -41,7 +41,7 @@ namespace Hotfix
 		private void OnSend()
 		{
 			// 发送一个actor消息
-			SessionComponent.Instance.Session.Send(new Actor_Test() { Info = "message client->gate->map->gate->client" });
+			Model.SessionHelper.Send(SessionComponent.Instance.Session, new Actor_Test() { Info = "message client->gate->map->gate->client" });
 		}
 
 		private async void OnSendRpc()
@@ -49,8 +49,7 @@ namespace Hotfix
 			try
 			{
 				// 向actor发起一次rpc调用
-				Actor_TestResponse response = (Actor_TestResponse) await SessionComponent.Instance.Session.Call(
-					new Actor_TestRequest() { request = "request actor test rpc" });
+				Actor_TestResponse response = (Actor_TestResponse) await Model.SessionHelper.Call(SessionComponent.Instance.Session, new Actor_TestRequest() { request = "request actor test rpc" });
 				Log.Info($"recv response: {MongoHelper.ToJson(response)}");
 			}
 			catch (Exception e)
@@ -63,8 +62,7 @@ namespace Hotfix
 		{
 			try
 			{
-				Actor_TransferResponse response = (Actor_TransferResponse) await SessionComponent.Instance.Session.Call(
-					new Actor_TransferRequest() {MapIndex = 0});
+				Actor_TransferResponse response = (Actor_TransferResponse) await Model.SessionHelper.Call(SessionComponent.Instance.Session, new Actor_TransferRequest() {MapIndex = 0});
 				Log.Info($"传送成功! {MongoHelper.ToJson(response)}");
 			}
 			catch (Exception e)
@@ -75,8 +73,7 @@ namespace Hotfix
 
 		private async void OnTransfer2()
 		{
-			Actor_TransferResponse response = (Actor_TransferResponse)await SessionComponent.Instance.Session.Call(
-				new Actor_TransferRequest() { MapIndex = 1 });
+			Actor_TransferResponse response = (Actor_TransferResponse)await Model.SessionHelper.Call(SessionComponent.Instance.Session, new Actor_TransferRequest() { MapIndex = 1 });
 			Log.Info($"传送成功! {MongoHelper.ToJson(response)}");
 		}
 
@@ -84,7 +81,7 @@ namespace Hotfix
 		{
 			try
 			{
-				G2C_EnterMap g2CEnterMap = (G2C_EnterMap)await SessionComponent.Instance.Session.Call(new C2G_EnterMap());
+				G2C_EnterMap g2CEnterMap = (G2C_EnterMap)await Model.SessionHelper.Call(SessionComponent.Instance.Session, new C2G_EnterMap());
 				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.UILobby);
 			}
 			catch (Exception e)

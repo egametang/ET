@@ -6,11 +6,19 @@ namespace Model
 	public abstract partial class Component: Disposer
 	{
 		[BsonIgnore]
-		public Entity Parent { get; set; }
+		public Disposer Parent { get; set; }
 
-		public T GetParent<T>() where T : Entity
+		public T GetParent<T>() where T : Disposer
 		{
 			return this.Parent as T;
+		}
+
+		public Entity Entity
+		{
+			get
+			{
+				return this.Parent as Entity;
+			}
 		}
 
 		protected Component()

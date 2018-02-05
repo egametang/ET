@@ -24,16 +24,22 @@ namespace Model
 	public sealed class Session : Entity
 	{
 		private static uint RpcId { get; set; }
-		public NetworkComponent network;
 		private AChannel channel;
-		
+
 		private readonly Dictionary<uint, Action<PacketInfo>> requestCallback = new Dictionary<uint, Action<PacketInfo>>();
 		
 		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0], new byte[0]};
 
+		public NetworkComponent Network
+		{
+			get
+			{
+				return this.GetParent<NetworkComponent>();
+			}
+		}
+
 		public void Awake(NetworkComponent net, AChannel c)
 		{
-			this.network = net;
 			this.channel = c;
 			this.requestCallback.Clear();
 		}
@@ -60,7 +66,7 @@ namespace Model
 			}
 
 			this.channel.Dispose();
-			this.network.Remove(id);
+			this.Network.Remove(id);
 			this.requestCallback.Clear();
 		}
 
@@ -120,12 +126,12 @@ namespace Model
 			if (packet.Length < Packet.MinSize)
 			{
 				Log.Error($"message error length < {Packet.MinSize}, ip: {this.RemoteAddress}");
-				this.network.Remove(this.Id);
+				this.Network.Remove(this.Id);
 				return;
 			}
 
 			ushort headerSize = BitConverter.ToUInt16(packet.Bytes, 0);
-			Header header = this.network.MessagePacker.DeserializeFrom<Header>(packet.Bytes, 2, headerSize);
+			Header header = this.Network.MessagePacker.DeserializeFrom<Header>(packet.Bytes, 2, headerSize);
 			byte flag = header.Flag;
 			PacketInfo packetInfo = new PacketInfo
 			{
@@ -149,7 +155,7 @@ namespace Model
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, packetInfo);
+			this.Network.MessageDispatcher.Dispatch(this, packetInfo);
 		}
 
 		public Task<PacketInfo> Call(ushort opcode, byte[] bytes)
@@ -226,13 +232,37 @@ namespace Model
 				Flag = flag
 			};
 
-			byte[] headerBytes = this.network.MessagePacker.SerializeToByteArray(header);
+			byte[] headerBytes = this.Network.MessagePacker.SerializeToByteArray(header);
 			byte[] headerLength = BitConverter.GetBytes((ushort)headerBytes.Length);
 
 			this.byteses[0] = headerLength;
 			this.byteses[1] = headerBytes;
 			this.byteses[2] = bytes;
+
+#if SERVER
+			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
+			if (this.Network.AppType == AppType.AllServer)
+			{
+				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
+				this.packet.Length = 0;
+				ushort index = 0;
+				foreach (var byts in this.byteses)
+				{
+					Array.Copy(byts, 0, this.packet.Bytes, index, byts.Length);
+					index += (ushort)byts.Length;
+				}
+
+				this.packet.Length = index;
+				session.Run(packet);
+				return;
+			}
+#endif
+
 			channel.Send(this.byteses);
 		}
+
+#if SERVER
+		private Packet packet = new Packet(ushort.MaxValue);
+#endif
 	}
 }

@@ -10,29 +10,41 @@ namespace Model
 		{
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
-			byte[] bytes = session.network.MessagePacker.SerializeToByteArray(request);
+			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(request);
 			PacketInfo packetInfo = await session.Call(opcode, bytes);
 			Type responseType = opcodeTypeComponent.GetType(packetInfo.Header.Opcode);
-			object message = session.network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-			return (IResponse) message;
+			object message = session.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+			IResponse response = (IResponse) message;
+			if (response.Error > 100)
+			{
+				throw new RpcException(response.Error, response.Message);
+			}
+
+			return response;
 		}
 
 		public static async Task<IResponse> Call(this Session session, IRequest request, CancellationToken cancellationToken)
 		{
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
-			byte[] bytes = session.network.MessagePacker.SerializeToByteArray(request);
+			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(request);
 			PacketInfo packetInfo = await session.Call(opcode, bytes, cancellationToken);
 			Type responseType = opcodeTypeComponent.GetType(packetInfo.Header.Opcode);
-			object message = session.network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-			return (IResponse)message;
+			object message = session.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+			IResponse response = (IResponse)message;
+			if (response.Error > 100)
+			{
+				throw new RpcException(response.Error, response.Message);
+			}
+
+			return response;
 		}
 
 		public static void Send(this Session session, IMessage message)
 		{
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
-			byte[] bytes = session.network.MessagePacker.SerializeToByteArray(message);
+			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(message);
 			session.Send(opcode, bytes);
 		}
 
@@ -40,7 +52,7 @@ namespace Model
 		{
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
-			byte[] bytes = session.network.MessagePacker.SerializeToByteArray(message);
+			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(message);
 			session.Reply(opcode, rpcId, bytes);
 		}
 	}

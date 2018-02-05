@@ -17,22 +17,22 @@ namespace Model
 
 		public void Awake()
 		{
-			Type[] monoTypes = DllHelper.GetMonoTypes();
-			foreach (Type monoType in monoTypes)
+			Type[] types = DllHelper.GetAllTypes();
+			foreach (Type type in types)
 			{
-				object[] attrs = monoType.GetCustomAttributes(typeof(MessageAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
 				if (attrs.Length == 0)
 				{
 					continue;
 				}
-
+				
 				MessageAttribute messageAttribute = attrs[0] as MessageAttribute;
 				if (messageAttribute == null)
 				{
 					continue;
 				}
 
-				this.opcodeTypes.Add(messageAttribute.Opcode, monoType);
+				this.opcodeTypes.Add(messageAttribute.Opcode, type);
 			}
 		}
 

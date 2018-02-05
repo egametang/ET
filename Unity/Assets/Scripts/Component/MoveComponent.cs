@@ -93,7 +93,7 @@ namespace Model
 		public void Awake()
 		{
 			this.mainSpeed = this.AddSpeed(new Vector3());
-			this.animatorComponent = this.Parent.GetComponent<AnimatorComponent>();
+			this.animatorComponent = this.Entity.GetComponent<AnimatorComponent>();
 		}
 
 		public void Update()

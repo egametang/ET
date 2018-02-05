@@ -15,7 +15,7 @@ namespace Hotfix
 	{
 		public static void Start(this RealmGateAddressComponent component)
 		{
-			StartConfig[] startConfigs = component.Parent.GetComponent<StartConfigComponent>().GetAll();
+			StartConfig[] startConfigs = component.Entity.GetComponent<StartConfigComponent>().GetAll();
 			foreach (StartConfig config in startConfigs)
 			{
 				if (!config.AppType.Is(AppType.Gate))

@@ -7,7 +7,7 @@ namespace Model
 		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Header.Opcode);
-			IMessage message = (IMessage)session.network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 
 			// 如果是帧同步消息,交给ClientFrameComponent处理
 			FrameMessage frameMessage = message as FrameMessage;

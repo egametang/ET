@@ -31,7 +31,7 @@ namespace Model
 
 		public void Load()
 		{
-			AppType appType = this.Parent.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			AppType appType = this.Entity.GetComponent<StartConfigComponent>().StartConfig.AppType;
 
 			this.handlers = new Dictionary<Type, List<IMHandler>>();
 			
