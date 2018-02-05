@@ -24,12 +24,13 @@ namespace Model
 	public sealed class Session : Entity
 	{
 		private static uint RpcId { get; set; }
-		private NetworkComponent network;
+		public NetworkComponent network;
 		private AChannel channel;
-
-		private readonly Dictionary<uint, Action<object>> requestCallback = new Dictionary<uint, Action<object>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0]};
 		
+		private readonly Dictionary<uint, Action<PacketInfo>> requestCallback = new Dictionary<uint, Action<PacketInfo>>();
+		
+		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0], new byte[0]};
+
 		public void Awake(NetworkComponent net, AChannel c)
 		{
 			this.network = net;
@@ -53,9 +54,9 @@ namespace Model
 
 			base.Dispose();
 
-			foreach (Action<object> action in this.requestCallback.Values.ToArray())
+			foreach (Action<PacketInfo> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ErrorResponse() { Error = ErrorCode.ERR_SocketDisconnected });
+				action.Invoke(new PacketInfo());
 			}
 
 			this.channel.Dispose();
@@ -102,18 +103,10 @@ namespace Model
 					Log.Error(e.ToString());
 					continue;
 				}
-
-				if (packet.Length < 2)
-				{
-					Log.Error($"message error length < 2, ip: {this.RemoteAddress}");
-					this.network.Remove(this.Id);
-					return;
-				}
-
-				ushort opcode = BitConverter.ToUInt16(packet.Bytes, 0);
+				
 				try
 				{
-					this.RunDecompressedBytes(opcode, packet.Bytes, 2, packet.Length);
+					this.Run(packet);
 				}
 				catch (Exception e)
 				{
@@ -122,147 +115,123 @@ namespace Model
 			}
 		}
 
-		private void RunDecompressedBytes(ushort opcode, byte[] messageBytes, int offset, int count)
+		private void Run(Packet packet)
 		{
-			object message;
-
-			try
+			if (packet.Length < Packet.MinSize)
 			{
-				Type messageType = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-				message = this.network.MessagePacker.DeserializeFrom(messageType, messageBytes, offset, count - offset);
-			}
-			catch (Exception e)
-			{
-				Log.Error($"message deserialize error, ip: {this.RemoteAddress} {opcode} {e}");
+				Log.Error($"message error length < {Packet.MinSize}, ip: {this.RemoteAddress}");
 				this.network.Remove(this.Id);
 				return;
 			}
 
-			//Log.Debug($"recv: {MongoHelper.ToJson(message)}");
-
-			AResponse response = message as AResponse;
-			if (response != null)
+			ushort headerSize = BitConverter.ToUInt16(packet.Bytes, 0);
+			Header header = this.network.MessagePacker.DeserializeFrom<Header>(packet.Bytes, 2, headerSize);
+			byte flag = header.Flag;
+			PacketInfo packetInfo = new PacketInfo
 			{
-				// rpcFlag>0 表示这是一个rpc响应消息
-				// Rpc回调有找不着的可能，因为client可能取消Rpc调用
-				Action<object> action;
-				if (!this.requestCallback.TryGetValue(response.RpcId, out action))
+				Header = header,
+				Index = (ushort)(headerSize + 2),
+				Bytes = packet.Bytes,
+				Length = (ushort)(packet.Length - 2 - headerSize)
+			};
+
+			// flag第2位表示这是rpc返回消息
+			if ((flag & 0x40) > 0)
+			{
+				uint rpcId = header.RpcId;
+				Action<PacketInfo> action;
+				if (!this.requestCallback.TryGetValue(rpcId, out action))
 				{
 					return;
 				}
-				this.requestCallback.Remove(response.RpcId);
-				action(message);
+				this.requestCallback.Remove(rpcId);
+				action(packetInfo);
 				return;
 			}
 
-			this.network.MessageDispatcher.Dispatch(this, opcode, offset, messageBytes, (AMessage)message);
+			this.network.MessageDispatcher.Dispatch(this, packetInfo);
 		}
 
-		/// <summary>
-		/// Rpc调用,发送一个消息,等待返回一个消息
-		/// </summary>
-		public Task<AResponse> Call(ARequest request)
+		public Task<PacketInfo> Call(ushort opcode, byte[] bytes)
 		{
-			request.RpcId = ++RpcId;
-
-			var tcs = new TaskCompletionSource<AResponse>();
-			this.requestCallback[request.RpcId] = (message) =>
+			uint rpcId = ++RpcId;
+			var tcs = new TaskCompletionSource<PacketInfo>();
+			this.requestCallback[rpcId] = (packetInfo) =>
 			{
 				try
 				{
-					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
+					tcs.SetResult(packetInfo);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {opcode}", e));
 				}
 			};
 
-			this.SendMessage(request);
+			const byte flag = 0x80;
+			this.SendMessage(flag, opcode, rpcId, bytes);
 			return tcs.Task;
 		}
 
-		/// <summary>
-		/// Rpc调用
-		/// </summary>
-		public Task<AResponse> Call(ARequest request, CancellationToken cancellationToken)
+		public Task<PacketInfo> Call(ushort opcode, byte[] bytes, CancellationToken cancellationToken)
 		{
-			request.RpcId = ++RpcId;
-			
-			var tcs = new TaskCompletionSource<AResponse>();
-
-			this.requestCallback[request.RpcId] = (message) =>
+			uint rpcId = ++RpcId;
+			var tcs = new TaskCompletionSource<PacketInfo>();
+			this.requestCallback[rpcId] = (packetInfo) =>
 			{
 				try
 				{
-					AResponse response = (AResponse)message;
-					if (response.Error > 100)
-					{
-						tcs.SetException(new RpcException(response.Error, response.Message));
-						return;
-					}
-					//Log.Debug($"recv: {MongoHelper.ToJson(response)}");
-					tcs.SetResult(response);
+					tcs.SetResult(packetInfo);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {message.GetType().FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {opcode}", e));
 				}
 			};
 
-			cancellationToken.Register(() => { this.requestCallback.Remove(request.RpcId); });
+			cancellationToken.Register(() => { this.requestCallback.Remove(rpcId); });
 
-			this.SendMessage(request);
-
+			const byte flag = 0x80;
+			this.SendMessage(flag, opcode, rpcId, bytes);
 			return tcs.Task;
 		}
 
-		public void Send(AMessage message)
+		public void Send(ushort opcode, byte[] bytes)
 		{
 			if (this.Id == 0)
 			{
 				throw new Exception("session已经被Dispose了");
 			}
-			this.SendMessage(message);
+			const byte flag = 0x00;
+			this.SendMessage(flag, opcode, 0, bytes);
 		}
 
-		public void Reply<Response>(Response message) where Response : AResponse
+		public void Reply(ushort opcode, uint rpcId, byte[] bytes)
 		{
 			if (this.Id == 0)
 			{
 				throw new Exception("session已经被Dispose了");
 			}
-			this.SendMessage(message);
+
+			const byte flag = 0x40;
+			this.SendMessage(flag, opcode, rpcId, bytes);
 		}
 
-		private void SendMessage(object message)
+		private void SendMessage(byte flag, ushort opcode, uint rpcId, byte[] bytes)
 		{
-			//Log.Debug($"send: {MongoHelper.ToJson(message)}");
-			ushort opcode = this.network.Parent.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-			byte[] messageBytes = this.network.MessagePacker.SerializeToByteArray(message);
-
-#if SERVER
-			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
-			if (this.network.AppType == AppType.AllServer)
+			Header header = new Header
 			{
-				Session session = this.network.Parent.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				session.RunDecompressedBytes(opcode, messageBytes, 0, messageBytes.Length);
-				return;
-			}
-#endif
+				Opcode = opcode,
+				RpcId = rpcId,
+				Flag = flag
+			};
 
-			byte[] opcodeBytes = BitConverter.GetBytes(opcode);
-			
-			this.byteses[0] = opcodeBytes;
-			this.byteses[1] = messageBytes;
+			byte[] headerBytes = this.network.MessagePacker.SerializeToByteArray(header);
+			byte[] headerLength = BitConverter.GetBytes((ushort)headerBytes.Length);
 
+			this.byteses[0] = headerLength;
+			this.byteses[1] = headerBytes;
+			this.byteses[2] = bytes;
 			channel.Send(this.byteses);
 		}
 	}

@@ -1,23 +1,23 @@
 using ProtoBuf;
 using System.Collections.Generic;
+using Model;
 using MongoDB.Bson.Serialization.Attributes;
 namespace Model
 {
 	[Message(Opcode.C2R_Login)]
 	[ProtoContract]
-	public partial class C2R_Login:  ARequest
+	public partial class C2R_Login: MessageObject, IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
 
 		[ProtoMember(2, IsRequired = true)]
 		public string Password;
-
 	}
 
 	[Message(Opcode.R2C_Login)]
 	[ProtoContract]
-	public partial class R2C_Login:  AResponse
+	public partial class R2C_Login : MessageObject, IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Address;
@@ -25,11 +25,16 @@ namespace Model
 		[ProtoMember(2, IsRequired = true)]
 		public long Key;
 
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.C2G_LoginGate)]
 	[ProtoContract]
-	public partial class C2G_LoginGate:  ARequest
+	public partial class C2G_LoginGate : MessageObject, IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -38,43 +43,57 @@ namespace Model
 
 	[Message(Opcode.G2C_LoginGate)]
 	[ProtoContract]
-	public partial class G2C_LoginGate:  AResponse
+	public partial class G2C_LoginGate : MessageObject, IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
 
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.Actor_Test)]
 	[ProtoContract]
-	public partial class Actor_Test:  AActorMessage
+	public partial class Actor_Test : MessageObject, IActorMessage
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.Actor_TestRequest)]
 	[ProtoContract]
-	public partial class Actor_TestRequest:  AActorRequest
+	public partial class Actor_TestRequest : MessageObject, IActorRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string request;
-
 	}
 
 	[Message(Opcode.Actor_TestResponse)]
 	[ProtoContract]
-	public partial class Actor_TestResponse:  AActorResponse
+	public partial class Actor_TestResponse : MessageObject, IActorResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string response;
 
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.Actor_TransferRequest)]
 	[ProtoContract]
-	public partial class Actor_TransferRequest:  AActorRequest
+	public partial class Actor_TransferRequest : MessageObject, IActorRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public int MapIndex;
@@ -83,19 +102,24 @@ namespace Model
 
 	[Message(Opcode.Actor_TransferResponse)]
 	[ProtoContract]
-	public partial class Actor_TransferResponse:  AActorResponse
+	public partial class Actor_TransferResponse : MessageObject, IActorResponse
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.C2G_EnterMap)]
 	[ProtoContract]
-	public partial class C2G_EnterMap:  ARequest
+	public partial class C2G_EnterMap : MessageObject, IRequest
 	{
 	}
 
 	[Message(Opcode.G2C_EnterMap)]
 	[ProtoContract]
-	public partial class G2C_EnterMap:  AResponse
+	public partial class G2C_EnterMap : MessageObject, IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long UnitId;
@@ -103,6 +127,11 @@ namespace Model
 		[ProtoMember(2, IsRequired = true)]
 		public int Count;
 
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.UnitInfo)]
@@ -122,7 +151,7 @@ namespace Model
 
 	[Message(Opcode.Actor_CreateUnits)]
 	[ProtoContract]
-	public partial class Actor_CreateUnits:  AActorMessage
+	public partial class Actor_CreateUnits : MessageObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
@@ -137,25 +166,25 @@ namespace Model
 		public long Id;
 
 		[ProtoMember(2, IsRequired = true)]
-		public AMessage Message;
+		public IMessage Message;
 
 	}
 
 	[Message(Opcode.FrameMessage)]
 	[ProtoContract]
-	public partial class FrameMessage:  AActorMessage
+	public partial class FrameMessage : MessageObject, IActorMessage
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public int Frame;
 
 		[ProtoMember(2)]
-		public List<AFrameMessage> Messages = new List<AFrameMessage>();
+		public List<MessageObject> Messages = new List<MessageObject>();
 
 	}
 
 	[Message(Opcode.Frame_ClickMap)]
 	[ProtoContract]
-	public partial class Frame_ClickMap:  AFrameMessage
+	public partial class Frame_ClickMap : MessageObject, IFrameMessage
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public int X;
@@ -163,11 +192,13 @@ namespace Model
 		[ProtoMember(2, IsRequired = true)]
 		public int Z;
 
+		[ProtoMember(90)]
+		public long Id { get; set; }
 	}
 
 	[Message(Opcode.C2M_Reload)]
 	[ProtoContract]
-	public partial class C2M_Reload:  ARequest
+	public partial class C2M_Reload : MessageObject, IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public AppType AppType;
@@ -176,68 +207,35 @@ namespace Model
 
 	[Message(Opcode.M2C_Reload)]
 	[ProtoContract]
-	public partial class M2C_Reload:  AResponse
+	public partial class M2C_Reload : MessageObject, IResponse
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 	}
 
 	[Message(Opcode.C2R_Ping)]
 	[ProtoContract]
-	public partial class C2R_Ping:  ARequest
+	public partial class C2R_Ping : MessageObject, IRequest
 	{
 	}
 
 	[Message(Opcode.R2C_Ping)]
 	[ProtoContract]
-	public partial class R2C_Ping:  AResponse
+	public partial class R2C_Ping : MessageObject, IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
+	}
+	
+	[ProtoInclude(Opcode.Frame_ClickMap, typeof(Frame_ClickMap))]
+	[BsonKnownTypes(typeof(Frame_ClickMap))]
+	public partial class MessageObject
 	{
 	}
-
-	[ProtoInclude((int)Opcode.Actor_Test, typeof(Actor_Test))]
-	[ProtoInclude((int)Opcode.Actor_CreateUnits, typeof(Actor_CreateUnits))]
-	[ProtoInclude((int)Opcode.FrameMessage, typeof(FrameMessage))]
-	[BsonKnownTypes(typeof(Actor_Test))]
-	[BsonKnownTypes(typeof(Actor_CreateUnits))]
-	[BsonKnownTypes(typeof(FrameMessage))]
-	public partial class  AActorMessage {}
-
-	[ProtoInclude((int)Opcode.Actor_TestRequest, typeof(Actor_TestRequest))]
-	[ProtoInclude((int)Opcode.Actor_TransferRequest, typeof(Actor_TransferRequest))]
-	[BsonKnownTypes(typeof(Actor_TestRequest))]
-	[BsonKnownTypes(typeof(Actor_TransferRequest))]
-	public partial class  AActorRequest {}
-
-	[ProtoInclude((int)Opcode.Actor_TestResponse, typeof(Actor_TestResponse))]
-	[ProtoInclude((int)Opcode.Actor_TransferResponse, typeof(Actor_TransferResponse))]
-	[BsonKnownTypes(typeof(Actor_TestResponse))]
-	[BsonKnownTypes(typeof(Actor_TransferResponse))]
-	public partial class  AActorResponse {}
-
-	[ProtoInclude((int)Opcode.Frame_ClickMap, typeof(Frame_ClickMap))]
-	[BsonKnownTypes(typeof(Frame_ClickMap))]
-	public partial class  AFrameMessage {}
-
-	[ProtoInclude((int)Opcode.C2R_Login, typeof(C2R_Login))]
-	[ProtoInclude((int)Opcode.C2G_LoginGate, typeof(C2G_LoginGate))]
-	[ProtoInclude((int)Opcode.C2G_EnterMap, typeof(C2G_EnterMap))]
-	[ProtoInclude((int)Opcode.C2M_Reload, typeof(C2M_Reload))]
-	[ProtoInclude((int)Opcode.C2R_Ping, typeof(C2R_Ping))]
-	[BsonKnownTypes(typeof(C2R_Login))]
-	[BsonKnownTypes(typeof(C2G_LoginGate))]
-	[BsonKnownTypes(typeof(C2G_EnterMap))]
-	[BsonKnownTypes(typeof(C2M_Reload))]
-	[BsonKnownTypes(typeof(C2R_Ping))]
-	public partial class  ARequest {}
-
-	[ProtoInclude((int)Opcode.R2C_Login, typeof(R2C_Login))]
-	[ProtoInclude((int)Opcode.G2C_LoginGate, typeof(G2C_LoginGate))]
-	[ProtoInclude((int)Opcode.G2C_EnterMap, typeof(G2C_EnterMap))]
-	[ProtoInclude((int)Opcode.M2C_Reload, typeof(M2C_Reload))]
-	[ProtoInclude((int)Opcode.R2C_Ping, typeof(R2C_Ping))]
-	[BsonKnownTypes(typeof(R2C_Login))]
-	[BsonKnownTypes(typeof(G2C_LoginGate))]
-	[BsonKnownTypes(typeof(G2C_EnterMap))]
-	[BsonKnownTypes(typeof(M2C_Reload))]
-	[BsonKnownTypes(typeof(R2C_Ping))]
-	public partial class  AResponse {}
-
 }

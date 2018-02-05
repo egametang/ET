@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
+using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
 namespace Model
@@ -22,7 +24,7 @@ namespace Model
 			// 注册委托
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AResponse>();
+			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
 
 
 			// 注册适配器
@@ -42,11 +44,36 @@ namespace Model
 				}
 				Init.Instance.AppDomain.RegisterCrossBindingAdaptor(adaptor);
 			}
+
+			// 初始化ILRuntime的protobuf
+			InitializeILRuntimeProtobuf();
 		}
 
 		public static void AvoidAot(GameObject gameObject)
 		{
 			Input input = gameObject.Get<Input>("11");
+		}
+
+		public static void InitializeILRuntimeProtobuf()
+		{
+			ProtoBuf.PType.RegisterFunctionCreateInstance(PType_CreateInstance);
+			ProtoBuf.PType.RegisterFunctionGetRealType(PType_GetRealType);
+		}
+
+		private static object PType_CreateInstance(string typeName)
+		{
+			return Init.Instance.AppDomain.Instantiate(typeName);
+		}
+
+		private static Type PType_GetRealType(object o)
+		{
+			Type type = o.GetType();
+			if (type.FullName == "ILRuntime.Runtime.Intepreter.ILTypeInstance")
+			{
+				ILTypeInstance ilo = o as ILTypeInstance;
+				type = ProtoBuf.PType.FindType(ilo.Type.FullName);
+			}
+			return type;
 		}
 	}
 }

@@ -71,14 +71,14 @@ namespace Model
 			return actorHandler;
 		}
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
 		{
 			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
 			{
 				throw new Exception($"not found message handler: {MongoHelper.ToJson(message)}");
 			}
 			
-			await handler.Handle(session, entity, message);
+			await handler.Handle(session, entity, rpcId, message);
 		}
 
 		public override void Dispose()

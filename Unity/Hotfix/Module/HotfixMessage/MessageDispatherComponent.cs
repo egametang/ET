@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Model;
 
-namespace Model
+namespace Hotfix
 {
 	[ObjectSystem]
 	public class MessageDispatherComponentSystem : ObjectSystem<MessageDispatherComponent>, IAwake, ILoad
@@ -22,7 +23,7 @@ namespace Model
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private Dictionary<Type, List<IMHandler>> handlers;
+		private Dictionary<ushort, List<IMHandler>> handlers;
 
 		public void Awake()
 		{
@@ -31,11 +32,9 @@ namespace Model
 
 		public void Load()
 		{
-			AppType appType = this.Parent.GetComponent<StartConfigComponent>().StartConfig.AppType;
-
-			this.handlers = new Dictionary<Type, List<IMHandler>>();
+			this.handlers = new Dictionary<ushort, List<IMHandler>>();
 			
-			Type[] types = DllHelper.GetMonoTypes();
+			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
@@ -43,34 +42,19 @@ namespace Model
 				{
 					continue;
 				}
-
 				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-				if (!messageHandlerAttribute.Type.Is(appType))
+				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
+				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
 				{
-					continue;
+					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMHandler>());
 				}
-				
-				object obj = Activator.CreateInstance(type);
-
-				IMHandler imHandler = obj as IMHandler;
-				if (imHandler == null)
-				{
-					throw new Exception($"message handler not inherit AMEvent or AMRpcEvent abstract class: {obj.GetType().FullName}");
-				}
-
-				Type messageType = imHandler.GetMessageType();
-				if (!this.handlers.TryGetValue(messageType, out List<IMHandler> list))
-				{
-					list = new List<IMHandler>();
-					this.handlers.Add(messageType, list);
-				}
-				list.Add(imHandler);
+				this.handlers[messageHandlerAttribute.Opcode].Add(iMHandler);
 			}
 		}
 
-		public void Handle(Session session, uint rpcId, IMessage message)
+		public void Handle(Session session, ushort opcode, IMessage message)
 		{
-			if (!this.handlers.TryGetValue(message.GetType(), out List<IMHandler> actions))
+			if (!this.handlers.TryGetValue(opcode, out List<IMHandler> actions))
 			{
 				Log.Error($"消息 {message.GetType().FullName} 没有处理");
 				return;
@@ -80,7 +64,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Handle(session, rpcId, message);
+					ev.Handle(null, message);
 				}
 				catch (Exception e)
 				{

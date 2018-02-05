@@ -4,6 +4,6 @@ namespace Model
 {
 	public interface IEntityActorHandler
 	{
-		Task Handle(Session session, Entity entity, ActorRequest message);
+		Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message);
 	}
 }

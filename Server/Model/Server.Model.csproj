@@ -37,9 +37,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AActorMessage.cs" Link="Base\Message\AActorMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AMessage.cs" Link="Base\Message\AMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\AppType.cs" Link="Other\AppType.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\ErrorCode.cs" Link="Base\Message\ErrorCode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessage.cs" Link="Base\Message\IMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessageDispatcher.cs" Link="Module\Network\IMessageDispatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\IMessagePacker.cs" Link="Module\Network\IMessagePacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Message\MessageInfo.cs" Link="Base\Message\MessageInfo.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Entity\Message\Opcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Entity\Message\OuterMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Network\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Helper\SessionHelper.cs" Link="Base\Helper\SessionHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,11 +7,16 @@ namespace Model
 		PacketSize,
 		PacketBody
 	}
-
+	
 	public struct Packet
 	{
-		public byte[] Bytes { get; set; }
-		public int Length { get; set; }
+		public const int MinSize = 2;
+
+		/// <summary>
+		/// 只读，不允许修改
+		/// </summary>
+		public byte[] Bytes { get; }
+		public ushort Length { get; set; }
 
 		public Packet(int length)
 		{
@@ -22,7 +27,7 @@ namespace Model
 		public Packet(byte[] bytes)
 		{
 			this.Bytes = bytes;
-			this.Length = bytes.Length;
+			this.Length = (ushort)bytes.Length;
 		}
 	}
 

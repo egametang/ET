@@ -36,15 +36,15 @@ namespace Model
 	{
 	}
 	
-	public interface AMessage
+	public interface IMessage
 	{
 	}
 	
-	public interface ARequest: AMessage
+	public interface IRequest: IMessage
 	{
 	}
 	
-	public interface AResponse: AMessage
+	public interface IResponse: IMessage
 	{
 		int Error { get; set; }
 		string Message { get; set; }

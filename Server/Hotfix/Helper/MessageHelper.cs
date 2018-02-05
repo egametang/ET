@@ -4,7 +4,7 @@ namespace Hotfix
 {
 	public static class MessageHelper
 	{
-		public static void Broadcast(AActorMessage message)
+		public static void Broadcast(IMessage message)
 		{
 			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
 			ActorProxyComponent actorProxyComponent = Game.Scene.GetComponent<ActorProxyComponent>();

@@ -54,8 +54,9 @@
     <Compile Include="Base\Helper\ArrayHelper.cs" />
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
-    <Compile Include="Base\Message\AMHandler.cs" />
-    <Compile Include="Base\Message\IMHandler.cs" />
+    <Compile Include="Module\HotfixMessage\AMessage.cs" />
+    <Compile Include="Module\HotfixMessage\AMHandler.cs" />
+    <Compile Include="Module\HotfixMessage\IMHandler.cs" />
     <Compile Include="Base\Object\Component.cs" />
     <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Disposer.cs" />
@@ -71,9 +72,12 @@
     <Compile Include="Base\Object\EventSystem.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Base\Other\IUIFactory.cs" />
-    <Compile Include="Component\UIComponent.cs" />
+    <Compile Include="Module\HotfixMessage\MessageDispatherComponent.cs" />
+    <Compile Include="Module\HotfixMessage\OpcodeTypeComponent.cs" />
+    <Compile Include="Module\HotfixMessage\UIComponent.cs" />
     <Compile Include="Entity\Hotfix.cs" />
     <Compile Include="Entity\Scene.cs" />
+    <Compile Include="Module\HotfixMessage\SessionWrap.cs" />
     <Compile Include="Entity\UI.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Component\" />
     <Folder Include="Event\" />
     <Folder Include="Handler\" />
   </ItemGroup>

@@ -104,7 +104,7 @@ namespace Hotfix
 					{
 						return;
 					}
-					await self.entityActorHandler.Handle(info.Session, self.Parent, info.Message);
+					await self.entityActorHandler.Handle(info.Session, self.Parent, info.RpcId, info.Message);
 				}
 				catch (Exception e)
 				{

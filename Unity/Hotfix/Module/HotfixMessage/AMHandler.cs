@@ -3,11 +3,11 @@ using Model;
 
 namespace Hotfix
 {
-	public abstract class AMHandler<Message> : IMHandler where Message: AMessage 
+	public abstract class AMHandler<Message> : IMHandler where Message: MessageObject
 	{
 		protected abstract void Run(Session session, Message message);
 
-		public void Handle(Session session, AMessage msg)
+		public void Handle(Session session, IMessage msg)
 		{
 			Message message = msg as Message;
 			if (message == null)

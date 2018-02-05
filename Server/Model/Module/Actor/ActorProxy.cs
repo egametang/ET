@@ -13,9 +13,9 @@ namespace Model
 		public ActorProxy proxy;
 
 		[BsonElement]
-		public AMessage message;
+		public MessageObject message;
 
-		public abstract Task<AResponse> Run();
+		public abstract Task<IResponse> Run();
 
 		public abstract void RunFail(int error);
 	}
@@ -25,16 +25,16 @@ namespace Model
 	/// </summary>
 	public class ActorMessageTask: ActorTask
 	{
-		public ActorMessageTask(ActorProxy proxy, AMessage message)
+		public ActorMessageTask(ActorProxy proxy, IMessage message)
 		{
 			this.proxy = proxy;
-			this.message = message;
+			this.message = (MessageObject)message;
 		}
 
-		public override async Task<AResponse> Run()
+		public override async Task<IResponse> Run()
 		{
 			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
-			ActorResponse response = await this.proxy.RealCall<ActorResponse>(request, this.proxy.CancellationTokenSource.Token);
+			ActorResponse response = (ActorResponse)await this.proxy.RealCall(request, this.proxy.CancellationTokenSource.Token);
 			return response;
 		}
 
@@ -46,25 +46,24 @@ namespace Model
 	/// <summary>
 	/// Rpc消息，需要等待返回
 	/// </summary>
-	/// <typeparam name="Response"></typeparam>
-	public class ActorRpcTask<Response> : ActorTask where Response: AResponse
+	public class ActorRpcTask : ActorTask
 	{
 		[BsonIgnore]
-		public readonly TaskCompletionSource<Response> Tcs = new TaskCompletionSource<Response>();
+		public readonly TaskCompletionSource<IResponse> Tcs = new TaskCompletionSource<IResponse>();
 
-		public ActorRpcTask(ActorProxy proxy, ARequest message)
+		public ActorRpcTask(ActorProxy proxy, IMessage message)
 		{
 			this.proxy = proxy;
-			this.message = message;
+			this.message = (MessageObject)message;
 		}
 
-		public override async Task<AResponse> Run()
+		public override async Task<IResponse> Run()
 		{
-			ActorRpcRequest request = new ActorRpcRequest() { Id = this.proxy.Id, AMessage = this.message };
-			ActorRpcResponse response = await this.proxy.RealCall<ActorRpcResponse>(request, this.proxy.CancellationTokenSource.Token);
+			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
+			ActorResponse response = (ActorResponse)await this.proxy.RealCall(request, this.proxy.CancellationTokenSource.Token);
 			if (response.Error != ErrorCode.ERR_NotFoundActor)
 			{
-				this.Tcs.SetResult((Response)response.AMessage);
+				this.Tcs.SetResult((IResponse)response.AMessage);
 			}
 			return response;
 		}
@@ -229,7 +228,7 @@ namespace Model
 		{
 			try
 			{
-				AResponse response = await task.Run();
+				IResponse response = await task.Run();
 
 				// 如果没找到Actor,发送窗口减少为1,重试
 				if (response.Error == ErrorCode.ERR_NotFoundActor)
@@ -282,27 +281,27 @@ namespace Model
 			}
 		}
 
-		public void Send(AMessage message)
+		public void Send(IMessage message)
 		{
 			ActorMessageTask task = new ActorMessageTask(this, message);
 			this.Add(task);
 		}
 
-		public Task<Response> Call<Response>(ARequest request)where Response : AResponse
+		public Task<IResponse> Call(IRequest request)
 		{
-			ActorRpcTask<Response> task = new ActorRpcTask<Response>(this, request);
+			ActorRpcTask task = new ActorRpcTask(this, (IMessage)request);
 			this.Add(task);
 			return task.Tcs.Task;
 		}
 
-		public async Task<Response> RealCall<Response>(ActorRequest request, CancellationToken cancellationToken) where Response: AResponse
+		public async Task<IResponse> RealCall(ActorRequest request, CancellationToken cancellationToken)
 		{
 			try
 			{
 				//Log.Debug($"realcall {MongoHelper.ToJson(request)} {this.Address}");
 				request.Id = this.Id;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
-				Response response = (Response)await session.Call(request, cancellationToken);
+				IResponse response = await session.Call(request, cancellationToken);
 				return response;
 			}
 			catch (RpcException e)

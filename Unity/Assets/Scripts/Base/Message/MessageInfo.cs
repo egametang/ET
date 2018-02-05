@@ -3,9 +3,9 @@
 	public struct MessageInfo
 	{
 		public ushort Opcode { get; set; }
-		public AMessage Message { get; set; }
+		public IMessage Message { get; set; }
 
-		public MessageInfo(ushort opcode, AMessage message)
+		public MessageInfo(ushort opcode, IMessage message)
 		{
 			this.Opcode = opcode;
 			this.Message = message;

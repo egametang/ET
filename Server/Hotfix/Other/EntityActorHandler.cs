@@ -9,21 +9,21 @@ namespace Hotfix
     /// </summary>
     public class GateSessionEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
         {
-	        ActorResponse response = new ActorResponse { RpcId = message.RpcId };
+	        ActorResponse response = new ActorResponse();
 
 			try
 	        {
-		        ((Session)entity).Send(message.AMessage);
-		        session.Reply(response);
+		        ((Session)entity).Send((IMessage)message.AMessage);
+		        session.Reply(rpcId, response);
 		        await Task.CompletedTask;
 	        }
 	        catch (Exception e)
 	        {
 		        response.Error = ErrorCode.ERR_SessionActorError;
 		        response.Message = $"session actor error {e}";
-				session.Reply(response);
+				session.Reply(rpcId, response);
 				throw;
 	        }
         }
@@ -31,9 +31,9 @@ namespace Hotfix
 
     public class CommonEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
         {
-            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
+            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, rpcId, message);
         }
     }
 
@@ -42,21 +42,18 @@ namespace Hotfix
     /// </summary>
     public class MapUnitEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
         {
-            if (message.AMessage is AFrameMessage aFrameMessage)
+            if (message.AMessage is IFrameMessage aFrameMessage)
             {
 				// 客户端发送不需要设置Frame消息的id，在这里统一设置，防止客户端被破解发个假的id过来
 	            aFrameMessage.Id = entity.Id;
 				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
-	            ActorResponse response = new ActorResponse
-	            {
-		            RpcId = message.RpcId
-	            };
-	            session.Reply(response);
+	            ActorResponse response = new ActorResponse();
+	            session.Reply(rpcId, response);
 				return;
             }
-            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
+            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, rpcId, message);
         }
     }
 }

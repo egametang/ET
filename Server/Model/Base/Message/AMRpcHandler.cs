@@ -2,7 +2,7 @@
 
 namespace Model
 {
-	public abstract class AMRpcHandler<Request, Response>: IMHandler where Request : ARequest where Response : AResponse
+	public abstract class AMRpcHandler<Request, Response>: IMHandler where Request : class, IRequest where Response : class, IResponse 
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -14,7 +14,7 @@ namespace Model
 
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, AMessage message)
+		public void Handle(Session session, uint rpcId, IMessage message)
 		{
 			try
 			{
@@ -30,8 +30,7 @@ namespace Model
 					{
 						return;
 					}
-					response.RpcId = request.RpcId;
-					session.Reply(response);
+					session.Reply(rpcId, response);
 				});
 			}
 			catch (Exception e)

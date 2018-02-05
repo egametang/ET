@@ -5,7 +5,7 @@ namespace Model
 {
 	public interface IMActorHandler
 	{
-		Task Handle(Session session, Entity entity, ActorRequest message);
+		Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message);
 		Type GetMessageType();
 	}
 }

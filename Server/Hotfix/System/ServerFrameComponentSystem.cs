@@ -41,9 +41,9 @@ namespace Hotfix
             }
         }
 
-        public static void Add(this ServerFrameComponent self, AFrameMessage message)
+        public static void Add(this ServerFrameComponent self, IFrameMessage message)
         {
-            self.FrameMessage.Messages.Add(message);
+            self.FrameMessage.Messages.Add((MessageObject)message);
         }
     }
 }

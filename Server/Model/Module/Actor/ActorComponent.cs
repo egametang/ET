@@ -7,6 +7,7 @@ namespace Model
 	public class ActorMessageInfo
 	{
 		public Session Session;
+		public uint RpcId;
 		public ActorRequest Message;
 	}
 

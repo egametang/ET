@@ -11,7 +11,7 @@ namespace Model
 	/// </summary>
 	public interface IMessageMethod
 	{
-		void Run(Session session, AMessage a);
+		void Run(Session session, IMessage a);
 	}
 
 	public class IMessageMonoMethod : IMessageMethod
@@ -23,7 +23,7 @@ namespace Model
 			this.iMHandler = iMHandler;
 		}
 
-		public void Run(Session session, AMessage a)
+		public void Run(Session session, IMessage a)
 		{
 			this.iMHandler.Handle(session, a);
 		}
@@ -45,7 +45,7 @@ namespace Model
 			this.param = new object[n];
 		}
 
-		public void Run(Session session, AMessage a)
+		public void Run(Session session, IMessage a)
 		{
 			this.param[0] = a;
 			this.appDomain.Invoke(this.method, this.instance, param);

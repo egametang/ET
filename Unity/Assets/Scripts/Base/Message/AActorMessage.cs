@@ -4,26 +4,23 @@ using ProtoBuf;
 // 不要在这个文件加[ProtoInclude]跟[BsonKnowType]标签,加到InnerMessage.cs或者OuterMessage.cs里面去
 namespace Model
 {
-	[ProtoContract]
-	[BsonKnownTypes(typeof(AFrameMessage))]
-	public abstract partial class AActorMessage : AMessage
+	public interface IActorMessage: IMessage
 	{
 	}
 
 	[ProtoContract]
-	public abstract partial class AActorRequest : ARequest
+	public interface IActorRequest : IRequest
 	{
 	}
 
 	[ProtoContract]
-	public abstract partial class AActorResponse : AResponse
+	public interface IActorResponse : IResponse
 	{
 	}
 
 	[ProtoContract]
-	public abstract partial class AFrameMessage : AActorMessage
+	public interface IFrameMessage : IActorMessage
 	{
-		[ProtoMember(90)]
-		public long Id;
+		long Id { get; set; }
 	}
 }

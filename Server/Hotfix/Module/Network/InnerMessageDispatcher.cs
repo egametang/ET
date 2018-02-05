@@ -5,49 +5,32 @@ namespace Hotfix
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, ushort opcode, int offset, byte[] messageBytes, AMessage message)
+		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
+			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Header.Opcode);
+			IMessage message = (IMessage)session.network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+
 			// 收到actor rpc request
-			if (message is ActorRpcRequest actorRpcRequest)
+			if (message is ActorRequest actorRpcRequest)
 			{
 				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorRpcRequest.Id);
 				if (entity == null)
 				{
 					Log.Warning($"not found actor: {actorRpcRequest.Id}");
-					ActorRpcResponse response = new ActorRpcResponse
-					{
-						RpcId = actorRpcRequest.RpcId,
-						Error = ErrorCode.ERR_NotFoundActor
-					};
-					session.Reply(response);
-					return;
-				}
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorRpcRequest });
-				return;
-			}
-
-			// 收到actor消息分发给actor自己去处理
-			if (message is ActorRequest actorRequest)
-			{
-				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(actorRequest.Id);
-				if (entity == null)
-				{
-					Log.Warning($"not found actor: {actorRequest.Id}");
 					ActorResponse response = new ActorResponse
 					{
-						RpcId = actorRequest.RpcId,
 						Error = ErrorCode.ERR_NotFoundActor
 					};
-					session.Reply(response);
+					session.Reply(packetInfo.Header.RpcId, response);
 					return;
 				}
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = actorRequest });
+				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, RpcId = packetInfo.Header.RpcId, Message = actorRpcRequest });
 				return;
 			}
-
-			if (message is AMessage || message is ARequest)
+			
+			if (message is IMessage || message is IRequest)
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, message);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.Header.RpcId, message);
 				return;
 			}
 

@@ -22,10 +22,6 @@ namespace Model
 		 public const ushort M2C_Reload = 118;
 		 public const ushort C2R_Ping = 119;
 		 public const ushort R2C_Ping = 120;
-		 public const ushort ActorRequest = 1001;
-		 public const ushort ActorResponse = 1002;
-		 public const ushort ActorRpcRequest = 1003;
-		 public const ushort ActorRpcResponse = 1004;
 		 public const ushort M2M_TrasferUnitRequest = 1005;
 		 public const ushort M2M_TrasferUnitResponse = 1006;
 		 public const ushort M2A_Reload = 1007;

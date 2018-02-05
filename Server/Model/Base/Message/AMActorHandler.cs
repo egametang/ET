@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : AMessage
+	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : MessageObject
 	{
 		protected abstract Task Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
 		{
 			Message msg = message.AMessage as Message;
 			if (msg == null)
@@ -29,8 +29,8 @@ namespace Model
 			{
 				return;
 			}
-			ActorResponse response = new ActorResponse { RpcId = message.RpcId };
-			session.Reply(response);
+			ActorResponse response = new ActorResponse();
+			session.Reply(rpcId, response);
 		}
 
 		public Type GetMessageType()
@@ -39,7 +39,7 @@ namespace Model
 		}
 	}
 
-	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request : AActorRequest where Response : AActorResponse
+	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request : MessageObject, IActorRequest where Response : MessageObject, IActorResponse
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -51,7 +51,7 @@ namespace Model
 
 		protected abstract Task Run(E unit, Request message, Action<Response> reply);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
 		{
 			try
 			{
@@ -74,12 +74,11 @@ namespace Model
 					{
 						return;
 					}
-					ActorRpcResponse actorResponse = new ActorRpcResponse
+					ActorResponse actorResponse = new ActorResponse
 					{
-						RpcId = message.RpcId,
 						AMessage = response
 					};
-					session.Reply(actorResponse);
+					session.Reply(rpcId, actorResponse);
 				});
 			}
 			catch (Exception e)
