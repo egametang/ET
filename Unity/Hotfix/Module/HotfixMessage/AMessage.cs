@@ -1,15 +1,15 @@
 ﻿namespace Hotfix
 {
 #if ILRuntime
-	public abstract partial class AMessage
+	public interface IMessage
 	{
 	}
 	
-	public abstract partial class ARequest
+	public interface ARequest
 	{
 	}
 	
-	public abstract partial class AResponse
+	public interface AResponse
 	{
 	}
 #endif

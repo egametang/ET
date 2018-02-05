@@ -212,11 +212,11 @@
     <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AActorMessage.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AMHandler.cs" />
     <Compile Include="Assets\Scripts\Base\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ClientDispatcher.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ErrorCode.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\IMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMessageDispatcher.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMessagePacker.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMHandler.cs" />
