@@ -21,5 +21,10 @@ namespace Model
 
 			return false;
 		}
+
+		public static bool IsClientHotfixMessage(ushort opcode)
+		{
+			return opcode < 1000;
+		}
 	}
 }

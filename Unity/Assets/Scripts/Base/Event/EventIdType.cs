@@ -4,6 +4,8 @@
 	{
 		InitSceneStart = 0,
 
+		RecvHotfixMessage,
+
 		BehaviorTreeRunTreeEvent,
 		BehaviorTreeOpenEditor,
 		BehaviorTreeClickNode,

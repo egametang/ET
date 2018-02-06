@@ -11,6 +11,8 @@ namespace Model
 	public struct Packet
 	{
 		public const int MinSize = 2;
+		public const int OpcodeIndex = 1;
+		public const int RpcIdIndex = 3;
 
 		/// <summary>
 		/// 只读，不允许修改
@@ -28,6 +30,21 @@ namespace Model
 		{
 			this.Bytes = bytes;
 			this.Length = (ushort)bytes.Length;
+		}
+
+		public byte Flag()
+		{
+			return this.Bytes[0];
+		}
+
+		public ushort Opcode()
+		{
+			return BitConverter.ToUInt16(this.Bytes, OpcodeIndex);
+		}
+
+		public uint RpcId()
+		{
+			return BitConverter.ToUInt32(this.Bytes, RpcIdIndex);
 		}
 	}
 

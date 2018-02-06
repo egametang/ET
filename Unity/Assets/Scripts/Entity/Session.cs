@@ -27,8 +27,10 @@ namespace Model
 		private AChannel channel;
 
 		private readonly Dictionary<uint, Action<PacketInfo>> requestCallback = new Dictionary<uint, Action<PacketInfo>>();
-		
+
+		private readonly byte[] flagBytes = new byte[1];
 		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0], new byte[0]};
+		private readonly List<byte[]> rpcByteses = new List<byte[]>() { new byte[0], new byte[0], new byte[0], new byte[0] };
 
 		public NetworkComponent Network
 		{
@@ -130,31 +132,42 @@ namespace Model
 				return;
 			}
 
-			ushort headerSize = BitConverter.ToUInt16(packet.Bytes, 0);
-			Header header = this.Network.MessagePacker.DeserializeFrom<Header>(packet.Bytes, 2, headerSize);
-			byte flag = header.Flag;
+			byte flag = packet.Flag();
+			ushort opcode = packet.Opcode();
 			PacketInfo packetInfo = new PacketInfo
 			{
-				Header = header,
-				Index = (ushort)(headerSize + 2),
-				Bytes = packet.Bytes,
-				Length = (ushort)(packet.Length - 2 - headerSize)
+				Opcode = opcode,
+				Bytes = packet.Bytes
 			};
 
-			// flag第2位表示这是rpc返回消息
-			if ((flag & 0x40) > 0)
+			if ((flag & 0xC0) > 0)
 			{
-				uint rpcId = header.RpcId;
-				Action<PacketInfo> action;
-				if (!this.requestCallback.TryGetValue(rpcId, out action))
+				uint rpcId = packet.RpcId();
+				packetInfo.RpcId = rpcId;
+				packetInfo.Index = Packet.RpcIdIndex + 4;
+				packetInfo.Length = (ushort)(packet.Length - packetInfo.Index);
+
+				// flag第2位表示这是rpc返回消息
+				if ((flag & 0x40) > 0)
 				{
+					Action<PacketInfo> action;
+					if (!this.requestCallback.TryGetValue(rpcId, out action))
+					{
+						return;
+					}
+					this.requestCallback.Remove(rpcId);
+
+					action(packetInfo);
 					return;
 				}
-				this.requestCallback.Remove(rpcId);
-				action(packetInfo);
-				return;
 			}
-
+			else
+			{
+				packetInfo.RpcId = 0;
+				packetInfo.Index = Packet.RpcIdIndex;
+				packetInfo.Length = (ushort)(packet.Length - packetInfo.Index);
+			}
+			
 			this.Network.MessageDispatcher.Dispatch(this, packetInfo);
 		}
 
@@ -225,44 +238,49 @@ namespace Model
 
 		private void SendMessage(byte flag, ushort opcode, uint rpcId, byte[] bytes)
 		{
-			Header header = new Header
+			this.flagBytes[0] = flag;
+
+			List<byte[]> bb;
+			if (rpcId == 0)
 			{
-				Opcode = opcode,
-				RpcId = rpcId,
-				Flag = flag
-			};
-
-			byte[] headerBytes = this.Network.MessagePacker.SerializeToByteArray(header);
-			byte[] headerLength = BitConverter.GetBytes((ushort)headerBytes.Length);
-
-			this.byteses[0] = headerLength;
-			this.byteses[1] = headerBytes;
-			this.byteses[2] = bytes;
-
+				bb = this.byteses;
+				bb[0] = flagBytes;
+				bb[1] = BitConverter.GetBytes(opcode);
+				bb[2] = bytes;
+			}
+			else
+			{
+				bb = this.rpcByteses;
+				bb[0] = flagBytes;
+				bb[1] = BitConverter.GetBytes(opcode);
+				bb[2] = BitConverter.GetBytes(rpcId);
+				bb[3] = bytes;
+			}
+			
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				this.packet.Length = 0;
+				this.pkt.Length = 0;
 				ushort index = 0;
-				foreach (var byts in this.byteses)
+				foreach (var byts in bb)
 				{
-					Array.Copy(byts, 0, this.packet.Bytes, index, byts.Length);
+					Array.Copy(byts, 0, this.pkt.Bytes, index, byts.Length);
 					index += (ushort)byts.Length;
 				}
 
-				this.packet.Length = index;
-				session.Run(packet);
+				this.pkt.Length = index;
+				session.Run(this.pkt);
 				return;
 			}
 #endif
 
-			channel.Send(this.byteses);
+			channel.Send(bb);
 		}
 
 #if SERVER
-		private Packet packet = new Packet(ushort.MaxValue);
+		private Packet pkt = new Packet(ushort.MaxValue);
 #endif
 	}
 }

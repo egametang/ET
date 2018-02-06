@@ -18,8 +18,8 @@ namespace Hotfix
 			byte[] bytes = ProtobufHelper.ToBytes(request);
 			ushort opcode = GetOpcode(request.GetType());
 			PacketInfo packetInfo = await session.Call(opcode, bytes);
-			ushort responseOpcode = packetInfo.Header.Opcode;
-			Type t = GetType(responseOpcode);
+			ushort responseOpcode = packetInfo.Opcode;
+			Type t = GetMessageType(responseOpcode);
 			object aa = ProtobufHelper.FromBytes(t, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 			IResponse response = (IResponse)aa;
 			return response;
@@ -34,7 +34,7 @@ namespace Hotfix
 #endif
 		}
 
-		public static Type GetType(ushort opcode)
+		public static Type GetMessageType(ushort opcode)
 		{
 #if ILRuntime
 			return Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);

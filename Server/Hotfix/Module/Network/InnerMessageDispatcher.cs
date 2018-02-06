@@ -7,7 +7,7 @@ namespace Hotfix
 	{
 		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
-			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Header.Opcode);
+			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Opcode);
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 
 			// 收到actor rpc request
@@ -21,20 +21,14 @@ namespace Hotfix
 					{
 						Error = ErrorCode.ERR_NotFoundActor
 					};
-					session.Reply(packetInfo.Header.RpcId, response);
+					session.Reply(packetInfo.RpcId, response);
 					return;
 				}
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, RpcId = packetInfo.Header.RpcId, Message = actorRpcRequest });
+				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, RpcId = packetInfo.RpcId, Message = actorRpcRequest });
 				return;
 			}
 			
-			if (message is IMessage || message is IRequest)
-			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.Header.RpcId, message);
-				return;
-			}
-
-			throw new Exception($"message type error: {message.GetType().FullName}");
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, message);
 		}
 	}
 }

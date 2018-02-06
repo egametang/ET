@@ -6,29 +6,11 @@ namespace Model
 {
 	public struct PacketInfo
 	{
-		public Header Header;
-	
+		public ushort Opcode;
+		public uint RpcId;
 		public byte[] Bytes;
 		public ushort Index;
 		public ushort Length;
-	}
-
-	[BsonIgnoreExtraElements]
-	[ProtoContract]
-	public class Header
-	{
-		[BsonElement("a")]
-		[ProtoMember(1)]
-		public byte Flag;
-
-		[BsonElement("b")]
-		[ProtoMember(2)]
-		public ushort Opcode;
-
-		[BsonElement("c")]
-		[BsonIgnoreIfDefault]
-		[ProtoMember(3)]
-		public uint RpcId;
 	}
 
 	[ProtoContract]

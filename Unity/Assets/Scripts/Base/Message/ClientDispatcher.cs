@@ -6,7 +6,17 @@ namespace Model
 	{
 		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
-			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Header.Opcode);
+#if ILRuntime
+// 热更消息抛到hotfix层
+			if (OpcodeHelper.IsClientHotfixMessage(packetInfo.Header.Opcode))
+			{
+				Game.EventSystem.Run(EventIdType.RecvHotfixMessage, packetInfo);
+				return;
+			}
+#endif
+
+
+			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Opcode);
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 
 			// 如果是帧同步消息,交给ClientFrameComponent处理
@@ -18,14 +28,8 @@ namespace Model
 			}
 
 			// 普通消息或者是Rpc请求消息
-			if (message is IMessage || message is IRequest)
-			{
-				MessageInfo messageInfo = new MessageInfo(packetInfo.Header.Opcode, message);
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
-				return;
-			}
-
-			throw new Exception($"message type error: {message.GetType().FullName}");
+			MessageInfo messageInfo = new MessageInfo(packetInfo.Opcode, message);
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
 		}
 	}
 }

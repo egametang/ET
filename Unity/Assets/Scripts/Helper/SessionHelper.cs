@@ -12,7 +12,7 @@ namespace Model
 			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
 			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(request);
 			PacketInfo packetInfo = await session.Call(opcode, bytes);
-			Type responseType = opcodeTypeComponent.GetType(packetInfo.Header.Opcode);
+			Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 			object message = session.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 			IResponse response = (IResponse) message;
 			if (response.Error > 100)
@@ -29,7 +29,7 @@ namespace Model
 			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
 			byte[] bytes = session.Network.MessagePacker.SerializeToByteArray(request);
 			PacketInfo packetInfo = await session.Call(opcode, bytes, cancellationToken);
-			Type responseType = opcodeTypeComponent.GetType(packetInfo.Header.Opcode);
+			Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 			object message = session.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 			IResponse response = (IResponse)message;
 			if (response.Error > 100)
