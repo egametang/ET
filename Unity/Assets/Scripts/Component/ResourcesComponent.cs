@@ -113,8 +113,6 @@ namespace Model
 			{
 				this.UnloadOneBundle(dependency);
 			}
-
-			this.UnloadOneBundle(assetBundleName);
 		}
 
 		private void UnloadOneBundle(string assetBundleName)
@@ -167,7 +165,6 @@ namespace Model
 				}
 				this.LoadOneBundle(dependency);
 			}
-			this.LoadOneBundle(assetBundleName);
 		}
 
 		public void LoadOneBundle(string assetBundleName)
@@ -242,7 +239,6 @@ namespace Model
 				}
 				await this.LoadOneBundleAsync(dependency);
 			}
-			await this.LoadOneBundleAsync(assetBundleName);
 		}
 
 		public async Task LoadOneBundleAsync(string assetBundleName)

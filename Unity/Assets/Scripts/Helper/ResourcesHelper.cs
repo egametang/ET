@@ -33,8 +33,7 @@ namespace Model
 			Dictionary<string, int> info = new Dictionary<string, int>();
 			List<string> parents = new List<string>();
 			CollectDependencies(parents, assetBundleName, info);
-			info.Remove(assetBundleName);
-			string[] ss = info.OrderByDescending(x => x.Value).Select(x => x.Key).ToArray();
+			string[] ss = info.OrderBy(x => x.Value).Select(x => x.Key).ToArray();
 			return ss;
 		}
 
