@@ -2,10 +2,10 @@
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeCreateNode)]
-	public class BehaviorTreeCreateNodeEvent_SelectNode: IEvent<NodeDesigner>
+	[Event(EventIdType.BehaviorTreeCreateNode)]
+	public class BehaviorTreeCreateNodeEvent_SelectNode: AEvent<NodeDesigner>
 	{
-		public void Run(NodeDesigner dstNode)
+		public override void Run(NodeDesigner dstNode)
 		{
 			BTEditorWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
 		}

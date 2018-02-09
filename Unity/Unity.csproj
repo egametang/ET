@@ -246,9 +246,9 @@
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\EventProxy.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwake.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\IEventMethod.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdate.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoad.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ISerializeToEntity.cs" />

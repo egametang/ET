@@ -6,7 +6,6 @@ using System.Threading;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
-using MongoDB.Bson.IO;
 using UnityEngine;
 
 namespace Model
@@ -18,9 +17,10 @@ namespace Model
 		public ILRuntime.Runtime.Enviorment.AppDomain AppDomain;
 
 		private IStaticMethod start;
-		private IStaticMethod update;
-		private IStaticMethod lateUpdate;
-		private IStaticMethod onApplicationQuit;
+
+		public Action HotfixUpdate;
+		public Action HotfixLateUpdate;
+		public Action HotfixOnApplicationQuit;
 
 		private async void Start()
 		{
@@ -66,9 +66,6 @@ namespace Model
 				ILHelper.InitILRuntime();
 				
 				this.start = new ILStaticMethod("Hotfix.Init", "Start", 0);
-				this.update = new ILStaticMethod("Hotfix.Init", "Update", 0);
-				this.lateUpdate = new ILStaticMethod("Hotfix.Init", "LateUpdate", 0);
-				this.onApplicationQuit = new ILStaticMethod("Hotfix.Init", "OnApplicationQuit", 0);
 #else
 				Log.Debug("run in mono mode");
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
@@ -76,15 +73,14 @@ namespace Model
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 				Type hotfixInit = Game.EventSystem.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
-				this.update = new MonoStaticMethod(hotfixInit, "Update");
-				this.lateUpdate = new MonoStaticMethod(hotfixInit, "LateUpdate");
-				this.onApplicationQuit = new MonoStaticMethod(hotfixInit, "OnApplicationQuit");
 #endif
 
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 
 				// 进入热更新层
 				this.start.Run();
+
+				Game.EventSystem.Run(EventIdType.TestHotfixSubscribMonoEvent, "TestHotfixSubscribMonoEvent");
 			}
 			catch (Exception e)
 			{
@@ -94,13 +90,13 @@ namespace Model
 
 		private void Update()
 		{
-			this.update?.Run();
+			this.HotfixUpdate.Invoke();
 			Game.EventSystem.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.lateUpdate?.Run();
+			this.HotfixLateUpdate.Invoke();
 			Game.EventSystem.LateUpdate();
 		}
 
@@ -108,7 +104,7 @@ namespace Model
 		{
 			Instance = null;
 			Game.Close();
-			this.onApplicationQuit?.Run();
+			this.HotfixOnApplicationQuit.Invoke();
 		}
 	}
 }

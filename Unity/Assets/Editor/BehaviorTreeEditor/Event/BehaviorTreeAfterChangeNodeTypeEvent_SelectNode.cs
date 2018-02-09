@@ -2,10 +2,10 @@
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeAfterChangeNodeType)]
-	public class BehaviorTreeAfterChangeNodeTypeEvent_SelectNode: IEvent
+	[Event(EventIdType.BehaviorTreeAfterChangeNodeType)]
+	public class BehaviorTreeAfterChangeNodeTypeEvent_SelectNode: AEvent
 	{
-		public void Run()
+		public override void Run()
 		{
 			NodeDesigner dstNode = BTEditorWindow.Instance.GraphDesigner.RootNode;
 			BTEditorWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);

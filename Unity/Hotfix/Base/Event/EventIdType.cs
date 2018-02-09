@@ -1,7 +1,7 @@
 ﻿namespace Hotfix
 {
-	public enum EventIdType
+	public static class EventIdType
 	{
-		InitSceneStart = 10001,
+		public const int InitSceneStart = 10001;
 	}
 }

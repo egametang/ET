@@ -4,17 +4,16 @@ namespace Model
 {
 	public class ClientDispatcher: IMessageDispatcher
 	{
+		// 热更层消息回调
+		public Action<Session, PacketInfo> HotfixCallback;
+
 		public void Dispatch(Session session, PacketInfo packetInfo)
 		{
-#if ILRuntime
-// 热更消息抛到hotfix层
-			if (OpcodeHelper.IsClientHotfixMessage(packetInfo.Header.Opcode))
+			if (OpcodeHelper.IsClientHotfixMessage(packetInfo.Opcode))
 			{
-				Game.EventSystem.Run(EventIdType.RecvHotfixMessage, packetInfo);
+				HotfixCallback.Invoke(session, packetInfo);
 				return;
 			}
-#endif
-
 
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Opcode);
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);

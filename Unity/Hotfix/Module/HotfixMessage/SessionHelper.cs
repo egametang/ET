@@ -8,39 +8,22 @@ namespace Hotfix
 	{
 		public static void Send(this Session session, IMessage message)
 		{
-			ushort opcode = GetOpcode(message.GetType());
+			ushort opcode = Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			byte[] bytes = ProtobufHelper.ToBytes(message);
 			session.Send(opcode, bytes);
 		}
 
 		public static async Task<IResponse> Call(this Session session, IRequest request)
 		{
+			OpcodeTypeComponent opcodeTypeComponent = Hotfix.Scene.GetComponent<OpcodeTypeComponent>();
 			byte[] bytes = ProtobufHelper.ToBytes(request);
-			ushort opcode = GetOpcode(request.GetType());
+			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
 			PacketInfo packetInfo = await session.Call(opcode, bytes);
 			ushort responseOpcode = packetInfo.Opcode;
-			Type t = GetMessageType(responseOpcode);
+			Type t = opcodeTypeComponent.GetType(responseOpcode);
 			object aa = ProtobufHelper.FromBytes(t, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 			IResponse response = (IResponse)aa;
 			return response;
-		}
-
-		public static ushort GetOpcode(Type type)
-		{
-#if ILRuntime
-			return Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(type);
-#else
-			return Game.Scene.GetComponent<Model.OpcodeTypeComponent>().GetOpcode(type);
-#endif
-		}
-
-		public static Type GetMessageType(ushort opcode)
-		{
-#if ILRuntime
-			return Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-#else
-			return Game.Scene.GetComponent<Model.OpcodeTypeComponent>().GetType(opcode);
-#endif
 		}
 	}
 }

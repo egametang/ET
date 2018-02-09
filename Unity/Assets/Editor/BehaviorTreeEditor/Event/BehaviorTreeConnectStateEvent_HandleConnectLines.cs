@@ -2,10 +2,10 @@
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeConnectState)]
-	public class BehaviorTreeConnectStateEvent_HandleConnectLines: IEvent<NodeDesigner, State>
+	[Event(EventIdType.BehaviorTreeConnectState)]
+	public class BehaviorTreeConnectStateEvent_HandleConnectLines: AEvent<NodeDesigner, State>
 	{
-		public void Run(NodeDesigner nodeDesigner, State state)
+		public override void Run(NodeDesigner nodeDesigner, State state)
 		{
 			BTEditorWindow.Instance.onStartConnect(nodeDesigner, state);
 		}

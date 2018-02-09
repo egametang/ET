@@ -8,7 +8,6 @@ namespace Hotfix
 		public async void Dispatch(Session session, PacketInfo packetInfo)
 		{
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Opcode);
-			Log.Debug($"111111111111 {MongoHelper.ToJson(packetInfo)}");
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 
 			// gate session收到actor消息直接转发给actor自己去处理

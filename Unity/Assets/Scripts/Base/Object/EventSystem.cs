@@ -56,7 +56,7 @@ namespace Model
 
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
 
-		private readonly Dictionary<EventIdType, List<IEventMethod>> allEvents = new Dictionary<EventIdType, List<IEventMethod>>();
+		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
 
 		private readonly Dictionary<Type, IObjectSystem> disposerEvents = new Dictionary<Type, IObjectSystem>();
 
@@ -72,8 +72,6 @@ namespace Model
 		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
 
 		private readonly HashSet<Disposer> unique = new HashSet<Disposer>();
-
-
 
 		public void LoadHotfixDll()
 		{
@@ -114,7 +112,6 @@ namespace Model
 				this.disposerEvents[objectSystem.Type()] = objectSystem;
 			}
 
-
 			this.allEvents.Clear();
 			foreach (Type type in types)
 			{
@@ -124,35 +121,23 @@ namespace Model
 				{
 					EventAttribute aEventAttribute = (EventAttribute)attr;
 					object obj = Activator.CreateInstance(type);
-					if (!this.allEvents.ContainsKey((EventIdType)aEventAttribute.Type))
+					IEvent iEvent = obj as IEvent;
+					if (iEvent == null)
 					{
-						this.allEvents.Add((EventIdType)aEventAttribute.Type, new List<IEventMethod>());
+						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
 					}
-					this.allEvents[(EventIdType)aEventAttribute.Type].Add(new IEventMonoMethod(obj));
+					this.RegisterEvent(aEventAttribute.Type, iEvent);
 				}
 			}
+		}
 
-			// hotfix dll
-			Type[] hotfixTypes = DllHelper.GetHotfixTypes();
-			foreach (Type type in hotfixTypes)
+		public void RegisterEvent(int eventId, IEvent e)
+		{
+			if (!this.allEvents.ContainsKey(eventId))
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
-				foreach (object attr in attrs)
-				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
-#if ILRuntime
-					IEventMethod method = new IEventILMethod(type, "Run");
-#else
-					object obj = Activator.CreateInstance(type);
-					IEventMethod method = new IEventMonoMethod(obj);
-#endif
-					if (!allEvents.ContainsKey((EventIdType)aEventAttribute.Type))
-					{
-						allEvents.Add((EventIdType)aEventAttribute.Type, new List<IEventMethod>());
-					}
-					allEvents[(EventIdType)aEventAttribute.Type].Add(method);
-				}
+				this.allEvents.Add(eventId, new List<IEvent>());
 			}
+			this.allEvents[eventId].Add(e);
 		}
 
 		public Assembly Get(DLLType dllType)
@@ -424,18 +409,18 @@ namespace Model
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 
-		public void Run(EventIdType type)
+		public void Run(int type)
 		{
-			List<IEventMethod> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEventMethod iEvent in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					iEvent.Run();
+					iEvent?.Handle();
 				}
 				catch (Exception e)
 				{
@@ -444,18 +429,18 @@ namespace Model
 			}
 		}
 
-		public void Run<A>(EventIdType type, A a)
+		public void Run<A>(int type, A a)
 		{
-			List<IEventMethod> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEventMethod iEvent in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					iEvent.Run(a);
+					iEvent?.Handle(a);
 				}
 				catch (Exception e)
 				{
@@ -464,18 +449,18 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B>(EventIdType type, A a, B b)
+		public void Run<A, B>(int type, A a, B b)
 		{
-			List<IEventMethod> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEventMethod iEvent in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					iEvent.Run(a, b);
+					iEvent?.Handle(a, b);
 				}
 				catch (Exception e)
 				{
@@ -484,18 +469,18 @@ namespace Model
 			}
 		}
 
-		public void Run<A, B, C>(EventIdType type, A a, B b, C c)
+		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
-			List<IEventMethod> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEventMethod iEvent in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					iEvent.Run(a, b, c);
+					iEvent?.Handle(a, b, c);
 				}
 				catch (Exception e)
 				{

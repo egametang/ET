@@ -1,9 +1,9 @@
 ﻿namespace Model
 {
-    [Event((int)EventIdType.LoadingBegin)]
-    public class LoadingBeginEvent_CreateLoadingUI : IEvent
+    [Event(EventIdType.LoadingBegin)]
+    public class LoadingBeginEvent_CreateLoadingUI : AEvent
     {
-        public void Run()
+        public override void Run()
         {
 			Game.Scene.GetComponent<UIComponent>().Create(UIType.UILoading);
         }

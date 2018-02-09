@@ -34,7 +34,7 @@ namespace Hotfix
 	{
 		private readonly Dictionary<Type, IObjectSystem> disposerEvents = new Dictionary<Type, IObjectSystem>();
 
-		private readonly Dictionary<EventIdType, List<object>> allEvents = new Dictionary<EventIdType, List<object>>();
+		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
 
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
@@ -73,7 +73,7 @@ namespace Hotfix
 				this.disposerEvents[objectSystem.Type()] = objectSystem;
 			}
 
-			allEvents.Clear();
+			this.allEvents.Clear();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
@@ -82,15 +82,48 @@ namespace Hotfix
 				{
 					EventAttribute aEventAttribute = (EventAttribute)attr;
 					object obj = Activator.CreateInstance(type);
-					if (!this.allEvents.ContainsKey((EventIdType)aEventAttribute.Type))
+					IEvent iEvent = obj as IEvent;
+					if (iEvent == null)
 					{
-						this.allEvents.Add((EventIdType)aEventAttribute.Type, new List<object>());
+						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
 					}
-					this.allEvents[(EventIdType)aEventAttribute.Type].Add(obj);
+					this.RegisterEvent(aEventAttribute.Type, iEvent);
+
+					// hotfix的事件也要注册到mono层，hotfix可以订阅mono层的事件
+					Action<List<object>> action = list => { Handle(aEventAttribute.Type, list); };
+					Game.EventSystem.RegisterEvent(aEventAttribute.Type, new EventProxy(action));
 				}
 			}
 
 			this.Load();
+		}
+
+		public void RegisterEvent(int eventId, IEvent e)
+		{
+			if (!this.allEvents.ContainsKey(eventId))
+			{
+				this.allEvents.Add(eventId, new List<IEvent>());
+			}
+			this.allEvents[eventId].Add(e);
+		}
+
+		public static void Handle(int type, List<object> param)
+		{
+			switch (param.Count)
+			{
+				case 0:
+					Hotfix.EventSystem.Run(type);
+					break;
+				case 1:
+					Hotfix.EventSystem.Run(type, param[0]);
+					break;
+				case 2:
+					Hotfix.EventSystem.Run(type, param[0], param[1]);
+					break;
+				case 3:
+					Hotfix.EventSystem.Run(type, param[0], param[1], param[2]);
+					break;
+			}
 		}
 
 		public void Add(Disposer disposer)
@@ -344,20 +377,18 @@ namespace Hotfix
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 
-
-		public void Run(EventIdType type)
+		public void Run(int type)
 		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-			foreach (object obj in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					IEvent iEvent = (IEvent)obj;
-					iEvent.Run();
+					iEvent?.Handle();
 				}
 				catch (Exception e)
 				{
@@ -366,68 +397,62 @@ namespace Hotfix
 			}
 		}
 
-		public void Run<A>(EventIdType type, A a)
+		public void Run<A>(int type, A a)
 		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-
-			foreach (object obj in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					IEvent<A> iEvent = (IEvent<A>)obj;
-					iEvent.Run(a);
+					iEvent?.Handle(a);
 				}
-				catch (Exception err)
+				catch (Exception e)
 				{
-					Log.Error(err.ToString());
+					Log.Error(e.ToString());
 				}
 			}
 		}
 
-		public void Run<A, B>(EventIdType type, A a, B b)
+		public void Run<A, B>(int type, A a, B b)
 		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-
-			foreach (object obj in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					IEvent<A, B> iEvent = (IEvent<A, B>)obj;
-					iEvent.Run(a, b);
+					iEvent?.Handle(a, b);
 				}
-				catch (Exception err)
+				catch (Exception e)
 				{
-					Log.Error(err.ToString());
+					Log.Error(e.ToString());
 				}
 			}
 		}
 
-		public void Run<A, B, C>(EventIdType type, A a, B b, C c)
+		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			List<IEvent> iEvents;
+			if (!this.allEvents.TryGetValue((int)type, out iEvents))
 			{
 				return;
 			}
-
-			foreach (object obj in iEvents)
+			foreach (IEvent iEvent in iEvents)
 			{
 				try
 				{
-					IEvent<A, B, C> iEvent = (IEvent<A, B, C>)obj;
-					iEvent.Run(a, b, c);
+					iEvent?.Handle(a, b, c);
 				}
-				catch (Exception err)
+				catch (Exception e)
 				{
-					Log.Error(err.ToString());
+					Log.Error(e.ToString());
 				}
 			}
 		}

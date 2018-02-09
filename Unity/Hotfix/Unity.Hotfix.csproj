@@ -54,7 +54,8 @@
     <Compile Include="Base\Helper\ArrayHelper.cs" />
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
-    <Compile Include="Module\HotfixMessage\RecvHotfixMessageEvent_HandleHotfixMessage.cs" />
+    <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Module\HotfixMessage\HotfixMessageDispatcher.cs" />
     <Compile Include="Module\HotfixMessage\IMessage.cs" />
     <Compile Include="Module\HotfixMessage\AMHandler.cs" />
     <Compile Include="Module\HotfixMessage\IMHandler.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Event\" />
     <Folder Include="Handler\" />
   </ItemGroup>
   <ItemGroup>

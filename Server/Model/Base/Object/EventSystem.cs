@@ -11,13 +11,13 @@ namespace Model
 		Hotfix,
 	}
 
-	public interface IObjectEvent
+	public interface IObjectSystem
 	{
 		Type Type();
 		void Set(object value);
 	}
 
-	public abstract class ObjectSystem<T> : IObjectEvent
+	public abstract class ObjectSystem<T> : IObjectSystem
 	{
 		private T value;
 
@@ -43,7 +43,7 @@ namespace Model
 
 		private readonly Dictionary<EventIdType, List<object>> allEvents = new Dictionary<EventIdType, List<object>>();
 
-		private readonly Dictionary<Type, IObjectEvent> disposerEvents = new Dictionary<Type, IObjectEvent>();
+		private readonly Dictionary<Type, IObjectSystem> disposerEvents = new Dictionary<Type, IObjectSystem>();
 
 		private Queue<Disposer> updates = new Queue<Disposer>();
 		private Queue<Disposer> updates2 = new Queue<Disposer>();
@@ -72,13 +72,13 @@ namespace Model
 				}
 
 				object obj = Activator.CreateInstance(type);
-				IObjectEvent objectEvent = obj as IObjectEvent;
-				if (objectEvent == null)
+				IObjectSystem objectSystem = obj as IObjectSystem;
+				if (objectSystem == null)
 				{
 					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
 					continue;
 				}
-				this.disposerEvents[objectEvent.Type()] = objectEvent;
+				this.disposerEvents[objectSystem.Type()] = objectSystem;
 			}
 
 
@@ -114,7 +114,7 @@ namespace Model
 
 		public void Add(Disposer disposer)
 		{
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				return;
 			}
@@ -139,7 +139,7 @@ namespace Model
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				return;
 			}
@@ -156,7 +156,7 @@ namespace Model
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake1");
 			}
@@ -173,7 +173,7 @@ namespace Model
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake2");
 			}
@@ -190,7 +190,7 @@ namespace Model
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 			{
 				throw new Exception($"{disposer.GetType().Name} not found awake3");
 			}
@@ -219,7 +219,7 @@ namespace Model
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}
@@ -257,7 +257,7 @@ namespace Model
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}
@@ -289,7 +289,7 @@ namespace Model
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectEvent objectEvent))
+				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
 				{
 					continue;
 				}

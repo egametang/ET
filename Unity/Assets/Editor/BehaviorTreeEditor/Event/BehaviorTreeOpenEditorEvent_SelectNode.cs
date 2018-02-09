@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeOpenEditor)]
-	public class BehaviorTreeOpenEditorEvent_SelectNode: IEvent
+	[Event(EventIdType.BehaviorTreeOpenEditor)]
+	public class BehaviorTreeOpenEditorEvent_SelectNode: AEvent
 	{
-		public void Run()
+		public override void Run()
 		{
 			NodeDesigner dstNode = BTEditorWindow.Instance.onCreateTree();
 			if (dstNode == null)

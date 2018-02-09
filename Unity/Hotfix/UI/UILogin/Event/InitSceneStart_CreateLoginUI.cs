@@ -2,10 +2,10 @@
 
 namespace Hotfix
 {
-	[Event((int)EventIdType.InitSceneStart)]
-	public class InitSceneStart_CreateLoginUI: IEvent
+	[Event(EventIdType.InitSceneStart)]
+	public class InitSceneStart_CreateLoginUI: AEvent
 	{
-		public void Run()
+		public override void Run()
 		{
 			UI ui = Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.UILogin);
 		}

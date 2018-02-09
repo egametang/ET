@@ -17,7 +17,7 @@ namespace Model
 
 		public void Awake()
 		{
-			Type[] types = DllHelper.GetAllTypes();
+			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);

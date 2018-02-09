@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
@@ -22,9 +23,11 @@ namespace Model
 			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
 
 			// 注册委托
+			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<List<object>>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
+			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
 
 
 			// 注册适配器

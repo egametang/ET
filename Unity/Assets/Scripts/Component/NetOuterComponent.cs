@@ -20,7 +20,8 @@
 		{
 			this.Awake(NetworkProtocol.TCP);
 			this.MessagePacker = new ProtobufPacker();
-			this.MessageDispatcher = new ClientDispatcher();
+			// 由hotfix中设置
+			//this.MessageDispatcher = new ClientDispatcher();
 		}
 
 		public new void Update()
