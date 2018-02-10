@@ -23,7 +23,7 @@ namespace Hotfix
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private Dictionary<ushort, List<IMHandler>> handlers;
+		private readonly Dictionary<ushort, List<IMHandler>> handlers = new Dictionary<ushort, List<IMHandler>>();
 
 		public void Awake()
 		{
@@ -32,9 +32,13 @@ namespace Hotfix
 
 		public void Load()
 		{
-			this.handlers = new Dictionary<ushort, List<IMHandler>>();
-			
+			this.handlers.Clear();
+
+			Model.MessageDispatherComponent messageDispatherComponent = Game.Scene.GetComponent<Model.MessageDispatherComponent>();
+			Model.OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<Model.OpcodeTypeComponent>();
+
 			Type[] types = DllHelper.GetHotfixTypes();
+
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
@@ -42,17 +46,49 @@ namespace Hotfix
 				{
 					continue;
 				}
-				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
-				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
+
+				IMHandler iMHandler = Activator.CreateInstance(type) as IMHandler;
+				if (iMHandler == null)
 				{
-					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMHandler>());
+					Log.Error($"message handle {type.Name} 需要继承 IMHandler");
+					continue;
 				}
-				this.handlers[messageHandlerAttribute.Opcode].Add(iMHandler);
+				
+				Type messageType = iMHandler.GetMessageType();
+
+				ushort opcode = this.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
+				if (opcode == 0)
+				{
+					Log.Error($"消息opcode为0: {messageType.Name}");
+					continue;
+				}
+				this.RegisterHandler(opcode, iMHandler);
+
+				// 尝试注册到mono层
+				if (messageDispatherComponent != null && opcodeTypeComponent != null)
+				{
+					ushort monoOpcode = opcodeTypeComponent.GetOpcode(messageType);
+					if (monoOpcode == 0)
+					{
+						continue;
+					}
+
+					MessageProxy messageProxy = new MessageProxy(messageType, (session, o) => { iMHandler.Handle(session, o); });
+					messageDispatherComponent.RegisterHandler(monoOpcode, messageProxy);
+				}
 			}
 		}
 
-		public void Handle(Session session, ushort opcode, IMessage message)
+		public void RegisterHandler(ushort opcode, IMHandler handler)
+		{
+			if (!this.handlers.ContainsKey(opcode))
+			{
+				this.handlers.Add(opcode, new List<IMHandler>());
+			}
+			this.handlers[opcode].Add(handler);
+		}
+
+		public void Handle(Session session, ushort opcode, object message)
 		{
 			if (!this.handlers.TryGetValue(opcode, out List<IMHandler> actions))
 			{

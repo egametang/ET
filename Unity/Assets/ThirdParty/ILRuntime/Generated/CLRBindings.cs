@@ -34,7 +34,6 @@ namespace ILRuntime.Runtime.Generated
             Model_AEventAttribute_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
-            Model_MessageHandlerAttribute_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             Model_MessageAttribute_Binding.Register(app);

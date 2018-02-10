@@ -1,58 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using ILRuntime.CLR.Method;
-using ILRuntime.Runtime.Intepreter;
 
 namespace Model
 {
-	/// <summary>
-	/// 用来抹平ILRuntime跟mono层差异
-	/// </summary>
-	public interface IMessageMethod
-	{
-		void Run(Session session, IMessage a);
-	}
-
-	public class IMessageMonoMethod : IMessageMethod
-	{
-		private readonly IMHandler iMHandler;
-
-		public IMessageMonoMethod(IMHandler iMHandler)
-		{
-			this.iMHandler = iMHandler;
-		}
-
-		public void Run(Session session, IMessage a)
-		{
-			this.iMHandler.Handle(session, a);
-		}
-	}
-
-	public class IMessageILMethod : IMessageMethod
-	{
-		private readonly ILRuntime.Runtime.Enviorment.AppDomain appDomain;
-		private readonly ILTypeInstance instance;
-		private readonly IMethod method;
-		private readonly object[] param;
-
-		public IMessageILMethod(Type type, string methodName)
-		{
-			appDomain = Init.Instance.AppDomain;
-			this.instance = this.appDomain.Instantiate(type.FullName);
-			this.method = this.instance.Type.GetMethod(methodName, 2);
-			int n = this.method.ParameterCount;
-			this.param = new object[n];
-		}
-
-		public void Run(Session session, IMessage a)
-		{
-			this.param[0] = a;
-			this.appDomain.Invoke(this.method, this.instance, param);
-		}
-	}
-
-
 	[ObjectSystem]
 	public class MessageDispatherComponentSystem : ObjectSystem<MessageDispatherComponent>, IAwake, ILoad
 	{
@@ -72,7 +22,7 @@ namespace Model
 	/// </summary>
 	public class MessageDispatherComponent : Component
 	{
-		private Dictionary<ushort, List<IMessageMethod>> handlers;
+		private readonly Dictionary<ushort, List<IMHandler>> handlers = new Dictionary<ushort, List<IMHandler>>();
 
 
 		public void Awake()
@@ -82,7 +32,7 @@ namespace Model
 
 		public void Load()
 		{
-			handlers = new Dictionary<ushort, List<IMessageMethod>>();
+			this.handlers.Clear();
 
 			Type[] types = DllHelper.GetMonoTypes();
 
@@ -93,53 +43,49 @@ namespace Model
 				{
 					continue;
 				}
-				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
-				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
-				{
-					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
-				}
-				this.handlers[messageHandlerAttribute.Opcode].Add(new IMessageMonoMethod(iMHandler));
-			}
 
-			// hotfix dll
-			Type[] hotfixTypes = DllHelper.GetHotfixTypes();
-			foreach (Type type in hotfixTypes)
-			{
-				object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
-				if (attrs.Length == 0)
+				IMHandler iMHandler = Activator.CreateInstance(type) as IMHandler;
+				if (iMHandler == null)
 				{
+					Log.Error($"message handle {type.Name} 需要继承 IMHandler");
 					continue;
 				}
-				MessageHandlerAttribute messageHandlerAttribute = (MessageHandlerAttribute)attrs[0];
-#if ILRuntime
-				IMessageMethod iMessageMethod = new IMessageILMethod(type, "Handle");
-#else
-				IMHandler iMHandler = (IMHandler)Activator.CreateInstance(type);
-				IMessageMethod iMessageMethod = new IMessageMonoMethod(iMHandler);
-#endif
-				if (!this.handlers.ContainsKey(messageHandlerAttribute.Opcode))
+
+				Type messageType = iMHandler.GetMessageType();
+				ushort opcode = this.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
+				if (opcode == 0)
 				{
-					this.handlers.Add(messageHandlerAttribute.Opcode, new List<IMessageMethod>());
+					Log.Error($"消息opcode为0: {messageType.Name}");
+					continue;
 				}
-				this.handlers[messageHandlerAttribute.Opcode].Add(iMessageMethod);
+				this.RegisterHandler(opcode, iMHandler);
 			}
+		}
+
+		public void RegisterHandler(ushort opcode, IMHandler handler)
+		{
+			Log.Debug($"11111111111111111111111 {opcode}");
+			if (!this.handlers.ContainsKey(opcode))
+			{
+				this.handlers.Add(opcode, new List<IMHandler>());
+			}
+			this.handlers[opcode].Add(handler);
 		}
 
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			List<IMessageMethod> actions;
+			List<IMHandler> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
 				Log.Error($"消息 {messageInfo.Opcode} 没有处理");
 				return;
 			}
-
-			foreach (IMessageMethod ev in actions)
+			
+			foreach (IMHandler ev in actions)
 			{
 				try
 				{
-					ev.Run(session, messageInfo.Message);
+					ev.Handle(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

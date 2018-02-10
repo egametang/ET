@@ -139,7 +139,7 @@ namespace Model
 				Opcode = opcode,
 				Bytes = packet.Bytes
 			};
-
+			
 			if ((flag & 0xC0) > 0)
 			{
 				uint rpcId = packet.RpcId();

@@ -26,6 +26,8 @@ namespace Hotfix
 
 				response.PlayerId = player.Id;
 				reply(response);
+
+				session.Send(new G2C_TestHotfixMessage() { Info = "recv hotfix message success" });
 			}
 			catch (Exception e)
 			{

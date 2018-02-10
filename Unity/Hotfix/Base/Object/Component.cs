@@ -5,11 +5,19 @@ namespace Hotfix
 	public abstract class Component : Disposer
 	{
 		[BsonIgnore]
-		public Entity Parent { get; set; }
+		public Disposer Parent { get; set; }
 
 		public T GetParent<T>() where T : Entity
 		{
 			return this.Parent as T;
+		}
+
+		public Entity Entity
+		{
+			get
+			{
+				return this.Parent as Entity;
+			}
 		}
 
 		protected Component()

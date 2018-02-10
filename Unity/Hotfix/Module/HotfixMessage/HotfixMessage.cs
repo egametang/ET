@@ -53,4 +53,12 @@ namespace Hotfix
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
 	}
+
+	[Message(HotfixOpcode.G2C_TestHotfixMessage)]
+	[ProtoContract]
+	public class G2C_TestHotfixMessage : MessageObject, IMessage
+	{
+		[ProtoMember(1, IsRequired = true)]
+		public string Info;
+	}
 }

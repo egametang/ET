@@ -28,7 +28,6 @@ namespace Hotfix
 					{
 						actorCreateUnits.Units.Add(new UnitInfo() {UnitId = u.Id, X = (int)(u.Position.X * 1000), Z = (int)(u.Position.Z * 1000) });
 					}
-					Log.Debug($"{MongoHelper.ToJson(actorCreateUnits)}");
 					MessageHelper.Broadcast(actorCreateUnits);
 				}
 			}

@@ -54,8 +54,10 @@ namespace Model
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
 				Game.Scene.AddComponent<ConfigComponent>();
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
-				
+
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent>();
+
 #if ILRuntime
 				Log.Debug("run in ilruntime mode");
 
@@ -74,8 +76,6 @@ namespace Model
 				Type hotfixInit = Game.EventSystem.HotfixAssembly.GetType("Hotfix.Init");
 				this.start = new MonoStaticMethod(hotfixInit, "Start");
 #endif
-
-				Game.Scene.AddComponent<OpcodeTypeComponent>();
 
 				// 进入热更新层
 				this.start.Run();

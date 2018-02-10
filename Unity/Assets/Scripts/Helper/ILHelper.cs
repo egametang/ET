@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
+using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
@@ -28,7 +29,9 @@ namespace Model
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
 			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
+			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<Session, object>();
 
+			 CLRBindings.Initialize(Init.Instance.AppDomain);
 
 			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;

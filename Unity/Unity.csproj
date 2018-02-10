@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -213,6 +216,7 @@
     <Compile Include="Assets\Scripts\Base\Message\AppType.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ClientDispatcher.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ErrorCode.cs" />
+    <Compile Include="Assets\Scripts\Base\Message\MessageProxy.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMessage.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMessageDispatcher.cs" />
     <Compile Include="Assets\Scripts\Base\Message\IMessagePacker.cs" />
@@ -259,7 +263,6 @@
     <Compile Include="Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
-    <Compile Include="Assets\Scripts\Base\UI\LayerNames.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
@@ -343,6 +346,7 @@
     <Compile Include="Assets\Scripts\Other\ReferenceCollector.cs" />
     <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />
+    <Compile Include="Assets\Scripts\UI\LayerNames.cs" />
     <Compile Include="Assets\Scripts\UI\UILoading\Component\UILoadingComponent.cs" />
     <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingBeginEvent_CreateLoadingUI.cs" />
     <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingFinishEvent_RemoveLoadingUI.cs" />
@@ -369,7 +373,6 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_IStart_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_Log_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_MessageAttribute_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_MessageHandlerAttribute_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_MongoHelper_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_NetworkComponent_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Model_NetworkHelper_Binding.cs" />

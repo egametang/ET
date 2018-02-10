@@ -7,11 +7,5 @@ namespace Model
 	/// </summary>
 	public class MessageHandlerAttribute: Attribute
 	{
-		public ushort Opcode { get; }
-
-		public MessageHandlerAttribute(ushort opcode)
-		{
-			this.Opcode = opcode;
-		}
 	}
 }

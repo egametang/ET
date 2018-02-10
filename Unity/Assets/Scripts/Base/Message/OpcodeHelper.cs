@@ -24,7 +24,7 @@ namespace Model
 
 		public static bool IsClientHotfixMessage(ushort opcode)
 		{
-			return opcode < 1000;
+			return opcode > 10000;
 		}
 	}
 }

@@ -55,6 +55,7 @@
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Handler\G2C_TestHotfixHandler.cs" />
     <Compile Include="Module\HotfixMessage\HotfixMessageDispatcher.cs" />
     <Compile Include="Module\HotfixMessage\IMessage.cs" />
     <Compile Include="Module\HotfixMessage\AMHandler.cs" />
@@ -91,9 +92,7 @@
     <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handler\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Unity.csproj">
       <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>
