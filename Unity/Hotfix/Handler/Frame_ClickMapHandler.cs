@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Model;
+using UnityEngine;
 
-namespace Model
+namespace Hotfix
 {
 	[MessageHandler]
 	public class Frame_ClickMapHandler : AMHandler<Frame_ClickMap>

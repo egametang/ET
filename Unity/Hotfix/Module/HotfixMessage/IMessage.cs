@@ -2,7 +2,6 @@
 
 namespace Hotfix
 {
-#if ILRuntime
 	public interface IMessage
 	{
 	}
@@ -14,10 +13,4 @@ namespace Hotfix
 	public interface IResponse
 	{
 	}
-
-	[ProtoContract]
-	public class MessageObject
-	{
-	}
-#endif
 }

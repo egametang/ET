@@ -1,6 +1,5 @@
 using ProtoBuf;
 using System.Collections.Generic;
-using Model;
 using MongoDB.Bson.Serialization.Attributes;
 namespace Model
 {
@@ -105,19 +104,7 @@ namespace Model
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
-
-	[Message(Opcode.FrameMessageInfo)]
-	[ProtoContract]
-	public partial class FrameMessageInfo
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public long Id;
-
-		[ProtoMember(2, IsRequired = true)]
-		public IMessage Message;
-
-	}
-
+	
 	[Message(Opcode.FrameMessage)]
 	[ProtoContract]
 	public partial class FrameMessage : MessageObject, IActorMessage
@@ -127,7 +114,6 @@ namespace Model
 
 		[ProtoMember(2)]
 		public List<MessageObject> Messages = new List<MessageObject>();
-
 	}
 
 	[Message(Opcode.Frame_ClickMap)]

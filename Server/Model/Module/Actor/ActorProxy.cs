@@ -289,7 +289,7 @@ namespace Model
 
 		public Task<IResponse> Call(IRequest request)
 		{
-			ActorRpcTask task = new ActorRpcTask(this, (IMessage)request);
+			ActorRpcTask task = new ActorRpcTask(this, request);
 			this.Add(task);
 			return task.Tcs.Task;
 		}

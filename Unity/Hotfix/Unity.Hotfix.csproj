@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ILRuntime</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -54,8 +54,13 @@
     <Compile Include="Base\Helper\ArrayHelper.cs" />
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
+    <Compile Include="Component\OperaComponent.cs" />
     <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Handler\Actor_CreateUnitsHandler.cs" />
+    <Compile Include="Handler\Actor_TestHandler.cs" />
+    <Compile Include="Handler\Frame_ClickMapHandler.cs" />
     <Compile Include="Handler\G2C_TestHotfixHandler.cs" />
+    <Compile Include="Module\HotfixMessage\IActorMessage.cs" />
     <Compile Include="Module\HotfixMessage\HotfixMessageDispatcher.cs" />
     <Compile Include="Module\HotfixMessage\IMessage.cs" />
     <Compile Include="Module\HotfixMessage\AMHandler.cs" />

@@ -25,6 +25,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Scene", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Scene_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_EventSystem", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_EventSystem_1);
 
 
         }
@@ -37,6 +40,17 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
             var result_of_this_method = Model.Game.Scene;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_EventSystem_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+            var result_of_this_method = Model.Game.EventSystem;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

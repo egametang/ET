@@ -1,4 +1,6 @@
+using Hotfix;
 using Model;
+using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace Hotfix
@@ -61,4 +63,41 @@ namespace Hotfix
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 	}
+
+	[Message(HotfixOpcode.C2M_TestActorRequest)]
+	[ProtoContract]
+	public class C2M_TestActorRequest : MessageObject, IActorRequest
+	{
+		[ProtoMember(1, IsRequired = true)]
+		public string Info;
+	}
+
+	[Message(HotfixOpcode.M2C_TestActorResponse)]
+	[ProtoContract]
+	public class M2C_TestActorResponse : MessageObject, IActorResponse
+	{
+		[ProtoMember(1, IsRequired = true)]
+		public string Info;
+
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
+	}
 }
+
+#if SERVER
+namespace Model
+{
+	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
+	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
+	public partial class MessageObject
+	{
+	}
+}
+#else
+	public partial class MessageObject
+	{
+	}
+#endif

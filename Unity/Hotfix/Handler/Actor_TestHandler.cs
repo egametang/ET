@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using Model;
+
+namespace Hotfix
 {
 	[MessageHandler]
 	public class Actor_TestHandler : AMHandler<Actor_Test>

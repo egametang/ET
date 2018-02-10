@@ -23,20 +23,20 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(Model.Log);
             args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("Error", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Error_0);
+            method = type.GetMethod("Info", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Info_0);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("Debug", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Debug_1);
             args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("Info", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Info_2);
+            method = type.GetMethod("Error", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Error_2);
 
 
         }
 
 
-        static StackObject* Error_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Info_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -45,7 +45,7 @@ namespace ILRuntime.Runtime.Generated
             System.String msg = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            Model.Log.Error(msg);
+            Model.Log.Info(msg);
 
             return __ret;
         }
@@ -64,7 +64,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* Info_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Error_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -73,7 +73,7 @@ namespace ILRuntime.Runtime.Generated
             System.String msg = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            Model.Log.Info(msg);
+            Model.Log.Error(msg);
 
             return __ret;
         }

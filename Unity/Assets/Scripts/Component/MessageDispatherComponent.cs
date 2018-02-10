@@ -64,7 +64,6 @@ namespace Model
 
 		public void RegisterHandler(ushort opcode, IMHandler handler)
 		{
-			Log.Debug($"11111111111111111111111 {opcode}");
 			if (!this.handlers.ContainsKey(opcode))
 			{
 				this.handlers.Add(opcode, new List<IMHandler>());

@@ -32,6 +32,8 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("Format", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Format_2);
 
+            app.RegisterCLRCreateArrayInstance(type, s => new System.String[s]);
+
 
         }
 

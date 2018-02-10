@@ -55,14 +55,11 @@ namespace Hotfix
 				}
 				
 				Type messageType = iMHandler.GetMessageType();
-
 				ushort opcode = this.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
-				if (opcode == 0)
+				if (opcode != 0)
 				{
-					Log.Error($"消息opcode为0: {messageType.Name}");
-					continue;
+					this.RegisterHandler(opcode, iMHandler);
 				}
-				this.RegisterHandler(opcode, iMHandler);
 
 				// 尝试注册到mono层
 				if (messageDispatherComponent != null && opcodeTypeComponent != null)

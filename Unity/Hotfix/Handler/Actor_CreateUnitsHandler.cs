@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Model;
+using UnityEngine;
 
-namespace Model
+namespace Hotfix
 {
 	[MessageHandler]
 	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
@@ -29,7 +30,7 @@ namespace Model
 				}
 			}
 
-			Game.Scene.AddComponent<OperaComponent>();
+			Hotfix.Scene.AddComponent<OperaComponent>();
 		}
 	}
 }
