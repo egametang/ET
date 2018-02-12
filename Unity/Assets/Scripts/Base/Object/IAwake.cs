@@ -1,22 +1,74 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
-	public interface IAwake
+	public abstract class AAwakeSystem
 	{
-		void Awake();
+		public abstract Type Type();
+
+		public virtual void Run(object o){ }
+		public virtual void Run(object o, object a) { }
+		public virtual void Run(object o, object a, object b) { }
+		public virtual void Run(object o, object a, object b, object c) { }
 	}
 
-	public interface IAwake<A>
+	public abstract class AwakeSystem<T> : AAwakeSystem
 	{
-		void Awake(A a);
+		public override Type Type()
+		{
+			return typeof(T);
+		}
+
+		public override void Run(object o)
+		{
+			this.Awake((T)o);
+		}
+
+		public abstract void Awake(T self);
 	}
 
-	public interface IAwake<A, B>
+	public abstract class AwakeSystem<T, A> : AAwakeSystem
 	{
-		void Awake(A a, B b);
+		public override Type Type()
+		{
+			return typeof(T);
+		}
+
+		public override void Run(object o, object a)
+		{
+			this.Awake((T)o, (A)a);
+		}
+
+		public abstract void Awake(T self, A a);
 	}
 
-	public interface IAwake<A, B, C>
+	public abstract class AwakeSystem<T, A, B> : AAwakeSystem
 	{
-		void Awake(A a, B b, C c);
+		public override Type Type()
+		{
+			return typeof(T);
+		}
+
+		public override void Run(object o, object a, object b)
+		{
+			this.Awake((T)o, (A)a, (B)b);
+		}
+
+		public abstract void Awake(T self, A a, B b);
+	}
+
+	public abstract class AwakeSystem<T, A, B, C> : AAwakeSystem
+	{
+		public override Type Type()
+		{
+			return typeof(T);
+		}
+
+		public override void Run(object o, object a, object b, object c)
+		{
+			this.Awake((T)o, (A)a, (B)b, (C)c);
+		}
+
+		public abstract void Awake(T self, A a, B b, C c);
 	}
 }

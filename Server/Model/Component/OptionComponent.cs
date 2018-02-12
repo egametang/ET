@@ -4,11 +4,11 @@ using CommandLine;
 namespace Model
 {
 	[ObjectSystem]
-	public class OptionComponentSystem : ObjectSystem<OptionComponent>, IAwake<string[]>
+	public class OptionComponentSystem : AwakeSystem<OptionComponent, string[]>
 	{
-		public void Awake(string[] args)
+		public override void Awake(OptionComponent self, string[] a)
 		{
-			this.Get().Awake(args);
+			self.Awake(a);
 		}
 	}
 	

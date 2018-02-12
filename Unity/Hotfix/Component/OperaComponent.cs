@@ -4,20 +4,24 @@ using UnityEngine;
 namespace Hotfix
 {
     [ObjectSystem]
-    public class OperaComponentSystem : ObjectSystem<OperaComponent>, IUpdate, IAwake
+    public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
     {
-        public void Update()
-        {
-            this.Get().Update();
-        }
-
-	    public void Awake()
+	    public override void Awake(OperaComponent self)
 	    {
-		    this.Get().Awake();
+		    self.Awake();
 	    }
     }
 
-    public class OperaComponent: Component
+	[ObjectSystem]
+	public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
+	{
+		public override void Update(OperaComponent self)
+		{
+			self.Update();
+		}
+	}
+
+	public class OperaComponent: Component
     {
         public Vector3 ClickPoint;
 

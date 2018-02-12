@@ -3,11 +3,11 @@
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class RealmGateAddressComponentSystem : ObjectSystem<RealmGateAddressComponent>, IStart
+	public class RealmGateAddressComponentSystem : StartSystem<RealmGateAddressComponent>
 	{
-		public void Start()
+		public override void Start(RealmGateAddressComponent self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 	

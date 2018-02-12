@@ -9,15 +9,14 @@ namespace Model
     }
     
     [ObjectSystem]
-    public class ClientFrameComponentSystem : ObjectSystem<ClientFrameComponent>, IStart
+    public class ClientFrameComponentStartSystem : StartSystem<ClientFrameComponent>
     {
-        public void Start()
-        {
-            this.Get().Start();
-        }
+	    public override void Start(ClientFrameComponent t)
+	    {
+		    t.Start();
+	    }
     }
-
-    public class ClientFrameComponent: Component
+	public class ClientFrameComponent: Component
     {
         public int Frame;
 

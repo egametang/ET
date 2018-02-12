@@ -4,19 +4,23 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectSystem]
-	public class NumericWatcherComponentSystem : ObjectSystem<NumericWatcherComponent>, IAwake, ILoad
+	public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
 	{
-		public void Awake()
+		public override void Awake(NumericWatcherComponent self)
 		{
-			this.Get().Awake();
-		}
-
-		public void Load()
-		{
-			this.Get().Load();
+			self.Awake();
 		}
 	}
-	
+
+	[ObjectSystem]
+	public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
+	{
+		public override void Load(NumericWatcherComponent self)
+		{
+			self.Load();
+		}
+	}
+
 	/// <summary>
 	/// 监视数值变化组件,分发监听
 	/// </summary>

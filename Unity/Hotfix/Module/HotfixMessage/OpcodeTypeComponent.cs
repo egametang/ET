@@ -4,11 +4,11 @@ using Model;
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class OpcodeTypeComponentSystem : ObjectSystem<OpcodeTypeComponent>, IAwake
+	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
 	{
-		public void Awake()
+		public override void Awake(OpcodeTypeComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

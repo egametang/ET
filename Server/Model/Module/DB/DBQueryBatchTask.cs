@@ -7,12 +7,10 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbQueryBatchTaskSystem : ObjectSystem<DBQueryBatchTask>, IAwake<List<long>, string, TaskCompletionSource<List<Component>>>
+	public class DbQueryBatchTaskSystem : AwakeSystem<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Component>>>
 	{
-		public void Awake(List<long> idList, string collectionName, TaskCompletionSource<List<Component>> tcs)
+		public override void Awake(DBQueryBatchTask self, List<long> idList, string collectionName, TaskCompletionSource<List<Component>> tcs)
 		{
-			DBQueryBatchTask self = this.Get();
-
 			self.IdList = idList;
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;

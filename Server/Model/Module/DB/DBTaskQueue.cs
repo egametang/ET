@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbTaskQueueSystem : ObjectSystem<DBTaskQueue>, IAwake, IStart
+	public class DbTaskQueueAwakeSystem : AwakeSystem<DBTaskQueue>
 	{
-		public void Awake()
+		public override void Awake(DBTaskQueue self)
 		{
-			DBTaskQueue self = this.Get();
 			self.queue.Clear();
 		}
+	}
 
-		public async void Start()
+	[ObjectSystem]
+	public class DbTaskQueueStartSystem : StartSystem<DBTaskQueue>
+	{
+		public override async void Start(DBTaskQueue self)
 		{
-			DBTaskQueue self = this.Get();
-
 			while (true)
 			{
 				if (self.IsDisposed)

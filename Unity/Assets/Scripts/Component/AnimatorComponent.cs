@@ -5,16 +5,20 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class AnimatorComponentSystem : ObjectSystem<AnimatorComponent>, IAwake, IUpdate
+	public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>
 	{
-		public void Awake()
+		public override void Awake(AnimatorComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Update()
+	[ObjectSystem]
+	public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
+	{
+		public override void Update(AnimatorComponent self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 

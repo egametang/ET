@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class SessionSystem : ObjectSystem<Session>, IAwake<NetworkComponent, AChannel>, IStart
+	public class SessionAwakeSystem : AwakeSystem<Session, NetworkComponent, AChannel>
 	{
-		public void Awake(NetworkComponent network, AChannel channel)
+		public override void Awake(Session self, NetworkComponent a, AChannel b)
 		{
-			this.Get().Awake(network, channel);
+			self.Awake(a, b);
 		}
+	}
 
-		public void Start()
+	[ObjectSystem]
+	public class SessionStartSystem : StartSystem<Session>
+	{
+		public override void Start(Session self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 

@@ -1,7 +1,25 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
-	public interface IUpdate
+	public abstract class AUpdateSystem
 	{
-		void Update();
+		public abstract Type Type();
+		public abstract void Run(object o);
+	}
+
+	public abstract class UpdateSystem<T> : AUpdateSystem
+	{
+		public override void Run(object o)
+		{
+			this.Update((T)o);
+		}
+
+		public override Type Type()
+		{
+			return typeof(T);
+		}
+
+		public abstract void Update(T self);
 	}
 }

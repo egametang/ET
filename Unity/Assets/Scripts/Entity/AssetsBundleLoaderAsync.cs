@@ -5,15 +5,15 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class AssetsBundleLoaderAsyncSystem : ObjectSystem<AssetsBundleLoaderAsync>, IUpdate
+	public class AssetsBundleLoaderAsyncSystem : UpdateSystem<AssetsBundleLoaderAsync>
 	{
-		public void Update()
+		public override void Update(AssetsBundleLoaderAsync self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 
-	public class AssetsBundleLoaderAsync : Component, IUpdate
+	public class AssetsBundleLoaderAsync : Component
 	{
 		private AssetBundleCreateRequest request;
 

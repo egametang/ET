@@ -5,16 +5,20 @@ using Model;
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class MessageDispatherComponentSystem : ObjectSystem<MessageDispatherComponent>, IAwake, ILoad
+	public class MessageDispatherComponentAwakeSystem : AwakeSystem<MessageDispatherComponent>
 	{
-		public void Awake()
+		public override void Awake(MessageDispatherComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Load()
+	[ObjectSystem]
+	public class MessageDispatherComponentLoadSystem : LoadSystem<MessageDispatherComponent>
+	{
+		public override void Load(MessageDispatherComponent self)
 		{
-			this.Get().Load();
+			self.Load();
 		}
 	}
 

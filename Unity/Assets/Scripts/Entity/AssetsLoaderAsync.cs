@@ -5,20 +5,24 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class AssetsLoaderAsyncSystem : ObjectSystem<AssetsLoaderAsync>, IUpdate, IAwake<AssetBundle>
+	public class AssetsLoaderAsyncAwakeSystem : AwakeSystem<AssetsLoaderAsync, AssetBundle>
 	{
-		public void Awake(AssetBundle assetBundle)
+		public override void Awake(AssetsLoaderAsync self, AssetBundle a)
 		{
-			this.Get().Awake(assetBundle);
-		}
-		
-		public void Update()
-		{
-			this.Get().Update();
+			self.Awake(a);
 		}
 	}
 
-	public class AssetsLoaderAsync : Component, IUpdate
+	[ObjectSystem]
+	public class AssetsLoaderAsyncUpdateSystem : UpdateSystem<AssetsLoaderAsync>
+	{
+		public override void Update(AssetsLoaderAsync self)
+		{
+			self.Update();
+		}
+	}
+
+	public class AssetsLoaderAsync : Component
 	{
 		private AssetBundle assetBundle;
 

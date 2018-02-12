@@ -5,19 +5,23 @@ using System.Net;
 namespace Model
 {
 	[ObjectSystem]
-	public class HttpComponentComponentSystem : ObjectSystem<HttpComponent>, IAwake, ILoad
+	public class HttpComponentComponentAwakeSystem : AwakeSystem<HttpComponent>
 	{
-		public void Awake()
+		public override void Awake(HttpComponent self)
 		{
-			this.Get().Awake();
-		}
-
-		public void Load()
-		{
-			this.Get().Load();
+			self.Awake();
 		}
 	}
-	
+
+	[ObjectSystem]
+	public class HttpComponentComponentLoadSystem : LoadSystem<HttpComponent>
+	{
+		public override void Load(HttpComponent self)
+		{
+			self.Load();
+		}
+	}
+
 	/// <summary>
 	/// http请求分发器
 	/// </summary>

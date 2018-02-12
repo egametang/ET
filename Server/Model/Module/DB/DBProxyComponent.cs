@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbProxyComponentSystem : ObjectSystem<DBProxyComponent>, IAwake
+	public class DbProxyComponentSystem : AwakeSystem<DBProxyComponent>
 	{
-		public void Awake()
+		public override void Awake(DBProxyComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 	

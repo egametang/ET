@@ -6,12 +6,10 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbQueryJsonTaskSystem : ObjectSystem<DBQueryJsonTask>, IAwake<string, string, TaskCompletionSource<List<Component>>>
+	public class DBQueryJsonTaskAwakeSystem : AwakeSystem<DBQueryJsonTask, string, string, TaskCompletionSource<List<Component>>>
 	{
-		public void Awake(string collectionName, string json, TaskCompletionSource<List<Component>> tcs)
+		public override void Awake(DBQueryJsonTask self, string collectionName, string json, TaskCompletionSource<List<Component>> tcs)
 		{
-			DBQueryJsonTask self = this.Get();
-			
 			self.CollectionName = collectionName;
 			self.Json = json;
 			self.Tcs = tcs;

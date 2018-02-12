@@ -6,16 +6,20 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class UiComponentSystem : ObjectSystem<UIComponent>, IAwake, ILoad
+	public class UiComponentAwakeSystem : AwakeSystem<UIComponent>
 	{
-		public void Awake()
+		public override void Awake(UIComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Load()
+	[ObjectSystem]
+	public class UiComponentLoadSystem : LoadSystem<UIComponent>
+	{
+		public override void Load(UIComponent self)
 		{
-			this.Get().Load();
+			self.Load();
 		}
 	}
 

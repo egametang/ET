@@ -2,17 +2,17 @@
 
 namespace Hotfix
 {
-	public abstract class ALoadSystem
+	public abstract class AStartSystem
 	{
 		public abstract Type Type();
 		public abstract void Run(object o);
 	}
 
-	public abstract class LoadSystem<T> : ALoadSystem
+	public abstract class StartSystem<T> : AStartSystem
 	{
 		public override void Run(object o)
 		{
-			this.Load((T)o);
+			this.Start((T)o);
 		}
 
 		public override Type Type()
@@ -20,6 +20,6 @@ namespace Hotfix
 			return typeof(T);
 		}
 
-		public abstract void Load(T self);
+		public abstract void Start(T self);
 	}
 }

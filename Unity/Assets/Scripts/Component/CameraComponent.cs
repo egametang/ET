@@ -3,16 +3,20 @@
 namespace Model
 {
 	[ObjectSystem]
-	public class CameraComponentSystem : ObjectSystem<CameraComponent>, IAwake, ILateUpdate
+	public class CameraComponentAwakeSystem : AwakeSystem<CameraComponent>
 	{
-		public void Awake()
+		public override void Awake(CameraComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void LateUpdate()
+	[ObjectSystem]
+	public class CameraComponentLateUpdateSystem : LateUpdateSystem<CameraComponent>
+	{
+		public override void LateUpdate(CameraComponent self)
 		{
-			this.Get().LateUpdate();
+			self.LateUpdate();
 		}
 	}
 

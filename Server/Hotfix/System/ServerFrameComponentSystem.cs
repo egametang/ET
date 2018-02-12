@@ -3,12 +3,12 @@
 namespace Hotfix
 {
     [ObjectSystem]
-    public class ServerFrameComponentSystem : ObjectSystem<ServerFrameComponent>, IAwake
+    public class ServerFrameComponentSystem : AwakeSystem<ServerFrameComponent>
     {
-        public void Awake()
-        {
-            this.Get().Awake();
-        }
+	    public override void Awake(ServerFrameComponent self)
+	    {
+		    self.Awake();
+	    }
     }
 	
     public static class ServerFrameComponentEx

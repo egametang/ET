@@ -4,19 +4,23 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectSystem]
-	public class OpcodeTypeComponentSystem : ObjectSystem<OpcodeTypeComponent>, IAwake, ILoad
+	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
 	{
-		public void Awake()
+		public override void Awake(OpcodeTypeComponent self)
 		{
-			this.Get().Awake();
-		}
-
-		public void Load()
-		{
-			this.Get().Load();
+			self.Awake();
 		}
 	}
-	
+
+	[ObjectSystem]
+	public class OpcodeTypeComponentLoadSystem : LoadSystem<OpcodeTypeComponent>
+	{
+		public override void Load(OpcodeTypeComponent self)
+		{
+			self.Load();
+		}
+	}
+
 	public class OpcodeTypeComponent : Component
 	{
 		private Dictionary<ushort, Type> opcodeType { get; set; }

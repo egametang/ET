@@ -6,21 +6,29 @@ using Model;
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class ActorComponentSystem : ObjectSystem<ActorComponent>, IAwake, IAwake<IEntityActorHandler>, ILoad
+	public class ActorComponentAwakeSystem : AwakeSystem<ActorComponent>
 	{
-		public void Awake()
+		public override void Awake(ActorComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Awake(IEntityActorHandler iEntityActorHandler)
+	[ObjectSystem]
+	public class ActorComponentAwake1System : AwakeSystem<ActorComponent, IEntityActorHandler>
+	{
+		public override void Awake(ActorComponent self, IEntityActorHandler iEntityActorHandler)
 		{
-			this.Get().Awake(iEntityActorHandler);
+			self.Awake(iEntityActorHandler);
 		}
+	}
 
-		public void Load()
+	[ObjectSystem]
+	public class ActorComponentLoadSystem : LoadSystem<ActorComponent>
+	{
+		public override void Load(ActorComponent self)
 		{
-			this.Get().Load();
+			self.Load();
 		}
 	}
 

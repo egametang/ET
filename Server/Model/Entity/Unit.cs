@@ -10,11 +10,11 @@ namespace Model
 	}
 
 	[ObjectSystem]
-	public class UnitSystem : ObjectSystem<Unit>, IAwake<UnitType>
+	public class UnitSystem : AwakeSystem<Unit, UnitType>
 	{
-		public void Awake(UnitType unitType)
+		public override void Awake(Unit self, UnitType a)
 		{
-			this.Get().Awake(unitType);
+			self.Awake(a);
 		}
 	}
 

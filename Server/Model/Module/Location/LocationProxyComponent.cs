@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class LocationProxyComponentSystem : ObjectSystem<LocationProxyComponent>, IAwake
+	public class LocationProxyComponentSystem : AwakeSystem<LocationProxyComponent>
 	{
-		public void Awake()
+		public override void Awake(LocationProxyComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

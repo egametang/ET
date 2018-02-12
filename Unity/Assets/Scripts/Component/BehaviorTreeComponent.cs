@@ -6,19 +6,23 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class BehaviorTreeComponentSystem : ObjectSystem<BehaviorTreeComponent>, IAwake, ILoad
+	public class BehaviorTreeComponentAwakeSystem : AwakeSystem<BehaviorTreeComponent>
 	{
-		public void Awake()
+		public override void Awake(BehaviorTreeComponent self)
 		{
-			this.Get().Awake();
-		}
-		
-		public void Load()
-		{
-			this.Get().Load();
+			self.Awake();
 		}
 	}
-	
+
+	[ObjectSystem]
+	public class BehaviorTreeComponentLoadSystem : LoadSystem<BehaviorTreeComponent>
+	{
+		public override void Load(BehaviorTreeComponent self)
+		{
+			self.Load();
+		}
+	}
+
 	public class BehaviorTreeComponent : Component
 	{
 		public static BehaviorTreeComponent Instance;

@@ -3,11 +3,11 @@
 namespace Model
 {
 	[ObjectSystem]
-	public class OpcodeTypeComponentSystem : ObjectSystem<OpcodeTypeComponent>, IAwake
+	public class OpcodeTypeComponentSystem : AwakeSystem<OpcodeTypeComponent>
 	{
-		public void Awake()
+		public override void Awake(OpcodeTypeComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

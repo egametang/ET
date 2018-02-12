@@ -1,11 +1,11 @@
 ﻿namespace Model
 {
 	[ObjectSystem]
-	public class UnitGateComponentSystem : ObjectSystem<UnitGateComponent>, IAwake<long>
+	public class UnitGateComponentAwakeSystem : AwakeSystem<UnitGateComponent, long>
 	{
-		public void Awake(long gateSessionId)
+		public override void Awake(UnitGateComponent self, long a)
 		{
-			this.Get().Awake(gateSessionId);
+			self.Awake(a);
 		}
 	}
 

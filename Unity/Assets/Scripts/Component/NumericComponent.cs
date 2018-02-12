@@ -3,14 +3,14 @@
 namespace Model
 {
 	[ObjectSystem]
-	public class NumericComponentSystem : ObjectSystem<NumericComponent>, IAwake
+	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>
 	{
-		public void Awake()
+		public override void Awake(NumericComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
-	
+
 	public class NumericComponent: Component
 	{
 		public readonly Dictionary<int, int> NumericDic = new Dictionary<int, int>();

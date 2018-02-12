@@ -5,16 +5,20 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class ActorMessageDispatherComponentSystem : ObjectSystem<ActorMessageDispatherComponent>, IStart, ILoad
+	public class ActorMessageDispatherComponentStartSystem : AwakeSystem<ActorMessageDispatherComponent>
 	{
-		public void Start()
+		public override void Awake(ActorMessageDispatherComponent self)
 		{
-			this.Get().Start();
+			self.Awake();
 		}
+	}
 
-		public void Load()
+	[ObjectSystem]
+	public class ActorMessageDispatherComponentLoadSystem : LoadSystem<ActorMessageDispatherComponent>
+	{
+		public override void Load(ActorMessageDispatherComponent self)
 		{
-			this.Get().Load();
+			self.Load();
 		}
 	}
 
@@ -25,7 +29,7 @@ namespace Model
 	{
 		private Dictionary<Type, IMActorHandler> handlers;
 		
-		public void Start()
+		public void Awake()
 		{
 			this.Load();
 		}

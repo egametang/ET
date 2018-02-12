@@ -12,11 +12,11 @@ namespace Model
 	}
 
 	[ObjectSystem]
-	public class TimerComponentSystem : ObjectSystem<TimerComponent>, IUpdate
+	public class TimerComponentUpdateSystem : UpdateSystem<TimerComponent>
 	{
-		public void Update()
+		public override void Update(TimerComponent self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 

@@ -32,9 +32,17 @@ namespace Hotfix
 
 	public sealed class EventSystem
 	{
-		private readonly Dictionary<Type, IObjectSystem> disposerEvents = new Dictionary<Type, IObjectSystem>();
-
 		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
+
+		private readonly UnOrderMultiMap<Type, AAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, AAwakeSystem>();
+
+		private readonly UnOrderMultiMap<Type, AStartSystem> startEvents = new UnOrderMultiMap<Type, AStartSystem>();
+
+		private readonly UnOrderMultiMap<Type, ALoadSystem> loadEvents = new UnOrderMultiMap<Type, ALoadSystem>();
+
+		private readonly UnOrderMultiMap<Type, AUpdateSystem> updateEvents = new UnOrderMultiMap<Type, AUpdateSystem>();
+
+		private readonly UnOrderMultiMap<Type, ALateUpdateSystem> lateUpdateEvents = new UnOrderMultiMap<Type, ALateUpdateSystem>();
 
 		private Queue<Component> updates = new Queue<Component>();
 		private Queue<Component> updates2 = new Queue<Component>();
@@ -51,8 +59,6 @@ namespace Hotfix
 
 		public EventSystem()
 		{
-			this.disposerEvents.Clear();
-
 			Type[] types = DllHelper.GetHotfixTypes();
 			foreach (Type type in types)
 			{
@@ -64,13 +70,36 @@ namespace Hotfix
 				}
 
 				object obj = Activator.CreateInstance(type);
-				IObjectSystem objectSystem = obj as IObjectSystem;
-				if (objectSystem == null)
+
+				AAwakeSystem objectSystem = obj as AAwakeSystem;
+				if (objectSystem != null)
 				{
-					Log.Error($"组件事件没有继承IObjectEvent: {type.Name}");
-					continue;
+					this.awakeEvents.Add(objectSystem.Type(), objectSystem);
 				}
-				this.disposerEvents[objectSystem.Type()] = objectSystem;
+
+				AUpdateSystem aUpdateSystem = obj as AUpdateSystem;
+				if (aUpdateSystem != null)
+				{
+					this.updateEvents.Add(aUpdateSystem.Type(), aUpdateSystem);
+				}
+
+				ALateUpdateSystem aLateUpdateSystem = obj as ALateUpdateSystem;
+				if (aLateUpdateSystem != null)
+				{
+					this.lateUpdateEvents.Add(aLateUpdateSystem.Type(), aLateUpdateSystem);
+				}
+
+				AStartSystem aStartSystem = obj as AStartSystem;
+				if (aStartSystem != null)
+				{
+					this.startEvents.Add(aStartSystem.Type(), aStartSystem);
+				}
+
+				ALoadSystem aLoadSystem = obj as ALoadSystem;
+				if (aLoadSystem != null)
+				{
+					this.loadEvents.Add(aLoadSystem.Type(), aLoadSystem);
+				}
 			}
 
 			this.allEvents.Clear();
@@ -98,15 +127,6 @@ namespace Hotfix
 			this.Load();
 		}
 
-		public void RegisterEvent(int eventId, IEvent e)
-		{
-			if (!this.allEvents.ContainsKey(eventId))
-			{
-				this.allEvents.Add(eventId, new List<IEvent>());
-			}
-			this.allEvents[eventId].Add(e);
-		}
-
 		public static void Handle(int type, List<object> param)
 		{
 			switch (param.Count)
@@ -125,30 +145,36 @@ namespace Hotfix
 					break;
 			}
 		}
+		
+		public void RegisterEvent(int eventId, IEvent e)
+		{
+			if (!this.allEvents.ContainsKey(eventId))
+			{
+				this.allEvents.Add(eventId, new List<IEvent>());
+			}
+			this.allEvents[eventId].Add(e);
+		}
 
 		public void Add(Component disposer)
 		{
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectSystem))
-			{
-				return;
-			}
+			Type type = disposer.GetType();
 
-			if (objectSystem is ILoad)
+			if (this.loadEvents.ContainsKey(type))
 			{
 				this.loaders.Enqueue(disposer);
 			}
 
-			if (objectSystem is IUpdate)
+			if (this.updateEvents.ContainsKey(type))
 			{
 				this.updates.Enqueue(disposer);
 			}
 
-			if (objectSystem is IStart)
+			if (this.startEvents.ContainsKey(type))
 			{
 				this.starts.Enqueue(disposer);
 			}
 
-			if (objectSystem is ILateUpdate)
+			if (this.lateUpdateEvents.ContainsKey(type))
 			{
 				this.lateUpdates.Enqueue(disposer);
 			}
@@ -158,68 +184,80 @@ namespace Hotfix
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			if (iAwakeSystems == null)
 			{
 				return;
 			}
-			IAwake iAwake = objectEvent as IAwake;
-			if (iAwake == null)
+
+			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
-				return;
+				if (aAwakeSystem == null)
+				{
+					continue;
+				}
+				aAwakeSystem.Run(disposer);
 			}
-			objectEvent.Set(disposer);
-			iAwake.Awake();
 		}
 
 		public void Awake<P1>(Component disposer, P1 p1)
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			if (iAwakeSystems == null)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake1");
+				return;
 			}
-			IAwake<P1> iAwake = objectEvent as IAwake<P1>;
-			if (iAwake == null)
+
+			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake1");
+				if (aAwakeSystem == null)
+				{
+					continue;
+				}
+				aAwakeSystem.Run(disposer, p1);
 			}
-			objectEvent.Set(disposer);
-			iAwake.Awake(p1);
 		}
 
 		public void Awake<P1, P2>(Component disposer, P1 p1, P2 p2)
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			if (iAwakeSystems == null)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake2");
+				return;
 			}
-			IAwake<P1, P2> iAwake = objectEvent as IAwake<P1, P2>;
-			if (iAwake == null)
+
+			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake2");
+				if (aAwakeSystem == null)
+				{
+					continue;
+				}
+				aAwakeSystem.Run(disposer, p1, p2);
 			}
-			objectEvent.Set(disposer);
-			iAwake.Awake(p1, p2);
 		}
 
 		public void Awake<P1, P2, P3>(Component disposer, P1 p1, P2 p2, P3 p3)
 		{
 			this.Add(disposer);
 
-			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			if (iAwakeSystems == null)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake3");
+				return;
 			}
-			IAwake<P1, P2, P3> iAwake = objectEvent as IAwake<P1, P2, P3>;
-			if (iAwake == null)
+
+			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
-				throw new Exception($"{disposer.GetType().Name} not found awake3");
+				if (aAwakeSystem == null)
+				{
+					continue;
+				}
+				aAwakeSystem.Run(disposer, p1, p2, p3);
 			}
-			objectEvent.Set(disposer);
-			iAwake.Awake(p1, p2, p3);
 		}
 
 		public void Load()
@@ -238,26 +276,24 @@ namespace Hotfix
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+				List<ALoadSystem> aLoadSystems = this.loadEvents[disposer.GetType()];
+				if (aLoadSystems == null)
 				{
 					continue;
 				}
 
 				this.loaders2.Enqueue(disposer);
 
-				ILoad iLoad = objectEvent as ILoad;
-				if (iLoad == null)
+				foreach (ALoadSystem aLoadSystem in aLoadSystems)
 				{
-					continue;
-				}
-				objectEvent.Set(disposer);
-				try
-				{
-					iLoad.Load();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
+					try
+					{
+						aLoadSystem.Run(disposer);
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
 			}
 
@@ -276,17 +312,23 @@ namespace Hotfix
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+				List<AStartSystem> aStartSystems = this.startEvents[disposer.GetType()];
+				if (aStartSystems == null)
 				{
 					continue;
 				}
-				IStart iStart = objectEvent as IStart;
-				if (iStart == null)
+
+				foreach (AStartSystem aStartSystem in aStartSystems)
 				{
-					continue;
+					try
+					{
+						aStartSystem.Run(disposer);
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
-				objectEvent.Set(disposer);
-				iStart.Start();
 			}
 		}
 
@@ -294,7 +336,7 @@ namespace Hotfix
 		{
 			this.Start();
 
-			unique.Clear();
+			this.unique.Clear();
 			while (this.updates.Count > 0)
 			{
 				Component disposer = this.updates.Dequeue();
@@ -308,26 +350,24 @@ namespace Hotfix
 					continue;
 				}
 
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectEvent))
+				List<AUpdateSystem> aUpdateSystems = this.updateEvents[disposer.GetType()];
+				if (aUpdateSystems == null)
 				{
 					continue;
 				}
 
 				this.updates2.Enqueue(disposer);
 
-				IUpdate iUpdate = objectEvent as IUpdate;
-				if (iUpdate == null)
+				foreach (AUpdateSystem aUpdateSystem in aUpdateSystems)
 				{
-					continue;
-				}
-				objectEvent.Set(disposer);
-				try
-				{
-					iUpdate.Update();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
+					try
+					{
+						aUpdateSystem.Run(disposer);
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
 			}
 
@@ -336,7 +376,7 @@ namespace Hotfix
 
 		public void LateUpdate()
 		{
-			unique.Clear();
+			this.unique.Clear();
 			while (this.lateUpdates.Count > 0)
 			{
 				Component disposer = this.lateUpdates.Dequeue();
@@ -350,27 +390,24 @@ namespace Hotfix
 					continue;
 				}
 
-				IObjectSystem objectSystem;
-				if (!this.disposerEvents.TryGetValue(disposer.GetType(), out objectSystem))
+				List<ALateUpdateSystem> aLateUpdateSystems = this.lateUpdateEvents[disposer.GetType()];
+				if (aLateUpdateSystems == null)
 				{
 					continue;
 				}
 
 				this.lateUpdates2.Enqueue(disposer);
 
-				ILateUpdate iLateUpdate = objectSystem as ILateUpdate;
-				if (iLateUpdate == null)
+				foreach (ALateUpdateSystem aLateUpdateSystem in aLateUpdateSystems)
 				{
-					continue;
-				}
-				objectSystem.Set(disposer);
-				try
-				{
-					iLateUpdate.LateUpdate();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e.ToString());
+					try
+					{
+						aLateUpdateSystem.Run(disposer);
+					}
+					catch (Exception e)
+					{
+						Log.Error(e.ToString());
+					}
 				}
 			}
 

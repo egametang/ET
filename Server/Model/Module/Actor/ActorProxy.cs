@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class ActorProxySystem : ObjectSystem<ActorProxy>, IAwake, IStart
+	public class ActorProxyAwakeSystem : AwakeSystem<ActorProxy>
 	{
-		public void Awake()
+		public override void Awake(ActorProxy self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Start()
+	[ObjectSystem]
+	public class ActorProxyStartSystem : StartSystem<ActorProxy>
+	{
+		public override void Start(ActorProxy self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 

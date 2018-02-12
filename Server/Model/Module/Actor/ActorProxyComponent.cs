@@ -3,13 +3,11 @@
 namespace Model
 {
 	[ObjectSystem]
-	public class ActorProxyComponentSystem : ObjectSystem<ActorProxyComponent>, IStart
+	public class ActorProxyComponentSystem : StartSystem<ActorProxyComponent>
 	{
 		// 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟
-		public async void Start()
+		public override async void Start(ActorProxyComponent self)
 		{
-			ActorProxyComponent self = this.Get();
-
 			List<long> timeoutActorProxyIds = new List<long>();
 
 			while (true)

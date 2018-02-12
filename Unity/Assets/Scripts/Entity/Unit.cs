@@ -7,12 +7,7 @@ namespace Model
 		Hero,
 		Npc
 	}
-
-	[ObjectSystem]
-	public class UnitSystem : ObjectSystem<Unit>
-	{
-	}
-
+	
 	public sealed class Unit: Entity
 	{
 		public VInt3 IntPos;

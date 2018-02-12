@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class UiBundleDownloaderComponentSystem : ObjectSystem<BundleDownloaderComponent>, IAwake
+	public class UiBundleDownloaderComponentAwakeSystem : AwakeSystem<BundleDownloaderComponent>
 	{
-		public void Awake()
+		public override void Awake(BundleDownloaderComponent self)
 		{
-			BundleDownloaderComponent self = this.Get();
-
 			self.bundles = new Queue<string>();
 			self.downloadedBundles = new HashSet<string>();
 			self.downloadingBundle = "";

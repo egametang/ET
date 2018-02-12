@@ -54,6 +54,7 @@
     <Compile Include="Base\Helper\ArrayHelper.cs" />
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
+    <Compile Include="Base\Object\IStart.cs" />
     <Compile Include="Component\OperaComponent.cs" />
     <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Handler\Actor_CreateUnitsHandler.cs" />

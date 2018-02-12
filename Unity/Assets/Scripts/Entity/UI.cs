@@ -4,15 +4,14 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class UiSystem : ObjectSystem<UI>, IAwake<Scene, UI, GameObject>
+	public class UiAwakeSystem : AwakeSystem<UI, Scene, UI, GameObject>
 	{
-		public void Awake(Scene scene, UI parent, GameObject gameObject)
+		public override void Awake(UI self, Scene scene, UI parent, GameObject gameObject)
 		{
-			this.Get().Awake(scene, parent, gameObject);
+			self.Awake(scene, parent, gameObject);
 		}
 	}
-	
-	
+
 	public sealed class UI: Entity
 	{
 		public Scene Scene { get; set; }

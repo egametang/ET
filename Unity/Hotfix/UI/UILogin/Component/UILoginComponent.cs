@@ -7,11 +7,11 @@ using UnityEngine.UI;
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class UiLoginComponentSystem : ObjectSystem<UILoginComponent>, IAwake
+	public class UiLoginComponentSystem : AwakeSystem<UILoginComponent>
 	{
-		public void Awake()
+		public override void Awake(UILoginComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 	

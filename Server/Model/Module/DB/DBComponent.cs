@@ -3,11 +3,11 @@
 namespace Model
 {
 	[ObjectSystem]
-	public class DbComponentSystem : ObjectSystem<DBComponent>, IAwake
+	public class DbComponentSystem : AwakeSystem<DBComponent>
 	{
-		public void Awake()
+		public override void Awake(DBComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

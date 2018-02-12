@@ -6,11 +6,11 @@ using System.Linq;
 namespace Model
 {
 	[ObjectSystem]
-	public class StartConfigComponentSystem : ObjectSystem<StartConfigComponent>, IAwake<string, int>
+	public class StartConfigComponentSystem : AwakeSystem<StartConfigComponent, string, int>
 	{
-		public void Awake(string a, int b)
+		public override void Awake(StartConfigComponent self, string a, int b)
 		{
-			this.Get().Awake(a, b);
+			self.Awake(a, b);
 		}
 	}
 	

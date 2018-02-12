@@ -5,11 +5,11 @@ using Model;
 namespace MyEditor
 {
 	[ObjectSystem]
-	public class BtNodeInfoComponentSystem : ObjectSystem<BTNodeInfoComponent>, IAwake
+	public class BtNodeInfoComponentSystem : AwakeSystem<BTNodeInfoComponent>
 	{
-		public void Awake()
+		public override void Awake(BTNodeInfoComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

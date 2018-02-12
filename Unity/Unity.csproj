@@ -230,6 +230,7 @@
     <Compile Include="Assets\Scripts\Base\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Message\ProtobufPacker.cs" />
     <Compile Include="Assets\Scripts\Base\Message\RpcException.cs" />
+    <Compile Include="Assets\Scripts\Base\UnOrderMultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AService.cs" />

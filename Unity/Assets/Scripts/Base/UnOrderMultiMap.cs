@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace Model
 {
-	public class MultiMap<T, K>
+	public class UnOrderMultiMap<T, K>
 	{
-		private readonly SortedDictionary<T, List<K>> dictionary = new SortedDictionary<T, List<K>>();
+		private readonly Dictionary<T, List<K>> dictionary = new Dictionary<T, List<K>>();
 
 		// 重用list
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
 
-		public SortedDictionary<T, List<K>> GetDictionary()
+		public Dictionary<T, List<K>> GetDictionary()
 		{
 			return this.dictionary;
 		}
@@ -149,6 +149,15 @@ namespace Model
 		public bool ContainsKey(T t)
 		{
 			return this.dictionary.ContainsKey(t);
+		}
+
+		public void Clear()
+		{
+			foreach (KeyValuePair<T, List<K>> keyValuePair in this.dictionary)
+			{
+				this.RecycleList(keyValuePair.Value);
+			}
+			this.dictionary.Clear();
 		}
 	}
 }

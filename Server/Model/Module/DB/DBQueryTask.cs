@@ -5,11 +5,10 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbQueryTaskSystem : ObjectSystem<DBQueryTask>, IAwake<string, TaskCompletionSource<Component>>
+	public class DBQueryTaskSystem : AwakeSystem<DBQueryTask, string, TaskCompletionSource<Component>>
 	{
-		public void Awake(string collectionName, TaskCompletionSource<Component> tcs)
+		public override void Awake(DBQueryTask self, string collectionName, TaskCompletionSource<Component> tcs)
 		{
-			DBQueryTask self = this.Get();
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;
 		}

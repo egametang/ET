@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbCacheComponentSystem : ObjectSystem<DBCacheComponent>, IAwake
+	public class DbCacheComponentSystem : AwakeSystem<DBCacheComponent>
 	{
-		public void Awake()
+		public override void Awake(DBCacheComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

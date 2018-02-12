@@ -13,11 +13,11 @@ namespace Model
 	}
 
 	[ObjectSystem]
-	public class LockComponentSystem : ObjectSystem<LockComponent>, IAwake<IPEndPoint>
+	public class LockComponentAwakeSystem : AwakeSystem<LockComponent, IPEndPoint>
 	{
-		public void Awake(IPEndPoint a)
+		public override void Awake(LockComponent self, IPEndPoint a)
 		{
-			this.Get().Awake(a);
+			self.Awake(a);
 		}
 	}
 

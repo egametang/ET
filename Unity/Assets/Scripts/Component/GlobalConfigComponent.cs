@@ -1,11 +1,11 @@
 ﻿namespace Model
 {
 	[ObjectSystem]
-	public class GlobalConfigComponentSystem : ObjectSystem<GlobalConfigComponent>, IAwake
+	public class GlobalConfigComponentAwakeSystem : AwakeSystem<GlobalConfigComponent>
 	{
-		public void Awake()
+		public override void Awake(GlobalConfigComponent t)
 		{
-			this.Get().Awake();
+			t.Awake();
 		}
 	}
 

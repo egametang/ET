@@ -6,11 +6,11 @@ using System.Linq;
 namespace Model
 {
 	[ObjectSystem]
-	public class AppManagerComponentSystem : ObjectSystem<AppManagerComponent>, IStart
+	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
 	{
-		public void Start()
+		public override void Start(AppManagerComponent self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 

@@ -4,24 +4,32 @@ using Model;
 namespace Hotfix
 {
 	[ObjectSystem]
-	public class NetInnerComponentSystem : ObjectSystem<NetInnerComponent>, IAwake, IAwake<IPEndPoint>, IUpdate
+	public class NetInnerComponentAwakeSystem : AwakeSystem<NetInnerComponent>
 	{
-		public void Awake()
+		public override void Awake(NetInnerComponent self)
 		{
-			this.Get().Awake();
-		}
-
-		public void Awake(IPEndPoint ipEndPoint)
-		{
-			this.Get().Awake(ipEndPoint);
-		}
-
-		public void Update()
-		{
-			this.Get().Update();
+			self.Awake();
 		}
 	}
-	
+
+	[ObjectSystem]
+	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, IPEndPoint>
+	{
+		public override void Awake(NetInnerComponent self, IPEndPoint a)
+		{
+			self.Awake(a);
+		}
+	}
+
+	[ObjectSystem]
+	public class NetInnerComponentUpdateSystem : UpdateSystem<NetInnerComponent>
+	{
+		public override void Update(NetInnerComponent self)
+		{
+			self.Update();
+		}
+	}
+
 	public static class NetInnerComponentEx
 	{
 		public static void Awake(this NetInnerComponent self)

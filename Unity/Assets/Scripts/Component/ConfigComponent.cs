@@ -4,16 +4,20 @@ using System.Collections.Generic;
 namespace Model
 {
 	[ObjectSystem]
-	public class ConfigComponentSystem : ObjectSystem<ConfigComponent>, IAwake, ILoad
+	public class ConfigComponentAwakeSystem : AwakeSystem<ConfigComponent>
 	{
-		public void Awake()
+		public override void Awake(ConfigComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
+	}
 
-		public void Load()
+	[ObjectSystem]
+	public class ConfigComponentLoadSystem : LoadSystem<ConfigComponent>
+	{
+		public override void Load(ConfigComponent self)
 		{
-			this.Get().Load();
+			self.Load();
 		}
 	}
 
