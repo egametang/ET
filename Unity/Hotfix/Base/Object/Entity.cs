@@ -32,7 +32,7 @@ namespace Hotfix
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -57,7 +57,7 @@ namespace Hotfix
 
 		public K AddComponent<K>() where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K>(this);
+			K component = ComponentFactory.CreateWithParent<K>(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -74,7 +74,7 @@ namespace Hotfix
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1>(this, p1);
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -91,7 +91,7 @@ namespace Hotfix
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2>(this, p1, p2);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
@@ -108,7 +108,7 @@ namespace Hotfix
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2, P3>(this, p1, p2, p3);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{

@@ -40,7 +40,7 @@ namespace Model
 
 		public async Task StartAsync()
 		{
-			using (UnityWebRequestAsync request = EntityFactory.Create<UnityWebRequestAsync>())
+			using (UnityWebRequestAsync request = ComponentFactory.Create<UnityWebRequestAsync>())
 			{
 				string versionUrl = GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + "Version.txt";
 				Log.Debug(versionUrl);
@@ -126,7 +126,7 @@ namespace Model
 				{
 					try
 					{
-						using (this.downloadingRequest = EntityFactory.Create<UnityWebRequestAsync>())
+						using (this.downloadingRequest = ComponentFactory.Create<UnityWebRequestAsync>())
 						{
 							await this.downloadingRequest.DownloadAsync(GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + this.downloadingBundle);
 							byte[] data = this.downloadingRequest.Request.downloadHandler.data;
@@ -202,7 +202,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

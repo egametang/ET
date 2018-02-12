@@ -33,7 +33,7 @@ namespace Hotfix
 		{
 			self.entityActorHandler = new CommonEntityActorHandler();
 			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Parent.Id;
+			self.actorId = self.Entity.Id;
 			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
 			self.HandleAsync();
 		}
@@ -42,7 +42,7 @@ namespace Hotfix
 		{
 			self.entityActorHandler = iEntityActorHandler;
 			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Parent.Id;
+			self.actorId = self.Entity.Id;
 			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
 			self.HandleAsync();
 		}
@@ -92,7 +92,7 @@ namespace Hotfix
 		{
 			while (true)
 			{
-				if (self.Id == 0)
+				if (self.IsDisposed)
 				{
 					return;
 				}

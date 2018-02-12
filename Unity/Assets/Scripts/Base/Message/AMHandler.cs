@@ -14,7 +14,7 @@ namespace Model
 				Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof(Message).Name}");
 				return;
 			}
-			if (session.Id == 0)
+			if (session.IsDisposed)
 			{
 				Log.Error($"session disconnect {msg}");
 				return;

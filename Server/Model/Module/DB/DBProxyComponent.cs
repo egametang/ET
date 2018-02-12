@@ -27,55 +27,55 @@ namespace Model
 			dbAddress = dbStartConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 
-		public async Task Save(Disposer disposer, bool needCache = true)
+		public async Task Save(Component disposer, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			await session.Call(new DBSaveRequest { Disposer = disposer, NeedCache = needCache});
 		}
 
-		public async Task SaveBatch(List<Disposer> disposers, bool needCache = true)
+		public async Task SaveBatch(List<Component> disposers, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			await session.Call(new DBSaveBatchRequest { Disposers = disposers, NeedCache = needCache});
 		}
 
-		public async Task Save(Disposer disposer, bool needCache, CancellationToken cancellationToken)
+		public async Task Save(Component disposer, bool needCache, CancellationToken cancellationToken)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			await session.Call(new DBSaveRequest { Disposer = disposer, NeedCache = needCache}, cancellationToken);
 		}
 
-		public async void SaveLog(Disposer disposer)
+		public async void SaveLog(Component disposer)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			await session.Call(new DBSaveRequest { Disposer = disposer,  NeedCache = false, CollectionName = "Log" });
 		}
 
-		public async Task<T> Query<T>(long id, bool needCache = true) where T: Disposer
+		public async Task<T> Query<T>(long id, bool needCache = true) where T: Component
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id, NeedCache = needCache });
 			return (T)dbQueryResponse.Disposer;
 		}
 
-		public async Task<List<T>> QueryBatch<T>(List<long> ids, bool needCache = true) where T : Disposer
+		public async Task<List<T>> QueryBatch<T>(List<long> ids, bool needCache = true) where T : Component
 		{
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryBatchResponse dbQueryBatchResponse = (DBQueryBatchResponse)await session.Call(new DBQueryBatchRequest { CollectionName = typeof(T).Name, IdList = ids, NeedCache = needCache});
-			foreach (Disposer disposer in dbQueryBatchResponse.Disposers)
+			foreach (Component disposer in dbQueryBatchResponse.Disposers)
 			{
 				list.Add((T)disposer);
 			}
 			return list;
 		}
 
-		public async Task<List<T>> QueryJson<T>(string json, bool needCache = true) where T : Disposer
+		public async Task<List<T>> QueryJson<T>(string json, bool needCache = true) where T : Component
 		{
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
 			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json, NeedCache = needCache});
-			foreach (Disposer disposer in dbQueryJsonResponse.Disposers)
+			foreach (Component disposer in dbQueryJsonResponse.Disposers)
 			{
 				list.Add((T)disposer);
 			}

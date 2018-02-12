@@ -27,9 +27,9 @@ namespace Model
 			//this.database = this.mongoClient.GetDatabase(config.DBName);
 		}
 
-		public IMongoCollection<Disposer> GetCollection(string name)
+		public IMongoCollection<Component> GetCollection(string name)
 		{
-			return this.database.GetCollection<Disposer>(name);
+			return this.database.GetCollection<Component>(name);
 		}
 	}
 }

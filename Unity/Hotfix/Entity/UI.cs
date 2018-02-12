@@ -44,7 +44,7 @@ namespace Hotfix
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -94,7 +94,7 @@ namespace Hotfix
 			{
 				return null;
 			}
-			child = EntityFactory.Create<UI, Scene, UI, GameObject>(this.Scene, this, childGameObject);
+			child = ComponentFactory.Create<UI, Scene, UI, GameObject>(this.Scene, this, childGameObject);
 			this.Add(child);
 			return child;
 		}

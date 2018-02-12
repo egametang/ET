@@ -22,7 +22,7 @@ namespace Model
 			{
 				await timerComponent.WaitAsync(1000);
 				
-				if (self.Id == 0)
+				if (self.IsDisposed)
 				{
 					return;
 				}

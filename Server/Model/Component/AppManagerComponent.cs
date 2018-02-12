@@ -78,7 +78,7 @@ namespace Model
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(5000);
 
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}

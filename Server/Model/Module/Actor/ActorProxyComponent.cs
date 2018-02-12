@@ -16,7 +16,7 @@ namespace Model
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10000);
 
-				if (self.Id == 0)
+				if (self.IsDisposed)
 				{
 					return;
 				}
@@ -54,7 +54,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -73,7 +73,7 @@ namespace Model
 				return actorProxy;
 			}
 			
-			actorProxy = EntityFactory.CreateWithId<ActorProxy>(id);
+			actorProxy = ComponentFactory.CreateWithId<ActorProxy>(id);
 			this.ActorProxys[id] = actorProxy;
 			return actorProxy;
 		}

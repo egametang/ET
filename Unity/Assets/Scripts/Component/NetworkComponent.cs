@@ -61,7 +61,7 @@ namespace Model
 		{
 			while (true)
 			{
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}
@@ -73,7 +73,7 @@ namespace Model
 		public virtual async Task<Session> Accept()
 		{
 			AChannel channel = await this.Service.AcceptChannel();
-			Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
+			Session session = ComponentFactory.CreateWithId<Session, NetworkComponent, AChannel>(IdGenerater.GenerateId(), this, channel);
 			session.Parent = this;
 			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 			this.sessions.Add(session.Id, session);
@@ -106,7 +106,7 @@ namespace Model
 			try
 			{
 				AChannel channel = this.Service.ConnectChannel(ipEndPoint);
-				Session session = EntityFactory.Create<Session, NetworkComponent, AChannel>(this, channel);
+				Session session = ComponentFactory.CreateWithId<Session, NetworkComponent, AChannel>(IdGenerater.GenerateId(), this, channel);
 				session.Parent = this;
 				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
 				this.sessions.Add(session.Id, session);
@@ -130,7 +130,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

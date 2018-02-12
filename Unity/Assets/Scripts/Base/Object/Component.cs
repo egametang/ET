@@ -5,6 +5,12 @@ namespace Model
 	[BsonIgnoreExtraElements]
 	public abstract partial class Component: Disposer
 	{
+		[BsonIgnoreIfDefault]
+		[BsonDefaultValue(0L)]
+		[BsonElement]
+		[BsonId]
+		public long Id { get; set; }
+
 		[BsonIgnore]
 		public Disposer Parent { get; set; }
 
@@ -21,14 +27,9 @@ namespace Model
 			}
 		}
 
-		protected Component()
-		{
-			this.Id = 1;
-		}
-
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

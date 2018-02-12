@@ -7,9 +7,9 @@ using MongoDB.Driver;
 namespace Model
 {
 	[ObjectSystem]
-	public class DbQueryBatchTaskSystem : ObjectSystem<DBQueryBatchTask>, IAwake<List<long>, string, TaskCompletionSource<List<Disposer>>>
+	public class DbQueryBatchTaskSystem : ObjectSystem<DBQueryBatchTask>, IAwake<List<long>, string, TaskCompletionSource<List<Component>>>
 	{
-		public void Awake(List<long> idList, string collectionName, TaskCompletionSource<List<Disposer>> tcs)
+		public void Awake(List<long> idList, string collectionName, TaskCompletionSource<List<Component>> tcs)
 		{
 			DBQueryBatchTask self = this.Get();
 
@@ -25,20 +25,20 @@ namespace Model
 
 		public List<long> IdList { get; set; }
 
-		public TaskCompletionSource<List<Disposer>> Tcs { get; set; }
+		public TaskCompletionSource<List<Component>> Tcs { get; set; }
 		
 		public override async Task Run()
 		{
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
-			List<Disposer> result = new List<Disposer>();
+			List<Component> result = new List<Component>();
 
 			try
 			{
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					Disposer disposer = dbCacheComponent.GetFromCache(this.CollectionName, id);
+					Component disposer = dbCacheComponent.GetFromCache(this.CollectionName, id);
 					if (disposer == null)
 					{
 						disposer = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();

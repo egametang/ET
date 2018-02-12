@@ -19,8 +19,9 @@ namespace Model
 			if (queue.Count > 0)
             {
 				obj = queue.Dequeue();
-	            obj.Id = IdGenerater.GenerateId();
-	            return obj;
+	            obj.IsDisposed = false;
+	            obj.IsFromPool = true;
+				return obj;
             }
 	        obj = (Disposer)Activator.CreateInstance(type);
             return obj;

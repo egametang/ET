@@ -89,7 +89,7 @@ namespace Model
 		}
 	}
 
-	public sealed class ActorProxy : Disposer
+	public sealed class ActorProxy : Component
 	{
 		// actor的地址
 		public IPEndPoint Address;
@@ -127,7 +127,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -153,7 +153,7 @@ namespace Model
 
 		private void Add(ActorTask task)
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				throw new Exception("ActorProxy Disposed! dont hold actorproxy");
 			}
@@ -204,7 +204,7 @@ namespace Model
 			while (true)
 			{
 				ActorTask actorTask = await this.GetAsync();
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}

@@ -12,7 +12,7 @@ namespace Hotfix
 			try
 			{
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				Disposer disposer = await dbCacheComponent.Get(message.CollectionName, message.Id);
+				Component disposer = await dbCacheComponent.Get(message.CollectionName, message.Id);
 
 				response.Disposer = disposer;
 

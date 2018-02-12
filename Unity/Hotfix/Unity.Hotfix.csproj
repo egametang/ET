@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ILRuntime</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -69,7 +69,6 @@
     <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Disposer.cs" />
     <Compile Include="Base\Object\Entity.cs" />
-    <Compile Include="Base\Object\EntityFactory.cs" />
     <Compile Include="Base\Object\EntityType.cs" />
     <Compile Include="Base\Object\IAwake.cs" />
     <Compile Include="Base\Object\ILateUpdate.cs" />

@@ -27,7 +27,7 @@ namespace Hotfix
 
             while (true)
             {
-                if (self.Id == 0)
+                if (self.IsDisposed)
                 {
                     return;
                 }

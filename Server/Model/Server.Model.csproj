@@ -62,7 +62,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs" Link="Base\Object\Disposer.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Object\Entity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EntityFactory.cs" Link="Base\Object\EntityFactory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs" Link="Base\Object\IAwake.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdate.cs" Link="Base\Object\ILateUpdate.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs" Link="Base\Object\ILoad.cs" />

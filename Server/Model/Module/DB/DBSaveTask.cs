@@ -6,9 +6,9 @@ namespace Model
 {
 
 	[ObjectSystem]
-	public class DbSaveTaskSystem : ObjectSystem<DBSaveTask>, IAwake<Disposer, string, TaskCompletionSource<bool>>
+	public class DbSaveTaskSystem : ObjectSystem<DBSaveTask>, IAwake<Component, string, TaskCompletionSource<bool>>
 	{
-		public void Awake(Disposer entity, string collectionName, TaskCompletionSource<bool> tcs)
+		public void Awake(Component entity, string collectionName, TaskCompletionSource<bool> tcs)
 		{
 			DBSaveTask self = this.Get();
 
@@ -20,7 +20,7 @@ namespace Model
 
 	public sealed class DBSaveTask : DBTask
 	{
-		public Disposer Disposer;
+		public Component Disposer;
 
 		public string CollectionName { get; set; }
 

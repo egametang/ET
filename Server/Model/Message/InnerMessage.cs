@@ -102,7 +102,7 @@ namespace Model
 		public string CollectionName;
 
 		[ProtoMember(3, IsRequired = true)]
-		public Disposer Disposer;
+		public Component Disposer;
 
 	}
 
@@ -128,7 +128,7 @@ namespace Model
 		public string CollectionName;
 
 		[ProtoMember(3)]
-		public List<Disposer> Disposers = new List<Disposer>();
+		public List<Component> Disposers = new List<Component>();
 
 	}
 
@@ -163,7 +163,7 @@ namespace Model
 	public partial class DBQueryResponse: MessageObject, IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
-		public Disposer Disposer;
+		public Component Disposer;
 
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -192,7 +192,7 @@ namespace Model
 	public partial class DBQueryBatchResponse: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
-		public List<Disposer> Disposers = new List<Disposer>();
+		public List<Component> Disposers = new List<Component>();
 
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -221,7 +221,7 @@ namespace Model
 	public partial class DBQueryJsonResponse: MessageObject, IResponse
 	{
 		[ProtoMember(1)]
-		public List<Disposer> Disposers = new List<Disposer>();
+		public List<Component> Disposers = new List<Component>();
 
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }

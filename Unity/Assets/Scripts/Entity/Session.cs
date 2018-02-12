@@ -53,7 +53,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -92,7 +92,7 @@ namespace Model
 		{
 			while (true)
 			{
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}
@@ -101,7 +101,8 @@ namespace Model
 				try
 				{
 					packet = await this.channel.Recv();
-					if (this.Id == 0)
+					
+					if (this.IsDisposed)
 					{
 						return;
 					}
@@ -217,7 +218,7 @@ namespace Model
 
 		public void Send(ushort opcode, byte[] bytes)
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				throw new Exception("session已经被Dispose了");
 			}
@@ -227,7 +228,7 @@ namespace Model
 
 		public void Reply(ushort opcode, uint rpcId, byte[] bytes)
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				throw new Exception("session已经被Dispose了");
 			}

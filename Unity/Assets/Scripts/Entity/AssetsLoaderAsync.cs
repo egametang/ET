@@ -18,7 +18,7 @@ namespace Model
 		}
 	}
 
-	public class AssetsLoaderAsync : Disposer, IUpdate
+	public class AssetsLoaderAsync : Component, IUpdate
 	{
 		private AssetBundle assetBundle;
 
@@ -44,7 +44,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

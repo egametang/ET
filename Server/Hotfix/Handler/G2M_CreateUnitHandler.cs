@@ -11,7 +11,7 @@ namespace Hotfix
 			M2G_CreateUnit response = new M2G_CreateUnit();
 			try
 			{
-				Unit unit = EntityFactory.Create<Unit>();
+				Unit unit = ComponentFactory.Create<Unit>();
 				await unit.AddComponent<ActorComponent, IEntityActorHandler>(new MapUnitEntityActorHandler()).AddLocation();
 				unit.AddComponent<UnitGateComponent, long>(message.GateSessionId);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);

@@ -109,7 +109,6 @@ namespace ILRuntime.Runtime.Generated
             Model_GlobalProto_Binding.Register(app);
             Model_NetworkHelper_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
-            Model_EntityFactory_Binding.Register(app);
         }
     }
 }

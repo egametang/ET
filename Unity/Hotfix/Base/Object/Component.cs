@@ -4,8 +4,10 @@ namespace Hotfix
 {
 	public abstract class Component : Disposer
 	{
+		public long Id { get; set; }
+
 		[BsonIgnore]
-		public Disposer Parent { get; set; }
+		public Component Parent { get; set; }
 
 		public T GetParent<T>() where T : Entity
 		{
@@ -19,15 +21,10 @@ namespace Hotfix
 				return this.Parent as Entity;
 			}
 		}
-
-		protected Component()
-		{
-			this.Id = 1;
-		}
-
+		
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

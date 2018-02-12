@@ -9,7 +9,6 @@ namespace Hotfix
 		{
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packetInfo.Opcode);
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-
 			// 收到actor rpc request
 			if (message is ActorRequest actorRpcRequest)
 			{
@@ -24,6 +23,7 @@ namespace Hotfix
 					session.Reply(packetInfo.RpcId, response);
 					return;
 				}
+				
 				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, RpcId = packetInfo.RpcId, Message = actorRpcRequest });
 				return;
 			}

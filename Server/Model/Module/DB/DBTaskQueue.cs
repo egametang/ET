@@ -19,7 +19,7 @@ namespace Model
 
 			while (true)
 			{
-				if (self.Id == 0)
+				if (self.IsDisposed)
 				{
 					return;
 				}
@@ -40,7 +40,7 @@ namespace Model
 		}
 	}
 
-	public sealed class DBTaskQueue : Disposer
+	public sealed class DBTaskQueue : Component
 	{
 		public Queue<DBTask> queue = new Queue<DBTask>();
 

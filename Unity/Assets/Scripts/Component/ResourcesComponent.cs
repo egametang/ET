@@ -41,7 +41,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -67,7 +67,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -279,7 +279,7 @@ namespace Model
 			}
 
 			AssetBundle assetBundle;
-			using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.Create<AssetsBundleLoaderAsync>())
+			using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = ComponentFactory.Create<AssetsBundleLoaderAsync>())
 			{
 				assetBundle = await assetsBundleLoaderAsync.LoadAsync(assetBundleName);
 			}
@@ -288,7 +288,7 @@ namespace Model
 			{
 				// 异步load资源到内存cache住
 				UnityEngine.Object[] assets;
-				using (AssetsLoaderAsync assetsLoaderAsync = EntityFactory.Create<AssetsLoaderAsync, AssetBundle>(assetBundle))
+				using (AssetsLoaderAsync assetsLoaderAsync = ComponentFactory.Create<AssetsLoaderAsync, AssetBundle>(assetBundle))
 				{
 					assets = await assetsLoaderAsync.LoadAllAssetsAsync();
 				}

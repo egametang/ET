@@ -20,7 +20,7 @@ namespace Hotfix
 
 				if (message.NeedCache)
 				{
-					foreach (Disposer disposer in message.Disposers)
+					foreach (Component disposer in message.Disposers)
 					{
 						dbCacheComponent.AddToCache(disposer, message.CollectionName);
 					}

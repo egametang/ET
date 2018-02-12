@@ -58,7 +58,7 @@ namespace Model
 
                 await timerComponent.WaitAsync(waitTime);
 
-                if (this.Id == 0)
+                if (this.IsDisposed)
                 {
                     return;
                 }

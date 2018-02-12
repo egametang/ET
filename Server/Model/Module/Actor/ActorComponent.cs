@@ -29,7 +29,7 @@ namespace Model
 		{
 			try
 			{
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}

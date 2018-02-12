@@ -13,7 +13,7 @@ namespace Model
 		}
 	}
 
-	public class AssetsBundleLoaderAsync : Disposer, IUpdate
+	public class AssetsBundleLoaderAsync : Component, IUpdate
 	{
 		private AssetBundleCreateRequest request;
 
@@ -32,7 +32,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

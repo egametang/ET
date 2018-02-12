@@ -98,7 +98,7 @@ namespace Model
 		{
 			while (true)
 			{
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}
@@ -118,7 +118,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

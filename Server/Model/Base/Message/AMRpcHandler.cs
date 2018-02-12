@@ -26,7 +26,7 @@ namespace Model
 				this.Run(session, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
-					if (session.Id == 0)
+					if (session.IsDisposed)
 					{
 						return;
 					}

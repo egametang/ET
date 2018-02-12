@@ -36,18 +36,18 @@ namespace Hotfix
 
 		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
 
-		private Queue<Disposer> updates = new Queue<Disposer>();
-		private Queue<Disposer> updates2 = new Queue<Disposer>();
+		private Queue<Component> updates = new Queue<Component>();
+		private Queue<Component> updates2 = new Queue<Component>();
 
-		private readonly Queue<Disposer> starts = new Queue<Disposer>();
+		private readonly Queue<Component> starts = new Queue<Component>();
 
-		private Queue<Disposer> loaders = new Queue<Disposer>();
-		private Queue<Disposer> loaders2 = new Queue<Disposer>();
+		private Queue<Component> loaders = new Queue<Component>();
+		private Queue<Component> loaders2 = new Queue<Component>();
 
-		private Queue<Disposer> lateUpdates = new Queue<Disposer>();
-		private Queue<Disposer> lateUpdates2 = new Queue<Disposer>();
+		private Queue<Component> lateUpdates = new Queue<Component>();
+		private Queue<Component> lateUpdates2 = new Queue<Component>();
 
-		private readonly HashSet<Disposer> unique = new HashSet<Disposer>();
+		private readonly HashSet<Component> unique = new HashSet<Component>();
 
 		public EventSystem()
 		{
@@ -126,7 +126,7 @@ namespace Hotfix
 			}
 		}
 
-		public void Add(Disposer disposer)
+		public void Add(Component disposer)
 		{
 			if (!this.disposerEvents.TryGetValue(disposer.GetType(), out IObjectSystem objectSystem))
 			{
@@ -154,7 +154,7 @@ namespace Hotfix
 			}
 		}
 
-		public void Awake(Disposer disposer)
+		public void Awake(Component disposer)
 		{
 			this.Add(disposer);
 
@@ -171,7 +171,7 @@ namespace Hotfix
 			iAwake.Awake();
 		}
 
-		public void Awake<P1>(Disposer disposer, P1 p1)
+		public void Awake<P1>(Component disposer, P1 p1)
 		{
 			this.Add(disposer);
 
@@ -188,7 +188,7 @@ namespace Hotfix
 			iAwake.Awake(p1);
 		}
 
-		public void Awake<P1, P2>(Disposer disposer, P1 p1, P2 p2)
+		public void Awake<P1, P2>(Component disposer, P1 p1, P2 p2)
 		{
 			this.Add(disposer);
 
@@ -205,7 +205,7 @@ namespace Hotfix
 			iAwake.Awake(p1, p2);
 		}
 
-		public void Awake<P1, P2, P3>(Disposer disposer, P1 p1, P2 p2, P3 p3)
+		public void Awake<P1, P2, P3>(Component disposer, P1 p1, P2 p2, P3 p3)
 		{
 			this.Add(disposer);
 
@@ -227,8 +227,8 @@ namespace Hotfix
 			unique.Clear();
 			while (this.loaders.Count > 0)
 			{
-				Disposer disposer = this.loaders.Dequeue();
-				if (disposer.Id == 0)
+				Component disposer = this.loaders.Dequeue();
+				if (disposer.IsDisposed)
 				{
 					continue;
 				}
@@ -269,7 +269,7 @@ namespace Hotfix
 			unique.Clear();
 			while (this.starts.Count > 0)
 			{
-				Disposer disposer = this.starts.Dequeue();
+				Component disposer = this.starts.Dequeue();
 
 				if (!this.unique.Add(disposer))
 				{
@@ -297,8 +297,8 @@ namespace Hotfix
 			unique.Clear();
 			while (this.updates.Count > 0)
 			{
-				Disposer disposer = this.updates.Dequeue();
-				if (disposer.Id == 0)
+				Component disposer = this.updates.Dequeue();
+				if (disposer.IsDisposed)
 				{
 					continue;
 				}
@@ -339,8 +339,8 @@ namespace Hotfix
 			unique.Clear();
 			while (this.lateUpdates.Count > 0)
 			{
-				Disposer disposer = this.lateUpdates.Dequeue();
-				if (disposer.Id == 0)
+				Component disposer = this.lateUpdates.Dequeue();
+				if (disposer.IsDisposed)
 				{
 					continue;
 				}

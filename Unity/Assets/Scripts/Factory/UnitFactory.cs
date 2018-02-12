@@ -12,7 +12,7 @@ namespace Model
 	        
             UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
             
-	        Unit unit = EntityFactory.CreateWithId<Unit>(id);
+	        Unit unit = ComponentFactory.CreateWithId<Unit>(id);
 	        unit.GameObject = UnityEngine.Object.Instantiate(prefab);
 	        GameObject parent = GameObject.Find($"/Global/Unit");
 	        unit.GameObject.transform.SetParent(parent.transform, false);

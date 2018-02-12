@@ -95,7 +95,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

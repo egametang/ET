@@ -209,7 +209,7 @@ namespace Model
 			while (this.loaders.Count > 0)
 			{
 				Disposer disposer = this.loaders.Dequeue();
-				if (disposer.Id == 0)
+				if (disposer.IsDisposed)
 				{
 					continue;
 				}
@@ -279,7 +279,7 @@ namespace Model
 			while (this.updates.Count > 0)
 			{
 				Disposer disposer = this.updates.Dequeue();
-				if (disposer.Id == 0)
+				if (disposer.IsDisposed)
 				{
 					continue;
 				}

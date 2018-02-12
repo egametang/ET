@@ -41,18 +41,16 @@ namespace Hotfix
 				{
 					r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = text, Password = "111111" });
 				}
-				
-				
+
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
 				Session gateSession = Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
 				Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
-
 				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
-				
+
 				Log.Info("登陆gate成功!");
 
 				// 创建Player
-				Player player = Model.EntityFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
+				Player player = Model.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
 				PlayerComponent playerComponent = Game.Scene.GetComponent<PlayerComponent>();
 				playerComponent.MyPlayer = player;
 
