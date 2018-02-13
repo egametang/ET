@@ -90,13 +90,13 @@ namespace Model
 
 		private void Update()
 		{
-			this.HotfixUpdate.Invoke();
+			this.HotfixUpdate?.Invoke();
 			Game.EventSystem.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.HotfixLateUpdate.Invoke();
+			this.HotfixLateUpdate?.Invoke();
 			Game.EventSystem.LateUpdate();
 		}
 
@@ -104,7 +104,7 @@ namespace Model
 		{
 			Instance = null;
 			Game.Close();
-			this.HotfixOnApplicationQuit.Invoke();
+			this.HotfixOnApplicationQuit?.Invoke();
 		}
 	}
 }

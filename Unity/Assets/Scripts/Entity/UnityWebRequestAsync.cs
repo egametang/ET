@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 namespace Model
 {
 	[ObjectSystem]
-	public class UnityWebRequestSystem : UpdateSystem<UnityWebRequestAsync>
+	public class UnityWebRequestUpdateSystem : UpdateSystem<UnityWebRequestAsync>
 	{
 		public override void Update(UnityWebRequestAsync self)
 		{
