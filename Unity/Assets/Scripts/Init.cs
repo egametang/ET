@@ -28,7 +28,9 @@ namespace Model
 
 				// 下载ab包
 				await BundleHelper.DownloadBundle();
-				
+
+				Game.Hotfix.LoadHotfixAssembly();
+
 				// 加载配置
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
 				Game.Scene.AddComponent<ConfigComponent>();
