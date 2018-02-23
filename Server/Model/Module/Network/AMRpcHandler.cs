@@ -14,7 +14,7 @@ namespace Model
 
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, uint rpcId, IMessage message)
+		public void Handle(Session session, uint rpcId, object message)
 		{
 			try
 			{

@@ -68,7 +68,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
             Model_OpcodeTypeComponent_Binding.Register(app);
-            Model_MessageProxy_Binding.Register(app);
             Model_MessageDispatherComponent_Binding.Register(app);
             Model_MessageAttribute_Binding.Register(app);
             Model_DoubleMap_2_UInt16_Type_Binding.Register(app);

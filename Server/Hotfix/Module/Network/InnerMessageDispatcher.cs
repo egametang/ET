@@ -28,7 +28,7 @@ namespace Hotfix
 				return;
 			}
 			
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, message);
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, new MessageInfo(packetInfo.Opcode, message));
 		}
 	}
 }

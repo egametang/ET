@@ -6,6 +6,10 @@ namespace Model
 	{
 		public AppType Type { get; }
 
+		public MessageHandlerAttribute()
+		{
+		}
+
 		public MessageHandlerAttribute(AppType appType)
 		{
 			this.Type = appType;

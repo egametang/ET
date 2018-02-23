@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Other\" />
+  </ItemGroup>
+
 </Project>

@@ -74,7 +74,7 @@ namespace Hotfix
 						continue;
 					}
 
-					MessageProxy messageProxy = new MessageProxy(messageType, (session, o) => { iMHandler.Handle(session, o); });
+					MessageProxy messageProxy = new MessageProxy(messageType, (session, rpcId, o) => { iMHandler.Handle(session, rpcId, o); });
 					messageDispatherComponent.RegisterHandler(monoOpcode, messageProxy);
 				}
 			}
@@ -89,11 +89,11 @@ namespace Hotfix
 			this.handlers[opcode].Add(handler);
 		}
 
-		public void Handle(Session session, ushort opcode, object message)
+		public void Handle(Session session, uint rpcId, MessageInfo messageInfo)
 		{
-			if (!this.handlers.TryGetValue(opcode, out List<IMHandler> actions))
+			if (!this.handlers.TryGetValue(messageInfo.Opcode, out List<IMHandler> actions))
 			{
-				Log.Error($"消息 {message.GetType().FullName} 没有处理");
+				Log.Error($"消息 {messageInfo.Message.GetType().FullName} 没有处理");
 				return;
 			}
 			
@@ -101,7 +101,7 @@ namespace Hotfix
 			{
 				try
 				{
-					ev.Handle(null, message);
+					ev.Handle(session, rpcId, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

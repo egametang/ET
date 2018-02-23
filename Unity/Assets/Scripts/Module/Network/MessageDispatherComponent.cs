@@ -75,7 +75,7 @@ namespace Model
 			this.handlers[opcode].Add(handler);
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(Session session, uint rpcId, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
@@ -88,7 +88,7 @@ namespace Model
 			{
 				try
 				{
-					ev.Handle(session, messageInfo.Message);
+					ev.Handle(session, rpcId, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

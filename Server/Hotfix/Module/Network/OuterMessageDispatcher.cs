@@ -31,7 +31,7 @@ namespace Hotfix
 
 			if (message != null)
 			{
-				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, message);
+				Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, new MessageInfo(packetInfo.Opcode, message));
 				return;
 			}
 

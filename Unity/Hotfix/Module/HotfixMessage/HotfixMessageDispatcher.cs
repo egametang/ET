@@ -9,9 +9,8 @@ namespace Hotfix
 		{
 			ushort opcode = packetInfo.Opcode;
 			Type t = Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-			object aa = ProtobufHelper.FromBytes(t, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-			IMessage message = (IMessage)aa;
-			Hotfix.Scene.GetComponent<MessageDispatherComponent>().Handle(session, opcode, message);
+			object message = ProtobufHelper.FromBytes(t, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+			Hotfix.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, new MessageInfo(packetInfo.Opcode, message));
 		}
 	}
 }

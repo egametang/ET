@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -211,26 +208,6 @@
     <Compile Include="Assets\Scripts\Base\Math\VInt3.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\AMHandler.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\AppType.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\ClientDispatcher.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\ErrorCode.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IActorMessage.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IMessage.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IMessageDispatcher.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IMessagePacker.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\IMHandler.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\MessageAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\MessageHandlerAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\MessageInfo.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\MessageProxy.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\MongoPacker.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\NumericType.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\Opcode.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\OpcodeHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\ProtobufPacker.cs" />
-    <Compile Include="Assets\Scripts\Base\Message\RpcException.cs" />
-    <Compile Include="Assets\Scripts\Base\UnOrderMultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Base\Network\AService.cs" />
@@ -263,6 +240,7 @@
     <Compile Include="Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
+    <Compile Include="Assets\Scripts\Base\UnOrderMultiMap.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
@@ -286,13 +264,7 @@
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\NetOuterComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\NetworkComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\NumericComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\NumericWatcherComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Component\ResourcesComponent.cs" />
     <Compile Include="Assets\Scripts\Component\SceneChangeComponent.cs" />
@@ -330,15 +302,40 @@
     <Compile Include="Assets\Scripts\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\SessionHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\AMHandler.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\ClientDispatcher.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\ErrorCode.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\IActorMessage.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\IMessage.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\IMessageDispatcher.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\IMessagePacker.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\IMHandler.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MessageAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MessageDispatherComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MessageHandlerAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MessageInfo.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MessageProxy.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\MongoPacker.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\NetOuterComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\NetworkComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\Opcode.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\OpcodeHelper.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\OpcodeTypeComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\ProtobufPacker.cs" />
+    <Compile Include="Assets\Scripts\Module\Network\RpcException.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\INumericWatcher.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\NumericComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\NumericType.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcherAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" />
     <Compile Include="Assets\Scripts\MonoConfig\CanvasConfig.cs" />
+    <Compile Include="Assets\Scripts\Other\AppType.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />
     <Compile Include="Assets\Scripts\Other\ILMethod.cs" />
-    <Compile Include="Assets\Scripts\Other\INumericWatcher.cs" />
     <Compile Include="Assets\Scripts\Other\IUIFactory.cs" />
     <Compile Include="Assets\Scripts\Other\MonoMethod.cs" />
     <Compile Include="Assets\Scripts\Other\MotionType.cs" />
-    <Compile Include="Assets\Scripts\Other\NumericWatcherAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\ReferenceCollector.cs" />
     <Compile Include="Assets\Scripts\Other\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Other\UIType.cs" />

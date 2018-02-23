@@ -79,7 +79,7 @@ namespace Model
             {
 	            IFrameMessage message = (IFrameMessage)sessionFrameMessage.FrameMessage.Messages[i];
 	            ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo() { Opcode= opcode, Message = (IMessage)message });
+                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, 0, new MessageInfo() { Opcode= opcode, Message = message });
             }
         }
     }

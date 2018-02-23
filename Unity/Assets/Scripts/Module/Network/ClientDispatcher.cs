@@ -28,7 +28,7 @@ namespace Model
 
 			// 普通消息或者是Rpc请求消息
 			MessageInfo messageInfo = new MessageInfo(packetInfo.Opcode, message);
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, packetInfo.RpcId, messageInfo);
 		}
 	}
 }
