@@ -22,6 +22,11 @@
 
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\AEventAttribute.cs" Link="Base\Event\AEventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\IEvent.cs" Link="Base\Event\IEvent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs" Link="Base\Helper\ArrayHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Base\Helper\EnumHelper.cs" />
@@ -37,20 +42,11 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AChannel.cs" Link="Base\Network\AChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\AService.cs" Link="Base\Network\AService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\Circularbuffer.cs" Link="Base\Network\Circularbuffer.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KChannel.cs" Link="Base\Network\KNet\KChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\Kcp.cs" Link="Base\Network\KNet\Kcp.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\KNet\KService.cs" Link="Base\Network\KNet\KService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\NetworkHelper.cs" Link="Base\Network\NetworkHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\PacketParser.cs" Link="Base\Network\TNet\PacketParser.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TChannel.cs" Link="Base\Network\TNet\TChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Network\TNet\TService.cs" Link="Base\Network\TNet\TService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Object\Component.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs" Link="Base\Object\Disposer.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Object\Entity.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Object\EventSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs" Link="Base\Object\IAwake.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdate.cs" Link="Base\Object\ILateUpdate.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs" Link="Base\Object\ILoad.cs" />
@@ -67,38 +63,49 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Module\Network\InnerConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Module\Network\OuterConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\Opcode.cs" Link="Message\Opcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Message\OuterMessage.cs" Link="Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Network\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Message\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Helper\SessionHelper.cs" Link="Base\Helper\SessionHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\AMHandler.cs" Link="Module\Network\AMHandler.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\ErrorCode.cs" Link="Module\Network\ErrorCode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\IActorMessage.cs" Link="Module\Network\IActorMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\IMessage.cs" Link="Module\Network\IMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\IMessageDispatcher.cs" Link="Module\Network\IMessageDispatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\IMessagePacker.cs" Link="Module\Network\IMessagePacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\IMHandler.cs" Link="Module\Network\IMHandler.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\MessageAttribute.cs" Link="Module\Network\MessageAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\MessageDispatherComponent.cs" Link="Module\Network\MessageDispatherComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\MessageHandlerAttribute.cs" Link="Module\Network\MessageHandlerAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\MessageInfo.cs" Link="Module\Network\MessageInfo.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\MongoPacker.cs" Link="Module\Network\MongoPacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\NetworkComponent.cs" Link="Module\Network\NetworkComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\Opcode.cs" Link="Module\Network\Opcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\OpcodeTypeComponent.cs" Link="Module\Network\OpcodeTypeComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\ProtobufPacker.cs" Link="Module\Network\ProtobufPacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Network\RpcException.cs" Link="Module\Network\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterMessage.cs" Link="Message\OuterMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterOpcode.cs" Link="Message\OuterOpcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessageDispatcher.cs" Link="Module\Message\IMessageDispatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessagePacker.cs" Link="Module\Message\IMessagePacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMHandler.cs" Link="Module\Message\IMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageDispatherComponent.cs" Link="Module\Message\MessageDispatherComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MongoPacker.cs" Link="Module\Message\MongoPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AChannel.cs" Link="Module\Message\Network\AChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\Circularbuffer.cs" Link="Module\Message\Network\Circularbuffer.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KChannel.cs" Link="Module\Message\Network\KCP\KChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\Kcp.cs" Link="Module\Message\Network\KCP\Kcp.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KService.cs" Link="Module\Message\Network\KCP\KService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\NetworkHelper.cs" Link="Module\Message\Network\NetworkHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\PacketParser.cs" Link="Module\Message\Network\TCP\PacketParser.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\TChannel.cs" Link="Module\Message\Network\TCP\TChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\TService.cs" Link="Module\Message\Network\TCP\TService.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Opcode.cs" Link="Module\Message\Opcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericType.cs" Link="Module\Numeric\NumericType.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Other\AppType.cs" Link="Other\AppType.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\HotfixMessage\HotfixMessage.cs" Link="Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\HotfixMessage\HotfixOpcode.cs" Link="Message\HotfixOpcode.cs" />
+    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixMessage.cs" Link="Message\HotfixMessage.cs" />
+    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixOpcode.cs" Link="Message\HotfixOpcode.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -115,9 +122,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Base\Network\KNet\" />
-    <Folder Include="Base\Network\TNet\" />
     <Folder Include="Component\Config\" />
+    <Folder Include="Module\Message\Network\KCP\" />
+    <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Numeric\" />
   </ItemGroup>
 </Project>

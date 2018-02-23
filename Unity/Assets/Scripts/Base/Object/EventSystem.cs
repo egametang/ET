@@ -14,20 +14,6 @@ namespace Model
 
 	public sealed class EventSystem
 	{
-		private Assembly hotfixAssembly;
-
-		public Assembly HotfixAssembly
-		{
-			get
-			{
-				return this.hotfixAssembly;
-			}
-			set
-			{
-				this.hotfixAssembly = value;
-			}
-		}
-
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
 
 		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
@@ -54,16 +40,6 @@ namespace Model
 		private Queue<Component> lateUpdates2 = new Queue<Component>();
 
 		private readonly HashSet<Component> unique = new HashSet<Component>();
-
-		public void LoadHotfixDll()
-		{
-#if ILRuntime
-			DllHelper.LoadHotfixAssembly();	
-#else
-			this.HotfixAssembly = DllHelper.LoadHotfixAssembly();
-#endif
-			this.Load();
-		}
 
 		public void Add(DLLType dllType, Assembly assembly)
 		{
@@ -135,6 +111,8 @@ namespace Model
 					this.RegisterEvent(aEventAttribute.Type, iEvent);
 				}
 			}
+
+			this.Load();
 		}
 
 		public void RegisterEvent(int eventId, IEvent e)
@@ -197,7 +175,13 @@ namespace Model
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer);
+				
+				IAwake iAwake = aAwakeSystem as IAwake;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer);
 			}
 		}
 
@@ -217,7 +201,13 @@ namespace Model
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1);
+				
+				IAwake<P1> iAwake = aAwakeSystem as IAwake<P1>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1);
 			}
 		}
 
@@ -237,7 +227,13 @@ namespace Model
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1, p2);
+				
+				IAwake<P1, P2> iAwake = aAwakeSystem as IAwake<P1, P2>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1, p2);
 			}
 		}
 
@@ -257,7 +253,13 @@ namespace Model
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1, p2, p3);
+
+				IAwake<P1, P2, P3> iAwake = aAwakeSystem as IAwake<P1, P2, P3>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1, p2, p3);
 			}
 		}
 
@@ -418,7 +420,7 @@ namespace Model
 		public void Run(int type)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -438,7 +440,7 @@ namespace Model
 		public void Run<A>(int type, A a)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -458,7 +460,7 @@ namespace Model
 		public void Run<A, B>(int type, A a, B b)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -478,7 +480,7 @@ namespace Model
 		public void Run<A, B, C>(int type, A a, B b, C c)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}

@@ -16,7 +16,7 @@ namespace Hotfix
 				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
 				GameObject login = UnityEngine.Object.Instantiate(bundleGameObject);
 				login.layer = LayerMask.NameToLayer(LayerNames.UI);
-		        UI ui = ComponentFactory.Create<UI, Scene, UI, GameObject>(scene, null, login);
+		        UI ui = ComponentFactory.Create<UI, GameObject>(login);
 
 				ui.AddComponent<UILoginComponent>();
 				return ui;

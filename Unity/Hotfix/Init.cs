@@ -12,9 +12,9 @@ namespace Hotfix
 				Hotfix.Scene.ModelScene = Game.Scene;
 
 				// 注册热更层回调
-				Model.Init.Instance.HotfixUpdate = () => { Update(); };
-				Model.Init.Instance.HotfixLateUpdate = () => { LateUpdate(); };
-				Model.Init.Instance.HotfixOnApplicationQuit = () => { OnApplicationQuit(); };
+				Game.Hotfix.Update = () => { Update(); };
+				Game.Hotfix.LateUpdate = () => { LateUpdate(); };
+				Game.Hotfix.OnApplicationQuit = () => { OnApplicationQuit(); };
 
 				// 注册热更层消息回调
 				ClientDispatcher clientDispatcher = new ClientDispatcher

@@ -59,7 +59,7 @@ namespace Hotfix
 
 		public EventSystem()
 		{
-			Type[] types = DllHelper.GetHotfixTypes();
+			Type[] types = Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
@@ -196,7 +196,13 @@ namespace Hotfix
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer);
+				
+				IAwake iAwake = aAwakeSystem as IAwake;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer);
 			}
 		}
 
@@ -209,14 +215,20 @@ namespace Hotfix
 			{
 				return;
 			}
-
+			
 			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1);
+				
+				IAwake<P1> iAwake = aAwakeSystem as IAwake<P1>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1);
 			}
 		}
 
@@ -236,7 +248,13 @@ namespace Hotfix
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1, p2);
+				
+				IAwake<P1, P2> iAwake = aAwakeSystem as IAwake<P1, P2>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1, p2);
 			}
 		}
 
@@ -256,7 +274,13 @@ namespace Hotfix
 				{
 					continue;
 				}
-				aAwakeSystem.Run(disposer, p1, p2, p3);
+				
+				IAwake<P1, P2, P3> iAwake = aAwakeSystem as IAwake<P1, P2, P3>;
+				if (iAwake == null)
+				{
+					continue;
+				}
+				iAwake.Run(disposer, p1, p2, p3);
 			}
 		}
 

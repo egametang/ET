@@ -26,8 +26,11 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("get_Scene", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Scene_0);
             args = new Type[]{};
+            method = type.GetMethod("get_Hotfix", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Hotfix_1);
+            args = new Type[]{};
             method = type.GetMethod("get_EventSystem", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_EventSystem_1);
+            app.RegisterCLRMethodRedirection(method, get_EventSystem_2);
 
 
         }
@@ -44,7 +47,18 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* get_EventSystem_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_Hotfix_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+            var result_of_this_method = Model.Game.Hotfix;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_EventSystem_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

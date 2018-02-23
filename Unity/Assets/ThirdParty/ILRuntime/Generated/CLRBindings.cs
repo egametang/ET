@@ -42,25 +42,27 @@ namespace ILRuntime.Runtime.Generated
             VInt3_Binding.Register(app);
             Model_PlayerComponent_Binding.Register(app);
             Model_Player_Binding.Register(app);
-            Model_Disposer_Binding.Register(app);
+            Model_Component_Binding.Register(app);
             Model_CameraComponent_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             Model_Actor_Test_Binding.Register(app);
             Model_MoveComponent_Binding.Register(app);
             Model_PacketInfo_Binding.Register(app);
             Model_ProtobufHelper_Binding.Register(app);
-            Model_IdGenerater_Binding.Register(app);
+            Model_MessageInfo_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
             System_Type_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
+            Model_IdGenerater_Binding.Register(app);
+            System_Collections_Generic_List_1_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_List_1_Object_Binding.Register(app);
+            Model_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            Model_DllHelper_Binding.Register(app);
+            Model_Hotfix_Binding.Register(app);
             System_Activator_Binding.Register(app);
             Model_AEventAttribute_Binding.Register(app);
             Model_EventProxy_Binding.Register(app);
@@ -68,6 +70,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
             Model_OpcodeTypeComponent_Binding.Register(app);
+            Model_MessageProxy_Binding.Register(app);
             Model_MessageDispatherComponent_Binding.Register(app);
             Model_MessageAttribute_Binding.Register(app);
             Model_DoubleMap_2_UInt16_Type_Binding.Register(app);
@@ -79,6 +82,7 @@ namespace ILRuntime.Runtime.Generated
             Model_GameObjectHelper_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             System_Collections_Generic_List_1_UIType_Binding.Register(app);
+            Model_Disposer_Binding.Register(app);
             Model_Scene_Binding.Register(app);
             Model_Session_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
@@ -93,7 +97,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             UnityEngine_Component_Binding.Register(app);
-            Model_Init_Binding.Register(app);
             Model_ClientDispatcher_Binding.Register(app);
             Model_NetworkComponent_Binding.Register(app);
             ReferenceCollector_Binding.Register(app);
@@ -107,6 +110,7 @@ namespace ILRuntime.Runtime.Generated
             Model_GlobalProto_Binding.Register(app);
             Model_NetworkHelper_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
+            Model_ComponentFactory_Binding.Register(app);
         }
     }
 }

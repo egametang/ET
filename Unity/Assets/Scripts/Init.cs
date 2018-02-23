@@ -1,27 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using ILRuntime.CLR.Method;
-using ILRuntime.CLR.TypeSystem;
-using ILRuntime.Runtime.Enviorment;
 using UnityEngine;
 
 namespace Model
 {
 	public class Init : MonoBehaviour
 	{
-		public static Init Instance;
-
-		public ILRuntime.Runtime.Enviorment.AppDomain AppDomain;
-
-		private IStaticMethod start;
-
-		public Action HotfixUpdate;
-		public Action HotfixLateUpdate;
-		public Action HotfixOnApplicationQuit;
-
 		private async void Start()
 		{
 			try
@@ -32,9 +15,6 @@ namespace Model
 				}
 
 				DontDestroyOnLoad(gameObject);
-				Instance = this;
-
-
 				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
 
 				Game.Scene.AddComponent<GlobalConfigComponent>();
@@ -46,7 +26,6 @@ namespace Model
 				Game.Scene.AddComponent<ClientFrameComponent>();
 				Game.Scene.AddComponent<UIComponent>();
 
-
 				// 下载ab包
 				await BundleHelper.DownloadBundle();
 				
@@ -54,31 +33,10 @@ namespace Model
 				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
 				Game.Scene.AddComponent<ConfigComponent>();
 				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
-
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent>();
 
-#if ILRuntime
-				Log.Debug("run in ilruntime mode");
-
-				this.AppDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
-				Game.EventSystem.LoadHotfixDll();
-				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
-				ILHelper.InitILRuntime();
-				
-				this.start = new ILStaticMethod("Hotfix.Init", "Start", 0);
-#else
-				Log.Debug("run in mono mode");
-				Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
-				Game.EventSystem.LoadHotfixDll();
-				Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
-				Type hotfixInit = Game.EventSystem.HotfixAssembly.GetType("Hotfix.Init");
-				this.start = new MonoStaticMethod(hotfixInit, "Start");
-#endif
-
-				// 进入热更新层
-				this.start.Run();
+				Game.Hotfix.GotoHotfix();
 
 				Game.EventSystem.Run(EventIdType.TestHotfixSubscribMonoEvent, "TestHotfixSubscribMonoEvent");
 			}
@@ -90,21 +48,20 @@ namespace Model
 
 		private void Update()
 		{
-			this.HotfixUpdate?.Invoke();
+			Game.Hotfix.Update?.Invoke();
 			Game.EventSystem.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.HotfixLateUpdate?.Invoke();
+			Game.Hotfix.LateUpdate?.Invoke();
 			Game.EventSystem.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			Instance = null;
+			Game.Hotfix.OnApplicationQuit?.Invoke();
 			Game.Close();
-			this.HotfixOnApplicationQuit?.Invoke();
 		}
 	}
 }

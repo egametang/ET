@@ -15,23 +15,23 @@ namespace Model
 		{
 			// 注册重定向函数
 			MethodInfo mi = typeof(Log).GetMethod("Debug", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
+			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
 
 			MethodInfo mi2 = typeof(Log).GetMethod("Info", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi2, ILRedirection.LogInfo);
+			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi2, ILRedirection.LogInfo);
 
 			MethodInfo mi3 = typeof(Log).GetMethod("Error", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
+			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
 
 			// 注册委托
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<List<object>>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<Session, object>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<List<object>>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
+			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<Session, uint, object>();
 
-			 CLRBindings.Initialize(Init.Instance.AppDomain);
+			CLRBindings.Initialize(Game.Hotfix.AppDomain);
 
 			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;
@@ -48,7 +48,7 @@ namespace Model
 				{
 					continue;
 				}
-				Init.Instance.AppDomain.RegisterCrossBindingAdaptor(adaptor);
+				Game.Hotfix.AppDomain.RegisterCrossBindingAdaptor(adaptor);
 			}
 
 			// 初始化ILRuntime的protobuf
@@ -68,7 +68,7 @@ namespace Model
 
 		private static object PType_CreateInstance(string typeName)
 		{
-			return Init.Instance.AppDomain.Instantiate(typeName);
+			return Game.Hotfix.AppDomain.Instantiate(typeName);
 		}
 
 		private static Type PType_GetRealType(object o)
