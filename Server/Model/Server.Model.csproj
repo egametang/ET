@@ -59,7 +59,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\ConfigComponent.cs" Link="Component\ConfigComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
@@ -70,6 +69,11 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Helper\SessionHelper.cs" Link="Base\Helper\SessionHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterMessage.cs" Link="Message\OuterMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterOpcode.cs" Link="Message\OuterOpcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\AConfig.cs" Link="Module\Config\AConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigComponent.cs" Link="Module\Config\ConfigComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ICategory.cs" Link="Module\Config\ICategory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />

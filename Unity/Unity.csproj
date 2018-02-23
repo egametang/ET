@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -114,12 +117,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Base\Config\ACategory.cs" />
-    <Compile Include="Assets\Scripts\Base\Config\AConfig.cs" />
-    <Compile Include="Assets\Scripts\Base\Config\AConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Base\Config\ConfigAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Config\ConfigHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Config\ICategory.cs" />
     <Compile Include="Assets\Scripts\Base\DoubleMap.cs" />
     <Compile Include="Assets\Scripts\Base\Event\AEventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\CrossEventAttribute.cs" />
@@ -202,7 +199,7 @@
     <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\StartConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
-    <Compile Include="Assets\Scripts\Component\ConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
     <Compile Include="Assets\Scripts\Component\PlayerComponent.cs" />
@@ -291,6 +288,12 @@
     <Compile Include="Assets\Scripts\Module\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\TypeHelper.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\ACategory.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\AConfig.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\AConfigComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\ConfigAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\ConfigHelper.cs" />
+    <Compile Include="Assets\Scripts\Module\Config\ICategory.cs" />
     <Compile Include="Assets\Scripts\Module\Message\AMHandler.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ClientDispatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ErrorCode.cs" />
