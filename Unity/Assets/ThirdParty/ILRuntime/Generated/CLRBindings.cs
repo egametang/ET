@@ -85,8 +85,8 @@ namespace ILRuntime.Runtime.Generated
             Model_Disposer_Binding.Register(app);
             Model_Scene_Binding.Register(app);
             Model_Session_Binding.Register(app);
-            System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
             Model_SessionHelper_Binding.Register(app);
+            System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_IResponse_Binding.Register(app);
             System_Threading_Tasks_Task_1_PacketInfo_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_PacketInfo_Binding.Register(app);

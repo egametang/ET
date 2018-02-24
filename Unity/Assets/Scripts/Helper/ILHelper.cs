@@ -11,27 +11,19 @@ namespace Model
 {
 	public static class ILHelper
 	{
-		public static unsafe void InitILRuntime()
+		public static unsafe void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain appDomain)
 		{
 			// 注册重定向函数
-			MethodInfo mi = typeof(Log).GetMethod("Debug", new Type[] { typeof(string) });
-			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
-
-			MethodInfo mi2 = typeof(Log).GetMethod("Info", new Type[] { typeof(string) });
-			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi2, ILRedirection.LogInfo);
-
-			MethodInfo mi3 = typeof(Log).GetMethod("Error", new Type[] { typeof(string) });
-			Game.Hotfix.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
 
 			// 注册委托
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<List<object>>();
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
-			Game.Hotfix.AppDomain.DelegateManager.RegisterMethodDelegate<Session, uint, object>();
+			appDomain.DelegateManager.RegisterMethodDelegate<List<object>>();
+			appDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
+			appDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
+			appDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
+			appDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
+			appDomain.DelegateManager.RegisterMethodDelegate<Session, uint, object>();
 
-			CLRBindings.Initialize(Game.Hotfix.AppDomain);
+			CLRBindings.Initialize(appDomain);
 
 			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;
@@ -48,27 +40,22 @@ namespace Model
 				{
 					continue;
 				}
-				Game.Hotfix.AppDomain.RegisterCrossBindingAdaptor(adaptor);
+				appDomain.RegisterCrossBindingAdaptor(adaptor);
 			}
 
 			// 初始化ILRuntime的protobuf
-			InitializeILRuntimeProtobuf();
+			InitializeILRuntimeProtobuf(appDomain);
 		}
 
-		public static void AvoidAot(GameObject gameObject)
+		public static void InitializeILRuntimeProtobuf(ILRuntime.Runtime.Enviorment.AppDomain appDomain)
 		{
-			Input input = gameObject.Get<Input>("11");
-		}
-
-		public static void InitializeILRuntimeProtobuf()
-		{
-			ProtoBuf.PType.RegisterFunctionCreateInstance(PType_CreateInstance);
+			ProtoBuf.PType.RegisterFunctionCreateInstance((typeName)=>PType_CreateInstance(appDomain, typeName));
 			ProtoBuf.PType.RegisterFunctionGetRealType(PType_GetRealType);
 		}
 
-		private static object PType_CreateInstance(string typeName)
+		private static object PType_CreateInstance(ILRuntime.Runtime.Enviorment.AppDomain appDomain, string typeName)
 		{
-			return Game.Hotfix.AppDomain.Instantiate(typeName);
+			return appDomain.Instantiate(typeName);
 		}
 
 		private static Type PType_GetRealType(object o)

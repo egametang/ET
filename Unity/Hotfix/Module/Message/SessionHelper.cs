@@ -26,12 +26,12 @@ namespace Hotfix
 			return response;
 		}
 
-		public static void SendModel(this Session session, Model.IMessage message)
+		public static void Send(this Session session, Model.IMessage message)
 		{
 			Model.SessionHelper.Send(session, message);
 		}
 
-		public static async Task<Model.IResponse> CallModel(this Session session, Model.IRequest request)
+		public static async Task<Model.IResponse> Call(this Session session, Model.IRequest request)
 		{
 			return await Model.SessionHelper.Call(session, request);
 		}

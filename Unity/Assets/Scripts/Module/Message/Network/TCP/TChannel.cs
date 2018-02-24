@@ -156,7 +156,14 @@ namespace Model
 					{
 						sendSize = this.sendBuffer.Count;
 					}
-					await this.tcpClient.GetStream().WriteAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+
+					NetworkStream stream = this.tcpClient.GetStream();
+					if (!stream.CanWrite)
+					{
+						return;
+					}
+					await stream.WriteAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
+
 					this.sendBuffer.FirstIndex += sendSize;
 					if (this.sendBuffer.FirstIndex == sendBuffer.ChunkSize)
 					{
@@ -184,7 +191,12 @@ namespace Model
 					}
 					int size = this.recvBuffer.ChunkSize - this.recvBuffer.LastIndex;
 
-					int n = await this.tcpClient.GetStream().ReadAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size);
+					NetworkStream stream = this.tcpClient.GetStream();
+					if (!stream.CanRead)
+					{
+						return;
+					}
+					int n = await stream.ReadAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size);
 
 					if (n == 0)
 					{
@@ -213,12 +225,6 @@ namespace Model
 						}
 					}
 				}
-			}
-			catch (ObjectDisposedException)
-			{
-			}
-			catch (IOException)
-			{
 			}
 			catch (Exception e)
 			{

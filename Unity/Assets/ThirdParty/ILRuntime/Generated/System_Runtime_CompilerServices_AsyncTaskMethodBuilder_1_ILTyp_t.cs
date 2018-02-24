@@ -76,6 +76,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
             method = type.GetMethod("SetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetResult_5);
+            args = new Type[]{typeof(System.Runtime.CompilerServices.IAsyncStateMachine)};
+            method = type.GetMethod("SetStateMachine", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, SetStateMachine_6);
 
             app.RegisterCLRCreateDefaultInstance(type, () => new System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance>());
 
@@ -400,6 +403,26 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method = (System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.SetResult(result);
+
+            WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
+
+            return __ret;
+        }
+
+        static StackObject* SetStateMachine_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Runtime.CompilerServices.IAsyncStateMachine stateMachine = (System.Runtime.CompilerServices.IAsyncStateMachine)typeof(System.Runtime.CompilerServices.IAsyncStateMachine).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
+            System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method;
+            instance_of_this_method = (System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Runtime.CompilerServices.AsyncTaskMethodBuilder<ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+
+            instance_of_this_method.SetStateMachine(stateMachine);
 
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
 
