@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Model
@@ -38,10 +39,15 @@ namespace Model
 			this.TimeNow = (uint)TimeHelper.Now();
 			this.socket = new UdpClient(ipEndPoint);
 
-			const uint IOC_IN = 0x80000000;
-			const uint IOC_VENDOR = 0x18000000;
-			uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-			this.socket.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+#if SERVER
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				const uint IOC_IN = 0x80000000;
+				const uint IOC_VENDOR = 0x18000000;
+				uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+				this.socket.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+			}
+#endif
 
 			this.StartRecv();
 		}
