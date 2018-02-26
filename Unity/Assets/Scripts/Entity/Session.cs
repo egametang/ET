@@ -151,7 +151,7 @@ namespace Model
 				packetInfo.RpcId = rpcId;
 				packetInfo.Index = Packet.RpcIdIndex + 4;
 				packetInfo.Length = (ushort)(packet.Length - packetInfo.Index);
-
+				
 				// flag第2位表示这是rpc返回消息
 				if ((flag & 0x40) > 0)
 				{
@@ -176,6 +176,74 @@ namespace Model
 			this.Network.MessageDispatcher.Dispatch(this, packetInfo);
 		}
 
+		public Task<IResponse> Call(IRequest request)
+		{
+			uint rpcId = ++RpcId;
+			var tcs = new TaskCompletionSource<IResponse>();
+
+			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
+			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
+			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(request);
+
+			this.requestCallback[rpcId] = (packetInfo) =>
+			{
+				try
+				{
+					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
+					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+					IResponse response = (IResponse)message;
+					if (response.Error > 100)
+					{
+						throw new RpcException(response.Error, response.Message);
+					}
+
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new Exception($"Rpc Error: {packetInfo.Opcode}", e));
+				}
+			};
+
+			const byte flag = 0x80;
+			this.SendMessage(flag, opcode, rpcId, bytes);
+			return tcs.Task;
+		}
+
+		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		{
+			uint rpcId = ++RpcId;
+			var tcs = new TaskCompletionSource<IResponse>();
+
+			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
+			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
+			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(request);
+
+			this.requestCallback[rpcId] = (packetInfo) =>
+			{
+				try
+				{
+					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
+					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
+					IResponse response = (IResponse)message;
+					if (response.Error > 100)
+					{
+						throw new RpcException(response.Error, response.Message);
+					}
+
+					tcs.SetResult(response);
+				}
+				catch (Exception e)
+				{
+					tcs.SetException(new Exception($"Rpc Error: {packetInfo.Opcode}", e));
+				}
+			};
+
+			const byte flag = 0x80;
+			this.SendMessage(flag, opcode, rpcId, bytes);
+			return tcs.Task;
+		}
+
 		public Task<PacketInfo> Call(ushort opcode, byte[] bytes)
 		{
 			uint rpcId = ++RpcId;
@@ -184,6 +252,10 @@ namespace Model
 			{
 				try
 				{
+					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
+					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
+					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);
+					packetInfo.Bytes = newBytes;
 					tcs.SetResult(packetInfo);
 				}
 				catch (Exception e)
@@ -205,6 +277,10 @@ namespace Model
 			{
 				try
 				{
+					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
+					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
+					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);
+					packetInfo.Bytes = newBytes;
 					tcs.SetResult(packetInfo);
 				}
 				catch (Exception e)
@@ -220,6 +296,27 @@ namespace Model
 			return tcs.Task;
 		}
 
+		public void Send(IMessage message)
+		{
+			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
+			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
+			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
+			this.Send(opcode, bytes);
+		}
+
+		public void Reply(uint rpcId, IResponse message)
+		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("session已经被Dispose了");
+			}
+			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
+			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
+			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
+			const byte flag = 0x40;
+			this.SendMessage(flag, opcode, rpcId, bytes);
+		}
+
 		public void Send(ushort opcode, byte[] bytes)
 		{
 			if (this.IsDisposed)
@@ -228,17 +325,6 @@ namespace Model
 			}
 			const byte flag = 0x00;
 			this.SendMessage(flag, opcode, 0, bytes);
-		}
-
-		public void Reply(ushort opcode, uint rpcId, byte[] bytes)
-		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("session已经被Dispose了");
-			}
-
-			const byte flag = 0x40;
-			this.SendMessage(flag, opcode, rpcId, bytes);
 		}
 
 		private void SendMessage(byte flag, ushort opcode, uint rpcId, byte[] bytes)

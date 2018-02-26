@@ -30,13 +30,13 @@ namespace Model
 
 	[Message(Opcode.M2A_Reload)]
 	[ProtoContract]
-	public partial class M2A_Reload: MessageObject, IRequest
+	public partial class M2A_Reload: IRequest
 	{
 	}
 
 	[Message(Opcode.A2M_Reload)]
 	[ProtoContract]
-	public partial class A2M_Reload: MessageObject, IResponse
+	public partial class A2M_Reload: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -47,7 +47,7 @@ namespace Model
 
 	[Message(Opcode.G2G_LockRequest)]
 	[ProtoContract]
-	public partial class G2G_LockRequest: MessageObject, IRequest
+	public partial class G2G_LockRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
@@ -59,7 +59,7 @@ namespace Model
 
 	[Message(Opcode.G2G_LockResponse)]
 	[ProtoContract]
-	public partial class G2G_LockResponse: MessageObject, IResponse
+	public partial class G2G_LockResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -70,7 +70,7 @@ namespace Model
 
 	[Message(Opcode.G2G_LockReleaseRequest)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseRequest: MessageObject, IRequest
+	public partial class G2G_LockReleaseRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
@@ -82,7 +82,7 @@ namespace Model
 
 	[Message(Opcode.G2G_LockReleaseResponse)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseResponse: MessageObject, IResponse
+	public partial class G2G_LockReleaseResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -93,7 +93,7 @@ namespace Model
 
 	[Message(Opcode.DBSaveRequest)]
 	[ProtoContract]
-	public partial class DBSaveRequest: MessageObject, IRequest
+	public partial class DBSaveRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public bool NeedCache;
@@ -108,7 +108,7 @@ namespace Model
 
 	[Message(Opcode.DBSaveBatchResponse)]
 	[ProtoContract]
-	public partial class DBSaveBatchResponse: MessageObject, IResponse
+	public partial class DBSaveBatchResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -119,7 +119,7 @@ namespace Model
 
 	[Message(Opcode.DBSaveBatchRequest)]
 	[ProtoContract]
-	public partial class DBSaveBatchRequest: MessageObject, IRequest
+	public partial class DBSaveBatchRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public bool NeedCache;
@@ -134,7 +134,7 @@ namespace Model
 
 	[Message(Opcode.DBSaveResponse)]
 	[ProtoContract]
-	public partial class DBSaveResponse: MessageObject, IResponse
+	public partial class DBSaveResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -145,7 +145,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryRequest)]
 	[ProtoContract]
-	public partial class DBQueryRequest: MessageObject, IRequest
+	public partial class DBQueryRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
@@ -160,7 +160,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryResponse)]
 	[ProtoContract]
-	public partial class DBQueryResponse: MessageObject, IResponse
+	public partial class DBQueryResponse: IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public Component Disposer;
@@ -174,7 +174,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryBatchRequest)]
 	[ProtoContract]
-	public partial class DBQueryBatchRequest: MessageObject, IRequest
+	public partial class DBQueryBatchRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string CollectionName;
@@ -189,7 +189,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryBatchResponse)]
 	[ProtoContract]
-	public partial class DBQueryBatchResponse: MessageObject, IResponse
+	public partial class DBQueryBatchResponse: IResponse
 	{
 		[ProtoMember(1)]
 		public List<Component> Disposers = new List<Component>();
@@ -203,7 +203,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryJsonRequest)]
 	[ProtoContract]
-	public partial class DBQueryJsonRequest: MessageObject, IRequest
+	public partial class DBQueryJsonRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string CollectionName;
@@ -218,7 +218,7 @@ namespace Model
 
 	[Message(Opcode.DBQueryJsonResponse)]
 	[ProtoContract]
-	public partial class DBQueryJsonResponse: MessageObject, IResponse
+	public partial class DBQueryJsonResponse: IResponse
 	{
 		[ProtoMember(1)]
 		public List<Component> Disposers = new List<Component>();
@@ -232,7 +232,7 @@ namespace Model
 
 	[Message(Opcode.ObjectAddRequest)]
 	[ProtoContract]
-	public partial class ObjectAddRequest: MessageObject, IRequest
+	public partial class ObjectAddRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -244,7 +244,7 @@ namespace Model
 
 	[Message(Opcode.ObjectAddResponse)]
 	[ProtoContract]
-	public partial class ObjectAddResponse: MessageObject, IResponse
+	public partial class ObjectAddResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -255,7 +255,7 @@ namespace Model
 
 	[Message(Opcode.ObjectRemoveRequest)]
 	[ProtoContract]
-	public partial class ObjectRemoveRequest: MessageObject, IRequest
+	public partial class ObjectRemoveRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -264,7 +264,7 @@ namespace Model
 
 	[Message(Opcode.ObjectRemoveResponse)]
 	[ProtoContract]
-	public partial class ObjectRemoveResponse: MessageObject, IResponse
+	public partial class ObjectRemoveResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -275,7 +275,7 @@ namespace Model
 
 	[Message(Opcode.ObjectLockRequest)]
 	[ProtoContract]
-	public partial class ObjectLockRequest: MessageObject, IRequest
+	public partial class ObjectLockRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -290,7 +290,7 @@ namespace Model
 
 	[Message(Opcode.ObjectLockResponse)]
 	[ProtoContract]
-	public partial class ObjectLockResponse: MessageObject, IResponse
+	public partial class ObjectLockResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -301,7 +301,7 @@ namespace Model
 
 	[Message(Opcode.ObjectUnLockRequest)]
 	[ProtoContract]
-	public partial class ObjectUnLockRequest: MessageObject, IRequest
+	public partial class ObjectUnLockRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -316,7 +316,7 @@ namespace Model
 
 	[Message(Opcode.ObjectUnLockResponse)]
 	[ProtoContract]
-	public partial class ObjectUnLockResponse: MessageObject, IResponse
+	public partial class ObjectUnLockResponse: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -327,7 +327,7 @@ namespace Model
 
 	[Message(Opcode.ObjectGetRequest)]
 	[ProtoContract]
-	public partial class ObjectGetRequest: MessageObject, IRequest
+	public partial class ObjectGetRequest: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -341,7 +341,7 @@ namespace Model
 
 	[Message(Opcode.ObjectGetResponse)]
 	[ProtoContract]
-	public partial class ObjectGetResponse: MessageObject, IResponse
+	public partial class ObjectGetResponse: IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public int AppId;
@@ -355,7 +355,7 @@ namespace Model
 
 	[Message(Opcode.R2G_GetLoginKey)]
 	[ProtoContract]
-	public partial class R2G_GetLoginKey: MessageObject, IRequest
+	public partial class R2G_GetLoginKey: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
@@ -364,7 +364,7 @@ namespace Model
 
 	[Message(Opcode.G2R_GetLoginKey)]
 	[ProtoContract]
-	public partial class G2R_GetLoginKey: MessageObject, IResponse
+	public partial class G2R_GetLoginKey: IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -378,7 +378,7 @@ namespace Model
 
 	[Message(Opcode.G2M_CreateUnit)]
 	[ProtoContract]
-	public partial class G2M_CreateUnit: MessageObject, IRequest
+	public partial class G2M_CreateUnit: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
@@ -390,7 +390,7 @@ namespace Model
 
 	[Message(Opcode.M2G_CreateUnit)]
 	[ProtoContract]
-	public partial class M2G_CreateUnit: MessageObject, IResponse
+	public partial class M2G_CreateUnit: IResponse
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long UnitId;

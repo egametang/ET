@@ -66,7 +66,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Message\Session.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Helper\SessionHelper.cs" Link="Base\Helper\SessionHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterMessage.cs" Link="Message\OuterMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Message\OuterOpcode.cs" Link="Message\OuterOpcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />

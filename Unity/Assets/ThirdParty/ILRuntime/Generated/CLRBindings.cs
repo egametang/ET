@@ -25,6 +25,7 @@ namespace ILRuntime.Runtime.Generated
             Model_SessionComponent_Binding.Register(app);
             Model_Frame_ClickMap_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
+            Model_Session_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             System_Threading_Tasks_Task_1_ILTypeInstance_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_ILTypeInstance_Binding.Register(app);
@@ -84,14 +85,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_UIType_Binding.Register(app);
             Model_Disposer_Binding.Register(app);
             Model_Scene_Binding.Register(app);
-            Model_Session_Binding.Register(app);
-            Model_SessionHelper_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
-            System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_IResponse_Binding.Register(app);
             System_Threading_Tasks_Task_1_PacketInfo_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_PacketInfo_Binding.Register(app);
-            System_Threading_Tasks_Task_1_IResponse_Binding.Register(app);
-            System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -103,6 +99,8 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_Button_Binding.Register(app);
             Model_ActionHelper_Binding.Register(app);
             Model_Actor_TestRequest_Binding.Register(app);
+            System_Threading_Tasks_Task_1_IResponse_Binding.Register(app);
+            System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.Register(app);
             Model_MongoHelper_Binding.Register(app);
             Model_Actor_TransferRequest_Binding.Register(app);
             Model_C2G_EnterMap_Binding.Register(app);
