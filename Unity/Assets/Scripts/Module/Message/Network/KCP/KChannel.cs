@@ -7,6 +7,20 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+	public struct WaitSendBuffer
+	{
+		public byte[] Bytes;
+		public int Index;
+		public int Length;
+
+		public WaitSendBuffer(byte[] bytes, int index, int length)
+		{
+			this.Bytes = bytes;
+			this.Index = index;
+			this.Length = length;
+		}
+	}
+
 	public class KChannel: AChannel
 	{
 		private UdpClient socket;
@@ -14,7 +28,7 @@ namespace Model
 		private Kcp kcp;
 
 		private readonly CircularBuffer recvBuffer = new CircularBuffer(8192);
-		private readonly Queue<byte[]> sendBuffer = new Queue<byte[]>();
+		private readonly Queue<WaitSendBuffer> sendBuffer = new Queue<WaitSendBuffer>();
 
 		private readonly PacketParser parser;
 		private bool isConnected;
@@ -24,7 +38,7 @@ namespace Model
 
 		private uint lastRecvTime;
 
-		private readonly byte[] cacheBytes = new byte[1400];
+		private readonly byte[] cacheBytes = new byte[ushort.MaxValue];
 
 		public uint Conn;
 
@@ -156,8 +170,8 @@ namespace Model
 				{
 					break;
 				}
-				byte[] buffer = this.sendBuffer.Dequeue();
-				this.KcpSend(buffer);
+				WaitSendBuffer buffer = this.sendBuffer.Dequeue();
+				this.KcpSend(buffer.Bytes, buffer.Index, buffer.Length);
 			}
 		}
 
@@ -175,80 +189,75 @@ namespace Model
 					this.OnError(this, SocketError.NetworkReset);
 					return;
 				}
-				int count = this.kcp.Recv(cacheBytes);
+				int count = this.kcp.Recv(this.cacheBytes);
 				if (count <= 0)
 				{
 					return;
 				}
-				
-				// 收到的数据放入缓冲区
-				this.recvBuffer.SendTo(this.cacheBytes, 0, count);
 
 				lastRecvTime = timeNow;
+
+				// 收到的数据放入缓冲区
+				byte[] sizeBuffer = BitConverter.GetBytes((ushort)count);
+				this.recvBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
+				this.recvBuffer.Write(cacheBytes, 0, count);
 
 				if (this.recvTcs != null)
 				{
 					bool isOK = this.parser.Parse();
 					if (isOK)
 					{
-						Packet packet = this.parser.GetPacket();
-
+						Packet pkt = this.parser.GetPacket();
 						var tcs = this.recvTcs;
 						this.recvTcs = null;
-						tcs.SetResult(packet);
+						tcs.SetResult(pkt);
 					}
 				}
 			}
 		}
-		
+
 		public void Output(byte[] bytes, int count)
 		{
 			this.socket.Send(bytes, count, this.remoteEndPoint);
 		}
 
-		private void KcpSend(byte[] buffers)
+		private void KcpSend(byte[] buffers, int index, int length)
 		{
-			this.kcp.Send(buffers);
+			this.kcp.Send(buffers, index, length);
 			this.GetService().AddToUpdate(this.Id);
 		}
-		
-		public override void Send(byte[] buffer)
+
+		public override void Send(byte[] buffer, int index, int length)
 		{
-			byte[] size = BitConverter.GetBytes((ushort)buffer.Length);
 			if (isConnected)
 			{
-				this.KcpSend(size);
-				this.KcpSend(buffer);
+				this.KcpSend(buffer, index, length);
 				return;
 			}
-			this.sendBuffer.Enqueue(size);
-			this.sendBuffer.Enqueue(buffer);
+			this.sendBuffer.Enqueue(new WaitSendBuffer(buffer, index, length));
 		}
 
 		public override void Send(List<byte[]> buffers)
 		{
 			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
-			byte[] sizeBuffer = BitConverter.GetBytes(size);
-			if (isConnected)
+			byte[] bytes;
+			if (!this.isConnected)
 			{
-				this.KcpSend(sizeBuffer);
+				bytes = this.cacheBytes;
 			}
 			else
 			{
-				this.sendBuffer.Enqueue(sizeBuffer);
+				bytes = new byte[size];
 			}
 
+			int index = 0;
 			foreach (byte[] buffer in buffers)
 			{
-				if (isConnected)
-				{
-					this.KcpSend(buffer);
-				}
-				else
-				{
-					this.sendBuffer.Enqueue(buffer);
-				}
+				Array.Copy(buffer, 0, bytes, index, buffer.Length);
+				index += buffer.Length;
 			}
+
+			Send(bytes, 0, size);
 		}
 
 		public override Task<Packet> Recv()

@@ -86,15 +86,15 @@ namespace Model
 			this.StartRecv();
 		}
 
-		public override void Send(byte[] buffer)
+		public override void Send(byte[] buffer, int index, int length)
 		{
 			if (this.IsDisposed)
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 			byte[] size = BitConverter.GetBytes((ushort)buffer.Length);
-			this.sendBuffer.SendTo(size);
-			this.sendBuffer.SendTo(buffer);
+			this.sendBuffer.Write(size, 0, size.Length);
+			this.sendBuffer.Write(buffer, index, length);
 			if (this.isConnected)
 			{
 				this.StartSend();
@@ -109,10 +109,10 @@ namespace Model
 			}
 			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
 			byte[] sizeBuffer = BitConverter.GetBytes(size);
-			this.sendBuffer.SendTo(sizeBuffer);
+			this.sendBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
 			foreach (byte[] buffer in buffers)
 			{
-				this.sendBuffer.SendTo(buffer);
+				this.sendBuffer.Write(buffer, 0, buffer.Length);
 			}
 			if (this.isConnected)
 			{
@@ -143,33 +143,22 @@ namespace Model
 					}
 
 					// 没有数据需要发送
-					if (this.sendBuffer.Count == 0)
+					long buffLength = this.sendBuffer.Length;
+					if (buffLength == 0)
 					{
 						this.isSending = false;
 						return;
 					}
 
 					this.isSending = true;
-
-					int sendSize = sendBuffer.ChunkSize - this.sendBuffer.FirstIndex;
-					if (sendSize > this.sendBuffer.Count)
-					{
-						sendSize = this.sendBuffer.Count;
-					}
-
+					
 					NetworkStream stream = this.tcpClient.GetStream();
 					if (!stream.CanWrite)
 					{
 						return;
 					}
-					await stream.WriteAsync(this.sendBuffer.First, this.sendBuffer.FirstIndex, sendSize);
 
-					this.sendBuffer.FirstIndex += sendSize;
-					if (this.sendBuffer.FirstIndex == sendBuffer.ChunkSize)
-					{
-						this.sendBuffer.FirstIndex = 0;
-						this.sendBuffer.RemoveFirst();
-					}
+					await this.sendBuffer.ReadAsync(stream);
 				}
 			}
 			catch (Exception e)
@@ -189,27 +178,19 @@ namespace Model
 					{
 						return;
 					}
-					int size = this.recvBuffer.ChunkSize - this.recvBuffer.LastIndex;
 
 					NetworkStream stream = this.tcpClient.GetStream();
 					if (!stream.CanRead)
 					{
 						return;
 					}
-					int n = await stream.ReadAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size);
 
+					int n = await this.recvBuffer.WriteAsync(stream);
+					
 					if (n == 0)
 					{
 						this.OnError(this, SocketError.NetworkReset);
 						return;
-					}
-
-					this.recvBuffer.LastIndex += n;
-
-					if (this.recvBuffer.LastIndex == this.recvBuffer.ChunkSize)
-					{
-						this.recvBuffer.AddLast();
-						this.recvBuffer.LastIndex = 0;
 					}
 
 					if (this.recvTcs != null)

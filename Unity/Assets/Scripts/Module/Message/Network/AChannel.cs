@@ -59,7 +59,7 @@ namespace Model
 		/// <summary>
 		/// 发送消息
 		/// </summary>
-		public abstract void Send(byte[] buffer);
+		public abstract void Send(byte[] buffer, int index, int length);
 
 		public abstract void Send(List<byte[]> buffers);
 

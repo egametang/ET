@@ -41,8 +41,8 @@ public class Kcp
 	/* encode 16 bits unsigned int (lsb) */
 	public static int ikcp_encode16u(byte[] p, int offset, UInt16 w)
 	{
-		p[0 + offset] = (byte) (w >> 0);
-		p[1 + offset] = (byte) (w >> 8);
+		p[0 + offset] = (byte)(w >> 0);
+		p[1 + offset] = (byte)(w >> 8);
 		return 2;
 	}
 
@@ -51,7 +51,7 @@ public class Kcp
 	{
 		UInt16 result = 0;
 		result |= p[0 + offset];
-		result |= (UInt16) (p[1 + offset] << 8);
+		result |= (UInt16)(p[1 + offset] << 8);
 		c = result;
 		return 2;
 	}
@@ -59,10 +59,10 @@ public class Kcp
 	/* encode 32 bits unsigned int (lsb) */
 	public static int ikcp_encode32u(byte[] p, int offset, UInt32 l)
 	{
-		p[0 + offset] = (byte) (l >> 0);
-		p[1 + offset] = (byte) (l >> 8);
-		p[2 + offset] = (byte) (l >> 16);
-		p[3 + offset] = (byte) (l >> 24);
+		p[0 + offset] = (byte)(l >> 0);
+		p[1 + offset] = (byte)(l >> 8);
+		p[2 + offset] = (byte)(l >> 16);
+		p[3 + offset] = (byte)(l >> 24);
 		return 4;
 	}
 
@@ -71,9 +71,9 @@ public class Kcp
 	{
 		UInt32 result = 0;
 		result |= p[0 + offset];
-		result |= (UInt32) (p[1 + offset] << 8);
-		result |= (UInt32) (p[2 + offset] << 16);
-		result |= (UInt32) (p[3 + offset] << 24);
+		result |= (UInt32)(p[1 + offset] << 8);
+		result |= (UInt32)(p[2 + offset] << 16);
+		result |= (UInt32)(p[3 + offset] << 24);
 		c = result;
 		return 4;
 	}
@@ -127,12 +127,12 @@ public class Kcp
 
 	private static UInt32 _imin_(UInt32 a, UInt32 b)
 	{
-		return a <= b? a : b;
+		return a <= b ? a : b;
 	}
 
 	private static UInt32 _imax_(UInt32 a, UInt32 b)
 	{
-		return a >= b? a : b;
+		return a >= b ? a : b;
 	}
 
 	private static UInt32 _ibound_(UInt32 lower, UInt32 middle, UInt32 upper)
@@ -142,7 +142,7 @@ public class Kcp
 
 	private static Int32 _itimediff(UInt32 later, UInt32 earlier)
 	{
-		return (Int32) (later - earlier);
+		return (Int32)(later - earlier);
 	}
 
 	// KCP Segment Definition
@@ -172,13 +172,13 @@ public class Kcp
 			var offset_ = offset;
 
 			offset += ikcp_encode32u(ptr, offset, conv);
-			offset += ikcp_encode8u(ptr, offset, (byte) cmd);
-			offset += ikcp_encode8u(ptr, offset, (byte) frg);
-			offset += ikcp_encode16u(ptr, offset, (UInt16) wnd);
+			offset += ikcp_encode8u(ptr, offset, (byte)cmd);
+			offset += ikcp_encode8u(ptr, offset, (byte)frg);
+			offset += ikcp_encode16u(ptr, offset, (UInt16)wnd);
 			offset += ikcp_encode32u(ptr, offset, ts);
 			offset += ikcp_encode32u(ptr, offset, sn);
 			offset += ikcp_encode32u(ptr, offset, una);
-			offset += ikcp_encode32u(ptr, offset, (UInt32) data.Length);
+			offset += ikcp_encode32u(ptr, offset, (UInt32)data.Length);
 
 			return offset - offset_;
 		}
@@ -336,17 +336,22 @@ public class Kcp
 	}
 
 	// user/upper level send, returns below zero for error
-	public int Send(byte[] buffer)
+	public int Send(byte[] bytes, int index, int length)
 	{
-		if (0 == buffer.Length)
+		if (0 == bytes.Length)
 			return -1;
+
+		if (length == 0)
+		{
+			return -1;
+		}
 
 		var count = 0;
 
-		if (buffer.Length < mss)
+		if (length < mss)
 			count = 1;
 		else
-			count = (int) (buffer.Length + mss - 1) / (int) mss;
+			count = (int)(length + mss - 1) / (int)mss;
 
 		if (255 < count)
 			return -2;
@@ -359,15 +364,15 @@ public class Kcp
 		for (var i = 0; i < count; i++)
 		{
 			var size = 0;
-			if (buffer.Length - offset > mss)
-				size = (int) mss;
+			if (length - offset > mss)
+				size = (int)mss;
 			else
-				size = buffer.Length - offset;
+				size = length - offset;
 
 			var seg = new Segment(size);
-			Array.Copy(buffer, offset, seg.data, 0, size);
+			Array.Copy(bytes, offset + index, seg.data, 0, size);
 			offset += size;
-			seg.frg = (UInt32) (count - i - 1);
+			seg.frg = (UInt32)(count - i - 1);
 			snd_queue = append(snd_queue, seg);
 		}
 
@@ -379,23 +384,23 @@ public class Kcp
 	{
 		if (0 == rx_srtt)
 		{
-			rx_srtt = (UInt32) rtt;
-			rx_rttval = (UInt32) rtt / 2;
+			rx_srtt = (UInt32)rtt;
+			rx_rttval = (UInt32)rtt / 2;
 		}
 		else
 		{
-			Int32 delta = (Int32) ((UInt32) rtt - rx_srtt);
+			Int32 delta = (Int32)((UInt32)rtt - rx_srtt);
 			if (0 > delta)
 				delta = -delta;
 
-			rx_rttval = (3 * rx_rttval + (uint) delta) / 4;
-			rx_srtt = (UInt32) ((7 * rx_srtt + rtt) / 8);
+			rx_rttval = (3 * rx_rttval + (uint)delta) / 4;
+			rx_srtt = (UInt32)((7 * rx_srtt + rtt) / 8);
 			if (rx_srtt < 1)
 				rx_srtt = 1;
 		}
 
-		var rto = (int) (rx_srtt + _imax_(1, 4 * rx_rttval));
-		rx_rto = _ibound_(rx_minrto, (UInt32) rto, IKCP_RTO_MAX);
+		var rto = (int)(rx_srtt + _imax_(1, 4 * rx_rttval));
+		rx_rto = _ibound_(rx_minrto, (UInt32)rto, IKCP_RTO_MAX);
 	}
 
 	private void shrink_buf()
@@ -479,7 +484,7 @@ public class Kcp
 				this.rcv_buf = append(new Segment[1] { newseg }, this.rcv_buf);
 			else
 				this.rcv_buf = append(slice(this.rcv_buf, 0, after_idx + 1),
-				                      append(new Segment[1] { newseg }, slice(this.rcv_buf, after_idx + 1, this.rcv_buf.Length)));
+									  append(new Segment[1] { newseg }, slice(this.rcv_buf, after_idx + 1, this.rcv_buf.Length)));
 
 		// move available data from rcv_buf -> rcv_queue
 		var count = 0;
@@ -570,7 +575,7 @@ public class Kcp
 					ack_push(sn, ts);
 					if (_itimediff(sn, rcv_nxt) >= 0)
 					{
-						var seg = new Segment((int) length);
+						var seg = new Segment((int)length);
 						seg.conv = conv_;
 						seg.cmd = cmd;
 						seg.frg = frg;
@@ -601,7 +606,7 @@ public class Kcp
 				return -3;
 			}
 
-			offset += (int) length;
+			offset += (int)length;
 		}
 
 		if (_itimediff(snd_una, s_una) > 0)
@@ -634,7 +639,7 @@ public class Kcp
 	private Int32 wnd_unused()
 	{
 		if (rcv_queue.Length < rcv_wnd)
-			return (int) this.rcv_wnd - rcv_queue.Length;
+			return (int)this.rcv_wnd - rcv_queue.Length;
 		return 0;
 	}
 
@@ -652,7 +657,7 @@ public class Kcp
 		var seg = new Segment(0);
 		seg.conv = conv;
 		seg.cmd = IKCP_CMD_ACK;
-		seg.wnd = (UInt32) wnd_unused();
+		seg.wnd = (UInt32)wnd_unused();
 		seg.una = rcv_nxt;
 
 		// flush acknowledges
@@ -703,7 +708,7 @@ public class Kcp
 		if ((probe & IKCP_ASK_SEND) != 0)
 		{
 			seg.cmd = IKCP_CMD_WASK;
-			if (offset + IKCP_OVERHEAD > (int) mtu)
+			if (offset + IKCP_OVERHEAD > (int)mtu)
 			{
 				output(buffer, offset);
 				//Array.Clear(buffer, 0, offset);
@@ -745,7 +750,7 @@ public class Kcp
 			this.snd_queue = slice(this.snd_queue, count, this.snd_queue.Length);
 
 		// calculate resent
-		var resent = (UInt32) fastresend;
+		var resent = (UInt32)fastresend;
 		if (fastresend <= 0)
 			resent = 0xffffffff;
 		var rtomin = rx_rto >> 3;
@@ -914,9 +919,9 @@ public class Kcp
 		if (tm_packet >= tm_flush_)
 			minimal = tm_flush_;
 		if (minimal >= interval)
-			minimal = (int) interval;
+			minimal = (int)interval;
 
-		return current_ + (UInt32) minimal;
+		return current_ + (UInt32)minimal;
 	}
 
 	// change MTU size, default is 1400
@@ -929,7 +934,7 @@ public class Kcp
 		if (null == buffer_)
 			return -2;
 
-		mtu = (UInt32) mtu_;
+		mtu = (UInt32)mtu_;
 		mss = mtu - IKCP_OVERHEAD;
 		buffer = buffer_;
 		return 0;
@@ -941,7 +946,7 @@ public class Kcp
 			interval_ = 5000;
 		else if (interval_ < 10)
 			interval_ = 10;
-		interval = (UInt32) interval_;
+		interval = (UInt32)interval_;
 		return 0;
 	}
 
@@ -954,7 +959,7 @@ public class Kcp
 	{
 		if (nodelay_ > 0)
 		{
-			nodelay = (UInt32) nodelay_;
+			nodelay = (UInt32)nodelay_;
 			if (nodelay_ != 0)
 				rx_minrto = IKCP_RTO_NDL;
 			else
@@ -967,7 +972,7 @@ public class Kcp
 				interval_ = 5000;
 			else if (interval_ < 10)
 				interval_ = 10;
-			interval = (UInt32) interval_;
+			interval = (UInt32)interval_;
 		}
 
 		if (resend_ >= 0)
@@ -983,10 +988,10 @@ public class Kcp
 	public int WndSize(int sndwnd, int rcvwnd)
 	{
 		if (sndwnd > 0)
-			snd_wnd = (UInt32) sndwnd;
+			snd_wnd = (UInt32)sndwnd;
 
 		if (rcvwnd > 0)
-			rcv_wnd = (UInt32) rcvwnd;
+			rcv_wnd = (UInt32)rcvwnd;
 		return 0;
 	}
 

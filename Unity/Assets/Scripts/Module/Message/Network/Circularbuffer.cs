@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Model
 {
-    public class CircularBuffer
+    public class CircularBuffer: Stream
     {
         public int ChunkSize = 8192;
 
@@ -28,7 +31,7 @@ namespace Model
             this.AddLast();
         }
 
-        public int Count
+        public override long Length
         {
             get
             {
@@ -93,38 +96,93 @@ namespace Model
             }
         }
 
-        public void RecvFrom(byte[] buffer, int count)
+		/// <summary>
+		/// 从CircularBuffer读取到stream流中
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public async Task ReadAsync(Stream stream)
+	    {
+		    long buffLength = this.Length;
+			int sendSize = this.ChunkSize - this.FirstIndex;
+		    if (sendSize > buffLength)
+		    {
+			    sendSize = (int)buffLength;
+		    }
+			
+		    await stream.WriteAsync(this.First, this.FirstIndex, sendSize);
+
+		    this.FirstIndex += sendSize;
+		    if (this.FirstIndex == this.ChunkSize)
+		    {
+			    this.FirstIndex = 0;
+			    this.RemoveFirst();
+		    }
+		}
+
+		/// <summary>
+		/// 从stream流写到CircularBuffer中
+		/// </summary>
+		/// <param name="stream"></param>
+		/// <returns></returns>
+		public async Task<int> WriteAsync(Stream stream)
+	    {
+		    int size = this.ChunkSize - this.LastIndex;
+			
+		    int n = await stream.ReadAsync(this.Last, this.LastIndex, size);
+
+		    if (n == 0)
+		    {
+			    return 0;
+		    }
+
+		    this.LastIndex += n;
+
+		    if (this.LastIndex == this.ChunkSize)
+		    {
+			    this.AddLast();
+			    this.LastIndex = 0;
+		    }
+
+		    return n;
+	    }
+
+        public override int Read(byte[] buffer, int offset, int count)
         {
-            if (this.Count < count)
+	        if (buffer.Length < offset + count)
+	        {
+		        throw new Exception($"bufferList length < coutn, buffer length: {buffer.Length} {offset} {count}");
+	        }
+
+	        long length = this.Length;
+			if (length < count)
             {
-                throw new Exception($"bufferList size < n, bufferList: {this.Count} buffer length: {buffer.Length} {count}");
+	            count = (int)length;
             }
 
-	        if (buffer.Length < count)
-	        {
-				throw new Exception($"bufferList length < coutn, buffer length: {buffer.Length} {count}");
-	        }
             int alreadyCopyCount = 0;
             while (alreadyCopyCount < count)
             {
                 int n = count - alreadyCopyCount;
-                if (ChunkSize - this.FirstIndex > n)
+				if (ChunkSize - this.FirstIndex > n)
                 {
-                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount, n);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, n);
                     this.FirstIndex += n;
                     alreadyCopyCount += n;
                 }
                 else
                 {
-                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount, ChunkSize - this.FirstIndex);
+                    Array.Copy(this.First, this.FirstIndex, buffer, alreadyCopyCount + offset, ChunkSize - this.FirstIndex);
                     alreadyCopyCount += ChunkSize - this.FirstIndex;
                     this.FirstIndex = 0;
                     this.RemoveFirst();
                 }
             }
+
+	        return count;
         }
 
-        public void SendTo(byte[] buffer)
+        public void Write(byte[] buffer)
         {
             int alreadyCopyCount = 0;
             while (alreadyCopyCount < buffer.Length)
@@ -151,7 +209,7 @@ namespace Model
             }
         }
 
-        public void SendTo(byte[] buffer, int offset, int count)
+        public override void Write(byte[] buffer, int offset, int count)
         {
             int alreadyCopyCount = 0;
             while (alreadyCopyCount < count)
@@ -177,5 +235,46 @@ namespace Model
                 }
             }
         }
+
+	    public override void Flush()
+	    {
+		    throw new NotImplementedException();
+		}
+
+	    public override long Seek(long offset, SeekOrigin origin)
+	    {
+			throw new NotImplementedException();
+	    }
+
+	    public override void SetLength(long value)
+	    {
+		    throw new NotImplementedException();
+		}
+
+	    public override bool CanRead
+	    {
+		    get
+		    {
+			    return true;
+		    }
+	    }
+
+	    public override bool CanSeek
+	    {
+		    get
+		    {
+			    return false;
+		    }
+	    }
+
+	    public override bool CanWrite
+	    {
+		    get
+		    {
+			    return true;
+		    }
+	    }
+
+	    public override long Position { get; set; }
     }
 }

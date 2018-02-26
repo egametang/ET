@@ -75,13 +75,13 @@ namespace Model
 				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (this.buffer.Count < 2)
+						if (this.buffer.Length < 2)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.buffer.RecvFrom(this.packet.Bytes, 2);
+							this.buffer.Read(this.packet.Bytes, 0, 2);
 							this.packetSize = BitConverter.ToUInt16(this.packet.Bytes, 0);
 							if (packetSize > 60000)
 							{
@@ -91,13 +91,13 @@ namespace Model
 						}
 						break;
 					case ParserState.PacketBody:
-						if (this.buffer.Count < this.packetSize)
+						if (this.buffer.Length < this.packetSize)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.buffer.RecvFrom(this.packet.Bytes, this.packetSize);
+							this.buffer.Read(this.packet.Bytes, 0, this.packetSize);
 							this.packet.Length = this.packetSize;
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
