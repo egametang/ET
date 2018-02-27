@@ -192,7 +192,7 @@ namespace Model
 					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 					IResponse response = (IResponse)message;
-					if (response.Error > 100)
+					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
@@ -226,7 +226,7 @@ namespace Model
 					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 					IResponse response = (IResponse)message;
-					if (response.Error > 100)
+					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
