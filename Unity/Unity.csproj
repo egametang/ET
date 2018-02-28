@@ -230,8 +230,6 @@
     <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
-    <Compile Include="Assets\Scripts\Message\OuterMessage.cs" />
-    <Compile Include="Assets\Scripts\Message\OuterOpcode.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorNodeConfig.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTree.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeArgsDict.cs" />
@@ -318,6 +316,8 @@
     <Compile Include="Assets\Scripts\Module\Message\Opcode.cs" />
     <Compile Include="Assets\Scripts\Module\Message\OpcodeHelper.cs" />
     <Compile Include="Assets\Scripts\Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\OuterMessage.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\OuterOpcode.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ProtobufPacker.cs" />
     <Compile Include="Assets\Scripts\Module\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\INumericWatcher.cs" />

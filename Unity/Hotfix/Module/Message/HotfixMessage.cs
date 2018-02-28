@@ -1,41 +1,41 @@
-using Hotfix;
-using Model;
-using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
-
+using Model;
+using Hotfix;
+using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 namespace Hotfix
 {
 	[Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]
-	public class C2R_Login : MessageObject, IRequest
+	public partial class C2R_Login: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
 
 		[ProtoMember(2, IsRequired = true)]
 		public string Password;
+
 	}
 
 	[Message(HotfixOpcode.R2C_Login)]
 	[ProtoContract]
-	public class R2C_Login : MessageObject, IResponse
+	public partial class R2C_Login: IResponse
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Address;
 
 		[ProtoMember(2, IsRequired = true)]
 		public long Key;
 
-		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
 	}
 
 	[Message(HotfixOpcode.C2G_LoginGate)]
 	[ProtoContract]
-	public class C2G_LoginGate : MessageObject, IRequest
+	public partial class C2G_LoginGate: IRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
@@ -44,60 +44,60 @@ namespace Hotfix
 
 	[Message(HotfixOpcode.G2C_LoginGate)]
 	[ProtoContract]
-	public class G2C_LoginGate : MessageObject, IResponse
+	public partial class G2C_LoginGate: IResponse
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
 
-		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
 	}
 
 	[Message(HotfixOpcode.G2C_TestHotfixMessage)]
 	[ProtoContract]
-	public class G2C_TestHotfixMessage : MessageObject, IMessage
+	public partial class G2C_TestHotfixMessage: IMessage
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
+
 	}
 
 	[Message(HotfixOpcode.C2M_TestActorRequest)]
 	[ProtoContract]
-	public class C2M_TestActorRequest : MessageObject, IActorRequest
+	public partial class C2M_TestActorRequest: MessageObject, IActorRequest
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
+
 	}
 
 	[Message(HotfixOpcode.M2C_TestActorResponse)]
 	[ProtoContract]
-	public class M2C_TestActorResponse : MessageObject, IActorResponse
+	public partial class M2C_TestActorResponse: MessageObject, IActorResponse
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int Error { get; set; }
+		[ProtoMember(91, IsRequired = true)]
+		public string Message { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
-		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
 	}
-}
 
+}
 #if SERVER
 namespace Model
 {
-	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
 	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
-	public partial class MessageObject
-	{
-	}
+	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
+	public partial class MessageObject {}
+
 }
-#else
-	public partial class MessageObject
-	{
-	}
 #endif
+namespace Model
+{
+	public partial class MessageObject {}
+
+}

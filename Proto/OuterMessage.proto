@@ -1,54 +1,32 @@
-message C2R_Login // ARequest
-{
-	required string	Account	 = 1;	// 帐号
-	required string	Password = 2;	// 密码
-}
-
-message R2C_Login // AResponse
-{
-	required string Address = 1;
-	required int64 	Key	    = 2;
-}
-
-message C2G_LoginGate // ARequest
-{
-	required int64 Key = 1;	// 帐号
-}
-
-message G2C_LoginGate // AResponse
-{
-	required int64 PlayerId = 1;
-}
-
-message Actor_Test // AActorMessage
+message Actor_Test // IActorMessage
 {
 	required string Info = 1;
 }
 
-message Actor_TestRequest // AActorRequest
+message Actor_TestRequest // IActorRequest
 {
 	required string request = 1;
 }
 
-message Actor_TestResponse // AActorResponse
+message Actor_TestResponse // IActorResponse
 {
 	required string response = 1;
 }
 
-message Actor_TransferRequest // AActorRequest
+message Actor_TransferRequest // IActorRequest
 {
 	required int32 MapIndex = 1;
 }
 
-message Actor_TransferResponse // AActorResponse
+message Actor_TransferResponse // IActorResponse
 {
 }
 
-message C2G_EnterMap // ARequest
+message C2G_EnterMap // IRequest
 {
 }
 
-message G2C_EnterMap // AResponse
+message G2C_EnterMap // IResponse
 {
 	required int64 UnitId = 1;
 	required int32 Count  = 2;
@@ -61,7 +39,7 @@ message UnitInfo
 	required int32 Z       = 3;
 }
 
-message Actor_CreateUnits // AActorMessage
+message Actor_CreateUnits // IActorMessage
 {
     repeated UnitInfo Units = 1;
 }
@@ -69,34 +47,28 @@ message Actor_CreateUnits // AActorMessage
 message FrameMessageInfo
 {
 	required int64 Id = 1;
-	required AMessage Message = 2;
+	required MessageObject Message = 2;
 }
 
-message FrameMessage // AActorMessage
-{
-	required int32 Frame = 1;
-	repeated AFrameMessage Messages = 2;
-}
-
-message Frame_ClickMap // AFrameMessage
+message Frame_ClickMap // IFrameMessage
 {
 	required int32 X = 1;
 	required int32 Z = 2;
 }
 
-message C2M_Reload // ARequest
+message C2M_Reload // IRequest
 {
 	required AppType AppType = 1;
 }
 
-message M2C_Reload // AResponse
+message M2C_Reload // IResponse
 {
 }
 
-message C2R_Ping // ARequest
+message C2R_Ping // IRequest
 {
 }
 
-message R2C_Ping // AResponse
+message R2C_Ping // IResponse
 {
 }

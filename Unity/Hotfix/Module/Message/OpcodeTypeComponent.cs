@@ -32,7 +32,6 @@ namespace Hotfix
 				{
 					continue;
 				}
-
 				this.opcodeTypes.Add(messageAttribute.Opcode, type);
 
 				ProtoBuf.PType.RegisterType(type.FullName, type);
