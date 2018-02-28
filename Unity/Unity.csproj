@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -122,7 +125,7 @@
     <Compile Include="Assets\Scripts\Base\Event\EventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\EventIdType.cs" />
     <Compile Include="Assets\Scripts\Base\Event\IEvent.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\ArrayHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\EnumHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\FileHelper.cs" />

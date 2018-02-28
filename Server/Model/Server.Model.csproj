@@ -27,7 +27,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\IEvent.cs" Link="Base\Event\IEvent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ArrayHelper.cs" Link="Base\Helper\ArrayHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Base\Helper\EnumHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\FileHelper.cs" Link="Base\Helper\FileHelper.cs" />
@@ -36,6 +35,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs" Link="Base\Helper\MethodInfoHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MongoHelper.cs" Link="Base\Helper\MongoHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs" Link="Base\Helper\NetHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ObjectHelper.cs" Link="Base\Helper\ObjectHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs" Link="Base\Helper\ProtobufHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\RandomHelper.cs" Link="Base\Helper\RandomHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs" Link="Base\Helper\StringHelper.cs" />
