@@ -239,6 +239,8 @@ namespace Model
 				}
 			};
 
+			cancellationToken.Register(()=>this.requestCallback.Remove(rpcId));
+
 			const byte flag = 0x80;
 			this.SendMessage(flag, opcode, rpcId, bytes);
 			return tcs.Task;
