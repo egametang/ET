@@ -175,6 +175,7 @@
     <Compile Include="Assets\Scripts\Base\Object\Object.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" />
+    <Compile Include="Assets\Scripts\Base\OneThreadSynchronizationContext.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Base\UnOrderMultiMap.cs" />

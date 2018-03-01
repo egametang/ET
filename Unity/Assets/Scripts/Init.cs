@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Threading;
 using UnityEngine;
 
 namespace Model
 {
 	public class Init : MonoBehaviour
 	{
+		private readonly OneThreadSynchronizationContext contex = new OneThreadSynchronizationContext();
+
 		private async void Start()
 		{
 			try
@@ -13,6 +16,8 @@ namespace Model
 				{
 					Log.Warning($"当前版本:{Application.unityVersion}, 最好使用运行指南推荐版本!");
 				}
+
+				SynchronizationContext.SetSynchronizationContext(this.contex);
 
 				DontDestroyOnLoad(gameObject);
 				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
@@ -50,6 +55,7 @@ namespace Model
 
 		private void Update()
 		{
+			this.contex.Update();
 			Game.Hotfix.Update?.Invoke();
 			Game.EventSystem.Update();
 		}

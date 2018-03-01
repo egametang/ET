@@ -161,6 +161,9 @@ namespace Model
 					await this.sendBuffer.ReadAsync(stream);
 				}
 			}
+			catch (ObjectDisposedException)
+			{
+			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());
@@ -186,7 +189,7 @@ namespace Model
 					}
 
 					int n = await this.recvBuffer.WriteAsync(stream);
-					
+
 					if (n == 0)
 					{
 						this.OnError(this, SocketError.NetworkReset);
@@ -206,6 +209,9 @@ namespace Model
 						}
 					}
 				}
+			}
+			catch (ObjectDisposedException)
+			{
 			}
 			catch (Exception e)
 			{
