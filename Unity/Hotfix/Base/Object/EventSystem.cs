@@ -4,32 +4,6 @@ using Model;
 
 namespace Hotfix
 {
-	public interface IObjectSystem
-	{
-		Type Type();
-		void Set(object value);
-	}
-
-	public abstract class ObjectSystem<T> : IObjectSystem
-	{
-		private T value;
-
-		protected T Get()
-		{
-			return value;
-		}
-
-		public void Set(object v)
-		{
-			this.value = (T)v;
-		}
-
-		public Type Type()
-		{
-			return typeof(T);
-		}
-	}
-
 	public sealed class EventSystem
 	{
 		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
@@ -59,7 +33,7 @@ namespace Hotfix
 
 		public EventSystem()
 		{
-			Type[] types = Game.Hotfix.GetHotfixTypes();
+			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
@@ -120,7 +94,7 @@ namespace Hotfix
 
 					// hotfix的事件也要注册到mono层，hotfix可以订阅mono层的事件
 					Action<List<object>> action = list => { Handle(aEventAttribute.Type, list); };
-					Game.EventSystem.RegisterEvent(aEventAttribute.Type, new EventProxy(action));
+					Model.Game.EventSystem.RegisterEvent(aEventAttribute.Type, new EventProxy(action));
 				}
 			}
 
@@ -132,16 +106,16 @@ namespace Hotfix
 			switch (param.Count)
 			{
 				case 0:
-					Hotfix.EventSystem.Run(type);
+					Game.EventSystem.Run(type);
 					break;
 				case 1:
-					Hotfix.EventSystem.Run(type, param[0]);
+					Game.EventSystem.Run(type, param[0]);
 					break;
 				case 2:
-					Hotfix.EventSystem.Run(type, param[0], param[1]);
+					Game.EventSystem.Run(type, param[0], param[1]);
 					break;
 				case 3:
-					Hotfix.EventSystem.Run(type, param[0], param[1], param[2]);
+					Game.EventSystem.Run(type, param[0], param[1], param[2]);
 					break;
 			}
 		}

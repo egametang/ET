@@ -38,10 +38,10 @@ namespace Hotfix
 		{
 			this.handlers.Clear();
 
-			Model.MessageDispatherComponent messageDispatherComponent = Game.Scene.GetComponent<Model.MessageDispatherComponent>();
-			Model.OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<Model.OpcodeTypeComponent>();
+			Model.MessageDispatherComponent messageDispatherComponent = Model.Game.Scene.GetComponent<Model.MessageDispatherComponent>();
+			Model.OpcodeTypeComponent opcodeTypeComponent = Model.Game.Scene.GetComponent<Model.OpcodeTypeComponent>();
 
-			Type[] types = Game.Hotfix.GetHotfixTypes();
+			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

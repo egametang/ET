@@ -7,7 +7,7 @@ namespace Hotfix
 	{
 		public override void Run()
 		{
-			UI ui = Hotfix.Scene.GetComponent<UIComponent>().Create(UIType.UILogin);
+			UI ui = Game.Scene.GetComponent<UIComponent>().Create(UIType.UILogin);
 		}
 	}
 }

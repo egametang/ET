@@ -18,7 +18,7 @@ namespace Hotfix
 
 		public void Awake()
 		{
-			Type[] types = Game.Hotfix.GetHotfixTypes();
+			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);

@@ -13,7 +13,7 @@ namespace Model
 				GameObject bundleGameObject = ((GameObject)Resources.Load("KV")).Get<GameObject>("UILoading");
 				GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
 				go.layer = LayerMask.NameToLayer(LayerNames.UI);
-				UI ui = ComponentFactory.Create<UI, Scene, UI, GameObject>(scene, null, go);
+				UI ui = ComponentFactory.Create<UI, GameObject>(go);
 
 				ui.AddComponent<UILoadingComponent>();
 				return ui;

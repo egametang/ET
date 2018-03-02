@@ -11,7 +11,7 @@ namespace Hotfix
         {
 	        try
 			{
-				ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
+				ResourcesComponent resourcesComponent = Model.Game.Scene.GetComponent<ResourcesComponent>();
 				resourcesComponent.LoadBundle($"{type}.unity3d");
 				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
 				GameObject login = UnityEngine.Object.Instantiate(bundleGameObject);
@@ -30,7 +30,7 @@ namespace Hotfix
 
 	    public void Remove(UIType type)
 	    {
-			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
+			Model.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
 	    }
     }
 }

@@ -19,7 +19,7 @@ namespace Hotfix
 
 			if (this.IsFromPool)
 			{
-				Hotfix.ObjectPool.Recycle(this);
+				Game.ObjectPool.Recycle(this);
 			}
 		}
 	}

@@ -83,7 +83,7 @@
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Module\UI\UIComponent.cs" />
-    <Compile Include="Entity\Hotfix.cs" />
+    <Compile Include="Entity\Game.cs" />
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Module\Message\HotfixMessage.cs" />
     <Compile Include="Module\Message\SessionHelper.cs" />

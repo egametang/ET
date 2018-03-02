@@ -4,14 +4,13 @@ using UnityEngine;
 namespace Hotfix
 {
 	[Model.ObjectSystem]
-	public class UiSystem : AwakeSystem<UI, GameObject>
+	public class UiAwakeSystem : AwakeSystem<UI, GameObject>
 	{
 		public override void Awake(UI self, GameObject gameObject)
 		{
 			self.Awake(gameObject);
 		}
 	}
-	
 	
 	public sealed class UI: Entity
 	{

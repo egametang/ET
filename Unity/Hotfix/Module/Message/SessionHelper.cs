@@ -8,14 +8,14 @@ namespace Hotfix
 	{
 		public static void Send(this Session session, IMessage message)
 		{
-			ushort opcode = Hotfix.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
+			ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
 			byte[] bytes = ProtobufHelper.ToBytes(message);
 			session.Send(opcode, bytes);
 		}
 
 		public static async Task<IResponse> Call(this Session session, IRequest request)
 		{
-			OpcodeTypeComponent opcodeTypeComponent = Hotfix.Scene.GetComponent<OpcodeTypeComponent>();
+			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			byte[] bytes = ProtobufHelper.ToBytes(request);
 			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
 			PacketInfo packetInfo = await session.Call(opcode, bytes);

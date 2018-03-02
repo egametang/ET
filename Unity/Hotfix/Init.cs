@@ -9,25 +9,25 @@ namespace Hotfix
 		{
 			try
 			{
-				Hotfix.Scene.ModelScene = Game.Scene;
+				Game.Scene.ModelScene = Model.Game.Scene;
 
 				// 注册热更层回调
-				Game.Hotfix.Update = () => { Update(); };
-				Game.Hotfix.LateUpdate = () => { LateUpdate(); };
-				Game.Hotfix.OnApplicationQuit = () => { OnApplicationQuit(); };
+				Model.Game.Hotfix.Update = () => { Update(); };
+				Model.Game.Hotfix.LateUpdate = () => { LateUpdate(); };
+				Model.Game.Hotfix.OnApplicationQuit = () => { OnApplicationQuit(); };
 
 				// 注册热更层消息回调
 				ClientDispatcher clientDispatcher = new ClientDispatcher
 				{
 					HotfixCallback = (s, p) => { HotfixMessageDispatcher.Run(s, p); }
 				};
-				Game.Scene.GetComponent<NetOuterComponent>().MessageDispatcher = clientDispatcher;
+				Model.Game.Scene.GetComponent<NetOuterComponent>().MessageDispatcher = clientDispatcher;
 
-				Hotfix.Scene.AddComponent<UIComponent>();
-				Hotfix.Scene.AddComponent<OpcodeTypeComponent>();
-				Hotfix.Scene.AddComponent<MessageDispatherComponent>();
+				Game.Scene.AddComponent<UIComponent>();
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
+				Game.Scene.AddComponent<MessageDispatherComponent>();
 
-				Hotfix.EventSystem.Run(EventIdType.InitSceneStart);
+				Game.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
@@ -39,7 +39,7 @@ namespace Hotfix
 		{
 			try
 			{
-				Hotfix.EventSystem.Update();
+				Game.EventSystem.Update();
 			}
 			catch (Exception e)
 			{
@@ -51,7 +51,7 @@ namespace Hotfix
 		{
 			try
 			{
-				Hotfix.EventSystem.LateUpdate();
+				Game.EventSystem.LateUpdate();
 			}
 			catch (Exception e)
 			{
@@ -61,7 +61,7 @@ namespace Hotfix
 
 		public static void OnApplicationQuit()
 		{
-			Hotfix.Close();
+			Game.Close();
 		}
 	}
 }

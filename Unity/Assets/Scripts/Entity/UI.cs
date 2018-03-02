@@ -4,18 +4,16 @@ using UnityEngine;
 namespace Model
 {
 	[ObjectSystem]
-	public class UiAwakeSystem : AwakeSystem<UI, Scene, UI, GameObject>
+	public class UiAwakeSystem : AwakeSystem<UI, GameObject>
 	{
-		public override void Awake(UI self, Scene scene, UI parent, GameObject gameObject)
+		public override void Awake(UI self, GameObject gameObject)
 		{
-			self.Awake(scene, parent, gameObject);
+			self.Awake(gameObject);
 		}
 	}
 
 	public sealed class UI: Entity
 	{
-		public Scene Scene { get; set; }
-
 		public string Name
 		{
 			get
@@ -28,16 +26,9 @@ namespace Model
 
 		public Dictionary<string, UI> children = new Dictionary<string, UI>();
 		
-		public void Awake(Scene scene, UI parent, GameObject gameObject)
+		public void Awake(GameObject gameObject)
 		{
 			this.children.Clear();
-			
-			this.Scene = scene;
-
-			if (parent != null)
-			{
-				gameObject.transform.SetParent(parent.GameObject.transform, false);
-			}
 			this.GameObject = gameObject;
 		}
 
@@ -94,7 +85,7 @@ namespace Model
 			{
 				return null;
 			}
-			child = ComponentFactory.Create<UI, Scene, UI, GameObject>(this.Scene, this, childGameObject);
+			child = ComponentFactory.Create<UI, GameObject>(childGameObject);
 			this.Add(child);
 			return child;
 		}

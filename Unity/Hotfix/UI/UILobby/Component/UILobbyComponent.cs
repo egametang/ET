@@ -82,7 +82,7 @@ namespace Hotfix
 			try
 			{
 				G2C_EnterMap g2CEnterMap = (G2C_EnterMap)await SessionComponent.Instance.Session.Call(new C2G_EnterMap());
-				Hotfix.Scene.GetComponent<UIComponent>().Remove(UIType.UILobby);
+				Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILobby);
 			}
 			catch (Exception e)
 			{

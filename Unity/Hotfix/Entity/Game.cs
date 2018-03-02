@@ -1,6 +1,6 @@
 ﻿namespace Hotfix
 {
-	public static class Hotfix
+	public static class Game
 	{
 		private static Scene scene;
 
