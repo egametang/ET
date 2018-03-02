@@ -52,7 +52,7 @@ namespace Model
 			string versionPath = Path.Combine(PathHelper.AppHotfixResPath, "Version.txt");
 			if (!File.Exists(versionPath))
 			{
-				foreach (FileVersionInfo versionInfo in this.VersionConfig.FileVersionInfos)
+				foreach (FileVersionInfo versionInfo in this.VersionConfig.FileInfoDict.Values)
 				{
 					if(versionInfo.File == "Version.txt")
 					{
@@ -68,7 +68,7 @@ namespace Model
 				VersionConfig localVersionConfig = JsonHelper.FromJson<VersionConfig>(File.ReadAllText(versionPath));
 				Log.Debug("LocalVersion:\n" + JsonHelper.ToJson(localVersionConfig));
 				// 先删除服务器端没有的ab
-				foreach (FileVersionInfo fileVersionInfo in localVersionConfig.FileVersionInfos)
+				foreach (FileVersionInfo fileVersionInfo in localVersionConfig.FileInfoDict.Values)
 				{
 					if (this.VersionConfig.FileInfoDict.ContainsKey(fileVersionInfo.File))
 					{
@@ -79,7 +79,7 @@ namespace Model
 				}
 
 				// 再下载
-				foreach (FileVersionInfo fileVersionInfo in this.VersionConfig.FileVersionInfos)
+				foreach (FileVersionInfo fileVersionInfo in this.VersionConfig.FileInfoDict.Values)
 				{
 					FileVersionInfo localVersionInfo;
 					if (localVersionConfig.FileInfoDict.TryGetValue(fileVersionInfo.File, out localVersionInfo))

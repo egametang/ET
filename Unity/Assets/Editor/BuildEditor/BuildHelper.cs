@@ -112,7 +112,7 @@ namespace MyEditor
 				long size = fi.Length;
 				string filePath = relativePath == "" ? fi.Name : $"{relativePath}/{fi.Name}";
 
-				versionProto.FileVersionInfos.Add(new FileVersionInfo
+				versionProto.FileInfoDict.Add(filePath, new FileVersionInfo
 				{
 					File = filePath,
 					MD5 = md5,
