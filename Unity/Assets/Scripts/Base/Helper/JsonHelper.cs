@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using LitJson;
 
 namespace Model
@@ -12,12 +13,26 @@ namespace Model
 
 		public static T FromJson<T>(string str)
 		{
-			return JsonMapper.ToObject<T>(str);
+			T t = JsonMapper.ToObject<T>(str);
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
+			if (iSupportInitialize == null)
+			{
+				return t;
+			}
+			iSupportInitialize.EndInit();
+			return t;
 		}
 
 		public static object FromJson(Type type, string str)
 		{
-			return JsonMapper.ToObject(type, str);
+			object t = JsonMapper.ToObject(type, str);
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
+			if (iSupportInitialize == null)
+			{
+				return t;
+			}
+			iSupportInitialize.EndInit();
+			return t;
 		}
 
 		public static T Clone<T>(T t)

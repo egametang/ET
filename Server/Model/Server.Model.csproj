@@ -33,7 +33,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\IdGenerater.cs" Link="Base\Helper\IdGenerater.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MD5Helper.cs" Link="Base\Helper\MD5Helper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs" Link="Base\Helper\MethodInfoHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MongoHelper.cs" Link="Base\Helper\MongoHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs" Link="Base\Helper\NetHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ObjectHelper.cs" Link="Base\Helper\ObjectHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ProtobufHelper.cs" Link="Base\Helper\ProtobufHelper.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageDispatherComponent.cs" Link="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MongoPacker.cs" Link="Module\Message\MongoPacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AChannel.cs" Link="Module\Message\Network\AChannel.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />

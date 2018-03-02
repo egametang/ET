@@ -11,7 +11,7 @@ namespace Model
 
 		public string SerializeToText(object obj)
 		{
-			return MongoHelper.ToJson(obj);
+			return JsonHelper.ToJson(obj);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes)
@@ -36,12 +36,12 @@ namespace Model
 
 		public T DeserializeFrom<T>(string str)
 		{
-			return MongoHelper.FromJson<T>(str);
+			return JsonHelper.FromJson<T>(str);
 		}
 
 		public object DeserializeFrom(Type type, string str)
 		{
-			return MongoHelper.FromJson(type, str);
+			return JsonHelper.FromJson(type, str);
 		}
 	}
 }

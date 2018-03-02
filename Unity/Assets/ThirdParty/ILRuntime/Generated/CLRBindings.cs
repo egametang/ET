@@ -101,7 +101,6 @@ namespace ILRuntime.Runtime.Generated
             Model_Actor_TestRequest_Binding.Register(app);
             System_Threading_Tasks_Task_1_IResponse_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.Register(app);
-            Model_MongoHelper_Binding.Register(app);
             Model_Actor_TransferRequest_Binding.Register(app);
             Model_C2G_EnterMap_Binding.Register(app);
             Model_GlobalConfigComponent_Binding.Register(app);

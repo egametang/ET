@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -129,7 +132,6 @@
     <Compile Include="Assets\Scripts\Base\Helper\JsonHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\MongoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
@@ -302,7 +304,6 @@
     <Compile Include="Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageInfo.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageProxy.cs" />
-    <Compile Include="Assets\Scripts\Module\Message\MongoPacker.cs" />
     <Compile Include="Assets\Scripts\Module\Message\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\AService.cs" />

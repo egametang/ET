@@ -10,7 +10,7 @@ namespace Model
 		public long Size;
 	}
 
-	public class VersionConfig : AConfig
+	public class VersionConfig : Object
 	{
 		public int Version;
 		
