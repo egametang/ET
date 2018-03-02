@@ -58,11 +58,11 @@ namespace Model
 			catch (SocketException e)
 			{
 				Log.Error($"connect error: {e.SocketErrorCode}");
-				this.OnError(this, e.SocketErrorCode);
+				this.OnError(e.SocketErrorCode);
 			}
 			catch (Exception e)
 			{
-				this.OnError(this, SocketError.SocketError);
+				this.OnError(SocketError.SocketError);
 				Log.Error($"connect error: {ipEndPoint} {e}");
 			}
 		}
@@ -161,13 +161,18 @@ namespace Model
 					await this.sendBuffer.ReadAsync(stream);
 				}
 			}
+			catch (IOException)
+			{
+				this.OnError(SocketError.SocketError);
+			}
 			catch (ObjectDisposedException)
 			{
+				this.OnError(SocketError.SocketError);
 			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());
-				this.OnError(this, SocketError.SocketError);
+				this.OnError(SocketError.SocketError);
 			}
 		}
 
@@ -192,7 +197,7 @@ namespace Model
 
 					if (n == 0)
 					{
-						this.OnError(this, SocketError.NetworkReset);
+						this.OnError(SocketError.NetworkReset);
 						return;
 					}
 
@@ -210,13 +215,18 @@ namespace Model
 					}
 				}
 			}
+			catch (IOException)
+			{
+				this.OnError(SocketError.SocketError);
+			}
 			catch (ObjectDisposedException)
 			{
+				this.OnError(SocketError.SocketError);
 			}
 			catch (Exception e)
 			{
 				Log.Error(e.ToString());
-				this.OnError(this, SocketError.SocketError);
+				this.OnError(SocketError.SocketError);
 			}
 		}
 

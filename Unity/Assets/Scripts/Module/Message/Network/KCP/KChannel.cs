@@ -154,7 +154,7 @@ namespace Model
 			// 超时断开连接
 			if (timeNow - this.lastRecvTime > 20 * 1000)
 			{
-				this.OnError(this, SocketError.Disconnecting);
+				this.OnError(SocketError.Disconnecting);
 				return;
 			}
 			this.kcp.Update(timeNow);
@@ -186,7 +186,7 @@ namespace Model
 				int n = kcp.PeekSize();
 				if (n == 0)
 				{
-					this.OnError(this, SocketError.NetworkReset);
+					this.OnError(SocketError.NetworkReset);
 					return;
 				}
 				int count = this.kcp.Recv(this.cacheBytes);
