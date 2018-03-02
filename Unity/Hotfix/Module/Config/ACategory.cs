@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Model;
 
-namespace Model
+namespace Hotfix
 {
 	/// <summary>
 	/// 管理该所有的配置

@@ -27,6 +27,11 @@ namespace Hotfix
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent>();
 
+				// 加载热更配置
+				Model.Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
+				Game.Scene.AddComponent<ConfigComponent>();
+				Model.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
+
 				Game.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)

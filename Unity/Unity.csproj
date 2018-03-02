@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -125,15 +122,16 @@
     <Compile Include="Assets\Scripts\Base\Event\EventAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Event\EventIdType.cs" />
     <Compile Include="Assets\Scripts\Base\Event\IEvent.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\ObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\EnumHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\FileHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\IdGenerater.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\JsonHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\MongoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\Helper\ObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\RandomHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\StringHelper.cs" />
@@ -515,6 +513,15 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\RuntimeStack.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackFrame.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackObject.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\IJsonWrapper.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonData.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonException.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonMapper.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonMockWrapper.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonReader.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonWriter.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\Lexer.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\ParserToken.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Code.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeReader.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeWriter.cs" />

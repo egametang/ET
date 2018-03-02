@@ -1,7 +1,8 @@
 ﻿using System;
+using Model;
 using UnityEngine;
 
-namespace Model
+namespace Hotfix
 {
 	public static class ConfigHelper
 	{
@@ -9,7 +10,7 @@ namespace Model
 		{
 			try
 			{
-				GameObject config = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("config.unity3d", "Config");
+				GameObject config = Model.Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("config.unity3d", "Config");
 				string configStr = config.Get<TextAsset>(key).text;
 				return configStr;
 			}

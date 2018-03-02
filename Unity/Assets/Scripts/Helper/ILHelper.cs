@@ -45,6 +45,7 @@ namespace Model
 
 			// 初始化ILRuntime的protobuf
 			InitializeILRuntimeProtobuf(appDomain);
+			LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appDomain);
 		}
 
 		public static void InitializeILRuntimeProtobuf(ILRuntime.Runtime.Enviorment.AppDomain appDomain)

@@ -18,7 +18,7 @@
 		{
 			Instance = this;
 			string configStr = ConfigHelper.GetGlobal();
-			this.GlobalProto = MongoHelper.FromJson<GlobalProto>(configStr);
+			this.GlobalProto = JsonHelper.FromJson<GlobalProto>(configStr);
 		}
 	}
 }

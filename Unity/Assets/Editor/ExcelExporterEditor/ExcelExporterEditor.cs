@@ -288,6 +288,19 @@ public class ExcelExporterEditor : EditorWindow
 				}
 
 				string fieldName = cellInfos[j].Name;
+
+				if (fieldName == "Id" || fieldName == "_id")
+				{
+					if (this.isClient)
+					{
+						fieldName = "Id";
+					}
+					else
+					{
+						fieldName = "_id";
+					}
+				}
+
 				string fieldType = cellInfos[j].Type;
 				sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
 			}
