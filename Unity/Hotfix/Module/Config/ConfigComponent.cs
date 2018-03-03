@@ -27,7 +27,7 @@ namespace Hotfix
 	/// </summary>
 	public class ConfigComponent: Component
 	{
-		private Dictionary<Type, ICategory> allConfig;
+		private readonly Dictionary<Type, ACategory> allConfig = new Dictionary<Type, ACategory>();
 
 		public void Awake()
 		{
@@ -36,7 +36,7 @@ namespace Hotfix
 
 		public void Load()
 		{
-			this.allConfig = new Dictionary<Type, ICategory>();
+			this.allConfig.Clear();
 			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
@@ -48,7 +48,7 @@ namespace Hotfix
 				}
 				object obj = Activator.CreateInstance(type);
 
-				ICategory iCategory = obj as ICategory;
+				ACategory iCategory = obj as ACategory;
 				if (iCategory == null)
 				{
 					throw new Exception($"class: {type.Name} not inherit from ACategory");
@@ -63,7 +63,7 @@ namespace Hotfix
 		public T GetOne<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
+			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
@@ -74,7 +74,7 @@ namespace Hotfix
 		public T Get<T>(long id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
+			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
@@ -85,7 +85,7 @@ namespace Hotfix
 		public T TryGet<T>(int id) where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
+			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				return default(T);
@@ -96,7 +96,7 @@ namespace Hotfix
 		public T[] GetAll<T>() where T : AConfig
 		{
 			Type type = typeof (T);
-			ICategory configCategory;
+			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
@@ -104,11 +104,11 @@ namespace Hotfix
 			return ((ACategory<T>) configCategory).GetAll();
 		}
 
-		public T GetCategory<T>() where T : class, ICategory, new()
+		public T GetCategory<T>() where T : ACategory, new()
 		{
 			T t = new T();
 			Type type = t.ConfigType;
-			ICategory configCategory;
+			ACategory configCategory;
 			bool ret = this.allConfig.TryGetValue(type, out configCategory);
 			return ret? (T)configCategory : null;
 		}

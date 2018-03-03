@@ -7,7 +7,7 @@ namespace Model
     {
         private readonly Dictionary<Type, Queue<Disposer>> dictionary = new Dictionary<Type, Queue<Disposer>>();
 
-        private Disposer Fetch(Type type)
+        public Disposer Fetch(Type type)
         {
 	        Queue<Disposer> queue;
             if (!this.dictionary.TryGetValue(type, out queue))

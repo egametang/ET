@@ -5,15 +5,20 @@ using Model;
 
 namespace Hotfix
 {
+	public abstract class ACategory : Object
+	{
+		public abstract Type ConfigType { get; }
+	}
+
 	/// <summary>
 	/// 管理该所有的配置
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class ACategory<T>: ICategory where T : AConfig
+	public abstract class ACategory<T>: ACategory where T : AConfig
 	{
 		protected Dictionary<long, T> dict;
 
-		public virtual void BeginInit()
+		public override void BeginInit()
 		{
 			this.dict = new Dictionary<long, T>();
 
@@ -38,7 +43,7 @@ namespace Hotfix
 			}
 		}
 
-		public Type ConfigType
+		public override Type ConfigType
 		{
 			get
 			{
@@ -46,7 +51,7 @@ namespace Hotfix
 			}
 		}
 
-		public virtual void EndInit()
+		public override void EndInit()
 		{
 		}
 

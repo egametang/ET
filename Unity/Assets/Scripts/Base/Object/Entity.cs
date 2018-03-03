@@ -54,6 +54,23 @@ namespace Model
 			this.componentDict.Clear();
 		}
 
+		public Component AddComponent(Type type)
+		{
+			Component component = ComponentFactory.CreateWithParent(type, this);
+
+			if (this.componentDict.ContainsKey(component.GetType()))
+			{
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
+			}
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(component.GetType(), component);
+			return component;
+		}
+
 		public K AddComponent<K>() where K : Component, new()
 		{
 			K component = ComponentFactory.CreateWithParent<K>(this);
@@ -158,6 +175,16 @@ namespace Model
 				return default(K);
 			}
 			return (K)component;
+		}
+
+		public Component GetComponent(Type type)
+		{
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
+			{
+				return null;
+			}
+			return component;
 		}
 
 		public Component[] GetComponents()

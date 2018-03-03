@@ -7,14 +7,14 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace Hotfix
 {
 	[BsonIgnoreExtraElements]
-	public class Entity : Component
+	public partial class Entity : Component
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
-		private readonly HashSet<Component> components;
+		private HashSet<Component> components;
 
 		[BsonIgnore]
-		private readonly Dictionary<Type, Component> componentDict;
+		private Dictionary<Type, Component> componentDict;
 
 		protected Entity()
 		{
@@ -53,6 +53,23 @@ namespace Hotfix
 
 			this.components.Clear();
 			this.componentDict.Clear();
+		}
+
+		public Component AddComponent(Type type)
+		{
+			Component component = ComponentFactory.CreateWithParent(type, this);
+
+			if (this.componentDict.ContainsKey(component.GetType()))
+			{
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
+			}
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(component.GetType(), component);
+			return component;
 		}
 
 		public K AddComponent<K>() where K : Component, new()
@@ -161,9 +178,46 @@ namespace Hotfix
 			return (K)component;
 		}
 
+		public Component GetComponent(Type type)
+		{
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
+			{
+				return null;
+			}
+			return component;
+		}
+
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
+		}
+
+		public override void BeginInit()
+		{
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
+		}
+
+		public override void EndInit()
+		{
+			try
+			{
+				this.componentDict.Clear();
+
+				if (this.components != null)
+				{
+					foreach (Component component in this.components)
+					{
+						component.Parent = this;
+						this.componentDict.Add(component.GetType(), component);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
 		}
 	}
 }

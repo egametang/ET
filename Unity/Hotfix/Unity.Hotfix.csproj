@@ -68,7 +68,6 @@
     <Compile Include="Module\Config\AConfig.cs" />
     <Compile Include="Module\Config\ConfigComponent.cs" />
     <Compile Include="Module\Config\ConfigHelper.cs" />
-    <Compile Include="Module\Config\ICategory.cs" />
     <Compile Include="Module\Message\IActorMessage.cs" />
     <Compile Include="Module\Message\HotfixMessageDispatcher.cs" />
     <Compile Include="Module\Message\IMessage.cs" />

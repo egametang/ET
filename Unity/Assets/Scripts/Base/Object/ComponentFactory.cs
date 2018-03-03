@@ -1,7 +1,17 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
 	public static class ComponentFactory
 	{
+		public static Component CreateWithParent(Type type, Component parent)
+		{
+			Component disposer = (Component)Game.ObjectPool.Fetch(type);
+			disposer.Parent = parent;
+			Game.EventSystem.Awake(disposer);
+			return disposer;
+		}
+
 		public static T CreateWithParent<T>(Component parent) where T : Component
 		{
 			T disposer = Game.ObjectPool.Fetch<T>();

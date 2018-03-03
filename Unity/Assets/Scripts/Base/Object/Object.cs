@@ -11,5 +11,10 @@ namespace Model
 		public virtual void EndInit()
 		{
 		}
+
+		public override string ToString()
+		{
+			return JsonHelper.ToJson(this);
+		}
 	}
 }
