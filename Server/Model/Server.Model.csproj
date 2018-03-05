@@ -70,6 +70,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\AConfig.cs" Link="Module\Config\AConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigComponent.cs" Link="Module\Config\ConfigComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\FrameSync\FrameMessage.cs" Link="Module\FrameSync\FrameMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ETModel
 {
-	public abstract class LocationTask : SceneEntity
+	public abstract class LocationTask: Component
 	{
-		protected LocationTask()
-		{
-		}
-
-		protected LocationTask(long id) : base(id)
-		{
-		}
-
+		[BsonIgnore]
+		public Scene Scene { get; set; }
+		
 		public abstract void Run();
 	}
 

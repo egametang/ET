@@ -56,13 +56,13 @@
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Base\Helper\JsonHelper.cs" />
     <Compile Include="Base\Object\IStart.cs" />
-    <Compile Include="Component\OperaComponent.cs" />
+    <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
     <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
-    <Compile Include="Handler\Actor_CreateUnitsHandler.cs" />
-    <Compile Include="Handler\Actor_TestHandler.cs" />
-    <Compile Include="Handler\Frame_ClickMapHandler.cs" />
-    <Compile Include="Handler\G2C_TestHotfixHandler.cs" />
+    <Compile Include="Module\FrameSync\Actor_CreateUnitsHandler.cs" />
+    <Compile Include="Module\FrameSync\Actor_TestHandler.cs" />
+    <Compile Include="Module\FrameSync\Frame_ClickMapHandler.cs" />
+    <Compile Include="Module\FrameSync\G2C_TestHotfixHandler.cs" />
     <Compile Include="Module\Config\ACategory.cs" />
     <Compile Include="Module\Config\AConfig.cs" />
     <Compile Include="Module\Config\ConfigComponent.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="Entity\Scene.cs" />
     <Compile Include="Module\Message\HotfixMessage.cs" />
     <Compile Include="Module\Message\SessionHelper.cs" />
-    <Compile Include="Entity\UI.cs" />
+    <Compile Include="Module\UI\UI.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Module\Message\HotfixOpcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

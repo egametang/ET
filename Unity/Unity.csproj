@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -183,10 +186,6 @@
     <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
     <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
-    <Compile Include="Assets\Scripts\Component\AnimatorComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\BundleDownloaderComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\CameraComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\ClientFrameComponent.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\DBConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\GlobalProto.cs" />
@@ -195,41 +194,31 @@
     <Compile Include="Assets\Scripts\Component\Config\OuterConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\RunServerConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\StartConfig.cs" />
-    <Compile Include="Assets\Scripts\Component\Config\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\MoveComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\PlayerComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\ResourcesComponent.cs" />
     <Compile Include="Assets\Scripts\Component\SceneChangeComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\SessionComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
-    <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
-    <Compile Include="Assets\Scripts\Entity\AssetsBundleLoaderAsync.cs" />
-    <Compile Include="Assets\Scripts\Entity\AssetsLoaderAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Hotfix.cs" />
-    <Compile Include="Assets\Scripts\Entity\Player.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
     <Compile Include="Assets\Scripts\Entity\Session.cs" />
-    <Compile Include="Assets\Scripts\Entity\UI.cs" />
-    <Compile Include="Assets\Scripts\Entity\Unit.cs" />
     <Compile Include="Assets\Scripts\Entity\UnityWebRequestAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Scripts\Event\NumericWatcher_Hp_ShowUI.cs" />
-    <Compile Include="Assets\Scripts\Factory\PlayerFactory.cs" />
-    <Compile Include="Assets\Scripts\Factory\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
-    <Compile Include="Assets\Scripts\Helper\MessageHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PositionHelper.cs" />
-    <Compile Include="Assets\Scripts\Helper\ResourceHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
+    <Compile Include="Assets\Scripts\Module\AssetsBundle\AssetsBundleLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Module\AssetsBundle\AssetsLoaderAsync.cs" />
+    <Compile Include="Assets\Scripts\Module\AssetsBundle\BundleDownloaderComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\AssetsBundle\ResourcesComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\AssetsBundle\VersionConfig.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorNodeConfig.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTree.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeArgsDict.cs" />
@@ -286,6 +275,18 @@
     <Compile Include="Assets\Scripts\Module\Config\ConfigAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigHelper.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\AnimatorComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\CameraComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\ClientFrameComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\FrameMessage.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\MoveComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\Player.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\PlayerComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\PlayerFactory.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\SessionComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\Unit.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\UnitComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Module\Message\AMHandler.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ClientDispatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ErrorCode.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" />
     <Compile Include="Assets\Scripts\Module\UI\IUIFactory.cs" />
     <Compile Include="Assets\Scripts\Module\UI\LayerNames.cs" />
+    <Compile Include="Assets\Scripts\Module\UI\UI.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIType.cs" />

@@ -21,11 +21,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Model\Server.Model.csproj" />
+    <Compile Remove="Other\**" />
+    <EmbeddedResource Remove="Other\**" />
+    <None Remove="Other\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Other\" />
+    <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
 
 </Project>
