@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -52,7 +55,7 @@
     <Reference Include="System">
       <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml">
+    <Reference Include="System.XML">
       <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.XML.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
@@ -206,7 +209,6 @@
     <Compile Include="Assets\Scripts\Component\UnitComponent.cs" />
     <Compile Include="Assets\Scripts\Entity\AssetsBundleLoaderAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\AssetsLoaderAsync.cs" />
-    <Compile Include="Assets\Scripts\Entity\Config\BuffConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Hotfix.cs" />

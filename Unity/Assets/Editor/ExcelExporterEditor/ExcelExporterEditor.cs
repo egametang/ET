@@ -125,7 +125,18 @@ public class ExcelExporterEditor : EditorWindow
 
 			sb.Append("\t[Config(AppType.Client)]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
-			sb.Append("\t{}\n\n");
+			sb.Append("\t{\n");
+			sb.Append($"\t\tpublic static void AvoidAOT(ConfigComponent configComponent, {protoName}Category category)\n");
+			sb.Append("\t\t{\n");
+			sb.Append($"\t\t\tconfigComponent.Get<{protoName}>(1);\n");
+			sb.Append($"\t\t\tconfigComponent.GetCategory<{protoName}Category>();\n");
+			sb.Append($"\t\t\tconfigComponent.GetAll<{protoName}>();\n");
+			sb.Append($"\t\t\tcategory.GetAll();\n");
+			sb.Append($"\t\t\t{protoName} config = category[1];\n");
+			sb.Append($"\t\t\tconfig = category.TryGet(1);\n");
+			sb.Append($"\t\t\tconfig = category.GetOne();\n");
+			sb.Append("\t\t}\n");
+			sb.Append("\t}\n\n");
 
 			sb.Append($"\tpublic class {protoName}: AConfig\n");
 			sb.Append("\t{\n");

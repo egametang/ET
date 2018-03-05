@@ -57,7 +57,6 @@
     <Compile Include="Base\Helper\JsonHelper.cs" />
     <Compile Include="Base\Object\IStart.cs" />
     <Compile Include="Component\OperaComponent.cs" />
-    <Compile Include="Entity\Config\BuffConfig.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
     <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Handler\Actor_CreateUnitsHandler.cs" />
