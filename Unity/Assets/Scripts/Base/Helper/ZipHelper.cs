@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
-namespace Model
+namespace ETModel
 {
 	public static class ZipHelper
 	{
@@ -55,7 +55,7 @@ namespace Model
 using System.IO;
 using System.IO.Compression;
 
-namespace Model
+namespace ETModel
 {
 	public static class ZipHelper
 	{

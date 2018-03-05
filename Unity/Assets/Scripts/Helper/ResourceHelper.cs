@@ -3,7 +3,7 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public static class ResourceHelper
 	{

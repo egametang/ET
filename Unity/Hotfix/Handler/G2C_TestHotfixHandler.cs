@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler]
 	public class G2C_TestHotfixMessageHandler : AMHandler<G2C_TestHotfixMessage>

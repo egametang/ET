@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	[BsonIgnoreExtraElements]
 	public partial class Entity : Component

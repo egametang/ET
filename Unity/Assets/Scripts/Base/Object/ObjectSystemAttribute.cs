@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace ETModel
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ObjectSystemAttribute: Attribute

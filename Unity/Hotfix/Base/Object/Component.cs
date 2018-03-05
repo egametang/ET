@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public abstract class Component : Disposer
 	{

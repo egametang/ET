@@ -1,7 +1,7 @@
-﻿using Model;
+﻿using ETModel;
 using UnityEngine;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler]
 	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
@@ -9,10 +9,10 @@ namespace Hotfix
 		protected override void Run(Session session, Actor_CreateUnits message)
 		{
 			// 加载Unit资源
-			ResourcesComponent resourcesComponent = Model.Game.Scene.GetComponent<ResourcesComponent>();
+			ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
 			resourcesComponent.LoadBundle($"Unit.unity3d");
 			
-			UnitComponent unitComponent = Model.Game.Scene.GetComponent<UnitComponent>();
+			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)
 			{
@@ -26,7 +26,7 @@ namespace Hotfix
 
 				if (PlayerComponent.Instance.MyPlayer.UnitId == unit.Id)
 				{
-					Model.Game.Scene.GetComponent<CameraComponent>().Unit = unit;
+					ETModel.Game.Scene.GetComponent<CameraComponent>().Unit = unit;
 				}
 			}
 

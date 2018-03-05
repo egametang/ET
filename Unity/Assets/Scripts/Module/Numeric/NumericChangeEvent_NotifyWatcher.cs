@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	// 分发数值监听
 	[Event(EventIdType.NumbericChange)]

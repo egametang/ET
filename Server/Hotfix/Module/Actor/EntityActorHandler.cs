@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
     /// <summary>
     /// gate session收到的消息直接转发给客户端

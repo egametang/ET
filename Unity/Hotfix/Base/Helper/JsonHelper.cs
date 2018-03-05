@@ -1,7 +1,7 @@
 ﻿using System;
 using LitJson;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class JsonHelper
 	{

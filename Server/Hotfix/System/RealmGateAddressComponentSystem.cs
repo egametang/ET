@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class RealmGateAddressComponentSystem : StartSystem<RealmGateAddressComponent>

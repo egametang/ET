@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>

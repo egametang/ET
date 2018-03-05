@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class ConfigComponentAwakeSystem : AwakeSystem<ConfigComponent>
@@ -37,7 +37,7 @@ namespace Hotfix
 		public void Load()
 		{
 			this.allConfig.Clear();
-			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
+			Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

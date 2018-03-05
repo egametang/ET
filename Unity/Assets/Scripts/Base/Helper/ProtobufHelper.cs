@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using ProtoBuf;
 
-namespace Model
+namespace ETModel
 {
 	public static class ProtobufHelper
 	{

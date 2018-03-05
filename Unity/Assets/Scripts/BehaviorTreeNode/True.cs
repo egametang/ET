@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	[Node(NodeClassifyType.Decorator)]
 	public class True: Node

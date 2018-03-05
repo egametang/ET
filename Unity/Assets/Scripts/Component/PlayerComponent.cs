@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class PlayerComponentAwakeSystem : AwakeSystem<PlayerComponent>

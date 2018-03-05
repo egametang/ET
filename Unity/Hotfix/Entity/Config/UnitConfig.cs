@@ -1,6 +1,6 @@
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[Config(AppType.Client)]
 	public partial class UnitConfigCategory : ACategory<UnitConfig>

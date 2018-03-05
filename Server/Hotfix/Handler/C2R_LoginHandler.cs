@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
-using Model;
+using ETModel;
 using MongoDB.Bson;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Realm)]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>

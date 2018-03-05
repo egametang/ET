@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using LitJson;
 
-namespace Model
+namespace ETModel
 {
 	public static class JsonHelper
 	{

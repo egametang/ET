@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>

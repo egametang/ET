@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	[Node(NodeClassifyType.Root, "UI创建时执行的行为树")]
 	public class UICreateRoot : Node

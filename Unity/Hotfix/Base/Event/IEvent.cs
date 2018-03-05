@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hotfix
+namespace ETHotfix
 {
 #if ILRuntime
 	public interface IEvent
@@ -112,19 +112,19 @@ namespace Hotfix
 		public abstract void Run(A a, B b, C c);
 	}
 #else
-	public abstract class AEvent : Model.AEvent
+	public abstract class AEvent : ETModel.AEvent
 	{
 	}
 
-	public abstract class AEvent<A> : Model.AEvent<A>
+	public abstract class AEvent<A> : ETModel.AEvent<A>
 	{
 	}
 
-	public abstract class AEvent<A, B> : Model.AEvent<A, B>
+	public abstract class AEvent<A, B> : ETModel.AEvent<A, B>
 	{
 	}
 
-	public abstract class AEvent<A, B, C>: Model.AEvent<A, B, C>
+	public abstract class AEvent<A, B, C>: ETModel.AEvent<A, B, C>
 	{
 	}
 #endif

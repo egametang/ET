@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : MessageObject
 	{

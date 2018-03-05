@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using ILRuntime.Runtime;
 
-namespace Model
+namespace ETModel
 {
 	public static class Log
 	{

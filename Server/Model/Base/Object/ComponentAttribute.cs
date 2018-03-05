@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	[BsonKnownTypes(typeof(AConfigComponent))]
 	[BsonKnownTypes(typeof(UnitGateComponent))]

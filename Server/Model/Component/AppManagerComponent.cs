@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>

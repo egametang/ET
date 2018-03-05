@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class MoveComponentAwakeSystem : AwakeSystem<MoveComponent>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Model
+namespace ETModel
 {
 	public enum DLLType
 	{

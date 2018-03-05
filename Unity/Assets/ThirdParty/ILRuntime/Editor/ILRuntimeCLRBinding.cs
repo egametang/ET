@@ -6,7 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Reflection;
 using ILRuntime.Runtime.Enviorment;
-using Model;
+using ETModel;
 
 [System.Reflection.Obfuscation(Exclude = true)]
 public class ILRuntimeCLRBinding

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class StartConfigComponentSystem : AwakeSystem<StartConfigComponent, string, int>

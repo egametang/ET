@@ -4,7 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class ActorProxyAwakeSystem : AwakeSystem<ActorProxy>

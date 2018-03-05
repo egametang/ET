@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public abstract class ALateUpdateSystem
 	{

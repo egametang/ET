@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using Model;
+using ETModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class UiLoginComponentSystem : AwakeSystem<UILoginComponent>
@@ -37,21 +37,21 @@ namespace Hotfix
 				string text = this.account.GetComponent<InputField>().text;
 
 				R2C_Login r2CLogin;
-				using (Session session = Model.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint))
+				using (Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint))
 				{
 					r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = text, Password = "111111" });
 				}
 
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
-				Session gateSession = Model.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
-				Model.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
+				Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				ETModel.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
 				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
 
 				Log.Info("登陆gate成功!");
 
 				// 创建Player
-				Player player = Model.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
-				PlayerComponent playerComponent = Model.Game.Scene.GetComponent<PlayerComponent>();
+				Player player = ETModel.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
+				PlayerComponent playerComponent = ETModel.Game.Scene.GetComponent<PlayerComponent>();
 				playerComponent.MyPlayer = player;
 
 				Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);

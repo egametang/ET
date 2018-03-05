@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
     [UIFactory((int)UIType.UILoading)]
     public class UILoadingFactory : IUIFactory

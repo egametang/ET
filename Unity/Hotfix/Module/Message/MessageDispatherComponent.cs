@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class MessageDispatherComponentAwakeSystem : AwakeSystem<MessageDispatherComponent>
@@ -38,10 +38,10 @@ namespace Hotfix
 		{
 			this.handlers.Clear();
 
-			Model.MessageDispatherComponent messageDispatherComponent = Model.Game.Scene.GetComponent<Model.MessageDispatherComponent>();
-			Model.OpcodeTypeComponent opcodeTypeComponent = Model.Game.Scene.GetComponent<Model.OpcodeTypeComponent>();
+			ETModel.MessageDispatherComponent messageDispatherComponent = ETModel.Game.Scene.GetComponent<ETModel.MessageDispatherComponent>();
+			ETModel.OpcodeTypeComponent opcodeTypeComponent = ETModel.Game.Scene.GetComponent<ETModel.OpcodeTypeComponent>();
 
-			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
+			Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

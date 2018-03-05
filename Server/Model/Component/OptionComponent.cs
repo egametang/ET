@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandLine;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class OptionComponentSystem : AwakeSystem<OptionComponent, string[]>

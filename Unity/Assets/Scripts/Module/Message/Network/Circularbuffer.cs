@@ -4,7 +4,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
     public class CircularBuffer: Stream
     {

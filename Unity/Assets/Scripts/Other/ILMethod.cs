@@ -1,6 +1,6 @@
 ﻿using ILRuntime.CLR.Method;
 
-namespace Model
+namespace ETModel
 {
 	public class ILStaticMethod : IStaticMethod
 	{

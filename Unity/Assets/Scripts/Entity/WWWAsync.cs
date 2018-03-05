@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class WwwAsyncUpdateSystem : UpdateSystem<WWWAsync>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-using Model;
+using ETModel;
 using NLog;
 
 namespace App

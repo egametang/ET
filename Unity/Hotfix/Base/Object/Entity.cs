@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Model;
+using ETModel;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[BsonIgnoreExtraElements]
 	public partial class Entity : Component

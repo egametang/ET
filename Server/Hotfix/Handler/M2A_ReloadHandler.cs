@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.AllServer)]
 	public class M2A_ReloadHandler : AMRpcHandler<M2A_Reload, A2M_Reload>

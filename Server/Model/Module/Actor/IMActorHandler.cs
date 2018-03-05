@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public interface IMActorHandler
 	{

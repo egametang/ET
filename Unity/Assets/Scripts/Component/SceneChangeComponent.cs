@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Model
+namespace ETModel
 {
 	public class SceneChangeComponent: Component
 	{

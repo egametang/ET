@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hotfix
+namespace ETHotfix
 {
-	[Model.ObjectSystem]
+	[ETModel.ObjectSystem]
 	public class UiAwakeSystem : AwakeSystem<UI, GameObject>
 	{
 		public override void Awake(UI self, GameObject gameObject)

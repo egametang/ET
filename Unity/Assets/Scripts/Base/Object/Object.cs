@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class Object: ISupportInitialize
 	{

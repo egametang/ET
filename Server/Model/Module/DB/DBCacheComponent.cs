@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class DbCacheComponentSystem : AwakeSystem<DBCacheComponent>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ProtoBuf;
 
-namespace Model
+namespace ETModel
 {
 	/// <summary>
 	/// 用来包装actor消息

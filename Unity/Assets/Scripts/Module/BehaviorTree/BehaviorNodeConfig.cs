@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public class BehaviorNodeConfig: MonoBehaviour
 	{

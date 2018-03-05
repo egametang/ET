@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Model
+namespace ETModel
 {
 	public static class ByteHelper
 	{

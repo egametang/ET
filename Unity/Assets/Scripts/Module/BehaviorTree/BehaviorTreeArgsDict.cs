@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	[Serializable]
 	public class BehaviorTreeArgsDict

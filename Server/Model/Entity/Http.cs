@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	// 充值流水
 	public sealed class RechargeRecord : Entity

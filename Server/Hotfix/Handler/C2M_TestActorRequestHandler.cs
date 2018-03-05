@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ActorMessageHandler(AppType.Map)]
 	public class C2M_TestActorRequestHandler : AMActorRpcHandler<Unit, C2M_TestActorRequest, M2C_TestActorResponse>

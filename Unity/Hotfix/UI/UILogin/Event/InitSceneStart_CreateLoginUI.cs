@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[Event(EventIdType.InitSceneStart)]
 	public class InitSceneStart_CreateLoginUI: AEvent

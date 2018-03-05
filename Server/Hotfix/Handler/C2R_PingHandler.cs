@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Realm)]
 	public class C2R_PingHandler : AMRpcHandler<C2R_Ping, R2C_Ping>

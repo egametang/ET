@@ -1,9 +1,9 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	// 分发数值监听
-	[Event(Model.EventIdType.TestHotfixSubscribMonoEvent)]
+	[Event(ETModel.EventIdType.TestHotfixSubscribMonoEvent)]
 	public class TestHotfixSubscribMonoEvent_LogString : AEvent<string>
 	{
 		public override void Run(string info)

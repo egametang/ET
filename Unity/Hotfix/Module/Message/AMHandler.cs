@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public abstract class AMHandler<Message> : IMHandler where Message: class
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
@@ -18,7 +18,7 @@ namespace Hotfix
 
 		public void Awake()
 		{
-			Type[] types = Model.Game.Hotfix.GetHotfixTypes();
+			Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);

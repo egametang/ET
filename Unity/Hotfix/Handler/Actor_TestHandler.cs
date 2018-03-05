@@ -1,6 +1,6 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler]
 	public class Actor_TestHandler : AMHandler<Actor_Test>

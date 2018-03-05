@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Model;
+using ETModel;
 using UnityEngine;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class UiComponentAwakeSystem : AwakeSystem<UIComponent>
@@ -67,7 +67,7 @@ namespace Hotfix
 		{
 			UiTypes.Clear();
             
-            Type[] types = Model.Game.Hotfix.GetHotfixTypes();
+            Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

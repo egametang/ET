@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>

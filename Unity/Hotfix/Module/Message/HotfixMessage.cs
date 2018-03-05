@@ -1,9 +1,9 @@
 using ProtoBuf;
-using Model;
-using Hotfix;
+using ETModel;
+using ETHotfix;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace Hotfix
+namespace ETHotfix
 {
 	[Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]
@@ -88,7 +88,7 @@ namespace Hotfix
 
 }
 #if SERVER
-namespace Model
+namespace ETModel
 {
 	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
 	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
@@ -96,7 +96,7 @@ namespace Model
 
 }
 #endif
-namespace Model
+namespace ETModel
 {
 	public partial class MessageObject {}
 

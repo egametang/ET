@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 #if ILRuntime
 	public interface IMHandler
@@ -10,7 +10,7 @@ namespace Hotfix
 		Type GetMessageType();
 	}
 #else
-	public interface IMHandler : Model.IMHandler
+	public interface IMHandler : ETModel.IMHandler
 	{
 	}
 #endif

@@ -1,4 +1,4 @@
-﻿using Model;
+﻿using ETModel;
 using UnityEngine;
 
 namespace MyEditor

@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	public enum UnitType
 	{

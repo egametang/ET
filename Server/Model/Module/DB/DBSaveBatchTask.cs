@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class DbSaveBatchTaskSystem : AwakeSystem<DBSaveBatchTask, List<Component>, string, TaskCompletionSource<bool>>

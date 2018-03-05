@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	public abstract class ALogDecorater
 	{

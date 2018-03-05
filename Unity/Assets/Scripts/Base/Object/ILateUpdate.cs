@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class ALateUpdateSystem
 	{

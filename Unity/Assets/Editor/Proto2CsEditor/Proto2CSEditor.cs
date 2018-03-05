@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Model;
+using ETModel;
 using UnityEditor;
 
 namespace MyEditor
@@ -34,11 +34,11 @@ namespace MyEditor
 		public static void AllProto2CS()
 		{
 			msgOpcode.Clear();
-			Proto2CS("Model", "OuterMessage.proto", outerOutPath, "OuterOpcode", 100, HeadFlag.Proto | HeadFlag.Bson);
+			Proto2CS("ETModel", "OuterMessage.proto", outerOutPath, "OuterOpcode", 100, HeadFlag.Proto | HeadFlag.Bson);
 			GenerateOpcode("OuterOpcode", outerOutPath);
 
 			msgOpcode.Clear();
-			Proto2CS("Model", "InnerMessage.proto", innerOutPath, "InnerOpcode", 1000, HeadFlag.Bson);
+			Proto2CS("ETModel", "InnerMessage.proto", innerOutPath, "InnerOpcode", 1000, HeadFlag.Bson);
 			GenerateOpcode("InnerOpcode", innerOutPath);
 
 			msgOpcode.Clear();
@@ -59,7 +59,7 @@ namespace MyEditor
 
 			StringBuilder sb = new StringBuilder();
 			sb.Append("using ProtoBuf;\n");
-			sb.Append("using Model;\n");
+			sb.Append("using ETModel;\n");
 			if (ns == "Hotfix")
 			{
 				sb.Append("using Hotfix;\n");
@@ -169,7 +169,7 @@ namespace MyEditor
 		private static void GenerateHead(StringBuilder sb, HeadFlag flag, string opcodeClassName)
 		{
 			sb.AppendLine("#if SERVER");
-			sb.AppendLine("namespace Model\n{");
+			sb.AppendLine("namespace ETModel\n{");
 			foreach (string parentClass in parentMsg.GetDictionary().Keys)
 			{
 				if ((flag & HeadFlag.Bson) != 0)
@@ -186,7 +186,7 @@ namespace MyEditor
 			sb.AppendLine("}");
 			sb.AppendLine("#endif");
 
-			sb.AppendLine("namespace Model\n{");
+			sb.AppendLine("namespace ETModel\n{");
 			foreach (string parentClass in parentMsg.GetDictionary().Keys)
 			{
 				if ((flag & HeadFlag.Proto) != 0)
@@ -205,7 +205,7 @@ namespace MyEditor
 		private static void GenerateOpcode(string outputFileName, string outputPath)
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("namespace Model");
+			sb.AppendLine("namespace ETModel");
 			sb.AppendLine("{");
 			sb.AppendLine($"\tpublic static partial class {outputFileName}");
 			sb.AppendLine("\t{");

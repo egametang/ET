@@ -7,7 +7,7 @@ using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public static class ILHelper
 	{

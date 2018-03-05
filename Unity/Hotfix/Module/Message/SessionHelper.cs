@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class SessionHelper
 	{

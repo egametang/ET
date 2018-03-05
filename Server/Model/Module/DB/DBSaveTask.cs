@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace Model
+namespace ETModel
 {
 
 	[ObjectSystem]

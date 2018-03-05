@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class DbComponentSystem : AwakeSystem<DBComponent>

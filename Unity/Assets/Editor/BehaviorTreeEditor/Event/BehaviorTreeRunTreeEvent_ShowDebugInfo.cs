@@ -1,4 +1,4 @@
-﻿using Model;
+﻿using ETModel;
 
 namespace MyEditor
 {

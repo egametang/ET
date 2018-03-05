@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class CameraComponentAwakeSystem : AwakeSystem<CameraComponent>

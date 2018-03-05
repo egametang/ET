@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Model
+namespace ETModel
 {
 	public static class ResourcesHelper
 	{

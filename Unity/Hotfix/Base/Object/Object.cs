@@ -1,4 +1,4 @@
-﻿namespace Hotfix
+﻿namespace ETHotfix
 {
 	public interface IDisposable2
 	{

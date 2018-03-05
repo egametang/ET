@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class UnityWebRequestUpdateSystem : UpdateSystem<UnityWebRequestAsync>

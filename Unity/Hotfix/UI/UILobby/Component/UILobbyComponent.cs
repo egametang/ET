@@ -1,9 +1,9 @@
 ﻿using System;
-using Model;
+using ETModel;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class UiLobbyComponentSystem : AwakeSystem<UILobbyComponent>

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class UiLoadingComponentAwakeSystem : AwakeSystem<UILoadingComponent>

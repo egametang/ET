@@ -1,7 +1,7 @@
-﻿using Model;
+﻿using ETModel;
 using UnityEngine;
 
-namespace Hotfix
+namespace ETHotfix
 {
     [ObjectSystem]
     public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>

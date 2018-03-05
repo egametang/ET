@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	public class BTFloatComponent: BTTypeBaseComponent
 	{

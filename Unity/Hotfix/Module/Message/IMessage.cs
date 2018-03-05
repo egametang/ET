@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public partial class MessageObject
 	{

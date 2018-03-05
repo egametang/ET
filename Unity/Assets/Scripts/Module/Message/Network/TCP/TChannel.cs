@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public class TChannel : AChannel
 	{

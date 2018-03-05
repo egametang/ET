@@ -1,7 +1,7 @@
 ﻿using System;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	[BsonKnownTypes(typeof(Component))]
 	public abstract class Disposer : Object, IDisposable

@@ -1,8 +1,8 @@
 using ProtoBuf;
-using Model;
+using ETModel;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace Model
+namespace ETModel
 {
 	[Message(OuterOpcode.Actor_Test)]
 	[ProtoContract]
@@ -163,7 +163,7 @@ namespace Model
 
 }
 #if SERVER
-namespace Model
+namespace ETModel
 {
 	[BsonKnownTypes(typeof(Actor_Test))]
 	[BsonKnownTypes(typeof(Actor_TestRequest))]
@@ -176,7 +176,7 @@ namespace Model
 
 }
 #endif
-namespace Model
+namespace ETModel
 {
 	[ProtoInclude(OuterOpcode.Actor_Test, typeof(Actor_Test))]
 	[ProtoInclude(OuterOpcode.Actor_TestRequest, typeof(Actor_TestRequest))]

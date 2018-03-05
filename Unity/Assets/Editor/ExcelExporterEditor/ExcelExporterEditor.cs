@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Model;
+using ETModel;
 using MongoDB.Bson;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -121,7 +121,7 @@ public class ExcelExporterEditor : EditorWindow
 		{
 			StringBuilder sb = new StringBuilder();
 			ISheet sheet = xssfWorkbook.GetSheetAt(0);
-			sb.Append("namespace Model\n{\n");
+			sb.Append("namespace ETModel\n{\n");
 
 			sb.Append("\t[Config(AppType.Client)]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");

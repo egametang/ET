@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 
-namespace Model
+namespace ETModel
 {
 	public static class NetHelper
 	{

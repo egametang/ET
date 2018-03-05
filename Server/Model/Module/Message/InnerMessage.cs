@@ -1,8 +1,7 @@
 using ProtoBuf;
-using Model;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace Model
+namespace ETModel
 {
 /// <summary>
 /// 传送unit
@@ -385,10 +384,10 @@ namespace Model
 
 }
 #if SERVER
-namespace Model
+namespace ETModel
 {
 }
 #endif
-namespace Model
+namespace ETModel
 {
 }

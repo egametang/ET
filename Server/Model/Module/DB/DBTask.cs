@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class DBTask : Component
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class LocationTask : SceneEntity
 	{

@@ -1,4 +1,4 @@
-﻿namespace Hotfix
+﻿namespace ETHotfix
 {
 	/// <summary>
 	/// 每个Config的基类

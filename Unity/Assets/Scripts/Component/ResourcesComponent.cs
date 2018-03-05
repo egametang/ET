@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Model
+namespace ETModel
 {
 	public class ABInfo : Disposer
 	{

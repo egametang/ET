@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class NetInnerComponentAwakeSystem : AwakeSystem<NetInnerComponent>

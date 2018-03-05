@@ -1,5 +1,5 @@
 ﻿using System;
-using Model;
+using ETModel;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace MyEditor

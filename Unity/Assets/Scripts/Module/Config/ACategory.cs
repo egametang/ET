@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class ACategory : Object
 	{

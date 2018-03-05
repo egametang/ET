@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Model
+namespace ETModel
 {
 	[ObjectSystem]
 	public class ActorProxyComponentSystem : StartSystem<ActorProxyComponent>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class NetworkComponent : Component
 	{

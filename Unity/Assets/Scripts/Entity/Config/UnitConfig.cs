@@ -1,4 +1,4 @@
-namespace Model
+namespace ETModel
 {
 	[Config(AppType.Client)]
 	public partial class UnitConfigCategory : ACategory<UnitConfig>
