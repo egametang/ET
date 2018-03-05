@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -201,10 +198,8 @@
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Hotfix.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
-    <Compile Include="Assets\Scripts\Entity\Session.cs" />
     <Compile Include="Assets\Scripts\Entity\UnityWebRequestAsync.cs" />
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
-    <Compile Include="Assets\Scripts\Event\NumericWatcher_Hp_ShowUI.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
@@ -319,19 +314,21 @@
     <Compile Include="Assets\Scripts\Module\Message\OuterOpcode.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ProtobufPacker.cs" />
     <Compile Include="Assets\Scripts\Module\Message\RpcException.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\Session.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\INumericWatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\NumericComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\NumericType.cs" />
+    <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcherAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\UI\CanvasConfig.cs" />
     <Compile Include="Assets\Scripts\Module\UI\IUIFactory.cs" />
     <Compile Include="Assets\Scripts\Module\UI\LayerNames.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UI.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIType.cs" />
-    <Compile Include="Assets\Scripts\MonoConfig\CanvasConfig.cs" />
     <Compile Include="Assets\Scripts\Other\AppType.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />

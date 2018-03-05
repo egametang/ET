@@ -58,7 +58,7 @@
     <Compile Include="Base\Object\IStart.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
-    <Compile Include="Event\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Module\FrameSync\Actor_CreateUnitsHandler.cs" />
     <Compile Include="Module\FrameSync\Actor_TestHandler.cs" />
     <Compile Include="Module\FrameSync\Frame_ClickMapHandler.cs" />

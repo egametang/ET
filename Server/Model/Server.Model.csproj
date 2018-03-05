@@ -65,7 +65,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Entity\Session.cs" Link="Module\Message\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\AConfig.cs" Link="Module\Config\AConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
@@ -99,6 +98,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterOpcode.cs" Link="Module\Message\OuterOpcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
