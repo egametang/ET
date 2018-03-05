@@ -2,7 +2,7 @@
 
 namespace ETHotfix
 {
-	public partial class MessageObject
+	public class MessageObject
 	{
 	}
 

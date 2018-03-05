@@ -67,14 +67,14 @@ namespace ETModel
 				this.appDomain.LoadAssembly(fs, p, new Mono.Cecil.Pdb.PdbReaderProvider());
 			}
 
-			this.start = new ILStaticMethod(this.appDomain, "Hotfix.Init", "Start", 0);
+			this.start = new ILStaticMethod(this.appDomain, "ETHotfix.Init", "Start", 0);
 #else
 			GameObject code = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("code.unity3d", "Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
 			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
 			this.assembly = Assembly.Load(assBytes, mdbBytes);
 
-			Type hotfixInit = this.assembly.GetType("Hotfix.Init");
+			Type hotfixInit = this.assembly.GetType("ETHotfix.Init");
 			this.start = new MonoStaticMethod(hotfixInit, "Start");
 #endif
 			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
