@@ -42,7 +42,7 @@ namespace MyEditor
 			GenerateOpcode("InnerOpcode", innerOutPath);
 
 			msgOpcode.Clear();
-			Proto2CS("Hotfix", "HotfixMessage.proto", hotfixOutPath, "HotfixOpcode", 10000, HeadFlag.Bson);
+			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixOutPath, "HotfixOpcode", 10000, HeadFlag.Bson);
 			GenerateOpcode("HotfixOpcode", hotfixOutPath);
 			
 			AssetDatabase.Refresh();
@@ -60,9 +60,9 @@ namespace MyEditor
 			StringBuilder sb = new StringBuilder();
 			sb.Append("using ProtoBuf;\n");
 			sb.Append("using ETModel;\n");
-			if (ns == "Hotfix")
+			if (ns == "ETHotfix")
 			{
-				sb.Append("using Hotfix;\n");
+				sb.Append("using ETHotfix;\n");
 			}
 
 			sb.Append("using System.Collections.Generic;\n");

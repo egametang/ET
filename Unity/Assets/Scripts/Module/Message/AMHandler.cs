@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public abstract class AMHandler<Message> : IMHandler where Message : MessageObject
+	public abstract class AMHandler<Message> : IMHandler where Message: class
 	{
 		protected abstract void Run(Session session, Message message);
 
