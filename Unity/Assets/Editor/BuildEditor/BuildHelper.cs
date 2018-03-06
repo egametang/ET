@@ -10,7 +10,7 @@ namespace MyEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		[MenuItem("Tools/编译Hotfix")]
+		//[MenuItem("Tools/编译Hotfix")]
 		public static void BuildHotfix()
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
