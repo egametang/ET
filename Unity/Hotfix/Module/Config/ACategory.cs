@@ -8,19 +8,22 @@ namespace ETHotfix
 	public abstract class ACategory : Object
 	{
 		public abstract Type ConfigType { get; }
+		public abstract IConfig GetOne();
+		public abstract IConfig[] GetAll();
+		public abstract IConfig TryGet(int type);
 	}
 
 	/// <summary>
 	/// 管理该所有的配置
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class ACategory<T>: ACategory where T : AConfig
+	public abstract class ACategory<T>: ACategory where T : IConfig
 	{
-		protected Dictionary<long, T> dict;
+		protected Dictionary<long, IConfig> dict;
 
 		public override void BeginInit()
 		{
-			this.dict = new Dictionary<long, T>();
+			this.dict = new Dictionary<long, IConfig>();
 
 			string configStr = ConfigHelper.GetText(typeof (T).Name);
 
@@ -54,23 +57,10 @@ namespace ETHotfix
 		public override void EndInit()
 		{
 		}
-
-		public T this[long type]
+		
+		public override IConfig TryGet(int type)
 		{
-			get
-			{
-				T t;
-				if (!this.dict.TryGetValue(type, out t))
-				{
-					throw new KeyNotFoundException($"{typeof (T)} 没有找到配置, key: {type}");
-				}
-				return t;
-			}
-		}
-
-		public T TryGet(int type)
-		{
-			T t;
+			IConfig t;
 			if (!this.dict.TryGetValue(type, out t))
 			{
 				return null;
@@ -78,12 +68,12 @@ namespace ETHotfix
 			return t;
 		}
 
-		public T[] GetAll()
+		public override IConfig[] GetAll()
 		{
 			return this.dict.Values.ToArray();
 		}
 
-		public T GetOne()
+		public override IConfig GetOne()
 		{
 			return this.dict.Values.First();
 		}

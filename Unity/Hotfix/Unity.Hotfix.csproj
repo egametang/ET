@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Temp\UnityVS_bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;ILRuntime</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -64,7 +64,7 @@
     <Compile Include="Module\FrameSync\Frame_ClickMapHandler.cs" />
     <Compile Include="Module\FrameSync\G2C_TestHotfixHandler.cs" />
     <Compile Include="Module\Config\ACategory.cs" />
-    <Compile Include="Module\Config\AConfig.cs" />
+    <Compile Include="Module\Config\IConfig.cs" />
     <Compile Include="Module\Config\ConfigComponent.cs" />
     <Compile Include="Module\Config\ConfigHelper.cs" />
     <Compile Include="Module\Message\IActorMessage.cs" />

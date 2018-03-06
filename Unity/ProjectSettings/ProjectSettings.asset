@@ -572,7 +572,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: NET45
     4: NET45
-    7: NET45
+    7: NET45;ILRuntime
   platformArchitecture:
     iOS: 2
   scriptingBackend:

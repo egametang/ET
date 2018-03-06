@@ -189,6 +189,10 @@ namespace ETModel
 			{
 				try
 				{
+					if (packetInfo.RpcId != rpcId)
+					{
+						return;
+					}
 					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 					IResponse response = (IResponse)message;
@@ -223,6 +227,10 @@ namespace ETModel
 			{
 				try
 				{
+					if (packetInfo.RpcId != rpcId)
+					{
+						return;
+					}
 					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
 					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
 					IResponse response = (IResponse)message;
@@ -254,6 +262,10 @@ namespace ETModel
 			{
 				try
 				{
+					if (packetInfo.RpcId != rpcId)
+					{
+						return;
+					}
 					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
 					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
 					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);
@@ -279,6 +291,10 @@ namespace ETModel
 			{
 				try
 				{
+					if (packetInfo.RpcId != rpcId)
+					{
+						return;
+					}
 					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
 					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
 					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);

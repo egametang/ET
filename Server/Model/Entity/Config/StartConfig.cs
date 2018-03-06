@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ETModel
 {
-	public class StartConfig: AConfig
+	public class StartConfig: Entity
 	{
 		public int AppId { get; set; }
 

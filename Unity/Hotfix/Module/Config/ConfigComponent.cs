@@ -60,57 +60,52 @@ namespace ETHotfix
 			}
 		}
 
-		public T GetOne<T>() where T : AConfig
+		public IConfig GetOne(Type type)
 		{
-			Type type = typeof (T);
 			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
-			return ((ACategory<T>) configCategory).GetOne();
+			return configCategory.GetOne();
 		}
 
-		public T Get<T>(long id) where T : AConfig
+		public IConfig Get(Type type, int id)
 		{
-			Type type = typeof (T);
 			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
-			return ((ACategory<T>) configCategory)[id];
+
+			return configCategory.TryGet(id);
 		}
 
-		public T TryGet<T>(int id) where T : AConfig
+		public IConfig TryGet(Type type, int id)
 		{
-			Type type = typeof (T);
 			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
-				return default(T);
+				return null;
 			}
-			return ((ACategory<T>) configCategory).TryGet(id);
+			return configCategory.TryGet(id);
 		}
 
-		public T[] GetAll<T>() where T : AConfig
+		public IConfig[] GetAll(Type type)
 		{
-			Type type = typeof (T);
 			ACategory configCategory;
 			if (!this.allConfig.TryGetValue(type, out configCategory))
 			{
 				throw new Exception($"ConfigComponent not found key: {type.FullName}");
 			}
-			return ((ACategory<T>) configCategory).GetAll();
+			return configCategory.GetAll();
 		}
 
-		public T GetCategory<T>() where T : ACategory, new()
+		public ACategory GetCategory(Type type)
 		{
-			T t = new T();
-			Type type = t.ConfigType;
 			ACategory configCategory;
 			bool ret = this.allConfig.TryGetValue(type, out configCategory);
-			return ret? (T)configCategory : null;
+			return ret? configCategory : null;
 		}
 	}
 }

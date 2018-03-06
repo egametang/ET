@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Mono.Cecil;
 using System.Reflection;
+using ETModel;
 using Mono.Cecil.Cil;
 
 using ILRuntime.CLR.TypeSystem;
