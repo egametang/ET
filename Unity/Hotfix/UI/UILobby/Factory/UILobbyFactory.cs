@@ -7,13 +7,14 @@ namespace ETHotfix
     [UIFactory((int)UIType.UILobby)]
     public class UILobbyFactory : IUIFactory
     {
-        public UI Create(Scene scene, UIType type, GameObject gameObject)
+        public UI Create(Scene scene, int type, GameObject gameObject)
         {
 	        try
 	        {
+		        string uiName = UIType.GetUIName(type);
 				ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
-		        resourcesComponent.LoadBundle($"{type}.unity3d");
-				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
+		        resourcesComponent.LoadBundle($"{uiName}.unity3d");
+				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{uiName}.unity3d", $"{uiName}");
 				GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
 				lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
 				UI ui = ComponentFactory.Create<UI, GameObject>(lobby);
@@ -28,9 +29,10 @@ namespace ETHotfix
 	        }
 		}
 
-	    public void Remove(UIType type)
+	    public void Remove(int type)
 	    {
-		    ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
+		    string uiName = UIType.GetUIName(type);
+			ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{uiName}.unity3d");
 		}
     }
 }

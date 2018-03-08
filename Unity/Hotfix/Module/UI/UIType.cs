@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ETModel
+namespace ETHotfix
 {
     public static class UIType
     {
 	    public const int Root = 0;
-	    public const int UILoading = 10000;
+	    public const int UILogin = 1;
+	    public const int UILobby = 2;
 
 	    public static Dictionary<int, string> UIName = new Dictionary<int, string>()
 	    {
-			{Root,              "Root" },
-			{UILoading,         "UILoading" },
-	    };
+			{Root,            "Root" },
+			{UILogin,         "UILogin" },
+			{UILobby,         "UILobby" },
+		};
 
 	    public static string GetUIName(int type)
 	    {

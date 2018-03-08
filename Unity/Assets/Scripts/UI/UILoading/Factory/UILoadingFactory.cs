@@ -6,7 +6,7 @@ namespace ETModel
     [UIFactory((int)UIType.UILoading)]
     public class UILoadingFactory : IUIFactory
     {
-        public UI Create(Scene scene, UIType type, GameObject gameObject)
+        public UI Create(Scene scene, int type, GameObject gameObject)
         {
 	        try
 	        {
@@ -25,7 +25,7 @@ namespace ETModel
 	        }
 		}
 
-	    public void Remove(UIType type)
+	    public void Remove(int type)
 	    {
 	    }
     }

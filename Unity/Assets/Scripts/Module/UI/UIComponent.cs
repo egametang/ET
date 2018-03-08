@@ -29,8 +29,8 @@ namespace ETModel
 	public class UIComponent: Component
 	{
 		private GameObject Root;
-		private readonly Dictionary<UIType, IUIFactory> UiTypes = new Dictionary<UIType, IUIFactory>();
-		private readonly Dictionary<UIType, UI> uis = new Dictionary<UIType, UI>();
+		private readonly Dictionary<int, IUIFactory> UiTypes = new Dictionary<int, IUIFactory>();
+		private readonly Dictionary<int, UI> uis = new Dictionary<int, UI>();
 
 		public override void Dispose()
 		{
@@ -41,7 +41,7 @@ namespace ETModel
 
 			base.Dispose();
 
-			foreach (UIType type in uis.Keys.ToArray())
+			foreach (int type in uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!uis.TryGetValue(type, out ui))
@@ -77,7 +77,7 @@ namespace ETModel
 				}
 
 				UIFactoryAttribute attribute = attrs[0] as UIFactoryAttribute;
-				if (UiTypes.ContainsKey((UIType)attribute.Type))
+				if (UiTypes.ContainsKey(attribute.Type))
 				{
                     Log.Debug($"已经存在同类UI Factory: {attribute.Type}");
 					throw new Exception($"已经存在同类UI Factory: {attribute.Type}");
@@ -89,11 +89,11 @@ namespace ETModel
 					Log.Error($"{o.GetType().FullName} 没有继承 IUIFactory");
 					continue;
 				}
-				this.UiTypes.Add((UIType)attribute.Type, factory);
+				this.UiTypes.Add(attribute.Type, factory);
 			}
 		}
 
-		public UI Create(UIType type)
+		public UI Create(int type)
 		{
 			try
 			{
@@ -111,12 +111,12 @@ namespace ETModel
 			}
 		}
 
-		public void Add(UIType type, UI ui)
+		public void Add(int type, UI ui)
 		{
 			this.uis.Add(type, ui);
 		}
 
-		public void Remove(UIType type)
+		public void Remove(int type)
 		{
 			UI ui;
 			if (!uis.TryGetValue(type, out ui))
@@ -129,7 +129,7 @@ namespace ETModel
 
 		public void RemoveAll()
 		{
-			foreach (UIType type in this.uis.Keys.ToArray())
+			foreach (int type in this.uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!this.uis.TryGetValue(type, out ui))
@@ -141,16 +141,16 @@ namespace ETModel
 			}
 		}
 
-		public UI Get(UIType type)
+		public UI Get(int type)
 		{
 			UI ui;
 			this.uis.TryGetValue(type, out ui);
 			return ui;
 		}
 
-		public List<UIType> GetUITypeList()
+		public List<int> GetUITypeList()
 		{
-			return new List<UIType>(this.uis.Keys);
+			return new List<int>(this.uis.Keys);
 		}
 	}
 }

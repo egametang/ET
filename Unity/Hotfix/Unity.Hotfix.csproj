@@ -96,6 +96,7 @@
     <Compile Include="Module\UI\UI.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Module\Message\HotfixOpcode.cs" />
+    <Compile Include="Module\UI\UIType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="UI\UILobby\Factory\UILobbyFactory.cs" />

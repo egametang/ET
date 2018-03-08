@@ -50,7 +50,7 @@ namespace ILRuntime.Runtime.Generated
                     }
                 }
             }
-            args = new Type[]{typeof(ETModel.UIType)};
+            args = new Type[]{typeof(System.Int32)};
             if (genericMethods.TryGetValue("ToArray", out lst))
             {
                 foreach(var m in lst)
@@ -103,10 +103,10 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IEnumerable<ETModel.UIType> source = (System.Collections.Generic.IEnumerable<ETModel.UIType>)typeof(System.Collections.Generic.IEnumerable<ETModel.UIType>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.IEnumerable<System.Int32> source = (System.Collections.Generic.IEnumerable<System.Int32>)typeof(System.Collections.Generic.IEnumerable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = System.Linq.Enumerable.ToArray<ETModel.UIType>(source);
+            var result_of_this_method = System.Linq.Enumerable.ToArray<System.Int32>(source);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
