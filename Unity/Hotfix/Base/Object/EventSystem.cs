@@ -6,7 +6,7 @@ namespace ETHotfix
 {
 	public sealed class EventSystem
 	{
-		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
+		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
 		private readonly UnOrderMultiMap<Type, AAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, AAwakeSystem>();
 
@@ -101,7 +101,7 @@ namespace ETHotfix
 			this.Load();
 		}
 
-		public static void Handle(int type, List<object> param)
+		public static void Handle(string type, List<object> param)
 		{
 			switch (param.Count)
 			{
@@ -120,7 +120,7 @@ namespace ETHotfix
 			}
 		}
 		
-		public void RegisterEvent(int eventId, IEvent e)
+		public void RegisterEvent(string eventId, IEvent e)
 		{
 			if (!this.allEvents.ContainsKey(eventId))
 			{
@@ -412,10 +412,10 @@ namespace ETHotfix
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 
-		public void Run(int type)
+		public void Run(string type)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -432,10 +432,10 @@ namespace ETHotfix
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(string type, A a)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -452,10 +452,10 @@ namespace ETHotfix
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(string type, A a, B b)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
@@ -472,10 +472,10 @@ namespace ETHotfix
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(string type, A a, B b, C c)
 		{
 			List<IEvent> iEvents;
-			if (!this.allEvents.TryGetValue((int)type, out iEvents))
+			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}

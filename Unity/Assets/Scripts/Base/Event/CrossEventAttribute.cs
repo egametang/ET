@@ -2,7 +2,7 @@
 {
     public class CrossEventAttribute : AEventAttribute
     {
-        public CrossEventAttribute(int type) : base(type)
+        public CrossEventAttribute(string type) : base(type)
         {
         }
     }

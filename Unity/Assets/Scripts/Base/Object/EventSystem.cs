@@ -16,7 +16,7 @@ namespace ETModel
 	{
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
 
-		private readonly Dictionary<int, List<IEvent>> allEvents = new Dictionary<int, List<IEvent>>();
+		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
 		private readonly UnOrderMultiMap<Type, AAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, AAwakeSystem>();
 
@@ -115,7 +115,7 @@ namespace ETModel
 			this.Load();
 		}
 
-		public void RegisterEvent(int eventId, IEvent e)
+		public void RegisterEvent(string eventId, IEvent e)
 		{
 			if (!this.allEvents.ContainsKey(eventId))
 			{
@@ -417,7 +417,7 @@ namespace ETModel
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 
-		public void Run(int type)
+		public void Run(string type)
 		{
 			List<IEvent> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -437,7 +437,7 @@ namespace ETModel
 			}
 		}
 
-		public void Run<A>(int type, A a)
+		public void Run<A>(string type, A a)
 		{
 			List<IEvent> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -457,7 +457,7 @@ namespace ETModel
 			}
 		}
 
-		public void Run<A, B>(int type, A a, B b)
+		public void Run<A, B>(string type, A a, B b)
 		{
 			List<IEvent> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
@@ -477,7 +477,7 @@ namespace ETModel
 			}
 		}
 
-		public void Run<A, B, C>(int type, A a, B b, C c)
+		public void Run<A, B, C>(string type, A a, B b, C c)
 		{
 			List<IEvent> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))

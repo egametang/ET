@@ -30,8 +30,8 @@ namespace ETHotfix
 	public class UIComponent: Component
 	{
 		private GameObject Root;
-		private readonly Dictionary<int, IUIFactory> UiTypes = new Dictionary<int, IUIFactory>();
-		private readonly Dictionary<int, UI> uis = new Dictionary<int, UI>();
+		private readonly Dictionary<string, IUIFactory> UiTypes = new Dictionary<string, IUIFactory>();
+		private readonly Dictionary<string, UI> uis = new Dictionary<string, UI>();
 
 		public override void Dispose()
 		{
@@ -42,7 +42,7 @@ namespace ETHotfix
 
 			base.Dispose();
 
-			foreach (int type in uis.Keys.ToArray())
+			foreach (string type in uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!uis.TryGetValue(type, out ui))
@@ -94,7 +94,7 @@ namespace ETHotfix
 			}
 		}
 
-		public UI Create(int type)
+		public UI Create(string type)
 		{
 			try
 			{
@@ -112,12 +112,12 @@ namespace ETHotfix
 			}
 		}
 
-		public void Add(int type, UI ui)
+		public void Add(string type, UI ui)
 		{
 			this.uis.Add(type, ui);
 		}
 
-		public void Remove(int type)
+		public void Remove(string type)
 		{
 			UI ui;
 			if (!uis.TryGetValue(type, out ui))
@@ -131,7 +131,7 @@ namespace ETHotfix
 
 		public void RemoveAll()
 		{
-			foreach (int type in this.uis.Keys.ToArray())
+			foreach (string type in this.uis.Keys.ToArray())
 			{
 				UI ui;
 				if (!this.uis.TryGetValue(type, out ui))
@@ -143,16 +143,16 @@ namespace ETHotfix
 			}
 		}
 
-		public UI Get(int type)
+		public UI Get(string type)
 		{
 			UI ui;
 			this.uis.TryGetValue(type, out ui);
 			return ui;
 		}
 
-		public List<int> GetUITypeList()
+		public List<string> GetUITypeList()
 		{
-			return new List<int>(this.uis.Keys);
+			return new List<string>(this.uis.Keys);
 		}
 	}
 }

@@ -5,9 +5,9 @@ namespace ETModel
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public abstract class AEventAttribute: Attribute
 	{
-		public int Type { get; private set; }
+		public string Type { get; private set; }
 
-		protected AEventAttribute(int type)
+		protected AEventAttribute(string type)
 		{
 			this.Type = type;
 		}

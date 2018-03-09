@@ -4,17 +4,16 @@ using UnityEngine;
 
 namespace ETHotfix
 {
-    [UIFactory((int)UIType.UILogin)]
+    [UIFactory(UIType.UILogin)]
     public class UILoginFactory : IUIFactory
     {
-        public UI Create(Scene scene, int type, GameObject gameObject)
+        public UI Create(Scene scene, string type, GameObject gameObject)
         {
 	        try
 	        {
-		        string uiName = UIType.GetUIName(type);
 				ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
-				resourcesComponent.LoadBundle($"{uiName}.unity3d");
-				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{uiName}.unity3d", $"{uiName}");
+				resourcesComponent.LoadBundle($"{type}.unity3d");
+				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
 				GameObject login = UnityEngine.Object.Instantiate(bundleGameObject);
 				login.layer = LayerMask.NameToLayer(LayerNames.UI);
 		        UI ui = ComponentFactory.Create<UI, GameObject>(login);
@@ -29,10 +28,9 @@ namespace ETHotfix
 	        }
 		}
 
-	    public void Remove(int type)
+	    public void Remove(string type)
 	    {
-		    string uiName = UIType.GetUIName(type);
-			ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{uiName}.unity3d");
+			ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
 	    }
     }
 }

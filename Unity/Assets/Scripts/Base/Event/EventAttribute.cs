@@ -2,7 +2,7 @@
 {
 	public class EventAttribute: AEventAttribute
 	{
-		public EventAttribute(int type): base(type)
+		public EventAttribute(string type): base(type)
 		{
 		}
 	}

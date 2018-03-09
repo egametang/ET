@@ -22,7 +22,7 @@ namespace ILRuntime.Runtime.Generated
             FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.EventSystem);
-            args = new Type[]{typeof(System.Int32), typeof(ETModel.IEvent)};
+            args = new Type[]{typeof(System.String), typeof(ETModel.IEvent)};
             method = type.GetMethod("RegisterEvent", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, RegisterEvent_0);
 
@@ -39,7 +39,8 @@ namespace ILRuntime.Runtime.Generated
             ETModel.IEvent e = (ETModel.IEvent)typeof(ETModel.IEvent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int32 eventId = ptr_of_this_method->Value;
+            System.String eventId = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ETModel.EventSystem instance_of_this_method;
             instance_of_this_method = (ETModel.EventSystem)typeof(ETModel.EventSystem).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
