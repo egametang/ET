@@ -384,11 +384,9 @@ namespace ETModel
 	}
 
 }
-#if SERVER
 namespace ETModel
 {
 }
-#endif
 namespace ETModel
 {
 }

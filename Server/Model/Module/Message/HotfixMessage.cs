@@ -2,7 +2,7 @@ using ProtoBuf;
 using ETModel;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace ETHotfix
+namespace ETModel
 {
 	[Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]
@@ -105,9 +105,21 @@ namespace ETHotfix
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
-		[ProtoMember(1, TypeName = "ETHotfix.PlayerInfo")]
+		[ProtoMember(1)]
 		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
 
 	}
+
+}
+namespace ETModel
+{
+	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
+	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
+	public partial class MessageObject {}
+
+}
+namespace ETModel
+{
+	public partial class MessageObject {}
 
 }

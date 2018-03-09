@@ -94,8 +94,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\TService.cs" Link="Module\Message\Network\TCP\TService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Opcode.cs" Link="Module\Message\Opcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterMessage.cs" Link="Module\Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterOpcode.cs" Link="Module\Message\OuterOpcode.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
@@ -106,8 +104,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Other\AppType.cs" Link="Other\AppType.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
   </ItemGroup>
 
   <ItemGroup>

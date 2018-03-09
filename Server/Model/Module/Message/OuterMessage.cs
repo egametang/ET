@@ -95,7 +95,7 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Actor_CreateUnits: MessageObject, IActorMessage
 	{
-		[ProtoMember(1, TypeName = "ETModel.UnitInfo")]
+		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
@@ -160,5 +160,29 @@ namespace ETModel
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
 	}
+
+}
+namespace ETModel
+{
+	[BsonKnownTypes(typeof(Actor_Test))]
+	[BsonKnownTypes(typeof(Actor_TestRequest))]
+	[BsonKnownTypes(typeof(Actor_TestResponse))]
+	[BsonKnownTypes(typeof(Actor_TransferRequest))]
+	[BsonKnownTypes(typeof(Actor_TransferResponse))]
+	[BsonKnownTypes(typeof(Actor_CreateUnits))]
+	[BsonKnownTypes(typeof(Frame_ClickMap))]
+	public partial class MessageObject {}
+
+}
+namespace ETModel
+{
+	[ProtoInclude(OuterOpcode.Actor_Test, typeof(Actor_Test))]
+	[ProtoInclude(OuterOpcode.Actor_TestRequest, typeof(Actor_TestRequest))]
+	[ProtoInclude(OuterOpcode.Actor_TestResponse, typeof(Actor_TestResponse))]
+	[ProtoInclude(OuterOpcode.Actor_TransferRequest, typeof(Actor_TransferRequest))]
+	[ProtoInclude(OuterOpcode.Actor_TransferResponse, typeof(Actor_TransferResponse))]
+	[ProtoInclude(OuterOpcode.Actor_CreateUnits, typeof(Actor_CreateUnits))]
+	[ProtoInclude(OuterOpcode.Frame_ClickMap, typeof(Frame_ClickMap))]
+	public partial class MessageObject {}
 
 }
