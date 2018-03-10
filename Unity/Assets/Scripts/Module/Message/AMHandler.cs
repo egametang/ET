@@ -6,7 +6,7 @@ namespace ETModel
 	{
 		protected abstract void Run(Session session, Message message);
 
-		public void Handle(Session session, uint rpcId, object msg)
+		public void Handle(Session session, object msg)
 		{
 			Message message = msg as Message;
 			if (message == null)

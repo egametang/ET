@@ -9,21 +9,21 @@ namespace ETHotfix
     /// </summary>
     public class GateSessionEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, ActorRequest message)
         {
-	        ActorResponse response = new ActorResponse();
-
+			ActorResponse response = new ActorResponse();
 			try
 	        {
 		        ((Session)entity).Send((IMessage)message.AMessage);
-		        session.Reply(rpcId, response);
+		        response.RpcId = message.RpcId;
+		        session.Reply(response);
 		        await Task.CompletedTask;
 	        }
 	        catch (Exception e)
 	        {
 		        response.Error = ErrorCode.ERR_SessionActorError;
 		        response.Message = $"session actor error {e}";
-				session.Reply(rpcId, response);
+				session.Reply(response);
 				throw;
 	        }
         }
@@ -31,9 +31,9 @@ namespace ETHotfix
 
     public class CommonEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, ActorRequest message)
         {
-            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, rpcId, message);
+            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
         }
     }
 
@@ -42,7 +42,7 @@ namespace ETHotfix
     /// </summary>
     public class MapUnitEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message)
+        public async Task Handle(Session session, Entity entity, ActorRequest message)
         {
             if (message.AMessage is IFrameMessage aFrameMessage)
             {
@@ -50,10 +50,11 @@ namespace ETHotfix
 	            aFrameMessage.Id = entity.Id;
 				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
 	            ActorResponse response = new ActorResponse();
-	            session.Reply(rpcId, response);
+	            response.RpcId = message.RpcId;
+	            session.Reply(response);
 				return;
             }
-            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, rpcId, message);
+            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, message);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class M2M_TrasferUnitRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public Unit Unit;
 
@@ -24,12 +26,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.M2A_Reload)]
 	[ProtoContract]
 	public partial class M2A_Reload: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.A2M_Reload)]
@@ -40,12 +46,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.G2G_LockRequest)]
 	[ProtoContract]
 	public partial class G2G_LockRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
 
@@ -62,12 +72,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.G2G_LockReleaseRequest)]
 	[ProtoContract]
 	public partial class G2G_LockReleaseRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
 
@@ -84,12 +98,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.DBSaveRequest)]
 	[ProtoContract]
 	public partial class DBSaveRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public bool NeedCache;
 
@@ -109,12 +127,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.DBSaveBatchRequest)]
 	[ProtoContract]
 	public partial class DBSaveBatchRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public bool NeedCache;
 
@@ -134,12 +156,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.DBQueryRequest)]
 	[ProtoContract]
 	public partial class DBQueryRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Id;
 
@@ -159,6 +185,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public Component Disposer;
 
@@ -168,6 +196,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class DBQueryBatchRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string CollectionName;
 
@@ -187,6 +217,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1)]
 		public List<Component> Disposers = new List<Component>();
 
@@ -196,6 +228,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class DBQueryJsonRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string CollectionName;
 
@@ -215,6 +249,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1)]
 		public List<Component> Disposers = new List<Component>();
 
@@ -224,6 +260,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class ObjectAddRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -240,12 +278,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.ObjectRemoveRequest)]
 	[ProtoContract]
 	public partial class ObjectRemoveRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -259,12 +301,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.ObjectLockRequest)]
 	[ProtoContract]
 	public partial class ObjectLockRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -284,12 +330,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.ObjectUnLockRequest)]
 	[ProtoContract]
 	public partial class ObjectUnLockRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -309,12 +359,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(InnerOpcode.ObjectGetRequest)]
 	[ProtoContract]
 	public partial class ObjectGetRequest: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -328,6 +382,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public int AppId;
 
@@ -337,6 +393,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class R2G_GetLoginKey: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
 
@@ -350,6 +408,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -359,6 +419,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class G2M_CreateUnit: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
 
@@ -375,6 +437,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long UnitId;
 
@@ -383,10 +447,4 @@ namespace ETModel
 
 	}
 
-}
-namespace ETModel
-{
-}
-namespace ETModel
-{
 }

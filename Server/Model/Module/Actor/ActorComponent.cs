@@ -7,7 +7,7 @@ namespace ETModel
 	public class ActorMessageInfo
 	{
 		public Session Session;
-		public uint RpcId;
+		public int RpcId;
 		public ActorRequest Message;
 	}
 

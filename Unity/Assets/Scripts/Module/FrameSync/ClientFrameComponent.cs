@@ -79,7 +79,7 @@ namespace ETModel
             {
 	            IFrameMessage message = (IFrameMessage)sessionFrameMessage.FrameMessage.Messages[i];
 	            ushort opcode = Game.Scene.GetComponent<OpcodeTypeComponent>().GetOpcode(message.GetType());
-                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo(0, opcode, message));
+                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo(opcode, message));
             }
         }
     }

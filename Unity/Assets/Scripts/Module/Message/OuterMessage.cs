@@ -17,6 +17,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Actor_TestRequest: MessageObject, IActorRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string request;
 
@@ -30,6 +32,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string response;
 
@@ -39,6 +43,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Actor_TransferRequest: MessageObject, IActorRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public int MapIndex;
 
@@ -52,12 +58,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(OuterOpcode.C2G_EnterMap)]
 	[ProtoContract]
 	public partial class C2G_EnterMap: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(OuterOpcode.G2C_EnterMap)]
@@ -68,6 +78,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long UnitId;
 
@@ -130,6 +142,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class C2M_Reload: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public AppType AppType;
 
@@ -143,12 +157,16 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(OuterOpcode.C2R_Ping)]
 	[ProtoContract]
 	public partial class C2R_Ping: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(OuterOpcode.R2C_Ping)]
@@ -159,6 +177,20 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
+
+}
+namespace ETModel
+{
+	[ProtoInclude(OuterOpcode.Actor_Test, typeof(Actor_Test))]
+	[ProtoInclude(OuterOpcode.Actor_TestRequest, typeof(Actor_TestRequest))]
+	[ProtoInclude(OuterOpcode.Actor_TestResponse, typeof(Actor_TestResponse))]
+	[ProtoInclude(OuterOpcode.Actor_TransferRequest, typeof(Actor_TransferRequest))]
+	[ProtoInclude(OuterOpcode.Actor_TransferResponse, typeof(Actor_TransferResponse))]
+	[ProtoInclude(OuterOpcode.Actor_CreateUnits, typeof(Actor_CreateUnits))]
+	[ProtoInclude(OuterOpcode.Frame_ClickMap, typeof(Frame_ClickMap))]
+	public partial class MessageObject {}
 
 }

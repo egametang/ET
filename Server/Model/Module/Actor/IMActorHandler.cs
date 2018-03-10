@@ -5,7 +5,7 @@ namespace ETModel
 {
 	public interface IMActorHandler
 	{
-		Task Handle(Session session, Entity entity, uint rpcId, ActorRequest message);
+		Task Handle(Session session, Entity entity, ActorRequest message);
 		Type GetMessageType();
 	}
 }

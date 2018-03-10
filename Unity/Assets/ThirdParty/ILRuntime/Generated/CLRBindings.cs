@@ -57,9 +57,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
             UnityEngine_Resources_Binding.Register(app);
-            ETModel_PacketInfo_Binding.Register(app);
-            ETModel_ProtobufHelper_Binding.Register(app);
-            ETModel_MessageInfo_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
@@ -74,6 +71,14 @@ namespace ILRuntime.Runtime.Generated
             ETModel_EventProxy_Binding.Register(app);
             ETModel_EventSystem_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
+            ETModel_Packet_Binding.Register(app);
+            ETModel_ProtobufHelper_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
+            ETModel_MessageInfo_Binding.Register(app);
+            System_Threading_Tasks_TaskCompletionSource_1_ILTypeInstance_Binding.Register(app);
+            System_Threading_CancellationToken_Binding.Register(app);
+            ETModel_SessionCallbackComponent_Binding.Register(app);
+            ETModel_RpcException_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
             ETModel_OpcodeTypeComponent_Binding.Register(app);
             ETModel_MessageProxy_Binding.Register(app);
@@ -89,15 +94,10 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_String_Binding.Register(app);
             ETModel_Disposer_Binding.Register(app);
             ETModel_Scene_Binding.Register(app);
-            System_Runtime_CompilerServices_AsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
-            System_Threading_Tasks_Task_1_PacketInfo_Binding.Register(app);
-            System_Runtime_CompilerServices_TaskAwaiter_1_PacketInfo_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             UnityEngine_Component_Binding.Register(app);
-            ETModel_ClientDispatcher_Binding.Register(app);
-            ETModel_NetworkComponent_Binding.Register(app);
             ReferenceCollector_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             ETModel_ActionHelper_Binding.Register(app);
@@ -110,6 +110,7 @@ namespace ILRuntime.Runtime.Generated
             ETModel_GlobalProto_Binding.Register(app);
             ETModel_NetworkHelper_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
+            ETModel_NetworkComponent_Binding.Register(app);
             ETModel_ComponentFactory_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.Register(app);
         }

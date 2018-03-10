@@ -27,14 +27,11 @@ namespace ETModel
 
 	public sealed class Session : Entity
 	{
-		private static uint RpcId { get; set; }
+		private static int RpcId { get; set; }
 		private AChannel channel;
 
-		private readonly Dictionary<uint, Action<PacketInfo>> requestCallback = new Dictionary<uint, Action<PacketInfo>>();
-
-		private readonly byte[] flagBytes = new byte[1];
-		private readonly List<byte[]> byteses = new List<byte[]>() {new byte[0], new byte[0], new byte[0]};
-		private readonly List<byte[]> rpcByteses = new List<byte[]>() { new byte[0], new byte[0], new byte[0], new byte[0] };
+		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
+		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[0], new byte[0]};
 
 		public NetworkComponent Network
 		{
@@ -66,9 +63,9 @@ namespace ETModel
 
 			base.Dispose();
 
-			foreach (Action<PacketInfo> action in this.requestCallback.Values.ToArray())
+			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new PacketInfo());
+				action.Invoke(null);
 			}
 
 			this.channel.Dispose();
@@ -139,63 +136,52 @@ namespace ETModel
 
 			byte flag = packet.Flag();
 			ushort opcode = packet.Opcode();
-			PacketInfo packetInfo = new PacketInfo
-			{
-				Opcode = opcode,
-				Bytes = packet.Bytes
-			};
 			
-			if ((flag & 0xC0) > 0)
+			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
-				uint rpcId = packet.RpcId();
-				packetInfo.RpcId = rpcId;
-				packetInfo.Index = Packet.RpcIdIndex + 4;
-				packetInfo.Length = (ushort)(packet.Length - packetInfo.Index);
-				
-				// flag第2位表示这是rpc返回消息
-				if ((flag & 0x40) > 0)
-				{
-					Action<PacketInfo> action;
-					if (!this.requestCallback.TryGetValue(rpcId, out action))
-					{
-						return;
-					}
-					this.requestCallback.Remove(rpcId);
+				this.Network.MessageDispatcher.Dispatch(this, packet);
+				return;
+			}
+			
+			// flag第一位为1表示这是rpc返回消息
+			if ((flag & 0x01) > 0)
+			{
+				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
+				Type responseType = opcodeTypeComponent.GetType(opcode);
+				object message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
 
-					action(packetInfo);
+				IResponse response = message as IResponse;
+				if (response == null)
+				{
+					throw new Exception($"flag is response, but message is not! {opcode}");
+				}
+				Action<IResponse> action;
+				if (!this.requestCallback.TryGetValue(response.RpcId, out action))
+				{
 					return;
 				}
-			}
-			else
-			{
-				packetInfo.RpcId = 0;
-				packetInfo.Index = Packet.RpcIdIndex;
-				packetInfo.Length = (ushort)(packet.Length - packetInfo.Index);
+				this.requestCallback.Remove(response.RpcId);
+
+				action(response);
+				return;
 			}
 			
-			this.Network.MessageDispatcher.Dispatch(this, packetInfo);
+			this.Network.MessageDispatcher.Dispatch(this, packet);
 		}
 
 		public Task<IResponse> Call(IRequest request)
 		{
-			uint rpcId = ++RpcId;
+			int rpcId = ++RpcId;
 			var tcs = new TaskCompletionSource<IResponse>();
 
-			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
-			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(request);
-
-			this.requestCallback[rpcId] = (packetInfo) =>
+			this.requestCallback[rpcId] = (response) =>
 			{
 				try
 				{
-					if (packetInfo.RpcId != rpcId)
+					if (response.RpcId != rpcId)
 					{
 						return;
 					}
-					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
-					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-					IResponse response = (IResponse)message;
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
@@ -205,35 +191,28 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {packetInfo.Opcode}", e));
+					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
-			const byte flag = 0x80;
-			this.SendMessage(flag, opcode, rpcId, bytes);
+			request.RpcId = rpcId;
+			this.Send(0x00, request);
 			return tcs.Task;
 		}
 
 		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
-			uint rpcId = ++RpcId;
+			int rpcId = ++RpcId;
 			var tcs = new TaskCompletionSource<IResponse>();
 
-			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-			ushort opcode = opcodeTypeComponent.GetOpcode(request.GetType());
-			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(request);
-
-			this.requestCallback[rpcId] = (packetInfo) =>
+			this.requestCallback[rpcId] = (response) =>
 			{
 				try
 				{
-					if (packetInfo.RpcId != rpcId)
+					if (response.RpcId != rpcId)
 					{
 						return;
 					}
-					Type responseType = opcodeTypeComponent.GetType(packetInfo.Opcode);
-					object message = this.Network.MessagePacker.DeserializeFrom(responseType, packetInfo.Bytes, packetInfo.Index, packetInfo.Length);
-					IResponse response = (IResponse)message;
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
@@ -243,129 +222,47 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {packetInfo.Opcode}", e));
+					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
-			cancellationToken.Register(()=>this.requestCallback.Remove(rpcId));
+			cancellationToken.Register(() => this.requestCallback.Remove(rpcId));
 
-			const byte flag = 0x80;
-			this.SendMessage(flag, opcode, rpcId, bytes);
-			return tcs.Task;
-		}
-
-		public Task<PacketInfo> Call(ushort opcode, byte[] bytes)
-		{
-			uint rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<PacketInfo>();
-			this.requestCallback[rpcId] = (packetInfo) =>
-			{
-				try
-				{
-					if (packetInfo.RpcId != rpcId)
-					{
-						return;
-					}
-					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
-					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
-					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);
-					packetInfo.Bytes = newBytes;
-					tcs.SetResult(packetInfo);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {opcode}", e));
-				}
-			};
-
-			const byte flag = 0x80;
-			this.SendMessage(flag, opcode, rpcId, bytes);
-			return tcs.Task;
-		}
-
-		public Task<PacketInfo> Call(ushort opcode, byte[] bytes, CancellationToken cancellationToken)
-		{
-			uint rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<PacketInfo>();
-			this.requestCallback[rpcId] = (packetInfo) =>
-			{
-				try
-				{
-					if (packetInfo.RpcId != rpcId)
-					{
-						return;
-					}
-					// 抛到外层不能再使用之前的byte[],因为那是Packet所有的,为了减少gc一直传到这个位置
-					byte[] newBytes = new byte[packetInfo.Length + packetInfo.Index];
-					Array.Copy(packetInfo.Bytes, 0, newBytes, 0, newBytes.Length);
-					packetInfo.Bytes = newBytes;
-					tcs.SetResult(packetInfo);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {opcode}", e));
-				}
-			};
-
-			cancellationToken.Register(() => { this.requestCallback.Remove(rpcId); });
-
-			const byte flag = 0x80;
-			this.SendMessage(flag, opcode, rpcId, bytes);
+			request.RpcId = rpcId;
+			this.Send(0x00, request);
 			return tcs.Task;
 		}
 
 		public void Send(IMessage message)
 		{
-			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
-			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
-			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
-			this.Send(opcode, bytes);
+			this.Send(0x00, message);
 		}
 
-		public void Reply(uint rpcId, IResponse message)
+		public void Reply(IResponse message)
 		{
 			if (this.IsDisposed)
 			{
 				throw new Exception("session已经被Dispose了");
 			}
-			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
+
+			this.Send(0x01, message);
+		}
+
+		private void Send(byte flag, object message)
+		{
+			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
 			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
-			const byte flag = 0x40;
-			this.SendMessage(flag, opcode, rpcId, bytes);
+
+			Send(flag, opcode, bytes);
 		}
 
-		public void Send(ushort opcode, byte[] bytes)
+		public void Send(byte flag, ushort opcode, byte[] bytes)
 		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("session已经被Dispose了");
-			}
-			const byte flag = 0x00;
-			this.SendMessage(flag, opcode, 0, bytes);
-		}
+			this.byteses[0][0] = flag;
+			this.byteses[1] = BitConverter.GetBytes(opcode);
+			this.byteses[2] = bytes;
 
-		private void SendMessage(byte flag, ushort opcode, uint rpcId, byte[] bytes)
-		{
-			this.flagBytes[0] = flag;
-
-			List<byte[]> bb;
-			if (rpcId == 0)
-			{
-				bb = this.byteses;
-				bb[0] = flagBytes;
-				bb[1] = BitConverter.GetBytes(opcode);
-				bb[2] = bytes;
-			}
-			else
-			{
-				bb = this.rpcByteses;
-				bb[0] = flagBytes;
-				bb[1] = BitConverter.GetBytes(opcode);
-				bb[2] = BitConverter.GetBytes(rpcId);
-				bb[3] = bytes;
-			}
-			
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
 			if (this.Network.AppType == AppType.AllServer)
@@ -373,7 +270,7 @@ namespace ETModel
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
 				this.pkt.Length = 0;
 				ushort index = 0;
-				foreach (var byts in bb)
+				foreach (var byts in byteses)
 				{
 					Array.Copy(byts, 0, this.pkt.Bytes, index, byts.Length);
 					index += (ushort)byts.Length;
@@ -385,7 +282,7 @@ namespace ETModel
 			}
 #endif
 
-			channel.Send(bb);
+			channel.Send(this.byteses);
 		}
 
 #if SERVER

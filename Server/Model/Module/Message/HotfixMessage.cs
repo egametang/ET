@@ -8,6 +8,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class C2R_Login: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
 
@@ -24,6 +26,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Address;
 
@@ -36,6 +40,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class C2G_LoginGate: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -49,6 +55,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
 
@@ -67,6 +75,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class C2M_TestActorRequest: MessageObject, IActorRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
@@ -80,6 +90,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
@@ -95,6 +107,8 @@ namespace ETModel
 	[ProtoContract]
 	public partial class C2G_PlayerInfo: IRequest
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
 	}
 
 	[Message(HotfixOpcode.G2C_PlayerInfo)]
@@ -105,6 +119,8 @@ namespace ETModel
 		public int Error { get; set; }
 		[ProtoMember(91, IsRequired = true)]
 		public string Message { get; set; }
+		[ProtoMember(92, IsRequired = true)]
+		public int RpcId { get; set; }
 		[ProtoMember(1)]
 		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
 
@@ -115,11 +131,6 @@ namespace ETModel
 {
 	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
 	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
-	public partial class MessageObject {}
-
-}
-namespace ETModel
-{
 	public partial class MessageObject {}
 
 }

@@ -14,7 +14,7 @@ namespace ETModel
 
 		protected abstract void Run(Session session, Request message, Action<Response> reply);
 
-		public void Handle(Session session, uint rpcId, object message)
+		public void Handle(Session session, object message)
 		{
 			try
 			{
@@ -30,7 +30,10 @@ namespace ETModel
 					{
 						return;
 					}
-					session.Reply(rpcId, response);
+
+					int rpcId = request.RpcId;
+					response.RpcId = rpcId;
+					session.Reply(response);
 				});
 			}
 			catch (Exception e)

@@ -88,7 +88,7 @@ namespace ETModel
 			{
 				try
 				{
-					ev.Handle(session, messageInfo.RpcId, messageInfo.Message);
+					ev.Handle(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

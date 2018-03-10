@@ -112,7 +112,7 @@ namespace ETHotfix
 					{
 						return;
 					}
-					await self.entityActorHandler.Handle(info.Session, (Entity)self.Parent, info.RpcId, info.Message);
+					await self.entityActorHandler.Handle(info.Session, (Entity)self.Parent, info.Message);
 				}
 				catch (Exception e)
 				{

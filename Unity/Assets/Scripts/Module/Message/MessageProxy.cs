@@ -5,17 +5,17 @@ namespace ETModel
 	public class MessageProxy: IMHandler
 	{
 		private readonly Type type;
-		private readonly Action<Session, uint, object> action;
+		private readonly Action<Session, object> action;
 
-		public MessageProxy(Type type, Action<Session, uint, object> action)
+		public MessageProxy(Type type, Action<Session, object> action)
 		{
 			this.type = type;
 			this.action = action;
 		}
 		
-		public void Handle(Session session, uint rpcId, object message)
+		public void Handle(Session session, object message)
 		{
-			this.action.Invoke(session, rpcId, message);
+			this.action.Invoke(session, message);
 		}
 
 		public Type GetMessageType()

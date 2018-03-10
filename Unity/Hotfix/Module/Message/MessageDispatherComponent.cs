@@ -74,7 +74,7 @@ namespace ETHotfix
 						continue;
 					}
 
-					MessageProxy messageProxy = new MessageProxy(messageType, (session, rpcId, o) => { iMHandler.Handle(session, rpcId, o); });
+					MessageProxy messageProxy = new MessageProxy(messageType, (session, o) => { iMHandler.Handle(session, o); });
 					messageDispatherComponent.RegisterHandler(monoOpcode, messageProxy);
 				}
 			}
@@ -101,7 +101,7 @@ namespace ETHotfix
 			{
 				try
 				{
-					ev.Handle(session, messageInfo.RpcId, messageInfo.Message);
+					ev.Handle(session, messageInfo.Message);
 				}
 				catch (Exception e)
 				{

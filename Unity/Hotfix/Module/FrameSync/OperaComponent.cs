@@ -41,7 +41,7 @@ namespace ETHotfix
 	            if (Physics.Raycast(ray, out hit, 1000, this.mapMask))
 	            {
 					this.ClickPoint = hit.point;
-		            SessionComponent.Instance.Session.Send(new Frame_ClickMap() { X = (int)(this.ClickPoint.x * 1000), Z = (int)(this.ClickPoint.z * 1000) });
+		            ETModel.SessionComponent.Instance.Session.Send(new Frame_ClickMap() { X = (int)(this.ClickPoint.x * 1000), Z = (int)(this.ClickPoint.z * 1000) });
 
 					// 测试actor rpc消息
 					this.TestActor();
@@ -51,7 +51,7 @@ namespace ETHotfix
 
 	    public async void TestActor()
 	    {
-		    M2C_TestActorResponse response = (M2C_TestActorResponse)await SessionComponent.Instance.Session.Call(
+		    M2C_TestActorResponse response = (M2C_TestActorResponse)await SessionWrapComponent.Instance.Session.Call(
 					new C2M_TestActorRequest() {Info = "actor rpc request"});
 			Log.Info(response.Info);
 		}

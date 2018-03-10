@@ -25,15 +25,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(ETModel.IMessage)};
             method = type.GetMethod("Send", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Send_0);
-            args = new Type[]{typeof(System.UInt16), typeof(System.Byte[])};
+            args = new Type[]{typeof(System.Byte), typeof(System.UInt16), typeof(System.Byte[])};
             method = type.GetMethod("Send", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Send_1);
-            args = new Type[]{typeof(System.UInt16), typeof(System.Byte[])};
-            method = type.GetMethod("Call", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Call_2);
             args = new Type[]{typeof(ETModel.IRequest)};
             method = type.GetMethod("Call", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Call_3);
+            app.RegisterCLRMethodRedirection(method, Call_2);
 
 
         }
@@ -61,48 +58,25 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 4);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             System.Byte[] bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.UInt16 opcode = (ushort)ptr_of_this_method->Value;
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            System.Byte flag = (byte)ptr_of_this_method->Value;
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
             ETModel.Session instance_of_this_method;
             instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Send(opcode, bytes);
+            instance_of_this_method.Send(flag, opcode, bytes);
 
             return __ret;
         }
 
         static StackObject* Call_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Byte[] bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.UInt16 opcode = (ushort)ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ETModel.Session instance_of_this_method;
-            instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.Call(opcode, bytes);
-
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* Call_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

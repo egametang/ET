@@ -30,22 +30,23 @@ namespace ETHotfix
 
 		public async void OnLogin()
 		{
+			SessionWrap sessionWrap = null;
 			try
 			{
 				IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
 
 				string text = this.account.GetComponent<InputField>().text;
 
-				R2C_Login r2CLogin;
-				using (Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint))
-				{
-					r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = text, Password = "111111" });
-				}
+				Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				sessionWrap = new SessionWrap(session);
+				R2C_Login r2CLogin = (R2C_Login) await sessionWrap.Call(new C2R_Login() { Account = text, Password = "111111" });
+				sessionWrap.Dispose();
 
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
 				Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				Game.Scene.AddComponent<SessionWrapComponent>().Session = new SessionWrap(gateSession);
 				ETModel.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
-				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
+				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionWrapComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
 
 				Log.Info("登陆gate成功!");
 
@@ -59,6 +60,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
+				sessionWrap?.Dispose();
 				Log.Error(e.ToStr());
 			}
 		}

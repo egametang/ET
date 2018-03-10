@@ -11,8 +11,9 @@ namespace ETModel
 	public struct Packet
 	{
 		public const int MinSize = 2;
+		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
-		public const int RpcIdIndex = 3;
+		public const int Index = 3;
 
 		/// <summary>
 		/// 只读，不允许修改
@@ -36,15 +37,10 @@ namespace ETModel
 		{
 			return this.Bytes[0];
 		}
-
+		
 		public ushort Opcode()
 		{
 			return BitConverter.ToUInt16(this.Bytes, OpcodeIndex);
-		}
-
-		public uint RpcId()
-		{
-			return BitConverter.ToUInt32(this.Bytes, RpcIdIndex);
 		}
 	}
 

@@ -34,14 +34,14 @@ namespace MyEditor
 		public static void AllProto2CS()
 		{
 			msgOpcode.Clear();
-			Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100, HeadFlag.Proto | HeadFlag.Bson);
+			Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100, HeadFlag.Proto);
 			GenerateOpcode("OuterOpcode", clientMessagePath);
 
 			Proto2CS("ETModel", "OuterMessage.proto", serverMessagePath, "OuterOpcode", 100, HeadFlag.Proto | HeadFlag.Bson, false);
 			GenerateOpcode("OuterOpcode", serverMessagePath);
 
 			msgOpcode.Clear();
-			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.Bson);
+			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.Proto);
 			GenerateOpcode("HotfixOpcode", hotfixMessagePath);
 
 			msgOpcode.Clear();
@@ -124,12 +124,20 @@ namespace MyEditor
 				{
 					sb.Append("\t{\n");
 
+					if (parentClass == "IRequest" || parentClass == "IActorRequest")
+					{
+						sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
+						sb.AppendLine("\t\tpublic int RpcId { get; set; }");
+					}
+
 					if (parentClass == "IResponse" || parentClass == "IActorResponse")
 					{
 						sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
 						sb.AppendLine("\t\tpublic int Error { get; set; }");
 						sb.AppendLine("\t\t[ProtoMember(91, IsRequired = true)]");
 						sb.AppendLine("\t\tpublic string Message { get; set; }");
+						sb.AppendLine("\t\t[ProtoMember(92, IsRequired = true)]");
+						sb.AppendLine("\t\tpublic int RpcId { get; set; }");
 					}
 
 					if (parentClass == "IFrameMessage")
@@ -163,32 +171,56 @@ namespace MyEditor
 			}
 			sb.Append("}\n");
 
-			if (!isClient)
-			{
+			//if (!isClient)
+			//{
 				GenerateHead(sb, ns, flag, opcodeClassName);
-			}
+			//}
 
 			File.WriteAllText(csPath, sb.ToString());
 		}
 
 		private static void GenerateHead(StringBuilder sb, string ns, HeadFlag flag, string opcodeClassName)
 		{
-			sb.AppendLine($"namespace {ns}");
-			sb.AppendLine("{");
-			foreach (string parentClass in parentMsg.GetDictionary().Keys)
+			if ((flag & HeadFlag.Bson) != 0)
 			{
-				if ((flag & HeadFlag.Bson) != 0)
+				if (parentMsg.Count > 0)
 				{
-					foreach (string s in parentMsg.GetAll(parentClass))
+					sb.AppendLine($"namespace {ns}");
+					sb.AppendLine("{");
+					foreach (string parentClass in parentMsg.GetDictionary().Keys)
 					{
-						sb.Append($"\t[BsonKnownTypes(typeof({s}))]\n");
+						foreach (string s in parentMsg.GetAll(parentClass))
+						{
+							sb.Append($"\t[BsonKnownTypes(typeof({s}))]\n");
+						}
+
+						sb.Append($"\tpublic partial class {parentClass} {{}}\n\n");
 					}
+
+					sb.AppendLine("}");
 				}
-
-
-				sb.Append($"\tpublic partial class {parentClass} {{}}\n\n");
 			}
-			sb.AppendLine("}");
+
+			if ((flag & HeadFlag.Proto) != 0)
+			{
+				if (parentMsg.Count > 0)
+				{
+					sb.AppendLine($"namespace {ns}");
+					sb.AppendLine("{");
+					foreach (string parentClass in parentMsg.GetDictionary().Keys)
+					{
+
+						foreach (string s in parentMsg.GetAll(parentClass))
+						{
+							sb.Append($"\t[ProtoInclude({opcodeClassName}.{s}, typeof({s}))]\n");
+						}
+
+						sb.Append($"\tpublic partial class {parentClass} {{}}\n\n");
+					}
+
+					sb.AppendLine("}");
+				}
+			}
 		}
 		
 		private static void GenerateOpcode(string outputFileName, string outputPath)
