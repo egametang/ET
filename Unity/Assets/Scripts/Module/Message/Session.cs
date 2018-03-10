@@ -65,7 +65,7 @@ namespace ETModel
 
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(null);
+				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SocketDisconnected });
 			}
 
 			this.channel.Dispose();
@@ -142,31 +142,31 @@ namespace ETModel
 				this.Network.MessageDispatcher.Dispatch(this, packet);
 				return;
 			}
-			
-			// flag第一位为1表示这是rpc返回消息
-			if ((flag & 0x01) > 0)
+
+			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
+			if ((flag & 0x01) == 0)
 			{
-				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-				Type responseType = opcodeTypeComponent.GetType(opcode);
-				object message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
-
-				IResponse response = message as IResponse;
-				if (response == null)
-				{
-					throw new Exception($"flag is response, but message is not! {opcode}");
-				}
-				Action<IResponse> action;
-				if (!this.requestCallback.TryGetValue(response.RpcId, out action))
-				{
-					return;
-				}
-				this.requestCallback.Remove(response.RpcId);
-
-				action(response);
+				this.Network.MessageDispatcher.Dispatch(this, packet);
 				return;
 			}
 			
-			this.Network.MessageDispatcher.Dispatch(this, packet);
+			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
+			Type responseType = opcodeTypeComponent.GetType(opcode);
+			object message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+
+			IResponse response = message as IResponse;
+			if (response == null)
+			{
+				throw new Exception($"flag is response, but message is not! {opcode}");
+			}
+			Action<IResponse> action;
+			if (!this.requestCallback.TryGetValue(response.RpcId, out action))
+			{
+				return;
+			}
+			this.requestCallback.Remove(response.RpcId);
+
+			action(response);
 		}
 
 		public Task<IResponse> Call(IRequest request)
@@ -178,10 +178,6 @@ namespace ETModel
 			{
 				try
 				{
-					if (response.RpcId != rpcId)
-					{
-						return;
-					}
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
@@ -209,10 +205,6 @@ namespace ETModel
 			{
 				try
 				{
-					if (response.RpcId != rpcId)
-					{
-						return;
-					}
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
@@ -259,6 +251,10 @@ namespace ETModel
 
 		public void Send(byte flag, ushort opcode, byte[] bytes)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("session已经被Dispose了");
+			}
 			this.byteses[0][0] = flag;
 			this.byteses[1] = BitConverter.GetBytes(opcode);
 			this.byteses[2] = bytes;

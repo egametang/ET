@@ -16,6 +16,7 @@ namespace MyEditor
 	[Flags]
 	public enum HeadFlag
 	{
+		None = 0,
 		Bson = 1,
 		Proto = 2,
 	}
@@ -41,7 +42,7 @@ namespace MyEditor
 			GenerateOpcode("OuterOpcode", serverMessagePath);
 
 			msgOpcode.Clear();
-			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.Proto);
+			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.None);
 			GenerateOpcode("HotfixOpcode", hotfixMessagePath);
 
 			msgOpcode.Clear();

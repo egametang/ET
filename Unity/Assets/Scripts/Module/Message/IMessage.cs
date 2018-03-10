@@ -3,15 +3,6 @@
 // 不要在这个文件加[ProtoInclude]跟[BsonKnowType]标签,加到InnerMessage.cs或者OuterMessage.cs里面去
 namespace ETModel
 {
-	public struct PacketInfo
-	{
-		public ushort Opcode;
-		public uint RpcId;
-		public byte[] Bytes;
-		public ushort Index;
-		public ushort Length;
-	}
-
 	[ProtoContract]
 	public partial class MessageObject
 	{
@@ -31,5 +22,12 @@ namespace ETModel
 		int Error { get; set; }
 		string Message { get; set; }
 		int RpcId { get; set; }
+	}
+
+	public class ResponseMessage: IResponse
+	{
+		public int Error { get; set; }
+		public string Message { get; set; }
+		public int RpcId { get; set; }
 	}
 }

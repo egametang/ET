@@ -127,10 +127,3 @@ namespace ETHotfix
 	}
 
 }
-namespace ETHotfix
-{
-	[ProtoInclude(HotfixOpcode.C2M_TestActorRequest, typeof(C2M_TestActorRequest))]
-	[ProtoInclude(HotfixOpcode.M2C_TestActorResponse, typeof(M2C_TestActorResponse))]
-	public partial class MessageObject {}
-
-}

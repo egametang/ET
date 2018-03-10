@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using ILRuntime.CLR.Method;
+using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
@@ -20,8 +21,10 @@ namespace ETModel
 			appDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
 			appDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 			appDomain.DelegateManager.RegisterMethodDelegate<IResponse>();
-			appDomain.DelegateManager.RegisterMethodDelegate<Session, PacketInfo>();
-			appDomain.DelegateManager.RegisterMethodDelegate<Session, uint, object>();
+			appDomain.DelegateManager.RegisterMethodDelegate<Session, object>();
+			appDomain.DelegateManager.RegisterMethodDelegate<Session, Packet>();
+			appDomain.DelegateManager.RegisterMethodDelegate<Session>();
+			appDomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
 
 			CLRBindings.Initialize(appDomain);
 
