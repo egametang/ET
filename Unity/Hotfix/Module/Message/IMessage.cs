@@ -2,11 +2,6 @@
 
 namespace ETHotfix
 {
-	[ProtoContract]
-	public partial class MessageObject
-	{
-	}
-
 	public interface IMessage
 	{
 	}

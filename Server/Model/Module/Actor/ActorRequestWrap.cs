@@ -19,7 +19,10 @@ namespace ETModel
 		public long Id { get; set; }
 
 		[ProtoMember(2, IsRequired = true)]
-		public MessageObject AMessage { get; set; }
+		public ushort Op { get; set; }
+
+		[ProtoMember(3, IsRequired = true)]
+		public byte[] AMessage { get; set; }
 	}
 
 	/// <summary>
@@ -39,6 +42,12 @@ namespace ETModel
 		public int RpcId { get; set; }
 
 		[ProtoMember(1, IsRequired = true)]
-		public MessageObject AMessage;
+		public byte Flag { get; set; }
+
+		[ProtoMember(2, IsRequired = true)]
+		public ushort Op { get; set; }
+
+		[ProtoMember(3, IsRequired = true)]
+		public byte[] AMessage { get; set; }
 	}
 }

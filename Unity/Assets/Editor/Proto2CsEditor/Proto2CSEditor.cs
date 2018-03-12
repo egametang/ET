@@ -108,8 +108,7 @@ namespace MyEditor
 					sb.Append($"\tpublic partial class {msgName}");
 					if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse" || parentClass == "IFrameMessage")
 					{
-						sb.Append($": MessageObject, {parentClass}\n");
-						parentMsg.Add("MessageObject", msgName);
+						sb.Append($": {parentClass}\n");
 					}
 					else if (parentClass != "")
 					{
@@ -174,7 +173,7 @@ namespace MyEditor
 
 			//if (!isClient)
 			//{
-				GenerateHead(sb, ns, flag, opcodeClassName);
+				//GenerateHead(sb, ns, flag, opcodeClassName);
 			//}
 
 			File.WriteAllText(csPath, sb.ToString());

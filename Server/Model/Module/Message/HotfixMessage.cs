@@ -73,7 +73,7 @@ namespace ETModel
 
 	[Message(HotfixOpcode.C2M_TestActorRequest)]
 	[ProtoContract]
-	public partial class C2M_TestActorRequest: MessageObject, IActorRequest
+	public partial class C2M_TestActorRequest: IActorRequest
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
@@ -84,7 +84,7 @@ namespace ETModel
 
 	[Message(HotfixOpcode.M2C_TestActorResponse)]
 	[ProtoContract]
-	public partial class M2C_TestActorResponse: MessageObject, IActorResponse
+	public partial class M2C_TestActorResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -125,12 +125,5 @@ namespace ETModel
 		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
 
 	}
-
-}
-namespace ETModel
-{
-	[BsonKnownTypes(typeof(C2M_TestActorRequest))]
-	[BsonKnownTypes(typeof(M2C_TestActorResponse))]
-	public partial class MessageObject {}
 
 }

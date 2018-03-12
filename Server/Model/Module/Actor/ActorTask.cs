@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -6,19 +7,32 @@ namespace ETModel
 	{
 		public ActorProxy proxy;
 		
-		public MessageObject message;
+		public object message;
 		
 		public TaskCompletionSource<IResponse> Tcs;
 
 		public async Task<IResponse> Run()
 		{
-			ActorRequest request = new ActorRequest() { Id = this.proxy.Id, AMessage = this.message };
-			ActorResponse response = (ActorResponse)await this.proxy.RealCall(request, this.proxy.CancellationTokenSource.Token);
-			if (response.Error != ErrorCode.ERR_NotFoundActor)
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.proxy.Address);
+			OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
+
+			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
+			byte[] requestBytes = session.Network.MessagePacker.SerializeToByteArray(message);
+
+			ActorRequest actorRequest = new ActorRequest() { Id = this.proxy.Id, Op = opcode, AMessage = requestBytes };
+
+			ActorResponse actorResponse = (ActorResponse)await session.Call(actorRequest, this.proxy.CancellationTokenSource.Token);
+			
+			if (actorResponse.Error != ErrorCode.ERR_NotFoundActor)
 			{
-				this.Tcs?.SetResult((IResponse)response.AMessage);
+				if (this.Tcs != null)
+				{
+					Type type = opcodeTypeComponent.GetType(actorResponse.Op);
+					IResponse response = (IResponse) session.Network.MessagePacker.DeserializeFrom(type, actorResponse.AMessage);
+					this.Tcs?.SetResult(response);
+				}
 			}
-			return response;
+			return actorResponse;
 		}
 
 		public void RunFail(int error)

@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : MessageObject
+	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class 
 	{
 		protected abstract Task Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
 		{
-			Message msg = message.AMessage as Message;
+			Message msg = message as Message;
 			if (msg == null)
 			{
 				Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Message).Name}");
@@ -39,7 +39,7 @@ namespace ETModel
 		}
 	}
 
-	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request : MessageObject, IActorRequest where Response : MessageObject, IActorResponse
+	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request: class, IActorRequest where Response : class, IActorResponse
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
@@ -51,11 +51,11 @@ namespace ETModel
 
 		protected abstract Task Run(E unit, Request message, Action<Response> reply);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
 		{
 			try
 			{
-				Request request = message.AMessage as Request;
+				Request request = message as Request;
 				if (request == null)
 				{
 					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
@@ -67,6 +67,8 @@ namespace ETModel
 					Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
 					return;
 				}
+
+				int rpcId = request.RpcId;
 				await this.Run(e, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
@@ -74,12 +76,20 @@ namespace ETModel
 					{
 						return;
 					}
+
+					response.RpcId = rpcId;
+
+					OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
+					ushort opcode = opcodeTypeComponent.GetOpcode(response.GetType());
+					byte[] repsponseBytes = session.Network.MessagePacker.SerializeToByteArray(response);
+
 					ActorResponse actorResponse = new ActorResponse
 					{
-						AMessage = response
+						Flag = 0x01,
+						Op = opcode,
+						AMessage = repsponseBytes
 					};
-					int rpcId = message.RpcId;
-					actorResponse.RpcId = rpcId;
+					actorResponse.RpcId = actorRequest.RpcId;
 					session.Reply(actorResponse);
 				});
 			}

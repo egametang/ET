@@ -209,7 +209,7 @@ namespace ETModel
 		public void Send(IMessage message)
 		{
 			ActorTask task = new ActorTask();
-			task.message = (MessageObject)message;
+			task.message = message;
 			task.proxy = this;
 			this.Add(task);
 		}
@@ -217,7 +217,7 @@ namespace ETModel
 		public Task<IResponse> Call(IRequest request)
 		{
 			ActorTask task = new ActorTask();
-			task.message = (MessageObject)request;
+			task.message = request;
 			task.proxy = this;
 			task.Tcs = new TaskCompletionSource<IResponse>();
 			this.Add(task);

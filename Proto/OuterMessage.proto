@@ -44,12 +44,6 @@ message Actor_CreateUnits // IActorMessage
     repeated UnitInfo Units = 1;
 }
 
-message FrameMessageInfo
-{
-	required int64 Id = 1;
-	required MessageObject Message = 2;
-}
-
 message Frame_ClickMap // IFrameMessage
 {
 	required int32 X = 1;

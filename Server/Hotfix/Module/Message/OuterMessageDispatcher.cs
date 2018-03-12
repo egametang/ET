@@ -10,6 +10,23 @@ namespace ETHotfix
 			ushort opcode = packet.Opcode();
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+			
+			// 如果是帧指令消息，构造成OneFrameMessage发给对应的unit
+			if (message is IFrameMessage)
+			{
+				long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
+				ActorProxy actorProxy = Game.Scene.GetComponent<ActorProxyComponent>().Get(unitId);
+
+				// 这里设置了帧消息的id，防止客户端伪造
+				IFrameMessage iFrameMessage = (IFrameMessage)message;
+				iFrameMessage.Id = unitId;
+
+				OneFrameMessage oneFrameMessage = new OneFrameMessage();
+				oneFrameMessage.Op = opcode;
+				oneFrameMessage.AMessage = session.Network.MessagePacker.SerializeToByteArray(iFrameMessage);
+				actorProxy.Send(oneFrameMessage);
+				return;
+			}
 
 			// gate session收到actor消息直接转发给actor自己去处理
 			if (message is IActorMessage)

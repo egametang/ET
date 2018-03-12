@@ -6,7 +6,7 @@ namespace ETModel
 {
 	[Message(OuterOpcode.Actor_Test)]
 	[ProtoContract]
-	public partial class Actor_Test: MessageObject, IActorMessage
+	public partial class Actor_Test: IActorMessage
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
@@ -15,7 +15,7 @@ namespace ETModel
 
 	[Message(OuterOpcode.Actor_TestRequest)]
 	[ProtoContract]
-	public partial class Actor_TestRequest: MessageObject, IActorRequest
+	public partial class Actor_TestRequest: IActorRequest
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
@@ -26,7 +26,7 @@ namespace ETModel
 
 	[Message(OuterOpcode.Actor_TestResponse)]
 	[ProtoContract]
-	public partial class Actor_TestResponse: MessageObject, IActorResponse
+	public partial class Actor_TestResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -41,7 +41,7 @@ namespace ETModel
 
 	[Message(OuterOpcode.Actor_TransferRequest)]
 	[ProtoContract]
-	public partial class Actor_TransferRequest: MessageObject, IActorRequest
+	public partial class Actor_TransferRequest: IActorRequest
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
@@ -52,7 +52,7 @@ namespace ETModel
 
 	[Message(OuterOpcode.Actor_TransferResponse)]
 	[ProtoContract]
-	public partial class Actor_TransferResponse: MessageObject, IActorResponse
+	public partial class Actor_TransferResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int Error { get; set; }
@@ -105,28 +105,16 @@ namespace ETModel
 
 	[Message(OuterOpcode.Actor_CreateUnits)]
 	[ProtoContract]
-	public partial class Actor_CreateUnits: MessageObject, IActorMessage
+	public partial class Actor_CreateUnits: IActorMessage
 	{
 		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
 
-	[Message(OuterOpcode.FrameMessageInfo)]
-	[ProtoContract]
-	public partial class FrameMessageInfo
-	{
-		[ProtoMember(1, IsRequired = true)]
-		public long Id;
-
-		[ProtoMember(2, IsRequired = true)]
-		public MessageObject Message;
-
-	}
-
 	[Message(OuterOpcode.Frame_ClickMap)]
 	[ProtoContract]
-	public partial class Frame_ClickMap: MessageObject, IFrameMessage
+	public partial class Frame_ClickMap: IFrameMessage
 	{
 		[ProtoMember(92, IsRequired = true)]
 		public long Id { get; set; }
@@ -180,29 +168,5 @@ namespace ETModel
 		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
 	}
-
-}
-namespace ETModel
-{
-	[BsonKnownTypes(typeof(Actor_Test))]
-	[BsonKnownTypes(typeof(Actor_TestRequest))]
-	[BsonKnownTypes(typeof(Actor_TestResponse))]
-	[BsonKnownTypes(typeof(Actor_TransferRequest))]
-	[BsonKnownTypes(typeof(Actor_TransferResponse))]
-	[BsonKnownTypes(typeof(Actor_CreateUnits))]
-	[BsonKnownTypes(typeof(Frame_ClickMap))]
-	public partial class MessageObject {}
-
-}
-namespace ETModel
-{
-	[ProtoInclude(OuterOpcode.Actor_Test, typeof(Actor_Test))]
-	[ProtoInclude(OuterOpcode.Actor_TestRequest, typeof(Actor_TestRequest))]
-	[ProtoInclude(OuterOpcode.Actor_TestResponse, typeof(Actor_TestResponse))]
-	[ProtoInclude(OuterOpcode.Actor_TransferRequest, typeof(Actor_TransferRequest))]
-	[ProtoInclude(OuterOpcode.Actor_TransferResponse, typeof(Actor_TransferResponse))]
-	[ProtoInclude(OuterOpcode.Actor_CreateUnits, typeof(Actor_CreateUnits))]
-	[ProtoInclude(OuterOpcode.Frame_ClickMap, typeof(Frame_ClickMap))]
-	public partial class MessageObject {}
 
 }

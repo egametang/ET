@@ -25,10 +25,11 @@ namespace ETHotfix
 		{
 			ushort opcode = p.Opcode();
 			byte flag = p.Flag();
-			
+
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			Type responseType = opcodeTypeComponent.GetType(opcode);
 			object message = ProtobufHelper.FromBytes(responseType, p.Bytes, Packet.Index, p.Length - Packet.Index);
+
 			if ((flag & 0x01) > 0)
 			{
 				IResponse response = message as IResponse;
@@ -36,6 +37,7 @@ namespace ETHotfix
 				{
 					throw new Exception($"flag is response, but hotfix message is not! {opcode}");
 				}
+				
 				Action<IResponse> action;
 				if (!this.requestCallback.TryGetValue(response.RpcId, out action))
 				{

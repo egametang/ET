@@ -73,8 +73,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             ETModel_Packet_Binding.Register(app);
             ETModel_ProtobufHelper_Binding.Register(app);
-            ETModel_MessageInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
+            ETModel_MessageInfo_Binding.Register(app);
             System_Threading_Tasks_TaskCompletionSource_1_ILTypeInstance_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
             ETModel_SessionCallbackComponent_Binding.Register(app);

@@ -32,7 +32,7 @@ namespace ETHotfix
                     return;
                 }
 
-                await timerComponent.WaitAsync(40);
+                await timerComponent.WaitAsync(100);
 				
                 MessageHelper.Broadcast(self.FrameMessage);
 
@@ -41,9 +41,9 @@ namespace ETHotfix
             }
         }
 
-        public static void Add(this ServerFrameComponent self, IFrameMessage message)
+        public static void Add(this ServerFrameComponent self, OneFrameMessage oneFrameMessage)
         {
-            self.FrameMessage.Messages.Add((MessageObject)message);
+            self.FrameMessage.Messages.Add(oneFrameMessage);
         }
     }
 }

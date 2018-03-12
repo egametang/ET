@@ -75,14 +75,14 @@ namespace ETModel
 			return actorHandler;
 		}
 
-		public async Task Handle(Session session, Entity entity, ActorRequest message)
+		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
 		{
-			if (!this.handlers.TryGetValue(message.AMessage.GetType(), out IMActorHandler handler))
+			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{
 				throw new Exception($"not found message handler: {MongoHelper.ToJson(message)}");
 			}
 			
-			await handler.Handle(session, entity, message);
+			await handler.Handle(session, entity, actorRequest, message);
 		}
 
 		public override void Dispose()
