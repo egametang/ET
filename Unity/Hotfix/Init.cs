@@ -32,7 +32,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e.ToString());
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e.ToString());
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e.ToString());
 			}
 		}
 

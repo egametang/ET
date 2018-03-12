@@ -108,7 +108,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"{type} UI 错误: {e.ToStr()}");
+				throw new Exception($"{type} UI 错误: {e}");
 			}
 		}
 
