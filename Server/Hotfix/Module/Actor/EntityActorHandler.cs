@@ -12,6 +12,8 @@ namespace ETHotfix
         public async Task Handle(Session session, Entity entity, ActorRequest actorRequest)
         {
 			ActorResponse actorResponse = new ActorResponse();
+	        actorResponse.RpcId = actorRequest.RpcId;
+
 			try
 	        {
 		        OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
@@ -21,8 +23,7 @@ namespace ETHotfix
 				// 发送给客户端
 				Session clientSession = entity as Session;
 		        clientSession.Send(actorResponse.Flag, message);
-
-				actorResponse.RpcId = actorRequest.RpcId;
+				
 		        session.Reply(actorResponse);
 		        await Task.CompletedTask;
 	        }
@@ -30,7 +31,6 @@ namespace ETHotfix
 	        {
 		        actorResponse.Error = ErrorCode.ERR_SessionActorError;
 		        actorResponse.Message = $"session actor error {e}";
-		        actorResponse.RpcId = actorRequest.RpcId;
 				session.Reply(actorResponse);
 				throw;
 	        }
@@ -44,6 +44,7 @@ namespace ETHotfix
 	        OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
 	        Type type = opcodeTypeComponent.GetType(actorRequest.Op);
 	        IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, actorRequest.AMessage);
+
 			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorRequest, message);
         }
     }
@@ -63,9 +64,11 @@ namespace ETHotfix
             {
 				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
 
-	            ActorResponse actorResponse = new ActorResponse();
-	            actorResponse.RpcId = actorRequest.RpcId;
-	            session.Reply(actorResponse);
+				ActorResponse actorResponse = new ActorResponse
+				{
+					RpcId = actorRequest.RpcId
+				};
+				session.Reply(actorResponse);
 				return;
             }
             await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorRequest, message);

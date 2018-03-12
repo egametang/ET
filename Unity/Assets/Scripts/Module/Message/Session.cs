@@ -240,7 +240,7 @@ namespace ETModel
 			this.Send(0x01, message);
 		}
 
-		public void Send(byte flag, object message)
+		public void Send(byte flag, IMessage message)
 		{
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());

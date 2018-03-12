@@ -208,37 +208,24 @@ namespace ETModel
 
 		public void Send(IMessage message)
 		{
-			ActorTask task = new ActorTask();
-			task.message = message;
-			task.proxy = this;
+			ActorTask task = new ActorTask
+			{
+				message = message,
+				proxy = this
+			};
 			this.Add(task);
 		}
 
 		public Task<IResponse> Call(IRequest request)
 		{
-			ActorTask task = new ActorTask();
-			task.message = request;
-			task.proxy = this;
-			task.Tcs = new TaskCompletionSource<IResponse>();
+			ActorTask task = new ActorTask
+			{
+				message = request,
+				proxy = this,
+				Tcs = new TaskCompletionSource<IResponse>()
+			};
 			this.Add(task);
 			return task.Tcs.Task;
-		}
-
-		public async Task<IResponse> RealCall(ActorRequest request, CancellationToken cancellationToken)
-		{
-			try
-			{
-				//Log.Debug($"realcall {MongoHelper.ToJson(request)} {this.Address}");
-				request.Id = this.Id;
-				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.Address);
-				IResponse response = await session.Call(request, cancellationToken);
-				return response;
-			}
-			catch (RpcException e)
-			{
-				Log.Error($"{this.Address} {e}");
-				throw;
-			}
 		}
 
 		public string DebugQueue(Queue<ActorTask> tasks)

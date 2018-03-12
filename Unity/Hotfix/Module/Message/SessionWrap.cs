@@ -78,10 +78,6 @@ namespace ETHotfix
 			{
 				try
 				{
-					if (response.RpcId != rpcId)
-					{
-						return;
-					}
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
@@ -110,10 +106,6 @@ namespace ETHotfix
 			{
 				try
 				{
-					if (response.RpcId != rpcId)
-					{
-						return;
-					}
 					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);

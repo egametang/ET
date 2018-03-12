@@ -28,7 +28,6 @@ namespace ETModel
 	{
 		private readonly Dictionary<ushort, List<IMHandler>> handlers = new Dictionary<ushort, List<IMHandler>>();
 
-
 		public void Awake()
 		{
 			this.Load();

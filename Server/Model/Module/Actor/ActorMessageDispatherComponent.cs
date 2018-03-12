@@ -75,7 +75,7 @@ namespace ETModel
 			return actorHandler;
 		}
 
-		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
+		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, IMessage message)
 		{
 			if (!this.handlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{

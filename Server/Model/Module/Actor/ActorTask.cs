@@ -7,7 +7,7 @@ namespace ETModel
 	{
 		public ActorProxy proxy;
 		
-		public object message;
+		public IMessage message;
 		
 		public TaskCompletionSource<IResponse> Tcs;
 
