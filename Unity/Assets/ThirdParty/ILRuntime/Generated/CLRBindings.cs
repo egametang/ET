@@ -13,10 +13,6 @@ namespace ILRuntime.Runtime.Generated
         {
             System_NotImplementedException_Binding.Register(app);
             System_String_Binding.Register(app);
-            ETModel_Define_Binding.Register(app);
-            System_Exception_Binding.Register(app);
-            System_Collections_IDictionary_Binding.Register(app);
-            System_Object_Binding.Register(app);
             LitJson_JsonMapper_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
             UnityEngine_Input_Binding.Register(app);
@@ -54,9 +50,11 @@ namespace ILRuntime.Runtime.Generated
             System_Type_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
             System_Activator_Binding.Register(app);
+            System_Exception_Binding.Register(app);
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
             //UnityEngine_Resources_Binding.Register(app);
+            System_Object_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);

@@ -84,7 +84,7 @@ namespace ETModel
 			this.resourceCache.Clear();
 		}
 
-		public K GetAsset<K>(string bundleName, string prefab) where K : class
+		public UnityEngine.Object GetAsset(string bundleName, string prefab)
 		{
 			string path = $"{bundleName}/{prefab}".ToLower();
 
@@ -93,13 +93,12 @@ namespace ETModel
 			{
 				throw new Exception($"not found asset: {path}");
 			}
-
-			K k = resource as K;
-			if (k == null)
+			
+			if (resource == null)
 			{
-				throw new Exception($"asset type error, type: {k.GetType().Name}, path: {path}");
+				throw new Exception($"asset type error, path: {path}");
 			}
-			return k;
+			return resource;
 		}
 
 		public void UnloadBundle(string assetBundleName)
@@ -189,8 +188,9 @@ namespace ETModel
 
 			if (!Define.IsAsync)
 			{
+				string[] realPath = null;
 #if UNITY_EDITOR
-				string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+				realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
 				foreach (string s in realPath)
 				{
 					string assetName = Path.GetFileNameWithoutExtension(s);
@@ -200,8 +200,8 @@ namespace ETModel
 				}
 
 				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
-				return;
 #endif
+				return;
 			}
 
 			AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(PathHelper.AppHotfixResPath, assetBundleName));
@@ -263,8 +263,9 @@ namespace ETModel
 
 			if (!Define.IsAsync)
 			{
+				string[] realPath = null;
 #if UNITY_EDITOR
-				string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+				realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
 				foreach (string s in realPath)
 				{
 					string assetName = Path.GetFileNameWithoutExtension(s);
@@ -274,8 +275,8 @@ namespace ETModel
 				}
 
 				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
-				return;
 #endif
+				return;
 			}
 
 			AssetBundle assetBundle;

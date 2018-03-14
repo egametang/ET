@@ -25,34 +25,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("LoadBundle", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, LoadBundle_0);
-            Dictionary<string, List<MethodInfo>> genericMethods = new Dictionary<string, List<MethodInfo>>();
-            List<MethodInfo> lst = null;                    
-            foreach(var m in type.GetMethods())
-            {
-                if(m.IsGenericMethodDefinition)
-                {
-                    if (!genericMethods.TryGetValue(m.Name, out lst))
-                    {
-                        lst = new List<MethodInfo>();
-                        genericMethods[m.Name] = lst;
-                    }
-                    lst.Add(m);
-                }
-            }
-            args = new Type[]{typeof(UnityEngine.GameObject)};
-            if (genericMethods.TryGetValue("GetAsset", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.GetParameters().Length == 2)
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, GetAsset_1);
-
-                        break;
-                    }
-                }
-            }
+            args = new Type[]{typeof(System.String), typeof(System.String)};
+            method = type.GetMethod("GetAsset", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetAsset_1);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("UnloadBundle", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, UnloadBundle_2);
@@ -95,8 +70,13 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method = (ETModel.ResourcesComponent)typeof(ETModel.ResourcesComponent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.GetAsset<UnityEngine.GameObject>(bundleName, prefab);
+            var result_of_this_method = instance_of_this_method.GetAsset(bundleName, prefab);
 
+            object obj_result_of_this_method = result_of_this_method;
+            if(obj_result_of_this_method is CrossBindingAdaptorType)
+            {    
+                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
+            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

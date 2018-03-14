@@ -13,7 +13,7 @@ namespace ETHotfix
 	        {
 				ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
 		        resourcesComponent.LoadBundle($"{type}.unity3d");
-				GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>($"{type}.unity3d", $"{type}");
+				GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset($"{type}.unity3d", $"{type}");
 				GameObject lobby = UnityEngine.Object.Instantiate(bundleGameObject);
 				lobby.layer = LayerMask.NameToLayer(LayerNames.UI);
 				UI ui = ComponentFactory.Create<UI, GameObject>(lobby);

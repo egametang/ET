@@ -24,7 +24,7 @@ namespace ETModel
 						await bundleDownloaderComponent.StartAsync();
 					}
 					Game.Scene.GetComponent<ResourcesComponent>().LoadOneBundle("StreamingAssets");
-					ResourcesComponent.AssetBundleManifestObject = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<AssetBundleManifest>("StreamingAssets", "AssetBundleManifest");
+					ResourcesComponent.AssetBundleManifestObject = (AssetBundleManifest)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("StreamingAssets", "AssetBundleManifest");
 				}
 				catch (Exception e)
 				{

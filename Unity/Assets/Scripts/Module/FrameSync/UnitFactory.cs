@@ -7,7 +7,7 @@ namespace ETModel
         public static Unit Create(long id)
         {
 	        ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
-	        GameObject bundleGameObject = resourcesComponent.GetAsset<GameObject>("Unit.unity3d", "Unit");
+	        GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
 	        GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 	        
             UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();

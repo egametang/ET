@@ -57,7 +57,7 @@ namespace ETModel
 			Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
 #if ILRuntime
 			this.appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-			GameObject code = Game.Scene.GetComponent<ResourcesComponent>().GetAsset<GameObject>("code.unity3d", "Code");
+			GameObject code = (GameObject)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("code.unity3d", "Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
 			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
 
