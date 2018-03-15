@@ -8,3 +8,7 @@ Unity/Library/
 Unity/Temp/
 */obj
 IOS-Build
+Unity/Assets/Res/
+Unity/Assets/Resources/
+Unity/Assets/Bundles/
+Unity/Assets/Scenes/
