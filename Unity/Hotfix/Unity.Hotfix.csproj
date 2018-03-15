@@ -53,7 +53,9 @@
     <Compile Include="Base\Event\IEvent.cs" />
     <Compile Include="Base\Helper\ArrayHelper.cs" />
     <Compile Include="Base\Helper\AssetBundleHelper.cs" />
+    <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Base\Helper\JsonHelper.cs" />
+    <Compile Include="Base\Helper\Log.cs" />
     <Compile Include="Base\Object\IStart.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />

@@ -1,4 +1,6 @@
-﻿namespace ETModel
+﻿using System;
+
+namespace ETModel
 {
 	public static class Log
 	{
@@ -22,6 +24,11 @@
 		public static void Debug(string message)
 		{
 			globalLog.Debug(message);
+		}
+
+		public static void Error(Exception e)
+		{
+			globalLog.Error(e.ToString());
 		}
 
 		public static void Error(string message)

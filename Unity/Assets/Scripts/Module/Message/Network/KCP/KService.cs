@@ -90,47 +90,55 @@ namespace ETModel
 					continue;
 				}
 
-				int messageLength = udpReceiveResult.Buffer.Length;
-
-				// 长度小于4，不是正常的消息
-				if (messageLength < 4)
+				try
 				{
-					continue;
+					int messageLength = udpReceiveResult.Buffer.Length;
+
+					// 长度小于4，不是正常的消息
+					if (messageLength < 4)
+					{
+						continue;
+					}
+
+					// accept
+					uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
+
+					// conn从1000开始，如果为1，2，3则是特殊包
+					switch (conn)
+					{
+						case KcpProtocalType.SYN:
+							// 长度!=8，不是accpet消息
+							if (messageLength != 8)
+							{
+								break;
+							}
+							this.HandleAccept(udpReceiveResult);
+							break;
+						case KcpProtocalType.ACK:
+							// 长度!=12，不是connect消息
+							if (messageLength != 12)
+							{
+								break;
+							}
+							this.HandleConnect(udpReceiveResult);
+							break;
+						case KcpProtocalType.FIN:
+							// 长度!=12，不是DisConnect消息
+							if (messageLength != 12)
+							{
+								break;
+							}
+							this.HandleDisConnect(udpReceiveResult);
+							break;
+						default:
+							this.HandleRecv(udpReceiveResult, conn);
+							break;
+					}
 				}
-
-				// accept
-				uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
-
-				// conn从1000开始，如果为1，2，3则是特殊包
-				switch (conn)
+				catch (Exception e)
 				{
-					case KcpProtocalType.SYN:
-						// 长度!=8，不是accpet消息
-						if (messageLength != 8)
-						{
-							break;
-						}
-						this.HandleAccept(udpReceiveResult);
-						break;
-					case KcpProtocalType.ACK:
-						// 长度!=12，不是connect消息
-						if (messageLength != 12)
-						{
-							break;
-						}
-						this.HandleConnect(udpReceiveResult);
-						break;
-					case KcpProtocalType.FIN:
-						// 长度!=12，不是DisConnect消息
-						if (messageLength != 12)
-						{
-							break;
-						}
-						this.HandleDisConnect(udpReceiveResult);
-						break;
-					default:
-						this.HandleRecv(udpReceiveResult, conn);
-						break;
+					Log.Error(e);
+					continue;
 				}
 			}
 		}

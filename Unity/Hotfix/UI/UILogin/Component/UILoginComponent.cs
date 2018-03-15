@@ -61,7 +61,7 @@ namespace ETHotfix
 			catch (Exception e)
 			{
 				sessionWrap?.Dispose();
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 	}

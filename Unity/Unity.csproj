@@ -412,6 +412,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding_Enumerator__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IDictionary_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Exception_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_IDisposable_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Linq_Enumerable_Binding.cs" />

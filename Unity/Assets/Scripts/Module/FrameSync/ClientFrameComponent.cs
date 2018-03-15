@@ -41,18 +41,25 @@ namespace ETModel
 
         public async void UpdateAsync()
         {
-            TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-            while (true)
-            {
-                await timerComponent.WaitAsync(waitTime);
+	        try
+	        {
+		        TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
+		        while (true)
+		        {
+			        await timerComponent.WaitAsync(waitTime);
 
-                if (this.IsDisposed)
-                {
-                    return;
-                }
-                
-                this.UpdateFrame();
-            }
+			        if (this.IsDisposed)
+			        {
+				        return;
+			        }
+
+			        this.UpdateFrame();
+		        }
+			}
+	        catch (Exception e)
+	        {
+		        Log.Error(e);
+	        }
         }
 
         private void UpdateFrame()
