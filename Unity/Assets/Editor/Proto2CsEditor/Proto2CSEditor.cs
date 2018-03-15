@@ -140,7 +140,7 @@ namespace MyEditor
 						sb.AppendLine("\t\tpublic string Message { get; set; }\n");
 					}
 
-					if (parentClass == "IActorRequest" || parentClass == "IActorMessage" || parentClass == "IFrameMessage")
+					if (parentClass == "IActorRequest" || parentClass == "IActorMessage")
 					{
 						sb.AppendLine("\t\t[ProtoMember(93, IsRequired = true)]");
 						sb.AppendLine("\t\tpublic long ActorId { get; set; }\n");
@@ -281,6 +281,9 @@ namespace MyEditor
 			string typeCs = "";
 			switch (type)
 			{
+				case "int16":
+					typeCs = "short";
+					break;
 				case "int32":
 					typeCs = "int";
 					break;
@@ -298,6 +301,9 @@ namespace MyEditor
 					break;
 				case "uint64":
 					typeCs = "ulong";
+					break;
+				case "uint16":
+					typeCs = "ushort";
 					break;
 				default:
 					typeCs = type;

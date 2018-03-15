@@ -34,7 +34,7 @@ public class ILRuntimeCLRBinding
         types.Add(typeof(List<ILRuntime.Runtime.Intepreter.ILTypeInstance>));
 
         ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(types, "Assets/ThirdParty/ILRuntime/Generated");
-
+		AssetDatabase.Refresh();
     }
 
     [MenuItem("Tools/ILRuntime/Generate CLR Binding Code by Analysis")]
@@ -49,7 +49,8 @@ public class ILRuntimeCLRBinding
         //Crossbind Adapter is needed to generate the correct binding code
         InitILRuntime(domain);
         ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/ThirdParty/ILRuntime/Generated");
-    }
+	    AssetDatabase.Refresh();
+	}
 
     static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain domain)
     {

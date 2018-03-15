@@ -19,7 +19,7 @@ namespace ETModel
 	}
 
 	[ProtoContract]
-	public interface IFrameMessage : IActorMessage
+	public interface IFrameMessage : IMessage
 	{
 		long Id { get; set; }
 	}

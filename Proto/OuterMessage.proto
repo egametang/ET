@@ -44,6 +44,18 @@ message Actor_CreateUnits // IActorMessage
     repeated UnitInfo Units = 1;
 }
 
+message OneFrameMessage // IActorMessage
+{
+	required uint16 Op = 1;
+	required bytes AMessage = 2;
+}
+
+message FrameMessage // IActorMessage
+{
+	required int32 Frame = 1;
+	repeated OneFrameMessage Messages = 2;
+}
+
 message Frame_ClickMap // IFrameMessage
 {
 	required int32 X = 1;
