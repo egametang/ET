@@ -9,22 +9,19 @@ namespace ETHotfix
     /// </summary>
     public class GateSessionEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest actorRequest)
+        public async Task Handle(Session session, Entity entity, IActorMessage actorMessage)
         {
-			ActorResponse actorResponse = new ActorResponse();
-	        actorResponse.RpcId = actorRequest.RpcId;
-
+			ActorResponse actorResponse = new ActorResponse
+			{
+				RpcId = actorMessage.RpcId
+			};
 			try
 	        {
-		        OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-		        Type type = opcodeTypeComponent.GetType(actorRequest.Op);
-		        IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, actorRequest.AMessage);
+		        // 发送给客户端
+		        Session clientSession = entity as Session;
+				clientSession.Send(actorMessage);
 
-				// 发送给客户端
-				Session clientSession = entity as Session;
-		        clientSession.Send(actorResponse.Flag, message);
-				
-		        session.Reply(actorResponse);
+				session.Reply(actorResponse);
 		        await Task.CompletedTask;
 	        }
 	        catch (Exception e)
@@ -39,13 +36,9 @@ namespace ETHotfix
 
     public class CommonEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest actorRequest)
+        public async Task Handle(Session session, Entity entity, IActorMessage actorMessage)
         {
-	        OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-	        Type type = opcodeTypeComponent.GetType(actorRequest.Op);
-	        IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, actorRequest.AMessage);
-
-			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorRequest, message);
+			await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorMessage);
         }
     }
 
@@ -54,24 +47,20 @@ namespace ETHotfix
     /// </summary>
     public class MapUnitEntityActorHandler : IEntityActorHandler
     {
-        public async Task Handle(Session session, Entity entity, ActorRequest actorRequest)
+        public async Task Handle(Session session, Entity entity, IActorMessage actorMessage)
         {
-	        OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-	        Type type = opcodeTypeComponent.GetType(actorRequest.Op);
-	        IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, actorRequest.AMessage);
-
-			if (message is OneFrameMessage aFrameMessage)
+			if (actorMessage is OneFrameMessage aFrameMessage)
             {
 				Game.Scene.GetComponent<ServerFrameComponent>().Add(aFrameMessage);
 
 				ActorResponse actorResponse = new ActorResponse
 				{
-					RpcId = actorRequest.RpcId
+					RpcId = actorMessage.RpcId
 				};
 				session.Reply(actorResponse);
 				return;
             }
-            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorRequest, message);
+            await Game.Scene.GetComponent<ActorMessageDispatherComponent>().Handle(session, entity, actorMessage);
         }
     }
 }

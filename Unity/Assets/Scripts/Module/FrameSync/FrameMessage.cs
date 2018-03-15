@@ -5,8 +5,13 @@ namespace ETModel
 {
 	[Message(Opcode.OneFrameMessage)]
 	[ProtoContract]
-	public class OneFrameMessage: IMessage
+	public class OneFrameMessage: IActorMessage
 	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public ushort Op;
 
@@ -18,6 +23,11 @@ namespace ETModel
 	[ProtoContract]
 	public partial class FrameMessage : IActorMessage
 	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public int Frame;
 

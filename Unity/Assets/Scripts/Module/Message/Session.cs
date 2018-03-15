@@ -136,12 +136,14 @@ namespace ETModel
 
 			byte flag = packet.Flag();
 			ushort opcode = packet.Opcode();
-			
+
+#if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
 				this.Network.MessageDispatcher.Dispatch(this, packet);
 				return;
 			}
+#endif
 
 			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
 			if ((flag & 0x01) == 0)

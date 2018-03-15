@@ -18,9 +18,12 @@ namespace ETModel
 	[ObjectSystem]
 	public class ActorProxyStartSystem : StartSystem<ActorProxy>
 	{
-		public override void Start(ActorProxy self)
+		public override async void Start(ActorProxy self)
 		{
-			self.Start();
+			int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+			self.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
+
+			self.UpdateAsync();
 		}
 	}
 
@@ -75,15 +78,7 @@ namespace ETModel
 			this.tcs = null;
 			t?.SetResult(new ActorTask());
 		}
-
-		public async void Start()
-		{
-			int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
-			this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
-
-			this.UpdateAsync();
-		}
-
+		
 		private void Add(ActorTask task)
 		{
 			if (this.IsDisposed)
@@ -126,7 +121,7 @@ namespace ETModel
 			return this.tcs.Task;
 		}
 
-		private async void UpdateAsync()
+		public async void UpdateAsync()
 		{
 			while (true)
 			{
@@ -206,7 +201,7 @@ namespace ETModel
 			}
 		}
 
-		public void Send(IMessage message)
+		public void Send(IActorMessage message)
 		{
 			ActorTask task = new ActorTask
 			{
@@ -216,7 +211,7 @@ namespace ETModel
 			this.Add(task);
 		}
 
-		public Task<IResponse> Call(IRequest request)
+		public Task<IResponse> Call(IActorRequest request)
 		{
 			ActorTask task = new ActorTask
 			{

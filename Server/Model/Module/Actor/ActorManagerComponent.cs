@@ -24,11 +24,18 @@ namespace ETModel
 
 		public void Add(Entity entity)
 		{
+			Log.Info($"add actor: {entity.Id} {entity.GetType().Name}");
 			dictionary[entity.Id] = entity;
 		}
 
 		public void Remove(long id)
 		{
+			Entity entity;
+			if (!this.dictionary.TryGetValue(id, out entity))
+			{
+				return;
+			}
+			Log.Info($"remove actor: {entity.Id} {entity.GetType().Name}");
 			this.dictionary.Remove(id);
 		}
 

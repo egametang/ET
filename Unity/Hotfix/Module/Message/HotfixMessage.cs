@@ -10,6 +10,7 @@ namespace ETHotfix
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string Account;
 
@@ -23,11 +24,14 @@ namespace ETHotfix
 	public partial class R2C_Login: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string Address;
 
@@ -42,6 +46,7 @@ namespace ETHotfix
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
@@ -52,11 +57,14 @@ namespace ETHotfix
 	public partial class G2C_LoginGate: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
 
@@ -77,6 +85,10 @@ namespace ETHotfix
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
@@ -87,11 +99,14 @@ namespace ETHotfix
 	public partial class M2C_TestActorResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
@@ -109,6 +124,7 @@ namespace ETHotfix
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 	}
 
 	[Message(HotfixOpcode.G2C_PlayerInfo)]
@@ -116,11 +132,14 @@ namespace ETHotfix
 	public partial class G2C_PlayerInfo: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, TypeName = "ETHotfix.PlayerInfo")]
 		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
 

@@ -7,12 +7,12 @@ namespace ETModel
 	{
 		protected abstract Task Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
+		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
 		{
-			Message msg = message as Message;
+			Message msg = actorRequest as Message;
 			if (msg == null)
 			{
-				Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Message).Name}");
+				Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Message).Name}");
 				return;
 			}
 			E e = entity as E;
@@ -29,7 +29,10 @@ namespace ETModel
 			{
 				return;
 			}
-			ActorResponse response = new ActorResponse();
+			ActorResponse response = new ActorResponse
+			{
+				RpcId = actorRequest.RpcId
+			};
 			session.Reply(response);
 		}
 
@@ -51,14 +54,14 @@ namespace ETModel
 
 		protected abstract Task Run(E unit, Request message, Action<Response> reply);
 
-		public async Task Handle(Session session, Entity entity, ActorRequest actorRequest, object message)
+		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
 		{
 			try
 			{
-				Request request = message as Request;
+				Request request = actorRequest as Request;
 				if (request == null)
 				{
-					Log.Error($"消息类型转换错误: {message.GetType().FullName} to {typeof (Request).Name}");
+					Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Request).Name}");
 					return;
 				}
 				E e = entity as E;
@@ -76,26 +79,14 @@ namespace ETModel
 					{
 						return;
 					}
-
 					response.RpcId = rpcId;
-
-					OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-					ushort opcode = opcodeTypeComponent.GetOpcode(response.GetType());
-					byte[] repsponseBytes = session.Network.MessagePacker.SerializeToByteArray(response);
-
-					ActorResponse actorResponse = new ActorResponse
-					{
-						Flag = 0x01,
-						Op = opcode,
-						AMessage = repsponseBytes
-					};
-					actorResponse.RpcId = actorRequest.RpcId;
-					session.Reply(actorResponse);
+					
+					session.Reply(response);
 				});
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {message.GetType().FullName}", e);
+				throw new Exception($"解释消息失败: {actorRequest.GetType().FullName}", e);
 			}
 		}
 

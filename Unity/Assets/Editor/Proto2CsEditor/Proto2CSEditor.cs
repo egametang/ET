@@ -123,27 +123,33 @@ namespace MyEditor
 				if (isMsgStart && newline == "{")
 				{
 					sb.Append("\t{\n");
-
-					if (parentClass == "IRequest" || parentClass == "IActorRequest")
+					
+					if (parentClass == "IRequest" || parentClass == "IActorRequest" || parentClass == "IActorMessage" || parentClass == "IFrameMessage")
 					{
 						sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
-						sb.AppendLine("\t\tpublic int RpcId { get; set; }");
+						sb.AppendLine("\t\tpublic int RpcId { get; set; }\n");
 					}
 
 					if (parentClass == "IResponse" || parentClass == "IActorResponse")
 					{
 						sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
-						sb.AppendLine("\t\tpublic int Error { get; set; }");
+						sb.AppendLine("\t\tpublic int RpcId { get; set; }\n");
 						sb.AppendLine("\t\t[ProtoMember(91, IsRequired = true)]");
-						sb.AppendLine("\t\tpublic string Message { get; set; }");
+						sb.AppendLine("\t\tpublic int Error { get; set; }\n");
 						sb.AppendLine("\t\t[ProtoMember(92, IsRequired = true)]");
-						sb.AppendLine("\t\tpublic int RpcId { get; set; }");
+						sb.AppendLine("\t\tpublic string Message { get; set; }\n");
+					}
+
+					if (parentClass == "IActorRequest" || parentClass == "IActorMessage" || parentClass == "IFrameMessage")
+					{
+						sb.AppendLine("\t\t[ProtoMember(93, IsRequired = true)]");
+						sb.AppendLine("\t\tpublic long ActorId { get; set; }\n");
 					}
 
 					if (parentClass == "IFrameMessage")
 					{
-						sb.AppendLine("\t\t[ProtoMember(92, IsRequired = true)]");
-						sb.AppendLine("\t\tpublic long Id { get; set; }");
+						sb.AppendLine("\t\t[ProtoMember(94, IsRequired = true)]");
+						sb.AppendLine("\t\tpublic long Id { get; set; }\n");
 					}
 				}
 

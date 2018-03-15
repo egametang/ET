@@ -8,6 +8,12 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Actor_Test: IActorMessage
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string Info;
 
@@ -19,6 +25,10 @@ namespace ETModel
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string request;
 
@@ -29,11 +39,14 @@ namespace ETModel
 	public partial class Actor_TestResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public string response;
 
@@ -45,6 +58,10 @@ namespace ETModel
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public int MapIndex;
 
@@ -55,11 +72,14 @@ namespace ETModel
 	public partial class Actor_TransferResponse: IActorResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 	}
 
 	[Message(OuterOpcode.C2G_EnterMap)]
@@ -68,6 +88,7 @@ namespace ETModel
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 	}
 
 	[Message(OuterOpcode.G2C_EnterMap)]
@@ -75,11 +96,14 @@ namespace ETModel
 	public partial class G2C_EnterMap: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public long UnitId;
 
@@ -107,6 +131,12 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Actor_CreateUnits: IActorMessage
 	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
 		[ProtoMember(1, TypeName = "ETModel.UnitInfo")]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
@@ -116,8 +146,15 @@ namespace ETModel
 	[ProtoContract]
 	public partial class Frame_ClickMap: IFrameMessage
 	{
-		[ProtoMember(92, IsRequired = true)]
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(94, IsRequired = true)]
 		public long Id { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public int X;
 
@@ -132,6 +169,7 @@ namespace ETModel
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 		[ProtoMember(1, IsRequired = true)]
 		public AppType AppType;
 
@@ -142,11 +180,14 @@ namespace ETModel
 	public partial class M2C_Reload: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 	}
 
 	[Message(OuterOpcode.C2R_Ping)]
@@ -155,6 +196,7 @@ namespace ETModel
 	{
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
+
 	}
 
 	[Message(OuterOpcode.R2C_Ping)]
@@ -162,11 +204,14 @@ namespace ETModel
 	public partial class R2C_Ping: IResponse
 	{
 		[ProtoMember(90, IsRequired = true)]
-		public int Error { get; set; }
-		[ProtoMember(91, IsRequired = true)]
-		public string Message { get; set; }
-		[ProtoMember(92, IsRequired = true)]
 		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
 	}
 
 }
