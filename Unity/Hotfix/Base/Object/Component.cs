@@ -9,7 +9,7 @@ namespace ETHotfix
 		[BsonIgnore]
 		public Component Parent { get; set; }
 
-		public T GetParent<T>() where T : Entity
+		public T GetParent<T>() where T : Component
 		{
 			return this.Parent as T;
 		}

@@ -12,13 +12,14 @@ namespace ETModel
 		public long Id { get; set; }
 
 		[BsonIgnore]
-		public Disposer Parent { get; set; }
+		public Component Parent { get; set; }
 
-		public T GetParent<T>() where T : Disposer
+		public T GetParent<T>() where T : Component
 		{
 			return this.Parent as T;
 		}
 
+		[BsonIgnore]
 		public Entity Entity
 		{
 			get
