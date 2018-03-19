@@ -17,14 +17,12 @@ namespace ETModel
 
 		protected Entity()
 		{
-			this.Id = this.InstanceId;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id)
+		protected Entity(long id): base(id)
 		{
-			this.Id = id;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
@@ -202,6 +200,8 @@ namespace ETModel
 		{
 			try
 			{
+				this.InstanceId = IdGenerater.GenerateId();
+
 				this.componentDict.Clear();
 
 				if (this.components != null)

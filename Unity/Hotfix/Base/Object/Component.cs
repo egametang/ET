@@ -8,7 +8,7 @@ namespace ETHotfix
 	public abstract partial class Component : Object, IDisposable2
 	{
 		[BsonIgnore]
-		public long InstanceId { get; private set; }
+		public long InstanceId { get; protected set; }
 
 		[BsonIgnore]
 		private bool isFromPool;
@@ -23,6 +23,7 @@ namespace ETHotfix
 			set
 			{
 				this.isFromPool = value;
+
 				if (this.InstanceId == 0)
 				{
 					this.InstanceId = IdGenerater.GenerateId();
@@ -68,6 +69,7 @@ namespace ETHotfix
 		{
 			this.InstanceId = IdGenerater.GenerateId();
 			Game.EventSystem.Add(this);
+			this.Id = this.InstanceId;
 		}
 
 		protected Component(long instanceId)
@@ -82,7 +84,7 @@ namespace ETHotfix
 			{
 				return;
 			}
-			
+
 			Game.EventSystem.Remove(this.InstanceId);
 
 			this.InstanceId = 0;

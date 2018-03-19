@@ -7,7 +7,7 @@ namespace ETModel
 	public abstract partial class Component : Object, IDisposable
 	{
 		[BsonIgnore]
-		public long InstanceId { get; private set; }
+		public long InstanceId { get; protected set; }
 
 		[BsonIgnore]
 		private bool isFromPool;
@@ -68,6 +68,7 @@ namespace ETModel
 		{
 			this.InstanceId = IdGenerater.GenerateId();
 			Game.EventSystem.Add(this);
+			this.Id = this.InstanceId;
 		}
 
 		protected Component(long instanceId)
