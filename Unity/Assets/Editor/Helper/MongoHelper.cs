@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using System.Collections.Generic;
 
 namespace ETModel
 {
@@ -69,5 +70,20 @@ namespace ETModel
 		{
 			return FromBson<T>(ToBson(t));
 		}
+
+
+        public static void AvoidAOT()
+        {
+            ArraySerializer<int> aint = new ArraySerializer<int>();
+            ArraySerializer<string> astring = new ArraySerializer<string>();
+            ArraySerializer<long> along = new ArraySerializer<long>();
+
+            EnumerableInterfaceImplementerSerializer<List<int>> e =
+                new EnumerableInterfaceImplementerSerializer<List<int>>();
+
+            EnumerableInterfaceImplementerSerializer<List<int>, int> elistint =
+                new EnumerableInterfaceImplementerSerializer<List<int>, int>();
+        }
+
 	}
 }
