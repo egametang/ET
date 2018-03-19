@@ -64,11 +64,12 @@ f.提供命令行配置工具，配置分布式非常简单
 ET框架的服务端是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
 使用方法：  
-[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)    
+[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
+  
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
-群友源码分析：  
+群友分享：  
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
@@ -78,6 +79,8 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET框架Actor使用与心得](http://www.tinkingli.com/?p=117)  
 [基于ET框架和UGUI的简单UI框架实现（渐渐写）](http://www.tinkingli.com/?p=124)  
 [ET框架笔记 (笑览世界写)](http://www.tinkingli.com/?p=76)  
+[ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
+[ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
 群友demo：  
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
