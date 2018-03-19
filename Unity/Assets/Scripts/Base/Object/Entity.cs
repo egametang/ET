@@ -17,7 +17,7 @@ namespace ETModel
 
 		protected Entity()
 		{
-			this.Id = IdGenerater.GenerateId();
+			this.Id = this.InstanceId;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
@@ -46,7 +46,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 
@@ -215,7 +215,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 	}

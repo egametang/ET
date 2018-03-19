@@ -41,8 +41,6 @@ namespace ETHotfix
 		{
 			self.entityActorHandler = new CommonEntityActorHandler();
 			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
 			self.HandleAsync();
 		}
 
@@ -50,8 +48,6 @@ namespace ETHotfix
 		{
 			self.entityActorHandler = iEntityActorHandler;
 			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
 			self.HandleAsync();
 		}
 
@@ -63,12 +59,12 @@ namespace ETHotfix
 
 		public static async Task AddLocation(this ActorComponent self)
 		{
-			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.actorId);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Parent.InstanceId);
 		}
 
 		public static async Task RemoveLocation(this ActorComponent self)
 		{
-			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.actorId);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.Parent.InstanceId);
 		}
 
 		public static void Add(this ActorComponent self, ActorMessageInfo info)
@@ -116,7 +112,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}

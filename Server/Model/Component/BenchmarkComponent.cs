@@ -31,7 +31,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -51,11 +51,11 @@ namespace ETModel
 			}
 			catch (RpcException e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 

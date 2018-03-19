@@ -31,35 +31,35 @@ namespace ETModel
 			}
 		}
 
-		public Task<bool> Add(Component disposer, string collectionName = "")
+		public Task<bool> Add(Component component, string collectionName = "")
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-			this.AddToCache(disposer, collectionName);
+			this.AddToCache(component, collectionName);
 
 			if (string.IsNullOrEmpty(collectionName))
 			{
-				collectionName = disposer.GetType().Name;
+				collectionName = component.GetType().Name;
 			}
-			DBSaveTask task = ComponentFactory.CreateWithId<DBSaveTask, Component, string, TaskCompletionSource<bool>>(disposer.Id, disposer, collectionName, tcs);
+			DBSaveTask task = ComponentFactory.CreateWithId<DBSaveTask, Component, string, TaskCompletionSource<bool>>(component.Id, component, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 
 			return tcs.Task;
 		}
 
-		public Task<bool> AddBatch(List<Component> disposers, string collectionName)
+		public Task<bool> AddBatch(List<Component> components, string collectionName)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			DBSaveBatchTask task = ComponentFactory.Create<DBSaveBatchTask, List<Component>, string, TaskCompletionSource<bool>>(disposers, collectionName, tcs);
+			DBSaveBatchTask task = ComponentFactory.Create<DBSaveBatchTask, List<Component>, string, TaskCompletionSource<bool>>(components, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 			return tcs.Task;
 		}
 
-		public void AddToCache(Component disposer, string collectionName = "")
+		public void AddToCache(Component component, string collectionName = "")
 		{
 			if (string.IsNullOrEmpty(collectionName))
 			{
-				collectionName = disposer.GetType().Name;
+				collectionName = component.GetType().Name;
 			}
 			Dictionary<long, Component> collection;
 			if (!this.cache.TryGetValue(collectionName, out collection))
@@ -67,7 +67,7 @@ namespace ETModel
 				collection = new Dictionary<long, Component>();
 				this.cache.Add(collectionName, collection);
 			}
-			collection[disposer.Id] = disposer;
+			collection[component.Id] = component;
 		}
 
 		public Component GetFromCache(string collectionName, long id)
@@ -97,10 +97,10 @@ namespace ETModel
 
 		public Task<Component> Get(string collectionName, long id)
 		{
-			Component disposer = GetFromCache(collectionName, id);
-			if (disposer != null)
+			Component component = GetFromCache(collectionName, id);
+			if (component != null)
 			{
-				return Task.FromResult(disposer);
+				return Task.FromResult(component);
 			}
 
 			TaskCompletionSource<Component> tcs = new TaskCompletionSource<Component>();
@@ -112,22 +112,22 @@ namespace ETModel
 
 		public Task<List<Component>> GetBatch(string collectionName, List<long> idList)
 		{
-			List <Component> disposers = new List<Component>();
+			List <Component> components = new List<Component>();
 			bool isAllInCache = true;
 			foreach (long id in idList)
 			{
-				Component disposer = this.GetFromCache(collectionName, id);
-				if (disposer == null)
+				Component component = this.GetFromCache(collectionName, id);
+				if (component == null)
 				{
 					isAllInCache = false;
 					break;
 				}
-				disposers.Add(disposer);
+				components.Add(component);
 			}
 
 			if (isAllInCache)
 			{
-				return Task.FromResult(disposers);
+				return Task.FromResult(components);
 			}
 
 			TaskCompletionSource<List<Component>> tcs = new TaskCompletionSource<List<Component>>();

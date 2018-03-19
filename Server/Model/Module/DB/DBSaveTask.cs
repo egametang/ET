@@ -10,7 +10,7 @@ namespace ETModel
 	{
 		public override void Awake(DBSaveTask self, Component entity, string collectionName, TaskCompletionSource<bool> tcs)
 		{
-			self.Disposer = entity;
+			self.Component = entity;
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;
 		}
@@ -18,7 +18,7 @@ namespace ETModel
 
 	public sealed class DBSaveTask : DBTask
 	{
-		public Component Disposer;
+		public Component Component;
 
 		public string CollectionName { get; set; }
 
@@ -31,7 +31,7 @@ namespace ETModel
 			try
 			{
 				// 执行保存数据库任务
-				await dbComponent.GetCollection(this.CollectionName).ReplaceOneAsync(s => s.Id == this.Disposer.Id, this.Disposer, new UpdateOptions {IsUpsert = true});
+				await dbComponent.GetCollection(this.CollectionName).ReplaceOneAsync(s => s.Id == this.Component.Id, this.Component, new UpdateOptions {IsUpsert = true});
 				this.Tcs.SetResult(true);
 			}
 			catch (Exception e)

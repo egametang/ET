@@ -36,18 +36,18 @@ namespace ETModel
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					Component disposer = dbCacheComponent.GetFromCache(this.CollectionName, id);
-					if (disposer == null)
+					Component component = dbCacheComponent.GetFromCache(this.CollectionName, id);
+					if (component == null)
 					{
-						disposer = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
-						dbCacheComponent.AddToCache(disposer);
+						component = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
+						dbCacheComponent.AddToCache(component);
 					}
 					
-					if (disposer == null)
+					if (component == null)
 					{
 						continue;
 					}
-					result.Add(disposer);
+					result.Add(component);
 				}
 				
 				this.Tcs.SetResult(result);

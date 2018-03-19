@@ -6,7 +6,7 @@ namespace ETModel
 	{
 		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
 		{
-			Log.Error(e.ToString());
+			Log.Error(e);
 			response.Error = ErrorCode.ERR_RpcFail;
 			response.Message = e.ToString();
 			reply(response);

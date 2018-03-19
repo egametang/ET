@@ -91,7 +91,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_CanvasConfig_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             System_Collections_Generic_List_1_String_Binding.Register(app);
-            ETModel_Disposer_Binding.Register(app);
             ETModel_Scene_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);

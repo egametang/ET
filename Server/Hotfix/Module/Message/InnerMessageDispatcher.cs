@@ -14,10 +14,10 @@ namespace ETHotfix
 			// 收到actor消息,放入actor队列
 			if (message is IActorMessage iActorMessage)
 			{
-				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(iActorMessage.ActorId);
+				Entity entity = Game.EventSystem.Get(iActorMessage.ActorId) as Entity;
 				if (entity == null)
 				{
-					Log.Debug($"not found actor: {iActorMessage.ActorId}");
+					Log.Warning($"not found actor: {iActorMessage.ActorId}");
 					ActorResponse response = new ActorResponse
 					{
 						Error = ErrorCode.ERR_NotFoundActor,

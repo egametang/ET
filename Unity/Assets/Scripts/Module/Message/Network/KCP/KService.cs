@@ -86,7 +86,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 					continue;
 				}
 

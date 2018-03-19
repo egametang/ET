@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace ETModel
 {
-	public class ABInfo : Disposer
+	public class ABInfo : Component
 	{
 		private int refCount;
 		public string Name { get; }

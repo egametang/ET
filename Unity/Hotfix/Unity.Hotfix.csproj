@@ -75,7 +75,6 @@
     <Compile Include="Module\Message\IMHandler.cs" />
     <Compile Include="Base\Object\Component.cs" />
     <Compile Include="Base\Object\ComponentFactory.cs" />
-    <Compile Include="Base\Object\Disposer.cs" />
     <Compile Include="Base\Object\Entity.cs" />
     <Compile Include="Base\Object\EntityType.cs" />
     <Compile Include="Base\Object\IAwake.cs" />
