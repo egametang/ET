@@ -10,15 +10,17 @@ namespace ETHotfix
 
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
-		private readonly UnOrderMultiMap<Type, AAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, AAwakeSystem>();
+		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, IAwakeSystem>();
 
-		private readonly UnOrderMultiMap<Type, AStartSystem> startEvents = new UnOrderMultiMap<Type, AStartSystem>();
+		private readonly UnOrderMultiMap<Type, IStartSystem> startEvents = new UnOrderMultiMap<Type, IStartSystem>();
 
-		private readonly UnOrderMultiMap<Type, ALoadSystem> loadEvents = new UnOrderMultiMap<Type, ALoadSystem>();
+		private readonly UnOrderMultiMap<Type, IDestroySystem> desdroyEvents = new UnOrderMultiMap<Type, IDestroySystem>();
 
-		private readonly UnOrderMultiMap<Type, AUpdateSystem> updateEvents = new UnOrderMultiMap<Type, AUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, ILoadSystem> loadEvents = new UnOrderMultiMap<Type, ILoadSystem>();
 
-		private readonly UnOrderMultiMap<Type, ALateUpdateSystem> lateUpdateEvents = new UnOrderMultiMap<Type, ALateUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateEvents = new UnOrderMultiMap<Type, IUpdateSystem>();
+
+		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateEvents = new UnOrderMultiMap<Type, ILateUpdateSystem>();
 
 		private Queue<long> updates = new Queue<long>();
 		private Queue<long> updates2 = new Queue<long>();
@@ -45,34 +47,40 @@ namespace ETHotfix
 
 				object obj = Activator.CreateInstance(type);
 
-				AAwakeSystem objectSystem = obj as AAwakeSystem;
+				IAwakeSystem objectSystem = obj as IAwakeSystem;
 				if (objectSystem != null)
 				{
 					this.awakeEvents.Add(objectSystem.Type(), objectSystem);
 				}
 
-				AUpdateSystem aUpdateSystem = obj as AUpdateSystem;
-				if (aUpdateSystem != null)
+				IUpdateSystem updateSystem = obj as IUpdateSystem;
+				if (updateSystem != null)
 				{
-					this.updateEvents.Add(aUpdateSystem.Type(), aUpdateSystem);
+					this.updateEvents.Add(updateSystem.Type(), updateSystem);
 				}
 
-				ALateUpdateSystem aLateUpdateSystem = obj as ALateUpdateSystem;
-				if (aLateUpdateSystem != null)
+				ILateUpdateSystem lateUpdateSystem = obj as ILateUpdateSystem;
+				if (lateUpdateSystem != null)
 				{
-					this.lateUpdateEvents.Add(aLateUpdateSystem.Type(), aLateUpdateSystem);
+					this.lateUpdateEvents.Add(lateUpdateSystem.Type(), lateUpdateSystem);
 				}
 
-				AStartSystem aStartSystem = obj as AStartSystem;
-				if (aStartSystem != null)
+				IStartSystem startSystem = obj as IStartSystem;
+				if (startSystem != null)
 				{
-					this.startEvents.Add(aStartSystem.Type(), aStartSystem);
+					this.startEvents.Add(startSystem.Type(), startSystem);
 				}
 
-				ALoadSystem aLoadSystem = obj as ALoadSystem;
-				if (aLoadSystem != null)
+				IDestroySystem destroySystem = obj as IDestroySystem;
+				if (destroySystem != null)
 				{
-					this.loadEvents.Add(aLoadSystem.Type(), aLoadSystem);
+					this.desdroyEvents.Add(destroySystem.Type(), destroySystem);
+				}
+
+				ILoadSystem loadSystem = obj as ILoadSystem;
+				if (loadSystem != null)
+				{
+					this.loadEvents.Add(loadSystem.Type(), loadSystem);
 				}
 			}
 
@@ -163,13 +171,13 @@ namespace ETHotfix
 
 		public void Awake(Component component)
 		{
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
@@ -181,19 +189,27 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				iAwake.Run(component);
+
+				try
+				{
+					iAwake.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
 		public void Awake<P1>(Component component, P1 p1)
 		{
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 			
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
@@ -205,19 +221,27 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				iAwake.Run(component, p1);
+
+				try
+				{
+					iAwake.Run(component, p1);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
 		public void Awake<P1, P2>(Component component, P1 p1, P2 p2)
 		{
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
@@ -229,19 +253,27 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				iAwake.Run(component, p1, p2);
+
+				try
+				{
+					iAwake.Run(component, p1, p2);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
 		public void Awake<P1, P2, P3>(Component component, P1 p1, P2 p2, P3 p3)
 		{
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
@@ -253,7 +285,15 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				iAwake.Run(component, p1, p2, p3);
+
+				try
+				{
+					iAwake.Run(component, p1, p2, p3);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
@@ -272,7 +312,7 @@ namespace ETHotfix
 					continue;
 				}
 				
-				List<ALoadSystem> aLoadSystems = this.loadEvents[component.GetType()];
+				List<ILoadSystem> aLoadSystems = this.loadEvents[component.GetType()];
 				if (aLoadSystems == null)
 				{
 					continue;
@@ -280,7 +320,7 @@ namespace ETHotfix
 
 				this.loaders2.Enqueue(instanceId);
 
-				foreach (ALoadSystem aLoadSystem in aLoadSystems)
+				foreach (ILoadSystem aLoadSystem in aLoadSystems)
 				{
 					try
 					{
@@ -307,13 +347,13 @@ namespace ETHotfix
 					continue;
 				}
 
-				List<AStartSystem> aStartSystems = this.startEvents[component.GetType()];
+				List<IStartSystem> aStartSystems = this.startEvents[component.GetType()];
 				if (aStartSystems == null)
 				{
 					continue;
 				}
 
-				foreach (AStartSystem aStartSystem in aStartSystems)
+				foreach (IStartSystem aStartSystem in aStartSystems)
 				{
 					try
 					{
@@ -323,6 +363,32 @@ namespace ETHotfix
 					{
 						Log.Error(e);
 					}
+				}
+			}
+		}
+
+		public void Desdroy(Component component)
+		{
+			List<IDestroySystem> iDestroySystems = this.desdroyEvents[component.GetType()];
+			if (iDestroySystems == null)
+			{
+				return;
+			}
+
+			foreach (IDestroySystem aDestroySystem in iDestroySystems)
+			{
+				if (aDestroySystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					aDestroySystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
 				}
 			}
 		}
@@ -344,7 +410,7 @@ namespace ETHotfix
 					continue;
 				}
 				
-				List<AUpdateSystem> aUpdateSystems = this.updateEvents[component.GetType()];
+				List<IUpdateSystem> aUpdateSystems = this.updateEvents[component.GetType()];
 				if (aUpdateSystems == null)
 				{
 					continue;
@@ -352,7 +418,7 @@ namespace ETHotfix
 
 				this.updates2.Enqueue(instanceId);
 
-				foreach (AUpdateSystem aUpdateSystem in aUpdateSystems)
+				foreach (IUpdateSystem aUpdateSystem in aUpdateSystems)
 				{
 					try
 					{
@@ -383,7 +449,7 @@ namespace ETHotfix
 					continue;
 				}
 				
-				List<ALateUpdateSystem> aLateUpdateSystems = this.lateUpdateEvents[component.GetType()];
+				List<ILateUpdateSystem> aLateUpdateSystems = this.lateUpdateEvents[component.GetType()];
 				if (aLateUpdateSystems == null)
 				{
 					continue;
@@ -391,7 +457,7 @@ namespace ETHotfix
 
 				this.lateUpdates2.Enqueue(instanceId);
 
-				foreach (ALateUpdateSystem aLateUpdateSystem in aLateUpdateSystems)
+				foreach (ILateUpdateSystem aLateUpdateSystem in aLateUpdateSystems)
 				{
 					try
 					{

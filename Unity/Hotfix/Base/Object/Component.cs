@@ -93,6 +93,10 @@ namespace ETHotfix
 			{
 				Game.ObjectPool.Recycle(this);
 			}
+
+
+			// 触发Desdroy事件
+			Game.EventSystem.Desdroy(this);
 		}
 	}
 }

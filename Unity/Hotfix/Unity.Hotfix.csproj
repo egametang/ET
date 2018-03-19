@@ -56,7 +56,8 @@
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Base\Helper\JsonHelper.cs" />
     <Compile Include="Base\Helper\Log.cs" />
-    <Compile Include="Base\Object\IStart.cs" />
+    <Compile Include="Base\Object\IDestroySystem.cs" />
+    <Compile Include="Base\Object\IStartSystem.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
     <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
@@ -77,11 +78,11 @@
     <Compile Include="Base\Object\ComponentFactory.cs" />
     <Compile Include="Base\Object\Entity.cs" />
     <Compile Include="Base\Object\EntityType.cs" />
-    <Compile Include="Base\Object\IAwake.cs" />
-    <Compile Include="Base\Object\ILateUpdate.cs" />
-    <Compile Include="Base\Object\ILoad.cs" />
+    <Compile Include="Base\Object\IAwakeSystem.cs" />
+    <Compile Include="Base\Object\ILateUpdateSystem.cs" />
+    <Compile Include="Base\Object\ILoadSystem.cs" />
     <Compile Include="Base\Object\ISerializeToEntity.cs" />
-    <Compile Include="Base\Object\IUpdate.cs" />
+    <Compile Include="Base\Object\IUpdateSystem.cs" />
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\EventSystem.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
