@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Debug\..\..\..\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>bin\Release\..\..\..\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
