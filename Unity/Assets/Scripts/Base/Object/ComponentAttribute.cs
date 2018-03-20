@@ -3,7 +3,7 @@
 namespace ETModel
 {
 	[BsonKnownTypes(typeof(AConfigComponent))]
-	[BsonKnownTypes(typeof(Entity))]
+	[BsonKnownTypes(typeof(ComponentWithId))]
 	public partial class Component
 	{
 	}

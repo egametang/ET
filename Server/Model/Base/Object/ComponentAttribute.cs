@@ -5,7 +5,7 @@ namespace ETModel
 	[BsonKnownTypes(typeof(AConfigComponent))]
 	[BsonKnownTypes(typeof(UnitGateComponent))]
 	[BsonKnownTypes(typeof(NumericComponent))]
-	[BsonKnownTypes(typeof(Entity))]
+	[BsonKnownTypes(typeof(ComponentWithId))]
 	public partial class Component
 	{
 	}
