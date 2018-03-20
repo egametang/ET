@@ -27,7 +27,7 @@ namespace ETModel
 		}
 	}
 
-	public sealed class ActorProxy : Component
+	public sealed class ActorProxy : ComponentWithId
 	{
 		// actor的地址
 		public IPEndPoint Address;

@@ -21,7 +21,7 @@ namespace ETModel
 		Accept,
 	}
 
-	public abstract class AChannel: Component
+	public abstract class AChannel: ComponentWithId
 	{
 		public ChannelType ChannelType { get; }
 
@@ -55,7 +55,6 @@ namespace ETModel
 
 		protected AChannel(AService service, ChannelType channelType)
 		{
-			this.Id = IdGenerater.GenerateId();
 			this.ChannelType = channelType;
 			this.service = service;
 		}

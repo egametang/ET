@@ -6,7 +6,7 @@ namespace ETHotfix
 	{
 		public static Component CreateWithParent(Type type, Component parent)
 		{
-			Component component = (Component)Game.ObjectPool.Fetch(type);
+			Component component = Game.ObjectPool.Fetch(type);
 			component.Parent = parent;
 			Game.EventSystem.Awake(component);
 			return component;
@@ -72,7 +72,7 @@ namespace ETHotfix
 			return component;
 		}
 
-		public static T CreateWithId<T>(long id) where T : Component
+		public static T CreateWithId<T>(long id) where T : ComponentWithId
 		{
 			T component = Game.ObjectPool.Fetch<T>();
 			component.Id = id;
@@ -80,7 +80,7 @@ namespace ETHotfix
 			return component;
 		}
 
-		public static T CreateWithId<T, A>(long id, A a) where T : Component
+		public static T CreateWithId<T, A>(long id, A a) where T : ComponentWithId
 		{
 			T component = Game.ObjectPool.Fetch<T>();
 			component.Id = id;
@@ -88,7 +88,7 @@ namespace ETHotfix
 			return component;
 		}
 
-		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : Component
+		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : ComponentWithId
 		{
 			T component = Game.ObjectPool.Fetch<T>();
 			component.Id = id;
@@ -96,7 +96,7 @@ namespace ETHotfix
 			return component;
 		}
 
-		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : Component
+		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : ComponentWithId
 		{
 			T component = Game.ObjectPool.Fetch<T>();
 			component.Id = id;

@@ -12,7 +12,7 @@ namespace ETHotfix
 			try
 			{
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				Component component = await dbCacheComponent.Get(message.CollectionName, message.Id);
+				ComponentWithId component = await dbCacheComponent.Get(message.CollectionName, message.Id);
 
 				response.Component = component;
 

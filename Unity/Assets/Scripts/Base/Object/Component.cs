@@ -39,14 +39,7 @@ namespace ETModel
 				return this.InstanceId == 0;
 			}
 		}
-
-
-		[BsonIgnoreIfDefault]
-		[BsonDefaultValue(0L)]
-		[BsonElement]
-		[BsonId]
-		public long Id { get; set; }
-
+		
 		[BsonIgnore]
 		public Component Parent { get; set; }
 
@@ -67,13 +60,6 @@ namespace ETModel
 		protected Component()
 		{
 			this.InstanceId = IdGenerater.GenerateId();
-			Game.EventSystem.Add(this);
-			this.Id = this.InstanceId;
-		}
-
-		protected Component(long instanceId)
-		{
-			this.InstanceId = instanceId;
 			Game.EventSystem.Add(this);
 		}
 

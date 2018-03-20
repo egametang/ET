@@ -42,7 +42,6 @@ namespace ILRuntime.Runtime.Generated
             VInt3_Binding.Register(app);
             ETModel_PlayerComponent_Binding.Register(app);
             ETModel_Player_Binding.Register(app);
-            ETModel_Component_Binding.Register(app);
             ETModel_CameraComponent_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             ETModel_Actor_Test_Binding.Register(app);

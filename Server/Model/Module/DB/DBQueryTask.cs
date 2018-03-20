@@ -25,7 +25,7 @@ namespace ETModel
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 			// 执行查询前先看看cache中是否已经存在
-			Component component = dbCacheComponent.GetFromCache(this.CollectionName, this.Id);
+			ComponentWithId component = dbCacheComponent.GetFromCache(this.CollectionName, this.Id);
 			if (component != null)
 			{
 				this.Tcs.SetResult(component);

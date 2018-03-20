@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : Component
+	public partial class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]

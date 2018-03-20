@@ -156,6 +156,7 @@
     <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentWithId.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />

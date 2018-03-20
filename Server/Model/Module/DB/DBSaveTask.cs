@@ -6,11 +6,11 @@ namespace ETModel
 {
 
 	[ObjectSystem]
-	public class DbSaveTaskAwakeSystem : AwakeSystem<DBSaveTask, Component, string, TaskCompletionSource<bool>>
+	public class DbSaveTaskAwakeSystem : AwakeSystem<DBSaveTask, ComponentWithId, string, TaskCompletionSource<bool>>
 	{
-		public override void Awake(DBSaveTask self, Component entity, string collectionName, TaskCompletionSource<bool> tcs)
+		public override void Awake(DBSaveTask self, ComponentWithId component, string collectionName, TaskCompletionSource<bool> tcs)
 		{
-			self.Component = entity;
+			self.Component = component;
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;
 		}
@@ -18,7 +18,7 @@ namespace ETModel
 
 	public sealed class DBSaveTask : DBTask
 	{
-		public Component Component;
+		public ComponentWithId Component;
 
 		public string CollectionName { get; set; }
 

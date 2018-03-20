@@ -20,7 +20,7 @@ namespace ETHotfix
 
 				if (message.NeedCache)
 				{
-					foreach (Component component in message.Components)
+					foreach (ComponentWithId component in message.Components)
 					{
 						dbCacheComponent.AddToCache(component, message.CollectionName);
 					}
