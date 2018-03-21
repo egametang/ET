@@ -24,6 +24,15 @@ namespace ETModel
 		}
 	}
 
+	[ObjectSystem]
+	public class HttpComponentComponentStartSystem : StartSystem<HttpComponent>
+	{
+		public override void Start(HttpComponent self)
+		{
+			self.Start();
+		}
+	}
+
 	/// <summary>
 	/// http请求分发器
 	/// </summary>
@@ -48,34 +57,6 @@ namespace ETModel
 			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
 			this.Load();
-
-			try
-			{
-				this.listener = new HttpListener();
-
-				if (this.HttpConfig.Url == null)
-				{
-					this.HttpConfig.Url = "";
-				}
-
-				foreach (string s in this.HttpConfig.Url.Split(';'))
-				{
-					if (s.Trim() == "")
-					{
-						continue;
-					}
-
-					this.listener.Prefixes.Add(s);
-				}
-
-				this.listener.Start();
-
-				this.Accept();
-			}
-			catch (HttpListenerException e)
-			{
-				throw new Exception($"http server error: {e.ErrorCode}", e);
-			}
 		}
 
 		public void Load()
@@ -112,6 +93,37 @@ namespace ETModel
 				this.dispatcher.Add(httpHandlerAttribute.Path, ihttpHandler);
 
 				LoadMethod(type, httpHandlerAttribute, ihttpHandler);
+			}
+		}
+
+		public void Start()
+		{
+			try
+			{
+				this.listener = new HttpListener();
+
+				if (this.HttpConfig.Url == null)
+				{
+					this.HttpConfig.Url = "";
+				}
+
+				foreach (string s in this.HttpConfig.Url.Split(';'))
+				{
+					if (s.Trim() == "")
+					{
+						continue;
+					}
+
+					this.listener.Prefixes.Add(s);
+				}
+
+				this.listener.Start();
+
+				this.Accept();
+			}
+			catch (HttpListenerException e)
+			{
+				throw new Exception($"http server error: {e.ErrorCode}", e);
 			}
 		}
 
@@ -219,18 +231,21 @@ namespace ETModel
 
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
-				if (resp != null)
+
+				if (resp == null)
 				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+					return;
+				}
+
+				using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+				{
+					if (resp is string)
 					{
-						if (resp is string)
-						{
-							sw.Write(resp.ToString());
-						}
-						else
-						{
-							sw.Write(JsonHelper.ToJson(resp));
-						}
+						sw.Write(resp.ToString());
+					}
+					else
+					{
+						sw.Write(JsonHelper.ToJson(resp));
 					}
 				}
 			}
@@ -255,17 +270,20 @@ namespace ETModel
 				if (item.ParameterType == typeof(HttpListenerRequest))
 				{
 					args[i] = context.Request;
+					continue;
 				}
-				else if (item.ParameterType == typeof(HttpListenerResponse))
+
+				if (item.ParameterType == typeof(HttpListenerResponse))
 				{
 					args[i] = context.Response;
+					continue;
 				}
-				else
+
+				try
 				{
-					try
+					switch (context.Request.HttpMethod)
 					{
-						if (context.Request.HttpMethod == "POST") //TODO 扩展一些，Http Entity 自动转换 的功能
-						{
+						case "POST":
 							if (item.Name == "postBody") // 约定参数名称为postBody,只传string类型。本来是byte[]，有需求可以改。
 							{
 								args[i] = postbody;
@@ -275,26 +293,26 @@ namespace ETModel
 								object entity = JsonHelper.FromJson(item.ParameterType, postbody);
 								args[i] = entity;
 							}
-						}
-						else if (context.Request.HttpMethod == "GET")
-						{
+
+							break;
+						case "GET":
 							string query = context.Request.QueryString[item.Name];
 							if (query != null)
 							{
 								object value = Convert.ChangeType(query, item.ParameterType);
 								args[i] = value;
 							}
-						}
-						else
-						{
+
+							break;
+						default:
 							args[i] = null;
-						}
+							break;
 					}
-					catch (Exception e)
-					{
-						Log.Debug(e.ToString());
-						args[i] = null;
-					}
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+					args[i] = null;
 				}
 			}
 
