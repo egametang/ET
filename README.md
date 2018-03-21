@@ -69,6 +69,9 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
+有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
+[module共享仓库](https://github.com/egametang/ET-Modules)   
+
 群友分享：  
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
