@@ -23,7 +23,7 @@ namespace ETModel
 		{
 			try
 			{
-				GameObject config = (GameObject)Resources.Load("KV");
+				GameObject config = (GameObject)ResourcesHelper.Load("KV");
 				string configStr = config.Get<TextAsset>("GlobalProto").text;
 				return configStr;
 			}
