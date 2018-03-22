@@ -42,6 +42,7 @@ namespace ILRuntime.Runtime.Generated
             VInt3_Binding.Register(app);
             ETModel_PlayerComponent_Binding.Register(app);
             ETModel_Player_Binding.Register(app);
+            ETModel_ComponentWithId_Binding.Register(app);
             ETModel_CameraComponent_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             ETModel_Actor_Test_Binding.Register(app);
@@ -53,22 +54,23 @@ namespace ILRuntime.Runtime.Generated
             System_Activator_Binding.Register(app);
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
-            //UnityEngine_Resources_Binding.Register(app);
-            System_Object_Binding.Register(app);
+            ETModel_IdGenerater_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
+            System_Object_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            ETModel_IdGenerater_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.Register(app);
             ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             ETModel_AEventAttribute_Binding.Register(app);
             ETModel_EventProxy_Binding.Register(app);
             ETModel_EventSystem_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ETModel_Packet_Binding.Register(app);
             ETModel_ProtobufHelper_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
@@ -90,6 +92,7 @@ namespace ILRuntime.Runtime.Generated
             ETModel_CanvasConfig_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             System_Collections_Generic_List_1_String_Binding.Register(app);
+            ETModel_Component_Binding.Register(app);
             ETModel_Scene_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -109,7 +112,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_InputField_Binding.Register(app);
             ETModel_NetworkComponent_Binding.Register(app);
             ETModel_ComponentFactory_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.Register(app);
         }
     }
 }

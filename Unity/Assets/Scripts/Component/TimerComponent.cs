@@ -33,35 +33,38 @@ namespace ETModel
 
 		public void Update()
 		{
+			if (this.timeId.Count == 0)
+			{
+				return;
+			}
+
 			long timeNow = TimeHelper.Now();
 
-			while (true)
+			timeOutId.Clear();
+
+			while (this.timeId.Count > 0)
 			{
-				if (this.timeId.Count <= 0)
-				{
-					return;
-				}
-				var kv = this.timeId.First();
-				if (kv.Key > timeNow)
+				long k = this.timeId.FirstKey();
+				if (k > timeNow)
 				{
 					break;
 				}
-
-				timeOutId.Clear();
-				timeOutId.AddRange(kv.Value);
-
-				this.timeId.Remove(kv.Key);
-				
-				foreach (long id in timeOutId)
+				foreach (long ll in this.timeId[k])
 				{
-					Timer timer;
-					if (!this.timers.TryGetValue(id, out timer))
-					{
-						continue;
-					}
-					this.timers.Remove(id);
-					timer.tcs.SetResult(true);
-				}				
+					this.timeOutId.Add(ll);
+				}
+				this.timeId.Remove(k);
+			}
+
+			foreach (long k in this.timeOutId)
+			{
+				Timer timer;
+				if (!this.timers.TryGetValue(k, out timer))
+				{
+					continue;
+				}
+				this.timers.Remove(k);
+				timer.tcs.SetResult(true);
 			}
 		}
 

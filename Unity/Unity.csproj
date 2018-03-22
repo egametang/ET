@@ -12,15 +12,12 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1p4</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -156,11 +153,11 @@
     <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ComponentWithIdAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ComponentWithId.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentWithId.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ComponentWithIdAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
@@ -168,8 +165,8 @@
     <Compile Include="Assets\Scripts\Base\Object\EventProxy.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwakeSystem.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IDestroySystem.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoadSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ISerializeToEntity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IStartSystem.cs" />
@@ -357,7 +354,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_CanvasConfig_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Component_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ComponentFactory_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Disposer_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ComponentWithId_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_DoubleMap_2_UInt16_Type_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Entity_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_EventProxy_Binding.cs" />
@@ -416,6 +413,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding_Enumerator__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_Int64_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IDictionary_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Exception_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_IDisposable_Binding.cs" />
@@ -440,7 +438,6 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Physics_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_RaycastHit_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Resources_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_TextAsset_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Transform_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_UI_Button_Binding.cs" />

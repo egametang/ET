@@ -105,7 +105,7 @@ namespace App
 						Game.Scene.AddComponent<ConfigComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
 						Game.Scene.AddComponent<ActorManagerComponent>();
-            Game.Scene.AddComponent<HttpComponent>();
+						//Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();
