@@ -9,14 +9,16 @@ namespace ETModel
         public FrameMessage FrameMessage;
     }
     
-    [ObjectSystem]
-    public class ClientFrameComponentStartSystem : StartSystem<ClientFrameComponent>
-    {
-	    public override void Start(ClientFrameComponent t)
-	    {
-		    t.Start();
-	    }
-    }
+	[ObjectSystem]
+	public class ClientFrameComponentUpdateSystem : UpdateSystem<ClientFrameComponent>
+	{
+		public override void Update(ClientFrameComponent self)
+		{
+			self.Update();
+		}
+	}
+
+
 	public class ClientFrameComponent: Component
     {
         public int Frame;
@@ -24,47 +26,19 @@ namespace ETModel
         public Queue<SessionFrameMessage> Queue = new Queue<SessionFrameMessage>();
 
         public int count = 1;
-        
-        public int waitTime;
+
+	    public int waitTime = 100;
 
         public const int maxWaitTime = 100;
-
-        public void Start()
-        {
-            UpdateAsync();
-        }
 
         public void Add(Session session, FrameMessage frameMessage)
         {
             this.Queue.Enqueue(new SessionFrameMessage() {Session = session, FrameMessage = frameMessage});
         }
 
-        public async void UpdateAsync()
+        public void Update()
         {
-	        try
-	        {
-		        TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-		        while (true)
-		        {
-			        await timerComponent.WaitAsync(waitTime);
-
-			        if (this.IsDisposed)
-			        {
-				        return;
-			        }
-
-			        this.UpdateFrame();
-		        }
-			}
-	        catch (Exception e)
-	        {
-		        Log.Error(e);
-	        }
-        }
-
-        private void UpdateFrame()
-        {
-            if (this.Queue.Count == 0)
+			if (this.Queue.Count == 0)
             {
                 return;
             }

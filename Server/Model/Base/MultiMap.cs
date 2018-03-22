@@ -5,13 +5,12 @@ namespace ETModel
 {
 	public class MultiMap<T, K>
 	{
-		// 客户端用SortedList，因为unity用SortedDictionary在取firstkey的时候有gc，再者客户端的插入删除并不多
-		private readonly SortedList<T, List<K>> dictionary = new SortedList<T, List<K>>();
+		private readonly SortedDictionary<T, List<K>> dictionary = new SortedDictionary<T, List<K>>();
 
 		// 重用list
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
 
-		public SortedList<T, List<K>> GetDictionary()
+		public SortedDictionary<T, List<K>> GetDictionary()
 		{
 			return this.dictionary;
 		}
@@ -35,7 +34,7 @@ namespace ETModel
 
 		public T FirstKey()
 		{
-			return this.dictionary.Keys[0];
+			return this.dictionary.Keys.First();
 		}
 
 		public int Count
