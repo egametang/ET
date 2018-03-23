@@ -2,46 +2,46 @@
 
 namespace ETModel
 {
-	public class HttpHandlerAttribute: Attribute
-	{
-		public AppType AppType { get; }
+    public class HttpHandlerAttribute : Attribute
+    {
+        public AppType AppType { get; }
 
-		public string Path { get; }
+        public string Path { get; }
 
-		public HttpHandlerAttribute(AppType appType, string path)
-		{
-			this.AppType = appType;
-			this.Path = path;
-		}
-	}
+        public HttpHandlerAttribute(AppType appType, string path)
+        {
+            this.AppType = appType;
+            this.Path = path;
+        }
+    }
 
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-	public class GetAttribute: Attribute
-	{
-		public string Path { get; }
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class GetAttribute : Attribute
+    {
+        public string Path { get; }
 
-		public GetAttribute()
-		{
-		}
+        public GetAttribute()
+        {
+        }
 
-		public GetAttribute(string path)
-		{
-			this.Path = path;
-		}
-	}
+        public GetAttribute(string path)
+        {
+            this.Path = path;
+        }
+    }
 
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-	public class PostAttribute: Attribute
-	{
-		public string Path { get; }
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+    public class PostAttribute : Attribute
+    {
+        public string Path { get; }
 
-		public PostAttribute()
-		{
-		}
+        public PostAttribute()
+        {
+        }
 
-		public PostAttribute(string path)
-		{
-			this.Path = path;
-		}
-	}
+        public PostAttribute(string path)
+        {
+            this.Path = path;
+        }
+    }
 }
