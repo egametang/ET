@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class HttpHandlerAttribute: Attribute
+	public class HttpHandlerAttribute : Attribute
 	{
 		public AppType AppType { get; }
 
@@ -16,7 +16,7 @@ namespace ETModel
 	}
 
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-	public class GetAttribute: Attribute
+	public class GetAttribute : Attribute
 	{
 		public string Path { get; }
 
@@ -31,7 +31,7 @@ namespace ETModel
 	}
 
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-	public class PostAttribute: Attribute
+	public class PostAttribute : Attribute
 	{
 		public string Path { get; }
 
