@@ -66,7 +66,7 @@ namespace ILRuntime.Runtime.Generated
             ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            ETModel_AEventAttribute_Binding.Register(app);
+            ETModel_EventAttribute_Binding.Register(app);
             ETModel_EventProxy_Binding.Register(app);
             ETModel_EventSystem_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
