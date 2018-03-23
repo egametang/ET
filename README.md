@@ -2,6 +2,12 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.1发布!
+1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
+2.增加了DestroySystem事件，在Component Dispose时调用  
+3.actor实现代码进行了简化  
+4.升级了默认Unity版本，修复了kcp协议中UdpClient无法接收udp消息的bug  
+
 # ET 3.0发布啦! 3.0是ET非常完善的一个版本，在2.0的基础上增加了如下功能：
 1.客户端全热更支持，逻辑，消息，事件，config，UI等等全部可以热更了  
 2.System改成了事件机制，awake，update，start等system可以在不同模块多次订阅  
