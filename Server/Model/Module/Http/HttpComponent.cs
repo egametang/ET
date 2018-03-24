@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ETModel
 {
 	[ObjectSystem]
-	public class HttpComponentComponentAwakeSystem: AwakeSystem<HttpComponent>
+	public class HttpComponentComponentAwakeSystem : AwakeSystem<HttpComponent>
 	{
 		public override void Awake(HttpComponent self)
 		{
@@ -16,7 +17,7 @@ namespace ETModel
 	}
 
 	[ObjectSystem]
-	public class HttpComponentComponentLoadSystem: LoadSystem<HttpComponent>
+	public class HttpComponentComponentLoadSystem : LoadSystem<HttpComponent>
 	{
 		public override void Load(HttpComponent self)
 		{
@@ -36,7 +37,7 @@ namespace ETModel
 	/// <summary>
 	/// http请求分发器
 	/// </summary>
-	public class HttpComponent: Component
+	public class HttpComponent : Component
 	{
 		public AppType appType;
 		public HttpListener listener;
@@ -76,7 +77,7 @@ namespace ETModel
 					continue;
 				}
 
-				HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute) attrs[0];
+				HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute)attrs[0];
 				if (!httpHandlerAttribute.AppType.Is(this.appType))
 				{
 					continue;
@@ -136,7 +137,7 @@ namespace ETModel
 				object[] getAttrs = method.GetCustomAttributes(typeof(GetAttribute), false);
 				if (getAttrs.Length != 0)
 				{
-					GetAttribute get = (GetAttribute) getAttrs[0];
+					GetAttribute get = (GetAttribute)getAttrs[0];
 
 					string path = method.Name;
 					if (!string.IsNullOrEmpty(get.Path))
@@ -152,7 +153,7 @@ namespace ETModel
 				if (postAttrs.Length != 0)
 				{
 					// Post处理方法
-					PostAttribute post = (PostAttribute) postAttrs[0];
+					PostAttribute post = (PostAttribute)postAttrs[0];
 
 					string path = method.Name;
 					if (!string.IsNullOrEmpty(post.Path))
@@ -183,7 +184,7 @@ namespace ETModel
 				}
 
 				HttpListenerContext context = await this.listener.GetContextAsync();
-				InvokeHandler(context);
+				await InvokeHandler(context);
 				context.Response.Close();
 			}
 		}
@@ -192,7 +193,7 @@ namespace ETModel
 		/// 调用处理方法
 		/// </summary>
 		/// <param name="context"></param>
-		private void InvokeHandler(HttpListenerContext context)
+		private async Task InvokeHandler(HttpListenerContext context)
 		{
 			context.Response.StatusCode = 404;
 
@@ -231,21 +232,25 @@ namespace ETModel
 
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
-
-				if (resp == null)
+				object result = resp;
+				if (resp is Task t)
 				{
-					return;
+					await t;
+					result = t.GetType().GetProperty("Result").GetValue(t, null);
 				}
 
-				using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+				if (result != null)
 				{
-					if (resp is string)
+					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
 					{
-						sw.Write(resp.ToString());
-					}
-					else
-					{
-						sw.Write(JsonHelper.ToJson(resp));
+						if (result.GetType() == typeof(string))
+						{
+							sw.Write(result.ToString());
+						}
+						else
+						{
+							sw.Write(JsonHelper.ToJson(result));
+						}
 					}
 				}
 			}

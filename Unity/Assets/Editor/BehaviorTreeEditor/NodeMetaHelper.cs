@@ -258,7 +258,7 @@ namespace MyEditor
 		public static Type GetNodeType(string nodeName)
 		{
 			Assembly assembly = GetModelAssembly();
-			Type nodeType = assembly.GetType("Model." + nodeName);
+			Type nodeType = assembly.GetType("ETModel." + nodeName);
 			if (nodeType == null)
 			{
 				Log.Error($"不存在此节点:{nodeName}");

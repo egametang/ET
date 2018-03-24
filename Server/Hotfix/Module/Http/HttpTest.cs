@@ -1,16 +1,11 @@
 ﻿using System.Net;
 using ETModel;
+using System.Threading.Tasks;
 
 namespace ETHotfix
 {
-	public class AccountInfo
-	{
-		public string name;
-		public string pwd;
-	}
-
 	[HttpHandler(AppType.Gate, "/")]
-	public class HttpTest: AHttpHandler
+	public class HttpTest : AHttpHandler
 	{
 		[Get] // url-> /Login?name=11&age=1111
 		public string Login(string name, int age, HttpListenerRequest req, HttpListenerResponse resp)
@@ -23,6 +18,7 @@ namespace ETHotfix
 		[Get("t")] // url-> /t
 		public int Test()
 		{
+			System.Console.WriteLine("");
 			return 1;
 		}
 
@@ -38,12 +34,24 @@ namespace ETHotfix
 			return 1;
 		}
 
-		[Post]
-		public object Test3(HttpListenerResponse resp, HttpListenerRequest req, string postBody, AccountInfo accountInfo)
+		[Get] // url-> /GetRechargeRecord
+		public async Task<HttpResult> GetRechargeRecord(long id)
 		{
-			Log.Info(postBody);
-			Log.Info(JsonHelper.ToJson(accountInfo));
-			return new { name = "1111" };
+			// var db = Game.Scene.GetComponent<DBProxyComponent>();
+
+			// var info = await db.Query<RechargeRecord>(id);
+
+			await Task.Delay(1000); // 用于测试
+
+			object info = null;
+			if (info != null)
+			{
+				return Ok(data: info);
+			}
+			else
+			{
+				return Error("ID不存在！");
+			}
 		}
 	}
 }
