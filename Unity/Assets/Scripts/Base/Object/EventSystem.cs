@@ -20,17 +20,19 @@ namespace ETModel
 
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
-		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, IAwakeSystem>();
+		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
 
-		private readonly UnOrderMultiMap<Type, IStartSystem> startEvents = new UnOrderMultiMap<Type, IStartSystem>();
+		private readonly UnOrderMultiMap<Type, IStartSystem> startSystems = new UnOrderMultiMap<Type, IStartSystem>();
 
-		private readonly UnOrderMultiMap<Type, IDestroySystem> destroyEvents = new UnOrderMultiMap<Type, IDestroySystem>();
+		private readonly UnOrderMultiMap<Type, IDestroySystem> destroySystems = new UnOrderMultiMap<Type, IDestroySystem>();
 
-		private readonly UnOrderMultiMap<Type, ILoadSystem> loadEvents = new UnOrderMultiMap<Type, ILoadSystem>();
+		private readonly UnOrderMultiMap<Type, ILoadSystem> loadSystems = new UnOrderMultiMap<Type, ILoadSystem>();
 
-		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateEvents = new UnOrderMultiMap<Type, IUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateSystems = new UnOrderMultiMap<Type, IUpdateSystem>();
 
-		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateEvents = new UnOrderMultiMap<Type, ILateUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateSystems = new UnOrderMultiMap<Type, ILateUpdateSystem>();
+
+		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
 
 		private Queue<long> updates = new Queue<long>();
 		private Queue<long> updates2 = new Queue<long>();
@@ -47,11 +49,12 @@ namespace ETModel
 		{
 			this.assemblies[dllType] = assembly;
 
-			this.awakeEvents.Clear();
-			this.lateUpdateEvents.Clear();
-			this.updateEvents.Clear();
-			this.startEvents.Clear();
-			this.loadEvents.Clear();
+			this.awakeSystems.Clear();
+			this.lateUpdateSystems.Clear();
+			this.updateSystems.Clear();
+			this.startSystems.Clear();
+			this.loadSystems.Clear();
+			this.changeSystems.Clear();
 
 			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
@@ -68,37 +71,43 @@ namespace ETModel
 				IAwakeSystem objectSystem = obj as IAwakeSystem;
 				if (objectSystem != null)
 				{
-					this.awakeEvents.Add(objectSystem.Type(), objectSystem);
+					this.awakeSystems.Add(objectSystem.Type(), objectSystem);
 				}
 
 				IUpdateSystem updateSystem = obj as IUpdateSystem;
 				if (updateSystem != null)
 				{
-					this.updateEvents.Add(updateSystem.Type(), updateSystem);
+					this.updateSystems.Add(updateSystem.Type(), updateSystem);
 				}
 
 				ILateUpdateSystem lateUpdateSystem = obj as ILateUpdateSystem;
 				if (lateUpdateSystem != null)
 				{
-					this.lateUpdateEvents.Add(lateUpdateSystem.Type(), lateUpdateSystem);
+					this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
 				}
 
 				IStartSystem startSystem = obj as IStartSystem;
 				if (startSystem != null)
 				{
-					this.startEvents.Add(startSystem.Type(), startSystem);
+					this.startSystems.Add(startSystem.Type(), startSystem);
 				}
 
 				IDestroySystem destroySystem = obj as IDestroySystem;
 				if (destroySystem != null)
 				{
-					this.destroyEvents.Add(destroySystem.Type(), destroySystem);
+					this.destroySystems.Add(destroySystem.Type(), destroySystem);
 				}
 
 				ILoadSystem loadSystem = obj as ILoadSystem;
 				if (loadSystem != null)
 				{
-					this.loadEvents.Add(loadSystem.Type(), loadSystem);
+					this.loadSystems.Add(loadSystem.Type(), loadSystem);
+				}
+
+				IChangeSystem changeSystem = obj as IChangeSystem;
+				if (changeSystem != null)
+				{
+					this.changeSystems.Add(loadSystem.Type(), changeSystem);
 				}
 			}
 
@@ -148,22 +157,22 @@ namespace ETModel
 
 			Type type = component.GetType();
 
-			if (this.loadEvents.ContainsKey(type))
+			if (this.loadSystems.ContainsKey(type))
 			{
 				this.loaders.Enqueue(component.InstanceId);
 			}
 
-			if (this.updateEvents.ContainsKey(type))
+			if (this.updateSystems.ContainsKey(type))
 			{
 				this.updates.Enqueue(component.InstanceId);
 			}
 
-			if (this.startEvents.ContainsKey(type))
+			if (this.startSystems.ContainsKey(type))
 			{
 				this.starts.Enqueue(component.InstanceId);
 			}
 
-			if (this.lateUpdateEvents.ContainsKey(type))
+			if (this.lateUpdateSystems.ContainsKey(type))
 			{
 				this.lateUpdates.Enqueue(component.InstanceId);
 			}
@@ -183,7 +192,7 @@ namespace ETModel
 
 		public void Awake(Component component)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
@@ -215,7 +224,7 @@ namespace ETModel
 
 		public void Awake<P1>(Component component, P1 p1)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
@@ -247,7 +256,7 @@ namespace ETModel
 
 		public void Awake<P1, P2>(Component component, P1 p1, P2 p2)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
@@ -279,7 +288,7 @@ namespace ETModel
 
 		public void Awake<P1, P2, P3>(Component component, P1 p1, P2 p2, P3 p3)
 		{
-			List<IAwakeSystem> iAwakeSystems = this.awakeEvents[component.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
@@ -309,6 +318,32 @@ namespace ETModel
 			}
 		}
 
+		public void Change(Component component)
+		{
+			List<IChangeSystem> iChangeSystems = this.changeSystems[component.GetType()];
+			if (iChangeSystems == null)
+			{
+				return;
+			}
+
+			foreach (IChangeSystem iChangeSystem in iChangeSystems)
+			{
+				if (iChangeSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					iChangeSystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+		}
+
 		public void Load()
 		{
 			while (this.loaders.Count > 0)
@@ -324,19 +359,19 @@ namespace ETModel
 					continue;
 				}
 				
-				List<ILoadSystem> aLoadSystems = this.loadEvents[component.GetType()];
-				if (aLoadSystems == null)
+				List<ILoadSystem> iLoadSystems = this.loadSystems[component.GetType()];
+				if (iLoadSystems == null)
 				{
 					continue;
 				}
 
 				this.loaders2.Enqueue(instanceId);
 
-				foreach (ILoadSystem aLoadSystem in aLoadSystems)
+				foreach (ILoadSystem iLoadSystem in iLoadSystems)
 				{
 					try
 					{
-						aLoadSystem.Run(component);
+						iLoadSystem.Run(component);
 					}
 					catch (Exception e)
 					{
@@ -359,17 +394,17 @@ namespace ETModel
 					continue;
 				}
 
-				List<IStartSystem> aStartSystems = this.startEvents[component.GetType()];
-				if (aStartSystems == null)
+				List<IStartSystem> iStartSystems = this.startSystems[component.GetType()];
+				if (iStartSystems == null)
 				{
 					continue;
 				}
 				
-				foreach (IStartSystem aStartSystem in aStartSystems)
+				foreach (IStartSystem iStartSystem in iStartSystems)
 				{
 					try
 					{
-						aStartSystem.Run(component);
+						iStartSystem.Run(component);
 					}
 					catch (Exception e)
 					{
@@ -381,22 +416,22 @@ namespace ETModel
 
 		public void Destroy(Component component)
 		{
-			List<IDestroySystem> iDestroySystems = this.destroyEvents[component.GetType()];
+			List<IDestroySystem> iDestroySystems = this.destroySystems[component.GetType()];
 			if (iDestroySystems == null)
 			{
 				return;
 			}
 
-			foreach (IDestroySystem aDestroySystem in iDestroySystems)
+			foreach (IDestroySystem iDestroySystem in iDestroySystems)
 			{
-				if (aDestroySystem == null)
+				if (iDestroySystem == null)
 				{
 					continue;
 				}
 
 				try
 				{
-					aDestroySystem.Run(component);
+					iDestroySystem.Run(component);
 				}
 				catch (Exception e)
 				{
@@ -422,19 +457,19 @@ namespace ETModel
 					continue;
 				}
 				
-				List<IUpdateSystem> aUpdateSystems = this.updateEvents[component.GetType()];
-				if (aUpdateSystems == null)
+				List<IUpdateSystem> iUpdateSystems = this.updateSystems[component.GetType()];
+				if (iUpdateSystems == null)
 				{
 					continue;
 				}
 
 				this.updates2.Enqueue(instanceId);
 
-				foreach (IUpdateSystem aUpdateSystem in aUpdateSystems)
+				foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
 				{
 					try
 					{
-						aUpdateSystem.Run(component);
+						iUpdateSystem.Run(component);
 					}
 					catch (Exception e)
 					{
@@ -461,19 +496,19 @@ namespace ETModel
 					continue;
 				}
 
-				List<ILateUpdateSystem> aLateUpdateSystems = this.lateUpdateEvents[component.GetType()];
-				if (aLateUpdateSystems == null)
+				List<ILateUpdateSystem> iLateUpdateSystems = this.lateUpdateSystems[component.GetType()];
+				if (iLateUpdateSystems == null)
 				{
 					continue;
 				}
 
 				this.lateUpdates2.Enqueue(instanceId);
 
-				foreach (ILateUpdateSystem aLateUpdateSystem in aLateUpdateSystems)
+				foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)
 				{
 					try
 					{
-						aLateUpdateSystem.Run(component);
+						iLateUpdateSystem.Run(component);
 					}
 					catch (Exception e)
 					{
