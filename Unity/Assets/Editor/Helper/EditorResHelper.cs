@@ -26,7 +26,62 @@ namespace ETModel
             }
             return files;
         }
-        
+        public static List<string>  GetSmallGame(string srcPath)
+        {
+            List<string> paths = new List<string>();
+            FileHelper.GetAllFiles(paths, srcPath);
+            
+            List<string> files = new List<string>();
+            foreach (string str in paths)
+            {
+                if (str.EndsWith(".prefab") || str.EndsWith(".unity")
+                    )
+                {
+                    files.Add(str);
+                }
+            }
+            return files;
+        }
+        /**
+         * 获取路径内的显示资源;
+         */
+        public static List<string> GetSmallGameAtlas(string srcPath)
+        {
+            List<string> paths = new List<string>();
+            FileHelper.GetAllFiles(paths, srcPath);
+            
+            List<string> files = new List<string>();
+            foreach (string str in paths)
+            {
+                if (str.EndsWith(".TTF") || str.EndsWith(".mat")
+                    || str.EndsWith(".physicMaterial")
+                    || str.EndsWith(".png")|| str.EndsWith(".jpg")
+                )
+                {
+                    files.Add(str);
+                }
+            }
+            return files;
+        }
+        /**
+         * 获取路径内的声音文件;
+         */
+        public static List<string> GetSmallGameSound(string srcPath)
+        {
+            List<string> paths = new List<string>();
+            FileHelper.GetAllFiles(paths, srcPath);
+            
+            List<string> files = new List<string>();
+            foreach (string str in paths)
+            {
+                if (str.EndsWith(".mp3") || str.EndsWith(".wav")
+                )
+                {
+                    files.Add(str);
+                }
+            }
+            return files;
+        }
         /// <summary>
         /// 获取文件夹内所有资源路径
         /// </summary>

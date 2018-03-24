@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 608905bf242c14a45867e85ac6859db0
+timeCreated: 1466840402
+licenseType: Store
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 64
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Slicker
+  fontNames:
+  - Hs
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: hdgame_res.unity3d
+  assetBundleVariant: 
