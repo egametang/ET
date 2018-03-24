@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using ETModel;
+using MongoDB.Bson.Serialization;
 using NLog;
 
 namespace App
@@ -13,8 +14,6 @@ namespace App
 			// 异步方法全部会回掉到主线程
 			OneThreadSynchronizationContext contex = new OneThreadSynchronizationContext();
 			SynchronizationContext.SetSynchronizationContext(contex);
-
-			MongoHelper.Init();
 			
 			try
 			{
