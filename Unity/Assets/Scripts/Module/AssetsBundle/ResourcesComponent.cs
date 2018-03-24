@@ -48,7 +48,7 @@ namespace ETModel
 
 			base.Dispose();
 
-			//Log.Debug($"desdroy assetbundle: {this.Name}");
+			//Log.Debug($"destroy assetbundle: {this.Name}");
 
 			this.AssetBundle?.Unload(true);
 		}

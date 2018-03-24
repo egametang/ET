@@ -24,7 +24,7 @@ namespace ETModel
 
 		private readonly UnOrderMultiMap<Type, IStartSystem> startEvents = new UnOrderMultiMap<Type, IStartSystem>();
 
-		private readonly UnOrderMultiMap<Type, IDestroySystem> desdroyEvents = new UnOrderMultiMap<Type, IDestroySystem>();
+		private readonly UnOrderMultiMap<Type, IDestroySystem> destroyEvents = new UnOrderMultiMap<Type, IDestroySystem>();
 
 		private readonly UnOrderMultiMap<Type, ILoadSystem> loadEvents = new UnOrderMultiMap<Type, ILoadSystem>();
 
@@ -92,7 +92,7 @@ namespace ETModel
 				IDestroySystem destroySystem = obj as IDestroySystem;
 				if (destroySystem != null)
 				{
-					this.desdroyEvents.Add(destroySystem.Type(), destroySystem);
+					this.destroyEvents.Add(destroySystem.Type(), destroySystem);
 				}
 
 				ILoadSystem loadSystem = obj as ILoadSystem;
@@ -379,9 +379,9 @@ namespace ETModel
 			}
 		}
 
-		public void Desdroy(Component component)
+		public void Destroy(Component component)
 		{
-			List<IDestroySystem> iDestroySystems = this.desdroyEvents[component.GetType()];
+			List<IDestroySystem> iDestroySystems = this.destroyEvents[component.GetType()];
 			if (iDestroySystems == null)
 			{
 				return;
