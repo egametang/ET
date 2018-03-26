@@ -171,7 +171,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 				this.OnError(SocketError.SocketError);
 			}
 		}
@@ -225,7 +225,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 				this.OnError(SocketError.SocketError);
 			}
 		}

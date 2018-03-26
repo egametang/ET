@@ -1,11 +1,10 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+namespace ETModel
 {
-	public abstract class AAwakeSystem
+	public interface IAwakeSystem
 	{
-		public abstract Type Type();
+		Type Type();
 	}
 
 	public interface IAwake
@@ -28,9 +27,9 @@ namespace ETHotfix
 		void Run(object o, A a, B b, C c);
 	}
 
-	public abstract class AwakeSystem<T> : AAwakeSystem, IAwake
+	public abstract class AwakeSystem<T> : IAwakeSystem, IAwake
 	{
-		public override Type Type()
+		public Type Type()
 		{
 			return typeof(T);
 		}
@@ -43,9 +42,9 @@ namespace ETHotfix
 		public abstract void Awake(T self);
 	}
 
-	public abstract class AwakeSystem<T, A> : AAwakeSystem, IAwake<A>
+	public abstract class AwakeSystem<T, A> : IAwakeSystem, IAwake<A>
 	{
-		public override Type Type()
+		public Type Type()
 		{
 			return typeof(T);
 		}
@@ -58,9 +57,9 @@ namespace ETHotfix
 		public abstract void Awake(T self, A a);
 	}
 
-	public abstract class AwakeSystem<T, A, B> : AAwakeSystem, IAwake<A, B>
+	public abstract class AwakeSystem<T, A, B> : IAwakeSystem, IAwake<A, B>
 	{
-		public override Type Type()
+		public Type Type()
 		{
 			return typeof(T);
 		}
@@ -73,9 +72,9 @@ namespace ETHotfix
 		public abstract void Awake(T self, A a, B b);
 	}
 
-	public abstract class AwakeSystem<T, A, B, C> : AAwakeSystem, IAwake<A, B, C>
+	public abstract class AwakeSystem<T, A, B, C> : IAwakeSystem, IAwake<A, B, C>
 	{
-		public override Type Type()
+		public Type Type()
 		{
 			return typeof(T);
 		}

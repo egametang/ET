@@ -27,23 +27,14 @@ namespace ETModel
 		}
 	}
 
-	public sealed class ActorProxy : Component
+	public sealed class ActorProxy : ComponentWithId
 	{
 		// actor的地址
 		public IPEndPoint Address;
-
-		// 已发送等待回应的消息
-		public Queue<ActorTask> RunningTasks = new Queue<ActorTask>();
-
+		
 		// 还没发送的消息
 		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();
-
-		// 发送窗口大小
-		public int WindowSize = 1;
-
-		// 最大窗口
-		public const int MaxWindowSize = 1;
-
+		
 		// 最近发送消息的时间
 		public long LastSendTime;
 
@@ -56,7 +47,6 @@ namespace ETModel
 		public void Awake()
 		{
 			this.LastSendTime = TimeHelper.Now();
-			this.WindowSize = 1;
 			this.tcs = null;
 			this.CancellationTokenSource = new CancellationTokenSource();
 		}
@@ -71,8 +61,13 @@ namespace ETModel
 			base.Dispose();
 			this.LastSendTime = 0;
 			this.Address = null;
-			this.RunningTasks.Clear();
-			this.WaitingTasks.Clear();
+
+			while (this.WaitingTasks.Count > 0)
+			{
+				ActorTask actorTask = this.WaitingTasks.Dequeue();
+				actorTask.RunFail(ErrorCode.ERR_NotFoundActor);
+			}
+
 			this.failTimes = 0;
 			var t = this.tcs;
 			this.tcs = null;
@@ -95,13 +90,11 @@ namespace ETModel
 		
 		private void AllowGet()
 		{
-			if (this.tcs == null || this.WaitingTasks.Count <= 0 || this.RunningTasks.Count >= this.WindowSize)
+			if (this.tcs == null || this.WaitingTasks.Count <= 0)
 			{
 				return;
 			}
-			
-			ActorTask task = this.WaitingTasks.Dequeue();
-			this.RunningTasks.Enqueue(task);
+			ActorTask task = this.WaitingTasks.Peek();
 
 			var t = this.tcs;
 			this.tcs = null;
@@ -112,8 +105,7 @@ namespace ETModel
 		{
 			if (this.WaitingTasks.Count > 0)
 			{
-				ActorTask task = this.WaitingTasks.Dequeue();
-				this.RunningTasks.Enqueue(task);
+				ActorTask task = this.WaitingTasks.Peek();
 				return Task.FromResult(task);
 			}
 			
@@ -132,51 +124,38 @@ namespace ETModel
 				}
 				try
 				{
-					this.RunTask(actorTask);
+					await this.RunTask(actorTask);
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 					return;
 				}
 			}
 		}
 
-		private async void RunTask(ActorTask task)
+		private async Task RunTask(ActorTask task)
 		{
 			try
 			{
 				IResponse response = await task.Run();
 
-				// 如果没找到Actor,发送窗口减少为1,重试
+				// 如果没找到Actor,重试
 				if (response.Error == ErrorCode.ERR_NotFoundActor)
 				{
 					this.CancellationTokenSource.Cancel();
-					this.WindowSize = 1;
 					++this.failTimes;
-
-					while (this.WaitingTasks.Count > 0)
-					{
-						ActorTask actorTask = this.WaitingTasks.Dequeue();
-						this.RunningTasks.Enqueue(actorTask);
-					}
-					ObjectHelper.Swap(ref this.RunningTasks, ref this.WaitingTasks);
 					
-					// 失败3次则清空actor发送队列，返回失败
-					if (this.failTimes > 3)
+					// 失败10次则清空actor发送队列，返回失败
+					if (this.failTimes > 10)
 					{
-						while (this.WaitingTasks.Count > 0)
-						{
-							ActorTask actorTask = this.WaitingTasks.Dequeue();
-							actorTask.RunFail(response.Error);
-						}
-
 						// 失败直接删除actorproxy
+						Log.Info($"actor send message fail, actorid: {this.Id}");
 						Game.Scene.GetComponent<ActorProxyComponent>().Remove(this.Id);
 						return;
 					}
-					// 等待一会再发送
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(this.failTimes * 500);
+					// 等待1s再发送
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
 					int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(this.Id);
 					this.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
 					this.CancellationTokenSource = new CancellationTokenSource();
@@ -187,17 +166,12 @@ namespace ETModel
 				// 发送成功
 				this.LastSendTime = TimeHelper.Now();
 				this.failTimes = 0;
-				if (this.WindowSize < MaxWindowSize)
-				{
-					++this.WindowSize;
-				}
 
-				this.RunningTasks.Dequeue();
-				this.AllowGet();
+				this.WaitingTasks.Dequeue();
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 

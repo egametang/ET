@@ -17,7 +17,7 @@ namespace ETModel
 	/// </summary>
 	public class DBCacheComponent : Component
 	{
-		public Dictionary<string, Dictionary<long, Component>> cache = new Dictionary<string, Dictionary<long, Component>>();
+		public Dictionary<string, Dictionary<long, ComponentWithId>> cache = new Dictionary<string, Dictionary<long, ComponentWithId>>();
 
 		public const int taskCount = 32;
 		public List<DBTaskQueue> tasks = new List<DBTaskQueue>(taskCount);
@@ -31,53 +31,53 @@ namespace ETModel
 			}
 		}
 
-		public Task<bool> Add(Component disposer, string collectionName = "")
+		public Task<bool> Add(ComponentWithId component, string collectionName = "")
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-			this.AddToCache(disposer, collectionName);
+			this.AddToCache(component, collectionName);
 
 			if (string.IsNullOrEmpty(collectionName))
 			{
-				collectionName = disposer.GetType().Name;
+				collectionName = component.GetType().Name;
 			}
-			DBSaveTask task = ComponentFactory.CreateWithId<DBSaveTask, Component, string, TaskCompletionSource<bool>>(disposer.Id, disposer, collectionName, tcs);
+			DBSaveTask task = ComponentFactory.CreateWithId<DBSaveTask, ComponentWithId, string, TaskCompletionSource<bool>>(component.Id, component, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 
 			return tcs.Task;
 		}
 
-		public Task<bool> AddBatch(List<Component> disposers, string collectionName)
+		public Task<bool> AddBatch(List<ComponentWithId> components, string collectionName)
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
-			DBSaveBatchTask task = ComponentFactory.Create<DBSaveBatchTask, List<Component>, string, TaskCompletionSource<bool>>(disposers, collectionName, tcs);
+			DBSaveBatchTask task = ComponentFactory.Create<DBSaveBatchTask, List<ComponentWithId>, string, TaskCompletionSource<bool>>(components, collectionName, tcs);
 			this.tasks[(int)((ulong)task.Id % taskCount)].Add(task);
 			return tcs.Task;
 		}
 
-		public void AddToCache(Component disposer, string collectionName = "")
+		public void AddToCache(ComponentWithId component, string collectionName = "")
 		{
 			if (string.IsNullOrEmpty(collectionName))
 			{
-				collectionName = disposer.GetType().Name;
+				collectionName = component.GetType().Name;
 			}
-			Dictionary<long, Component> collection;
+			Dictionary<long, ComponentWithId> collection;
 			if (!this.cache.TryGetValue(collectionName, out collection))
 			{
-				collection = new Dictionary<long, Component>();
+				collection = new Dictionary<long, ComponentWithId>();
 				this.cache.Add(collectionName, collection);
 			}
-			collection[disposer.Id] = disposer;
+			collection[component.Id] = component;
 		}
 
-		public Component GetFromCache(string collectionName, long id)
+		public ComponentWithId GetFromCache(string collectionName, long id)
 		{
-			Dictionary<long, Component> d;
+			Dictionary<long, ComponentWithId> d;
 			if (!this.cache.TryGetValue(collectionName, out d))
 			{
 				return null;
 			}
-			Component result;
+			ComponentWithId result;
 			if (!d.TryGetValue(id, out result))
 			{
 				return null;
@@ -87,7 +87,7 @@ namespace ETModel
 
 		public void RemoveFromCache(string collectionName, long id)
 		{
-			Dictionary<long, Component> d;
+			Dictionary<long, ComponentWithId> d;
 			if (!this.cache.TryGetValue(collectionName, out d))
 			{
 				return;
@@ -95,53 +95,53 @@ namespace ETModel
 			d.Remove(id);
 		}
 
-		public Task<Component> Get(string collectionName, long id)
+		public Task<ComponentWithId> Get(string collectionName, long id)
 		{
-			Component disposer = GetFromCache(collectionName, id);
-			if (disposer != null)
+			ComponentWithId component = GetFromCache(collectionName, id);
+			if (component != null)
 			{
-				return Task.FromResult(disposer);
+				return Task.FromResult(component);
 			}
 
-			TaskCompletionSource<Component> tcs = new TaskCompletionSource<Component>();
-			DBQueryTask dbQueryTask = ComponentFactory.CreateWithId<DBQueryTask, string, TaskCompletionSource<Component>>(id, collectionName, tcs);
+			TaskCompletionSource<ComponentWithId> tcs = new TaskCompletionSource<ComponentWithId>();
+			DBQueryTask dbQueryTask = ComponentFactory.CreateWithId<DBQueryTask, string, TaskCompletionSource<ComponentWithId>>(id, collectionName, tcs);
 			this.tasks[(int)((ulong)id % taskCount)].Add(dbQueryTask);
 
 			return tcs.Task;
 		}
 
-		public Task<List<Component>> GetBatch(string collectionName, List<long> idList)
+		public Task<List<ComponentWithId>> GetBatch(string collectionName, List<long> idList)
 		{
-			List <Component> disposers = new List<Component>();
+			List <ComponentWithId> components = new List<ComponentWithId>();
 			bool isAllInCache = true;
 			foreach (long id in idList)
 			{
-				Component disposer = this.GetFromCache(collectionName, id);
-				if (disposer == null)
+				ComponentWithId component = this.GetFromCache(collectionName, id);
+				if (component == null)
 				{
 					isAllInCache = false;
 					break;
 				}
-				disposers.Add(disposer);
+				components.Add(component);
 			}
 
 			if (isAllInCache)
 			{
-				return Task.FromResult(disposers);
+				return Task.FromResult(components);
 			}
 
-			TaskCompletionSource<List<Component>> tcs = new TaskCompletionSource<List<Component>>();
-			DBQueryBatchTask dbQueryBatchTask = ComponentFactory.Create<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Component>>>(idList, collectionName, tcs);
+			TaskCompletionSource<List<ComponentWithId>> tcs = new TaskCompletionSource<List<ComponentWithId>>();
+			DBQueryBatchTask dbQueryBatchTask = ComponentFactory.Create<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<ComponentWithId>>>(idList, collectionName, tcs);
 			this.tasks[(int)((ulong)dbQueryBatchTask.Id % taskCount)].Add(dbQueryBatchTask);
 
 			return tcs.Task;
 		}
 
-		public Task<List<Component>> GetJson(string collectionName, string json)
+		public Task<List<ComponentWithId>> GetJson(string collectionName, string json)
 		{
-			TaskCompletionSource<List<Component>> tcs = new TaskCompletionSource<List<Component>>();
+			TaskCompletionSource<List<ComponentWithId>> tcs = new TaskCompletionSource<List<ComponentWithId>>();
 			
-			DBQueryJsonTask dbQueryJsonTask = ComponentFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource<List<Component>>>(collectionName, json, tcs);
+			DBQueryJsonTask dbQueryJsonTask = ComponentFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource<List<ComponentWithId>>>(collectionName, json, tcs);
 			this.tasks[(int)((ulong)dbQueryJsonTask.Id % taskCount)].Add(dbQueryJsonTask);
 
 			return tcs.Task;

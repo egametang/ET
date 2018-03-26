@@ -82,7 +82,7 @@ public class ExcelExporterEditor : EditorWindow
 		}
 		catch (Exception e)
 		{
-			Log.Error(e.ToString());
+			Log.Error(e);
 		}
 	}
 

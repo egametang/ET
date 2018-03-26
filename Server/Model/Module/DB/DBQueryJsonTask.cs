@@ -6,9 +6,9 @@ using MongoDB.Driver;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DBQueryJsonTaskAwakeSystem : AwakeSystem<DBQueryJsonTask, string, string, TaskCompletionSource<List<Component>>>
+	public class DBQueryJsonTaskAwakeSystem : AwakeSystem<DBQueryJsonTask, string, string, TaskCompletionSource<List<ComponentWithId>>>
 	{
-		public override void Awake(DBQueryJsonTask self, string collectionName, string json, TaskCompletionSource<List<Component>> tcs)
+		public override void Awake(DBQueryJsonTask self, string collectionName, string json, TaskCompletionSource<List<ComponentWithId>> tcs)
 		{
 			self.CollectionName = collectionName;
 			self.Json = json;
@@ -22,7 +22,7 @@ namespace ETModel
 
 		public string Json { get; set; }
 
-		public TaskCompletionSource<List<Component>> Tcs { get; set; }
+		public TaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
 		
 		public override async Task Run()
 		{
@@ -30,9 +30,9 @@ namespace ETModel
 			try
 			{
 				// 执行查询数据库任务
-				FilterDefinition<Component> filterDefinition = new JsonFilterDefinition<Component>(this.Json);
-				List<Component> disposers = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition).Result.ToListAsync();
-				this.Tcs.SetResult(disposers);
+				FilterDefinition<ComponentWithId> filterDefinition = new JsonFilterDefinition<ComponentWithId>(this.Json);
+				List<ComponentWithId> components = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition).Result.ToListAsync();
+				this.Tcs.SetResult(components);
 			}
 			catch (Exception e)
 			{

@@ -13,7 +13,7 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ETModel_AEventAttribute_Binding
+    unsafe class ETModel_EventAttribute_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
@@ -21,7 +21,7 @@ namespace ILRuntime.Runtime.Generated
             MethodBase method;
             FieldInfo field;
             Type[] args;
-            Type type = typeof(ETModel.AEventAttribute);
+            Type type = typeof(ETModel.EventAttribute);
             args = new Type[]{};
             method = type.GetMethod("get_Type", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Type_0);
@@ -36,8 +36,8 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ETModel.AEventAttribute instance_of_this_method;
-            instance_of_this_method = (ETModel.AEventAttribute)typeof(ETModel.AEventAttribute).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.EventAttribute instance_of_this_method;
+            instance_of_this_method = (ETModel.EventAttribute)typeof(ETModel.EventAttribute).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Type;

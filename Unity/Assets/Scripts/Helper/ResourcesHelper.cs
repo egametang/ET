@@ -12,6 +12,11 @@ namespace ETModel
 {
 	public static class ResourcesHelper
 	{
+		public static UnityEngine.Object Load(string path)
+		{
+			return Resources.Load(path);
+		}
+
 		public static string[] GetDependencies(string assetBundleName)
 		{
 			string[] dependencies = new string[0];

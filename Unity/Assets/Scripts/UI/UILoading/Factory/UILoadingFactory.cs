@@ -10,7 +10,7 @@ namespace ETModel
         {
 	        try
 	        {
-				GameObject bundleGameObject = ((GameObject)Resources.Load("KV")).Get<GameObject>(type);
+				GameObject bundleGameObject = ((GameObject)ResourcesHelper.Load("KV")).Get<GameObject>(type);
 				GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
 				go.layer = LayerMask.NameToLayer(LayerNames.UI);
 				UI ui = ComponentFactory.Create<UI, GameObject>(go);
@@ -20,7 +20,7 @@ namespace ETModel
 	        }
 	        catch (Exception e)
 	        {
-				Log.Error(e.ToString());
+				Log.Error(e);
 		        return null;
 	        }
 		}

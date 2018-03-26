@@ -23,14 +23,14 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ETModel.Component);
             args = new Type[]{};
-            method = type.GetMethod("get_Id", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_Id_0);
+            method = type.GetMethod("Dispose", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Dispose_0);
 
 
         }
 
 
-        static StackObject* get_Id_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Dispose_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -40,11 +40,9 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method = (ETModel.Component)typeof(ETModel.Component).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.Id;
+            instance_of_this_method.Dispose();
 
-            __ret->ObjectType = ObjectTypes.Long;
-            *(long*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
+            return __ret;
         }
 
 

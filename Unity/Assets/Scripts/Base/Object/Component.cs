@@ -1,16 +1,45 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public abstract partial class Component: Disposer
+	public abstract partial class Component : Object, IDisposable
 	{
-		[BsonIgnoreIfDefault]
-		[BsonDefaultValue(0L)]
-		[BsonElement]
-		[BsonId]
-		public long Id { get; set; }
+		[BsonIgnore]
+		public long InstanceId { get; protected set; }
 
+		[BsonIgnore]
+		private bool isFromPool;
+
+		[BsonIgnore]
+		public bool IsFromPool
+		{
+			get
+			{
+				return this.isFromPool;
+			}
+			set
+			{
+				this.isFromPool = value;
+
+				if (this.InstanceId == 0)
+				{
+					this.InstanceId = IdGenerater.GenerateId();
+					Game.EventSystem.Add(this);
+				}
+			}
+		}
+
+		[BsonIgnore]
+		public bool IsDisposed
+		{
+			get
+			{
+				return this.InstanceId == 0;
+			}
+		}
+		
 		[BsonIgnore]
 		public Component Parent { get; set; }
 
@@ -28,14 +57,30 @@ namespace ETModel
 			}
 		}
 
-		public override void Dispose()
+		protected Component()
+		{
+			this.InstanceId = IdGenerater.GenerateId();
+			Game.EventSystem.Add(this);
+		}
+
+		public virtual void Dispose()
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
 
-			base.Dispose();
+			Game.EventSystem.Remove(this.InstanceId);
+
+			this.InstanceId = 0;
+
+			if (this.IsFromPool)
+			{
+				Game.ObjectPool.Recycle(this);
+			}
+
+			// 触发Destroy事件
+			Game.EventSystem.Destroy(this);
 		}
 	}
 }

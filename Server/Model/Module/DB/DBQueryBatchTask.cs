@@ -7,9 +7,9 @@ using MongoDB.Driver;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DbQueryBatchTaskSystem : AwakeSystem<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<Component>>>
+	public class DbQueryBatchTaskSystem : AwakeSystem<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<ComponentWithId>>>
 	{
-		public override void Awake(DBQueryBatchTask self, List<long> idList, string collectionName, TaskCompletionSource<List<Component>> tcs)
+		public override void Awake(DBQueryBatchTask self, List<long> idList, string collectionName, TaskCompletionSource<List<ComponentWithId>> tcs)
 		{
 			self.IdList = idList;
 			self.CollectionName = collectionName;
@@ -23,31 +23,31 @@ namespace ETModel
 
 		public List<long> IdList { get; set; }
 
-		public TaskCompletionSource<List<Component>> Tcs { get; set; }
+		public TaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
 		
 		public override async Task Run()
 		{
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
-			List<Component> result = new List<Component>();
+			List<ComponentWithId> result = new List<ComponentWithId>();
 
 			try
 			{
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					Component disposer = dbCacheComponent.GetFromCache(this.CollectionName, id);
-					if (disposer == null)
+					ComponentWithId component = dbCacheComponent.GetFromCache(this.CollectionName, id);
+					if (component == null)
 					{
-						disposer = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
-						dbCacheComponent.AddToCache(disposer);
+						component = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
+						dbCacheComponent.AddToCache(component);
 					}
 					
-					if (disposer == null)
+					if (component == null)
 					{
 						continue;
 					}
-					result.Add(disposer);
+					result.Add(component);
 				}
 				
 				this.Tcs.SetResult(result);

@@ -11,7 +11,7 @@ using UnityEditor;
 
 namespace ETModel
 {
-	public class ABInfo : Disposer
+	public class ABInfo : Component
 	{
 		private int refCount;
 		public string Name { get; }
@@ -48,7 +48,7 @@ namespace ETModel
 
 			base.Dispose();
 
-			//Log.Debug($"desdroy assetbundle: {this.Name}");
+			//Log.Debug($"destroy assetbundle: {this.Name}");
 
 			this.AssetBundle?.Unload(true);
 		}

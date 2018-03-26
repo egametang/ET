@@ -10,7 +10,9 @@ namespace ETHotfix
 			ushort opcode = packet.Opcode();
 			Type messageType = session.Network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
-			
+
+			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+
 			switch (message)
 			{
 				case IFrameMessage iFrameMessage: // 如果是帧消息，构造成OneFrameMessage发给对应的unit
