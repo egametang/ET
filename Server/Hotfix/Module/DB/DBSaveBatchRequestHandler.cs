@@ -15,18 +15,18 @@ namespace ETHotfix
 
 				if (string.IsNullOrEmpty(message.CollectionName))
 				{
-					message.CollectionName = message.Disposers[0].GetType().Name;
+					message.CollectionName = message.Components[0].GetType().Name;
 				}
 
 				if (message.NeedCache)
 				{
-					foreach (Component disposer in message.Disposers)
+					foreach (ComponentWithId component in message.Components)
 					{
-						dbCacheComponent.AddToCache(disposer, message.CollectionName);
+						dbCacheComponent.AddToCache(component, message.CollectionName);
 					}
 				}
 
-				await dbCacheComponent.AddBatch(message.Disposers, message.CollectionName);
+				await dbCacheComponent.AddBatch(message.Components, message.CollectionName);
 
 				reply(response);
 			}

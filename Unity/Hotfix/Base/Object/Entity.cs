@@ -7,7 +7,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : Component
+	public partial class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -18,14 +18,12 @@ namespace ETHotfix
 
 		protected Entity()
 		{
-			this.Id = IdGenerater.GenerateId();
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id)
+		protected Entity(long id) : base(id)
 		{
-			this.Id = id;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
@@ -47,7 +45,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 
@@ -61,7 +59,7 @@ namespace ETHotfix
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
+				throw new Exception($"AddComponent, component already exist, component: {type.Name}");
 			}
 
 			if (component is ISerializeToEntity)
@@ -78,7 +76,7 @@ namespace ETHotfix
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
 			if (component is ISerializeToEntity)
@@ -95,7 +93,7 @@ namespace ETHotfix
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
 			if (component is ISerializeToEntity)
@@ -112,7 +110,7 @@ namespace ETHotfix
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
 			if (component is ISerializeToEntity)
@@ -129,7 +127,7 @@ namespace ETHotfix
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
 			if (component is ISerializeToEntity)
@@ -203,6 +201,8 @@ namespace ETHotfix
 		{
 			try
 			{
+				this.InstanceId = IdGenerater.GenerateId();
+
 				this.componentDict.Clear();
 
 				if (this.components != null)
@@ -216,7 +216,7 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 	}

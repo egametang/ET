@@ -17,8 +17,6 @@ namespace ETModel
 	{
 		public IEntityActorHandler entityActorHandler;
 
-		public long actorId;
-
 		// 队列处理消息
 		public Queue<ActorMessageInfo> queue;
 
@@ -26,25 +24,16 @@ namespace ETModel
 
 		public override void Dispose()
 		{
-			try
+			if (this.IsDisposed)
 			{
-				if (this.IsDisposed)
-				{
-					return;
-				}
-
-				base.Dispose();
-
-				var t = this.tcs;
-				this.tcs = null;
-				t?.SetResult(new ActorMessageInfo());
-
-				Game.Scene.GetComponent<ActorManagerComponent>().Remove(actorId);
+				return;
 			}
-			catch (Exception)
-			{
-				Log.Error($"unregister actor fail: {this.actorId}");
-			}
+
+			base.Dispose();
+
+			var t = this.tcs;
+			this.tcs = null;
+			t?.SetResult(new ActorMessageInfo());
 		}
 	}
 }

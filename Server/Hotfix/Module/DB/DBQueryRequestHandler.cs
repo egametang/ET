@@ -12,13 +12,13 @@ namespace ETHotfix
 			try
 			{
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				Component disposer = await dbCacheComponent.Get(message.CollectionName, message.Id);
+				ComponentWithId component = await dbCacheComponent.Get(message.CollectionName, message.Id);
 
-				response.Disposer = disposer;
+				response.Component = component;
 
-				if (message.NeedCache && disposer != null)
+				if (message.NeedCache && component != null)
 				{
-					dbCacheComponent.AddToCache(disposer, message.CollectionName);
+					dbCacheComponent.AddToCache(component, message.CollectionName);
 				}
 
 				reply(response);

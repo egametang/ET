@@ -6,102 +6,102 @@ namespace ETModel
 	{
 		public static Component CreateWithParent(Type type, Component parent)
 		{
-			Component disposer = (Component)Game.ObjectPool.Fetch(type);
-			disposer.Parent = parent;
-			Game.EventSystem.Awake(disposer);
-			return disposer;
+			Component component = (Component)Game.ObjectPool.Fetch(type);
+			component.Parent = parent;
+			Game.EventSystem.Awake(component);
+			return component;
 		}
 
 		public static T CreateWithParent<T>(Component parent) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Parent = parent;
-			Game.EventSystem.Awake(disposer);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Parent = parent;
+			Game.EventSystem.Awake(component);
+			return component;
 		}
 
 		public static T CreateWithParent<T, A>(Component parent, A a) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Parent = parent;
-			Game.EventSystem.Awake(disposer, a);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Parent = parent;
+			Game.EventSystem.Awake(component, a);
+			return component;
 		}
 
 		public static T CreateWithParent<T, A, B>(Component parent, A a, B b) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Parent = parent;
-			Game.EventSystem.Awake(disposer, a, b);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Parent = parent;
+			Game.EventSystem.Awake(component, a, b);
+			return component;
 		}
 
 		public static T CreateWithParent<T, A, B, C>(Component parent, A a, B b, C c) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Parent = parent;
-			Game.EventSystem.Awake(disposer, a, b, c);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Parent = parent;
+			Game.EventSystem.Awake(component, a, b, c);
+			return component;
 		}
 
 		public static T Create<T>() where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			Game.EventSystem.Awake(disposer);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(component);
+			return component;
 		}
 
 		public static T Create<T, A>(A a) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			Game.EventSystem.Awake(disposer, a);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(component, a);
+			return component;
 		}
 
 		public static T Create<T, A, B>(A a, B b) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			Game.EventSystem.Awake(disposer, a, b);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(component, a, b);
+			return component;
 		}
 
 		public static T Create<T, A, B, C>(A a, B b, C c) where T : Component
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			Game.EventSystem.Awake(disposer, a, b, c);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			Game.EventSystem.Awake(component, a, b, c);
+			return component;
 		}
 
-		public static T CreateWithId<T>(long id) where T : Component
+		public static T CreateWithId<T>(long id) where T : ComponentWithId
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Id = id;
-			Game.EventSystem.Awake(disposer);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Id = id;
+			Game.EventSystem.Awake(component);
+			return component;
 		}
 
-		public static T CreateWithId<T, A>(long id, A a) where T : Component
+		public static T CreateWithId<T, A>(long id, A a) where T : ComponentWithId
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Id = id;
-			Game.EventSystem.Awake(disposer, a);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Id = id;
+			Game.EventSystem.Awake(component, a);
+			return component;
 		}
 
-		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : Component
+		public static T CreateWithId<T, A, B>(long id, A a, B b) where T : ComponentWithId
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Id = id;
-			Game.EventSystem.Awake(disposer, a, b);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Id = id;
+			Game.EventSystem.Awake(component, a, b);
+			return component;
 		}
 
-		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : Component
+		public static T CreateWithId<T, A, B, C>(long id, A a, B b, C c) where T : ComponentWithId
 		{
-			T disposer = Game.ObjectPool.Fetch<T>();
-			disposer.Id = id;
-			Game.EventSystem.Awake(disposer, a, b, c);
-			return disposer;
+			T component = Game.ObjectPool.Fetch<T>();
+			component.Id = id;
+			Game.EventSystem.Awake(component, a, b, c);
+			return component;
 		}
 	}
 }

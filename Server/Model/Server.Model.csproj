@@ -12,17 +12,16 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>bin\Debug\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
-    <OutputPath>bin\Release\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\AEventAttribute.cs" Link="Base\Event\AEventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
@@ -40,18 +39,19 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs" Link="Base\Helper\StringHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Object\Component.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Disposer.cs" Link="Base\Object\Disposer.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentWithId.cs" Link="Base\Object\ComponentWithId.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Object\Entity.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Object\EventSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwake.cs" Link="Base\Object\IAwake.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdate.cs" Link="Base\Object\ILateUpdate.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoad.cs" Link="Base\Object\ILoad.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwakeSystem.cs" Link="Base\Object\IAwakeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IChangeSystem.cs" Link="Base\Object\IChangeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IDestroySystem.cs" Link="Base\Object\IDestroySystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdateSystem.cs" Link="Base\Object\ILateUpdateSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoadSystem.cs" Link="Base\Object\ILoadSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ISerializeToEntity.cs" Link="Base\Object\ISerializeToEntity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStart.cs" Link="Base\Object\IStart.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdate.cs" Link="Base\Object\IUpdate.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStartSystem.cs" Link="Base\Object\IStartSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdateSystem.cs" Link="Base\Object\IUpdateSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" Link="Base\Object\ObjectSystemAttribute.cs" />

@@ -14,14 +14,14 @@ namespace ETHotfix
 				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 				if (string.IsNullOrEmpty(message.CollectionName))
 				{
-					message.CollectionName = message.Disposer.GetType().Name;
+					message.CollectionName = message.Component.GetType().Name;
 				}
 
 				if (message.NeedCache)
 				{
-					dbCacheComponent.AddToCache(message.Disposer, message.CollectionName);
+					dbCacheComponent.AddToCache(message.Component, message.CollectionName);
 				}
-				await dbCacheComponent.Add(message.Disposer, message.CollectionName);
+				await dbCacheComponent.Add(message.Component, message.CollectionName);
 				reply(response);
 			}
 			catch (Exception e)

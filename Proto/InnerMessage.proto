@@ -44,7 +44,7 @@
 
 		required string CollectionName = 2;
 
-		required Component Disposer = 3;
+		required ComponentWithId Component = 3;
 	}
 
 
@@ -56,7 +56,7 @@
 	{
 		required bool NeedCache = 1;
 		required string CollectionName = 2;
-		repeated Component Disposers = 3;
+		repeated ComponentWithId Components = 3;
 	}
 
 	message DBSaveResponse // IResponse
@@ -72,7 +72,7 @@
 
 	message DBQueryResponse // IResponse
 	{
-		required Component Disposer = 1;
+		required ComponentWithId Component = 1;
 	}
 
 	message DBQueryBatchRequest // IRequest
@@ -84,7 +84,7 @@
 
 	message DBQueryBatchResponse // IResponse
 	{
-		repeated Component Disposers = 1;
+		repeated ComponentWithId Components = 1;
 	}
 
 	message DBQueryJsonRequest // IRequest
@@ -96,7 +96,7 @@
 
 	message DBQueryJsonResponse // IResponse
 	{
-		repeated Component Disposers = 1;
+		repeated ComponentWithId Components = 1;
 	}
 
 	message ObjectAddRequest // IRequest

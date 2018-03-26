@@ -32,7 +32,9 @@ namespace ETModel
 		private readonly HashSet<long> updateChannels = new HashSet<long>();
 
 		// 下次时间更新的channel
-		private readonly MultiMap<long, long> timerMap = new MultiMap<long, long>();
+		private readonly MultiMap<long, long> timerId = new MultiMap<long, long>();
+
+		private readonly List<long> timeOutId = new List<long>();
 
 		public KService(IPEndPoint ipEndPoint)
 		{
@@ -86,7 +88,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 					continue;
 				}
 
@@ -240,7 +242,7 @@ namespace ETModel
 
 		public void AddToNextTimeUpdate(long time, long id)
 		{
-			this.timerMap.Add(time, id);
+			this.timerId.Add(time, id);
 		}
 
 		public override AChannel GetChannel(long id)
@@ -280,26 +282,8 @@ namespace ETModel
 
 		public override void Update()
 		{
-			this.TimeNow = (uint)TimeHelper.Now();
+			this.TimerOut();
 
-			while (true)
-			{
-				if (this.timerMap.Count <= 0)
-				{
-					break;
-				}
-				var kv = this.timerMap.First();
-				if (kv.Key > TimeNow)
-				{
-					break;
-				}
-				List<long> timeOutId = kv.Value;
-				foreach (long id in timeOutId)
-				{
-					this.updateChannels.Add(id);
-				}
-				this.timerMap.Remove(kv.Key);
-			}
 			foreach (long id in updateChannels)
 			{
 				KChannel kChannel;
@@ -323,6 +307,38 @@ namespace ETModel
 				}
 				long id = this.removedChannels.Dequeue();
 				this.idChannels.Remove(id);
+			}
+		}
+
+		// 计算到期需要update的channel
+		private void TimerOut()
+		{
+			if (this.timerId.Count == 0)
+			{
+				return;
+			}
+
+			this.TimeNow = (uint)TimeHelper.ClientNow();
+
+			timeOutId.Clear();
+
+			while (this.timerId.Count > 0)
+			{
+				long k = this.timerId.FirstKey();
+				if (k > this.TimeNow)
+				{
+					break;
+				}
+				foreach (long ll in this.timerId[k])
+				{
+					this.timeOutId.Add(ll);
+				}
+				this.timerId.Remove(k);
+			}
+
+			foreach (long k in this.timeOutId)
+			{
+				this.updateChannels.Add(k);
 			}
 		}
 	}

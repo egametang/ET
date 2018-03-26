@@ -4,13 +4,28 @@ using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace ETModel
 {
 	public static class MongoHelper
 	{
-		public static void Init()
+		static MongoHelper()
 		{
+			Type bsonClassMap = typeof(BsonClassMap);
+			MethodInfo methodInfo = bsonClassMap.GetMethod("RegisterClassMap", new Type[] { });
+
+			Type[] types = typeof(Game).Assembly.GetTypes();
+			foreach (Type type in types)
+			{
+				if (!type.IsSubclassOf(typeof(Component)))
+				{
+					continue;
+				}
+				methodInfo.MakeGenericMethod(type).Invoke(null, null);
+			}
+
 			BsonSerializer.RegisterSerializer(new EnumSerializer<NumericType>(BsonType.String));
 		}
 
@@ -69,5 +84,20 @@ namespace ETModel
 		{
 			return FromBson<T>(ToBson(t));
 		}
+
+
+        public static void AvoidAOT()
+        {
+            ArraySerializer<int> aint = new ArraySerializer<int>();
+            ArraySerializer<string> astring = new ArraySerializer<string>();
+            ArraySerializer<long> along = new ArraySerializer<long>();
+
+            EnumerableInterfaceImplementerSerializer<List<int>> e =
+                new EnumerableInterfaceImplementerSerializer<List<int>>();
+
+            EnumerableInterfaceImplementerSerializer<List<int>, int> elistint =
+                new EnumerableInterfaceImplementerSerializer<List<int>, int>();
+        }
+
 	}
 }

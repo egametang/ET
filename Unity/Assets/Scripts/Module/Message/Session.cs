@@ -110,7 +110,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 					continue;
 				}
 				
@@ -120,7 +120,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}
@@ -155,6 +155,7 @@ namespace ETModel
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			Type responseType = opcodeTypeComponent.GetType(opcode);
 			object message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 
 			IResponse response = message as IResponse;
 			if (response == null)

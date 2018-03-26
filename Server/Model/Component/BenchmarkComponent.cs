@@ -24,14 +24,14 @@ namespace ETModel
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 1000; i++)
 				{
 					this.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -51,11 +51,11 @@ namespace ETModel
 			}
 			catch (RpcException e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 

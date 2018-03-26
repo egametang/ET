@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : Component
+	public partial class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -17,14 +17,12 @@ namespace ETModel
 
 		protected Entity()
 		{
-			this.Id = IdGenerater.GenerateId();
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id)
+		protected Entity(long id): base(id)
 		{
-			this.Id = id;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
@@ -46,7 +44,7 @@ namespace ETModel
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 
@@ -202,6 +200,8 @@ namespace ETModel
 		{
 			try
 			{
+				this.InstanceId = IdGenerater.GenerateId();
+
 				this.componentDict.Clear();
 
 				if (this.components != null)
@@ -215,7 +215,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 	}

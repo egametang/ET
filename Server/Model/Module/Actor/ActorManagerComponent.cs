@@ -2,26 +2,13 @@
 
 namespace ETModel
 {
-	[ObjectSystem]
-	public class ActorManagerComponentAwakeSystem : AwakeSystem<ActorManagerComponent>
-	{
-		public override void Awake(ActorManagerComponent self)
-		{
-			self.Awake();
-		}
-	}
-
 	/// <summary>
 	/// 用来管理该服务器上所有的Actor对象
 	/// </summary>
 	public class ActorManagerComponent : Component
 	{
 		private readonly Dictionary<long, Entity> dictionary = new Dictionary<long, Entity>();
-
-		public void Awake()
-		{
-		}
-
+		
 		public void Add(Entity entity)
 		{
 			Log.Info($"add actor: {entity.Id} {entity.GetType().Name}");
@@ -52,6 +39,7 @@ namespace ETModel
 			{
 				return;
 			}
+
 			base.Dispose();
 		}
 	}

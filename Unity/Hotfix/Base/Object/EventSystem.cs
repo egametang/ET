@@ -6,30 +6,34 @@ namespace ETHotfix
 {
 	public sealed class EventSystem
 	{
+		private readonly Dictionary<long, Component> allComponents = new Dictionary<long, Component>();
+
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
-		private readonly UnOrderMultiMap<Type, AAwakeSystem> awakeEvents = new UnOrderMultiMap<Type, AAwakeSystem>();
+		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
 
-		private readonly UnOrderMultiMap<Type, AStartSystem> startEvents = new UnOrderMultiMap<Type, AStartSystem>();
+		private readonly UnOrderMultiMap<Type, IStartSystem> startSystems = new UnOrderMultiMap<Type, IStartSystem>();
 
-		private readonly UnOrderMultiMap<Type, ALoadSystem> loadEvents = new UnOrderMultiMap<Type, ALoadSystem>();
+		private readonly UnOrderMultiMap<Type, IDestroySystem> destroySystems = new UnOrderMultiMap<Type, IDestroySystem>();
 
-		private readonly UnOrderMultiMap<Type, AUpdateSystem> updateEvents = new UnOrderMultiMap<Type, AUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, ILoadSystem> loadSystems = new UnOrderMultiMap<Type, ILoadSystem>();
 
-		private readonly UnOrderMultiMap<Type, ALateUpdateSystem> lateUpdateEvents = new UnOrderMultiMap<Type, ALateUpdateSystem>();
+		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateSystems = new UnOrderMultiMap<Type, IUpdateSystem>();
 
-		private Queue<Component> updates = new Queue<Component>();
-		private Queue<Component> updates2 = new Queue<Component>();
+		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateSystems = new UnOrderMultiMap<Type, ILateUpdateSystem>();
 
-		private readonly Queue<Component> starts = new Queue<Component>();
+		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
 
-		private Queue<Component> loaders = new Queue<Component>();
-		private Queue<Component> loaders2 = new Queue<Component>();
+		private Queue<long> updates = new Queue<long>();
+		private Queue<long> updates2 = new Queue<long>();
 
-		private Queue<Component> lateUpdates = new Queue<Component>();
-		private Queue<Component> lateUpdates2 = new Queue<Component>();
+		private readonly Queue<long> starts = new Queue<long>();
 
-		private readonly HashSet<Component> unique = new HashSet<Component>();
+		private Queue<long> loaders = new Queue<long>();
+		private Queue<long> loaders2 = new Queue<long>();
+
+		private Queue<long> lateUpdates = new Queue<long>();
+		private Queue<long> lateUpdates2 = new Queue<long>();
 
 		public EventSystem()
 		{
@@ -45,34 +49,46 @@ namespace ETHotfix
 
 				object obj = Activator.CreateInstance(type);
 
-				AAwakeSystem objectSystem = obj as AAwakeSystem;
+				IAwakeSystem objectSystem = obj as IAwakeSystem;
 				if (objectSystem != null)
 				{
-					this.awakeEvents.Add(objectSystem.Type(), objectSystem);
+					this.awakeSystems.Add(objectSystem.Type(), objectSystem);
 				}
 
-				AUpdateSystem aUpdateSystem = obj as AUpdateSystem;
-				if (aUpdateSystem != null)
+				IUpdateSystem updateSystem = obj as IUpdateSystem;
+				if (updateSystem != null)
 				{
-					this.updateEvents.Add(aUpdateSystem.Type(), aUpdateSystem);
+					this.updateSystems.Add(updateSystem.Type(), updateSystem);
 				}
 
-				ALateUpdateSystem aLateUpdateSystem = obj as ALateUpdateSystem;
-				if (aLateUpdateSystem != null)
+				ILateUpdateSystem lateUpdateSystem = obj as ILateUpdateSystem;
+				if (lateUpdateSystem != null)
 				{
-					this.lateUpdateEvents.Add(aLateUpdateSystem.Type(), aLateUpdateSystem);
+					this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
 				}
 
-				AStartSystem aStartSystem = obj as AStartSystem;
-				if (aStartSystem != null)
+				IStartSystem startSystem = obj as IStartSystem;
+				if (startSystem != null)
 				{
-					this.startEvents.Add(aStartSystem.Type(), aStartSystem);
+					this.startSystems.Add(startSystem.Type(), startSystem);
 				}
 
-				ALoadSystem aLoadSystem = obj as ALoadSystem;
-				if (aLoadSystem != null)
+				IDestroySystem destroySystem = obj as IDestroySystem;
+				if (destroySystem != null)
 				{
-					this.loadEvents.Add(aLoadSystem.Type(), aLoadSystem);
+					this.destroySystems.Add(destroySystem.Type(), destroySystem);
+				}
+
+				ILoadSystem loadSystem = obj as ILoadSystem;
+				if (loadSystem != null)
+				{
+					this.loadSystems.Add(loadSystem.Type(), loadSystem);
+				}
+
+				IChangeSystem changeSystem = obj as IChangeSystem;
+				if (changeSystem != null)
+				{
+					this.changeSystems.Add(loadSystem.Type(), changeSystem);
 				}
 			}
 
@@ -129,42 +145,47 @@ namespace ETHotfix
 			this.allEvents[eventId].Add(e);
 		}
 
-		public void Add(Component disposer)
+		public void Add(Component component)
 		{
-			Type type = disposer.GetType();
+			this.allComponents.Add(component.InstanceId, component);
 
-			if (this.loadEvents.ContainsKey(type))
+			Type type = component.GetType();
+
+			if (this.loadSystems.ContainsKey(type))
 			{
-				this.loaders.Enqueue(disposer);
+				this.loaders.Enqueue(component.InstanceId);
 			}
 
-			if (this.updateEvents.ContainsKey(type))
+			if (this.updateSystems.ContainsKey(type))
 			{
-				this.updates.Enqueue(disposer);
+				this.updates.Enqueue(component.InstanceId);
 			}
 
-			if (this.startEvents.ContainsKey(type))
+			if (this.startSystems.ContainsKey(type))
 			{
-				this.starts.Enqueue(disposer);
+				this.starts.Enqueue(component.InstanceId);
 			}
 
-			if (this.lateUpdateEvents.ContainsKey(type))
+			if (this.lateUpdateSystems.ContainsKey(type))
 			{
-				this.lateUpdates.Enqueue(disposer);
+				this.lateUpdates.Enqueue(component.InstanceId);
 			}
 		}
 
-		public void Awake(Component disposer)
+		public void Remove(long instanceId)
 		{
-			this.Add(disposer);
+			this.allComponents.Remove(instanceId);
+		}
 
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+		public void Awake(Component component)
+		{
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
 			{
 				if (aAwakeSystem == null)
 				{
@@ -176,121 +197,172 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				iAwake.Run(disposer);
+
+				try
+				{
+					iAwake.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
-		public void Awake<P1>(Component disposer, P1 p1)
+		public void Awake<P1>(Component component, P1 p1)
 		{
-			this.Add(disposer);
-
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 			
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem iAwakeSystem in iAwakeSystems)
 			{
-				if (aAwakeSystem == null)
+				if (iAwakeSystem == null)
 				{
 					continue;
 				}
 				
-				IAwake<P1> iAwake = aAwakeSystem as IAwake<P1>;
+				IAwake<P1> iAwake = iAwakeSystem as IAwake<P1>;
 				if (iAwake == null)
 				{
 					continue;
 				}
-				iAwake.Run(disposer, p1);
+
+				try
+				{
+					iAwake.Run(component, p1);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
-		public void Awake<P1, P2>(Component disposer, P1 p1, P2 p2)
+		public void Awake<P1, P2>(Component component, P1 p1, P2 p2)
 		{
-			this.Add(disposer);
-
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem iAwakeSystem in iAwakeSystems)
 			{
-				if (aAwakeSystem == null)
+				if (iAwakeSystem == null)
 				{
 					continue;
 				}
 				
-				IAwake<P1, P2> iAwake = aAwakeSystem as IAwake<P1, P2>;
+				IAwake<P1, P2> iAwake = iAwakeSystem as IAwake<P1, P2>;
 				if (iAwake == null)
 				{
 					continue;
 				}
-				iAwake.Run(disposer, p1, p2);
+
+				try
+				{
+					iAwake.Run(component, p1, p2);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
-		public void Awake<P1, P2, P3>(Component disposer, P1 p1, P2 p2, P3 p3)
+		public void Awake<P1, P2, P3>(Component component, P1 p1, P2 p2, P3 p3)
 		{
-			this.Add(disposer);
-
-			List<AAwakeSystem> iAwakeSystems = this.awakeEvents[disposer.GetType()];
+			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
 			{
 				return;
 			}
 
-			foreach (AAwakeSystem aAwakeSystem in iAwakeSystems)
+			foreach (IAwakeSystem iAwakeSystem in iAwakeSystems)
 			{
-				if (aAwakeSystem == null)
+				if (iAwakeSystem == null)
 				{
 					continue;
 				}
 				
-				IAwake<P1, P2, P3> iAwake = aAwakeSystem as IAwake<P1, P2, P3>;
+				IAwake<P1, P2, P3> iAwake = iAwakeSystem as IAwake<P1, P2, P3>;
 				if (iAwake == null)
 				{
 					continue;
 				}
-				iAwake.Run(disposer, p1, p2, p3);
+
+				try
+				{
+					iAwake.Run(component, p1, p2, p3);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+		}
+
+		public void Change(Component component)
+		{
+			List<IChangeSystem> iChangeSystems = this.changeSystems[component.GetType()];
+			if (iChangeSystems == null)
+			{
+				return;
+			}
+
+			foreach (IChangeSystem iChangeSystem in iChangeSystems)
+			{
+				if (iChangeSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					iChangeSystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
 		public void Load()
 		{
-			unique.Clear();
 			while (this.loaders.Count > 0)
 			{
-				Component disposer = this.loaders.Dequeue();
-				if (disposer.IsDisposed)
+				long instanceId = this.loaders.Dequeue();
+				Component component;
+				if (!this.allComponents.TryGetValue(instanceId, out component))
+				{
+					continue;
+				}
+				if (component.IsDisposed)
+				{
+					continue;
+				}
+				
+				List<ILoadSystem> iLoadSystems = this.loadSystems[component.GetType()];
+				if (iLoadSystems == null)
 				{
 					continue;
 				}
 
-				if (!this.unique.Add(disposer))
-				{
-					continue;
-				}
+				this.loaders2.Enqueue(instanceId);
 
-				List<ALoadSystem> aLoadSystems = this.loadEvents[disposer.GetType()];
-				if (aLoadSystems == null)
-				{
-					continue;
-				}
-
-				this.loaders2.Enqueue(disposer);
-
-				foreach (ALoadSystem aLoadSystem in aLoadSystems)
+				foreach (ILoadSystem iLoadSystem in iLoadSystems)
 				{
 					try
 					{
-						aLoadSystem.Run(disposer);
+						iLoadSystem.Run(component);
 					}
 					catch (Exception e)
 					{
-						Log.Error(e.ToString());
+						Log.Error(e);
 					}
 				}
 			}
@@ -300,32 +372,57 @@ namespace ETHotfix
 
 		private void Start()
 		{
-			unique.Clear();
 			while (this.starts.Count > 0)
 			{
-				Component disposer = this.starts.Dequeue();
-
-				if (!this.unique.Add(disposer))
+				long instanceId = this.starts.Dequeue();
+				Component component;
+				if (!this.allComponents.TryGetValue(instanceId, out component))
 				{
 					continue;
 				}
 
-				List<AStartSystem> aStartSystems = this.startEvents[disposer.GetType()];
-				if (aStartSystems == null)
+				List<IStartSystem> iStartSystems = this.startSystems[component.GetType()];
+				if (iStartSystems == null)
 				{
 					continue;
 				}
 
-				foreach (AStartSystem aStartSystem in aStartSystems)
+				foreach (IStartSystem iStartSystem in iStartSystems)
 				{
 					try
 					{
-						aStartSystem.Run(disposer);
+						iStartSystem.Run(component);
 					}
 					catch (Exception e)
 					{
-						Log.Error(e.ToString());
+						Log.Error(e);
 					}
+				}
+			}
+		}
+
+		public void Destroy(Component component)
+		{
+			List<IDestroySystem> iDestroySystems = this.destroySystems[component.GetType()];
+			if (iDestroySystems == null)
+			{
+				return;
+			}
+
+			foreach (IDestroySystem iDestroySystem in iDestroySystems)
+			{
+				if (iDestroySystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					iDestroySystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
 				}
 			}
 		}
@@ -333,38 +430,37 @@ namespace ETHotfix
 		public void Update()
 		{
 			this.Start();
-
-			this.unique.Clear();
+			
 			while (this.updates.Count > 0)
 			{
-				Component disposer = this.updates.Dequeue();
-				if (disposer.IsDisposed)
+				long instanceId = this.updates.Dequeue();
+				Component component;
+				if (!this.allComponents.TryGetValue(instanceId, out component))
+				{
+					continue;
+				}
+				if (component.IsDisposed)
+				{
+					continue;
+				}
+				
+				List<IUpdateSystem> iUpdateSystems = this.updateSystems[component.GetType()];
+				if (iUpdateSystems == null)
 				{
 					continue;
 				}
 
-				if (!this.unique.Add(disposer))
-				{
-					continue;
-				}
+				this.updates2.Enqueue(instanceId);
 
-				List<AUpdateSystem> aUpdateSystems = this.updateEvents[disposer.GetType()];
-				if (aUpdateSystems == null)
-				{
-					continue;
-				}
-
-				this.updates2.Enqueue(disposer);
-
-				foreach (AUpdateSystem aUpdateSystem in aUpdateSystems)
+				foreach (IUpdateSystem iUpdateSystem in iUpdateSystems)
 				{
 					try
 					{
-						aUpdateSystem.Run(disposer);
+						iUpdateSystem.Run(component);
 					}
 					catch (Exception e)
 					{
-						Log.Error(e.ToString());
+						Log.Error(e);
 					}
 				}
 			}
@@ -374,37 +470,36 @@ namespace ETHotfix
 
 		public void LateUpdate()
 		{
-			this.unique.Clear();
 			while (this.lateUpdates.Count > 0)
 			{
-				Component disposer = this.lateUpdates.Dequeue();
-				if (disposer.IsDisposed)
+				long instanceId = this.lateUpdates.Dequeue();
+				Component component;
+				if (!this.allComponents.TryGetValue(instanceId, out component))
+				{
+					continue;
+				}
+				if (component.IsDisposed)
+				{
+					continue;
+				}
+				
+				List<ILateUpdateSystem> iLateUpdateSystems = this.lateUpdateSystems[component.GetType()];
+				if (iLateUpdateSystems == null)
 				{
 					continue;
 				}
 
-				if (!this.unique.Add(disposer))
-				{
-					continue;
-				}
+				this.lateUpdates2.Enqueue(instanceId);
 
-				List<ALateUpdateSystem> aLateUpdateSystems = this.lateUpdateEvents[disposer.GetType()];
-				if (aLateUpdateSystems == null)
-				{
-					continue;
-				}
-
-				this.lateUpdates2.Enqueue(disposer);
-
-				foreach (ALateUpdateSystem aLateUpdateSystem in aLateUpdateSystems)
+				foreach (ILateUpdateSystem iLateUpdateSystem in iLateUpdateSystems)
 				{
 					try
 					{
-						aLateUpdateSystem.Run(disposer);
+						iLateUpdateSystem.Run(component);
 					}
 					catch (Exception e)
 					{
-						Log.Error(e.ToString());
+						Log.Error(e);
 					}
 				}
 			}
@@ -427,7 +522,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}
@@ -447,7 +542,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}
@@ -467,7 +562,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}
@@ -487,7 +582,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}

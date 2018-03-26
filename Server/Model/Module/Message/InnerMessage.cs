@@ -132,7 +132,7 @@ namespace ETModel
 		public string CollectionName;
 
 		[ProtoMember(3, IsRequired = true)]
-		public Component Disposer;
+		public ComponentWithId Component;
 
 	}
 
@@ -165,7 +165,7 @@ namespace ETModel
 		public string CollectionName;
 
 		[ProtoMember(3)]
-		public List<Component> Disposers = new List<Component>();
+		public List<ComponentWithId> Components = new List<ComponentWithId>();
 
 	}
 
@@ -216,7 +216,7 @@ namespace ETModel
 		public string Message { get; set; }
 
 		[ProtoMember(1, IsRequired = true)]
-		public Component Disposer;
+		public ComponentWithId Component;
 
 	}
 
@@ -252,7 +252,7 @@ namespace ETModel
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
-		public List<Component> Disposers = new List<Component>();
+		public List<ComponentWithId> Components = new List<ComponentWithId>();
 
 	}
 
@@ -288,7 +288,7 @@ namespace ETModel
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
-		public List<Component> Disposers = new List<Component>();
+		public List<ComponentWithId> Components = new List<ComponentWithId>();
 
 	}
 

@@ -27,9 +27,9 @@ namespace ETModel
 			//this.database = this.mongoClient.GetDatabase(config.DBName);
 		}
 
-		public IMongoCollection<Component> GetCollection(string name)
+		public IMongoCollection<ComponentWithId> GetCollection(string name)
 		{
-			return this.database.GetCollection<Component>(name);
+			return this.database.GetCollection<ComponentWithId>(name);
 		}
 	}
 }

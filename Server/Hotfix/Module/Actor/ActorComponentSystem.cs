@@ -10,7 +10,11 @@ namespace ETHotfix
 	{
 		public override void Awake(ActorComponent self)
 		{
-			self.Awake();
+			self.entityActorHandler = new CommonEntityActorHandler();
+			self.queue = new Queue<ActorMessageInfo>();
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
+
+			self.HandleAsync();
 		}
 	}
 
@@ -19,7 +23,11 @@ namespace ETHotfix
 	{
 		public override void Awake(ActorComponent self, IEntityActorHandler iEntityActorHandler)
 		{
-			self.Awake(iEntityActorHandler);
+			self.entityActorHandler = iEntityActorHandler;
+			self.queue = new Queue<ActorMessageInfo>();
+			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
+
+			self.HandleAsync();
 		}
 	}
 
@@ -28,7 +36,16 @@ namespace ETHotfix
 	{
 		public override void Load(ActorComponent self)
 		{
-			self.Load();
+			self.entityActorHandler = (IEntityActorHandler)HotfixHelper.Create(self.entityActorHandler);
+		}
+	}
+
+	[ObjectSystem]
+	public class ActorComponentDestroySystem : DestroySystem<ActorComponent>
+	{
+		public override void Destroy(ActorComponent self)
+		{
+			Game.Scene.GetComponent<ActorManagerComponent>().Remove(self.Entity.Id);
 		}
 	}
 
@@ -37,38 +54,14 @@ namespace ETHotfix
 	/// </summary>
 	public static class ActorComponentEx
 	{
-		public static void Awake(this ActorComponent self)
-		{
-			self.entityActorHandler = new CommonEntityActorHandler();
-			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
-			self.HandleAsync();
-		}
-
-		public static void Awake(this ActorComponent self, IEntityActorHandler iEntityActorHandler)
-		{
-			self.entityActorHandler = iEntityActorHandler;
-			self.queue = new Queue<ActorMessageInfo>();
-			self.actorId = self.Entity.Id;
-			Game.Scene.GetComponent<ActorManagerComponent>().Add((Entity)self.Parent);
-			self.HandleAsync();
-		}
-
-		// 热更新要重新创建接口,以便接口也能实现热更新
-		public static void Load(this ActorComponent self)
-		{
-			self.entityActorHandler = (IEntityActorHandler) HotfixHelper.Create(self.entityActorHandler);
-		}
-
 		public static async Task AddLocation(this ActorComponent self)
 		{
-			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.actorId);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Entity.Id);
 		}
 
 		public static async Task RemoveLocation(this ActorComponent self)
 		{
-			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.actorId);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.Entity.Id);
 		}
 
 		public static void Add(this ActorComponent self, ActorMessageInfo info)
@@ -96,7 +89,7 @@ namespace ETHotfix
 			return self.tcs.Task;
 		}
 
-		private static async void HandleAsync(this ActorComponent self)
+		public static async void HandleAsync(this ActorComponent self)
 		{
 			while (true)
 			{
@@ -116,7 +109,7 @@ namespace ETHotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
 		}

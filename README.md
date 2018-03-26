@@ -2,6 +2,12 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.1发布!
+1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
+2.增加了DestroySystem事件，在Component Dispose时调用  
+3.actor实现代码进行了简化  
+4.升级了默认Unity版本，修复了kcp协议中UdpClient无法接收udp消息的bug  
+
 # ET 3.0发布啦! 3.0是ET非常完善的一个版本，在2.0的基础上增加了如下功能：
 1.客户端全热更支持，逻辑，消息，事件，config，UI等等全部可以热更了  
 2.System改成了事件机制，awake，update，start等system可以在不同模块多次订阅  
@@ -64,11 +70,15 @@ f.提供命令行配置工具，配置分布式非常简单
 ET框架的服务端是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
 使用方法：  
-[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)    
+[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
+  
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
-群友源码分析：  
+有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
+[module共享仓库](https://github.com/egametang/ET-Modules)   
+
+群友分享：  
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
@@ -78,6 +88,8 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET框架Actor使用与心得](http://www.tinkingli.com/?p=117)  
 [基于ET框架和UGUI的简单UI框架实现（渐渐写）](http://www.tinkingli.com/?p=124)  
 [ET框架笔记 (笑览世界写)](http://www.tinkingli.com/?p=76)  
+[ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
+[ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
 群友demo：  
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  

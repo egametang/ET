@@ -17,7 +17,7 @@ namespace ETHotfix
 				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(iActorMessage.ActorId);
 				if (entity == null)
 				{
-					Log.Debug($"not found actor: {iActorMessage.ActorId}");
+					Log.Warning($"not found actor: {iActorMessage.ActorId}");
 					ActorResponse response = new ActorResponse
 					{
 						Error = ErrorCode.ERR_NotFoundActor,
