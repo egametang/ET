@@ -71,7 +71,7 @@ namespace ETModel
 #else
 			GameObject code = (GameObject)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("code.unity3d", "Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.mdb").bytes;
+			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
 			this.assembly = Assembly.Load(assBytes, mdbBytes);
 
 			Type hotfixInit = this.assembly.GetType("ETHotfix.Init");

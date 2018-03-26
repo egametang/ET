@@ -135,6 +135,21 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween43">
+      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50">
+      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween50.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenEditor">
+      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/Editor/DOTweenEditor.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI.OOXML">
       <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/Editor/npoi/NPOI.OOXML.dll</HintPath>
     </Reference>
@@ -161,21 +176,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>/Users/zys/Library/Unity/cache/packages/packages.unity.com/com.unity.purchasing@1.0.1/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween50">
-      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween50.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTweenEditor">
-      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/Editor/DOTweenEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween">
-      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween43">
-      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween43.dll</HintPath>
-    </Reference>
-    <Reference Include="DOTween46">
-      <HintPath>/Users/zys/U3DWork/ET/Games/ETGame/Unity/Assets/Plugins/DOTween/DOTween46.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

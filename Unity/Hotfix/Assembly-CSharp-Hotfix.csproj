@@ -37,6 +37,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Assets\Plugins\DOTween\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -89,6 +92,7 @@
     <Compile Include="Module\FrameSync\G2C_TestHotfixHandler.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Module\HeadGame\Component\HeartBeatAnimationEffectComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Component\HG_UIMenuComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Event\HG_InitSceneStart_StartGame.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Factory\HG_UIMenuFactory.cs" />
@@ -134,7 +138,6 @@
     <Content Include="Module\Config\ICategory.cs.meta" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Module\HeadGame\Component" />
     <Folder Include="Module\HeadGame\UI\UIGame\Component" />
     <Folder Include="Module\HeadGame\UI\UIGame\Event" />
     <Folder Include="Module\HeadGame\UI\UIGame\Factory" />

@@ -30,6 +30,7 @@ namespace ETHotfix
         private AudioClip clip;
         private bool canTap = true;
         private TimerComponent timerComponent;
+        private RawImage PlayerAvatar;
 
         public void Awake()
         {
@@ -41,6 +42,11 @@ namespace ETHotfix
             ReferenceCollector rc = gameObject.GetComponent<ReferenceCollector>();
             _audioSource = gameObject.AddComponent<AudioSource>();
 
+            PlayerAvatar =  rc.Get<GameObject>("PlayerAvatar").GetComponent<RawImage>();
+            //添加自动义组件;
+            UI ui = ComponentFactory.Create<UI, GameObject>(PlayerAvatar.gameObject);
+            ui.AddComponent<HeartBeatAnimationEffectComponent>();
+            
             Button_Start = rc.Get<GameObject>("Button_Start");
             Button_Start.GetComponent<Button>().onClick.Add(BtnClick_StartGame);
             
