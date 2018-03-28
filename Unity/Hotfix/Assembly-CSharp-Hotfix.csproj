@@ -93,6 +93,15 @@
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Module\HeadGame\Component\HeartBeatAnimationEffectComponent.cs" />
+    <Compile Include="Module\HeadGame\Event\HG_WarEvent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_BallControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_CpuControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_GameWarComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PlayerControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_UIGameComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Event\HG_InitSceneStart_StartWar.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_GameWarFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_UIGameFactory.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Component\HG_UIMenuComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Event\HG_InitSceneStart_StartGame.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Factory\HG_UIMenuFactory.cs" />
@@ -107,6 +116,7 @@
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Module\Message\SessionWrap.cs" />
     <Compile Include="Module\Message\SessionWrapComponent.cs" />
+    <Compile Include="Module\ModuleEvent\EventCenterController.cs" />
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\UI\UI.cs" />
     <Compile Include="Module\UI\UIComponent.cs" />
@@ -138,9 +148,6 @@
     <Content Include="Module\Config\ICategory.cs.meta" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Module\HeadGame\UI\UIGame\Component" />
-    <Folder Include="Module\HeadGame\UI\UIGame\Event" />
-    <Folder Include="Module\HeadGame\UI\UIGame\Factory" />
     <Folder Include="Module\SmallGame" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

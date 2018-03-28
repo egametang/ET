@@ -41,7 +41,7 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class ActorComponentDesdroySystem : DestroySystem<ActorComponent>
+	public class ActorComponentDestroySystem : DestroySystem<ActorComponent>
 	{
 		public override void Destroy(ActorComponent self)
 		{

@@ -87,7 +87,8 @@ namespace ETHotfix
                     canTap = false;
                     await timerComponent.WaitAsync(250);
                     Log.Info("click start");
-                    canTap = true;
+                    Game.EventSystem.Run(EventIdType.InitSceneStart_HDWar);
+                   
                 }
             }
             catch (Exception e)
@@ -148,6 +149,16 @@ namespace ETHotfix
             {
                 Log.Error(e);
             }
+        }
+
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            base.Dispose();
         }
     }
 }

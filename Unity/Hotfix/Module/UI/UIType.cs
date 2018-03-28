@@ -10,6 +10,7 @@ namespace ETHotfix
 	    public const string UILobby = "UILobby";
 	    
 	    public const string HG_UIMenu = "hdgame_uimenu";
+	    public const string HG_UIGame = "hdgame_uigame";
 	    public const string HG_MainGame = "hdgame_maingame";
 	    public const string HG_Sound = "hdgame_sound";
 	    public const string HG_Res = "hdgame_res";

@@ -103,7 +103,8 @@ namespace ETHotfix
 
 				// 设置canvas
 				string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;
-				ui.GameObject.transform.SetParent(this.Root.Get<GameObject>(cavasName).transform, false);
+				GameObject obj = this.Root.Get<GameObject>(cavasName);
+				ui.GameObject.transform.SetParent(obj.transform, false);
 				return ui;
 			}
 			catch (Exception e)
