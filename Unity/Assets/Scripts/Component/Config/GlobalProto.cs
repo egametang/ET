@@ -12,9 +12,12 @@
 			url += "Android/";
 #elif UNITY_IOS
 			url += "IOS/";
+#elif UNITY_WEBGL
+			url += "WebGL/";
 #else
 			url += "PC/";
 #endif
+			Log.Debug(url);
 			return url;
 		}
 	}
