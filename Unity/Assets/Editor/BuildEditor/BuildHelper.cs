@@ -62,6 +62,9 @@ namespace MyEditor
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
 					break;
+				case PlatformType.WebGL:
+					buildTarget = BuildTarget.WebGL;
+					break;
 			}
 
 			string fold = string.Format(BuildFolder, type);

@@ -57,6 +57,7 @@
     <Compile Include="Base\Helper\JsonHelper.cs" />
     <Compile Include="Base\Helper\Log.cs" />
     <Compile Include="Base\Object\ComponentWithId.cs" />
+    <Compile Include="Base\Object\IChangeSystem.cs" />
     <Compile Include="Base\Object\IDestroySystem.cs" />
     <Compile Include="Base\Object\IStartSystem.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
