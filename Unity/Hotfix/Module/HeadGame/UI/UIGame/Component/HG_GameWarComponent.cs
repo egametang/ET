@@ -79,7 +79,7 @@ namespace ETHotfix
         private TimerComponent timerComponent;
         private EventCenterController eventCenter;
         private HG_PlayerControllerCp plCp;
-        private int mapMask;
+        private int mapMask; 
         public void Awake()
         {
             gameObject = this.GetParent<UI>().GameObject;
