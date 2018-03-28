@@ -1,37 +1,86 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using ETModel;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Hotfix
+namespace ETHotfix
 {
-	public abstract class Component : Disposer
+	[BsonIgnoreExtraElements]
+	public abstract partial class Component : Object, IDisposable2
 	{
 		[BsonIgnore]
-		public Entity Entity { get; set; }
+		public long InstanceId { get; protected set; }
 
-		public T GetEntity<T>() where T : Entity
+		[BsonIgnore]
+		private bool isFromPool;
+
+		[BsonIgnore]
+		public bool IsFromPool
 		{
-			return this.Entity as T;
+			get
+			{
+				return this.isFromPool;
+			}
+			set
+			{
+				this.isFromPool = value;
+
+				if (this.InstanceId == 0)
+				{
+					this.InstanceId = IdGenerater.GenerateId();
+					Game.EventSystem.Add(this);
+				}
+			}
+		}
+
+		[BsonIgnore]
+		public bool IsDisposed
+		{
+			get
+			{
+				return this.InstanceId == 0;
+			}
+		}
+
+		[BsonIgnore]
+		public Component Parent { get; set; }
+
+		public T GetParent<T>() where T : Component
+		{
+			return this.Parent as T;
+		}
+
+		[BsonIgnore]
+		public Entity Entity
+		{
+			get
+			{
+				return this.Parent as Entity;
+			}
 		}
 
 		protected Component()
 		{
-			this.Id = 1;
+			this.InstanceId = IdGenerater.GenerateId();
+			Game.EventSystem.Add(this);
 		}
 
-		public T GetComponent<T>() where T : Component
+		public virtual void Dispose()
 		{
-			return this.Entity.GetComponent<T>();
-		}
-
-		public override void Dispose()
-		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
 
-			base.Dispose();
+			Game.EventSystem.Remove(this.InstanceId);
 
-			this.Entity?.RemoveComponent(this.GetType());
+			this.InstanceId = 0;
+
+			if (this.IsFromPool)
+			{
+				Game.ObjectPool.Recycle(this);
+			}
+
+			// 触发Destroy事件
+			Game.EventSystem.Destroy(this);
 		}
 	}
 }

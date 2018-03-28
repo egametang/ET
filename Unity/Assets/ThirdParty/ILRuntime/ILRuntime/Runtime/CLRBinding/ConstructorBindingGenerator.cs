@@ -53,6 +53,7 @@ namespace ILRuntime.Runtime.CLRBinding
             StringBuilder sb = new StringBuilder();
 
             int idx = 0;
+            bool isMultiArr = type.IsArray && type.GetArrayRank() > 1;
             foreach (var i in methods)
             {
                 if (excludes != null && excludes.Contains(i))
@@ -75,7 +76,12 @@ namespace ILRuntime.Runtime.CLRBinding
                     p.ParameterType.GetClassName(out tmp, out clsName, out isByRef);
                     if (isByRef)
                         sb.AppendLine("            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);");
-                    sb.AppendLine(string.Format("            {0} {1} = {2};", clsName, p.Name, p.ParameterType.GetRetrieveValueCode(clsName)));
+                    if (isMultiArr)
+                    {
+                        sb.AppendLine(string.Format("            {0} a{1} = {2};", clsName, j, p.ParameterType.GetRetrieveValueCode(clsName)));
+                    }
+                    else
+                        sb.AppendLine(string.Format("            {0} {1} = {2};", clsName, p.Name, p.ParameterType.GetRetrieveValueCode(clsName)));
                     if (!isByRef && !p.ParameterType.IsPrimitive)
                         sb.AppendLine("            __intp.Free(ptr_of_this_method);");
                 }
@@ -84,11 +90,20 @@ namespace ILRuntime.Runtime.CLRBinding
                 {
                     string tmp, clsName;
                     bool isByRef;
-                    type.GetClassName(out tmp, out clsName, out isByRef);
-                    sb.Append(string.Format("new {0}(", clsName));
-                    param.AppendParameters(sb);
-                    sb.AppendLine(");");
-
+                    if (isMultiArr)
+                    {
+                        type.GetElementType().GetClassName(out tmp, out clsName, out isByRef);
+                        sb.Append(string.Format("new {0}[", clsName));
+                        param.AppendParameters(sb, isMultiArr);
+                        sb.AppendLine("];");
+                    }
+                    else
+                    {
+                        type.GetClassName(out tmp, out clsName, out isByRef);
+                        sb.Append(string.Format("new {0}(", clsName));
+                        param.AppendParameters(sb, isMultiArr);
+                        sb.AppendLine(");");
+                    }
                 }
                 sb.AppendLine();
                 if (type.IsValueType)

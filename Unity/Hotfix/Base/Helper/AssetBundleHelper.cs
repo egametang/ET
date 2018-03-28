@@ -1,4 +1,4 @@
-﻿namespace Hotfix
+﻿namespace ETHotfix
 {
 	public static class AssetBundleHelper
 	{

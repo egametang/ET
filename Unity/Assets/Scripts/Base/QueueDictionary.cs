@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Model
+namespace ETModel
 {
 	public class QueueDictionary<T, K>
 	{

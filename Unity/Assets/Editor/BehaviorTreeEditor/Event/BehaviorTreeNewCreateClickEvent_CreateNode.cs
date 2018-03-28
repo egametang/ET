@@ -1,12 +1,12 @@
-﻿using Model;
+﻿using ETModel;
 using UnityEngine;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
-	public class BehaviorTreeNewCreateClickEvent_CreateNode: IEvent<string, Vector2>
+	[Event(EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
+	public class BehaviorTreeNewCreateClickEvent_CreateNode: AEvent<string, Vector2>
 	{
-		public void Run(string name, Vector2 pos)
+		public override void Run(string name, Vector2 pos)
 		{
 			BTEditorWindow.Instance.onCreateNode(name, pos);
 		}

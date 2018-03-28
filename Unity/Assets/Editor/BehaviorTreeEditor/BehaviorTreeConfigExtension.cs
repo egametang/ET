@@ -3,7 +3,7 @@ using System.Reflection;
 using MyEditor;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public static class BehaviorTreeConfigExtension
 	{

@@ -3,14 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class WWWAsyncEvent : ObjectEvent<WWWAsync>, IUpdate
+	[ObjectSystem]
+	public class WwwAsyncUpdateSystem : UpdateSystem<WWWAsync>
 	{
-		public void Update()
+		public override void Update(WWWAsync self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 	
@@ -65,7 +65,9 @@ namespace Model
 				return;
 			}
 
-			this.tcs.SetResult(true);
+			var t = this.tcs;
+			this.tcs = null;
+			t?.SetResult(true);
 		}
 
 		public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
@@ -104,7 +106,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -113,6 +115,7 @@ namespace Model
 
             www?.Dispose();
 			this.www = null;
+			this.tcs = null;
 		}
 	}
 }

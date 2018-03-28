@@ -3,7 +3,7 @@ using System;
 using System.Text;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
     public static class PathHelper
     {     /// <summary>

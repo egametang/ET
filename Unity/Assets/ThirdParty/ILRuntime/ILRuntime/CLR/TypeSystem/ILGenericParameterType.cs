@@ -109,7 +109,7 @@ namespace ILRuntime.CLR.TypeSystem
             get { return arrayType; }
         }
 
-        public IType MakeArrayType()
+        public IType MakeArrayType(int rank)
         {
             if (arrayType == null)
                 arrayType = new ILGenericParameterType(name + "[]");
@@ -167,6 +167,11 @@ namespace ILRuntime.CLR.TypeSystem
         public bool IsArray
         {
             get { return false; }
+        }
+
+        public int ArrayRank
+        {
+            get { return 1; }
         }
 
         public IType[] Implements

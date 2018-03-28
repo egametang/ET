@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ActorMessageHandler(AppType.Map)]
 	public class Actor_TransferHandler : AMActorRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>
@@ -34,12 +35,12 @@ namespace Hotfix
 
 				// 传送到map
 				StartConfig mapConfig = startConfigComponent.MapConfigs[mapIndex];
-				string address = mapConfig.GetComponent<InnerConfig>().Address;
+				IPEndPoint address = mapConfig.GetComponent<InnerConfig>().IPEndPoint;
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(address);
 
 				// 只删除不disponse否则M2M_TrasferUnitRequest无法序列化Unit
 				Game.Scene.GetComponent<UnitComponent>().RemoveNoDispose(unitId);
-				await session.Call<M2M_TrasferUnitResponse>(new M2M_TrasferUnitRequest() { Unit = unit });
+				await session.Call(new M2M_TrasferUnitRequest() { Unit = unit });
 				unit.Dispose();
 
 				// 解锁unit的地址,并且更新unit的地址

@@ -1,66 +1,130 @@
-﻿namespace Hotfix
+﻿using System;
+using System.Collections.Generic;
+
+namespace ETHotfix
 {
 #if ILRuntime
 	public interface IEvent
 	{
-		void Run();
+		void Handle();
+		void Handle(object a);
+		void Handle(object a, object b);
+		void Handle(object a, object b, object c);
 	}
 
-	public interface IEvent<in A>
+	public abstract class AEvent : IEvent
 	{
-		void Run(A uid);
+		public void Handle()
+		{
+			this.Run();
+		}
+
+		public void Handle(object a)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a, object b)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a, object b, object c)
+		{
+			throw new NotImplementedException();
+		}
+
+		public abstract void Run();
 	}
 
-	public interface IEvent<in A, in B>
+	public abstract class AEvent<A>: IEvent
 	{
-		void Run(A a, B b);
+		public void Handle()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a)
+		{
+			this.Run((A)a);
+		}
+
+		public void Handle(object a, object b)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a, object b, object c)
+		{
+			throw new NotImplementedException();
+		}
+
+		public abstract void Run(A a);
 	}
 
-	public interface IEvent<in A, in B, in C>
+	public abstract class AEvent<A, B>: IEvent
 	{
-		void Run(A a, B b, C c);
+		public void Handle()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a, object b)
+		{
+			this.Run((A)a, (B)b);
+		}
+
+		public void Handle(object a, object b, object c)
+		{
+			throw new NotImplementedException();
+		}
+
+		public abstract void Run(A a, B b);
 	}
 
-	public interface IEvent<in A, in B, in C, in D>
+	public abstract class AEvent<A, B, C>: IEvent
 	{
-		void Run(A a, B b, C c, D d);
-	}
+		public void Handle()
+		{
+			throw new NotImplementedException();
+		}
 
-	public interface IEvent<in A, in B, in C, in D, in E>
-	{
-		void Run(A a, B b, C c, D d, E e);
-	}
+		public void Handle(object a)
+		{
+			throw new NotImplementedException();
+		}
 
-	public interface IEvent<in A, in B, in C, in D, in E, in F>
-	{
-		void Run(A a, B b, C c, D d, E e, F f);
+		public void Handle(object a, object b)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Handle(object a, object b, object c)
+		{
+			this.Run((A)a, (B)b, (C)c);
+		}
+
+		public abstract void Run(A a, B b, C c);
 	}
 #else
-	public interface IEvent : Model.IEvent
+	public abstract class AEvent : ETModel.AEvent
 	{
 	}
 
-	public interface IEvent<in A> : Model.IEvent<A>
+	public abstract class AEvent<A> : ETModel.AEvent<A>
 	{
 	}
 
-	public interface IEvent<in A, in B> : Model.IEvent<A, B>
+	public abstract class AEvent<A, B> : ETModel.AEvent<A, B>
 	{
 	}
 
-	public interface IEvent<in A, in B, in C> : Model.IEvent<A, B, C>
-	{
-	}
-
-	public interface IEvent<in A, in B, in C, in D> : Model.IEvent<A, B, C, D>
-	{
-	}
-
-	public interface IEvent<in A, in B, in C, in D, in E> : Model.IEvent<A, B, C, D, E>
-	{
-	}
-
-	public interface IEvent<in A, in B, in C, in D, in E, in F> : Model.IEvent<A, B, C, D, E, F>
+	public abstract class AEvent<A, B, C>: ETModel.AEvent<A, B, C>
 	{
 	}
 #endif

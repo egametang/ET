@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class Init
 	{
@@ -9,12 +9,30 @@ namespace Hotfix
 		{
 			try
 			{
-				Hotfix.Scene.ModelScene = Game.Scene;
-				Hotfix.Scene.AddComponent<UIComponent>();
+				Game.Scene.ModelScene = ETModel.Game.Scene;
+
+				// 注册热更层回调
+				ETModel.Game.Hotfix.Update = () => { Update(); };
+				ETModel.Game.Hotfix.LateUpdate = () => { LateUpdate(); };
+				ETModel.Game.Hotfix.OnApplicationQuit = () => { OnApplicationQuit(); };
+				
+				Game.Scene.AddComponent<UIComponent>();
+				Game.Scene.AddComponent<OpcodeTypeComponent>();
+				Game.Scene.AddComponent<MessageDispatherComponent>();
+
+				// 加载热更配置
+				ETModel.Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
+				Game.Scene.AddComponent<ConfigComponent>();
+				ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
+
+				UnitConfig unitConfig = (UnitConfig)Game.Scene.GetComponent<ConfigComponent>().Get(typeof(UnitConfig), 1001);
+				Log.Debug($"config {JsonHelper.ToJson(unitConfig)}");
+
+				Game.EventSystem.Run(EventIdType.InitSceneStart);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e);
 			}
 		}
 
@@ -22,11 +40,11 @@ namespace Hotfix
 		{
 			try
 			{
-				ObjectEvents.Instance.Update();
+				Game.EventSystem.Update();
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e);
 			}
 		}
 
@@ -34,18 +52,17 @@ namespace Hotfix
 		{
 			try
 			{
-				ObjectEvents.Instance.LateUpdate();
+				Game.EventSystem.LateUpdate();
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToStr());
+				Log.Error(e);
 			}
 		}
 
 		public static void OnApplicationQuit()
 		{
-			ObjectEvents.Close();
-			Hotfix.Close();
+			Game.Close();
 		}
 	}
 }

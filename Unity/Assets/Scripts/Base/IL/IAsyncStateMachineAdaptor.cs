@@ -4,7 +4,7 @@ using ILRuntime.CLR.Method;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Intepreter;
 
-namespace Model
+namespace ETModel
 {
 	/// <summary>
 	/// 用于async await适配

@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Gate)]
 	public class G2G_LockRequestHandler : AMRpcHandler<G2G_LockRequest, G2G_LockResponse>
@@ -16,9 +16,10 @@ namespace Hotfix
 				{
 					response.Error = ErrorCode.ERR_NotFoundUnit;
 					reply(response);
+					return;
 				}
 
-				await unit.GetComponent<MasterComponent>().Lock(message.Address);
+				await unit.GetComponent<MasterComponent>().Lock(NetworkHelper.ToIPEndPoint(message.Address));
 
 				reply(response);
 			}

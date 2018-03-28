@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Manager)]
 	public class C2M_ReloadHandler: AMRpcHandler<C2M_Reload, M2C_Reload>
@@ -20,8 +20,8 @@ namespace Hotfix
 						continue;
 					}
 					InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
-					Session serverSession = netInnerComponent.Get(innerConfig.Address);
-					await serverSession.Call<A2M_Reload>(new M2A_Reload());
+					Session serverSession = netInnerComponent.Get(innerConfig.IPEndPoint);
+					await serverSession.Call(new M2A_Reload());
 				}
 				reply(response);
 			}

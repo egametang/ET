@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Gate)]
 	public class G2G_LockReleaseRequestHandler : AMRpcHandler<G2G_LockReleaseRequest, G2G_LockReleaseResponse>
@@ -20,7 +20,7 @@ namespace Hotfix
 					return;
 				}
 
-				unit.GetComponent<MasterComponent>().Release(message.Address);
+				unit.GetComponent<MasterComponent>().Release(NetworkHelper.ToIPEndPoint(message.Address));
 				reply(g2GLockReleaseResponse);
 			}
 			catch (Exception e)

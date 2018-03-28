@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	[Node(NodeClassifyType.Composite)]
 	internal class Sequence: Node

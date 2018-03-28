@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Model;
+﻿using ETModel;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeRunTreeEvent)]
-	public class BehaviorTreeRunTreeEvent_ShowDebugInfo: IEvent<BehaviorTree>
+	[Event(EventIdType.BehaviorTreeRunTreeEvent)]
+	public class BehaviorTreeRunTreeEvent_ShowDebugInfo: AEvent<BehaviorTree>
 	{
-		public void Run(BehaviorTree tree)
+		public override void Run(BehaviorTree tree)
 		{
 			if (BTEditor.Instance.CurTreeGO == null)
 			{

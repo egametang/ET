@@ -1,28 +1,29 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class UILoadingComponentEvent : ObjectEvent<UILoadingComponent>, IAwake, IStart
+	[ObjectSystem]
+	public class UiLoadingComponentAwakeSystem : AwakeSystem<UILoadingComponent>
 	{
-		public void Awake()
+		public override void Awake(UILoadingComponent self)
 		{
-			UILoadingComponent self = this.Get();
-			self.text = self.GetEntity<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
+			self.text = self.GetParent<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
 		}
+	}
 
-		public async void Start()
+	[ObjectSystem]
+	public class UiLoadingComponentStartSystem : StartSystem<UILoadingComponent>
+	{
+		public override async void Start(UILoadingComponent self)
 		{
-			UILoadingComponent self = this.Get();
-
 			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-			
+
 			while (true)
 			{
 				await timerComponent.WaitAsync(1000);
-				
-				if (self.Id == 0)
+
+				if (self.IsDisposed)
 				{
 					return;
 				}
@@ -36,7 +37,7 @@ namespace Model
 			}
 		}
 	}
-	
+
 	public class UILoadingComponent : Component
 	{
 		public Text text;

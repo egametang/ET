@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public enum AAAA
 	{

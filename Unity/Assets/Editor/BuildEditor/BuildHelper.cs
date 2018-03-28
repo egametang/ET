@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using Model;
+using ETModel;
 using UnityEditor;
 
 namespace MyEditor
@@ -10,7 +10,7 @@ namespace MyEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		[MenuItem("Tools/编译Hotfix")]
+		//[MenuItem("Tools/编译Hotfix")]
 		public static void BuildHotfix()
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -62,6 +62,9 @@ namespace MyEditor
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
 					break;
+				case PlatformType.WebGL:
+					buildTarget = BuildTarget.WebGL;
+					break;
 			}
 
 			string fold = string.Format(BuildFolder, type);
@@ -94,7 +97,7 @@ namespace MyEditor
 
 			using (FileStream fileStream = new FileStream($"{dir}/Version.txt", FileMode.Create))
 			{
-				byte[] bytes = MongoHelper.ToJson(versionProto).ToByteArray();
+				byte[] bytes = JsonHelper.ToJson(versionProto).ToByteArray();
 				fileStream.Write(bytes, 0, bytes.Length);
 			}
 		}
@@ -112,7 +115,7 @@ namespace MyEditor
 				long size = fi.Length;
 				string filePath = relativePath == "" ? fi.Name : $"{relativePath}/{fi.Name}";
 
-				versionProto.FileVersionInfos.Add(new FileVersionInfo
+				versionProto.FileInfoDict.Add(filePath, new FileVersionInfo
 				{
 					File = filePath,
 					MD5 = md5,

@@ -1,9 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
-	public class StartConfig: AConfig
+	public class StartConfig: Entity
 	{
 		public int AppId { get; set; }
 

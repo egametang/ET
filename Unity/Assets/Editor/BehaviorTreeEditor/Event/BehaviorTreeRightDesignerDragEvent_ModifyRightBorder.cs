@@ -1,11 +1,11 @@
-﻿using Model;
+﻿using ETModel;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeRightDesignerDrag)]
-	public class BehaviorTreeRightDesignerDragEvent_ModifyRightBorder: IEvent<float>
+	[Event(EventIdType.BehaviorTreeRightDesignerDrag)]
+	public class BehaviorTreeRightDesignerDragEvent_ModifyRightBorder: AEvent<float>
 	{
-		public void Run(float deltaX)
+		public override void Run(float deltaX)
 		{
 			BTEditorWindow.Instance.onDraggingRightDesigner(deltaX);
 		}

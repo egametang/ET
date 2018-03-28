@@ -5,7 +5,7 @@ using MyEditor;
 using UnityEditor;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public class BTEditorTree
 	{
@@ -17,8 +17,8 @@ namespace Model
 			Type rootType = typeof(Game).Assembly.GetType($"Model.{config.RootNodeProto.Name}");
 			Node root = (Node) Activator.CreateInstance(rootType, config.RootNodeProto);
 			root.Id = BTEditor.NodeIdStartIndex;
-			EQueue<NodeProto> protoStack = new EQueue<NodeProto>();
-			EQueue<Node> nodeStack = new EQueue<Node>();
+			Queue<NodeProto> protoStack = new Queue<NodeProto>();
+			Queue<Node> nodeStack = new Queue<Node>();
 			protoStack.Enqueue(config.RootNodeProto);
 			nodeStack.Enqueue(root);
 			while (protoStack.Count > 0)
@@ -101,7 +101,7 @@ namespace Model
 
 		public T GetChildInType<T>() where T : Node
 		{
-			EQueue<Node> nodeStack = new EQueue<Node>();
+			Queue<Node> nodeStack = new Queue<Node>();
 			nodeStack.Enqueue(_root);
 			while (nodeStack.Count > 0)
 			{
@@ -126,7 +126,7 @@ namespace Model
 
 		public T[] GetChildrenInType<T>() where T : Node
 		{
-			EQueue<Node> nodeStack = new EQueue<Node>();
+			Queue<Node> nodeStack = new Queue<Node>();
 			List<T> list = new List<T>();
 			nodeStack.Enqueue(_root);
 			while (nodeStack.Count > 0)
@@ -189,7 +189,7 @@ namespace Model
 
 		public static T GetChildInType<T>(this Node root) where T : Node
 		{
-			EQueue<Node> nodeStack = new EQueue<Node>();
+			Queue<Node> nodeStack = new Queue<Node>();
 			nodeStack.Enqueue(root);
 			while (nodeStack.Count > 0)
 			{
@@ -208,7 +208,7 @@ namespace Model
 
 		public static T[] GetChildrenInType<T>(this Node root) where T : Node
 		{
-			EQueue<Node> nodeStack = new EQueue<Node>();
+			Queue<Node> nodeStack = new Queue<Node>();
 			List<T> list = new List<T>();
 			nodeStack.Enqueue(root);
 			while (nodeStack.Count > 0)
@@ -230,8 +230,8 @@ namespace Model
 		{
 			config.Clear();
 			BehaviorNodeConfig rootNp = config.AddRootNode(root.GetType().Name);
-			EQueue<Node> queue = new EQueue<Node>();
-			EQueue<BehaviorNodeConfig> npQue = new EQueue<BehaviorNodeConfig>();
+			Queue<Node> queue = new Queue<Node>();
+			Queue<BehaviorNodeConfig> npQue = new Queue<BehaviorNodeConfig>();
 			rootNp.describe = root.Description;
 			queue.Enqueue(root);
 			npQue.Enqueue(rootNp);

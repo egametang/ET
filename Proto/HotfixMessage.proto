@@ -1,0 +1,49 @@
+message C2R_Login // IRequest
+{
+	required string	Account	 = 1;	// 帐号
+	required string	Password = 2;	// 密码
+}
+
+message R2C_Login // IResponse
+{
+	required string Address = 1;
+	required int64 	Key	    = 2;
+}
+
+message C2G_LoginGate // IRequest
+{
+	required int64 Key = 1;	// 帐号
+}
+
+message G2C_LoginGate // IResponse
+{
+	required int64 PlayerId = 1;
+}
+
+message G2C_TestHotfixMessage // IMessage
+{
+	required string Info = 1;
+}
+
+message C2M_TestActorRequest // IActorRequest
+{
+	required string Info = 1;
+}
+
+message M2C_TestActorResponse // IActorResponse
+{
+	required string Info = 1;
+}
+
+message PlayerInfo // IMessage
+{
+}
+
+message C2G_PlayerInfo // IRequest
+{
+}
+
+message G2C_PlayerInfo // IResponse
+{
+	repeated PlayerInfo PlayerInfos = 1;
+}

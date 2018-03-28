@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Model
+namespace ETModel
 {
 	public static class ByteHelper
 	{
@@ -58,6 +58,15 @@ namespace Model
 		public static string Utf8ToStr(this byte[] bytes, int index, int count)
 		{
 			return Encoding.UTF8.GetString(bytes, index, count);
+		}
+
+		public static void WriteTo(this byte[] bytes, int offset, uint num)
+		{
+			byte[] numBytes = BitConverter.GetBytes(num);
+			for (int i = 0; i < numBytes.Length; ++i)
+			{
+				bytes[offset + i] = numBytes[i];
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	public enum SceneType
 	{
@@ -31,7 +31,7 @@
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

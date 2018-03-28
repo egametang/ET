@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Model;
+using ETModel;
 using MongoDB.Bson;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -82,7 +82,7 @@ public class ExcelExporterEditor : EditorWindow
 		}
 		catch (Exception e)
 		{
-			Log.Error(e.ToString());
+			Log.Error(e);
 		}
 	}
 
@@ -121,14 +121,16 @@ public class ExcelExporterEditor : EditorWindow
 		{
 			StringBuilder sb = new StringBuilder();
 			ISheet sheet = xssfWorkbook.GetSheetAt(0);
-			sb.Append("namespace Model\n{\n");
+			sb.Append("namespace ETModel\n{\n");
 
 			sb.Append("\t[Config(AppType.Client)]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
-			sb.Append("\t{}\n\n");
-
-			sb.Append($"\tpublic class {protoName}: AConfig\n");
 			sb.Append("\t{\n");
+			sb.Append("\t}\n\n");
+
+			sb.Append($"\tpublic class {protoName}: IConfig\n");
+			sb.Append("\t{\n");
+			sb.Append("\t\tpublic long Id { get; set; }\n");
 
 			int cellCount = sheet.GetRow(3).LastCellNum;
 			
@@ -288,6 +290,19 @@ public class ExcelExporterEditor : EditorWindow
 				}
 
 				string fieldName = cellInfos[j].Name;
+
+				if (fieldName == "Id" || fieldName == "_id")
+				{
+					if (this.isClient)
+					{
+						fieldName = "Id";
+					}
+					else
+					{
+						fieldName = "_id";
+					}
+				}
+
 				string fieldType = cellInfos[j].Type;
 				sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
 			}

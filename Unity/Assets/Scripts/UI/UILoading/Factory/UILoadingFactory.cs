@@ -1,31 +1,31 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
-    [UIFactory((int)UIType.UILoading)]
+    [UIFactory(UIType.UILoading)]
     public class UILoadingFactory : IUIFactory
     {
-        public UI Create(Scene scene, UIType type, GameObject gameObject)
+        public UI Create(Scene scene, string type, GameObject gameObject)
         {
 	        try
 	        {
-				GameObject bundleGameObject = ((GameObject)Resources.Load("KV")).Get<GameObject>("UILoading");
+				GameObject bundleGameObject = ((GameObject)ResourcesHelper.Load("KV")).Get<GameObject>(type);
 				GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
 				go.layer = LayerMask.NameToLayer(LayerNames.UI);
-				UI ui = EntityFactory.Create<UI, Scene, UI, GameObject>(scene, null, go);
+				UI ui = ComponentFactory.Create<UI, GameObject>(go);
 
 				ui.AddComponent<UILoadingComponent>();
 				return ui;
 	        }
 	        catch (Exception e)
 	        {
-				Log.Error(e.ToString());
+				Log.Error(e);
 		        return null;
 	        }
 		}
 
-	    public void Remove(UIType type)
+	    public void Remove(string type)
 	    {
 	    }
     }

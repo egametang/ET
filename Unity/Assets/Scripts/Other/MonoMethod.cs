@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Model
+namespace ETModel
 {
 	public class MonoInstanceMethod : IInstanceMethod
 	{

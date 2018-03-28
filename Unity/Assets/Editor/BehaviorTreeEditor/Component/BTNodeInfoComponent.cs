@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Model;
+using ETModel;
 
 namespace MyEditor
 {
-	[ObjectEvent]
-	public class BTNodeInfoComponentEvent : ObjectEvent<BTNodeInfoComponent>, IAwake
+	[ObjectSystem]
+	public class BtNodeInfoComponentSystem : AwakeSystem<BTNodeInfoComponent>
 	{
-		public void Awake()
+		public override void Awake(BTNodeInfoComponent self)
 		{
-			this.Get().Awake();
+			self.Awake();
 		}
 	}
 

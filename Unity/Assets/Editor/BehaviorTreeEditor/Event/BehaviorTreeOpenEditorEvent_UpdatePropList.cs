@@ -1,11 +1,11 @@
-﻿using Model;
+﻿using ETModel;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeOpenEditor)]
-	public class BehaviorTreeOpenEditorEvent_UpdatePropList: IEvent
+	[Event(EventIdType.BehaviorTreeOpenEditor)]
+	public class BehaviorTreeOpenEditorEvent_UpdatePropList: AEvent
 	{
-		public void Run()
+		public override void Run()
 		{
 			BTEditorWindow.Instance.onUpdatePropList();
 		}

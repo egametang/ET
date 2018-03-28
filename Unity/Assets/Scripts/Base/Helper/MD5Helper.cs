@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 
-namespace Model
+namespace ETModel
 {
 	public static class MD5Helper
 	{

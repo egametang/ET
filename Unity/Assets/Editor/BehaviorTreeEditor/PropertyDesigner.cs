@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
+using ETModel;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -206,7 +206,7 @@ namespace MyEditor
 				{
 					if (GUILayout.Button("新建"))
 					{
-						BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreePropertyDesignerNewCreateClick, name, Vector2.zero);
+						Game.EventSystem.Run(EventIdType.BehaviorTreePropertyDesignerNewCreateClick, name, Vector2.zero);
 					}
 				}
 				if (mCurNode.folderName != NodeClassifyType.Root.ToString() ||
@@ -214,7 +214,7 @@ namespace MyEditor
 				{
 					if (GUILayout.Button("替换"))
 					{
-						BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeReplaceClick, name, Vector2.zero);
+						Game.EventSystem.Run(EventIdType.BehaviorTreeReplaceClick, name, Vector2.zero);
 					}
 				}
 

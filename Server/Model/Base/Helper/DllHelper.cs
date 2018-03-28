@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Model
+namespace ETModel
 {
 	public static class DllHelper
 	{
@@ -22,7 +22,7 @@ namespace Model
 		public static Type[] GetMonoTypes()
 		{
 			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in ObjectEvents.Instance.GetAll())
+			foreach (Assembly assembly in Game.EventSystem.GetAll())
 			{
 				types.AddRange(assembly.GetTypes());
 			}

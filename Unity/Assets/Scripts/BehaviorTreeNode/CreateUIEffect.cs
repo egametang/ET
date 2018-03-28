@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	[Node(NodeClassifyType.Action, "创建UI特效")]
 	public class CreateUIEffect : Node

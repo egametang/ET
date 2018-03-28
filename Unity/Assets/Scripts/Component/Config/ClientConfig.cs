@@ -1,18 +1,29 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Net;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	public class ClientConfig: AConfigComponent
 	{
 		public string Host = "";
 		public int Port;
-		
+
 		[BsonIgnore]
-		public string Address
+		private IPEndPoint ipEndPoint;
+
+		public override void EndInit()
+		{
+			base.EndInit();
+
+			this.ipEndPoint = NetworkHelper.ToIPEndPoint(this.Host, this.Port);
+		}
+
+		[BsonIgnore]
+		public IPEndPoint IPEndPoint
 		{
 			get
 			{
-				return $"{this.Host}:{this.Port}";
+				return this.ipEndPoint;
 			}
 		}
 	}

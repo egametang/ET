@@ -4,12 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\..\..\netcoreapp2.0\</OutputPath>
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

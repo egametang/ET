@@ -1,11 +1,11 @@
-﻿namespace Model
+﻿namespace ETModel
 {
-	[ObjectEvent]
-	public class GlobalConfigComponentEvent : ObjectEvent<GlobalConfigComponent>, IAwake
+	[ObjectSystem]
+	public class GlobalConfigComponentAwakeSystem : AwakeSystem<GlobalConfigComponent>
 	{
-		public void Awake()
+		public override void Awake(GlobalConfigComponent t)
 		{
-			this.Get().Awake();
+			t.Awake();
 		}
 	}
 
@@ -18,7 +18,7 @@
 		{
 			Instance = this;
 			string configStr = ConfigHelper.GetGlobal();
-			this.GlobalProto = MongoHelper.FromJson<GlobalProto>(configStr);
+			this.GlobalProto = JsonHelper.FromJson<GlobalProto>(configStr);
 		}
 	}
 }

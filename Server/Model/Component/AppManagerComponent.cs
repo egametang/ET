@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IStart
+	[ObjectSystem]
+	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
 	{
-		public void Start()
+		public override void Start(AppManagerComponent self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 
@@ -65,7 +65,7 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Model
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(5000);
 
-				if (this.Id == 0)
+				if (this.IsDisposed)
 				{
 					return;
 				}

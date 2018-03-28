@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class HotfixHelper
 	{

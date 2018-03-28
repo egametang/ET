@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Model
+namespace ETModel
 {
 	public abstract class Object: ISupportInitialize
 	{
@@ -10,6 +10,11 @@ namespace Model
 
 		public virtual void EndInit()
 		{
+		}
+
+		public override string ToString()
+		{
+			return JsonHelper.ToJson(this);
 		}
 	}
 }

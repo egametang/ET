@@ -1,0 +1,80 @@
+message Actor_Test // IActorMessage
+{
+	required string Info = 1;
+}
+
+message Actor_TestRequest // IActorRequest
+{
+	required string request = 1;
+}
+
+message Actor_TestResponse // IActorResponse
+{
+	required string response = 1;
+}
+
+message Actor_TransferRequest // IActorRequest
+{
+	required int32 MapIndex = 1;
+}
+
+message Actor_TransferResponse // IActorResponse
+{
+}
+
+message C2G_EnterMap // IRequest
+{
+}
+
+message G2C_EnterMap // IResponse
+{
+	required int64 UnitId = 1;
+	required int32 Count  = 2;
+}
+
+message UnitInfo
+{
+	required int64 UnitId  = 1;
+	required int32 X       = 2;
+	required int32 Z       = 3;
+}
+
+message Actor_CreateUnits // IActorMessage
+{
+    repeated UnitInfo Units = 1;
+}
+
+message OneFrameMessage // IActorMessage
+{
+	required uint16 Op = 1;
+	required bytes AMessage = 2;
+}
+
+message FrameMessage // IActorMessage
+{
+	required int32 Frame = 1;
+	repeated OneFrameMessage Messages = 2;
+}
+
+message Frame_ClickMap // IFrameMessage
+{
+	required int32 X = 1;
+	required int32 Z = 2;
+}
+
+message C2M_Reload // IRequest
+{
+	required AppType AppType = 1;
+}
+
+message M2C_Reload // IResponse
+{
+}
+
+message C2R_Ping // IRequest
+{
+}
+
+message R2C_Ping // IResponse
+{
+}

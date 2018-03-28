@@ -2,7 +2,7 @@
 using CommandLine;
 #endif
 
-namespace Model
+namespace ETModel
 {
 	public class Options
 	{

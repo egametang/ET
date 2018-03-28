@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class BenchmarkComponentEvent : ObjectEvent<BenchmarkComponent>, IAwake<string>
+	[ObjectSystem]
+	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>
 	{
-		public void Awake(string address)
+		public override void Awake(BenchmarkComponent self, IPEndPoint a)
 		{
-			this.Get().Awake(address);
+			self.Awake(a);
 		}
 	}
 
@@ -18,29 +19,27 @@ namespace Model
 
 		private long time1 = TimeHelper.ClientNow();
 
-		public async void Awake(string address)
+		public void Awake(IPEndPoint ipEndPoint)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-
-				for (int i = 0; i < 200; i++)
+				for (int i = 0; i < 1000; i++)
 				{
-					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10);
-					this.TestAsync(networkComponent, address, i);
+					this.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
-		public async void TestAsync(NetOuterComponent networkComponent, string address, int j)
+		public async void TestAsync(NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{
-				using (Session session = networkComponent.Create(address))
+				using (Session session = networkComponent.Create(ipEndPoint))
 				{
 					int i = 0;
 					while (i < 100000000)
@@ -52,11 +51,11 @@ namespace Model
 			}
 			catch (RpcException e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -64,7 +63,7 @@ namespace Model
 		{
 			try
 			{
-				await session.Call<R2C_Ping>(new C2R_Ping());
+				await session.Call(new C2R_Ping());
 				++this.k;
 
 				if (this.k % 100000 != 0)
@@ -79,13 +78,13 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

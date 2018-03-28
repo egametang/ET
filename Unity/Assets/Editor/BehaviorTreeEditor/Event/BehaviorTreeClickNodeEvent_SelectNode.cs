@@ -1,11 +1,11 @@
-﻿using Model;
+﻿using ETModel;
 
 namespace MyEditor
 {
-	[Event((int)EventIdType.BehaviorTreeClickNode)]
-	public class BehaviorTreeClickNodeEvent_SelectNode: IEvent<NodeDesigner>
+	[Event(EventIdType.BehaviorTreeClickNode)]
+	public class BehaviorTreeClickNodeEvent_SelectNode: AEvent<NodeDesigner>
 	{
-		public void Run(NodeDesigner dstNode)
+		public override void Run(NodeDesigner dstNode)
 		{
 			BTEditorWindow.Instance.OnSelectNode(dstNode.NodeData, dstNode);
 		}

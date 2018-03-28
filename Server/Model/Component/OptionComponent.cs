@@ -1,14 +1,14 @@
 ﻿using System;
 using CommandLine;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class OptionComponentEvent : ObjectEvent<OptionComponent>, IAwake<string[]>
+	[ObjectSystem]
+	public class OptionComponentSystem : AwakeSystem<OptionComponent, string[]>
 	{
-		public void Awake(string[] args)
+		public override void Awake(OptionComponent self, string[] a)
 		{
-			this.Get().Awake(args);
+			self.Awake(a);
 		}
 	}
 	

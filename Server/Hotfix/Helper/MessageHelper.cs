@@ -1,10 +1,10 @@
-﻿using Model;
+﻿using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class MessageHelper
 	{
-		public static void Broadcast(AActorMessage message)
+		public static void Broadcast(IActorMessage message)
 		{
 			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
 			ActorProxyComponent actorProxyComponent = Game.Scene.GetComponent<ActorProxyComponent>();

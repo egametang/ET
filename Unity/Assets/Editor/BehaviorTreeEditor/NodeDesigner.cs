@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Model;
+using ETModel;
 using UnityEngine;
 
 namespace MyEditor
@@ -280,17 +280,17 @@ namespace MyEditor
 			if (!isSelected && mouse.x > Pos.x - Width / 2 - 30f && mouse.x < Pos.x + Width / 2 + 30f && mouse.y > Pos.y - Height / 2 &&
 			    mouse.y < Pos.y + Height / 2)
 			{
-				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeMouseInNode, NodeData, this);
 			}
 			//并判断是否点中了连线柄
 			if (mouse.x > LeftPos.x - 30f && mouse.x < LeftPos.x + 10f && mouse.y > LeftPos.y - 30f && mouse.y < LeftPos.y + 30f)
 			{
-				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectLeft);
 			}
 
 			if (mouse.x > RightPos.x - 10f && mouse.x < RightPos.x + 30f && mouse.y > RightPos.y - 30f && mouse.y < RightPos.y + 30f && NodeData.CanAddChild())
 			{
-				BTEditor.Instance.GetComponent<EventComponent>().Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
+				Game.EventSystem.Run(EventIdType.BehaviorTreeConnectState, this, State.ConnectRight);
 			}
 
 			for (int i = 0; i < this.Children.Count; i++)

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public enum LockStatus
 	{
@@ -10,12 +12,12 @@ namespace Model
 		Locked,
 	}
 
-	[ObjectEvent]
-	public class LockComponentEvent : ObjectEvent<LockComponent>, IAwake<string>
+	[ObjectSystem]
+	public class LockComponentAwakeSystem : AwakeSystem<LockComponent, IPEndPoint>
 	{
-		public void Awake(string a)
+		public override void Awake(LockComponent self, IPEndPoint a)
 		{
-			this.Get().Awake(a);
+			self.Awake(a);
 		}
 	}
 
@@ -25,11 +27,11 @@ namespace Model
 	public class LockComponent: Component
 	{
 		private LockStatus status = LockStatus.LockedNot;
-		private string address;
+		private IPEndPoint address;
 		private int lockCount;
-		private readonly EQueue<TaskCompletionSource<bool>> queue = new EQueue<TaskCompletionSource<bool>>();
+		private readonly Queue<TaskCompletionSource<bool>> queue = new Queue<TaskCompletionSource<bool>>();
 
-		public void Awake(string addr)	
+		public void Awake(IPEndPoint addr)	
 		{
 			this.address = addr;
 		}
@@ -51,7 +53,7 @@ namespace Model
 			this.status = LockStatus.LockRequesting;
 
 			// 真身直接本地请求锁,镜像需要调用Rpc获取锁
-			MasterComponent masterComponent = this.GetComponent<MasterComponent>();
+			MasterComponent masterComponent = this.Entity.GetComponent<MasterComponent>();
 			if (masterComponent != null)
 			{
 				await masterComponent.Lock(this.address);
@@ -82,7 +84,7 @@ namespace Model
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.address);
 				string serverAddress = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.ServerIP;
 				G2G_LockRequest request = new G2G_LockRequest { Id = this.Entity.Id, Address = serverAddress };
-				await session.Call<G2G_LockResponse>(request);
+				await session.Call(request);
 
 				this.status = LockStatus.Locked;
 
@@ -109,7 +111,7 @@ namespace Model
 			this.status = LockStatus.LockedNot;
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.address);
 			G2G_LockReleaseRequest request = new G2G_LockReleaseRequest();
-			await session.Call<G2G_LockReleaseResponse>(request);
+			await session.Call(request);
 		}
 	}
 }

@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Model;
+using ETModel;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Hotfix
+namespace ETHotfix
 {
-	public class Entity : Disposer
+	[BsonIgnoreExtraElements]
+	public partial class Entity : ComponentWithId
 	{
-		public Entity Parent { get; set; }
-		
-		private HashSet<Component> components = new HashSet<Component>();
-		
-		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
+		[BsonElement]
+		[BsonIgnoreIfNull]
+		private HashSet<Component> components;
+
+		[BsonIgnore]
+		private Dictionary<Type, Component> componentDict;
 
 		protected Entity()
 		{
-			this.Id = IdGenerater.GenerateId();
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id)
+		protected Entity(long id) : base(id)
 		{
-			this.Id = id;
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
@@ -40,26 +45,41 @@ namespace Hotfix
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
+
+			this.components.Clear();
+			this.componentDict.Clear();
+		}
+
+		public Component AddComponent(Type type)
+		{
+			Component component = ComponentFactory.CreateWithParent(type, this);
+
+			if (this.componentDict.ContainsKey(component.GetType()))
+			{
+				throw new Exception($"AddComponent, component already exist, component: {type.Name}");
+			}
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(component.GetType(), component);
+			return component;
 		}
 
 		public K AddComponent<K>() where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K>(this);
+			K component = ComponentFactory.CreateWithParent<K>(this);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -69,19 +89,14 @@ namespace Hotfix
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1>(this, p1);
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -91,19 +106,14 @@ namespace Hotfix
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2>(this, p1, p2);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -113,19 +123,14 @@ namespace Hotfix
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2, P3>(this, p1, p2, p3);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
 
 			if (this.componentDict.ContainsKey(component.GetType()))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
 			}
 
-			if (this.components == null)
-			{
-				this.components = new HashSet<Component>();
-			}
-
-			if (component is ComponentDB)
+			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
@@ -141,12 +146,9 @@ namespace Hotfix
 				return;
 			}
 
-			this.components?.Remove(component);
+			this.components.Remove(component);
 			this.componentDict.Remove(typeof(K));
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 
@@ -160,10 +162,7 @@ namespace Hotfix
 
 			this.components?.Remove(component);
 			this.componentDict.Remove(type);
-			if (this.components != null && this.components.Count == 0)
-			{
-				this.components = null;
-			}
+
 			component.Dispose();
 		}
 
@@ -177,9 +176,48 @@ namespace Hotfix
 			return (K)component;
 		}
 
+		public Component GetComponent(Type type)
+		{
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
+			{
+				return null;
+			}
+			return component;
+		}
+
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
+		}
+
+		public override void BeginInit()
+		{
+			this.components = new HashSet<Component>();
+			this.componentDict = new Dictionary<Type, Component>();
+		}
+
+		public override void EndInit()
+		{
+			try
+			{
+				this.InstanceId = IdGenerater.GenerateId();
+
+				this.componentDict.Clear();
+
+				if (this.components != null)
+				{
+					foreach (Component component in this.components)
+					{
+						component.Parent = this;
+						this.componentDict.Add(component.GetType(), component);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
 		}
 	}
 }

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public class LockInfo
 	{
-		public string Address;
+		public IPEndPoint Address;
 		public TaskCompletionSource<bool> Tcs;
 
-		public LockInfo(string address, TaskCompletionSource<bool> tcs)
+		public LockInfo(IPEndPoint address, TaskCompletionSource<bool> tcs)
 		{
 			this.Address = address;
 			this.Tcs = tcs;
@@ -18,27 +19,27 @@ namespace Model
 	public class MasterComponent : Component
 	{
 		/// 镜像的地址
-		private readonly List<string> ghostsAddress = new List<string>();
+		private readonly List<IPEndPoint> ghostsAddress = new List<IPEndPoint>();
 
 		/// 当前获取锁的进程地址
-		private string lockedAddress = "";
+		private IPEndPoint lockedAddress;
 
 		/// 请求锁的队列
-		private readonly EQueue<LockInfo> queue = new EQueue<LockInfo>();
+		private readonly Queue<LockInfo> queue = new Queue<LockInfo>();
 
-		public void AddGhost(string address)
+		public void AddGhost(IPEndPoint address)
 		{
 			this.ghostsAddress.Add(address);
 		}
 
-		public void RemoveGhost(string address)
+		public void RemoveGhost(IPEndPoint address)
 		{
 			this.ghostsAddress.Remove(address);
 		}
 
-		public Task<bool> Lock(string address)
+		public Task<bool> Lock(IPEndPoint address)
 		{
-			if (this.lockedAddress == "")
+			if (this.lockedAddress == null)
 			{
 				this.lockedAddress = address;
 				return Task.FromResult(true);
@@ -50,16 +51,16 @@ namespace Model
 			return tcs.Task;
 		}
 
-		public void Release(string address)
+		public void Release(IPEndPoint address)
 		{
-			if (this.lockedAddress != address)
+			if (!this.lockedAddress.Equals(address))
 			{
 				Log.Error($"解锁地址与锁地址不匹配! {this.lockedAddress} {address}");
 				return;
 			}
 			if (this.queue.Count == 0)
 			{
-				this.lockedAddress = "";
+				this.lockedAddress = null;
 				return;
 			}
 			LockInfo lockInfo = this.queue.Dequeue();

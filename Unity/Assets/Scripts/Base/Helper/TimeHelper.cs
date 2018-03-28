@@ -1,27 +1,22 @@
 ﻿using System;
 
-namespace Model
+namespace ETModel
 {
 	public static class TimeHelper
 	{
-		private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		private static readonly long epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
 		/// <summary>
 		/// 客户端时间
 		/// </summary>
 		/// <returns></returns>
 		public static long ClientNow()
 		{
-			return Convert.ToInt64((DateTime.UtcNow - epoch).TotalMilliseconds);
+			return (DateTime.UtcNow.Ticks - epoch) / 10000;
 		}
 
 		public static long ClientNowSeconds()
 		{
-			return Convert.ToInt64((DateTime.UtcNow - epoch).TotalSeconds);
-		}
-
-		public static long ClientNowTicks()
-		{	
-			return Convert.ToInt64((DateTime.UtcNow - epoch).Ticks);
+			return (DateTime.UtcNow.Ticks - epoch) / 10000000;
 		}
 
 		/// <summary>
