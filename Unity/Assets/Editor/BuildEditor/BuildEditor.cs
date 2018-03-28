@@ -15,9 +15,11 @@ namespace MyEditor
 
 	public enum PlatformType
 	{
+		None,
 		Android,
 		IOS,
 		PC,
+		WebGL,
 	}
 
 	public class BuildEditor : EditorWindow
@@ -49,6 +51,11 @@ namespace MyEditor
 
 			if (GUILayout.Button("开始打包"))
 			{
+				if (this.platformType == PlatformType.None)
+				{
+					Log.Error("请选择打包平台!");
+					return;
+				}
 				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe);
 			}
 		}
