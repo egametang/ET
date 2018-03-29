@@ -70,11 +70,11 @@ namespace ETModel
 			return list;
 		}
 
-		public async Task<List<T>> QueryJson<T>(string json, bool needCache = true) where T : ComponentWithId
+		public async Task<List<T>> QueryJson<T>(string json) where T : ComponentWithId
 		{
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(dbAddress);
-			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json, NeedCache = needCache});
+			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
 			foreach (ComponentWithId component in dbQueryJsonResponse.Components)
 			{
 				list.Add((T)component);
