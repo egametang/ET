@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ETModel
@@ -15,12 +14,12 @@ namespace ETModel
 	/// </summary>
 	public class ActorComponent: Component
 	{
-		public IEntityActorHandler entityActorHandler;
+		public string ActorType;
 
 		// 队列处理消息
-		public Queue<ActorMessageInfo> queue;
+		public Queue<ActorMessageInfo> Queue;
 
-		public TaskCompletionSource<ActorMessageInfo> tcs;
+		public TaskCompletionSource<ActorMessageInfo> Tcs;
 
 		public override void Dispose()
 		{
@@ -31,8 +30,8 @@ namespace ETModel
 
 			base.Dispose();
 
-			var t = this.tcs;
-			this.tcs = null;
+			var t = this.Tcs;
+			this.Tcs = null;
 			t?.SetResult(new ActorMessageInfo());
 		}
 	}

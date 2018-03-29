@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Hotfix</AssemblyName>
-    <RootNamespace>Hotfix</RootNamespace>
+    <RootNamespace>ETHotfix</RootNamespace>
   </PropertyGroup>
 	
   <PropertyGroup>
