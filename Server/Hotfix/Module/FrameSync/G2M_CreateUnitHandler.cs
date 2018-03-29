@@ -13,7 +13,7 @@ namespace ETHotfix
 			{
 				Unit unit = ComponentFactory.Create<Unit>();
 
-				await unit.AddComponent<ActorComponent, IEntityActorHandler>(new MapUnitEntityActorHandler()).AddLocation();
+				await unit.AddComponent<ActorComponent>().AddLocation();
 				unit.AddComponent<UnitGateComponent, long>(message.GateSessionId);
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
 				response.UnitId = unit.Id;

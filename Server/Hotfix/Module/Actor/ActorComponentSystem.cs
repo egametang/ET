@@ -10,8 +10,8 @@ namespace ETHotfix
 	{
 		public override void Awake(ActorComponent self)
 		{
-			self.entityActorHandler = new CommonEntityActorHandler();
-			self.queue = new Queue<ActorMessageInfo>();
+			self.ActorType = ActorType.Common;
+			self.Queue = new Queue<ActorMessageInfo>();
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
 
 			self.HandleAsync();
@@ -19,27 +19,18 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class ActorComponentAwake1System : AwakeSystem<ActorComponent, IEntityActorHandler>
+	public class ActorComponentAwake1System : AwakeSystem<ActorComponent, string>
 	{
-		public override void Awake(ActorComponent self, IEntityActorHandler iEntityActorHandler)
+		public override void Awake(ActorComponent self, string actorType)
 		{
-			self.entityActorHandler = iEntityActorHandler;
-			self.queue = new Queue<ActorMessageInfo>();
+			self.ActorType = actorType;
+			self.Queue = new Queue<ActorMessageInfo>();
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
 
 			self.HandleAsync();
 		}
 	}
-
-	[ObjectSystem]
-	public class ActorComponentLoadSystem : LoadSystem<ActorComponent>
-	{
-		public override void Load(ActorComponent self)
-		{
-			self.entityActorHandler = (IEntityActorHandler)HotfixHelper.Create(self.entityActorHandler);
-		}
-	}
-
+	
 	[ObjectSystem]
 	public class ActorComponentDestroySystem : DestroySystem<ActorComponent>
 	{
@@ -66,27 +57,27 @@ namespace ETHotfix
 
 		public static void Add(this ActorComponent self, ActorMessageInfo info)
 		{
-			self.queue.Enqueue(info);
+			self.Queue.Enqueue(info);
 
-			if (self.tcs == null)
+			if (self.Tcs == null)
 			{
 				return;
 			}
 
-			var t = self.tcs;
-			self.tcs = null;
-			t.SetResult(self.queue.Dequeue());
+			var t = self.Tcs;
+			self.Tcs = null;
+			t.SetResult(self.Queue.Dequeue());
 		}
 
 		private static Task<ActorMessageInfo> GetAsync(this ActorComponent self)
 		{
-			if (self.queue.Count > 0)
+			if (self.Queue.Count > 0)
 			{
-				return Task.FromResult(self.queue.Dequeue());
+				return Task.FromResult(self.Queue.Dequeue());
 			}
 
-			self.tcs = new TaskCompletionSource<ActorMessageInfo>();
-			return self.tcs.Task;
+			self.Tcs = new TaskCompletionSource<ActorMessageInfo>();
+			return self.Tcs.Task;
 		}
 
 		public static async void HandleAsync(this ActorComponent self)
@@ -105,7 +96,10 @@ namespace ETHotfix
 					{
 						return;
 					}
-					await self.entityActorHandler.Handle(info.Session, (Entity)self.Parent, info.Message);
+
+					// 根据这个actor的类型分发给相应的ActorHandler处理
+					await Game.Scene.GetComponent<ActorMessageDispatherComponent>().ActorTypeHandle(
+							self.ActorType, info.Session, (Entity)self.Parent, info.Message);
 				}
 				catch (Exception e)
 				{
