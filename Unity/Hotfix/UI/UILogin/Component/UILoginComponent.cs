@@ -41,6 +41,7 @@ namespace ETHotfix
 				sessionWrap = new SessionWrap(session);
 				R2C_Login r2CLogin = (R2C_Login) await sessionWrap.Call(new C2R_Login() { Account = account.text, Password = password.text });
 
+                Log.Error("1111111");
                 if(r2CLogin.Error == ErrorCode.ERR_AccountOrPasswordError)
                 {
                     Log.Error("账号或密码错误");
