@@ -323,6 +323,7 @@
     <Compile Include="Assets\Scripts\Module\UI\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIType.cs" />
+    <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Other\AppType.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
     <Compile Include="Assets\Scripts\Other\IInstanceMethod.cs" />

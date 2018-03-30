@@ -40,7 +40,19 @@ namespace ETModel
 
 	}
 
-	[Message(HotfixOpcode.C2G_LoginGate)]
+    [Message(InnerOpcode.R2G_PlayerKickOut)]
+    [ProtoContract]
+    public partial class R2G_PlayerKickOut : IRequest
+    {
+        [ProtoMember(90, IsRequired = true)]
+        public int RpcId { get; set; }
+
+        [ProtoMember(1, IsRequired = true)]
+        public long UserID;
+
+    }
+
+    [Message(HotfixOpcode.C2G_LoginGate)]
 	[ProtoContract]
 	public partial class C2G_LoginGate: IRequest
 	{
@@ -112,37 +124,44 @@ namespace ETModel
 
 	}
 
-	[Message(HotfixOpcode.PlayerInfo)]
-	[ProtoContract]
-	public partial class PlayerInfo: IMessage
-	{
-	}
+    [Message(HotfixOpcode.PlayerInfo)]
+    [ProtoContract]
+    public partial class PlayerInfo : IMessage
+    {
+        [ProtoMember(1, IsRequired = true)]
+        public int Nickname;
+        [ProtoMember(2, IsRequired = true)]
+        public int Photo;
+        [ProtoMember(3, IsRequired = true)]
+        public int Sex;
+        [ProtoMember(4, IsRequired = true)]
+        public int Money;
+    }
 
-	[Message(HotfixOpcode.C2G_PlayerInfo)]
-	[ProtoContract]
-	public partial class C2G_PlayerInfo: IRequest
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
+    [Message(HotfixOpcode.C2G_PlayerInfo)]
+    [ProtoContract]
+    public partial class C2G_PlayerInfo : IRequest
+    {
+        [ProtoMember(90, IsRequired = true)]
+        public int RpcId { get; set; }
+    }
 
-	}
+    [Message(HotfixOpcode.G2C_PlayerInfo)]
+    [ProtoContract]
+    public partial class G2C_PlayerInfo : IResponse
+    {
+        [ProtoMember(90, IsRequired = true)]
+        public int RpcId { get; set; }
 
-	[Message(HotfixOpcode.G2C_PlayerInfo)]
-	[ProtoContract]
-	public partial class G2C_PlayerInfo: IResponse
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
+        [ProtoMember(91, IsRequired = true)]
+        public int Error { get; set; }
 
-		[ProtoMember(91, IsRequired = true)]
-		public int Error { get; set; }
+        [ProtoMember(92, IsRequired = true)]
+        public string Message { get; set; }
 
-		[ProtoMember(92, IsRequired = true)]
-		public string Message { get; set; }
+        [ProtoMember(1)]
+        PlayerInfo PlayerInfos = new PlayerInfo();
 
-		[ProtoMember(1)]
-		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
-
-	}
+    }
 
 }

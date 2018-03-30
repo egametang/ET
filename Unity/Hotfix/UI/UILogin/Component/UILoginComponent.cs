@@ -17,7 +17,8 @@ namespace ETHotfix
 	
 	public class UILoginComponent: Component
 	{
-		private GameObject account;
+		private InputField account;
+        private InputField password;
 		private GameObject loginBtn;
 
 		public void Awake()
@@ -25,7 +26,8 @@ namespace ETHotfix
 			ReferenceCollector rc = this.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 			loginBtn = rc.Get<GameObject>("LoginBtn");
 			loginBtn.GetComponent<Button>().onClick.Add(OnLogin);
-			this.account = rc.Get<GameObject>("Account");
+			account = rc.Get<GameObject>("Account").GetComponent<InputField>();
+            password = rc.Get<GameObject>("Password").GetComponent<InputField>();
 		}
 
 		public async void OnLogin()
@@ -35,13 +37,17 @@ namespace ETHotfix
 			{
 				IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
 
-				string text = this.account.GetComponent<InputField>().text;
-
 				Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
 				sessionWrap = new SessionWrap(session);
-				R2C_Login r2CLogin = (R2C_Login) await sessionWrap.Call(new C2R_Login() { Account = text, Password = "111111" });
-				sessionWrap.Dispose();
+				R2C_Login r2CLogin = (R2C_Login) await sessionWrap.Call(new C2R_Login() { Account = account.text, Password = password.text });
 
+                if(r2CLogin.Error == ErrorCode.ERR_AccountOrPasswordError)
+                {
+                    Log.Error("账号或密码错误");
+                    return;
+                }
+
+                sessionWrap.Dispose();
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
 				Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
 				Game.Scene.AddComponent<SessionWrapComponent>().Session = new SessionWrap(gateSession);
@@ -50,12 +56,12 @@ namespace ETHotfix
 
 				Log.Info("登陆gate成功!");
 
-				// 创建Player
-				Player player = ETModel.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
-				PlayerComponent playerComponent = ETModel.Game.Scene.GetComponent<PlayerComponent>();
-				playerComponent.MyPlayer = player;
+                //// 创建Player
+                //Player player = ETModel.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
+                //PlayerComponent playerComponent = ETModel.Game.Scene.GetComponent<PlayerComponent>();
+                //playerComponent.MyPlayer = player;
 
-				Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
+                Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
 				Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILogin);
 			}
 			catch (Exception e)
