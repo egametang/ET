@@ -3,6 +3,9 @@ using ETModel;
 
 namespace ETHotfix
 {
+    /// <summary>
+    /// 批量保存数据到数据库
+    /// </summary>
 	[MessageHandler(AppType.DB)]
 	public class DBSaveBatchRequestHandler : AMRpcHandler<DBSaveBatchRequest, DBSaveBatchResponse>
 	{

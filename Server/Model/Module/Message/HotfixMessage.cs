@@ -50,6 +50,9 @@ namespace ETModel
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
+		[ProtoMember(2, IsRequired = true)]
+		public long Chanel;
+
 	}
 
 	[Message(HotfixOpcode.G2C_LoginGate)]

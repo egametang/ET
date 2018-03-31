@@ -3,6 +3,9 @@ using ETModel;
 
 namespace ETHotfix
 {
+    /// <summary>
+    /// DBSaveRequestHandle
+    /// </summary>
 	[MessageHandler(AppType.DB)]
 	public class DBSaveRequestHandler : AMRpcHandler<DBSaveRequest, DBSaveResponse>
 	{

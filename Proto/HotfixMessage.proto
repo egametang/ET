@@ -13,6 +13,7 @@ message R2C_Login // IResponse
 message C2G_LoginGate // IRequest
 {
 	required int64 Key = 1;	// 帐号
+	required int64 Chanel = 2;	// 渠道
 }
 
 message G2C_LoginGate // IResponse

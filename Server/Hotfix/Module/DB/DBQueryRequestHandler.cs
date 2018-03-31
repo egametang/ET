@@ -3,6 +3,9 @@ using ETModel;
 
 namespace ETHotfix
 {
+    /// <summary>
+    ///数据添加到数据库缓存字
+    /// </summary>
 	[MessageHandler(AppType.DB)]
 	public class DBQueryRequestHandler : AMRpcHandler<DBQueryRequest, DBQueryResponse>
 	{
