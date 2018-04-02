@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using ETModel;
 
-namespace ETHotfix
+namespace ETModel
 {
     /// <summary>
     /// 用户信息

@@ -20,6 +20,7 @@ namespace ETHotfix
                 Log.Info($"登录请求：{{Account:'{message.Account}',Password:'{message.Password}'}}");
                 //验证账号密码是否正确
                 List<AccountInfo> result = await dbProxy.QueryJson<AccountInfo>($"{{Account:'{message.Account}',Password:'{message.Password}'}}");
+           
                 if (result.Count == 0)
                 {
                     response.Error = ErrorCode.ERR_AccountOrPasswordError;
@@ -29,6 +30,8 @@ namespace ETHotfix
 
                 AccountInfo account = result[0];
                 Log.Info($"账号登录成功{MongoHelper.ToJson(account)}");
+
+                //UserInfo userInfo = await dbProxy.Query<UserInfo>(account.Id, true);
 
                 //将已在线玩家踢下线
                 //await RealmHelper.KickOutPlayer(account.Id);
