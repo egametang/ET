@@ -9,6 +9,8 @@ namespace ETModel
 		public const int ERR_SessionActorError = 103;
 		public const int ERR_NotFoundUnit = 104;
 		public const int ERR_ConnectGateKeyError = 105;
+        public const int ERR_AccountAlreadyRegister = 106;
+        
 
         public const int ERR_LoginError = 106;
 

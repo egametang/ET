@@ -47,4 +47,30 @@ message C2G_PlayerInfo // IRequest
 message G2C_PlayerInfo // IResponse
 {
 	repeated PlayerInfo PlayerInfos = 1;
+}    
+#region Client-Realm
+
+message C2R_Login_Req // IRequest
+{
+    required string Account = 1;
+    required string Password = 2;
 }
+
+message R2C_Login_Ack // IResponse
+{
+    required long Key = 1;
+    required string Address = 2;
+}
+
+message C2R_Register_Req // IRequest
+{
+    required string Account = 1;
+    required string Password = 2;
+}
+
+message R2C_Register_Ack // IResponse
+{
+
+}
+
+#endregion

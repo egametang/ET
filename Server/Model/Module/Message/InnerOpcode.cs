@@ -34,5 +34,7 @@ namespace ETModel
 		 public const ushort G2R_GetLoginKey = 1030;
 		 public const ushort G2M_CreateUnit = 1031;
 		 public const ushort M2G_CreateUnit = 1032;
+		 public const ushort G2R_PlayerOnline_Ntt = 1033;
+		 public const ushort G2R_PlayerOffline_Ntt = 1034;
 	}
 }

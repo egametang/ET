@@ -149,13 +149,13 @@
     <Folder Include="Module\SmallGame\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Unity.csproj">
-      <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>
-      <Name>Unity</Name>
+    <ProjectReference Include="..\Assembly-CSharp-firstpass.csproj">
+      <Project>{2662b409-6332-1e56-d797-c9025c53bdd6}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Unity.Plugins.csproj">
-      <Project>{d1fdb199-0fb7-099d-3771-c6a942e4e326}</Project>
-      <Name>Unity.Plugins</Name>
+    <ProjectReference Include="..\Assembly-CSharp.csproj">
+      <Project>{cd8c9303-404b-fb8d-6b9b-21988d5cac0a}</Project>
+      <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

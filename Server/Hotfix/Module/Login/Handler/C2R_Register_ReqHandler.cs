@@ -1,8 +1,8 @@
 ﻿using System;
-using Model;
+using ETModel;
 using System.Collections.Generic;
 
-namespace Hotfix
+namespace ETHotfix
 {
     [MessageHandler(AppType.Realm)]
     public class C2R_Register_ReqHandler : AMRpcHandler<C2R_Register_Req, R2C_Register_Ack>
