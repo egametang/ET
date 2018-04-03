@@ -93,7 +93,7 @@ namespace App
                         Game.Scene.AddComponent<DBComponent>();
                         Game.Scene.AddComponent<DBProxyComponent>();
                         Game.Scene.AddComponent<DBCacheComponent>();
-                        //Game.Scene.AddComponent<DBAutoSaveCatchToSqlComponent>();
+                        Game.Scene.AddComponent<DBAutoSaveCatchToSqlComponent>();
                         Game.Scene.AddComponent<LocationComponent>();
                         Game.Scene.AddComponent<ActorMessageDispatherComponent>();
                         Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);

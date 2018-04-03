@@ -31,7 +31,7 @@ namespace ETHotfix
                 AccountInfo account = result[0];
                 Log.Info($"账号登录成功{MongoHelper.ToJson(account)}");
 
-                //UserInfo userInfo = await dbProxy.Query<UserInfo>(account.Id, true);
+                UserInfo userInfo = await dbProxy.Query<UserInfo>(account.Id, true);
 
                 //将已在线玩家踢下线
                 //await RealmHelper.KickOutPlayer(account.Id);

@@ -18,8 +18,9 @@ namespace ETModel
 	public class DBCacheComponent : Component
 	{
 		public Dictionary<string, Dictionary<long, ComponentWithId>> cache = new Dictionary<string, Dictionary<long, ComponentWithId>>();
+ 
 
-		public const int taskCount = 32;
+        public const int taskCount = 32;
 		public List<DBTaskQueue> tasks = new List<DBTaskQueue>(taskCount);
 
 		public void Awake()
