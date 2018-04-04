@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
 	[BsonIgnoreExtraElements]
-	public abstract partial class Component : Object, IDisposable2
+	public abstract partial class Component : Object, IDisposable
 	{
 		[BsonIgnore]
 		public long InstanceId { get; protected set; }
