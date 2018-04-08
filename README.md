@@ -2,6 +2,11 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.2发布! 3.2变化不大修复了一些bug，进一步完善了ET
+1.增加了ChangeSystem，可以订阅组件改变事件  
+2.修复dbcache中查询数据库一定会cache的bug  
+3.去掉了IEntityActorHandler接口，使用string来分发  
+
 # ET 3.1发布!
 1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
 2.增加了DestroySystem事件，在Component Dispose时调用  
