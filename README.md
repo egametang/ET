@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # [English](https://github.com/egametang/Egametang/blob/master/README.md) 
 
 __讨论QQ群 : 474643097__
@@ -104,3 +106,4 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1JDDGvzRYDUGBAmCZhYhQlQ) 密码: 7k7a  
   
 __讨论QQ群 : 474643097__
+>>>>>>> master

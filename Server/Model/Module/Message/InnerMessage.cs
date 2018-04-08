@@ -508,4 +508,25 @@ namespace ETModel
 
 	}
 
+	[Message(InnerOpcode.G2R_PlayerOnline_Ntt)]
+	[ProtoContract]
+	public partial class G2R_PlayerOnline_Ntt: IMessage
+	{
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+		[ProtoMember(2, IsRequired = true)]
+		public int GateAppID;
+
+	}
+
+	[Message(InnerOpcode.G2R_PlayerOffline_Ntt)]
+	[ProtoContract]
+	public partial class G2R_PlayerOffline_Ntt: IMessage
+	{
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+	}
+
 }

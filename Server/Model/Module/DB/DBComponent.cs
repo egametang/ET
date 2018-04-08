@@ -20,13 +20,18 @@ namespace ETModel
 		public IMongoDatabase database;
 
 		public void Awake()
-		{
-			//DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
-			//string connectionString = config.ConnectionString;
-			//mongoClient = new MongoClient(connectionString);
-			//this.database = this.mongoClient.GetDatabase(config.DBName);
-		}
+        {
+            DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
+            string connectionString = config.ConnectionString;
+            mongoClient = new MongoClient(connectionString);
+            this.database = this.mongoClient.GetDatabase(config.DBName);
+        }
 
+        /// <summary>
+        /// 相当于获取数据表;
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
 		public IMongoCollection<ComponentWithId> GetCollection(string name)
 		{
 			return this.database.GetCollection<ComponentWithId>(name);

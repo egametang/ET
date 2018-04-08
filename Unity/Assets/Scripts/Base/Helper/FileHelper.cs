@@ -22,6 +22,17 @@ namespace ETModel
 				GetAllFiles(files, subDir);
 			}
 		}
+		/**
+		 * 获取当前的子文件夹;
+		 */
+		public static void GetAllDirectories(List<string> files, string dir)
+		{
+			string[] subDirs = Directory.GetDirectories(dir);
+			foreach (string subDir in subDirs)
+			{
+				files.Add(subDir);
+			}
+		}
 		
 		public static void CleanDirectory(string dir)
 		{

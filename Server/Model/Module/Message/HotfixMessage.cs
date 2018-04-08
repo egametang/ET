@@ -50,6 +50,9 @@ namespace ETModel
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
 
+		[ProtoMember(2, IsRequired = true)]
+		public long Chanel;
+
 	}
 
 	[Message(HotfixOpcode.G2C_LoginGate)]
@@ -142,6 +145,72 @@ namespace ETModel
 
 		[ProtoMember(1)]
 		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
+
+	}
+
+	[Message(HotfixOpcode.C2R_Login_Req)]
+	[ProtoContract]
+	public partial class C2R_Login_Req: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public string Account;
+
+		[ProtoMember(2, IsRequired = true)]
+		public string Password;
+
+	}
+
+	[Message(HotfixOpcode.R2C_Login_Ack)]
+	[ProtoContract]
+	public partial class R2C_Login_Ack: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long Key;
+
+		[ProtoMember(2, IsRequired = true)]
+		public string Address;
+
+	}
+
+	[Message(HotfixOpcode.C2R_Register_Req)]
+	[ProtoContract]
+	public partial class C2R_Register_Req: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public string Account;
+
+		[ProtoMember(2, IsRequired = true)]
+		public string Password;
+
+	}
+
+	[Message(HotfixOpcode.R2C_Register_Ack)]
+	[ProtoContract]
+	public partial class R2C_Register_Ack: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
 
 	}
 

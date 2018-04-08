@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +36,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Assets\Plugins\DOTween\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -48,11 +51,17 @@
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Apps\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\Managed\UnityEngine.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Apps\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Apps\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\..\..\Applications\Unity\Unity.app\Contents\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +72,7 @@
     <Compile Include="Base\Helper\ExceptionHelper.cs" />
     <Compile Include="Base\Helper\JsonHelper.cs" />
     <Compile Include="Base\Helper\Log.cs" />
+<<<<<<< HEAD
     <Compile Include="Base\Object\ComponentWithId.cs" />
     <Compile Include="Base\Object\IChangeSystem.cs" />
     <Compile Include="Base\Object\IDestroySystem.cs" />
@@ -107,6 +117,65 @@
     <Compile Include="Module\UI\UI.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="Module\Message\HotfixOpcode.cs" />
+=======
+    <Compile Include="Base\Object\Component.cs" />
+    <Compile Include="Base\Object\ComponentFactory.cs" />
+    <Compile Include="Base\Object\ComponentWithId.cs" />
+    <Compile Include="Base\Object\Entity.cs" />
+    <Compile Include="Base\Object\EntityType.cs" />
+    <Compile Include="Base\Object\EventSystem.cs" />
+    <Compile Include="Base\Object\IAwakeSystem.cs" />
+    <Compile Include="Base\Object\IDestroySystem.cs" />
+    <Compile Include="Base\Object\ILateUpdateSystem.cs" />
+    <Compile Include="Base\Object\ILoadSystem.cs" />
+    <Compile Include="Base\Object\ISerializeToEntity.cs" />
+    <Compile Include="Base\Object\IStartSystem.cs" />
+    <Compile Include="Base\Object\IUpdateSystem.cs" />
+    <Compile Include="Base\Object\Object.cs" />
+    <Compile Include="Base\Object\ObjectPool.cs" />
+    <Compile Include="Entity\Config\UnitConfig.cs" />
+    <Compile Include="Entity\Game.cs" />
+    <Compile Include="Entity\Scene.cs" />
+    <Compile Include="Init.cs" />
+    <Compile Include="Module\Config\ACategory.cs" />
+    <Compile Include="Module\Config\ConfigComponent.cs" />
+    <Compile Include="Module\Config\ConfigHelper.cs" />
+    <Compile Include="Module\Config\IConfig.cs" />
+    <Compile Include="Module\FrameSync\Actor_CreateUnitsHandler.cs" />
+    <Compile Include="Module\FrameSync\Actor_TestHandler.cs" />
+    <Compile Include="Module\FrameSync\Frame_ClickMapHandler.cs" />
+    <Compile Include="Module\FrameSync\G2C_TestHotfixHandler.cs" />
+    <Compile Include="Module\FrameSync\OperaComponent.cs" />
+    <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
+    <Compile Include="Module\HeadGame\Component\HeartBeatAnimationEffectComponent.cs" />
+    <Compile Include="Module\HeadGame\Event\HG_WarEvent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_BallControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_CpuControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_GameWarComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PlayerControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_UIGameComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Event\HG_InitSceneStart_StartWar.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_GameWarFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_UIGameFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Component\HG_UIMenuComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Event\HG_InitSceneStart_StartGame.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Factory\HG_UIMenuFactory.cs" />
+    <Compile Include="Module\Message\AMHandler.cs" />
+    <Compile Include="Module\Message\HotfixMessage.cs" />
+    <Compile Include="Module\Message\HotfixMessageDispatcher.cs" />
+    <Compile Include="Module\Message\HotfixOpcode.cs" />
+    <Compile Include="Module\Message\IActorMessage.cs" />
+    <Compile Include="Module\Message\IMessage.cs" />
+    <Compile Include="Module\Message\IMHandler.cs" />
+    <Compile Include="Module\Message\MessageDispatherComponent.cs" />
+    <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="Module\Message\SessionWrap.cs" />
+    <Compile Include="Module\Message\SessionWrapComponent.cs" />
+    <Compile Include="Module\ModuleEvent\EventCenterController.cs" />
+    <Compile Include="Module\UI\IUIFactory.cs" />
+    <Compile Include="Module\UI\UI.cs" />
+    <Compile Include="Module\UI\UIComponent.cs" />
+>>>>>>> master
     <Compile Include="Module\UI\UIType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
@@ -125,6 +194,18 @@
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Module\Config\ACategory.cs.meta" />
+    <Content Include="Module\Config\AConfig.cs.meta" />
+    <Content Include="Module\Config\AConfigComponent.cs.meta" />
+    <Content Include="Module\Config\ConfigAttribute.cs.meta" />
+    <Content Include="Module\Config\ConfigComponent.cs.meta" />
+    <Content Include="Module\Config\ConfigHelper.cs.meta" />
+    <Content Include="Module\Config\ICategory.cs.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Module\SmallGame" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(ProjectDir)\..\Tools\pdb2mdb.exe" $(TargetFileName)</PostBuildEvent>
@@ -134,6 +215,9 @@
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(OutDir)$(TargetName).dll" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).dll.bytes" />
     <Copy SourceFiles="$(OutDir)$(TargetName).pdb" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).pdb.bytes" />
+<<<<<<< HEAD
     <Copy SourceFiles="$(OutDir)$(TargetName).dll.mdb" DestinationFiles="$(ProjectDir)/../Assets/Res/Code/$(TargetName).mdb.bytes" />
+=======
+>>>>>>> master
   </Target>
 </Project>

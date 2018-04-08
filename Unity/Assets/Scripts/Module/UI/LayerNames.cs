@@ -18,6 +18,11 @@ namespace ETModel
 		/// 地形层
 		/// </summary>
 		public const string MAP = "Map";
+		
+		/// <summary>
+		/// 战斗的
+		/// </summary>
+		public const string WAR = "War";
 
 		/// <summary>
 		/// 默认层

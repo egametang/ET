@@ -69,6 +69,8 @@ namespace MyEditor
 			SetShareBundleAndAtlas("Assets/Bundles/UI");
 
 			SetShareBundleAndAtlas("Assets/Bundles/Unit");
+			
+			SetGamesBundleAndAtlas("Assets/Bundles/Games");
 
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
@@ -116,6 +118,113 @@ namespace MyEditor
 			}
 		}
 
+		//zys------ start
+		// 会将目录下的小游戏打成一个包
+		//声音 图片材质 预设场景  分别打包
+		private  void SetGamesBundleAndAtlas(string dir)
+		{			
+			this.dictionary.Clear();
+			
+			List<string> paths = new List<string>();
+			FileHelper.GetAllDirectories( paths,dir);
+			
+			//一个子文件夹是一个游戏模块
+			foreach (string path in paths)
+			{
+				string path1 = path.Replace('\\', '/');
+				int lastIndex = path1.LastIndexOf('/') +1;
+				if (path1.Length > lastIndex)
+				{
+					string sGameName = path1.Substring(lastIndex, path1.Length-lastIndex);
+					Log.Info($"a game is {sGameName}");
+				
+				
+					List<string> resPaths = EditorResHelper.GetSmallGameAtlas( path1);
+					SetSomeFileInOneBundle(resPaths,$"{sGameName}_Res");
+				
+					List<string> soundPaths = EditorResHelper.GetSmallGameSound( path1);
+					SetSomeFileInOneBundle(soundPaths,$"{sGameName}_Sound");
+					
+					//最后打包预设什么的  引用的都应该被设置过了
+					List<string> perPaths = EditorResHelper.GetSmallGame( path1);
+					SetSomeFileInSelfBundle(perPaths,$"{sGameName}");
+				}
+			
+			}
+		}
+
+		/**
+		 * 把一个类型的文件打入一个文件包;
+		 */
+		private  void SetSomeFileInOneBundle(List<string> paths, string name)
+		{
+			foreach (string path in paths)
+			{
+				string path1 = path.Replace('\\', '/');
+				SetBundleAndAtlas(path1,name);
+			}
+		}
+		/**
+		 * 把各自打入自己的包;
+		 */
+		private  void SetSomeFileInSelfBundle(List<string> paths, string name)
+		{
+			foreach (string path in paths)
+			{
+				string path1 = path.Replace('\\', '/');
+				Object go = AssetDatabase.LoadAssetAtPath<Object>(path1);
+
+				SetBundle(path1, $"{name}_{go.name}");
+
+				List<string> pathes = CollectDependencies(path1);
+				foreach (string pt in pathes)
+				{
+					string extension = Path.GetExtension(pt);
+					if (extension == ".cs" || extension == ".dll" || extension == ".png" || extension == ".jpg"
+                        || extension == ".spriteatlas")// 图片的话通过图集去管理的就不在标记
+					{
+						continue;
+					}
+                    if (!pt.Contains("."))//主要是针对UI 的文件夹。 防止重复打包
+                    {
+                        continue;
+                    }
+                    if (pt.Contains("Resources"))
+					{
+						continue;
+					}
+					if (pt == path1)
+					{
+						continue;
+					}
+
+					// 不存在则记录下来
+					if (!this.dictionary.ContainsKey(pt))
+					{
+						Log.Info($"{path1}----{pt}");
+						BundleInfo bundleInfo = new BundleInfo();
+						bundleInfo.ParentPaths.Add(path1);
+						this.dictionary.Add(pt, bundleInfo);
+
+						SetAtlas(pt, $"{name}_{go.name}");
+
+						continue;
+					}
+
+					// 依赖的父亲不一样
+					BundleInfo info = this.dictionary[pt];
+					if (info.ParentPaths.Contains(path1))
+					{
+						continue;
+					}
+					info.ParentPaths.Add(path1);
+
+					SetBundleAndAtlas(pt, $"{name}-share");
+				}
+			}
+		}
+
+		//zys------end
 		// 会将目录下的每个prefab引用的资源强制打成一个包，不分析共享资源
 		private static void SetIndependentBundleAndAtlas(string dir)
 		{
@@ -236,8 +345,25 @@ namespace MyEditor
 				//Log.Info(bundlePath);
 				importer.assetBundleName = "";
 			}
+            List<string> gmbundlePaths = EditorResHelper.GetAllResourcePath("Assets/Games/", true,true);
+            foreach (string bundlePath in gmbundlePaths)
+            {
+                string extendName = Path.GetExtension(bundlePath);
+                if (extendName == ".cs")
+                {
+                    continue;
+                }
 
-			List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
+                AssetImporter importer = AssetImporter.GetAtPath(bundlePath);
+                if (importer == null)
+                {
+                    continue;
+                }
+                //Log.Info(bundlePath);
+                importer.assetBundleName = "";
+            }
+
+            List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
 			foreach (string pt in paths)
 			{
 				string extendName = Path.GetExtension(pt);

@@ -170,4 +170,18 @@
 		required int64 UnitId = 1;
 		required int Count = 2;
 	}
-}
+
+	#region Gate-Realm
+
+    message G2R_PlayerOnline_Ntt // IMessage
+    {
+        required long UserID = 1;
+        required int GateAppID = 2;
+    }
+
+    message G2R_PlayerOffline_Ntt // IMessage
+    {
+        required long UserID = 1;
+    }
+
+    #endregion

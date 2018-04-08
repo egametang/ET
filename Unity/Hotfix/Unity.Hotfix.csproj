@@ -36,17 +36,39 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Plugins\DOTween\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>C:\Apps\Unity2017.1.3p2\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>C:\Apps\Unity2017.1.3p2\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +94,19 @@
     <Compile Include="Module\Config\IConfig.cs" />
     <Compile Include="Module\Config\ConfigComponent.cs" />
     <Compile Include="Module\Config\ConfigHelper.cs" />
+    <Compile Include="Module\HeadGame\Component\HeartBeatAnimationEffectComponent.cs" />
+    <Compile Include="Module\HeadGame\Event\HG_WarEvent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_BallControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_CpuControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_GameWarComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PlayerControllerCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_UIGameComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Event\HG_InitSceneStart_StartWar.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_GameWarFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_UIGameFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Component\HG_UIMenuComponent.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Event\HG_InitSceneStart_StartGame.cs" />
+    <Compile Include="Module\HeadGame\UI\UIMenu\Factory\HG_UIMenuFactory.cs" />
     <Compile Include="Module\Message\IActorMessage.cs" />
     <Compile Include="Module\Message\HotfixMessageDispatcher.cs" />
     <Compile Include="Module\Message\IMessage.cs" />
@@ -91,6 +126,8 @@
     <Compile Include="Base\Object\ObjectPool.cs" />
     <Compile Include="Module\Message\SessionWrapComponent.cs" />
     <Compile Include="Module\Message\SessionWrap.cs" />
+    <Compile Include="Module\ModuleEvent\EventCenterController.cs" />
+    <Compile Include="Module\ModuleEvent\MonoEventComponent.cs" />
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
@@ -109,7 +146,9 @@
     <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
     <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Module\SmallGame\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity.csproj">
       <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>

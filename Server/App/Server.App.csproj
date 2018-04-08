@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>App</AssemblyName>
     <RootNamespace>App</RootNamespace>
+    <BaseDirectory>..\..\Bin</BaseDirectory>
   </PropertyGroup>
 
   <PropertyGroup>
