@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: UIAtlas
+  m_EditorData:
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingParameters:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: eca5103b0537794418007f97b59a34b8, type: 3}
+    - {fileID: 2800000, guid: ea467ba2eb273954fbafe7117aed3f0a, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 5690b2cf181106a43954e6923acb5ed3, type: 3}
+  - {fileID: 21300000, guid: f1caa20323aab04458a7c73cbe535ac5, type: 3}
+  - {fileID: 21300000, guid: 9cd9fefecd73fb94e8db78397da2e877, type: 3}
+  - {fileID: 21300000, guid: 41c7b2c23c5b9be4398db5825c86f066, type: 3}
+  - {fileID: 21300000, guid: c6f37801c9f6f5a46aa6e1a9dc5d32ee, type: 3}
+  - {fileID: 21300000, guid: 79c69aa6fb769c1488b28bb7d404237c, type: 3}
+  - {fileID: 21300000, guid: 1180cd75992f1044fb4225b8c5981d4f, type: 3}
+  - {fileID: 21300000, guid: 4af0c14b2e737c34aaa97201eda1d95c, type: 3}
+  - {fileID: 21300000, guid: ea467ba2eb273954fbafe7117aed3f0a, type: 3}
+  - {fileID: 21300000, guid: 6339a25040fcdb449a6d9aa57c89c5c4, type: 3}
+  - {fileID: 21300000, guid: fcde31d65059278428aa4ea95eadc40f, type: 3}
+  - {fileID: 21300000, guid: 3cd341cce83dc554fa3fd2327269bda7, type: 3}
+  - {fileID: 21300000, guid: ebe7bbf98ac8e264bb3011e93ebee734, type: 3}
+  - {fileID: 21300000, guid: 5cf27794898f2804299a0449828ca7c7, type: 3}
+  - {fileID: 21300000, guid: 390f8326fae4567468bab35d3ab19c54, type: 3}
+  - {fileID: 21300000, guid: 990bdd84fc6ef08448cd27f27a3968b2, type: 3}
+  - {fileID: 21300000, guid: 16890c51b1bd3a84ea1b3cb4a485d378, type: 3}
+  - {fileID: 21300000, guid: a50917747b20a994db59ecadf24e5bf6, type: 3}
+  - {fileID: 21300000, guid: 9afb4b25bb9ca714284f259ac9cdf59c, type: 3}
+  - {fileID: 21300000, guid: 00e5bf27c8266f54885997b59bbdec20, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - menu-btn-4
+  - menu-btn-2
+  - menu-btn-3
+  - menu-btn-1
+  - arrowR-Yellow
+  - arrowL-Yellow
+  - BTN-Shop
+  - BTN3
+  - BTN-Settings
+  - BTN-Play2
+  - mainHUD
+  - you-win
+  - draw
+  - you-have-lost
+  - logoGame
+  - optionCell-2
+  - icon_template
+  - optionCell
+  - UI-Pause
+  - middlePole
+  m_Tag: UIAtlas
+  m_IsVariant: 0

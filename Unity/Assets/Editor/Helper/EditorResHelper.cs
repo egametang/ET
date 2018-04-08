@@ -15,7 +15,7 @@ namespace ETModel
         {
             List<string> paths = new List<string>();
             FileHelper.GetAllFiles(paths, srcPath);
-            
+
             List<string> files = new List<string>();
             foreach (string str in paths)
             {
@@ -26,11 +26,11 @@ namespace ETModel
             }
             return files;
         }
-        public static List<string>  GetSmallGame(string srcPath)
+        public static List<string> GetSmallGame(string srcPath)
         {
             List<string> paths = new List<string>();
             FileHelper.GetAllFiles(paths, srcPath);
-            
+
             List<string> files = new List<string>();
             foreach (string str in paths)
             {
@@ -49,13 +49,14 @@ namespace ETModel
         {
             List<string> paths = new List<string>();
             FileHelper.GetAllFiles(paths, srcPath);
-            
+
             List<string> files = new List<string>();
             foreach (string str in paths)
             {
                 if (str.EndsWith(".TTF") || str.EndsWith(".mat")
                     || str.EndsWith(".physicMaterial")
-                    || str.EndsWith(".png")|| str.EndsWith(".jpg")
+                    || str.EndsWith(".spriteatlas")
+                    || str.EndsWith(".png") || str.EndsWith(".jpg")
                 )
                 {
                     files.Add(str);
@@ -70,7 +71,7 @@ namespace ETModel
         {
             List<string> paths = new List<string>();
             FileHelper.GetAllFiles(paths, srcPath);
-            
+
             List<string> files = new List<string>();
             foreach (string str in paths)
             {
@@ -87,8 +88,9 @@ namespace ETModel
         /// </summary>
         /// <param name="srcPath">源文件夹</param>
         /// <param name="subDire">是否获取子文件夹</param>
+        /// <param name="isNeedDir">是否获取文件夹  因为图集可以将文件夹打包。清理得时候就这样清掉</param>
         /// <returns></returns>
-        public static List<string> GetAllResourcePath(string srcPath, bool subDire)
+        public static List<string> GetAllResourcePath(string srcPath, bool subDire,bool isNeedDir = false)
         {
             List<string> paths = new List<string>();
             string[] files = Directory.GetFiles(srcPath);
@@ -100,11 +102,18 @@ namespace ETModel
                 }
                 paths.Add(str);
             }
+            if (isNeedDir)
+            {
+                foreach (string subPath in Directory.GetDirectories(srcPath))
+                {
+                    paths.Add(subPath);
+                }
+            }
             if (subDire)
             {
                 foreach (string subPath in Directory.GetDirectories(srcPath))
                 {
-                    List<string> subFiles = GetAllResourcePath(subPath, true);
+                    List<string> subFiles = GetAllResourcePath(subPath, true, isNeedDir);
                     paths.AddRange(subFiles);
                 }
             }

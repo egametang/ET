@@ -180,11 +180,16 @@ namespace MyEditor
 				foreach (string pt in pathes)
 				{
 					string extension = Path.GetExtension(pt);
-					if (extension == ".cs" || extension == ".dll")
+					if (extension == ".cs" || extension == ".dll" || extension == ".png" || extension == ".jpg"
+                        || extension == ".spriteatlas")// 图片的话通过图集去管理的就不在标记
 					{
 						continue;
 					}
-					if (pt.Contains("Resources"))
+                    if (!pt.Contains("."))//主要是针对UI 的文件夹。 防止重复打包
+                    {
+                        continue;
+                    }
+                    if (pt.Contains("Resources"))
 					{
 						continue;
 					}
@@ -340,8 +345,25 @@ namespace MyEditor
 				//Log.Info(bundlePath);
 				importer.assetBundleName = "";
 			}
+            List<string> gmbundlePaths = EditorResHelper.GetAllResourcePath("Assets/Games/", true,true);
+            foreach (string bundlePath in gmbundlePaths)
+            {
+                string extendName = Path.GetExtension(bundlePath);
+                if (extendName == ".cs")
+                {
+                    continue;
+                }
 
-			List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
+                AssetImporter importer = AssetImporter.GetAtPath(bundlePath);
+                if (importer == null)
+                {
+                    continue;
+                }
+                //Log.Info(bundlePath);
+                importer.assetBundleName = "";
+            }
+
+            List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
 			foreach (string pt in paths)
 			{
 				string extendName = Path.GetExtension(pt);
