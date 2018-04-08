@@ -12,7 +12,11 @@
 		// 充值时间
 		public long Time { get; set; }
 
-		public RechargeRecord(long id) : base(id)
+        public RechargeRecord() : base()
+        {
+        }
+
+        public RechargeRecord(long id) : base(id)
 		{
 		}
 	}
@@ -24,7 +28,11 @@
 
 		public long UpdateTime { get; set; }
 
-		public Recharge(long id) : base(id)
+        public Recharge() : base()
+        {
+        }
+
+        public Recharge(long id) : base(id)
 		{
 		}
 	}
