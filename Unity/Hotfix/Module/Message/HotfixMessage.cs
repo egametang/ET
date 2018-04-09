@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
+//客户端和服务器端的热更消息
 	[Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]
 	public partial class C2R_Login: IRequest

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
+//服务器内网间的通讯
 /// <summary>
 /// 传送unit
 /// </summary>
@@ -526,6 +527,33 @@ namespace ETModel
 	{
 		[ProtoMember(1, IsRequired = true)]
 		public long UserID;
+
+	}
+
+	[Message(InnerOpcode.R2G_PlayerKickOut_Req)]
+	[ProtoContract]
+	public partial class R2G_PlayerKickOut_Req: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+	}
+
+	[Message(InnerOpcode.G2R_PlayerKickOut_Ack)]
+	[ProtoContract]
+	public partial class G2R_PlayerKickOut_Ack: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
 
 	}
 

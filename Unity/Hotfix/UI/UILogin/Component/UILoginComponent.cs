@@ -54,29 +54,29 @@ namespace ETHotfix
             SessionWrap sessionWrap = null;
             try
             {
-                //IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
+                IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
 
-                //string text = this.account.text;
+                string text = this.account.text;
 
-                //Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
-                //sessionWrap = new SessionWrap(session);
-                //R2C_Login r2CLogin = (R2C_Login)await sessionWrap.Call(new C2R_Login() { Account = text, Password = "111111" });
-                //sessionWrap.Dispose();
+                Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+                sessionWrap = new SessionWrap(session);
+                R2C_Login r2CLogin = (R2C_Login)await sessionWrap.Call(new C2R_Login() { Account = text, Password = "111111" });
+                sessionWrap.Dispose();
 
-                //connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
-                //Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
-                //Game.Scene.AddComponent<SessionWrapComponent>().Session = new SessionWrap(gateSession);
-                //ETModel.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
-                //G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionWrapComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
+                connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
+                Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+                Game.Scene.AddComponent<SessionWrapComponent>().Session = new SessionWrap(gateSession);
+                ETModel.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
+                G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionWrapComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
 
-                //Log.Info("登陆gate成功!");
+                Log.Info("登陆gate成功!");
 
-                //// 创建Player
-                //Player player = ETModel.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
-                //PlayerComponent playerComponent = ETModel.Game.Scene.GetComponent<PlayerComponent>();
-                //playerComponent.MyPlayer = player;
-                //
-                //				Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
+                // 创建Player
+                Player player = ETModel.ComponentFactory.CreateWithId<Player>(g2CLoginGate.PlayerId);
+                PlayerComponent playerComponent = ETModel.Game.Scene.GetComponent<PlayerComponent>();
+                playerComponent.MyPlayer = player;
+
+                //Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
                 Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_UIMenu);
                 Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILogin);
             }

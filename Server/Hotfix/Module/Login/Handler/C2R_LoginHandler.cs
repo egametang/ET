@@ -33,14 +33,16 @@ namespace ETHotfix
 
                 UserInfo userInfo = await dbProxy.Query<UserInfo>(account.Id, true);
 
+                LoginComponent gateCp = Game.Scene.GetComponent<LoginComponent>();
                 //将已在线玩家踢下线
-                //await RealmHelper.KickOutPlayer(account.Id);
+                //最好是 realm 不管这个了，别人登录游戏再去踢人吧  可是。等等在写吧
+               await gateCp.KickOutPlayer(account.Id);
 
                 //随机分配网关服务器
                 StartConfig gateConfig = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
                 Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(gateConfig.GetComponent<InnerConfig>().IPEndPoint);
 
-                //请求登录Gate服务器密匙
+                //请求登录Gate服务器密匙  //在这里踢人
                 G2R_GetLoginKey getLoginKey_Ack = await gateSession.Call(new R2G_GetLoginKey() { Account = account.Account }) as G2R_GetLoginKey;
 
                 response.Key = getLoginKey_Ack.Key;

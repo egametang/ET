@@ -1,3 +1,6 @@
+
+//客户端和服务器端的热更消息
+#region ET
 message C2R_Login // IRequest
 {
 	required string	Account	 = 1;	// 帐号
@@ -48,6 +51,9 @@ message G2C_PlayerInfo // IResponse
 {
 	repeated PlayerInfo PlayerInfos = 1;
 }    
+
+#endregion
+
 #region Client-Realm
 
 message C2R_Login_Req // IRequest

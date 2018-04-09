@@ -5,6 +5,7 @@ using ETModel;
 using MongoDB.Bson.Serialization;
 using NLog;
 
+
 namespace App
 {
     internal static class Program
@@ -60,7 +61,7 @@ namespace App
                         Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
                         Game.Scene.AddComponent<LocationProxyComponent>();
                         Game.Scene.AddComponent<RealmGateAddressComponent>();
-                        Game.Scene.AddComponent<ActorManagerComponent>();
+                        Game.Scene.AddComponent<ActorManagerComponent>();                      
                         break;
                     case AppType.Gate:
                         Game.Scene.AddComponent<PlayerComponent>();
@@ -71,6 +72,8 @@ namespace App
                         Game.Scene.AddComponent<ActorProxyComponent>();
                         Game.Scene.AddComponent<GateSessionKeyComponent>();
                         Game.Scene.AddComponent<ActorManagerComponent>();
+                        Game.Scene.AddComponent<OnlineComponent>();
+                        Game.Scene.AddComponent<LoginComponent>();
                         break;
                     case AppType.Location:
                         Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
@@ -105,6 +108,8 @@ namespace App
                         Game.Scene.AddComponent<ConfigComponent>();
                         Game.Scene.AddComponent<ServerFrameComponent>();
                         Game.Scene.AddComponent<ActorManagerComponent>();
+                        Game.Scene.AddComponent<OnlineComponent>();
+                        Game.Scene.AddComponent<LoginComponent>();
                         // Game.Scene.AddComponent<HttpComponent>();
                         break;
                     case AppType.Benchmark:

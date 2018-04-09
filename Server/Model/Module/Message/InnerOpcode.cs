@@ -36,5 +36,7 @@ namespace ETModel
 		 public const ushort M2G_CreateUnit = 1032;
 		 public const ushort G2R_PlayerOnline_Ntt = 1033;
 		 public const ushort G2R_PlayerOffline_Ntt = 1034;
+		 public const ushort R2G_PlayerKickOut_Req = 1035;
+		 public const ushort G2R_PlayerKickOut_Ack = 1036;
 	}
 }
