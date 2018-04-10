@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d3ebeafad61569343ba31ed70a4f0065
-timeCreated: 1521878953
+timeCreated: 1523366150
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -70,7 +70,7 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape: []
-  spritePackingTag: HG_MainGame
+  spritePackingTag: HdGame_Res
   userData: 
   assetBundleName: hdgame_res.unity3d
   assetBundleVariant: 

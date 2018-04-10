@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d85fd77d40d21c84d88ae6d435b905fe
-timeCreated: 1521885355
+timeCreated: 1523366140
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -70,7 +70,7 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape: []
-  spritePackingTag: /HdGame
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a0447f914e7fac440a3cd5be99773c7a
-timeCreated: 1521878941
+timeCreated: 1523366149
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
@@ -70,7 +70,7 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape: []
-  spritePackingTag: GoalPlane
+  spritePackingTag: HdGame_Res
   userData: 
   assetBundleName: hdgame_res.unity3d
   assetBundleVariant: 

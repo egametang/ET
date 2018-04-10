@@ -28,7 +28,8 @@ namespace ETEditor
 
 		private PlatformType platformType;
 		private bool isBuildExe;
-		private BuildOptions buildOptions = BuildOptions.AllowDebugging | BuildOptions.Development;
+        private bool isContainAB;
+        private BuildOptions buildOptions = BuildOptions.AllowDebugging | BuildOptions.Development;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
 		[MenuItem("Tools/打包工具")]
@@ -42,23 +43,29 @@ namespace ETEditor
 			if (GUILayout.Button("标记"))
 			{
 				SetPackingTagAndAssetBundle();
-			}
+            }
+            if (GUILayout.Button("清除标记"))
+            {
+                ClearPackingTagAndAssetBundle();
+            }
 
-			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
+            this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
 			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			this.buildOptions = (BuildOptions)EditorGUILayout.EnumMaskField("BuildOptions(可多选): ", this.buildOptions);
+            this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
+            this.buildOptions = (BuildOptions)EditorGUILayout.EnumMaskField("BuildOptions(可多选): ", this.buildOptions);
 			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumMaskField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
 
 			if (GUILayout.Button("开始打包"))
 			{
-				if (this.platformType == PlatformType.None)
-				{
-					Log.Error("请选择打包平台!");
-					return;
-				}
-				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe);
-			}
-		}
+                if (this.platformType == PlatformType.None)
+                {
+                    Log.Error("请选择打包平台!");
+                    return;
+                }
+                BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB);
+
+            }
+        }
 
 		private void SetPackingTagAndAssetBundle()
 		{
@@ -66,9 +73,9 @@ namespace ETEditor
 
 			SetIndependentBundleAndAtlas("Assets/Bundles/Independent");
 
-			SetShareBundleAndAtlas("Assets/Bundles/UI");
+			SetBundleAndAtlasWithoutShare("Assets/Bundles/UI");
 
-			SetShareBundleAndAtlas("Assets/Bundles/Unit");
+			SetRootBundleOnly("Assets/Bundles/Unit");
 			
 			SetGamesBundleAndAtlas("Assets/Bundles/Games");
 
@@ -86,27 +93,17 @@ namespace ETEditor
 				List<string> pathes = CollectDependencies(path);
 
 				foreach (string pt in pathes)
-				{
-					string extension = Path.GetExtension(pt);
-					if (extension == ".cs" || extension == ".dll")
-					{
-						continue;
-					}
-					if (pt.Contains("Resources"))
-					{
-						continue;
-					}
+				{				
 					if (pt == path)
 					{
 						continue;
 					}
-
-					SetAtlas(pt, "");
-				}
+                    SetAtlas(pt, "", true);
+                }
 			}
 		}
-		
-		private static void SetBundles(string dir)
+        // 会将目录下的每个prefab引用的资源强制打成一个包，不分析共享资源
+        private static void SetBundles(string dir)
 		{
 			List<string> paths = EditorResHelper.GetPrefabsAndScenes(dir);
 			foreach (string path in paths)
@@ -117,11 +114,23 @@ namespace ETEditor
 				SetBundle(path1, go.name);
 			}
 		}
+        // 会将目录下的每个prefab引用的资源打成一个包,只给顶层prefab打包
+        private static void SetRootBundleOnly(string dir)
+        {
+            List<string> paths = EditorResHelper.GetPrefabsAndScenes(dir);
+            foreach (string path in paths)
+            {
+                string path1 = path.Replace('\\', '/');
+                Object go = AssetDatabase.LoadAssetAtPath<Object>(path1);
 
-		//zys------ start
-		// 会将目录下的小游戏打成一个包
-		//声音 图片材质 预设场景  分别打包
-		private  void SetGamesBundleAndAtlas(string dir)
+                SetBundle(path1, go.name);
+            }
+        }
+
+        //zys------ start
+        // 会将目录下的小游戏打成一个包
+        //声音 图片材质 预设场景  分别打包
+        private  void SetGamesBundleAndAtlas(string dir)
 		{			
 			this.dictionary.Clear();
 			
@@ -246,26 +255,38 @@ namespace ETEditor
 
 				foreach (string pt in pathes)
 				{
-					string extension = Path.GetExtension(pt);
-					if (extension == ".cs" || extension == ".dll")
-					{
-						continue;
-					}
-					if (pt.Contains("Resources"))
-					{
-						continue;
-					}
 					if (pt == path1)
 					{
 						continue;
 					}
 
-					SetBundleAndAtlas(pt, go.name);
-				}
+                    SetBundleAndAtlas(pt, go.name, true);
+                }
 			}
 		}
+        private static void SetBundleAndAtlasWithoutShare(string dir)
+        {
+            List<string> paths = EditorResHelper.GetPrefabsAndScenes(dir);
+            foreach (string path in paths)
+            {
+                string path1 = path.Replace('\\', '/');
+                Object go = AssetDatabase.LoadAssetAtPath<Object>(path1);
 
-		private static List<string> CollectDependencies(string o)
+                SetBundle(path1, go.name);
+
+                //List<string> pathes = CollectDependencies(path1);
+                //foreach (string pt in pathes)
+                //{
+                //	if (pt == path1)
+                //	{
+                //		continue;
+                //	}
+                //
+                //	SetBundleAndAtlas(pt, go.name);
+                //}
+            }
+        }
+        private static List<string> CollectDependencies(string o)
 		{
 			string[] paths = AssetDatabase.GetDependencies(o);
 
@@ -289,15 +310,6 @@ namespace ETEditor
 				List<string> pathes = CollectDependencies(path1);
 				foreach (string pt in pathes)
 				{
-					string extension = Path.GetExtension(pt);
-					if (extension == ".cs" || extension == ".dll")
-					{
-						continue;
-					}
-					if (pt.Contains("Resources"))
-					{
-						continue;
-					}
 					if (pt == path1)
 					{
 						continue;
@@ -306,7 +318,12 @@ namespace ETEditor
 					// 不存在则记录下来
 					if (!this.dictionary.ContainsKey(pt))
 					{
-						Log.Info($"{path1}----{pt}");
+                        // 如果已经设置了包
+                        if (GetBundleName(pt) != "")
+                        {
+                            continue;
+                        }
+                        Log.Info($"{path1}----{pt}");
 						BundleInfo bundleInfo = new BundleInfo();
 						bundleInfo.ParentPaths.Add(path1);
 						this.dictionary.Add(pt, bundleInfo);
@@ -327,8 +344,8 @@ namespace ETEditor
 					DirectoryInfo dirInfo = new DirectoryInfo(dir);
 					string dirName = dirInfo.Name;
 
-					SetBundleAndAtlas(pt, $"{dirName}-share");
-				}
+                    SetBundleAndAtlas(pt, $"{dirName}-share", true);
+                }
 			}
 		}
 
@@ -337,126 +354,141 @@ namespace ETEditor
 			List<string> bundlePaths = EditorResHelper.GetAllResourcePath("Assets/Bundles/", true);
 			foreach (string bundlePath in bundlePaths)
 			{
-				AssetImporter importer = AssetImporter.GetAtPath(bundlePath);
-				if (importer == null)
-				{
-					continue;
-				}
-				//Log.Info(bundlePath);
-				importer.assetBundleName = "";
-			}
+                SetBundleAndAtlas(bundlePath, "", true);
+            }
             List<string> gmbundlePaths = EditorResHelper.GetAllResourcePath("Assets/Games/", true,true);
             foreach (string bundlePath in gmbundlePaths)
             {
-                string extendName = Path.GetExtension(bundlePath);
-                if (extendName == ".cs")
-                {
-                    continue;
-                }
-
-                AssetImporter importer = AssetImporter.GetAtPath(bundlePath);
-                if (importer == null)
-                {
-                    continue;
-                }
-                //Log.Info(bundlePath);
-                importer.assetBundleName = "";
+                SetBundleAndAtlas(bundlePath, "", true);
             }
 
             List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
 			foreach (string pt in paths)
 			{
-				string extendName = Path.GetExtension(pt);
-				if (extendName == ".cs")
-				{
-					continue;
-				}
-
-				AssetImporter importer = AssetImporter.GetAtPath(pt);
-				if (importer == null)
-				{
-					continue;
-				}
-				//Log.Info(bundlePath);
-				importer.assetBundleName = "";
-
-				SetAtlas(pt, "");
-			}
+                SetBundleAndAtlas(pt, "", true);
+            }
 		}
+        private static string GetBundleName(string path)
+        {
+            string extension = Path.GetExtension(path);
+            if (extension == ".cs" || extension == ".dll" || extension == ".js")
+            {
+                return "";
+            }
+            if (path.Contains("Resources"))
+            {
+                return "";
+            }
 
-		private static void SetBundle(string path, string name)
+            AssetImporter importer = AssetImporter.GetAtPath(path);
+            if (importer == null)
+            {
+                return "";
+            }
+
+            return importer.assetBundleName;
+        }
+        private static void SetBundle(string path, string name, bool overwrite = false)
 		{
-			AssetImporter importer = AssetImporter.GetAtPath(path);
-			if (importer == null)
-			{
-				return;
-			}
+            string extension = Path.GetExtension(path);
+            if (extension == ".cs" || extension == ".dll" || extension == ".js")
+            {
+                return;
+            }
+            if (path.Contains("Resources"))
+            {
+                return;
+            }
 
-			//Log.Info(path);
-			string bundleName = "";
-			if (name == "")
-			{
-				return;
-			}
-			if (importer.assetBundleName != "")
-			{
-				return;
-			}
-			bundleName = $"{name}.unity3d";
-			importer.assetBundleName = bundleName;
-		}
+            AssetImporter importer = AssetImporter.GetAtPath(path);
+            if (importer == null)
+            {
+                return;
+            }
 
-		private static void SetAtlas(string path, string name)
+            if (importer.assetBundleName != "" && overwrite == false)
+            {
+                return;
+            }
+
+            //Log.Info(path);
+            string bundleName = "";
+            if (name != "")
+            {
+                bundleName = $"{name}.unity3d";
+            }
+
+            importer.assetBundleName = bundleName;
+        }
+
+		private static void SetAtlas(string path, string name, bool overwrite = false)
 		{
-			TextureImporter textureImporter = AssetImporter.GetAtPath(path) as TextureImporter;
-			if (textureImporter == null)
-			{
-				return;
-			}
+            string extension = Path.GetExtension(path);
+            if (extension == ".cs" || extension == ".dll" || extension == ".js")
+            {
+                return;
+            }
+            if (path.Contains("Resources"))
+            {
+                return;
+            }
 
-			if (textureImporter.spritePackingTag != "")
-			{
-				return;
-			}
+            TextureImporter textureImporter = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (textureImporter == null)
+            {
+                return;
+            }
 
-			textureImporter.spritePackingTag = name;
-			AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
-		}
+            if (textureImporter.spritePackingTag != "" && overwrite == false)
+            {
+                return;
+            }
 
-		private static void SetBundleAndAtlas(string path, string name)
+            textureImporter.spritePackingTag = name;
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+
+        }
+
+        private static void SetBundleAndAtlas(string path, string name, bool overwrite = false)
 		{
-			AssetImporter importer = AssetImporter.GetAtPath(path);
-			if (importer == null)
-			{
-				return;
-			}
+            string extension = Path.GetExtension(path);
+            if (extension == ".cs" || extension == ".dll" || extension == ".js" || extension == ".mat")
+            {
+                return;
+            }
+            if (path.Contains("Resources"))
+            {
+                return;
+            }
 
-			//Log.Info(path);
-			string bundleName = "";
-			if (name == "")
-			{
-				return;
-			}
-			if (importer.assetBundleName != "")
-			{
-				return;
-			}
-			bundleName = $"{name}.unity3d";
-			importer.assetBundleName = bundleName;
+            AssetImporter importer = AssetImporter.GetAtPath(path);
+            if (importer == null)
+            {
+                return;
+            }
 
-			TextureImporter textureImporter = importer as TextureImporter;
-			if (textureImporter == null)
-			{
-				return;
-			}
+            if (importer.assetBundleName == "" || overwrite)
+            {
+                string bundleName = "";
+                if (name != "")
+                {
+                    bundleName = $"{name}.unity3d";
+                }
 
-			if (textureImporter.spritePackingTag != "")
-			{
-				return;
-			}
+                importer.assetBundleName = bundleName;
+            }
 
-			textureImporter.spritePackingTag = name;
-			AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
-		}
+            TextureImporter textureImporter = importer as TextureImporter;
+            if (textureImporter == null)
+            {
+                return;
+            }
+
+            if (textureImporter.spritePackingTag == "" || overwrite)
+            {
+                textureImporter.spritePackingTag = name;
+                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+            }
+        }
 	}
 }
