@@ -1,6 +1,6 @@
 ﻿using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeCreateNode)]
 	public class BehaviorTreeCreateNodeEvent_SelectNode: AEvent<NodeDesigner>

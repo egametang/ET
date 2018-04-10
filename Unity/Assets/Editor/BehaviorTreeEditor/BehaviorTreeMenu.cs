@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public class AlterBundleNameWindow: EditorWindow
 	{

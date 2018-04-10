@@ -1,6 +1,6 @@
 ﻿using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeRunTreeEvent)]
 	public class BehaviorTreeRunTreeEvent_ShowDebugInfo: AEvent<BehaviorTree>

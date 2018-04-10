@@ -1,6 +1,6 @@
 ﻿using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeRightDesignerDrag)]
 	public class BehaviorTreeRightDesignerDragEvent_ModifyRightBorder: AEvent<float>

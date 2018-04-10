@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public class BundleInfo
 	{

@@ -5,7 +5,7 @@ using ETModel;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public enum NodeChildLimitType
 	{

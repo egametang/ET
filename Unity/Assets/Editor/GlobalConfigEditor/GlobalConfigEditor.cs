@@ -3,7 +3,7 @@ using ETModel;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
     public class GlobalProtoEditor: EditorWindow
     {
