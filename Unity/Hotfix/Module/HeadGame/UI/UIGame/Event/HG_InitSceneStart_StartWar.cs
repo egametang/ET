@@ -9,7 +9,7 @@ namespace ETHotfix
         {
             //进入战场的时候。添加游戏场景。
             Game.Scene.GetComponent<UIComponent>().Remove(UIType.HG_UIMenu);
-
+             
             //添加UI 界面
             UI ui = Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_UIGame);
             UI mainGame = Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_MainGame);

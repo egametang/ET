@@ -8,3 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Init.unity
     guid: e0d691ac8c1d0454ba07089ea820e18a
+  - enabled: 1
+    path: Assets/Games/HdFootball/Scenes/Menu.unity
+    guid: 2e6af9a31fe488f409b5b80418adc14a
+  - enabled: 1
+    path: Assets/Games/HdFootball/Scenes/Game.unity
+    guid: 9c28a7c9d2263ff45860a3fa53e0dab6

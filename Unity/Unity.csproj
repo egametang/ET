@@ -420,6 +420,8 @@
     <Compile Include="Assets\Scripts\Module\BehaviorTree\NodePropAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeProto.cs" />
     <Compile Include="Assets\Scripts\Module\BehaviorTree\TypeHelper.cs" />
+    <Compile Include="Assets\Scripts\Module\Collision\Collision2DComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Collision\CollisionComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Module\Config\AConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigAttribute.cs" />
@@ -929,6 +931,7 @@
     <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\WireType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Games\HdFootball\Prefabs\readMe.txt" />
     <None Include="Assets\Plugins\DOTween\DOTween.XML" />
     <None Include="Assets\Plugins\DOTween\DOTween43.xml" />
     <None Include="Assets\Plugins\DOTween\DOTween46.xml" />

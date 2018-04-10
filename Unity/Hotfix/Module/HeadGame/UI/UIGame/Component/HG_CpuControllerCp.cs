@@ -53,7 +53,6 @@ namespace ETHotfix
         public bool canTurnShoe = true;
         private float maxShoeTurn = 20.0f; //in degrees
 
-
         //starting position of cpu
         [Range(3.0f, 7.0f)] public float startingX = 5.0f;
 
@@ -73,6 +72,11 @@ namespace ETHotfix
 
         private Vector2 cpuFieldLimits = new Vector2(0.1f, 8.5f);
         private GameObject ball;
+
+        public void SetBall(GameObject _ball)
+        {
+            ball = _ball;
+        }
         
         private GameObject gameObject;
         private Transform transform;
@@ -97,7 +101,7 @@ namespace ETHotfix
             
             startingPosition = new Vector3(startingX, 0.5f, 0);
             //find and cache ball object
-            ball = GameObject.FindGameObjectWithTag("Ball");
+            //ball = GameObject.FindGameObjectWithTag("Ball");
             resetPosition();
             setCpuLevel();
 
@@ -156,7 +160,12 @@ namespace ETHotfix
 
         public void FixedUpdate()
         {
-            if (canMove && !HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
+            if(this.IsDisposed)
+            {
+                Log.Warning(" cpu  update when dispised ");
+            }
+     
+            if (!this.IsDisposed && canMove && !HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
                 playSoccer();
         }
 

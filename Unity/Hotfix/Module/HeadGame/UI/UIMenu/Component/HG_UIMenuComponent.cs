@@ -14,6 +14,14 @@ namespace ETHotfix
             self.Awake();
         }
     }
+    //[ObjectSystem]
+    //public class HG_UIMenuComponentFixUpdateSystem : LateUpdateSystem<HG_UIMenuComponent>
+    //{
+    //    public override void LateUpdate(HG_UIMenuComponent self)
+    //    {
+    //        self.FixedUpdate();
+    //    }
+    //}
 
     /// <summary>
     /// 菜单组件
@@ -32,8 +40,10 @@ namespace ETHotfix
         private TimerComponent timerComponent;
         private RawImage PlayerAvatar;
 
-        public void Awake()
+     
+            public void Awake()
         {
+            canTap = true;
             ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
             clip = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "MenuTap");
             timerComponent = Game.Scene.ModelScene.GetComponent<TimerComponent>();

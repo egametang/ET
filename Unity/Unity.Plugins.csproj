@@ -600,6 +600,7 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Games\HdFootball\Prefabs\readMe.txt" />
     <None Include="Assets\Plugins\DOTween\DOTween.XML" />
     <None Include="Assets\Plugins\DOTween\DOTween43.xml" />
     <None Include="Assets\Plugins\DOTween\DOTween46.xml" />

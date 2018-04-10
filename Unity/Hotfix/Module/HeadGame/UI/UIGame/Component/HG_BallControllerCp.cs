@@ -16,6 +16,15 @@ namespace ETHotfix
         }
     }
 
+    [ObjectSystem]
+    public class HG_BallControllerCpFixUpdateSystem : LateUpdateSystem<HG_BallControllerCp>
+    {
+        public override void LateUpdate(HG_BallControllerCp self)
+        {
+            self.FixedUpdate();
+        }
+    }
+
     public class HG_BallControllerCp : Component
     {
         private HG_GameWarComponent gc; //Reference to GameController Object
@@ -60,17 +69,18 @@ namespace ETHotfix
             ballHitGround = rc.Get<AudioClip>("Ball-Hit-Ground");
             ballHitMiddlePole = rc.Get<AudioClip>("ballHitsMiddlePole");
             //===资源类
-            resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
+            resourcesComponent = Game.Scene.ModelScene.GetComponent<ResourcesComponent>();
             ballSpeedDebug =  rc.Get<GameObject>("Ball-Speed");
             ballShadow =  rc.Get<GameObject>("BallShadow");
-            hitEffect = (GameObject)resourcesComponent.GetAsset("hdgame_hiteffect.unity3d", "HitEffect");
+            hitEffect = (GameObject)resourcesComponent.GetAsset($"{UIType.HG_HitEff}.unity3d", "HitEffect");
             transform.position = ballStartingPosition[0];
             
             AudioClip hitsd1 = (AudioClip)resourcesComponent.GetAsset($"{UIType. HG_Sound}.unity3d", "BallHit-01");
             AudioClip hitsd2 = (AudioClip)resourcesComponent.GetAsset($"{UIType. HG_Sound}.unity3d", "BallHit-02");
             AudioClip hitsd3 = (AudioClip)resourcesComponent.GetAsset($"{UIType. HG_Sound}.unity3d", "BallHit-03");
             ballHitHead = new[] {hitsd1, hitsd2, hitsd3};
-
+            CollisionComponent collisionCp = gameObject.AddComponent<CollisionComponent>();
+            collisionCp.CollisionEnterCallback += OnCollisionEnter;
         }
 
 
@@ -124,8 +134,9 @@ namespace ETHotfix
         /// <summary>
         /// Manages collition events
         /// </summary>
-        void OnCollisionEnter(Collision other)
+        void OnCollisionEnter(GameObject other)
         {
+            Log.Info($"Collis  {other.gameObject.tag}");
             if (other.gameObject.tag == "Field")
             {
                 playSfx(ballHitGround);
@@ -145,14 +156,14 @@ namespace ETHotfix
             if (other.gameObject.tag == "PlayerHead")
             {
                 playSfx(ballHitHead[Random.Range(0, ballHitHead.Length)]);
-                other.gameObject.GetComponent<PlayerController>().changeFaceStatus();
+                player.changeFaceStatus();
                 createHitGfx();
             }
 
             if (other.gameObject.tag == "CpuHead")
             {
                 playSfx(ballHitHead[Random.Range(0, ballHitHead.Length)]);
-                other.gameObject.GetComponent<CpuController>().changeFaceStatus();
+                cpu.changeFaceStatus();
                 createHitGfx();
             }
         }

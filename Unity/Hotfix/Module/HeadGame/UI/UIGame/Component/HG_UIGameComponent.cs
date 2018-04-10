@@ -62,16 +62,16 @@ namespace ETHotfix
 
             eventCenter.AddMsg(HG_WarEvent.HG_WarTimeChange, Event_GetWarTimeChange);
             eventCenter.AddMsg(HG_WarEvent.HG_WarTScoreChange, Event_GetScoreChange);
-           
-//            Button_Pause.GetComponent<Button>().onClick.Add(BtnClick_PauseGame);
-//            
-//            Button_Right.GetComponent<Button>().onClick.Add(BtnClick_MoveRight);
-//            
-//            Button_Left.GetComponent<Button>().onClick.Add(BtnClick_MoveLeft);
-//            
-//            Button_Jump.GetComponent<Button>().onClick.Add(BtnClick_Jump);
-            
-            
+
+            Button_Pause.GetComponent<Button>().onClick.Add(BtnClick_PauseGame);
+            //            
+            //            Button_Right.GetComponent<Button>().onClick.Add(BtnClick_MoveRight);
+            //            
+            //            Button_Left.GetComponent<Button>().onClick.Add(BtnClick_MoveLeft);
+            //            
+            //            Button_Jump.GetComponent<Button>().onClick.Add(BtnClick_Jump);
+
+
         }
 
         void Event_GetWarTimeChange(object obj)
@@ -98,14 +98,16 @@ namespace ETHotfix
         {
             try
             {
+                Log.Info("  BtnClick_PauseGame  ");
                 if (canTap)
                 {
                     playSfx(clip);
                     canTap = false;
                     await timerComponent.WaitAsync(250);
-//                    Log.Info("click BtnClick_PauseGame");
-//                    Game.EventSystem.Run(EventIdType.InitSceneStart_HDWar);
-                   
+                    canTap = true;
+                    //                    Log.Info("click BtnClick_PauseGame");
+                    //                    Game.EventSystem.Run(EventIdType.InitSceneStart_HDWar);
+                    Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_UIPause);
                 }
             }
             catch (Exception e)

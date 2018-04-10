@@ -97,12 +97,14 @@ namespace ETHotfix
 		public UI Create(string type)
 		{
 			try
-			{
+			{                
 				UI ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
                 uis.Add(type, ui);
 
-				// 设置canvas
-				string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;
+                //Log.Warning($"create ui {type} id is == {ui.InstanceId}");
+
+                // 设置canvas
+                string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;
 				GameObject obj = this.Root.Get<GameObject>(cavasName);
 				ui.GameObject.transform.SetParent(obj.transform, false);
 				return ui;

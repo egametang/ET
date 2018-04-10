@@ -2,10 +2,11 @@
 using ETModel;
 using UnityEngine;
 
+
 namespace ETHotfix
 {
-    [UIFactory(UIType.HG_MainGame)]
-    public class HG_GameWarFactory: IUIFactory
+    [UIFactory(UIType.HG_UIPause)]
+    public class HG_PausePanelFactory : IUIFactory
     {
         public UI Create(Scene scene, string type, GameObject gameObject)
         {
@@ -13,15 +14,12 @@ namespace ETHotfix
             {
                 ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
                 resourcesComponent.LoadBundle($"{type}.unity3d");
-                resourcesComponent.LoadBundle($"{UIType.HG_Sound}.unity3d");
-                resourcesComponent.LoadBundle($"{UIType.HG_HitEff}.unity3d");
-
-                GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset($"{type}.unity3d", "MainGame");
+                GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset($"{type}.unity3d", "PausePlane");
                 GameObject tarObj = UnityEngine.Object.Instantiate(bundleGameObject);
-                tarObj.layer = LayerMask.NameToLayer(LayerNames.WAR);
+                tarObj.layer = LayerMask.NameToLayer(LayerNames.UI);
                 UI ui = ComponentFactory.Create<UI, GameObject>(tarObj);
 
-                ui.AddComponent<HG_GameWarComponent>();
+                ui.AddComponent<HG_PanelPauseCp>();
                 return ui;
             }
             catch (Exception e)
@@ -34,8 +32,6 @@ namespace ETHotfix
         public void Remove(string type)
         {
             ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{type}.unity3d");
-            ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{UIType.HG_Sound}.unity3d");
-            ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"{UIType.HG_HitEff}.unity3d");
         }
     }
 }

@@ -22,14 +22,14 @@ namespace ETHotfix
             self.Update();
         }
     }
-    [ObjectSystem]
-    public class HG_GameWarComponentFixUpdateSystem : LateUpdateSystem<HG_GameWarComponent>
-    {
-        public override void LateUpdate(HG_GameWarComponent self)
-        {
-            self.FixedUpdate();
-        }
-    }
+    //[ObjectSystem]
+    //public class HG_GameWarComponentFixUpdateSystem : LateUpdateSystem<HG_GameWarComponent>
+    //{
+    //    public override void LateUpdate(HG_GameWarComponent self)
+    //    {
+    //        self.FixedUpdate();
+    //    }
+    //}
     /// <summary>
     /// 战斗中的 操作。 
     /// 自己的控制组件；
@@ -59,9 +59,9 @@ namespace ETHotfix
         public GameObject goalPlane;
 
 
-//	    public GameObject hudPlayerGoals; // event 发出去
-//	    public GameObject hudCpuGoals;// event 发出去
-//	    public GameObject hudGameTime;// event 发出去
+        //	    public GameObject hudPlayerGoals; // event 发出去
+        //	    public GameObject hudCpuGoals;// event 发出去
+        //	    public GameObject hudGameTime;// event 发出去
 
         //通过其他面板弄;
         public GameObject GameFinishPlane;
@@ -79,10 +79,16 @@ namespace ETHotfix
         private TimerComponent timerComponent;
         private EventCenterController eventCenter;
         private HG_PlayerControllerCp plCp;
-        private int mapMask; 
+        private int mapMask;
+        Camera curCamera;
+        HG_CpuControllerCp cpuCp;
+        HG_BallControllerCp battleCp;
+
         public void Awake()
         {
+            isFirstRun = true;
             gameObject = this.GetParent<UI>().GameObject;
+            
             transform = gameObject.transform;
             ReferenceCollector rc = gameObject.GetComponent<ReferenceCollector>();
             gameObject.AddComponent<AudioSource>();
@@ -94,17 +100,20 @@ namespace ETHotfix
             GameObject PlayerObj = rc.Get<GameObject>("Player");
             //添加自动义组件;
             UI ui = ComponentFactory.Create<UI, GameObject>(PlayerObj);
-             plCp = ui.AddComponent<HG_PlayerControllerCp>();
+            plCp = ui.AddComponent<HG_PlayerControllerCp>();
 
             GameObject CPUObj = rc.Get<GameObject>("CPU");
-            //添加自动义组件;
-            UI CPUui = ComponentFactory.Create<UI, GameObject>(CPUObj);
-            HG_CpuControllerCp cpuCp = CPUui.AddComponent<HG_CpuControllerCp>();
+
 
             ball = rc.Get<GameObject>("Ball");
             //添加自动义组件;
+            UI CPUui = ComponentFactory.Create<UI, GameObject>(CPUObj);
+            cpuCp = CPUui.AddComponent<HG_CpuControllerCp>();
+
+            //添加自动义组件;
             UI Ballui = ComponentFactory.Create<UI, GameObject>(ball);
-            Ballui.AddComponent<HG_BallControllerCp, HG_PlayerControllerCp, HG_CpuControllerCp>(plCp, cpuCp);
+            battleCp = Ballui.AddComponent<HG_BallControllerCp, HG_GameWarComponent, HG_PlayerControllerCp, HG_CpuControllerCp>(this, plCp, cpuCp);
+            cpuCp.SetBall(ball);
 
             startWistle = rc.Get<AudioClip>("startWistle");
             endWistle = rc.Get<AudioClip>("gameIsFinishedWistle");
@@ -114,13 +123,13 @@ namespace ETHotfix
             ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
 
 
-            AudioClip goalSd = (AudioClip) resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-received");
-            goalReceived = new[] {goalSd};
+            AudioClip goalSd = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-received");
+            goalReceived = new[] { goalSd };
             AudioClip goalLandSd1 =
-                (AudioClip) resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-landed-01");
+                (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-landed-01");
             AudioClip goalLandSd2 =
-                (AudioClip) resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-landed-02");
-            goalLanded = new[] {goalLandSd1, goalLandSd2};
+                (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "goal-landed-02");
+            goalLanded = new[] { goalLandSd1, goalLandSd2 };
 
             gameIsFinished = false;
             gameFinishFlag = false;
@@ -130,18 +139,21 @@ namespace ETHotfix
             eventCenter.AddMsg(HG_WarEvent.HG_OP_Right, Event_OP_Right);
             eventCenter.AddMsg(HG_WarEvent.HG_OP_Jump, Event_OP_Jump);
 
-            
+
             mapMask = LayerMask.GetMask("UI");
-            
+            curCamera = Camera.current;
+            remainingTime = gameTime;
+            passTime = 0;
             init();
 
             if (GameFinishPlane)
                 GameFinishPlane.SetActive(false);
-
-            remainingTime = gameTime;
+          
         }
 
 
+        int passTime = 0;
+        GameObject Counter;
         //setup the game for the first run
         async void init()
         {
@@ -153,21 +165,33 @@ namespace ETHotfix
                 ball.GetComponent<Rigidbody>().isKinematic = true;
 
                 //show the countdown timer
-                GameObject Counter =
+                Counter =
                     GameObject.Instantiate(counter, new Vector3(0, 1.8f, -1),
                         Quaternion.Euler(0, 180, 0)) as GameObject;
                 Counter.name = "Starting-Time-Counter";
-//			yield return new WaitForSeconds(startDelay);
+                //			yield return new WaitForSeconds(startDelay);
                 await timerComponent.WaitAsync(startDelay);
                 //start the game
                 isFirstRun = false;
                 playSfx(startWistle);
-//			yield return new WaitForSeconds(startWistle.length);
-                await timerComponent.WaitAsync((long) (startWistle.length * 1000));
+                //			yield return new WaitForSeconds(startWistle.length);
+                await timerComponent.WaitAsync((long)(startWistle.length * 1000));
 
-                //unfreeze the ball
-                ball.GetComponent<Rigidbody>().useGravity = true;
-                ball.GetComponent<Rigidbody>().isKinematic = false;
+                if(!this.IsDisposed)
+                {
+                    //unfreeze the ball
+                    ball.GetComponent<Rigidbody>().useGravity = true;
+                    ball.GetComponent<Rigidbody>().isKinematic = false;
+                    while (true)
+                    {
+                        await timerComponent.WaitAsync(1000);
+                        passTime++;
+                        //show game timer
+                        manageGameTime();
+                    }
+                    eventCenter.SendMsg(HG_WarEvent.HG_WarTimeChange, remainingTime);
+                }
+           
             }
         }
         /// <summary>
@@ -175,45 +199,49 @@ namespace ETHotfix
         /// </summary>
         void movePlayerWithKeyboard()
         {
-           
-                if (Input.GetKey(KeyCode.LeftArrow)||Input.GetKey(KeyCode.W))
-                {
-                    Log.Info("left click");
-                    plCp. moveLeft();
-                }
 
-                if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-                {
-                    Log.Info("right click");
-                    plCp.moveRight();
-                }
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            {
+                //Log.Info("left click");
+                plCp.moveLeft();
+            }
 
-                if (Input.GetKeyDown(KeyCode.Space) )
-                {
-                    Log.Info("jump click");
-                    plCp. doJump();
-                }
-            
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            {
+                //Log.Info("right click");
+                plCp.moveRight();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //Log.Info("jump click");
+                plCp.doJump();
+            }
+
         }
 
 
         public void Update()
         {
-            //show game timer
-            manageGameTime();
+            if(this.IsDisposed)
+            {
+                Log.Warning("game war cp update   when disposed");
+            }
+            
+      
 
             if (!gameIsFinished)
                 manageGoals();
-            
+
             if (Input.GetMouseButtonDown(1))
             {
                 Log.Info("mouse dwon");
-//                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-//                RaycastHit hit;
-//                if (Physics.Raycast(ray, out hit, 1000))
-//                {
-//                    
-//                }
+                //                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                //                RaycastHit hit;
+                //                if (Physics.Raycast(ray, out hit, 1000))
+                //                {
+                //                    
+                //                }
             }
 
             if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
@@ -234,21 +262,21 @@ namespace ETHotfix
                 if (playerGoals > cpuGoals)
                 {
                     Log.Info("Player Wins");
-//                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[0];
+                    //                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[0];
                 }
                 else if (playerGoals < cpuGoals)
                 {
                     Log.Info("CPU Wins");
-//                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[1];
+                    //                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[1];
                 }
                 else if (playerGoals == cpuGoals)
                 {
                     Log.Info("Draw!");
-//                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[2];
+                    //                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[2];
                 }
 
                 //show gamefinish plane
-                GameFinishPlane.SetActive(true);
+                //GameFinishPlane.SetActive(true);
             }
         }
         private RaycastHit hitInfo;
@@ -257,56 +285,62 @@ namespace ETHotfix
         private Ray ray2;
         public void FixedUpdate()
         {
-  
+
         }
-        void movePlayerWithTouch() {
-//Log.Info($"touch num is {	Input.touches.Length}");
-            if(	Input.touches.Length > 0) { 
-//                Camera.current
-                ray = Camera.current.ScreenPointToRay(Input.touches[0].position);
-                if(Input.touches.Length > 1)
-                    ray2 = Camera.current.ScreenPointToRay(Input.touches[1].position);
+        void movePlayerWithTouch()
+        {
+            //Log.Info($"touch num is {	Input.touches.Length}");
+            if (Input.touches.Length > 0 && curCamera)
+            {
+                //                Camera.current
+                ray = curCamera.ScreenPointToRay(Input.touches[0].position);
+                if (Input.touches.Length > 1)
+                    ray2 = curCamera.ScreenPointToRay(Input.touches[1].position);
                 else
-                    ray2 = Camera.current.ScreenPointToRay(Input.touches[0].position);
+                    ray2 = curCamera.ScreenPointToRay(Input.touches[0].position);
             }
-            else if (Input.GetMouseButton(0))
-                ray = Camera.current.ScreenPointToRay(Input.mousePosition);
+            else if (Input.GetMouseButton(0) && curCamera)
+                ray = curCamera.ScreenPointToRay(Input.mousePosition);
             else
                 return;
-		
-            
-            Log.Info("check btn click");
-            if (Physics.Raycast(ray, out hitInfo,1000)) {
+
+
+            //Log.Info("check btn click");
+            if (Physics.Raycast(ray, out hitInfo, 1000))
+            {
                 GameObject objectHit = hitInfo.transform.gameObject;
-                Log.Info($"btn click namge is {objectHit.name}");
-                switch(objectHit.name) {				
+                //Log.Info($"btn click namge is {objectHit.name}");
+                switch (objectHit.name)
+                {
                     case "Button_Jump":
-                        
-                          plCp.  doJump();
+
+                        plCp.doJump();
                         break;
                     case "Button_Left":
-                        plCp. moveLeft();
+                        plCp.moveLeft();
                         break;
                     case "Button_Right":
-                        plCp. moveRight();
+                        plCp.moveRight();
                         break;
-                }	
+                }
             }
 
-            if (Physics.Raycast(ray2, out hitInfo2,1000)) {
+            if (Physics.Raycast(ray2, out hitInfo2, 1000))
+            {
                 GameObject objectHit2 = hitInfo2.transform.gameObject;
-                switch(objectHit2.name) {				
+                switch (objectHit2.name)
+                {
                     case "Button_Jump":
-                         
-                        plCp.  doJump();
+
+                        plCp.doJump();
                         break;
                     case "Button_Left":
-                        plCp. moveLeft();
+                        plCp.moveLeft();
                         break;
                     case "Button_Right":
-                        plCp.  moveRight();
+                        plCp.moveRight();
                         break;
-                }	
+                }
             }
         }
 
@@ -348,11 +382,11 @@ namespace ETHotfix
                 {
                     t += Time.deltaTime * speed;
                     gp.transform.position = new Vector3(Mathf.SmoothStep(15, 0, t), 2, -1);
-//				yield return 0;
+                    //				yield return 0;
                     await timerComponent.WaitAsync(0);
                 }
 
-//			yield return new WaitForSeconds(0.75f);
+                //			yield return new WaitForSeconds(0.75f);
 
                 await timerComponent.WaitAsync(750);
                 float t2 = 0;
@@ -360,12 +394,12 @@ namespace ETHotfix
                 {
                     t2 += Time.deltaTime * speed;
                     gp.transform.position = new Vector3(Mathf.SmoothStep(0, -15, t2), 2, -1);
-//				yield return 0;
+                    //				yield return 0;
                     await timerComponent.WaitAsync(0);
                 }
             }
 
-//		yield return new WaitForSeconds(1.5f);
+            //		yield return new WaitForSeconds(1.5f);
             await timerComponent.WaitAsync(1500);
             GameObject.Destroy(gp);
 
@@ -377,8 +411,8 @@ namespace ETHotfix
 
             //continue the game
             playSfx(startWistle);
-//		yield return new WaitForSeconds(startWistle.length);
-            await timerComponent.WaitAsync((long) startWistle.length * 1000);
+            //		yield return new WaitForSeconds(startWistle.length);
+            await timerComponent.WaitAsync((long)startWistle.length * 1000);
             ball.GetComponent<Rigidbody>().isKinematic = false;
             ball.GetComponent<Rigidbody>().AddForce(new Vector3(0, 1, 0), ForceMode.Impulse);
         }
@@ -387,8 +421,8 @@ namespace ETHotfix
         //show goals on the screen
         void manageGoals()
         {
-//		hudCpuGoals.GetComponent<TextMesh>().text = cpuGoals.ToString();
-//		hudPlayerGoals.GetComponent<TextMesh>().text = playerGoals.ToString();
+            //		hudCpuGoals.GetComponent<TextMesh>().text = cpuGoals.ToString();
+            //		hudPlayerGoals.GetComponent<TextMesh>().text = playerGoals.ToString();
             eventCenter.SendMsg(HG_WarEvent.HG_WarTScoreChange, playerGoals, cpuGoals);
         }
 
@@ -396,7 +430,7 @@ namespace ETHotfix
         //show game timer on the screen
         void manageGameTime()
         {
-            remainingTime = (int) (gameTime - Time.timeSinceLevelLoad);
+            remainingTime = (int)(gameTime - passTime);
 
             //finish the game if time is up
             if (remainingTime <= 0)
@@ -405,7 +439,7 @@ namespace ETHotfix
                 remainingTime = 0;
             }
 
-//		hudGameTime.GetComponent<TextMesh>().text = remainingTime.ToString();
+            //		hudGameTime.GetComponent<TextMesh>().text = remainingTime.ToString();
             eventCenter.SendMsg(HG_WarEvent.HG_WarTimeChange, remainingTime);
         }
 
@@ -415,12 +449,16 @@ namespace ETHotfix
         //*****************************************************************************
         void playSfx(AudioClip _clip)
         {
-            gameObject.GetComponent<AudioSource>().clip = _clip;
-            if (!gameObject.GetComponent<AudioSource>().isPlaying)
+            if (gameObject)
             {
-                gameObject.GetComponent<AudioSource>().Play();
+                gameObject.GetComponent<AudioSource>().clip = _clip;
+                if (!gameObject.GetComponent<AudioSource>().isPlaying)
+                {
+                    gameObject.GetComponent<AudioSource>().Play();
+                }
             }
         }
+
 
         void Event_OP_Left()
         {
@@ -455,6 +493,11 @@ namespace ETHotfix
             eventCenter.RemoveMsg(HG_WarEvent.HG_OP_Left, Event_OP_Left);
             eventCenter.RemoveMsg(HG_WarEvent.HG_OP_Right, Event_OP_Right);
             eventCenter.RemoveMsg(HG_WarEvent.HG_OP_Jump, Event_OP_Jump);
+            GameObject.Destroy(Counter);
+            plCp.Dispose();
+            cpuCp.Dispose();
+            battleCp.Dispose();
+
             base.Dispose();
         }
     }
