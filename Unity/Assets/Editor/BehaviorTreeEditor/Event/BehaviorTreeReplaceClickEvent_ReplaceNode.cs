@@ -1,7 +1,7 @@
 ﻿using ETModel;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeReplaceClick)]
 	public class BehaviorTreeReplaceClickEvent_ReplaceNode: AEvent<string, Vector2>

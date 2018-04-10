@@ -1,6 +1,6 @@
 ﻿using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeOpenEditor)]
 	public class BehaviorTreeOpenEditorEvent_UpdatePropList: AEvent

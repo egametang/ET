@@ -79,6 +79,13 @@ namespace ETModel
 				abInfo.Value?.AssetBundle?.Unload(true);
 			}
 
+			while (cacheDictionary.Count > 0)
+			{
+				ABInfo abInfo = this.cacheDictionary.FirstValue;
+				this.cacheDictionary.Dequeue();
+				abInfo.AssetBundle?.Unload(true);
+			}
+
 			this.bundles.Clear();
 			this.cacheDictionary.Clear();
 			this.resourceCache.Clear();
@@ -93,11 +100,7 @@ namespace ETModel
 			{
 				throw new Exception($"not found asset: {path}");
 			}
-			
-			if (resource == null)
-			{
-				throw new Exception($"asset type error, path: {path}");
-			}
+
 			return resource;
 		}
 
@@ -118,12 +121,13 @@ namespace ETModel
 		{
 			assetBundleName = assetBundleName.ToLower();
 
-			//Log.Debug($"unload bundle {assetBundleName}");
 			ABInfo abInfo;
 			if (!this.bundles.TryGetValue(assetBundleName, out abInfo))
 			{
 				throw new Exception($"not found assetBundle: {assetBundleName}");
 			}
+
+			//Log.Debug($"---------- unload one bundle {assetBundleName} refcount: {abInfo.RefCount}");
 
 			--abInfo.RefCount;
 			if (abInfo.RefCount > 0)
@@ -155,7 +159,7 @@ namespace ETModel
 			assetBundleName = assetBundleName.ToLower();
 			string[] dependencies = ResourcesHelper.GetSortedDependencies(assetBundleName);
 
-			Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
+			//Log.Debug($"-----------dep load {assetBundleName} dep: {dependencies.ToList().ListToString()}");
 			foreach (string dependency in dependencies)
 			{
 				if (string.IsNullOrEmpty(dependency))
@@ -168,6 +172,7 @@ namespace ETModel
 
 		public void LoadOneBundle(string assetBundleName)
 		{
+			//Log.Debug($"---------------load one bundle {assetBundleName}");
 			ABInfo abInfo;
 			if (this.bundles.TryGetValue(assetBundleName, out abInfo))
 			{
@@ -204,7 +209,22 @@ namespace ETModel
 				return;
 			}
 
-			AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(PathHelper.AppHotfixResPath, assetBundleName));
+			string p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
+			AssetBundle assetBundle = null;
+			if (File.Exists(p))
+			{
+				assetBundle = AssetBundle.LoadFromFile(p);
+			}
+			else
+			{
+				p = Path.Combine(PathHelper.AppResPath, assetBundleName);
+				assetBundle = AssetBundle.LoadFromFile(p);
+			}
+
+			if (assetBundle == null)
+			{
+				throw new Exception($"assets bundle not found: {assetBundleName}");
+			}
 
 			if (!assetBundle.isStreamedSceneAssetBundle)
 			{
@@ -243,6 +263,7 @@ namespace ETModel
 
 		public async Task LoadOneBundleAsync(string assetBundleName)
 		{
+			//Log.Debug($"---------------load one bundle {assetBundleName}");
 			ABInfo abInfo;
 			if (this.bundles.TryGetValue(assetBundleName, out abInfo))
 			{
@@ -279,10 +300,21 @@ namespace ETModel
 				return;
 			}
 
-			AssetBundle assetBundle;
-			using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = ComponentFactory.Create<AssetsBundleLoaderAsync>())
+			string p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
+			AssetBundle assetBundle = null;
+			if (File.Exists(p))
 			{
-				assetBundle = await assetsBundleLoaderAsync.LoadAsync(assetBundleName);
+				assetBundle = AssetBundle.LoadFromFile(p);
+			}
+			else
+			{
+				p = Path.Combine(PathHelper.AppResPath, assetBundleName);
+				assetBundle = AssetBundle.LoadFromFile(p);
+			}
+
+			if (assetBundle == null)
+			{
+				throw new Exception($"assets bundle not found: {assetBundleName}");
 			}
 
 			if (!assetBundle.isStreamedSceneAssetBundle)

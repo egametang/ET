@@ -1,7 +1,7 @@
 ﻿using ETModel;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreePropertyDesignerNewCreateClick)]
 	public class BehaviorTreeNewCreateClickEvent_CreateNode: AEvent<string, Vector2>
