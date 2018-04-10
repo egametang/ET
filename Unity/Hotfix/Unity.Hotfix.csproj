@@ -100,12 +100,14 @@
     <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_CpuControllerCp.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_GameWarComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PanelPauseCp.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PanelResultCp.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_PlayerControllerCp.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Component\HG_UIGameComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Event\HG_InitSceneStart_ReStartWar.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Event\HG_InitSceneStart_StartWar.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_GameWarFactory.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_PausePanelFactory.cs" />
+    <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_ResultPanelFactory.cs" />
     <Compile Include="Module\HeadGame\UI\UIGame\Factory\HG_UIGameFactory.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Component\HG_UIMenuComponent.cs" />
     <Compile Include="Module\HeadGame\UI\UIMenu\Event\HG_InitSceneStart_StartGame.cs" />

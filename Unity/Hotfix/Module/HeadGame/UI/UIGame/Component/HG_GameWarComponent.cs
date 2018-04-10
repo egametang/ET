@@ -38,7 +38,7 @@ namespace ETHotfix
     /// </summary>
     public class HG_GameWarComponent : Component
     {
-        public static int gameTime = 90; //gameplay time for each round
+        public static int gameTime = 10; //gameplay time for each round
         private int remainingTime; //time left to finish the game
         public static int playerGoals; //total goals by player
         public static int cpuGoals; //total goals by cpu
@@ -277,6 +277,8 @@ namespace ETHotfix
 
                 //show gamefinish plane
                 //GameFinishPlane.SetActive(true);
+
+                UI ui = Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_UIResult);
             }
         }
         private RaycastHit hitInfo;
