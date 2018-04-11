@@ -143,11 +143,11 @@ namespace ETHotfix
             mapMask = LayerMask.GetMask("UI");
             curCamera = Camera.current;
             remainingTime = gameTime;
+            eventCenter.SendMsg(HG_WarEvent.HG_WarTimeChange, remainingTime);
+            Log.Warning($"发送了剩余时间 {remainingTime} ");
             passTime = 0;
             init();
 
-            if (GameFinishPlane)
-                GameFinishPlane.SetActive(false);
           
         }
 
@@ -189,7 +189,6 @@ namespace ETHotfix
                         //show game timer
                         manageGameTime();
                     }
-                    eventCenter.SendMsg(HG_WarEvent.HG_WarTimeChange, remainingTime);
                 }
            
             }
@@ -257,15 +256,17 @@ namespace ETHotfix
 
                 //play end wistle
                 playSfx(endWistle);
-
+                bool? isWin = null;
                 //declare the winner
                 if (playerGoals > cpuGoals)
                 {
+                    isWin = true;
                     Log.Info("Player Wins");
                     //                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[0];
                 }
                 else if (playerGoals < cpuGoals)
                 {
+                    isWin = false;
                     Log.Info("CPU Wins");
                     //                    gameFinishStatusImage.GetComponent<Renderer>().material.mainTexture = statusImages[1];
                 }
@@ -278,7 +279,7 @@ namespace ETHotfix
                 //show gamefinish plane
                 //GameFinishPlane.SetActive(true);
 
-                UI ui = Game.Scene.GetComponent<UIComponent>().Create(UIType.HG_UIResult);
+                UI ui = Game.Scene.GetComponent<UIComponent>().Create<bool?>(UIType.HG_UIResult, isWin);
             }
         }
         private RaycastHit hitInfo;

@@ -8,9 +8,9 @@ using UnityEngine.U2D;
 namespace ETHotfix
 {
     [ObjectSystem]
-    public class HG_PanelResultCpAwakeSystem : AwakeSystem<HG_PanelResultCp,bool>
+    public class HG_PanelResultCpAwakeSystem : AwakeSystem<HG_PanelResultCp,bool?>
     {
-        public override void Awake(HG_PanelResultCp self,bool isWin)
+        public override void Awake(HG_PanelResultCp self,bool? isWin)
         {
             self.Awake(isWin);
         }
@@ -43,8 +43,9 @@ namespace ETHotfix
         }
         private Status currentStatus = Status.PLAY;
 
-        public void Awake(bool isWin)
+        public void Awake(bool? isWin)
         {
+            Log.Info($"战斗结果 {isWin}");
             gameObject = this.GetParent<UI>().GameObject;
             transform = gameObject.transform;
             timerComponent = Game.Scene.ModelScene.GetComponent<TimerComponent>();
@@ -59,7 +60,21 @@ namespace ETHotfix
             StatusImg = obj.GetComponent<Image>();
             ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
             clip = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "MenuTap");
-            string imgStr = isWin? "you-win" : "you-have-lost";
+            string imgStr = "draw";
+            //if (isWin == null)
+            //{
+            //    imgStr = "draw";
+            //}
+            //else
+            if (isWin == true)
+            {
+                imgStr = "you-win" ;
+            }
+            else if (isWin == false)
+            {
+                imgStr =  "you-have-lost";
+            }
+            
             SpriteAtlas oenAtals = (SpriteAtlas)resourcesComponent.GetAsset($"{UIType.HG_Res}.unity3d", "UIAtlas");
 
             PauseGame();

@@ -6,9 +6,9 @@ using UnityEngine;
 namespace ETHotfix
 {
     [UIFactory(UIType.HG_UIResult)]
-    public class HG_ResultPanelFactory : IUIFactory
+    public class HG_ResultPanelFactory : IUIFactoryP1
     {
-        public UI Create(Scene scene, string type, GameObject gameObject)
+        public UI Create<K>(Scene scene, string type, GameObject gameObject,K k)
         {
             try
             {
@@ -19,7 +19,7 @@ namespace ETHotfix
                 tarObj.layer = LayerMask.NameToLayer(LayerNames.UI);
                 UI ui = ComponentFactory.Create<UI, GameObject>(tarObj);
 
-                ui.AddComponent<HG_PanelResultCp,bool>(true);
+                ui.AddComponent<HG_PanelResultCp, K>(k);
                 return ui;
             }
             catch (Exception e)

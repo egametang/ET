@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +34,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -136,6 +137,7 @@
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="Module\UI\IUIFactoryP1.cs" />
     <Compile Include="Module\UI\UIComponent.cs" />
     <Compile Include="Entity\Game.cs" />
     <Compile Include="Entity\Scene.cs" />

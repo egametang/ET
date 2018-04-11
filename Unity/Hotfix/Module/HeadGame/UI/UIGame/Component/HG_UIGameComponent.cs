@@ -60,6 +60,7 @@ namespace ETHotfix
             ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
             clip = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "MenuTap");
 
+            Log.Warning(" 监听   时间变化事件 ");
             eventCenter.AddMsg(HG_WarEvent.HG_WarTimeChange, Event_GetWarTimeChange);
             eventCenter.AddMsg(HG_WarEvent.HG_WarTScoreChange, Event_GetScoreChange);
 
@@ -76,6 +77,8 @@ namespace ETHotfix
 
         void Event_GetWarTimeChange(object obj)
         {
+
+            Log.Warning($"收到了时间变化事件 {obj}");
             if (obj is int)
             {
                 int time = (int)obj;
