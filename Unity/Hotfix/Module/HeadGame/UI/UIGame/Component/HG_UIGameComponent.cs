@@ -37,7 +37,7 @@ namespace ETHotfix
         private AudioSource _audioSource;
         private AudioClip clip;
         private bool canTap = true;
-        
+
         public void Awake()
         {
             gameObject = this.GetParent<UI>().GameObject;
@@ -45,18 +45,18 @@ namespace ETHotfix
             timerComponent = Game.Scene.ModelScene.GetComponent<TimerComponent>();
             eventCenter = Game.Scene.GetComponent<EventCenterController>();
             _audioSource = gameObject.AddComponent<AudioSource>();
-            
+
             ReferenceCollector rc = gameObject.GetComponent<ReferenceCollector>();
-            Button_Pause =  rc.Get<GameObject>("Button_Pause");
-            Button_Right =  rc.Get<GameObject>("Button_Right");
-            Button_Left =  rc.Get<GameObject>("Button_Left");
-            Button_Jump =  rc.Get<GameObject>("Button_Jump");
-            LabTime =  rc.Get<GameObject>("Time").GetComponent<Text>();
-            LabCpuName =  rc.Get<GameObject>("CpuName").GetComponent<Text>();
-            LabCpuScore =  rc.Get<GameObject>("CpuGoals").GetComponent<Text>();
-            LabPlayerName =  rc.Get<GameObject>("PlayerName").GetComponent<Text>();
-            LabPlayerScore =  rc.Get<GameObject>("PlayerGoals").GetComponent<Text>();
-            
+            Button_Pause = rc.Get<GameObject>("Button_Pause");
+            Button_Right = rc.Get<GameObject>("Button_Right");
+            Button_Left = rc.Get<GameObject>("Button_Left");
+            Button_Jump = rc.Get<GameObject>("Button_Jump");
+            LabTime = rc.Get<GameObject>("Time").GetComponent<Text>();
+            LabCpuName = rc.Get<GameObject>("CpuName").GetComponent<Text>();
+            LabCpuScore = rc.Get<GameObject>("CpuGoals").GetComponent<Text>();
+            LabPlayerName = rc.Get<GameObject>("PlayerName").GetComponent<Text>();
+            LabPlayerScore = rc.Get<GameObject>("PlayerGoals").GetComponent<Text>();
+
             ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
             clip = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "MenuTap");
 
@@ -65,6 +65,11 @@ namespace ETHotfix
             eventCenter.AddMsg(HG_WarEvent.HG_WarTScoreChange, Event_GetScoreChange);
 
             Button_Pause.GetComponent<Button>().onClick.Add(BtnClick_PauseGame);
+
+            rc.Get<GameObject>("Button").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet); });
+            rc.Get<GameObject>("Button (1)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,"asdsad"); });
+            rc.Get<GameObject>("Button (2)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,2, gameObject); });
+
             //            
             //            Button_Right.GetComponent<Button>().onClick.Add(BtnClick_MoveRight);
             //            

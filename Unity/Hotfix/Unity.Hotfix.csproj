@@ -133,6 +133,7 @@
     <Compile Include="Module\Message\SessionWrapComponent.cs" />
     <Compile Include="Module\Message\SessionWrap.cs" />
     <Compile Include="Module\ModuleEvent\EventCenterController.cs" />
+    <Compile Include="Module\ModuleEvent\EventCenterObject.cs" />
     <Compile Include="Module\ModuleEvent\MonoEventComponent.cs" />
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />

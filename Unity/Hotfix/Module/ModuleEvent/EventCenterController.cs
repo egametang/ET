@@ -16,6 +16,8 @@ namespace ETHotfix
     /// <summary>
     /// Event center controller.
     /// 事件控制中心;
+    /// 每个事件消息 有一个接收控制对象，对象里有3种事件;
+    /// 
     /// </summary>
     public class EventCenterController : Component
     {
@@ -24,272 +26,87 @@ namespace ETHotfix
         {
             
         }
-        public delegate void VoidDelegate();
-
-        public delegate void VoidDataDelegate(object data);
-
-        public delegate void VoidObjDelegate(object data, object data2);
-
-        /// <summary>
-        /// The message arr.
-        /// 不带参数对回调委托;
-        /// </summary>
-        Dictionary<string, List<VoidDelegate>> msgArr = new Dictionary<string, List<VoidDelegate>>();
-
-        /// <summary>
-        /// The message data arr.
-        /// 带参数对回调委托;
-        /// </summary>
-        Dictionary<string, List<VoidDataDelegate>> msgDataArr = new Dictionary<string, List<VoidDataDelegate>>();
-
-        /// <summary>
-        /// The message object arr.
-        /// 不定参数回调委托;
-        /// </summary>
-        Dictionary<string, List<VoidObjDelegate>> msgObjArr = new Dictionary<string, List<VoidObjDelegate>>();
-
-        #region 无参数回调
-
-        public void AddMsg(string evtName, VoidDelegate fun)
+        private  Dictionary<string, EventCenterObject> msgCallbackList=new Dictionary<string, EventCenterObject>();
+        
+        public void AddMsg(string evtName, Action fun)
         {
-//		GameObject obj = new GameObject ();
-            if (msgArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                if (!msgArr[evtName].Contains(fun))
-                {
-                    msgArr[evtName].Add(fun);
-                }
+                msgCallbackList[evtName].MsgCallback += fun;
             }
             else
             {
-                msgArr[evtName] = new List<VoidDelegate>();
-                msgArr[evtName].Add(fun);
+                msgCallbackList[evtName] = new EventCenterObject();
+                msgCallbackList[evtName].MsgCallback += fun;
             }
         }
-
-        public void RemoveMsg(string evtName, VoidDelegate fun)
+        public void AddMsg(string evtName, Action<object> fun)
         {
-            if (msgArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                if (msgArr[evtName].Contains(fun))
-                {
-                    msgArr[evtName].Remove(fun);
-                }
-            }
-        }
-
-        #endregion
-
-
-        #region 不定数据回调
-
-        public void AddMsg(string evtName, VoidObjDelegate fun)
-        {
-            if (msgObjArr.ContainsKey(evtName))
-            {
-                if (!msgObjArr[evtName].Contains(fun))
-                {
-                    msgObjArr[evtName].Add(fun);
-                }
+                msgCallbackList[evtName].MsgP1Callback += fun;
             }
             else
             {
-                msgObjArr[evtName] = new List<VoidObjDelegate>();
-                msgObjArr[evtName].Add(fun);
+                msgCallbackList[evtName] = new EventCenterObject();
+                msgCallbackList[evtName].MsgP1Callback += fun;
             }
         }
-
-        public void RemoveMsg(string evtName, VoidObjDelegate fun)
+        public void AddMsg(string evtName, Action<object, object> fun)
         {
-            if (msgObjArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                if (msgObjArr[evtName].Contains(fun))
-                {
-                    msgObjArr[evtName].Remove(fun);
-                }
-            }
-        }
-
-        #endregion
-
-        #region 封装数据回调
-
-        public void AddMsg(string evtName, VoidDataDelegate fun)
-        {
-            if (msgDataArr.ContainsKey(evtName))
-            {
-                if (!msgDataArr[evtName].Contains(fun))
-                {
-                    msgDataArr[evtName].Add(fun);
-                }
+                msgCallbackList[evtName].MsgP2Callback += fun;
             }
             else
             {
-                msgDataArr[evtName] = new List<VoidDataDelegate>();
-                msgDataArr[evtName].Add(fun);
+                msgCallbackList[evtName] = new EventCenterObject();
+                msgCallbackList[evtName].MsgP2Callback += fun;
             }
         }
-
-        public void RemoveMsg(string evtName, VoidDataDelegate fun)
+        public void RemoveMsg(string evtName, Action fun)
         {
-            if (msgDataArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                if (msgDataArr[evtName].Contains(fun))
-                {
-                    msgDataArr[evtName].Remove(fun);
-                }
+                msgCallbackList[evtName].MsgCallback -= fun;
             }
         }
-
-        #endregion
+        public void RemoveMsg(string evtName, Action<object> fun)
+        {
+            if (msgCallbackList.ContainsKey(evtName))
+            {
+                msgCallbackList[evtName].MsgP1Callback -= fun;
+            }
+        }
+        public void RemoveMsg(string evtName, Action<object, object> fun)
+        {
+            if (msgCallbackList.ContainsKey(evtName))
+            {
+                msgCallbackList[evtName].MsgP2Callback -= fun;
+            }
+        }
 
         public void SendMsg(string evtName)
         {
-            if (msgArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                List<VoidDelegate> allFuns = null;
-                msgArr.TryGetValue(evtName, out allFuns);
-                if (allFuns != null)
-                {
-//				try {
-                    List<VoidDelegate> errorList = new List<VoidDelegate>();
-                    List<VoidDelegate> exeList = new List<VoidDelegate>(allFuns);
-                    foreach (VoidDelegate oneFun in exeList)
-                    {
-                        if (oneFun != null)
-                        {
-                            if (oneFun.Target != null && oneFun.Method != null)
-                            {
-                                if (oneFun.Target is MonoBehaviour)
-                                {
-                                    MonoBehaviour mon = oneFun.Target as MonoBehaviour;
-                                    if (mon != null)
-                                    {
-                                        GameObject obj = mon.gameObject;
-                                        if (obj != null)
-                                        {
-                                            obj.SendMessage(oneFun.Method.Name, null,
-                                                SendMessageOptions.DontRequireReceiver);
-                                        }
-                                        else
-                                        {
-                                            errorList.Add(oneFun);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        errorList.Add(oneFun);
-                                    }
-                                }
-                                else
-                                {
-                                    oneFun();
-                                }
-                            }
-                            else
-                            {
-                                errorList.Add(oneFun);
-                            }
-                        }
-                    }
-                    foreach (VoidDelegate oneFun in errorList)
-                    {
-                        if (oneFun != null)
-                        {
-                            allFuns.Remove(oneFun);
-                        }
-                    }
-//				} catch {
-//					Debuger.LogError ("foreach (VoidDelegate)  error  " + evtName);
-//				}
-                }
+                msgCallbackList[evtName].SendMsg();
             }
         }
-
         public void SendMsg(string evtName, object objData)
         {
-            if (msgDataArr.ContainsKey(evtName))
+            if (msgCallbackList.ContainsKey(evtName))
             {
-                List<VoidDataDelegate> allFuns = null;
-                msgDataArr.TryGetValue(evtName, out allFuns);
-                if (allFuns != null)
-                {
-//				try {
-                    List<VoidDataDelegate> errorList = new List<VoidDataDelegate>();
-                    List<VoidDataDelegate> exeList = new List<VoidDataDelegate>(allFuns);
-                    foreach (VoidDataDelegate oneFun in exeList)
-                    {
-                        if (oneFun.Target != null && oneFun.Method != null)
-                        {
-                            if (oneFun.Target is MonoBehaviour)
-                            {
-                                MonoBehaviour mon = oneFun.Target as MonoBehaviour;
-                                GameObject obj = mon.gameObject;
-                                obj.SendMessage(oneFun.Method.Name, objData, SendMessageOptions.DontRequireReceiver);
-                            }
-                            else
-                            {
-                                oneFun(objData);
-                            }
-                        }
-                        else
-                        {
-                            errorList.Add(oneFun);
-                        }
-                    }
-                    foreach (VoidDataDelegate oneFun in errorList)
-                    {
-                        if (oneFun != null)
-                        {
-                            allFuns.Remove(oneFun);
-                        }
-                    }
-//				} catch {
-//					Debuger.LogError ("foreach (VoidDataDelegate)  error " + evtName);
-//				}
-                }
+                msgCallbackList[evtName].SendMsg(objData);
+            }
+        }
+        public void SendMsg(string evtName, object objData, object objData1)
+        {
+            if (msgCallbackList.ContainsKey(evtName))
+            {
+                msgCallbackList[evtName].SendMsg(objData, objData1);
             }
         }
 
-        public void SendMsg(string evtName, object objData, object objData2)
-        {
-            if (msgObjArr.ContainsKey(evtName))
-            {
-                List<VoidObjDelegate> allFuns = null;
-                msgObjArr.TryGetValue(evtName, out allFuns);
-                if (allFuns != null)
-                {
-//				try {
-                    List<VoidObjDelegate> errorList = new List<VoidObjDelegate>();
-                    List<VoidObjDelegate> exeList = new List<VoidObjDelegate>(allFuns);
-                    foreach (VoidObjDelegate oneFun in exeList)
-                    {
-                        if (oneFun.Target != null && oneFun.Method != null)
-                        {
-//							if (oneFun.Target  is GameObject) {
-//								GameObject obj = oneFun.Target as GameObject; 
-//								obj.SendMessage (oneFun.Method.Name, objData, SendMessageOptions.DontRequireReceiver);
-//							} else {
-                            oneFun(objData, objData2);
-//							}
-                        }
-                        else
-                        {
-                            errorList.Add(oneFun);
-                        }
-                    }
-                    foreach (VoidObjDelegate oneFun in errorList)
-                    {
-                        if (oneFun != null)
-                        {
-                            allFuns.Remove(oneFun);
-                        }
-                    }
-//				} catch {
-//					Debuger.LogError ("foreach (VoidObjDelegate)  error  " + evtName);
-//				}
-                }
-            }
-        }
     }
 }

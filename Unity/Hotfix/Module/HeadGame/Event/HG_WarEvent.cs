@@ -8,6 +8,7 @@
         public static string HG_OP_Left = "HG_OP_Left";
         public static string HG_OP_Right = "HG_OP_Right";
         public static string HG_OP_Jump = "HG_OP_Jump";
-        
+        public static string testEvet = "testEvet";
+
     }
 }

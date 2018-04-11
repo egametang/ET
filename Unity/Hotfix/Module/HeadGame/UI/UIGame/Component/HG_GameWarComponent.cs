@@ -138,19 +138,32 @@ namespace ETHotfix
             eventCenter.AddMsg(HG_WarEvent.HG_OP_Left, Event_OP_Left);
             eventCenter.AddMsg(HG_WarEvent.HG_OP_Right, Event_OP_Right);
             eventCenter.AddMsg(HG_WarEvent.HG_OP_Jump, Event_OP_Jump);
-
-
+            //eventCenter.AddMsg(HG_WarEvent.testEvet, GetMsg);
+            //eventCenter.AddMsg(HG_WarEvent.testEvet, GetMsg1);
+            //eventCenter.AddMsg(HG_WarEvent.testEvet, GetMsg2);
+            //eventCenter.RemoveMsg(HG_WarEvent.testEvet, GetMsg2);
             mapMask = LayerMask.GetMask("UI");
             curCamera = Camera.current;
             remainingTime = gameTime;
             eventCenter.SendMsg(HG_WarEvent.HG_WarTimeChange, remainingTime);
-            Log.Warning($"发送了剩余时间 {remainingTime} ");
+            //Log.Warning($"发送了剩余时间 {remainingTime} ");
             passTime = 0;
             init();
 
           
         }
-
+        void GetMsg()
+        {
+            Log.Info("get new evnet 没参数");
+        }
+        void GetMsg1<T>(T obj)
+        {
+            Log.Info($"get new evnet 参数1 {obj} ");
+        }
+        void GetMsg2(object obj, object obj1)
+        {
+            Log.Info($"get new evnet 参数2  {obj}  {obj1}");
+        }
 
         int passTime = 0;
         GameObject Counter;
