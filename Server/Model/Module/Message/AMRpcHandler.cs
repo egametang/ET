@@ -23,6 +23,8 @@ namespace ETModel
 				{
 					Log.Error($"消息类型转换错误: {message.GetType().Name} to {typeof (Request).Name}");
 				}
+
+				int rpcId = request.RpcId;
 				this.Run(session, request, response =>
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
@@ -31,7 +33,6 @@ namespace ETModel
 						return;
 					}
 
-					int rpcId = request.RpcId;
 					response.RpcId = rpcId;
 					session.Reply(response);
 				});
