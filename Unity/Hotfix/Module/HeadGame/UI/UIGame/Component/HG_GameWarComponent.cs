@@ -152,18 +152,18 @@ namespace ETHotfix
 
           
         }
-        void GetMsg()
-        {
-            Log.Info("get new evnet 没参数");
-        }
-        void GetMsg1<T>(T obj)
-        {
-            Log.Info($"get new evnet 参数1 {obj} ");
-        }
-        void GetMsg2(object obj, object obj1)
-        {
-            Log.Info($"get new evnet 参数2  {obj}  {obj1}");
-        }
+        //void GetMsg()
+        //{
+        //    Log.Info("get new evnet 没参数");
+        //}
+        //void GetMsg1<T>(T obj)
+        //{
+        //    Log.Info($"get new evnet 参数1 {obj} ");
+        //}
+        //void GetMsg2(object obj, object obj1)
+        //{
+        //    Log.Info($"get new evnet 参数2  {obj}  {obj1}");
+        //}
 
         int passTime = 0;
         GameObject Counter;
