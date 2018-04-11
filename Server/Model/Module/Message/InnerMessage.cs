@@ -269,9 +269,6 @@ namespace ETModel
 		[ProtoMember(2, IsRequired = true)]
 		public string Json;
 
-		[ProtoMember(3, IsRequired = true)]
-		public bool NeedCache;
-
 	}
 
 	[Message(InnerOpcode.DBQueryJsonResponse)]

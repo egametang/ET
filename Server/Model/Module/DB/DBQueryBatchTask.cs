@@ -40,7 +40,6 @@ namespace ETModel
 					if (component == null)
 					{
 						component = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id).Result.FirstOrDefaultAsync();
-						dbCacheComponent.AddToCache(component);
 					}
 					
 					if (component == null)

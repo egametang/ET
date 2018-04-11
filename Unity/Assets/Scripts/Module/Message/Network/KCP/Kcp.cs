@@ -110,7 +110,10 @@ public class Kcp
 	{
 		var arr = new T[p.Length + 1];
 		for (int i = 0; i < p.Length; i++)
+		{
 			arr[i] = p[i];
+		}
+
 		arr[p.Length] = c;
 		return arr;
 	}
@@ -119,9 +122,15 @@ public class Kcp
 	{
 		var arr = new T[p.Length + cs.Length];
 		for (int i = 0; i < p.Length; i++)
+		{
 			arr[i] = p[i];
+		}
+
 		for (int i = 0; i < cs.Length; i++)
+		{
 			arr[p.Length + i] = cs[i];
+		}
+
 		return arr;
 	}
 
@@ -257,15 +266,21 @@ public class Kcp
 	public int PeekSize()
 	{
 		if (0 == rcv_queue.Length)
+		{
 			return -1;
+		}
 
 		Segment seq = rcv_queue[0];
 
 		if (0 == seq.frg)
+		{
 			return seq.data.Length;
+		}
 
 		if (rcv_queue.Length < seq.frg + 1)
+		{
 			return -1;
+		}
 
 		int length = 0;
 
@@ -273,7 +288,9 @@ public class Kcp
 		{
 			length += item.data.Length;
 			if (0 == item.frg)
+			{
 				break;
+			}
 		}
 
 		return length;
@@ -283,18 +300,26 @@ public class Kcp
 	public int Recv(byte[] buffer)
 	{
 		if (0 == rcv_queue.Length)
+		{
 			return -1;
+		}
 
 		int peekSize = PeekSize();
 		if (0 > peekSize)
+		{
 			return -2;
+		}
 
 		if (peekSize > buffer.Length)
+		{
 			return -3;
+		}
 
 		bool fast_recover = false;
 		if (rcv_queue.Length >= rcv_wnd)
+		{
 			fast_recover = true;
+		}
 
 		// merge fragment.
 		int count = 0;
@@ -305,15 +330,20 @@ public class Kcp
 			n += seg.data.Length;
 			count++;
 			if (0 == seg.frg)
+			{
 				break;
+			}
 		}
 
 		if (0 < count)
+		{
 			this.rcv_queue = slice(this.rcv_queue, count, this.rcv_queue.Length);
+		}
 
 		// move available data from rcv_buf -> rcv_queue
 		count = 0;
 		foreach (Segment seg in rcv_buf)
+		{
 			if (seg.sn == this.rcv_nxt && this.rcv_queue.Length < this.rcv_wnd)
 			{
 				this.rcv_queue = append(this.rcv_queue, seg);
@@ -324,13 +354,18 @@ public class Kcp
 			{
 				break;
 			}
+		}
 
 		if (0 < count)
-			rcv_buf = slice(rcv_buf, count, rcv_buf.Length);
+		{
+			this.rcv_buf = slice(this.rcv_buf, count, this.rcv_buf.Length);
+		}
 
 		// fast recover
 		if (rcv_queue.Length < rcv_wnd && fast_recover)
+		{
 			this.probe |= IKCP_ASK_TELL;
+		}
 
 		return n;
 	}
@@ -339,7 +374,9 @@ public class Kcp
 	public int Send(byte[] bytes, int index, int length)
 	{
 		if (0 == bytes.Length)
+		{
 			return -1;
+		}
 
 		if (length == 0)
 		{
@@ -349,15 +386,23 @@ public class Kcp
 		int count = 0;
 
 		if (length < mss)
+		{
 			count = 1;
+		}
 		else
-			count = (int)(length + mss - 1) / (int)mss;
+		{
+			count = (int)(length + this.mss - 1) / (int)this.mss;
+		}
 
 		if (255 < count)
+		{
 			return -2;
+		}
 
 		if (0 == count)
+		{
 			count = 1;
+		}
 
 		int offset = 0;
 
@@ -365,9 +410,13 @@ public class Kcp
 		{
 			int size = 0;
 			if (length - offset > mss)
-				size = (int)mss;
+			{
+				size = (int)this.mss;
+			}
 			else
+			{
 				size = length - offset;
+			}
 
 			Segment seg = new Segment(size);
 			Array.Copy(bytes, offset + index, seg.data, 0, size);
@@ -391,12 +440,16 @@ public class Kcp
 		{
 			Int32 delta = (Int32)((UInt32)rtt - rx_srtt);
 			if (0 > delta)
+			{
 				delta = -delta;
+			}
 
 			rx_rttval = (3 * rx_rttval + (uint)delta) / 4;
 			rx_srtt = (UInt32)((7 * rx_srtt + rtt) / 8);
 			if (rx_srtt < 1)
-				rx_srtt = 1;
+			{
+				this.rx_srtt = 1;
+			}
 		}
 
 		int rto = (int)(rx_srtt + _imax_(1, 4 * rx_rttval));
@@ -406,15 +459,21 @@ public class Kcp
 	private void shrink_buf()
 	{
 		if (snd_buf.Length > 0)
-			snd_una = snd_buf[0].sn;
+		{
+			this.snd_una = this.snd_buf[0].sn;
+		}
 		else
-			snd_una = snd_nxt;
+		{
+			this.snd_una = this.snd_nxt;
+		}
 	}
 
 	private void parse_ack(UInt32 sn)
 	{
 		if (_itimediff(sn, snd_una) < 0 || _itimediff(sn, snd_nxt) >= 0)
+		{
 			return;
+		}
 
 		int index = 0;
 		foreach (Segment seg in snd_buf)
@@ -434,13 +493,21 @@ public class Kcp
 	{
 		int count = 0;
 		foreach (Segment seg in snd_buf)
+		{
 			if (_itimediff(una, seg.sn) > 0)
+			{
 				count++;
+			}
 			else
+			{
 				break;
+			}
+		}
 
 		if (0 < count)
-			snd_buf = slice(snd_buf, count, snd_buf.Length);
+		{
+			this.snd_buf = slice(this.snd_buf, count, this.snd_buf.Length);
+		}
 	}
 
 	private void ack_push(UInt32 sn, UInt32 ts)
@@ -458,7 +525,9 @@ public class Kcp
 	{
 		uint sn = newseg.sn;
 		if (_itimediff(sn, rcv_nxt + rcv_wnd) >= 0 || _itimediff(sn, rcv_nxt) < 0)
+		{
 			return;
+		}
 
 		int n = rcv_buf.Length - 1;
 		int after_idx = -1;
@@ -480,15 +549,22 @@ public class Kcp
 		}
 
 		if (!repeat)
+		{
 			if (after_idx == -1)
+			{
 				this.rcv_buf = append(new Segment[1] { newseg }, this.rcv_buf);
+			}
 			else
+			{
 				this.rcv_buf = append(slice(this.rcv_buf, 0, after_idx + 1),
-									  append(new Segment[1] { newseg }, slice(this.rcv_buf, after_idx + 1, this.rcv_buf.Length)));
+				                      append(new Segment[1] { newseg }, slice(this.rcv_buf, after_idx + 1, this.rcv_buf.Length)));
+			}
+		}
 
 		// move available data from rcv_buf -> rcv_queue
 		int count = 0;
 		foreach (Segment seg in rcv_buf)
+		{
 			if (seg.sn == this.rcv_nxt && this.rcv_queue.Length < this.rcv_wnd)
 			{
 				this.rcv_queue = append(this.rcv_queue, seg);
@@ -499,9 +575,12 @@ public class Kcp
 			{
 				break;
 			}
+		}
 
 		if (0 < count)
+		{
 			this.rcv_buf = slice(this.rcv_buf, count, this.rcv_buf.Length);
+		}
 	}
 
 	// when you received a low level packet (eg. UDP packet), call it
@@ -509,7 +588,9 @@ public class Kcp
 	{
 		uint s_una = snd_una;
 		if (data.Length < IKCP_OVERHEAD)
+		{
 			return 0;
+		}
 
 		int offset = 0;
 
@@ -527,7 +608,9 @@ public class Kcp
 			byte frg = 0;
 
 			if (data.Length - offset < IKCP_OVERHEAD)
+			{
 				break;
+			}
 
 			offset += ikcp_decode32u(data, offset, ref conv_);
 
@@ -544,7 +627,9 @@ public class Kcp
 			offset += ikcp_decode32u(data, offset, ref length);
 
 			if (data.Length - offset < length)
+			{
 				return -2;
+			}
 
 			switch (cmd)
 			{
@@ -564,7 +649,10 @@ public class Kcp
 			if (IKCP_CMD_ACK == cmd)
 			{
 				if (_itimediff(current, ts) >= 0)
+				{
 					this.update_ack(_itimediff(this.current, ts));
+				}
+
 				parse_ack(sn);
 				shrink_buf();
 			}
@@ -585,7 +673,9 @@ public class Kcp
 						seg.una = una;
 
 						if (length > 0)
+						{
 							Array.Copy(data, offset, seg.data, 0, length);
+						}
 
 						parse_data(seg);
 					}
@@ -610,6 +700,7 @@ public class Kcp
 		}
 
 		if (_itimediff(snd_una, s_una) > 0)
+		{
 			if (this.cwnd < this.rmt_wnd)
 			{
 				uint mss_ = this.mss;
@@ -621,10 +712,15 @@ public class Kcp
 				else
 				{
 					if (this.incr < mss_)
+					{
 						this.incr = mss_;
+					}
+
 					this.incr += mss_ * mss_ / this.incr + mss_ / 16;
 					if ((this.cwnd + 1) * mss_ <= this.incr)
+					{
 						this.cwnd++;
+					}
 				}
 				if (this.cwnd > this.rmt_wnd)
 				{
@@ -632,6 +728,7 @@ public class Kcp
 					this.incr = this.rmt_wnd * mss_;
 				}
 			}
+		}
 
 		return 0;
 	}
@@ -639,7 +736,10 @@ public class Kcp
 	private Int32 wnd_unused()
 	{
 		if (rcv_queue.Length < rcv_wnd)
-			return (int)this.rcv_wnd - rcv_queue.Length;
+		{
+			return (int)this.rcv_wnd - this.rcv_queue.Length;
+		}
+
 		return 0;
 	}
 
@@ -652,7 +752,9 @@ public class Kcp
 		int lost = 0;
 
 		if (0 == updated)
+		{
 			return;
+		}
 
 		Segment seg = new Segment(0);
 		seg.conv = conv;
@@ -689,10 +791,16 @@ public class Kcp
 				if (_itimediff(current, ts_probe) >= 0)
 				{
 					if (probe_wait < IKCP_PROBE_INIT)
-						probe_wait = IKCP_PROBE_INIT;
+					{
+						this.probe_wait = IKCP_PROBE_INIT;
+					}
+
 					probe_wait += probe_wait / 2;
 					if (probe_wait > IKCP_PROBE_LIMIT)
-						probe_wait = IKCP_PROBE_LIMIT;
+					{
+						this.probe_wait = IKCP_PROBE_LIMIT;
+					}
+
 					ts_probe = current + probe_wait;
 					probe |= IKCP_ASK_SEND;
 				}
@@ -722,13 +830,17 @@ public class Kcp
 		// calculate window size
 		uint cwnd_ = _imin_(snd_wnd, rmt_wnd);
 		if (0 == nocwnd)
-			cwnd_ = _imin_(cwnd, cwnd_);
+		{
+			cwnd_ = _imin_(this.cwnd, cwnd_);
+		}
 
 		count = 0;
 		for (int k = 0; k < snd_queue.Length; k++)
 		{
 			if (_itimediff(snd_nxt, snd_una + cwnd_) >= 0)
+			{
 				break;
+			}
 
 			Segment newseg = snd_queue[k];
 			newseg.conv = conv;
@@ -747,15 +859,22 @@ public class Kcp
 		}
 
 		if (0 < count)
+		{
 			this.snd_queue = slice(this.snd_queue, count, this.snd_queue.Length);
+		}
 
 		// calculate resent
 		uint resent = (UInt32)fastresend;
 		if (fastresend <= 0)
+		{
 			resent = 0xffffffff;
+		}
+
 		uint rtomin = rx_rto >> 3;
 		if (nodelay != 0)
+		{
 			rtomin = 0;
+		}
 
 		// flush data segments
 		foreach (Segment segment in snd_buf)
@@ -775,9 +894,14 @@ public class Kcp
 				segment.xmit++;
 				xmit++;
 				if (0 == nodelay)
-					segment.rto += rx_rto;
+				{
+					segment.rto += this.rx_rto;
+				}
 				else
-					segment.rto += rx_rto / 2;
+				{
+					segment.rto += this.rx_rto / 2;
+				}
+
 				segment.resendts = current_ + segment.rto;
 				lost = 1;
 			}
@@ -812,7 +936,9 @@ public class Kcp
 				}
 
 				if (segment.xmit >= dead_link)
+				{
 					this.state = 0;
+				}
 			}
 		}
 
@@ -830,7 +956,10 @@ public class Kcp
 			uint inflight = snd_nxt - snd_una;
 			ssthresh = inflight / 2;
 			if (ssthresh < IKCP_THRESH_MIN)
-				ssthresh = IKCP_THRESH_MIN;
+			{
+				this.ssthresh = IKCP_THRESH_MIN;
+			}
+
 			cwnd = ssthresh + resent;
 			incr = cwnd * mss;
 		}
@@ -839,7 +968,10 @@ public class Kcp
 		{
 			ssthresh = cwnd / 2;
 			if (ssthresh < IKCP_THRESH_MIN)
-				ssthresh = IKCP_THRESH_MIN;
+			{
+				this.ssthresh = IKCP_THRESH_MIN;
+			}
+
 			cwnd = 1;
 			incr = mss;
 		}
@@ -876,7 +1008,10 @@ public class Kcp
 		{
 			ts_flush += interval;
 			if (_itimediff(current, ts_flush) >= 0)
-				ts_flush = current + interval;
+			{
+				this.ts_flush = this.current + this.interval;
+			}
+
 			flush();
 		}
 	}
@@ -891,7 +1026,9 @@ public class Kcp
 	public UInt32 Check(UInt32 current_)
 	{
 		if (0 == updated)
+		{
 			return current_;
+		}
 
 		uint ts_flush_ = ts_flush;
 		int tm_flush_ = 0x7fffffff;
@@ -899,10 +1036,14 @@ public class Kcp
 		int minimal = 0;
 
 		if (_itimediff(current_, ts_flush_) >= 10000 || _itimediff(current_, ts_flush_) < -10000)
+		{
 			ts_flush_ = current_;
+		}
 
 		if (_itimediff(current_, ts_flush_) >= 0)
+		{
 			return current_;
+		}
 
 		tm_flush_ = _itimediff(ts_flush_, current_);
 
@@ -910,16 +1051,26 @@ public class Kcp
 		{
 			int diff = _itimediff(seg.resendts, current_);
 			if (diff <= 0)
+			{
 				return current_;
+			}
+
 			if (diff < tm_packet)
+			{
 				tm_packet = diff;
+			}
 		}
 
 		minimal = tm_packet;
 		if (tm_packet >= tm_flush_)
+		{
 			minimal = tm_flush_;
+		}
+
 		if (minimal >= interval)
-			minimal = (int)interval;
+		{
+			minimal = (int)this.interval;
+		}
 
 		return current_ + (UInt32)minimal;
 	}
@@ -928,11 +1079,15 @@ public class Kcp
 	public int SetMtu(Int32 mtu_)
 	{
 		if (mtu_ < 50 || mtu_ < IKCP_OVERHEAD)
+		{
 			return -1;
+		}
 
 		var buffer_ = new byte[(mtu_ + IKCP_OVERHEAD) * 3];
 		if (null == buffer_)
+		{
 			return -2;
+		}
 
 		mtu = (UInt32)mtu_;
 		mss = mtu - IKCP_OVERHEAD;
@@ -943,9 +1098,14 @@ public class Kcp
 	public int Interval(Int32 interval_)
 	{
 		if (interval_ > 5000)
+		{
 			interval_ = 5000;
+		}
 		else if (interval_ < 10)
+		{
 			interval_ = 10;
+		}
+
 		interval = (UInt32)interval_;
 		return 0;
 	}
@@ -961,25 +1121,38 @@ public class Kcp
 		{
 			nodelay = (UInt32)nodelay_;
 			if (nodelay_ != 0)
-				rx_minrto = IKCP_RTO_NDL;
+			{
+				this.rx_minrto = IKCP_RTO_NDL;
+			}
 			else
-				rx_minrto = IKCP_RTO_MIN;
+			{
+				this.rx_minrto = IKCP_RTO_MIN;
+			}
 		}
 
 		if (interval_ >= 0)
 		{
 			if (interval_ > 5000)
+			{
 				interval_ = 5000;
+			}
 			else if (interval_ < 10)
+			{
 				interval_ = 10;
+			}
+
 			interval = (UInt32)interval_;
 		}
 
 		if (resend_ >= 0)
-			fastresend = resend_;
+		{
+			this.fastresend = resend_;
+		}
 
 		if (nc_ >= 0)
-			nocwnd = nc_;
+		{
+			this.nocwnd = nc_;
+		}
 
 		return 0;
 	}
@@ -988,10 +1161,15 @@ public class Kcp
 	public int WndSize(int sndwnd, int rcvwnd)
 	{
 		if (sndwnd > 0)
-			snd_wnd = (UInt32)sndwnd;
+		{
+			this.snd_wnd = (UInt32)sndwnd;
+		}
 
 		if (rcvwnd > 0)
-			rcv_wnd = (UInt32)rcvwnd;
+		{
+			this.rcv_wnd = (UInt32)rcvwnd;
+		}
+
 		return 0;
 	}
 

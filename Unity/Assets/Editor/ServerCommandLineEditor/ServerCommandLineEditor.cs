@@ -8,7 +8,7 @@ using MongoDB.Bson;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public class ServerCommandLineEditor: EditorWindow
 	{

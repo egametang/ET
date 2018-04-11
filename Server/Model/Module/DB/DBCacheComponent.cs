@@ -35,8 +35,6 @@ namespace ETModel
 		{
 			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
-			this.AddToCache(component, collectionName);
-
 			if (string.IsNullOrEmpty(collectionName))
 			{
 				collectionName = component.GetType().Name;

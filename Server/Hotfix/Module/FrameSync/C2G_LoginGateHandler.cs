@@ -22,7 +22,7 @@ namespace ETHotfix
 				Player player = ComponentFactory.Create<Player, string>(account);
 				Game.Scene.GetComponent<PlayerComponent>().Add(player);
 				session.AddComponent<SessionPlayerComponent>().Player = player;
-				await session.AddComponent<ActorComponent, IEntityActorHandler>(new GateSessionEntityActorHandler()).AddLocation();
+				await session.AddComponent<ActorComponent, string>(ActorType.GateSession).AddLocation();
 
 				response.PlayerId = player.Id;
 				reply(response);

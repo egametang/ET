@@ -91,7 +91,8 @@ namespace ETHotfix
 
 		public void Handle(Session session, MessageInfo messageInfo)
 		{
-			if (!this.handlers.TryGetValue(messageInfo.Opcode, out List<IMHandler> actions))
+			List<IMHandler> actions;
+			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))
 			{
 				Log.Error($"消息 {messageInfo.Message.GetType().FullName} 没有处理");
 				return;

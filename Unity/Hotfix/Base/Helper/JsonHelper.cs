@@ -13,7 +13,7 @@ namespace ETHotfix
 		public static T FromJson<T>(string str)
 		{
 			T t = JsonMapper.ToObject<T>(str);
-			ISupportInitialize2 iSupportInitialize = t as ISupportInitialize2;
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
 				return t;
@@ -25,7 +25,7 @@ namespace ETHotfix
 		public static object FromJson(Type type, string str)
 		{
 			object t = JsonMapper.ToObject(type, str);
-			ISupportInitialize2 iSupportInitialize = t as ISupportInitialize2;
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
 			if (iSupportInitialize == null)
 			{
 				return t;
