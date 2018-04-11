@@ -22,18 +22,14 @@ namespace ETModel
 				return;
 			}
 
-			await this.Run(e, msg);
-
-			// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
-			if (session.IsDisposed)
-			{
-				return;
-			}
+			int rpcId = actorRequest.RpcId;
 			ActorResponse response = new ActorResponse
 			{
-				RpcId = actorRequest.RpcId
+				RpcId = rpcId
 			};
 			session.Reply(response);
+
+			await this.Run(e, msg);
 		}
 
 		public Type GetMessageType()
@@ -74,7 +70,7 @@ namespace ETModel
 				int rpcId = request.RpcId;
 				await this.Run(e, request, response =>
 				{
-					// 等回调回来,session可以已经断开了,所以需要判断session id是否为0
+					// 等回调回来,session可以已经断开了
 					if (session.IsDisposed)
 					{
 						return;
