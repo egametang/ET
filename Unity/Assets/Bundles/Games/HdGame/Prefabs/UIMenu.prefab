@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114191859801273158}
   - component: {fileID: 114036845704240266}
   m_Layer: 0
-  m_Name: Button_Prev
+  m_Name: Button_Next
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 114317921877457078}
   - component: {fileID: 114223745932078448}
   m_Layer: 0
-  m_Name: Button_Next
+  m_Name: Button_Prev
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -882,7 +882,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: 065538d2904ebb24d9caa99ee02347bb, type: 3}
+  m_Texture: {fileID: 2800000, guid: 390f8326fae4567468bab35d3ab19c54, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -903,9 +903,9 @@ MonoBehaviour:
   data:
   - key: PlayerAvatar
     gameObject: {fileID: 1208154357763850}
-  - key: Button_Prev
-    gameObject: {fileID: 1201585979930642}
   - key: Button_Next
+    gameObject: {fileID: 1201585979930642}
+  - key: Button_Prev
     gameObject: {fileID: 1996371074165188}
   - key: Button_Options
     gameObject: {fileID: 1523451589008394}
@@ -993,10 +993,10 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1334, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224225037373896742
 RectTransform:
@@ -1103,7 +1103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1334, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224748754310619316

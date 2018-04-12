@@ -795,31 +795,6 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114554786379590496, guid: 4588e3fa77d2447a1aee9107e522e58c,
-        type: 2}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 6339a25040fcdb449a6d9aa57c89c5c4, type: 3}
-    - target: {fileID: 114741604280557674, guid: 4588e3fa77d2447a1aee9107e522e58c,
-        type: 2}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 390f8326fae4567468bab35d3ab19c54, type: 3}
-    - target: {fileID: 224628041321402530, guid: 4588e3fa77d2447a1aee9107e522e58c,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224628041321402530, guid: 4588e3fa77d2447a1aee9107e522e58c,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 1334
-      objectReference: {fileID: 0}
-    - target: {fileID: 224628041321402530, guid: 4588e3fa77d2447a1aee9107e522e58c,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 750
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4588e3fa77d2447a1aee9107e522e58c, type: 2}
   m_IsPrefabParent: 0

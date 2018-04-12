@@ -39,12 +39,14 @@ namespace ETHotfix
         private bool canTap = true;
         private TimerComponent timerComponent;
         private RawImage PlayerAvatar;
+        ResourcesComponent resourcesComponent;
 
-     
+        int maxNum = 3;
+        int curIndex = 0;
             public void Awake()
         {
             canTap = true;
-            ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
+             resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
             clip = (AudioClip)resourcesComponent.GetAsset($"{UIType.HG_Sound}.unity3d", "MenuTap");
             timerComponent = Game.Scene.ModelScene.GetComponent<TimerComponent>();
 
@@ -68,7 +70,8 @@ namespace ETHotfix
             
             Button_Prev = rc.Get<GameObject>("Button_Prev");
             Button_Prev.GetComponent<Button>().onClick.Add(BtnClick_PrePlay);
-
+            curIndex = PlayerPrefs.GetInt("selectedAvatar", 0);
+            ShowPlayerImg(curIndex);
 //            while (true)
 //            {
 //                await timerComponent.WaitAsync(1000);
@@ -132,6 +135,12 @@ namespace ETHotfix
                 {
                     playSfx(clip);
                     canTap = false;
+                    curIndex++;
+                    if(curIndex >maxNum)
+                    {
+                        curIndex = maxNum;
+                    }
+                    ShowPlayerImg(curIndex);
                     await timerComponent.WaitAsync(250);
                     Log.Info("click next");
                     canTap = true;
@@ -150,6 +159,12 @@ namespace ETHotfix
                 {
                     playSfx(clip);
                     canTap = false;
+                    curIndex--;
+                    if(curIndex < 0)
+                    {
+                        curIndex = 0;
+                    }
+                    ShowPlayerImg(curIndex);
                     await timerComponent.WaitAsync(250);
                     Log.Info("click pre");
                     canTap = true;
@@ -160,7 +175,12 @@ namespace ETHotfix
                 Log.Error(e);
             }
         }
-
+        void ShowPlayerImg(int index)
+        {
+            PlayerPrefs.SetInt("selectedAvatar", index);
+            index++;
+            PlayerAvatar.texture = (Texture2D)resourcesComponent.GetAsset($"{UIType.HG_Res}.unity3d", $"Player-Head-0{index}-n");
+        }
         public override void Dispose()
         {
             if (this.IsDisposed)
