@@ -350,7 +350,6 @@
     <Compile Include="Assets\Scripts\Component\GlobalConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Component\SceneChangeComponent.cs" />
     <Compile Include="Assets\Scripts\Component\TimerComponent.cs" />
-    <Compile Include="Assets\Scripts\Entity\Config\UnitConfig.cs" />
     <Compile Include="Assets\Scripts\Entity\Game.cs" />
     <Compile Include="Assets\Scripts\Entity\Hotfix.cs" />
     <Compile Include="Assets\Scripts\Entity\Scene.cs" />
@@ -940,7 +939,9 @@
     <None Include="Assets\Plugins\DOTween\readme.txt" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
+    <None Include="Assets\Res\Config\RoleInfo.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\Scripts\Entity\Config\readMe.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

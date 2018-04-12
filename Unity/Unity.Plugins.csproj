@@ -609,7 +609,9 @@
     <None Include="Assets\Plugins\DOTween\readme.txt" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
+    <None Include="Assets\Res\Config\RoleInfo.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\Scripts\Entity\Config\readMe.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

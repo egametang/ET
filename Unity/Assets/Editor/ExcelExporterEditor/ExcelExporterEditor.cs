@@ -77,7 +77,7 @@ public class ExcelExporterEditor : EditorWindow
 
 			if (GUILayout.Button("生成配置类"))
 			{
-				ExportAllClass(@".\Assets\Scripts\Entity\Config");
+				ExportAllClass(@".\Hotfix\Entity\Config");
 			}
 		}
 		catch (Exception e)
@@ -116,7 +116,11 @@ public class ExcelExporterEditor : EditorWindow
 		string protoName = Path.GetFileNameWithoutExtension(fileName);
 		Log.Info($"{protoName}生成class开始");
 		string exportPath = Path.Combine(exportDir, $"{protoName}.cs");
-		using (FileStream txt = new FileStream(exportPath, FileMode.Create))
+        if (File.Exists(exportPath))
+        {
+            File.Delete(exportPath);
+        }
+        using (FileStream txt = new FileStream(exportPath, FileMode.OpenOrCreate))
 		using (StreamWriter sw = new StreamWriter(txt))
 		{
 			StringBuilder sb = new StringBuilder();

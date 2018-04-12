@@ -1,0 +1,4 @@
+{"Id":1,"Name":"米克尔","Desc":"速度一般，跳跃一般","Height":5,"Weight":200}
+{"Id":2,"Name":"纳洛","Desc":"速度较好，跳跃一般","Height":6,"Weight":200}
+{"Id":3,"Name":"麦德罗","Desc":"速度一般，跳跃较好","Height":6,"Weight":250}
+{"Id":4,"Name":"蒂娜","Desc":"速度快，跳跃好","Height":8,"Weight":300}

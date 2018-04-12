@@ -1,16 +1,15 @@
 namespace ETModel
 {
 	[Config(AppType.Client)]
-	public partial class UnitConfigCategory : ACategory<UnitConfig>
+	public partial class RoleInfoCategory : ACategory<RoleInfo>
 	{
 	}
 
-	public class UnitConfig: IConfig
+	public class RoleInfo: IConfig
 	{
 		public long Id { get; set; }
 		public string Name;
 		public string Desc;
-		public int Position;
 		public int Height;
 		public int Weight;
 	}
