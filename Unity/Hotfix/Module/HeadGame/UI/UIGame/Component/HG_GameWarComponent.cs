@@ -38,7 +38,7 @@ namespace ETHotfix
     /// </summary>
     public class HG_GameWarComponent : Component
     {
-        public static int gameTime = 10; //gameplay time for each round
+        public static int gameTime = 90; //gameplay time for each round
         private int remainingTime; //time left to finish the game
         public static int playerGoals; //total goals by player
         public static int cpuGoals; //total goals by cpu
@@ -212,17 +212,27 @@ namespace ETHotfix
         void movePlayerWithKeyboard()
         {
 
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
             {
                 //Log.Info("left click");
-                plCp.moveLeft();
+                plCp.moveLeft(true);
+            }
+            if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+            {
+                plCp.moveLeft(false);
             }
 
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
                 //Log.Info("right click");
-                plCp.moveRight();
+                plCp.moveRight(true);
             }
+            if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D))
+            {
+                plCp.moveRight(false);
+            }
+
+
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -256,11 +266,11 @@ namespace ETHotfix
                 //                }
             }
 
-            if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
-            {
+            //if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
+            //{
                 movePlayerWithKeyboard();
-                movePlayerWithTouch();
-            }
+                //movePlayerWithTouch();
+            //}
 
             //if time is up, setup game finish events
             if (gameIsFinished && !gameFinishFlag)
@@ -303,62 +313,62 @@ namespace ETHotfix
         {
 
         }
-        void movePlayerWithTouch()
-        {
-            //Log.Info($"touch num is {	Input.touches.Length}");
-            if (Input.touches.Length > 0 && curCamera)
-            {
-                //                Camera.current
-                ray = curCamera.ScreenPointToRay(Input.touches[0].position);
-                if (Input.touches.Length > 1)
-                    ray2 = curCamera.ScreenPointToRay(Input.touches[1].position);
-                else
-                    ray2 = curCamera.ScreenPointToRay(Input.touches[0].position);
-            }
-            else if (Input.GetMouseButton(0) && curCamera)
-                ray = curCamera.ScreenPointToRay(Input.mousePosition);
-            else
-                return;
+        //void movePlayerWithTouch()
+        //{
+        //    //Log.Info($"touch num is {	Input.touches.Length}");
+        //    if (Input.touches.Length > 0 && curCamera)
+        //    {
+        //        //                Camera.current
+        //        ray = curCamera.ScreenPointToRay(Input.touches[0].position);
+        //        if (Input.touches.Length > 1)
+        //            ray2 = curCamera.ScreenPointToRay(Input.touches[1].position);
+        //        else
+        //            ray2 = curCamera.ScreenPointToRay(Input.touches[0].position);
+        //    }
+        //    else if (Input.GetMouseButton(0) && curCamera)
+        //        ray = curCamera.ScreenPointToRay(Input.mousePosition);
+        //    else
+        //        return;
 
 
-            //Log.Info("check btn click");
-            if (Physics.Raycast(ray, out hitInfo, 1000))
-            {
-                GameObject objectHit = hitInfo.transform.gameObject;
-                //Log.Info($"btn click namge is {objectHit.name}");
-                switch (objectHit.name)
-                {
-                    case "Button_Jump":
+        //    //Log.Info("check btn click");
+        //    if (Physics.Raycast(ray, out hitInfo, 1000))
+        //    {
+        //        GameObject objectHit = hitInfo.transform.gameObject;
+        //        //Log.Info($"btn click namge is {objectHit.name}");
+        //        switch (objectHit.name)
+        //        {
+        //            case "Button_Jump":
 
-                        plCp.doJump();
-                        break;
-                    case "Button_Left":
-                        plCp.moveLeft();
-                        break;
-                    case "Button_Right":
-                        plCp.moveRight();
-                        break;
-                }
-            }
+        //                plCp.doJump();
+        //                break;
+        //            case "Button_Left":
+        //                plCp.moveLeft();
+        //                break;
+        //            case "Button_Right":
+        //                plCp.moveRight();
+        //                break;
+        //        }
+        //    }
 
-            if (Physics.Raycast(ray2, out hitInfo2, 1000))
-            {
-                GameObject objectHit2 = hitInfo2.transform.gameObject;
-                switch (objectHit2.name)
-                {
-                    case "Button_Jump":
+        //    if (Physics.Raycast(ray2, out hitInfo2, 1000))
+        //    {
+        //        GameObject objectHit2 = hitInfo2.transform.gameObject;
+        //        switch (objectHit2.name)
+        //        {
+        //            case "Button_Jump":
 
-                        plCp.doJump();
-                        break;
-                    case "Button_Left":
-                        plCp.moveLeft();
-                        break;
-                    case "Button_Right":
-                        plCp.moveRight();
-                        break;
-                }
-            }
-        }
+        //                plCp.doJump();
+        //                break;
+        //            case "Button_Left":
+        //                plCp.moveLeft();
+        //                break;
+        //            case "Button_Right":
+        //                plCp.moveRight();
+        //                break;
+        //        }
+        //    }
+        //}
 
 
         /// <summary>
@@ -476,20 +486,20 @@ namespace ETHotfix
         }
 
 
-        void Event_OP_Left()
+        void Event_OP_Left(object isGo)
         {
-            if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
-            {
-                plCp.moveLeft();
-            }
+            //if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
+            //{
+                plCp.moveLeft((bool)isGo);
+            //}
         }
 
-        void Event_OP_Right()
+        void Event_OP_Right(object isGo)
         {
-            if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
-            {
-                plCp.moveRight();
-            }
+            //if (!HG_GameWarComponent.isGoalTransition && !HG_GameWarComponent.gameIsFinished)
+            //{
+                plCp.moveRight((bool)isGo);
+            //}
         }
 
         void Event_OP_Jump()

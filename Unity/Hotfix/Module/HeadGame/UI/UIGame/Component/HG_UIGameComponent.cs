@@ -2,6 +2,8 @@
 using System.Net;
 using ETModel;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace ETHotfix
@@ -17,13 +19,13 @@ namespace ETHotfix
     /// <summary>
     /// 上下左右。名字。得分。还有操作;
     /// </summary>
-    public class HG_UIGameComponent: Component
+    public class HG_UIGameComponent : Component
     {
         private EventCenterController eventCenter;
         private GameObject gameObject;
         private Transform transform;
         private TimerComponent timerComponent;
-        
+
         private GameObject Button_Pause;
         private GameObject Button_Right;
         private GameObject Button_Left;
@@ -33,7 +35,7 @@ namespace ETHotfix
         private Text LabCpuScore;
         private Text LabPlayerName;
         private Text LabPlayerScore;
-        
+
         private AudioSource _audioSource;
         private AudioClip clip;
         private bool canTap = true;
@@ -66,17 +68,21 @@ namespace ETHotfix
 
             Button_Pause.GetComponent<Button>().onClick.Add(BtnClick_PauseGame);
 
-            rc.Get<GameObject>("Button").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet); });
-            rc.Get<GameObject>("Button (1)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,"asdsad"); });
-            rc.Get<GameObject>("Button (2)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,2, gameObject); });
+            //rc.Get<GameObject>("Button").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet); });
+            //rc.Get<GameObject>("Button (1)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,"asdsad"); });
+            //rc.Get<GameObject>("Button (2)").GetComponent<Button>().onClick.Add(() => { eventCenter.SendMsg(HG_WarEvent.testEvet,2, gameObject); });
 
             //            
-            //            Button_Right.GetComponent<Button>().onClick.Add(BtnClick_MoveRight);
-            //            
-            //            Button_Left.GetComponent<Button>().onClick.Add(BtnClick_MoveLeft);
-            //            
-            //            Button_Jump.GetComponent<Button>().onClick.Add(BtnClick_Jump);
+            //Button_Right.GetComponent<Button>().onClick.Add(BtnClick_MoveRight);
 
+            //Button_Left.GetComponent<Button>().onClick.Add(BtnClick_MoveLeft);
+
+            //Button_Jump.GetComponent<Button>().onClick.Add(BtnClick_Jump);
+            MonoEventComponent.Instance.AddEventTrigger(Button_Right, EventTriggerType.PointerDown, Btn_Down_Right);
+            MonoEventComponent.Instance.AddEventTrigger(Button_Right, EventTriggerType.PointerUp, Btn_Up_Right);
+
+            MonoEventComponent.Instance.AddEventTrigger(Button_Left, EventTriggerType.PointerDown, Btn_Down_Left);
+            MonoEventComponent.Instance.AddEventTrigger(Button_Left, EventTriggerType.PointerUp, Btn_Up_Left);
 
         }
 
@@ -90,7 +96,7 @@ namespace ETHotfix
                 LabTime.text = $"{time}";
             }
         }
-        void Event_GetScoreChange(object obj,object obj1)
+        void Event_GetScoreChange(object obj, object obj1)
         {
             if (obj is int && obj1 is int)
             {
@@ -100,8 +106,8 @@ namespace ETHotfix
                 LabCpuScore.text = $"{rightScore}";
             }
         }
-        
-        
+
+
         public async void BtnClick_PauseGame()
         {
             try
@@ -123,43 +129,91 @@ namespace ETHotfix
                 Log.Error(e);
             }
         }
-        public async void BtnClick_MoveRight()
+        public async void Btn_Down_Right(BaseEventData evt)
         {
             try
             {
-                if (canTap)
-                {
-                    playSfx(clip);
-                    canTap = false;
-                    await timerComponent.WaitAsync(250);
-                    canTap = true;
-                    eventCenter.SendMsg(HG_WarEvent.HG_OP_Right);
-                }
+                playSfx(clip);
+                eventCenter.SendMsg(HG_WarEvent.HG_OP_Right,true);
             }
             catch (Exception e)
             {
                 Log.Error(e);
             }
         }
-        public async void BtnClick_MoveLeft()
+        public async void Btn_Up_Right(BaseEventData evt)
         {
             try
             {
-                if (canTap)
-                {
-                    playSfx(clip);
-                    canTap = false;
-                    await timerComponent.WaitAsync(250);
-                    canTap = true;
-                    
-                    eventCenter.SendMsg(HG_WarEvent.HG_OP_Left);
-                }
+                playSfx(clip);
+                eventCenter.SendMsg(HG_WarEvent.HG_OP_Right,false);
             }
             catch (Exception e)
             {
                 Log.Error(e);
             }
         }
+        public async void Btn_Down_Left(BaseEventData evt)
+        {
+            try
+            {
+                playSfx(clip);
+                eventCenter.SendMsg(HG_WarEvent.HG_OP_Left, true);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+        public async void Btn_Up_Left(BaseEventData evt)
+        {
+            try
+            {
+                playSfx(clip);
+                eventCenter.SendMsg(HG_WarEvent.HG_OP_Left, false);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+        //public async void BtnClick_MoveRight()
+        //{
+        //    try
+        //    {
+        //        if (canTap)
+        //        {
+        //            playSfx(clip);
+        //            canTap = false;
+        //            await timerComponent.WaitAsync(250);
+        //            canTap = true;
+        //            eventCenter.SendMsg(HG_WarEvent.HG_OP_Right);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Log.Error(e);
+        //    }
+        //}
+        //public async void BtnClick_MoveLeft()
+        //{
+        //    try
+        //    {
+        //        if (canTap)
+        //        {
+        //            playSfx(clip);
+        //            canTap = false;
+        //            await timerComponent.WaitAsync(250);
+        //            canTap = true;
+
+        //            eventCenter.SendMsg(HG_WarEvent.HG_OP_Left);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Log.Error(e);
+        //    }
+        //}
         public async void BtnClick_Jump()
         {
             try
@@ -178,7 +232,7 @@ namespace ETHotfix
                 Log.Error(e);
             }
         }
-        
+
         //*****************************************************************************
         // Play sound clips
         //*****************************************************************************

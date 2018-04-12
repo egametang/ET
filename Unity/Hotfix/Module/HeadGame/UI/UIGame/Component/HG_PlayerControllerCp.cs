@@ -46,7 +46,7 @@ namespace ETHotfix
         public bool canTurnHead = true; //flag
         public bool canTurnShoe = true; //flag
 
-        private float moveSpeed = 30.0f; //player movement speed
+        private float moveSpeed = 5.0f; //player movement speed
         private float jumpSpeed = 300.0f; //player jump power (avoid setting it higher than 400)
         private bool canJump = true;
 
@@ -94,7 +94,7 @@ namespace ETHotfix
         public void Update()
         {
             rotateShoe();
-
+            CheckMovePl();
             //swing the head to the default rotation when player is not moving or jumping
             if (!Input.anyKey && canTurnHead)
             {
@@ -103,7 +103,7 @@ namespace ETHotfix
                 myHead.GetComponent<HingeJoint>().spring = js;
             }
         }
-
+    
 
         /// <summary>
         /// Here we have 2 functions to move the player with keyboard keys, mouse clicks or touch events.
@@ -261,21 +261,54 @@ namespace ETHotfix
             myHead.GetComponent<Renderer>().material.mainTexture =
                 curPerson.normal;
         }
-
-
-       public  void moveLeft()
+        bool? isGoRight = null;
+        void CheckMovePl()
         {
+            if(isGoRight == false)
+            {
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed * -1, 0, 0), ForceMode.Acceleration);
+            }
+            else if(isGoRight == true)
+            {
+                gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Acceleration);
+            }
+        }
+        /// <summary>
+        /// nul 就是停下来 
+        /// </summary>
+        /// <param name="isRight"></param>
+        public  void moveLeft(bool isLeft)
+        {
+            if (isLeft)
+            {
+                isGoRight = false;
+                rotateHead(-1);
+            }
+            else
+            {
+                isGoRight = null;
+            }
+            //isGoRight = (isLeft)? false : null;
             //print ("Left arrow pressed!");
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed * -1, 0, 0), ForceMode.Acceleration);
-            rotateHead(-1);
+            //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed * -1, 0, 0), ForceMode.Acceleration);
+   
         }
 
 
-        public void moveRight()
+        public void moveRight(bool isRight)
         {
+            if (isRight)
+            {
+                isGoRight = true;
+                rotateHead(1);
+            }
+            else
+            {
+                isGoRight = null;
+            }
             //print ("Right arrow pressed!");
-            gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Acceleration);
-            rotateHead(1);
+            //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(moveSpeed, 0, 0), ForceMode.Acceleration);
+ 
         }
 
 
