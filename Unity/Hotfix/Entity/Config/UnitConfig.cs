@@ -1,13 +1,11 @@
-using ETModel;
-
-namespace ETHotfix
+namespace ETModel
 {
 	[Config(AppType.Client)]
 	public partial class UnitConfigCategory : ACategory<UnitConfig>
 	{
 	}
 
-	public class UnitConfig : IConfig
+	public class UnitConfig: IConfig
 	{
 		public long Id { get; set; }
 		public string Name;

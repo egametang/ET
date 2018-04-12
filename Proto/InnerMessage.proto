@@ -1,3 +1,7 @@
+
+//服务器内网间的通讯
+	#region ET
+	
 	/// <summary>
 	/// 传送unit
 	/// </summary>
@@ -170,4 +174,34 @@
 		required int64 UnitId = 1;
 		required int Count = 2;
 	}
-}
+
+    #endregion
+	
+	#region Gate-Realm
+
+    message G2R_PlayerOnline_Ntt // IMessage
+    {
+        required long UserID = 1;
+        required int GateAppID = 2;
+    }
+
+    message G2R_PlayerOffline_Ntt // IMessage
+    {
+        required long UserID = 1;
+    }
+
+    #endregion
+
+	#region Realm-Gate
+
+    message R2G_PlayerKickOut_Req // IRequest
+    {
+        required long UserID = 1;
+    }
+
+    message G2R_PlayerKickOut_Ack // IResponse
+    {
+
+    }
+
+    #endregion

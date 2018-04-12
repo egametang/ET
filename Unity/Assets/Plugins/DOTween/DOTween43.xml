@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DOTween43</name>
+    </assembly>
+    <members>
+        <member name="T:DG.Tweening.ShortcutExtensions">
+            <summary>
+            Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
+            These, as all DOTween43 methods, require Unity 4.3 or later.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOColor(UnityEngine.SpriteRenderer,UnityEngine.Color,System.Single)">
+            <summary>Tweens a SpriteRenderer's color to the given value.
+            Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions.DOFade(UnityEngine.SpriteRenderer,System.Single,System.Single)">
+            <summary>Tweens a Material's alpha color to the given value.
+            Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+    </members>
+</doc>

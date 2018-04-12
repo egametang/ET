@@ -4,6 +4,9 @@ using ETModel;
 
 namespace ETHotfix
 {
+    /// <summary>
+    /// 批量加入数据库缓存字典
+    /// </summary>
 	[MessageHandler(AppType.DB)]
 	public class DBQueryBatchRequestHandler : AMRpcHandler<DBQueryBatchRequest, DBQueryBatchResponse>
 	{

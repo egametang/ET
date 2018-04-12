@@ -1,3 +1,5 @@
+//服务器和客户端间的消息通讯
+	#region ET
 message Actor_Test // IActorMessage
 {
 	required string Info = 1;
@@ -78,3 +80,4 @@ message C2R_Ping // IRequest
 message R2C_Ping // IResponse
 {
 }
+	#endregion

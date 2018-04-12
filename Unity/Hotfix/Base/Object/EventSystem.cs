@@ -147,6 +147,7 @@ namespace ETHotfix
 
 		public void Add(Component component)
 		{
+            //Log.Warning($"event  ad  {component.InstanceId}");
 			this.allComponents.Add(component.InstanceId, component);
 
 			Type type = component.GetType();
@@ -174,7 +175,8 @@ namespace ETHotfix
 
 		public void Remove(long instanceId)
 		{
-			this.allComponents.Remove(instanceId);
+            //Log.Warning($"event  remove  ui {instanceId} ");
+            this.allComponents.Remove(instanceId);
 		}
 
 		public void Awake(Component component)

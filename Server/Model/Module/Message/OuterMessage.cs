@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
+//服务器和客户端间的消息通讯
 	[Message(OuterOpcode.Actor_Test)]
 	[ProtoContract]
 	public partial class Actor_Test: IActorMessage

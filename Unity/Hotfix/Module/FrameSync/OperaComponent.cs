@@ -37,6 +37,7 @@ namespace ETHotfix
         {
             if (Input.GetMouseButtonDown(1))
             {
+	            Log.Info("mouse  down left");
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 	            if (Physics.Raycast(ray, out hit, 1000, this.mapMask))

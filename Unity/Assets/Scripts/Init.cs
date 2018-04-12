@@ -12,11 +12,6 @@ namespace ETModel
 		{
 			try
 			{
-				if (Application.unityVersion != "2017.1.0p5")
-				{
-					Log.Warning($"当前版本:{Application.unityVersion}, 最好使用运行指南推荐版本!");
-				}
-
 				SynchronizationContext.SetSynchronizationContext(this.contex);
 
 				DontDestroyOnLoad(gameObject);
