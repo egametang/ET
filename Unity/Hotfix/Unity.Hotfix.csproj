@@ -63,6 +63,7 @@
     <Compile Include="Base\Object\IStartSystem.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
+    <!--add auto createcs-->
     <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
     <Compile Include="Module\FrameSync\Actor_CreateUnitsHandler.cs" />
     <Compile Include="Module\FrameSync\Actor_TestHandler.cs" />
