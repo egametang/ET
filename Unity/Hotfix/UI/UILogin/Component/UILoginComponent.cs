@@ -68,10 +68,10 @@ namespace ETHotfix
                     return;
                 }
 
-                Log.Info("登陆gate成功!");
+                Log.Info("登陆gate成功 id = "+g2CLoginGate.UserID);
 
                 // 创建User
-                User user = ETModel.ComponentFactory.CreateWithId<User>(g2CLoginGate.PlayerId);
+                User user = ETModel.ComponentFactory.CreateWithId<User,long>(g2CLoginGate.PlayerId,g2CLoginGate.UserID);
                 UserComponent userComponent = ETModel.Game.Scene.GetComponent<UserComponent>();
                 userComponent.LocalPlayer = user;
 

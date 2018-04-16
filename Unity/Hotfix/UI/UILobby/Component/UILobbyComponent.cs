@@ -21,6 +21,7 @@ namespace ETHotfix
 			ReferenceCollector rc = this.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 
             long userId = UserComponent.Instance.LocalPlayer.UserID;
+            Log.Error("test = "+userId);
             G2C_PlayerInfo g2C_PlayerInfo = await SessionWrapComponent.Instance.Session.Call(new C2G_PlayerInfo() { UserID = userId }) as G2C_PlayerInfo;
 
             Log.Error(g2C_PlayerInfo.PlayerInfos.Nickname);
