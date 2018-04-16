@@ -12,12 +12,15 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.1.2f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -323,6 +326,8 @@
     <Compile Include="Assets\Scripts\Module\UI\UIComponent.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIFactoryAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\UI\UIType.cs" />
+    <Compile Include="Assets\Scripts\MyGame\Component\UserComponent.cs" />
+    <Compile Include="Assets\Scripts\MyGame\Entity\User.cs" />
     <Compile Include="Assets\Scripts\NewBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\Other\AppType.cs" />
     <Compile Include="Assets\Scripts\Other\Define.cs" />
@@ -773,6 +778,7 @@
     <None Include="Assets\Res\Config\UnitConfig.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

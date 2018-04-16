@@ -129,13 +129,15 @@ namespace ETModel
     public partial class PlayerInfo : IMessage
     {
         [ProtoMember(1, IsRequired = true)]
-        public int Nickname;
+        public string Nickname;
         [ProtoMember(2, IsRequired = true)]
         public int Photo;
         [ProtoMember(3, IsRequired = true)]
         public int Sex;
         [ProtoMember(4, IsRequired = true)]
-        public int Money;
+        public float Gold;
+        [ProtoMember(5, IsRequired = true)]
+        public int RoomCard;
     }
 
     [Message(HotfixOpcode.C2G_PlayerInfo)]
@@ -144,6 +146,9 @@ namespace ETModel
     {
         [ProtoMember(90, IsRequired = true)]
         public int RpcId { get; set; }
+
+        [ProtoMember(1, IsRequired = true)]
+        public long UserID;
     }
 
     [Message(HotfixOpcode.G2C_PlayerInfo)]
@@ -159,8 +164,8 @@ namespace ETModel
         [ProtoMember(92, IsRequired = true)]
         public string Message { get; set; }
 
-        [ProtoMember(1)]
-        PlayerInfo PlayerInfos = new PlayerInfo();
+        [ProtoMember(80)]
+        public PlayerInfo PlayerInfos = new PlayerInfo();
 
     }
 
