@@ -22,8 +22,8 @@ namespace ETModel
 			if (list == null)
 			{
 				list = this.FetchList();
-                this.dictionary[t] = list;
-            }
+				this.dictionary[t] = list;
+			}
 			list.Add(k);
 		}
 
