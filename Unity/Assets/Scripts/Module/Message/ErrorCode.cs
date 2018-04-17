@@ -5,7 +5,8 @@ namespace ETModel
 		public const int ERR_Success = 0;
 		public const int ERR_NotFoundActor = 2;
 
-		public const int ERR_AccountOrPasswordError = 102;
+        public const int ERR_AccountOrPasswordUnder6 = 101;
+        public const int ERR_AccountOrPasswordError = 102;
 		public const int ERR_SessionActorError = 103;
 		public const int ERR_NotFoundUnit = 104;
 		public const int ERR_ConnectGateKeyError = 105;

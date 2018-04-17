@@ -284,8 +284,13 @@ namespace ETModel
 			channel.Send(this.byteses);
 		}
 
+        //public Task Call(global::ETHotfix.C2G_PlayerInfo c2G_PlayerInfo)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
 #if SERVER
 		private Packet pkt = new Packet(ushort.MaxValue);
 #endif
-	}
+    }
 }

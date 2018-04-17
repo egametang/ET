@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
-	[Message(HotfixOpcode.C2R_Login)]
+    #region ET
+    [Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]
 	public partial class C2R_Login: IRequest
 	{
@@ -37,7 +38,6 @@ namespace ETHotfix
 
 		[ProtoMember(2, IsRequired = true)]
 		public long Key;
-
 	}
 
 	[Message(HotfixOpcode.C2G_LoginGate)]
@@ -49,7 +49,6 @@ namespace ETHotfix
 
 		[ProtoMember(1, IsRequired = true)]
 		public long Key;
-
 	}
 
 	[Message(HotfixOpcode.G2C_LoginGate)]
@@ -67,8 +66,10 @@ namespace ETHotfix
 
 		[ProtoMember(1, IsRequired = true)]
 		public long PlayerId;
+        [ProtoMember(2, IsRequired = true)]
+        public long UserID;
 
-	}
+    }
 
 	[Message(HotfixOpcode.G2C_TestHotfixMessage)]
 	[ProtoContract]
@@ -116,7 +117,17 @@ namespace ETHotfix
 	[ProtoContract]
 	public partial class PlayerInfo: IMessage
 	{
-	}
+        [ProtoMember(1, IsRequired = true)]
+        public string Nickname;
+        [ProtoMember(2, IsRequired = true)]
+        public int Photo;
+        [ProtoMember(3, IsRequired = true)]
+        public int Sex;
+        [ProtoMember(4, IsRequired = true)]
+        public float Gold;
+        [ProtoMember(5, IsRequired = true)]
+        public float RoomCard;
+    }
 
 	[Message(HotfixOpcode.C2G_PlayerInfo)]
 	[ProtoContract]
@@ -125,24 +136,29 @@ namespace ETHotfix
 		[ProtoMember(90, IsRequired = true)]
 		public int RpcId { get; set; }
 
-	}
+        [ProtoMember(1, IsRequired = true)]
+        public long UserID;
+    }
 
-	[Message(HotfixOpcode.G2C_PlayerInfo)]
-	[ProtoContract]
-	public partial class G2C_PlayerInfo: IResponse
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
+    [Message(HotfixOpcode.G2C_PlayerInfo)]
+    [ProtoContract]
+    public partial class G2C_PlayerInfo : IResponse
+    {
+        [ProtoMember(90, IsRequired = true)]
+        public int RpcId { get; set; }
 
-		[ProtoMember(91, IsRequired = true)]
-		public int Error { get; set; }
+        [ProtoMember(91, IsRequired = true)]
+        public int Error { get; set; }
 
-		[ProtoMember(92, IsRequired = true)]
-		public string Message { get; set; }
+        [ProtoMember(92, IsRequired = true)]
+        public string Message { get; set; }
 
-		[ProtoMember(1, TypeName = "ETHotfix.PlayerInfo")]
-		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
+        [ProtoMember(80, TypeName = "ETHotfix.PlayerInfo")]
+        public PlayerInfo PlayerInfos = new PlayerInfo();
+    }
+    #endregion
 
-	}
+    #region Lobby
 
+    #endregion
 }
