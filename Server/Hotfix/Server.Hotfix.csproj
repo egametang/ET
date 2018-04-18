@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="Module\Http\" />
+    <Folder Include="MyGame\Entity\DB\" />
   </ItemGroup>
 
 </Project>

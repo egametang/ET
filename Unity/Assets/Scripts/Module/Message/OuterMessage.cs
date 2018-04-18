@@ -139,7 +139,6 @@ namespace ETModel
 
 		[ProtoMember(1, TypeName = "ETModel.UnitInfo")]
 		public List<UnitInfo> Units = new List<UnitInfo>();
-
 	}
 
 	[Message(OuterOpcode.OneFrameMessage)]
