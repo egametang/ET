@@ -77,7 +77,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessagePacker.cs" Link="Module\Message\IMessagePacker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMHandler.cs" Link="Module\Message\IMHandler.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageDispatherComponent.cs" Link="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />

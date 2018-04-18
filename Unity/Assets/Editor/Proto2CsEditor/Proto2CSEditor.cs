@@ -23,10 +23,10 @@ namespace ETEditor
 	
 	public class Proto2CSEditor : EditorWindow
 	{
-		private const string protoPath = @"..\Proto\";
-		private const string serverMessagePath = @"..\Server\Model\Module\Message\";
-		private const string clientMessagePath = @"Assets\Scripts\Module\Message\";
-		private const string hotfixMessagePath = @"Hotfix\Module\Message\";
+		private const string protoPath = "../Proto/";
+		private const string serverMessagePath = "../Server/Model/Module/Message/";
+		private const string clientMessagePath = "Assets/Scripts/Module/Message/";
+		private const string hotfixMessagePath = "Hotfix/Module/Message/";
 		private static readonly char[] splitChars = { ' ', '\t' };
 		private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 		private static MultiMap<string, string> parentMsg = new MultiMap<string, string>();
