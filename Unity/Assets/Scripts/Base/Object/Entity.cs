@@ -54,12 +54,12 @@ namespace ETModel
 
 		public Component AddComponent(Type type)
 		{
-			Component component = ComponentFactory.CreateWithParent(type, this);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			if (this.componentDict.ContainsKey(type))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
+
+			Component component = ComponentFactory.CreateWithParent(type, this);
 
 			if (component is ISerializeToEntity)
 			{
@@ -71,12 +71,12 @@ namespace ETModel
 
 		public K AddComponent<K>() where K : Component, new()
 		{
-			K component = ComponentFactory.CreateWithParent<K>(this);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			if (this.componentDict.ContainsKey(typeof(K)))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
+
+			K component = ComponentFactory.CreateWithParent<K>(this);
 
 			if (component is ISerializeToEntity)
 			{
@@ -88,12 +88,12 @@ namespace ETModel
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			if (this.componentDict.ContainsKey(typeof(K)))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
+
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 			
 			if (component is ISerializeToEntity)
 			{
@@ -105,12 +105,12 @@ namespace ETModel
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			if (this.componentDict.ContainsKey(typeof(K)))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
+
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 			
 			if (component is ISerializeToEntity)
 			{
@@ -122,13 +122,13 @@ namespace ETModel
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			if (this.componentDict.ContainsKey(typeof(K)))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);

@@ -1,6 +1,6 @@
 ﻿using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	[Event(EventIdType.BehaviorTreeMouseInNode)]
 	public class BehaviorTreeMouseInNodeEvent_HandleOperate: AEvent<BehaviorNodeData, NodeDesigner>

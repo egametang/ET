@@ -2,7 +2,7 @@
 using ETModel;
 using UnityEditor;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public static class BuildHelper
 	{
@@ -10,7 +10,7 @@ namespace MyEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		//[MenuItem("Tools/编译Hotfix")]
+		[MenuItem("Tools/编译Hotfix")]
 		public static void BuildHotfix()
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -28,12 +28,11 @@ namespace MyEditor
 			process.StartInfo.RedirectStandardError = true;
 			process.Start();
 			string info = process.StandardOutput.ReadToEnd();
-			process.WaitForExit();
 			process.Close();
 			Log.Info(info);
 		}
 
-		[MenuItem("Tools/Web资源服务器")]
+		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
 			string currentDir = System.Environment.CurrentDirectory;
@@ -45,7 +44,7 @@ namespace MyEditor
 			process.Start();
 		}
 
-		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe)
+		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)
 		{
 			BuildTarget buildTarget = BuildTarget.StandaloneWindows;
 			string exeName = "ET";
@@ -62,9 +61,6 @@ namespace MyEditor
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
 					break;
-				case PlatformType.WebGL:
-					buildTarget = BuildTarget.WebGL;
-					break;
 			}
 
 			string fold = string.Format(BuildFolder, type);
@@ -75,12 +71,19 @@ namespace MyEditor
 			
 			Log.Info("开始资源打包");
 			BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
-
+			
 			GenerateVersionInfo(fold);
 			Log.Info("完成资源打包");
-			
+
+			if (isContainAB)
+			{
+				FileHelper.CleanDirectory("Assets/StreamingAssets/");
+				FileHelper.CopyDirectory(fold, "Assets/StreamingAssets/");
+			}
+
 			if (isBuildExe)
 			{
+				AssetDatabase.Refresh();
 				string[] levels = {
 					"Assets/Scenes/Init.unity",
 				};

@@ -2,7 +2,7 @@
 using ETModel;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public enum DebugState
 	{

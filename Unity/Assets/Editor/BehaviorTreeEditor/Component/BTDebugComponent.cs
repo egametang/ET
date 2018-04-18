@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using ETModel;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public class BTDebugComponent: Component
 	{
