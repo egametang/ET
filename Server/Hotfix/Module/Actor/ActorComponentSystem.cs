@@ -11,10 +11,8 @@ namespace ETHotfix
 		public override void Awake(ActorComponent self)
 		{
 			self.ActorType = ActorType.Common;
-			self.Queue = new Queue<ActorMessageInfo>();
+			self.Queue.Clear();
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
-
-			self.HandleAsync();
 		}
 	}
 
@@ -24,13 +22,20 @@ namespace ETHotfix
 		public override void Awake(ActorComponent self, string actorType)
 		{
 			self.ActorType = actorType;
-			self.Queue = new Queue<ActorMessageInfo>();
+			self.Queue.Clear();
 			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
+		}
+	}
 
+	[ObjectSystem]
+	public class ActorComponentStartSystem : StartSystem<ActorComponent>
+	{
+		public override void Start(ActorComponent self)
+		{
 			self.HandleAsync();
 		}
 	}
-	
+
 	[ObjectSystem]
 	public class ActorComponentDestroySystem : DestroySystem<ActorComponent>
 	{
@@ -82,6 +87,7 @@ namespace ETHotfix
 
 		public static async void HandleAsync(this ActorComponent self)
 		{
+			ActorMessageDispatherComponent actorMessageDispatherComponent = Game.Scene.GetComponent<ActorMessageDispatherComponent>();
 			while (true)
 			{
 				if (self.IsDisposed)
@@ -98,8 +104,7 @@ namespace ETHotfix
 					}
 
 					// 根据这个actor的类型分发给相应的ActorHandler处理
-					await Game.Scene.GetComponent<ActorMessageDispatherComponent>().ActorTypeHandle(
-							self.ActorType, info.Session, (Entity)self.Parent, info.Message);
+					await actorMessageDispatherComponent.ActorTypeHandle(self.ActorType, (Entity)self.Parent, info);
 				}
 				catch (Exception e)
 				{

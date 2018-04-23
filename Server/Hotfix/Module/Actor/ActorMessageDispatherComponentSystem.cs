@@ -96,10 +96,10 @@ namespace ETHotfix
 		}
 
 		/// <summary>
-		/// 根据actor的类型分发给不同的ActorHandler处理
+		/// 一个actor收到的所有消息先由其指定的ActorTypeHandle处理
 		/// </summary>
 		public static async Task ActorTypeHandle(
-				this ActorMessageDispatherComponent self, string actorType, Session session, Entity entity, IActorMessage actorMessage)
+				this ActorMessageDispatherComponent self, string actorType, Entity entity, ActorMessageInfo actorMessageInfo)
 		{
 			IActorTypeHandler iActorTypeHandler;
 			if (!self.ActorTypeHandlers.TryGetValue(actorType, out iActorTypeHandler))
@@ -107,7 +107,7 @@ namespace ETHotfix
 				throw new Exception($"not found actortype handler: {actorType}");
 			}
 
-			await iActorTypeHandler.Handle(session, entity, actorMessage);
+			await iActorTypeHandler.Handle(actorMessageInfo.Session, entity, actorMessageInfo.Message);
 		}
 
 		/// <summary>
