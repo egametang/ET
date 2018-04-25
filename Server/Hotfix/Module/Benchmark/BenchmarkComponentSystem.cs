@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using ETModel;
 
-namespace ETModel
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>
@@ -13,20 +14,16 @@ namespace ETModel
 		}
 	}
 
-	public class BenchmarkComponent: Component
+	public static class BenchmarkComponentEx
 	{
-		private int k;
-
-		private long time1 = TimeHelper.ClientNow();
-
-		public void Awake(IPEndPoint ipEndPoint)
+		public static void Awake(this BenchmarkComponent self, IPEndPoint ipEndPoint)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					this.TestAsync(networkComponent, ipEndPoint, i);
+					self.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
 			catch (Exception e)
@@ -35,7 +32,7 @@ namespace ETModel
 			}
 		}
 
-		public async void TestAsync(NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
+		public static async void TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{
@@ -45,7 +42,7 @@ namespace ETModel
 					while (i < 100000000)
 					{
 						++i;
-						await this.Send(session, j);
+						await self.Send(session, j);
 					}
 				}
 			}
@@ -59,37 +56,27 @@ namespace ETModel
 			}
 		}
 
-		public async Task Send(Session session, int j)
+		public static async Task Send(this BenchmarkComponent self, Session session, int j)
 		{
 			try
 			{
 				await session.Call(new C2R_Ping());
-				++this.k;
+				++self.k;
 
-				if (this.k % 100000 != 0)
+				if (self.k % 100000 != 0)
 				{
 					return;
 				}
 
 				long time2 = TimeHelper.ClientNow();
-				long time = time2 - this.time1;
-				this.time1 = time2;
-				Log.Info($"Benchmark k: {this.k} 每10W次耗时: {time} ms");
+				long time = time2 - self.time1;
+				self.time1 = time2;
+				Log.Info($"Benchmark k: {self.k} 每10W次耗时: {time} ms");
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
 			}
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
 		}
 	}
 }

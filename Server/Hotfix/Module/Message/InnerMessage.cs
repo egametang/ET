@@ -2,7 +2,7 @@ using ProtoBuf;
 using ETModel;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace ETModel
+namespace ETHotfix
 {
 /// <summary>
 /// 传送unit

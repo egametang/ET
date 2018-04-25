@@ -11,12 +11,10 @@ namespace ETModel
 		 public const ushort G2C_EnterMap = 107;
 		 public const ushort UnitInfo = 108;
 		 public const ushort Actor_CreateUnits = 109;
-		 public const ushort OneFrameMessage = 110;
-		 public const ushort FrameMessage = 111;
-		 public const ushort Frame_ClickMap = 112;
-		 public const ushort C2M_Reload = 113;
-		 public const ushort M2C_Reload = 114;
-		 public const ushort C2R_Ping = 115;
-		 public const ushort R2C_Ping = 116;
+		 public const ushort Frame_ClickMap = 110;
+		 public const ushort C2M_Reload = 111;
+		 public const ushort M2C_Reload = 112;
+		 public const ushort C2R_Ping = 113;
+		 public const ushort R2C_Ping = 114;
 	}
 }

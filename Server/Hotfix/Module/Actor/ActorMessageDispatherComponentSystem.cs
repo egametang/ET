@@ -36,8 +36,6 @@ namespace ETHotfix
 		{
 			AppType appType = self.Entity.GetComponent<StartConfigComponent>().StartConfig.AppType;
 
-			Log.Info("apptype: " + appType);
-
 			self.ActorMessageHandlers.Clear();
 			self.ActorTypeHandlers.Clear();
 
