@@ -32,11 +32,6 @@ namespace ETHotfix
 	{
 		public override void Destroy(ActorProxy self)
 		{
-			if (self.IsDisposed)
-			{
-				return;
-			}
-
 			self.LastSendTime = 0;
 			self.Address = null;
 
@@ -59,6 +54,7 @@ namespace ETHotfix
 		{
 			self.LastSendTime = TimeHelper.Now();
 			self.tcs = null;
+			self.failTimes = 0;
 			self.CancellationTokenSource = new CancellationTokenSource();
 		}
 
