@@ -20,16 +20,10 @@ namespace ETModel
 		
         private byte[] lastBuffer;
 
-        public CircularBuffer()
-        {
-            this.AddLast();
-        }
-
-        public CircularBuffer(int chunkSize)
-        {
-            this.ChunkSize = chunkSize;
-            this.AddLast();
-        }
+	    public CircularBuffer()
+	    {
+		    this.AddLast();
+	    }
 
         public override long Length
         {
@@ -46,7 +40,7 @@ namespace ETModel
                 }
                 if (c < 0)
                 {
-                    Log.Error("TBuffer count < 0: {0}, {1}, {2}".Fmt(this.bufferQueue.Count, this.LastIndex, this.FirstIndex));
+                    Log.Error("CircularBuffer count < 0: {0}, {1}, {2}".Fmt(this.bufferQueue.Count, this.LastIndex, this.FirstIndex));
                 }
                 return c;
             }
@@ -97,11 +91,11 @@ namespace ETModel
         }
 
 		/// <summary>
-		/// 从CircularBuffer读取到stream流中
+		/// 从CircularBuffer写到stream流中
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public async Task ReadAsync(Stream stream)
+		public async Task WriteToAsync(Stream stream)
 	    {
 		    long buffLength = this.Length;
 			int sendSize = this.ChunkSize - this.FirstIndex;
@@ -111,7 +105,7 @@ namespace ETModel
 		    }
 			
 		    await stream.WriteAsync(this.First, this.FirstIndex, sendSize);
-
+		    
 		    this.FirstIndex += sendSize;
 		    if (this.FirstIndex == this.ChunkSize)
 		    {
@@ -121,14 +115,14 @@ namespace ETModel
 		}
 
 		/// <summary>
-		/// 从stream流写到CircularBuffer中
+		/// 从stream流读到CircularBuffer中
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public async Task<int> WriteAsync(Stream stream)
+		public async Task<int> ReadFromAsync(Stream stream)
 	    {
 		    int size = this.ChunkSize - this.LastIndex;
-			
+		    
 		    int n = await stream.ReadAsync(this.Last, this.LastIndex, size);
 
 		    if (n == 0)
@@ -182,36 +176,9 @@ namespace ETModel
 	        return count;
         }
 
-        public void Write(byte[] buffer)
-        {
-            int alreadyCopyCount = 0;
-            while (alreadyCopyCount < buffer.Length)
-            {
-                if (this.LastIndex == ChunkSize)
-                {
-                    this.AddLast();
-                    this.LastIndex = 0;
-                }
-
-                int n = buffer.Length - alreadyCopyCount;
-                if (ChunkSize - this.LastIndex > n)
-                {
-                    Array.Copy(buffer, alreadyCopyCount, this.lastBuffer, this.LastIndex, n);
-                    this.LastIndex += buffer.Length - alreadyCopyCount;
-                    alreadyCopyCount += n;
-                }
-                else
-                {
-                    Array.Copy(buffer, alreadyCopyCount, this.lastBuffer, this.LastIndex, ChunkSize - this.LastIndex);
-                    alreadyCopyCount += ChunkSize - this.LastIndex;
-                    this.LastIndex = ChunkSize;
-                }
-            }
-        }
-
         public override void Write(byte[] buffer, int offset, int count)
         {
-            int alreadyCopyCount = 0;
+	        int alreadyCopyCount = 0;
             while (alreadyCopyCount < count)
             {
                 if (this.LastIndex == ChunkSize)

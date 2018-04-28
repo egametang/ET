@@ -158,7 +158,7 @@ namespace ETModel
 						return;
 					}
 
-					await this.sendBuffer.ReadAsync(stream);
+					await this.sendBuffer.WriteToAsync(stream);
 				}
 			}
 			catch (IOException)
@@ -193,14 +193,14 @@ namespace ETModel
 						return;
 					}
 
-					int n = await this.recvBuffer.WriteAsync(stream);
+					int n = await this.recvBuffer.ReadFromAsync(stream);
 
 					if (n == 0)
 					{
 						this.OnError(SocketError.NetworkReset);
 						return;
 					}
-
+					
 					if (this.recvTcs != null)
 					{
 						bool isOK = this.parser.Parse();
@@ -215,12 +215,14 @@ namespace ETModel
 					}
 				}
 			}
-			catch (IOException)
+			catch (IOException e)
 			{
+				Log.Error(e);
 				this.OnError(SocketError.SocketError);
 			}
-			catch (ObjectDisposedException)
+			catch (ObjectDisposedException e)
 			{
+				Log.Error(e);
 				this.OnError(SocketError.SocketError);
 			}
 			catch (Exception e)
