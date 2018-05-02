@@ -78,7 +78,13 @@ namespace ILRuntime.CLR.Method
 
         public bool IsStatic
         {
-            get { return def.IsStatic; }
+            get
+            {
+                if (cDef != null)
+                    return cDef.IsStatic;
+                else
+                    return def.IsStatic;
+            }
         }
 
         public CLRRedirectionDelegate Redirection { get { return redirect; } }

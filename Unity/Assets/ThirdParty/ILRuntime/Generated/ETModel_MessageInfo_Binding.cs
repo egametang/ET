@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.MessageInfo);
             args = new Type[]{};
@@ -88,10 +87,10 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ETModel.MessageInfo instance_of_this_method;
-            instance_of_this_method = (ETModel.MessageInfo)typeof(ETModel.MessageInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.MessageInfo instance_of_this_method = (ETModel.MessageInfo)typeof(ETModel.MessageInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.Opcode;
 
@@ -107,10 +106,10 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ETModel.MessageInfo instance_of_this_method;
-            instance_of_this_method = (ETModel.MessageInfo)typeof(ETModel.MessageInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.MessageInfo instance_of_this_method = (ETModel.MessageInfo)typeof(ETModel.MessageInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.Message;
 
@@ -131,12 +130,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Object message = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Object @message = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.UInt16 opcode = (ushort)ptr_of_this_method->Value;
 
-            var result_of_this_method = new ETModel.MessageInfo(opcode, message);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.UInt16 @opcode = (ushort)ptr_of_this_method->Value;
+
+
+            var result_of_this_method = new ETModel.MessageInfo(@opcode, @message);
 
             if(!isNewObj)
             {
@@ -144,6 +145,7 @@ namespace ILRuntime.Runtime.Generated
                 WriteBackInstance(__domain, __ret, __mStack, ref result_of_this_method);
                 return __ret;
             }
+
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

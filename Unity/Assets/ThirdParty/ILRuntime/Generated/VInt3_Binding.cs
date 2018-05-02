@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(VInt3);
 
@@ -84,13 +83,16 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Int32 _z = ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int32 _y = ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Int32 _x = ptr_of_this_method->Value;
+            System.Int32 @_z = ptr_of_this_method->Value;
 
-            var result_of_this_method = new VInt3(_x, _y, _z);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Int32 @_y = ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            System.Int32 @_x = ptr_of_this_method->Value;
+
+
+            var result_of_this_method = new VInt3(@_x, @_y, @_z);
 
             if(!isNewObj)
             {
@@ -98,6 +100,7 @@ namespace ILRuntime.Runtime.Generated
                 WriteBackInstance(__domain, __ret, __mStack, ref result_of_this_method);
                 return __ret;
             }
+
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

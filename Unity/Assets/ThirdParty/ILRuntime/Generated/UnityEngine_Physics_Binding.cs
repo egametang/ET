@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(UnityEngine.Physics);
             args = new Type[]{typeof(UnityEngine.Ray), typeof(UnityEngine.RaycastHit).MakeByRefType(), typeof(System.Single), typeof(System.Int32)};
@@ -35,18 +34,23 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Int32 layerMask = ptr_of_this_method->Value;
+            System.Int32 @layerMask = ptr_of_this_method->Value;
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Single maxDistance = *(float*)&ptr_of_this_method->Value;
+            System.Single @maxDistance = *(float*)&ptr_of_this_method->Value;
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            UnityEngine.RaycastHit hitInfo = (UnityEngine.RaycastHit)typeof(UnityEngine.RaycastHit).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.RaycastHit @hitInfo = (UnityEngine.RaycastHit)typeof(UnityEngine.RaycastHit).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            UnityEngine.Ray ray = (UnityEngine.Ray)typeof(UnityEngine.Ray).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.Ray @ray = (UnityEngine.Ray)typeof(UnityEngine.Ray).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = UnityEngine.Physics.Raycast(ray, out hitInfo, maxDistance, layerMask);
+
+            var result_of_this_method = UnityEngine.Physics.Raycast(@ray, out @hitInfo, @maxDistance, @layerMask);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             switch(ptr_of_this_method->ObjectType)

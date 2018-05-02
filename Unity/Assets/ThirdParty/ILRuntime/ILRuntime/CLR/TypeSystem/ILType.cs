@@ -43,6 +43,50 @@ namespace ILRuntime.CLR.TypeSystem
         int hashCode = -1;
         static int instance_id = 0x10000000;
         public TypeDefinition TypeDefinition { get { return definition; } }
+        bool mToStringGot, mEqualsGot, mGetHashCodeGot;
+        IMethod mToString, mEquals, mGetHashCode;
+
+        public IMethod ToStringMethod
+        {
+            get
+            {
+                if (!mToStringGot)
+                {
+                    IMethod m = appdomain.ObjectType.GetMethod("ToString", 0, true);
+                    mToString = GetVirtualMethod(m);
+                    mToStringGot = true;
+                }
+                return mToString;
+            }
+        }
+
+        public IMethod EqualsMethod
+        {
+            get
+            {
+                if (!mEqualsGot)
+                {
+                    IMethod m = appdomain.ObjectType.GetMethod("Equals", 1, true);
+                    mEquals = GetVirtualMethod(m);
+                    mEqualsGot = true;
+                }
+                return mEquals;
+            }
+        }
+
+        public IMethod GetHashCodeMethod
+        {
+            get
+            {
+                if (!mGetHashCodeGot)
+                {
+                    IMethod m = appdomain.ObjectType.GetMethod("GetHashCode", 0, true);
+                    mGetHashCode = GetVirtualMethod(m);
+                    mGetHashCodeGot = true;
+                }
+                return mGetHashCode;
+            }
+        }
 
         public TypeReference TypeReference
         {
@@ -148,7 +192,15 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return definition.HasGenericParameters && genericArguments == null;
+                return  typeRef.HasGenericParameters && genericArguments == null;
+            }
+        }
+
+        public bool IsGenericParameter
+        {
+            get
+            {
+                return typeRef.IsGenericParameter && genericArguments == null;
             }
         }
 
@@ -261,6 +313,14 @@ namespace ILRuntime.CLR.TypeSystem
             get; private set;
         }
 
+        public bool IsByRef
+        {
+            get
+            {
+                return typeRef.IsByReference;
+            }
+        }
+
         private bool? isValueType;
 
         public bool IsValueType
@@ -287,6 +347,14 @@ namespace ILRuntime.CLR.TypeSystem
         public bool IsPrimitive
         {
             get { return false; }
+        }
+
+        public bool IsInterface
+        {
+            get
+            {
+                return TypeDefinition.IsInterface;
+            }
         }
 
         public Type TypeForCLR
@@ -354,11 +422,35 @@ namespace ILRuntime.CLR.TypeSystem
                 return definition.IsEnum;
             }
         }
+
+        string fullName;
         public string FullName
         {
             get
             {
-                return typeRef.FullName;
+                if (string.IsNullOrEmpty(fullName))
+                {
+                    if (typeRef.HasGenericParameters && genericArguments != null)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append(typeRef.FullName);
+                        sb.Append('<');
+                        bool first = true;
+                        foreach (var i in genericArguments)
+                        {
+                            if (first)
+                                first = false;
+                            else
+                                sb.Append(", ");
+                            sb.Append(i.Value.FullName);
+                        }
+                        sb.Append('>');
+                        fullName = sb.ToString();
+                    }
+                    else
+                        fullName = typeRef.FullName;
+                }
+                return fullName;
             }
         }
         public string Name
@@ -404,6 +496,8 @@ namespace ILRuntime.CLR.TypeSystem
                     }
                 }
             }
+            if (firstCLRInterface == null && BaseType != null && BaseType is ILType)
+                firstCLRInterface = ((ILType)BaseType).FirstCLRInterface;
         }
         void InitializeBaseType()
         {
@@ -589,6 +683,11 @@ namespace ILRuntime.CLR.TypeSystem
             }
 
             var m = GetMethod(method.Name, method.Parameters, genericArguments, method.ReturnType, true);
+            if (m == null && method.DeclearingType.IsInterface)
+            {
+                m = GetMethod(string.Format("{0}.{1}", method.DeclearingType.FullName, method.Name), method.Parameters, genericArguments, method.ReturnType, true);
+            }
+
             if (m == null)
             {
                 if (BaseType != null)
@@ -619,7 +718,7 @@ namespace ILRuntime.CLR.TypeSystem
                     if (i.ParameterCount == pCnt)
                     {
                         bool match = true;
-                        if (genericArguments != null && i.GenericParameterCount == genericArguments.Length)
+                        if (genericArguments != null && i.GenericParameterCount == genericArguments.Length && genericMethod == null)
                         {
                             genericMethod = CheckGenericParams(i, param, ref match);
                         }
@@ -697,13 +796,28 @@ namespace ILRuntime.CLR.TypeSystem
                 for (int j = 0; j < param.Count; j++)
                 {
                     var p = i.Parameters[j];
+                    if (p.IsByRef)
+                        p = p.ElementType;
+
+                    if (p.IsGenericParameter)
+                        continue;
+
+                    var p2 = param[j];
+                    if (p2.IsByRef)
+                        p2 = p2.ElementType;
                     if (p.HasGenericParameter)
                     {
+                        if(p.Name != p2.Name)
+                        {
+                            match = false;
+                            break;
+                        }
                         //TODO should match the generic parameters;
                         continue;
                     }
 
-                    if (param[j] != p)
+                    
+                    if (p2 != p)
                     {
                         match = false;
                         break;
@@ -905,6 +1019,11 @@ namespace ILRuntime.CLR.TypeSystem
                 return true;
             }
 
+            if (IsEnum)
+            {
+                if (type.TypeForCLR == typeof(Enum))
+                    return true;
+            }
             if (BaseType != null)
             {
                 res = BaseType.CanAssignTo(type);
