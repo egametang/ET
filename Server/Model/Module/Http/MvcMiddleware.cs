@@ -185,8 +185,6 @@ namespace ETModel
                     }
                 }
             }
-
-            context.Response.OutputStream.Close(); // 返回
         }
 
         /// <summary>

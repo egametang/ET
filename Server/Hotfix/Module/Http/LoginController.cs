@@ -7,14 +7,14 @@ namespace ETHotfix
     [HttpHandler(AppType.Gate, "/")]
     public class LoginController : AHttpHandler
     {
-        [Post]
+        [Post] // url-> /Login
         public object Login(Account account)
         {
             return Ok("登陆成功！");
         }
 
-        [Get] // url-> /Login?name=11&age=1111
-        public string Login(string name, int age, HttpListenerRequest req, HttpListenerResponse resp)
+        [Get] // url-> /PushInfo?name=11&age=1111
+        public string PushInfo(string name, int age, HttpListenerRequest req, HttpListenerResponse resp)
         {
             Log.Info(name);
             Log.Info($"{age}");
@@ -29,9 +29,12 @@ namespace ETHotfix
         }
 
         [Post] // url-> /Test1
-        public int Test1(HttpListenerRequest req)
+        public object Test1(HttpListenerRequest req)
         {
-            return 1;
+            return new
+            {
+
+            };
         }
 
         [Get] // url-> /Test2

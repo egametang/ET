@@ -116,6 +116,7 @@ namespace ETModel
 
                 HttpListenerContext context = await this.listener.GetContextAsync();
                 await _middlewareEntry.Invoke(context); // 调用中间件
+                context.Response.Close();
             }
         }
 
@@ -188,6 +189,39 @@ namespace ETModel
                 object[] args = GetServicesByParameters(constructors[0].GetParameters());
                 return Activator.CreateInstance(t, args);
             }
+        }
+
+
+        public void Run(Func<HttpListenerContext, RequestDelegate, Task> action)
+        {
+            _middlewares.Add((next) =>
+            {
+                return context =>
+                {
+                    Task task = action(context, next);
+                    if (task == null)
+                        task = Task.CompletedTask;
+                    return task;
+                };
+            });
+        }
+
+        public void Run(string path, Func<HttpListenerContext, RequestDelegate, Task> action)
+        {
+            _middlewares.Add((next) =>
+            {
+                return context =>
+                {
+                    if (context.Request.Url.AbsolutePath == path)
+                    {
+                        Task task = action(context, next);
+                        if (task == null)
+                            task = Task.CompletedTask;
+                        return task;
+                    }
+                    return next(context);
+                };
+            });
         }
 
         public void Use(Func<RequestDelegate, RequestDelegate> middleware)
