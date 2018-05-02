@@ -7,334 +7,286 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	[ObjectSystem]
-	public class HttpComponentComponentAwakeSystem : AwakeSystem<HttpComponent>
-	{
-		public override void Awake(HttpComponent self)
-		{
-			self.Awake();
-		}
-	}
+    public delegate Task RequestDelegate(HttpListenerContext context);
 
-	[ObjectSystem]
-	public class HttpComponentComponentLoadSystem : LoadSystem<HttpComponent>
-	{
-		public override void Load(HttpComponent self)
-		{
-			self.Load();
-		}
-	}
+    /// <summary>
+    /// http请求分发器
+    /// </summary>
+    public class HttpComponent : Component
+    {
+        private enum ServiceState
+        {
+            None, // 长久,没请求都是同个对象
+            Transient // 瞬时,每次请求都是一个新的.
+        }
 
-	[ObjectSystem]
-	public class HttpComponentComponentStartSystem : StartSystem<HttpComponent>
-	{
-		public override void Start(HttpComponent self)
-		{
-			self.Start();
-		}
-	}
+        private class ServiceInfo
+        {
+            public ServiceState ServiceState { get; set; } = ServiceState.Transient;
 
-	/// <summary>
-	/// http请求分发器
-	/// </summary>
-	public class HttpComponent : Component
-	{
-		public AppType appType;
-		public HttpListener listener;
-		public HttpConfig HttpConfig;
-		public Dictionary<string, IHttpHandler> dispatcher;
+            public Type type;
 
-		// 处理方法
-		private Dictionary<MethodInfo, IHttpHandler> handlersMapping;
+            public object obj; // 用于保存长久的服务
+        }
 
-		// Get处理
-		private Dictionary<string, MethodInfo> getHandlers;
-		private Dictionary<string, MethodInfo> postHandlers;
+        public AppType appType;
+        public HttpListener listener;
+        public HttpConfig HttpConfig;
 
-		public void Awake()
-		{
-			StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
-			this.appType = startConfig.AppType;
-			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
+        // 中间件
+        private List<Func<RequestDelegate, RequestDelegate>> _middlewares = new List<Func<RequestDelegate, RequestDelegate>>();
 
-			this.Load();
-		}
+        // 服务,IOC容器.
+        private Dictionary<string, ServiceInfo> _services = new Dictionary<string, ServiceInfo>();
 
-		public void Load()
-		{
-			this.dispatcher = new Dictionary<string, IHttpHandler>();
-			this.handlersMapping = new Dictionary<MethodInfo, IHttpHandler>();
-			this.getHandlers = new Dictionary<string, MethodInfo>();
-			this.postHandlers = new Dictionary<string, MethodInfo>();
+        // 中间件调用入口
+        private RequestDelegate _middlewareEntry = null;
 
-			Type[] types = DllHelper.GetMonoTypes();
+        public void Awake()
+        {
+            StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
+            this.appType = startConfig.AppType;
+            this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
-			foreach (Type type in types)
-			{
-				object[] attrs = type.GetCustomAttributes(typeof(HttpHandlerAttribute), false);
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
+            this.Load();
+        }
 
-				HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute)attrs[0];
-				if (!httpHandlerAttribute.AppType.Is(this.appType))
-				{
-					continue;
-				}
+        public void Load()
+        {
+            // 初始化中间件的调用链
+            _middlewareEntry = context =>
+            {
+                return Task.CompletedTask;
+            };
 
-				object obj = Activator.CreateInstance(type);
+            _middlewares.Reverse();
 
-				IHttpHandler ihttpHandler = obj as IHttpHandler;
-				if (ihttpHandler == null)
-				{
-					throw new Exception($"HttpHandler handler not inherit IHttpHandler class: {obj.GetType().FullName}");
-				}
+            foreach (var func in _middlewares)
+            {
+                _middlewareEntry = func.Invoke(_middlewareEntry);
+            }
+        }
 
-				this.dispatcher.Add(httpHandlerAttribute.Path, ihttpHandler);
+        public void Start()
+        {
+            try
+            {
+                this.listener = new HttpListener();
 
-				LoadMethod(type, httpHandlerAttribute, ihttpHandler);
-			}
-		}
+                if (this.HttpConfig.Url == null)
+                {
+                    this.HttpConfig.Url = "";
+                }
 
-		public void Start()
-		{
-			try
-			{
-				this.listener = new HttpListener();
+                foreach (string s in this.HttpConfig.Url.Split(';'))
+                {
+                    if (s.Trim() == "")
+                    {
+                        continue;
+                    }
 
-				if (this.HttpConfig.Url == null)
-				{
-					this.HttpConfig.Url = "";
-				}
+                    this.listener.Prefixes.Add(s);
+                }
 
-				foreach (string s in this.HttpConfig.Url.Split(';'))
-				{
-					if (s.Trim() == "")
-					{
-						continue;
-					}
+                this.listener.Start();
 
-					this.listener.Prefixes.Add(s);
-				}
+                this.Accept();
+            }
+            catch (HttpListenerException e)
+            {
+                if (e.ErrorCode == 5)
+                {
+                    throw new Exception($"CMD管理员中输入:netsh http add urlacl url=http://*:8080/ user=Everyone   |http server error: {e.ErrorCode}", e);
+                }
+                else
+                {
+                    throw new Exception($"http server error: {e.ErrorCode}", e);
+                }
+            }
+        }
 
-				this.listener.Start();
+        public async void Accept()
+        {
+            while (true)
+            {
+                if (this.IsDisposed)
+                {
+                    return;
+                }
 
-				this.Accept();
-			}
-			catch (HttpListenerException e)
-			{
-				throw new Exception($"http server error: {e.ErrorCode}", e);
-			}
-		}
+                HttpListenerContext context = await this.listener.GetContextAsync();
+                await _middlewareEntry.Invoke(context); // 调用中间件
+                context.Response.Close();
+            }
+        }
 
-		public void LoadMethod(Type type, HttpHandlerAttribute httpHandlerAttribute, IHttpHandler httpHandler)
-		{
-			// 扫描这个类里面的方法
-			MethodInfo[] methodInfos = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Instance);
-			foreach (MethodInfo method in methodInfos)
-			{
-				object[] getAttrs = method.GetCustomAttributes(typeof(GetAttribute), false);
-				if (getAttrs.Length != 0)
-				{
-					GetAttribute get = (GetAttribute)getAttrs[0];
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
 
-					string path = method.Name;
-					if (!string.IsNullOrEmpty(get.Path))
-					{
-						path = get.Path;
-					}
+            base.Dispose();
 
-					getHandlers.Add(httpHandlerAttribute.Path + path, method);
-					//Log.Debug($"add handler[{httpHandler}.{method.Name}] path {httpHandlerAttribute.Path + path}");
-				}
+            this.listener.Stop();
+            this.listener.Close();
+            this._middlewares.Clear();
+            this._services.Clear();
+            this._middlewareEntry = null;
+        }
 
-				object[] postAttrs = method.GetCustomAttributes(typeof(PostAttribute), false);
-				if (postAttrs.Length != 0)
-				{
-					// Post处理方法
-					PostAttribute post = (PostAttribute)postAttrs[0];
+        /// <summary>
+        /// 根据参数,获取服务数组.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public object[] GetServicesByParameters(ParameterInfo[] parameters)
+        {
+            object[] args = new object[parameters.Length];
 
-					string path = method.Name;
-					if (!string.IsNullOrEmpty(post.Path))
-					{
-						path = post.Path;
-					}
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                ParameterInfo info = parameters[i];
 
-					postHandlers.Add(httpHandlerAttribute.Path + path, method);
-					//Log.Debug($"add handler[{httpHandler}.{method.Name}] path {httpHandlerAttribute.Path + path}");
-				}
+                if (info.ParameterType == typeof(HttpComponent)) // 注入HttpComponent
+                {
+                    args[i] = this;
+                    continue;
+                }
 
-				if (getAttrs.Length == 0 && postAttrs.Length == 0)
-				{
-					continue;
-				}
+                if (_services.TryGetValue(info.ParameterType.Name, out ServiceInfo serviceInfo))
+                {
 
-				handlersMapping.Add(method, httpHandler);
-			}
-		}
+                    if (serviceInfo.ServiceState == ServiceState.Transient)
+                    {
+                        args[i] = CreateInstance(serviceInfo.type);
+                    }
+                    else
+                    {
+                        args[i] = serviceInfo.obj;
+                    }
+                }
+            }
+            return args;
+        }
 
-		public async void Accept()
-		{
-			while (true)
-			{
-				if (this.IsDisposed)
-				{
-					return;
-				}
+        /// <summary>
+        /// 创建实例并在构造函数中注入依赖对象
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public object CreateInstance(Type t)
+        {
+            var constructors = t.GetConstructors();
+            if (constructors.Length != 1)
+            {
+                Log.Error($"{t.Name} 服务只能有1个构造函数.");
+                return null;
+            }
+            else
+            {
+                object[] args = GetServicesByParameters(constructors[0].GetParameters());
+                return Activator.CreateInstance(t, args);
+            }
+        }
 
-				HttpListenerContext context = await this.listener.GetContextAsync();
-				await InvokeHandler(context);
-				context.Response.Close();
-			}
-		}
 
-		/// <summary>
-		/// 调用处理方法
-		/// </summary>
-		/// <param name="context"></param>
-		private async Task InvokeHandler(HttpListenerContext context)
-		{
-			context.Response.StatusCode = 404;
+        public void Run(Func<HttpListenerContext, RequestDelegate, Task> action)
+        {
+            _middlewares.Add((next) =>
+            {
+                return context =>
+                {
+                    Task task = action(context, next);
+                    if (task == null)
+                        task = Task.CompletedTask;
+                    return task;
+                };
+            });
+        }
 
-			MethodInfo methodInfo = null;
-			IHttpHandler httpHandler = null;
-			string postbody = "";
-			switch (context.Request.HttpMethod)
-			{
-				case "GET":
-					this.getHandlers.TryGetValue(context.Request.Url.AbsolutePath, out methodInfo);
-					if (methodInfo != null)
-					{
-						this.handlersMapping.TryGetValue(methodInfo, out httpHandler);
-					}
-					break;
-				case "POST":
-					this.postHandlers.TryGetValue(context.Request.Url.AbsolutePath, out methodInfo);
-					if (methodInfo != null)
-					{
-						this.handlersMapping.TryGetValue(methodInfo, out httpHandler);
+        public void Run(string path, Func<HttpListenerContext, RequestDelegate, Task> action)
+        {
+            _middlewares.Add((next) =>
+            {
+                return context =>
+                {
+                    if (context.Request.Url.AbsolutePath == path)
+                    {
+                        Task task = action(context, next);
+                        if (task == null)
+                            task = Task.CompletedTask;
+                        return task;
+                    }
+                    return next(context);
+                };
+            });
+        }
 
-						using (StreamReader sr = new StreamReader(context.Request.InputStream))
-						{
-							postbody = sr.ReadToEnd();
-						}
-					}
-					break;
-				default:
-					context.Response.StatusCode = 405;
-					break;
-			}
+        public void Use(Func<RequestDelegate, RequestDelegate> middleware)
+        {
+            _middlewares.Add(middleware);
+        }
 
-			if (httpHandler != null)
-			{
-				object[] args = InjectParameters(context, methodInfo, postbody);
+        public void Use<T>()
+        {
+            Type type = typeof(T);
 
-				// 自动把返回值，以json方式响应。
-				object resp = methodInfo.Invoke(httpHandler, args);
-				object result = resp;
-				if (resp is Task t)
-				{
-					await t;
-					result = t.GetType().GetProperty("Result").GetValue(t, null);
-				}
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
 
-				if (result != null)
-				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
-					{
-						if (result.GetType() == typeof(string))
-						{
-							sw.Write(result.ToString());
-						}
-						else
-						{
-							sw.Write(JsonHelper.ToJson(result));
-						}
-					}
-				}
-			}
-		}
+            if (constructorInfos.Length != 1)
+            {
+                Log.Error($"{type.Name} 中间件只能有1个构造函数.");
+                return;
+            }
 
-		/// <summary>
-		/// 注入参数
-		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="methodInfo"></param>
-		/// <param name="postbody"></param>
-		/// <returns></returns>
-		private static object[] InjectParameters(HttpListenerContext context, MethodInfo methodInfo, string postbody)
-		{
-			context.Response.StatusCode = 200;
-			ParameterInfo[] parameterInfos = methodInfo.GetParameters();
-			object[] args = new object[parameterInfos.Length];
-			for (int i = 0; i < parameterInfos.Length; i++)
-			{
-				ParameterInfo item = parameterInfos[i];
+            MethodInfo methodInfo = type.GetMethod("Invoke");
 
-				if (item.ParameterType == typeof(HttpListenerRequest))
-				{
-					args[i] = context.Request;
-					continue;
-				}
+            Func<RequestDelegate, RequestDelegate> func = new Func<RequestDelegate, RequestDelegate>(next =>
+            {
+                object obj = CreateInstance(type);
+                return context =>
+                {
+                    return (Task)methodInfo.Invoke(obj, new object[] { context });
+                };
+            });
+            _middlewares.Add(func);
+        }
 
-				if (item.ParameterType == typeof(HttpListenerResponse))
-				{
-					args[i] = context.Response;
-					continue;
-				}
+        public void AddService<T>()
+        {
+            Type type = typeof(T);
+            if (!_services.ContainsKey(type.Name))
+            {
+                _services.Add(type.Name, new ServiceInfo
+                {
+                    ServiceState = ServiceState.None,
+                    type = type,
+                    obj = CreateInstance(type)
+                });
+            }
+            else
+            {
+                Log.Error($"{type.Name} 此服务已经注册.");
+            }
+        }
 
-				try
-				{
-					switch (context.Request.HttpMethod)
-					{
-						case "POST":
-							if (item.Name == "postBody") // 约定参数名称为postBody,只传string类型。本来是byte[]，有需求可以改。
-							{
-								args[i] = postbody;
-							}
-							else if (item.ParameterType.IsClass && item.ParameterType != typeof(string) && !string.IsNullOrEmpty(postbody))
-							{
-								object entity = JsonHelper.FromJson(item.ParameterType, postbody);
-								args[i] = entity;
-							}
-
-							break;
-						case "GET":
-							string query = context.Request.QueryString[item.Name];
-							if (query != null)
-							{
-								object value = Convert.ChangeType(query, item.ParameterType);
-								args[i] = value;
-							}
-
-							break;
-						default:
-							args[i] = null;
-							break;
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-					args[i] = null;
-				}
-			}
-
-			return args;
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
-
-			this.listener.Stop();
-			this.listener.Close();
-		}
-	}
+        public void AddServiceTransient<T>()
+        {
+            Type type = typeof(T);
+            if (!_services.ContainsKey(type.Name))
+            {
+                _services.Add(type.Name, new ServiceInfo
+                {
+                    ServiceState = ServiceState.Transient,
+                    type = type,
+                });
+            }
+            else
+            {
+                Log.Error($"{type.Name} 此服务已经注册.");
+            }
+        }
+    }
 }
