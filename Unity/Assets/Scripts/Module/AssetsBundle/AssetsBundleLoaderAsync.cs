@@ -39,10 +39,10 @@ namespace ETModel
 			base.Dispose();
 		}
 
-		public Task<AssetBundle> LoadAsync(string bundleName)
+		public Task<AssetBundle> LoadAsync(string path)
 		{
 			this.tcs = new TaskCompletionSource<AssetBundle>();
-			this.request = AssetBundle.LoadFromFileAsync(Path.Combine(PathHelper.AppHotfixResPath, bundleName));
+			this.request = AssetBundle.LoadFromFileAsync(path);
 			return this.tcs.Task;
 		}
 	}
