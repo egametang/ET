@@ -29,7 +29,7 @@ namespace ETModel
 
 		public IPEndPoint RemoteAddress { get; protected set; }
 
-		private event Action<AChannel, SocketError> errorCallback;
+		private Action<AChannel, SocketError> errorCallback;
 
 		public event Action<AChannel, SocketError> ErrorCallback
 		{
