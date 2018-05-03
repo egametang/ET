@@ -132,6 +132,8 @@ namespace App
 			{
 				Log.Error(e);
 			}
+
+            Console.ReadKey();
 		}
 	}
 }
