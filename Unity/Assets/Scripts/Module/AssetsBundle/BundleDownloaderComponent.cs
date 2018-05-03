@@ -56,7 +56,7 @@ namespace ETModel
 			}
 			else
 			{
-				versionPath = Path.Combine(PathHelper.AppResPath, "Version.txt");
+				versionPath = Path.Combine(PathHelper.AppResPath4Web, "Version.txt");
 				using (UnityWebRequestAsync request = ComponentFactory.Create<UnityWebRequestAsync>())
 				{
 					await request.DownloadAsync(versionPath);
