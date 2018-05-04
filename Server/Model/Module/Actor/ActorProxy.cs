@@ -9,6 +9,8 @@ namespace ETModel
 	{
 		// actor的地址
 		public IPEndPoint Address;
+
+		public long ActorInstanceId;
 		
 		// 还没发送的消息
 		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();

@@ -20,8 +20,10 @@ namespace ETHotfix
 	{
 		public override async void Start(ActorProxy self)
 		{
-			int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-			self.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
+			self.ActorInstanceId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+			self.Address = Game.Scene.GetComponent<StartConfigComponent>()
+					.Get(IdGenerater.GetAppIdFromId(self.ActorInstanceId))
+					.GetComponent<InnerConfig>().IPEndPoint;
 
 			self.UpdateAsync();
 		}
@@ -144,8 +146,10 @@ namespace ETHotfix
 
 					// 等待1s再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
-					int appId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-					self.Address = Game.Scene.GetComponent<StartConfigComponent>().Get(appId).GetComponent<InnerConfig>().IPEndPoint;
+					self.ActorInstanceId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+					self.Address = Game.Scene.GetComponent<StartConfigComponent>()
+							.Get(IdGenerater.GetAppIdFromId(self.ActorInstanceId))
+							.GetComponent<InnerConfig>().IPEndPoint;
 					self.CancellationTokenSource = new CancellationTokenSource();
 					self.AllowGet();
 					return;

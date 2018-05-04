@@ -12,7 +12,6 @@ namespace ETHotfix
 		{
 			self.ActorType = ActorType.Common;
 			self.Queue.Clear();
-			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
 		}
 	}
 
@@ -23,7 +22,6 @@ namespace ETHotfix
 		{
 			self.ActorType = actorType;
 			self.Queue.Clear();
-			Game.Scene.GetComponent<ActorManagerComponent>().Add(self.Entity);
 		}
 	}
 
@@ -41,7 +39,6 @@ namespace ETHotfix
 	{
 		public override void Destroy(ActorComponent self)
 		{
-			Game.Scene.GetComponent<ActorManagerComponent>().Remove(self.Entity.Id);
 		}
 	}
 
@@ -52,7 +49,7 @@ namespace ETHotfix
 	{
 		public static async Task AddLocation(this ActorComponent self)
 		{
-			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Entity.Id);
+			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Entity.Id, self.Entity.InstanceId);
 		}
 
 		public static async Task RemoveLocation(this ActorComponent self)

@@ -11,7 +11,7 @@ namespace ETHotfix
 			ObjectUnLockResponse response = new ObjectUnLockResponse();
 			try
 			{
-				Game.Scene.GetComponent<LocationComponent>().UpdateAndUnLock(message.Key, message.UnLockAppId, message.AppId);
+				Game.Scene.GetComponent<LocationComponent>().UnLockAndUpdate(message.Key, message.OldInstanceId, message.InstanceId);
 				reply(response);
 			}
 			catch (Exception e)

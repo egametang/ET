@@ -8,6 +8,7 @@
 	
 	message M2M_TrasferUnitResponse // IResponse
 	{
+		required int64 InstanceId = 1;
 	}
 	
 	message M2A_Reload // IRequest
@@ -101,7 +102,7 @@
 	message ObjectAddRequest // IRequest
 	{
 		required int64 Key = 1;
-		required int AppId = 2;
+		required int64 InstanceId = 2;
 	}
 
 	message ObjectAddResponse // IResponse
@@ -120,7 +121,7 @@
 	message ObjectLockRequest // IRequest
 	{
 		required int64 Key = 1;
-		required int LockAppId = 2;
+		required int64 InstanceId = 2;
 		required int Time = 3;
 	}
 
@@ -131,8 +132,8 @@
 	message ObjectUnLockRequest // IRequest
 	{
 		required int64 Key = 1;
-		required int UnLockAppId = 2;
-		required int AppId = 3;
+		required int64 OldInstanceId = 2;
+		required int64 InstanceId = 3;
 	}
 
 	message ObjectUnLockResponse // IResponse
@@ -146,7 +147,7 @@
 
 	message ObjectGetResponse // IResponse
 	{
-		required int AppId = 1;
+		required int64 InstanceId = 1;
 	}
 
 	message R2G_GetLoginKey // IRequest

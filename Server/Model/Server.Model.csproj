@@ -113,7 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Component\Config\" />
-    <Folder Include="Component\Unit" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Numeric\" />
