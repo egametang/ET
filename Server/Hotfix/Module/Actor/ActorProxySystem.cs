@@ -11,7 +11,24 @@ namespace ETHotfix
 	{
 		public override void Awake(ActorProxy self)
 		{
-			self.Awake();
+			self.LastSendTime = TimeHelper.Now();
+			self.tcs = null;
+			self.FailTimes = 0;
+			self.MaxFailTimes = 5;
+			self.ActorId = 0;
+		}
+	}
+	
+	[ObjectSystem]
+	public class ActorProxyAwake2System : AwakeSystem<ActorProxy, long>
+	{
+		public override void Awake(ActorProxy self, long actorId)
+		{
+			self.LastSendTime = TimeHelper.Now();
+			self.tcs = null;
+			self.FailTimes = 0;
+			self.MaxFailTimes = 0;
+			self.ActorId = actorId;
 		}
 	}
 
@@ -20,9 +37,13 @@ namespace ETHotfix
 	{
 		public override async void Start(ActorProxy self)
 		{
-			self.ActorInstanceId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+			if (self.ActorId == 0)
+			{
+				self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+			}
+
 			self.Address = Game.Scene.GetComponent<StartConfigComponent>()
-					.Get(IdGenerater.GetAppIdFromId(self.ActorInstanceId))
+					.Get(IdGenerater.GetAppIdFromId(self.ActorId))
 					.GetComponent<InnerConfig>().IPEndPoint;
 
 			self.UpdateAsync();
@@ -43,7 +64,8 @@ namespace ETHotfix
 				actorTask.RunFail(ErrorCode.ERR_NotFoundActor);
 			}
 
-			self.failTimes = 0;
+			self.ActorId = 0;
+			self.FailTimes = 0;
 			var t = self.tcs;
 			self.tcs = null;
 			t?.SetResult(new ActorTask());
@@ -52,14 +74,6 @@ namespace ETHotfix
 
 	public static class ActorProxyEx
 	{
-		public static void Awake(this ActorProxy self)
-		{
-			self.LastSendTime = TimeHelper.Now();
-			self.tcs = null;
-			self.failTimes = 0;
-			self.CancellationTokenSource = new CancellationTokenSource();
-		}
-
 		private static void Add(this ActorProxy self, ActorTask task)
 		{
 			if (self.IsDisposed)
@@ -69,7 +83,7 @@ namespace ETHotfix
 
 			self.WaitingTasks.Enqueue(task);
 			// failtimes > 0表示正在重试，这时候不能加到正在发送队列
-			if (self.failTimes == 0)
+			if (self.FailTimes == 0)
 			{
 				self.AllowGet();
 			}
@@ -132,11 +146,10 @@ namespace ETHotfix
 				// 如果没找到Actor,重试
 				if (response.Error == ErrorCode.ERR_NotFoundActor)
 				{
-					self.CancellationTokenSource.Cancel();
-					++self.failTimes;
+					++self.FailTimes;
 
 					// 失败10次则清空actor发送队列，返回失败
-					if (self.failTimes > 10)
+					if (self.FailTimes > self.MaxFailTimes)
 					{
 						// 失败直接删除actorproxy
 						Log.Info($"actor send message fail, actorid: {self.Id}");
@@ -146,18 +159,17 @@ namespace ETHotfix
 
 					// 等待1s再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
-					self.ActorInstanceId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+					self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
 					self.Address = Game.Scene.GetComponent<StartConfigComponent>()
-							.Get(IdGenerater.GetAppIdFromId(self.ActorInstanceId))
+							.Get(IdGenerater.GetAppIdFromId(self.ActorId))
 							.GetComponent<InnerConfig>().IPEndPoint;
-					self.CancellationTokenSource = new CancellationTokenSource();
 					self.AllowGet();
 					return;
 				}
 
 				// 发送成功
 				self.LastSendTime = TimeHelper.Now();
-				self.failTimes = 0;
+				self.FailTimes = 0;
 
 				self.WaitingTasks.Dequeue();
 			}

@@ -75,6 +75,20 @@ namespace ETModel
 			this.ActorProxys[id] = actorProxy;
 			return actorProxy;
 		}
+		
+		public ActorProxy GetWithActorId(long actorId)
+		{
+			if (this.ActorProxys.TryGetValue(actorId, out ActorProxy actorProxy))
+			{
+				return actorProxy;
+			}
+			
+			actorProxy = ComponentFactory.CreateWithId<ActorProxy>(actorId);
+			actorProxy.ActorId = actorId;
+			actorProxy.MaxFailTimes = 0;
+			this.ActorProxys[actorId] = actorProxy;
+			return actorProxy;
+		}
 
 		public void Remove(long id)
 		{

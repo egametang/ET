@@ -14,8 +14,8 @@ namespace ETModel
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.proxy.Address);
 
-			this.message.ActorId = this.proxy.ActorInstanceId;
-			IResponse response = await session.Call(message, this.proxy.CancellationTokenSource.Token);
+			this.message.ActorId = this.proxy.ActorId;
+			IResponse response = await session.Call(message);
 
 			if (response.Error != ErrorCode.ERR_NotFoundActor)
 			{
