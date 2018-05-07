@@ -4,7 +4,7 @@ namespace ETModel
 {
 	public struct ActorTask
 	{
-		public ActorProxy proxy;
+		public ActorMessageSender MessageSender;
 		
 		public IActorMessage message;
 		
@@ -12,9 +12,9 @@ namespace ETModel
 
 		public async Task<IResponse> Run()
 		{
-			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.proxy.Address);
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(this.MessageSender.Address);
 
-			this.message.ActorId = this.proxy.ActorId;
+			this.message.ActorId = this.MessageSender.ActorId;
 			IResponse response = await session.Call(message);
 
 			if (response.Error != ErrorCode.ERR_NotFoundActor)

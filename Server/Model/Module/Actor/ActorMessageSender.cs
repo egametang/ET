@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	public sealed class ActorProxy : ComponentWithId
+	public sealed class ActorMessageSender : ComponentWithId
 	{
 		// actor的地址
 		public IPEndPoint Address;

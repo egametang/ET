@@ -6,9 +6,9 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class ActorComponentAwakeSystem : AwakeSystem<ActorComponent>
+	public class MailBoxComponentAwakeSystem : AwakeSystem<MailBoxComponent>
 	{
-		public override void Awake(ActorComponent self)
+		public override void Awake(MailBoxComponent self)
 		{
 			self.ActorType = ActorType.Common;
 			self.Queue.Clear();
@@ -16,9 +16,9 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class ActorComponentAwake1System : AwakeSystem<ActorComponent, string>
+	public class MailBoxComponentAwake1System : AwakeSystem<MailBoxComponent, string>
 	{
-		public override void Awake(ActorComponent self, string actorType)
+		public override void Awake(MailBoxComponent self, string actorType)
 		{
 			self.ActorType = actorType;
 			self.Queue.Clear();
@@ -26,38 +26,38 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class ActorComponentStartSystem : StartSystem<ActorComponent>
+	public class MailBoxComponentStartSystem : StartSystem<MailBoxComponent>
 	{
-		public override void Start(ActorComponent self)
+		public override void Start(MailBoxComponent self)
 		{
 			self.HandleAsync();
 		}
 	}
 
 	[ObjectSystem]
-	public class ActorComponentDestroySystem : DestroySystem<ActorComponent>
+	public class MailBoxComponentDestroySystem : DestroySystem<MailBoxComponent>
 	{
-		public override void Destroy(ActorComponent self)
+		public override void Destroy(MailBoxComponent self)
 		{
 		}
 	}
 
 	/// <summary>
-	/// 挂上这个组件表示该Entity是一个Actor, 它会将Entity位置注册到Location Server, 接收的消息将会队列处理
+	/// 挂上这个组件表示该Entity是一个Actor, 接收的消息将会队列处理
 	/// </summary>
-	public static class ActorComponentEx
+	public static class MailBoxComponentEx
 	{
-		public static async Task AddLocation(this ActorComponent self)
+		public static async Task AddLocation(this MailBoxComponent self)
 		{
 			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Entity.Id, self.Entity.InstanceId);
 		}
 
-		public static async Task RemoveLocation(this ActorComponent self)
+		public static async Task RemoveLocation(this MailBoxComponent self)
 		{
 			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.Entity.Id);
 		}
 
-		public static void Add(this ActorComponent self, ActorMessageInfo info)
+		public static void Add(this MailBoxComponent self, ActorMessageInfo info)
 		{
 			self.Queue.Enqueue(info);
 
@@ -71,7 +71,7 @@ namespace ETHotfix
 			t.SetResult(self.Queue.Dequeue());
 		}
 
-		private static Task<ActorMessageInfo> GetAsync(this ActorComponent self)
+		private static Task<ActorMessageInfo> GetAsync(this MailBoxComponent self)
 		{
 			if (self.Queue.Count > 0)
 			{
@@ -82,7 +82,7 @@ namespace ETHotfix
 			return self.Tcs.Task;
 		}
 
-		public static async void HandleAsync(this ActorComponent self)
+		public static async void HandleAsync(this MailBoxComponent self)
 		{
 			ActorMessageDispatherComponent actorMessageDispatherComponent = Game.Scene.GetComponent<ActorMessageDispatherComponent>();
 			while (true)

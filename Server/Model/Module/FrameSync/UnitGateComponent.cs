@@ -11,16 +11,16 @@
 
 	public class UnitGateComponent : Component, ISerializeToEntity
 	{
-		public long GateSessionId;
+		public long GateSessionActorId;
 
 		public void Awake(long gateSessionId)
 		{
-			this.GateSessionId = gateSessionId;
+			this.GateSessionActorId = gateSessionId;
 		}
 
-		public ActorProxy GetActorProxy()
+		public ActorMessageSender GetActorMessageSender()
 		{
-			return Game.Scene.GetComponent<ActorProxyComponent>().Get(this.GateSessionId);
+			return Game.Scene.GetComponent<ActorMessageSenderComponent>().Get(this.GateSessionActorId);
 		}
 	}
 }

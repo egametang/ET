@@ -26,8 +26,21 @@ namespace ETHotfix
 					session.Reply(response);
 					return;
 				}
+
+				MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+				if (mailBoxComponent == null)
+				{
+					ActorResponse response = new ActorResponse
+					{
+						Error = ErrorCode.ERR_NotFoundActor,
+						RpcId = iActorMessage.RpcId
+					};
+					session.Reply(response);
+					Log.Error($"actor没有挂载ActorComponent组件: {entity.GetType().Name} {entity.Id}");
+					return;
+				}
 				
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = iActorMessage });
+				mailBoxComponent.Add(new ActorMessageInfo() { Session = session, Message = iActorMessage });
 				return;
 			}
 			

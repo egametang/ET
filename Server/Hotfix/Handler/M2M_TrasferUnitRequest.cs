@@ -16,7 +16,7 @@ namespace ETHotfix
 				Game.EventSystem.Add(unit);
 				Log.Debug(MongoHelper.ToJson(message.Unit));
 				// 这里不需要注册location，因为unlock会更新位置
-				unit.AddComponent<ActorComponent>();
+				unit.AddComponent<MailBoxComponent>();
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
 				response.InstanceId = unit.InstanceId;
 				reply(response);
