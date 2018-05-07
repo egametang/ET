@@ -153,7 +153,7 @@ namespace ETModel
 			// 超时断开连接
 			if (timeNow - this.lastRecvTime > 20 * 1000)
 			{
-				this.OnError(SocketError.Disconnecting);
+				this.OnError((int)SocketError.Disconnecting);
 				return;
 			}
 			this.kcp.Update(timeNow);
@@ -185,7 +185,7 @@ namespace ETModel
 				int n = kcp.PeekSize();
 				if (n == 0)
 				{
-					this.OnError(SocketError.NetworkReset);
+					this.OnError((int)SocketError.NetworkReset);
 					return;
 				}
 				int count = this.kcp.Recv(this.cacheBytes);

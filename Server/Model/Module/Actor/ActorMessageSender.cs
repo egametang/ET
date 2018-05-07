@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	public sealed class ActorMessageSender : ComponentWithId
+	public sealed class ActorMessageSender : Entity
 	{
 		// actor的地址
 		public IPEndPoint Address;
@@ -18,10 +18,24 @@ namespace ETModel
 		// 最近发送消息的时间
 		public long LastSendTime;
 
-		public TaskCompletionSource<ActorTask> tcs;
+		public TaskCompletionSource<ActorTask> Tcs;
 
 		public int FailTimes;
 
 		public int MaxFailTimes;
+
+		public int Error;
+
+		public override void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			
+			base.Dispose();
+
+			this.Error = 0;
+		}
 	}
 }

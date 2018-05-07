@@ -32,7 +32,7 @@ namespace ETHotfix
 				{
 					ActorResponse response = new ActorResponse
 					{
-						Error = ErrorCode.ERR_NotFoundActor,
+						Error = ErrorCode.ERR_ActorNoActorComponent,
 						RpcId = iActorMessage.RpcId
 					};
 					session.Reply(response);

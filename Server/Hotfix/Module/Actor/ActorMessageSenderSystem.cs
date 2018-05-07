@@ -12,10 +12,11 @@ namespace ETHotfix
 		public override void Awake(ActorMessageSender self)
 		{
 			self.LastSendTime = TimeHelper.Now();
-			self.tcs = null;
+			self.Tcs = null;
 			self.FailTimes = 0;
 			self.MaxFailTimes = 5;
 			self.ActorId = 0;
+			self.Error = 0;
 		}
 	}
 	
@@ -25,10 +26,11 @@ namespace ETHotfix
 		public override void Awake(ActorMessageSender self, long actorId)
 		{
 			self.LastSendTime = TimeHelper.Now();
-			self.tcs = null;
+			self.Tcs = null;
 			self.FailTimes = 0;
 			self.MaxFailTimes = 0;
 			self.ActorId = actorId;
+			self.Error = 0;
 		}
 	}
 
@@ -55,19 +57,18 @@ namespace ETHotfix
 	{
 		public override void Destroy(ActorMessageSender self)
 		{
-			self.LastSendTime = 0;
-			self.Address = null;
-
 			while (self.WaitingTasks.Count > 0)
 			{
 				ActorTask actorTask = self.WaitingTasks.Dequeue();
-				actorTask.RunFail(ErrorCode.ERR_NotFoundActor);
+				actorTask.RunFail(self.Error);
 			}
-
+			
+			self.LastSendTime = 0;
+			self.Address = null;
 			self.ActorId = 0;
 			self.FailTimes = 0;
-			var t = self.tcs;
-			self.tcs = null;
+			var t = self.Tcs;
+			self.Tcs = null;
 			t?.SetResult(new ActorTask());
 		}
 	}
@@ -91,15 +92,15 @@ namespace ETHotfix
 
 		private static void AllowGet(this ActorMessageSender self)
 		{
-			if (self.tcs == null || self.WaitingTasks.Count <= 0)
+			if (self.Tcs == null || self.WaitingTasks.Count <= 0)
 			{
 				return;
 			}
 
 			ActorTask task = self.WaitingTasks.Peek();
 
-			var t = self.tcs;
-			self.tcs = null;
+			var t = self.Tcs;
+			self.Tcs = null;
 			t.SetResult(task);
 		}
 
@@ -111,8 +112,8 @@ namespace ETHotfix
 				return Task.FromResult(task);
 			}
 
-			self.tcs = new TaskCompletionSource<ActorTask>();
-			return self.tcs.Task;
+			self.Tcs = new TaskCompletionSource<ActorTask>();
+			return self.Tcs.Task;
 		}
 
 		public static async void UpdateAsync(this ActorMessageSender self)
@@ -140,35 +141,43 @@ namespace ETHotfix
 		{
 			IResponse response = await task.Run();
 
-			// 如果没找到Actor,重试
-			if (response.Error == ErrorCode.ERR_NotFoundActor)
+			// 发送成功
+			switch (response.Error)
 			{
-				++self.FailTimes;
+				case ErrorCode.ERR_Success:
+					self.LastSendTime = TimeHelper.Now();
+					self.FailTimes = 0;
 
-				// 失败MaxFailTimes次则清空actor发送队列，返回失败
-				if (self.FailTimes > self.MaxFailTimes)
-				{
-					// 失败直接删除actorproxy
-					Log.Info($"actor send message fail, actorid: {self.Id}");
+					self.WaitingTasks.Dequeue();
+					return;
+				case ErrorCode.ERR_NotFoundActor:
+					// 如果没找到Actor,重试
+					++self.FailTimes;
+
+					// 失败MaxFailTimes次则清空actor发送队列，返回失败
+					if (self.FailTimes > self.MaxFailTimes)
+					{
+						// 失败直接删除actorproxy
+						Log.Info($"actor send message fail, actorid: {self.Id}");
+						self.Error = response.Error;
+						self.GetParent<ActorMessageSenderComponent>().Remove(self.Id);
+						return;
+					}
+
+					// 等待1s再发送
+					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
+					self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
+					self.Address = Game.Scene.GetComponent<StartConfigComponent>()
+							.Get(IdGenerater.GetAppIdFromId(self.ActorId))
+							.GetComponent<InnerConfig>().IPEndPoint;
+					self.AllowGet();
+					return;
+				default:
+					// 其它错误
+					self.Error = response.Error;
 					self.GetParent<ActorMessageSenderComponent>().Remove(self.Id);
 					return;
-				}
-
-				// 等待1s再发送
-				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
-				self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-				self.Address = Game.Scene.GetComponent<StartConfigComponent>()
-						.Get(IdGenerater.GetAppIdFromId(self.ActorId))
-						.GetComponent<InnerConfig>().IPEndPoint;
-				self.AllowGet();
-				return;
 			}
-
-			// 发送成功
-			self.LastSendTime = TimeHelper.Now();
-			self.FailTimes = 0;
-
-			self.WaitingTasks.Dequeue();
 		}
 
 		public static void Send(this ActorMessageSender self, IActorMessage message)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,7 @@ namespace ETModel
 	{
 		private static int RpcId { get; set; }
 		private AChannel channel;
+		public int Error;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
 		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[0], new byte[0]};
@@ -43,6 +45,7 @@ namespace ETModel
 
 		public void Awake(NetworkComponent net, AChannel c)
 		{
+			this.Error = 0;
 			this.channel = c;
 			this.requestCallback.Clear();
 		}
@@ -65,9 +68,10 @@ namespace ETModel
 
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SocketDisconnected });
+				action.Invoke(new ResponseMessage { Error = this.Error });
 			}
 
+			this.Error = 0;
 			this.channel.Dispose();
 			this.Network.Remove(id);
 			this.requestCallback.Clear();

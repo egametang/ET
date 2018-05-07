@@ -35,7 +35,8 @@ namespace ETHotfix
                     {
                         continue;
                     }
-					
+
+                    actorMessageSender.Error = ErrorCode.ERR_ActorTimeOut;
                     timeoutActorProxyIds.Add(id);
                 }
 

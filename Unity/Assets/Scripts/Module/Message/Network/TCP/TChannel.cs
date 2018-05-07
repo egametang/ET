@@ -58,11 +58,11 @@ namespace ETModel
 			catch (SocketException e)
 			{
 				Log.Error($"connect error: {e.SocketErrorCode}");
-				this.OnError(e.SocketErrorCode);
+				this.OnError((int)e.SocketErrorCode);
 			}
 			catch (Exception e)
 			{
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 				Log.Error($"connect error: {ipEndPoint} {e}");
 			}
 		}
@@ -163,16 +163,16 @@ namespace ETModel
 			}
 			catch (IOException)
 			{
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 			catch (ObjectDisposedException)
 			{
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace ETModel
 
 					if (n == 0)
 					{
-						this.OnError(SocketError.NetworkReset);
+						this.OnError((int)SocketError.NetworkReset);
 						return;
 					}
 					
@@ -217,16 +217,16 @@ namespace ETModel
 			}
 			catch (IOException)
 			{
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 			catch (ObjectDisposedException)
 			{
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
-				this.OnError(SocketError.SocketError);
+				this.OnError((int)SocketError.SocketError);
 			}
 		}
 
