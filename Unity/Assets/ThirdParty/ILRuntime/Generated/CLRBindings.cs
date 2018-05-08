@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -6,6 +6,8 @@ namespace ILRuntime.Runtime.Generated
 {
     class CLRBindings
     {
+
+
         /// <summary>
         /// Initialize the CLR binding, please invoke this AFTER CLR Redirection registration
         /// </summary>
@@ -112,6 +114,15 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_InputField_Binding.Register(app);
             ETModel_NetworkComponent_Binding.Register(app);
             ETModel_ComponentFactory_Binding.Register(app);
+
+            ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
+        }
+
+        /// <summary>
+        /// Release the CLR binding, please invoke this BEFORE ILRuntime Appdomain destroy
+        /// </summary>
+        public static void Shutdown(ILRuntime.Runtime.Enviorment.AppDomain app)
+        {
         }
     }
 }

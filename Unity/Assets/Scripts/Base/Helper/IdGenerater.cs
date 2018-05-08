@@ -12,5 +12,10 @@
 
 			return (AppId << 48) + (time << 16) + ++value;
 		}
+
+		public static int GetAppIdFromId(long id)
+		{
+			return (int)(id >> 48);
+		}
 	}
 }

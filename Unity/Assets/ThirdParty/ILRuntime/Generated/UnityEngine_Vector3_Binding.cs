@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -92,12 +92,15 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Vector3 b = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.Vector3 @b = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Vector3 a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.Vector3 @a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
+
 
             var result_of_this_method = a - b;
 
@@ -134,13 +137,16 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Single z = *(float*)&ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Single y = *(float*)&ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Single x = *(float*)&ptr_of_this_method->Value;
+            System.Single @z = *(float*)&ptr_of_this_method->Value;
 
-            var result_of_this_method = new UnityEngine.Vector3(x, y, z);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Single @y = *(float*)&ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            System.Single @x = *(float*)&ptr_of_this_method->Value;
+
+
+            var result_of_this_method = new UnityEngine.Vector3(@x, @y, @z);
 
             if(!isNewObj)
             {
@@ -148,6 +154,7 @@ namespace ILRuntime.Runtime.Generated
                 WriteBackInstance(__domain, __ret, __mStack, ref result_of_this_method);
                 return __ret;
             }
+
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

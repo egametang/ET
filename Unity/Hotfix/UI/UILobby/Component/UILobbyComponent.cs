@@ -23,7 +23,7 @@ namespace ETHotfix
 		{
 			ReferenceCollector rc = this.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
 			GameObject sendBtn = rc.Get<GameObject>("Send");
-			GameObject sendRpcBtn = rc.Get<GameObject>("SendRpc");
+			GameObject sendRpcBtn = rc.Get<GameObject>("" + "SendRpc");
 			sendBtn.GetComponent<Button>().onClick.Add(this.OnSend);
 			sendRpcBtn.GetComponent<Button>().onClick.Add(this.OnSendRpc);
 

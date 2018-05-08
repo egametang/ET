@@ -149,117 +149,136 @@ namespace ILRuntime.Runtime.Enviorment
                 return ret;
             fixed (byte* p = data)
             {
-                if (array is int[])
+                /*Array oArr = (Array)array;
+                if (oArr.Rank == 1)
                 {
-                    int[] arr = array as int[];
-                    int* ptr = (int*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    if (array is int[])
                     {
-                        arr[i] = ptr[i];
+                        int[] arr = array as int[];
+                        int* ptr = (int*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is byte[])
-                {
-                    byte[] arr = array as byte[];
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is byte[])
                     {
-                        arr[i] = p[i];
+                        byte[] arr = array as byte[];
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = p[i];
+                        }
                     }
-                }
-                else if (array is sbyte[])
-                {
-                    sbyte[] arr = array as sbyte[];
-                    sbyte* ptr = (sbyte*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is sbyte[])
                     {
-                        arr[i] = ptr[i];
+                        sbyte[] arr = array as sbyte[];
+                        sbyte* ptr = (sbyte*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is short[])
-                {
-                    short[] arr = array as short[];
-                    short* ptr = (short*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is short[])
                     {
-                        arr[i] = ptr[i];
+                        short[] arr = array as short[];
+                        short* ptr = (short*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is ushort[])
-                {
-                    ushort[] arr = array as ushort[];
-                    ushort* ptr = (ushort*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is ushort[])
                     {
-                        arr[i] = ptr[i];
+                        ushort[] arr = array as ushort[];
+                        ushort* ptr = (ushort*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is char[])
-                {
-                    char[] arr = array as char[];
-                    char* ptr = (char*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is char[])
                     {
-                        arr[i] = ptr[i];
+                        char[] arr = array as char[];
+                        char* ptr = (char*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is uint[])
-                {
-                    uint[] arr = array as uint[];
-                    uint* ptr = (uint*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is uint[])
                     {
-                        arr[i] = ptr[i];
+                        uint[] arr = array as uint[];
+                        uint* ptr = (uint*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is Int64[])
-                {
-                    long[] arr = array as long[];
-                    long* ptr = (long*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is Int64[])
                     {
-                        arr[i] = ptr[i];
+                        long[] arr = array as long[];
+                        long* ptr = (long*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is UInt64[])
-                {
-                    ulong[] arr = array as ulong[];
-                    ulong* ptr = (ulong*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is UInt64[])
                     {
-                        arr[i] = ptr[i];
+                        ulong[] arr = array as ulong[];
+                        ulong* ptr = (ulong*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is float[])
-                {
-                    float[] arr = array as float[];
-                    float* ptr = (float*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is float[])
                     {
-                        arr[i] = ptr[i];
+                        float[] arr = array as float[];
+                        float* ptr = (float*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is double[])
-                {
-                    double[] arr = array as double[];
-                    double* ptr = (double*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is double[])
                     {
-                        arr[i] = ptr[i];
+                        double[] arr = array as double[];
+                        double* ptr = (double*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
                     }
-                }
-                else if (array is bool[])
-                {
-                    bool[] arr = array as bool[];
-                    bool* ptr = (bool*)p;
-                    for (int i = 0; i < arr.Length; i++)
+                    else if (array is bool[])
                     {
-                        arr[i] = ptr[i];
+                        bool[] arr = array as bool[];
+                        bool* ptr = (bool*)p;
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            arr[i] = ptr[i];
+                        }
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("array=" + array.GetType());
                     }
                 }
                 else
                 {
-                    throw new NotImplementedException("array=" + array.GetType());
-                }
+                    int* dst = (int*)System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(oArr, 0).ToPointer();
+
+                        int* src = (int*)p;
+                        int len = data.Length / sizeof(int);
+                        for (int i = 0; i < len; i++)
+                            dst[i] = src[i];
+                    
+                }*/
+                Array arr = (Array)array;
+                var handle = System.Runtime.InteropServices.GCHandle.Alloc(arr, System.Runtime.InteropServices.GCHandleType.Pinned);
+                var dst = System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(arr, 0);
+                System.Runtime.InteropServices.Marshal.Copy(data, 0, dst, data.Length);
+                handle.Free();
             }
 
             return ret;
@@ -772,7 +791,7 @@ namespace ILRuntime.Runtime.Enviorment
             intp.Free(param);
 
             param = ILIntepreter.Minus(esp, 3);
-            object instance = StackObject.ToObject(param, domain, mStack);
+            object instance = CheckCrossBindingAdapter(StackObject.ToObject(param, domain, mStack));
             intp.Free(param);
 
             if (instance is ILRuntimeMethodInfo)
@@ -786,7 +805,7 @@ namespace ILRuntime.Runtime.Enviorment
                     object[] arr = (object[])p;
                     foreach (var i in arr)
                     {
-                        esp = ILIntepreter.PushObject(esp, mStack, i);
+                        esp = ILIntepreter.PushObject(esp, mStack, CheckCrossBindingAdapter(i));
                     }
                 }
                 bool unhandled;
@@ -811,6 +830,15 @@ namespace ILRuntime.Runtime.Enviorment
             }
             else
                 return ILIntepreter.PushObject(ret, mStack, ((MethodInfo)instance).Invoke(obj, (object[])p));
+        }
+
+        static object CheckCrossBindingAdapter(object obj)
+        {
+            if(obj is CrossBindingAdaptorType)
+            {
+                return ((CrossBindingAdaptorType)obj).ILInstance;
+            }
+            return obj;
         }
 
         /*public unsafe static object MethodInfoInvoke(ILContext ctx, object instance, object[] param, IType[] genericArguments)
@@ -859,7 +887,7 @@ namespace ILRuntime.Runtime.Enviorment
             intp.Free(param);
              
             var type = instance.GetType();
-            if (type == typeof(ILTypeInstance))
+            if (type == typeof(ILTypeInstance) || type == typeof(ILEnumTypeInstance))
             {
                 return ILIntepreter.PushObject(ret, mStack, ((ILTypeInstance)instance).Type.ReflectionType);
             }
@@ -921,6 +949,46 @@ namespace ILRuntime.Runtime.Enviorment
             }
             else
                 return ILIntepreter.PushObject(ret, mStack, Enum.Parse(t, name), true);
+        }
+
+        public static StackObject* EnumGetValues(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj)
+        {
+            var ret = esp - 1;
+            AppDomain domain = intp.AppDomain;
+
+            var p = esp - 1;
+            Type t = (Type)StackObject.ToObject(p, domain, mStack);
+            intp.Free(p);
+            if (t is ILRuntimeType)
+            {
+                ILType it = ((ILRuntimeType)t).ILType;
+                List<ILTypeInstance> res = new List<ILTypeInstance>();
+                if (it.IsEnum)
+                {
+                    var fields = it.TypeDefinition.Fields;
+                    for (int i = 0; i < fields.Count; i++)
+                    {
+                        var f = fields[i];
+                        if (f.IsStatic)
+                        {
+                            ILEnumTypeInstance ins = new ILEnumTypeInstance(it);
+                            ins[0] = f.Constant;
+                            ins.Boxed = true;
+
+                            res.Add(ins);
+                        }
+                    }
+                    return ILIntepreter.PushObject(ret, mStack, res.ToArray(), true);
+                }
+                else
+                    throw new Exception(string.Format("{0} is not Enum", t.FullName));
+            }
+            else if (t is ILRuntimeWrapperType)
+            {
+                return ILIntepreter.PushObject(ret, mStack, Enum.GetValues(((ILRuntimeWrapperType)t).RealType), true);
+            }
+            else
+                return ILIntepreter.PushObject(ret, mStack, Enum.GetValues(t), true);
         }
     }
 }

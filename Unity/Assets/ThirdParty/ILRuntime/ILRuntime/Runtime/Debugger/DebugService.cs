@@ -1047,7 +1047,7 @@ namespace ILRuntime.Runtime.Debugger
             {
                 final.AppendLine(string.Format("({0}){1}", i, mStack[i]));
             }
-#if !UNITY_5 && !UNITY_2017 && !UNITY_4
+#if !UNITY_5 && !UNITY_2017_1_OR_NEWER && !UNITY_4
             System.Diagnostics.Debug.Print(final.ToString());
 #else
             UnityEngine.Debug.LogWarning(final.ToString());

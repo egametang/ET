@@ -75,7 +75,11 @@ namespace ETModel
 			AChannel channel = await this.Service.AcceptChannel();
 			Session session = ComponentFactory.CreateWithId<Session, NetworkComponent, AChannel>(IdGenerater.GenerateId(), this, channel);
 			session.Parent = this;
-			channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+			channel.ErrorCallback += (c, e) =>
+			{
+				session.Error = e;
+				this.Remove(session.Id);
+			};
 			this.sessions.Add(session.Id, session);
 			return session;
 		}
@@ -108,7 +112,11 @@ namespace ETModel
 				AChannel channel = this.Service.ConnectChannel(ipEndPoint);
 				Session session = ComponentFactory.CreateWithId<Session, NetworkComponent, AChannel>(IdGenerater.GenerateId(), this, channel);
 				session.Parent = this;
-				channel.ErrorCallback += (c, e) => { this.Remove(session.Id); };
+				channel.ErrorCallback += (c, e) =>
+				{
+					session.Error = e;
+					this.Remove(session.Id);
+				};
 				this.sessions.Add(session.Id, session);
 				return session;
 			}

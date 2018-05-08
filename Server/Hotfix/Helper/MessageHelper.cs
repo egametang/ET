@@ -7,11 +7,11 @@ namespace ETHotfix
 		public static void Broadcast(IActorMessage message)
 		{
 			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
-			ActorProxyComponent actorProxyComponent = Game.Scene.GetComponent<ActorProxyComponent>();
+			ActorMessageSenderComponent actorMessageSenderComponent = Game.Scene.GetComponent<ActorMessageSenderComponent>();
 			foreach (Unit unit in units)
 			{
-				long gateSessionId = unit.GetComponent<UnitGateComponent>().GateSessionId;
-				actorProxyComponent.Get(gateSessionId).Send(message);
+				long gateSessionActorId = unit.GetComponent<UnitGateComponent>().GateSessionActorId;
+				actorMessageSenderComponent.GetWithActorId(gateSessionActorId).Send(message);
 			}
 		}
 	}

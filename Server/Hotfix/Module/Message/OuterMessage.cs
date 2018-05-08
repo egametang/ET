@@ -2,7 +2,7 @@ using ProtoBuf;
 using ETModel;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace ETModel
+namespace ETHotfix
 {
 	[Message(OuterOpcode.Actor_Test)]
 	[ProtoContract]
@@ -139,42 +139,6 @@ namespace ETModel
 
 		[ProtoMember(1)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
-
-	}
-
-	[Message(OuterOpcode.OneFrameMessage)]
-	[ProtoContract]
-	public partial class OneFrameMessage: IActorMessage
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(93, IsRequired = true)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(1, IsRequired = true)]
-		public ushort Op;
-
-		[ProtoMember(2, IsRequired = true)]
-		public byte[] AMessage;
-
-	}
-
-	[Message(OuterOpcode.FrameMessage)]
-	[ProtoContract]
-	public partial class FrameMessage: IActorMessage
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(93, IsRequired = true)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(1, IsRequired = true)]
-		public int Frame;
-
-		[ProtoMember(2)]
-		public List<OneFrameMessage> Messages = new List<OneFrameMessage>();
 
 	}
 

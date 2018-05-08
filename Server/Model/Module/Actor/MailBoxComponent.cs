@@ -10,14 +10,14 @@ namespace ETModel
 	}
 
 	/// <summary>
-	/// 挂上这个组件表示该Entity是一个Actor, 它会将Entity位置注册到Location Server, 接收的消息将会队列处理
+	/// 挂上这个组件表示该Entity是一个Actor,接收的消息将会队列处理
 	/// </summary>
-	public class ActorComponent: Component
+	public class MailBoxComponent: Component
 	{
 		public string ActorType;
 
 		// 队列处理消息
-		public Queue<ActorMessageInfo> Queue;
+		public Queue<ActorMessageInfo> Queue = new Queue<ActorMessageInfo>();
 
 		public TaskCompletionSource<ActorMessageInfo> Tcs;
 

@@ -27,7 +27,7 @@ namespace ETModel
 
 		private Kcp kcp;
 
-		private readonly CircularBuffer recvBuffer = new CircularBuffer(8192);
+		private readonly CircularBuffer recvBuffer = new CircularBuffer();
 		private readonly Queue<WaitSendBuffer> sendBuffer = new Queue<WaitSendBuffer>();
 
 		private readonly PacketParser parser;
@@ -52,7 +52,6 @@ namespace ETModel
 			this.RemoteConn = remoteConn;
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
-			this.parser = new PacketParser(this.recvBuffer);
 			kcp = new Kcp(this.RemoteConn, this.Output);
 			kcp.SetMtu(512);
 			kcp.NoDelay(1, 10, 2, 1);  //fast
@@ -154,7 +153,7 @@ namespace ETModel
 			// 超时断开连接
 			if (timeNow - this.lastRecvTime > 20 * 1000)
 			{
-				this.OnError(SocketError.Disconnecting);
+				this.OnError((int)SocketError.Disconnecting);
 				return;
 			}
 			this.kcp.Update(timeNow);
@@ -186,7 +185,7 @@ namespace ETModel
 				int n = kcp.PeekSize();
 				if (n == 0)
 				{
-					this.OnError(SocketError.NetworkReset);
+					this.OnError((int)SocketError.NetworkReset);
 					return;
 				}
 				int count = this.kcp.Recv(this.cacheBytes);

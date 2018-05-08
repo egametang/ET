@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.UnitFactory);
             args = new Type[]{typeof(System.Int64)};
@@ -35,10 +34,12 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Int64 id = *(long*)&ptr_of_this_method->Value;
 
-            var result_of_this_method = ETModel.UnitFactory.Create(id);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Int64 @id = *(long*)&ptr_of_this_method->Value;
+
+
+            var result_of_this_method = ETModel.UnitFactory.Create(@id);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,7 +19,6 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.Session);
             args = new Type[]{typeof(ETModel.IMessage)};
@@ -41,15 +40,16 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ETModel.IMessage message = (ETModel.IMessage)typeof(ETModel.IMessage).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ETModel.Session instance_of_this_method;
-            instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.IMessage @message = (ETModel.IMessage)typeof(ETModel.IMessage).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Send(message);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            ETModel.Session instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Send(@message);
 
             return __ret;
         }
@@ -59,19 +59,22 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Byte[] bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.UInt16 opcode = (ushort)ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Byte flag = (byte)ptr_of_this_method->Value;
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            ETModel.Session instance_of_this_method;
-            instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Byte[] @bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Send(flag, opcode, bytes);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.UInt16 @opcode = (ushort)ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+            System.Byte @flag = (byte)ptr_of_this_method->Value;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
+            ETModel.Session instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Send(@flag, @opcode, @bytes);
 
             return __ret;
         }
@@ -81,15 +84,16 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ETModel.IRequest request = (ETModel.IRequest)typeof(ETModel.IRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ETModel.Session instance_of_this_method;
-            instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.IRequest @request = (ETModel.IRequest)typeof(ETModel.IRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.Call(request);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            ETModel.Session instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Call(@request);
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)

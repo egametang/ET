@@ -2,7 +2,7 @@ using ProtoBuf;
 using ETModel;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-namespace ETModel
+namespace ETHotfix
 {
 	[Message(HotfixOpcode.C2R_Login)]
 	[ProtoContract]

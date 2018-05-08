@@ -30,13 +30,13 @@ namespace ETModel
 				try
 				{
 					await task.Run();
-
-					task.Dispose();
 				}
 				catch (Exception e)
 				{
 					Log.Error(e);
 				}
+
+				task.Dispose();
 			}
 		}
 	}

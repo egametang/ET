@@ -142,42 +142,6 @@ namespace ETModel
 
 	}
 
-	[Message(OuterOpcode.OneFrameMessage)]
-	[ProtoContract]
-	public partial class OneFrameMessage: IActorMessage
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(93, IsRequired = true)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(1, IsRequired = true)]
-		public ushort Op;
-
-		[ProtoMember(2, IsRequired = true)]
-		public byte[] AMessage;
-
-	}
-
-	[Message(OuterOpcode.FrameMessage)]
-	[ProtoContract]
-	public partial class FrameMessage: IActorMessage
-	{
-		[ProtoMember(90, IsRequired = true)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(93, IsRequired = true)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(1, IsRequired = true)]
-		public int Frame;
-
-		[ProtoMember(2, TypeName = "ETModel.OneFrameMessage")]
-		public List<OneFrameMessage> Messages = new List<OneFrameMessage>();
-
-	}
-
 	[Message(OuterOpcode.Frame_ClickMap)]
 	[ProtoContract]
 	public partial class Frame_ClickMap: IFrameMessage

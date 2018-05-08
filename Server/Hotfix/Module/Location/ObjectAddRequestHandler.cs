@@ -11,7 +11,7 @@ namespace ETHotfix
 			ObjectAddResponse response = new ObjectAddResponse();
 			try
 			{
-				Game.Scene.GetComponent<LocationComponent>().Add(message.Key, message.AppId);
+				Game.Scene.GetComponent<LocationComponent>().Add(message.Key, message.InstanceId);
 				reply(response);
 			}
 			catch (Exception e)

@@ -7,67 +7,30 @@ namespace ETModel
 {
 	public abstract class LocationTask: Component
 	{
-		[BsonIgnore]
-		public Scene Scene { get; set; }
-		
 		public abstract void Run();
 	}
-
-	public sealed class LocationLockTask : LocationTask
+	
+	[ObjectSystem]
+	public class LocationQueryTaskAwakeSystem : AwakeSystem<LocationQueryTask, long>
 	{
-		private readonly long key;
-		private readonly int lockAppId;
-		private readonly int time;
-
-		private readonly TaskCompletionSource<bool> tcs;
-
-		public LocationLockTask(long key, int lockAppId, int time)
+		public override void Awake(LocationQueryTask self, long key)
 		{
-			this.key = key;
-			this.lockAppId = lockAppId;
-			this.time = time;
-			this.tcs = new TaskCompletionSource<bool>();
-		}
-
-		public Task<bool> Task
-		{
-			get
-			{
-				return this.tcs.Task;
-			}
-		}
-
-		public override void Run()
-		{
-			try
-			{
-				Scene.GetComponent<LocationComponent>().Lock(this.key, this.lockAppId, this.time);
-				this.tcs.SetResult(true);
-			}
-			catch (Exception e)
-			{
-				this.tcs.SetException(e);
-			}
+			self.Key = key;
+			self.Tcs = new TaskCompletionSource<long>();
 		}
 	}
 
 	public sealed class LocationQueryTask : LocationTask
 	{
-		private readonly long key;
+		public long Key;
 
-		private readonly TaskCompletionSource<int> tcs;
+		public TaskCompletionSource<long> Tcs;
 
-		public LocationQueryTask(long key)
-		{
-			this.key = key;
-			this.tcs = new TaskCompletionSource<int>();
-		}
-
-		public Task<int> Task
+		public Task<long> Task
 		{
 			get
 			{
-				return this.tcs.Task;
+				return this.Tcs.Task;
 			}
 		}
 
@@ -75,29 +38,30 @@ namespace ETModel
 		{
 			try
 			{
-				int location = Scene.GetComponent<LocationComponent>().Get(key);
-				this.tcs.SetResult(location);
+				LocationComponent locationComponent = this.GetParent<LocationComponent>();
+				long location = locationComponent.Get(this.Key);
+				this.Tcs.SetResult(location);
 			}
 			catch (Exception e)
 			{
-				this.tcs.SetException(e);
+				this.Tcs.SetException(e);
 			}
 		}
 	}
 
 	public class LocationComponent : Component
 	{
-		private readonly Dictionary<long, int> locations = new Dictionary<long, int>();
+		private readonly Dictionary<long, long> locations = new Dictionary<long, long>();
 
-		private readonly Dictionary<long, int> lockDict = new Dictionary<long, int>();
+		private readonly Dictionary<long, long> lockDict = new Dictionary<long, long>();
 
 		private readonly Dictionary<long, Queue<LocationTask>> taskQueues = new Dictionary<long, Queue<LocationTask>>();
 
-		public void Add(long key, int appId)
+		public void Add(long key, long instanceId)
 		{
-			this.locations[key] = appId;
+			this.locations[key] = instanceId;
 
-			Log.Info($"location add key: {key} appid: {appId}");
+			Log.Info($"location add key: {key} instanceId: {instanceId}");
 
 			// 更新db
 			//await Game.Scene.GetComponent<DBProxyComponent>().Save(new Location(key, address));
@@ -109,37 +73,43 @@ namespace ETModel
 			this.locations.Remove(key);
 		}
 
-		public int Get(long key)
+		public long Get(long key)
 		{
-			this.locations.TryGetValue(key, out int location);
-			return location;
+			this.locations.TryGetValue(key, out long instanceId);
+			return instanceId;
 		}
 
-		public async void Lock(long key, int lockAppId, int time = 0)
+		public async void Lock(long key, long instanceId, int time = 0)
 		{
 			if (this.lockDict.ContainsKey(key))
 			{
-				Log.Error($"不可能同时存在两次lock, key: {key} lockAppId: {lockAppId}");
+				Log.Error($"不可能同时存在两次lock, key: {key} InstanceId: {instanceId}");
 				return;
 			}
 
-			Log.Info($"location lock key: {key} lockAppId: {lockAppId}");
+			Log.Info($"location lock key: {key} InstanceId: {instanceId}");
 
-			this.lockDict.Add(key, lockAppId);
+			if (!this.locations.TryGetValue(key, out long saveInstanceId))
+			{
+				Log.Error($"actor没有注册, key: {key} InstanceId: {instanceId}");
+				return;
+			}
+
+			if (saveInstanceId != instanceId)
+			{
+				Log.Error($"actor注册的instanceId与lock的不一致, key: {key} InstanceId: {instanceId} saveInstanceId: {saveInstanceId}");
+				return;
+			}
+
+			this.lockDict.Add(key, instanceId);
 
 			// 超时则解锁
 			if (time > 0)
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(time);
 
-				int saveAppId = 0;
-				if (!this.lockDict.TryGetValue(key, out saveAppId))
+				if (!this.lockDict.ContainsKey(key))
 				{
-					return;
-				}
-				if (saveAppId != lockAppId)
-				{
-					Log.Error($"timeout unlock appid is different {saveAppId} {lockAppId}");
 					return;
 				}
 				Log.Info($"location timeout unlock key: {key} time: {time}");
@@ -147,16 +117,15 @@ namespace ETModel
 			}
 		}
 
-		public void UpdateAndUnLock(long key, int unLockAppId, int value)
+		public void UnLockAndUpdate(long key, long oldInstanceId, long instanceId)
 		{
-			int lockAppId = 0;
-			this.lockDict.TryGetValue(key, out lockAppId);
-			if (lockAppId != unLockAppId)
+			this.lockDict.TryGetValue(key, out long lockInstanceId);
+			if (lockInstanceId != oldInstanceId)
 			{
-				Log.Error($"unlock appid is different {lockAppId} {unLockAppId}" );
+				Log.Error($"unlock appid is different {lockInstanceId} {oldInstanceId}" );
 			}
-			Log.Info($"location unlock key: {key} unLockAppId: {unLockAppId} new: {value}");
-			this.locations[key] = value;
+			Log.Info($"location unlock key: {key} oldInstanceId: {oldInstanceId} new: {instanceId}");
+			this.locations[key] = instanceId;
 			this.UnLock(key);
 		}
 
@@ -182,33 +151,28 @@ namespace ETModel
 				}
 
 				LocationTask task = tasks.Dequeue();
-				task.Run();
+				try
+				{
+					task.Run();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+				task.Dispose();
 			}
 		}
 
-		public Task<bool> LockAsync(long key, int appId, int time)
+		public Task<long> GetAsync(long key)
 		{
 			if (!this.lockDict.ContainsKey(key))
 			{
-				this.Lock(key, appId, time);
-				return Task.FromResult(true);
+				this.locations.TryGetValue(key, out long instanceId);
+				Log.Info($"location get key: {key} {instanceId}");
+				return Task.FromResult(instanceId);
 			}
 
-			LocationLockTask task = new LocationLockTask(key, appId, time);
-			this.AddTask(key, task);
-			return task.Task;
-		}
-
-		public Task<int> GetAsync(long key)
-		{
-			if (!this.lockDict.ContainsKey(key))
-			{
-				this.locations.TryGetValue(key, out int location);
-				Log.Info($"location get key: {key} {location}");
-				return Task.FromResult(location);
-			}
-
-			LocationQueryTask task = new LocationQueryTask(key);
+			LocationQueryTask task = ComponentFactory.CreateWithParent<LocationQueryTask, long>(this, key);
 			this.AddTask(key, task);
 			return task.Task;
 		}
@@ -220,7 +184,6 @@ namespace ETModel
 				tasks = new Queue<LocationTask>();
 				this.taskQueues[key] = tasks;
 			}
-			task.Scene = this.GetParent<Scene>();
 			tasks.Enqueue(task);
 		}
 
@@ -231,6 +194,10 @@ namespace ETModel
 				return;
 			}
 			base.Dispose();
+			
+			this.locations.Clear();
+			this.lockDict.Clear();
+			this.taskQueues.Clear();
 		}
 	}
 }

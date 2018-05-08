@@ -29,9 +29,9 @@ namespace ETModel
 
 		public IPEndPoint RemoteAddress { get; protected set; }
 
-		private event Action<AChannel, SocketError> errorCallback;
+		private Action<AChannel, int> errorCallback;
 
-		public event Action<AChannel, SocketError> ErrorCallback
+		public event Action<AChannel, int> ErrorCallback
 		{
 			add
 			{
@@ -43,13 +43,13 @@ namespace ETModel
 			}
 		}
 
-		protected void OnError(SocketError e)
+		protected void OnError(int error)
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
-			this.errorCallback?.Invoke(this, e);
+			this.errorCallback?.Invoke(this, error);
 		}
 
 

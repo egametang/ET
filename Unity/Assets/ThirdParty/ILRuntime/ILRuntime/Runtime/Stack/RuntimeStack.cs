@@ -91,7 +91,7 @@ namespace ILRuntime.Runtime.Stack
                 p->ObjectType = ObjectTypes.Null;
             }
 #endif
-            res.BasePointer = method.LocalVariableCount > 0 ? Add(esp, method.LocalVariableCount + 1) : esp;
+            res.BasePointer = method.LocalVariableCount > 0 ? Add(esp, method.LocalVariableCount) : esp;
             res.ManagedStackBase = managedStack.Count;
             res.ValueTypeBasePointer = valueTypePtr;
             //frames.Push(res);
@@ -347,6 +347,8 @@ namespace ILRuntime.Runtime.Stack
 
         public void FreeValueTypeObject(StackObject* esp)
         {
+            if (esp->ObjectType != ObjectTypes.ValueTypeObjectReference)
+                return;
             int start = int.MaxValue;
             int end = int.MinValue;
             StackObject* endAddr;
