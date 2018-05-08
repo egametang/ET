@@ -1,4 +1,4 @@
-namespace ETModel
+namespace ETHotfix
 {
 	public static partial class HotfixOpcode
 	{

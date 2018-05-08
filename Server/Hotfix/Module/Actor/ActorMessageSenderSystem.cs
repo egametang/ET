@@ -60,7 +60,7 @@ namespace ETHotfix
 			while (self.WaitingTasks.Count > 0)
 			{
 				ActorTask actorTask = self.WaitingTasks.Dequeue();
-				actorTask.RunFail(self.Error);
+				actorTask.Tcs?.SetException(new RpcException(self.Error, ""));
 			}
 			
 			self.LastSendTime = 0;
@@ -139,7 +139,11 @@ namespace ETHotfix
 
 		private static async Task RunTask(this ActorMessageSender self, ActorTask task)
 		{
-			IResponse response = await task.Run();
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.Address);
+
+			task.ActorMessage.ActorId = self.ActorId;
+			IResponse response = await session.Call(task.ActorMessage);
+			
 
 			// 发送成功
 			switch (response.Error)
@@ -149,6 +153,9 @@ namespace ETHotfix
 					self.FailTimes = 0;
 
 					self.WaitingTasks.Dequeue();
+					
+					task.Tcs?.SetResult(response);
+					
 					return;
 				case ErrorCode.ERR_NotFoundActor:
 					// 如果没找到Actor,重试
@@ -182,13 +189,14 @@ namespace ETHotfix
 
 		public static void Send(this ActorMessageSender self, IActorMessage message)
 		{
-			ActorTask task = new ActorTask { message = message, MessageSender = self };
+			ActorTask task = new ActorTask(message);
 			self.Add(task);
 		}
 
 		public static Task<IResponse> Call(this ActorMessageSender self, IActorRequest request)
 		{
-			ActorTask task = new ActorTask { message = request, MessageSender = self, Tcs = new TaskCompletionSource<IResponse>() };
+			TaskCompletionSource<IResponse> tcs = new TaskCompletionSource<IResponse>();
+			ActorTask task = new ActorTask(request, tcs);
 			self.Add(task);
 			return task.Tcs.Task;
 		}
@@ -198,7 +206,7 @@ namespace ETHotfix
 			string s = "";
 			foreach (ActorTask task in tasks)
 			{
-				s += $" {task.message.GetType().Name}";
+				s += $" {task.ActorMessage.GetType().Name}";
 			}
 
 			return s;

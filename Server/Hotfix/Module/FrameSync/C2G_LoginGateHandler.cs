@@ -6,7 +6,7 @@ namespace ETHotfix
 	[MessageHandler(AppType.Gate)]
 	public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
 	{
-		protected override async void Run(Session session, C2G_LoginGate message, Action<G2C_LoginGate> reply)
+		protected override void Run(Session session, C2G_LoginGate message, Action<G2C_LoginGate> reply)
 		{
 			G2C_LoginGate response = new G2C_LoginGate();
 			try

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using ETModel;
 
-namespace ETModel
+namespace ETHotfix
 {
 	[ObjectSystem]
 	public class MessageDispatherComponentAwakeSystem : AwakeSystem<MessageDispatherComponent>
