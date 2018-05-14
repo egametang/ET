@@ -6,22 +6,41 @@ using ETModel;
 
 namespace ETHotfix
 {
-	public class SessionWrap: Entity
+	[ObjectSystem]
+	public class SessionAwakeSystem : AwakeSystem<Session, ETModel.Session>
 	{
-		public readonly Session session;
+		public override void Awake(Session self, ETModel.Session session)
+		{
+			self.session = session;
+			SessionCallbackComponent sessionComponent = self.session.AddComponent<SessionCallbackComponent>();
+			sessionComponent.MessageCallback = (s, p) => { self.Run(s, p); };
+			sessionComponent.DisposeCallback = s => { self.Dispose(); };
+		}
+	}
+	
+	/// <summary>
+	/// 用来收发热更层的消息
+	/// </summary>
+	public class Session: Entity
+	{
+		public ETModel.Session session;
 
 		private static int RpcId { get; set; }
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
 
-		public SessionWrap(Session session)
+		public override void Dispose()
 		{
-			this.session = session;
-			SessionCallbackComponent sessionComponent = this.session.AddComponent<SessionCallbackComponent>();
-			sessionComponent.MessageCallback = (s, p) => { this.Run(s, p); };
-			sessionComponent.DisposeCallback = s => { this.Dispose(); };
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			
+			base.Dispose();
+			
+			this.session.Dispose();
 		}
 
-		public void Run(Session s, Packet p)
+		public void Run(ETModel.Session s, Packet p)
 		{
 			ushort opcode = p.Opcode();
 			byte flag = p.Flag();
@@ -125,15 +144,6 @@ namespace ETHotfix
 
 			this.Send(0x00, request);
 			return tcs.Task;
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			base.Dispose();
 		}
 	}
 }

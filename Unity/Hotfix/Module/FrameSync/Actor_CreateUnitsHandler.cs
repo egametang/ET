@@ -6,7 +6,7 @@ namespace ETHotfix
 	[MessageHandler]
 	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
 	{
-		protected override void Run(Session session, Actor_CreateUnits message)
+		protected override void Run(ETModel.Session session, Actor_CreateUnits message)
 		{
 			// 加载Unit资源
 			ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();

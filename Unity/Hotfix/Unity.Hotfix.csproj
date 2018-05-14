@@ -85,8 +85,8 @@
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\EventSystem.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
-    <Compile Include="Module\Message\SessionWrapComponent.cs" />
-    <Compile Include="Module\Message\SessionWrap.cs" />
+    <Compile Include="Module\Message\SessionComponent.cs" />
+    <Compile Include="Module\Message\Session.cs" />
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />

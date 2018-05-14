@@ -89,7 +89,7 @@ namespace ETHotfix
 			this.handlers[opcode].Add(handler);
 		}
 
-		public void Handle(Session session, MessageInfo messageInfo)
+		public void Handle(ETModel.Session session, MessageInfo messageInfo)
 		{
 			List<IMHandler> actions;
 			if (!this.handlers.TryGetValue(messageInfo.Opcode, out actions))

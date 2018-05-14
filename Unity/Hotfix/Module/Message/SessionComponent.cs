@@ -3,19 +3,19 @@
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class SessionComponentAwakeSystem : AwakeSystem<SessionWrapComponent>
+	public class SessionComponentAwakeSystem : AwakeSystem<SessionComponent>
 	{
-		public override void Awake(SessionWrapComponent self)
+		public override void Awake(SessionComponent self)
 		{
 			self.Awake();
 		}
 	}
 
-	public class SessionWrapComponent: Component
+	public class SessionComponent: Component
 	{
-		public static SessionWrapComponent Instance;
+		public static SessionComponent Instance;
 
-		public SessionWrap Session;
+		public Session Session;
 
 		public void Awake()
 		{

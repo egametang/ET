@@ -30,23 +30,28 @@ namespace ETHotfix
 
 		public async void OnLogin()
 		{
-			SessionWrap sessionWrap = null;
 			try
 			{
 				IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
 
 				string text = this.account.GetComponent<InputField>().text;
 
-				Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
-				sessionWrap = new SessionWrap(session);
-				R2C_Login r2CLogin = (R2C_Login) await sessionWrap.Call(new C2R_Login() { Account = text, Password = "111111" });
-				sessionWrap.Dispose();
+				// 创建一个ETModel层的Session
+				ETModel.Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				// 创建一个ETHotfix层的Session, ETHotfix的Session会通过ETModel层的Session发送消息
+				Session realmSession = ComponentFactory.Create<Session, ETModel.Session>(session);
+				R2C_Login r2CLogin = (R2C_Login) await realmSession.Call(new C2R_Login() { Account = text, Password = "111111" });
+				realmSession.Dispose();
 
 				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
-				Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
-				Game.Scene.AddComponent<SessionWrapComponent>().Session = new SessionWrap(gateSession);
-				ETModel.Game.Scene.AddComponent<SessionComponent>().Session = gateSession;
-				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionWrapComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
+				// 创建一个ETModel层的Session,并且保存到ETModel.SessionComponent中
+				ETModel.Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				ETModel.Game.Scene.AddComponent<ETModel.SessionComponent>().Session = gateSession;
+				
+				// 创建一个ETHotfix层的Session, 并且保存到ETHotfix.SessionComponent中
+				Game.Scene.AddComponent<SessionComponent>().Session = ComponentFactory.Create<Session, ETModel.Session>(gateSession);
+				
+				G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await SessionComponent.Instance.Session.Call(new C2G_LoginGate() { Key = r2CLogin.Key });
 
 				Log.Info("登陆gate成功!");
 
@@ -60,7 +65,6 @@ namespace ETHotfix
 			}
 			catch (Exception e)
 			{
-				sessionWrap?.Dispose();
 				Log.Error(e);
 			}
 		}
