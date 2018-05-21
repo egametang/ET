@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public abstract partial class Component : Object, IDisposable
+	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
 		public long InstanceId { get; protected set; }
@@ -23,11 +23,17 @@ namespace ETModel
 			{
 				this.isFromPool = value;
 
+				if (!this.isFromPool)
+				{
+					return;
+				}
+
 				if (this.InstanceId == 0)
 				{
 					this.InstanceId = IdGenerater.GenerateId();
-					Game.EventSystem.Add(this);
 				}
+
+				Game.EventSystem.Add(this);
 			}
 		}
 
@@ -56,11 +62,10 @@ namespace ETModel
 				return this.Parent as Entity;
 			}
 		}
-
+		
 		protected Component()
 		{
 			this.InstanceId = IdGenerater.GenerateId();
-			Game.EventSystem.Add(this);
 		}
 
 		public virtual void Dispose()

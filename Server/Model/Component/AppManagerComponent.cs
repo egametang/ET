@@ -74,11 +74,13 @@ namespace ETModel
 		/// </summary>
 		private async void WatchProcessAsync()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(5000);
 
-				if (this.IsDisposed)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}

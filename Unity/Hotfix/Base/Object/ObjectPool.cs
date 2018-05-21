@@ -19,20 +19,21 @@ namespace ETHotfix
 			if (queue.Count > 0)
 			{
 				obj = queue.Dequeue();
-				obj.IsFromPool = true;
-				return obj;
 			}
-			obj = (Component)Activator.CreateInstance(type);
+			else
+			{
+				obj = (Component)Activator.CreateInstance(type);	
+			}
+			obj.IsFromPool = true;
 			return obj;
 		}
 
-		public T Fetch<T>() where T : Component
+		public T Fetch<T>() where T: Component
 		{
-			T t = (T)this.Fetch(typeof(T));
-			t.IsFromPool = true;
+			T t = (T) this.Fetch(typeof(T));
 			return t;
 		}
-
+        
 		public void Recycle(Component obj)
 		{
 			Type type = obj.GetType();

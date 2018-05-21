@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public abstract partial class ComponentWithId : Component
+	public abstract class ComponentWithId : Component
 	{
 		[BsonIgnoreIfDefault]
 		[BsonDefaultValue(0L)]

@@ -85,9 +85,12 @@ namespace ETHotfix
 		public static async void HandleAsync(this MailBoxComponent self)
 		{
 			ActorMessageDispatherComponent actorMessageDispatherComponent = Game.Scene.GetComponent<ActorMessageDispatherComponent>();
+			
+			long instanceId = self.InstanceId;
+			
 			while (true)
 			{
-				if (self.IsDisposed)
+				if (self.InstanceId != instanceId)
 				{
 					return;
 				}

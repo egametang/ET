@@ -68,10 +68,13 @@ namespace ETModel
 				}
 
 				int rpcId = request.RpcId;
+				
+				long instanceId = session.InstanceId;
+				
 				await this.Run(e, request, response =>
 				{
-					// 等回调回来,session可以已经断开了
-					if (session.IsDisposed)
+					// 等回调回来,session可以已经断开了,所以需要判断session InstanceId是否一样
+					if (session.InstanceId != instanceId)
 					{
 						return;
 					}

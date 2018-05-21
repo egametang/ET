@@ -19,17 +19,18 @@ namespace ETModel
 			if (queue.Count > 0)
             {
 				obj = queue.Dequeue();
-	            obj.IsFromPool = true;
-				return obj;
             }
-	        obj = (Component)Activator.CreateInstance(type);
+			else
+			{
+				obj = (Component)Activator.CreateInstance(type);	
+			}
+	        obj.IsFromPool = true;
             return obj;
         }
 
         public T Fetch<T>() where T: Component
 		{
             T t = (T) this.Fetch(typeof(T));
-			t.IsFromPool = true;
 			return t;
 		}
         

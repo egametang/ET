@@ -176,9 +176,11 @@ namespace ETModel
 
 		public async void Accept()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
-				if (this.IsDisposed)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}

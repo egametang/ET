@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : ComponentWithId
+	public class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -15,7 +15,7 @@ namespace ETModel
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict;
 
-		protected Entity()
+		public Entity()
 		{
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
@@ -211,18 +211,12 @@ namespace ETModel
 			return this.componentDict.Values.ToArray();
 		}
 
-		public override void BeginInit()
-		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
-		}
-
 		public override void EndInit()
 		{
 			try
 			{
-				this.InstanceId = IdGenerater.GenerateId();
-
+				base.EndInit();
+				
 				this.componentDict.Clear();
 
 				if (this.components != null)

@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
 	[BsonIgnoreExtraElements]
-	public abstract partial class Component : Object, IDisposable
+	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
 		public long InstanceId { get; protected set; }
@@ -23,11 +23,17 @@ namespace ETHotfix
 			{
 				this.isFromPool = value;
 
+				if (!this.isFromPool)
+				{
+					return;
+				}
+
 				if (this.InstanceId == 0)
 				{
 					this.InstanceId = IdGenerater.GenerateId();
-					Game.EventSystem.Add(this);
 				}
+
+				Game.EventSystem.Add(this);
 			}
 		}
 
@@ -60,9 +66,8 @@ namespace ETHotfix
 		protected Component()
 		{
 			this.InstanceId = IdGenerater.GenerateId();
-			Game.EventSystem.Add(this);
 		}
-
+		
 		public virtual void Dispose()
 		{
 			if (this.IsDisposed)

@@ -18,12 +18,12 @@ namespace ETModel
 		public override async void Start(UILoadingComponent self)
 		{
 			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-
+			long instanceId = self.InstanceId;
 			while (true)
 			{
 				await timerComponent.WaitAsync(1000);
 
-				if (self.IsDisposed)
+				if (self.InstanceId != instanceId)
 				{
 					return;
 				}

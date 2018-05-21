@@ -18,9 +18,11 @@ namespace ETModel
 	{
 		public override async void Start(DBTaskQueue self)
 		{
+			long instanceId = self.InstanceId;
+			
 			while (true)
 			{
-				if (self.IsDisposed)
+				if (self.InstanceId != instanceId)
 				{
 					return;
 				}
