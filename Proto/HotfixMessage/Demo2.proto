@@ -1,0 +1,28 @@
+
+message G2C_TestHotfixMessage // IMessage
+{
+    required string Info = 1;
+}
+
+message C2M_TestActorRequest // IActorRequest
+{
+    required string Info = 1;
+}
+
+message M2C_TestActorResponse // IActorResponse
+{
+    required string Info = 1;
+}
+
+message PlayerInfo // IMessage
+{
+}
+
+message C2G_PlayerInfo // IRequest
+{
+}
+
+message G2C_PlayerInfo // IResponse
+{
+    repeated PlayerInfo PlayerInfos = 1;
+}

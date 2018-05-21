@@ -24,7 +24,8 @@ namespace ETEditor
 	public class Proto2CSEditor : EditorWindow
 	{
 		private const string protoPath = "../Proto/";
-		private const string serverMessagePath = "../Server/Hotfix/Module/Message/";
+	    private const string protoHotFixPath = "../Proto/HotfixMessage/";
+        private const string serverMessagePath = "../Server/Hotfix/Module/Message/";
 		private const string clientMessagePath = "Assets/Scripts/Module/Message/";
 		private const string hotfixMessagePath = "Hotfix/Module/Message/";
 		private static readonly char[] splitChars = { ' ', '\t' };
@@ -42,11 +43,13 @@ namespace ETEditor
 			GenerateOpcode("ETHotfix", "OuterOpcode", serverMessagePath);
 
 			msgOpcode.Clear();
-			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.None);
+		    ProtoHotFixDir2CS("ETHotfix",  hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.None);
+//			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000, HeadFlag.None);
 			GenerateOpcode("ETHotfix", "HotfixOpcode", hotfixMessagePath);
 
-			msgOpcode.Clear();
-			Proto2CS("ETHotfix", "HotfixMessage.proto", serverMessagePath, "HotfixOpcode", 10000, HeadFlag.Bson, false);
+            msgOpcode.Clear();
+		    ProtoHotFixDir2CS("ETHotfix",  serverMessagePath, "HotfixOpcode", 10000, HeadFlag.Bson, false);
+//            Proto2CS("ETHotfix", "HotfixMessage.proto", serverMessagePath, "HotfixOpcode", 10000, HeadFlag.Bson, false);
 			GenerateOpcode("ETHotfix", "HotfixOpcode", serverMessagePath);
 
 			msgOpcode.Clear();
@@ -55,8 +58,175 @@ namespace ETEditor
 
 			AssetDatabase.Refresh();
 		}
-		
-		public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode, HeadFlag flag, bool isClient = true)
+
+        public static void ProtoHotFixDir2CS(string ns,  string outputPath, string opcodeClassName, int startOpcode, HeadFlag flag, bool isClient = true)
+        {
+            msgOpcode.Clear();
+
+            parentMsg = new MultiMap<string, string>();
+            string csPath = Path.Combine(outputPath, "HotfixMessage" + ".cs");
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("using ProtoBuf;\n");
+            sb.Append("using ETModel;\n");
+            sb.Append("using System.Collections.Generic;\n");
+            sb.Append("using MongoDB.Bson.Serialization.Attributes;\n");
+            sb.Append($"namespace {ns}\n");
+            sb.Append("{\n");
+
+            foreach (string filePath in Directory.GetFiles(protoHotFixPath))
+            {
+                if (Path.GetExtension(filePath) != ".proto")
+                {
+                    continue;
+                }
+                if (Path.GetFileName(filePath).StartsWith("~"))
+                {
+                    continue;
+                }
+                string protoName = Path.GetFileNameWithoutExtension(filePath);
+                //开始读取一个
+                string proto = Path.Combine(protoHotFixPath, protoName);
+
+                sb.Append($"#region  {protoName}\n");
+
+                string s = File.ReadAllText($"{proto}.proto");
+                bool isMsgStart = false;
+                string parentClass = "";
+                foreach (string line in s.Split('\n'))
+                {
+                    string newline = line.Trim();
+
+                    if (newline == "")
+                    {
+                        continue;
+                    }
+
+                    if (newline.StartsWith("//"))
+                    {
+                        sb.Append($"{newline}\n");
+                    }
+
+                    if (newline.StartsWith("message"))
+                    {
+                        parentClass = "";
+                        isMsgStart = true;
+                        string msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
+                        string[] ss = newline.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (ss.Length == 2)
+                        {
+                            parentClass = ss[1].Trim();
+                        }
+
+                        msgOpcode.Add(new OpcodeInfo() { Name = msgName, Opcode = ++startOpcode });
+
+                        sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
+                        sb.Append($"\t[ProtoContract]\n");
+                        sb.Append($"\tpublic partial class {msgName}");
+                        if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse" || parentClass == "IFrameMessage")
+                        {
+                            sb.Append($": {parentClass}\n");
+                        }
+                        else if (parentClass != "")
+                        {
+                            sb.Append($": {parentClass}\n");
+                        }
+                        else
+                        {
+                            sb.Append("\n");
+                        }
+                    }
+
+                    if (isMsgStart && newline == "{")
+                    {
+                        sb.Append("\t{\n");
+
+                        if (parentClass == "IRequest" || parentClass == "IActorRequest" || parentClass == "IActorMessage" || parentClass == "IFrameMessage")
+                        {
+                            sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic int RpcId { get; set; }\n");
+                        }
+
+                        if (parentClass == "IResponse" || parentClass == "IActorResponse")
+                        {
+                            sb.AppendLine("\t\t[ProtoMember(90, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic int RpcId { get; set; }\n");
+                            sb.AppendLine("\t\t[ProtoMember(91, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic int Error { get; set; }\n");
+                            sb.AppendLine("\t\t[ProtoMember(92, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic string Message { get; set; }\n");
+                        }
+
+                        if (parentClass == "IActorRequest" || parentClass == "IActorMessage")
+                        {
+                            sb.AppendLine("\t\t[ProtoMember(93, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic long ActorId { get; set; }\n");
+                        }
+
+                        if (parentClass == "IFrameMessage")
+                        {
+                            sb.AppendLine("\t\t[ProtoMember(94, IsRequired = true)]");
+                            sb.AppendLine("\t\tpublic long Id { get; set; }\n");
+                        }
+                    }
+
+                    // 成员
+                    if (newline.StartsWith("required"))
+                    {
+                        Members(sb, newline, true);
+                    }
+
+                    if (newline.StartsWith("optional"))
+                    {
+                        Members(sb, newline, false);
+                    }
+
+                    if (newline.StartsWith("repeated"))
+                    {
+                        Repeated(sb, ns, newline, isClient);
+                    }
+
+                    if (newline.StartsWith("object"))
+                    {
+                        Object(sb, newline);
+                    }
+
+                    if (newline.StartsWith("[") && newline.EndsWith("]"))
+                    {
+                        sb.AppendLine($"\t\t{newline}");
+                    }
+
+                    if (newline.StartsWith("#region") || newline.StartsWith("#endregion"))
+                    {
+                        sb.AppendLine($"\t{newline}");
+                    }
+
+                    if (isMsgStart && newline == "}")
+                    {
+                        isMsgStart = false;
+                        sb.Append("\t}\n\n");
+                    }
+                }
+
+                sb.Append($"#endregion\n");
+            }
+            
+
+
+
+          
+            sb.Append("}\n");
+
+            //if (!isClient)
+            //{
+            //GenerateHead(sb, ns, flag, opcodeClassName);
+            //}
+
+            File.WriteAllText(csPath, sb.ToString());
+        }
+        public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode, HeadFlag flag, bool isClient = true)
 		{
 			msgOpcode.Clear();
 			parentMsg = new MultiMap<string, string>();
@@ -169,7 +339,22 @@ namespace ETEditor
 					Repeated(sb, ns, newline, isClient);
 				}
 
-				if (isMsgStart && newline == "}")
+			    if (newline.StartsWith("object"))
+			    {
+			        Object(sb, newline);
+			    }
+
+			    if (newline.StartsWith("[") && newline.EndsWith("]"))
+			    {
+			        sb.AppendLine($"\t\t{newline}");
+			    }
+
+			    if (newline.StartsWith("#region") || newline.StartsWith("#endregion"))
+			    {
+			        sb.AppendLine($"\t{newline}");
+			    }
+
+                if (isMsgStart && newline == "}")
 				{
 					isMsgStart = false;
 					sb.Append("\t}\n\n");
@@ -333,5 +518,25 @@ namespace ETEditor
 			}
 
 		}
-	}
+
+	    private static void Object(StringBuilder sb, string newline)
+	    {
+	        try
+	        {
+	            int index = newline.IndexOf(";");
+	            newline = newline.Remove(index);
+	            string[] ss = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
+	            string type = ss[1];
+	            string name = ss[2];
+	            int order = int.Parse(ss[4]);
+	            sb.Append($"\t\t[ProtoMember({order})]\n");
+	            sb.Append($"\t\tpublic {type} {name} = new {type}();\n\n");
+	        }
+	        catch (Exception e)
+	        {
+	            Log.Error($"{newline}\n {e}");
+	        }
+
+	    }
+    }
 }
