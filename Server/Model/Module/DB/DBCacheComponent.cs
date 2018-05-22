@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace ETModel
 {
@@ -135,6 +140,16 @@ namespace ETModel
 			return tcs.Task;
 		}
 
+		
+		public Task<List<ComponentWithId>> Get<T>(string collectionName, Expression<Func<T, bool>> func) where T : ComponentWithId
+		{
+			TaskCompletionSource<List<ComponentWithId>> tcs = new TaskCompletionSource<List<ComponentWithId>>();
+			var vistor = new ExpressionVistor(func);
+			DBQueryJsonTask dbQueryJsonTask = ComponentFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource<List<ComponentWithId>>>(collectionName, vistor.Output, tcs);
+			this.tasks[(int)((ulong)dbQueryJsonTask.Id % taskCount)].Add(dbQueryJsonTask);
+			return tcs.Task;
+		}
+		
 		public Task<List<ComponentWithId>> GetJson(string collectionName, string json)
 		{
 			TaskCompletionSource<List<ComponentWithId>> tcs = new TaskCompletionSource<List<ComponentWithId>>();
