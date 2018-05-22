@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using ExpressionVisitor = MongoDB.Bson.Serialization.ExpressionVisitor;
 
 namespace ETModel
 {
@@ -25,13 +24,8 @@ namespace ETModel
         {
             Visit(node);
         }
-        
-        protected override Expression Visit(Expression node)
-        {
-            return base.Visit(node);
-        }
 
-        protected override Expression VisitLambda(LambdaExpression node)
+        protected override Expression VisitLambda<T>(Expression<T> node)
         {
             var lambda = base.VisitLambda(node);
             this.Builder.Remove(this.Builder.Length - 1, 1); //Remove the Last Comma
