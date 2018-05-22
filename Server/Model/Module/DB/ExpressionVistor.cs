@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using ExpressionVisitor = MongoDB.Bson.Serialization.ExpressionVisitor;
 
@@ -45,10 +47,41 @@ namespace ETModel
 
         protected override Expression VisitMember(MemberExpression node)
         {
-            this.Variable = node.Member.Name;
+            switch (node.Expression.NodeType)
+            {
+                case ExpressionType.Constant:
+                case ExpressionType.MemberAccess:
+                {
+                    var cleanNode = GetMemberConstant(node);
+                    return VisitConstant(cleanNode);
+                }
+            }
+
+            if (node.Member.Name != nameof(ComponentWithId.Id))
+                this.Variable = node.Member.Name;
+            else
+                this.Variable = "_id";
             return base.VisitMember(node);
         }
 
+        private static ConstantExpression GetMemberConstant(MemberExpression node)
+        {
+            object value;
+            if (node.Member.MemberType == MemberTypes.Field)
+            {
+                value = GetFieldValue(node);
+            }
+            else if (node.Member.MemberType == MemberTypes.Property)
+            {
+                value = GetPropertyValue(node);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return Expression.Constant(value, node.Type);
+        }
+        
         protected override Expression VisitConstant(ConstantExpression node)
         {
             this.Builder.Append(this.Variable);
@@ -87,6 +120,33 @@ namespace ETModel
                 this.Builder.Append("}");
             this.Builder.Append(",");
             return base.VisitConstant(node);
+        }
+        
+        private static object GetFieldValue(MemberExpression node)
+        {
+            var fieldInfo = (FieldInfo)node.Member;
+
+            var instance = (node.Expression == null) ? null : TryEvaluate(node.Expression).Value;
+
+            return fieldInfo.GetValue(instance);
+        }
+
+        private static object GetPropertyValue(MemberExpression node)
+        {
+            var propertyInfo = (PropertyInfo)node.Member;
+
+            var instance = (node.Expression == null) ? null : TryEvaluate(node.Expression).Value;
+
+            return propertyInfo.GetValue(instance, null);
+        }
+        
+        private static ConstantExpression TryEvaluate(Expression expression)
+        {
+            if (expression.NodeType == ExpressionType.Constant)
+            {
+                return (ConstantExpression)expression;
+            }
+            throw new NotSupportedException();
         }
     }
 }
