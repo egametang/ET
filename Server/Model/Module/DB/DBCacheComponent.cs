@@ -140,11 +140,8 @@ namespace ETModel
 		
 		public Task<List<ComponentWithId>> Get<T>(string collectionName, Expression<Func<T, bool>> func) where T : ComponentWithId
 		{
-			TaskCompletionSource<List<ComponentWithId>> tcs = new TaskCompletionSource<List<ComponentWithId>>();
 			var vistor = new ExpressionVistor(func);
-			DBQueryJsonTask dbQueryJsonTask = ComponentFactory.Create<DBQueryJsonTask, string, string, TaskCompletionSource<List<ComponentWithId>>>(collectionName, vistor.Output, tcs);
-			this.tasks[(int)((ulong)dbQueryJsonTask.Id % taskCount)].Add(dbQueryJsonTask);
-			return tcs.Task;
+			return GetJson(collectionName,vistor.Output);
 		}
 		
 		public Task<List<ComponentWithId>> GetJson(string collectionName, string json)
