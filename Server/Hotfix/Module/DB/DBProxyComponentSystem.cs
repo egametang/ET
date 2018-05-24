@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ETModel;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 
 namespace ETHotfix
 {
@@ -54,6 +60,22 @@ namespace ETHotfix
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id, NeedCache = needCache });
 			return (T)dbQueryResponse.Component;
+		}
+		
+		public static async Task<List<T>> Query<T>(this DBProxyComponent self, Expression<Func<T ,bool>> exp, bool needCache = true) where T: ComponentWithId
+		{
+			List<T> list = new List<T>();
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
+			ExpressionFilterDefinition<T> filter = new ExpressionFilterDefinition<T>(exp);
+			var serializerRegistry = BsonSerializer.SerializerRegistry;
+			var documentSerializer = serializerRegistry.GetSerializer<T>();
+			var json = filter.Render(documentSerializer, serializerRegistry).ToJson();
+			DBQueryJsonResponse dbQueryResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
+			foreach (ComponentWithId component in dbQueryResponse.Components)
+			{
+				list.Add((T)component);
+			}
+			return list;
 		}
 
 		public static async Task<List<T>> QueryBatch<T>(this DBProxyComponent self, List<long> ids, bool needCache = true) where T : ComponentWithId
