@@ -8,7 +8,6 @@ namespace ETModel
 	{
 		[BsonIgnoreIfDefault]
 		[BsonDefaultValue(0L)]
-		[BsonElement]
 		[BsonId]
 		public long Id { get; set; }
 

@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
+using ETHotfix;
 using ETModel;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using NLog;
 
@@ -9,6 +13,8 @@ namespace App
 {
 	internal static class Program
 	{
+
+		
 		private static void Main(string[] args)
 		{
 			// 异步方法全部会回掉到主线程
@@ -98,6 +104,7 @@ namespace App
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
+						Game.Scene.AddComponent<TestComponent>();
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
@@ -107,6 +114,8 @@ namespace App
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
 				}
+
+				Test();
 
 				while (true)
 				{
@@ -126,6 +135,19 @@ namespace App
 			{
 				Log.Error(e);
 			}
+
+			Console.Read();
+		}
+
+		static async void Test()
+		{
+			/*BsonClassMap.RegisterClassMap<XXX>();
+			var cache = Game.Scene.GetComponent<DBProxyComponent>();
+			//List<ComponentWithId> xx = await cache.Get<XXX>("XXX", (t) =>t.Fucker == 10000 && t.Lover >= 0);
+			int kaka = 10000;
+			//List<ComponentWithId> xx = await cache.Get<XXX>("XXX", (t) =>t.Fucker == 10000 && t.Lover >= 0);
+			List<ComponentWithId> xx = await cache<XXX>("XXX", (t) => t.Id == 123);
+			Log.Info(xx.Count.ToString());*/
 		}
 	}
 }
