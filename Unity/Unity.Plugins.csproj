@@ -53,7 +53,7 @@
     <Reference Include="System">
       <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.dll</HintPath>
     </Reference>
-    <Reference Include="System.XML">
+    <Reference Include="System.Xml">
       <HintPath>C:\Apps\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.XML.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
