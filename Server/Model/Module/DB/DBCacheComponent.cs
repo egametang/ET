@@ -136,13 +136,6 @@ namespace ETModel
 
 			return tcs.Task;
 		}
-
-		
-		public Task<List<ComponentWithId>> Get<T>(string collectionName, Expression<Func<T, bool>> func) where T : ComponentWithId
-		{
-			var vistor = new ExpressionVistor(func);
-			return GetJson(collectionName,vistor.Output);
-		}
 		
 		public Task<List<ComponentWithId>> GetJson(string collectionName, string json)
 		{

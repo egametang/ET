@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using ETModel;
@@ -66,6 +68,12 @@ namespace ETHotfix
 				list.Add((T)component);
 			}
 			return list;
+		}
+		
+		public static async Task<List<T>> Query<T>(this DBProxyComponent self, Expression<Func<T, bool>> func) where T : ComponentWithId
+		{
+			ExpressionVistor vistor = new ExpressionVistor(func);
+			return await self.QueryJson<T>(vistor.Output);
 		}
 
 		public static async Task<List<T>> QueryJson<T>(this DBProxyComponent self, string json) where T : ComponentWithId
