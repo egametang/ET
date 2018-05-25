@@ -67,9 +67,9 @@ namespace ETHotfix
 			List<T> list = new List<T>();
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			ExpressionFilterDefinition<T> filter = new ExpressionFilterDefinition<T>(exp);
-			var serializerRegistry = BsonSerializer.SerializerRegistry;
-			var documentSerializer = serializerRegistry.GetSerializer<T>();
-			var json = filter.Render(documentSerializer, serializerRegistry).ToJson();
+			IBsonSerializerRegistry serializerRegistry = BsonSerializer.SerializerRegistry;
+			IBsonSerializer<T> documentSerializer = serializerRegistry.GetSerializer<T>();
+			string json = filter.Render(documentSerializer, serializerRegistry).ToJson();
 			DBQueryJsonResponse dbQueryResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
 			foreach (ComponentWithId component in dbQueryResponse.Components)
 			{
@@ -88,12 +88,6 @@ namespace ETHotfix
 				list.Add((T)component);
 			}
 			return list;
-		}
-		
-		public static async Task<List<T>> Query<T>(this DBProxyComponent self, Expression<Func<T, bool>> func) where T : ComponentWithId
-		{
-			ExpressionVistor vistor = new ExpressionVistor(func);
-			return await self.QueryJson<T>(vistor.Output);
 		}
 
 		public static async Task<List<T>> QueryJson<T>(this DBProxyComponent self, string json) where T : ComponentWithId
