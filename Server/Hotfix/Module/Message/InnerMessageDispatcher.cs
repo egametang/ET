@@ -7,7 +7,7 @@ namespace ETHotfix
 	{
 		public void Dispatch(Session session, Packet packet)
 		{
-			ushort opcode = packet.Opcode();
+			ushort opcode = packet.Opcode;
 			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
 			

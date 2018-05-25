@@ -7,7 +7,7 @@ namespace ETHotfix
 	{
 		public async void Dispatch(Session session, Packet packet)
 		{
-			ushort opcode = packet.Opcode();
+			ushort opcode = packet.Opcode;
 			Type messageType = session.Network.Entity.GetComponent<OpcodeTypeComponent>().GetType(opcode);
 			object message = session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
 

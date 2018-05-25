@@ -6,7 +6,7 @@ namespace ETModel
 	{
 		public void Dispatch(Session session, Packet packet)
 		{
-			ushort opcode = packet.Opcode();
+			ushort opcode = packet.Opcode;
 			
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
