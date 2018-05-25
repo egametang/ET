@@ -54,6 +54,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" Link="Base\Object\ObjectSystemAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\OneThreadSynchronizationContext.cs" Link="Base\OneThreadSynchronizationContext.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
@@ -114,6 +117,7 @@
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Base\RecyclableMemoryStream\" />
     <Folder Include="Component\Config\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />

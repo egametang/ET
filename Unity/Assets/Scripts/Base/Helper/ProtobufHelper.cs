@@ -1,12 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using Microsoft.IO;
 using ProtoBuf;
 
 namespace ETModel
 {
 	public static class ProtobufHelper
 	{
+		private static readonly RecyclableMemoryStreamManager recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
+
 		public static byte[] ToBytes(object message)
 		{
 			using (MemoryStream ms = new MemoryStream())
@@ -19,7 +22,7 @@ namespace ETModel
 		public static T FromBytes<T>(byte[] bytes)
 		{
 			T t;
-			using (MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length))
+			using (MemoryStream ms = recyclableMemoryStreamManager.GetStream("protobuf", bytes, 0, bytes.Length))
 			{
 				t = Serializer.Deserialize<T>(ms);
 			}
@@ -35,7 +38,7 @@ namespace ETModel
 		public static T FromBytes<T>(byte[] bytes, int index, int length)
 		{
 			T t;
-			using (MemoryStream ms = new MemoryStream(bytes, index, length))
+			using (MemoryStream ms = recyclableMemoryStreamManager.GetStream("protobuf", bytes, index, length))
 			{
 				t = Serializer.Deserialize<T>(ms);
 			}
@@ -51,7 +54,7 @@ namespace ETModel
 		public static object FromBytes(Type type, byte[] bytes)
 		{
 			object t;
-			using (MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length))
+			using (MemoryStream ms = recyclableMemoryStreamManager.GetStream("protobuf", bytes, 0, bytes.Length))
 			{
 				t = Serializer.NonGeneric.Deserialize(type, ms);
 			}
@@ -67,7 +70,7 @@ namespace ETModel
 		public static object FromBytes(Type type, byte[] bytes, int index, int length)
 		{
 			object t;
-			using (MemoryStream ms = new MemoryStream(bytes, index, length))
+			using (MemoryStream ms = recyclableMemoryStreamManager.GetStream("protobuf", bytes, index, length))
 			{
 				t = Serializer.NonGeneric.Deserialize(type, ms);
 			}
