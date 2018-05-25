@@ -66,7 +66,14 @@ namespace ETModel
 					return;
 				}
 
-				await this.Accept();
+				try
+				{
+					await this.Accept();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 

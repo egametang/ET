@@ -511,4 +511,16 @@ namespace ETHotfix
 
 	}
 
+	[Message(InnerOpcode.G2M_SessionDisconnect)]
+	[ProtoContract]
+	public partial class G2M_SessionDisconnect: IActorMessage
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93, IsRequired = true)]
+		public long ActorId { get; set; }
+
+	}
+
 }

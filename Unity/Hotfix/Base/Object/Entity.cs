@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ETModel;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ETHotfix
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : ComponentWithId
+	public class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -16,13 +15,13 @@ namespace ETHotfix
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict;
 
-		protected Entity()
+		public Entity()
 		{
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id) : base(id)
+		protected Entity(long id): base(id)
 		{
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
@@ -52,12 +51,28 @@ namespace ETHotfix
 			this.components.Clear();
 			this.componentDict.Clear();
 		}
+		
+		public Component AddComponent(Component component)
+		{
+			Type type = component.GetType();
+			if (this.componentDict.ContainsKey(type))
+			{
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
+			}
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(type, component);
+			return component;
+		}
 
 		public Component AddComponent(Type type)
 		{
 			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, component: {type.Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
 
 			Component component = ComponentFactory.CreateWithParent(type, this);
@@ -66,15 +81,16 @@ namespace ETHotfix
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K>() where K : Component, new()
 		{
-			if (this.componentDict.ContainsKey(typeof(K)))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
 			K component = ComponentFactory.CreateWithParent<K>(this);
@@ -83,71 +99,75 @@ namespace ETHotfix
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			if (this.componentDict.ContainsKey(typeof(K)))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
 			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
-
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			if (this.componentDict.ContainsKey(typeof(K)))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
-
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			if (this.componentDict.ContainsKey(typeof(K)))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
-
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public void RemoveComponent<K>() where K : Component
 		{
+			Type type = typeof (K);
 			Component component;
-			if (!this.componentDict.TryGetValue(typeof(K), out component))
+			if (!this.componentDict.TryGetValue(type, out component))
 			{
 				return;
 			}
 
 			this.components.Remove(component);
-			this.componentDict.Remove(typeof(K));
+			this.componentDict.Remove(type);
 
 			component.Dispose();
 		}
@@ -196,7 +216,7 @@ namespace ETHotfix
 			try
 			{
 				base.EndInit();
-
+				
 				this.componentDict.Clear();
 
 				if (this.components != null)
@@ -211,6 +231,26 @@ namespace ETHotfix
 			catch (Exception e)
 			{
 				Log.Error(e);
+			}
+		}
+
+		public override void BeginSerialize()
+		{
+			base.BeginSerialize();
+
+			foreach (Component component in this.components)
+			{
+				component.BeginSerialize();
+			}
+		}
+
+		public override void EndDeSerialize()
+		{
+			base.EndDeSerialize();
+			
+			foreach (Component component in this.components)
+			{
+				component.EndDeSerialize();
 			}
 		}
 	}

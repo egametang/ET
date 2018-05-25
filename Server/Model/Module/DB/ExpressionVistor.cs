@@ -17,7 +17,7 @@ namespace ETModel
             }
         }
 
-        private string         Variable;
+        private string Variable;
         private ExpressionType NodeType;
 
         public ExpressionVistor(Expression node)
@@ -27,7 +27,7 @@ namespace ETModel
 
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
-            var lambda = base.VisitLambda(node);
+            Expression lambda = base.VisitLambda(node);
             this.Builder.Remove(this.Builder.Length - 1, 1); //Remove the Last Comma
             this.Builder.Append("}");
             return lambda;
@@ -46,32 +46,36 @@ namespace ETModel
                 case ExpressionType.Constant:
                 case ExpressionType.MemberAccess:
                 {
-                    var cleanNode = GetMemberConstant(node);
+                    ConstantExpression cleanNode = GetMemberConstant(node);
                     return VisitConstant(cleanNode);
                 }
             }
 
             if (node.Member.Name != nameof(ComponentWithId.Id))
+            {
                 this.Variable = node.Member.Name;
+            }
             else
+            {
                 this.Variable = "_id";
+            }
+
             return base.VisitMember(node);
         }
 
         private static ConstantExpression GetMemberConstant(MemberExpression node)
         {
             object value;
-            if (node.Member.MemberType == MemberTypes.Field)
+            switch (node.Member.MemberType)
             {
-                value = GetFieldValue(node);
-            }
-            else if (node.Member.MemberType == MemberTypes.Property)
-            {
-                value = GetPropertyValue(node);
-            }
-            else
-            {
-                throw new NotSupportedException();
+                case MemberTypes.Field:
+                    value = GetFieldValue(node);
+                    break;
+                case MemberTypes.Property:
+                    value = GetPropertyValue(node);
+                    break;
+                default:
+                    throw new NotSupportedException();
             }
             return Expression.Constant(value, node.Type);
         }
@@ -80,67 +84,69 @@ namespace ETModel
         {
             this.Builder.Append(this.Variable);
             bool flag = false;
-            if (this.NodeType == ExpressionType.Equal)
+            switch (this.NodeType)
             {
-                this.Builder.Append(":");
-            }
-            else if (this.NodeType == ExpressionType.GreaterThan)
-            {
-                this.Builder.Append(":{");
-                this.Builder.Append("$gt:");
-                flag = true;
-            }
-            else if (this.NodeType == ExpressionType.GreaterThanOrEqual)
-            {
-                this.Builder.Append(":{");
-                this.Builder.Append("$gte:");
-                flag = true;
-            }
-            else if (this.NodeType == ExpressionType.LessThan)
-            {
-                this.Builder.Append(":{");
-                this.Builder.Append("$lt:");
-                flag = true;
-            }
-            else if (this.NodeType == ExpressionType.LessThanOrEqual)
-            {
-                this.Builder.Append(":{");
-                this.Builder.Append("lte:");
-                flag = true;
+                case ExpressionType.Equal:
+                    this.Builder.Append(":");
+                    break;
+                case ExpressionType.GreaterThan:
+                    this.Builder.Append(":{");
+                    this.Builder.Append("$gt:");
+                    flag = true;
+                    break;
+                case ExpressionType.GreaterThanOrEqual:
+                    this.Builder.Append(":{");
+                    this.Builder.Append("$gte:");
+                    flag = true;
+                    break;
+                case ExpressionType.LessThan:
+                    this.Builder.Append(":{");
+                    this.Builder.Append("$lt:");
+                    flag = true;
+                    break;
+                case ExpressionType.LessThanOrEqual:
+                    this.Builder.Append(":{");
+                    this.Builder.Append("lte:");
+                    flag = true;
+                    break;
             }
 
             this.Builder.Append(node.Value);
             if (flag)
+            {
                 this.Builder.Append("}");
+            }
+
             this.Builder.Append(",");
             return base.VisitConstant(node);
         }
         
         private static object GetFieldValue(MemberExpression node)
         {
-            var fieldInfo = (FieldInfo)node.Member;
+            FieldInfo fieldInfo = (FieldInfo)node.Member;
 
-            var instance = (node.Expression == null) ? null : TryEvaluate(node.Expression).Value;
+            object instance = node.Expression == null ? null : TryEvaluate(node.Expression).Value;
 
             return fieldInfo.GetValue(instance);
         }
 
         private static object GetPropertyValue(MemberExpression node)
         {
-            var propertyInfo = (PropertyInfo)node.Member;
+            PropertyInfo propertyInfo = (PropertyInfo)node.Member;
 
-            var instance = (node.Expression == null) ? null : TryEvaluate(node.Expression).Value;
+            object instance = node.Expression == null ? null : TryEvaluate(node.Expression).Value;
 
             return propertyInfo.GetValue(instance, null);
         }
         
         private static ConstantExpression TryEvaluate(Expression expression)
         {
-            if (expression.NodeType == ExpressionType.Constant)
+            if (expression.NodeType != ExpressionType.Constant)
             {
-                return (ConstantExpression)expression;
+                throw new NotSupportedException();
             }
-            throw new NotSupportedException();
+
+            return (ConstantExpression)expression;
         }
     }
 }

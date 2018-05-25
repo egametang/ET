@@ -89,6 +89,12 @@ namespace ETHotfix
 			}
 			return list;
 		}
+		
+		public static async Task<List<T>> Query<T>(this DBProxyComponent self, Expression<Func<T, bool>> func) where T : ComponentWithId
+		{
+			ExpressionVistor vistor = new ExpressionVistor(func);
+			return await self.QueryJson<T>(vistor.Output);
+		}
 
 		public static async Task<List<T>> QueryJson<T>(this DBProxyComponent self, string json) where T : ComponentWithId
 		{

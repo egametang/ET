@@ -42,6 +42,7 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Object\EventSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwakeSystem.cs" Link="Base\Object\IAwakeSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IChangeSystem.cs" Link="Base\Object\IChangeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IComponentSerialize.cs" Link="Base\Object\IComponentSerialize.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IDestroySystem.cs" Link="Base\Object\IDestroySystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdateSystem.cs" Link="Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoadSystem.cs" Link="Base\Object\ILoadSystem.cs" />
