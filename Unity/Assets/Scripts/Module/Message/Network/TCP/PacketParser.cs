@@ -8,7 +8,7 @@ namespace ETModel
 		PacketBody
 	}
 	
-	public struct Packet
+	public class Packet
 	{
 		public const int MinSize = 2;
 		public const int FlagIndex = 0;
@@ -20,6 +20,8 @@ namespace ETModel
 		/// </summary>
 		public byte[] Bytes { get; }
 		public ushort Length { get; set; }
+		public byte Flag { get; set; }
+		public ushort Opcode { get; set; }
 
 		public Packet(int length)
 		{
@@ -32,16 +34,6 @@ namespace ETModel
 			this.Bytes = bytes;
 			this.Length = (ushort)bytes.Length;
 		}
-
-		public byte Flag()
-		{
-			return this.Bytes[0];
-		}
-		
-		public ushort Opcode()
-		{
-			return BitConverter.ToUInt16(this.Bytes, OpcodeIndex);
-		}
 	}
 
 	internal class PacketParser
@@ -50,7 +42,7 @@ namespace ETModel
 
 		private ushort packetSize;
 		private ParserState state;
-		private Packet packet = new Packet(ushort.MaxValue);
+		private readonly Packet packet = new Packet(ushort.MaxValue);
 		private bool isOK;
 
 		public PacketParser(CircularBuffer buffer)
@@ -95,6 +87,8 @@ namespace ETModel
 						{
 							this.buffer.Read(this.packet.Bytes, 0, this.packetSize);
 							this.packet.Length = this.packetSize;
+							this.packet.Flag = this.packet.Bytes[0];
+							this.packet.Opcode = BitConverter.ToUInt16(this.packet.Bytes, Packet.OpcodeIndex);
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
 							finish = true;

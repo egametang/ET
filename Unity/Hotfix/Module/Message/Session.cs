@@ -42,8 +42,8 @@ namespace ETHotfix
 
 		public void Run(ETModel.Session s, Packet p)
 		{
-			ushort opcode = p.Opcode();
-			byte flag = p.Flag();
+			ushort opcode = p.Opcode;
+			byte flag = p.Flag;
 
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			Type responseType = opcodeTypeComponent.GetType(opcode);

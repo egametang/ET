@@ -138,8 +138,8 @@ namespace ETModel
 				return;
 			}
 
-			byte flag = packet.Flag();
-			ushort opcode = packet.Opcode();
+			byte flag = packet.Flag;
+			ushort opcode = packet.Opcode;
 
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
@@ -280,6 +280,8 @@ namespace ETModel
 				}
 
 				this.pkt.Length = index;
+				this.pkt.Flag = flag;
+				this.pkt.Opcode = opcode;
 				session.Run(this.pkt);
 				return;
 			}
@@ -289,7 +291,7 @@ namespace ETModel
 		}
 
 #if SERVER
-		private Packet pkt = new Packet(ushort.MaxValue);
+		private readonly Packet pkt = new Packet(ushort.MaxValue);
 #endif
 	}
 }
