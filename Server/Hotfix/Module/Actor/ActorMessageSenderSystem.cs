@@ -148,15 +148,6 @@ namespace ETHotfix
 			// 发送成功
 			switch (response.Error)
 			{
-				case ErrorCode.ERR_Success:
-					self.LastSendTime = TimeHelper.Now();
-					self.FailTimes = 0;
-
-					self.WaitingTasks.Dequeue();
-					
-					task.Tcs?.SetResult(response);
-					
-					return;
 				case ErrorCode.ERR_NotFoundActor:
 					// 如果没找到Actor,重试
 					++self.FailTimes;
@@ -179,10 +170,20 @@ namespace ETHotfix
 							.GetComponent<InnerConfig>().IPEndPoint;
 					self.AllowGet();
 					return;
-				default:
-					// 其它错误
+				
+				case ErrorCode.ERR_ActorNoMailBoxComponent:
 					self.Error = response.Error;
 					self.GetParent<ActorMessageSenderComponent>().Remove(self.Id);
+					return;
+				
+				default:
+					self.LastSendTime = TimeHelper.Now();
+					self.FailTimes = 0;
+
+					self.WaitingTasks.Dequeue();
+					
+					task.Tcs?.SetResult(response);
+					
 					return;
 			}
 		}
