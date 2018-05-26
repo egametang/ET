@@ -32,11 +32,11 @@ namespace ETHotfix
 				{
 					ActorResponse response = new ActorResponse
 					{
-						Error = ErrorCode.ERR_ActorNoActorComponent,
+						Error = ErrorCode.ERR_ActorNoMailBoxComponent,
 						RpcId = iActorMessage.RpcId
 					};
 					session.Reply(response);
-					Log.Error($"actor没有挂载ActorComponent组件: {entity.GetType().Name} {entity.Id}");
+					Log.Error($"actor没有挂载MailBoxComponent组件: {entity.GetType().Name} {entity.Id}");
 					return;
 				}
 				
