@@ -62,8 +62,8 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				this.OnError((int)SocketError.SocketError);
 				Log.Error($"connect error: {ipEndPoint} {e}");
+				this.OnError((int)SocketError.SocketError);
 			}
 		}
 
@@ -76,6 +76,7 @@ namespace ETModel
 			
 			base.Dispose();
 
+			this.recvTcs = null;
 			this.tcpClient.Close();
 		}
 
@@ -122,13 +123,9 @@ namespace ETModel
 
 		private async void StartSend()
 		{
+			long instanceId = this.InstanceId;
 			try
 			{
-				if (this.IsDisposed)
-				{
-					return;
-				}
-
 				// 如果正在发送中,不需要再次发送
 				if (this.isSending)
 				{
@@ -137,7 +134,7 @@ namespace ETModel
 
 				while (true)
 				{
-					if (this.IsDisposed)
+					if (this.InstanceId != instanceId)
 					{
 						return;
 					}
@@ -178,11 +175,12 @@ namespace ETModel
 
 		private async void StartRecv()
 		{
+			long instanceId = this.InstanceId;
 			try
 			{
 				while (true)
 				{
-					if (this.IsDisposed)
+					if (this.InstanceId != instanceId)
 					{
 						return;
 					}
@@ -200,18 +198,34 @@ namespace ETModel
 						this.OnError((int)SocketError.NetworkReset);
 						return;
 					}
-					
-					if (this.recvTcs != null)
+
+					// 如果没有recv调用
+					if (this.recvTcs == null)
+					{
+						continue;
+					}
+
+					try
 					{
 						bool isOK = this.parser.Parse();
-						if (isOK)
+						if (!isOK)
 						{
-							Packet packet = this.parser.GetPacket();
-
-							var tcs = this.recvTcs;
-							this.recvTcs = null;
-							tcs.SetResult(packet);
+							continue;
 						}
+
+						Packet packet = this.parser.GetPacket();
+
+						var tcs = this.recvTcs;
+						this.recvTcs = null;
+						tcs.SetResult(packet);
+					}
+					catch (Exception e)
+					{
+						this.OnError(ErrorCode.ERR_PacketParserError);
+						
+						var tcs = this.recvTcs;
+						this.recvTcs = null;
+						tcs.SetException(e);
 					}
 				}
 			}
@@ -237,15 +251,23 @@ namespace ETModel
 				throw new Exception("TChannel已经被Dispose, 不能接收消息");
 			}
 
-			bool isOK = this.parser.Parse();
-			if (isOK)
+			try
 			{
-				Packet packet = this.parser.GetPacket();
-				return Task.FromResult(packet);
-			}
+				bool isOK = this.parser.Parse();
+				if (isOK)
+				{
+					Packet packet = this.parser.GetPacket();
+					return Task.FromResult(packet);
+				}
 
-			recvTcs = new TaskCompletionSource<Packet>();
-			return recvTcs.Task;
+				this.recvTcs = new TaskCompletionSource<Packet>();
+				return this.recvTcs.Task;
+			}
+			catch (Exception)
+			{
+				this.OnError(ErrorCode.ERR_PacketParserError);
+				throw;
+			}
 		}
 	}
 }
