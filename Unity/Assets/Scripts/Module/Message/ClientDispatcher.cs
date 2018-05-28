@@ -6,17 +6,28 @@ namespace ETModel
 	{
 		public void Dispatch(Session session, Packet packet)
 		{
-			ushort opcode = packet.Opcode;
-			
-			if (OpcodeHelper.IsClientHotfixMessage(opcode))
+			object message;
+			try
 			{
-				session.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(session, packet);
+				if (OpcodeHelper.IsClientHotfixMessage(packet.Opcode))
+				{
+					session.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(session, packet);
+					return;
+				}
+
+				OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
+				Type responseType = opcodeTypeComponent.GetType(packet.Opcode);
+				message = session.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+			}
+			catch (Exception e)
+			{
+				// 出现任何解析消息异常都要断开Session，防止客户端伪造消息
+				Log.Error(e);
+				session.Error = ErrorCode.ERR_PacketParserError;
+				session.Network.Remove(session.Id);
 				return;
 			}
-
-			OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-			Type responseType = opcodeTypeComponent.GetType(opcode);
-			object message = session.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+				
 			// 如果是帧同步消息,交给ClientFrameComponent处理
 			FrameMessage frameMessage = message as FrameMessage;
 			if (frameMessage != null)
@@ -26,7 +37,7 @@ namespace ETModel
 			}
 
 			// 普通消息或者是Rpc请求消息
-			MessageInfo messageInfo = new MessageInfo(opcode, message);
+			MessageInfo messageInfo = new MessageInfo(packet.Opcode, message);
 			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
 		}
 	}

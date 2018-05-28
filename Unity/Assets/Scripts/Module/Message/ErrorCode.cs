@@ -6,6 +6,7 @@ namespace ETModel
 		public const int ERR_NotFoundActor = 2;
 		public const int ERR_ActorNoMailBoxComponent = 3;
 		public const int ERR_ActorTimeOut = 4;
+		public const int ERR_PacketParserError = 5;
 
 		public const int ERR_AccountOrPasswordError = 102;
 		public const int ERR_SessionActorError = 103;

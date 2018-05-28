@@ -95,9 +95,11 @@ namespace ETModel
 
 		private async void StartRecv()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
-				if (this.IsDisposed)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}
@@ -106,8 +108,8 @@ namespace ETModel
 				try
 				{
 					packet = await this.channel.Recv();
-					
-					if (this.IsDisposed)
+
+					if (this.InstanceId != instanceId)
 					{
 						return;
 					}
@@ -115,7 +117,7 @@ namespace ETModel
 				catch (Exception e)
 				{
 					Log.Error(e);
-					continue;
+					return;
 				}
 				
 				try
@@ -131,13 +133,6 @@ namespace ETModel
 
 		private void Run(Packet packet)
 		{
-			if (packet.Length < Packet.MinSize)
-			{
-				Log.Error($"message error length < {Packet.MinSize}, ip: {this.RemoteAddress}");
-				this.Network.Remove(this.Id);
-				return;
-			}
-
 			byte flag = packet.Flag;
 			ushort opcode = packet.Opcode;
 
@@ -155,12 +150,24 @@ namespace ETModel
 				this.Network.MessageDispatcher.Dispatch(this, packet);
 				return;
 			}
-			
-			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-			Type responseType = opcodeTypeComponent.GetType(opcode);
-			object message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
-			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 
+			object message;
+			try
+			{
+				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
+				Type responseType = opcodeTypeComponent.GetType(opcode);
+				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+			}
+			catch (Exception e)
+			{
+				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
+				Log.Error(e);
+				this.Error = ErrorCode.ERR_PacketParserError;
+				this.Network.Remove(this.Id);
+				return;
+			}
+				
 			IResponse response = message as IResponse;
 			if (response == null)
 			{

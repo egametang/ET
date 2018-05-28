@@ -202,16 +202,31 @@ namespace ETModel
 				this.recvBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
 				this.recvBuffer.Write(cacheBytes, 0, count);
 
-				if (this.recvTcs != null)
+				if (this.recvTcs == null)
+				{
+					continue;
+				}
+
+				try
 				{
 					bool isOK = this.parser.Parse();
-					if (isOK)
+					if (!isOK)
 					{
-						Packet pkt = this.parser.GetPacket();
-						var tcs = this.recvTcs;
-						this.recvTcs = null;
-						tcs.SetResult(pkt);
+						continue;
 					}
+
+					Packet packet = this.parser.GetPacket();
+					var tcs = this.recvTcs;
+					this.recvTcs = null;
+					tcs.SetResult(packet);
+				}
+				catch (Exception e)
+				{
+					this.OnError(ErrorCode.ERR_PacketParserError);
+						
+					var tcs = this.recvTcs;
+					this.recvTcs = null;
+					tcs.SetException(e);
 				}
 			}
 		}
@@ -264,18 +279,26 @@ namespace ETModel
 		{
 			if (this.IsDisposed)
 			{
-				throw new Exception("KChannel已经被Dispose, 不能接收消息");
+				throw new Exception("TChannel已经被Dispose, 不能接收消息");
 			}
 
-			bool isOK = this.parser.Parse();
-			if (isOK)
+			try
 			{
-				Packet packet = this.parser.GetPacket();
-				return Task.FromResult(packet);
-			}
+				bool isOK = this.parser.Parse();
+				if (isOK)
+				{
+					Packet packet = this.parser.GetPacket();
+					return Task.FromResult(packet);
+				}
 
-			recvTcs = new TaskCompletionSource<Packet>();
-			return recvTcs.Task;
+				this.recvTcs = new TaskCompletionSource<Packet>();
+				return this.recvTcs.Task;
+			}
+			catch (Exception)
+			{
+				this.OnError(ErrorCode.ERR_PacketParserError);
+				throw;
+			}
 		}
 	}
 }

@@ -10,7 +10,8 @@ namespace ETModel
 	
 	public class Packet
 	{
-		public const int MinSize = 2;
+		public const int MinSize = 3;
+		public const int MaxSize = 60000;
 		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
 		public const int Index = 3;
@@ -39,7 +40,6 @@ namespace ETModel
 	internal class PacketParser
 	{
 		private readonly CircularBuffer buffer;
-
 		private ushort packetSize;
 		private ParserState state;
 		private readonly Packet packet = new Packet(ushort.MaxValue);
@@ -71,9 +71,9 @@ namespace ETModel
 						{
 							this.buffer.Read(this.packet.Bytes, 0, 2);
 							this.packetSize = BitConverter.ToUInt16(this.packet.Bytes, 0);
-							if (packetSize > 60000)
+							if (packetSize < Packet.MinSize || packetSize > Packet.MaxSize)
 							{
-								throw new Exception($"packet too large, size: {this.packetSize}");
+								throw new Exception($"packet size error: {this.packetSize}");
 							}
 							this.state = ParserState.PacketBody;
 						}
