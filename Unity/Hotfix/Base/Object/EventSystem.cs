@@ -88,7 +88,7 @@ namespace ETHotfix
 				IChangeSystem changeSystem = obj as IChangeSystem;
 				if (changeSystem != null)
 				{
-					this.changeSystems.Add(loadSystem.Type(), changeSystem);
+					this.changeSystems.Add(changeSystem.Type(), changeSystem);
 				}
 			}
 
