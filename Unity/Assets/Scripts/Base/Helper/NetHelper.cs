@@ -18,5 +18,18 @@ namespace ETModel
 			}
 			return addressIPs.ToArray();
 		}
-	}
+
+        public static bool IsLocalAddress(string address)
+        {
+            foreach (string localIp in GetAddressIPs())
+            {
+                if (localIp.Contains(address))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 }

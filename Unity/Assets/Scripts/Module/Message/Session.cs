@@ -235,7 +235,7 @@ namespace ETModel
 
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
-			if (this.Network.AppType == AppType.AllServer)
+			if (NetHelper.IsLocalAddress(this.RemoteAddress.ToString()) && this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
 				this.pkt.Length = 0;
