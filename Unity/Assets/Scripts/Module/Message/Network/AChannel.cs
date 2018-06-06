@@ -42,6 +42,29 @@ namespace ETModel
 				this.errorCallback -= value;
 			}
 		}
+		
+		private Action<Packet> readCallback;
+
+		public event Action<Packet> ReadCallback
+		{
+			add
+			{
+				this.readCallback += value;
+			}
+			remove
+			{
+				this.readCallback -= value;
+			}
+		}
+
+		protected void OnRead(Packet packet)
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			this.readCallback?.Invoke(packet);
+		}
 
 		protected void OnError(int error)
 		{
@@ -65,11 +88,6 @@ namespace ETModel
 		public abstract void Send(byte[] buffer, int index, int length);
 
 		public abstract void Send(List<byte[]> buffers);
-
-		/// <summary>
-		/// 接收消息
-		/// </summary>
-		public abstract Task<Packet> Recv();
 
 		public override void Dispose()
 		{

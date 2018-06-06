@@ -17,15 +17,6 @@ namespace ETModel
 		}
 	}
 
-	[ObjectSystem]
-	public class SessionStartSystem : StartSystem<Session>
-	{
-		public override void Start(Session self)
-		{
-			self.Start();
-		}
-	}
-
 	public sealed class Session : Entity
 	{
 		private static int RpcId { get; set; }
@@ -48,11 +39,6 @@ namespace ETModel
 			this.Error = 0;
 			this.channel = c;
 			this.requestCallback.Clear();
-		}
-
-		public void Start()
-		{
-			this.StartRecv();
 		}
 
 		public override void Dispose()
@@ -93,41 +79,15 @@ namespace ETModel
 			}
 		}
 
-		private async void StartRecv()
+		public void OnRead(Packet packet)
 		{
-			long instanceId = this.InstanceId;
-			
-			while (true)
+			try
 			{
-				if (this.InstanceId != instanceId)
-				{
-					return;
-				}
-
-				Packet packet;
-				try
-				{
-					packet = await this.channel.Recv();
-
-					if (this.InstanceId != instanceId)
-					{
-						return;
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-					return;
-				}
-				
-				try
-				{
-					this.Run(packet);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
+				this.Run(packet);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
 			}
 		}
 

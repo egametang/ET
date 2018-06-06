@@ -87,6 +87,9 @@ namespace ETModel
 				session.Error = e;
 				this.Remove(session.Id);
 			};
+
+			channel.ReadCallback += (packet) => { session.OnRead(packet); };
+			
 			this.sessions.Add(session.Id, session);
 			return session;
 		}
@@ -124,6 +127,9 @@ namespace ETModel
 					session.Error = e;
 					this.Remove(session.Id);
 				};
+				
+				channel.ReadCallback += (packet) => { session.OnRead(packet); };
+				
 				this.sessions.Add(session.Id, session);
 				return session;
 			}

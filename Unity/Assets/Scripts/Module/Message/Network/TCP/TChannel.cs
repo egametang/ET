@@ -18,7 +18,6 @@ namespace ETModel
 		private bool isSending;
 		private readonly PacketParser parser;
 		private bool isConnected;
-		private TaskCompletionSource<Packet> recvTcs;
 
 		/// <summary>
 		/// connect
@@ -75,8 +74,6 @@ namespace ETModel
 			}
 			
 			base.Dispose();
-
-			this.recvTcs = null;
 			this.tcpClient.Close();
 		}
 
@@ -199,33 +196,15 @@ namespace ETModel
 						return;
 					}
 
-					// 如果没有recv调用
-					if (this.recvTcs == null)
+					while (true)
 					{
-						continue;
-					}
-
-					try
-					{
-						bool isOK = this.parser.Parse();
-						if (!isOK)
+						if (!this.parser.Parse())
 						{
-							continue;
+							break;
 						}
 
 						Packet packet = this.parser.GetPacket();
-
-						var tcs = this.recvTcs;
-						this.recvTcs = null;
-						tcs.SetResult(packet);
-					}
-					catch (Exception e)
-					{
-						this.OnError(ErrorCode.ERR_PacketParserError);
-						
-						var tcs = this.recvTcs;
-						this.recvTcs = null;
-						tcs.SetException(e);
+						this.OnRead(packet);
 					}
 				}
 			}
@@ -241,32 +220,6 @@ namespace ETModel
 			{
 				Log.Error(e);
 				this.OnError((int)SocketError.SocketError);
-			}
-		}
-
-		public override Task<Packet> Recv()
-		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("TChannel已经被Dispose, 不能接收消息");
-			}
-
-			try
-			{
-				bool isOK = this.parser.Parse();
-				if (isOK)
-				{
-					Packet packet = this.parser.GetPacket();
-					return Task.FromResult(packet);
-				}
-
-				this.recvTcs = new TaskCompletionSource<Packet>();
-				return this.recvTcs.Task;
-			}
-			catch (Exception)
-			{
-				this.OnError(ErrorCode.ERR_PacketParserError);
-				throw;
 			}
 		}
 	}
