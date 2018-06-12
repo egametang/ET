@@ -17,6 +17,15 @@ namespace ETModel
 		}
 	}
 
+	[ObjectSystem]
+	public class SessionStartSystem : StartSystem<Session>
+	{
+		public override void Start(Session self)
+		{
+			self.Start();
+		}
+	}
+
 	public sealed class Session : Entity
 	{
 		private static int RpcId { get; set; }
@@ -34,11 +43,23 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkComponent net, AChannel c)
+		public void Awake(NetworkComponent net, AChannel aChannel)
 		{
 			this.Error = 0;
-			this.channel = c;
+			this.channel = aChannel;
 			this.requestCallback.Clear();
+			
+			channel.ErrorCallback += (c, e) =>
+			{
+				this.Error = e;
+				this.Network.Remove(this.Id); 
+			};
+			channel.ReadCallback += this.OnRead;
+		}
+
+		public void Start()
+		{
+			this.channel?.Start();
 		}
 
 		public override void Dispose()
@@ -51,10 +72,10 @@ namespace ETModel
 			long id = this.Id;
 
 			base.Dispose();
-
+			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = this.Error });
+				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
 			}
 
 			this.Error = 0;
@@ -95,7 +116,7 @@ namespace ETModel
 		{
 			byte flag = packet.Flag;
 			ushort opcode = packet.Opcode;
-
+			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
@@ -116,7 +137,7 @@ namespace ETModel
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				Type responseType = opcodeTypeComponent.GetType(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, packet.Offset, packet.Length);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)
@@ -238,27 +259,21 @@ namespace ETModel
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				this.pkt.Length = 0;
-				ushort index = 0;
-				foreach (var byts in byteses)
-				{
-					Array.Copy(byts, 0, this.pkt.Bytes, index, byts.Length);
-					index += (ushort)byts.Length;
-				}
 
-				this.pkt.Length = index;
-				this.pkt.Flag = flag;
-				this.pkt.Opcode = opcode;
-				session.Run(this.pkt);
+				Packet packet = ((TChannel)this.channel).parser.packet;
+
+				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
+
+				packet.Offset = 0;
+				packet.Length = (ushort)bytes.Length;
+				packet.Flag = flag;
+				packet.Opcode = opcode;
+				session.Run(packet);
 				return;
 			}
 #endif
 
 			channel.Send(this.byteses);
 		}
-
-#if SERVER
-		private readonly Packet pkt = new Packet(ushort.MaxValue);
-#endif
 	}
 }

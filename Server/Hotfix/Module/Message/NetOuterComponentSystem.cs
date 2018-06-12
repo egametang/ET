@@ -20,6 +20,15 @@ namespace ETHotfix
 			self.Awake(a);
 		}
 	}
+	
+	[ObjectSystem]
+	public class NetOuterComponentStartSystem : StartSystem<NetOuterComponent>
+	{
+		public override void Start(NetOuterComponent self)
+		{
+			self.Start();
+		}
+	}
 
 	[ObjectSystem]
 	public class NetOuterComponentUpdateSystem : UpdateSystem<NetOuterComponent>
@@ -34,14 +43,14 @@ namespace ETHotfix
 	{
 		public static void Awake(this NetOuterComponent self)
 		{
-			self.Awake(NetworkProtocol.TCP);
+			self.Awake(NetworkProtocol.KCP);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 
 		public static void Awake(this NetOuterComponent self, IPEndPoint ipEndPoint)
 		{
-			self.Awake(NetworkProtocol.TCP, ipEndPoint);
+			self.Awake(NetworkProtocol.KCP, ipEndPoint);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}

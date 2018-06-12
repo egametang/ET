@@ -11,6 +11,15 @@ namespace ETHotfix
 			self.Awake();
 		}
 	}
+	
+	[ObjectSystem]
+	public class NetInnerComponentStartSystem : StartSystem<NetInnerComponent>
+	{
+		public override void Start(NetInnerComponent self)
+		{
+			self.Start();
+		}
+	}
 
 	[ObjectSystem]
 	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, IPEndPoint>
