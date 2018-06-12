@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ETModel;
@@ -17,7 +18,7 @@ namespace ETHotfix
 			sessionComponent.DisposeCallback = s => { self.Dispose(); };
 		}
 	}
-	
+
 	/// <summary>
 	/// 用来收发热更层的消息
 	/// </summary>
@@ -36,18 +37,25 @@ namespace ETHotfix
 			}
 			
 			base.Dispose();
-			
+
+			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
+			{
+				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
+			}
+
+			this.requestCallback.Clear();
+
 			this.session.Dispose();
 		}
 
-		public void Run(ETModel.Session s, Packet p)
+		public void Run(ETModel.Session s, Packet packet)
 		{
-			ushort opcode = p.Opcode;
-			byte flag = p.Flag;
+			ushort opcode = packet.Opcode;
+			byte flag = packet.Flag;
 
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			Type responseType = opcodeTypeComponent.GetType(opcode);
-			object message = ProtobufHelper.FromBytes(responseType, p.Bytes, Packet.Index, p.Length - Packet.Index);
+			object message = ProtobufHelper.FromBytes(responseType, packet.Bytes, packet.Offset, packet.Length);
 
 			if ((flag & 0x01) > 0)
 			{
