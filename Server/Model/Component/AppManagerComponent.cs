@@ -25,6 +25,8 @@ namespace ETModel
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
+				Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
+				
 				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
 				{
 					continue;
