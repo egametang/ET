@@ -9,20 +9,11 @@ using System.Threading.Tasks;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class SessionAwakeSystem : AwakeSystem<Session, NetworkComponent, AChannel>
+	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
 	{
-		public override void Awake(Session self, NetworkComponent a, AChannel b)
+		public override void Awake(Session self, AChannel b)
 		{
-			self.Awake(a, b);
-		}
-	}
-
-	[ObjectSystem]
-	public class SessionStartSystem : StartSystem<Session>
-	{
-		public override void Start(Session self)
-		{
-			self.Start();
+			self.Awake(b);
 		}
 	}
 
@@ -43,7 +34,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkComponent net, AChannel aChannel)
+		public void Awake(AChannel aChannel)
 		{
 			this.Error = 0;
 			this.channel = aChannel;
@@ -55,13 +46,9 @@ namespace ETModel
 				this.Network.Remove(this.Id); 
 			};
 			channel.ReadCallback += this.OnRead;
+			
+			this.channel.Start();
 		}
-
-		public void Start()
-		{
-			this.channel?.Start();
-		}
-
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -77,7 +64,7 @@ namespace ETModel
 			{
 				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
 			}
-
+			
 			this.Error = 0;
 			this.channel.Dispose();
 			this.Network.Remove(id);
@@ -143,7 +130,7 @@ namespace ETModel
 			catch (Exception e)
 			{
 				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error(e);
+				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
 				return;

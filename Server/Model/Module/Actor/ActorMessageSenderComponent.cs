@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ETModel
 {
@@ -22,6 +23,10 @@ namespace ETModel
 
 		public ActorMessageSender Get(long id)
 		{
+			if (id == 0)
+			{
+				throw new Exception($"actor id is 0");
+			}
 			if (this.ActorMessageSenders.TryGetValue(id, out ActorMessageSender actorMessageSender))
 			{
 				return actorMessageSender;
@@ -35,6 +40,10 @@ namespace ETModel
 		
 		public ActorMessageSender GetWithActorId(long actorId)
 		{
+			if (actorId == 0)
+			{
+				throw new Exception($"actor id is 0");
+			}
 			if (this.ActorMessageSenders.TryGetValue(actorId, out ActorMessageSender actorMessageSender))
 			{
 				return actorMessageSender;

@@ -74,9 +74,8 @@ namespace ETModel
 				this.ConnectAsync(this.RemoteAddress);
 				return;
 			}
-			
-			this.StartSend();
 			this.StartRecv();
+			this.StartSend();
 		}
 
 		public override void Send(byte[] buffer, int index, int length)
@@ -158,10 +157,12 @@ namespace ETModel
 				this.OnError((int)e.SocketError);	
 				return;
 			}
+
+			e.RemoteEndPoint = null;
 			this.isConnected = true;
 			
-			this.StartSend();
 			this.StartRecv();
+			this.StartSend();
 		}
 
 		private void OnDisconnectComplete(object o)

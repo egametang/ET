@@ -70,9 +70,14 @@ namespace ETModel
 			this.Service.Start();
 		}
 
+		public int Count
+		{
+			get { return this.sessions.Count; }
+		}
+
 		public void OnAccept(AChannel channel)
 		{
-			Session session = ComponentFactory.CreateWithParent<Session, NetworkComponent, AChannel>(this, this, channel);
+			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
 		}
 
@@ -100,7 +105,7 @@ namespace ETModel
 		public Session Create(IPEndPoint ipEndPoint)
 		{
 			AChannel channel = this.Service.ConnectChannel(ipEndPoint);
-			Session session = ComponentFactory.CreateWithParent<Session, NetworkComponent, AChannel>(this, this, channel);
+			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
 			return session;
 		}
