@@ -31,9 +31,12 @@ namespace ETModel
 		private readonly HashSet<long> updateChannels = new HashSet<long>();
 
 		// 下次时间更新的channel
-		private readonly MultiMap<long, long> timerId = new MultiMap<long, long>();
+		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly List<long> timeOutId = new List<long>();
+		private readonly List<long> timeOutTime = new List<long>();
+		
+		// 记录最小时间，不用每次都去MultiMap取第一个值
+		private long minTime;
 		
 		private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
@@ -256,7 +259,11 @@ namespace ETModel
 
 		public void AddToNextTimeUpdate(long time, long id)
 		{
-			this.timerId.Add(time, id);
+			if (time < this.minTime)
+			{
+				this.minTime = time;
+			}
+			this.timeId.Add(time, id);
 		}
 
 		public override void Remove(long id)
@@ -309,32 +316,40 @@ namespace ETModel
 		// 计算到期需要update的channel
 		private void TimerOut()
 		{
-			if (this.timerId.Count == 0)
+			if (this.timeId.Count == 0)
 			{
 				return;
 			}
 
-			this.TimeNow = (uint)TimeHelper.ClientNow();
+			long timeNow = TimeHelper.ClientNow();
+			this.TimeNow = (uint)timeNow;
 			
-			timeOutId.Clear();
-
-			while (this.timerId.Count > 0)
+			if (timeNow < this.minTime)
 			{
-				long k = this.timerId.FirstKey();
-				if (k > this.TimeNow)
+				return;
+			}
+			
+			this.timeOutTime.Clear();
+
+			foreach (KeyValuePair<long,List<long>> kv in this.timeId.GetDictionary())
+			{
+				long k = kv.Key;
+				if (k > timeNow)
 				{
+					minTime = k;
 					break;
 				}
-				foreach (long ll in this.timerId[k])
-				{
-					this.timeOutId.Add(ll);
-				}
-				this.timerId.Remove(k);
+				this.timeOutTime.Add(k);
 			}
-
-			foreach (long k in this.timeOutId)
+			
+			foreach (long k in this.timeOutTime)
 			{
-				this.updateChannels.Add(k);
+				foreach (long v in this.timeId[k])
+				{
+					this.updateChannels.Add(v);
+				}
+
+				this.timeId.Remove(k);
 			}
 		}
 	}
