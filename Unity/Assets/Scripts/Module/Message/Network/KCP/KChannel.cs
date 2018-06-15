@@ -224,6 +224,7 @@ namespace ETModel
 				this.KcpSend(buffer, index, length);
 				return;
 			}
+			
 			this.sendBuffer.Enqueue(new WaitSendBuffer(buffer, index, length));
 		}
 
@@ -231,7 +232,7 @@ namespace ETModel
 		{
 			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
 			byte[] bytes;
-			if (!this.isConnected)
+			if (this.isConnected)
 			{
 				bytes = this.cacheBytes;
 			}

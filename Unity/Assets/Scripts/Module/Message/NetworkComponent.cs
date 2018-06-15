@@ -34,6 +34,8 @@ namespace ETModel
 				}
 
 				this.Service.AcceptCallback += this.OnAccept;
+				
+				this.Start();
 			}
 			catch (Exception e)
 			{
@@ -58,6 +60,8 @@ namespace ETModel
 				}
 				
 				this.Service.AcceptCallback += this.OnAccept;
+				
+				this.Start();
 			}
 			catch (Exception e)
 			{

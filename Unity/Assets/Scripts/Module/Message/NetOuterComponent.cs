@@ -8,15 +8,6 @@
 			self.Awake();
 		}
 	}
-	
-	[ObjectSystem]
-	public class NetOuterComponentStartSystem : StartSystem<NetOuterComponent>
-	{
-		public override void Start(NetOuterComponent self)
-		{
-			self.Start();
-		}
-	}
 
 	[ObjectSystem]
 	public class NetOuterComponentUpdateSystem : UpdateSystem<NetOuterComponent>
