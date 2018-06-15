@@ -51,6 +51,8 @@ namespace ILRuntime.Runtime.Generated
             ETModel_MoveComponent_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
             ETModel_Hotfix_Binding.Register(app);
+            System_Collections_Generic_List_1_Type_Binding.Register(app);
+            System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
             System_Type_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
             System_Activator_Binding.Register(app);
@@ -74,10 +76,10 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ETModel_SessionCallbackComponent_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
             ETModel_Component_Binding.Register(app);
             ETModel_Packet_Binding.Register(app);
             ETModel_ProtobufHelper_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
             ETModel_MessageInfo_Binding.Register(app);
             System_Threading_Tasks_TaskCompletionSource_1_ILTypeInstance_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);

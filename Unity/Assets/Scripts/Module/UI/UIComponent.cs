@@ -66,7 +66,7 @@ namespace ETModel
 		{
 			this.UiTypes.Clear();
             
-            Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 
 			foreach (Type type in types)
 			{

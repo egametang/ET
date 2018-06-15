@@ -37,7 +37,7 @@ namespace ETModel
 		{
 			this.allWatchers = new Dictionary<NumericType, List<INumericWatcher>>();
 
-			Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(NumericWatcherAttribute), false);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -33,7 +34,7 @@ namespace ETModel
 			this.start.Run();
 		}
 
-		public Type[] GetHotfixTypes()
+		public List<Type> GetHotfixTypes()
 		{
 #if ILRuntime
 			if (this.appDomain == null)
@@ -41,13 +42,13 @@ namespace ETModel
 				return new Type[0];
 			}
 
-			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
+			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType);
 #else
 			if (this.assembly == null)
 			{
-				return new Type[0];
+				return new List<Type>();
 			}
-			return this.assembly.GetTypes();
+			return this.assembly.GetTypes().ToList();
 #endif
 		}
 
