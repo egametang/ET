@@ -12,8 +12,8 @@ namespace ETModel
 	public sealed class TChannel: AChannel
 	{
 		private Socket socket;
-		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
-		private readonly SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
+		private SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
+		private SocketAsyncEventArgs outArgs = new SocketAsyncEventArgs();
 
 		private readonly CircularBuffer recvBuffer = new CircularBuffer();
 		private readonly CircularBuffer sendBuffer = new CircularBuffer();
@@ -64,6 +64,8 @@ namespace ETModel
 			this.socket.Close();
 			this.innArgs.Dispose();
 			this.outArgs.Dispose();
+			this.innArgs = null;
+			this.outArgs = null;
 			this.socket = null;
 		}
 
@@ -145,10 +147,15 @@ namespace ETModel
 
 		private void OnConnectComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
 			{
+				Log.Error($"session disposed!");
 				return;
 			}
 
@@ -196,10 +203,15 @@ namespace ETModel
 
 		private void OnRecvComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
 			{
+				Log.Error($"session disposed!");
 				return;
 			}
 
@@ -287,10 +299,15 @@ namespace ETModel
 
 		private void OnSendComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
 			{
+				Log.Error($"session disposed!");
 				return;
 			}
 
