@@ -147,6 +147,10 @@ namespace ETModel
 
 		private void OnConnectComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
@@ -199,6 +203,10 @@ namespace ETModel
 
 		private void OnRecvComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
@@ -291,6 +299,10 @@ namespace ETModel
 
 		private void OnSendComplete(object o)
 		{
+			if (this.IsDisposed)
+			{
+				throw new Exception("TChannel已经被Dispose, 不能发送消息");
+			}
 			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
