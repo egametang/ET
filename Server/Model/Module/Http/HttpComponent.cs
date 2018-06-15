@@ -67,7 +67,7 @@ namespace ETModel
 			this.getHandlers = new Dictionary<string, MethodInfo>();
 			this.postHandlers = new Dictionary<string, MethodInfo>();
 
-			Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 
 			foreach (Type type in types)
 			{

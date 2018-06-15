@@ -12,16 +12,13 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.4.3f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -355,7 +352,6 @@
     <Compile Include="Assets\Scripts\G2C_TestHandler.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
-    <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
@@ -562,6 +558,8 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_ILTypeInstance_Binding_Enume_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_String_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Type_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Type_Binding_Enumerator_Bind_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding_Enumerator__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />

@@ -18,15 +18,5 @@ namespace ETModel
 			Assembly assembly = Assembly.Load(dllBytes, pdbBytes);
 			return assembly;
 		}
-
-		public static Type[] GetMonoTypes()
-		{
-			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in Game.EventSystem.GetAll())
-			{
-				types.AddRange(assembly.GetTypes());
-			}
-			return types.ToArray();
-		}
 	}
 }
