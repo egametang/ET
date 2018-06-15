@@ -22,7 +22,7 @@
 	{
 		public void Awake()
 		{
-			this.Awake(NetworkProtocol.KCP);
+			this.Awake(NetworkProtocol.TCP);
 			this.MessagePacker = new ProtobufPacker();
 			this.MessageDispatcher = new ClientDispatcher();
 		}

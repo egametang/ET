@@ -75,6 +75,7 @@ namespace ETModel
 			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
 			if (userTokenInfo.InstanceId != this.InstanceId)
 			{
+				Log.Error($"session disposed!");
 				return;
 			}
 			
