@@ -22,7 +22,7 @@
 
 		public ActorMessageSender GetActorMessageSender()
 		{
-			return Game.Scene.GetComponent<ActorMessageSenderComponent>().Get(this.GateSessionActorId);
+			return Game.Scene.GetComponent<ActorMessageSenderComponent>().GetWithActorId(this.GateSessionActorId);
 		}
 	}
 }
