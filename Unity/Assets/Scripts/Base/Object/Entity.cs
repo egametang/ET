@@ -33,9 +33,7 @@ namespace ETModel
 			{
 				return;
 			}
-
-			base.Dispose();
-
+			
 			foreach (Component component in this.GetComponents())
 			{
 				try
@@ -47,7 +45,9 @@ namespace ETModel
 					Log.Error(e);
 				}
 			}
-
+			
+			base.Dispose();
+			
 			this.components.Clear();
 			this.componentDict.Clear();
 		}
@@ -59,6 +59,8 @@ namespace ETModel
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
+			
+			component.Parent = this;
 
 			if (component is ISerializeToEntity)
 			{
