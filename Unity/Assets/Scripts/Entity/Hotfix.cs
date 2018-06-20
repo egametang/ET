@@ -39,7 +39,7 @@ namespace ETModel
 #if ILRuntime
 			if (this.appDomain == null)
 			{
-				return new Type[0];
+				return new List<Type>();
 			}
 
 			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType);

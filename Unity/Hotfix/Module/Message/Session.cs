@@ -40,7 +40,7 @@ namespace ETHotfix
 
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
+				action.Invoke(new ResponseMessage { Error = this.session.Error });
 			}
 
 			this.requestCallback.Clear();
@@ -105,7 +105,7 @@ namespace ETHotfix
 			{
 				try
 				{
-					if (response.Error > ErrorCode.ERR_Exception)
+					if (ErrorCode.IsRpcNeedThrowException(response.Error))
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
@@ -133,7 +133,7 @@ namespace ETHotfix
 			{
 				try
 				{
-					if (response.Error > ErrorCode.ERR_Exception)
+					if (ErrorCode.IsRpcNeedThrowException(response.Error))
 					{
 						throw new RpcException(response.Error, response.Message);
 					}

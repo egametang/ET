@@ -74,6 +74,9 @@ namespace ETHotfix
 			{
 				return;
 			}
+			
+			// 触发Destroy事件
+			Game.EventSystem.Destroy(this);
 
 			Game.EventSystem.Remove(this.InstanceId);
 
@@ -83,9 +86,6 @@ namespace ETHotfix
 			{
 				Game.ObjectPool.Recycle(this);
 			}
-
-			// 触发Destroy事件
-			Game.EventSystem.Destroy(this);
 		}
 
 		public virtual void BeginSerialize()
