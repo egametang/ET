@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -20,11 +19,11 @@ namespace ETModel
 
 		public uint TimeNow { get; set; }
 
-		private UdpClient socket;
+		private Socket socket;
 
 		private readonly Dictionary<long, KChannel> idChannels = new Dictionary<long, KChannel>();
-
-		private TaskCompletionSource<AChannel> acceptTcs;
+		
+		private readonly byte[] cache = new byte[8192];
 
 		private readonly Queue<long> removedChannels = new Queue<long>();
 
@@ -32,166 +31,179 @@ namespace ETModel
 		private readonly HashSet<long> updateChannels = new HashSet<long>();
 
 		// 下次时间更新的channel
-		private readonly MultiMap<long, long> timerId = new MultiMap<long, long>();
+		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly List<long> timeOutId = new List<long>();
+		private readonly List<long> timeOutTime = new List<long>();
+		
+		// 记录最小时间，不用每次都去MultiMap取第一个值
+		private long minTime;
+		
+		private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
 		public KService(IPEndPoint ipEndPoint)
 		{
-			this.TimeNow = (uint)TimeHelper.Now();
-			this.socket = new UdpClient(ipEndPoint);
-
+			this.TimeNow = (uint)TimeHelper.ClientNow();
+			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+			this.socket.Bind(ipEndPoint);
 #if SERVER
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				const uint IOC_IN = 0x80000000;
 				const uint IOC_VENDOR = 0x18000000;
 				uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-				this.socket.Client.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+				this.socket.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
 			}
 #endif
-
-			this.StartRecv();
 		}
 
 		public KService()
 		{
-			this.TimeNow = (uint)TimeHelper.Now();
-			this.socket = new UdpClient(new IPEndPoint(IPAddress.Any, 0));
-			this.StartRecv();
+			this.TimeNow = (uint)TimeHelper.ClientNow();
+			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+			this.socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+#if SERVER
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				const uint IOC_IN = 0x80000000;
+				const uint IOC_VENDOR = 0x18000000;
+				uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+				this.socket.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+			}
+#endif
 		}
 
 		public override void Dispose()
 		{
-			if (this.socket == null)
+			if (this.IsDisposed)
 			{
 				return;
+			}
+			
+			base.Dispose();
+
+			foreach (KeyValuePair<long,KChannel> keyValuePair in this.idChannels)
+			{
+				keyValuePair.Value.Dispose();
 			}
 
 			this.socket.Close();
 			this.socket = null;
 		}
 
-		public async void StartRecv()
+		public override void Start()
 		{
-			while (true)
+		}
+
+		public void Recv()
+		{
+			while (this.socket.Available > 0)
 			{
-				if (this.socket == null)
+				if (this.IsDisposed)
 				{
 					return;
 				}
 
-				UdpReceiveResult udpReceiveResult;
+				int messageLength = 0;
 				try
 				{
-					udpReceiveResult = await this.socket.ReceiveAsync();
+					messageLength = this.socket.ReceiveFrom(this.cache, ref this.ipEndPoint);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
-					Log.Error(e);
+					return;
+				}
+
+				// 长度小于4，不是正常的消息
+				if (messageLength < 4)
+				{
 					continue;
 				}
 
-				try
+				// accept
+				uint conn = BitConverter.ToUInt32(this.cache, 0);
+
+				// conn从1000开始，如果为1，2，3则是特殊包
+				switch (conn)
 				{
-					int messageLength = udpReceiveResult.Buffer.Length;
+					case KcpProtocalType.SYN:
+						// 长度!=8，不是accpet消息
+						if (messageLength != 8)
+						{
+							break;
+						}
 
-					// 长度小于4，不是正常的消息
-					if (messageLength < 4)
-					{
-						continue;
-					}
-
-					// accept
-					uint conn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 0);
-
-					// conn从1000开始，如果为1，2，3则是特殊包
-					switch (conn)
-					{
-						case KcpProtocalType.SYN:
-							// 长度!=8，不是accpet消息
-							if (messageLength != 8)
-							{
-								break;
-							}
-							this.HandleAccept(udpReceiveResult);
+						IPEndPoint acceptIpEndPoint = (IPEndPoint)this.ipEndPoint;
+						this.ipEndPoint = new IPEndPoint(0, 0);
+						this.HandleAccept(this.cache, acceptIpEndPoint);
+						break;
+					case KcpProtocalType.ACK:
+						// 长度!=12，不是connect消息
+						if (messageLength != 12)
+						{
 							break;
-						case KcpProtocalType.ACK:
-							// 长度!=12，不是connect消息
-							if (messageLength != 12)
-							{
-								break;
-							}
-							this.HandleConnect(udpReceiveResult);
+						}
+						this.HandleConnect(this.cache);
+						break;
+					case KcpProtocalType.FIN:
+						// 长度!=12，不是DisConnect消息
+						if (messageLength != 12)
+						{
 							break;
-						case KcpProtocalType.FIN:
-							// 长度!=12，不是DisConnect消息
-							if (messageLength != 12)
-							{
-								break;
-							}
-							this.HandleDisConnect(udpReceiveResult);
-							break;
-						default:
-							this.HandleRecv(udpReceiveResult, conn);
-							break;
-					}
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-					continue;
+						}
+						this.HandleDisConnect(this.cache);
+						break;
+					default:
+						this.HandleRecv(this.cache, messageLength, conn);
+						break;
 				}
 			}
 		}
 
-		private void HandleConnect(UdpReceiveResult udpReceiveResult)
+		private void HandleConnect(byte[] bytes)
 		{
-			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
-			uint responseConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
+			uint requestConn = BitConverter.ToUInt32(bytes, 4);
+			uint responseConn = BitConverter.ToUInt32(bytes, 8);
 
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
 			{
 				return;
 			}
+
 			// 处理chanel
 			kChannel.HandleConnnect(responseConn);
 		}
 
-		private void HandleDisConnect(UdpReceiveResult udpReceiveResult)
+		private void HandleDisConnect(byte[] bytes)
 		{
-			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 8);
+			uint requestConn = BitConverter.ToUInt32(bytes, 8);
 
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(requestConn, out kChannel))
 			{
 				return;
 			}
+
 			// 处理chanel
 			this.idChannels.Remove(requestConn);
 			kChannel.Dispose();
 		}
 
-		private void HandleRecv(UdpReceiveResult udpReceiveResult, uint conn)
+		private void HandleRecv(byte[] bytes, int length, uint conn)
 		{
 			KChannel kChannel;
 			if (!this.idChannels.TryGetValue(conn, out kChannel))
 			{
 				return;
 			}
+
 			// 处理chanel
-			kChannel.HandleRecv(udpReceiveResult.Buffer, this.TimeNow);
+			kChannel.HandleRecv(bytes, length, this.TimeNow);
 		}
 
-		private void HandleAccept(UdpReceiveResult udpReceiveResult)
+		private void HandleAccept(byte[] bytes, IPEndPoint remoteEndPoint)
 		{
-			if (this.acceptTcs == null)
-			{
-				return;
-			}
-
-			uint requestConn = BitConverter.ToUInt32(udpReceiveResult.Buffer, 4);
+			uint requestConn = BitConverter.ToUInt32(bytes, 4);
 
 			// 如果已经连接上,则重新响应请求
 			KChannel kChannel;
@@ -201,11 +213,9 @@ namespace ETModel
 				return;
 			}
 
-			TaskCompletionSource<AChannel> t = this.acceptTcs;
-			this.acceptTcs = null;
-			kChannel = this.CreateAcceptChannel(udpReceiveResult.RemoteEndPoint, requestConn);
+			kChannel = this.CreateAcceptChannel(remoteEndPoint, requestConn);
 			kChannel.HandleAccept(requestConn);
-			t.SetResult(kChannel);
+			this.OnAccept(kChannel);
 		}
 
 		private KChannel CreateAcceptChannel(IPEndPoint remoteEndPoint, uint remoteConn)
@@ -221,7 +231,14 @@ namespace ETModel
 			return channel;
 		}
 
-		private KChannel CreateConnectChannel(IPEndPoint remoteEndPoint)
+		public override AChannel GetChannel(long id)
+		{
+			KChannel channel;
+			this.idChannels.TryGetValue(id, out channel);
+			return channel;
+		}
+
+		public override AChannel ConnectChannel(IPEndPoint remoteEndPoint)
 		{
 			uint conv = (uint)RandomHelper.RandomNumber(1000, int.MaxValue);
 			KChannel channel = new KChannel(conv, this.socket, remoteEndPoint, this);
@@ -242,28 +259,12 @@ namespace ETModel
 
 		public void AddToNextTimeUpdate(long time, long id)
 		{
-			this.timerId.Add(time, id);
+			if (time < this.minTime)
+			{
+				this.minTime = time;
+			}
+			this.timeId.Add(time, id);
 		}
-
-		public override AChannel GetChannel(long id)
-		{
-			KChannel channel;
-			this.idChannels.TryGetValue(id, out channel);
-			return channel;
-		}
-
-		public override Task<AChannel> AcceptChannel()
-		{
-			acceptTcs = new TaskCompletionSource<AChannel>();
-			return this.acceptTcs.Task;
-		}
-
-		public override AChannel ConnectChannel(IPEndPoint ipEndPoint)
-		{
-			KChannel channel = this.CreateConnectChannel(ipEndPoint);
-			return channel;
-		}
-
 
 		public override void Remove(long id)
 		{
@@ -279,9 +280,11 @@ namespace ETModel
 			this.removedChannels.Enqueue(id);
 			channel.Dispose();
 		}
-
+		
 		public override void Update()
 		{
+			this.Recv();
+			
 			this.TimerOut();
 
 			foreach (long id in updateChannels)
@@ -313,32 +316,40 @@ namespace ETModel
 		// 计算到期需要update的channel
 		private void TimerOut()
 		{
-			if (this.timerId.Count == 0)
+			if (this.timeId.Count == 0)
 			{
 				return;
 			}
 
-			this.TimeNow = (uint)TimeHelper.ClientNow();
-
-			timeOutId.Clear();
-
-			while (this.timerId.Count > 0)
+			long timeNow = TimeHelper.ClientNow();
+			this.TimeNow = (uint)timeNow;
+			
+			if (timeNow < this.minTime)
 			{
-				long k = this.timerId.FirstKey();
-				if (k > this.TimeNow)
+				return;
+			}
+			
+			this.timeOutTime.Clear();
+
+			foreach (KeyValuePair<long,List<long>> kv in this.timeId.GetDictionary())
+			{
+				long k = kv.Key;
+				if (k > timeNow)
 				{
+					minTime = k;
 					break;
 				}
-				foreach (long ll in this.timerId[k])
-				{
-					this.timeOutId.Add(ll);
-				}
-				this.timerId.Remove(k);
+				this.timeOutTime.Add(k);
 			}
-
-			foreach (long k in this.timeOutId)
+			
+			foreach (long k in this.timeOutTime)
 			{
-				this.updateChannels.Add(k);
+				foreach (long v in this.timeId[k])
+				{
+					this.updateChannels.Add(v);
+				}
+
+				this.timeId.Remove(k);
 			}
 		}
 	}

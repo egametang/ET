@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class SessionAwakeSystem : AwakeSystem<Session, NetworkComponent, AChannel>
+	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
 	{
-		public override void Awake(Session self, NetworkComponent a, AChannel b)
+		public override void Awake(Session self, AChannel b)
 		{
-			self.Awake(a, b);
+			self.Awake(b);
 		}
 	}
 
@@ -34,13 +34,21 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkComponent net, AChannel c)
+		public void Awake(AChannel aChannel)
 		{
 			this.Error = 0;
-			this.channel = c;
+			this.channel = aChannel;
 			this.requestCallback.Clear();
+			
+			channel.ErrorCallback += (c, e) =>
+			{
+				this.Error = e;
+				this.Network.Remove(this.Id); 
+			};
+			channel.ReadCallback += this.OnRead;
+			
+			this.channel.Start();
 		}
-
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -51,12 +59,12 @@ namespace ETModel
 			long id = this.Id;
 
 			base.Dispose();
-
+			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = this.Error });
+				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
 			}
-
+			
 			this.Error = 0;
 			this.channel.Dispose();
 			this.Network.Remove(id);
@@ -95,7 +103,7 @@ namespace ETModel
 		{
 			byte flag = packet.Flag;
 			ushort opcode = packet.Opcode;
-
+			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
@@ -116,13 +124,13 @@ namespace ETModel
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				Type responseType = opcodeTypeComponent.GetType(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, packet.Offset, packet.Length);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)
 			{
 				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error(e);
+				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
 				return;
@@ -238,27 +246,21 @@ namespace ETModel
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				this.pkt.Length = 0;
-				ushort index = 0;
-				foreach (var byts in byteses)
-				{
-					Array.Copy(byts, 0, this.pkt.Bytes, index, byts.Length);
-					index += (ushort)byts.Length;
-				}
 
-				this.pkt.Length = index;
-				this.pkt.Flag = flag;
-				this.pkt.Opcode = opcode;
-				session.Run(this.pkt);
+				Packet packet = ((TChannel)this.channel).parser.packet;
+
+				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
+
+				packet.Offset = 0;
+				packet.Length = (ushort)bytes.Length;
+				packet.Flag = flag;
+				packet.Opcode = opcode;
+				session.Run(packet);
 				return;
 			}
 #endif
 
 			channel.Send(this.byteses);
 		}
-
-#if SERVER
-		private readonly Packet pkt = new Packet(ushort.MaxValue);
-#endif
 	}
 }

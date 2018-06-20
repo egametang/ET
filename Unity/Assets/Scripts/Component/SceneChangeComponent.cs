@@ -4,6 +4,18 @@ using UnityEngine.SceneManagement;
 
 namespace ETModel
 {
+	[ObjectSystem]
+	public class SceneChangeComponentUpdateSystem: UpdateSystem<SceneChangeComponent>
+	{
+		public override void Update(SceneChangeComponent self)
+		{
+			if (self.loadMapOperation.isDone)
+			{
+				self.tcs.SetResult(true);
+			}
+		}
+	}
+
 	public class SceneChangeComponent: Component
 	{
 		public AsyncOperation loadMapOperation;

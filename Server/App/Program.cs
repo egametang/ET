@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading;
 using ETModel;
-using MongoDB.Bson.Serialization;
 using NLog;
 
 namespace App
@@ -12,8 +11,7 @@ namespace App
 		private static void Main(string[] args)
 		{
 			// 异步方法全部会回掉到主线程
-			OneThreadSynchronizationContext contex = new OneThreadSynchronizationContext();
-			SynchronizationContext.SetSynchronizationContext(contex);
+			SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
 			
 			try
 			{
@@ -113,7 +111,7 @@ namespace App
 					try
 					{
 						Thread.Sleep(1);
-						contex.Update();
+						OneThreadSynchronizationContext.Instance.Update();
 						Game.EventSystem.Update();
 					}
 					catch (Exception e)

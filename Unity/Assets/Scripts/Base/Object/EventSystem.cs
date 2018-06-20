@@ -17,6 +17,7 @@ namespace ETModel
 		private readonly Dictionary<long, Component> allComponents = new Dictionary<long, Component>();
 
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
+		private readonly List<Type> types = new List<Type>();
 
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
@@ -48,6 +49,11 @@ namespace ETModel
 		public void Add(DLLType dllType, Assembly assembly)
 		{
 			this.assemblies[dllType] = assembly;
+			this.types.Clear();
+			foreach (Assembly value in this.assemblies.Values)
+			{
+				this.types.AddRange(value.GetTypes());
+			}
 
 			this.awakeSystems.Clear();
 			this.lateUpdateSystems.Clear();
@@ -56,7 +62,6 @@ namespace ETModel
 			this.loadSystems.Clear();
 			this.changeSystems.Clear();
 
-			Type[] types = DllHelper.GetMonoTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
@@ -145,10 +150,10 @@ namespace ETModel
 		{
 			return this.assemblies[dllType];
 		}
-
-		public Assembly[] GetAll()
+		
+		public List<Type> GetTypes()
 		{
-			return this.assemblies.Values.ToArray();
+			return this.types;
 		}
 
 		public void Add(Component component)

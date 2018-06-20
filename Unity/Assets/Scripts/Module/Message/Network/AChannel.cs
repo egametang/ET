@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -19,6 +17,11 @@ namespace ETModel
 	{
 		Connect,
 		Accept,
+	}
+
+	public class UserTokenInfo
+	{
+		public long InstanceId;
 	}
 
 	public abstract class AChannel: ComponentWithId
@@ -56,39 +59,33 @@ namespace ETModel
 				this.readCallback -= value;
 			}
 		}
-
+		
 		protected void OnRead(Packet packet)
 		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			this.readCallback?.Invoke(packet);
+			this.readCallback.Invoke(packet);
 		}
 
-		protected void OnError(int error)
+		protected void OnError(int e)
 		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			this.errorCallback?.Invoke(this, error);
+			this.errorCallback?.Invoke(this, e);
 		}
-
 
 		protected AChannel(AService service, ChannelType channelType)
 		{
+			this.Id = IdGenerater.GenerateId();
 			this.ChannelType = channelType;
 			this.service = service;
 		}
-		
+
+		public abstract void Start();
+
 		/// <summary>
 		/// 发送消息
 		/// </summary>
 		public abstract void Send(byte[] buffer, int index, int length);
 
 		public abstract void Send(List<byte[]> buffers);
-
+		
 		public override void Dispose()
 		{
 			if (this.IsDisposed)

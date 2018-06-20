@@ -67,7 +67,7 @@ namespace ETHotfix
 		{
 			UiTypes.Clear();
             
-            Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
+			List<Type> types = ETModel.Game.Hotfix.GetHotfixTypes();
 
 			foreach (Type type in types)
 			{

@@ -33,7 +33,7 @@ namespace ETHotfix
 
 			AppType appType = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.AppType;
 
-			Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 
 			foreach (Type type in types)
 			{

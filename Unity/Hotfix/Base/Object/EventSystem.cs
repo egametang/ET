@@ -37,7 +37,7 @@ namespace ETHotfix
 
 		public EventSystem()
 		{
-			Type[] types = ETModel.Game.Hotfix.GetHotfixTypes();
+			List<Type> types = ETModel.Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);

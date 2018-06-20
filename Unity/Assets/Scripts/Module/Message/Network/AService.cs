@@ -1,25 +1,43 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
 	public enum NetworkProtocol
 	{
-		TCP,
 		KCP,
+		TCP,
 	}
 
 	public abstract class AService: Component
 	{
 		public abstract AChannel GetChannel(long id);
 
-		public abstract Task<AChannel> AcceptChannel();
+		private Action<AChannel> acceptCallback;
+
+		public event Action<AChannel> AcceptCallback
+		{
+			add
+			{
+				this.acceptCallback += value;
+			}
+			remove
+			{
+				this.acceptCallback -= value;
+			}
+		}
+		
+		protected void OnAccept(AChannel channel)
+		{
+			this.acceptCallback.Invoke(channel);
+		}
 
 		public abstract AChannel ConnectChannel(IPEndPoint ipEndPoint);
 
 		public abstract void Remove(long channelId);
 
 		public abstract void Update();
+
+		public abstract void Start();
 	}
 }

@@ -16,5 +16,6 @@ namespace ETModel
 		 public const ushort M2C_Reload = 112;
 		 public const ushort C2R_Ping = 113;
 		 public const ushort R2C_Ping = 114;
+		 public const ushort G2C_Test = 115;
 	}
 }
