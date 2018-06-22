@@ -42,7 +42,7 @@ namespace ETModel
 				return new List<Type>();
 			}
 
-			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType);
+			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToList();
 #else
 			if (this.assembly == null)
 			{
