@@ -2,43 +2,37 @@ namespace ETModel
 {
 	public static class ErrorCode
 	{
+        //ET
 		public const int ERR_Success = 0;
-		
-		// 100000 以上，避免跟SocketError冲突
-		public const int ERR_MyErrorCode = 100000;
-		
+		public const int ERR_NotFoundActor = 2;
+		public const int ERR_ActorNoMailBoxComponent = 3;
+		public const int ERR_ActorTimeOut = 4;
+		public const int ERR_PacketParserError = 5;
 
-		
-		public const int ERR_Exception = 200000;
-		
-		public const int ERR_NotFoundActor = 100002;
-		public const int ERR_ActorNoMailBoxComponent = 100003;
-		public const int ERR_ActorTimeOut = 100004;
-		public const int ERR_PacketParserError = 100005;
+		public const int ERR_AccountOrPasswordError = 102;
+		public const int ERR_SessionActorError = 103;
+		public const int ERR_NotFoundUnit = 104;
+		public const int ERR_ConnectGateKeyError = 105;
 
-		public const int ERR_AccountOrPasswordError = 100102;
-		public const int ERR_SessionActorError = 100103;
-		public const int ERR_NotFoundUnit = 100104;
-		public const int ERR_ConnectGateKeyError = 100105;
+		public const int ERR_RpcFail = 2001;
+		public const int ERR_SocketDisconnected = 2002;
+		public const int ERR_ReloadFail = 2003;
+		public const int ERR_ActorLocationNotFound = 2004;
 
-		public const int ERR_RpcFail = 102001;
-		public const int ERR_SocketDisconnected = 102002;
-		public const int ERR_ReloadFail = 102003;
-		public const int ERR_ActorLocationNotFound = 102004;
+		public const int ERR_Exception = 100000;
+		public const int ERR_SessionDispose = 100001;
 
-		public static bool IsRpcNeedThrowException(int error)
-		{
-			if (error == 0)
-			{
-				return false;
-			}
+	    //CG
+	    public const int ERR_Disconnect = 200;
+	    public const int ERR_RegisterError = 201;
+	    public const int ERR_AccountAlreadyRegister = 202;
+	    public const int ERR_LoginError = 203;
+	    public const int ERR_CharacterNameAlreadyExist = 204;
+	    public const int ERR_CharacterNotExist = 205;
+	    public const int ERR_CharacterAlreadyExist = 206;
 
-			if (error > ERR_Exception)
-			{
-				return false;
-			}
-
-			return true;
-		}
-	}
+        //SYS
+	    public const int ERR_Cheat = 30000;
+	    public const int ERR_SignError = 30001;
+    }
 }

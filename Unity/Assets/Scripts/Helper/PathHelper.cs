@@ -3,7 +3,8 @@
 namespace ETModel
 {
     public static class PathHelper
-    {     /// <summary>
+    {     
+        /// <summary>
         ///应用程序外部资源路径存放路径(热更新资源路径)
         /// </summary>
         public static string AppHotfixResPath

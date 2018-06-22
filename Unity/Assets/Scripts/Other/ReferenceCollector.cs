@@ -119,6 +119,11 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		return dictGo;
 	}
 
+    public Dictionary<string, Object> GetAll()
+    {
+        return dict;
+    }
+
 	public void OnBeforeSerialize()
 	{
 	}

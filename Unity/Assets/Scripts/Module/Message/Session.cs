@@ -62,7 +62,7 @@ namespace ETModel
 			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = this.Error });
+				action.Invoke(new ResponseMessage { Error = ErrorCode.ERR_SessionDispose });
 			}
 			
 			this.Error = 0;
@@ -160,7 +160,7 @@ namespace ETModel
 			{
 				try
 				{
-					if (ErrorCode.IsRpcNeedThrowException(response.Error))
+					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
@@ -187,7 +187,7 @@ namespace ETModel
 			{
 				try
 				{
-					if (ErrorCode.IsRpcNeedThrowException(response.Error))
+					if (response.Error > ErrorCode.ERR_Exception)
 					{
 						throw new RpcException(response.Error, response.Message);
 					}

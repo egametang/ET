@@ -39,6 +39,8 @@ namespace ETModel
 
 		public uint RemoteConn;
 
+		public uint lastConnectTime;
+
 		// accept
 		public KChannel(uint conn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
@@ -101,8 +103,6 @@ namespace ETModel
 			kcp.SetOutput(this.Output);
 			kcp.NoDelay(1, 10, 2, 1);  //fast
 
-			this.lastRecvTime = this.GetService().TimeNow;
-
 			HandleSend();
 		}
 
@@ -141,12 +141,6 @@ namespace ETModel
 			// 如果还没连接上，发送连接请求
 			if (!this.isConnected)
 			{
-				// 5秒连接不上，报错
-				if (timeNow - this.lastRecvTime > 5 * 1000)
-				{
-					this.OnError((int)SocketError.ConnectionRefused);
-					return;
-				}
 				Connect(timeNow);
 				return;
 			}

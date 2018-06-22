@@ -21,11 +21,11 @@ namespace ETModel
 
 		public void Awake()
 		{
-			//DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
-			//string connectionString = config.ConnectionString;
-			//mongoClient = new MongoClient(connectionString);
-			//this.database = this.mongoClient.GetDatabase(config.DBName);
-		}
+            DBConfig config = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.GetComponent<DBConfig>();
+            string connectionString = config.ConnectionString;
+            mongoClient = new MongoClient(connectionString);
+            this.database = this.mongoClient.GetDatabase(config.DBName);
+        }
 
 		public IMongoCollection<ComponentWithId> GetCollection(string name)
 		{

@@ -70,7 +70,14 @@ namespace ETModel
 			t?.SetResult(true);
 		}
 
-		public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
+	    public Task<bool> LoadDatFile(string url)
+	    {
+	        this.www = new WWW(url);
+	        this.tcs = new TaskCompletionSource<bool>();
+	        return this.tcs.Task;
+	    }
+
+        public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
 		{
 			url = url.Replace(" ", "%20");
 			this.www = WWW.LoadFromCacheOrDownload(url, hash, 0);

@@ -3,82 +3,82 @@ using System.Linq;
 
 namespace ETModel
 {
-	[ObjectSystem]
-	public class UnitComponentSystem : AwakeSystem<UnitComponent>
-	{
-		public override void Awake(UnitComponent self)
-		{
-			self.Awake();
-		}
-	}
-	
-	public class UnitComponent: Component
-	{
-		public static UnitComponent Instance { get; private set; }
+    [ObjectSystem]
+    public class UnitComponentSystem : AwakeSystem<UnitComponent>
+    {
+        public override void Awake(UnitComponent self)
+        {
+            self.Awake();
+        }
+    }
 
-		public Unit MyUnit;
-		
-		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
+    public class UnitComponent : Component
+    {
+        public static UnitComponent Instance { get; private set; }
 
-		public void Awake()
-		{
-			Instance = this;
-		}
+        public Unit MyUnit;
 
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			base.Dispose();
+        private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
 
-			foreach (Unit unit in this.idUnits.Values)
-			{
-				unit.Dispose();
-			}
+        public void Awake()
+        {
+            Instance = this;
+        }
 
-			this.idUnits.Clear();
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            base.Dispose();
 
-			Instance = null;
-		}
+            foreach (Unit unit in this.idUnits.Values)
+            {
+                unit.Dispose();
+            }
 
-		public void Add(Unit unit)
-		{
-			this.idUnits.Add(unit.Id, unit);
-		}
+            this.idUnits.Clear();
 
-		public Unit Get(long id)
-		{
-			Unit unit;
-			this.idUnits.TryGetValue(id, out unit);
-			return unit;
-		}
+            Instance = null;
+        }
 
-		public void Remove(long id)
-		{
-			Unit unit;
-			this.idUnits.TryGetValue(id, out unit);
-			this.idUnits.Remove(id);
-			unit?.Dispose();
-		}
+        public void Add(Unit unit)
+        {
+            this.idUnits.Add(unit.Id, unit);
+        }
 
-		public void RemoveNoDispose(long id)
-		{
-			this.idUnits.Remove(id);
-		}
+        public Unit Get(long id)
+        {
+            Unit unit;
+            this.idUnits.TryGetValue(id, out unit);
+            return unit;
+        }
 
-		public int Count
-		{
-			get
-			{
-				return this.idUnits.Count;
-			}
-		}
+        public void Remove(long id)
+        {
+            Unit unit;
+            this.idUnits.TryGetValue(id, out unit);
+            this.idUnits.Remove(id);
+            unit?.Dispose();
+        }
 
-		public Unit[] GetAll()
-		{
-			return this.idUnits.Values.ToArray();
-		}
-	}
+        public void RemoveNoDispose(long id)
+        {
+            this.idUnits.Remove(id);
+        }
+
+        public int Count
+        {
+            get
+            {
+                return this.idUnits.Count;
+            }
+        }
+
+        public Unit[] GetAll()
+        {
+            return this.idUnits.Values.ToArray();
+        }
+    }
 }
