@@ -31,8 +31,6 @@ namespace ETModel
 			this.parser = new PacketParser(this.recvBuffer);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
-			this.innArgs.UserToken = new UserTokenInfo() { InstanceId = this.InstanceId };
-			this.outArgs.UserToken = new UserTokenInfo() { InstanceId = this.InstanceId };
 
 			this.RemoteAddress = ipEndPoint;
 		}
@@ -44,8 +42,6 @@ namespace ETModel
 			this.parser = new PacketParser(this.recvBuffer);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
-			this.innArgs.UserToken = new UserTokenInfo() { InstanceId = this.InstanceId };
-			this.outArgs.UserToken = new UserTokenInfo() { InstanceId = this.InstanceId };
 
 			this.RemoteAddress = (IPEndPoint)socket.RemoteEndPoint;
 			
@@ -148,13 +144,12 @@ namespace ETModel
 
 		private void OnConnectComplete(object o)
 		{
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
-			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.socket == null)
 			{
 				return;
 			}
-
+			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
+			
 			if (e.SocketError != SocketError.Success)
 			{
 				this.OnError((int)e.SocketError);	
@@ -199,12 +194,11 @@ namespace ETModel
 
 		private void OnRecvComplete(object o)
 		{
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.socket == null)
 			{
 				return;
 			}
+			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 
 			if (e.SocketError != SocketError.Success)
 			{
@@ -244,10 +238,11 @@ namespace ETModel
 				}
 			}
 
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.socket == null)
 			{
 				return;
 			}
+			
 			this.StartRecv();
 		}
 
@@ -290,12 +285,11 @@ namespace ETModel
 
 		private void OnSendComplete(object o)
 		{
-			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.socket == null)
 			{
 				return;
 			}
+			SocketAsyncEventArgs e = (SocketAsyncEventArgs) o;
 
 			if (e.SocketError != SocketError.Success)
 			{

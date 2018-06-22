@@ -19,11 +19,6 @@ namespace ETModel
 		Accept,
 	}
 
-	public class UserTokenInfo
-	{
-		public long InstanceId;
-	}
-
 	public abstract class AChannel: ComponentWithId
 	{
 		public ChannelType ChannelType { get; }

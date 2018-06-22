@@ -39,11 +39,11 @@ namespace ETModel
 			this.Error = 0;
 			this.channel = aChannel;
 			this.requestCallback.Clear();
-			
+			long id = this.Id;
 			channel.ErrorCallback += (c, e) =>
 			{
 				this.Error = e;
-				this.Network.Remove(this.Id); 
+				this.Network.Remove(id); 
 			};
 			channel.ReadCallback += this.OnRead;
 			
