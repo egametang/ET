@@ -24,6 +24,24 @@
     <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CrossGate\Factory\Battle\" />
+    <Folder Include="CrossGate\Factory\DB\" />
+    <Folder Include="CrossGate\Factory\Gate\" />
+    <Folder Include="CrossGate\Factory\Map\" />
+    <Folder Include="CrossGate\Factory\Npc\" />
+    <Folder Include="CrossGate\Factory\Realm\" />
+    <Folder Include="CrossGate\Handler\Map\" />
+    <Folder Include="CrossGate\Handler\Npc\" />
+    <Folder Include="CrossGate\Handler\Battle\" />
+    <Folder Include="CrossGate\Helper\Battle\" />
+    <Folder Include="CrossGate\Helper\Map\" />
+    <Folder Include="CrossGate\Helper\Npc\" />
+    <Folder Include="CrossGate\System\Battle\" />
+    <Folder Include="CrossGate\System\DB\" />
+    <Folder Include="CrossGate\System\Login\" />
+    <Folder Include="CrossGate\System\Map\" />
+    <Folder Include="CrossGate\System\Npc\" />
+    <Folder Include="CrossGate\System\Realm\" />
     <Folder Include="Module\Http\" />
   </ItemGroup>
 </Project>

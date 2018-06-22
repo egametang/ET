@@ -1,3 +1,5 @@
+#region ET
+
 message C2R_Login // IRequest
 {
 	required string	Account	 = 1;	// 帐号
@@ -47,3 +49,188 @@ message G2C_PlayerInfo // IResponse
 {
 	repeated PlayerInfo PlayerInfos = 1;
 }
+
+#endregion
+    
+#region Client-Realm
+
+message C2R_Register_Request // IRequest
+{
+    required string Account = 1;
+    required string Password = 2;
+    required string SafeQuestion = 3;
+    required string SafeAnswer = 4;
+}
+
+message R2C_Register_Response // IResponse
+{
+	
+}
+
+message C2R_Login_Request // IRequest
+{
+    required string Account = 1;
+    required string Password = 2;
+}
+
+message R2C_Login_Response // IResponse
+{
+    required long Key = 1;
+    required string Address = 2;
+}
+
+#endregion
+
+#region Client - Gate
+
+message C2G_LoginGate_Request // IRequest
+{
+    required long Key = 1;
+}
+
+message G2C_LoginGate_Response // IResponse
+{
+    required long PlayerID = 1;
+    required long UserID = 2;
+    required LoginBasicRoleInfo Info = 3;
+}
+
+message C2G_CrateCharacter_Request // IRequest
+{
+    required string PlayerName = 1;
+    required int CharacterID = 2;
+    required int StrBp = 3;
+    required int HealthBP = 4;
+    required int DefBP = 5;
+    required int SpeedBP = 6;
+    required int MagicBP = 7;
+    required int Di = 8;
+    required int Shui = 9;
+    required int Huo = 10;
+    required int Feng = 11;
+    required long UserID = 12;
+}
+
+message G2C_CrateCharacter_Response // IResponse
+{
+    required LoginBasicRoleInfo Info = 1;
+}
+
+#endregion
+
+
+#region Client Data Model
+
+message LoginBasicRoleInfo // IResponse
+{
+    required RoleInfo RoleInfo = 1;
+    required RoleStateInfo StateInfo = 2;
+    required List<TitleInfo> TitleInfo = 3;
+}
+
+message RoleInfo
+{
+	required string Name = 1;
+	required int VipDays = 2;
+	required int Level = 3;
+	required int Job = 4;	
+	required int JobLevel = 5;
+	required long Coin = 6;
+	required long LockCoin = 7;
+	required int CharacterID = 10;
+	required string CustomTitle = 11;
+	required int SecletTitleId = 12;
+	required string MapID = 13;
+	required int Dong = 14;
+	required int Nan = 15;
+	required int NowExp = 16;
+	required int BPLeft = 17;
+	required int HealthBP = 18;
+	required int StrBP = 19;
+	required int DefBP = 20;
+	required int SpeedBP = 21;
+	required int MagicBP = 22;
+	required int HealthState = 23;
+	required bool IsFront = 24;
+	required int Meili = 25;
+	required int Naili = 26;
+	required int Zhili = 27;
+	required int Lingqiao = 28;
+}
+
+message RoleStateInfo
+{
+	required float HPNow = 1;
+	required float HPTotal = 2;
+	required float MPNow = 3;
+	required float MPTotal = 4;
+	//
+	required int Zhanji = 5;
+	required int Rongyao = 6;
+	required int ZhongZhu = 7;
+	//
+	required float Attack = 8;
+	required float Defend = 9;
+	required float Speed = 10;
+	required float Jingshen = 11;
+	required float Huifu = 12;
+	//
+	required int Kangdu = 13;
+	required int Kanghunshui = 14;
+	required int Kangshihua = 15;
+	required int Kangjiuzui = 16;
+	required int Kanghunluan = 17;
+	required int Kangyiwang = 18;
+	//
+	required int Bisha = 19;
+	required int Fanji = 20;
+	required int Minzhong = 21;
+	required int Mogong = 22;
+	//
+	required int Di = 23;
+	required int Shui = 24;
+	required int Huo = 25;
+	required int Feng = 26;
+}
+
+message FriendInfo
+{
+	required long UserID = 1;
+	required string Name = 2;
+	required int Level = 3;
+}
+
+message ItemInfo
+{
+	required List<int[]> Info = 1;
+}
+
+message PetInfo
+{
+	required List<string> Name = 1;
+	required List<int[]> Info = 2;
+}
+
+message BankItemInfo
+{
+	required List<int[]> Info = 1;
+}
+
+message BankPetInfo
+{
+	required List<string> Name = 1;
+	required List<int[]> Info = 2;
+}
+
+message SkillInfo
+{
+	required List<int[]> Skill = 1;
+}
+
+message TitleInfo
+{
+	required int TitleID = 1;
+	required int TitleType = 2;
+}
+
+#endregion

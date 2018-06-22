@@ -9,11 +9,19 @@ namespace ETModel
 		public static async Task DownloadBundle()
 		{
 			Game.EventSystem.Run(EventIdType.LoadingBegin);
-			await StartDownLoadResources();
-			Game.EventSystem.Run(EventIdType.LoadingFinish);
-		}
+            bool done = await StartDownLoadResources();
+		    Game.EventSystem.Run(EventIdType.LoadingFinish);
+            //if (done)
+            //{
+            //    Game.EventSystem.Run(EventIdType.LoadingFinish);
+            //}
+            //else
+            //{
+            //    Game.Scene.GetComponent<UILoadingComponent>().OnLoadFail();
+            //}
+        }
 		
-		public static async Task StartDownLoadResources()
+		public static async Task<bool> StartDownLoadResources()
 		{
 			if (Define.IsAsync)
 			{
@@ -25,13 +33,14 @@ namespace ETModel
 					}
 					Game.Scene.GetComponent<ResourcesComponent>().LoadOneBundle("StreamingAssets");
 					ResourcesComponent.AssetBundleManifestObject = (AssetBundleManifest)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("StreamingAssets", "AssetBundleManifest");
+                    return true;
 				}
 				catch (Exception e)
 				{
 					Log.Error(e);
 				}
-
 			}
-		}
-	}
+		    return false;
+        }
+    }
 }

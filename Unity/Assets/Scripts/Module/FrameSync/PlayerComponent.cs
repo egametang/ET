@@ -3,73 +3,73 @@ using System.Linq;
 
 namespace ETModel
 {
-	[ObjectSystem]
-	public class PlayerComponentAwakeSystem : AwakeSystem<PlayerComponent>
-	{
-		public override void Awake(PlayerComponent self)
-		{
-			self.Awake();
-		}
-	}
-	
-	public class PlayerComponent : Component
-	{
-		public static PlayerComponent Instance { get; private set; }
+    [ObjectSystem]
+    public class PlayerComponentAwakeSystem : AwakeSystem<PlayerComponent>
+    {
+        public override void Awake(PlayerComponent self)
+        {
+            self.Awake();
+        }
+    }
 
-		public Player MyPlayer;
-		
-		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
+    public class PlayerComponent : Component
+    {
+        public static PlayerComponent Instance { get; private set; }
 
-		public void Awake()
-		{
-			Instance = this;
-		}
-		
-		public void Add(Player player)
-		{
-			this.idPlayers.Add(player.Id, player);
-		}
+        public Player MyPlayer;
 
-		public Player Get(long id)
-		{
-			Player player;
-			this.idPlayers.TryGetValue(id, out player);
-			return player;
-		}
+        private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
 
-		public void Remove(long id)
-		{
-			this.idPlayers.Remove(id);
-		}
+        public void Awake()
+        {
+            Instance = this;
+        }
 
-		public int Count
-		{
-			get
-			{
-				return this.idPlayers.Count;
-			}
-		}
+        public void Add(Player player)
+        {
+            this.idPlayers.Add(player.Id, player);
+        }
 
-		public Player[] GetAll()
-		{
-			return this.idPlayers.Values.ToArray();
-		}
+        public Player Get(long id)
+        {
+            Player player;
+            this.idPlayers.TryGetValue(id, out player);
+            return player;
+        }
 
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			
-			base.Dispose();
+        public void Remove(long id)
+        {
+            this.idPlayers.Remove(id);
+        }
 
-			foreach (Player player in this.idPlayers.Values)
-			{
-				player.Dispose();
-			}
+        public int Count
+        {
+            get
+            {
+                return this.idPlayers.Count;
+            }
+        }
 
-			Instance = null;
-		}
-	}
+        public Player[] GetAll()
+        {
+            return this.idPlayers.Values.ToArray();
+        }
+
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            base.Dispose();
+
+            foreach (Player player in this.idPlayers.Values)
+            {
+                player.Dispose();
+            }
+
+            Instance = null;
+        }
+    }
 }
