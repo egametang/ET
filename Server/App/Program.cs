@@ -34,7 +34,7 @@ namespace App
 				LogManager.Configuration.Variables["appTypeFormat"] = $"{startConfig.AppType,-8}";
 				LogManager.Configuration.Variables["appIdFormat"] = $"{startConfig.AppId:D3}";
 
-				Log.Info($"server start........................ {startConfig.AppId} {startConfig.AppType}");
+				Log.Info($"Server is running........................ {startConfig.AppId} {startConfig.AppType}");
 
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatherComponent>();
@@ -57,7 +57,11 @@ namespace App
 						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
-						break;
+                        //魔力
+					    Game.Scene.AddComponent<OnlineComponent>();
+					    //
+					    Game.Scene.AddComponent<DBProxyComponent>();
+                        break;
 					case AppType.Gate:
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
@@ -66,7 +70,15 @@ namespace App
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
-						break;
+					    //魔力
+					    Game.Scene.AddComponent<CG_GateSessionKeyComponent>();
+					    Game.Scene.AddComponent<UserComponent>();
+					    Game.Scene.AddComponent<BattleAddressComponent>();
+					    Game.Scene.AddComponent<LoginAddressComponent>();
+					    Game.Scene.AddComponent<NpcAddressComponent>();
+					    //
+					    Game.Scene.AddComponent<DBProxyComponent>();
+                        break;
 					case AppType.Location:
 						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
 						Game.Scene.AddComponent<LocationComponent>();
@@ -79,14 +91,37 @@ namespace App
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
 						break;
-					case AppType.AllServer:
+				    case AppType.DB:
+				        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+				        Game.Scene.AddComponent<DBComponent>();
+				        Game.Scene.AddComponent<DBProxyComponent>();
+				        Game.Scene.AddComponent<DBCacheComponent>();
+				        break;
+				    case AppType.Login:
+				        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+				        Game.Scene.AddComponent<DBProxyComponent>();
+				        break;
+				    case AppType.Battle:
+				        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+				        Game.Scene.AddComponent<DBProxyComponent>();
+				        break;
+				    case AppType.Npc:
+				        Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+				        Game.Scene.AddComponent<DBProxyComponent>();
+				        break;
+                    case AppType.AllServer:
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
-						Game.Scene.AddComponent<DBComponent>();
-						Game.Scene.AddComponent<DBProxyComponent>();
-						Game.Scene.AddComponent<DBCacheComponent>();
-						Game.Scene.AddComponent<LocationComponent>();
+                        
+                        //PS：如果启动闪退有可能是服务器配置文件没有填数据库配置，请正确填写
+                        //这里需要将DBComponent的Awake注释去掉才能连接MongoDB
+                        Game.Scene.AddComponent<DBComponent>();
+                        Game.Scene.AddComponent<DBProxyComponent>();
+                        //这里需要加上DBCacheComponent才能操作MongoDB
+                        Game.Scene.AddComponent<DBCacheComponent>();
+
+                        Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
 						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
@@ -96,16 +131,24 @@ namespace App
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
-						// Game.Scene.AddComponent<HttpComponent>();
-						break;
-					case AppType.Benchmark:
-						Game.Scene.AddComponent<NetOuterComponent>();
+                        // Game.Scene.AddComponent<HttpComponent>();
+
+                        //魔力
+                        Game.Scene.AddComponent<OnlineComponent>();
+                        Game.Scene.AddComponent<CG_GateSessionKeyComponent>();
+                        Game.Scene.AddComponent<UserComponent>();
+                        Game.Scene.AddComponent<BattleAddressComponent>();
+                        Game.Scene.AddComponent<LoginAddressComponent>();
+                        Game.Scene.AddComponent<NpcAddressComponent>();
+                        break;
+					case AppType.Benchmark: //测试ping的
+                        Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<BenchmarkComponent, IPEndPoint>(clientConfig.IPEndPoint);
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
 				}
-
+                
 				while (true)
 				{
 					try

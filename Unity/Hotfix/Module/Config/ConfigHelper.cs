@@ -6,6 +6,11 @@ namespace ETHotfix
 {
 	public static class ConfigHelper
 	{
+        /// <summary>
+        /// 读取文本
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
 		public static string GetText(string key)
 		{
 			try
@@ -20,9 +25,24 @@ namespace ETHotfix
 			}
 		}
 
+        /// <summary>
+        /// 文本还原成对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="str"></param>
+        /// <returns></returns>
 		public static T ToObject<T>(string str)
 		{
 			return JsonHelper.FromJson<T>(str);
 		}
-	}
+
+        /// <summary>
+        /// 读取敏感字库
+        /// </summary>
+	    public static void LoadMinGanText()
+	    {
+	        string str = GetText("MinGan");
+            IllegalWordDetectionHelper.Init(str);
+        }
+    }
 }

@@ -14,11 +14,11 @@ TagManager:
   - 
   - 
   - Map
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UIHiden
+  - Bottom
+  - Medium
+  - Top
+  - TopMost
   - 
   - 
   - 
@@ -40,4 +40,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BaseMap
+    uniqueID: 1522296563
+    locked: 0
+  - name: TopMap
+    uniqueID: 250072757
+    locked: 0
+  - name: Battle
+    uniqueID: 305012587
+    locked: 0
+  - name: Animation
+    uniqueID: 236283627
+    locked: 0
+  - name: SkillEffect
+    uniqueID: 1997038419
+    locked: 0
+  - name: Text
+    uniqueID: 1128220273
+    locked: 0
+  - name: DamageNumber
+    uniqueID: 4129213279
     locked: 0

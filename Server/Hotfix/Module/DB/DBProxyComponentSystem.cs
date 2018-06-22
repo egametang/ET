@@ -98,5 +98,31 @@ namespace ETHotfix
 			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
 			return dbQueryJsonResponse.Components;
 		}
-	}
+
+	    //斗地主那的代码
+	    public static async Task<List<T>> QueryBatch<T>(this DBProxyComponent self, List<long> ids, bool needCache = true) where T : ComponentWithId
+	    {
+	        List<T> list = new List<T>();
+	        Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
+	        DBQueryBatchResponse dbQueryBatchResponse = (DBQueryBatchResponse)await session.Call(new DBQueryBatchRequest { CollectionName = typeof(T).Name, IdList = ids, NeedCache = needCache });
+	        foreach (ComponentWithId component in dbQueryBatchResponse.Components)
+	        {
+	            list.Add((T)component);
+	        }
+	        return list;
+	    }
+
+	    //斗地主那的代码
+	    public static async Task<List<T>> QueryJson<T>(this DBProxyComponent self, string json) where T : ComponentWithId
+	    {
+	        List<T> list = new List<T>();
+	        Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
+	        DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
+	        foreach (ComponentWithId component in dbQueryJsonResponse.Components)
+	        {
+	            list.Add((T)component);
+	        }
+	        return list;
+	    }
+    }
 }

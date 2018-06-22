@@ -96,22 +96,21 @@ namespace ETModel
 
 		public void Recv()
 		{
-			if (this.socket == null)
-			{
-				return;
-			}
-
 			while (this.socket.Available > 0)
 			{
+				if (this.IsDisposed)
+				{
+					return;
+				}
+
 				int messageLength = 0;
 				try
 				{
 					messageLength = this.socket.ReceiveFrom(this.cache, ref this.ipEndPoint);
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
-					Log.Error(e);
-					continue;
+					return;
 				}
 
 				// 长度小于4，不是正常的消息
@@ -284,8 +283,6 @@ namespace ETModel
 		
 		public override void Update()
 		{
-			this.TimeNow = (uint)TimeHelper.ClientNow();
-			
 			this.Recv();
 			
 			this.TimerOut();
@@ -324,7 +321,8 @@ namespace ETModel
 				return;
 			}
 
-			long timeNow = this.TimeNow;
+			long timeNow = TimeHelper.ClientNow();
+			this.TimeNow = (uint)timeNow;
 			
 			if (timeNow < this.minTime)
 			{

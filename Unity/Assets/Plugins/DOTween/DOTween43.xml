@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DOTween43</name>
+    </assembly>
+    <members>
+        <member name="T:DG.Tweening.ShortcutExtensions43">
+            <summary>
+            Methods that extend known Unity objects and allow to directly create and control tweens from their instances.
+            These, as all DOTween43 methods, require Unity 4.3 or later.
+            </summary>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOGradientColor(UnityEngine.Material,UnityEngine.Gradient,System.Single)">
+            <summary>Tweens a Material's color using the given gradient
+            (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOGradientColor(UnityEngine.Material,UnityEngine.Gradient,System.String,System.Single)">
+            <summary>Tweens a Material's named color property using the given gradient
+            (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="gradient">The gradient to use</param>
+            <param name="property">The name of the material property to tween (like _Tint or _SpecColor)</param>
+            <param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOColor(UnityEngine.SpriteRenderer,UnityEngine.Color,System.Single)">
+            <summary>Tweens a SpriteRenderer's color to the given value.
+            Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOFade(UnityEngine.SpriteRenderer,System.Single,System.Single)">
+            <summary>Tweens a Material's alpha color to the given value.
+            Also stores the spriteRenderer as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOGradientColor(UnityEngine.SpriteRenderer,UnityEngine.Gradient,System.Single)">
+            <summary>Tweens a SpriteRenderer's color using the given gradient
+            (NOTE 1: only uses the colors of the gradient, not the alphas - NOTE 2: creates a Sequence, not a Tweener).
+            Also stores the image as the tween's target so it can be used for filtered operations</summary>
+            <param name="gradient">The gradient to use</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOMove(UnityEngine.Rigidbody2D,UnityEngine.Vector2,System.Single,System.Boolean)">
+            <summary>Tweens a Rigidbody2D's position to the given value.
+            Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOMoveX(UnityEngine.Rigidbody2D,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a Rigidbody2D's X position to the given value.
+            Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOMoveY(UnityEngine.Rigidbody2D,System.Single,System.Single,System.Boolean)">
+            <summary>Tweens a Rigidbody2D's Y position to the given value.
+            Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DORotate(UnityEngine.Rigidbody2D,System.Single,System.Single)">
+            <summary>Tweens a Rigidbody2D's rotation to the given value.
+            Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOJump(UnityEngine.Rigidbody2D,UnityEngine.Vector2,System.Single,System.Int32,System.Single,System.Boolean)">
+            <summary>Tweens a Rigidbody2D's position to the given value, while also applying a jump effect along the Y axis.
+            Returns a Sequence instead of a Tweener.
+            Also stores the Rigidbody2D as the tween's target so it can be used for filtered operations.
+            <para>IMPORTANT: a rigidbody2D can't be animated in a jump arc using MovePosition, so the tween will directly set the position</para></summary>
+            <param name="endValue">The end value to reach</param>
+            <param name="jumpPower">Power of the jump (the max height of the jump is represented by this plus the final Y offset)</param>
+            <param name="numJumps">Total number of jumps</param>
+            <param name="duration">The duration of the tween</param>
+            <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
+        </member>
+        <member name="M:DG.Tweening.ShortcutExtensions43.DOBlendableColor(UnityEngine.SpriteRenderer,UnityEngine.Color,System.Single)">
+            <summary>Tweens a SpriteRenderer's color to the given value,
+            in a way that allows other DOBlendableColor tweens to work together on the same target,
+            instead than fight each other as multiple DOColor would do.
+            Also stores the SpriteRenderer as the tween's target so it can be used for filtered operations</summary>
+            <param name="endValue">The value to tween to</param><param name="duration">The duration of the tween</param>
+        </member>
+    </members>
+</doc>

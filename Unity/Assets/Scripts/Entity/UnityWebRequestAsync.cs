@@ -84,13 +84,13 @@ namespace ETModel
 
 		public Task<bool> DownloadAsync(string url)
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+            this.tcs = new TaskCompletionSource<bool>();
 			
 			url = url.Replace(" ", "%20");
 			this.Request = UnityWebRequest.Get(url);
 			this.Request.Send();
-			
-			return this.tcs.Task;
+
+            return this.tcs.Task;
 		}
 	}
 }

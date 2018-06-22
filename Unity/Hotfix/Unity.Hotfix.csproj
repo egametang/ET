@@ -36,19 +36,39 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Plugins\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween43, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Plugins\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Plugins\DOTween\DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assets\Plugins\DOTween\DOTween50.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>..\..\..\..\..\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\Mono.Data.Sqlite.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Unity2017\Editor\Data\Managed\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Temp\UnityVS_bin\Debug\UnityEngine.dll</HintPath>
+    <Reference Include="System.Data" />
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Unity2017\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Temp\UnityVS_bin\Debug\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Temp\UnityVS_bin\Debug\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Temp\UnityVS_bin\Debug\UnityEngine.UI.dll</HintPath>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\Unity2017\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +84,57 @@
     <Compile Include="Base\Object\IComponentSerialize.cs" />
     <Compile Include="Base\Object\IDestroySystem.cs" />
     <Compile Include="Base\Object\IStartSystem.cs" />
+    <Compile Include="CrossGate\Component\Raycast\RaycastComponent.cs" />
+    <Compile Include="CrossGate\Component\SpriteAnimation\SpriteBaseComponent.cs" />
+    <Compile Include="CrossGate\Component\Client\ClientComponent.cs" />
+    <Compile Include="CrossGate\Component\Common\Disconnect\UIDisconnectComponent.cs" />
+    <Compile Include="CrossGate\Component\Common\LoadingScene\UILoadingSceneComponent.cs" />
+    <Compile Include="CrossGate\Component\Common\PopMessage\UIWarnningMessageComponent.cs" />
+    <Compile Include="CrossGate\Component\Common\UGUIAnimation\UGUISpriteAnimationComponent.cs" />
+    <Compile Include="CrossGate\Component\Common\Waitting\UIWaittingComponent.cs" />
+    <Compile Include="CrossGate\Component\Login\UICreateCharacterComponent.cs" />
+    <Compile Include="CrossGate\Component\Login\UILoginComponent.cs" />
+    <Compile Include="CrossGate\Component\Login\UIRegisterComponent.cs" />
+    <Compile Include="CrossGate\Component\Login\UIStartMenuComponent.cs" />
+    <Compile Include="CrossGate\Component\Map\MapComponent.cs" />
+    <Compile Include="CrossGate\Component\Map\MapDatReaderComponent.cs" />
+    <Compile Include="CrossGate\Component\Map\TileClickComponent.cs" />
+    <Compile Include="CrossGate\Component\GamePlayer\GamePlayerComponent.cs" />
+    <Compile Include="CrossGate\Component\Movement\MovementComponent.cs" />
+    <Compile Include="CrossGate\Component\ObjectPool\GameObjectPoolComponent.cs" />
+    <Compile Include="CrossGate\Component\SceneObject\SceneObjectComponent.cs" />
+    <Compile Include="CrossGate\Component\SceneObject\SceneTextComponent.cs" />
+    <Compile Include="CrossGate\Component\SessionWarp\SessionOfflineComponent.cs" />
+    <Compile Include="CrossGate\Component\SpriteAnimation\StaticSpriteComponent.cs" />
+    <Compile Include="CrossGate\Entity\Map\MapTile.cs" />
+    <Compile Include="CrossGate\Entity\Map\Tile.cs" />
+    <Compile Include="CrossGate\Entity\Map\TileDat.cs" />
+    <Compile Include="CrossGate\Entity\GamePlayer\GamePlayer.cs" />
+    <Compile Include="CrossGate\Entity\Role\Role.cs" />
+    <Compile Include="CrossGate\Entity\SceneObject\ScenePlayer.cs" />
+    <Compile Include="CrossGate\Entity\User\User.cs" />
+    <Compile Include="CrossGate\Event\Login\Event_LoginEnterMap.cs" />
+    <Compile Include="CrossGate\Event\Login\InitSceneStart_CreateLoginUI.cs" />
+    <Compile Include="CrossGate\Factory\Common\Disconnect\UIDisconnectFactory.cs" />
+    <Compile Include="CrossGate\Factory\Common\LoadingScene\UILoadingSceneFactory.cs" />
+    <Compile Include="CrossGate\Factory\Common\PopMessage\UIWarnningMessageFactory.cs" />
+    <Compile Include="CrossGate\Factory\Common\Waitting\UIWaittingFactory.cs" />
+    <Compile Include="CrossGate\Factory\Login\UICreateCharacterFactory.cs" />
+    <Compile Include="CrossGate\Factory\Login\UILoginFactory.cs" />
+    <Compile Include="CrossGate\Factory\Login\UIRegisterFactory.cs" />
+    <Compile Include="CrossGate\Factory\Login\UIStartMenuFactory.cs" />
+    <Compile Include="CrossGate\Factory\Map\TileFactory.cs" />
+    <Compile Include="CrossGate\Factory\GamePlayer\GamePlayerFactory.cs" />
+    <Compile Include="CrossGate\Factory\SceneObject\SceneObjectFactory.cs" />
+    <Compile Include="CrossGate\Helper\ErrorHelper.cs" />
+    <Compile Include="CrossGate\Helper\GameTool.cs" />
+    <Compile Include="CrossGate\Helper\IllegalWordDetectionHelper.cs" />
+    <Compile Include="CrossGate\Helper\MapHelper.cs" />
+    <Compile Include="CrossGate\Resource\ResourceComponent.cs" />
+    <Compile Include="CrossGate\SqlDB\GenerateDbDataHelper.cs" />
+    <Compile Include="CrossGate\SqlDB\Model\ImageConfig.cs" />
+    <Compile Include="CrossGate\SqlDB\SqlConnectHelper.cs" />
+    <Compile Include="CrossGate\SqlDB\SqlliteComponent.cs" />
     <Compile Include="Module\FrameSync\OperaComponent.cs" />
     <Compile Include="Entity\Config\UnitConfig.cs" />
     <Compile Include="Module\FrameSync\TestHotfixSubscribMonoEvent_LogString.cs" />
@@ -97,6 +168,7 @@
     <Compile Include="Module\UI\IUIFactory.cs" />
     <Compile Include="Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="Module\UI\UIBaseComponent.cs" />
     <Compile Include="Module\UI\UIComponent.cs" />
     <Compile Include="Entity\Game.cs" />
     <Compile Include="Entity\Scene.cs" />
@@ -108,11 +180,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\UILobby\Component\UILobbyComponent.cs" />
     <Compile Include="UI\UILobby\Factory\UILobbyFactory.cs" />
-    <Compile Include="UI\UILogin\Component\UILoginComponent.cs" />
-    <Compile Include="UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
-    <Compile Include="UI\UILogin\Factory\UILoginFactory.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CrossGate\Entity\Item\" />
+    <Folder Include="CrossGate\Entity\Npc\" />
+    <Folder Include="CrossGate\Entity\Pet\" />
+    <Folder Include="CrossGate\Factory\Common\UGUIAnimation\" />
+    <Folder Include="CrossGate\Factory\Item\" />
+    <Folder Include="CrossGate\Factory\Pet\" />
+    <Folder Include="CrossGate\Factory\Role\" />
+    <Folder Include="UI\UILogin\Component\" />
+    <Folder Include="UI\UILogin\Event\" />
+    <Folder Include="UI\UILogin\Factory\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity.csproj">
       <Project>{cf118143-7e37-744f-be45-3f55345fec40}</Project>

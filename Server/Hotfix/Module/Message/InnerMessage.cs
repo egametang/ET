@@ -453,7 +453,7 @@ namespace ETHotfix
 		public int RpcId { get; set; }
 
 		[ProtoMember(1, IsRequired = true)]
-		public string Account;
+		public long UserID;
 
 	}
 
@@ -520,6 +520,219 @@ namespace ETHotfix
 
 		[ProtoMember(93, IsRequired = true)]
 		public long ActorId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.R2G_GetLoginKey_Request)]
+	[ProtoContract]
+	public partial class R2G_GetLoginKey_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+	}
+
+	[Message(InnerOpcode.G2R_GetLoginKey_Response)]
+	[ProtoContract]
+	public partial class G2R_GetLoginKey_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long Key;
+
+	}
+
+	[Message(InnerOpcode.R2G_PlayerKickOut_Request)]
+	[ProtoContract]
+	public partial class R2G_PlayerKickOut_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+	}
+
+	[Message(InnerOpcode.G2R_PlayerKickOut_Response)]
+	[ProtoContract]
+	public partial class G2R_PlayerKickOut_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2R_PlayerOnline_Request)]
+	[ProtoContract]
+	public partial class G2R_PlayerOnline_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+		[ProtoMember(2, IsRequired = true)]
+		public int GateAppID;
+
+	}
+
+	[Message(InnerOpcode.R2G_PlayerOnline_Response)]
+	[ProtoContract]
+	public partial class R2G_PlayerOnline_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2R_PlayerOffline_Request)]
+	[ProtoContract]
+	public partial class G2R_PlayerOffline_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public long UserID;
+
+		[ProtoMember(2, IsRequired = true)]
+		public int GateAppID;
+
+	}
+
+	[Message(InnerOpcode.R2G_PlayerOffline_Response)]
+	[ProtoContract]
+	public partial class R2G_PlayerOffline_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(InnerOpcode.L2D_CreateCharacter_Request)]
+	[ProtoContract]
+	public partial class L2D_CreateCharacter_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public Character Info;
+
+		[ProtoMember(2, IsRequired = true)]
+		public string CollectionName;
+
+		[ProtoMember(3, IsRequired = true)]
+		public bool NeedCache;
+
+	}
+
+	[Message(InnerOpcode.D2L_CreateCharacter_Response)]
+	[ProtoContract]
+	public partial class D2L_CreateCharacter_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2L_CreateCharacter_Request)]
+	[ProtoContract]
+	public partial class G2L_CreateCharacter_Request: IRequest
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public string PlayerName;
+
+		[ProtoMember(2, IsRequired = true)]
+		public int CharacterID;
+
+		[ProtoMember(3, IsRequired = true)]
+		public int StrBp;
+
+		[ProtoMember(4, IsRequired = true)]
+		public int HealthBP;
+
+		[ProtoMember(5, IsRequired = true)]
+		public int DefBP;
+
+		[ProtoMember(6, IsRequired = true)]
+		public int SpeedBP;
+
+		[ProtoMember(7, IsRequired = true)]
+		public int MagicBP;
+
+		[ProtoMember(8, IsRequired = true)]
+		public int Di;
+
+		[ProtoMember(9, IsRequired = true)]
+		public int Shui;
+
+		[ProtoMember(10, IsRequired = true)]
+		public int Huo;
+
+		[ProtoMember(11, IsRequired = true)]
+		public int Feng;
+
+		[ProtoMember(12, IsRequired = true)]
+		public long UserID;
+
+	}
+
+	[Message(InnerOpcode.L2G_CreateCharacter_Response)]
+	[ProtoContract]
+	public partial class L2G_CreateCharacter_Response: IResponse
+	{
+		[ProtoMember(90, IsRequired = true)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91, IsRequired = true)]
+		public int Error { get; set; }
+
+		[ProtoMember(92, IsRequired = true)]
+		public string Message { get; set; }
+
+		[ProtoMember(1, IsRequired = true)]
+		public LoginBasicRoleInfo Info;
 
 	}
 

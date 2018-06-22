@@ -7,7 +7,7 @@
 
 		public string GetUrl()
 		{
-			string url = this.AssetBundleServerUrl;
+		    string url = this.AssetBundleServerUrl; //"http://mylittlebucket.oss-cn-hangzhou.aliyuncs.com/";
 #if UNITY_ANDROID
 			url += "Android/";
 #elif UNITY_IOS
@@ -15,9 +15,9 @@
 #elif UNITY_WEBGL
 			url += "WebGL/";
 #else
-			url += "PC/";
+            url += "PC/";
 #endif
-			Log.Debug(url);
+			//Log.Debug(url);
 			return url;
 		}
 	}

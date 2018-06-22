@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ETModel;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ETHotfix
 {
@@ -33,7 +34,10 @@ namespace ETHotfix
 		private readonly Dictionary<string, IUIFactory> UiTypes = new Dictionary<string, IUIFactory>();
 		private readonly Dictionary<string, UI> uis = new Dictionary<string, UI>();
 
-		public override void Dispose()
+	    //自定义扩展
+	    private Dictionary<WindowLayer, GameObject> m_allLayers = new Dictionary<WindowLayer, GameObject>();
+
+        public override void Dispose()
 		{
 			if (this.IsDisposed)
 			{
@@ -60,7 +64,8 @@ namespace ETHotfix
 		public void Awake()
 		{
 			this.Root = GameObject.Find("Global/UI/");
-			this.Load();
+		    this.InstantiateUi(Root.transform);
+            this.Load();
 		}
 
 		public void Load()
@@ -98,13 +103,33 @@ namespace ETHotfix
 		{
 			try
 			{
-				UI ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
-                uis.Add(type, ui);
+			    UI ui;
 
-				// 设置canvas
-				string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;
-				ui.GameObject.transform.SetParent(this.Root.Get<GameObject>(cavasName).transform, false);
-				return ui;
+			    if (uis.ContainsKey(type))
+			    {
+			        ui = uis[type];
+			    }
+			    else
+			    {
+			        ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
+			        uis.Add(type, ui);
+			    }
+
+			    // 设置Ui层级
+			    SetViewParent(ui, ui.GameObject.GetComponent<CanvasConfig>().UiWindowLayer);
+
+			    //调用Show方法
+			    ui.UiComponent.Show();
+
+			    return ui;
+
+    //            UI ui = UiTypes[type].Create(this.GetParent<Scene>(), type, Root);
+    //            uis.Add(type, ui);
+
+				//// 设置canvas
+				//string cavasName = ui.GameObject.GetComponent<CanvasConfig>().CanvasName;
+				//ui.GameObject.transform.SetParent(this.Root.Get<GameObject>(cavasName).transform, false);
+				//return ui;
 			}
 			catch (Exception e)
 			{
@@ -112,7 +137,18 @@ namespace ETHotfix
 			}
 		}
 
-		public void Add(string type, UI ui)
+	    public void Close(string type)
+	    {
+	        UI ui;
+	        if (!uis.TryGetValue(type, out ui))
+	        {
+	            return;
+	        }
+	        uis[type].UiComponent.Close();
+	        SetViewParent(uis[type], WindowLayer.UIHiden);
+	    }
+
+        public void Add(string type, UI ui)
 		{
 			this.uis.Add(type, ui);
 		}
@@ -154,5 +190,73 @@ namespace ETHotfix
 		{
 			return new List<string>(this.uis.Keys);
 		}
-	}
+
+        #region 自定义扩展
+
+        private void InstantiateUi(Transform parent)
+        {
+            WindowLayer[] _names = new WindowLayer[]
+            {
+                WindowLayer.UIHiden,
+                WindowLayer.Bottom,
+                WindowLayer.Medium,
+                WindowLayer.Top,
+                WindowLayer.TopMost
+            };
+            Camera _cam = new GameObject().AddComponent<Camera>();
+            _cam.clearFlags = CameraClearFlags.Depth;
+            _cam.cullingMask = 1 << LayerMask.NameToLayer("UI");
+            _cam.orthographic = true;
+            _cam.depth = 10;
+            _cam.name = "UiCamera";
+            _cam.transform.SetParent(parent);
+            _cam.transform.localPosition = Vector3.zero;
+
+            foreach (var layer in _names)
+            {
+                var it = layer.ToString();
+                GameObject _go = new GameObject();
+                this.m_allLayers.Add(layer, _go);
+                Canvas _canvas = _go.AddComponent<Canvas>();
+                _canvas.renderMode = RenderMode.ScreenSpaceCamera;
+                _canvas.worldCamera = _cam;
+                _canvas.sortingOrder = (int)layer;
+                CanvasScaler _scale = _go.AddComponent<CanvasScaler>();
+                _scale.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                _scale.referenceResolution = new Vector2(1920, 1080);
+                _scale.matchWidthOrHeight = 1;
+                GraphicRaycaster _graphic = _go.AddComponent<GraphicRaycaster>();
+                _go.name = it;
+                _go.transform.SetParent(parent);
+                _go.transform.localPosition = Vector3.zero;
+                if (layer == WindowLayer.UIHiden)
+                {
+                    _go.layer = LayerMask.NameToLayer("UIHiden");
+                    _graphic.enabled = false;
+                }
+                else
+                {
+                    _go.layer = LayerMask.NameToLayer("UI");
+                }
+            }
+        }
+
+        //修改UI层级
+        void SetViewParent(UI ui, WindowLayer layer)
+        {
+            RectTransform _rt = ui.GameObject.GetComponent<RectTransform>();
+            _rt.SetParent(m_allLayers[layer].transform);
+            _rt.anchorMin = Vector2.zero;
+            _rt.anchorMax = Vector2.one;
+            _rt.offsetMax = Vector2.zero;
+            _rt.offsetMin = Vector2.zero;
+            _rt.pivot = new Vector2(0.5f, 0.5f);
+            //
+            _rt.localScale = Vector3.one;
+            _rt.localPosition = Vector3.zero;
+            _rt.localRotation = Quaternion.identity;
+        }
+
+        #endregion
+    }
 }

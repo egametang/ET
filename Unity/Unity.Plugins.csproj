@@ -16,8 +16,8 @@
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>GamePlugins:3</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
-    <UnityVersion>2017.4.3f1</UnityVersion>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2017.1.3p2</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
@@ -33,7 +33,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_3;UNITY_2017_4;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime1</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_3;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime1</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,201 +43,57 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_3;UNITY_2017_4;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime1</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_3;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime1</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\mscorlib.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.dll</HintPath>
     </Reference>
     <Reference Include="System.XML">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.XML.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.XML.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Core.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\Microsoft.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\Microsoft.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>C:\Apps\Unity2017.4.3\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Xml.Linq.dll</HintPath>
+      <HintPath>C:\Program Files\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.5\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ClothModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AIModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UNETModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.WebModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.WebModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ARModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VRModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.StyleSheetsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.GridModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticlesLegacyModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ParticlesLegacyModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VideoModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.WindModule">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UIAutomation">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.GoogleAudioSpatializer">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>C:/Apps/Unity2017.4.3/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>C:/Program Files/Unity2017/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
@@ -245,14 +101,20 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Users/USER-PC/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.13/UnityEngine.Analytics.dll</HintPath>
+    <Reference Include="DOTween">
+      <HintPath>Assets/Plugins/DOTween/DOTween.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>C:/Users/USER-PC/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.purchasing@0.0.19/UnityEngine.Purchasing.dll</HintPath>
+    <Reference Include="DOTween43">
+      <HintPath>Assets/Plugins/DOTween/DOTween43.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.StandardEvents">
-      <HintPath>C:/Users/USER-PC/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
+    <Reference Include="DOTween46">
+      <HintPath>Assets/Plugins/DOTween/DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50">
+      <HintPath>Assets/Plugins/DOTween/DOTween50.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Data.Sqlite">
+      <HintPath>Assets/Plugins/SQLDB/Mono.Data.Sqlite.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -583,9 +445,1243 @@
     <Compile Include="Assets\Plugins\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Plugins\DOTween\DOTween.XML" />
+    <None Include="Assets\Plugins\DOTween\DOTween43.xml" />
+    <None Include="Assets\Plugins\DOTween\DOTween46.xml" />
+    <None Include="Assets\Plugins\DOTween\DOTween50.xml" />
+    <None Include="Assets\Plugins\DOTween\Editor\DOTweenEditor.XML" />
+    <None Include="Assets\Plugins\DOTween\readme.txt" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
+    <None Include="Assets\Res\Config\GameVersion.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
+    <None Include="Assets\Res\Config\MinGan.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\Res\Map\MapVersion.txt" />
+    <None Include="Assets\Res\Text\3.0_ColorPick.txt" />
+    <None Include="Assets\Res\Text\BeginFrame.txt" />
+    <None Include="Assets\Res\Text\CharacterDesc.txt" />
+    <None Include="Assets\Res\Text\ColorInfo.txt" />
+    <None Include="Assets\Res\Text\DownLoadKey.txt" />
+    <None Include="Assets\Res\Text\DressId.txt" />
+    <None Include="Assets\Res\Text\ImageConfig_2.0.txt" />
+    <None Include="Assets\Res\Text\ImageConfig_3.0.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100000.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100001.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100002.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100003.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100004.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100005.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100006.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100007.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100008.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100009.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100010.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100011.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100012.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100013.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100014.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100015.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100016.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100017.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100018.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100019.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100020.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100021.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100022.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100023.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100025.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100026.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100027.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100028.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100029.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100030.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100031.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100032.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100033.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100034.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100035.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100036.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100037.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100038.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100039.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100040.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100041.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100042.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100043.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100044.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100045.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100046.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100047.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100048.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100050.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100051.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100052.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100053.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100054.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100055.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100056.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100057.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100058.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100059.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100060.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100061.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100062.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100063.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100064.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100065.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100066.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100067.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100068.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100069.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100070.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100071.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100072.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100073.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100075.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100076.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100077.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100078.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100079.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100080.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100081.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100082.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100083.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100084.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100085.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100086.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100087.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100088.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100089.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100090.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100091.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100092.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100093.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100094.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100095.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100096.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100097.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100098.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100100.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100101.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100102.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100103.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100104.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100105.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100106.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100107.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100108.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100109.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100110.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100111.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100112.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100113.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100114.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100115.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100116.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100117.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100118.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100119.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100120.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100121.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100122.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100123.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100125.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100126.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100127.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100128.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100129.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100130.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100131.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100132.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100133.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100134.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100135.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100136.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100137.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100138.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100139.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100140.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100141.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100142.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100143.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100144.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100145.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100146.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100147.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100148.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100150.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100151.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100152.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100153.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100154.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100155.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100156.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100157.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100158.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100159.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100160.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100161.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100162.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100163.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100164.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100165.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100166.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100167.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100168.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100169.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100170.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100171.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100172.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100173.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100250.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100251.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100252.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100253.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100254.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100255.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100256.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100257.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100258.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100259.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100260.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100261.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100262.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100263.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100264.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100265.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100266.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100267.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100268.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100269.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100270.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100271.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100272.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100273.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100275.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100276.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100277.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100278.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100279.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100280.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100281.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100282.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100283.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100284.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100285.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100286.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100287.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100288.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100289.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100290.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100291.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100292.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100293.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100294.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100295.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100296.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100297.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100298.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100300.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100301.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100302.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100303.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100304.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100305.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100306.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100307.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100308.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100309.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100310.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100311.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100312.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100313.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100314.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100315.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100316.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100317.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100318.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100319.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100320.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100321.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100322.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100323.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100325.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100326.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100327.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100328.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100329.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100330.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100331.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100332.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100333.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100334.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100335.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100336.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100337.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100338.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100339.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100340.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100341.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100342.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100343.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100344.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100345.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100346.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100347.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100348.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100350.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100351.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100352.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100353.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100354.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100355.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100356.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100357.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100358.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100359.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100360.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100361.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100362.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100363.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100364.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100365.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100366.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100367.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100368.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100369.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100370.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100371.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100372.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100373.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100375.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100376.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100377.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100378.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100379.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100380.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100381.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100382.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100383.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100384.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100385.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100386.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100387.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100388.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100389.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100390.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100391.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100392.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100393.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100394.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100395.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100396.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100397.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100398.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100400.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100401.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100402.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100403.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100404.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100405.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100406.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100407.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100408.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100409.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100410.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100411.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100412.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100413.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100414.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100415.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100416.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100417.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100418.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100419.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100420.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100421.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100422.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100423.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100425.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100426.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100427.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100428.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100429.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100430.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100450.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100451.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100452.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100453.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100454.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100455.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100475.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100476.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100477.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100478.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100479.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100480.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100500.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100501.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100502.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100503.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100504.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100505.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100525.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100526.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100527.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100528.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100529.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100530.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100550.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100551.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100552.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100553.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100554.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100555.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100575.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100576.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100577.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100578.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100579.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100580.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100600.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100601.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100602.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100603.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100604.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100605.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100625.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100626.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100627.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100628.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100629.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100630.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100650.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100651.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100652.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100653.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100654.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100655.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100675.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100676.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100677.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100678.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100679.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100680.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100700.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100701.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100702.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100703.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100704.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100705.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100725.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100726.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100727.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100728.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100729.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100730.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100750.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100751.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100752.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100753.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100754.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100755.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100800.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100801.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100802.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100803.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100804.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100805.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100900.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100901.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\100902.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101000.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101001.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101002.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101003.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101004.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101005.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101010.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101011.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101012.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101013.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101014.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101020.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101021.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101022.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101023.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101024.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101025.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101030.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101031.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101032.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101033.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101100.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101101.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101102.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101103.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101104.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101110.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101111.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101112.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101113.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101114.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101120.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101121.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101122.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101123.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101200.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101201.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101202.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101203.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101204.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101205.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101210.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101211.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101212.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101213.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101214.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101240.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101241.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101242.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101243.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101244.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101245.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101250.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101251.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101252.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101253.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101254.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101300.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101301.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101302.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101303.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101310.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101311.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101312.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101313.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101314.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101320.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101321.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101322.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101323.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101324.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101330.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101331.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101332.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101333.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101400.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101401.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101402.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101403.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101404.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101405.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101406.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101410.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101411.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101412.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101413.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101420.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101421.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101422.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101423.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101430.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101431.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101432.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101433.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101434.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101500.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101501.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101502.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101503.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101510.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101511.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101512.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101513.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101520.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101521.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101522.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101523.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101524.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101530.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101531.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101532.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101533.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101600.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101601.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101602.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101603.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101610.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101611.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101612.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101613.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101614.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101615.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101620.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101621.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101622.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101623.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101630.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101631.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101632.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101633.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101700.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101701.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101702.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101703.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101710.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101711.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101712.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101713.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101714.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101720.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101721.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101722.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101723.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101800.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101801.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101802.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101803.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101810.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101811.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101812.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101813.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101820.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101821.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101822.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101823.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101824.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101830.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101831.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101832.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101833.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101834.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101900.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101901.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101902.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101903.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101904.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101905.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101910.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101911.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101912.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101913.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101920.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101921.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101922.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101923.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101930.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101931.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101932.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101933.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101934.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\101935.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103010.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103011.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103012.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103013.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103014.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\103015.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104001.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104002.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104003.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104004.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104005.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104306.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104307.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104308.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104309.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104359.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104360.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104361.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104362.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104363.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104364.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104412.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104413.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104414.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104415.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104416.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104417.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104436.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104442.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104443.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104444.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104445.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104446.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104447.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104460.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104461.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104462.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104463.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104464.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104465.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104520.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104521.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104522.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104523.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104524.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104525.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104526.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104527.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104528.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104529.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104530.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104531.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104532.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104533.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104534.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104535.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104561.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104562.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104563.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104564.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104565.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104610.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104611.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104612.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104613.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104614.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\104615.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106000.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106001.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106002.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106003.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106004.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106005.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106006.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106007.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106008.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106009.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106010.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106011.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106012.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106013.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106014.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106015.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106016.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106017.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106018.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106019.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106020.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106021.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106022.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106023.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106025.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106026.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106027.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106028.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106029.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106030.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106031.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106032.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106033.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106034.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106035.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106036.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106037.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106038.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106039.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106040.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106041.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106042.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106043.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106044.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106045.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106046.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106047.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106048.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106050.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106051.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106052.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106053.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106054.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106055.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106056.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106057.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106058.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106059.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106060.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106061.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106062.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106063.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106064.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106065.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106066.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106067.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106068.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106069.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106070.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106071.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106072.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106073.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106075.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106076.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106077.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106078.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106079.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106080.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106081.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106082.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106083.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106084.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106085.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106086.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106087.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106088.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106089.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106090.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106091.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106092.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106093.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106094.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106095.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106096.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106097.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106098.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106100.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106101.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106102.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106103.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106104.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106105.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106106.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106107.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106108.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106109.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106110.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106111.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106112.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106113.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106114.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106115.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106116.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106117.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106118.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106119.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106120.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106121.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106122.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106123.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106125.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106126.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106127.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106128.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106129.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106130.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106131.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106132.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106133.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106134.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106135.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106136.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106137.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106138.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106139.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106140.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106141.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106142.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106143.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106144.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106145.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106146.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106147.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106148.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106150.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106151.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106152.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106153.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106154.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106155.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106156.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106157.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106158.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106159.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106160.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106161.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106162.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106163.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106164.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106165.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106166.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106167.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106168.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106169.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106170.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106171.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106172.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106173.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106250.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106251.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106252.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106253.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106254.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106255.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106256.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106257.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106258.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106259.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106260.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106261.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106262.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106263.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106264.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106265.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106266.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106267.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106268.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106269.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106270.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106271.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106272.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106273.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106275.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106276.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106277.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106278.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106279.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106280.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106281.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106282.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106283.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106284.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106285.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106286.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106287.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106288.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106289.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106290.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106291.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106292.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106293.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106294.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106295.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106296.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106297.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106298.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106300.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106301.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106302.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106303.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106304.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106305.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106306.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106307.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106308.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106309.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106310.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106311.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106312.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106313.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106314.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106315.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106316.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106317.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106318.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106319.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106320.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106321.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106322.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106323.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106325.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106326.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106327.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106328.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106329.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106330.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106331.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106332.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106333.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106334.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106335.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106336.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106337.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106338.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106339.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106340.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106341.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106342.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106343.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106344.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106345.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106346.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106347.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106348.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106350.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106351.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106352.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106353.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106354.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106355.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106356.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106357.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106358.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106359.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106360.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106361.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106362.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106363.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106364.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106365.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106366.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106367.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106368.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106369.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106370.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106371.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106372.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106373.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106375.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106376.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106377.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106378.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106379.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106380.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106381.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106382.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106383.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106384.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106385.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106386.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106387.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106388.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106389.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106390.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106391.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106392.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106393.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106394.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106395.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106396.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106397.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106398.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106400.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106401.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106402.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106403.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106404.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106405.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106406.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106407.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106408.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106409.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106410.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106411.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106412.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106413.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106414.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106415.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106416.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106417.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106418.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106419.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106420.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106421.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106422.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106423.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106425.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106426.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106427.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106428.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106429.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106430.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106450.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106451.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106452.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106453.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106454.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106455.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106475.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106476.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106477.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106478.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106479.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106480.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106500.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106501.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106502.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106503.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106504.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106505.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106525.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106526.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106527.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106528.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106529.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106530.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106550.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106551.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106552.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106553.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106554.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106555.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106575.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106576.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106577.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106578.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106579.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106580.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106600.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106601.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106602.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106603.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106604.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106605.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106625.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106626.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106627.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106628.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106629.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106630.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106650.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106651.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106652.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106653.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106654.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106655.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106675.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106676.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106677.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106678.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106679.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106680.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106700.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106701.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106702.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106703.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106704.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106705.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106725.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106726.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106727.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106728.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106729.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106730.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106750.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106751.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106752.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106753.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106754.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\106755.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107000.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107001.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107002.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107003.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107010.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107011.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107012.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107013.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107100.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107101.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107102.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107103.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107110.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107111.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107112.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107113.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107200.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107201.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107202.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107203.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107210.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107211.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107212.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107213.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107300.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107301.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107302.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107303.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107400.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107401.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107402.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107403.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107500.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107501.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107502.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107503.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107600.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107601.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107602.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107603.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107610.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107611.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107612.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107613.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107700.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107701.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107702.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107703.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107710.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107711.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107712.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107713.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107800.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107801.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107802.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107803.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107900.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107901.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107902.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107903.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107904.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107910.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107911.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107912.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107913.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\107914.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\110396.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\110397.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\110398.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\110399.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116007.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116033.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116037.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116038.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116039.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116040.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116057.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116120.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116121.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116122.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\116123.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120055.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120057.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120058.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120059.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120060.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120061.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120062.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120063.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120064.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120065.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120066.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120067.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120068.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120069.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120070.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120071.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120072.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120081.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120082.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120083.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120084.txt" />
+    <None Include="Assets\Res\Text\Info\NewAnimation\120085.txt" />
+    <None Include="Assets\Res\Text\Info\SoundKeyFrame.txt" />
+    <None Include="Assets\Res\Text\Info\SoundNameId.txt" />
+    <None Include="Assets\Res\Text\Info\enemybase.txt" />
+    <None Include="Assets\Res\Text\Info\itemset.txt" />
+    <None Include="Assets\Res\Text\Info\msg.txt" />
+    <None Include="Assets\Res\Text\MapName.txt" />
+    <None Include="Assets\Res\Text\SkillInfo\skill.txt" />
+    <None Include="Assets\Res\Text\SkillInfo\skillexp.txt" />
+    <None Include="Assets\Res\Text\SkillInfo\tech.txt" />
+    <None Include="Assets\Res\Text\SoundConfig.txt" />
+    <None Include="Assets\Res\Text\Warp.txt" />
+    <None Include="Assets\Res\Text\itemprice.txt" />
+    <None Include="Assets\Res\Text\itemrecipe.txt" />
+    <None Include="Assets\Res\Text\jobs.txt" />
+    <None Include="Assets\Res\Text\skilllv.txt" />
+    <None Include="Assets\Res\Text\techarea.txt" />
+    <None Include="Assets\Res\Text\titlename.txt" />
     <None Include="Assets\StreamingAssets\Version.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>

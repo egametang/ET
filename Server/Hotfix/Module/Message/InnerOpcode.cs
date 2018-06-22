@@ -35,5 +35,17 @@ namespace ETHotfix
 		 public const ushort G2M_CreateUnit = 1031;
 		 public const ushort M2G_CreateUnit = 1032;
 		 public const ushort G2M_SessionDisconnect = 1033;
+		 public const ushort R2G_GetLoginKey_Request = 1034;
+		 public const ushort G2R_GetLoginKey_Response = 1035;
+		 public const ushort R2G_PlayerKickOut_Request = 1036;
+		 public const ushort G2R_PlayerKickOut_Response = 1037;
+		 public const ushort G2R_PlayerOnline_Request = 1038;
+		 public const ushort R2G_PlayerOnline_Response = 1039;
+		 public const ushort G2R_PlayerOffline_Request = 1040;
+		 public const ushort R2G_PlayerOffline_Response = 1041;
+		 public const ushort L2D_CreateCharacter_Request = 1042;
+		 public const ushort D2L_CreateCharacter_Response = 1043;
+		 public const ushort G2L_CreateCharacter_Request = 1044;
+		 public const ushort L2G_CreateCharacter_Response = 1045;
 	}
 }

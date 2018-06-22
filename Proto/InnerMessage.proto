@@ -1,178 +1,266 @@
-	/// <summary>
-	/// 传送unit
-	/// </summary>
-	message M2M_TrasferUnitRequest // IRequest
-	{
-		required Unit Unit = 1;
-	}
-	
-	message M2M_TrasferUnitResponse // IResponse
-	{
-		required int64 InstanceId = 1;
-	}
-	
-	message M2A_Reload // IRequest
-	{
-	}
-
-	message A2M_Reload // IResponse
-	{
-	}
-
-	message G2G_LockRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string Address = 2;
-	}
-
-	message G2G_LockResponse // IResponse
-	{
-	}
-
-	message G2G_LockReleaseRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string Address = 2;
-	}
-
-	message G2G_LockReleaseResponse // IResponse
-	{
-	}
-
-	message DBSaveRequest // IRequest
-	{
-		required bool NeedCache = 1;
-
-		required string CollectionName = 2;
-
-		required ComponentWithId Component = 3;
-	}
-
-
-	message DBSaveBatchResponse // IResponse
-	{
-	}
-
-	message DBSaveBatchRequest // IRequest
-	{
-		required bool NeedCache = 1;
-		required string CollectionName = 2;
-		repeated ComponentWithId Components = 3;
-	}
-
-	message DBSaveResponse // IResponse
-	{
-	}
-
-	message DBQueryRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string CollectionName = 2;
-		required bool NeedCache = 3;
-	}
-
-	message DBQueryResponse // IResponse
-	{
-		required ComponentWithId Component = 1;
-	}
-
-	message DBQueryBatchRequest // IRequest
-	{
-		required string CollectionName = 1;
-		repeated int64 IdList = 2;
-		required bool NeedCache = 3;
-	}
-
-	message DBQueryBatchResponse // IResponse
-	{
-		repeated ComponentWithId Components = 1;
-	}
-
-	message DBQueryJsonRequest // IRequest
-	{
-		required string CollectionName = 1;
-		required string Json = 2;
-	}
-
-	message DBQueryJsonResponse // IResponse
-	{
-		repeated ComponentWithId Components = 1;
-	}
-
-	message ObjectAddRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 InstanceId = 2;
-	}
-
-	message ObjectAddResponse // IResponse
-	{
-	}
-
-	message ObjectRemoveRequest // IRequest
-	{
-		required int64 Key = 1;
-	}
-
-	message ObjectRemoveResponse // IResponse
-	{
-	}
-
-	message ObjectLockRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 InstanceId = 2;
-		required int Time = 3;
-	}
-
-	message ObjectLockResponse // IResponse
-	{
-	}
-
-	message ObjectUnLockRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 OldInstanceId = 2;
-		required int64 InstanceId = 3;
-	}
-
-	message ObjectUnLockResponse // IResponse
-	{
-	}
-
-	message ObjectGetRequest // IRequest
-	{
-		required int64 Key = 1;
-	}
-
-	message ObjectGetResponse // IResponse
-	{
-		required int64 InstanceId = 1;
-	}
-
-	message R2G_GetLoginKey // IRequest
-	{
-		required string Account = 1;
-	}
-
-	message G2R_GetLoginKey // IResponse
-	{
-		required int64 Key = 1;
-	}
-
-	message G2M_CreateUnit // IRequest
-	{
-		required int64 PlayerId = 1;
-		required int64 GateSessionId = 2;
-	}
-
-	message M2G_CreateUnit // IResponse
-	{
-		required int64 UnitId = 1;
-		required int Count = 2;
-	}
-
-	message G2M_SessionDisconnect // IActorMessage
-	{
-	}
+/// <summary>
+/// 传送unit
+/// </summary>
+message M2M_TrasferUnitRequest // IRequest
+{
+	required Unit Unit = 1;
 }
+
+message M2M_TrasferUnitResponse // IResponse
+{
+	required int64 InstanceId = 1;
+}
+
+message M2A_Reload // IRequest
+{
+}
+
+message A2M_Reload // IResponse
+{
+}
+
+message G2G_LockRequest // IRequest
+{
+	required int64 Id = 1;
+	required string Address = 2;
+}
+
+message G2G_LockResponse // IResponse
+{
+}
+
+message G2G_LockReleaseRequest // IRequest
+{
+	required int64 Id = 1;
+	required string Address = 2;
+}
+
+message G2G_LockReleaseResponse // IResponse
+{
+}
+
+message DBSaveRequest // IRequest
+{
+	required bool NeedCache = 1;
+
+	required string CollectionName = 2;
+
+	required ComponentWithId Component = 3;
+}
+
+
+message DBSaveBatchResponse // IResponse
+{
+}
+
+message DBSaveBatchRequest // IRequest
+{
+	required bool NeedCache = 1;
+	required string CollectionName = 2;
+	repeated ComponentWithId Components = 3;
+}
+
+message DBSaveResponse // IResponse
+{
+}
+
+message DBQueryRequest // IRequest
+{
+	required int64 Id = 1;
+	required string CollectionName = 2;
+	required bool NeedCache = 3;
+}
+
+message DBQueryResponse // IResponse
+{
+	required ComponentWithId Component = 1;
+}
+
+message DBQueryBatchRequest // IRequest
+{
+	required string CollectionName = 1;
+	repeated int64 IdList = 2;
+	required bool NeedCache = 3;
+}
+
+message DBQueryBatchResponse // IResponse
+{
+	repeated ComponentWithId Components = 1;
+}
+
+message DBQueryJsonRequest // IRequest
+{
+	required string CollectionName = 1;
+	required string Json = 2;
+}
+
+message DBQueryJsonResponse // IResponse
+{
+	repeated ComponentWithId Components = 1;
+}
+
+message ObjectAddRequest // IRequest
+{
+	required int64 Key = 1;
+	required int64 InstanceId = 2;
+}
+
+message ObjectAddResponse // IResponse
+{
+}
+
+message ObjectRemoveRequest // IRequest
+{
+	required int64 Key = 1;
+}
+
+message ObjectRemoveResponse // IResponse
+{
+}
+
+message ObjectLockRequest // IRequest
+{
+	required int64 Key = 1;
+	required int64 InstanceId = 2;
+	required int Time = 3;
+}
+
+message ObjectLockResponse // IResponse
+{
+}
+
+message ObjectUnLockRequest // IRequest
+{
+	required int64 Key = 1;
+	required int64 OldInstanceId = 2;
+	required int64 InstanceId = 3;
+}
+
+message ObjectUnLockResponse // IResponse
+{
+}
+
+message ObjectGetRequest // IRequest
+{
+	required int64 Key = 1;
+}
+
+message ObjectGetResponse // IResponse
+{
+	required int64 InstanceId = 1;
+}
+
+message R2G_GetLoginKey // IRequest
+{
+	required long UserID = 1;
+}
+
+message G2R_GetLoginKey // IResponse
+{
+	required int64 Key = 1;
+}
+
+message G2M_CreateUnit // IRequest
+{
+	required int64 PlayerId = 1;
+	required int64 GateSessionId = 2;
+}
+
+message M2G_CreateUnit // IResponse
+{
+	required int64 UnitId = 1;
+	required int Count = 2;
+}
+
+message G2M_SessionDisconnect // IActorMessage
+{
+}
+
+#endregion
+
+#region Realm - Gate
+
+message R2G_GetLoginKey_Request // IRequest
+{
+	required long UserID = 1;
+}
+
+message G2R_GetLoginKey_Response // IResponse
+{
+	required long Key = 1;
+}
+
+message R2G_PlayerKickOut_Request // IRequest
+{
+	required long UserID = 1;
+}
+
+message G2R_PlayerKickOut_Response // IResponse
+{
+}
+
+#endregion
+
+#region Gate - Realm
+
+message G2R_PlayerOnline_Request // IRequest
+{
+	required long UserID = 1;
+	required int GateAppID = 2;
+}
+
+message R2G_PlayerOnline_Response // IResponse
+{
+}
+
+message G2R_PlayerOffline_Request // IRequest
+{
+	required long UserID = 1;
+	required int GateAppID = 2;
+}
+
+message R2G_PlayerOffline_Response // IResponse
+{
+}
+
+#endregion
+
+#region Login - DB
+
+message L2D_CreateCharacter_Request // IRequest
+{
+	required Character Info = 1;
+	required string CollectionName = 2;
+	required bool NeedCache = 3;
+}
+
+message D2L_CreateCharacter_Response // IResponse
+{
+}
+
+#endregion
+
+#region Gate - Login
+
+message G2L_CreateCharacter_Request // IRequest
+{
+    required string PlayerName = 1;
+    required int CharacterID = 2;
+    required int StrBp = 3;
+    required int HealthBP = 4;
+    required int DefBP = 5;
+    required int SpeedBP = 6;
+    required int MagicBP = 7;
+    required int Di = 8;
+    required int Shui = 9;
+    required int Huo = 10;
+    required int Feng = 11;
+    required long UserID = 12;
+}
+
+message L2G_CreateCharacter_Response // IResponse
+{
+	required LoginBasicRoleInfo Info = 1;
+}
+
+#endregion
