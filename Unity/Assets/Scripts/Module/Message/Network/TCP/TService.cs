@@ -22,7 +22,6 @@ namespace ETModel
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 			this.innArgs.Completed += this.OnAcceptComplete;
-			this.innArgs.UserToken = new UserTokenInfo() { InstanceId = this.InstanceId };
 			
 			this.acceptor.Bind(ipEndPoint);
 			this.acceptor.Listen(1000);
@@ -71,13 +70,11 @@ namespace ETModel
 
 		private void OnAcceptComplete(object sender, SocketAsyncEventArgs o)
 		{
-			SocketAsyncEventArgs e = o;
-			UserTokenInfo userTokenInfo = (UserTokenInfo) e.UserToken;
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.acceptor == null)
 			{
-				Log.Error($"session disposed!");
 				return;
 			}
+			SocketAsyncEventArgs e = o;
 			
 			if (e.SocketError != SocketError.Success)
 			{
@@ -96,7 +93,7 @@ namespace ETModel
 				Log.Error(exception);
 			}
 
-			if (userTokenInfo.InstanceId != this.InstanceId)
+			if (this.acceptor == null)
 			{
 				return;
 			}
