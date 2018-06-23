@@ -19,10 +19,5 @@
 		{
 			this.GateSessionActorId = gateSessionId;
 		}
-
-		public ActorMessageSender GetActorMessageSender()
-		{
-			return Game.Scene.GetComponent<ActorMessageSenderComponent>().Get(this.GateSessionActorId);
-		}
 	}
 }

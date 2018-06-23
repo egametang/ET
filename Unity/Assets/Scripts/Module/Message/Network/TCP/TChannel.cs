@@ -33,6 +33,9 @@ namespace ETModel
 			this.outArgs.Completed += this.OnComplete;
 
 			this.RemoteAddress = ipEndPoint;
+
+			this.isConnected = false;
+			this.isSending = false;
 		}
 		
 		public TChannel(Socket socket, TService service): base(service, ChannelType.Accept)
@@ -46,6 +49,7 @@ namespace ETModel
 			this.RemoteAddress = (IPEndPoint)socket.RemoteEndPoint;
 			
 			this.isConnected = true;
+			this.isSending = false;
 		}
 		
 		public override void Dispose()
@@ -86,7 +90,8 @@ namespace ETModel
 			byte[] sizeBuffer = BitConverter.GetBytes(length);
 			this.sendBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
 			this.sendBuffer.Write(buffer, index, length);
-			if (this.isConnected && !this.isSending)
+
+			if(!this.isSending)
 			{
 				this.StartSend();
 			}
@@ -105,7 +110,8 @@ namespace ETModel
 			{
 				this.sendBuffer.Write(buffer, 0, buffer.Length);
 			}
-			if (this.isConnected && !this.isSending)
+
+			if(!this.isSending)
 			{
 				this.StartSend();
 			}
@@ -159,7 +165,8 @@ namespace ETModel
 			e.RemoteEndPoint = null;
 			this.isConnected = true;
 			
-			this.Start();
+			this.StartRecv();
+			this.StartSend();
 		}
 
 		private void OnDisconnectComplete(object o)
@@ -248,10 +255,8 @@ namespace ETModel
 
 		private void StartSend()
 		{
-			// 没有数据需要发送
-			if (this.sendBuffer.Length == 0)
+			if(!this.isConnected)
 			{
-				this.isSending = false;
 				return;
 			}
 
@@ -302,7 +307,14 @@ namespace ETModel
 				this.sendBuffer.FirstIndex = 0;
 				this.sendBuffer.RemoveFirst();
 			}
-
+			
+			// 没有数据需要发送
+			if (this.sendBuffer.Length == 0)
+			{
+				this.isSending = false;
+				return;
+			}
+			
 			this.StartSend();
 		}
 	}
