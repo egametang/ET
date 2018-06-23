@@ -10,7 +10,6 @@ namespace ETHotfix
 		{
 			Log.Debug(message.Info);
 			await Task.CompletedTask;
-			unit.GetComponent<UnitGateComponent>().GetActorMessageSender().Send(message);
 		}
 	}
 }
