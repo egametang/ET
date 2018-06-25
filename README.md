@@ -111,4 +111,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [肉饼老师主讲](http://www.taikr.com/my/course/972)   
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1JDDGvzRYDUGBAmCZhYhQlQ) 密码: 7k7a  
   
+相关网站:  
+[ET框架问题讨论](http://www.etframework.cn/)  
+  
 __讨论QQ群 : 474643097__
