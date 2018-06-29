@@ -25,6 +25,8 @@ namespace ETModel
 		public const int ERR_SocketDisconnected = 202002;
 		public const int ERR_ReloadFail = 202003;
 		public const int ERR_ActorLocationNotFound = 202004;
+		public const int ERR_KcpConnectFail = 202005;
+		public const int ERR_KcpTimeout = 202006;
 
 		public static bool IsRpcNeedThrowException(int error)
 		{

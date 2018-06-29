@@ -11,7 +11,7 @@ namespace ETHotfix
 			try
 			{
 				Type messageType = session.Network.Entity.GetComponent<OpcodeTypeComponent>().GetType(packet.Opcode);
-				message = session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, packet.Offset, packet.Length);
+				message = session.Network.MessagePacker.DeserializeFrom(messageType, packet.Stream);
 				
 			}
 			catch (Exception e)

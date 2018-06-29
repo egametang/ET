@@ -55,7 +55,7 @@ namespace ETHotfix
 
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
 			Type responseType = opcodeTypeComponent.GetType(opcode);
-			object message = ProtobufHelper.FromBytes(responseType, packet.Bytes, packet.Offset, packet.Length);
+			object message = this.session.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
 
 			if ((flag & 0x01) > 0)
 			{

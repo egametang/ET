@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -64,7 +65,12 @@ namespace ETModel
 			{
 				action.Invoke(new ResponseMessage { Error = this.Error });
 			}
-			
+
+			if (this.Error != 0)
+			{
+				Log.Error($"session dispose: {this.Id} {this.Error}");
+			}
+
 			this.Error = 0;
 			this.channel.Dispose();
 			this.Network.Remove(id);
@@ -124,7 +130,7 @@ namespace ETModel
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				Type responseType = opcodeTypeComponent.GetType(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, packet.Offset, packet.Length);
+				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)
@@ -249,12 +255,11 @@ namespace ETModel
 
 				Packet packet = ((TChannel)this.channel).parser.packet;
 
-				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
-
-				packet.Offset = 0;
-				packet.Length = (ushort)bytes.Length;
 				packet.Flag = flag;
 				packet.Opcode = opcode;
+				packet.Stream.Seek(0, SeekOrigin.Begin);
+				packet.Stream.SetLength(bytes.Length);
+				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
 				session.Run(packet);
 				return;
 			}

@@ -11,7 +11,7 @@ namespace ETHotfix
 			try
 			{
 				Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packet.Opcode);
-				message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, packet.Offset, packet.Length);
+				message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packet.Stream);
 			}
 			catch (Exception e)
 			{
