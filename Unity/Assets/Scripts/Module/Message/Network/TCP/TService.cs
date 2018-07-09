@@ -21,7 +21,7 @@ namespace ETModel
 		{
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-			this.innArgs.Completed += this.OnAcceptComplete;
+			this.innArgs.Completed += this.OnComplete;
 			
 			this.acceptor.Bind(ipEndPoint);
 			this.acceptor.Listen(1000);
@@ -57,6 +57,18 @@ namespace ETModel
 				this.AcceptAsync();
 			}
 		}
+
+		private void OnComplete(object sender, SocketAsyncEventArgs e)
+		{
+			switch (e.LastOperation)
+			{
+				case SocketAsyncOperation.Accept:
+					OneThreadSynchronizationContext.Instance.Post(this.OnAcceptComplete, e);
+					break;
+				default:
+					throw new Exception($"socket error: {e.LastOperation}");
+			}
+		}
 		
 		public void AcceptAsync()
 		{
@@ -65,16 +77,16 @@ namespace ETModel
 			{
 				return;
 			}
-			OnAcceptComplete(this, this.innArgs);
+			OnAcceptComplete(this.innArgs);
 		}
 
-		private void OnAcceptComplete(object sender, SocketAsyncEventArgs o)
+		private void OnAcceptComplete(object o)
 		{
 			if (this.acceptor == null)
 			{
 				return;
 			}
-			SocketAsyncEventArgs e = o;
+			SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 			
 			if (e.SocketError != SocketError.Success)
 			{
