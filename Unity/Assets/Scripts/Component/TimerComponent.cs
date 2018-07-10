@@ -29,7 +29,9 @@ namespace ETModel
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
-		private readonly List<long> timeOutTime = new List<long>();
+		private readonly Queue<long> timeOutTime = new Queue<long>();
+		
+		private readonly Queue<long> timeOutTimerIds = new Queue<long>();
 
 		// 记录最小时间，不用每次都去MultiMap取第一个值
 		private long minTime;
@@ -48,9 +50,7 @@ namespace ETModel
 				return;
 			}
 			
-			this.timeOutTime.Clear();
-
-			foreach (KeyValuePair<long,List<long>> kv in this.timeId.GetDictionary())
+			foreach (KeyValuePair<long, List<long>> kv in this.timeId.GetDictionary())
 			{
 				long k = kv.Key;
 				if (k > timeNow)
@@ -58,23 +58,29 @@ namespace ETModel
 					minTime = k;
 					break;
 				}
-				this.timeOutTime.Add(k);
+				this.timeOutTime.Enqueue(k);
 			}
 
-			foreach (long k in this.timeOutTime)
+			while(this.timeOutTime.Count > 0)
 			{
-				foreach (long v in this.timeId[k])
+				long time = this.timeOutTime.Dequeue();
+				foreach(long timerId in this.timeId[time])
 				{
-					Timer timer;
-					if (!this.timers.TryGetValue(v, out timer))
-					{
-						continue;
-					}
-					this.timers.Remove(v);
-					timer.tcs.SetResult(true);
+					this.timeOutTimerIds.Enqueue(timerId);	
 				}
+				this.timeId.Remove(time);
+			}
 
-				this.timeId.Remove(k);
+			while(this.timeOutTimerIds.Count > 0)
+			{
+				long timerId = this.timeOutTimerIds.Dequeue();
+				Timer timer;
+				if (!this.timers.TryGetValue(timerId, out timer))
+				{
+					continue;
+				}
+				this.timers.Remove(timerId);
+				timer.tcs.SetResult(true);
 			}
 		}
 
