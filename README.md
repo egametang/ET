@@ -2,6 +2,13 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.4发布! 
+1.使用SocketAsyncEventArgs重新实现了TCP跟KCP网络库，大大减少GC，网络层收消息除了protobuf已经是0GC了  
+2.修复了TimerCompnent一个bug  
+3.修复了linux跟mac在netcore2.1下启动报错的问题  
+4.增加了db的lambda表达式查询  
+5.修复SceneChangeComponent错误  
+
 # ET 3.3发布! 
 1.增加了原生actor实现，知道actor的InstanceId即可直接发送Actor消息，不需要注册跟查询location  
 2.修复了组件反序列化后注册到EventSystem中的bug  
