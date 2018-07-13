@@ -128,6 +128,11 @@ namespace ETHotfix
 						return;
 					}
 
+					if (actorTask.ActorMessage == null)
+					{
+						return;
+					}
+
 					await self.RunTask(actorTask);
 				}
 			}

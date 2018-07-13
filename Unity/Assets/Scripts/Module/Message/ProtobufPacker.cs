@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ETModel
 {
@@ -17,6 +18,11 @@ namespace ETModel
 		public object DeserializeFrom(Type type, byte[] bytes)
 		{
 			return ProtobufHelper.FromBytes(type, bytes);
+		}
+
+		public object DeserializeFrom(Type type, Stream stream)
+		{
+			return ProtobufHelper.FromStream(type, stream);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes, int index, int count)

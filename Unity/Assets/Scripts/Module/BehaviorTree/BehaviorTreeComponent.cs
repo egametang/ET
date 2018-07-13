@@ -42,7 +42,7 @@ namespace ETModel
 			this.treeCache = new Dictionary<GameObject, BehaviorTree>();
 
 		
-			Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(NodeAttribute), false);

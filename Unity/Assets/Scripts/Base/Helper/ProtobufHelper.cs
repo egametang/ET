@@ -82,5 +82,17 @@ namespace ETModel
 			iSupportInitialize.EndInit();
 			return t;
 		}
+		
+		public static object FromStream(Type type, Stream stream)
+		{
+			object t = Serializer.NonGeneric.Deserialize(type, stream);
+			ISupportInitialize iSupportInitialize = t as ISupportInitialize;
+			if (iSupportInitialize == null)
+			{
+				return t;
+			}
+			iSupportInitialize.EndInit();
+			return t;
+		}
 	}
 }

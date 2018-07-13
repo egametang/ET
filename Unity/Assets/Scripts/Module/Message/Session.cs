@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class SessionAwakeSystem : AwakeSystem<Session, NetworkComponent, AChannel>
+	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
 	{
-		public override void Awake(Session self, NetworkComponent a, AChannel b)
+		public override void Awake(Session self, AChannel b)
 		{
-			self.Awake(a, b);
+			self.Awake(b);
 		}
 	}
 
@@ -34,11 +35,20 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkComponent net, AChannel c)
+		public void Awake(AChannel aChannel)
 		{
 			this.Error = 0;
-			this.channel = c;
+			this.channel = aChannel;
 			this.requestCallback.Clear();
+			long id = this.Id;
+			channel.ErrorCallback += (c, e) =>
+			{
+				this.Error = e;
+				this.Network.Remove(id); 
+			};
+			channel.ReadCallback += this.OnRead;
+			
+			this.channel.Start();
 		}
 
 		public override void Dispose()
@@ -51,10 +61,15 @@ namespace ETModel
 			long id = this.Id;
 
 			base.Dispose();
-
+			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
 				action.Invoke(new ResponseMessage { Error = this.Error });
+			}
+
+			if (this.Error != 0)
+			{
+				Log.Error($"session dispose: {this.Id} {this.Error}");
 			}
 
 			this.Error = 0;
@@ -116,13 +131,13 @@ namespace ETModel
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				Type responseType = opcodeTypeComponent.GetType(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
+				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)
 			{
 				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error(e);
+				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
 				return;
@@ -152,7 +167,7 @@ namespace ETModel
 			{
 				try
 				{
-					if (response.Error > ErrorCode.ERR_Exception)
+					if (ErrorCode.IsRpcNeedThrowException(response.Error))
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
@@ -179,7 +194,7 @@ namespace ETModel
 			{
 				try
 				{
-					if (response.Error > ErrorCode.ERR_Exception)
+					if (ErrorCode.IsRpcNeedThrowException(response.Error))
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
@@ -238,27 +253,20 @@ namespace ETModel
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				this.pkt.Length = 0;
-				ushort index = 0;
-				foreach (var byts in byteses)
-				{
-					Array.Copy(byts, 0, this.pkt.Bytes, index, byts.Length);
-					index += (ushort)byts.Length;
-				}
 
-				this.pkt.Length = index;
-				this.pkt.Flag = flag;
-				this.pkt.Opcode = opcode;
-				session.Run(this.pkt);
+				Packet packet = ((TChannel)this.channel).parser.packet;
+
+				packet.Flag = flag;
+				packet.Opcode = opcode;
+				packet.Stream.Seek(0, SeekOrigin.Begin);
+				packet.Stream.SetLength(bytes.Length);
+				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
+				session.Run(packet);
 				return;
 			}
 #endif
 
 			channel.Send(this.byteses);
 		}
-
-#if SERVER
-		private readonly Packet pkt = new Packet(ushort.MaxValue);
-#endif
 	}
 }

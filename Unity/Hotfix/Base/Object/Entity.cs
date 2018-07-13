@@ -33,9 +33,7 @@ namespace ETHotfix
 			{
 				return;
 			}
-
-			base.Dispose();
-
+			
 			foreach (Component component in this.GetComponents())
 			{
 				try
@@ -48,6 +46,8 @@ namespace ETHotfix
 				}
 			}
 
+			base.Dispose();
+
 			this.components.Clear();
 			this.componentDict.Clear();
 		}
@@ -59,6 +59,8 @@ namespace ETHotfix
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
+			
+			component.Parent = this;
 
 			if (component is ISerializeToEntity)
 			{

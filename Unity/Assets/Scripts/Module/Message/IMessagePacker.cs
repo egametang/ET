@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ETModel
 {
@@ -8,6 +9,7 @@ namespace ETModel
 		string SerializeToText(object obj);
 
 		object DeserializeFrom(Type type, byte[] bytes);
+		object DeserializeFrom(Type type, Stream stream);
 		object DeserializeFrom(Type type, byte[] bytes, int index, int count);
 		T DeserializeFrom<T>(byte[] bytes);
 		T DeserializeFrom<T>(byte[] bytes, int index, int count);

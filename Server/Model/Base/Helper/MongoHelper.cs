@@ -65,6 +65,11 @@ namespace ETModel
 				return BsonSerializer.Deserialize(memoryStream, type);
 			}
 		}
+		
+		public static object FromStream(Type type, Stream stream)
+		{
+			return BsonSerializer.Deserialize(stream, type);
+		}
 
 		public static T FromBson<T>(byte[] bytes)
 		{

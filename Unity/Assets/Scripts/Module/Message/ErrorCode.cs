@@ -3,21 +3,43 @@ namespace ETModel
 	public static class ErrorCode
 	{
 		public const int ERR_Success = 0;
-		public const int ERR_NotFoundActor = 2;
-		public const int ERR_ActorNoMailBoxComponent = 3;
-		public const int ERR_ActorTimeOut = 4;
-		public const int ERR_PacketParserError = 5;
 
-		public const int ERR_AccountOrPasswordError = 102;
-		public const int ERR_SessionActorError = 103;
-		public const int ERR_NotFoundUnit = 104;
-		public const int ERR_ConnectGateKeyError = 105;
+		// 100000 以上，避免跟SocketError冲突
+		public const int ERR_MyErrorCode = 100000;
+		
+		// 小于这个Rpc会抛异常
+		public const int ERR_Exception = 200000;
+		
+		public const int ERR_NotFoundActor = 200002;
+		public const int ERR_ActorNoMailBoxComponent = 200003;
+		public const int ERR_ActorTimeOut = 200004;
+		public const int ERR_PacketParserError = 200005;
 
-		public const int ERR_Exception = 1000;
+		public const int ERR_AccountOrPasswordError = 200102;
+		public const int ERR_SessionActorError = 200103;
+		public const int ERR_NotFoundUnit = 200104;
+		public const int ERR_ConnectGateKeyError = 200105;
 
-		public const int ERR_RpcFail = 2001;
-		public const int ERR_SocketDisconnected = 2002;
-		public const int ERR_ReloadFail = 2003;
-		public const int ERR_ActorLocationNotFound = 2004;
+		public const int ERR_RpcFail = 202001;
+		public const int ERR_SocketDisconnected = 202002;
+		public const int ERR_ReloadFail = 202003;
+		public const int ERR_ActorLocationNotFound = 202004;
+		public const int ERR_KcpConnectFail = 202005;
+		public const int ERR_KcpTimeout = 202006;
+
+		public static bool IsRpcNeedThrowException(int error)
+		{
+			if (error == 0)
+			{
+				return false;
+			}
+
+			if (error > ERR_Exception)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

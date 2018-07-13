@@ -14,7 +14,6 @@ namespace ETHotfix
 
 		protected ComponentWithId()
 		{
-			this.Id = this.InstanceId;
 		}
 
 		protected ComponentWithId(long id)

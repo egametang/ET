@@ -25,6 +25,8 @@ namespace ETModel
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
+				Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
+				
 				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
 				{
 					continue;
@@ -58,7 +60,7 @@ namespace ETModel
 			Log.Info($"{exe} {arguments}");
 			try
 			{
-				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = true };
+				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = false };
 
 				Process process = Process.Start(info);
 				this.processes.Add(startConfig.AppId, process);
