@@ -80,7 +80,7 @@ namespace ETModel
 		public abstract void Send(byte[] buffer, int index, int length);
 
 		public abstract void Send(List<byte[]> buffers);
-		
+
 		public override void Dispose()
 		{
 			if (this.IsDisposed)

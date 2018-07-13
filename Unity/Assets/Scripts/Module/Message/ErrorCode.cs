@@ -3,11 +3,10 @@ namespace ETModel
 	public static class ErrorCode
 	{
 		public const int ERR_Success = 0;
-		
+
 		// 100000 以上，避免跟SocketError冲突
 		public const int ERR_MyErrorCode = 100000;
 		
-
 		// 小于这个Rpc会抛异常
 		public const int ERR_Exception = 200000;
 		

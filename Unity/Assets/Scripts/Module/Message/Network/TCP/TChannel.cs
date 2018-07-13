@@ -183,6 +183,7 @@ namespace ETModel
 
 		public void RecvAsync(byte[] buffer, int offset, int count)
 		{
+			long instanceId = this.InstanceId;
 			try
 			{
 				this.innArgs.SetBuffer(buffer, offset, count);
@@ -273,6 +274,7 @@ namespace ETModel
 
 		public void SendAsync(byte[] buffer, int offset, int count)
 		{
+			long instanceId = this.InstanceId;
 			try
 			{
 				this.outArgs.SetBuffer(buffer, offset, count);
@@ -287,7 +289,7 @@ namespace ETModel
 			}
 			OnSendComplete(this.outArgs);
 		}
-
+    
 		private void OnSendComplete(object o)
 		{
 			if (this.socket == null)

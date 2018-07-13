@@ -50,6 +50,7 @@ namespace ETModel
 			
 			this.channel.Start();
 		}
+
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -109,7 +110,7 @@ namespace ETModel
 		{
 			byte flag = packet.Flag;
 			ushort opcode = packet.Opcode;
-			
+
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{

@@ -37,6 +37,7 @@ namespace ETModel
 			this.Stream = new MemoryStream(length);
 		}
 
+
 		public Packet(byte[] bytes)
 		{
 			this.Stream = new MemoryStream(bytes);
@@ -92,6 +93,7 @@ namespace ETModel
 						}
 						else
 						{
+
 							this.buffer.Read(this.cache, 0, 1);
 							this.packet.Flag = this.cache[0];
 							this.buffer.Read(this.cache, 0, 2);
