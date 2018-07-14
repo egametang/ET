@@ -78,10 +78,14 @@ namespace ILRuntime.Runtime.Generated
             ETModel_SessionCallbackComponent_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeInstance_Binding.Register(app);
             ETModel_Component_Binding.Register(app);
-            ETModel_ProtobufHelper_Binding.Register(app);
+            ETModel_Packet_Binding.Register(app);
+            ETModel_NetworkComponent_Binding.Register(app);
+            ETModel_IMessagePacker_Binding.Register(app);
             ETModel_MessageInfo_Binding.Register(app);
+            ETModel_ProtobufHelper_Binding.Register(app);
             System_Threading_Tasks_TaskCompletionSource_1_ILTypeInstance_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
+            ETModel_ErrorCode_Binding.Register(app);
             ETModel_RpcException_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
             ETModel_OpcodeTypeComponent_Binding.Register(app);
@@ -113,7 +117,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_GlobalProto_Binding.Register(app);
             ETModel_NetworkHelper_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
-            ETModel_NetworkComponent_Binding.Register(app);
             ETModel_ComponentFactory_Binding.Register(app);
 
             ILRuntime.CLR.TypeSystem.CLRType __clrType = null;

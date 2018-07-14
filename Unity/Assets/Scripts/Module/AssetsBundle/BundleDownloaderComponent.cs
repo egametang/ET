@@ -21,8 +21,8 @@ namespace ETModel
 	/// </summary>
 	public class BundleDownloaderComponent : Component
 	{
-		public VersionConfig VersionConfig { get; private set; }
-
+		private VersionConfig remoteVersionConfig;
+		
 		public Queue<string> bundles;
 
 		public long TotalSize;
@@ -33,81 +33,100 @@ namespace ETModel
 
 		public UnityWebRequestAsync webRequest;
 
-		public TaskCompletionSource<bool> Tcs;
-
 		public async Task StartAsync()
 		{
-			using (UnityWebRequestAsync webRequestAsync = ComponentFactory.Create<UnityWebRequestAsync>())
+			// 获取远程的Version.txt
+			string versionUrl = "";
+			try
 			{
-				string versionUrl = GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + "Version.txt";
-				//Log.Debug(versionUrl);
-				await webRequestAsync.DownloadAsync(versionUrl);
-				this.VersionConfig = JsonHelper.FromJson<VersionConfig>(webRequestAsync.Request.downloadHandler.text);
-				//Log.Debug(JsonHelper.ToJson(this.VersionConfig));
-			}
-
-
-			VersionConfig localVersionConfig;
-			// 对比本地的Version.txt
-			string versionPath = Path.Combine(PathHelper.AppHotfixResPath, "Version.txt");
-			if (File.Exists(versionPath))
-			{
-				localVersionConfig = JsonHelper.FromJson<VersionConfig>(File.ReadAllText(versionPath));
-			}
-			else
-			{
-				versionPath = Path.Combine(PathHelper.AppResPath4Web, "Version.txt");
-				using (UnityWebRequestAsync request = ComponentFactory.Create<UnityWebRequestAsync>())
+				using (UnityWebRequestAsync webRequestAsync = ComponentFactory.Create<UnityWebRequestAsync>())
 				{
-					await request.DownloadAsync(versionPath);
-					localVersionConfig = JsonHelper.FromJson<VersionConfig>(request.Request.downloadHandler.text);
+					versionUrl = GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + "Version.txt";
+					//Log.Debug(versionUrl);
+					await webRequestAsync.DownloadAsync(versionUrl);
+					remoteVersionConfig = JsonHelper.FromJson<VersionConfig>(webRequestAsync.Request.downloadHandler.text);
+					//Log.Debug(JsonHelper.ToJson(this.VersionConfig));
 				}
+
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"url: {versionUrl}");
 			}
 
-
-			// 先删除服务器端没有的ab
-			foreach (FileVersionInfo fileVersionInfo in localVersionConfig.FileInfoDict.Values)
+			// 获取streaming目录的Version.txt
+			VersionConfig streamingVersionConfig;
+			string versionPath = Path.Combine(PathHelper.AppResPath4Web, "Version.txt");
+			using (UnityWebRequestAsync request = ComponentFactory.Create<UnityWebRequestAsync>())
 			{
-				if (this.VersionConfig.FileInfoDict.ContainsKey(fileVersionInfo.File))
-				{
-					continue;
-				}
-				string abPath = Path.Combine(PathHelper.AppHotfixResPath, fileVersionInfo.File);
-				File.Delete(abPath);
+				await request.DownloadAsync(versionPath);
+				streamingVersionConfig = JsonHelper.FromJson<VersionConfig>(request.Request.downloadHandler.text);
 			}
-
-			// 再下载
-			foreach (FileVersionInfo fileVersionInfo in this.VersionConfig.FileInfoDict.Values)
+			
+			// 删掉远程不存在的文件
+			DirectoryInfo directoryInfo = new DirectoryInfo(PathHelper.AppHotfixResPath);
+			if (directoryInfo.Exists)
 			{
-				FileVersionInfo localVersionInfo;
-				if (localVersionConfig.FileInfoDict.TryGetValue(fileVersionInfo.File, out localVersionInfo))
+				FileInfo[] fileInfos = directoryInfo.GetFiles();
+				foreach (FileInfo fileInfo in fileInfos)
 				{
-					if (fileVersionInfo.MD5 == localVersionInfo.MD5)
+					if (remoteVersionConfig.FileInfoDict.ContainsKey(fileInfo.Name))
 					{
 						continue;
 					}
+					
+					fileInfo.Delete();
 				}
+			}
+			else
+			{
+				directoryInfo.Create();
+			}
 
-				if (fileVersionInfo.File == "Version.txt")
+			// 对比MD5
+			foreach (FileVersionInfo fileVersionInfo in remoteVersionConfig.FileInfoDict.Values)
+			{
+				// 对比md5
+				string localFileMD5 = BundleHelper.GetBundleMD5(streamingVersionConfig, fileVersionInfo.File);
+				if (fileVersionInfo.MD5 == localFileMD5)
 				{
 					continue;
 				}
-
 				this.bundles.Enqueue(fileVersionInfo.File);
 				this.TotalSize += fileVersionInfo.Size;
 			}
+		}
 
-			if (this.bundles.Count == 0)
+		public int Progress
+		{
+			get
+			{
+				if (this.TotalSize == 0)
+				{
+					return 0;
+				}
+
+				long alreadyDownloadBytes = 0;
+				foreach (string downloadedBundle in this.downloadedBundles)
+				{
+					long size = this.remoteVersionConfig.FileInfoDict[downloadedBundle].Size;
+					alreadyDownloadBytes += size;
+				}
+				if (this.webRequest != null)
+				{
+					alreadyDownloadBytes += (long)this.webRequest.Request.downloadedBytes;
+				}
+				return (int)(alreadyDownloadBytes * 100f / this.TotalSize);
+			}
+		}
+
+		public async Task DownloadAsync()
+		{
+			if (this.bundles.Count == 0 && this.downloadingBundle == "")
 			{
 				return;
 			}
 
-			//Log.Debug($"need download bundles: {this.bundles.ToList().ListToString()}");
-			await this.WaitAsync();
-		}
-
-		private async void UpdateAsync()
-		{
 			try
 			{
 				while (true)
@@ -129,10 +148,6 @@ namespace ETModel
 								byte[] data = this.webRequest.Request.downloadHandler.data;
 
 								string path = Path.Combine(PathHelper.AppHotfixResPath, this.downloadingBundle);
-								if (!Directory.Exists(Path.GetDirectoryName(path)))
-								{
-									Directory.CreateDirectory(Path.GetDirectoryName(path));
-								}
 								using (FileStream fs = new FileStream(path, FileMode.Create))
 								{
 									fs.Write(data, 0, data.Length);
@@ -151,61 +166,11 @@ namespace ETModel
 					this.downloadingBundle = "";
 					this.webRequest = null;
 				}
-
-				using (FileStream fs = new FileStream(Path.Combine(PathHelper.AppHotfixResPath, "Version.txt"), FileMode.Create))
-				using (StreamWriter sw = new StreamWriter(fs))
-				{
-					sw.Write(JsonHelper.ToJson(this.VersionConfig));
-				}
-
-				this.Tcs?.SetResult(true);
 			}
 			catch (Exception e)
 			{
 				Log.Error(e);
 			}
-		}
-
-		public int Progress
-		{
-			get
-			{
-				if (this.VersionConfig == null)
-				{
-					return 0;
-				}
-
-				if (this.TotalSize == 0)
-				{
-					return 0;
-				}
-
-				long alreadyDownloadBytes = 0;
-				foreach (string downloadedBundle in this.downloadedBundles)
-				{
-					long size = this.VersionConfig.FileInfoDict[downloadedBundle].Size;
-					alreadyDownloadBytes += size;
-				}
-				if (this.webRequest != null)
-				{
-					alreadyDownloadBytes += (long)this.webRequest.Request.downloadedBytes;
-				}
-				return (int)(alreadyDownloadBytes * 100f / this.TotalSize);
-			}
-		}
-
-		private Task<bool> WaitAsync()
-		{
-			if (this.bundles.Count == 0 && this.downloadingBundle == "")
-			{
-				return Task.FromResult(true);
-			}
-
-			this.Tcs = new TaskCompletionSource<bool>();
-
-			UpdateAsync();
-
-			return this.Tcs.Task;
 		}
 	}
 }

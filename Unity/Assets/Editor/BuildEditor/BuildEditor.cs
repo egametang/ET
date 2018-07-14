@@ -20,6 +20,12 @@ namespace ETEditor
 		IOS,
 		PC,
 	}
+	
+	public enum BuildType
+	{
+		Development,
+		Release,
+	}
 
 	public class BuildEditor : EditorWindow
 	{
@@ -28,6 +34,7 @@ namespace ETEditor
 		private PlatformType platformType;
 		private bool isBuildExe;
 		private bool isContainAB;
+		private BuildType buildType;
 		private BuildOptions buildOptions = BuildOptions.AllowDebugging | BuildOptions.Development;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
@@ -39,21 +46,22 @@ namespace ETEditor
 
 		private void OnGUI()
 		{
-			if (GUILayout.Button("标记"))
-			{
-				SetPackingTagAndAssetBundle();
-			}
-
-			if (GUILayout.Button("清除标记"))
-			{
-				ClearPackingTagAndAssetBundle();
-			}
-
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
 			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
 			this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
-			this.buildOptions = (BuildOptions)EditorGUILayout.EnumMaskField("BuildOptions(可多选): ", this.buildOptions);
-			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumMaskField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
+			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
+			
+			switch (buildType)
+			{
+				case BuildType.Development:
+					this.buildOptions = BuildOptions.Development | BuildOptions.AutoRunPlayer | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
+					break;
+				case BuildType.Release:
+					this.buildOptions = BuildOptions.None;
+					break;
+			}
+			
+			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
 
 			if (GUILayout.Button("开始打包"))
 			{

@@ -19,17 +19,25 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
+            FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.Session);
             args = new Type[]{typeof(ETModel.IMessage)};
             method = type.GetMethod("Send", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Send_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_Network", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Network_1);
             args = new Type[]{typeof(System.Byte), typeof(System.UInt16), typeof(System.Byte[])};
             method = type.GetMethod("Send", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Send_1);
+            app.RegisterCLRMethodRedirection(method, Send_2);
             args = new Type[]{typeof(ETModel.IRequest)};
             method = type.GetMethod("Call", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Call_2);
+            app.RegisterCLRMethodRedirection(method, Call_3);
+
+            field = type.GetField("Error", flag);
+            app.RegisterCLRFieldGetter(field, get_Error_0);
+            app.RegisterCLRFieldSetter(field, set_Error_0);
 
 
         }
@@ -54,7 +62,27 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* Send_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_Network_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ETModel.Session instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Network;
+
+            object obj_result_of_this_method = result_of_this_method;
+            if(obj_result_of_this_method is CrossBindingAdaptorType)
+            {    
+                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
+            }
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Send_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -79,7 +107,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* Call_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Call_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -103,6 +131,15 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
+
+        static object get_Error_0(ref object o)
+        {
+            return ((ETModel.Session)o).Error;
+        }
+        static void set_Error_0(ref object o, object v)
+        {
+            ((ETModel.Session)o).Error = (System.Int32)v;
+        }
 
 
     }
