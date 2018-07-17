@@ -1,6 +1,4 @@
-﻿using ProtoBuf;
-
-namespace ETHotfix
+﻿namespace ETHotfix
 {
 	public interface IMessage
 	{

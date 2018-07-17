@@ -45,7 +45,7 @@ namespace ETHotfix
 
         public static void Add(this ServerFrameComponent self, OneFrameMessage oneFrameMessage)
         {
-            self.FrameMessage.Messages.Add(oneFrameMessage);
+            self.FrameMessage.Message.Add(oneFrameMessage);
         }
     }
 }

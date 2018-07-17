@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ETModel;
-using ProtoBuf;
 
 namespace ETHotfix
 {
@@ -35,17 +34,6 @@ namespace ETHotfix
 					continue;
 				}
 				this.opcodeTypes.Add(messageAttribute.Opcode, type);
-			}
-
-			foreach (Type type in types)
-			{
-				object[] attrs = type.GetCustomAttributes(typeof(ProtoContractAttribute), false);
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
-
-				PType.RegisterType(type.FullName, type);
 			}
 		}
 

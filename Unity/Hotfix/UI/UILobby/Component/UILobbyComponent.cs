@@ -49,7 +49,7 @@ namespace ETHotfix
 			try
 			{
 				// 向actor发起一次rpc调用
-				Actor_TestResponse response = (Actor_TestResponse) await ETModel.SessionComponent.Instance.Session.Call(new Actor_TestRequest() { request = "request actor test rpc" });
+				Actor_TestResponse response = (Actor_TestResponse) await ETModel.SessionComponent.Instance.Session.Call(new Actor_TestRequest() { Request = "request actor test rpc" });
 				Log.Info($"recv response: {JsonHelper.ToJson(response)}");
 			}
 			catch (Exception e)
@@ -81,7 +81,8 @@ namespace ETHotfix
 		{
 			try
 			{
-				G2C_EnterMap g2CEnterMap = (G2C_EnterMap)await ETModel.SessionComponent.Instance.Session.Call(new C2G_EnterMap());
+				object o = await ETModel.SessionComponent.Instance.Session.Call(new C2G_EnterMap());
+				G2C_EnterMap g2CEnterMap = (G2C_EnterMap) o;
 				Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILobby);
 			}
 			catch (Exception e)

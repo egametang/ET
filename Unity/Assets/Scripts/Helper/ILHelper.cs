@@ -46,31 +46,7 @@ namespace ETModel
 				appDomain.RegisterCrossBindingAdaptor(adaptor);
 			}
 
-			// 初始化ILRuntime的protobuf
-			InitializeILRuntimeProtobuf(appDomain);
 			LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appDomain);
-		}
-
-		public static void InitializeILRuntimeProtobuf(ILRuntime.Runtime.Enviorment.AppDomain appDomain)
-		{
-			ProtoBuf.PType.RegisterFunctionCreateInstance((typeName)=>PType_CreateInstance(appDomain, typeName));
-			ProtoBuf.PType.RegisterFunctionGetRealType(PType_GetRealType);
-		}
-
-		private static object PType_CreateInstance(ILRuntime.Runtime.Enviorment.AppDomain appDomain, string typeName)
-		{
-			return appDomain.Instantiate(typeName);
-		}
-
-		private static Type PType_GetRealType(object o)
-		{
-			Type type = o.GetType();
-			if (type.FullName == "ILRuntime.Runtime.Intepreter.ILTypeInstance")
-			{
-				ILTypeInstance ilo = o as ILTypeInstance;
-				type = ProtoBuf.PType.FindType(ilo.Type.FullName);
-			}
-			return type;
 		}
 	}
 }

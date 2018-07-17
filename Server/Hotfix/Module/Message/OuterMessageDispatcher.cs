@@ -1,5 +1,6 @@
 ﻿using System;
 using ETModel;
+using Google.Protobuf;
 
 namespace ETHotfix
 {
@@ -34,11 +35,11 @@ namespace ETHotfix
 	
 					// 这里设置了帧消息的id，防止客户端伪造
 					iFrameMessage.Id = unitId;
-	
+
 					OneFrameMessage oneFrameMessage = new OneFrameMessage
 					{
 						Op = packet.Opcode,
-						AMessage = session.Network.MessagePacker.SerializeToByteArray(iFrameMessage)
+						AMessage = ByteString.CopyFrom(session.Network.MessagePacker.SerializeToByteArray(iFrameMessage))
 					};
 					actorMessageSender.Send(oneFrameMessage);
 					return;

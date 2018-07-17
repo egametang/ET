@@ -1,3 +1,6 @@
+using ETModel;
+using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 namespace ETHotfix
 {
 	public static partial class InnerOpcode

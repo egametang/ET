@@ -1,3 +1,37 @@
+using ETModel;
+namespace ETHotfix
+{
+	[Message(HotfixOpcode.C2R_Login)]
+	public partial class C2R_Login : IRequest {}
+
+	[Message(HotfixOpcode.R2C_Login)]
+	public partial class R2C_Login : IResponse {}
+
+	[Message(HotfixOpcode.C2G_LoginGate)]
+	public partial class C2G_LoginGate : IRequest {}
+
+	[Message(HotfixOpcode.G2C_LoginGate)]
+	public partial class G2C_LoginGate : IResponse {}
+
+	[Message(HotfixOpcode.G2C_TestHotfixMessage)]
+	public partial class G2C_TestHotfixMessage : IMessage {}
+
+	[Message(HotfixOpcode.C2M_TestActorRequest)]
+	public partial class C2M_TestActorRequest : IActorRequest {}
+
+	[Message(HotfixOpcode.M2C_TestActorResponse)]
+	public partial class M2C_TestActorResponse : IActorResponse {}
+
+	[Message(HotfixOpcode.PlayerInfo)]
+	public partial class PlayerInfo : IMessage {}
+
+	[Message(HotfixOpcode.C2G_PlayerInfo)]
+	public partial class C2G_PlayerInfo : IRequest {}
+
+	[Message(HotfixOpcode.G2C_PlayerInfo)]
+	public partial class G2C_PlayerInfo : IResponse {}
+
+}
 namespace ETHotfix
 {
 	public static partial class HotfixOpcode

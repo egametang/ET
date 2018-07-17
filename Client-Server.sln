@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.Driver", "Server\Th
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.Driver.Core", "Server\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj", "{831276B2-B7EB-4FD0-93E5-4D2109C78950}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Protobuf", "Server\ThirdParty\Google.Protobuf\Google.Protobuf.csproj", "{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -175,6 +177,18 @@ Global
 		{831276B2-B7EB-4FD0-93E5-4D2109C78950}.Release|x64.Build.0 = Release|Any CPU
 		{831276B2-B7EB-4FD0-93E5-4D2109C78950}.Release|x86.ActiveCfg = Release|Any CPU
 		{831276B2-B7EB-4FD0-93E5-4D2109C78950}.Release|x86.Build.0 = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|x64.Build.0 = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Debug|x86.Build.0 = Debug|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|x64.ActiveCfg = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|x64.Build.0 = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +207,7 @@ Global
 		{BC611535-3BDA-45C5-8765-9E242E312B8F} = {4940CE10-6652-4AC6-9D30-CF200A217643}
 		{6D19C1F8-085C-422E-8DAF-2E49024DB08C} = {4940CE10-6652-4AC6-9D30-CF200A217643}
 		{831276B2-B7EB-4FD0-93E5-4D2109C78950} = {4940CE10-6652-4AC6-9D30-CF200A217643}
+		{BC06C46E-79F3-4AB6-800E-FA080CA54A0B} = {78640FA0-9F11-412D-A639-61F03D02407A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EABC01E3-3EB5-47EF-B46E-AAD8BB3585F1}

@@ -44,17 +44,17 @@ namespace ETModel
             }
             SessionFrameMessage sessionFrameMessage = this.Queue.Dequeue();
             this.Frame = sessionFrameMessage.FrameMessage.Frame;
-
-            for (int i = 0; i < sessionFrameMessage.FrameMessage.Messages.Count; ++i)
+            for (int i = 0; i < sessionFrameMessage.FrameMessage.Message.Count; ++i)
             {
-	            OneFrameMessage oneFrameMessage = sessionFrameMessage.FrameMessage.Messages[i];
+	            OneFrameMessage oneFrameMessage = sessionFrameMessage.FrameMessage.Message[i];
 
 				Session session = sessionFrameMessage.Session;
 				OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-	            Type type = opcodeTypeComponent.GetType(oneFrameMessage.Op);
+	            Type type = opcodeTypeComponent.GetType((ushort)oneFrameMessage.Op);
 
-	            IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, oneFrameMessage.AMessage);
-                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo(oneFrameMessage.Op, message));
+	            byte[] bytes = oneFrameMessage.AMessage.ToByteArray();
+	            IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, bytes, 0, bytes.Length);
+                Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo((ushort)oneFrameMessage.Op, message));
             }
         }
     }

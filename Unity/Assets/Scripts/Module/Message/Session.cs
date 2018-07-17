@@ -233,7 +233,6 @@ namespace ETModel
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
 			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
-
 			Send(flag, opcode, bytes);
 		}
 
