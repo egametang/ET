@@ -15,6 +15,11 @@ namespace ETModel
 			return MongoHelper.FromBson(type, bytes, index, count);
 		}
 
+		public object DeserializeFrom(object instance, byte[] bytes, int index, int count)
+		{
+			return MongoHelper.FromBson(instance, bytes, index, count);
+		}
+
 		public object DeserializeFrom(Type type, MemoryStream stream)
 		{
 			return MongoHelper.FromStream(type, stream);

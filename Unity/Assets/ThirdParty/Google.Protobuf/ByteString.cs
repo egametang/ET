@@ -53,13 +53,13 @@ namespace Google.Protobuf
         /// <summary>
         /// Unsafe operations that can cause IO Failure and/or other catestrophic side-effects.
         /// </summary>
-        internal static class Unsafe
+        public static class Unsafe
         {
             /// <summary>
             /// Constructs a new ByteString from the given byte array. The array is
             /// *not* copied, and must not be modified after this constructor is called.
             /// </summary>
-            internal static ByteString FromBytes(byte[] bytes)
+            public static ByteString FromBytes(byte[] bytes)
             {
                 return new ByteString(bytes);
             }
@@ -68,7 +68,7 @@ namespace Google.Protobuf
             /// Provides direct, unrestricted access to the bytes contained in this instance.
             /// You must not modify or resize the byte array returned by this method.
             /// </summary>
-            internal static byte[] GetBuffer(ByteString bytes)
+            public static byte[] GetBuffer(ByteString bytes)
             {
                 return bytes.bytes;
             }

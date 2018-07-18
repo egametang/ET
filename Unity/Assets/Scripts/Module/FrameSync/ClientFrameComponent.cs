@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Google.Protobuf;
 
 namespace ETModel
 {
@@ -50,10 +51,11 @@ namespace ETModel
 
 				Session session = sessionFrameMessage.Session;
 				OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-	            Type type = opcodeTypeComponent.GetType((ushort)oneFrameMessage.Op);
+	            ushort opcode = (ushort) oneFrameMessage.Op;
+	            object instance = opcodeTypeComponent.GetInstance(opcode);
 
-	            byte[] bytes = oneFrameMessage.AMessage.ToByteArray();
-	            IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(type, bytes, 0, bytes.Length);
+	            byte[] bytes = ByteString.Unsafe.GetBuffer(oneFrameMessage.AMessage);
+	            IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(instance, bytes, 0, bytes.Length);
                 Game.Scene.GetComponent<MessageDispatherComponent>().Handle(sessionFrameMessage.Session, new MessageInfo((ushort)oneFrameMessage.Op, message));
             }
         }

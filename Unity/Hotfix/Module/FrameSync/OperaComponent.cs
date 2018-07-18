@@ -56,7 +56,7 @@ namespace ETHotfix
 		    {
 			    M2C_TestActorResponse response = (M2C_TestActorResponse)await SessionComponent.Instance.Session.Call(
 						new C2M_TestActorRequest() { Info = "actor rpc request" });
-			    Log.Info(response.Info);
+			    //Log.Info(response.Info);
 			}
 		    catch (Exception e)
 		    {

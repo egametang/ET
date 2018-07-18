@@ -25,6 +25,19 @@ namespace ETModel
 			return message;
 		}
 		
+		public static object FromBytes(object instance, byte[] bytes, int index, int count)
+		{
+			object message = instance;
+			((Google.Protobuf.IMessage)message).MergeFrom(bytes, index, count);
+			ISupportInitialize iSupportInitialize = message as ISupportInitialize;
+			if (iSupportInitialize == null)
+			{
+				return message;
+			}
+			iSupportInitialize.EndInit();
+			return message;
+		}
+		
 		public static object FromStream(Type type, MemoryStream stream)
 		{
 			object message = Activator.CreateInstance(type);

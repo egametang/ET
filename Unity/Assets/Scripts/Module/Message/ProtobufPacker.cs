@@ -15,6 +15,11 @@ namespace ETModel
 			return ProtobufHelper.FromBytes(type, bytes, index, count);
 		}
 
+		public object DeserializeFrom(object instance, byte[] bytes, int index, int count)
+		{
+			return ProtobufHelper.FromBytes(instance, bytes, index, count);
+		}
+
 		public object DeserializeFrom(Type type, MemoryStream stream)
 		{
 			return ProtobufHelper.FromStream(type, stream);
