@@ -16,8 +16,8 @@ namespace ETModel
 				}
 
 				OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-				Type responseType = opcodeTypeComponent.GetType(packet.Opcode);
-				message = session.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
+				object instance = opcodeTypeComponent.GetInstance(packet.Opcode);
+				message = session.Network.MessagePacker.DeserializeFrom(instance, packet.Stream);
 			}
 			catch (Exception e)
 			{

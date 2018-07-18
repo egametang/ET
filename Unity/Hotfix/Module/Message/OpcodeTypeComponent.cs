@@ -9,16 +9,30 @@ namespace ETHotfix
 	{
 		public override void Awake(OpcodeTypeComponent self)
 		{
-			self.Awake();
+			self.Load();
+		}
+	}
+	
+	[ObjectSystem]
+	public class OpcodeTypeComponentLoadSystem : LoadSystem<OpcodeTypeComponent>
+	{
+		public override void Load(OpcodeTypeComponent self)
+		{
+			self.Load();
 		}
 	}
 
 	public class OpcodeTypeComponent : Component
 	{
 		private readonly DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
+		
+		private readonly Dictionary<ushort, object> typeMessages = new Dictionary<ushort, object>();
 
-		public void Awake()
+		public void Load()
 		{
+			this.opcodeTypes.Clear();
+			this.typeMessages.Clear();
+			
 			List<Type> types = ETModel.Game.Hotfix.GetHotfixTypes();
 			foreach (Type type in types)
 			{
@@ -34,6 +48,7 @@ namespace ETHotfix
 					continue;
 				}
 				this.opcodeTypes.Add(messageAttribute.Opcode, type);
+				this.typeMessages.Add(messageAttribute.Opcode, Activator.CreateInstance(type));
 			}
 		}
 
@@ -45,6 +60,11 @@ namespace ETHotfix
 		public Type GetType(ushort opcode)
 		{
 			return this.opcodeTypes.GetValueByKey(opcode);
+		}
+		
+		public object GetInstance(ushort opcode)
+		{
+			return this.typeMessages[opcode];
 		}
 
 		public override void Dispose()

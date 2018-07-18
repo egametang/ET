@@ -8,5 +8,6 @@ namespace ETModel
 		byte[] SerializeToByteArray(object obj);
 		object DeserializeFrom(Type type, byte[] bytes, int index, int count);
 		object DeserializeFrom(Type type, MemoryStream stream);
+		object DeserializeFrom(object instance, MemoryStream stream);
 	}
 }

@@ -19,5 +19,10 @@ namespace ETModel
 		{
 			return ProtobufHelper.FromStream(type, stream);
 		}
+
+		public object DeserializeFrom(object instance, MemoryStream stream)
+		{
+			return ProtobufHelper.FromStream(instance, stream);
+		}
 	}
 }

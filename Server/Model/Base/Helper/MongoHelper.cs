@@ -52,7 +52,7 @@ namespace ETModel
 		{
 			return obj.ToBson();
 		}
-
+		
 		public static object FromBson(Type type, byte[] bytes)
 		{
 			return BsonSerializer.Deserialize(bytes, type);
@@ -64,6 +64,11 @@ namespace ETModel
 			{
 				return BsonSerializer.Deserialize(memoryStream, type);
 			}
+		}
+		
+		public static object FromBson(object instance, Stream stream)
+		{
+			return BsonSerializer.Deserialize(stream, instance.GetType());
 		}
 		
 		public static object FromStream(Type type, Stream stream)

@@ -54,8 +54,8 @@ namespace ETHotfix
 			byte flag = packet.Flag;
 
 			OpcodeTypeComponent opcodeTypeComponent = Game.Scene.GetComponent<OpcodeTypeComponent>();
-			Type responseType = opcodeTypeComponent.GetType(opcode);
-			object message = this.session.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
+			object instance = opcodeTypeComponent.GetInstance(opcode);
+			object message = this.session.Network.MessagePacker.DeserializeFrom(instance, packet.Stream);
 
 			if ((flag & 0x01) > 0)
 			{

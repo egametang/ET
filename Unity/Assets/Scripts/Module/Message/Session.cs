@@ -129,8 +129,8 @@ namespace ETModel
 			try
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-				Type responseType = opcodeTypeComponent.GetType(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(responseType, packet.Stream);
+				object instance = opcodeTypeComponent.GetInstance(opcode);
+				message = this.Network.MessagePacker.DeserializeFrom(instance, packet.Stream);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)

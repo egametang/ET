@@ -19,5 +19,10 @@ namespace ETModel
 		{
 			return MongoHelper.FromStream(type, stream);
 		}
+
+		public object DeserializeFrom(object instance, MemoryStream stream)
+		{
+			return MongoHelper.FromBson(instance, stream);
+		}
 	}
 }
