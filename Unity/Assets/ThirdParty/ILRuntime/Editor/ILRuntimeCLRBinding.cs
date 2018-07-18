@@ -47,31 +47,9 @@ public class ILRuntimeCLRBinding
             domain.LoadAssembly(fs);
         }
         //Crossbind Adapter is needed to generate the correct binding code
-        InitILRuntime(domain);
+        ILHelper.InitILRuntime(domain);
         ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/ThirdParty/ILRuntime/Generated");
 	    AssetDatabase.Refresh();
 	}
-
-    static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain domain)
-    {
-        //这里需要注册所有热更DLL中用到的跨域继承Adapter，否则无法正确抓取引用
-        // 注册适配器
-        Assembly assembly = typeof(Init).Assembly;
-        foreach (Type type in assembly.GetTypes())
-        {
-            object[] attrs = type.GetCustomAttributes(typeof(ILAdapterAttribute), false);
-            if (attrs.Length == 0)
-            {
-                continue;
-            }
-            object obj = Activator.CreateInstance(type);
-            CrossBindingAdaptor adaptor = obj as CrossBindingAdaptor;
-            if (adaptor == null)
-            {
-                continue;
-            }
-            domain.RegisterCrossBindingAdaptor(adaptor);
-        }
-    }
 }
 #endif

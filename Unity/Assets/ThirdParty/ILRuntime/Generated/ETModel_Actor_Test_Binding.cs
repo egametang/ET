@@ -19,13 +19,14 @@ namespace ILRuntime.Runtime.Generated
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
-            FieldInfo field;
             Type[] args;
             Type type = typeof(ETModel.Actor_Test);
-
-            field = type.GetField("Info", flag);
-            app.RegisterCLRFieldGetter(field, get_Info_0);
-            app.RegisterCLRFieldSetter(field, set_Info_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_Info", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Info_0);
+            args = new Type[]{typeof(System.String)};
+            method = type.GetMethod("set_Info", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, set_Info_1);
 
             args = new Type[]{};
             method = type.GetConstructor(flag, null, args, null);
@@ -34,15 +35,40 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
+        static StackObject* get_Info_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
-        static object get_Info_0(ref object o)
-        {
-            return ((ETModel.Actor_Test)o).Info;
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ETModel.Actor_Test instance_of_this_method = (ETModel.Actor_Test)typeof(ETModel.Actor_Test).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Info;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
-        static void set_Info_0(ref object o, object v)
+
+        static StackObject* set_Info_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
-            ((ETModel.Actor_Test)o).Info = (System.String)v;
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            ETModel.Actor_Test instance_of_this_method = (ETModel.Actor_Test)typeof(ETModel.Actor_Test).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Info = value;
+
+            return __ret;
         }
+
 
         static StackObject* Ctor_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {

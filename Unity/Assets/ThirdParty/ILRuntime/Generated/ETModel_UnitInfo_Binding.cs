@@ -18,49 +18,74 @@ namespace ILRuntime.Runtime.Generated
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
-            FieldInfo field;
+            MethodBase method;
             Type[] args;
             Type type = typeof(ETModel.UnitInfo);
-
-            field = type.GetField("UnitId", flag);
-            app.RegisterCLRFieldGetter(field, get_UnitId_0);
-            app.RegisterCLRFieldSetter(field, set_UnitId_0);
-            field = type.GetField("X", flag);
-            app.RegisterCLRFieldGetter(field, get_X_1);
-            app.RegisterCLRFieldSetter(field, set_X_1);
-            field = type.GetField("Z", flag);
-            app.RegisterCLRFieldGetter(field, get_Z_2);
-            app.RegisterCLRFieldSetter(field, set_Z_2);
-
-
-        }
+            args = new Type[]{};
+            method = type.GetMethod("get_UnitId", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_UnitId_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_X", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_X_1);
+            args = new Type[]{};
+            method = type.GetMethod("get_Z", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Z_2);
 
 
+        }
 
-        static object get_UnitId_0(ref object o)
+
+        static StackObject* get_UnitId_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
-            return ((ETModel.UnitInfo)o).UnitId;
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ETModel.UnitInfo instance_of_this_method = (ETModel.UnitInfo)typeof(ETModel.UnitInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.UnitId;
+
+            __ret->ObjectType = ObjectTypes.Long;
+            *(long*)&__ret->Value = result_of_this_method;
+            return __ret + 1;
         }
-        static void set_UnitId_0(ref object o, object v)
+
+        static StackObject* get_X_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
-            ((ETModel.UnitInfo)o).UnitId = (System.Int64)v;
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ETModel.UnitInfo instance_of_this_method = (ETModel.UnitInfo)typeof(ETModel.UnitInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.X;
+
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method;
+            return __ret + 1;
         }
-        static object get_X_1(ref object o)
+
+        static StackObject* get_Z_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
-            return ((ETModel.UnitInfo)o).X;
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ETModel.UnitInfo instance_of_this_method = (ETModel.UnitInfo)typeof(ETModel.UnitInfo).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Z;
+
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method;
+            return __ret + 1;
         }
-        static void set_X_1(ref object o, object v)
-        {
-            ((ETModel.UnitInfo)o).X = (System.Int32)v;
-        }
-        static object get_Z_2(ref object o)
-        {
-            return ((ETModel.UnitInfo)o).Z;
-        }
-        static void set_Z_2(ref object o, object v)
-        {
-            ((ETModel.UnitInfo)o).Z = (System.Int32)v;
-        }
+
 
 
     }
