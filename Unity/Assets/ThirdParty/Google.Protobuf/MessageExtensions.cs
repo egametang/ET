@@ -39,6 +39,8 @@ namespace Google.Protobuf
     /// </summary>
     public static class MessageExtensions
     {
+        public static CodedInputStream inputStream = new CodedInputStream(new byte[0]);
+        
         /// <summary>
         /// Merges data from the given byte array into an existing message.
         /// </summary>
@@ -48,7 +50,8 @@ namespace Google.Protobuf
         {
             ProtoPreconditions.CheckNotNull(message, "message");
             ProtoPreconditions.CheckNotNull(data, "data");
-            CodedInputStream input = new CodedInputStream(data);
+            inputStream.Reset(data, 0, data.Length);
+            CodedInputStream input = inputStream;
             message.MergeFrom(input);
             input.CheckReadEndOfStreamTag();
         }
@@ -62,7 +65,9 @@ namespace Google.Protobuf
         {
             ProtoPreconditions.CheckNotNull(message, "message");
             ProtoPreconditions.CheckNotNull(data, "data");
-            CodedInputStream input = new CodedInputStream(data, offset, length);
+            inputStream.Reset(data, offset, length);
+            CodedInputStream input = inputStream;
+            //CodedInputStream input = new CodedInputStream(data, offset, length);
             message.MergeFrom(input);
             input.CheckReadEndOfStreamTag();
         }

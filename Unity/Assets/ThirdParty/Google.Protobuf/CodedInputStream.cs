@@ -57,12 +57,12 @@ namespace Google.Protobuf
         /// Whether to leave the underlying stream open when disposing of this stream.
         /// This is always true when there's no stream.
         /// </summary>
-        private readonly bool leaveOpen;
+        private bool leaveOpen;
 
         /// <summary>
         /// Buffer of data read from the stream or provided at construction time.
         /// </summary>
-        private readonly byte[] buffer;
+        private byte[] buffer;
 
         /// <summary>
         /// The index of the buffer at which we need to refill from the stream (if there is one).
@@ -111,8 +111,8 @@ namespace Google.Protobuf
 
         private int recursionDepth = 0;
 
-        private readonly int recursionLimit;
-        private readonly int sizeLimit;
+        private int recursionLimit;
+        private int sizeLimit;
 
         #region Construction
         // Note that the checks are performed such that we don't end up checking obviously-valid things
@@ -175,6 +175,25 @@ namespace Google.Protobuf
             this.sizeLimit = DefaultSizeLimit;
             this.recursionLimit = DefaultRecursionLimit;
             this.leaveOpen = leaveOpen;
+        }
+        
+        public void Reset(byte[] buf, int offset, int length)
+        {
+            this.buffer = buf;
+            this.bufferPos = offset;
+            this.bufferSize = length;
+            this.sizeLimit = DefaultSizeLimit;
+            this.recursionLimit = DefaultRecursionLimit;
+            this.leaveOpen = true;
+
+            bufferSizeAfterLimit = 0;
+            lastTag = 0;
+            nextTag = 0;
+            hasNextTag = false;
+            totalBytesRetired = 0;
+            currentLimit = int.MaxValue;
+            sizeLimit = 0;
+            recursionDepth = 0;
         }
 
         /// <summary>
