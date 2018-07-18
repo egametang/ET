@@ -53,6 +53,13 @@ namespace ETModel
 			return obj.ToBson();
 		}
 		
+		public static void ToBson(object obj, MemoryStream stream)
+		{
+			byte[] bytes = obj.ToBson();
+			stream.Write(bytes);
+			stream.Seek(0, SeekOrigin.Begin);
+		}
+		
 		public static object FromBson(Type type, byte[] bytes)
 		{
 			return BsonSerializer.Deserialize(bytes, type);

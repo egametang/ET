@@ -5,9 +5,14 @@ namespace ETModel
 {
 	public class ProtobufPacker : IMessagePacker
 	{
-		public byte[] SerializeToByteArray(object obj)
+		public byte[] SerializeTo(object obj)
 		{
 			return ProtobufHelper.ToBytes(obj);
+		}
+
+		public void SerializeTo(object obj, MemoryStream stream)
+		{
+			ProtobufHelper.ToStream(obj, stream);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes, int index, int count)

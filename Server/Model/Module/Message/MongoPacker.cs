@@ -5,9 +5,14 @@ namespace ETModel
 {
 	public class MongoPacker: IMessagePacker
 	{
-		public byte[] SerializeToByteArray(object obj)
+		public byte[] SerializeTo(object obj)
 		{
 			return MongoHelper.ToBson(obj);
+		}
+
+		public void SerializeTo(object obj, MemoryStream stream)
+		{
+			MongoHelper.ToBson(obj, stream);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes, int index, int count)

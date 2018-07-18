@@ -185,9 +185,7 @@ namespace ETModel
 				return;
 			}
 
-			// 处理chanel
-			this.idChannels.Remove(requestConn);
-			kChannel.Dispose();
+			kChannel.HandleDisConnect();
 		}
 
 		private void HandleRecv(byte[] bytes, int length, uint conn)

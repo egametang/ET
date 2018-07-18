@@ -70,6 +70,23 @@ namespace ETModel
 			this.Connect(kService.TimeNow);
 		}
 
+		public override void Send(MemoryStream stream)
+		{
+			ushort size = (ushort)(stream.Length - stream.Position);
+			byte[] bytes;
+			if (this.isConnected)
+			{
+				bytes = stream.GetBuffer();
+			}
+			else
+			{
+				bytes = new byte[size];
+				Array.Copy(stream.GetBuffer(), stream.Position, bytes, 0, size);
+			}
+
+			Send(bytes, 0, size);
+		}
+
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -90,6 +107,11 @@ namespace ETModel
 		private KService GetService()
 		{
 			return (KService)this.service;
+		}
+
+		public void HandleDisConnect()
+		{
+			this.OnError(ErrorCode.ERR_KcpRemoteDisconnect);
 		}
 
 		public void HandleConnnect(uint responseConn)
@@ -235,28 +257,14 @@ namespace ETModel
 			
 			this.sendBuffer.Enqueue(new WaitSendBuffer(buffer, index, length));
 		}
-
-		public override void Send(List<byte[]> buffers)
+		
+		public override MemoryStream Stream
 		{
-			ushort size = (ushort)buffers.Select(b => b.Length).Sum();
-			byte[] bytes;
-			if (this.isConnected)
+			get
 			{
-				bytes = this.packet.Bytes;
+				return this.packet.Stream;
 			}
-			else
-			{
-				bytes = new byte[size];
-			}
-
-			int index = 0;
-			foreach (byte[] buffer in buffers)
-			{
-				Array.Copy(buffer, 0, bytes, index, buffer.Length);
-				index += buffer.Length;
-			}
-
-			Send(bytes, 0, size);
 		}
+
 	}
 }

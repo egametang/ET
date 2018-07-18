@@ -12,6 +12,11 @@ namespace ETModel
 			return ((Google.Protobuf.IMessage) message).ToByteArray();
 		}
 		
+		public static void ToStream(object message, MemoryStream stream)
+		{
+			((Google.Protobuf.IMessage) message).WriteTo(stream);
+		}
+		
 		public static object FromBytes(Type type, byte[] bytes, int index, int count)
 		{
 			object message = Activator.CreateInstance(type);

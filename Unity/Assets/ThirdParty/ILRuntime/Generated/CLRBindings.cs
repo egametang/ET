@@ -27,7 +27,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_SessionComponent_Binding.Register(app);
             ETModel_Frame_ClickMap_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
-            ETModel_Session_Binding.Register(app);
             System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             System_Threading_Tasks_Task_1_ILTypeInstance_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_ILTypeInstance_Binding.Register(app);

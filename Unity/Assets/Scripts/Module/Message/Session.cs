@@ -22,10 +22,9 @@ namespace ETModel
 	{
 		private static int RpcId { get; set; }
 		private AChannel channel;
-		public int Error;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[0], new byte[0]};
+		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[0] };
 
 		public NetworkComponent Network
 		{
@@ -35,15 +34,25 @@ namespace ETModel
 			}
 		}
 
+		public int Error
+		{
+			get
+			{
+				return this.channel.Error;
+			}
+			set
+			{
+				this.channel.Error = value;
+			}
+		}
+
 		public void Awake(AChannel aChannel)
 		{
-			this.Error = 0;
 			this.channel = aChannel;
 			this.requestCallback.Clear();
 			long id = this.Id;
 			channel.ErrorCallback += (c, e) =>
 			{
-				this.Error = e;
 				this.Network.Remove(id); 
 			};
 			channel.ReadCallback += this.OnRead;
@@ -66,12 +75,12 @@ namespace ETModel
 				action.Invoke(new ResponseMessage { Error = this.Error });
 			}
 
-			if (this.Error != 0)
+			int error = this.channel.Error;
+			if (this.channel.Error != 0)
 			{
-				Log.Error($"session dispose: {this.Id} {this.Error}");
+				Log.Error($"session dispose: {this.Id} {error}");
 			}
-
-			this.Error = 0;
+			
 			this.channel.Dispose();
 			this.Network.Remove(id);
 			this.requestCallback.Clear();
@@ -90,6 +99,14 @@ namespace ETModel
 			get
 			{
 				return this.channel.ChannelType;
+			}
+		}
+
+		public MemoryStream Stream
+		{
+			get
+			{
+				return this.channel.Stream;
 			}
 		}
 
@@ -232,11 +249,11 @@ namespace ETModel
 		{
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
-			byte[] bytes = this.Network.MessagePacker.SerializeToByteArray(message);
-			Send(flag, opcode, bytes);
+			
+			Send(flag, opcode, message);
 		}
-
-		public void Send(byte flag, ushort opcode, byte[] bytes)
+		
+		public void Send(byte flag, ushort opcode, object message)
 		{
 			if (this.IsDisposed)
 			{
@@ -244,7 +261,22 @@ namespace ETModel
 			}
 			this.byteses[0][0] = flag;
 			this.byteses[1] = BitConverter.GetBytes(opcode);
-			this.byteses[2] = bytes;
+
+			MemoryStream stream = this.Stream;
+			
+			int index = Packet.Index;
+			stream.Seek(index, SeekOrigin.Begin);
+			stream.SetLength(index);
+			var  bb = this.Network.MessagePacker.SerializeTo(message);
+			this.Network.MessagePacker.SerializeTo(message, stream);
+			
+			stream.Seek(0, SeekOrigin.Begin);
+			index = 0;
+			foreach (var bytes in this.byteses)
+			{
+				Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
+				index += bytes.Length;
+			}
 
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
@@ -257,14 +289,19 @@ namespace ETModel
 				packet.Flag = flag;
 				packet.Opcode = opcode;
 				packet.Stream.Seek(0, SeekOrigin.Begin);
-				packet.Stream.SetLength(bytes.Length);
-				Array.Copy(bytes, 0, packet.Bytes, 0, bytes.Length);
+				packet.Stream.SetLength(0);
+				this.Network.MessagePacker.SerializeTo(message, stream);
 				session.Run(packet);
 				return;
 			}
 #endif
 
-			channel.Send(this.byteses);
+			this.Send(stream);
+		}
+
+		public void Send(MemoryStream stream)
+		{
+			channel.Send(stream);
 		}
 	}
 }
