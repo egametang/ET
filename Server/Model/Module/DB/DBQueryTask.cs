@@ -34,7 +34,8 @@ namespace ETModel
 			try
 			{
 				// 执行查询数据库任务
-				component = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == this.Id).Result.FirstOrDefaultAsync();
+				IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == this.Id);
+				component = await cursor.FirstOrDefaultAsync();
 				this.Tcs.SetResult(component);
 			}
 			catch (Exception e)
