@@ -22,6 +22,11 @@ namespace ETModel
 				{
 					continue;
 				}
+				
+				if(type == typeof(ComponentWithId) || type == typeof(Component) || type == typeof(Entity))
+				{
+					continue;
+				}
 				methodInfo.MakeGenericMethod(type).Invoke(null, null);
 			}
 
