@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace ETEditor
 {
-	class OpcodeInfo
+	internal class OpcodeInfo
 	{
 		public string Name;
 		public int Opcode;
@@ -25,12 +25,17 @@ namespace ETEditor
 		[MenuItem("Tools/Proto2CS")]
 		public static void AllProto2CS()
 		{
+			// InnerMessage.proto生成cs代码
+			InnerProto2CS.Proto2CS();
+			
 			msgOpcode.Clear();
 			Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100);
 			
 
 			msgOpcode.Clear();
 			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);
+
+			CommandRun($"protoc.bat", "");
 
 			AssetDatabase.Refresh();
 		}
@@ -41,12 +46,13 @@ namespace ETEditor
 			{
 				ProcessStartInfo info = new ProcessStartInfo
 				{
+					CreateNoWindow = true,
 					FileName = exe, 
 					Arguments = arguments, 
 					UseShellExecute = true,
-					WorkingDirectory = "."
 				};
-				Process.Start(info);
+				Process p = Process.Start(info);
+				p.WaitForExit();
 			}
 			catch (Exception e)
 			{
@@ -59,7 +65,7 @@ namespace ETEditor
 			msgOpcode.Clear();
 			string proto = Path.Combine(protoPath, protoName);
 			
-			CommandRun($"protoc.exe", $"--csharp_out=\"{outputPath}\" --proto_path=\"{protoPath}\" {protoName}");
+			//CommandRun($"protoc.exe", $"--csharp_out=\"./{outputPath}\" --proto_path=\"{protoPath}\" {protoName}");
 
 			string s = File.ReadAllText(proto);
 
