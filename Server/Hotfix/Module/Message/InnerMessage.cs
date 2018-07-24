@@ -9,7 +9,8 @@ namespace ETHotfix
 	public partial class M2M_TrasferUnitRequest: IRequest
 	{
 		public int RpcId { get; set; }
-		public Unit Unit;
+
+		public Unit Unit { get; set; }
 
 	}
 
@@ -22,7 +23,7 @@ namespace ETHotfix
 
 		public string Message { get; set; }
 
-		public long InstanceId;
+		public long InstanceId { get; set; }
 
 	}
 
@@ -49,9 +50,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Id;
+		public long Id { get; set; }
 
-		public string Address;
+		public string Address { get; set; }
 
 	}
 
@@ -71,9 +72,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Id;
+		public long Id { get; set; }
 
-		public string Address;
+		public string Address { get; set; }
 
 	}
 
@@ -93,11 +94,11 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public bool NeedCache;
+		public bool NeedCache { get; set; }
 
-		public string CollectionName;
+		public string CollectionName { get; set; }
 
-		public ComponentWithId Component;
+		public ComponentWithId Component { get; set; }
 
 	}
 
@@ -117,9 +118,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public bool NeedCache;
+		public bool NeedCache { get; set; }
 
-		public string CollectionName;
+		public string CollectionName { get; set; }
 
 		public List<ComponentWithId> Components = new List<ComponentWithId>();
 
@@ -141,11 +142,11 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Id;
+		public long Id { get; set; }
 
-		public string CollectionName;
+		public string CollectionName { get; set; }
 
-		public bool NeedCache;
+		public bool NeedCache { get; set; }
 
 	}
 
@@ -158,7 +159,7 @@ namespace ETHotfix
 
 		public string Message { get; set; }
 
-		public ComponentWithId Component;
+		public ComponentWithId Component { get; set; }
 
 	}
 
@@ -167,11 +168,11 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public string CollectionName;
+		public string CollectionName { get; set; }
 
 		public List<long> IdList = new List<long>();
 
-		public bool NeedCache;
+		public bool NeedCache { get; set; }
 
 	}
 
@@ -193,9 +194,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public string CollectionName;
+		public string CollectionName { get; set; }
 
-		public string Json;
+		public string Json { get; set; }
 
 	}
 
@@ -217,9 +218,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
-		public long InstanceId;
+		public long InstanceId { get; set; }
 
 	}
 
@@ -239,7 +240,7 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
 	}
 
@@ -259,11 +260,11 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
-		public long InstanceId;
+		public long InstanceId { get; set; }
 
-		public int Time;
+		public int Time { get; set; }
 
 	}
 
@@ -283,11 +284,11 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
-		public long OldInstanceId;
+		public long OldInstanceId { get; set; }
 
-		public long InstanceId;
+		public long InstanceId { get; set; }
 
 	}
 
@@ -307,7 +308,7 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
 	}
 
@@ -320,7 +321,7 @@ namespace ETHotfix
 
 		public string Message { get; set; }
 
-		public long InstanceId;
+		public long InstanceId { get; set; }
 
 	}
 
@@ -329,7 +330,7 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public string Account;
+		public string Account { get; set; }
 
 	}
 
@@ -342,7 +343,7 @@ namespace ETHotfix
 
 		public string Message { get; set; }
 
-		public long Key;
+		public long Key { get; set; }
 
 	}
 
@@ -351,9 +352,9 @@ namespace ETHotfix
 	{
 		public int RpcId { get; set; }
 
-		public long PlayerId;
+		public long PlayerId { get; set; }
 
-		public long GateSessionId;
+		public long GateSessionId { get; set; }
 
 	}
 
@@ -366,9 +367,9 @@ namespace ETHotfix
 
 		public string Message { get; set; }
 
-		public long UnitId;
+		public long UnitId { get; set; }
 
-		public int Count;
+		public int Count { get; set; }
 
 	}
 
