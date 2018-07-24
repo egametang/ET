@@ -206,7 +206,8 @@ namespace Google.Protobuf.Collections
         /// </summary>
         public void Clear()
         {
-            array = EmptyArray;
+            // ET修改，这里不释放数组，避免gc
+            //array = EmptyArray;
             count = 0;
         }
 
