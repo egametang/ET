@@ -737,6 +737,7 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      Units.Clear();
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
