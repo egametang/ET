@@ -73,6 +73,9 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      account_ = "";
+      password_ = "";
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -185,6 +188,11 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      address_ = "";
+      key_ = 0;
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -263,6 +271,8 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      key_ = 0;
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -356,6 +366,10 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      playerId_ = 0;
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -412,6 +426,7 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      info_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -486,6 +501,9 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      info_ = "";
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -583,6 +601,10 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      info_ = "";
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -639,6 +661,7 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -683,6 +706,7 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -772,6 +796,9 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {

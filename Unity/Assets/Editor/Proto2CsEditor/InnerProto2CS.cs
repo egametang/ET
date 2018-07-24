@@ -217,7 +217,7 @@ namespace ETEditor
 				string name = ss[1];
 				string typeCs = ConvertType(type);
 
-				sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }};\n\n");
+				sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
 			}
 			catch (Exception e)
 			{

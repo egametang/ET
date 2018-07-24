@@ -67,6 +67,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      info_ = "";
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -149,6 +152,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      request_ = "";
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -246,6 +252,10 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      response_ = "";
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -332,6 +342,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      mapIndex_ = 0;
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -414,6 +427,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -466,6 +482,7 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -570,6 +587,11 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      unitId_ = 0;
+      count_ = 0;
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -660,6 +682,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      unitId_ = 0;
+      x_ = 0;
+      z_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -737,6 +762,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      units_.Clear();
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -834,6 +862,10 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      x_ = 0;
+      z_ = 0;
+      rpcId_ = 0;
+      id_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -890,6 +922,7 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -964,6 +997,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      rpcId_ = 0;
+      error_ = 0;
+      message_ = "";
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
