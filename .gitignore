@@ -49,3 +49,29 @@ Server/.DS_Store
 /Server/.vscode/
 Unity/sa_Data/StreamingAssets/
 Unity/sa_Data/
+Unity/Assets/Res/3DPerfabs/
+Unity/Assets/Res/Unit/
+Unity/Assets/Resources/Atlas/
+Unity/Assets/Resources/UI/
+Unity/Assets/Bundles/UI/
+Unity/Assets/Res/Code/
+Unity/Assets/Res/3DPerfabs.meta
+Unity/Assets/Scenes/Map.unity.meta
+Unity/Assets/Scenes/Map.unity
+Unity/Assets/Standard Assets.meta
+Unity/Assets/Resources/Atlas.meta
+Unity/.vscode/settings.json
+Unity/.vscode/launch.json
+Unity/Assets/ThirdParty/ILRuntime/LitJson/obj.meta
+Unity/Assets/ThirdParty/ILRuntime/LitJson/bin.meta
+Unity/Assets/Plugins/ProCore/
+Unity/Assets/Plugins/Virtual Joystick Pack/
+Unity/Assets/Standard Assets/Environment/Water (Basic)/
+Unity/Assets/Standard Assets/Environment/Water (Basic).meta
+Unity/Assets/Standard Assets/Environment.meta
+Unity/Assets/Plugins/Virtual Joystick Pack.meta
+Unity/Assets/Plugins/ProCore.meta
+Unity/Hotfix/UI/UICombat/Factory/UICombatFractory.cs
+Unity/Hotfix/UI/UICombat/Component/UICombatComponent.cs
+Unity/Hotfix/Module/FrameSync/Frame_JoyStickHandler.cs
+Unity/Hotfix/Module/FrameSync/Frame_FightingHandler.cs
