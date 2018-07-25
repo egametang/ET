@@ -8,7 +8,7 @@ namespace ETModel
 	[BsonIgnoreExtraElements]
 	public class Entity : ComponentWithId
 	{
-		[BsonElement]
+		[BsonElement("C")]
 		[BsonIgnoreIfNull]
 		private HashSet<Component> components;
 
