@@ -37,8 +37,11 @@ namespace ETEditor
 			msgOpcode.Clear();
 			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);
 
+#if !UNITY_EDITOR_OSX
 			CommandRun($"protoc.bat", "");
-
+#else
+			"bash ./protoc.sh".Bash(System.Environment.CurrentDirectory);
+#endif
 			AssetDatabase.Refresh();
 		}
 

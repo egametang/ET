@@ -19,6 +19,7 @@ namespace ETEditor
 		Android,
 		IOS,
 		PC,
+		MacOS,
 	}
 	
 	public enum BuildType

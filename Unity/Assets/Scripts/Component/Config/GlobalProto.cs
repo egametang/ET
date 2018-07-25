@@ -14,6 +14,8 @@
 			url += "IOS/";
 #elif UNITY_WEBGL
 			url += "WebGL/";
+#elif UNITY_STANDALONE_OSX
+			url += "MacOS/";
 #else
 			url += "PC/";
 #endif

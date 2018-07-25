@@ -35,6 +35,7 @@ namespace ETEditor
 		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
+#if !UNITY_EDITOR_OSX
 			string currentDir = System.Environment.CurrentDirectory;
 			string path = Path.Combine(currentDir, @"..\FileServer\");
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -42,6 +43,10 @@ namespace ETEditor
 			process.StartInfo.WorkingDirectory = path;
 			process.StartInfo.CreateNoWindow = true;
 			process.Start();
+#else
+			string path = System.Environment.CurrentDirectory + "/../FileServer/";
+			("cd " + path + " && go run FileServer.go").Bash(path, true);
+#endif
 		}
 
 		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)
@@ -60,6 +65,9 @@ namespace ETEditor
 					break;
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
+					break;
+				case PlatformType.MacOS:
+					buildTarget = BuildTarget.StandaloneOSX;
 					break;
 			}
 
