@@ -47,3 +47,5 @@ _ReSharper.CSharp/
 .DS_Store
 Server/.DS_Store
 /Server/.vscode/
+Unity/sa_Data/StreamingAssets/
+Unity/sa_Data/
