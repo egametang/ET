@@ -82,6 +82,9 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      op_ = 0;
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -178,7 +181,10 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
-      Message.Clear();
+      frame_ = 0;
+      message_.Clear();
+      rpcId_ = 0;
+      actorId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {

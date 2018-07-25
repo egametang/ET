@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ETModel
 {
@@ -49,18 +50,14 @@ namespace ETModel
 			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
-#if __MonoCS__
-			const string exe = @"dotnet";
+			const string exe = "dotnet";
 			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#else
-			const string exe = @"dotnet";
-			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#endif
 
 			Log.Info($"{exe} {arguments}");
 			try
 			{
-				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = false };
+				bool useShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = useShellExecute };
 
 				Process process = Process.Start(info);
 				this.processes.Add(startConfig.AppId, process);
