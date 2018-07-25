@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	public class Env
 	{
+		[BsonElement, BsonIgnoreIfNull]
 		private Dictionary<EnvKey, object> values = new Dictionary<EnvKey, object>();
 
 		public object this[EnvKey key]

@@ -78,7 +78,13 @@ namespace ILRuntime.CLR.Method
 
         public bool IsStatic
         {
-            get { return def.IsStatic; }
+            get
+            {
+                if (cDef != null)
+                    return cDef.IsStatic;
+                else
+                    return def.IsStatic;
+            }
         }
 
         public CLRRedirectionDelegate Redirection { get { return redirect; } }
@@ -111,7 +117,9 @@ namespace ILRuntime.CLR.Method
             {
                 if (def.IsGenericMethod && !def.IsGenericMethodDefinition)
                 {
-                    appdomain.RedirectMap.TryGetValue(def.GetGenericMethodDefinition(), out redirect);
+                    //Redirection of Generic method Definition will be prioritized
+                    if(!appdomain.RedirectMap.TryGetValue(def.GetGenericMethodDefinition(), out redirect))
+                        appdomain.RedirectMap.TryGetValue(def, out redirect);
                 }
                 else
                     appdomain.RedirectMap.TryGetValue(def, out redirect);
@@ -220,7 +228,8 @@ namespace ILRuntime.CLR.Method
             for (int i = paramCount; i >= 1; i--)
             {
                 var p = Minus(esp, i);
-                var obj = this.param[paramCount - i].ParameterType.CheckCLRTypes(StackObject.ToObject(p, appdomain, mStack));
+                var pt = this.param[paramCount - i].ParameterType;
+                var obj = pt.CheckCLRTypes(StackObject.ToObject(p, appdomain, mStack));
                 obj = ILIntepreter.CheckAndCloneValueType(obj, appdomain);
                 param[paramCount - i] = obj;
             }
@@ -248,7 +257,7 @@ namespace ILRuntime.CLR.Method
                 {
                     var res = cDef.Invoke(param);
 
-                    FixReference(paramCount, esp, param, mStack);
+                    FixReference(paramCount, esp, param, mStack, null, false);
                     return res;
                 }
 
@@ -260,6 +269,8 @@ namespace ILRuntime.CLR.Method
                 if (!def.IsStatic)
                 {
                     instance = declaringType.TypeForCLR.CheckCLRTypes(StackObject.ToObject((Minus(esp, paramCount + 1)), appdomain, mStack));
+                    if (declaringType.IsValueType)
+                        instance = ILIntepreter.CheckAndCloneValueType(instance, appdomain);
                     if (instance == null)
                         throw new NullReferenceException();
                 }
@@ -271,17 +282,18 @@ namespace ILRuntime.CLR.Method
                     res = def.Invoke(instance, param);
                 }
 
-                FixReference(paramCount, esp, param, mStack);
+                FixReference(paramCount, esp, param, mStack, instance, !def.IsStatic);
                 return res;
             }
         }
 
-        unsafe void FixReference(int paramCount, StackObject* esp, object[] param, IList<object> mStack)
+        unsafe void FixReference(int paramCount, StackObject* esp, object[] param, IList<object> mStack,object instance, bool hasThis)
         {
-            for (int i = paramCount; i >= 1; i--)
+            var cnt = hasThis ? paramCount + 1 : paramCount;
+            for (int i = cnt; i >= 1; i--)
             {
                 var p = Minus(esp, i);
-                var val = param[paramCount - i];
+                var val = i <= paramCount ? param[paramCount - i] : instance;
                 switch (p->ObjectType)
                 {
                     case ObjectTypes.StackObjectReference:
@@ -296,7 +308,7 @@ namespace ILRuntime.CLR.Method
                             }
                             else
                             {
-                                ILIntepreter.UnboxObject(dst, val);
+                                ILIntepreter.UnboxObject(dst, val, mStack, appdomain);
                             }
                         }
                         break;
@@ -325,6 +337,12 @@ namespace ILRuntime.CLR.Method
                             {
                                 ((CLRType)t).SetStaticFieldValue(p->ValueLow, val);
                             }
+                        }
+                        break;
+                    case ObjectTypes.ArrayReference:
+                        {
+                            var arr = mStack[p->Value] as Array;
+                            arr.SetValue(val, p->ValueLow);
                         }
                         break;
                 }

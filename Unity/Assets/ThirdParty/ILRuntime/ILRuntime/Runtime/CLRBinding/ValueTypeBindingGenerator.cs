@@ -27,18 +27,10 @@ namespace ILRuntime.Runtime.CLRBinding
 
             sb.AppendLine("        static object PerformMemberwiseClone(ref object o)");
             sb.AppendLine("        {");
-            sb.AppendLine(string.Format("            return new {0}", typeClsName));
-            sb.AppendLine("            {");
-
-            foreach (var i in fields)
-            {
-                if (i.IsStatic || i.IsInitOnly || i.IsLiteral) continue;
-                sb.AppendLine(string.Format("                {0} = (({1}) o).{0},", i.Name, typeClsName));
-            }
-
-            sb.AppendLine("            };");
+            sb.AppendLine(string.Format("            var ins = new {0}();", typeClsName));
+            sb.AppendLine(string.Format("            ins = ({0})o;", typeClsName));
+            sb.AppendLine("            return ins;");
             sb.AppendLine("        }");
-
             return sb.ToString();
 
         }

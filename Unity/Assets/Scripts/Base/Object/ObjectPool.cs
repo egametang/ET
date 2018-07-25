@@ -1,64 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Model
+namespace ETModel
 {
     public class ObjectPool
     {
-	    private static ObjectPool instance;
+        private readonly Dictionary<Type, Queue<Component>> dictionary = new Dictionary<Type, Queue<Component>>();
 
-	    public static ObjectPool Instance
-	    {
-		    get
-		    {
-			    return instance ?? (instance = new ObjectPool());
-		    }
-	    }
-
-        private readonly Dictionary<Type, EQueue<Disposer>> dictionary = new Dictionary<Type, EQueue<Disposer>>();
-
-        private ObjectPool()
+        public Component Fetch(Type type)
         {
-        }
-
-	    public static void Close()
-	    {
-		    instance = null;
-	    }
-
-        private Disposer Fetch(Type type)
-        {
-	        EQueue<Disposer> queue;
+	        Queue<Component> queue;
             if (!this.dictionary.TryGetValue(type, out queue))
             {
-                queue = new EQueue<Disposer>();
+                queue = new Queue<Component>();
                 this.dictionary.Add(type, queue);
             }
-	        Disposer obj;
+	        Component obj;
 			if (queue.Count > 0)
             {
 				obj = queue.Dequeue();
-	            obj.Id = IdGenerater.GenerateId();
-	            return obj;
             }
-	        obj = (Disposer)Activator.CreateInstance(type);
+			else
+			{
+				obj = (Component)Activator.CreateInstance(type);	
+			}
+	        obj.IsFromPool = true;
             return obj;
         }
 
-        public T Fetch<T>() where T: Disposer
+        public T Fetch<T>() where T: Component
 		{
             T t = (T) this.Fetch(typeof(T));
-			t.IsFromPool = true;
 			return t;
 		}
         
-        public void Recycle(Disposer obj)
+        public void Recycle(Component obj)
         {
             Type type = obj.GetType();
-	        EQueue<Disposer> queue;
+	        Queue<Component> queue;
             if (!this.dictionary.TryGetValue(type, out queue))
             {
-                queue = new EQueue<Disposer>();
+                queue = new Queue<Component>();
 				this.dictionary.Add(type, queue);
             }
             queue.Enqueue(obj);

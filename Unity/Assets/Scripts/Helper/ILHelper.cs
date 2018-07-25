@@ -1,29 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using ILRuntime.CLR.Method;
+using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
+using ILRuntime.Runtime.Generated;
+using ILRuntime.Runtime.Intepreter;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
 	public static class ILHelper
 	{
-		public static unsafe void InitILRuntime()
+		public static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
 		{
 			// 注册重定向函数
-			MethodInfo mi = typeof(Log).GetMethod("Debug", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi, ILRedirection.LogDebug);
-
-			MethodInfo mi2 = typeof(Log).GetMethod("Info", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi2, ILRedirection.LogInfo);
-
-			MethodInfo mi3 = typeof(Log).GetMethod("Error", new Type[] { typeof(string) });
-			Init.Instance.AppDomain.RegisterCLRMethodRedirection(mi3, ILRedirection.LogError);
 
 			// 注册委托
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
-			Init.Instance.AppDomain.DelegateManager.RegisterMethodDelegate<AResponse>();
+			appdomain.DelegateManager.RegisterMethodDelegate<List<object>>();
+			appdomain.DelegateManager.RegisterMethodDelegate<AChannel, System.Net.Sockets.SocketError>();
+			appdomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
+			appdomain.DelegateManager.RegisterMethodDelegate<IResponse>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Session, object>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Session, Packet>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Session>();
+			appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
+			appdomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
 
+			CLRBindings.Initialize(appdomain);
 
 			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;
@@ -40,13 +45,10 @@ namespace Model
 				{
 					continue;
 				}
-				Init.Instance.AppDomain.RegisterCrossBindingAdaptor(adaptor);
+				appdomain.RegisterCrossBindingAdaptor(adaptor);
 			}
-		}
 
-		public static void AvoidAot(GameObject gameObject)
-		{
-			Input input = gameObject.Get<Input>("11");
+			LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
 		}
 	}
 }

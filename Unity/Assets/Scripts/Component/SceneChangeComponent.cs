@@ -2,8 +2,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Model
+namespace ETModel
 {
+	[ObjectSystem]
+	public class SceneChangeComponentUpdateSystem: UpdateSystem<SceneChangeComponent>
+	{
+		public override void Update(SceneChangeComponent self)
+		{
+			if (self.loadMapOperation.isDone)
+			{
+				self.tcs.SetResult(true);
+			}
+		}
+	}
+
 	public class SceneChangeComponent: Component
 	{
 		public AsyncOperation loadMapOperation;
@@ -38,7 +50,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

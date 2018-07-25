@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	/// <summary>
 	/// 一般使用事件名+变量名

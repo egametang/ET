@@ -3,14 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class WWWAsyncEvent : ObjectEvent<WWWAsync>, IUpdate
+	[ObjectSystem]
+	public class WwwAsyncUpdateSystem : UpdateSystem<WWWAsync>
 	{
-		public void Update()
+		public override void Update(WWWAsync self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 	
@@ -106,7 +106,7 @@ namespace Model
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

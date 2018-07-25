@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.App", "App\Server.App.csproj", "{11464C2C-E0B6-476E-ABB1-87445E736B76}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Base", "Base\Server.Base.csproj", "{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server.Hotfix", "Hotfix\Server.Hotfix.csproj", "{E383A68D-1928-46F4-8896-4E99DF331476}"
 EndProject
@@ -20,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.Driver", "ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj", "{3FD1D683-59E8-47C4-9436-B3D856EFB094}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoDB.Driver.Core", "ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj", "{46A590DE-EBA3-4928-AB78-5C514D08C9E7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Protobuf", "ThirdParty\Google.Protobuf\Google.Protobuf.csproj", "{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +43,6 @@ Global
 		{11464C2C-E0B6-476E-ABB1-87445E736B76}.Release|x64.Build.0 = Release|Any CPU
 		{11464C2C-E0B6-476E-ABB1-87445E736B76}.Release|x86.ActiveCfg = Release|Any CPU
 		{11464C2C-E0B6-476E-ABB1-87445E736B76}.Release|x86.Build.0 = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|x64.Build.0 = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Debug|x86.Build.0 = Debug|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|x64.ActiveCfg = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|x64.Build.0 = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|x86.ActiveCfg = Release|Any CPU
-		{9FB55F6F-9A5B-4B8C-A1DD-374A431BAB57}.Release|x86.Build.0 = Release|Any CPU
 		{E383A68D-1928-46F4-8896-4E99DF331476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E383A68D-1928-46F4-8896-4E99DF331476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E383A68D-1928-46F4-8896-4E99DF331476}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -115,6 +103,18 @@ Global
 		{46A590DE-EBA3-4928-AB78-5C514D08C9E7}.Release|x64.Build.0 = Release|Any CPU
 		{46A590DE-EBA3-4928-AB78-5C514D08C9E7}.Release|x86.ActiveCfg = Release|Any CPU
 		{46A590DE-EBA3-4928-AB78-5C514D08C9E7}.Release|x86.Build.0 = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|x64.Build.0 = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Debug|x86.Build.0 = Debug|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|x64.ActiveCfg = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|x64.Build.0 = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|x86.ActiveCfg = Release|Any CPU
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +124,7 @@ Global
 		{817B2682-29D6-4BAC-9AA7-618DCCD8CBE5} = {6946DBCF-B81C-4B2A-A7C5-94A337D915C2}
 		{3FD1D683-59E8-47C4-9436-B3D856EFB094} = {6946DBCF-B81C-4B2A-A7C5-94A337D915C2}
 		{46A590DE-EBA3-4928-AB78-5C514D08C9E7} = {6946DBCF-B81C-4B2A-A7C5-94A337D915C2}
+		{02B4D7EC-AC40-4675-963E-53CAB9A86BDE} = {5D11E730-0CAA-4A47-BA1A-379004F0F6D9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE120158-643A-409C-B8F2-5E654E4D6D70}

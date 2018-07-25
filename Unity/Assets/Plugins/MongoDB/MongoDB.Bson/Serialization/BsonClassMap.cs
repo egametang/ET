@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 #if NET45
 using System.Runtime.Serialization;
@@ -1277,10 +1278,25 @@ namespace MongoDB.Bson.Serialization
                 ConstructorInfo defaultConstructor = classTypeInfo.GetConstructors(bindingFlags)
                     .Where(c => c.GetParameters().Length == 0)
                     .SingleOrDefault();
-#if ENABLE_IL2CPP
-                _creator = () => defaultConstructor.Invoke(null);
-#else
-				if (defaultConstructor != null)
+                #if ENABLE_IL2CPP
+
+                if (defaultConstructor != null)
+                {
+                    _creator = () => defaultConstructor.Invoke(null);
+
+                }
+                else if(__getUninitializedObjectMethodInfo != null)
+                {
+
+                    _creator = () => __getUninitializedObjectMethodInfo.Invoke(null, new object[] { this._classType });
+                }
+                else
+                {
+                    var message = $"Type '{_classType.GetType().Name}' does not have a default constructor.";
+                    throw new BsonSerializationException(message);
+                }
+                #else
+                if (defaultConstructor != null)
                 {
                     // lambdaExpression = () => (object) new TClass()
                     body = Expression.New(defaultConstructor);
@@ -1298,7 +1314,7 @@ namespace MongoDB.Bson.Serialization
 
                 var lambdaExpression = Expression.Lambda<Func<object>>(body);
                 _creator = lambdaExpression.Compile();
-#endif
+                #endif
             }
             return _creator;
         }

@@ -209,7 +209,7 @@ namespace ILRuntime.Runtime.Intepreter
                         {
                             if (value.GetType().IsPrimitive)
                             {
-                                ILIntepreter.UnboxObject(esp, value);
+                                ILIntepreter.UnboxObject(esp, value, managedObjs, type.AppDomain);
                             }
                             else
                             {
@@ -293,7 +293,7 @@ namespace ILRuntime.Runtime.Intepreter
                     case ObjectTypes.Object:
                     case ObjectTypes.FieldReference:
                     case ObjectTypes.ArrayReference:
-                        mStack[val->Value] = managedObjs[i];
+                        mStack[val->Value] = ILIntepreter.CheckAndCloneValueType(managedObjs[i], type.AppDomain);
                         val->ValueLow = fields[i].ValueLow;
                         break;
                     case ObjectTypes.ValueTypeObjectReference:
@@ -392,10 +392,10 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
+       
         public override string ToString()
         {
-            IMethod m = type.AppDomain.ObjectType.GetMethod("ToString", 0);
-            m = type.GetVirtualMethod(m);
+            var m = type.ToStringMethod;
             if (m != null)
             {
                 if (m is ILMethod)
@@ -410,6 +410,66 @@ namespace ILRuntime.Runtime.Intepreter
                 return type.FullName;
         }
 
+        public override bool Equals(object obj)
+        {
+            var m = type.EqualsMethod;
+            if (m != null)
+            {
+                using (var ctx = type.AppDomain.BeginInvoke(m))
+                {
+                    ctx.PushObject(this);
+                    ctx.PushObject(obj);
+                    ctx.Invoke();
+                    return ctx.ReadBool();
+                }
+            }
+            else
+            {
+                if (this is ILEnumTypeInstance)
+                {
+                    if (obj is ILEnumTypeInstance)
+                    {
+                        ILEnumTypeInstance enum1 = (ILEnumTypeInstance)this;
+                        ILEnumTypeInstance enum2 = (ILEnumTypeInstance)obj;
+                        if (enum1.type == enum2.type)
+                        {
+                            var res = enum1.fields[0] == enum2.fields[0];
+                            return res;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return base.Equals(obj);
+                }
+                else
+                    return base.Equals(obj);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            var m = type.GetHashCodeMethod;
+            if (m != null)
+            {
+                using (var ctx = type.AppDomain.BeginInvoke(m))
+                {
+                    ctx.PushObject(this);
+                    ctx.Invoke();
+                    return ctx.ReadInteger();
+                }
+            }
+            else
+            {
+                if (this is ILEnumTypeInstance)
+                {
+                    return ((ILEnumTypeInstance)this).fields[0].Value.GetHashCode();
+                }
+                else
+                    return base.GetHashCode();
+            }
+        }
+
         public bool CanAssignTo(IType type)
         {
             return this.type.CanAssignTo(type);
@@ -421,15 +481,7 @@ namespace ILRuntime.Runtime.Intepreter
             for (int i = 0; i < fields.Length; i++)
             {
                 ins.fields[i] = fields[i];
-                ins.managedObjs[i] = managedObjs[i];
-            }
-            if (type.FirstCLRBaseType is Enviorment.CrossBindingAdaptor)
-            {
-                ins.clrInstance = ((Enviorment.CrossBindingAdaptor)type.FirstCLRBaseType).CreateCLRInstance(type.AppDomain, ins);
-            }
-            else
-            {
-                ins.clrInstance = ins;
+                ins.managedObjs[i] = ILIntepreter.CheckAndCloneValueType(managedObjs[i],Type.AppDomain);
             }
             return ins;
         }

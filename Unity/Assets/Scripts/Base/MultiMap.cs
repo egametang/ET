@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Model
+namespace ETModel
 {
 	public class MultiMap<T, K>
 	{
@@ -9,6 +9,8 @@ namespace Model
 
 		// 重用list
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
+
+		private T firstKey;
 
 		public SortedDictionary<T, List<K>> GetDictionary()
 		{
@@ -30,6 +32,11 @@ namespace Model
 		public KeyValuePair<T, List<K>> First()
 		{
 			return this.dictionary.First();
+		}
+
+		public T FirstKey()
+		{
+			return this.dictionary.Keys.First();
 		}
 
 		public int Count
@@ -144,6 +151,11 @@ namespace Model
 				return false;
 			}
 			return list.Contains(k);
+		}
+
+		public bool ContainsKey(T t)
+		{
+			return this.dictionary.ContainsKey(t);
 		}
 	}
 }

@@ -30,6 +30,14 @@ namespace ILRuntime.CLR.TypeSystem
             }
         }
 
+        public bool IsGenericParameter
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public Type TypeForCLR
         {
             get { return typeof(ILGenericParameterType); }
@@ -109,7 +117,7 @@ namespace ILRuntime.CLR.TypeSystem
             get { return arrayType; }
         }
 
-        public IType MakeArrayType()
+        public IType MakeArrayType(int rank)
         {
             if (arrayType == null)
                 arrayType = new ILGenericParameterType(name + "[]");
@@ -123,6 +131,11 @@ namespace ILRuntime.CLR.TypeSystem
         }
 
         public bool IsPrimitive
+        {
+            get { return false; }
+        }
+
+        public bool IsInterface
         {
             get { return false; }
         }
@@ -167,6 +180,27 @@ namespace ILRuntime.CLR.TypeSystem
         public bool IsArray
         {
             get { return false; }
+        }
+
+        public bool IsByRef
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public IType ElementType
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        public int ArrayRank
+        {
+            get { return 1; }
         }
 
         public IType[] Implements

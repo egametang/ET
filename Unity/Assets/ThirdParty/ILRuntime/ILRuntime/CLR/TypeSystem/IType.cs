@@ -28,13 +28,23 @@ namespace ILRuntime.CLR.TypeSystem
 
         bool IsArray { get; }
 
+        int ArrayRank { get; }
+
         bool IsValueType { get; }
 
         bool IsDelegate { get; }
 
         bool IsPrimitive { get; }
 
+        bool IsByRef { get; }
+
+        bool IsInterface { get; }
+
+        IType ElementType { get; }
+
         bool HasGenericParameter { get; }
+
+        bool IsGenericParameter { get; }
 
         ILRuntime.Runtime.Enviorment.AppDomain AppDomain { get; }
 
@@ -70,7 +80,7 @@ namespace ILRuntime.CLR.TypeSystem
 
         IType MakeByRefType();
 
-        IType MakeArrayType();
+        IType MakeArrayType(int rank);
         IType FindGenericArgument(string key);
 
         IType ResolveGenericType(IType contextType);

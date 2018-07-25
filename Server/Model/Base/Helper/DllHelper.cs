@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Model
+namespace ETModel
 {
 	public static class DllHelper
 	{
@@ -17,16 +17,6 @@ namespace Model
 #endif
 			Assembly assembly = Assembly.Load(dllBytes, pdbBytes);
 			return assembly;
-		}
-
-		public static Type[] GetMonoTypes()
-		{
-			List<Type> types = new List<Type>();
-			foreach (Assembly assembly in ObjectEvents.Instance.GetAll())
-			{
-				types.AddRange(assembly.GetTypes());
-			}
-			return types.ToArray();
 		}
 	}
 }

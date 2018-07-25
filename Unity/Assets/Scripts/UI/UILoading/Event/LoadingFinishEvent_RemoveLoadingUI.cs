@@ -1,9 +1,9 @@
-﻿namespace Model
+﻿namespace ETModel
 {
-    [Event((int)EventIdType.LoadingFinish)]
-    public class LoadingFinishEvent_RemoveLoadingUI : IEvent
+    [Event(EventIdType.LoadingFinish)]
+    public class LoadingFinishEvent_RemoveLoadingUI : AEvent
     {
-        public void Run()
+        public override void Run()
         {
 			Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILoading);
         }

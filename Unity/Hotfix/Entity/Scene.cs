@@ -1,4 +1,4 @@
-﻿namespace Hotfix
+﻿namespace ETHotfix
 {
 	public enum SceneType
 	{
@@ -17,7 +17,7 @@
 	
 	public sealed class Scene: Entity
 	{
-		public Model.Scene ModelScene { get; set; } = new Model.Scene();
+		public ETModel.Scene ModelScene { get; set; } = new ETModel.Scene();
 
 		public string Name { get; set; }
 
@@ -31,7 +31,7 @@
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}

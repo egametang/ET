@@ -18,7 +18,7 @@ public class ReferenceCollectorDataComparer: IComparer<ReferenceCollectorData>
 {
 	public int Compare(ReferenceCollectorData x, ReferenceCollectorData y)
 	{
-		return String.Compare(x.key, y.key, StringComparison.Ordinal);
+		return string.Compare(x.key, y.key, StringComparison.Ordinal);
 	}
 }
 
@@ -32,7 +32,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 	public void Add(string key, Object obj)
 	{
 		SerializedObject serializedObject = new SerializedObject(this);
-		var dataProperty = serializedObject.FindProperty("data");
+		SerializedProperty dataProperty = serializedObject.FindProperty("data");
 		int i;
 		for (i = 0; i < data.Count; i++)
 		{
@@ -43,13 +43,13 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		}
 		if (i != data.Count)
 		{
-			var element = dataProperty.GetArrayElementAtIndex(i);
+			SerializedProperty element = dataProperty.GetArrayElementAtIndex(i);
 			element.FindPropertyRelative("gameObject").objectReferenceValue = obj;
 		}
 		else
 		{
 			dataProperty.InsertArrayElementAtIndex(i);
-			var element = dataProperty.GetArrayElementAtIndex(i);
+			SerializedProperty element = dataProperty.GetArrayElementAtIndex(i);
 			element.FindPropertyRelative("key").stringValue = key;
 			element.FindPropertyRelative("gameObject").objectReferenceValue = obj;
 		}
@@ -61,7 +61,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 	public void Remove(string key)
 	{
 		SerializedObject serializedObject = new SerializedObject(this);
-		var dataProperty = serializedObject.FindProperty("data");
+		SerializedProperty dataProperty = serializedObject.FindProperty("data");
 		int i;
 		for (i = 0; i < data.Count; i++)
 		{
@@ -109,6 +109,16 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		return dictGo as T;
 	}
 
+	public Object Get(string key)
+	{
+		Object dictGo;
+		if (!dict.TryGetValue(key, out dictGo))
+		{
+			return null;
+		}
+		return dictGo;
+	}
+
 	public void OnBeforeSerialize()
 	{
 	}
@@ -116,7 +126,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 	public void OnAfterDeserialize()
 	{
 		dict.Clear();
-		foreach (var referenceCollectorData in data)
+		foreach (ReferenceCollectorData referenceCollectorData in data)
 		{
 			if (!dict.ContainsKey(referenceCollectorData.key))
 			{

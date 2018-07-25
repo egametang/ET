@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using Model;
+using ETModel;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
     public class GlobalProtoEditor: EditorWindow
     {
@@ -21,7 +21,7 @@ namespace MyEditor
         {
             if (File.Exists(path))
             {
-                this.globalProto = MongoHelper.FromJson<GlobalProto>(File.ReadAllText(path));
+                this.globalProto = JsonHelper.FromJson<GlobalProto>(File.ReadAllText(path));
             }
             else
             {
@@ -36,7 +36,7 @@ namespace MyEditor
 
             if (GUILayout.Button("保存"))
             {
-                File.WriteAllText(path, MongoHelper.ToJson(this.globalProto));
+                File.WriteAllText(path, JsonHelper.ToJson(this.globalProto));
                 AssetDatabase.Refresh();
             }
         }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public partial class Entity : Component
+	public class Entity : ComponentWithId
 	{
 		[BsonElement]
 		[BsonIgnoreIfNull]
@@ -15,29 +15,25 @@ namespace Model
 		[BsonIgnore]
 		private Dictionary<Type, Component> componentDict;
 
-		protected Entity()
+		public Entity()
 		{
-			this.Id = IdGenerater.GenerateId();
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
-		protected Entity(long id)
+		protected Entity(long id): base(id)
 		{
-			this.Id = id;
 			this.components = new HashSet<Component>();
 			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()
 		{
-			if (this.Id == 0)
+			if (this.IsDisposed)
 			{
 				return;
 			}
-
-			base.Dispose();
-
+			
 			foreach (Component component in this.GetComponents())
 			{
 				try
@@ -46,92 +42,134 @@ namespace Model
 				}
 				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
 			}
-
+			
+			base.Dispose();
+			
 			this.components.Clear();
 			this.componentDict.Clear();
 		}
-
-		public K AddComponent<K>() where K : Component, new()
+		
+		public Component AddComponent(Component component)
 		{
-			K component = ComponentFactory.Create<K>(this);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			Type type = component.GetType();
+			if (this.componentDict.ContainsKey(type))
 			{
-				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
+			
+			component.Parent = this;
 
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
+			return component;
+		}
+
+		public Component AddComponent(Type type)
+		{
+			if (this.componentDict.ContainsKey(type))
+			{
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
+			}
+
+			Component component = ComponentFactory.CreateWithParent(type, this);
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(type, component);
+			return component;
+		}
+
+		public K AddComponent<K>() where K : Component, new()
+		{
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
+			{
+				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
+			}
+
+			K component = ComponentFactory.CreateWithParent<K>(this);
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1>(this, p1);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
+
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2>(this, p1, p2);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
+
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
-			K component = ComponentFactory.Create<K, P1, P2, P3>(this, p1, p2, p3);
-
-			if (this.componentDict.ContainsKey(component.GetType()))
+			Type type = typeof (K);
+			if (this.componentDict.ContainsKey(type))
 			{
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(component.GetType(), component);
+			this.componentDict.Add(type, component);
 			return component;
 		}
 
 		public void RemoveComponent<K>() where K : Component
 		{
+			Type type = typeof (K);
 			Component component;
-			if (!this.componentDict.TryGetValue(typeof(K), out component))
+			if (!this.componentDict.TryGetValue(type, out component))
 			{
 				return;
 			}
 
 			this.components.Remove(component);
-			this.componentDict.Remove(typeof(K));
+			this.componentDict.Remove(type);
 
 			component.Dispose();
 		}
@@ -160,21 +198,27 @@ namespace Model
 			return (K)component;
 		}
 
+		public Component GetComponent(Type type)
+		{
+			Component component;
+			if (!this.componentDict.TryGetValue(type, out component))
+			{
+				return null;
+			}
+			return component;
+		}
+
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
-		}
-
-		public override void BeginInit()
-		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void EndInit()
 		{
 			try
 			{
+				base.EndInit();
+				
 				this.componentDict.Clear();
 
 				if (this.components != null)
@@ -188,7 +232,27 @@ namespace Model
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
+			}
+		}
+
+		public override void BeginSerialize()
+		{
+			base.BeginSerialize();
+
+			foreach (Component component in this.components)
+			{
+				component.BeginSerialize();
+			}
+		}
+
+		public override void EndDeSerialize()
+		{
+			base.EndDeSerialize();
+			
+			foreach (Component component in this.components)
+			{
+				component.EndDeSerialize();
 			}
 		}
 	}

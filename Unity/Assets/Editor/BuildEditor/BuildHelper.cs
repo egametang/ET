@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using Model;
+using ETModel;
 using UnityEditor;
 
-namespace MyEditor
+namespace ETEditor
 {
 	public static class BuildHelper
 	{
@@ -10,7 +10,7 @@ namespace MyEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		[MenuItem("Tools/编译Hotfix")]
+		//[MenuItem("Tools/编译Hotfix")]
 		public static void BuildHotfix()
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -28,14 +28,14 @@ namespace MyEditor
 			process.StartInfo.RedirectStandardError = true;
 			process.Start();
 			string info = process.StandardOutput.ReadToEnd();
-			process.WaitForExit();
 			process.Close();
 			Log.Info(info);
 		}
 
-		[MenuItem("Tools/Web资源服务器")]
+		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
+#if !UNITY_EDITOR_OSX
 			string currentDir = System.Environment.CurrentDirectory;
 			string path = Path.Combine(currentDir, @"..\FileServer\");
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -43,9 +43,13 @@ namespace MyEditor
 			process.StartInfo.WorkingDirectory = path;
 			process.StartInfo.CreateNoWindow = true;
 			process.Start();
+#else
+			string path = System.Environment.CurrentDirectory + "/../FileServer/";
+			("cd " + path + " && go run FileServer.go").Bash(path, true);
+#endif
 		}
 
-		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe)
+		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)
 		{
 			BuildTarget buildTarget = BuildTarget.StandaloneWindows;
 			string exeName = "ET";
@@ -62,6 +66,9 @@ namespace MyEditor
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
 					break;
+				case PlatformType.MacOS:
+					buildTarget = BuildTarget.StandaloneOSX;
+					break;
 			}
 
 			string fold = string.Format(BuildFolder, type);
@@ -72,12 +79,19 @@ namespace MyEditor
 			
 			Log.Info("开始资源打包");
 			BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
-
+			
 			GenerateVersionInfo(fold);
 			Log.Info("完成资源打包");
-			
+
+			if (isContainAB)
+			{
+				FileHelper.CleanDirectory("Assets/StreamingAssets/");
+				FileHelper.CopyDirectory(fold, "Assets/StreamingAssets/");
+			}
+
 			if (isBuildExe)
 			{
+				AssetDatabase.Refresh();
 				string[] levels = {
 					"Assets/Scenes/Init.unity",
 				};
@@ -94,7 +108,7 @@ namespace MyEditor
 
 			using (FileStream fileStream = new FileStream($"{dir}/Version.txt", FileMode.Create))
 			{
-				byte[] bytes = MongoHelper.ToJson(versionProto).ToByteArray();
+				byte[] bytes = JsonHelper.ToJson(versionProto).ToByteArray();
 				fileStream.Write(bytes, 0, bytes.Length);
 			}
 		}
@@ -112,7 +126,7 @@ namespace MyEditor
 				long size = fi.Length;
 				string filePath = relativePath == "" ? fi.Name : $"{relativePath}/{fi.Name}";
 
-				versionProto.FileVersionInfos.Add(new FileVersionInfo
+				versionProto.FileInfoDict.Add(filePath, new FileVersionInfo
 				{
 					File = filePath,
 					MD5 = md5,

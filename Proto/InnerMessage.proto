@@ -1,206 +1,251 @@
 	/// <summary>
-	/// 用来包装actor消息
-	/// </summary>
-	message ActorRequest // ARequest
-	{
-		required int64 Id = 1;
-		required AMessage AMessage = 2;
-	}
-
-	/// <summary>
-	/// actor RPC消息响应
-	/// </summary>
-	message ActorResponse // AResponse
-	{
-	}
-
-	/// <summary>
-	/// 用来包装actor消息
-	/// </summary>
-	message ActorRpcRequest // ActorRequest
-	{
-	}
-
-	/// <summary>
-	/// actor RPC消息响应带回应
-	/// </summary>
-	message ActorRpcResponse // ActorResponse
-	{
-		required AMessage AMessage = 1;
-	}
-
-
-	/// <summary>
 	/// 传送unit
 	/// </summary>
-	message M2M_TrasferUnitRequest // ARequest
+	message M2M_TrasferUnitRequest // IRequest
 	{
-		required Unit Unit = 1;
+		int32 RpcId = 90;
+		Unit Unit = 1;
 	}
 	
-	message M2M_TrasferUnitResponse // AResponse
+	message M2M_TrasferUnitResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		int64 InstanceId = 1;
 	}
 	
-	message M2A_Reload // ARequest
+	message M2A_Reload // IRequest
 	{
+		int32 RpcId = 90;
 	}
 
-	message A2M_Reload // AResponse
+	message A2M_Reload // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message G2G_LockRequest // ARequest
+	message G2G_LockRequest // IRequest
 	{
-		required int64 Id = 1;
-		required string Address = 2;
+		int32 RpcId = 90;
+		int64 Id = 1;
+		string Address = 2;
 	}
 
-	message G2G_LockResponse // AResponse
+	message G2G_LockResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message G2G_LockReleaseRequest // ARequest
+	message G2G_LockReleaseRequest // IRequest
 	{
-		required int64 Id = 1;
-		required string Address = 2;
+		int32 RpcId = 90;
+		int64 Id = 1;
+		string Address = 2;
 	}
 
-	message G2G_LockReleaseResponse // AResponse
+	message G2G_LockReleaseResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message DBSaveRequest // ARequest
+	message DBSaveRequest // IRequest
 	{
-		required bool NeedCache = 1;
+		int32 RpcId = 90;
 
-		required string CollectionName = 2;
-
-		required Disposer Disposer = 3;
+		bool NeedCache = 1;
+		string CollectionName = 2;
+		ComponentWithId Component = 3;
 	}
 
 
-	message DBSaveBatchResponse // AResponse
+	message DBSaveBatchResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message DBSaveBatchRequest // ARequest
+	message DBSaveBatchRequest // IRequest
 	{
-		required bool NeedCache = 1;
-		required string CollectionName = 2;
-		repeated Disposer Disposers = 3;
+		int32 RpcId = 90;
+
+		bool NeedCache = 1;
+		string CollectionName = 2;
+		repeated ComponentWithId Components = 3;
 	}
 
-	message DBSaveResponse // AResponse
+	message DBSaveResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message DBQueryRequest // ARequest
+	message DBQueryRequest // IRequest
 	{
-		required int64 Id = 1;
-		required string CollectionName = 2;
-		required bool NeedCache = 3;
+		int32 RpcId = 90;
+		int64 Id = 1;
+		string CollectionName = 2;
+		bool NeedCache = 3;
 	}
 
-	message DBQueryResponse // AResponse
+	message DBQueryResponse // IResponse
 	{
-		required Disposer Disposer = 1;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		ComponentWithId Component = 1;
 	}
 
-	message DBQueryBatchRequest // ARequest
+	message DBQueryBatchRequest // IRequest
 	{
-		required string CollectionName = 1;
+		int32 RpcId = 90;
+		string CollectionName = 1;
 		repeated int64 IdList = 2;
-		required bool NeedCache = 3;
+		bool NeedCache = 3;
 	}
 
-	message DBQueryBatchResponse // AResponse
+	message DBQueryBatchResponse // IResponse
 	{
-		repeated Disposer Disposers = 1;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		repeated ComponentWithId Components = 1;
 	}
 
-	message DBQueryJsonRequest // ARequest
+	message DBQueryJsonRequest // IRequest
 	{
-		required string CollectionName = 1;
-		required string Json = 2;
-		required bool NeedCache = 3;
+		int32 RpcId = 90;
+		string CollectionName = 1;
+		string Json = 2;
 	}
 
-	message DBQueryJsonResponse // AResponse
+	message DBQueryJsonResponse // IResponse
 	{
-		repeated Disposer Disposers = 1;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		repeated ComponentWithId Components = 1;
 	}
 
-	message ObjectAddRequest // ARequest
+	message ObjectAddRequest // IRequest
 	{
-		required int64 Key = 1;
-		required int AppId = 2;
+		int32 RpcId = 90;
+		int64 Key = 1;
+		int64 InstanceId = 2;
 	}
 
-	message ObjectAddResponse // AResponse
+	message ObjectAddResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message ObjectRemoveRequest // ARequest
+	message ObjectRemoveRequest // IRequest
 	{
-		required int64 Key = 1;
+		int32 RpcId = 90;
+		int64 Key = 1;
 	}
 
-	message ObjectRemoveResponse // AResponse
+	message ObjectRemoveResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message ObjectLockRequest // ARequest
+	message ObjectLockRequest // IRequest
 	{
-		required int64 Key = 1;
-		required int LockAppId = 2;
-		required int Time = 3;
+		int32 RpcId = 90;
+		int64 Key = 1;
+		int64 InstanceId = 2;
+		int Time = 3;
 	}
 
-	message ObjectLockResponse // AResponse
+	message ObjectLockResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message ObjectUnLockRequest // ARequest
+	message ObjectUnLockRequest // IRequest
 	{
-		required int64 Key = 1;
-		required int UnLockAppId = 2;
-		required int AppId = 3;
+		int32 RpcId = 90;
+		int64 Key = 1;
+		int64 OldInstanceId = 2;
+		int64 InstanceId = 3;
 	}
 
-	message ObjectUnLockResponse // AResponse
+	message ObjectUnLockResponse // IResponse
 	{
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
 	}
 
-	message ObjectGetRequest // ARequest
+	message ObjectGetRequest // IRequest
 	{
-		required int64 Key = 1;
+		int32 RpcId = 90;
+		int64 Key = 1;
 	}
 
-	message ObjectGetResponse // AResponse
+	message ObjectGetResponse // IResponse
 	{
-		required int AppId = 1;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		int64 InstanceId = 1;
 	}
 
-	message R2G_GetLoginKey // ARequest
+	message R2G_GetLoginKey // IRequest
 	{
-		required string Account = 1;
+		int32 RpcId = 90;
+		string Account = 1;
 	}
 
-	message G2R_GetLoginKey // AResponse
+	message G2R_GetLoginKey // IResponse
 	{
-		required int64 Key = 1;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		int64 Key = 1;
 	}
 
-	message G2M_CreateUnit // ARequest
+	message G2M_CreateUnit // IRequest
 	{
-		required int64 PlayerId = 1;
-		required int64 GateSessionId = 2;
+		int32 RpcId = 90;
+		int64 PlayerId = 1;
+		int64 GateSessionId = 2;
 	}
 
-	message M2G_CreateUnit // AResponse
+	message M2G_CreateUnit // IResponse
 	{
-		required int64 UnitId = 1;
-		required int Count = 2;
+		int32 RpcId = 90;
+		int32 Error = 91;
+		string Message = 92;
+
+		int64 UnitId = 1;
+		int Count = 2;
+	}
+
+	message G2M_SessionDisconnect // IActorMessage
+	{
+		int32 RpcId = 90;
+		long ActorId = 94;
 	}
 }

@@ -1,10 +1,14 @@
-﻿using System.Diagnostics;
-using ILRuntime.Runtime;
+﻿using System;
 
-namespace Model
+namespace ETModel
 {
 	public static class Log
 	{
+		public static void Trace(string msg)
+		{
+			UnityEngine.Debug.Log(msg);
+		}
+
 		public static void Warning(string msg)
 		{
 			UnityEngine.Debug.LogWarning(msg);
@@ -13,6 +17,11 @@ namespace Model
 		public static void Info(string msg)
 		{
 			UnityEngine.Debug.Log(msg);
+		}
+
+		public static void Error(Exception e)
+		{
+			UnityEngine.Debug.LogError(e.ToString());
 		}
 
 		public static void Error(string msg)

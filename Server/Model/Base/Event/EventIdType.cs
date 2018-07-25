@@ -1,20 +1,7 @@
-﻿namespace Model
+﻿namespace ETModel
 {
-	public enum EventIdType
+	public static class EventIdType
 	{
-		InitSceneStart,
-
-		BehaviorTreeRunTreeEvent,
-		BehaviorTreeOpenEditor,
-		BehaviorTreeClickNode,
-		BehaviorTreeAfterChangeNodeType,
-		BehaviorTreeCreateNode,
-		BehaviorTreePropertyDesignerNewCreateClick,
-		BehaviorTreeMouseInNode,
-		BehaviorTreeConnectState,
-		BehaviorTreeReplaceClick,
-		BehaviorTreeRightDesignerDrag,
-
-		NumbericChange,
+		public const string NumbericChange = "NumbericChange";
 	}
 }

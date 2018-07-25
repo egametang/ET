@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Model
+namespace ETModel
 {
 	public struct Timer
 	{
@@ -11,12 +11,12 @@ namespace Model
 		public TaskCompletionSource<bool> tcs;
 	}
 
-	[ObjectEvent]
-	public class TimerComponentEvent : ObjectEvent<TimerComponent>, IUpdate
+	[ObjectSystem]
+	public class TimerComponentUpdateSystem : UpdateSystem<TimerComponent>
 	{
-		public void Update()
+		public override void Update(TimerComponent self)
 		{
-			this.Get().Update();
+			self.Update();
 		}
 	}
 
@@ -29,34 +29,58 @@ namespace Model
 		/// </summary>
 		private readonly MultiMap<long, long> timeId = new MultiMap<long, long>();
 
+		private readonly Queue<long> timeOutTime = new Queue<long>();
+		
+		private readonly Queue<long> timeOutTimerIds = new Queue<long>();
+
+		// 记录最小时间，不用每次都去MultiMap取第一个值
+		private long minTime;
+
 		public void Update()
 		{
+			if (this.timeId.Count == 0)
+			{
+				return;
+			}
+
 			long timeNow = TimeHelper.Now();
 
-			while (true)
+			if (timeNow < this.minTime)
 			{
-				if (this.timeId.Count <= 0)
+				return;
+			}
+			
+			foreach (KeyValuePair<long, List<long>> kv in this.timeId.GetDictionary())
+			{
+				long k = kv.Key;
+				if (k > timeNow)
 				{
-					return;
-				}
-				var kv = this.timeId.First();
-				if (kv.Key > timeNow)
-				{
+					minTime = k;
 					break;
 				}
+				this.timeOutTime.Enqueue(k);
+			}
 
-				List<long> timeOutId = kv.Value;
-				foreach (long id in timeOutId)
+			while(this.timeOutTime.Count > 0)
+			{
+				long time = this.timeOutTime.Dequeue();
+				foreach(long timerId in this.timeId[time])
 				{
-					Timer timer;
-					if (!this.timers.TryGetValue(id, out timer))
-					{
-						continue;
-					}
-					timer.tcs.SetResult(true);
+					this.timeOutTimerIds.Enqueue(timerId);	
 				}
+				this.timeId.Remove(time);
+			}
 
-				this.timeId.Remove(kv.Key);
+			while(this.timeOutTimerIds.Count > 0)
+			{
+				long timerId = this.timeOutTimerIds.Dequeue();
+				Timer timer;
+				if (!this.timers.TryGetValue(timerId, out timer))
+				{
+					continue;
+				}
+				this.timers.Remove(timerId);
+				timer.tcs.SetResult(true);
 			}
 		}
 
@@ -76,6 +100,10 @@ namespace Model
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
+			if (timer.Time < this.minTime)
+			{
+				this.minTime = timer.Time;
+			}
 			cancellationToken.Register(() => { this.Remove(timer.Id); });
 			return tcs.Task;
 		}
@@ -86,6 +114,10 @@ namespace Model
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
+			if (timer.Time < this.minTime)
+			{
+				this.minTime = timer.Time;
+			}
 			return tcs.Task;
 		}
 
@@ -95,6 +127,10 @@ namespace Model
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
+			if (timer.Time < this.minTime)
+			{
+				this.minTime = timer.Time;
+			}
 			cancellationToken.Register(() => { this.Remove(timer.Id); });
 			return tcs.Task;
 		}
@@ -105,6 +141,10 @@ namespace Model
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
+			if (timer.Time < this.minTime)
+			{
+				this.minTime = timer.Time;
+			}
 			return tcs.Task;
 		}
 	}

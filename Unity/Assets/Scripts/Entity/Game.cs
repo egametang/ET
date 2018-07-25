@@ -1,4 +1,4 @@
-﻿namespace Model
+﻿namespace ETModel
 {
 	public static class Game
 	{
@@ -13,16 +13,48 @@
 					return scene;
 				}
 				scene = new Scene();
-				scene.AddComponent<EventComponent>();
 				scene.AddComponent<TimerComponent>();
 				return scene;
 			}
 		}
-		
+
+		private static EventSystem eventSystem;
+
+		public static EventSystem EventSystem
+		{
+			get
+			{
+				return eventSystem ?? (eventSystem = new EventSystem());
+			}
+		}
+
+		private static ObjectPool objectPool;
+
+		public static ObjectPool ObjectPool
+		{
+			get
+			{
+				return objectPool ?? (objectPool = new ObjectPool());
+			}
+		}
+
+		private static Hotfix hotfix;
+
+		public static Hotfix Hotfix
+		{
+			get
+			{
+				return hotfix ?? (hotfix = new Hotfix());
+			}
+		}
+
 		public static void Close()
 		{
 			scene.Dispose();
+			eventSystem = null;
 			scene = null;
+			objectPool = null;
+			hotfix = null;
 		}
 	}
 }

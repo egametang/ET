@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Model
+namespace ETModel
 {
 	[BsonIgnoreExtraElements]
 	public class OuterConfig: AConfigComponent

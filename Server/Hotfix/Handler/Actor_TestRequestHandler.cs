@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[ActorMessageHandler(AppType.Map)]
 	public class Actor_TestRequestHandler : AMActorRpcHandler<Unit, Actor_TestRequest, Actor_TestResponse>
@@ -10,7 +10,7 @@ namespace Hotfix
 		protected override async Task Run(Unit unit, Actor_TestRequest message, Action<Actor_TestResponse> reply)
 		{
 			await Task.CompletedTask;
-			reply(new Actor_TestResponse() {response = "response actor rpc"});
+			reply(new Actor_TestResponse() {Response = "response actor rpc"});
 		}
 	}
 }

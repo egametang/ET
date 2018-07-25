@@ -1,66 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using Model;
 
-namespace Hotfix
+namespace ETHotfix
 {
-    public class ObjectPool
-    {
-	    private static ObjectPool instance;
+	public class ObjectPool
+	{
+		private readonly Dictionary<Type, Queue<Component>> dictionary = new Dictionary<Type, Queue<Component>>();
 
-	    public static ObjectPool Instance
-	    {
-		    get
-		    {
-				return instance ?? (instance = new ObjectPool());
-			}
-	    }
-
-        private readonly Dictionary<Type, EQueue<Disposer>> dictionary = new Dictionary<Type, EQueue<Disposer>>();
-
-        private ObjectPool()
-        {
-        }
-
-	    public static void Close()
-	    {
-		    instance = null;
-	    }
-
-        public Disposer Fetch(Type type)
-        {
-	        EQueue<Disposer> queue;
-            if (!this.dictionary.TryGetValue(type, out queue))
-            {
-                queue = new EQueue<Disposer>();
-                this.dictionary.Add(type, queue);
-            }
-	        Disposer obj;
-			if (queue.Count > 0)
-            {
-				obj = queue.Dequeue();
-	            obj.Id = IdGenerater.GenerateId();
-	            return obj;
-            }
-	        obj = (Disposer)Activator.CreateInstance(type);
-            return obj;
-        }
-
-        public T Fetch<T>() where T: Disposer
+		public Component Fetch(Type type)
 		{
-            return (T) this.Fetch(typeof(T));
-        }
-        
-        public void Recycle(Disposer obj)
-        {
-            Type type = obj.GetType();
-	        EQueue<Disposer> queue;
-            if (!this.dictionary.TryGetValue(type, out queue))
-            {
-                queue = new EQueue<Disposer>();
+			Queue<Component> queue;
+			if (!this.dictionary.TryGetValue(type, out queue))
+			{
+				queue = new Queue<Component>();
 				this.dictionary.Add(type, queue);
-            }
-            queue.Enqueue(obj);
-        }
-    }
+			}
+			Component obj;
+			if (queue.Count > 0)
+			{
+				obj = queue.Dequeue();
+			}
+			else
+			{
+				obj = (Component)Activator.CreateInstance(type);	
+			}
+			obj.IsFromPool = true;
+			return obj;
+		}
+
+		public T Fetch<T>() where T: Component
+		{
+			T t = (T) this.Fetch(typeof(T));
+			return t;
+		}
+        
+		public void Recycle(Component obj)
+		{
+			Type type = obj.GetType();
+			Queue<Component> queue;
+			if (!this.dictionary.TryGetValue(type, out queue))
+			{
+				queue = new Queue<Component>();
+				this.dictionary.Add(type, queue);
+			}
+			queue.Enqueue(obj);
+		}
+	}
 }

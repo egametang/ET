@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	[MessageHandler(AppType.Map)]
 	public class M2M_TrasferUnitRequestHandler : AMRpcHandler<M2M_TrasferUnitRequest, M2M_TrasferUnitResponse>
@@ -12,10 +12,13 @@ namespace Hotfix
 			try
 			{
 				Unit unit = message.Unit;
+				// 将unit加入事件系统
+				Game.EventSystem.Add(unit);
 				Log.Debug(MongoHelper.ToJson(message.Unit));
 				// 这里不需要注册location，因为unlock会更新位置
-				unit.AddComponent<ActorComponent>();
+				unit.AddComponent<MailBoxComponent>();
 				Game.Scene.GetComponent<UnitComponent>().Add(unit);
+				response.InstanceId = unit.InstanceId;
 				reply(response);
 			}
 			catch (Exception e)

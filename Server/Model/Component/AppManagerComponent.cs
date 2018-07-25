@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class AppManagerComponentEvent : ObjectEvent<AppManagerComponent>, IStart
+	[ObjectSystem]
+	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
 	{
-		public void Start()
+		public override void Start(AppManagerComponent self)
 		{
-			this.Get().Start();
+			self.Start();
 		}
 	}
 
@@ -25,6 +26,8 @@ namespace Model
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
+				Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
+				
 				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
 				{
 					continue;
@@ -47,25 +50,21 @@ namespace Model
 			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
-#if __MonoCS__
-			const string exe = @"dotnet";
+			const string exe = "dotnet";
 			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#else
-			const string exe = @"dotnet";
-			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#endif
 
 			Log.Info($"{exe} {arguments}");
 			try
 			{
-				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = true };
+				bool useShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = useShellExecute };
 
 				Process process = Process.Start(info);
 				this.processes.Add(startConfig.AppId, process);
 			}
 			catch (Exception e)
 			{
-				Log.Error(e.ToString());
+				Log.Error(e);
 			}
 		}
 
@@ -74,11 +73,13 @@ namespace Model
 		/// </summary>
 		private async void WatchProcessAsync()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(5000);
 
-				if (this.Id == 0)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}

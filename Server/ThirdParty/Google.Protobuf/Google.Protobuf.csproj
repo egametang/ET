@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+  	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\Bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\ByteArray.cs" Link="ByteArray.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\ByteString.cs" Link="ByteString.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\CodedInputStream.cs" Link="CodedInputStream.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\CodedOutputStream.ComputeSize.cs" Link="CodedOutputStream.ComputeSize.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\CodedOutputStream.cs" Link="CodedOutputStream.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\Collections\RepeatedField.cs" Link="Collections\RepeatedField.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\Compatibility\PropertyInfoExtensions.cs" Link="Compatibility\PropertyInfoExtensions.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\Compatibility\StreamExtensions.cs" Link="Compatibility\StreamExtensions.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\FieldCodec.cs" Link="FieldCodec.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\ICustomDiagnosticMessage.cs" Link="ICustomDiagnosticMessage.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\IMessage.cs" Link="IMessage.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\InvalidProtocolBufferException.cs" Link="InvalidProtocolBufferException.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\LimitedInputStream.cs" Link="LimitedInputStream.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\MessageExtensions.cs" Link="MessageExtensions.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\MessageParser.cs" Link="MessageParser.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\ProtoPreconditions.cs" Link="ProtoPreconditions.cs" />
+    <Compile Include="..\..\..\Unity\Assets\ThirdParty\Google.Protobuf\WireFormat.cs" Link="WireFormat.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Collections\" />
+    <Folder Include="Compatibility\" />
+  </ItemGroup>
+</Project>

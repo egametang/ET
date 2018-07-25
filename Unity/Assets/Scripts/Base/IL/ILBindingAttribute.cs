@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace ETModel
 {
 	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class ILBindingAttribute : Attribute

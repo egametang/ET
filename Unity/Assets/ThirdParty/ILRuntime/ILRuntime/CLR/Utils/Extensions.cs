@@ -25,7 +25,7 @@ namespace ILRuntime.CLR.Utils
                 {
                     IType t = null;
                     t = appdomain.GetType(i.ParameterType, dt, null);
-                    if (t == null && def.IsGenericInstance)
+                    if ((t == null && def.IsGenericInstance) || (t != null && t.HasGenericParameter))
                     {
                         GenericInstanceMethod gim = (GenericInstanceMethod)def;
                         string name = i.ParameterType.IsByReference ? i.ParameterType.GetElementType().FullName : i.ParameterType.FullName;
@@ -43,13 +43,12 @@ namespace ILRuntime.CLR.Utils
                             }
                             else if (name.Contains(gp.Name))
                             {
-                                if (name == gp.Name)
+                                t = appdomain.GetType(ga, contextType, contextMethod);
+                                if (t == null && genericArguments != null)
+                                    t = genericArguments[j];
+                                if (name == gp.Name + "[]")
                                 {
-                                    name = ga.FullName;
-                                }
-                                else if (name == gp.Name + "[]")
-                                {
-                                    name = ga.FullName + "[]";
+                                    name = t.FullName + "[]";
                                 }
                                 else
                                 {
@@ -60,7 +59,18 @@ namespace ILRuntime.CLR.Utils
                                     name = name.Replace("," + gp.Name + "[", "," + ga.FullName + "[");
                                     name = name.Replace("," + gp.Name + ",", "," + ga.FullName + ",");
                                     name = name.Replace("," + gp.Name + "[", "," + ga.FullName + "[");*/
-                                    name = ReplaceGenericArgument(name, gp.Name, ga.FullName);
+                                    name = ReplaceGenericArgument(name, gp.Name, t.FullName);
+                                }
+                                t = null;
+                            }
+                        }
+                        if(dt.GenericArguments != null)
+                        {
+                            foreach(var gp in dt.GenericArguments)
+                            {
+                                if (name.Contains(gp.Key))
+                                {
+                                    name = ReplaceGenericArgument(name, gp.Key, gp.Value.FullName);
                                 }
                             }
                         }
@@ -76,31 +86,45 @@ namespace ILRuntime.CLR.Utils
                 return EmptyParamList;
         }
 
-        static string ReplaceGenericArgument(string typename, string argumentName, string argumentType)
+        static string ReplaceGenericArgument(string typename, string argumentName, string argumentType, bool isGA = false)
         {
             string baseType;
             StringBuilder sb = new StringBuilder();
             List<string> ga;
             bool isArray;
             Runtime.Enviorment.AppDomain.ParseGenericType(typename, out baseType, out ga, out isArray);
+            bool hasGA = ga != null && ga.Count > 0;
             if (baseType == argumentName)
-                sb.Append(argumentType);
-            else
-                sb.Append(baseType);
-            if (ga != null && ga.Count > 0)
             {
-                sb.Append("<");
+                bool isAssemblyQualified = argumentName.Contains('=');
+                if (isGA && isAssemblyQualified)
+                    sb.Append('[');
+                sb.Append(argumentType);
+                if (isGA && isAssemblyQualified)
+                    sb.Append(']');
+            }
+            else
+            {
+                bool isAssemblyQualified = baseType.Contains('=');
+                if (isGA && !hasGA && isAssemblyQualified)
+                    sb.Append('[');
+                sb.Append(baseType);
+                if (isGA && !hasGA && isAssemblyQualified)
+                    sb.Append(']');
+            }
+            if (hasGA)
+            {
+                sb.Append("[");
                 bool isFirst = true;
-                foreach(var i in ga)
+                foreach (var i in ga)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         sb.Append(",");
-
-                    sb.Append(ReplaceGenericArgument(i, argumentName, argumentType));
+                    sb.Append(ReplaceGenericArgument(i, argumentName, argumentType, true));
                 }
-                sb.Append(">");
+                sb.Append("]");
             }
             if (isArray)
                 sb.Append("[]");
@@ -239,8 +263,8 @@ namespace ILRuntime.CLR.Utils
                 if (!(obj is ILEnumTypeInstance))
                 {
                     var ins = (ILTypeInstance)obj;
-                    if (ins.IsValueType)
-                        ins = ins.Clone();
+                    /*if (ins.IsValueType)
+                        ins = ins.Clone();*/
                     return ins.CLRInstance;
                 }
             }

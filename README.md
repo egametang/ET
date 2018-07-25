@@ -2,6 +2,45 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.4发布! 
+1.使用SocketAsyncEventArgs重新实现了TCP跟KCP网络库，大大减少GC，网络层收消息除了protobuf已经是0GC了  
+2.修复了TimerCompnent一个bug  
+3.修复了linux跟mac在netcore2.1下启动报错的问题  
+4.增加了db的lambda表达式查询  
+5.修复SceneChangeComponent错误  
+
+# ET 3.3发布! 
+1.增加了原生actor实现，知道actor的InstanceId即可直接发送Actor消息，不需要注册跟查询location  
+2.修复了组件反序列化后注册到EventSystem中的bug  
+3.修复ResourceComponent中异步加载资源使用了同步调用的bug  
+4.加载ab包的时候先判断热更里面有没有，有则加载热更的，没有则加载StreamingAssets里面的  
+5.优化了定时器实现  
+6.修复其它一系列小bug  
+
+# ET 3.2发布! 3.2变化不大修复了一些bug，进一步完善了ET
+1.增加了ChangeSystem，可以订阅组件改变事件  
+2.修复dbcache中查询数据库一定会cache的bug  
+3.去掉了IEntityActorHandler接口，使用string来分发  
+
+# ET 3.1发布!
+1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
+2.增加了DestroySystem事件，在Component Dispose时调用  
+3.actor实现代码进行了简化  
+4.升级了默认Unity版本，修复了kcp协议中UdpClient无法接收udp消息的bug  
+
+# ET 3.0发布啦! 3.0是ET非常完善的一个版本，在2.0的基础上增加了如下功能：
+1.客户端全热更支持，逻辑，消息，事件，config，UI等等全部可以热更了  
+2.System改成了事件机制，awake，update，start等system可以在不同模块多次订阅  
+3.消息去掉了继承结构，其它客户端对接起来，更方便了。  
+4.增加了初步的Module机制，目录结构更清晰，社区分享代码更方便了。  
+5.优化了代码，3.0的代码更加清晰，结构更加合理，前后端代码几乎一模一样了  
+
+
+
+  
+  
+  
+# ET的功能：
 ### 1.可用VS单步调试的分布式服务端，N变1  
 一般来说，分布式服务端要启动很多进程，一旦进程多了，单步调试就变得非常困难，导致服务端开发基本上靠打log来查找问题。平常开发游戏逻辑也得开启一大堆进程，不仅启动慢，而且查找问题及其不方便，要在一堆堆日志里面查问题，这感觉非常糟糕，这么多年也没人解决这个问题。ET框架使用了类似守望先锋的组件设计，所有服务端内容都拆成了一个个组件，启动时根据服务器类型挂载自己所需要的组件。这有点类似电脑，电脑都模块化的拆成了内存，CPU，主板等等零件，搭配不同的零件就能组装成一台不同的电脑，例如家用台式机需要内存，CPU，主板，显卡，显示器，硬盘。而公司用的服务器却不需要显示器和显卡，网吧的电脑可能不需要硬盘等。正因为这样的设计，ET框架可以将所有的服务器组件都挂在一个服务器进程上，那么这个服务器进程就有了所有服务器的功能，一个进程就可以作为整组分布式服务器使用。这也类似电脑，台式机有所有的电脑组件，那它也完全可以当作公司服务器使用，也可以当作网吧电脑。  
 ### 2.随意可拆分功能的分布式服务端，1变N  
@@ -30,15 +69,17 @@ erlang语言一大优势就是位置透明的消息机制，用户完全不用�
 ### 6.提供服务器不停服动态更新逻辑功能  
 热更是游戏服务器不可缺少的功能，ET框架使用的组件设计，可以做成守望先锋的设计，组件只有成员，无方法，将所有方法做成扩展方法放到热更dll中，运行时重新加载dll即可热更所有逻辑。
 ### 7.客户端热更新一键切换  
-因为ios的限制，之前unity热更新一般使用lua，导致unity3d开发人员要写两种代码，麻烦的要死。之后幸好出了ILRuntime库，利用ILRuntime库，unity3d可以利用C#语言加载热更新dll进行热更新。ILRuntime一个缺陷就是开发时候不支持VS debug，这有点不爽。ET框架使用了一个预编译指令ILRuntime，可以无缝切换。平常开发的时候不使用ILRuntime，而是使用Assembly.Load加载热更新动态库，这样可以方便用VS单步调试。在发布的时候，定义预编译指令ILRuntime就可以无缝切换成使用ILRuntime加载热更新动态库。这样开发起来及其方便，再也不用使用狗屎lua了
-### 8.客户端服务端用同一种语言，并且共享代码  
+因为ios的限制，之前unity热更新一般使用lua，导致unity3d开发人员要写两种代码，麻烦的要死。之后幸好出了ILRuntime库，利用ILRuntime库，unity3d可以利用C#语言加载热更新dll进行热更新。ILRuntime一个缺陷就是开发时候不支持VS debug，这有点不爽。ET框架使用了一个预编译指令ILRuntime，可以无缝切换。平常开发的时候不使用ILRuntime，而是使用Assembly.Load加载热更新动态库，这样可以方便用VS单步调试。在发布的时候，定义预编译指令ILRuntime就可以无缝切换成使用ILRuntime加载热更新动态库。这样开发起来及其方便，再也不用使用狗屎lua了  
+### 8.客户端全热更新  
+客户端可以实现所有逻辑热更新，包括协议，config，ui等等  
+### 9.客户端服务端用同一种语言，并且共享代码  
 下载ET框架，打开服务端工程，可以看到服务端引用了客户端很多代码，通过引用客户端代码的方式实现了双端共享代码。例如客户端服务端之间的网络消息两边完全共用一个文件即可，添加一个消息只需要修改一遍。  
-### 9.KCP ENET TCP协议无缝切换  
+### 10.KCP ENET TCP协议无缝切换  
 ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。框架还支持使用KCP协议，KCP也是可靠UDP协议，据说比ENET性能更好，使用kcp请注意，需要自己加心跳机制，否则20秒没收到包，服务端将断开连接。三种协议可以无缝切换。  
-### 10.打包工具  
+### 11.打包工具  
 ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
 
-### 11.还有很多很多功能，我就不详细介绍了  
+### 12.还有很多很多功能，我就不详细介绍了  
 a.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼  
 b.使用NLog库，打log及其方便，平常开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了  
 c.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。  
@@ -49,17 +90,35 @@ f.提供命令行配置工具，配置分布式非常简单
 ET框架的服务端是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
 使用方法：  
-[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)    
+[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
+  
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
-群友源码分析：  
+有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
+[module共享仓库](https://github.com/egametang/ET-Modules)   
+
+群友分享：  
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
+[linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
+[ET框架心跳包组件开发](http://www.tinkingli.com/?p=111)  
+[ET框架Actor使用与心得](http://www.tinkingli.com/?p=117)  
+[基于ET框架和UGUI的简单UI框架实现（渐渐写）](http://www.tinkingli.com/?p=124)  
+[ET框架笔记 (笑览世界写)](http://www.tinkingli.com/?p=76)  
+[ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
+[ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
 群友demo：  
-[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)   
+[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 
+视频教程：  
+[肉饼老师主讲](http://www.taikr.com/my/course/972)   
+[ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
+  
+相关网站:  
+[ET框架问题讨论](http://www.etframework.cn/)  
+  
 __讨论QQ群 : 474643097__

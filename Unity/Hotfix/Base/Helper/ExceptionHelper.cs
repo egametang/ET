@@ -1,18 +1,17 @@
 ﻿using System;
-using Model;
+using ETModel;
 
-namespace Hotfix
+namespace ETHotfix
 {
 	public static class ExceptionHelper
 	{
 		public static string ToStr(this Exception exception)
 		{
-			if (Define.IsILRuntime)
-			{
-				return (string) exception.Data["StackTrace"];
-			}
-
+#if ILRuntime
+			return $"{exception.Data["StackTrace"]} \n\n {exception}";
+#else
 			return exception.ToString();
+#endif
 		}
 	}
 }
