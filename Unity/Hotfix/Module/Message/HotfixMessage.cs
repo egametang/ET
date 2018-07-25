@@ -319,10 +319,25 @@ namespace ETHotfix {
       }
     }
 
+    private int birthPlace_;
+    /// <summary>
+    /// 出生方向
+    /// </summary>
+    public int BirthPlace {
+      get { return birthPlace_; }
+      set {
+        birthPlace_ = value;
+      }
+    }
+
     public void WriteTo(pb::CodedOutputStream output) {
       if (PlayerId != 0L) {
         output.WriteRawTag(8);
         output.WriteInt64(PlayerId);
+      }
+      if (BirthPlace != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(BirthPlace);
       }
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
@@ -352,6 +367,9 @@ namespace ETHotfix {
       if (PlayerId != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(PlayerId);
       }
+      if (BirthPlace != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(BirthPlace);
+      }
       return size;
     }
 
@@ -364,6 +382,10 @@ namespace ETHotfix {
             break;
           case 8: {
             PlayerId = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            BirthPlace = input.ReadInt32();
             break;
           }
           case 720: {
