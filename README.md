@@ -2,6 +2,13 @@
 
 __讨论QQ群 : 474643097__
 
+# ET 3.5发布! 
+1.protobuf改用官方3.0版本，不再使用protobuf-net，以消除消息反序列化GC，目前网络层真正做到了0GC  
+2.客户端资源更新直接计算本地文件的md5  
+3.修复了数据库组件一个超级bug，这个bug会导致数据库阻塞调用  
+4.修复MongoHelper一个bug，会导致CompnentWithId组件多次注册到Mongo Bson驱动，导致异常  
+5.增加了Mac平台相关工具  
+
 # ET 3.4发布! 
 1.使用SocketAsyncEventArgs重新实现了TCP跟KCP网络库，大大减少GC，网络层收消息除了protobuf已经是0GC了  
 2.修复了TimerCompnent一个bug  
