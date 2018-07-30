@@ -40,7 +40,7 @@ namespace ETHotfix
 			self.ActorMessageHandlers.Clear();
 			self.ActorTypeHandlers.Clear();
 
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(ActorTypeHandlerAttribute));
 
 			foreach (Type type in types)
 			{
@@ -67,6 +67,7 @@ namespace ETHotfix
 				self.ActorTypeHandlers.Add(actorTypeHandlerAttribute.ActorType, iActorTypeHandler);
 			}
 
+			types = Game.EventSystem.GetTypes(typeof (ActorMessageHandlerAttribute));
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), false);
@@ -74,7 +75,7 @@ namespace ETHotfix
 				{
 					continue;
 				}
-
+				
 				ActorMessageHandlerAttribute messageHandlerAttribute = (ActorMessageHandlerAttribute) attrs[0];
 				if (!messageHandlerAttribute.Type.Is(appType))
 				{

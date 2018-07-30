@@ -37,7 +37,7 @@ namespace ETHotfix
 		public void Load()
 		{
 			this.allConfig.Clear();
-			List<Type> types = ETModel.Game.Hotfix.GetHotfixTypes();
+			List<Type> types = Game.EventSystem.GetTypes();
 
 			foreach (Type type in types)
 			{

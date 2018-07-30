@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class MessageAttribute: Attribute
+	public class MessageAttribute: BaseAttribute
 	{
 		public ushort Opcode { get; }
 

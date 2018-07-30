@@ -67,7 +67,7 @@ namespace ETModel
 			this.getHandlers = new Dictionary<string, MethodInfo>();
 			this.postHandlers = new Dictionary<string, MethodInfo>();
 
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
 
 			foreach (Type type in types)
 			{

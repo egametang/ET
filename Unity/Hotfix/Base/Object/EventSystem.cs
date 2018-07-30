@@ -7,6 +7,8 @@ namespace ETHotfix
 	public sealed class EventSystem
 	{
 		private readonly Dictionary<long, Component> allComponents = new Dictionary<long, Component>();
+		
+		private readonly List<Type> types = new List<Type>();
 
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
@@ -37,7 +39,21 @@ namespace ETHotfix
 
 		public EventSystem()
 		{
-			List<Type> types = ETModel.Game.Hotfix.GetHotfixTypes();
+			this.types.Clear();
+			
+			List<Type> ts = ETModel.Game.Hotfix.GetHotfixTypes();
+			
+			foreach (Type type in ts)
+			{
+				// ILRuntime无法判断是否有Attribute
+				//if (type.GetCustomAttributes(typeof (Attribute), false).Length == 0)
+				//{
+				//	continue;
+				//}
+				
+				this.types.Add(type);	
+			}
+			
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
@@ -143,6 +159,11 @@ namespace ETHotfix
 				this.allEvents.Add(eventId, new List<IEvent>());
 			}
 			this.allEvents[eventId].Add(e);
+		}
+		
+		public List<Type> GetTypes()
+		{
+			return this.types;
 		}
 
 		public void Add(Component component)

@@ -32,7 +32,7 @@ namespace ETModel
 			this.opcodeTypes.Clear();
 			this.typeMessages.Clear();
 			
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(MessageAttribute));
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);

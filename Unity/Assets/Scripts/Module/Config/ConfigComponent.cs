@@ -36,7 +36,7 @@ namespace ETModel
 		public void Load()
 		{
 			this.allConfig.Clear();
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
 
 			foreach (Type type in types)
 			{

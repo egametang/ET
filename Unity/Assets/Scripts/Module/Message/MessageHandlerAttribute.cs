@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class MessageHandlerAttribute : Attribute
+	public class MessageHandlerAttribute : BaseAttribute
 	{
 		public AppType Type { get; }
 

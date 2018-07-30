@@ -13,14 +13,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Threading_Tasks_Task_1_ILTypeInstance_Binding
+    unsafe class System_Threading_Tasks_Task_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Threading.Tasks.Task<ILRuntime.Runtime.Intepreter.ILTypeInstance>);
+            Type type = typeof(System.Threading.Tasks.Task<Google.Protobuf.Adapt_IMessage.Adaptor>);
             args = new Type[]{};
             method = type.GetMethod("GetAwaiter", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
@@ -36,7 +36,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Threading.Tasks.Task<ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Threading.Tasks.Task<ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Threading.Tasks.Task<ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Threading.Tasks.Task<Google.Protobuf.Adapt_IMessage.Adaptor> instance_of_this_method = (System.Threading.Tasks.Task<Google.Protobuf.Adapt_IMessage.Adaptor>)typeof(System.Threading.Tasks.Task<Google.Protobuf.Adapt_IMessage.Adaptor>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetAwaiter();

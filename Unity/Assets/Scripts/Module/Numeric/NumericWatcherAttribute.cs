@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class NumericWatcherAttribute : Attribute
+	public class NumericWatcherAttribute : BaseAttribute
 	{
 		public NumericType NumericType { get; }
 

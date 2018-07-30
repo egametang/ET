@@ -3,9 +3,9 @@
 namespace ETModel
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class UIFactoryAttribute: Attribute
+	public class UIFactoryAttribute: BaseAttribute
 	{
-		public string Type { get; private set; }
+		public string Type { get; }
 
 		public UIFactoryAttribute(string type)
 		{

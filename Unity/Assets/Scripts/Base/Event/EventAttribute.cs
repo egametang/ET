@@ -3,9 +3,9 @@
 namespace ETModel
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class EventAttribute: Attribute
+	public class EventAttribute: BaseAttribute
 	{
-		public string Type { get; private set; }
+		public string Type { get; }
 
 		public EventAttribute(string type)
 		{

@@ -17,7 +17,7 @@ namespace ETModel
 		private readonly Dictionary<long, Component> allComponents = new Dictionary<long, Component>();
 
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
-		private readonly List<Type> types = new List<Type>();
+		private readonly UnOrderMultiMap<Type, Type> types = new UnOrderMultiMap<Type, Type>();
 
 		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
 
@@ -52,7 +52,17 @@ namespace ETModel
 			this.types.Clear();
 			foreach (Assembly value in this.assemblies.Values)
 			{
-				this.types.AddRange(value.GetTypes());
+				foreach (Type type in value.GetTypes())
+				{
+					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), false);
+					if (objects.Length == 0)
+					{
+						continue;
+					}
+
+					BaseAttribute baseAttribute = (BaseAttribute) objects[0];
+					this.types.Add(baseAttribute.AttributeType, type);
+				}
 			}
 
 			this.awakeSystems.Clear();
@@ -62,7 +72,7 @@ namespace ETModel
 			this.loadSystems.Clear();
 			this.changeSystems.Clear();
 
-			foreach (Type type in types)
+			foreach (Type type in types[typeof(ObjectSystemAttribute)])
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
 
@@ -117,7 +127,7 @@ namespace ETModel
 			}
 
 			this.allEvents.Clear();
-			foreach (Type type in types)
+			foreach (Type type in types[typeof(EventAttribute)])
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
 
@@ -151,9 +161,13 @@ namespace ETModel
 			return this.assemblies[dllType];
 		}
 		
-		public List<Type> GetTypes()
+		public List<Type> GetTypes(Type systemAttributeType)
 		{
-			return this.types;
+			if (!this.types.ContainsKey(systemAttributeType))
+			{
+				return new List<Type>();
+			}
+			return this.types[systemAttributeType];
 		}
 
 		public void Add(Component component)

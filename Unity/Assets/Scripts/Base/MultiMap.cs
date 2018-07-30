@@ -157,5 +157,10 @@ namespace ETModel
 		{
 			return this.dictionary.ContainsKey(t);
 		}
+
+		public void Clear()
+		{
+			dictionary.Clear();
+		}
 	}
 }

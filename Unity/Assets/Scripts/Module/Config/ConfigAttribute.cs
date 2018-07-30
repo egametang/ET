@@ -3,7 +3,7 @@
 namespace ETModel
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public class ConfigAttribute: Attribute
+	public class ConfigAttribute: BaseAttribute
 	{
 		public AppType Type { get; }
 

@@ -48,7 +48,7 @@ namespace ILRuntime.Runtime.Generated
                     }
                 }
             }
-            args = new Type[]{typeof(System.Action<ILRuntime.Runtime.Intepreter.ILTypeInstance>)};
+            args = new Type[]{typeof(System.Action<Google.Protobuf.Adapt_IMessage.Adaptor>)};
             if (genericMethods.TryGetValue("ToArray", out lst))
             {
                 foreach(var m in lst)
@@ -118,11 +118,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IEnumerable<System.Action<ILRuntime.Runtime.Intepreter.ILTypeInstance>> @source = (System.Collections.Generic.IEnumerable<System.Action<ILRuntime.Runtime.Intepreter.ILTypeInstance>>)typeof(System.Collections.Generic.IEnumerable<System.Action<ILRuntime.Runtime.Intepreter.ILTypeInstance>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.IEnumerable<System.Action<Google.Protobuf.Adapt_IMessage.Adaptor>> @source = (System.Collections.Generic.IEnumerable<System.Action<Google.Protobuf.Adapt_IMessage.Adaptor>>)typeof(System.Collections.Generic.IEnumerable<System.Action<Google.Protobuf.Adapt_IMessage.Adaptor>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = System.Linq.Enumerable.ToArray<System.Action<ILRuntime.Runtime.Intepreter.ILTypeInstance>>(@source);
+            var result_of_this_method = System.Linq.Enumerable.ToArray<System.Action<Google.Protobuf.Adapt_IMessage.Adaptor>>(@source);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

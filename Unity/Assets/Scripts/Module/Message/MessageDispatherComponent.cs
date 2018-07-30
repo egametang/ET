@@ -37,7 +37,7 @@ namespace ETModel
 		{
 			this.handlers.Clear();
 
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(MessageHandlerAttribute));
 
 			foreach (Type type in types)
 			{

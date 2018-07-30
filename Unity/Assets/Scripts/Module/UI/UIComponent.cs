@@ -66,7 +66,7 @@ namespace ETModel
 		{
 			this.UiTypes.Clear();
             
-			List<Type> types = Game.EventSystem.GetTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(UIFactoryAttribute));
 
 			foreach (Type type in types)
 			{

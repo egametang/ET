@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class ActorTypeHandlerAttribute : Attribute
+	public class ActorTypeHandlerAttribute : BaseAttribute
 	{
 		public AppType Type { get; }
 

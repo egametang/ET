@@ -34,23 +34,26 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Object\Component.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Object\ComponentFactory.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentWithId.cs" Link="Base\Object\ComponentWithId.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Object\Entity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Object\EventSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwakeSystem.cs" Link="Base\Object\IAwakeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IChangeSystem.cs" Link="Base\Object\IChangeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IComponentSerialize.cs" Link="Base\Object\IComponentSerialize.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IDestroySystem.cs" Link="Base\Object\IDestroySystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdateSystem.cs" Link="Base\Object\ILateUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoadSystem.cs" Link="Base\Object\ILoadSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ISerializeToEntity.cs" Link="Base\Object\ISerializeToEntity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStartSystem.cs" Link="Base\Object\IStartSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdateSystem.cs" Link="Base\Object\IUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Object\Object.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Object\ObjectPool.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" Link="Base\Object\ObjectSystemAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\BaseAttribute.cs" Link="Base\Base\BaseAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Base\Component.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Base\ComponentFactory.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentWithId.cs" Link="Base\Base\ComponentWithId.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Base\Entity.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EntityEventAttribute.cs" Link="Base\Base\EntityEventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventProxy.cs" Link="Base\Base\EventProxy.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Base\EventSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwakeSystem.cs" Link="Base\Base\IAwakeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IChangeSystem.cs" Link="Base\Base\IChangeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IComponentSerialize.cs" Link="Base\Base\IComponentSerialize.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IDestroySystem.cs" Link="Base\Base\IDestroySystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdateSystem.cs" Link="Base\Base\ILateUpdateSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoadSystem.cs" Link="Base\Base\ILoadSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ISerializeToEntity.cs" Link="Base\Base\ISerializeToEntity.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStartSystem.cs" Link="Base\Base\IStartSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdateSystem.cs" Link="Base\Base\IUpdateSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Base\Object.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Base\ObjectPool.cs" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" Link="Base\Base\ObjectSystemAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\OneThreadSynchronizationContext.cs" Link="Base\OneThreadSynchronizationContext.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
@@ -119,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />
+    <Folder Include="Base\Base\" />
     <Folder Include="Component\Config\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
