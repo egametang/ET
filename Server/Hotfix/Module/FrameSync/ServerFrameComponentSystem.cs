@@ -35,7 +35,7 @@ namespace ETHotfix
                 }
 
                 await timerComponent.WaitAsync(100);
-				
+				// 帧同步消息是从这里广播出去的，固定频率调用这个方法，去处理收到的客户端的请求
                 MessageHelper.Broadcast(self.FrameMessage);
 
                 ++self.Frame;

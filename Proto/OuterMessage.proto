@@ -73,6 +73,23 @@ message Frame_ClickMap // IFrameMessage
 	int32 Z = 2;
 }
 
+message Frame_JoyStick // IFrameMessage
+{
+	int32 RpcId = 90;
+	int64 Id = 94;
+	int32 X = 1;
+	int32 Y = 2;
+	int32 Z = 3;
+}
+
+message Frame_Fighting // IFrameMessage
+{
+	int32 RpcId = 90;
+	int64 Id = 94;
+	int32 SkillId = 1;
+}
+
+
 
 message C2R_Ping // IRequest
 {
