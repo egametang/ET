@@ -4,6 +4,8 @@ namespace ETModel
 	{
 		public const int ERR_Success = 0;
 		
+		// 1-11004 是SocketError请看SocketError定义
+		
 		// 100000 以上，避免跟SocketError冲突
 		public const int ERR_MyErrorCode = 100000;
 		

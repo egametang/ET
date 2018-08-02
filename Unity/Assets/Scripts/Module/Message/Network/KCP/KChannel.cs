@@ -43,6 +43,8 @@ namespace ETModel
 		// accept
 		public KChannel(uint conn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
+			
 			this.Id = conn;
 			this.Conn = conn;
 			this.RemoteConn = remoteConn;
@@ -61,6 +63,8 @@ namespace ETModel
 		// connect
 		public KChannel(uint conn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
+			
 			this.Id = conn;
 			this.Conn = conn;
 			this.socket = socket;

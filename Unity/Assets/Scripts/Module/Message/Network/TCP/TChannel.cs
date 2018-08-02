@@ -27,6 +27,8 @@ namespace ETModel
 
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
+			
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
 			this.parser = new PacketParser(this.recvBuffer);
@@ -41,6 +43,8 @@ namespace ETModel
 		
 		public TChannel(Socket socket, TService service): base(service, ChannelType.Accept)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
+			
 			this.socket = socket;
 			this.socket.NoDelay = true;
 			this.parser = new PacketParser(this.recvBuffer);

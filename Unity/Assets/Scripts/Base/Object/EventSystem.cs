@@ -197,9 +197,9 @@ namespace ETModel
 			}
 		}
 
-		public void Remove(long id)
+		public void Remove(long instanceId)
 		{
-			this.allComponents.Remove(id);
+			this.allComponents.Remove(instanceId);
 		}
 
 		public Component Get(long id)
