@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 
 namespace ETModel
 {
 	public struct WaitSendBuffer
 	{
 		public byte[] Bytes;
-		public int Index;
 		public int Length;
 
-		public WaitSendBuffer(byte[] bytes, int index, int length)
+		public WaitSendBuffer(byte[] bytes, int length)
 		{
 			this.Bytes = bytes;
-			this.Index = index;
 			this.Length = length;
 		}
 	}
@@ -25,53 +23,373 @@ namespace ETModel
 	{
 		private Socket socket;
 
-		private KCP kcp;
+		private IntPtr kcp;
 
 		private readonly Queue<WaitSendBuffer> sendBuffer = new Queue<WaitSendBuffer>();
 
 		private bool isConnected;
+		public bool IsRecvFirstKcpMessage { get; set; }
 		private readonly IPEndPoint remoteEndPoint;
 
 		private uint lastRecvTime;
 
-		public uint Conn;
-
 		public uint RemoteConn;
-		
+
 		public Packet packet = new Packet(ushort.MaxValue);
 
 		// accept
-		public KChannel(uint conn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
+		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
 			this.InstanceId = IdGenerater.GenerateId();
-			
-			this.Id = conn;
-			this.Conn = conn;
+
+			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
-			kcp = new KCP(this.RemoteConn, this);
-			kcp.SetOutput(this.Output);
-			kcp.NoDelay(1, 10, 2, 1);  //fast
-			kcp.SetMTU(470);
-			kcp.WndSize(256, 256);
+			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
+			Kcp.KcpSetoutput(
+				this.kcp,
+				(bytes, len, k, user) =>
+				{
+					KService.Output(bytes, len, user);
+					return len;
+				}
+			);
+			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
+			Kcp.KcpWndsize(this.kcp, 256, 256);
 			this.isConnected = true;
-
+			this.IsRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
 		}
 
 		// connect
-		public KChannel(uint conn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
+		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
 		{
 			this.InstanceId = IdGenerater.GenerateId();
-			
-			this.Id = conn;
-			this.Conn = conn;
-			this.socket = socket;
 
+			this.LocalConn = localConn;
+			this.socket = socket;
 			this.remoteEndPoint = remoteEndPoint;
+			this.IsRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
-			this.Connect(kService.TimeNow);
+			this.Connect();
+		}
+
+		public uint LocalConn
+		{
+			get
+			{
+				return (uint)this.Id;
+			}
+			set
+			{
+				this.Id = value;
+			}
+		}
+
+		public override void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+
+			base.Dispose();
+
+			try
+			{
+				if (this.Error == ErrorCode.ERR_Success)
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						this.Disconnect();
+					}
+				}
+			}
+			catch (Exception)
+			{
+			}
+
+			if (this.kcp != IntPtr.Zero)
+			{
+				Kcp.KcpRelease(this.kcp);
+				this.kcp = IntPtr.Zero;
+			}
+			this.socket = null;
+		}
+
+		public override MemoryStream Stream
+		{
+			get
+			{
+				return this.packet.Stream;
+			}
+		}
+
+		public void Disconnect(int error)
+		{
+			this.OnError(error);
+		}
+
+		private KService GetService()
+		{
+			return (KService)this.service;
+		}
+
+		public void HandleConnnect(uint remoteConn)
+		{
+			if (this.isConnected)
+			{
+				return;
+			}
+
+			this.RemoteConn = remoteConn;
+
+			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
+			Kcp.KcpSetoutput(
+				this.kcp,
+				(bytes, len, k, user) =>
+				{
+					KService.Output(bytes, len, user);
+					return len;
+				}
+			);
+			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
+			Kcp.KcpWndsize(this.kcp, 256, 256);
+
+			this.isConnected = true;
+			this.lastRecvTime = this.GetService().TimeNow;
+
+			HandleSend();
+		}
+
+		public void HandleAccept(uint remoteConn)
+		{
+			if (this.socket == null)
+			{
+				return;
+			}
+
+			// 如果channel已经收到过消息，则不再响应连接请求
+			if (this.IsRecvFirstKcpMessage)
+			{
+				return;
+			}
+			try
+			{
+				this.packet.Bytes.WriteTo(0, KcpProtocalType.ACK);
+				this.packet.Bytes.WriteTo(4, LocalConn);
+				this.packet.Bytes.WriteTo(8, RemoteConn);
+				this.socket.SendTo(this.packet.Bytes, 0, 12, SocketFlags.None, remoteEndPoint);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCode.ERR_SocketCantSend);
+			}
+		}
+
+		/// <summary>
+		/// 发送请求连接消息
+		/// </summary>
+		private void Connect()
+		{
+			try
+			{
+				uint timeNow = this.GetService().TimeNow;
+				this.packet.Bytes.WriteTo(0, KcpProtocalType.SYN);
+				this.packet.Bytes.WriteTo(4, this.LocalConn);
+				this.socket.SendTo(this.packet.Bytes, 0, 8, SocketFlags.None, remoteEndPoint);
+
+				// 200毫秒后再次update发送connect请求
+				this.GetService().AddToUpdateNextTime(timeNow + 200, this.Id);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCode.ERR_SocketCantSend);
+			}
+		}
+
+		private void Disconnect()
+		{
+			if (this.socket == null)
+			{
+				return;
+			}
+			try
+			{
+				this.packet.Bytes.WriteTo(0, KcpProtocalType.FIN);
+				this.packet.Bytes.WriteTo(4, this.LocalConn);
+				this.packet.Bytes.WriteTo(8, this.RemoteConn);
+				this.packet.Bytes.WriteTo(12, (uint)this.Error);
+				this.socket.SendTo(this.packet.Bytes, 0, 16, SocketFlags.None, remoteEndPoint);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCode.ERR_SocketCantSend);
+			}
+		}
+
+		public void Update()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+
+			uint timeNow = this.GetService().TimeNow;
+
+			// 如果还没连接上，发送连接请求
+			if (!this.isConnected)
+			{
+				// 10秒没连接上则报错
+				if (timeNow - this.lastRecvTime > 10 * 1000)
+				{
+					this.OnError(ErrorCode.ERR_KcpCantConnect);
+					return;
+				}
+				this.Connect();
+				return;
+			}
+
+			// 超时断开连接
+			if (timeNow - this.lastRecvTime > 40 * 1000)
+			{
+				this.OnError(ErrorCode.ERR_KcpChannelTimeout);
+				return;
+			}
+
+			try
+			{
+				Kcp.KcpUpdate(this.kcp, timeNow);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCode.ERR_SocketError);
+				return;
+			}
+
+
+			if (kcp != IntPtr.Zero)
+			{
+				uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
+				this.GetService().AddToUpdateNextTime(nextUpdateTime, this.Id);
+			}
+		}
+
+		private void HandleSend()
+		{
+			while (true)
+			{
+				if (this.sendBuffer.Count <= 0)
+				{
+					break;
+				}
+
+				WaitSendBuffer buffer = this.sendBuffer.Dequeue();
+				this.KcpSend(buffer.Bytes, buffer.Length);
+			}
+		}
+
+		public void HandleRecv(byte[] date, int length)
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+
+			// 收到了kcp消息则将自己从连接状态移除
+			if (!this.IsRecvFirstKcpMessage)
+			{
+				this.GetService().RemoveFromWaitConnectChannels(this.RemoteConn);
+				this.IsRecvFirstKcpMessage = true;
+			}
+
+			Kcp.KcpInput(this.kcp, date, length);
+			this.GetService().AddToUpdateNextTime(0, this.Id);
+
+			while (true)
+			{
+				int n = Kcp.KcpPeeksize(this.kcp);
+				if (n < 0)
+				{
+					return;
+				}
+				if (n == 0)
+				{
+					this.OnError((int)SocketError.NetworkReset);
+					return;
+				}
+
+				byte[] buffer = this.packet.Bytes;
+				this.packet.Stream.SetLength(n);
+				this.packet.Stream.Seek(0, SeekOrigin.Begin);
+				int count = Kcp.KcpRecv(this.kcp, buffer, ushort.MaxValue);
+				if (n != count)
+				{
+					return;
+				}
+				if (count <= 0)
+				{
+					return;
+				}
+
+				lastRecvTime = this.GetService().TimeNow;
+
+				this.OnRead(packet);
+			}
+		}
+
+		public override void Start()
+		{
+		}
+
+		public void Output(IntPtr bytes, int count)
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			try
+			{
+				if (count == 0)
+				{
+					Log.Error($"output 0");
+					return;
+				}
+
+				Marshal.Copy(bytes, this.packet.Bytes, 0, count);
+				this.socket.SendTo(this.packet.Bytes, 0, count, SocketFlags.None, this.remoteEndPoint);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				this.OnError(ErrorCode.ERR_SocketCantSend);
+			}
+		}
+
+		private void KcpSend(byte[] buffers, int length)
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			Kcp.KcpSend(this.kcp, buffers, length);
+			this.GetService().AddToUpdateNextTime(0, this.Id);
+		}
+
+		public override void Send(byte[] buffer, int index, int length)
+		{
+			if (isConnected)
+			{
+				this.KcpSend(buffer, length);
+				return;
+			}
+
+			this.sendBuffer.Enqueue(new WaitSendBuffer(buffer, length));
 		}
 
 		public override void Send(MemoryStream stream)
@@ -90,185 +408,5 @@ namespace ETModel
 
 			Send(bytes, 0, size);
 		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
-
-			for (int i = 0; i < 4; i++)
-			{
-				this.DisConnect();
-			}
-
-			this.socket = null;
-		}
-
-		private KService GetService()
-		{
-			return (KService)this.service;
-		}
-
-		public void HandleDisConnect()
-		{
-			this.OnError(ErrorCode.ERR_KcpRemoteDisconnect);
-		}
-
-		public void HandleConnnect(uint responseConn)
-		{
-			if (this.isConnected)
-			{
-				return;
-			}
-			this.isConnected = true;
-			this.RemoteConn = responseConn;
-			this.kcp = new KCP(responseConn, this);
-			kcp.SetOutput(this.Output);
-			kcp.NoDelay(1, 10, 2, 1);  //fast
-			kcp.SetMTU(470);
-			kcp.WndSize(256, 256);
-			this.lastRecvTime = this.GetService().TimeNow;
-
-			HandleSend();
-		}
-
-		public void HandleAccept(uint requestConn)
-		{
-			packet.Bytes.WriteTo(0, KcpProtocalType.ACK);
-			packet.Bytes.WriteTo(4, requestConn);
-			packet.Bytes.WriteTo(8, this.Conn);
-			this.socket.SendTo(packet.Bytes, 0, 12, SocketFlags.None, remoteEndPoint);
-		}
-
-		/// <summary>
-		/// 发送请求连接消息
-		/// </summary>
-		private void Connect(uint timeNow)
-		{
-			packet.Bytes.WriteTo(0, KcpProtocalType.SYN);
-			packet.Bytes.WriteTo(4, this.Conn);
-			this.socket.SendTo(packet.Bytes, 0, 8, SocketFlags.None, remoteEndPoint);
-
-			// 200毫秒后再次update发送connect请求
-			this.GetService().AddToNextTimeUpdate(timeNow + 200, this.Id);
-		}
-
-		private void DisConnect()
-		{
-			packet.Bytes.WriteTo(0, KcpProtocalType.FIN);
-			packet.Bytes.WriteTo(4, this.Conn);
-			packet.Bytes.WriteTo(8, this.RemoteConn);
-			//Log.Debug($"client disconnect: {this.Conn}");
-			this.socket.SendTo(packet.Bytes, 0, 12, SocketFlags.None, remoteEndPoint);
-		}
-
-		public void Update(uint timeNow)
-		{
-			// 如果还没连接上，发送连接请求
-			if (!this.isConnected)
-			{
-				// 5秒连接不上，报错
-				if (timeNow - this.lastRecvTime > 5 * 1000)
-				{
-					this.OnError(ErrorCode.ERR_KcpConnectFail);
-					return;
-				}
-				Connect(timeNow);
-				return;
-			}
-			
-			// 超时断开连接
-			if (timeNow - this.lastRecvTime > 40 * 1000)
-			{
-				this.OnError(ErrorCode.ERR_KcpTimeout);
-				return;
-			}
-			this.kcp.Update(timeNow);
-
-			uint nextUpdateTime = this.kcp.Check(timeNow);
-			this.GetService().AddToNextTimeUpdate(nextUpdateTime, this.Id);
-		}
-
-		private void HandleSend()
-		{
-			while (true)
-			{
-				if (this.sendBuffer.Count <= 0)
-				{
-					break;
-				}
-				WaitSendBuffer buffer = this.sendBuffer.Dequeue();
-				this.KcpSend(buffer.Bytes, buffer.Index, buffer.Length);
-			}
-		}
-
-		public void HandleRecv(byte[] date, int length, uint timeNow)
-		{
-			this.kcp.Input(date, 0, length);
-			this.GetService().AddToUpdate(this.Id);
-
-			while (true)
-			{
-				int n = kcp.PeekSize();
-				if (n == 0)
-				{
-					this.OnError((int)SocketError.NetworkReset);
-					return;
-				}
-				this.packet.Stream.SetLength(ushort.MaxValue);
-				int count = this.kcp.Recv(this.packet.Bytes, 0, ushort.MaxValue);
-				if (count <= 0)
-				{
-					return;
-				}
-
-				lastRecvTime = timeNow;
-
-				this.packet.Flag = this.packet.Bytes[0];
-				this.packet.Opcode = BitConverter.ToUInt16(this.packet.Bytes, 1);
-				this.packet.Stream.SetLength(count);
-				this.packet.Stream.Seek(Packet.Index, SeekOrigin.Begin);
-				this.OnRead(packet);
-			}
-		}
-		
-		public void Output(byte[] bytes, int count, object user)
-		{
-			this.socket.SendTo(bytes, 0, count, SocketFlags.None, this.remoteEndPoint);
-		}
-
-		private void KcpSend(byte[] buffers, int index, int length)
-		{
-			this.kcp.Send(buffers, index, length);
-			this.GetService().AddToUpdate(this.Id);
-		}
-
-		public override void Start()
-		{
-		}
-
-		public override void Send(byte[] buffer, int index, int length)
-		{
-			if (isConnected)
-			{
-				this.KcpSend(buffer, index, length);
-				return;
-			}
-			
-			this.sendBuffer.Enqueue(new WaitSendBuffer(buffer, index, length));
-		}
-		
-		public override MemoryStream Stream
-		{
-			get
-			{
-				return this.packet.Stream;
-			}
-		}
-
 	}
 }

@@ -10,8 +10,6 @@ namespace ETModel
 		// 重用list
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
 
-		private T firstKey;
-
 		public SortedDictionary<T, List<K>> GetDictionary()
 		{
 			return this.dictionary;

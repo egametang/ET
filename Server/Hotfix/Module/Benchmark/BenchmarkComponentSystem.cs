@@ -21,7 +21,7 @@ namespace ETHotfix
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				for (int i = 0; i < 100; i++)
+				for (int i = 0; i < 1000; i++)
 				{
 					self.TestAsync(networkComponent, ipEndPoint, i);
 				}
@@ -71,7 +71,7 @@ namespace ETHotfix
 				long time2 = TimeHelper.ClientNow();
 				long time = time2 - self.time1;
 				self.time1 = time2;
-				Log.Info($"Benchmark k: {self.k} 每10W次耗时: {time} ms");
+				Log.Info($"Benchmark k: {self.k} 每10W次耗时: {time} ms {session.Network.Count}");
 			}
 			catch (Exception e)
 			{

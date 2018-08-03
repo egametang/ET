@@ -24,7 +24,7 @@ namespace ETModel
 		private AChannel channel;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[0] };
+		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[2], new byte[1], new byte[2] };
 
 		public NetworkComponent Network
 		{
@@ -124,6 +124,10 @@ namespace ETModel
 
 		private void Run(Packet packet)
 		{
+			packet.Flag = packet.Bytes[Packet.FlagIndex];
+			packet.Opcode = BitConverter.ToUInt16(packet.Bytes, Packet.OpcodeIndex);
+			packet.Stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+			
 			byte flag = packet.Flag;
 			ushort opcode = packet.Opcode;
 			
@@ -259,19 +263,19 @@ namespace ETModel
 			{
 				throw new Exception("session已经被Dispose了");
 			}
-			this.byteses[0][0] = flag;
-			this.byteses[1] = BitConverter.GetBytes(opcode);
 
 			MemoryStream stream = this.Stream;
 			
-			int index = Packet.Index;
-			stream.Seek(index, SeekOrigin.Begin);
-			stream.SetLength(index);
-			var  bb = this.Network.MessagePacker.SerializeTo(message);
+			stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+			stream.SetLength(Packet.MessageIndex);
 			this.Network.MessagePacker.SerializeTo(message, stream);
-			
 			stream.Seek(0, SeekOrigin.Begin);
-			index = 0;
+			
+			ushort size = (ushort)(stream.Length - Packet.SizeLength);
+			this.byteses[0].WriteTo(0, size);
+			this.byteses[1][0] = flag;
+			this.byteses[2].WriteTo(0, opcode);
+			int index = 0;
 			foreach (var bytes in this.byteses)
 			{
 				Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
@@ -283,14 +287,7 @@ namespace ETModel
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-
 				Packet packet = ((TChannel)this.channel).parser.packet;
-
-				packet.Flag = flag;
-				packet.Opcode = opcode;
-				packet.Stream.Seek(0, SeekOrigin.Begin);
-				packet.Stream.SetLength(0);
-				this.Network.MessagePacker.SerializeTo(message, stream);
 				session.Run(packet);
 				return;
 			}

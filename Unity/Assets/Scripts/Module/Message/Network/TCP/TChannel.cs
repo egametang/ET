@@ -100,8 +100,6 @@ namespace ETModel
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
-			byte[] sizeBuffer = BitConverter.GetBytes(length);
-			this.sendBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
 			this.sendBuffer.Write(buffer, index, length);
 
 			if(!this.isSending)
@@ -117,9 +115,6 @@ namespace ETModel
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 
-			ushort size = (ushort)(stream.Length - stream.Position);
-			byte[] sizeBuffer = BitConverter.GetBytes(size);
-			this.sendBuffer.Write(sizeBuffer, 0, sizeBuffer.Length);
 			this.sendBuffer.ReadFrom(stream);
 
 			if(!this.isSending)

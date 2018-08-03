@@ -11,11 +11,12 @@ namespace ETModel
 
 	public class Packet
 	{
+		public const int SizeLength = 2;
 		public const int MinSize = 3;
 		public const int MaxSize = 60000;
-		public const int FlagIndex = 0;
-		public const int OpcodeIndex = 1;
-		public const int Index = 3;
+		public const int FlagIndex = 2;
+		public const int OpcodeIndex = 3;
+		public const int MessageIndex = 5;
 
 		/// <summary>
 		/// 只读，不允许修改
@@ -49,7 +50,6 @@ namespace ETModel
 		private ushort packetSize;
 		private ParserState state;
 		public readonly Packet packet = new Packet(ushort.MaxValue);
-		private readonly byte[] cache = new byte[2];
 		private bool isOK;
 
 		public PacketParser(CircularBuffer buffer)
@@ -92,15 +92,11 @@ namespace ETModel
 						}
 						else
 						{
-							this.buffer.Read(this.cache, 0, 1);
-							this.packet.Flag = this.cache[0];
-							this.buffer.Read(this.cache, 0, 2);
-							this.packet.Opcode = BitConverter.ToUInt16(this.cache, 0);
-							
 							this.packet.Stream.Seek(0, SeekOrigin.Begin);
-							this.packet.Stream.SetLength(this.packetSize - Packet.Index);
-							this.buffer.Read(this.packet.Stream.GetBuffer(), 0, this.packetSize - Packet.Index);
-							
+							this.packet.Stream.SetLength(this.packetSize + Packet.SizeLength);
+							byte[] bytes = this.packet.Stream.GetBuffer();
+							bytes.WriteTo(0, this.packetSize);
+							this.buffer.Read(bytes, Packet.SizeLength, this.packetSize);
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
 							finish = true;

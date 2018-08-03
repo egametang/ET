@@ -62,11 +62,30 @@ namespace ETModel
 
 		public static void WriteTo(this byte[] bytes, int offset, uint num)
 		{
-			byte[] numBytes = BitConverter.GetBytes(num);
-			for (int i = 0; i < numBytes.Length; ++i)
-			{
-				bytes[offset + i] = numBytes[i];
-			}
+			bytes[offset] = (byte)(num & 0xff);
+			bytes[offset + 1] = (byte)((num & 0xff00) >> 8);
+			bytes[offset + 2] = (byte)((num & 0xff0000) >> 16);
+			bytes[offset + 3] = (byte)((num & 0xff000000) >> 24);
+		}
+		
+		public static void WriteTo(this byte[] bytes, int offset, int num)
+		{
+			bytes[offset] = (byte)(num & 0xff);
+			bytes[offset + 1] = (byte)((num & 0xff00) >> 8);
+			bytes[offset + 2] = (byte)((num & 0xff0000) >> 16);
+			bytes[offset + 3] = (byte)((num & 0xff000000) >> 24);
+		}
+		
+		public static void WriteTo(this byte[] bytes, int offset, short num)
+		{
+			bytes[offset] = (byte)(num & 0xff);
+			bytes[offset + 1] = (byte)((num & 0xff00) >> 8);
+		}
+		
+		public static void WriteTo(this byte[] bytes, int offset, ushort num)
+		{
+			bytes[offset] = (byte)(num & 0xff);
+			bytes[offset + 1] = (byte)((num & 0xff00) >> 8);
 		}
 	}
 }

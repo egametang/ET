@@ -16,6 +16,11 @@
     <OutputPath>..\..\Bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Libs\**" />
+    <EmbeddedResource Remove="Libs\**" />
+    <None Remove="Libs\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
@@ -88,7 +93,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\Circularbuffer.cs" Link="Module\Message\Network\Circularbuffer.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KChannel.cs" Link="Module\Message\Network\KCP\KChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\Kcp.cs" Link="Module\Message\Network\KCP\Kcp.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KService.cs" Link="Module\Message\Network\KCP\KService.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\NetworkHelper.cs" Link="Module\Message\Network\NetworkHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\PacketParser.cs" Link="Module\Message\Network\TCP\PacketParser.cs" />
@@ -116,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
+    <ProjectReference Include="..\ThirdParty\Libs\KcpLib.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
