@@ -125,7 +125,7 @@ namespace ETHotfix
 					this.RegisterEvent(aEventAttribute.Type, iEvent);
 
 					// hotfix的事件也要注册到mono层，hotfix可以订阅mono层的事件
-					Action<List<object>> action = list => { Handle(aEventAttribute.Type, list); };
+					Action<List<object>> action = list => { Handle(iEvent, list); };
 					ETModel.Game.EventSystem.RegisterEvent(aEventAttribute.Type, new EventProxy(action));
 				}
 			}
@@ -133,21 +133,21 @@ namespace ETHotfix
 			this.Load();
 		}
 
-		public static void Handle(string type, List<object> param)
+		public static void Handle(IEvent iEvent, List<object> param)
 		{
 			switch (param.Count)
 			{
 				case 0:
-					Game.EventSystem.Run(type);
+					iEvent.Handle();
 					break;
 				case 1:
-					Game.EventSystem.Run(type, param[0]);
+					iEvent.Handle(param[0]);
 					break;
 				case 2:
-					Game.EventSystem.Run(type, param[0], param[1]);
+					iEvent.Handle(param[0], param[1]);
 					break;
 				case 3:
-					Game.EventSystem.Run(type, param[0], param[1], param[2]);
+					iEvent.Handle(param[0], param[1], param[2]);
 					break;
 			}
 		}
