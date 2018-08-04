@@ -74,6 +74,11 @@ namespace ETModel
 					{
 						continue;
 					}
+
+					if (fileInfo.Name == "Version.txt")
+					{
+						continue;
+					}
 					
 					fileInfo.Delete();
 				}
