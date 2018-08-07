@@ -76,6 +76,11 @@ namespace ETModel
 			bytes[offset + 3] = (byte)((num & 0xff000000) >> 24);
 		}
 		
+		public static void WriteTo(this byte[] bytes, int offset, byte num)
+		{
+			bytes[offset] = num;
+		}
+		
 		public static void WriteTo(this byte[] bytes, int offset, short num)
 		{
 			bytes[offset] = (byte)(num & 0xff);

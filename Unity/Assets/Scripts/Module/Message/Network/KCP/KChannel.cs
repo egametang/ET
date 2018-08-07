@@ -28,7 +28,7 @@ namespace ETModel
 		private readonly Queue<WaitSendBuffer> sendBuffer = new Queue<WaitSendBuffer>();
 
 		private bool isConnected;
-		public bool IsRecvFirstKcpMessage { get; set; }
+		public bool isRecvFirstKcpMessage;
 		private readonly IPEndPoint remoteEndPoint;
 
 		private uint lastRecvTime;
@@ -57,8 +57,9 @@ namespace ETModel
 			);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
+			Kcp.KcpSetmtu(this.kcp, 470);
 			this.isConnected = true;
-			this.IsRecvFirstKcpMessage = false;
+			this.isRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
 		}
 
@@ -70,7 +71,7 @@ namespace ETModel
 			this.LocalConn = localConn;
 			this.socket = socket;
 			this.remoteEndPoint = remoteEndPoint;
-			this.IsRecvFirstKcpMessage = false;
+			this.isRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
 			this.Connect();
 		}
@@ -156,6 +157,7 @@ namespace ETModel
 			);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
+			Kcp.KcpSetmtu(this.kcp, 470);
 
 			this.isConnected = true;
 			this.lastRecvTime = this.GetService().TimeNow;
@@ -171,16 +173,16 @@ namespace ETModel
 			}
 
 			// 如果channel已经收到过消息，则不再响应连接请求
-			if (this.IsRecvFirstKcpMessage)
+			if (this.isRecvFirstKcpMessage)
 			{
 				return;
 			}
 			try
 			{
 				this.packet.Bytes.WriteTo(0, KcpProtocalType.ACK);
-				this.packet.Bytes.WriteTo(4, LocalConn);
-				this.packet.Bytes.WriteTo(8, RemoteConn);
-				this.socket.SendTo(this.packet.Bytes, 0, 12, SocketFlags.None, remoteEndPoint);
+				this.packet.Bytes.WriteTo(1, LocalConn);
+				this.packet.Bytes.WriteTo(5, RemoteConn);
+				this.socket.SendTo(this.packet.Bytes, 0, 9, SocketFlags.None, remoteEndPoint);
 			}
 			catch (Exception e)
 			{
@@ -198,8 +200,8 @@ namespace ETModel
 			{
 				uint timeNow = this.GetService().TimeNow;
 				this.packet.Bytes.WriteTo(0, KcpProtocalType.SYN);
-				this.packet.Bytes.WriteTo(4, this.LocalConn);
-				this.socket.SendTo(this.packet.Bytes, 0, 8, SocketFlags.None, remoteEndPoint);
+				this.packet.Bytes.WriteTo(1, this.LocalConn);
+				this.socket.SendTo(this.packet.Bytes, 0, 5, SocketFlags.None, remoteEndPoint);
 
 				// 200毫秒后再次update发送connect请求
 				this.GetService().AddToUpdateNextTime(timeNow + 200, this.Id);
@@ -220,10 +222,10 @@ namespace ETModel
 			try
 			{
 				this.packet.Bytes.WriteTo(0, KcpProtocalType.FIN);
-				this.packet.Bytes.WriteTo(4, this.LocalConn);
-				this.packet.Bytes.WriteTo(8, this.RemoteConn);
-				this.packet.Bytes.WriteTo(12, (uint)this.Error);
-				this.socket.SendTo(this.packet.Bytes, 0, 16, SocketFlags.None, remoteEndPoint);
+				this.packet.Bytes.WriteTo(1, this.LocalConn);
+				this.packet.Bytes.WriteTo(5, this.RemoteConn);
+				this.packet.Bytes.WriteTo(9, (uint)this.Error);
+				this.socket.SendTo(this.packet.Bytes, 0, 13, SocketFlags.None, remoteEndPoint);
 			}
 			catch (Exception e)
 			{
@@ -294,7 +296,7 @@ namespace ETModel
 			}
 		}
 
-		public void HandleRecv(byte[] date, int length)
+		public void HandleRecv(byte[] date, int offset, int length)
 		{
 			if (this.IsDisposed)
 			{
@@ -302,13 +304,13 @@ namespace ETModel
 			}
 
 			// 收到了kcp消息则将自己从连接状态移除
-			if (!this.IsRecvFirstKcpMessage)
+			if (!this.isRecvFirstKcpMessage)
 			{
 				this.GetService().RemoveFromWaitConnectChannels(this.RemoteConn);
-				this.IsRecvFirstKcpMessage = true;
+				this.isRecvFirstKcpMessage = true;
 			}
 
-			Kcp.KcpInput(this.kcp, date, length);
+			Kcp.KcpInput(this.kcp, date, offset, length);
 			this.GetService().AddToUpdateNextTime(0, this.Id);
 
 			while (true)
@@ -361,8 +363,11 @@ namespace ETModel
 					return;
 				}
 
-				Marshal.Copy(bytes, this.packet.Bytes, 0, count);
-				this.socket.SendTo(this.packet.Bytes, 0, count, SocketFlags.None, this.remoteEndPoint);
+				this.packet.Bytes.WriteTo(0, KcpProtocalType.MSG);
+				// 每个消息头部写下该channel的id;
+				this.packet.Bytes.WriteTo(1, this.LocalConn);
+				Marshal.Copy(bytes, this.packet.Bytes, 5, count);
+				this.socket.SendTo(this.packet.Bytes, 0, count + 5, SocketFlags.None, this.remoteEndPoint);
 			}
 			catch (Exception e)
 			{

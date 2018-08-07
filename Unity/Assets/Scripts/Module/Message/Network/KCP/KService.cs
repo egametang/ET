@@ -8,9 +8,10 @@ namespace ETModel
 {
 	public static class KcpProtocalType
 	{
-		public const uint SYN = 1;
-		public const uint ACK = 2;
-		public const uint FIN = 3;
+		public const byte SYN = 1;
+		public const byte ACK = 2;
+		public const byte FIN = 3;
+		public const byte MSG = 4;
 	}
 
 	public sealed class KService : AService
@@ -123,23 +124,23 @@ namespace ETModel
 					continue;
 				}
 
-				// 长度小于4，不是正常的消息
-				if (messageLength < 4)
+				// 长度小于1，不是正常的消息
+				if (messageLength < 1)
 				{
 					continue;
 				}
 				// accept
-				uint conn = BitConverter.ToUInt32(this.cache, 0);
-
+				byte flag = this.cache[0];
+				
 				// conn从1000开始，如果为1，2，3则是特殊包
 				uint remoteConn = 0;
 				uint localConn = 0;
 				KChannel kChannel = null;
-				switch (conn)
+				switch (flag)
 				{
 					case KcpProtocalType.SYN:  // accept
-											   // 长度!=8，不是accpet消息
-						if (messageLength != 8)
+						// 长度!=5，不是accpet消息
+						if (messageLength != 5)
 						{
 							break;
 						}
@@ -147,7 +148,7 @@ namespace ETModel
 						IPEndPoint acceptIpEndPoint = (IPEndPoint)this.ipEndPoint;
 						this.ipEndPoint = new IPEndPoint(0, 0);
 
-						remoteConn = BitConverter.ToUInt32(this.cache, 4);
+						remoteConn = BitConverter.ToUInt32(this.cache, 1);
 
 						// 如果等待连接状态,则重新响应请求
 						if (this.waitConnectChannels.TryGetValue(remoteConn, out kChannel))
@@ -167,13 +168,13 @@ namespace ETModel
 
 						break;
 					case KcpProtocalType.ACK:  // connect返回
-											   // 长度!=12，不是connect消息
-						if (messageLength != 12)
+						// 长度!=9，不是connect消息
+						if (messageLength != 9)
 						{
 							break;
 						}
-						remoteConn = BitConverter.ToUInt32(this.cache, 4);
-						localConn = BitConverter.ToUInt32(this.cache, 8);
+						remoteConn = BitConverter.ToUInt32(this.cache, 1);
+						localConn = BitConverter.ToUInt32(this.cache, 5);
 
 						kChannel = this.GetKChannel(localConn);
 						if (kChannel != null)
@@ -182,32 +183,43 @@ namespace ETModel
 						}
 						break;
 					case KcpProtocalType.FIN:  // 断开
-											   // 长度!=12，不是DisConnect消息
-						if (messageLength != 16)
+						// 长度!=13，不是DisConnect消息
+						if (messageLength != 13)
 						{
 							break;
 						}
 
-						remoteConn = BitConverter.ToUInt32(this.cache, 4);
-						localConn = BitConverter.ToUInt32(this.cache, 8);
+						remoteConn = BitConverter.ToUInt32(this.cache, 1);
+						localConn = BitConverter.ToUInt32(this.cache, 5);
 
 						// 处理chanel
 						kChannel = this.GetKChannel(localConn);
 						if (kChannel != null)
 						{
+							// 校验remoteConn，防止第三方攻击
 							if (kChannel.RemoteConn == remoteConn)
 							{
 								kChannel.Disconnect(ErrorCode.ERR_PeerDisconnect);
 							}
 						}
 						break;
-					default:  // 接收
-							  // 处理chanel
-						localConn = conn;
+					case KcpProtocalType.MSG:  // 断开
+						// 长度<9，不是Msg消息
+						if (messageLength < 9)
+						{
+							break;
+						}
+						// 处理chanel
+						remoteConn = BitConverter.ToUInt32(this.cache, 1);
+						localConn = BitConverter.ToUInt32(this.cache, 5);
 						kChannel = this.GetKChannel(localConn);
 						if (kChannel != null)
 						{
-							kChannel.HandleRecv(this.cache, messageLength);
+							// 校验remoteConn，防止第三方攻击
+							if (kChannel.RemoteConn == remoteConn)
+							{
+								kChannel.HandleRecv(this.cache, 5, messageLength - 5);
+							}
 						}
 						break;
 				}
