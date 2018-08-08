@@ -275,7 +275,7 @@ namespace ETModel
 			}
 
 
-			if (kcp != IntPtr.Zero)
+			if (this.kcp != IntPtr.Zero)
 			{
 				uint nextUpdateTime = Kcp.KcpCheck(this.kcp, timeNow);
 				this.GetService().AddToUpdateNextTime(nextUpdateTime, this.Id);
@@ -309,12 +309,16 @@ namespace ETModel
 				this.GetService().RemoveFromWaitConnectChannels(this.RemoteConn);
 				this.isRecvFirstKcpMessage = true;
 			}
-
+			
 			Kcp.KcpInput(this.kcp, date, offset, length);
 			this.GetService().AddToUpdateNextTime(0, this.Id);
 
 			while (true)
 			{
+				if (this.IsDisposed)
+				{
+					return;
+				}
 				int n = Kcp.KcpPeeksize(this.kcp);
 				if (n < 0)
 				{

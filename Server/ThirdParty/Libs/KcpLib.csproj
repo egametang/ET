@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-
   <PropertyGroup>
-  	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-  	<OutputPath>..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\..\Bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-  	<OutputPath>..\..\..\Bin\</OutputPath>
+    <OutputPath>..\..\..\Bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\Kcp.cs" Link="Kcp.cs" />
@@ -26,5 +24,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>
