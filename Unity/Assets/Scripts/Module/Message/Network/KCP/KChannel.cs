@@ -390,7 +390,7 @@ namespace ETModel
 			this.GetService().AddToUpdateNextTime(0, this.Id);
 		}
 
-		public override void Send(byte[] buffer, int index, int length)
+		private void Send(byte[] buffer, int index, int length)
 		{
 			if (isConnected)
 			{

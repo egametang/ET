@@ -95,23 +95,6 @@ namespace ETModel
 			this.StartRecv();
 			this.StartSend();
 		}
-
-		public override void Send(byte[] buffer, int index, int length)
-		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("TChannel已经被Dispose, 不能发送消息");
-			}
-			
-			cache.WriteTo(0, (ushort)length);
-			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
-			this.sendBuffer.Write(buffer, index, length);
-
-			if(!this.isSending)
-			{
-				this.StartSend();
-			}
-		}
 		
 		public override void Send(MemoryStream stream)
 		{

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -70,12 +69,7 @@ namespace ETModel
 		}
 
 		public abstract void Start();
-
-		/// <summary>
-		/// 发送消息
-		/// </summary>
-		public abstract void Send(byte[] buffer, int index, int length);
-
+		
 		public abstract void Send(MemoryStream stream);
 		
 		public override void Dispose()
