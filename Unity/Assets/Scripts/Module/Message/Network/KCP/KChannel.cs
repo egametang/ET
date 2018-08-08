@@ -31,7 +31,9 @@ namespace ETModel
 		public bool isRecvFirstKcpMessage;
 		private readonly IPEndPoint remoteEndPoint;
 
-		private uint lastRecvTime;
+		public uint lastRecvTime;
+
+		public uint CreateTime;
 
 		public uint RemoteConn;
 
@@ -61,6 +63,7 @@ namespace ETModel
 			this.isConnected = true;
 			this.isRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
+			this.CreateTime = kService.TimeNow;
 		}
 
 		// connect
@@ -73,6 +76,7 @@ namespace ETModel
 			this.remoteEndPoint = remoteEndPoint;
 			this.isRecvFirstKcpMessage = false;
 			this.lastRecvTime = kService.TimeNow;
+			this.CreateTime = kService.TimeNow;
 			this.Connect();
 		}
 
@@ -343,7 +347,7 @@ namespace ETModel
 					return;
 				}
 
-				lastRecvTime = this.GetService().TimeNow;
+				this.lastRecvTime = this.GetService().TimeNow;
 
 				this.OnRead(packet);
 			}

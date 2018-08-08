@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+#if SERVER
 using System.Runtime.InteropServices;
+#endif
 
 namespace ETModel
 {
@@ -20,13 +22,20 @@ namespace ETModel
 
 		private uint IdGenerater = 1000;
 
+		// KService创建的时间
+		public long StartTime;
+		
+		// 当前时间 - KService创建的时间
 		public uint TimeNow { get; private set; }
 
 		private Socket socket;
 
 		private readonly Dictionary<long, KChannel> localConnChannels = new Dictionary<long, KChannel>();
 
+		// 记录等待连接的channel，10秒后或者第一个消息过来才会从这个dict中删除
 		private readonly Dictionary<uint, KChannel> waitConnectChannels = new Dictionary<uint, KChannel>();
+		private readonly List<uint> connectTimeoutChannels = new List<uint>();
+		private uint lastCheckTime;
 
 		private readonly byte[] cache = new byte[8192];
 
@@ -47,7 +56,8 @@ namespace ETModel
 
 		public KService(IPEndPoint ipEndPoint)
 		{
-			this.TimeNow = (uint)TimeHelper.ClientNow();
+			this.StartTime = TimeHelper.ClientNow();
+			this.TimeNow = (uint)(TimeHelper.ClientNow() - this.StartTime);
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 			//this.socket.Blocking = false;
 			this.socket.Bind(ipEndPoint);
@@ -65,7 +75,8 @@ namespace ETModel
 
 		public KService()
 		{
-			this.TimeNow = (uint)TimeHelper.ClientNow();
+			this.StartTime = TimeHelper.ClientNow();
+			this.TimeNow = (uint)(TimeHelper.ClientNow() - this.StartTime);
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 			//this.socket.Blocking = false;
 			this.socket.Bind(new IPEndPoint(IPAddress.Any, 0));
@@ -159,7 +170,7 @@ namespace ETModel
 
 						localConn = ++this.IdGenerater;
 						kChannel = new KChannel(localConn, remoteConn, this.socket, acceptIpEndPoint, this);
-						this.localConnChannels[kChannel.Id] = kChannel;
+						this.localConnChannels[kChannel.LocalConn] = kChannel;
 						this.waitConnectChannels[remoteConn] = kChannel;
 
 						kChannel.HandleAccept(remoteConn);
@@ -316,10 +327,12 @@ namespace ETModel
 
 		public override void Update()
 		{
-			this.TimeNow = (uint)TimeHelper.ClientNow();
+			this.TimeNow = (uint)(TimeHelper.ClientNow() - this.StartTime);
 
 			this.Recv();
 
+			this.CheckWaitTimeout();
+			
 			this.TimerOut();
 
 			foreach (long id in updateChannels)
@@ -345,6 +358,44 @@ namespace ETModel
 				}
 				long id = this.removedChannels.Dequeue();
 				this.localConnChannels.Remove(id);
+			}
+		}
+
+		// 2秒钟检查一次, 删除连接成功但是超过10秒还未发第一个消息过来的channel
+		private void CheckWaitTimeout()
+		{
+			if (this.TimeNow - this.lastCheckTime < 2000)
+			{
+				return;
+			}
+
+			this.lastCheckTime = this.TimeNow;
+
+			if (this.waitConnectChannels.Count == 0)
+			{
+				return;
+			}
+
+			this.connectTimeoutChannels.Clear();
+			foreach (KeyValuePair<uint,KChannel> kv in this.waitConnectChannels)
+			{
+				if (this.TimeNow - kv.Value.CreateTime < 10000)
+				{
+					continue;
+				}
+				this.connectTimeoutChannels.Add(kv.Key);
+			}
+
+			foreach (uint remoteConn in this.connectTimeoutChannels)
+			{
+				KChannel kChannel;
+				if (!this.waitConnectChannels.TryGetValue(remoteConn, out kChannel))
+				{
+					continue;
+				}
+
+				this.waitConnectChannels.Remove(remoteConn);
+				this.Remove(kChannel.LocalConn);
 			}
 		}
 
