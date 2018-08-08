@@ -25,6 +25,8 @@ namespace ETModel
 
 		public readonly PacketParser parser;
 
+		public readonly byte[] cache = new byte[2];
+
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
 			this.InstanceId = IdGenerater.GenerateId();
@@ -100,6 +102,9 @@ namespace ETModel
 			{
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
+			
+			cache.WriteTo(0, (ushort)length);
+			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
 			this.sendBuffer.Write(buffer, index, length);
 
 			if(!this.isSending)
@@ -115,6 +120,8 @@ namespace ETModel
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 
+			cache.WriteTo(0, (ushort)stream.Length);
+			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
 			this.sendBuffer.ReadFrom(stream);
 
 			if(!this.isSending)

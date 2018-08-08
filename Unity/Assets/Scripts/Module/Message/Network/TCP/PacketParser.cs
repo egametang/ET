@@ -14,9 +14,9 @@ namespace ETModel
 		public const int SizeLength = 2;
 		public const int MinSize = 3;
 		public const int MaxSize = 60000;
-		public const int FlagIndex = 2;
-		public const int OpcodeIndex = 3;
-		public const int MessageIndex = 5;
+		public const int FlagIndex = 0;
+		public const int OpcodeIndex = 1;
+		public const int MessageIndex = 3;
 
 		/// <summary>
 		/// 只读，不允许修改
@@ -93,10 +93,9 @@ namespace ETModel
 						else
 						{
 							this.packet.Stream.Seek(0, SeekOrigin.Begin);
-							this.packet.Stream.SetLength(this.packetSize + Packet.SizeLength);
+							this.packet.Stream.SetLength(this.packetSize);
 							byte[] bytes = this.packet.Stream.GetBuffer();
-							bytes.WriteTo(0, this.packetSize);
-							this.buffer.Read(bytes, Packet.SizeLength, this.packetSize);
+							this.buffer.Read(bytes, 0, this.packetSize);
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
 							finish = true;

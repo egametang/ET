@@ -198,6 +198,7 @@ namespace ETModel
 		    return n;
 	    }
 
+	    // 把CircularBuffer中数据写入buffer
         public override int Read(byte[] buffer, int offset, int count)
         {
 	        if (buffer.Length < offset + count)
@@ -233,6 +234,7 @@ namespace ETModel
 	        return count;
         }
 
+	    // 把buffer写入CircularBuffer中
         public override void Write(byte[] buffer, int offset, int count)
         {
 	        int alreadyCopyCount = 0;

@@ -24,7 +24,7 @@ namespace ETModel
 		private AChannel channel;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[2], new byte[1], new byte[2] };
+		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[2] };
 
 		public NetworkComponent Network
 		{
@@ -271,10 +271,8 @@ namespace ETModel
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
 			
-			ushort size = (ushort)(stream.Length - Packet.SizeLength);
-			this.byteses[0].WriteTo(0, size);
-			this.byteses[1][0] = flag;
-			this.byteses[2].WriteTo(0, opcode);
+			this.byteses[0][0] = flag;
+			this.byteses[1].WriteTo(0, opcode);
 			int index = 0;
 			foreach (var bytes in this.byteses)
 			{
