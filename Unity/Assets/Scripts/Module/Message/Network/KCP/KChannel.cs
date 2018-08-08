@@ -32,7 +32,7 @@ namespace ETModel
 		private readonly IPEndPoint remoteEndPoint;
 
 		public uint lastRecvTime;
-
+		
 		public uint CreateTime;
 
 		public uint RemoteConn;
@@ -203,10 +203,13 @@ namespace ETModel
 			try
 			{
 				uint timeNow = this.GetService().TimeNow;
+				
+				this.lastRecvTime = timeNow;
+				
 				this.packet.Bytes.WriteTo(0, KcpProtocalType.SYN);
 				this.packet.Bytes.WriteTo(1, this.LocalConn);
 				this.socket.SendTo(this.packet.Bytes, 0, 5, SocketFlags.None, remoteEndPoint);
-
+				
 				// 200毫秒后再次update发送connect请求
 				this.GetService().AddToUpdateNextTime(timeNow + 200, this.Id);
 			}
@@ -246,14 +249,19 @@ namespace ETModel
 			}
 
 			uint timeNow = this.GetService().TimeNow;
-
+			
 			// 如果还没连接上，发送连接请求
 			if (!this.isConnected)
 			{
 				// 10秒没连接上则报错
-				if (timeNow - this.lastRecvTime > 10 * 1000)
+				if (timeNow - this.CreateTime > 10 * 1000)
 				{
 					this.OnError(ErrorCode.ERR_KcpCantConnect);
+					return;
+				}
+				
+				if (timeNow - this.lastRecvTime < 150)
+				{
 					return;
 				}
 				this.Connect();
