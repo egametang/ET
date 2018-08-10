@@ -56,7 +56,7 @@ namespace ETEditor
 			switch (type)
 			{
 				case PlatformType.PC:
-					buildTarget = BuildTarget.StandaloneWindows;
+					buildTarget = BuildTarget.StandaloneWindows64;
 					exeName += ".exe";
 					break;
 				case PlatformType.Android:
