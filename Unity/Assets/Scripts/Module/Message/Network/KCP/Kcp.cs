@@ -24,7 +24,7 @@ namespace ETModel
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern uint ikcp_getconv(IntPtr ptr);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
-        private static extern int ikcp_input(IntPtr kcp, byte[] data, long offset, long size);
+        private static extern int ikcp_input(IntPtr kcp, byte[] data, int offset, int size);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern int ikcp_nodelay(IntPtr kcp, int nodelay, int interval, int resend, int nc);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
@@ -80,7 +80,7 @@ namespace ETModel
             return ikcp_getconv(ptr);
         }
 
-        public static int KcpInput(IntPtr kcp, byte[] data, long offset, long size)
+        public static int KcpInput(IntPtr kcp, byte[] data, int offset, int size)
         {
             if (kcp == IntPtr.Zero)
             {
