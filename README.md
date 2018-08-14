@@ -2,58 +2,9 @@
 
 __讨论QQ群 : 474643097__
 
-# ET 3.6发布! 
-1.kcp改成C版的，已经去掉所有gc，性能大幅提升，unity mono的socket udp收发还有少量gc，这个只能以后替换成C版的socket了，kcp增加了安全性检查，防止了第三方虚假包的攻击  
-2.优化了热更扫描Attribute的性能，提升服务端热更速度  
-3.修复: 热更层订阅model层事件的一个bug，mono层抛事件到热更层会抛多次  
-4.修复windows上更新资源删除Version.txt的bug  
-5.readme增加mac运行指南视频教程链接,L主讲  
+# ET的介绍：
+ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp协议等等  
 
-# ET 3.5发布! 
-1.protobuf改用官方3.0版本，不再使用protobuf-net，以消除消息反序列化GC，目前网络层真正做到了0GC  
-2.客户端资源更新直接计算本地文件的md5  
-3.修复了数据库组件一个超级bug，这个bug会导致数据库阻塞调用  
-4.修复MongoHelper一个bug，会导致CompnentWithId组件多次注册到Mongo Bson驱动，导致异常  
-5.增加了Mac平台相关工具  
-
-# ET 3.4发布! 
-1.使用SocketAsyncEventArgs重新实现了TCP跟KCP网络库，大大减少GC，网络层收消息除了protobuf已经是0GC了  
-2.修复了TimerCompnent一个bug  
-3.修复了linux跟mac在netcore2.1下启动报错的问题  
-4.增加了db的lambda表达式查询  
-5.修复SceneChangeComponent错误  
-
-# ET 3.3发布! 
-1.增加了原生actor实现，知道actor的InstanceId即可直接发送Actor消息，不需要注册跟查询location  
-2.修复了组件反序列化后注册到EventSystem中的bug  
-3.修复ResourceComponent中异步加载资源使用了同步调用的bug  
-4.加载ab包的时候先判断热更里面有没有，有则加载热更的，没有则加载StreamingAssets里面的  
-5.优化了定时器实现  
-6.修复其它一系列小bug  
-
-# ET 3.2发布! 3.2变化不大修复了一些bug，进一步完善了ET
-1.增加了ChangeSystem，可以订阅组件改变事件  
-2.修复dbcache中查询数据库一定会cache的bug  
-3.去掉了IEntityActorHandler接口，使用string来分发  
-
-# ET 3.1发布!
-1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
-2.增加了DestroySystem事件，在Component Dispose时调用  
-3.actor实现代码进行了简化  
-4.升级了默认Unity版本，修复了kcp协议中UdpClient无法接收udp消息的bug  
-
-# ET 3.0发布啦! 3.0是ET非常完善的一个版本，在2.0的基础上增加了如下功能：
-1.客户端全热更支持，逻辑，消息，事件，config，UI等等全部可以热更了  
-2.System改成了事件机制，awake，update，start等system可以在不同模块多次订阅  
-3.消息去掉了继承结构，其它客户端对接起来，更方便了。  
-4.增加了初步的Module机制，目录结构更清晰，社区分享代码更方便了。  
-5.优化了代码，3.0的代码更加清晰，结构更加合理，前后端代码几乎一模一样了  
-
-
-
-  
-  
-  
 # ET的功能：
 ### 1.可用VS单步调试的分布式服务端，N变1  
 一般来说，分布式服务端要启动很多进程，一旦进程多了，单步调试就变得非常困难，导致服务端开发基本上靠打log来查找问题。平常开发游戏逻辑也得开启一大堆进程，不仅启动慢，而且查找问题及其不方便，要在一堆堆日志里面查问题，这感觉非常糟糕，这么多年也没人解决这个问题。ET框架使用了类似守望先锋的组件设计，所有服务端内容都拆成了一个个组件，启动时根据服务器类型挂载自己所需要的组件。这有点类似电脑，电脑都模块化的拆成了内存，CPU，主板等等零件，搭配不同的零件就能组装成一台不同的电脑，例如家用台式机需要内存，CPU，主板，显卡，显示器，硬盘。而公司用的服务器却不需要显示器和显卡，网吧的电脑可能不需要硬盘等。正因为这样的设计，ET框架可以将所有的服务器组件都挂在一个服务器进程上，那么这个服务器进程就有了所有服务器的功能，一个进程就可以作为整组分布式服务器使用。这也类似电脑，台式机有所有的电脑组件，那它也完全可以当作公司服务器使用，也可以当作网吧电脑。  
@@ -137,3 +88,51 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET框架问题讨论](http://www.etframework.cn/)  
   
 __讨论QQ群 : 474643097__
+
+
+# ET 3.6发布! 
+1.kcp改成C版的，已经去掉所有gc，性能大幅提升，unity mono的socket udp收发还有少量gc，这个只能以后替换成C版的socket了，kcp增加了安全性检查，防止了第三方虚假包的攻击  
+2.优化了热更扫描Attribute的性能，提升服务端热更速度  
+3.修复: 热更层订阅model层事件的一个bug，mono层抛事件到热更层会抛多次  
+4.修复windows上更新资源删除Version.txt的bug  
+5.readme增加mac运行指南视频教程链接,L主讲  
+
+# ET 3.5发布! 
+1.protobuf改用官方3.0版本，不再使用protobuf-net，以消除消息反序列化GC，目前网络层真正做到了0GC  
+2.客户端资源更新直接计算本地文件的md5  
+3.修复了数据库组件一个超级bug，这个bug会导致数据库阻塞调用  
+4.修复MongoHelper一个bug，会导致CompnentWithId组件多次注册到Mongo Bson驱动，导致异常  
+5.增加了Mac平台相关工具  
+
+# ET 3.4发布! 
+1.使用SocketAsyncEventArgs重新实现了TCP跟KCP网络库，大大减少GC，网络层收消息除了protobuf已经是0GC了  
+2.修复了TimerCompnent一个bug  
+3.修复了linux跟mac在netcore2.1下启动报错的问题  
+4.增加了db的lambda表达式查询  
+5.修复SceneChangeComponent错误  
+
+# ET 3.3发布! 
+1.增加了原生actor实现，知道actor的InstanceId即可直接发送Actor消息，不需要注册跟查询location  
+2.修复了组件反序列化后注册到EventSystem中的bug  
+3.修复ResourceComponent中异步加载资源使用了同步调用的bug  
+4.加载ab包的时候先判断热更里面有没有，有则加载热更的，没有则加载StreamingAssets里面的  
+5.优化了定时器实现  
+6.修复其它一系列小bug  
+
+# ET 3.2发布! 3.2变化不大修复了一些bug，进一步完善了ET
+1.增加了ChangeSystem，可以订阅组件改变事件  
+2.修复dbcache中查询数据库一定会cache的bug  
+3.去掉了IEntityActorHandler接口，使用string来分发  
+
+# ET 3.1发布!
+1.进一步完善了entity component模型，去掉了Dispose层级，增加了ComponentWithId继承层级，Component增加了InstanceId，更好的实现了System机制  
+2.增加了DestroySystem事件，在Component Dispose时调用  
+3.actor实现代码进行了简化  
+4.升级了默认Unity版本，修复了kcp协议中UdpClient无法接收udp消息的bug  
+
+# ET 3.0发布啦! 3.0是ET非常完善的一个版本，在2.0的基础上增加了如下功能：
+1.客户端全热更支持，逻辑，消息，事件，config，UI等等全部可以热更了  
+2.System改成了事件机制，awake，update，start等system可以在不同模块多次订阅  
+3.消息去掉了继承结构，其它客户端对接起来，更方便了。  
+4.增加了初步的Module机制，目录结构更清晰，社区分享代码更方便了。  
+5.优化了代码，3.0的代码更加清晰，结构更加合理，前后端代码几乎一模一样了  
