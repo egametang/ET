@@ -30,8 +30,14 @@ namespace ETModel
 				Game.Scene.AddComponent<ClientFrameComponent>();
 				Game.Scene.AddComponent<UIComponent>();
 
-				// 下载ab包
-				await BundleHelper.DownloadBundle();
+                await Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync("testloadscene.unity3d");
+
+                await Game.Scene.AddComponent<SceneChangeComponent>().ChangeSceneAsync(SceneType.TestLoadScene);
+
+                Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("testloadscene.unity3d");
+
+                // 下载ab包
+                await BundleHelper.DownloadBundle();
 
 				Game.Hotfix.LoadHotfixAssembly();
 
