@@ -34,7 +34,9 @@ namespace ETHotfix
 				return;
 			}
 			
-			foreach (Component component in this.GetComponents())
+			base.Dispose();
+			
+			foreach (Component component in this.componentDict.Values)
 			{
 				try
 				{
@@ -45,8 +47,6 @@ namespace ETHotfix
 					Log.Error(e);
 				}
 			}
-
-			base.Dispose();
 
 			this.components.Clear();
 			this.componentDict.Clear();
@@ -161,6 +161,10 @@ namespace ETHotfix
 
 		public void RemoveComponent<K>() where K : Component
 		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
 			Type type = typeof (K);
 			Component component;
 			if (!this.componentDict.TryGetValue(type, out component))
@@ -176,6 +180,10 @@ namespace ETHotfix
 
 		public void RemoveComponent(Type type)
 		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
 			Component component;
 			if (!this.componentDict.TryGetValue(type, out component))
 			{
