@@ -4,7 +4,7 @@ namespace ETModel
 {
 	public class SessionCallbackComponent: Component
 	{
-		public Action<Session, Packet> MessageCallback;
+		public Action<Session, byte, ushort, Packet> MessageCallback;
 		public Action<Session> DisposeCallback;
 
 		public override void Dispose()

@@ -22,7 +22,7 @@ namespace ETModel
 			appdomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 			appdomain.DelegateManager.RegisterMethodDelegate<IResponse>();
 			appdomain.DelegateManager.RegisterMethodDelegate<Session, object>();
-			appdomain.DelegateManager.RegisterMethodDelegate<Session, Packet>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Session, byte, ushort, Packet>();
 			appdomain.DelegateManager.RegisterMethodDelegate<Session>();
 			appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
 			appdomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();

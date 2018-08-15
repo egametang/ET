@@ -6,26 +6,8 @@ namespace ETHotfix
 {
 	public class OuterMessageDispatcher: IMessageDispatcher
 	{
-		public async void Dispatch(Session session, Packet packet)
+		public async void Dispatch(Session session, ushort opcode, object message)
 		{
-			object message;
-			try
-			{
-				OpcodeTypeComponent opcodeTypeComponent = session.Network.Entity.GetComponent<OpcodeTypeComponent>();
-				object instance = opcodeTypeComponent.GetInstance(packet.Opcode);
-				message = session.Network.MessagePacker.DeserializeFrom(instance, packet.Stream);
-			}
-			catch (Exception e)
-			{
-				// 出现任何异常都要断开Session，防止客户端伪造消息
-				Log.Error(e);
-				session.Error = ErrorCode.ERR_PacketParserError;
-				session.Network.Remove(session.Id);
-				return;
-			}
-			
-			//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
-	
 			switch (message)
 			{
 				case IFrameMessage iFrameMessage: // 如果是帧消息，构造成OneFrameMessage发给对应的unit
@@ -38,7 +20,7 @@ namespace ETHotfix
 
 					OneFrameMessage oneFrameMessage = new OneFrameMessage
 					{
-						Op = packet.Opcode,
+						Op = opcode,
 						AMessage = ByteString.CopyFrom(session.Network.MessagePacker.SerializeTo(iFrameMessage))
 					};
 					actorMessageSender.Send(oneFrameMessage);
@@ -65,7 +47,7 @@ namespace ETHotfix
 				}
 			}
 	
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(packet.Opcode, message));
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(opcode, message));
 		}
 	}
 }

@@ -29,8 +29,6 @@ namespace ETModel
 			}
 		}
 		
-		public byte Flag { get; set; }
-		public ushort Opcode { get; set; }
 		public MemoryStream Stream { get; }
 
 		public Packet(int length)

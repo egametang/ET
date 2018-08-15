@@ -5,24 +5,8 @@ namespace ETHotfix
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, Packet packet)
+		public void Dispatch(Session session, ushort opcode, object message)
 		{
-			IMessage message;
-			try
-			{
-				Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(packet.Opcode);
-				message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packet.Stream);
-			}
-			catch (Exception e)
-			{
-				// 出现任何解析消息异常都要断开Session，防止客户端伪造消息
-				Log.Error(e);
-				session.Error = ErrorCode.ERR_PacketParserError;
-				session.Network.Remove(session.Id);
-				return;
-			}
-			
-			
 			// 收到actor消息,放入actor队列
 			if (message is IActorMessage iActorMessage)
 			{
@@ -56,7 +40,7 @@ namespace ETHotfix
 				return;
 			}
 			
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(packet.Opcode, message));
+			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(opcode, message));
 		}
 	}
 }

@@ -124,28 +124,18 @@ namespace ETModel
 
 		private void Run(Packet packet)
 		{
-			packet.Flag = packet.Bytes[Packet.FlagIndex];
-			packet.Opcode = BitConverter.ToUInt16(packet.Bytes, Packet.OpcodeIndex);
 			packet.Stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			
-			byte flag = packet.Flag;
-			ushort opcode = packet.Opcode;
+			byte flag = packet.Bytes[Packet.FlagIndex];
+			ushort opcode = BitConverter.ToUInt16(packet.Bytes, Packet.OpcodeIndex);
 			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
-				this.Network.MessageDispatcher.Dispatch(this, packet);
+				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, flag, opcode, packet);
 				return;
 			}
 #endif
-
-			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
-			if ((flag & 0x01) == 0)
-			{
-				this.Network.MessageDispatcher.Dispatch(this, packet);
-				return;
-			}
-
+			
 			object message;
 			try
 			{
@@ -160,6 +150,13 @@ namespace ETModel
 				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
+				return;
+			}
+
+			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
+			if ((flag & 0x01) == 0)
+			{
+				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
 				return;
 			}
 				

@@ -76,10 +76,8 @@ namespace ILRuntime.Runtime.Generated
             ETModel_EventSystem_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
-            ETModel_SessionCallbackComponent_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             ETModel_Component_Binding.Register(app);
-            ETModel_Packet_Binding.Register(app);
             ETModel_NetworkComponent_Binding.Register(app);
             ETModel_IMessagePacker_Binding.Register(app);
             ETModel_MessageInfo_Binding.Register(app);
