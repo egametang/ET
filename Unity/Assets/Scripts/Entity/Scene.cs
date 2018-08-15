@@ -12,7 +12,9 @@
 		BehaviorTreeScene,
 		RobotClient,
 
-		Realm
+		Realm,
+
+        TestLoadScene
 	}
 	
 	public sealed class Scene: Entity

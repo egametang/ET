@@ -300,14 +300,25 @@ namespace ETModel
 				string[] realPath = null;
 #if UNITY_EDITOR
 				realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+
+                AssetBundle ab = null;
+
 				foreach (string s in realPath)
 				{
 					string assetName = Path.GetFileNameWithoutExtension(s);
-					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
-					AddResource(assetBundleName, assetName, resource);
-				}
 
-				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
+                    AddResource(assetBundleName, assetName, resource);
+                    
+                    var abPath = string.Format(Define.AssetBundleBuildFolder, Define.GetPlatformType().ToString()) + assetBundleName;
+
+                    if (resource && resource is SceneAsset && ab == null && File.Exists(abPath))
+                    {
+                        ab = AssetBundle.LoadFromFile(abPath);
+                    }
+                }
+
+				this.bundles[assetBundleName] = new ABInfo(assetBundleName, ab);
 #endif
 				return;
 			}
@@ -377,16 +388,29 @@ namespace ETModel
 				string[] realPath = null;
 #if UNITY_EDITOR
 				realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+
+                AssetBundle ab = null;
+
 				foreach (string s in realPath)
 				{
 					string assetName = Path.GetFileNameWithoutExtension(s);
 					UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
 					AddResource(assetBundleName, assetName, resource);
-				}
 
-				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+                    var abPath = string.Format(Define.AssetBundleBuildFolder, Define.GetPlatformType().ToString()) + assetBundleName;
+
+                    if (resource && resource is SceneAsset && ab == null && File.Exists(abPath))
+                    {
+                        using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = ComponentFactory.Create<AssetsBundleLoaderAsync>())
+                        {
+                            ab = await assetsBundleLoaderAsync.LoadAsync(abPath);
+                        }
+                    }
+                }
+
+                this.bundles[assetBundleName] = new ABInfo(assetBundleName, ab);
 #endif
-				return;
+                return;
 			}
 
 			string p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
