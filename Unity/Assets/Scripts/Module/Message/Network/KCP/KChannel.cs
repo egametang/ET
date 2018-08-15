@@ -119,6 +119,7 @@ namespace ETModel
 				this.kcp = IntPtr.Zero;
 			}
 			this.socket = null;
+			this.packet.Dispose();
 		}
 
 		public override MemoryStream Stream

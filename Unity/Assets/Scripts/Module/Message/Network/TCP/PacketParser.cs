@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.IO;
 
 namespace ETModel
 {
@@ -9,7 +10,7 @@ namespace ETModel
 		PacketBody
 	}
 
-	public class Packet
+	public class Packet: IDisposable
 	{
 		public const int SizeLength = 2;
 		public const int MinSize = 3;
@@ -17,6 +18,8 @@ namespace ETModel
 		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
 		public const int MessageIndex = 3;
+		
+		public static RecyclableMemoryStreamManager memoryStreamManager = new RecyclableMemoryStreamManager();
 
 		/// <summary>
 		/// 只读，不允许修改
@@ -29,25 +32,31 @@ namespace ETModel
 			}
 		}
 		
-		public MemoryStream Stream { get; }
+		public MemoryStream Stream { get; private set; }
 
 		public Packet(int length)
 		{
-			this.Stream = new MemoryStream(length);
+			this.Stream = memoryStreamManager.GetStream("Packet", length);
 		}
 
-		public Packet(byte[] bytes)
+		public void Dispose()
 		{
-			this.Stream = new MemoryStream(bytes);
+			if (this.Stream == null)
+			{
+				return;
+			}
+			
+			this.Stream.Close();
+			this.Stream = null;
 		}
 	}
 
-	public class PacketParser
+	public class PacketParser: IDisposable
 	{
 		private readonly CircularBuffer buffer;
 		private ushort packetSize;
 		private ParserState state;
-		public readonly Packet packet = new Packet(ushort.MaxValue);
+		public Packet packet = new Packet(ushort.MaxValue);
 		private bool isOK;
 
 		public PacketParser(CircularBuffer buffer)
@@ -108,6 +117,16 @@ namespace ETModel
 		{
 			this.isOK = false;
 			return this.packet;
+		}
+
+		public void Dispose()
+		{
+			if (this.packet == null)
+			{
+				return;
+			}
+			this.packet?.Dispose();
+			this.packet = null;
 		}
 	}
 }
