@@ -362,6 +362,10 @@
     <Compile Include="Assets\Scripts\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Module\Config\IConfig.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterEntity.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\IFilter.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\AnimatorComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\ClientFrameComponent.cs" />
