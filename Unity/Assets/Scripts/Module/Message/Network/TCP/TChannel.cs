@@ -212,7 +212,7 @@ namespace ETModel
 
 			if (e.BytesTransferred == 0)
 			{
-				this.OnError((int)e.SocketError);
+				this.OnError(ErrorCode.ERR_PeerDisconnect);
 				return;
 			}
 

@@ -78,7 +78,7 @@ namespace ETModel
 			int error = this.channel.Error;
 			if (this.channel.Error != 0)
 			{
-				Log.Error($"session dispose: {this.Id} {error}");
+				Log.Trace($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
 			}
 			
 			this.channel.Dispose();
