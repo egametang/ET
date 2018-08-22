@@ -109,7 +109,7 @@ public class ReferenceCollector: MonoBehaviour, ISerializationCallbackReceiver
 		return dictGo as T;
 	}
 
-	public Object Get(string key)
+	public Object GetObject(string key)
 	{
 		Object dictGo;
 		if (!dict.TryGetValue(key, out dictGo))

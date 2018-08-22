@@ -305,6 +305,13 @@ namespace ETModel
 				this.OnError((int)e.SocketError);
 				return;
 			}
+			
+			if (e.BytesTransferred == 0)
+			{
+				this.OnError(ErrorCode.ERR_PeerDisconnect);
+				return;
+			}
+			
 			this.sendBuffer.FirstIndex += e.BytesTransferred;
 			if (this.sendBuffer.FirstIndex == this.sendBuffer.ChunkSize)
 			{
