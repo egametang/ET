@@ -28,7 +28,9 @@ namespace ETEditor
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 
-		[MenuItem("Tools/命令行配置")]
+        Vector2 mScrollPos = Vector2.zero; //YXX
+
+        [MenuItem("Tools/命令行配置")]
 		private static void ShowWindow()
 		{
 			GetWindow(typeof (ServerCommandLineEditor));
@@ -113,7 +115,16 @@ namespace ETEditor
 
 		private void OnGUI()
 		{
-			GUILayout.BeginHorizontal();
+            Vector2 tWindowSize = new Vector2(Screen.width, Screen.height);
+          
+
+            UnityEngine.Debug.LogError("" + tWindowSize.x + "   " + tWindowSize.y);
+            Rect tWindowRect = new Rect(0f, 0f, tWindowSize.x, tWindowSize.y-30);
+            Rect tTotalRect = new Rect(0f, 0f, tWindowSize.x+1000, tWindowSize.y+1000);
+
+            mScrollPos = GUI.BeginScrollView(tWindowRect, mScrollPos, tTotalRect);
+
+            GUILayout.BeginHorizontal();
 			string[] filesArray = this.files.ToArray();
 			this.selectedIndex = EditorGUILayout.Popup(this.selectedIndex, filesArray);
 
@@ -358,6 +369,8 @@ namespace ETEditor
 				Process.Start(info);
 			}
 			GUILayout.EndHorizontal();
+
+            GUI.EndScrollView();
 		}
 		
 		private void OnDestroy()
