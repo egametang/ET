@@ -36,9 +36,9 @@ namespace ETModel
 			}
 		}
 		
-		private Action<Packet> readCallback;
+		private Action<MemoryStream> readCallback;
 
-		public event Action<Packet> ReadCallback
+		public event Action<MemoryStream> ReadCallback
 		{
 			add
 			{
@@ -50,9 +50,9 @@ namespace ETModel
 			}
 		}
 		
-		protected void OnRead(Packet packet)
+		protected void OnRead(MemoryStream memoryStream)
 		{
-			this.readCallback.Invoke(packet);
+			this.readCallback.Invoke(memoryStream);
 		}
 
 		protected void OnError(int e)

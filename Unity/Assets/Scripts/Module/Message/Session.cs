@@ -75,11 +75,11 @@ namespace ETModel
 				action.Invoke(new ResponseMessage { Error = this.Error });
 			}
 
-			int error = this.channel.Error;
-			if (this.channel.Error != 0)
-			{
-				Log.Trace($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
-			}
+			//int error = this.channel.Error;
+			//if (this.channel.Error != 0)
+			//{
+			//	Log.Trace($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
+			//}
 			
 			this.channel.Dispose();
 			this.Network.Remove(id);
@@ -110,11 +110,11 @@ namespace ETModel
 			}
 		}
 
-		public void OnRead(Packet packet)
+		public void OnRead(MemoryStream memoryStream)
 		{
 			try
 			{
-				this.Run(packet);
+				this.Run(memoryStream);
 			}
 			catch (Exception e)
 			{
@@ -122,16 +122,16 @@ namespace ETModel
 			}
 		}
 
-		private void Run(Packet packet)
+		private void Run(MemoryStream memoryStream)
 		{
-			packet.Stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			byte flag = packet.Bytes[Packet.FlagIndex];
-			ushort opcode = BitConverter.ToUInt16(packet.Bytes, Packet.OpcodeIndex);
+			memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+			byte flag = memoryStream.GetBuffer()[Packet.FlagIndex];
+			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
-				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, flag, opcode, packet);
+				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, flag, opcode, memoryStream);
 				return;
 			}
 #endif
@@ -141,7 +141,7 @@ namespace ETModel
 			{
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				object instance = opcodeTypeComponent.GetInstance(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(instance, packet.Stream);
+				message = this.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
 				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
 			}
 			catch (Exception e)
@@ -282,8 +282,7 @@ namespace ETModel
 			if (this.Network.AppType == AppType.AllServer)
 			{
 				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				Packet packet = ((TChannel)this.channel).parser.packet;
-				session.Run(packet);
+				session.Run(stream);
 				return;
 			}
 #endif

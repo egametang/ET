@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.IO;
+
 #if SERVER
 using System.Runtime.InteropServices;
 #endif
@@ -34,6 +36,8 @@ namespace ETModel
 		private readonly byte[] cache = new byte[8192];
 
 		private readonly Queue<long> removedChannels = new Queue<long>();
+		
+		public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 
 		#region 连接相关
 		// 记录等待连接的channel，10秒后或者第一个消息过来才会从这个dict中删除

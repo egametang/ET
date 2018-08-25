@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using Microsoft.IO;
 
 namespace ETModel
 {
@@ -13,6 +14,8 @@ namespace ETModel
 
 		private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
 		private Socket acceptor;
+		
+		public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 		
 		/// <summary>
 		/// 即可做client也可做server

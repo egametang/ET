@@ -10,7 +10,7 @@ namespace ETModel
 		PacketBody
 	}
 
-	public class Packet: IDisposable
+	public static class Packet
 	{
 		public const int SizeLength = 2;
 		public const int MinSize = 3;
@@ -18,50 +18,20 @@ namespace ETModel
 		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
 		public const int MessageIndex = 3;
-		
-		public static RecyclableMemoryStreamManager memoryStreamManager = new RecyclableMemoryStreamManager();
-
-		/// <summary>
-		/// 只读，不允许修改
-		/// </summary>
-		public byte[] Bytes
-		{
-			get
-			{
-				return this.Stream.GetBuffer();
-			}
-		}
-		
-		public MemoryStream Stream { get; private set; }
-
-		public Packet(int length)
-		{
-			this.Stream = memoryStreamManager.GetStream("Packet", length);
-		}
-
-		public void Dispose()
-		{
-			if (this.Stream == null)
-			{
-				return;
-			}
-			
-			this.Stream.Close();
-			this.Stream = null;
-		}
 	}
 
-	public class PacketParser: IDisposable
+	public class PacketParser
 	{
 		private readonly CircularBuffer buffer;
 		private ushort packetSize;
 		private ParserState state;
-		public Packet packet = new Packet(ushort.MaxValue);
+		public MemoryStream memoryStream;
 		private bool isOK;
 
-		public PacketParser(CircularBuffer buffer)
+		public PacketParser(CircularBuffer buffer, MemoryStream memoryStream)
 		{
 			this.buffer = buffer;
+			this.memoryStream = memoryStream;
 		}
 
 		public bool Parse()
@@ -83,8 +53,8 @@ namespace ETModel
 						}
 						else
 						{
-							this.buffer.Read(this.packet.Bytes, 0, 2);
-							packetSize = BitConverter.ToUInt16(this.packet.Bytes, 0);
+							this.buffer.Read(this.memoryStream.GetBuffer(), 0, 2);
+							packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
 							if (packetSize < Packet.MinSize || packetSize > Packet.MaxSize)
 							{
 								throw new Exception($"packet size error: {this.packetSize}");
@@ -99,9 +69,9 @@ namespace ETModel
 						}
 						else
 						{
-							this.packet.Stream.Seek(0, SeekOrigin.Begin);
-							this.packet.Stream.SetLength(this.packetSize);
-							byte[] bytes = this.packet.Stream.GetBuffer();
+							this.memoryStream.Seek(0, SeekOrigin.Begin);
+							this.memoryStream.SetLength(this.packetSize);
+							byte[] bytes = this.memoryStream.GetBuffer();
 							this.buffer.Read(bytes, 0, this.packetSize);
 							this.isOK = true;
 							this.state = ParserState.PacketSize;
@@ -113,20 +83,10 @@ namespace ETModel
 			return this.isOK;
 		}
 
-		public Packet GetPacket()
+		public MemoryStream GetPacket()
 		{
 			this.isOK = false;
-			return this.packet;
-		}
-
-		public void Dispose()
-		{
-			if (this.packet == null)
-			{
-				return;
-			}
-			this.packet?.Dispose();
-			this.packet = null;
+			return this.memoryStream;
 		}
 	}
 }

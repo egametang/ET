@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
@@ -22,7 +23,7 @@ namespace ETModel
 			appdomain.DelegateManager.RegisterMethodDelegate<byte[], int, int>();
 			appdomain.DelegateManager.RegisterMethodDelegate<IResponse>();
 			appdomain.DelegateManager.RegisterMethodDelegate<Session, object>();
-			appdomain.DelegateManager.RegisterMethodDelegate<Session, byte, ushort, Packet>();
+			appdomain.DelegateManager.RegisterMethodDelegate<Session, byte, ushort, MemoryStream>();
 			appdomain.DelegateManager.RegisterMethodDelegate<Session>();
 			appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
 			appdomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 
 namespace ETModel
 {
 	public class SessionCallbackComponent: Component
 	{
-		public Action<Session, byte, ushort, Packet> MessageCallback;
+		public Action<Session, byte, ushort, MemoryStream> MessageCallback;
 		public Action<Session> DisposeCallback;
 
 		public override void Dispose()

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.IO;
 
 namespace ETModel
 {
@@ -19,21 +20,24 @@ namespace ETModel
 		private readonly CircularBuffer recvBuffer = new CircularBuffer();
 		private readonly CircularBuffer sendBuffer = new CircularBuffer();
 
+		private readonly MemoryStream memoryStream;
+
 		private bool isSending;
 
 		private bool isConnected;
 
-		public readonly PacketParser parser;
+		private readonly PacketParser parser;
 
-		public readonly byte[] cache = new byte[2];
-
+		private readonly byte[] cache = new byte[2];
+		
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
 			this.InstanceId = IdGenerater.GenerateId();
+			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(this.recvBuffer);
+			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -46,10 +50,11 @@ namespace ETModel
 		public TChannel(Socket socket, TService service): base(service, ChannelType.Accept)
 		{
 			this.InstanceId = IdGenerater.GenerateId();
+			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = socket;
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(this.recvBuffer);
+			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -71,17 +76,22 @@ namespace ETModel
 			this.socket.Close();
 			this.innArgs.Dispose();
 			this.outArgs.Dispose();
-			this.parser.Dispose();
 			this.innArgs = null;
 			this.outArgs = null;
 			this.socket = null;
+			this.memoryStream.Dispose();
+		}
+		
+		private TService GetService()
+		{
+			return (TService)this.service;
 		}
 
 		public override MemoryStream Stream
 		{
 			get
 			{
-				return this.parser.packet.Stream;
+				return this.memoryStream;
 			}
 		}
 
@@ -231,10 +241,10 @@ namespace ETModel
 					break;
 				}
 
-				Packet packet = this.parser.GetPacket();
+				MemoryStream stream = this.parser.GetPacket();
 				try
 				{
-					this.OnRead(packet);
+					this.OnRead(stream);
 				}
 				catch (Exception exception)
 				{
