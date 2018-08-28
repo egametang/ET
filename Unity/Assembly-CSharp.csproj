@@ -8,26 +8,25 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <BaseDirectory>Assets</BaseDirectory>
+    <BaseDirectory>.</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_1_3;UNITY_2017_1;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_2_0;UNITY_2018_2;UNITY_2018;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_TEXTURE_STREAMING;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_VIDEO;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_EVENT_QUEUE;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,19 +35,28 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoConfig>true</NoConfig>
+    <NoStdLib>true</NoStdLib>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+    <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
+    <UnityVersion>2018.2.0f2</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>E:\WorkProgramFiles\Unity\Unity-2018.2.0f2\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Apps/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>E:\WorkProgramFiles\Unity\Unity-2018.2.0f2\Editor\Data\Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -67,11 +75,11 @@
     <Compile Include="Assets\Scripts\Base\Helper\MethodInfoHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\NetHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ObjectHelper.cs" />
-    <Compile Include="Assets\Scripts\Base\Helper\ProtobufHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\RandomHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\StringHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\TimeHelper.cs" />
     <Compile Include="Assets\Scripts\Base\Helper\ZipHelper.cs" />
+    <Compile Include="Assets\Scripts\Base\IL\Adapt_IMessage.cs" />
     <Compile Include="Assets\Scripts\Base\IL\IAsyncStateMachineAdaptor.cs" />
     <Compile Include="Assets\Scripts\Base\IL\IDisposableAdaptor.cs" />
     <Compile Include="Assets\Scripts\Base\IL\ILAdapterAttribute.cs" />
@@ -89,16 +97,17 @@
     <Compile Include="Assets\Scripts\Base\Math\VLine.cs" />
     <Compile Include="Assets\Scripts\Base\Math\VRect.cs" />
     <Compile Include="Assets\Scripts\Base\MultiMap.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\BaseAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Component.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentFactory.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ComponentWithId.cs" />
     <Compile Include="Assets\Scripts\Base\Object\Entity.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EntityEventAttribute.cs" />
-    <Compile Include="Assets\Scripts\Base\Object\EntityType.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EventProxy.cs" />
     <Compile Include="Assets\Scripts\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IAwakeSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IChangeSystem.cs" />
+    <Compile Include="Assets\Scripts\Base\Object\IComponentSerialize.cs" />
     <Compile Include="Assets\Scripts\Base\Object\IDestroySystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="Assets\Scripts\Base\Object\ILoadSystem.cs" />
@@ -110,15 +119,11 @@
     <Compile Include="Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" />
     <Compile Include="Assets\Scripts\Base\OneThreadSynchronizationContext.cs" />
     <Compile Include="Assets\Scripts\Base\QueueDictionary.cs" />
+    <Compile Include="Assets\Scripts\Base\RecyclableMemoryStream\Events.cs" />
+    <Compile Include="Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
+    <Compile Include="Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="Assets\Scripts\Base\TryLocker.cs" />
     <Compile Include="Assets\Scripts\Base\UnOrderMultiMap.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\CreateUIEffect.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\Root.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Root\UICreateRoot.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Selector.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\Sequence.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\True.cs" />
-    <Compile Include="Assets\Scripts\BehaviorTreeNode\UIScale.cs" />
     <Compile Include="Assets\Scripts\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\DBConfig.cs" />
     <Compile Include="Assets\Scripts\Component\Config\GlobalProto.cs" />
@@ -138,7 +143,6 @@
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
-    <Compile Include="Assets\Scripts\Helper\DllHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
@@ -150,65 +154,21 @@
     <Compile Include="Assets\Scripts\Module\AssetsBundle\BundleDownloaderComponent.cs" />
     <Compile Include="Assets\Scripts\Module\AssetsBundle\ResourcesComponent.cs" />
     <Compile Include="Assets\Scripts\Module\AssetsBundle\VersionConfig.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorNodeConfig.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTree.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeArgsDict.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeConfig.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTArrayDoubleComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTArrayFloatComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTArrayInt64Component.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTArrayIntComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTArrayStringComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTBoolComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTDoubleComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTEnumComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTFloatComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTInt64Component.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTIntComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BaseType\BTStringComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BTTypeBaseComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\BTTypeManager.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayAudioClipComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayGameObjectComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayMaterialComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayShaderComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArraySpriteComponent..cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture2DComponent..cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTexture3DComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTArrayTextureComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTAudioClipComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTGameObjectComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTMaterialComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTShaderComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTSpriteComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTTexture2DComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTTexture3DComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BehaviorTreeType\UnityType\BTTextureComponent.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BTEnv.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\BTEnvKey.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\Node.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeClassifyType.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeDeprecatedAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeDesignerProto.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeEngineObjectAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeFieldBaseAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeFieldConstraintAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeInputAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeOutputAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodePropAttribute.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\NodeProto.cs" />
-    <Compile Include="Assets\Scripts\Module\BehaviorTree\TypeHelper.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ACategory.cs" />
     <Compile Include="Assets\Scripts\Module\Config\AConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Module\Config\IConfig.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterAttribute.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\FilterEntity.cs" />
+    <Compile Include="Assets\Scripts\Module\Filter\IFilter.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\AnimatorComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\CameraComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\ClientFrameComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\FrameMessage.cs" />
+    <Compile Include="Assets\Scripts\Module\FrameSync\FrameOpcode.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\MoveComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\Player.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\PlayerComponent.cs" />
@@ -247,6 +207,7 @@
     <Compile Include="Assets\Scripts\Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Message\OuterMessage.cs" />
     <Compile Include="Assets\Scripts\Module\Message\OuterOpcode.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\ProtobufHelper.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ProtobufPacker.cs" />
     <Compile Include="Assets\Scripts\Module\Message\RpcException.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Session.cs" />
@@ -276,6 +237,24 @@
     <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingBeginEvent_CreateLoadingUI.cs" />
     <Compile Include="Assets\Scripts\UI\UILoading\Event\LoadingFinishEvent_RemoveLoadingUI.cs" />
     <Compile Include="Assets\Scripts\UI\UILoading\Factory\UILoadingFactory.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\AdaptHelper.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\ByteArray.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\ByteString.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedInputStream.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedOutputStream.ComputeSize.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedOutputStream.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\Collections\RepeatedField.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\Compatibility\PropertyInfoExtensions.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\Compatibility\StreamExtensions.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\FieldCodec.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\ICustomDiagnosticMessage.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\IMessage.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\InvalidProtocolBufferException.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\LimitedInputStream.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\MessageExtensions.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\MessageParser.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\ProtoPreconditions.cs" />
+    <Compile Include="Assets\ThirdParty\Google.Protobuf\WireFormat.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\CLRBindings.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ActionHelper_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Actor_CreateUnits_Binding.cs" />
@@ -290,6 +269,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ComponentWithId_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_DoubleMap_2_UInt16_Type_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Entity_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ErrorCode_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_EventAttribute_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_EventProxy_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_EventSystem_Binding.cs" />
@@ -300,6 +280,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_GlobalProto_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Hotfix_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_IdGenerater_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_IMessagePacker_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Log_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_MessageAttribute_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_MessageDispatherComponent_Binding.cs" />
@@ -312,7 +293,6 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Packet_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Player_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_PlayerComponent_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ProtobufHelper_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_ResourcesComponent_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_RpcException_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_Scene_Binding.cs" />
@@ -325,11 +305,14 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_UnitFactory_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_UnitInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_CodedInputStream_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_CodedOutputStream_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_UnitInfo_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_ProtoPreconditions_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\LitJson_JsonMapper_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ProtoBuf_PType_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ReferenceCollector_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Activator_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Int32_Action_1_ILTypeI_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Int32_Action_1_Google__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_B_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_String_ILTypeInstance__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_String_ILTypeInstance__t_t.cs" />
@@ -338,17 +321,20 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Bi_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeIns_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeIn_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_UInt16_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_En_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_IEnumerator_1_UnitInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_ILTypeInstance_Binding_Enume_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_String_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_UnitInfo_Binding_Enumerator__t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Type_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Type_Binding_Enumerator_Bind_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_Int64_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IDictionary_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IEnumerator_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Exception_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_IDisposable_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Linq_Enumerable_Binding.cs" />
@@ -356,13 +342,13 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Reflection_MemberInfo_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Runtime_CompilerServices_TaskAwaiter_1_ILTypeInstance_B_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Runtime_CompilerServices_TaskAwaiter_1_Google_Protobuf__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Bindin_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_String_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_CancellationToken_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_Tasks_Task_1_ILTypeInstance_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_Tasks_Task_1_Google_Protobuf_Adapt_IMessage_B_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_Tasks_Task_1_IResponse_Binding.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_Tasks_TaskCompletionSource_1_ILTypeInstance_B_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Threading_Tasks_TaskCompletionSource_1_Google_Protobuf__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Type_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Camera_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\UnityEngine_Component_Binding.cs" />
@@ -436,6 +422,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CLRRedirections.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CrossBindingAdaptor.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\DelegateManager.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\InvocationContext.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\ValueTypeBinder.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Extensions.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\DelegateAdapter.cs" />
@@ -613,127 +600,571 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\IExtensibleAdapter.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\BclHelpers.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\BufferExtension.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\BufferPool.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\CallbackAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Compiler\CompilerContext.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Compiler\CompilerDelegates.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Compiler\Local.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\DataFormat.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\DiscriminatedUnion.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Extensible.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ExtensibleUtil.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\GlobalSuppressions.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Helpers.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\IExtensible.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\IExtension.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ImplicitFields.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\KeyValuePairProxy.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\AttributeMap.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\BasicList.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\CallbackSet.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\MetaType.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\ProtoSyntax.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\RuntimeTypeModel.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\SubType.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\TypeFormatEventArgs.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\TypeModel.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Meta\ValueMember.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\NetObjectCache.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\PrefixStyle.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtobufPropertyHelper.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoContractAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoConverterAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoEnumAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoException.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoIgnoreAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoIncludeAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoMapAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoMemberAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoReader.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ProtoWriter.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\PType.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\SerializationContext.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ArrayDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\BlobSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\BooleanSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ByteSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\CharSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\CompiledSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\DateTimeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\DecimalSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\DefaultValueDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\DoubleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\EnumSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\FieldDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\GuidSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\Int16Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\Int32Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\Int64Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\IProtoSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ISerializerProxy.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ListDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\MapDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\NetObjectSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\NullDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ParseableSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\PropertyDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ProtoDecoratorBase.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\ReflectedUriDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\SByteSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\SingleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\StringSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\SubItemSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\SurrogateSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\SystemTypeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\TagDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\TimeSpanSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\TupleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\TypeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\UInt16Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\UInt32Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\UInt64Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\Serializers\UriDecorator.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ServiceModel\ProtoEndpointBehavior.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ServiceModel\ProtoOperationBehavior.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\SubItemToken.cs" />
-    <Compile Include="Assets\ThirdParty\Protobuf\protobuf-net\WireType.cs" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\link.xml" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
+    <None Include="Assets\StreamingAssets\Version.txt" />
+    <Reference Include="Unity.TextMeshPro.Editor">
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.PackageManagerUI.Editor">
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.BaselibModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.BaselibModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CloudWebServicesModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.CloudWebServicesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.FacebookModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.FacebookModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.FileSystemHttpModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.FileSystemHttpModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StyleSheetsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TimelineModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.TimelineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Locator">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/Unity.Locator.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GoogleAudioSpatializer">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>C:/Apps/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>D:/Source/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>D:/Source/ET/Unity/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>C:/Users/Administrator/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.analytics@2.0.16/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StandardEvents">
+      <HintPath>C:/Users/Administrator/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/Microsoft.Win32.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="System.AppContext">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.AppContext.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Collections.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.NonGeneric">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Collections.NonGeneric.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Specialized">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Collections.Specialized.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ComponentModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.EventBasedAsync">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ComponentModel.EventBasedAsync.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.TypeConverter">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ComponentModel.TypeConverter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Console">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Common">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Contracts">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Debug">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.Debug.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.FileVersionInfo">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.FileVersionInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Process">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.Process.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.TextWriterTraceListener">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.TextWriterTraceListener.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Tools">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.Tools.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.TraceSource">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Diagnostics.TraceSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Drawing.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Dynamic.Runtime">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Dynamic.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Calendars">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Globalization.Calendars.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Extensions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Globalization.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.ZipFile">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.Compression.ZipFile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.DriveInfo">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.FileSystem.DriveInfo.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.FileSystem.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.FileSystem.Watcher">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.FileSystem.Watcher.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.IsolatedStorage">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.IsolatedStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.MemoryMappedFiles">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.MemoryMappedFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Pipes">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.Pipes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.UnmanagedMemoryStream">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.IO.UnmanagedMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Expressions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Linq.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Parallel">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Linq.Parallel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Queryable">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Linq.Queryable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Rtc">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Http.Rtc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.NameResolution">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.NameResolution.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.NetworkInformation">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.NetworkInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Ping">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Ping.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Requests">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Requests.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Security">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Sockets">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.Sockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebHeaderCollection">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.WebHeaderCollection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebSockets.Client">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.WebSockets.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.WebSockets">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Net.WebSockets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ObjectModel">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.Emit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit.ILGeneration">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.Emit.ILGeneration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Emit.Lightweight">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.Emit.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Extensions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Reflection.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Reader">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Resources.Reader.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.ResourceManager">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Resources.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Writer">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Resources.Writer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.VisualC">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.CompilerServices.VisualC.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Extensions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Handles">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Handles.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.InteropServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Numerics">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Serialization.Formatters.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Json">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Serialization.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Serialization.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Xml">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Runtime.Serialization.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Claims">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Claims.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Csp">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Cryptography.Csp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Cryptography.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Cryptography.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Cryptography.X509Certificates.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.Principal.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.SecureString">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Security.SecureString.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Duplex">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ServiceModel.Duplex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Http">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ServiceModel.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.NetTcp">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ServiceModel.NetTcp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Primitives">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ServiceModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Security">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ServiceModel.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Text.Encoding.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.Extensions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Text.Encoding.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Text.RegularExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Overlapped">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.Overlapped.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Parallel">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.Tasks.Parallel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.ThreadPool">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.ThreadPool.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Timer">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Threading.Timer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.ReaderWriter">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XDocument">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XmlDocument">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XmlDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XmlSerializer">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XmlSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XPath.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XPath.XDocument">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/Facades/System.Xml.XPath.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityScript">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/UnityScript.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityScript.Lang">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/UnityScript.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang">
+      <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -743,6 +1174,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

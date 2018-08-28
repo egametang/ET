@@ -117,8 +117,6 @@ namespace ETEditor
 		{
             Vector2 tWindowSize = new Vector2(Screen.width, Screen.height);
           
-
-            UnityEngine.Debug.LogError("" + tWindowSize.x + "   " + tWindowSize.y);
             Rect tWindowRect = new Rect(0f, 0f, tWindowSize.x, tWindowSize.y-30);
             Rect tTotalRect = new Rect(0f, 0f, tWindowSize.x+1000, tWindowSize.y+1000);
 
