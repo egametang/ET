@@ -796,6 +796,7 @@ namespace ETHotfix {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      playerInfos_ = null;
       rpcId_ = 0;
       error_ = 0;
       message_ = "";

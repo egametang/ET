@@ -737,8 +737,20 @@ namespace ETModel {
       set { units_ = value; }
     }
 
+    private global::ETModel.UnitInfo aa_;
+    public global::ETModel.UnitInfo Aa {
+      get { return aa_; }
+      set {
+        aa_ = value;
+      }
+    }
+
     public void WriteTo(pb::CodedOutputStream output) {
       units_.WriteTo(output, _repeated_units_codec);
+      if (aa_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Aa);
+      }
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
         output.WriteInt32(RpcId);
@@ -758,11 +770,15 @@ namespace ETModel {
         size += 2 + pb::CodedOutputStream.ComputeInt64Size(ActorId);
       }
       size += units_.CalculateSize(_repeated_units_codec);
+      if (aa_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Aa);
+      }
       return size;
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
       units_.Clear();
+      aa_ = null;
       rpcId_ = 0;
       actorId_ = 0;
       uint tag;
@@ -773,6 +789,13 @@ namespace ETModel {
             break;
           case 10: {
             units_.AddEntriesFrom(input, _repeated_units_codec);
+            break;
+          }
+          case 18: {
+            if (aa_ == null) {
+              aa_ = new global::ETModel.UnitInfo();
+            }
+            input.ReadMessage(aa_);
             break;
           }
           case 720: {
