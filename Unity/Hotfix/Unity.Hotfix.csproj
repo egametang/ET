@@ -92,6 +92,7 @@
     <Compile Include="Base\Object\Object.cs" />
     <Compile Include="Base\Object\EventSystem.cs" />
     <Compile Include="Base\Object\ObjectPool.cs" />
+    <Compile Include="Module\Message\MessagePool.cs" />
     <Compile Include="Module\Message\SessionComponent.cs" />
     <Compile Include="Module\Message\Session.cs" />
     <Compile Include="Module\UI\IUIFactory.cs" />

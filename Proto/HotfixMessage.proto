@@ -66,5 +66,6 @@ message G2C_PlayerInfo // IResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
-	PlayerInfo PlayerInfos = 1;
+	PlayerInfo PlayerInfo = 1;
+	repeated PlayerInfo PlayerInfos = 2;
 }

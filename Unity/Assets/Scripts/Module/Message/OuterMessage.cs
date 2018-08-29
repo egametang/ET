@@ -10,7 +10,7 @@ namespace ETModel {
 
   #region Messages
   public partial class Actor_Test : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_Test> _parser = new pb::MessageParser<Actor_Test>(() => new Actor_Test());
+    private static readonly pb::MessageParser<Actor_Test> _parser = new pb::MessageParser<Actor_Test>(() => (Actor_Test)MessagePool.Instance.Fetch(typeof(Actor_Test)));
     public static pb::MessageParser<Actor_Test> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -95,7 +95,7 @@ namespace ETModel {
   }
 
   public partial class Actor_TestRequest : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TestRequest> _parser = new pb::MessageParser<Actor_TestRequest>(() => new Actor_TestRequest());
+    private static readonly pb::MessageParser<Actor_TestRequest> _parser = new pb::MessageParser<Actor_TestRequest>(() => (Actor_TestRequest)MessagePool.Instance.Fetch(typeof(Actor_TestRequest)));
     public static pb::MessageParser<Actor_TestRequest> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -180,7 +180,7 @@ namespace ETModel {
   }
 
   public partial class Actor_TestResponse : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TestResponse> _parser = new pb::MessageParser<Actor_TestResponse>(() => new Actor_TestResponse());
+    private static readonly pb::MessageParser<Actor_TestResponse> _parser = new pb::MessageParser<Actor_TestResponse>(() => (Actor_TestResponse)MessagePool.Instance.Fetch(typeof(Actor_TestResponse)));
     public static pb::MessageParser<Actor_TestResponse> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -285,7 +285,7 @@ namespace ETModel {
   }
 
   public partial class Actor_TransferRequest : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TransferRequest> _parser = new pb::MessageParser<Actor_TransferRequest>(() => new Actor_TransferRequest());
+    private static readonly pb::MessageParser<Actor_TransferRequest> _parser = new pb::MessageParser<Actor_TransferRequest>(() => (Actor_TransferRequest)MessagePool.Instance.Fetch(typeof(Actor_TransferRequest)));
     public static pb::MessageParser<Actor_TransferRequest> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -370,7 +370,7 @@ namespace ETModel {
   }
 
   public partial class Actor_TransferResponse : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TransferResponse> _parser = new pb::MessageParser<Actor_TransferResponse>(() => new Actor_TransferResponse());
+    private static readonly pb::MessageParser<Actor_TransferResponse> _parser = new pb::MessageParser<Actor_TransferResponse>(() => (Actor_TransferResponse)MessagePool.Instance.Fetch(typeof(Actor_TransferResponse)));
     public static pb::MessageParser<Actor_TransferResponse> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -455,7 +455,7 @@ namespace ETModel {
   }
 
   public partial class C2G_EnterMap : pb::IMessage {
-    private static readonly pb::MessageParser<C2G_EnterMap> _parser = new pb::MessageParser<C2G_EnterMap>(() => new C2G_EnterMap());
+    private static readonly pb::MessageParser<C2G_EnterMap> _parser = new pb::MessageParser<C2G_EnterMap>(() => (C2G_EnterMap)MessagePool.Instance.Fetch(typeof(C2G_EnterMap)));
     public static pb::MessageParser<C2G_EnterMap> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -500,7 +500,7 @@ namespace ETModel {
   }
 
   public partial class G2C_EnterMap : pb::IMessage {
-    private static readonly pb::MessageParser<G2C_EnterMap> _parser = new pb::MessageParser<G2C_EnterMap>(() => new G2C_EnterMap());
+    private static readonly pb::MessageParser<G2C_EnterMap> _parser = new pb::MessageParser<G2C_EnterMap>(() => (G2C_EnterMap)MessagePool.Instance.Fetch(typeof(G2C_EnterMap)));
     public static pb::MessageParser<G2C_EnterMap> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -625,7 +625,7 @@ namespace ETModel {
   }
 
   public partial class UnitInfo : pb::IMessage {
-    private static readonly pb::MessageParser<UnitInfo> _parser = new pb::MessageParser<UnitInfo>(() => new UnitInfo());
+    private static readonly pb::MessageParser<UnitInfo> _parser = new pb::MessageParser<UnitInfo>(() => (UnitInfo)MessagePool.Instance.Fetch(typeof(UnitInfo)));
     public static pb::MessageParser<UnitInfo> Parser { get { return _parser; } }
 
     private long unitId_;
@@ -710,7 +710,7 @@ namespace ETModel {
   }
 
   public partial class Actor_CreateUnits : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_CreateUnits> _parser = new pb::MessageParser<Actor_CreateUnits>(() => new Actor_CreateUnits());
+    private static readonly pb::MessageParser<Actor_CreateUnits> _parser = new pb::MessageParser<Actor_CreateUnits>(() => (Actor_CreateUnits)MessagePool.Instance.Fetch(typeof(Actor_CreateUnits)));
     public static pb::MessageParser<Actor_CreateUnits> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -737,20 +737,8 @@ namespace ETModel {
       set { units_ = value; }
     }
 
-    private global::ETModel.UnitInfo aa_;
-    public global::ETModel.UnitInfo Aa {
-      get { return aa_; }
-      set {
-        aa_ = value;
-      }
-    }
-
     public void WriteTo(pb::CodedOutputStream output) {
       units_.WriteTo(output, _repeated_units_codec);
-      if (aa_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(Aa);
-      }
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
         output.WriteInt32(RpcId);
@@ -770,15 +758,12 @@ namespace ETModel {
         size += 2 + pb::CodedOutputStream.ComputeInt64Size(ActorId);
       }
       size += units_.CalculateSize(_repeated_units_codec);
-      if (aa_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Aa);
-      }
       return size;
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
+      if (typeof(global::ETModel.UnitInfo).IsClass) { for (int i = 0; i < units_.Count; i++) { MessagePool.Instance.Recycle(units_[i]); } }
       units_.Clear();
-      aa_ = null;
       rpcId_ = 0;
       actorId_ = 0;
       uint tag;
@@ -789,13 +774,6 @@ namespace ETModel {
             break;
           case 10: {
             units_.AddEntriesFrom(input, _repeated_units_codec);
-            break;
-          }
-          case 18: {
-            if (aa_ == null) {
-              aa_ = new global::ETModel.UnitInfo();
-            }
-            input.ReadMessage(aa_);
             break;
           }
           case 720: {
@@ -813,7 +791,7 @@ namespace ETModel {
   }
 
   public partial class Frame_ClickMap : pb::IMessage {
-    private static readonly pb::MessageParser<Frame_ClickMap> _parser = new pb::MessageParser<Frame_ClickMap>(() => new Frame_ClickMap());
+    private static readonly pb::MessageParser<Frame_ClickMap> _parser = new pb::MessageParser<Frame_ClickMap>(() => (Frame_ClickMap)MessagePool.Instance.Fetch(typeof(Frame_ClickMap)));
     public static pb::MessageParser<Frame_ClickMap> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -918,7 +896,7 @@ namespace ETModel {
   }
 
   public partial class C2R_Ping : pb::IMessage {
-    private static readonly pb::MessageParser<C2R_Ping> _parser = new pb::MessageParser<C2R_Ping>(() => new C2R_Ping());
+    private static readonly pb::MessageParser<C2R_Ping> _parser = new pb::MessageParser<C2R_Ping>(() => (C2R_Ping)MessagePool.Instance.Fetch(typeof(C2R_Ping)));
     public static pb::MessageParser<C2R_Ping> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -963,7 +941,7 @@ namespace ETModel {
   }
 
   public partial class R2C_Ping : pb::IMessage {
-    private static readonly pb::MessageParser<R2C_Ping> _parser = new pb::MessageParser<R2C_Ping>(() => new R2C_Ping());
+    private static readonly pb::MessageParser<R2C_Ping> _parser = new pb::MessageParser<R2C_Ping>(() => (R2C_Ping)MessagePool.Instance.Fetch(typeof(R2C_Ping)));
     public static pb::MessageParser<R2C_Ping> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -1048,7 +1026,7 @@ namespace ETModel {
   }
 
   public partial class G2C_Test : pb::IMessage {
-    private static readonly pb::MessageParser<G2C_Test> _parser = new pb::MessageParser<G2C_Test>(() => new G2C_Test());
+    private static readonly pb::MessageParser<G2C_Test> _parser = new pb::MessageParser<G2C_Test>(() => (G2C_Test)MessagePool.Instance.Fetch(typeof(G2C_Test)));
     public static pb::MessageParser<G2C_Test> Parser { get { return _parser; } }
 
     public void WriteTo(pb::CodedOutputStream output) {

@@ -10,7 +10,7 @@ namespace ETModel {
 
   #region Messages
   public partial class OneFrameMessage : pb::IMessage {
-    private static readonly pb::MessageParser<OneFrameMessage> _parser = new pb::MessageParser<OneFrameMessage>(() => new OneFrameMessage());
+    private static readonly pb::MessageParser<OneFrameMessage> _parser = new pb::MessageParser<OneFrameMessage>(() => (OneFrameMessage)MessagePool.Instance.Fetch(typeof(OneFrameMessage)));
     public static pb::MessageParser<OneFrameMessage> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -114,7 +114,7 @@ namespace ETModel {
   }
 
   public partial class FrameMessage : pb::IMessage {
-    private static readonly pb::MessageParser<FrameMessage> _parser = new pb::MessageParser<FrameMessage>(() => new FrameMessage());
+    private static readonly pb::MessageParser<FrameMessage> _parser = new pb::MessageParser<FrameMessage>(() => (FrameMessage)MessagePool.Instance.Fetch(typeof(FrameMessage)));
     public static pb::MessageParser<FrameMessage> Parser { get { return _parser; } }
 
     private int rpcId_;
@@ -182,6 +182,7 @@ namespace ETModel {
 
     public void MergeFrom(pb::CodedInputStream input) {
       frame_ = 0;
+      if (typeof(global::ETModel.OneFrameMessage).IsClass) { for (int i = 0; i < message_.Count; i++) { MessagePool.Instance.Recycle(message_[i]); } }
       message_.Clear();
       rpcId_ = 0;
       actorId_ = 0;

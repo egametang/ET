@@ -1,4 +1,4 @@
-namespace ETHotfix
+namespace ETModel
 {
 	public static partial class InnerOpcode
 	{

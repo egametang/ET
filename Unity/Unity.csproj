@@ -342,6 +342,7 @@
     <Compile Include="Assets\Scripts\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Scripts\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\BundleHelper.cs" />
+    <Compile Include="Assets\Scripts\Helper\Dumper.cs" />
     <Compile Include="Assets\Scripts\Helper\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\ILHelper.cs" />
     <Compile Include="Assets\Scripts\Helper\PathHelper.cs" />
@@ -388,6 +389,7 @@
     <Compile Include="Assets\Scripts\Module\Message\MessageDispatherComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageInfo.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\MessagePool.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageProxy.cs" />
     <Compile Include="Assets\Scripts\Module\Message\NetOuterComponent.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\AChannel.cs" />

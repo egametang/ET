@@ -21,12 +21,6 @@
     <None Remove="Other\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterMessage.cs" Link="Module\Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterOpcode.cs" Link="Module\Message\OuterOpcode.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />
   </ItemGroup>
   <ItemGroup>
