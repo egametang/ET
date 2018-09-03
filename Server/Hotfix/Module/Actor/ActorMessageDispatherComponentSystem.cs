@@ -35,7 +35,7 @@ namespace ETHotfix
 
 		public static void Load(this ActorMessageDispatherComponent self)
 		{
-			AppType appType = self.Entity.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
 
 			self.ActorMessageHandlers.Clear();
 			self.ActorTypeHandlers.Clear();

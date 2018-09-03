@@ -16,7 +16,7 @@ namespace ETHotfix
 	{
 		public static void Awake(this LocationProxyComponent self)
 		{
-			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+			StartConfigComponent startConfigComponent = StartConfigComponent.Instance;
 
 			StartConfig startConfig = startConfigComponent.LocationConfig;
 			self.LocationAddress = startConfig.GetComponent<InnerConfig>().IPEndPoint;

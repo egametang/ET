@@ -71,7 +71,7 @@ namespace ETHotfix
 			try
 			{
 				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.address);
-				string serverAddress = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.ServerIP;
+				string serverAddress = StartConfigComponent.Instance.StartConfig.ServerIP;
 				G2G_LockRequest request = new G2G_LockRequest { Id = self.Entity.Id, Address = serverAddress };
 				await session.Call(request);
 

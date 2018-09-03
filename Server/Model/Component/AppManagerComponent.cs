@@ -22,7 +22,7 @@ namespace ETModel
 		public void Start()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
-			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
+			StartConfig[] startConfigs = StartConfigComponent.Instance.GetAll();
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
@@ -47,7 +47,7 @@ namespace ETModel
 		private void StartProcess(int appId)
 		{
 			OptionComponent optionComponent = Game.Scene.GetComponent<OptionComponent>();
-			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+			StartConfigComponent startConfigComponent = StartConfigComponent.Instance;
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 			const string exe = "dotnet";

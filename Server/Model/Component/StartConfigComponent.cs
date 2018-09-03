@@ -16,6 +16,8 @@ namespace ETModel
 	
 	public class StartConfigComponent: Component
 	{
+		public static StartConfigComponent Instance { get; private set; }
+		
 		private Dictionary<int, StartConfig> configDict;
 		
 		public StartConfig StartConfig { get; private set; }
@@ -32,6 +34,8 @@ namespace ETModel
 
 		public void Awake(string path, int appId)
 		{
+			Instance = this;
+			
 			this.configDict = new Dictionary<int, StartConfig>();
 			this.MapConfigs = new List<StartConfig>();
 			this.GateConfigs = new List<StartConfig>();
@@ -81,6 +85,17 @@ namespace ETModel
 			}
 
 			this.StartConfig = this.Get(appId);
+		}
+
+		public override void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			base.Dispose();
+			
+			Instance = null;
 		}
 
 		public StartConfig Get(int id)

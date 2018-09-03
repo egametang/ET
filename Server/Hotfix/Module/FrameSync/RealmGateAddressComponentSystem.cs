@@ -15,7 +15,7 @@ namespace ETHotfix
 	{
 		public static void Start(this RealmGateAddressComponent component)
 		{
-			StartConfig[] startConfigs = component.Entity.GetComponent<StartConfigComponent>().GetAll();
+			StartConfig[] startConfigs = StartConfigComponent.Instance.GetAll();
 			foreach (StartConfig config in startConfigs)
 			{
 				if (!config.AppType.Is(AppType.Gate))

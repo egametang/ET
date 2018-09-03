@@ -74,7 +74,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigComponent.cs" Link="Module\Config\ConfigComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\FrameSync\FrameMessage.cs" Link="Module\FrameSync\FrameMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\FrameSync\FrameOpcode.cs" Link="Module\FrameSync\FrameOpcode.cs" />

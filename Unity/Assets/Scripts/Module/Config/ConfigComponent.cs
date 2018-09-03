@@ -45,6 +45,7 @@ namespace ETModel
 				{
 					continue;
 				}
+				
 				object obj = Activator.CreateInstance(type);
 
 				ACategory iCategory = obj as ACategory;
