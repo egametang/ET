@@ -5,10 +5,10 @@ using ETModel;
 namespace ETHotfix
 {
 	/// <summary>
-	/// gate session收到的actor消息直接转发给客户端
+	/// gate session 拦截器，收到的actor消息直接转发给客户端
 	/// </summary>
-	[ActorTypeHandler(AppType.Gate, ActorType.GateSession)]
-	public class GateSessionActorTypeHandler : IActorTypeHandler
+	[ActorInterceptTypeHandler(AppType.Gate, ActorInterceptType.GateSession)]
+	public class GateSessionActorInterceptInterceptTypeHandler : IActorInterceptTypeHandler
 	{
 		public async Task Handle(Session session, Entity entity, IActorMessage actorMessage)
 		{

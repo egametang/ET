@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	public interface IActorTypeHandler
+	public interface IActorInterceptTypeHandler
 	{
 		Task Handle(Session session, Entity entity, IActorMessage actorMessage);
 	}

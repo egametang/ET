@@ -26,7 +26,7 @@ namespace ETHotfix
 	/// <summary>
 	/// Actor消息分发组件
 	/// </summary>
-	public static class ActorMessageDispatherComponentEx
+	public static class ActorMessageDispatherComponentHelper
 	{
 		public static void Awake(this ActorMessageDispatherComponent self)
 		{
@@ -40,31 +40,31 @@ namespace ETHotfix
 			self.ActorMessageHandlers.Clear();
 			self.ActorTypeHandlers.Clear();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(ActorTypeHandlerAttribute));
+			List<Type> types = Game.EventSystem.GetTypes(typeof(ActorInterceptTypeHandlerAttribute));
 
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(ActorTypeHandlerAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(ActorInterceptTypeHandlerAttribute), false);
 				if (attrs.Length == 0)
 				{
 					continue;
 				}
 
-				ActorTypeHandlerAttribute actorTypeHandlerAttribute = (ActorTypeHandlerAttribute) attrs[0];
-				if (!actorTypeHandlerAttribute.Type.Is(appType))
+				ActorInterceptTypeHandlerAttribute actorInterceptTypeHandlerAttribute = (ActorInterceptTypeHandlerAttribute) attrs[0];
+				if (!actorInterceptTypeHandlerAttribute.Type.Is(appType))
 				{
 					continue;
 				}
 
 				object obj = Activator.CreateInstance(type);
 
-				IActorTypeHandler iActorTypeHandler = obj as IActorTypeHandler;
-				if (iActorTypeHandler == null)
+				IActorInterceptTypeHandler iActorInterceptTypeHandler = obj as IActorInterceptTypeHandler;
+				if (iActorInterceptTypeHandler == null)
 				{
 					throw new Exception($"actor handler not inherit IEntityActorHandler: {obj.GetType().FullName}");
 				}
 
-				self.ActorTypeHandlers.Add(actorTypeHandlerAttribute.ActorType, iActorTypeHandler);
+				self.ActorTypeHandlers.Add(actorInterceptTypeHandlerAttribute.ActorType, iActorInterceptTypeHandler);
 			}
 
 			types = Game.EventSystem.GetTypes(typeof (ActorMessageHandlerAttribute));
@@ -95,32 +95,24 @@ namespace ETHotfix
 			}
 		}
 
-		/// <summary>
-		/// 一个actor收到的所有消息先由其指定的ActorTypeHandle处理
-		/// </summary>
-		public static async Task ActorTypeHandle(
-				this ActorMessageDispatherComponent self, string actorType, Entity entity, ActorMessageInfo actorMessageInfo)
+		public static async Task Handle(
+				this ActorMessageDispatherComponent self, MailBoxComponent mailBoxComponent, ActorMessageInfo actorMessageInfo)
 		{
-			IActorTypeHandler iActorTypeHandler;
-			if (!self.ActorTypeHandlers.TryGetValue(actorType, out iActorTypeHandler))
+			// 有拦截器使用拦截器处理
+			IActorInterceptTypeHandler iActorInterceptTypeHandler;
+			if (self.ActorTypeHandlers.TryGetValue(mailBoxComponent.ActorInterceptType, out iActorInterceptTypeHandler))
 			{
-				throw new Exception($"not found actortype handler: {actorType}");
+				await iActorInterceptTypeHandler.Handle(actorMessageInfo.Session, mailBoxComponent.Entity, actorMessageInfo.Message);
+				return;
+			}
+			
+			// 没有拦截器就用IMActorHandler处理
+			if (!self.ActorMessageHandlers.TryGetValue(actorMessageInfo.Message.GetType(), out IMActorHandler handler))
+			{
+				throw new Exception($"not found message handler: {MongoHelper.ToJson(actorMessageInfo.Message)}");
 			}
 
-			await iActorTypeHandler.Handle(actorMessageInfo.Session, entity, actorMessageInfo.Message);
-		}
-
-		/// <summary>
-		/// 根据actor消息分发给ActorMessageHandler处理
-		/// </summary>
-		public static async Task Handle(this ActorMessageDispatherComponent self, Session session, Entity entity, IActorMessage actorRequest)
-		{
-			if (!self.ActorMessageHandlers.TryGetValue(actorRequest.GetType(), out IMActorHandler handler))
-			{
-				throw new Exception($"not found message handler: {MongoHelper.ToJson(actorRequest)}");
-			}
-
-			await handler.Handle(session, entity, actorRequest);
+			await handler.Handle(actorMessageInfo.Session, mailBoxComponent.Entity, actorMessageInfo.Message);
 		}
 	}
 }

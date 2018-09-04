@@ -73,7 +73,7 @@ namespace ETHotfix
 		}
 	}
 
-	public static class ActorMessageSenderEx
+	public static class ActorMessageSenderHelper
 	{
 		private static void Add(this ActorMessageSender self, ActorTask task)
 		{
