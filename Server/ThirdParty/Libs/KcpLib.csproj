@@ -20,6 +20,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Update="libkcp.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="libkcp.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
