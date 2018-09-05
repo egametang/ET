@@ -17,6 +17,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessagePool.cs">
+      <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Hotfix\Module\Message\MessagePool.cs">
+      <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
+    </Compile>
     <EmbeddedResource Remove="Libs\**" />
     <None Remove="Libs\**" />
   </ItemGroup>
@@ -87,7 +93,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessagePool.cs" Link="Module\Message\MessagePool.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AChannel.cs" Link="Module\Message\Network\AChannel.cs" />
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />
@@ -116,7 +121,6 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Other\AppType.cs" Link="Other\AppType.cs" />
     <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
     <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\MessagePool.cs" Link="Module\Message\MessagePool\MessagePool.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />

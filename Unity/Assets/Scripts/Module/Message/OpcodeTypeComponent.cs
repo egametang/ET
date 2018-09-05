@@ -62,8 +62,13 @@ namespace ETModel
 			return this.opcodeTypes.GetValueByKey(opcode);
 		}
 		
+		// 客户端为了0GC需要消息池，服务端消息需要跨协程不需要消息池
 		public object GetInstance(ushort opcode)
 		{
+#if SERVER
+			Type type = this.GetType(opcode);
+			return Activator.CreateInstance(type);
+#endif
 			return this.typeMessages[opcode];
 		}
 
