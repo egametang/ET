@@ -68,4 +68,7 @@ message G2C_PlayerInfo // IResponse
 	string Message = 92;
 	PlayerInfo PlayerInfo = 1;
 	repeated PlayerInfo PlayerInfos = 2;
+    repeated string TestRepeatedString = 3;
+    repeated int32 TestRepeatedInt32 = 4;
+    repeated int64 TestRepeatedInt64 = 5;
 }

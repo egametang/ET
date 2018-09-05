@@ -767,12 +767,39 @@ namespace ETHotfix {
       set { playerInfos_ = value; }
     }
 
+    private static readonly pb::FieldCodec<string> _repeated_testRepeatedString_codec
+        = pb::FieldCodec.ForString(26);
+    private pbc::RepeatedField<string> testRepeatedString_ = new pbc::RepeatedField<string>();
+    public pbc::RepeatedField<string> TestRepeatedString {
+      get { return testRepeatedString_; }
+      set { testRepeatedString_ = value; }
+    }
+
+    private static readonly pb::FieldCodec<int> _repeated_testRepeatedInt32_codec
+        = pb::FieldCodec.ForInt32(34);
+    private pbc::RepeatedField<int> testRepeatedInt32_ = new pbc::RepeatedField<int>();
+    public pbc::RepeatedField<int> TestRepeatedInt32 {
+      get { return testRepeatedInt32_; }
+      set { testRepeatedInt32_ = value; }
+    }
+
+    private static readonly pb::FieldCodec<long> _repeated_testRepeatedInt64_codec
+        = pb::FieldCodec.ForInt64(42);
+    private pbc::RepeatedField<long> testRepeatedInt64_ = new pbc::RepeatedField<long>();
+    public pbc::RepeatedField<long> TestRepeatedInt64 {
+      get { return testRepeatedInt64_; }
+      set { testRepeatedInt64_ = value; }
+    }
+
     public void WriteTo(pb::CodedOutputStream output) {
       if (playerInfo_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(PlayerInfo);
       }
       playerInfos_.WriteTo(output, _repeated_playerInfos_codec);
+      testRepeatedString_.WriteTo(output, _repeated_testRepeatedString_codec);
+      testRepeatedInt32_.WriteTo(output, _repeated_testRepeatedInt32_codec);
+      testRepeatedInt64_.WriteTo(output, _repeated_testRepeatedInt64_codec);
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
         output.WriteInt32(RpcId);
@@ -802,13 +829,19 @@ namespace ETHotfix {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PlayerInfo);
       }
       size += playerInfos_.CalculateSize(_repeated_playerInfos_codec);
+      size += testRepeatedString_.CalculateSize(_repeated_testRepeatedString_codec);
+      size += testRepeatedInt32_.CalculateSize(_repeated_testRepeatedInt32_codec);
+      size += testRepeatedInt64_.CalculateSize(_repeated_testRepeatedInt64_codec);
       return size;
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
       if (playerInfo_ != null) MessagePool.Instance.Recycle(playerInfo_); playerInfo_ = null;
-      if (typeof(global::ETHotfix.PlayerInfo).IsClass) { for (int i = 0; i < playerInfos_.Count; i++) { MessagePool.Instance.Recycle(playerInfos_[i]); } }
+      for (int i = 0; i < playerInfos_.Count; i++) { MessagePool.Instance.Recycle(playerInfos_[i]); }
       playerInfos_.Clear();
+      testRepeatedString_.Clear();
+      testRepeatedInt32_.Clear();
+      testRepeatedInt64_.Clear();
       rpcId_ = 0;
       error_ = 0;
       message_ = "";
@@ -827,6 +860,20 @@ namespace ETHotfix {
           }
           case 18: {
             playerInfos_.AddEntriesFrom(input, _repeated_playerInfos_codec);
+            break;
+          }
+          case 26: {
+            testRepeatedString_.AddEntriesFrom(input, _repeated_testRepeatedString_codec);
+            break;
+          }
+          case 34:
+          case 32: {
+            testRepeatedInt32_.AddEntriesFrom(input, _repeated_testRepeatedInt32_codec);
+            break;
+          }
+          case 42:
+          case 40: {
+            testRepeatedInt64_.AddEntriesFrom(input, _repeated_testRepeatedInt64_codec);
             break;
           }
           case 720: {

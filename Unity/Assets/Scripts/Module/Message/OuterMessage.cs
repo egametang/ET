@@ -762,7 +762,7 @@ namespace ETModel {
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
-      if (typeof(global::ETModel.UnitInfo).IsClass) { for (int i = 0; i < units_.Count; i++) { MessagePool.Instance.Recycle(units_[i]); } }
+      for (int i = 0; i < units_.Count; i++) { MessagePool.Instance.Recycle(units_[i]); }
       units_.Clear();
       rpcId_ = 0;
       actorId_ = 0;

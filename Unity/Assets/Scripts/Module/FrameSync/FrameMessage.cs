@@ -182,7 +182,7 @@ namespace ETModel {
 
     public void MergeFrom(pb::CodedInputStream input) {
       frame_ = 0;
-      if (typeof(global::ETModel.OneFrameMessage).IsClass) { for (int i = 0; i < message_.Count; i++) { MessagePool.Instance.Recycle(message_[i]); } }
+      for (int i = 0; i < message_.Count; i++) { MessagePool.Instance.Recycle(message_[i]); }
       message_.Clear();
       rpcId_ = 0;
       actorId_ = 0;
