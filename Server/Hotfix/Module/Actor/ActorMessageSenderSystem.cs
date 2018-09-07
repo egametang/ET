@@ -67,9 +67,7 @@ namespace ETHotfix
 			self.Address = null;
 			self.ActorId = 0;
 			self.FailTimes = 0;
-			var t = self.Tcs;
 			self.Tcs = null;
-			t?.SetResult(new ActorTask());
 		}
 	}
 
@@ -120,10 +118,17 @@ namespace ETHotfix
 		{
 			try
 			{
+				long instanceId = self.InstanceId;
 				while (true)
 				{
+					if (self.InstanceId != instanceId)
+					{
+						return;
+					}
+					
 					ActorTask actorTask = await self.GetAsync();
-					if (self.IsDisposed)
+					
+					if (self.InstanceId != instanceId)
 					{
 						return;
 					}
@@ -195,12 +200,20 @@ namespace ETHotfix
 
 		public static void Send(this ActorMessageSender self, IActorMessage message)
 		{
+			if (message == null)
+			{
+				throw new Exception($"actor send message is null");
+			}
 			ActorTask task = new ActorTask(message);
 			self.Add(task);
 		}
 
 		public static Task<IResponse> Call(this ActorMessageSender self, IActorRequest request)
 		{
+			if (request == null)
+			{
+				throw new Exception($"actor call message is null");
+			}
 			TaskCompletionSource<IResponse> tcs = new TaskCompletionSource<IResponse>();
 			ActorTask task = new ActorTask(request, tcs);
 			self.Add(task);
