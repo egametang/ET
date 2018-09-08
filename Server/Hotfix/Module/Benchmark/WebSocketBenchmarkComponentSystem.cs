@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>
+	public class WebSocketBenchmarkComponentSystem : AwakeSystem<WebSocketBenchmarkComponent>
 	{
-		public override void Awake(BenchmarkComponent self, IPEndPoint a)
+		public override void Awake(WebSocketBenchmarkComponent self)
 		{
-			self.Awake(a);
+			self.Awake();
 		}
 	}
 
-	public static class BenchmarkComponentHelper
+	public static class WebSocketBenchmarkComponentHelper
 	{
-		public static void Awake(this BenchmarkComponent self, IPEndPoint ipEndPoint)
+		public static void Awake(this WebSocketBenchmarkComponent self)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, ipEndPoint, i);
+					self.TestAsync(networkComponent, i);
 				}
 			}
 			catch (Exception e)
@@ -31,12 +30,12 @@ namespace ETHotfix
 				Log.Error(e);
 			}
 		}
-
-		public static async void TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
+		
+		public static async void TestAsync(this WebSocketBenchmarkComponent self, NetOuterComponent networkComponent, int j)
 		{
 			try
 			{
-				using (Session session = networkComponent.Create(ipEndPoint))
+				using (Session session = networkComponent.Create($"ws://127.0.0.1:8080"))
 				{
 					int i = 0;
 					while (i < 100000000)
@@ -55,15 +54,15 @@ namespace ETHotfix
 				Log.Error(e);
 			}
 		}
-
-		public static async Task Send(this BenchmarkComponent self, Session session, int j)
+		
+		public static async Task Send(this WebSocketBenchmarkComponent self, Session session, int j)
 		{
 			try
 			{
 				await session.Call(new C2R_Ping());
 				++self.k;
 
-				if (self.k % 100000 != 0)
+				if (self.k % 10000 != 0)
 				{
 					return;
 				}
@@ -71,7 +70,7 @@ namespace ETHotfix
 				long time2 = TimeHelper.ClientNow();
 				long time = time2 - self.time1;
 				self.time1 = time2;
-				Log.Info($"Benchmark k: {self.k} 每10W次耗时: {time} ms {session.Network.Count}");
+				Log.Info($"Benchmark k: {self.k} 每1W次耗时: {time} ms {session.Network.Count}");
 			}
 			catch (Exception e)
 			{

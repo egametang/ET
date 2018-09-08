@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.WebSockets;
+using Microsoft.IO;
+
+namespace ETModel
+{
+    public class WService: AService
+    {
+        private readonly HttpListener httpListener;
+        
+        private readonly Dictionary<long, WChannel> channels = new Dictionary<long, WChannel>();
+        
+        public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
+
+        public WService(IEnumerable<string> prefixs)
+        {
+            this.InstanceId = IdGenerater.GenerateId();
+            
+            this.httpListener = new HttpListener();
+            
+            foreach (string prefix in prefixs)
+            {
+                this.httpListener.Prefixes.Add(prefix);
+            }
+        }
+        
+        public WService()
+        {
+        }
+        
+        public override AChannel GetChannel(long id)
+        {
+            WChannel channel;
+            this.channels.TryGetValue(id, out channel);
+            return channel;
+        }
+
+        public override AChannel ConnectChannel(IPEndPoint ipEndPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override AChannel ConnectChannel(string address)
+        {
+			ClientWebSocket webSocket = new ClientWebSocket();
+            WChannel channel = new WChannel(webSocket, this);
+            this.channels[channel.Id] = channel;
+            channel.ConnectAsync(address);
+            return channel;
+        }
+
+        public override void Remove(long id)
+        {
+            WChannel channel;
+            if (!this.channels.TryGetValue(id, out channel))
+            {
+                return;
+            }
+
+            this.channels.Remove(id);
+            channel.Dispose();
+        }
+
+        public override void Update()
+        {
+            
+        }
+
+        public override async void Start()
+        {
+            if (this.httpListener == null)
+            {
+                return;
+            }
+            
+            httpListener.Start();
+
+            while (true)
+            {
+                try
+                {
+                    HttpListenerContext httpListenerContext = await this.httpListener.GetContextAsync();
+                
+                    HttpListenerWebSocketContext webSocketContext = await httpListenerContext.AcceptWebSocketAsync(null);
+                    
+                    WChannel channel = new WChannel(webSocketContext, this);
+                
+                    this.channels[channel.Id] = channel;
+                    
+                    this.OnAccept(channel);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+    }
+}

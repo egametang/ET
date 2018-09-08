@@ -29,8 +29,11 @@ namespace ETModel
 					case NetworkProtocol.TCP:
 						this.Service = new TService();
 						break;
-					default:
-						throw new ArgumentOutOfRangeException();
+#if SERVER
+					case NetworkProtocol.WebSocket:
+						this.Service = new WService();
+						break;
+#endif
 				}
 
 				this.Service.AcceptCallback += this.OnAccept;
@@ -68,6 +71,24 @@ namespace ETModel
 				throw new Exception($"{ipEndPoint}", e);
 			}
 		}
+
+#if SERVER
+		public void Awake(NetworkProtocol protocol, List<string> prefixs)
+		{
+			try
+			{
+				this.Service = new WService(prefixs);
+				
+				this.Service.AcceptCallback += this.OnAccept;
+				
+				this.Start();
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"websocket error: {prefixs}", e);
+			}
+		}
+#endif
 
 		public void Start()
 		{
@@ -109,6 +130,17 @@ namespace ETModel
 		public Session Create(IPEndPoint ipEndPoint)
 		{
 			AChannel channel = this.Service.ConnectChannel(ipEndPoint);
+			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
+			this.sessions.Add(session.Id, session);
+			return session;
+		}
+		
+		/// <summary>
+		/// 创建一个新Session
+		/// </summary>
+		public Session Create(string url)
+		{
+			AChannel channel = this.Service.ConnectChannel(url);
 			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
 			return session;

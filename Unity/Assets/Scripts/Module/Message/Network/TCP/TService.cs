@@ -131,6 +131,11 @@ namespace ETModel
 			return channel;
 		}
 
+		public override AChannel ConnectChannel(string address)
+		{
+			throw new NotImplementedException();
+		}
+
 		public override void Remove(long id)
 		{
 			TChannel channel;

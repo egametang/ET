@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using ETModel;
@@ -47,8 +48,9 @@ namespace App
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
+						//Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+						//Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetOuterComponent, List<string>>(new List<string>() {"http://*:8080/"});
 						Game.Scene.AddComponent<AppManagerComponent>();
 						break;
 					case AppType.Realm:
@@ -99,8 +101,10 @@ namespace App
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
+						//Game.Scene.AddComponent<NetOuterComponent>();
+						//Game.Scene.AddComponent<BenchmarkComponent, IPEndPoint>(clientConfig.IPEndPoint);
 						Game.Scene.AddComponent<NetOuterComponent>();
-						Game.Scene.AddComponent<BenchmarkComponent, IPEndPoint>(clientConfig.IPEndPoint);
+						Game.Scene.AddComponent<WebSocketBenchmarkComponent>();
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
