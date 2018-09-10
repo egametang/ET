@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -78,7 +79,7 @@ namespace ILRuntime.Runtime.Generated
         }
         static void set_IntPos_0(ref object o, object v)
         {
-            ((ETModel.Unit)o).IntPos = (VInt3)v;
+            ((ETModel.Unit)o).IntPos = (global::VInt3)v;
         }
 
 

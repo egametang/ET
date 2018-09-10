@@ -78,8 +78,11 @@ namespace ILRuntime.Runtime.Generated
             ETModel_EventSystem_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Type_Queue_1_Object_Binding.Register(app);
+            System_Collections_Generic_Queue_1_Object_Binding.Register(app);
             ETModel_SessionCallbackComponent_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
+            System_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             ETModel_Component_Binding.Register(app);
             ETModel_NetworkComponent_Binding.Register(app);
             ETModel_IMessagePacker_Binding.Register(app);
@@ -105,6 +108,12 @@ namespace ILRuntime.Runtime.Generated
             Google_Protobuf_ProtoPreconditions_Binding.Register(app);
             Google_Protobuf_CodedOutputStream_Binding.Register(app);
             Google_Protobuf_CodedInputStream_Binding.Register(app);
+            Google_Protobuf_MessageParser_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
+            Google_Protobuf_Collections_RepeatedField_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
+            Google_Protobuf_Collections_RepeatedField_1_String_Binding.Register(app);
+            Google_Protobuf_Collections_RepeatedField_1_Int32_Binding.Register(app);
+            Google_Protobuf_Collections_RepeatedField_1_Int64_Binding.Register(app);
+            Google_Protobuf_FieldCodec_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);

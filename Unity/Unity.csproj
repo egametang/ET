@@ -12,16 +12,13 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.4.9f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -516,10 +513,17 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_CodedInputStream_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_CodedOutputStream_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_Google_Protobuf_Ad_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_Int32_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_Int64_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_String_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_Collections_RepeatedField_1_UnitInfo_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_FieldCodec_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_MessageParser_1_Google_Protobuf_Adapt_IMessage_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\Google_Protobuf_ProtoPreconditions_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\LitJson_JsonMapper_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\ReferenceCollector_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Activator_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Int32_Action_1_Google__t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_B_t.cs" />
@@ -531,6 +535,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Bi_t_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Bi_t_t_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeIns_t.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_Type_Queue_1_Object_Bi_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeIn_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Dictionary_2_UInt16_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.cs" />
@@ -544,6 +549,7 @@
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_List_1_Type_Binding_Enumerator_Bind_t.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_Int64_Binding.cs" />
+    <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_Generic_Queue_1_Object_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IDictionary_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Collections_IEnumerator_Binding.cs" />
     <Compile Include="Assets\ThirdParty\ILRuntime\Generated\System_Exception_Binding.cs" />
@@ -819,7 +825,6 @@
     <None Include="Assets\StreamingAssets\Version.txt" />
     <None Include="Assets\link.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
 </Project>

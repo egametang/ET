@@ -188,23 +188,23 @@ namespace ETEditor
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
 				{
-					GUILayout.Label($"Address:");
+					GUILayout.Label($"内网地址:");
 					innerConfig.Address = EditorGUILayout.TextField(innerConfig.Address, GUILayout.Width(120));
 				}
 
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
 				if (outerConfig != null)
 				{
-					GUILayout.Label($"Address:");
+					GUILayout.Label($"外网地址:");
 					outerConfig.Address = EditorGUILayout.TextField(outerConfig.Address, GUILayout.Width(120));
-					GUILayout.Label($"Address2:");
+					GUILayout.Label($"外网地址2:");
 					outerConfig.Address2 = EditorGUILayout.TextField(outerConfig.Address2, GUILayout.Width(120));
 				}
 
 				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
 				if (clientConfig != null)
 				{
-					GUILayout.Label($"Address:");
+					GUILayout.Label($"连接地址:");
 					clientConfig.Address = EditorGUILayout.TextField(clientConfig.Address, GUILayout.Width(120));
 				}
 

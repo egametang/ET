@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -19,7 +20,7 @@ namespace ILRuntime.Runtime.Generated
         {
             MethodBase method;
             Type[] args;
-            Type type = typeof(ReferenceCollector);
+            Type type = typeof(global::ReferenceCollector);
             Dictionary<string, List<MethodInfo>> genericMethods = new Dictionary<string, List<MethodInfo>>();
             List<MethodInfo> lst = null;                    
             foreach(var m in type.GetMethods())
@@ -64,7 +65,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ReferenceCollector instance_of_this_method = (ReferenceCollector)typeof(ReferenceCollector).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            global::ReferenceCollector instance_of_this_method = (global::ReferenceCollector)typeof(global::ReferenceCollector).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Get<UnityEngine.GameObject>(@key);

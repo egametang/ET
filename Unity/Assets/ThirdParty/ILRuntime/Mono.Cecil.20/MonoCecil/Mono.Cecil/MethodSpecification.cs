@@ -82,7 +82,7 @@ namespace Mono.Cecil {
 			get { return method.Parameters; }
 		}
 
-		internal override bool ContainsGenericParameter {
+		public override bool ContainsGenericParameter {
 			get { return method.ContainsGenericParameter; }
 		}
 

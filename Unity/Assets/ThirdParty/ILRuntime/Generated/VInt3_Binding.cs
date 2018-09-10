@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -20,9 +21,9 @@ namespace ILRuntime.Runtime.Generated
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(VInt3);
+            Type type = typeof(global::VInt3);
 
-            app.RegisterCLRCreateDefaultInstance(type, () => new VInt3());
+            app.RegisterCLRCreateDefaultInstance(type, () => new global::VInt3());
 
             args = new Type[]{typeof(System.Int32), typeof(System.Int32), typeof(System.Int32)};
             method = type.GetConstructor(flag, null, args, null);
@@ -30,7 +31,7 @@ namespace ILRuntime.Runtime.Generated
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref VInt3 instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref global::VInt3 instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -69,7 +70,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as VInt3[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as global::VInt3[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
@@ -92,7 +93,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @_x = ptr_of_this_method->Value;
 
 
-            var result_of_this_method = new VInt3(@_x, @_y, @_z);
+            var result_of_this_method = new global::VInt3(@_x, @_y, @_z);
 
             if(!isNewObj)
             {

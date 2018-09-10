@@ -67,7 +67,7 @@ namespace Mono.Cecil {
 			get { return true; }
 		}
 
-		internal override bool ContainsGenericParameter {
+		public override bool ContainsGenericParameter {
 			get { return modifier_type.ContainsGenericParameter || base.ContainsGenericParameter; }
 		}
 
@@ -110,7 +110,7 @@ namespace Mono.Cecil {
 			get { return true; }
 		}
 
-		internal override bool ContainsGenericParameter {
+		public override bool ContainsGenericParameter {
 			get { return modifier_type.ContainsGenericParameter || base.ContainsGenericParameter; }
 		}
 
