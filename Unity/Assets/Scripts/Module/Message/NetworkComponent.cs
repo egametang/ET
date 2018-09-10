@@ -35,10 +35,6 @@ namespace ETModel
 						break;
 #endif
 				}
-
-				this.Service.AcceptCallback += this.OnAccept;
-				
-				this.Start();
 			}
 			catch (Exception e)
 			{
@@ -55,33 +51,24 @@ namespace ETModel
 				{
 					case NetworkProtocol.KCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new KService(ipEndPoint);
+						this.Service = new KService(ipEndPoint, this.OnAccept);
 						break;
 					case NetworkProtocol.TCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new TService(ipEndPoint);
+						this.Service = new TService(ipEndPoint, this.OnAccept);
 						break;
 #if SERVER
 					case NetworkProtocol.WebSocket:
 						string[] prefixs = address.Split(';');
-						this.Service = new WService(prefixs);
+						this.Service = new WService(prefixs, this.OnAccept);
 						break;
 #endif
 				}
-				
-				this.Service.AcceptCallback += this.OnAccept;
-				
-				this.Start();
 			}
 			catch (Exception e)
 			{
 				throw new Exception($"NetworkComponent Awake Error {address}", e);
 			}
-		}
-
-		public void Start()
-		{
-			this.Service.Start();
 		}
 
 		public int Count

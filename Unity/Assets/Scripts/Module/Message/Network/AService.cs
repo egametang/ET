@@ -40,7 +40,5 @@ namespace ETModel
 		public abstract void Remove(long channelId);
 
 		public abstract void Update();
-
-		public abstract void Start();
 	}
 }

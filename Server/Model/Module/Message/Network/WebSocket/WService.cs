@@ -14,20 +14,20 @@ namespace ETModel
         
         public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 
-        public WService(IEnumerable<string> prefixs)
+        public WService(IEnumerable<string> prefixs, Action<AChannel> acceptCallback)
         {
             this.InstanceId = IdGenerater.GenerateId();
+
+            this.AcceptCallback += acceptCallback;
             
             this.httpListener = new HttpListener();
-            
-            foreach (string prefix in prefixs)
-            {
-                this.httpListener.Prefixes.Add(prefix);
-            }
+
+            StartAccept(prefixs);
         }
         
         public WService()
         {
+            this.InstanceId = IdGenerater.GenerateId();
         }
         
         public override AChannel GetChannel(long id)
@@ -68,33 +68,49 @@ namespace ETModel
             
         }
 
-        public override async void Start()
+        public async void StartAccept(IEnumerable<string> prefixs)
         {
-            if (this.httpListener == null)
+            try
             {
-                return;
-            }
-            
-            httpListener.Start();
+                foreach (string prefix in prefixs)
+                {
+                    this.httpListener.Prefixes.Add(prefix);
+                }
+                
+                httpListener.Start();
 
-            while (true)
+                while (true)
+                {
+                    try
+                    {
+                        HttpListenerContext httpListenerContext = await this.httpListener.GetContextAsync();
+
+                        HttpListenerWebSocketContext webSocketContext = await httpListenerContext.AcceptWebSocketAsync(null);
+
+                        WChannel channel = new WChannel(webSocketContext, this);
+
+                        this.channels[channel.Id] = channel;
+
+                        this.OnAccept(channel);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e);
+                    }
+                }
+            }
+            catch (HttpListenerException e)
             {
-                try
+                if (e.ErrorCode == 5)
                 {
-                    HttpListenerContext httpListenerContext = await this.httpListener.GetContextAsync();
-                
-                    HttpListenerWebSocketContext webSocketContext = await httpListenerContext.AcceptWebSocketAsync(null);
-                    
-                    WChannel channel = new WChannel(webSocketContext, this);
-                
-                    this.channels[channel.Id] = channel;
-                    
-                    this.OnAccept(channel);
+                    throw new Exception($"CMD管理员中输入: netsh http add urlacl url=http://*:8080/ user=Everyone", e);
                 }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+
+                Log.Error(e);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
             }
         }
     }

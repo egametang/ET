@@ -57,8 +57,12 @@ namespace ETModel
 
 		private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-		public KService(IPEndPoint ipEndPoint)
+		public KService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
 		{
+			this.InstanceId = ETModel.IdGenerater.GenerateId();
+			
+			this.AcceptCallback += acceptCallback;
+			
 			this.StartTime = TimeHelper.ClientNow();
 			this.TimeNow = (uint)(TimeHelper.ClientNow() - this.StartTime);
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -78,6 +82,8 @@ namespace ETModel
 
 		public KService()
 		{
+			this.InstanceId = ETModel.IdGenerater.GenerateId();
+			
 			this.StartTime = TimeHelper.ClientNow();
 			this.TimeNow = (uint)(TimeHelper.ClientNow() - this.StartTime);
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
@@ -112,10 +118,6 @@ namespace ETModel
 			this.socket.Close();
 			this.socket = null;
 			Instance = null;
-		}
-
-		public override void Start()
-		{
 		}
 
 		public void Recv()
