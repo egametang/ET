@@ -46,20 +46,27 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, IPEndPoint ipEndPoint)
+		public void Awake(NetworkProtocol protocol, string address)
 		{
 			try
 			{
+				IPEndPoint ipEndPoint;
 				switch (protocol)
 				{
 					case NetworkProtocol.KCP:
+						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 						this.Service = new KService(ipEndPoint);
 						break;
 					case NetworkProtocol.TCP:
+						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 						this.Service = new TService(ipEndPoint);
 						break;
-					default:
-						throw new ArgumentOutOfRangeException();
+#if SERVER
+					case NetworkProtocol.WebSocket:
+						string[] prefixs = address.Split(';');
+						this.Service = new WService(prefixs);
+						break;
+#endif
 				}
 				
 				this.Service.AcceptCallback += this.OnAccept;
@@ -68,27 +75,9 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"{ipEndPoint}", e);
+				throw new Exception($"NetworkComponent Awake Error {address}", e);
 			}
 		}
-
-#if SERVER
-		public void Awake(NetworkProtocol protocol, List<string> prefixs)
-		{
-			try
-			{
-				this.Service = new WService(prefixs);
-				
-				this.Service.AcceptCallback += this.OnAccept;
-				
-				this.Start();
-			}
-			catch (Exception e)
-			{
-				throw new Exception($"websocket error: {prefixs}", e);
-			}
-		}
-#endif
 
 		public void Start()
 		{

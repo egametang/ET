@@ -48,33 +48,32 @@ namespace App
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
-						//Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
-						//Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent, List<string>>(new List<string>() {"http://*:8080/"});
 						Game.Scene.AddComponent<AppManagerComponent>();
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						break;
 					case AppType.Realm:
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					case AppType.Location:
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<LocationComponent>();
 						break;
 					case AppType.Map:
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
@@ -90,8 +89,8 @@ namespace App
 						Game.Scene.AddComponent<DBCacheComponent>();
 						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
-						Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(innerConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent, IPEndPoint>(outerConfig.IPEndPoint);
+						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
@@ -101,10 +100,15 @@ namespace App
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
-						//Game.Scene.AddComponent<NetOuterComponent>();
-						//Game.Scene.AddComponent<BenchmarkComponent, IPEndPoint>(clientConfig.IPEndPoint);
-						Game.Scene.AddComponent<NetOuterComponent>();
-						Game.Scene.AddComponent<WebSocketBenchmarkComponent>();
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol>(options.Protocol);
+						Game.Scene.AddComponent<BenchmarkComponent, string>(clientConfig.Address);
+						break;
+					case AppType.BenchmarkWebsocketServer:
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(NetworkProtocol.WebSocket, outerConfig.Address);
+						break;
+					case AppType.BenchmarkWebsocketClient:
+						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol>(NetworkProtocol.WebSocket);
+						Game.Scene.AddComponent<WebSocketBenchmarkComponent, string>(clientConfig.Address);
 						break;
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");

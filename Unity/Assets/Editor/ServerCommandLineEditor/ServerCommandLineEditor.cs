@@ -179,46 +179,40 @@ namespace ETEditor
 				StartConfig startConfig = this.startConfigs[i];
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"AppId:");
-				startConfig.AppId = EditorGUILayout.IntField(startConfig.AppId);
+				startConfig.AppId = EditorGUILayout.IntField(startConfig.AppId, GUILayout.Width(30));
 				GUILayout.Label($"服务器IP:");
-				startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP);
+				startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP, GUILayout.Width(100));
 				GUILayout.Label($"AppType:");
 				startConfig.AppType = (AppType) EditorGUILayout.EnumPopup(startConfig.AppType);
 
 				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
 				if (innerConfig != null)
 				{
-					GUILayout.Label($"InnerHost:");
-					innerConfig.Host = EditorGUILayout.TextField(innerConfig.Host);
-					GUILayout.Label($"InnerPort:");
-					innerConfig.Port = EditorGUILayout.IntField(innerConfig.Port);
+					GUILayout.Label($"Address:");
+					innerConfig.Address = EditorGUILayout.TextField(innerConfig.Address, GUILayout.Width(120));
 				}
 
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
 				if (outerConfig != null)
 				{
-					GUILayout.Label($"OuterHost:");
-					outerConfig.Host = EditorGUILayout.TextField(outerConfig.Host);
-					GUILayout.Label($"OuterHost2:");
-					outerConfig.Host2 = EditorGUILayout.TextField(outerConfig.Host2);
-					GUILayout.Label($"OuterPort:");
-					outerConfig.Port = EditorGUILayout.IntField(outerConfig.Port);
+					GUILayout.Label($"Address:");
+					outerConfig.Address = EditorGUILayout.TextField(outerConfig.Address, GUILayout.Width(120));
+					GUILayout.Label($"Address2:");
+					outerConfig.Address2 = EditorGUILayout.TextField(outerConfig.Address2, GUILayout.Width(120));
 				}
 
 				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
 				if (clientConfig != null)
 				{
-					GUILayout.Label($"Host:");
-					clientConfig.Host = EditorGUILayout.TextField(clientConfig.Host);
-					GUILayout.Label($"Port:");
-					clientConfig.Port = EditorGUILayout.IntField(clientConfig.Port);
+					GUILayout.Label($"Address:");
+					clientConfig.Address = EditorGUILayout.TextField(clientConfig.Address, GUILayout.Width(120));
 				}
 
 				HttpConfig httpConfig = startConfig.GetComponent<HttpConfig>();
 				if (httpConfig != null)
 				{
 					GUILayout.Label($"AppId:");
-					httpConfig.AppId = EditorGUILayout.IntField(httpConfig.AppId);
+					httpConfig.AppId = EditorGUILayout.IntField(httpConfig.AppId, GUILayout.Width(20));
 					GUILayout.Label($"AppKey:");
 					httpConfig.AppKey = EditorGUILayout.TextField(httpConfig.AppKey);
 					GUILayout.Label($"Url:");
@@ -309,11 +303,6 @@ namespace ETEditor
 					newStartConfig.AddComponent<InnerConfig>();
 				}
 
-				if (this.AppType.Is(AppType.Benchmark))
-				{
-					newStartConfig.AddComponent<ClientConfig>();
-				}
-
 				if (this.AppType.Is(AppType.Http))
 				{
 					newStartConfig.AddComponent<HttpConfig>();
@@ -322,6 +311,21 @@ namespace ETEditor
 				if (this.AppType.Is(AppType.DB))
 				{
 					newStartConfig.AddComponent<DBConfig>();
+				}
+				
+				if (this.AppType.Is(AppType.Benchmark))
+				{
+					newStartConfig.AddComponent<ClientConfig>();
+				}
+				
+				if (this.AppType.Is(AppType.BenchmarkWebsocketServer))
+				{
+					newStartConfig.AddComponent<OuterConfig>();
+				}
+				
+				if (this.AppType.Is(AppType.BenchmarkWebsocketClient))
+				{
+					newStartConfig.AddComponent<ClientConfig>();
 				}
 
 				this.startConfigs.Add(newStartConfig);

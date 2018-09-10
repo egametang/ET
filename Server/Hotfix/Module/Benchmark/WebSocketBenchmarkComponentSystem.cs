@@ -5,24 +5,24 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class WebSocketBenchmarkComponentSystem : AwakeSystem<WebSocketBenchmarkComponent>
+	public class WebSocketBenchmarkComponentSystem : AwakeSystem<WebSocketBenchmarkComponent, string>
 	{
-		public override void Awake(WebSocketBenchmarkComponent self)
+		public override void Awake(WebSocketBenchmarkComponent self, string address)
 		{
-			self.Awake();
+			self.Awake(address);
 		}
 	}
 
 	public static class WebSocketBenchmarkComponentHelper
 	{
-		public static void Awake(this WebSocketBenchmarkComponent self)
+		public static void Awake(this WebSocketBenchmarkComponent self, string address)
 		{
 			try
 			{
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, i);
+					self.TestAsync(networkComponent, i, address);
 				}
 			}
 			catch (Exception e)
@@ -31,11 +31,11 @@ namespace ETHotfix
 			}
 		}
 		
-		public static async void TestAsync(this WebSocketBenchmarkComponent self, NetOuterComponent networkComponent, int j)
+		public static async void TestAsync(this WebSocketBenchmarkComponent self, NetOuterComponent networkComponent, int j, string address)
 		{
 			try
 			{
-				using (Session session = networkComponent.Create($"ws://127.0.0.1:8080"))
+				using (Session session = networkComponent.Create(address))
 				{
 					int i = 0;
 					while (i < 100000000)

@@ -6,26 +6,14 @@ namespace ETModel
 	[BsonIgnoreExtraElements]
 	public class InnerConfig: AConfigComponent
 	{
-		public string Host { get; set; }
-		public int Port { get; set; }
-
 		[BsonIgnore]
-		private IPEndPoint ipEndPoint;
+		public IPEndPoint IPEndPoint { get; private set; }
+		
+		public string Address { get; set; }
 
 		public override void EndInit()
 		{
-			base.EndInit();
-
-			this.ipEndPoint = NetworkHelper.ToIPEndPoint(this.Host, this.Port);
-		}
-
-		[BsonIgnore]
-		public IPEndPoint IPEndPoint
-		{
-			get
-			{
-				return this.ipEndPoint;
-			}
+			this.IPEndPoint = NetworkHelper.ToIPEndPoint(this.Address);
 		}
 	}
 }

@@ -5,38 +5,27 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class NetOuterComponentAwakeSystem : AwakeSystem<NetOuterComponent>
+	public class NetOuterComponentAwakeSystem : AwakeSystem<NetOuterComponent, NetworkProtocol>
 	{
-		public override void Awake(NetOuterComponent self)
+		public override void Awake(NetOuterComponent self, NetworkProtocol protocol)
 		{
-			self.Awake(NetworkProtocol.WebSocket);
+			self.Awake(protocol);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 	}
 
 	[ObjectSystem]
-	public class NetOuterComponentAwake1System : AwakeSystem<NetOuterComponent, IPEndPoint>
+	public class NetOuterComponentAwake1System : AwakeSystem<NetOuterComponent, NetworkProtocol, string>
 	{
-		public override void Awake(NetOuterComponent self, IPEndPoint ipEndPoint)
+		public override void Awake(NetOuterComponent self, NetworkProtocol protocol, string address)
 		{
-			self.Awake(NetworkProtocol.TCP, ipEndPoint);
+			self.Awake(protocol, address);
 			self.MessagePacker = new ProtobufPacker();
 			self.MessageDispatcher = new OuterMessageDispatcher();
 		}
 	}
 	
-	[ObjectSystem]
-	public class NetOuterComponentAwake2System : AwakeSystem<NetOuterComponent, List<string>>
-	{
-		public override void Awake(NetOuterComponent self, List<string> prefixs)
-		{
-			self.Awake(NetworkProtocol.WebSocket, prefixs);
-			self.MessagePacker = new ProtobufPacker();
-			self.MessageDispatcher = new OuterMessageDispatcher();
-		}
-	}
-
 	[ObjectSystem]
 	public class NetOuterComponentUpdateSystem : UpdateSystem<NetOuterComponent>
 	{

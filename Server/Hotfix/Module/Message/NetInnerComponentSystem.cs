@@ -13,9 +13,9 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, IPEndPoint>
+	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, string>
 	{
-		public override void Awake(NetInnerComponent self, IPEndPoint a)
+		public override void Awake(NetInnerComponent self, string a)
 		{
 			self.Awake(a);
 		}
@@ -40,9 +40,9 @@ namespace ETHotfix
 			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;
 		}
 
-		public static void Awake(this NetInnerComponent self, IPEndPoint ipEndPoint)
+		public static void Awake(this NetInnerComponent self, string address)
 		{
-			self.Awake(NetworkProtocol.TCP, ipEndPoint);
+			self.Awake(NetworkProtocol.TCP, address);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;
