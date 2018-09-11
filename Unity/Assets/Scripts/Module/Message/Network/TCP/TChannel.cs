@@ -172,8 +172,7 @@ namespace ETModel
 			e.RemoteEndPoint = null;
 			this.isConnected = true;
 			
-			this.StartRecv();
-			this.StartSend();
+			this.Start();
 		}
 
 		private void OnDisconnectComplete(object o)

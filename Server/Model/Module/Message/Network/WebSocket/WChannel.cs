@@ -8,7 +8,7 @@ namespace ETModel
 {
     public class WChannel: AChannel
     {
-        private readonly HttpListenerWebSocketContext webSocketContext;
+        public HttpListenerWebSocketContext WebSocketContext { get; }
 
         private readonly WebSocket webSocket;
 
@@ -24,7 +24,7 @@ namespace ETModel
         {
             this.InstanceId = IdGenerater.GenerateId();
             
-            this.webSocketContext = webSocketContext;
+            this.WebSocketContext = webSocketContext;
 
             this.webSocket = webSocketContext.WebSocket;
             
@@ -40,6 +40,8 @@ namespace ETModel
             this.webSocket = webSocket;
             
             this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
+
+            isConnected = false;
         }
 
         public override void Dispose()
