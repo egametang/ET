@@ -48,7 +48,7 @@ namespace App
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
-						Game.Scene.AddComponent<AppManagerComponent>();
+						Game.Scene.AddComponent<AppManagerComponent, NetworkProtocol>(options.Protocol);
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						break;
@@ -92,7 +92,7 @@ namespace App
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<AppManagerComponent>();
+						Game.Scene.AddComponent<AppManagerComponent, NetworkProtocol>(options.Protocol);
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();

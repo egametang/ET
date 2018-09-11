@@ -7,20 +7,22 @@ using System.Runtime.InteropServices;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
+	public class AppManagerComponentAwakeSystem : AwakeSystem<AppManagerComponent, NetworkProtocol>
 	{
-		public override void Start(AppManagerComponent self)
+		public override void Awake(AppManagerComponent self, NetworkProtocol protocol)
 		{
-			self.Start();
+			self.Awake(protocol);
 		}
 	}
 
 	public class AppManagerComponent: Component
 	{
+		private NetworkProtocol networkProtocol;
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		public void Start()
+		public void Awake(NetworkProtocol protocol)
 		{
+			this.networkProtocol = protocol;
 			string[] ips = NetHelper.GetAddressIPs();
 			StartConfig[] startConfigs = StartConfigComponent.Instance.GetAll();
 			
@@ -51,7 +53,7 @@ namespace ETModel
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 			const string exe = "dotnet";
-			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
+			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile} --protocol={this.networkProtocol}";
 
 			Log.Info($"{exe} {arguments}");
 			try
