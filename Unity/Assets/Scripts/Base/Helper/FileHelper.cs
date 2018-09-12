@@ -60,14 +60,14 @@ namespace ETModel
 	
 			for (int i = 0; i < files.Length; i++)
 			{
-				File.Copy(files[i].FullName, target.FullName + @"\" + files[i].Name, true);
+				File.Copy(files[i].FullName, Path.Combine(target.FullName, files[i].Name), true);
 			}
 	
 			DirectoryInfo[] dirs = source.GetDirectories();
 	
 			for (int j = 0; j < dirs.Length; j++)
 			{
-				CopyDirectory(dirs[j].FullName, target.FullName + @"\" + dirs[j].Name);
+				CopyDirectory(dirs[j].FullName, Path.Combine(target.FullName, dirs[j].Name));
 			}
 		}
 	}
