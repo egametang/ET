@@ -33,6 +33,7 @@ namespace ETModel
 		public const int ERR_PeerDisconnect = 202008;
 		public const int ERR_SocketCantSend = 202009;
 		public const int ERR_SocketError = 202010;
+		public const int ERR_KcpWaitSendSizeTooLarge = 202011;
 
 		public const int ERR_WebsocketPeerReset = 203001;
 		public const int ERR_WebsocketMessageTooBig = 203002;
