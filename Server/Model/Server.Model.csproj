@@ -23,6 +23,12 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetOuterComponent.cs">
       <Link>Module\Message\NetOuterComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\WebSocket\WChannel.cs">
+      <Link>Module\Message\Network\WebSocket\WChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\WebSocket\WService.cs">
+      <Link>Module\Message\Network\WebSocket\WService.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Hotfix\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
     </Compile>

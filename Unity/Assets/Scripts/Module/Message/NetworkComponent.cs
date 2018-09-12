@@ -29,11 +29,9 @@ namespace ETModel
 					case NetworkProtocol.TCP:
 						this.Service = new TService();
 						break;
-#if SERVER
 					case NetworkProtocol.WebSocket:
 						this.Service = new WService();
 						break;
-#endif
 				}
 			}
 			catch (Exception e)
@@ -57,12 +55,10 @@ namespace ETModel
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 						this.Service = new TService(ipEndPoint, this.OnAccept);
 						break;
-#if SERVER
 					case NetworkProtocol.WebSocket:
 						string[] prefixs = address.Split(';');
 						this.Service = new WService(prefixs, this.OnAccept);
 						break;
-#endif
 				}
 			}
 			catch (Exception e)
@@ -114,9 +110,9 @@ namespace ETModel
 		/// <summary>
 		/// 创建一个新Session
 		/// </summary>
-		public Session Create(string url)
+		public Session Create(string address)
 		{
-			AChannel channel = this.Service.ConnectChannel(url);
+			AChannel channel = this.Service.ConnectChannel(address);
 			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
 			return session;

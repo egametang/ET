@@ -32,20 +32,18 @@ namespace ETHotfix
 		{
 			try
 			{
-				IPEndPoint connetEndPoint = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
-
 				string text = this.account.GetComponent<InputField>().text;
 
 				// 创建一个ETModel层的Session
-				ETModel.Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				ETModel.Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(GlobalConfigComponent.Instance.GlobalProto.Address);
+				
 				// 创建一个ETHotfix层的Session, ETHotfix的Session会通过ETModel层的Session发送消息
 				Session realmSession = ComponentFactory.Create<Session, ETModel.Session>(session);
 				R2C_Login r2CLogin = (R2C_Login) await realmSession.Call(new C2R_Login() { Account = text, Password = "111111" });
 				realmSession.Dispose();
 
-				connetEndPoint = NetworkHelper.ToIPEndPoint(r2CLogin.Address);
 				// 创建一个ETModel层的Session,并且保存到ETModel.SessionComponent中
-				ETModel.Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(connetEndPoint);
+				ETModel.Session gateSession = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(r2CLogin.Address);
 				ETModel.Game.Scene.AddComponent<ETModel.SessionComponent>().Session = gateSession;
 				
 				// 创建一个ETHotfix层的Session, 并且保存到ETHotfix.SessionComponent中

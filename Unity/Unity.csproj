@@ -381,6 +381,8 @@
     <Compile Include="Assets\Scripts\Module\FrameSync\UnitComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Module\Message\AMHandler.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\Network\WebSocket\WChannel.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\Network\WebSocket\WService.cs" />
     <Compile Include="Assets\Scripts\Module\Message\OuterMessageDispatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Module\Message\IActorMessage.cs" />

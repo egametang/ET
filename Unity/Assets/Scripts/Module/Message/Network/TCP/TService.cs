@@ -131,7 +131,8 @@ namespace ETModel
 
 		public override AChannel ConnectChannel(string address)
 		{
-			throw new NotImplementedException();
+			IPEndPoint ipEndPoint = NetworkHelper.ToIPEndPoint(address);
+			return this.ConnectChannel(ipEndPoint);
 		}
 
 		public override void Remove(long id)
