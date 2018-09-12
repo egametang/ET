@@ -48,14 +48,14 @@ namespace App
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
-						Game.Scene.AddComponent<AppManagerComponent, NetworkProtocol>(options.Protocol);
+						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						break;
 					case AppType.Realm:
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
@@ -63,7 +63,7 @@ namespace App
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
@@ -90,9 +90,9 @@ namespace App
 						Game.Scene.AddComponent<LocationComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(options.Protocol, outerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
-						Game.Scene.AddComponent<AppManagerComponent, NetworkProtocol>(options.Protocol);
+						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
@@ -100,14 +100,14 @@ namespace App
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol>(options.Protocol);
+						Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<BenchmarkComponent, string>(clientConfig.Address);
 						break;
 					case AppType.BenchmarkWebsocketServer:
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol, string>(NetworkProtocol.WebSocket, outerConfig.Address);
+						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						break;
 					case AppType.BenchmarkWebsocketClient:
-						Game.Scene.AddComponent<NetOuterComponent, NetworkProtocol>(NetworkProtocol.WebSocket);
+						Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<WebSocketBenchmarkComponent, string>(clientConfig.Address);
 						break;
 					default:

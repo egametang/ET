@@ -333,12 +333,11 @@ namespace ETEditor
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-
 			if (GUILayout.Button("保存"))
 			{
 				this.Save();
 			}
-
+			
 			if (GUILayout.Button("启动"))
 			{
 				StartConfig startConfig = null;

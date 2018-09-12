@@ -1,6 +1,6 @@
 ﻿namespace ETModel
 {
-	public class ClientDispatcher: IMessageDispatcher
+	public class OuterMessageDispatcher: IMessageDispatcher
 	{
 		public void Dispatch(Session session, ushort opcode, object message)
 		{

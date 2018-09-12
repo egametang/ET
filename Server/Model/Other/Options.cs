@@ -15,8 +15,5 @@ namespace ETModel
 
 		[Option("config", Required = false, Default = "../Config/StartConfig/LocalAllServer.txt")]
 		public string Config { get; set; }
-		
-		[Option("protocol", Required = false, Default = NetworkProtocol.TCP)]
-		public NetworkProtocol Protocol { get; set; }
 	}
 }

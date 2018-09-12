@@ -12,13 +12,16 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.4.9f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -378,7 +381,7 @@
     <Compile Include="Assets\Scripts\Module\FrameSync\UnitComponent.cs" />
     <Compile Include="Assets\Scripts\Module\FrameSync\UnitFactory.cs" />
     <Compile Include="Assets\Scripts\Module\Message\AMHandler.cs" />
-    <Compile Include="Assets\Scripts\Module\Message\ClientDispatcher.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\OuterMessageDispatcher.cs" />
     <Compile Include="Assets\Scripts\Module\Message\ErrorCode.cs" />
     <Compile Include="Assets\Scripts\Module\Message\IActorMessage.cs" />
     <Compile Include="Assets\Scripts\Module\Message\IMessage.cs" />
@@ -392,6 +395,7 @@
     <Compile Include="Assets\Scripts\Module\Message\MessagePool.cs" />
     <Compile Include="Assets\Scripts\Module\Message\MessageProxy.cs" />
     <Compile Include="Assets\Scripts\Module\Message\NetOuterComponent.cs" />
+    <Compile Include="Assets\Scripts\Module\Message\NetOuterComponentSystem.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\AChannel.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\AService.cs" />
     <Compile Include="Assets\Scripts\Module\Message\Network\Circularbuffer.cs" />

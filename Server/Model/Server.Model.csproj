@@ -20,6 +20,9 @@
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetOuterComponent.cs">
+      <Link>Module\Message\NetOuterComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Hotfix\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
     </Compile>

@@ -17,6 +17,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Other\**" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetOuterComponentSystem.cs">
+      <Link>Module\Message\NetOuterComponentSystem.cs</Link>
+    </Compile>
     <EmbeddedResource Remove="Other\**" />
     <None Remove="Other\**" />
   </ItemGroup>
