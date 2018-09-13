@@ -104,7 +104,8 @@ namespace ETModel
 			}
 			
 			this.StartRecv();
-			this.StartSend();
+			
+			this.GetService().MarkNeedStartSend(this.Id);
 		}
 		
 		public override void Send(MemoryStream stream)
@@ -118,10 +119,7 @@ namespace ETModel
 			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
 			this.sendBuffer.ReadFrom(stream);
 
-			if(!this.isSending)
-			{
-				this.StartSend();
-			}
+			this.GetService().MarkNeedStartSend(this.Id);
 		}
 
 		private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -259,7 +257,9 @@ namespace ETModel
 			this.StartRecv();
 		}
 
-		private void StartSend()
+		public bool IsSending => this.isSending;
+
+		public void StartSend()
 		{
 			if(!this.isConnected)
 			{

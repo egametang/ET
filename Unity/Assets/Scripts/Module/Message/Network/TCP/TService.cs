@@ -17,6 +17,8 @@ namespace ETModel
 		
 		public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 		
+		public HashSet<long> needStartSendChannel = new HashSet<long>();
+		
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
@@ -135,6 +137,11 @@ namespace ETModel
 			return this.ConnectChannel(ipEndPoint);
 		}
 
+		public void MarkNeedStartSend(long id)
+		{
+			this.needStartSendChannel.Add(id);
+		}
+
 		public override void Remove(long id)
 		{
 			TChannel channel;
@@ -152,6 +159,30 @@ namespace ETModel
 
 		public override void Update()
 		{
+			foreach (long id in this.needStartSendChannel)
+			{
+				TChannel channel;
+				if (!this.idChannels.TryGetValue(id, out channel))
+				{
+					continue;
+				}
+
+				if (channel.IsSending)
+				{
+					continue;
+				}
+
+				try
+				{
+					channel.StartSend();
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+			
+			this.needStartSendChannel.Clear();
 		}
 	}
 }
