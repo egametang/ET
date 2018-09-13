@@ -51,7 +51,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"url: {versionUrl}");
+				throw new Exception($"url: {versionUrl}", e);
 			}
 
 			// 获取streaming目录的Version.txt

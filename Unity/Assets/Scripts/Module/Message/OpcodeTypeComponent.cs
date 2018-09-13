@@ -68,8 +68,9 @@ namespace ETModel
 #if SERVER
 			Type type = this.GetType(opcode);
 			return Activator.CreateInstance(type);
-#endif
+#else
 			return this.typeMessages[opcode];
+#endif
 		}
 
 		public override void Dispose()

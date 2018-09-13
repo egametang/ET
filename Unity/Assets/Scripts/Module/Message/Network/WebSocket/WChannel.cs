@@ -172,7 +172,12 @@ namespace ETModel
                 {
                     try
                     {
-                        var receiveResult = await this.webSocket.ReceiveAsync(new ArraySegment<byte>(this.Stream.GetBuffer(), 0, this.Stream.Capacity), cancellationTokenSource.Token);
+#if SERVER
+                        ValueWebSocketReceiveResult receiveResult = await this.webSocket.ReceiveAsync(new Memory<byte>(this.Stream.GetBuffer(), 0, this.Stream.Capacity), cancellationTokenSource.Token);
+#else
+                        WebSocketReceiveResult receiveResult = await this.webSocket.ReceiveAsync(new ArraySegment<byte>(this.Stream.GetBuffer(), 0, this.Stream.Capacity), cancellationTokenSource.Token);
+#endif
+                        
                         if (this.IsDisposed)
                         {
                             return;
@@ -193,7 +198,7 @@ namespace ETModel
                         this.Stream.SetLength(receiveResult.Count);
                         this.OnRead(this.Stream);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         this.OnError(ErrorCode.ERR_WebsocketRecvError);
                         return;
