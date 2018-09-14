@@ -10,28 +10,20 @@ namespace ETHotfix
 	[ActorInterceptTypeHandler(AppType.Gate, ActorInterceptType.GateSession)]
 	public class GateSessionActorInterceptInterceptTypeHandler : IActorInterceptTypeHandler
 	{
-		public async Task Handle(Session session, Entity entity, IActorMessage actorMessage)
+		public async Task Handle(Session session, Entity entity, object actorMessage)
 		{
-			ActorResponse actorResponse = new ActorResponse
-			{
-				RpcId = actorMessage.RpcId
-			};
 			try
 			{
+				IActorMessage iActorMessage = actorMessage as IActorMessage;
 				// 发送给客户端
 				Session clientSession = entity as Session;
-				actorMessage.ActorId = 0;
-				clientSession.Send(actorMessage);
-
-				session.Reply(actorResponse);
+				iActorMessage.ActorId = 0;
+				clientSession.Send(iActorMessage);
 				await Task.CompletedTask;
 			}
 			catch (Exception e)
 			{
-				actorResponse.Error = ErrorCode.ERR_SessionActorError;
-				actorResponse.Message = $"session actor error {e}";
-				session.Reply(actorResponse);
-				throw;
+				Log.Error(e);
 			}
 		}
 	}

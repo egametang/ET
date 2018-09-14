@@ -13,32 +13,17 @@ namespace ETModel
 			{
 				return;
 			}
+			
 			base.Dispose();
+			
 			foreach (ActorMessageSender actorMessageSender in this.ActorMessageSenders.Values)
 			{
 				actorMessageSender.Dispose();
 			}
 			this.ActorMessageSenders.Clear();
 		}
-
-		public ActorMessageSender Get(long id)
-		{
-			if (id == 0)
-			{
-				throw new Exception($"actor id is 0");
-			}
-			if (this.ActorMessageSenders.TryGetValue(id, out ActorMessageSender actorMessageSender))
-			{
-				return actorMessageSender;
-			}
-			
-			actorMessageSender = ComponentFactory.CreateWithId<ActorMessageSender>(id);
-			actorMessageSender.Parent = this;
-			this.ActorMessageSenders[id] = actorMessageSender;
-			return actorMessageSender;
-		}
 		
-		public ActorMessageSender GetWithActorId(long actorId)
+		public ActorMessageSender Get(long actorId)
 		{
 			if (actorId == 0)
 			{
@@ -57,8 +42,7 @@ namespace ETModel
 
 		public void Remove(long id)
 		{
-			ActorMessageSender actorMessageSender;
-			if (!this.ActorMessageSenders.TryGetValue(id, out actorMessageSender))
+			if (!this.ActorMessageSenders.TryGetValue(id, out ActorMessageSender actorMessageSender))
 			{
 				return;
 			}

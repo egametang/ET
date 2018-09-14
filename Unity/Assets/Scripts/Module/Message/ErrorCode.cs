@@ -15,7 +15,7 @@ namespace ETModel
 		
 		public const int ERR_NotFoundActor = 200002;
 		public const int ERR_ActorNoMailBoxComponent = 200003;
-		public const int ERR_ActorTimeOut = 200004;
+		public const int ERR_ActorRemove = 200004;
 		public const int ERR_PacketParserError = 200005;
 
 		public const int ERR_AccountOrPasswordError = 200102;

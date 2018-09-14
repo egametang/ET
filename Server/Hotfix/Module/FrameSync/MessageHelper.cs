@@ -7,7 +7,7 @@ namespace ETHotfix
 		public static void Broadcast(IActorMessage message)
 		{
 			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
-			ActorMessageSenderComponent actorMessageSenderComponent = Game.Scene.GetComponent<ActorMessageSenderComponent>();
+			ActorMessageSenderComponent actorLocationSenderComponent = Game.Scene.GetComponent<ActorMessageSenderComponent>();
 			foreach (Unit unit in units)
 			{
 				UnitGateComponent unitGateComponent = unit.GetComponent<UnitGateComponent>();
@@ -16,7 +16,7 @@ namespace ETHotfix
 					continue;
 				}
 				
-				actorMessageSenderComponent.GetWithActorId(unitGateComponent.GateSessionActorId).Send(message);
+				actorLocationSenderComponent.Get(unitGateComponent.GateSessionActorId).Send(message);
 			}
 		}
 	}

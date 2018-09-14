@@ -66,6 +66,7 @@ namespace App
 						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
+						Game.Scene.AddComponent<ActorLocationSenderComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						break;
 					case AppType.Location:
@@ -77,11 +78,13 @@ namespace App
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
+						Game.Scene.AddComponent<ActorLocationSenderComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
 						Game.Scene.AddComponent<ServerFrameComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
+						Game.Scene.AddComponent<ActorLocationSenderComponent>();
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<DBComponent>();

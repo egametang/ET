@@ -17,6 +17,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
+    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IClientActorMessage.cs">
+      <Link>Module\Message\IClientActorMessage.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
     </Compile>

@@ -4,10 +4,10 @@ using ETModel;
 namespace ETHotfix
 {
     [ObjectSystem]
-    public class ActorMessageSenderComponentSystem : StartSystem<ActorMessageSenderComponent>
+    public class ActorLocationSenderComponentSystem : StartSystem<ActorLocationSenderComponent>
     {
         // 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟
-        public override async void Start(ActorMessageSenderComponent self)
+        public override async void Start(ActorLocationSenderComponent self)
         {
             List<long> timeoutActorProxyIds = new List<long>();
 
@@ -23,20 +23,19 @@ namespace ETHotfix
                 timeoutActorProxyIds.Clear();
 
                 long timeNow = TimeHelper.Now();
-                foreach (long id in self.ActorMessageSenders.Keys)
+                foreach (long id in self.ActorLocationSenders.Keys)
                 {
-                    ActorMessageSender actorMessageSender = self.Get(id);
-                    if (actorMessageSender == null)
+                    ActorLocationSender actorLocationMessageSender = self.ActorLocationSenders[id];
+                    if (actorLocationMessageSender == null)
                     {
                         continue;
                     }
 
-                    if (timeNow < actorMessageSender.LastSendTime + 60 * 1000)
+                    if (timeNow < actorLocationMessageSender.LastSendTime + 60 * 1000)
                     {
                         continue;
                     }
 
-                    actorMessageSender.Error = ErrorCode.ERR_ActorTimeOut;
                     timeoutActorProxyIds.Add(id);
                 }
 

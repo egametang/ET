@@ -6,7 +6,7 @@ namespace ETModel
 	public struct ActorMessageInfo
 	{
 		public Session Session;
-		public IActorMessage Message;
+		public object Message;
 	}
 
 	/// <summary>

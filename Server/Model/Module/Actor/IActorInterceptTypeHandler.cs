@@ -4,6 +4,6 @@ namespace ETModel
 {
 	public interface IActorInterceptTypeHandler
 	{
-		Task Handle(Session session, Entity entity, IActorMessage actorMessage);
+		Task Handle(Session session, Entity entity, object actorMessage);
 	}
 }

@@ -17,10 +17,10 @@ namespace ETHotfix
 	public partial class G2C_TestHotfixMessage : IMessage {}
 
 	[Message(HotfixOpcode.C2M_TestActorRequest)]
-	public partial class C2M_TestActorRequest : IActorRequest {}
+	public partial class C2M_TestActorRequest : IClientActorRequest {}
 
 	[Message(HotfixOpcode.M2C_TestActorResponse)]
-	public partial class M2C_TestActorResponse : IActorResponse {}
+	public partial class M2C_TestActorResponse : IClientActorResponse {}
 
 	[Message(HotfixOpcode.PlayerInfo)]
 	public partial class PlayerInfo : IMessage {}
