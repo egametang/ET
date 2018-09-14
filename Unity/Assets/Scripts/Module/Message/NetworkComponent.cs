@@ -76,6 +76,7 @@ namespace ETModel
 		{
 			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
+			session.Start();
 		}
 
 		public virtual void Remove(long id)
@@ -104,6 +105,7 @@ namespace ETModel
 			AChannel channel = this.Service.ConnectChannel(ipEndPoint);
 			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
+			session.Start();
 			return session;
 		}
 		
@@ -115,6 +117,7 @@ namespace ETModel
 			AChannel channel = this.Service.ConnectChannel(address);
 			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
 			this.sessions.Add(session.Id, session);
+			session.Start();
 			return session;
 		}
 

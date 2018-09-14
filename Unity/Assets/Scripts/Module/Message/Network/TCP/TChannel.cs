@@ -24,6 +24,8 @@ namespace ETModel
 
 		private bool isSending;
 
+		private bool isRecving;
+
 		private bool isConnected;
 
 		private readonly PacketParser parser;
@@ -102,9 +104,13 @@ namespace ETModel
 				this.ConnectAsync(this.RemoteAddress);
 				return;
 			}
-			
-			this.StartRecv();
-			
+
+			if (!this.isRecving)
+			{
+				this.isRecving = true;
+				this.StartRecv();
+			}
+
 			this.GetService().MarkNeedStartSend(this.Id);
 		}
 		

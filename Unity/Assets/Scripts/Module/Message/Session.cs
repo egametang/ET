@@ -56,9 +56,8 @@ namespace ETModel
 				this.Network.Remove(id); 
 			};
 			channel.ReadCallback += this.OnRead;
-			
-			this.channel.Start();
 		}
+		
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -84,6 +83,11 @@ namespace ETModel
 			this.channel.Dispose();
 			this.Network.Remove(id);
 			this.requestCallback.Clear();
+		}
+
+		public void Start()
+		{
+			this.channel.Start();
 		}
 
 		public IPEndPoint RemoteAddress
