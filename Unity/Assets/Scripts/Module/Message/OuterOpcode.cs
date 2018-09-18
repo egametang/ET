@@ -40,6 +40,12 @@ namespace ETModel
 	[Message(OuterOpcode.G2C_Test)]
 	public partial class G2C_Test : IMessage {}
 
+	[Message(OuterOpcode.C2M_Reload)]
+	public partial class C2M_Reload : IRequest {}
+
+	[Message(OuterOpcode.M2C_Reload)]
+	public partial class M2C_Reload : IResponse {}
+
 }
 namespace ETModel
 {
@@ -58,5 +64,7 @@ namespace ETModel
 		 public const ushort C2R_Ping = 111;
 		 public const ushort R2C_Ping = 112;
 		 public const ushort G2C_Test = 113;
+		 public const ushort C2M_Reload = 114;
+		 public const ushort M2C_Reload = 115;
 	}
 }

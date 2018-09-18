@@ -27,6 +27,16 @@ namespace ETHotfix
 	}
 	
 	[ObjectSystem]
+	public class NetOuterComponentLoadSystem : LoadSystem<NetOuterComponent>
+	{
+		public override void Load(NetOuterComponent self)
+		{
+			self.MessagePacker = new ProtobufPacker();
+			self.MessageDispatcher = new OuterMessageDispatcher();
+		}
+	}
+	
+	[ObjectSystem]
 	public class NetOuterComponentUpdateSystem : UpdateSystem<NetOuterComponent>
 	{
 		public override void Update(NetOuterComponent self)

@@ -20,6 +20,16 @@ namespace ETHotfix
 			self.Awake(a);
 		}
 	}
+	
+	[ObjectSystem]
+	public class NetInnerComponentLoadSystem : LoadSystem<NetInnerComponent>
+	{
+		public override void Load(NetInnerComponent self)
+		{
+			self.MessagePacker = new MongoPacker();
+			self.MessageDispatcher = new InnerMessageDispatcher();
+		}
+	}
 
 	[ObjectSystem]
 	public class NetInnerComponentUpdateSystem : UpdateSystem<NetInnerComponent>
@@ -30,7 +40,7 @@ namespace ETHotfix
 		}
 	}
 
-	public static class NetInnerComponentEx
+	public static class NetInnerComponentHelper
 	{
 		public static void Awake(this NetInnerComponent self)
 		{
