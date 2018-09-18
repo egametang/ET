@@ -31,9 +31,7 @@ namespace ETHotfix
 
 				this.InstanceId = IdGenerater.GenerateId();
 				Game.EventSystem.Add(this);
-                if (Define.IsEditorMode)
-                    ECSView.SetParent(this);
-            }
+			}
 		}
 
 		[BsonIgnore]
@@ -45,21 +43,10 @@ namespace ETHotfix
 			}
 		}
 
-        [BsonIgnore]
-        private Component parent;
-        [BsonIgnore]
-        public Component Parent
-        {
-            get { return parent; }
-            set
-            {
-                parent = value;
-                if (Define.IsEditorMode)
-                    ECSView.SetParent(this, parent);
-            }
-        }
+		[BsonIgnore]
+		public Component Parent { get; set; }
 
-        public T GetParent<T>() where T : Component
+		public T GetParent<T>() where T : Component
 		{
 			return this.Parent as T;
 		}
@@ -73,40 +60,31 @@ namespace ETHotfix
 			}
 		}
 
-        protected Component()
-        {
-            if (Define.IsEditorMode)
-                ECSView.CreateView(this);
-        }
+		protected Component()
+		{
+		}
+		
+		public virtual void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			
+			// 触发Destroy事件
+			Game.EventSystem.Destroy(this);
 
-        public virtual void Dispose()
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
+			Game.EventSystem.Remove(this.InstanceId);
 
-            // 触发Destroy事件
-            Game.EventSystem.Destroy(this);
+			this.InstanceId = 0;
 
-            Game.EventSystem.Remove(this.InstanceId);
+			if (this.IsFromPool)
+			{
+				Game.ObjectPool.Recycle(this);
+			}
+		}
 
-            this.InstanceId = 0;
-
-            if (this.IsFromPool)
-                Game.ObjectPool.Recycle(this);
-
-            if (Define.IsEditorMode)
-            {
-                if (this.IsFromPool)
-                    ECSView.ReturnPool(this);
-                else
-                    ECSView.DestroyView(this);
-            }
-
-        }
-
-        public virtual void BeginSerialize()
+		public virtual void BeginSerialize()
 		{
 		}
 
