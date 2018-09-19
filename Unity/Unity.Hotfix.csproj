@@ -332,6 +332,10 @@
       <Project>{6396AEEA-8EF9-9740-4CEF-891CC997106C}</Project>
       <Name>Unity.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}</Project>
+      <Name>Unity.ThirdParty</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Hotfix\Base\Event\EventIdType.cs" />

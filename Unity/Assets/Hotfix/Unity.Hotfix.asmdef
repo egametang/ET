@@ -1,7 +1,8 @@
 {
     "name": "Unity.Hotfix",
     "references": [
-        "Unity.Model"
+        "Unity.Model",
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [
         "Editor"

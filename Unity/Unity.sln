@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ThirdParty", "Unity.ThirdParty.csproj", "{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Model", "Unity.Model.csproj", "{6396AEEA-8EF9-9740-4CEF-891CC997106C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Hotfix", "Unity.Hotfix.csproj", "{350246F3-F094-675F-855B-FB9B18C2B23E}"
@@ -13,6 +15,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6396AEEA-8EF9-9740-4CEF-891CC997106C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6396AEEA-8EF9-9740-4CEF-891CC997106C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6396AEEA-8EF9-9740-4CEF-891CC997106C}.Release|Any CPU.ActiveCfg = Release|Any CPU
