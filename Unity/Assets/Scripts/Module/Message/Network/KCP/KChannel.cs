@@ -425,13 +425,16 @@ namespace ETModel
 
 		public override void Send(MemoryStream stream)
 		{
-			// 检查等待发送的消息，如果超出两倍窗口大小，应该断开连接
-			if (Kcp.KcpWaitsnd(this.kcp) > 256 * 2)
+			if (this.kcp != IntPtr.Zero)
 			{
-				this.OnError(ErrorCode.ERR_KcpWaitSendSizeTooLarge);
-				return;
+				// 检查等待发送的消息，如果超出两倍窗口大小，应该断开连接
+				if (Kcp.KcpWaitsnd(this.kcp) > 256 * 2)
+				{
+					this.OnError(ErrorCode.ERR_KcpWaitSendSizeTooLarge);
+					return;
+				}
 			}
-			
+
 			ushort size = (ushort)(stream.Length - stream.Position);
 			byte[] bytes;
 			if (this.isConnected)

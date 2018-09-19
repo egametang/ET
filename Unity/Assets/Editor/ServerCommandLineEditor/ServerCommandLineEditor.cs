@@ -28,8 +28,6 @@ namespace ETEditor
 
 		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
 
-		private string managerAddress;
-
 		[MenuItem("Tools/命令行配置")]
 		private static void ShowWindow()
 		{
