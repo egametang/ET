@@ -12,9 +12,6 @@
     <OutputPath>..\..\..\Bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\Kcp.cs" Link="Kcp.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\..\Unity\Assets\Plugins\x86_64\kcp.dll" Link="kcp.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -26,5 +23,10 @@
     <None Update="libkcp.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Unity\Assets\Model\Module\Message\Network\KCP\Kcp.cs">
+      <Link>Kcp.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,10 @@
+{
+    "name": "Unity.Hotfix",
+    "references": [
+        "Unity.Model"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

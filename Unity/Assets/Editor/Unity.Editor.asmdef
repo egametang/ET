@@ -1,0 +1,10 @@
+{
+    "name": "Unity.Editor",
+    "references": [
+        "Unity.Model"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

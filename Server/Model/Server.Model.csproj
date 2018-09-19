@@ -17,122 +17,122 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IClientActorMessage.cs">
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IClientActorMessage.cs">
       <Link>Module\Message\IClientActorMessage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessagePool.cs">
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetOuterComponent.cs">
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetOuterComponent.cs">
       <Link>Module\Message\NetOuterComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\WebSocket\WChannel.cs">
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\WebSocket\WChannel.cs">
       <Link>Module\Message\Network\WebSocket\WChannel.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\WebSocket\WService.cs">
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\WebSocket\WService.cs">
       <Link>Module\Message\Network\WebSocket\WService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\MessagePool.cs">
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
     </Compile>
     <EmbeddedResource Remove="Libs\**" />
     <None Remove="Libs\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Event\IEvent.cs" Link="Base\Event\IEvent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\EnumHelper.cs" Link="Base\Helper\EnumHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\FileHelper.cs" Link="Base\Helper\FileHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\IdGenerater.cs" Link="Base\Helper\IdGenerater.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MD5Helper.cs" Link="Base\Helper\MD5Helper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\MethodInfoHelper.cs" Link="Base\Helper\MethodInfoHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\NetHelper.cs" Link="Base\Helper\NetHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ObjectHelper.cs" Link="Base\Helper\ObjectHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\RandomHelper.cs" Link="Base\Helper\RandomHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\StringHelper.cs" Link="Base\Helper\StringHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\BaseAttribute.cs" Link="Base\Base\BaseAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Component.cs" Link="Base\Base\Component.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentFactory.cs" Link="Base\Base\ComponentFactory.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ComponentWithId.cs" Link="Base\Base\ComponentWithId.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Entity.cs" Link="Base\Base\Entity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EntityEventAttribute.cs" Link="Base\Base\EntityEventAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventProxy.cs" Link="Base\Base\EventProxy.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\EventSystem.cs" Link="Base\Base\EventSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IAwakeSystem.cs" Link="Base\Base\IAwakeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IChangeSystem.cs" Link="Base\Base\IChangeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IComponentSerialize.cs" Link="Base\Base\IComponentSerialize.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IDestroySystem.cs" Link="Base\Base\IDestroySystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILateUpdateSystem.cs" Link="Base\Base\ILateUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ILoadSystem.cs" Link="Base\Base\ILoadSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ISerializeToEntity.cs" Link="Base\Base\ISerializeToEntity.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IStartSystem.cs" Link="Base\Base\IStartSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\IUpdateSystem.cs" Link="Base\Base\IUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\Object.cs" Link="Base\Base\Object.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectPool.cs" Link="Base\Base\ObjectPool.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\Object\ObjectSystemAttribute.cs" Link="Base\Base\ObjectSystemAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\OneThreadSynchronizationContext.cs" Link="Base\OneThreadSynchronizationContext.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\FrameSync\FrameMessage.cs" Link="Module\FrameSync\FrameMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\FrameSync\FrameOpcode.cs" Link="Module\FrameSync\FrameOpcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessageDispatcher.cs" Link="Module\Message\IMessageDispatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMessagePacker.cs" Link="Module\Message\IMessagePacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\IMHandler.cs" Link="Module\Message\IMHandler.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AChannel.cs" Link="Module\Message\Network\AChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\Circularbuffer.cs" Link="Module\Message\Network\Circularbuffer.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KChannel.cs" Link="Module\Message\Network\KCP\KChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\KCP\KService.cs" Link="Module\Message\Network\KCP\KService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\NetworkHelper.cs" Link="Module\Message\Network\NetworkHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\PacketParser.cs" Link="Module\Message\Network\TCP\PacketParser.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\TChannel.cs" Link="Module\Message\Network\TCP\TChannel.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Network\TCP\TService.cs" Link="Module\Message\Network\TCP\TService.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Opcode.cs" Link="Module\Message\Opcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OpcodeHelper.cs" Link="Module\Message\OpcodeHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterMessage.cs" Link="Module\Message\OuterMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\OuterOpcode.cs" Link="Module\Message\OuterOpcode.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ProtobufHelper.cs" Link="Module\Message\ProtobufHelper.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericType.cs" Link="Module\Numeric\NumericType.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Scripts\Other\AppType.cs" Link="Other\AppType.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Event\IEvent.cs" Link="Base\Event\IEvent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\EnumHelper.cs" Link="Base\Helper\EnumHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\FileHelper.cs" Link="Base\Helper\FileHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\IdGenerater.cs" Link="Base\Helper\IdGenerater.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MD5Helper.cs" Link="Base\Helper\MD5Helper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MethodInfoHelper.cs" Link="Base\Helper\MethodInfoHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\NetHelper.cs" Link="Base\Helper\NetHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\ObjectHelper.cs" Link="Base\Helper\ObjectHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\RandomHelper.cs" Link="Base\Helper\RandomHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\StringHelper.cs" Link="Base\Helper\StringHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\BaseAttribute.cs" Link="Base\Base\BaseAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Component.cs" Link="Base\Base\Component.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ComponentFactory.cs" Link="Base\Base\ComponentFactory.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ComponentWithId.cs" Link="Base\Base\ComponentWithId.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Entity.cs" Link="Base\Base\Entity.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityEventAttribute.cs" Link="Base\Base\EntityEventAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventProxy.cs" Link="Base\Base\EventProxy.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventSystem.cs" Link="Base\Base\EventSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IAwakeSystem.cs" Link="Base\Base\IAwakeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IChangeSystem.cs" Link="Base\Base\IChangeSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IComponentSerialize.cs" Link="Base\Base\IComponentSerialize.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDestroySystem.cs" Link="Base\Base\IDestroySystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILateUpdateSystem.cs" Link="Base\Base\ILateUpdateSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILoadSystem.cs" Link="Base\Base\ILoadSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ISerializeToEntity.cs" Link="Base\Base\ISerializeToEntity.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IStartSystem.cs" Link="Base\Base\IStartSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IUpdateSystem.cs" Link="Base\Base\IUpdateSystem.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Object.cs" Link="Base\Base\Object.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectPool.cs" Link="Base\Base\ObjectPool.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectSystemAttribute.cs" Link="Base\Base\ObjectSystemAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\OneThreadSynchronizationContext.cs" Link="Base\OneThreadSynchronizationContext.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\FrameSync\FrameMessage.cs" Link="Module\FrameSync\FrameMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\FrameSync\FrameOpcode.cs" Link="Module\FrameSync\FrameOpcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessageDispatcher.cs" Link="Module\Message\IMessageDispatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessagePacker.cs" Link="Module\Message\IMessagePacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMHandler.cs" Link="Module\Message\IMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageInfo.cs" Link="Module\Message\MessageInfo.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetworkComponent.cs" Link="Module\Message\NetworkComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\AChannel.cs" Link="Module\Message\Network\AChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\AService.cs" Link="Module\Message\Network\AService.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\Circularbuffer.cs" Link="Module\Message\Network\Circularbuffer.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\KCP\KChannel.cs" Link="Module\Message\Network\KCP\KChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\KCP\KService.cs" Link="Module\Message\Network\KCP\KService.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\NetworkHelper.cs" Link="Module\Message\Network\NetworkHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\TCP\PacketParser.cs" Link="Module\Message\Network\TCP\PacketParser.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\TCP\TChannel.cs" Link="Module\Message\Network\TCP\TChannel.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\TCP\TService.cs" Link="Module\Message\Network\TCP\TService.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Opcode.cs" Link="Module\Message\Opcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeHelper.cs" Link="Module\Message\OpcodeHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OuterMessage.cs" Link="Module\Message\OuterMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OuterOpcode.cs" Link="Module\Message\OuterOpcode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ProtobufHelper.cs" Link="Module\Message\ProtobufHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs" Link="Module\Numeric\NumericType.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Other\AppType.cs" Link="Other\AppType.cs" />
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
