@@ -24,7 +24,7 @@ namespace App
 
 				if (!options.AppType.Is(startConfig.AppType))
 				{
-					Log.Error("命令行参数apptype与配置不一致");
+					Log.Error("命令行参数apptype与配置不一致1");
 					return;
 				}
 
