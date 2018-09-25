@@ -6,15 +6,15 @@ namespace ETModel
 	{
 		public IActorRequest ActorRequest;
 		
-		public TaskCompletionSource<IActorResponse> Tcs;
+		public TaskCompletionSource<IActorLocationResponse> Tcs;
 
-		public ActorTask(IActorRequest actorRequest)
+		public ActorTask(IActorLocationMessage actorRequest)
 		{
 			this.ActorRequest = actorRequest;
 			this.Tcs = null;
 		}
 		
-		public ActorTask(IActorRequest actorRequest, TaskCompletionSource<IActorResponse> tcs)
+		public ActorTask(IActorLocationRequest actorRequest, TaskCompletionSource<IActorLocationResponse> tcs)
 		{
 			this.ActorRequest = actorRequest;
 			this.Tcs = tcs;

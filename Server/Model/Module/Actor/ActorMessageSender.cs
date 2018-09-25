@@ -6,9 +6,9 @@ namespace ETModel
 	public struct ActorMessageSender
 	{
 		// actor的地址
-		public IPEndPoint Address;
+		public IPEndPoint Address { get; }
 
-		public long ActorId;
+		public long ActorId { get; }
 
 		public ActorMessageSender(long actorId, IPEndPoint address)
 		{

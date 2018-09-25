@@ -174,7 +174,18 @@ namespace ETHotfix
 					self.LastSendTime = TimeHelper.Now();
 					self.FailTimes = 0;
 					self.WaitingTasks.Dequeue();
-					task.Tcs?.SetResult(response);
+					
+					if (task.Tcs == null)
+					{
+						return;
+					}
+					
+					IActorLocationResponse actorLocationResponse = response as IActorLocationResponse;
+					if (actorLocationResponse == null)
+					{
+						task.Tcs.SetException(new Exception($"actor location respose is not IActorLocationResponse, but is: {response.GetType().Name}"));
+					}
+					task.Tcs.SetResult(actorLocationResponse);
 					return;
 			}
 		}
@@ -183,19 +194,19 @@ namespace ETHotfix
 	    {
 		    if (request == null)
 		    {
-			    throw new Exception($"actor send message is null");
+			    throw new Exception($"actor location send message is null");
 		    }
 		    ActorTask task = new ActorTask(request);
 		    self.Add(task);
 	    }
 
-		public static Task<IActorResponse> Call(this ActorLocationSender self, IActorLocationRequest request)
+		public static Task<IActorLocationResponse> Call(this ActorLocationSender self, IActorLocationRequest request)
 		{
 			if (request == null)
 			{
-				throw new Exception($"actor call message is null");
+				throw new Exception($"actor location call message is null");
 			}
-			TaskCompletionSource<IActorResponse> tcs = new TaskCompletionSource<IActorResponse>();
+			TaskCompletionSource<IActorLocationResponse> tcs = new TaskCompletionSource<IActorLocationResponse>();
 			ActorTask task = new ActorTask(request, tcs);
 			self.Add(task);
 			return task.Tcs.Task;

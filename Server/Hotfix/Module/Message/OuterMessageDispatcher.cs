@@ -27,23 +27,23 @@ namespace ETHotfix
 						actorLocationSender.Send(oneFrameMessage);
 						return;
 					}
-					case IActorLocationMessage clientActorMessage:
-					{
-						long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
-						ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);
-						actorLocationSender.Send(clientActorMessage);
-						return;
-					}
-					case IActorLocationRequest clientActorRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
+					case IActorLocationRequest actorLocationRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
 					{
 						long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
 						ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);
 
-						int rpcId = clientActorRequest.RpcId; // 这里要保存客户端的rpcId
-						IResponse response = await actorLocationSender.Call(clientActorRequest);
+						int rpcId = actorLocationRequest.RpcId; // 这里要保存客户端的rpcId
+						IResponse response = await actorLocationSender.Call(actorLocationRequest);
 						response.RpcId = rpcId;
 
 						session.Reply(response);
+						return;
+					}
+					case IActorLocationMessage actorLocationMessage:
+					{
+						long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
+						ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);
+						actorLocationSender.Send(actorLocationMessage);
 						return;
 					}
 				}
