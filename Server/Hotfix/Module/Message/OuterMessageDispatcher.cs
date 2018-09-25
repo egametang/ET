@@ -27,14 +27,14 @@ namespace ETHotfix
 						actorLocationSender.Send(oneFrameMessage);
 						return;
 					}
-					case IClientActorMessage clientActorMessage:
+					case IActorLocationMessage clientActorMessage:
 					{
 						long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
 						ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);
 						actorLocationSender.Send(clientActorMessage);
 						return;
 					}
-					case IClientActorRequest clientActorRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
+					case IActorLocationRequest clientActorRequest: // gate session收到actor rpc消息，先向actor 发送rpc请求，再将请求结果返回客户端
 					{
 						long unitId = session.GetComponent<SessionPlayerComponent>().Player.UnitId;
 						ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);

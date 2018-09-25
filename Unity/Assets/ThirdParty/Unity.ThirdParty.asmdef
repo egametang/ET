@@ -1,3 +1,8 @@
-﻿{
-	"name": "Unity.ThirdParty"
+{
+    "name": "Unity.ThirdParty",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
 }

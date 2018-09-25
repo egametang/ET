@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace ETModel
 {
@@ -19,6 +20,8 @@ namespace ETModel
 		public static StartConfigComponent Instance { get; private set; }
 		
 		private Dictionary<int, StartConfig> configDict;
+		
+		private Dictionary<int, IPEndPoint> innerAddressDict = new Dictionary<int, IPEndPoint>();
 		
 		public StartConfig StartConfig { get; private set; }
 
@@ -52,6 +55,12 @@ namespace ETModel
 				{
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
 					this.configDict.Add(startConfig.AppId, startConfig);
+
+					InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
+					if (innerConfig != null)
+					{
+						this.innerAddressDict.Add(startConfig.AppId, innerConfig.IPEndPoint);
+					}
 
 					if (startConfig.AppType.Is(AppType.Realm))
 					{
@@ -107,6 +116,18 @@ namespace ETModel
 			catch (Exception e)
 			{
 				throw new Exception($"not found startconfig: {id}", e);
+			}
+		}
+		
+		public IPEndPoint GetInnerAddress(int id)
+		{
+			try
+			{
+				return this.innerAddressDict[id];
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"not found innerAddress: {id}", e);
 			}
 		}
 

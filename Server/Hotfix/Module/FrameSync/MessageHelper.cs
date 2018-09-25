@@ -15,8 +15,9 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				
-				actorLocationSenderComponent.Get(unitGateComponent.GateSessionActorId).Send(message);
+
+				ActorMessageSender actorMessageSender = actorLocationSenderComponent.Get(unitGateComponent.GateSessionActorId);
+				actorMessageSender.Send(message);
 			}
 		}
 	}

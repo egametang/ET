@@ -17,8 +17,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IClientActorMessage.cs">
-      <Link>Module\Message\IClientActorMessage.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
+      <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
+      <Link>Module\Actor\IActorMessage.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
@@ -97,7 +100,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\FrameSync\FrameOpcode.cs" Link="Module\FrameSync\FrameOpcode.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IActorMessage.cs" Link="Module\Message\IActorMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessageDispatcher.cs" Link="Module\Message\IMessageDispatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessagePacker.cs" Link="Module\Message\IMessagePacker.cs" />

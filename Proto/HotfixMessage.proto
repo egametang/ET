@@ -36,14 +36,14 @@ message G2C_TestHotfixMessage // IMessage
 	string Info = 1;
 }
 
-message C2M_TestActorRequest // IClientActorRequest
+message C2M_TestActorRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 91;
 	string Info = 1;
 }
 
-message M2C_TestActorResponse // IClientActorResponse
+message M2C_TestActorResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;

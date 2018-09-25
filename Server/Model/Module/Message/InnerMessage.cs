@@ -374,7 +374,7 @@ namespace ETModel
 	}
 
 	[Message(InnerOpcode.G2M_SessionDisconnect)]
-	public partial class G2M_SessionDisconnect: IActorRequest
+	public partial class G2M_SessionDisconnect: IActorLocationMessage
 	{
 		public int RpcId { get; set; }
 

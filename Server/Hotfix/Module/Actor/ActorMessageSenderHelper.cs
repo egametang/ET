@@ -3,17 +3,6 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[ObjectSystem]
-	public class ActorMessageSenderAwakeSystem : AwakeSystem<ActorMessageSender, long>
-	{
-		public override void Awake(ActorMessageSender self, long actorId)
-		{
-			self.Id = actorId;
-			self.ActorId = actorId;
-			self.Address = StartConfigComponent.Instance.Get(IdGenerater.GetAppIdFromId(self.ActorId)).GetComponent<InnerConfig>().IPEndPoint;
-		}
-	}
-	
 	public static class ActorMessageSenderHelper
 	{
 		public static void Send(this ActorMessageSender self, IActorMessage message)

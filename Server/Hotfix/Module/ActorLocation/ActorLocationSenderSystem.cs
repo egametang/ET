@@ -179,7 +179,7 @@ namespace ETHotfix
 			}
 		}
 
-	    public static void Send(this ActorLocationSender self, IActorRequest request)
+	    public static void Send(this ActorLocationSender self, IActorLocationMessage request)
 	    {
 		    if (request == null)
 		    {
@@ -189,7 +189,7 @@ namespace ETHotfix
 		    self.Add(task);
 	    }
 
-		public static Task<IActorResponse> Call(this ActorLocationSender self, IActorRequest request)
+		public static Task<IActorResponse> Call(this ActorLocationSender self, IActorLocationRequest request)
 		{
 			if (request == null)
 			{

@@ -243,7 +243,7 @@
 		int Count = 2;
 	}
 
-	message G2M_SessionDisconnect // IActorRequest
+	message G2M_SessionDisconnect // IActorLocationMessage
 	{
 		int32 RpcId = 90;
 		long ActorId = 94;

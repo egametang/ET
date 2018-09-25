@@ -2,7 +2,7 @@ using ETModel;
 namespace ETModel
 {
 	[Message(FrameOpcode.OneFrameMessage)]
-	public partial class OneFrameMessage : IClientActorMessage {}
+	public partial class OneFrameMessage : IActorLocationMessage {}
 
 	[Message(FrameOpcode.FrameMessage)]
 	public partial class FrameMessage : IActorMessage {}

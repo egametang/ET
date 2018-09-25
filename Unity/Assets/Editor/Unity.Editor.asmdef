@@ -4,8 +4,10 @@
         "Unity.Model",
         "Unity.ThirdParty"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
-    "excludePlatforms": []
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
 }

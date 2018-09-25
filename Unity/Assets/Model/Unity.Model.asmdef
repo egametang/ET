@@ -3,6 +3,8 @@
     "references": [
         "Unity.ThirdParty"
     ],
+    "optionalUnityReferences": [],
     "includePlatforms": [],
-    "excludePlatforms": []
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
 }
