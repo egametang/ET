@@ -89,6 +89,16 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
   
 __讨论QQ群 : 474643097__
 
+# ET 4.0发布! 4.0将是一个长期支持版本，之后发现的bug，4.0也会进行修复  
+1.net core升级为2.1  
+2.网络方面：tcp网络改成了SocketAsyncEventArgs实现，kcp改成了使用c库实现，protobuf升级成了3.0，网络库方面unity客户端实现了0GC!  
+3.增加了Websocket支持，websocket跟tcp，udp接口完全兼容，使用十分简单  
+4.actor方面: actor增加原生actor，并且在原生actor基础上实现location actor，实现的更加清晰，使用更加方便易懂  
+5.数据库方面: DBProxyComponent实现了lambda表达式查询, 修复了一个超级异步阻塞bug  
+6.客户端使用asmdef实现了Hotfix库自动编译功能，并且完美支持Unity2018，再也不用自己搞引用问题了  
+7.修复了一大批bug  
+8. ......  
+
 
 # ET 3.6发布! 
 1.kcp改成C版的，已经去掉所有gc，性能大幅提升，unity mono的socket udp收发还有少量gc，这个只能以后替换成C版的socket了，kcp增加了安全性检查，防止了第三方虚假包的攻击  
