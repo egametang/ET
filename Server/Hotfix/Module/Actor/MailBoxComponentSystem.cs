@@ -10,7 +10,7 @@ namespace ETHotfix
 	{
 		public override void Awake(MailBoxComponent self)
 		{
-			self.ActorType = ActorType.Common;
+			self.ActorInterceptType = ActorInterceptType.None;
 			self.Queue.Clear();
 		}
 	}
@@ -18,9 +18,9 @@ namespace ETHotfix
 	[ObjectSystem]
 	public class MailBoxComponentAwake1System : AwakeSystem<MailBoxComponent, string>
 	{
-		public override void Awake(MailBoxComponent self, string actorType)
+		public override void Awake(MailBoxComponent self, string actorInterceptType)
 		{
-			self.ActorType = actorType;
+			self.ActorInterceptType = actorInterceptType;
 			self.Queue.Clear();
 		}
 	}
@@ -34,18 +34,10 @@ namespace ETHotfix
 		}
 	}
 
-	[ObjectSystem]
-	public class MailBoxComponentDestroySystem : DestroySystem<MailBoxComponent>
-	{
-		public override void Destroy(MailBoxComponent self)
-		{
-		}
-	}
-
 	/// <summary>
 	/// 挂上这个组件表示该Entity是一个Actor, 接收的消息将会队列处理
 	/// </summary>
-	public static class MailBoxComponentEx
+	public static class MailBoxComponentHelper
 	{
 		public static async Task AddLocation(this MailBoxComponent self)
 		{
@@ -104,7 +96,7 @@ namespace ETHotfix
 					}
 
 					// 根据这个actor的类型分发给相应的ActorHandler处理
-					await actorMessageDispatherComponent.ActorTypeHandle(self.ActorType, (Entity)self.Parent, info);
+					await actorMessageDispatherComponent.Handle(self, info);
 				}
 				catch (Exception e)
 				{

@@ -17,8 +17,8 @@ namespace ETEditor
 	public class Proto2CSEditor : EditorWindow
 	{
 		private const string protoPath = "../Proto/";
-		private const string clientMessagePath = "Assets/Scripts/Module/Message/";
-		private const string hotfixMessagePath = "Hotfix/Module/Message/";
+		private const string clientMessagePath = "Assets/Model/Module/Message/";
+		private const string hotfixMessagePath = "Assets/Hotfix/Module/Message/";
 		private static readonly char[] splitChars = { ' ', '\t' };
 		private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 		
@@ -32,7 +32,7 @@ namespace ETEditor
 			Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100);
 			
 			msgOpcode.Clear();
-			Proto2CS("ETModel", "FrameMessage.proto", "Assets/Scripts/Module/FrameSync/", "FrameOpcode", 10);
+			Proto2CS("ETModel", "FrameMessage.proto", "Assets/Model/Module/FrameSync/", "FrameOpcode", 10);
 
 			msgOpcode.Clear();
 			Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);

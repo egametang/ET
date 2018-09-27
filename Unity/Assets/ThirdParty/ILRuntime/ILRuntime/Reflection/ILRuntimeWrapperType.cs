@@ -212,6 +212,26 @@ namespace ILRuntime.Reflection
             return et.IsCOMObject;
         }
 
+        public override bool IsGenericType
+        {
+            get { return et.IsGenericType; }
+        }
+
+        public override bool IsGenericTypeDefinition
+        {
+            get
+            {
+                return et.IsGenericTypeDefinition;
+            }
+        }
+
+        public override bool IsGenericParameter
+        {
+            get
+            {
+                return et.IsGenericParameter;
+            }
+        }
         public override Type GetElementType()
         {
             return et.GetElementType();

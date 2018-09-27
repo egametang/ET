@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class HttpHandlerAttribute : Attribute
+	public class HttpHandlerAttribute : BaseAttribute
 	{
 		public AppType AppType { get; }
 

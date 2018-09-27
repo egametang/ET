@@ -6,20 +6,21 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>
+	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, string>
 	{
-		public override void Awake(BenchmarkComponent self, IPEndPoint a)
+		public override void Awake(BenchmarkComponent self, string a)
 		{
 			self.Awake(a);
 		}
 	}
 
-	public static class BenchmarkComponentEx
+	public static class BenchmarkComponentHelper
 	{
-		public static void Awake(this BenchmarkComponent self, IPEndPoint ipEndPoint)
+		public static void Awake(this BenchmarkComponent self, string address)
 		{
 			try
 			{
+				IPEndPoint ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{

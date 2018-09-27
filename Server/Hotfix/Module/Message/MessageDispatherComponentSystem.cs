@@ -31,7 +31,7 @@ namespace ETHotfix
 		{
 			self.Handlers.Clear();
 
-			AppType appType = Game.Scene.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
 
 			List<Type> types = Game.EventSystem.GetTypes(typeof(MessageHandlerAttribute));
 

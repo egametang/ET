@@ -27,7 +27,7 @@ namespace ETHotfix
 	{
 		public static void Awake(this DBProxyComponent self)
 		{
-			StartConfig dbStartConfig = Game.Scene.GetComponent<StartConfigComponent>().DBConfig;
+			StartConfig dbStartConfig = StartConfigComponent.Instance.DBConfig;
 			self.dbAddress = dbStartConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 

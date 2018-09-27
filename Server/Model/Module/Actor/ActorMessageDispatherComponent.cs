@@ -8,7 +8,7 @@ namespace ETModel
 	/// </summary>
 	public class ActorMessageDispatherComponent : Component
 	{
-		public readonly Dictionary<string, IActorTypeHandler> ActorTypeHandlers = new Dictionary<string, IActorTypeHandler>();
+		public readonly Dictionary<string, IActorInterceptTypeHandler> ActorTypeHandlers = new Dictionary<string, IActorInterceptTypeHandler>();
 
 		public readonly Dictionary<Type, IMActorHandler> ActorMessageHandlers = new Dictionary<Type, IMActorHandler>();
 

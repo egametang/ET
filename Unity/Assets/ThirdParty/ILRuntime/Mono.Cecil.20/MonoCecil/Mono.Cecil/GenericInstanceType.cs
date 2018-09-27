@@ -73,7 +73,7 @@ namespace Mono.Cecil
             get { return true; }
         }
 
-        internal override bool ContainsGenericParameter
+        public override bool ContainsGenericParameter
         {
             get { return Mixin.ContainsGenericParameter(this) || base.ContainsGenericParameter; }
         }

@@ -8,6 +8,8 @@ using ILRuntime.CLR.Method;
 using ILRuntime.Other;
 using Mono.Cecil;
 using ILRuntime.Runtime.Intepreter;
+using System.Reflection;
+
 namespace ILRuntime.CLR.Utils
 {
     public delegate TResult Func<T1, T2, T3, T4, T5, TResult>(T1 a1, T2 a2, T3 a3, T4 a4, T5 a5);
@@ -269,6 +271,34 @@ namespace ILRuntime.CLR.Utils
                 }
             }
             return obj;
+        }
+
+        public static bool CheckMethodParams(this MethodInfo m, Type[] args)
+        {
+            var arr = m.GetParameters();
+            if (arr.Length != args.Length) return false;
+            for (var i = 0; i < args.Length; i++)
+            {
+                var t1 = arr[i].ParameterType;
+                var t2 = args[i];
+                if (t1 != t2 || t1.IsByRef != t2.IsByRef)
+                    return false;
+            }
+            return true;
+        }
+
+        public static bool CheckMethodParams(this MethodInfo m, ParameterInfo[] args)
+        {
+            var arr = m.GetParameters();
+            if (arr.Length != args.Length) return false;
+            for (var i = 0; i < args.Length; i++)
+            {
+                var t1 = arr[i].ParameterType;
+                var t2 = args[i].ParameterType;
+                if (t1 != t2 || t1.IsByRef != t2.IsByRef)
+                    return false;
+            }
+            return true;
         }
     }
 }

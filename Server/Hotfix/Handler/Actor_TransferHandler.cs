@@ -26,7 +26,7 @@ namespace ETHotfix
 				
 				int mapIndex = message.MapIndex;
 
-				StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+				StartConfigComponent startConfigComponent = StartConfigComponent.Instance;
 
 				// 考虑AllServer情况
 				if (startConfigComponent.Count == 1)

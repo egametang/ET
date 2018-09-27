@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
+	public class AppManagerComponentAwakeSystem : AwakeSystem<AppManagerComponent>
 	{
-		public override void Start(AppManagerComponent self)
+		public override void Awake(AppManagerComponent self)
 		{
-			self.Start();
+			self.Awake();
 		}
 	}
 
@@ -19,10 +19,10 @@ namespace ETModel
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		public void Start()
+		public void Awake()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
-			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
+			StartConfig[] startConfigs = StartConfigComponent.Instance.GetAll();
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
@@ -47,7 +47,7 @@ namespace ETModel
 		private void StartProcess(int appId)
 		{
 			OptionComponent optionComponent = Game.Scene.GetComponent<OptionComponent>();
-			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+			StartConfigComponent startConfigComponent = StartConfigComponent.Instance;
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
 			const string exe = "dotnet";

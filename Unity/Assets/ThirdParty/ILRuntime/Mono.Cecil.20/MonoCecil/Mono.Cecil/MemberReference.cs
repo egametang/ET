@@ -72,7 +72,7 @@ namespace Mono.Cecil {
 			get { return false; }
 		}
 
-		internal virtual bool ContainsGenericParameter {
+		public virtual bool ContainsGenericParameter {
 			get { return declaring_type != null && declaring_type.ContainsGenericParameter; }
 		}
 

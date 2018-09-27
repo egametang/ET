@@ -6,7 +6,7 @@ namespace ETModel
 	public struct ActorMessageInfo
 	{
 		public Session Session;
-		public IActorMessage Message;
+		public object Message;
 	}
 
 	/// <summary>
@@ -14,7 +14,8 @@ namespace ETModel
 	/// </summary>
 	public class MailBoxComponent: Component
 	{
-		public string ActorType;
+		// 拦截器类型，默认没有拦截器
+		public string ActorInterceptType;
 
 		// 队列处理消息
 		public Queue<ActorMessageInfo> Queue = new Queue<ActorMessageInfo>();

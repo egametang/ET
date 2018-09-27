@@ -199,6 +199,14 @@ namespace ILRuntime.CLR.Method
             }
         }
 
+        public bool HasBody
+        {
+            get
+            {
+                return body != null;
+            }
+        }
+
         public int LocalVariableCount
         {
             get
@@ -254,6 +262,13 @@ namespace ILRuntime.CLR.Method
             get;
             private set;
         }
+
+        public void Prewarm()
+        {
+            if (body == null)
+                InitCodeBody();
+        }
+
         void InitCodeBody()
         {
             if (def.HasBody)
