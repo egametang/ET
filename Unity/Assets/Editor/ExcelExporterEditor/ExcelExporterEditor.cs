@@ -75,18 +75,23 @@ public class ExcelExporterEditor : EditorWindow
 				ExportAll(serverPath);
 			}
 
-			if (GUILayout.Button("生成配置类"))
+			if (GUILayout.Button("生成Model配置类"))
 			{
-				ExportAllClass(@".\Assets\Scripts\Entity\Config");
+				ExportAllClass(@".\Assets\Model\Entity\Config", "namespace ETModel\n{\n");
 			}
-		}
+
+            if (GUILayout.Button("生成Hofix配置类"))
+            {
+                ExportAllClass(@".\Assets\Hotfix\Entity\Config", "using ETModel;\n\nnamespace ETHotfix\n{\n");
+            }
+        }
 		catch (Exception e)
 		{
 			Log.Error(e);
 		}
 	}
 
-	private void ExportAllClass(string exportDir)
+	private void ExportAllClass(string exportDir, string csHead)
 	{
 		foreach (string filePath in Directory.GetFiles(ExcelPath))
 		{
@@ -99,13 +104,13 @@ public class ExcelExporterEditor : EditorWindow
 				continue;
 			}
 
-			ExportClass(filePath, exportDir);
+			ExportClass(filePath, exportDir, csHead);
 		}
 		Log.Debug("生成类完成!");
 		AssetDatabase.Refresh();
 	}
 
-	private void ExportClass(string fileName, string exportDir)
+	private void ExportClass(string fileName, string exportDir, string csHead)
 	{
 		XSSFWorkbook xssfWorkbook;
 		using (FileStream file = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -121,7 +126,7 @@ public class ExcelExporterEditor : EditorWindow
 		{
 			StringBuilder sb = new StringBuilder();
 			ISheet sheet = xssfWorkbook.GetSheetAt(0);
-			sb.Append("namespace ETModel\n{\n");
+			sb.Append(csHead);
 
 			sb.Append("\t[Config(AppType.Client)]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
