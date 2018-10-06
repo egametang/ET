@@ -1,22 +1,18 @@
 ﻿using System;
+using System.IO;
 
 namespace ETModel
 {
 	public class MongoPacker: IMessagePacker
 	{
-		public byte[] SerializeToByteArray(object obj)
+		public byte[] SerializeTo(object obj)
 		{
 			return MongoHelper.ToBson(obj);
 		}
 
-		public string SerializeToText(object obj)
+		public void SerializeTo(object obj, MemoryStream stream)
 		{
-			return MongoHelper.ToJson(obj);
-		}
-
-		public object DeserializeFrom(Type type, byte[] bytes)
-		{
-			return MongoHelper.FromBson(type, bytes);
+			MongoHelper.ToBson(obj, stream);
 		}
 
 		public object DeserializeFrom(Type type, byte[] bytes, int index, int count)
@@ -24,24 +20,19 @@ namespace ETModel
 			return MongoHelper.FromBson(type, bytes, index, count);
 		}
 
-		public T DeserializeFrom<T>(byte[] bytes)
+		public object DeserializeFrom(object instance, byte[] bytes, int index, int count)
 		{
-			return MongoHelper.FromBson<T>(bytes);
+			return MongoHelper.FromBson(instance, bytes, index, count);
 		}
 
-		public T DeserializeFrom<T>(byte[] bytes, int index, int count)
+		public object DeserializeFrom(Type type, MemoryStream stream)
 		{
-			return MongoHelper.FromBson<T>(bytes, index, count);
+			return MongoHelper.FromStream(type, stream);
 		}
 
-		public T DeserializeFrom<T>(string str)
+		public object DeserializeFrom(object instance, MemoryStream stream)
 		{
-			return MongoHelper.FromJson<T>(str);
-		}
-
-		public object DeserializeFrom(Type type, string str)
-		{
-			return MongoHelper.FromJson(type, str);
+			return MongoHelper.FromBson(instance, stream);
 		}
 	}
 }

@@ -90,6 +90,22 @@ namespace ILRuntime.Runtime.Intepreter
                             if ((byte)f.Constant == intVal)
                                 return f.Name;
                         }
+                        else if (f.Constant is uint)
+                        {
+                            int val = (int) (uint) f.Constant;
+                            if (val == intVal)
+                                return f.Name;
+                        }
+                        else if (f.Constant is ushort)
+                        {
+                            if ((ushort)f.Constant == intVal)
+                                return f.Name;
+                        }
+                        else if (f.Constant is sbyte)
+                        {
+                            if ((sbyte)f.Constant == intVal)
+                                return f.Name;
+                        }
                         else
                             throw new NotImplementedException();
                     }
@@ -207,12 +223,20 @@ namespace ILRuntime.Runtime.Intepreter
                         StackObject* esp = &ptr[index];
                         if (value != null)
                         {
-                            if (value.GetType().IsPrimitive)
+                            var vt = value.GetType();
+                            if (vt.IsPrimitive)
                             {
                                 ILIntepreter.UnboxObject(esp, value, managedObjs, type.AppDomain);
                             }
+                            else if (vt.IsEnum)
+                            {
+                                esp->ObjectType = ObjectTypes.Integer;
+                                esp->Value = Convert.ToInt32(value);
+                                esp->ValueLow = 0;
+                            }
                             else
                             {
+                                
                                 esp->ObjectType = ObjectTypes.Object;
                                 esp->Value = index;
                                 managedObjs[index] = value;
@@ -231,6 +255,89 @@ namespace ILRuntime.Runtime.Intepreter
                     }
                     else
                         throw new TypeLoadException();
+                }
+            }
+        }
+
+        const int SizeOfILTypeInstance = 21;
+        public unsafe int GetSizeInMemory(HashSet<object> traversedObj)
+        {
+            if (traversedObj.Contains(this))
+                return 0;
+            traversedObj.Add(this);
+            if (type == null)
+                return SizeOfILTypeInstance;
+            var size = SizeOfILTypeInstance + sizeof(StackObject) * fields.Length;
+            if (managedObjs != null)
+            {
+                size += managedObjs.Count * 4;
+                foreach (var i in managedObjs)
+                {
+                    size += GetSizeInMemory(i, traversedObj);
+                }
+            }
+            return size;
+        }
+
+        static int GetSizeInMemory(object obj, HashSet<object> traversedObj)
+        {
+            if (obj == null)
+                return 0;
+            if (obj is ILTypeInstance)
+                return ((ILTypeInstance)obj).GetSizeInMemory(traversedObj);
+            if (traversedObj.Contains(obj))
+                return 0;
+            traversedObj.Add(obj);
+            if (obj is string)
+            {
+                return Encoding.Unicode.GetByteCount((string)obj);
+            }
+            Type t = obj.GetType();
+            if (t.IsArray)
+            {
+                Array arr = (Array)obj;
+                var et = t.GetElementType();
+                int elementSize = 0;
+                if (et.IsPrimitive)
+                {
+                    elementSize = System.Runtime.InteropServices.Marshal.SizeOf(et);
+                }
+                else
+                    elementSize = 4;
+                return arr.Length * elementSize;
+            }
+            else
+            {
+                if (t.IsPrimitive)
+                {
+                    return System.Runtime.InteropServices.Marshal.SizeOf(t);
+                }
+                else
+                {
+                    int size = 0;
+                    System.Collections.ICollection collection = obj as System.Collections.ICollection;
+                    if (collection != null)
+                    {
+                        var enu = collection.GetEnumerator();
+                        while (enu.MoveNext())
+                        {
+                            size += GetSizeInMemory(enu.Current, traversedObj);
+                        }
+                    }
+                    else
+                    {
+                        System.Collections.IDictionary dictionary = obj as System.Collections.IDictionary;
+                        if (dictionary != null)
+                        {
+                            var enu = dictionary.GetEnumerator();
+                            while (enu.MoveNext())
+                            {
+                                size += GetSizeInMemory(enu.Key, traversedObj);
+                                size += GetSizeInMemory(enu.Value, traversedObj);
+                            }
+                        }
+                    }
+                    return size;
                 }
             }
         }
@@ -392,10 +499,10 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
+       
         public override string ToString()
         {
-            IMethod m = type.AppDomain.ObjectType.GetMethod("ToString", 0);
-            m = type.GetVirtualMethod(m);
+            var m = type.ToStringMethod;
             if (m != null)
             {
                 if (m is ILMethod)
@@ -408,6 +515,75 @@ namespace ILRuntime.Runtime.Intepreter
             }
             else
                 return type.FullName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (type != null)
+            {
+                var m = type.EqualsMethod;
+                if (m != null && m is ILMethod)
+                {
+                    using (var ctx = type.AppDomain.BeginInvoke(m))
+                    {
+                        ctx.PushObject(this);
+                        ctx.PushObject(obj);
+                        ctx.Invoke();
+                        return ctx.ReadBool();
+                    }
+                }
+                else
+                {
+                    if (this is ILEnumTypeInstance)
+                    {
+                        if (obj is ILEnumTypeInstance)
+                        {
+                            ILEnumTypeInstance enum1 = (ILEnumTypeInstance)this;
+                            ILEnumTypeInstance enum2 = (ILEnumTypeInstance)obj;
+                            if (enum1.type == enum2.type)
+                            {
+                                var res = enum1.fields[0] == enum2.fields[0];
+                                return res;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return base.Equals(obj);
+                    }
+                    else
+                        return base.Equals(obj);
+                }
+            }
+            else
+                return base.Equals(obj);
+        }
+        public override int GetHashCode()
+        {
+            if (type != null)
+            {
+                var m = type.GetHashCodeMethod;
+                if (m != null && m is ILMethod)
+                {
+                    using (var ctx = type.AppDomain.BeginInvoke(m))
+                    {
+                        ctx.PushObject(this);
+                        ctx.Invoke();
+                        return ctx.ReadInteger();
+                    }
+                }
+                else
+                {
+                    if (this is ILEnumTypeInstance)
+                    {
+                        return ((ILEnumTypeInstance)this).fields[0].Value.GetHashCode();
+                    }
+                    else
+                        return base.GetHashCode();
+                }
+            }
+            else
+                return base.GetHashCode();
         }
 
         public bool CanAssignTo(IType type)

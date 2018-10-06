@@ -6,7 +6,7 @@ namespace ETHotfix
 	[MessageHandler(AppType.Gate)]
 	public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
 	{
-		protected override async void Run(Session session, C2G_LoginGate message, Action<G2C_LoginGate> reply)
+		protected override void Run(Session session, C2G_LoginGate message, Action<G2C_LoginGate> reply)
 		{
 			G2C_LoginGate response = new G2C_LoginGate();
 			try
@@ -22,7 +22,7 @@ namespace ETHotfix
 				Player player = ComponentFactory.Create<Player, string>(account);
 				Game.Scene.GetComponent<PlayerComponent>().Add(player);
 				session.AddComponent<SessionPlayerComponent>().Player = player;
-				await session.AddComponent<ActorComponent, string>(ActorType.GateSession).AddLocation();
+				session.AddComponent<MailBoxComponent, string>(ActorInterceptType.GateSession);
 
 				response.PlayerId = player.Id;
 				reply(response);

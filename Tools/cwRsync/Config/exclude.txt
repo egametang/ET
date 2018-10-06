@@ -12,7 +12,7 @@ Unity/Assets/Res/
 Unity/Assets/Resources/
 Unity/Assets/Bundles/
 Unity/Assets/Scenes/
-Unity/.vs/
-Unity/.idea/
-Server/.vs/
 .vs/
+.idea/
+Release/
+Unity/Assets/StreamingAssets/

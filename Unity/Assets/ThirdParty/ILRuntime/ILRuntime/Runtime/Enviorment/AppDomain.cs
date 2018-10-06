@@ -5,7 +5,6 @@ using System.Text;
 using System.IO;
 using Mono.Cecil;
 using System.Reflection;
-using ETModel;
 using Mono.Cecil.Cil;
 
 using ILRuntime.CLR.TypeSystem;
@@ -24,6 +23,13 @@ namespace ILRuntime.Runtime.Enviorment
     public delegate object CLRCreateDefaultInstanceDelegate();
     public delegate object CLRCreateArrayInstanceDelegate(int size);
 
+    public struct TypeSizeInfo
+    {
+        public ILType Type;
+        public int StaticFieldSize;
+        public int MethodBodySize;
+        public int TotalSize;
+    }
     public class AppDomain
     {
         Queue<ILIntepreter> freeIntepreters = new Queue<ILIntepreter>();
@@ -52,12 +58,13 @@ namespace ILRuntime.Runtime.Enviorment
         /// </summary>
         public bool AllowUnboundCLRMethod { get; set; }
 
-#if UNITY_EDITOR
+#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
         public int UnityMainThreadID { get; set; }
 #endif
         public unsafe AppDomain()
         {
             AllowUnboundCLRMethod = true;
+            InvocationContext.InitializeDefaultConverters();
             loadedAssemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             var mi = typeof(System.Runtime.CompilerServices.RuntimeHelpers).GetMethod("InitializeArray");
             RegisterCLRMethodRedirection(mi, CLRRedirections.InitializeArray);
@@ -67,9 +74,13 @@ namespace ILRuntime.Runtime.Enviorment
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.CreateInstance);
                 }
-                else if(i.Name == "CreateInstance" && i.GetParameters().Length == 1)
+                else if (i.Name == "CreateInstance" && i.GetParameters().Length == 1)
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.CreateInstance2);
+                }
+                else if (i.Name == "CreateInstance" && i.GetParameters().Length == 2)
+                {
+                    RegisterCLRMethodRedirection(i, CLRRedirections.CreateInstance3);
                 }
             }
             foreach (var i in typeof(System.Type).GetMethods())
@@ -78,7 +89,7 @@ namespace ILRuntime.Runtime.Enviorment
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.GetType);
                 }
-                if(i.Name=="Equals" && i.GetParameters()[0].ParameterType == typeof(Type))
+                if (i.Name == "Equals" && i.GetParameters()[0].ParameterType == typeof(Type))
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.TypeEquals);
                 }
@@ -89,22 +100,22 @@ namespace ILRuntime.Runtime.Enviorment
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.DelegateCombine);
                 }
-                if(i.Name == "Remove")
+                if (i.Name == "Remove")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.DelegateRemove);
                 }
-                if(i.Name == "op_Equality")
+                if (i.Name == "op_Equality")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.DelegateEqulity);
                 }
-                if(i.Name == "op_Inequality")
+                if (i.Name == "op_Inequality")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.DelegateInequlity);
                 }
             }
-            foreach(var i in typeof(MethodBase).GetMethods())
+            foreach (var i in typeof(MethodBase).GetMethods())
             {
-                if(i.Name == "Invoke" && i.GetParameters().Length == 2)
+                if (i.Name == "Invoke" && i.GetParameters().Length == 2)
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.MethodInfoInvoke);
                 }
@@ -114,6 +125,18 @@ namespace ILRuntime.Runtime.Enviorment
                 if (i.Name == "Parse" && i.GetParameters().Length == 2)
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.EnumParse);
+                }
+                if (i.Name == "GetValues" && i.GetParameters().Length == 1)
+                {
+                    RegisterCLRMethodRedirection(i, CLRRedirections.EnumGetValues);
+                }
+                if (i.Name == "GetNames" && i.GetParameters().Length == 1)
+                {
+                    RegisterCLRMethodRedirection(i, CLRRedirections.EnumGetNames);
+                }
+                if(i.Name == "GetName")
+                {
+                    RegisterCLRMethodRedirection(i, CLRRedirections.EnumGetName);
                 }
             }
             mi = typeof(System.Type).GetMethod("GetTypeFromHandle");
@@ -157,7 +180,7 @@ namespace ILRuntime.Runtime.Enviorment
 
         public DelegateManager DelegateManager { get { return dMgr; } }
 
-        
+
         /// <summary>
         /// 加载Assembly 文件，从指定的路径
         /// </summary>
@@ -329,7 +352,7 @@ namespace ILRuntime.Runtime.Enviorment
         public void LoadAssembly(System.IO.Stream stream)
         {
             LoadAssembly(stream, null, null);
-        }        
+        }
 
         /// <summary>
         /// 从流加载Assembly,以及symbol符号文件(pdb)
@@ -341,7 +364,7 @@ namespace ILRuntime.Runtime.Enviorment
         {
             var module = ModuleDefinition.ReadModule(stream); //从MONO中加载模块
 
-            if (symbolReader != null && symbol != null) 
+            if (symbolReader != null && symbol != null)
             {
                 module.ReadSymbols(symbolReader.GetSymbolReader(module, symbol)); //加载符号表
             }
@@ -414,6 +437,8 @@ namespace ILRuntime.Runtime.Enviorment
 
         public void RegisterCLRMethodRedirection(MethodBase mi, CLRRedirectionDelegate func)
         {
+            if (mi == null)
+                return;
             if (!redirectMap.ContainsKey(mi))
                 redirectMap[mi] = func;
         }
@@ -511,22 +536,26 @@ namespace ILRuntime.Runtime.Enviorment
                     bt = bt.MakeGenericInstance(genericArguments);
                     mapType[bt.FullName] = bt;
                     mapTypeToken[bt.GetHashCode()] = bt;
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(baseType);
-                    sb.Append('<');
-                    for (int i = 0; i < genericParams.Count; i++)
+                    if (bt is CLRType)
                     {
-                        if (i > 0)
-                            sb.Append(",");
-                        if (genericParams[i].Contains(","))
-                            sb.Append(genericParams[i].Substring(0, genericParams[i].IndexOf(',')));
-                        else
-                            sb.Append(genericParams[i]);
+                        //It still make sense for CLRType, since CLR uses [T] for generics instead of <T>
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append(baseType);
+                        sb.Append('<');
+                        for (int i = 0; i < genericParams.Count; i++)
+                        {
+                            if (i > 0)
+                                sb.Append(",");
+                            if (genericParams[i].Contains(","))
+                                sb.Append(genericParams[i].Substring(0, genericParams[i].IndexOf(',')));
+                            else
+                                sb.Append(genericParams[i]);
+                        }
+                        sb.Append('>');
+                        var asmName = sb.ToString();
+                        if (bt.FullName != asmName)
+                            mapType[asmName] = bt;
                     }
-                    sb.Append('>');
-                    var asmName = sb.ToString();
-                    if (bt.FullName != asmName)
-                        mapType[asmName] = bt;
                 }
 
                 if (isArray)
@@ -581,7 +610,7 @@ namespace ILRuntime.Runtime.Enviorment
             int depth = 0;
             baseType = "";
             genericParams = null;
-            if (fullname.Length >2 && fullname.Substring(fullname.Length - 2) == "[]")
+            if (fullname.Length > 2 && fullname.Substring(fullname.Length - 2) == "[]")
             {
                 fullname = fullname.Substring(0, fullname.Length - 2);
                 isArray = true;
@@ -718,12 +747,15 @@ namespace ILRuntime.Runtime.Enviorment
                     if (t != null)
                     {
                         res = t.MakeArrayType(at.Rank);
-                        if (res is ILType)
+                        if (!_ref.ContainsGenericParameter)
                         {
-                            ///Unify the TypeReference
-                            ((ILType)res).TypeReference = _ref;
+                            if (res is ILType)
+                            {
+                                ///Unify the TypeReference
+                                ((ILType)res).TypeReference = _ref;
+                            }
+                            mapTypeToken[hash] = res;
                         }
-                        mapTypeToken[hash] = res;
                         if (!string.IsNullOrEmpty(res.FullName))
                             mapType[res.FullName] = res;
                         return res;
@@ -758,7 +790,7 @@ namespace ILRuntime.Runtime.Enviorment
                         }
                         else
                             val = GetType(gType.GenericArguments[i], contextType, contextMethod);
-                        if (val != null && val.HasGenericParameter)
+                        if (val != null && gType.GenericArguments[i].ContainsGenericParameter)
                             dummyGenericInstance = true;
                         if (val != null)
                             genericArguments[i] = new KeyValuePair<string, IType>(key, val);
@@ -885,7 +917,7 @@ namespace ILRuntime.Runtime.Enviorment
             if (mapType.TryGetValue(type, out t))
             {
                 ILType ilType = t as ILType;
-                if(ilType != null)
+                if (ilType != null)
                 {
                     bool hasConstructor = args != null && args.Length != 0;
                     var res = ilType.Instantiate(!hasConstructor);
@@ -902,6 +934,22 @@ namespace ILRuntime.Runtime.Enviorment
         }
 
         /// <summary>
+        /// Prewarm all methods of the specified type
+        /// </summary>
+        /// <param name="type"></param>
+        public void Prewarm(string type)
+        {
+            IType t = GetType(type);
+            if (t == null || t is CLRType)
+                return;
+            var methods = t.GetMethods();
+            foreach(var i in methods)
+            {
+                ((ILMethod)i).Prewarm();
+            }
+        }
+
+        /// <summary>
         /// Invoke a method
         /// </summary>
         /// <param name="type">Type's fullname</param>
@@ -913,10 +961,10 @@ namespace ILRuntime.Runtime.Enviorment
             IType t = GetType(type);
             if (t == null)
                 return null;
-            var m = t.GetMethod(method, p != null ? p.Length : 0);            
+            var m = t.GetMethod(method, p != null ? p.Length : 0);
             if (m != null)
             {
-                for(int i = 0; i < m.ParameterCount; i++)
+                for (int i = 0; i < m.ParameterCount; i++)
                 {
                     if (p[i] == null)
                         continue;
@@ -954,6 +1002,59 @@ namespace ILRuntime.Runtime.Enviorment
             return null;
         }
 
+        ILIntepreter RequestILIntepreter()
+        {
+            ILIntepreter inteptreter = null;
+            lock (freeIntepreters)
+            {
+                if (freeIntepreters.Count > 0)
+                {
+                    inteptreter = freeIntepreters.Dequeue();
+                    //Clear debug state, because it may be in ShouldBreak State
+                    inteptreter.ClearDebugState();
+                }
+                else
+                {
+                    inteptreter = new ILIntepreter(this);
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+                    intepreters[inteptreter.GetHashCode()] = inteptreter;
+                    debugService.ThreadStarted(inteptreter);
+#endif
+                }
+            }
+
+            return inteptreter;
+        }
+
+        internal void FreeILIntepreter(ILIntepreter inteptreter)
+        {
+            lock (freeIntepreters)
+            {
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+                if (inteptreter.CurrentStepType != StepTypes.None)
+                {
+                    //We should resume all other threads if we are currently doing stepping operation
+                    foreach (var i in intepreters)
+                    {
+                        if (i.Value != inteptreter)
+                        {
+                            i.Value.ClearDebugState();
+                            i.Value.Resume();
+                        }
+                    }
+                    inteptreter.ClearDebugState();
+                }
+#endif
+                inteptreter.Stack.ManagedStack.Clear();
+                inteptreter.Stack.Frames.Clear();
+                freeIntepreters.Enqueue(inteptreter);
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+                //debugService.ThreadEnded(inteptreter);
+#endif
+
+            }
+        }
+
         /// <summary>
         /// Invokes a specific method
         /// </summary>
@@ -966,62 +1067,31 @@ namespace ILRuntime.Runtime.Enviorment
             object res = null;
             if (m is ILMethod)
             {
-                ILIntepreter inteptreter = null;
-                lock (freeIntepreters)
-                {
-                    if (freeIntepreters.Count > 0)
-                    {
-                        inteptreter = freeIntepreters.Dequeue();
-                        //Clear debug state, because it may be in ShouldBreak State
-                        inteptreter.ClearDebugState();
-                    }
-                    else
-                    {
-                        inteptreter = new ILIntepreter(this);
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-                        intepreters[inteptreter.GetHashCode()] = inteptreter;
-                        debugService.ThreadStarted(inteptreter);
-#endif
-                    }
-                }
+                ILIntepreter inteptreter = RequestILIntepreter();
                 try
                 {
                     res = inteptreter.Run((ILMethod)m, instance, p);
                 }
                 finally
                 {
-                    lock (freeIntepreters)
-                    {
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-                        if (inteptreter.CurrentStepType!= StepTypes.None)
-                        {
-                            //We should resume all other threads if we are currently doing stepping operation
-                            foreach(var i in intepreters)
-                            {
-                                if(i.Value != inteptreter)
-                                {
-                                    i.Value.ClearDebugState();
-                                    i.Value.Resume();
-                                }
-                            }
-                            inteptreter.ClearDebugState();
-                        }
-#endif
-                        inteptreter.Stack.ManagedStack.Clear();
-                        inteptreter.Stack.Frames.Clear();
-                        freeIntepreters.Enqueue(inteptreter);
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-                        //debugService.ThreadEnded(inteptreter);
-#endif
-
-                    }
+                    FreeILIntepreter(inteptreter);
                 }
             }
 
             return res;
         }
 
-        internal IMethod GetMethod(object token, ILType contextType,ILMethod contextMethod, out bool invalidToken)
+        public InvocationContext BeginInvoke(IMethod m)
+        {
+            if (m is ILMethod)
+            {
+                ILIntepreter inteptreter = RequestILIntepreter();
+                return new InvocationContext(inteptreter, (ILMethod)m);
+            }
+            else
+                throw new NotSupportedException("Cannot invoke CLRMethod");
+        }
+        internal IMethod GetMethod(object token, ILType contextType, ILMethod contextMethod, out bool invalidToken)
         {
             string methodname = null;
             string typename = null;
@@ -1050,7 +1120,6 @@ namespace ILRuntime.Runtime.Enviorment
                 }
                 methodname = _ref.Name;
                 var typeDef = _ref.DeclaringType;
-
                 type = GetType(typeDef, contextType, contextMethod);
                 if (type == null)
                     throw new KeyNotFoundException("Cannot find type:" + typename);
@@ -1217,7 +1286,7 @@ namespace ILRuntime.Runtime.Enviorment
         public void RegisterCrossBindingAdaptor(CrossBindingAdaptor adaptor)
         {
             var bType = adaptor.BaseCLRType;
-            
+
             if (bType != null)
             {
                 if (!crossAdaptors.ContainsKey(bType))
@@ -1260,7 +1329,30 @@ namespace ILRuntime.Runtime.Enviorment
                     else
                         throw new Exception("Crossbinding Adapter for " + i.FullName + " is already added.");
                 }
-            } 
+            }
+        }
+
+        public unsafe int GetSizeInMemory(out List<TypeSizeInfo> detail)
+        {
+            int size = RuntimeStack.MAXIMAL_STACK_OBJECTS * sizeof(StackObject) * (intepreters.Count);
+            detail = new List<TypeSizeInfo>();
+            HashSet<object> traversed = new HashSet<object>();
+            foreach(var i in LoadedTypes)
+            {
+                ILType type = i.Value as ILType;
+                if(type != null)
+                {
+                    TypeSizeInfo info = new TypeSizeInfo();
+                    info.Type = type;
+                    info.StaticFieldSize = type.GetStaticFieldSizeInMemory(traversed);
+                    info.MethodBodySize = type.GetMethodBodySizeInMemory();
+                    info.TotalSize = info.StaticFieldSize + info.MethodBodySize;
+                    size += info.TotalSize;
+                    detail.Add(info);
+                }
+            }
+            detail.Sort((a, b) => b.TotalSize - a.TotalSize);
+            return size;
         }
     }
 }

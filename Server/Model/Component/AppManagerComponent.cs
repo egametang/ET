@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ETModel
 {
 	[ObjectSystem]
-	public class AppManagerComponentStartSystem : StartSystem<AppManagerComponent>
+	public class AppManagerComponentAwakeSystem : AwakeSystem<AppManagerComponent>
 	{
-		public override void Start(AppManagerComponent self)
+		public override void Awake(AppManagerComponent self)
 		{
-			self.Start();
+			self.Awake();
 		}
 	}
 
@@ -18,13 +19,15 @@ namespace ETModel
 	{
 		private readonly Dictionary<int, Process> processes = new Dictionary<int, Process>();
 
-		public void Start()
+		public void Awake()
 		{
 			string[] ips = NetHelper.GetAddressIPs();
-			StartConfig[] startConfigs = Game.Scene.GetComponent<StartConfigComponent>().GetAll();
+			StartConfig[] startConfigs = StartConfigComponent.Instance.GetAll();
 			
 			foreach (StartConfig startConfig in startConfigs)
 			{
+				Game.Scene.GetComponent<TimerComponent>().WaitAsync(100);
+				
 				if (!ips.Contains(startConfig.ServerIP) && startConfig.ServerIP != "*")
 				{
 					continue;
@@ -44,21 +47,17 @@ namespace ETModel
 		private void StartProcess(int appId)
 		{
 			OptionComponent optionComponent = Game.Scene.GetComponent<OptionComponent>();
-			StartConfigComponent startConfigComponent = Game.Scene.GetComponent<StartConfigComponent>();
+			StartConfigComponent startConfigComponent = StartConfigComponent.Instance;
 			string configFile = optionComponent.Options.Config;
 			StartConfig startConfig = startConfigComponent.Get(appId);
-#if __MonoCS__
-			const string exe = @"dotnet";
+			const string exe = "dotnet";
 			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#else
-			const string exe = @"dotnet";
-			string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config={configFile}";
-#endif
 
 			Log.Info($"{exe} {arguments}");
 			try
 			{
-				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = true };
+				bool useShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = useShellExecute };
 
 				Process process = Process.Start(info);
 				this.processes.Add(startConfig.AppId, process);
@@ -74,11 +73,13 @@ namespace ETModel
 		/// </summary>
 		private async void WatchProcessAsync()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
 				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(5000);
 
-				if (this.IsDisposed)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}

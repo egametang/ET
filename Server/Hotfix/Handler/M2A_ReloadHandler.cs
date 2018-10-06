@@ -17,7 +17,7 @@ namespace ETHotfix
 			catch (Exception e)
 			{
 				response.Error = ErrorCode.ERR_ReloadFail;
-				StartConfig myStartConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
+				StartConfig myStartConfig = StartConfigComponent.Instance.StartConfig;
 				InnerConfig innerConfig = myStartConfig.GetComponent<InnerConfig>();
 				response.Message = $"{innerConfig.IPEndPoint} reload fail, {e}";
 				reply(response);

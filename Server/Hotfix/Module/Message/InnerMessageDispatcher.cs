@@ -5,33 +5,67 @@ namespace ETHotfix
 {
 	public class InnerMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, Packet packet)
+		public void Dispatch(Session session, ushort opcode, object message)
 		{
-			ushort opcode = packet.Opcode();
-			Type messageType = Game.Scene.GetComponent<OpcodeTypeComponent>().GetType(opcode);
-			IMessage message = (IMessage)session.Network.MessagePacker.DeserializeFrom(messageType, packet.Bytes, Packet.Index, packet.Length - Packet.Index);
-			
 			// 收到actor消息,放入actor队列
-			if (message is IActorMessage iActorMessage)
+			switch (message)
 			{
-				Entity entity = Game.Scene.GetComponent<ActorManagerComponent>().Get(iActorMessage.ActorId);
-				if (entity == null)
+				case IActorRequest iActorRequest:
 				{
-					Log.Warning($"not found actor: {iActorMessage.ActorId}");
-					ActorResponse response = new ActorResponse
+					Entity entity = (Entity)Game.EventSystem.Get(iActorRequest.ActorId);
+					if (entity == null)
 					{
-						Error = ErrorCode.ERR_NotFoundActor,
-						RpcId = iActorMessage.RpcId
-					};
-					session.Reply(response);
+						Log.Warning($"not found actor: {iActorRequest.ActorId}");
+						ActorResponse response = new ActorResponse
+						{
+							Error = ErrorCode.ERR_NotFoundActor,
+							RpcId = iActorRequest.RpcId
+						};
+						session.Reply(response);
+						return;
+					}
+	
+					MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+					if (mailBoxComponent == null)
+					{
+						ActorResponse response = new ActorResponse
+						{
+							Error = ErrorCode.ERR_ActorNoMailBoxComponent,
+							RpcId = iActorRequest.RpcId
+						};
+						session.Reply(response);
+						Log.Error($"actor没有挂载MailBoxComponent组件: {entity.GetType().Name} {entity.Id}");
+						return;
+					}
+				
+					mailBoxComponent.Add(new ActorMessageInfo() { Session = session, Message = iActorRequest });
 					return;
 				}
+				case IActorMessage iactorMessage:
+				{
+					Entity entity = (Entity)Game.EventSystem.Get(iactorMessage.ActorId);
+					if (entity == null)
+					{
+						Log.Error($"not found actor: {iactorMessage.ActorId}");
+						return;
+					}
+	
+					MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+					if (mailBoxComponent == null)
+					{
+						Log.Error($"actor not add MailBoxComponent: {iactorMessage.ActorId}");
+						return;
+					}
 				
-				entity.GetComponent<ActorComponent>().Add(new ActorMessageInfo() { Session = session, Message = iActorMessage });
-				return;
+					mailBoxComponent.Add(new ActorMessageInfo() { Session = session, Message = iactorMessage });
+					return;
+				}
+				default:
+				{
+					Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(opcode, message));
+					break;
+				}
 			}
-			
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(opcode, message));
 		}
 	}
 }

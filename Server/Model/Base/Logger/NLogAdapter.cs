@@ -34,5 +34,10 @@ namespace ETModel
 		{
 			this.logger.Error(this.Decorate(message));
 		}
-	}
+
+        public void Fatal(string message)
+        {
+            this.logger.Fatal(this.Decorate(message));
+        }
+    }
 }

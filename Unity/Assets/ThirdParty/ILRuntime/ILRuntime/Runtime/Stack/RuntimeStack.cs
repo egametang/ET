@@ -25,7 +25,7 @@ namespace ILRuntime.Runtime.Stack
 #endif
 
         Stack<StackFrame> frames = new Stack<StackFrame>();
-        const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
+        public const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
 
         public Stack<StackFrame> Frames { get { return frames; } }
         public RuntimeStack(ILIntepreter intepreter)
@@ -91,7 +91,7 @@ namespace ILRuntime.Runtime.Stack
                 p->ObjectType = ObjectTypes.Null;
             }
 #endif
-            res.BasePointer = method.LocalVariableCount > 0 ? Add(esp, method.LocalVariableCount + 1) : esp;
+            res.BasePointer = method.LocalVariableCount > 0 ? Add(esp, method.LocalVariableCount) : esp;
             res.ManagedStackBase = managedStack.Count;
             res.ValueTypeBasePointer = valueTypePtr;
             //frames.Push(res);
@@ -347,6 +347,8 @@ namespace ILRuntime.Runtime.Stack
 
         public void FreeValueTypeObject(StackObject* esp)
         {
+            if (esp->ObjectType != ObjectTypes.ValueTypeObjectReference)
+                return;
             int start = int.MaxValue;
             int end = int.MinValue;
             StackObject* endAddr;

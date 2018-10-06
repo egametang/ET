@@ -53,7 +53,7 @@ namespace ETModel
 
 		public void Awake()
 		{
-			StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
+			StartConfig startConfig = StartConfigComponent.Instance.StartConfig;
 			this.appType = startConfig.AppType;
 			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
@@ -67,7 +67,7 @@ namespace ETModel
 			this.getHandlers = new Dictionary<string, MethodInfo>();
 			this.postHandlers = new Dictionary<string, MethodInfo>();
 
-			Type[] types = DllHelper.GetMonoTypes();
+			List<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
 
 			foreach (Type type in types)
 			{
@@ -176,9 +176,11 @@ namespace ETModel
 
 		public async void Accept()
 		{
+			long instanceId = this.InstanceId;
+			
 			while (true)
 			{
-				if (this.IsDisposed)
+				if (this.InstanceId != instanceId)
 				{
 					return;
 				}

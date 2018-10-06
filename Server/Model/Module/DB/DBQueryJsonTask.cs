@@ -31,7 +31,8 @@ namespace ETModel
 			{
 				// 执行查询数据库任务
 				FilterDefinition<ComponentWithId> filterDefinition = new JsonFilterDefinition<ComponentWithId>(this.Json);
-				List<ComponentWithId> components = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition).Result.ToListAsync();
+				IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync(filterDefinition);
+				List<ComponentWithId> components = await cursor.ToListAsync();
 				this.Tcs.SetResult(components);
 			}
 			catch (Exception e)

@@ -199,6 +199,14 @@ namespace ILRuntime.CLR.Method
             }
         }
 
+        public bool HasBody
+        {
+            get
+            {
+                return body != null;
+            }
+        }
+
         public int LocalVariableCount
         {
             get
@@ -254,6 +262,13 @@ namespace ILRuntime.CLR.Method
             get;
             private set;
         }
+
+        public void Prewarm()
+        {
+            if (body == null)
+                InitCodeBody();
+        }
+
         void InitCodeBody()
         {
             if (def.HasBody)
@@ -273,6 +288,10 @@ namespace ILRuntime.CLR.Method
                 {
                     var c = def.Body.Instructions[i];
                     InitToken(ref body[i], c.Operand, addr);
+                    if (i > 0 && c.OpCode.Code == Mono.Cecil.Cil.Code.Callvirt && def.Body.Instructions[i - 1].OpCode.Code == Mono.Cecil.Cil.Code.Constrained)
+                    {
+                        body[i - 1].TokenLong = body[i].TokenInteger;
+                    }
                 }
 
                 for (int i = 0; i < def.Body.ExceptionHandlers.Count; i++)

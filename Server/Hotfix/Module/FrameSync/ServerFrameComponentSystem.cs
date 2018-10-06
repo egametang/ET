@@ -25,9 +25,11 @@ namespace ETHotfix
         {
             TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 
+            long instanceId = self.InstanceId;
+
             while (true)
             {
-                if (self.IsDisposed)
+                if (self.InstanceId != instanceId)
                 {
                     return;
                 }
@@ -43,7 +45,7 @@ namespace ETHotfix
 
         public static void Add(this ServerFrameComponent self, OneFrameMessage oneFrameMessage)
         {
-            self.FrameMessage.Messages.Add(oneFrameMessage);
+            self.FrameMessage.Message.Add(oneFrameMessage);
         }
     }
 }

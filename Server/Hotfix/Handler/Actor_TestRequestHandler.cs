@@ -10,7 +10,7 @@ namespace ETHotfix
 		protected override async Task Run(Unit unit, Actor_TestRequest message, Action<Actor_TestResponse> reply)
 		{
 			await Task.CompletedTask;
-			reply(new Actor_TestResponse() {response = "response actor rpc"});
+			reply(new Actor_TestResponse() {Response = "response actor rpc"});
 		}
 	}
 }

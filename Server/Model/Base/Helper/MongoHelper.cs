@@ -22,6 +22,11 @@ namespace ETModel
 				{
 					continue;
 				}
+				
+				if(type == typeof(ComponentWithId) || type == typeof(Component) || type == typeof(Entity))
+				{
+					continue;
+				}
 				methodInfo.MakeGenericMethod(type).Invoke(null, null);
 			}
 
@@ -52,7 +57,19 @@ namespace ETModel
 		{
 			return obj.ToBson();
 		}
-
+		
+		public static void ToBson(object obj, MemoryStream stream)
+		{
+			using (BsonBinaryWriter bsonWriter = new BsonBinaryWriter(stream, BsonBinaryWriterSettings.Defaults))
+			{
+				BsonSerializationContext context = BsonSerializationContext.CreateRoot(bsonWriter);
+				BsonSerializationArgs args = default (BsonSerializationArgs);
+				args.NominalType = typeof(object);
+				IBsonSerializer serializer = BsonSerializer.LookupSerializer(args.NominalType);
+				serializer.Serialize(context, args, obj);
+			}
+		}
+		
 		public static object FromBson(Type type, byte[] bytes)
 		{
 			return BsonSerializer.Deserialize(bytes, type);
@@ -64,6 +81,24 @@ namespace ETModel
 			{
 				return BsonSerializer.Deserialize(memoryStream, type);
 			}
+		}
+		
+		public static object FromBson(object instance, byte[] bytes, int index, int count)
+		{
+			using (MemoryStream memoryStream = new MemoryStream(bytes, index, count))
+			{
+				return BsonSerializer.Deserialize(memoryStream, instance.GetType());
+			}
+		}
+		
+		public static object FromBson(object instance, Stream stream)
+		{
+			return BsonSerializer.Deserialize(stream, instance.GetType());
+		}
+		
+		public static object FromStream(Type type, Stream stream)
+		{
+			return BsonSerializer.Deserialize(stream, type);
 		}
 
 		public static T FromBson<T>(byte[] bytes)

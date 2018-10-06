@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>App</AssemblyName>
     <RootNamespace>App</RootNamespace>
   </PropertyGroup>
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.0-rc04" />
+    <PackageReference Include="NLog" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>

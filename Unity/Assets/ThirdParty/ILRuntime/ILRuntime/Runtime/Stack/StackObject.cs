@@ -16,6 +16,16 @@ namespace ILRuntime.Runtime.Stack
         public int Value;
         public int ValueLow;
 
+        public static bool operator ==(StackObject a, StackObject b)
+        {
+            return (a.ObjectType == b.ObjectType) && (a.Value == b.Value) && (a.ValueLow == b.ValueLow);
+        }
+
+        public static bool operator !=(StackObject a, StackObject b)
+        {
+            return (a.ObjectType != b.ObjectType) || (a.Value != b.Value) || (a.ValueLow == b.ValueLow);
+        }
+
         //IL2CPP can't process esp->ToObject() properly, so I can only use static function for this
         public static unsafe object ToObject(StackObject* esp, ILRuntime.Runtime.Enviorment.AppDomain appdomain, IList<object> mStack)
         {
@@ -147,11 +157,27 @@ namespace ILRuntime.Runtime.Stack
                     esp.Value = idx;
                     if (fieldType is CLRType)
                     {
-                        mStack[idx] = ((CLRType)fieldType).CreateDefaultInstance();
+                        if (fieldType.TypeForCLR.IsEnum)
+                        {
+                            esp.ObjectType = ObjectTypes.Integer;
+                            esp.Value = 0;
+                            esp.ValueLow = 0;
+                            mStack[idx] = null;
+                        }
+                        else
+                            mStack[idx] = ((CLRType)fieldType).CreateDefaultInstance();
                     }
                     else
                     {
-                        mStack[idx] = ((ILType)fieldType).Instantiate();
+                        if (((ILType)fieldType).IsEnum)
+                        {
+                            esp.ObjectType = ObjectTypes.Integer;
+                            esp.Value = 0;
+                            esp.ValueLow = 0;
+                            mStack[idx] = null;
+                        }
+                        else
+                            mStack[idx] = ((ILType)fieldType).Instantiate();
                     }
                 }
                 else

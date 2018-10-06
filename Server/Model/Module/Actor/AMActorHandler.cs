@@ -3,16 +3,16 @@ using System.Threading.Tasks;
 
 namespace ETModel
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class 
+	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class, IActorMessage
 	{
 		protected abstract Task Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
+		public async Task Handle(Session session, Entity entity, object actorMessage)
 		{
-			Message msg = actorRequest as Message;
+			Message msg = actorMessage as Message;
 			if (msg == null)
 			{
-				Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Message).Name}");
+				Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
 				return;
 			}
 			E e = entity as E;
@@ -21,13 +21,6 @@ namespace ETModel
 				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
 				return;
 			}
-
-			int rpcId = actorRequest.RpcId;
-			ActorResponse response = new ActorResponse
-			{
-				RpcId = rpcId
-			};
-			session.Reply(response);
 
 			await this.Run(e, msg);
 		}
@@ -50,14 +43,14 @@ namespace ETModel
 
 		protected abstract Task Run(E unit, Request message, Action<Response> reply);
 
-		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
+		public async Task Handle(Session session, Entity entity, object actorMessage)
 		{
 			try
 			{
-				Request request = actorRequest as Request;
+				Request request = actorMessage as Request;
 				if (request == null)
 				{
-					Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Request).Name}");
+					Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
 					return;
 				}
 				E e = entity as E;
@@ -68,10 +61,13 @@ namespace ETModel
 				}
 
 				int rpcId = request.RpcId;
+				
+				long instanceId = session.InstanceId;
+				
 				await this.Run(e, request, response =>
 				{
-					// 等回调回来,session可以已经断开了
-					if (session.IsDisposed)
+					// 等回调回来,session可以已经断开了,所以需要判断session InstanceId是否一样
+					if (session.InstanceId != instanceId)
 					{
 						return;
 					}
@@ -82,7 +78,7 @@ namespace ETModel
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {actorRequest.GetType().FullName}", e);
+				throw new Exception($"解释消息失败: {actorMessage.GetType().FullName}", e);
 			}
 		}
 

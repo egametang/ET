@@ -10,7 +10,7 @@ namespace ETEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		[MenuItem("Tools/编译Hotfix")]
+		//[MenuItem("Tools/编译Hotfix")]
 		public static void BuildHotfix()
 		{
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -35,6 +35,7 @@ namespace ETEditor
 		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
+#if !UNITY_EDITOR_OSX
 			string currentDir = System.Environment.CurrentDirectory;
 			string path = Path.Combine(currentDir, @"..\FileServer\");
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -42,6 +43,10 @@ namespace ETEditor
 			process.StartInfo.WorkingDirectory = path;
 			process.StartInfo.CreateNoWindow = true;
 			process.Start();
+#else
+			string path = System.Environment.CurrentDirectory + "/../FileServer/";
+			("cd " + path + " && go run FileServer.go").Bash(path, true);
+#endif
 		}
 
 		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)
@@ -51,7 +56,7 @@ namespace ETEditor
 			switch (type)
 			{
 				case PlatformType.PC:
-					buildTarget = BuildTarget.StandaloneWindows;
+					buildTarget = BuildTarget.StandaloneWindows64;
 					exeName += ".exe";
 					break;
 				case PlatformType.Android:
@@ -60,6 +65,9 @@ namespace ETEditor
 					break;
 				case PlatformType.IOS:
 					buildTarget = BuildTarget.iOS;
+					break;
+				case PlatformType.MacOS:
+					buildTarget = BuildTarget.StandaloneOSX;
 					break;
 			}
 
@@ -109,10 +117,6 @@ namespace ETEditor
 		{
 			foreach (string file in Directory.GetFiles(dir))
 			{
-				if (file.EndsWith(".manifest"))
-				{
-					continue;
-				}
 				string md5 = MD5Helper.FileMD5(file);
 				FileInfo fi = new FileInfo(file);
 				long size = fi.Length;

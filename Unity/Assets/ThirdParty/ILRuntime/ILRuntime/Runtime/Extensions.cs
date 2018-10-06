@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,7 +71,7 @@ namespace ILRuntime.Runtime
             else
             {
                 clsName = simpleClassName ? "" : (!string.IsNullOrEmpty(type.Namespace) ? type.Namespace.Replace(".", "_") + "_" : "");
-                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : null;
+                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : "global::";
             }
             clsName = clsName + type.Name.Replace(".", "_").Replace("`", "_").Replace("<", "_").Replace(">", "_");
             bool isGeneric = false;
