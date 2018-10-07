@@ -82,11 +82,14 @@ public class ReferenceCollectorEditor: Editor
 		EditorGUILayout.Space();
 
 		var delList = new List<int>();
-		for (int i = referenceCollector.data.Count - 1; i >= 0; i--)
+        SerializedProperty property;
+        for (int i = referenceCollector.data.Count - 1; i >= 0; i--)
 		{
 			GUILayout.BeginHorizontal();
-			referenceCollector.data[i].key = EditorGUILayout.TextField(referenceCollector.data[i].key, GUILayout.Width(150));
-			referenceCollector.data[i].gameObject = EditorGUILayout.ObjectField(referenceCollector.data[i].gameObject, typeof (Object), true);
+            property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("key");
+            property.stringValue = EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
+            property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
+            property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
 			if (GUILayout.Button("X"))
 			{
 				delList.Add(i);
