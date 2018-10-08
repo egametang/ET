@@ -41,7 +41,8 @@ public class ExcelExporterEditor : EditorWindow
 		GetWindow(typeof(ExcelExporterEditor));
 	}
 
-	private const string ExcelPath = @"..\Excel";
+	private const string ExcelPath = "../Excel";
+	private const string ServerConfigPath = "../Config/";
 
 	private bool isClient;
 
@@ -52,38 +53,30 @@ public class ExcelExporterEditor : EditorWindow
 	{
 		try
 		{
-			const string clientPath = @".\Assets\Res\Config";
-
-			string serverPath = EditorPrefs.GetString("serverPath");
-			serverPath = EditorGUILayout.TextField("服务端配置路径:", serverPath);
-			EditorPrefs.SetString("serverPath", serverPath);
+			const string clientPath = "./Assets/Res/Config";
 
 			if (GUILayout.Button("导出客户端配置"))
 			{
 				this.isClient = true;
+				
 				ExportAll(clientPath);
+				
+				ExportAllClass(@"./Assets/Model/Entity/Config", "namespace ETModel\n{\n");
+				ExportAllClass(@"./Assets/Hotfix/Entity/Config", "using ETModel;\n\nnamespace ETHotfix\n{\n");
+				
+				Log.Info($"导出客户端配置完成!");
 			}
 
 			if (GUILayout.Button("导出服务端配置"))
 			{
 				this.isClient = false;
-				if (serverPath == "")
-				{
-					Log.Error("请输入服务端配置路径!");
-					return;
-				}
-				ExportAll(serverPath);
+				
+				ExportAll(ServerConfigPath);
+				
+				ExportAllClass(@"../Server/Model/Entity/Config", "namespace ETModel\n{\n");
+				
+				Log.Info($"导出服务端配置完成!");
 			}
-
-			if (GUILayout.Button("生成Model配置类"))
-			{
-				ExportAllClass(@".\Assets\Model\Entity\Config", "namespace ETModel\n{\n");
-			}
-
-            if (GUILayout.Button("生成Hofix配置类"))
-            {
-                ExportAllClass(@".\Assets\Hotfix\Entity\Config", "using ETModel;\n\nnamespace ETHotfix\n{\n");
-            }
         }
 		catch (Exception e)
 		{
@@ -105,8 +98,8 @@ public class ExcelExporterEditor : EditorWindow
 			}
 
 			ExportClass(filePath, exportDir, csHead);
+			Log.Info($"生成{Path.GetFileName(filePath)}类");
 		}
-		Log.Debug("生成类完成!");
 		AssetDatabase.Refresh();
 	}
 
@@ -119,7 +112,7 @@ public class ExcelExporterEditor : EditorWindow
 		}
 
 		string protoName = Path.GetFileNameWithoutExtension(fileName);
-		Log.Info($"{protoName}生成class开始");
+		
 		string exportPath = Path.Combine(exportDir, $"{protoName}.cs");
 		using (FileStream txt = new FileStream(exportPath, FileMode.Create))
 		using (StreamWriter sw = new StreamWriter(txt))
@@ -128,7 +121,7 @@ public class ExcelExporterEditor : EditorWindow
 			ISheet sheet = xssfWorkbook.GetSheetAt(0);
 			sb.Append(csHead);
 
-			sb.Append("\t[Config(AppType.Client)]\n");
+			sb.Append($"\t[Config({GetCellString(sheet, 0, 0)})]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
 			sb.Append("\t{\n");
 			sb.Append("\t}\n\n");

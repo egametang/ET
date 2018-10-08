@@ -23,7 +23,7 @@ internal static class LogRedirection
             return false;
         }
 
-        if (!selectedStackTrace.Contains("Model.Log"))
+        if (!selectedStackTrace.Contains("ETModel.Log"))
         {
             return false;
         }
@@ -40,7 +40,7 @@ internal static class LogRedirection
         {
             return false;
         }
-        if (!selectedStackTrace.Contains("Hotfix.Log"))
+        if (!selectedStackTrace.Contains("ETHotfix.Log"))
         {
             InternalEditorUtility.OpenFileAtLineExternal(Application.dataPath.Replace("Assets", "") + match.Groups[1].Value, int.Parse(match.Groups[2].Value));
 

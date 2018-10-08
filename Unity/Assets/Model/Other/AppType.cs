@@ -15,11 +15,14 @@ namespace ETModel
 		Location = 1 << 5,
 		Map = 1 << 6,
 
-		BenchmarkWebsocketServer = 1 << 27,
-		BenchmarkWebsocketClient = 1 << 28,
-		Robot = 1 << 29,
-		Benchmark = 1 << 30,
-		Client = 1 << 31,
+		BenchmarkWebsocketServer = 1 << 26,
+		BenchmarkWebsocketClient = 1 << 27,
+		Robot = 1 << 28,
+		Benchmark = 1 << 29,
+		// 客户端Hotfix层
+		ClientH = 1 << 30,
+		// 客户端Model层
+		ClientM = 1 << 31,
 
 		// 7
 		AllServer = Manager | Realm | Gate | Http | DB | Location | Map | BenchmarkWebsocketServer
