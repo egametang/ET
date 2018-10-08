@@ -12,13 +12,16 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.4.11f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -357,6 +360,8 @@
     <Compile Include="Assets\Hotfix\Entity\Game.cs" />
     <Compile Include="Assets\Hotfix\Entity\Scene.cs" />
     <Compile Include="Assets\Hotfix\Init.cs" />
+    <Compile Include="Assets\Hotfix\Module\ActorLocation\IActorLocationMessage.cs" />
+    <Compile Include="Assets\Hotfix\Module\Actor\IActorMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\ACategory.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\ConfigHelper.cs" />
@@ -371,8 +376,6 @@
     <Compile Include="Assets\Hotfix\Module\Message\HotfixMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\HotfixMessageDispatcher.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\HotfixOpcode.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IActorMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IClientActorMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMHandler.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\MessageDispatherComponent.cs" />

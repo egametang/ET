@@ -5,7 +5,7 @@ using ETModel;
 namespace ETHotfix
 {
 	[ActorMessageHandler(AppType.Map)]
-	public class Actor_TestRequestHandler : AMActorRpcHandler<Unit, Actor_TestRequest, Actor_TestResponse>
+	public class Actor_TestRequestHandler : AMActorLocationRpcHandler<Unit, Actor_TestRequest, Actor_TestResponse>
 	{
 		protected override async Task Run(Unit unit, Actor_TestRequest message, Action<Actor_TestResponse> reply)
 		{

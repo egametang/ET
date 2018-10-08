@@ -5,16 +5,16 @@ namespace ETModel
 	public partial class Actor_Test : IActorMessage {}
 
 	[Message(OuterOpcode.Actor_TestRequest)]
-	public partial class Actor_TestRequest : IActorRequest {}
+	public partial class Actor_TestRequest : IActorLocationRequest {}
 
 	[Message(OuterOpcode.Actor_TestResponse)]
-	public partial class Actor_TestResponse : IActorResponse {}
+	public partial class Actor_TestResponse : IActorLocationResponse {}
 
 	[Message(OuterOpcode.Actor_TransferRequest)]
-	public partial class Actor_TransferRequest : IActorRequest {}
+	public partial class Actor_TransferRequest : IActorLocationRequest {}
 
 	[Message(OuterOpcode.Actor_TransferResponse)]
-	public partial class Actor_TransferResponse : IActorResponse {}
+	public partial class Actor_TransferResponse : IActorLocationResponse {}
 
 	[Message(OuterOpcode.C2G_EnterMap)]
 	public partial class C2G_EnterMap : IRequest {}

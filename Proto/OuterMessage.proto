@@ -8,14 +8,14 @@ message Actor_Test // IActorMessage
 	string Info = 1;
 }
 
-message Actor_TestRequest // IActorRequest
+message Actor_TestRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
 	string request = 1;
 }
 
-message Actor_TestResponse // IActorResponse
+message Actor_TestResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
@@ -23,14 +23,14 @@ message Actor_TestResponse // IActorResponse
 	string response = 1;
 }
 
-message Actor_TransferRequest // IActorRequest
+message Actor_TransferRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
 	int32 MapIndex = 1;
 }
 
-message Actor_TransferResponse // IActorResponse
+message Actor_TransferResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;

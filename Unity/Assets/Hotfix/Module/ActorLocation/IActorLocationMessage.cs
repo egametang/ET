@@ -1,7 +1,7 @@
 ﻿namespace ETHotfix
 {
 	// 客户端发送actor消息
-	public interface IClientActorMessage : IActorRequest
+	public interface IActorLocationMessage : IActorRequest
 	{
 	}
 

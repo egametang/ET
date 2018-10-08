@@ -6,8 +6,9 @@ namespace ETHotfix
 		long ActorId { get; set; }
 	}
 
-	public interface IActorRequest : IActorMessage
+	public interface IActorRequest : IRequest
 	{
+		long ActorId { get; set; }
 	}
 
 	public interface IActorResponse : IResponse

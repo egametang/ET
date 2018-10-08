@@ -5,21 +5,11 @@ using ETModel;
 namespace ETHotfix
 {
 	[ActorMessageHandler(AppType.Map)]
-	public class OneFrameMessageHandler: AMActorRpcHandler<Unit, OneFrameMessage, ActorResponse>
+	public class OneFrameMessageHandler: AMActorLocationHandler<Unit, OneFrameMessage>
     {
-	    protected override async Task Run(Unit unit, OneFrameMessage message, Action<ActorResponse> reply)
+	    protected override void Run(Unit unit, OneFrameMessage message)
 	    {
-		    ActorResponse actorResponse = new ActorResponse();
-		    try
-		    {
-			    Game.Scene.GetComponent<ServerFrameComponent>().Add(message);
-			    reply(actorResponse);
-		    }
-		    catch (Exception e)
-		    {
-			    ReplyError(actorResponse, e, reply);
-		    }
-		    await Task.CompletedTask;
+			Game.Scene.GetComponent<ServerFrameComponent>().Add(message);
 	    }
     }
 }
