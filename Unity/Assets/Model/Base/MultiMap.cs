@@ -22,9 +22,9 @@ namespace ETModel
 			if (list == null)
 			{
 				list = this.FetchList();
+				this.dictionary[t] = list;
 			}
 			list.Add(k);
-			this.dictionary[t] = list;
 		}
 
 		public KeyValuePair<T, List<K>> First()
