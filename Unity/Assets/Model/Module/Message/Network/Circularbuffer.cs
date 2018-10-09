@@ -91,11 +91,11 @@ namespace ETModel
         }
 
 		/// <summary>
-		/// 从CircularBuffer写到stream流中
+		/// 从CircularBuffer读到stream中
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public async Task WriteToAsync(Stream stream)
+		public async Task ReadAsync(Stream stream)
 	    {
 		    long buffLength = this.Length;
 			int sendSize = this.ChunkSize - this.FirstIndex;
@@ -114,7 +114,8 @@ namespace ETModel
 		    }
 		}
 
-	    public void WriteTo(Stream stream, int count)
+	    // 从CircularBuffer读到stream
+	    public void Read(Stream stream, int count)
 	    {
 		    if (count > this.Length)
 		    {
@@ -141,7 +142,8 @@ namespace ETModel
 		    }
 	    }
 	    
-	    public void ReadFrom(Stream stream)
+	    // 从stream写入CircularBuffer
+	    public void Write(Stream stream)
 		{
 			int count = (int)(stream.Length - stream.Position);
 			
@@ -172,11 +174,11 @@ namespace ETModel
 	    
 
 	    /// <summary>
-		/// 从stream流读到CircularBuffer中
+		///  从stream写入CircularBuffer
 		/// </summary>
 		/// <param name="stream"></param>
 		/// <returns></returns>
-		public async Task<int> ReadFromAsync(Stream stream)
+		public async Task<int> WriteAsync(Stream stream)
 	    {
 		    int size = this.ChunkSize - this.LastIndex;
 		    

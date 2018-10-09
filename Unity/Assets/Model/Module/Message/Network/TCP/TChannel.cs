@@ -30,7 +30,7 @@ namespace ETModel
 
 		private readonly PacketParser parser;
 
-		private readonly byte[] cache = new byte[2];
+		private readonly byte[] cache = new byte[Packet.SizeLength];
 		
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
@@ -121,9 +121,20 @@ namespace ETModel
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 
-			cache.WriteTo(0, (ushort)stream.Length);
+			switch (Packet.SizeLength)
+			{
+				case 4:
+					this.cache.WriteTo(0, (int) stream.Length);
+					break;
+				case 2:
+					this.cache.WriteTo(0, (ushort) stream.Length);
+					break;
+				default:
+					throw new Exception("packet size must be 2 or 4!");
+			}
+
 			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
-			this.sendBuffer.ReadFrom(stream);
+			this.sendBuffer.Write(stream);
 
 			this.GetService().MarkNeedStartSend(this.Id);
 		}

@@ -271,6 +271,12 @@ namespace ETModel
 			stream.SetLength(Packet.MessageIndex);
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
+
+			if (stream.Length > ushort.MaxValue)
+			{
+				Log.Error($"message too large: {stream.Length}, opcode: {opcode}");
+				return;
+			}
 			
 			this.byteses[0][0] = flag;
 			this.byteses[1].WriteTo(0, opcode);
