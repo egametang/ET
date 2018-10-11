@@ -113,7 +113,6 @@
     <Compile Include="Assets\Hotfix\UI\UILogin\Component\UILoginComponent.cs" />
     <Compile Include="Assets\Hotfix\UI\UILogin\Event\InitSceneStart_CreateLoginUI.cs" />
     <Compile Include="Assets\Hotfix\UI\UILogin\Factory\UILoginFactory.cs" />
-    <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>

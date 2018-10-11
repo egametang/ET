@@ -70,7 +70,6 @@
     <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
     <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
     <Compile Include="Assets\Editor\ServerManagerEditor\ServerManagerEditor.cs" />
-    <None Include="Assets\Editor\Unity.Editor.asmdef" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>

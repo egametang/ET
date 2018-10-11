@@ -631,7 +631,6 @@
     <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalEquatableStruct.cs" />
     <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\Hasher.cs" />
     <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
-    <None Include="Assets\ThirdParty\Unity.ThirdParty.asmdef" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>

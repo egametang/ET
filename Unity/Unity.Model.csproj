@@ -354,7 +354,6 @@
     <Compile Include="Assets\Model\UI\UILoading\Event\LoadingBeginEvent_CreateLoadingUI.cs" />
     <Compile Include="Assets\Model\UI\UILoading\Event\LoadingFinishEvent_RemoveLoadingUI.cs" />
     <Compile Include="Assets\Model\UI\UILoading\Factory\UILoadingFactory.cs" />
-    <None Include="Assets\Model\Unity.Model.asmdef" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>
