@@ -367,9 +367,13 @@ namespace ETModel
 
 		public string Message { get; set; }
 
+// 自己的unit id
+// 自己的unit id
 		public long UnitId { get; set; }
 
-		public int Count { get; set; }
+// 所有的unit
+// 所有的unit
+		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
 

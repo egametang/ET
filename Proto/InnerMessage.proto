@@ -239,8 +239,10 @@
 		int32 Error = 91;
 		string Message = 92;
 
+		// 自己的unit id
 		int64 UnitId = 1;
-		int Count = 2;
+		// 所有的unit
+		repeated UnitInfo Units = 2;
 	}
 
 	message G2M_SessionDisconnect // IActorLocationMessage

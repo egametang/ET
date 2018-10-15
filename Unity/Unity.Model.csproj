@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_11;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_11;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -115,6 +115,17 @@
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="Assets\Model\Base\TryLocker.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Color32.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\FrameworkResources.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Mathf.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\MathHelper.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Matrix3x3.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Matrix4x4.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\PackUtils.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Quaternion.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Vector2.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Vector3.cs" />
+    <Compile Include="Assets\Model\Base\UnityMath\Vector4.cs" />
     <Compile Include="Assets\Model\Base\UnOrderMultiMap.cs" />
     <Compile Include="Assets\Model\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Model\Component\Config\DBConfig.cs" />
@@ -159,7 +170,6 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_EventAttribute_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_EventProxy_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_EventSystem_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_Frame_ClickMap_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Game_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_GameObjectHelper_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_GlobalConfigComponent_Binding.cs" />
@@ -172,7 +182,6 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_MessageDispatherComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_MessageInfo_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_MessageProxy_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_MoveComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_NetworkComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_OpcodeTypeComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Player_Binding.cs" />
@@ -184,10 +193,8 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_SessionCallbackComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_SessionComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UIFactoryAttribute_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_Unit_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitFactory_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_UnitInfo_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_CodedInputStream_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_CodedOutputStream_Binding.cs" />
@@ -273,23 +280,21 @@
     <Compile Include="Assets\Model\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Model\Module\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Model\Module\Config\IConfig.cs" />
+    <Compile Include="Assets\Model\Module\Demo\AnimatorComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\CameraComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\MoveComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\Player.cs" />
+    <Compile Include="Assets\Model\Module\Demo\PlayerComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\PlayerFactory.cs" />
+    <Compile Include="Assets\Model\Module\Demo\SessionComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\Unit.cs" />
+    <Compile Include="Assets\Model\Module\Demo\UnitComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\UnitFactory.cs" />
+    <Compile Include="Assets\Model\Module\Demo\UnitPathComponent.cs" />
     <Compile Include="Assets\Model\Module\Filter\FilterAttribute.cs" />
     <Compile Include="Assets\Model\Module\Filter\FilterComponent.cs" />
     <Compile Include="Assets\Model\Module\Filter\FilterEntity.cs" />
     <Compile Include="Assets\Model\Module\Filter\IFilter.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\AnimatorComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\CameraComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\ClientFrameComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\FrameMessage.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\FrameOpcode.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\MoveComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\Player.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\PlayerComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\PlayerFactory.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\SessionComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\Unit.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\UnitComponent.cs" />
-    <Compile Include="Assets\Model\Module\FrameSync\UnitFactory.cs" />
     <Compile Include="Assets\Model\Module\Message\AMHandler.cs" />
     <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
     <Compile Include="Assets\Model\Module\Message\IMessage.cs" />
@@ -335,6 +340,126 @@
     <Compile Include="Assets\Model\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
     <Compile Include="Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" />
     <Compile Include="Assets\Model\Module\Numeric\NumericWatcherComponent.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\AIDestinationSetter.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\Patrol.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\changelog.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AIBase.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AILerp.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AIPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\IAstarAI.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\Seeker.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\TurnBasedAI.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\astarclasses.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AstarData.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AstarPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\GraphUpdateScene.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\GraphUpdateShape.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\AstarDebugger.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\Draw.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\EditorResourceHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphEditorBase.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphUpdateProcessor.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphUtilities.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\MovementUtilities.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\NodeLink.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\PathInterpolator.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\StackPool.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\WorkItemProcessor.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOAgent.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOCoreObstacle.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOCoreSimulator.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOLine.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOQuadtree.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Example3_Recast_Navmesh1\MecanimBridge.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAnimation.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdate.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdateHandler.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\TargetMover.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\ObjImporter.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastBBTree.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastMeshGatherer.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastMeshObj.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelClasses.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelContour.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelMesh.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelPolygonClipper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRasterization.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRegion.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelUtility.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\MathHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\AdvancedSmooth.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\AlternativePath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\FunnelModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\Modifiers.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\RadiusModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\RaycastModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\SimpleSmoothModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\StartEndModifier.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Navmesh\RelevantGraphSurface.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\EnumFlagAttribute.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\UniqueComponentAttribute.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\VersionedMonoBehaviour.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOController.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVONavmesh.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOObstacle.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOSimulator.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOSquareObstacle.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\BlockManager.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\SingleNodeBlocker.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\UnityHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\AstarParallel.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\AstarProfiler.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\GraphGizmoHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\GraphUpdateUtilities.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\PathUtilities.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\RetainedGizmos.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\ArrayPool.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarChecksum.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\AStarConfig.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarDeserializer.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarMath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarMemory.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\BBTree.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\BinaryHeap.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\EuclideanEmbedding.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Funnel.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\GraphNode.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\GraphTransform.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Guid.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\INavmesh.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Int3.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\IntRect.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\ListPool.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavGraph.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavmeshBase.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavmeshTile.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\NN.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\ObjectPool.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Path.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\ABPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\ConstantPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FleePath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FloodPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FloodPathTracer.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\MultiTargetPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\RandomPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\XPath.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathFindHelper.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathHandler.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathPool.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathProcessor.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathReturnQueue.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\RecastGenerator.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\JsonSerializer.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\SimpleZipReplacement.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\TinyJson.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\ThreadControlQueue.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\TriangleMeshNode.cs" />
+    <Compile Include="Assets\Model\Module\Pathfinding\Recast\WindowsStoreCompatibility.cs" />
     <Compile Include="Assets\Model\Module\UI\CanvasConfig.cs" />
     <Compile Include="Assets\Model\Module\UI\IUIFactory.cs" />
     <Compile Include="Assets\Model\Module\UI\LayerNames.cs" />
@@ -345,6 +470,7 @@
     <Compile Include="Assets\Model\Other\AppType.cs" />
     <Compile Include="Assets\Model\Other\Define.cs" />
     <Compile Include="Assets\Model\Other\ECSView.cs" />
+    <Compile Include="Assets\Model\Other\GizmosDebug.cs" />
     <Compile Include="Assets\Model\Other\IInstanceMethod.cs" />
     <Compile Include="Assets\Model\Other\ILMethod.cs" />
     <Compile Include="Assets\Model\Other\MonoMethod.cs" />
@@ -354,6 +480,13 @@
     <Compile Include="Assets\Model\UI\UILoading\Event\LoadingBeginEvent_CreateLoadingUI.cs" />
     <Compile Include="Assets\Model\UI\UILoading\Event\LoadingFinishEvent_RemoveLoadingUI.cs" />
     <Compile Include="Assets\Model\UI\UILoading\Factory\UILoadingFactory.cs" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Readme_upgrading.txt" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Readme.txt" />
+    <None Include="Assets\Model\Unity.Model.asmdef" />
+    <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\link.xml" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -560,6 +693,15 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>D:/Source/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.ClipperLib">
+      <HintPath>D:/Source/ET/Unity/Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+      <HintPath>D:/Source/ET/Unity/Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Poly2Tri">
+      <HintPath>D:/Source/ET/Unity/Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Rider.Unity.Editor.Plugin.Repacked">
       <HintPath>D:/Source/ET/Unity/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll</HintPath>

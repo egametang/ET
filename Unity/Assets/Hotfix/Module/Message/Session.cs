@@ -91,6 +91,10 @@ namespace ETHotfix
 		public void Send(byte flag, ushort opcode, IMessage message)
 		{
 			session.Send(flag, opcode, message);
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+			{
+				ETModel.Log.Msg(message);
+			}
 		}
 
 		public Task<IResponse> Call(IRequest request)

@@ -3,13 +3,19 @@
 --- !u!159 &1
 EditorSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 3
+  serializedVersion: 7
   m_ExternalVersionControlSupport: Visible Meta Files
   m_SerializationMode: 2
-  m_WebSecurityEmulationEnabled: 0
-  m_WebSecurityEmulationHostUrl: http://www.mydomain.com/mygame.unity3d
+  m_LineEndingsForNewScripts: 1
   m_DefaultBehaviorMode: 0
   m_SpritePackerMode: 2
   m_SpritePackerPaddingPower: 1
-  m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd
+  m_EtcTextureCompressorBehavior: 0
+  m_EtcTextureFastCompressor: 2
+  m_EtcTextureNormalCompressor: 2
+  m_EtcTextureBestCompressor: 5
+  m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd;asmdef
   m_ProjectGenerationRootNamespace: 
+  m_UserGeneratedProjectSuffix: 
+  m_CollabEditorSettings:
+    inProgressEnabled: 1

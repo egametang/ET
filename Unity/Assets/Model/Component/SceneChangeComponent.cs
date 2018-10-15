@@ -23,11 +23,11 @@ namespace ETModel
 	    public float deltaTime;
 	    public int lastProgress = 0;
 
-		public Task<bool> ChangeSceneAsync(SceneType sceneEnum)
+		public Task<bool> ChangeSceneAsync(string sceneName)
 		{
 			this.tcs = new TaskCompletionSource<bool>();
 			// 加载map
-			this.loadMapOperation = SceneManager.LoadSceneAsync(sceneEnum.ToString());
+			this.loadMapOperation = SceneManager.LoadSceneAsync(sceneName);
 			return this.tcs.Task;
 		}
 
@@ -55,6 +55,13 @@ namespace ETModel
 				return;
 			}
 			base.Dispose();
+
+			if (this.Entity.IsDisposed)
+			{
+				return;
+			}
+			
+			this.Entity.RemoveComponent<SceneChangeComponent>();
 		}
 	}
 }
