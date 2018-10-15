@@ -305,7 +305,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
-    <ProjectReference Include="..\ThirdParty\Libs\KcpLib.csproj" />
+    <ProjectReference Include="..\ThirdParty\KcpLib\KcpLib.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
     <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
