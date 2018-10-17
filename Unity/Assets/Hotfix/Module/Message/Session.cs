@@ -55,6 +55,11 @@ namespace ETHotfix
 			object instance = opcodeTypeComponent.GetInstance(opcode);
 			object message = this.session.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
 
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+			{
+				Log.Msg(message);
+			}
+
 			if ((flag & 0x01) > 0)
 			{
 				IResponse response = message as IResponse;
@@ -90,6 +95,10 @@ namespace ETHotfix
 
 		public void Send(byte flag, ushort opcode, IMessage message)
 		{
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+			{
+				Log.Msg(message);
+			}
 			session.Send(flag, opcode, message);
 			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
 			{

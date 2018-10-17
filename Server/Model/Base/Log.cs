@@ -45,10 +45,10 @@ namespace ETModel
         {
             globalLog.Fatal(message);
         }
-		
-		public static void Msg(object msg)
+
+		public static void Msg(object message)
 		{
-			Debug(MongoHelper.ToJson(msg));
+			Debug(MongoHelper.ToJson(message));
 		}
     }
 }

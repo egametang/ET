@@ -28,5 +28,11 @@ namespace ETHotfix
 		{
 			ETModel.Log.Debug(msg);
 		}
+		
+		public static void Msg(object msg)
+		{
+			
+			Debug(Dumper.DumpAsString(msg));
+		}
 	}
 }
