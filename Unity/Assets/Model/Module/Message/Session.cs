@@ -146,7 +146,11 @@ namespace ETModel
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				object instance = opcodeTypeComponent.GetInstance(opcode);
 				message = this.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
-				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+				
+				if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+				{
+					Log.Msg(message);
+				}
 			}
 			catch (Exception e)
 			{
@@ -263,6 +267,19 @@ namespace ETModel
 			if (this.IsDisposed)
 			{
 				throw new Exception("session已经被Dispose了");
+			}
+			
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode) )
+			{
+#if !SERVER
+				if (OpcodeHelper.IsClientHotfixMessage(opcode))
+				{
+				}
+				else
+#endif
+				{
+					Log.Msg(message);
+				}
 			}
 
 			MemoryStream stream = this.Stream;
