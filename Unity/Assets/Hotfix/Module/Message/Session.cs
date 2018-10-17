@@ -100,10 +100,6 @@ namespace ETHotfix
 				Log.Msg(message);
 			}
 			session.Send(flag, opcode, message);
-			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
-			{
-				ETModel.Log.Msg(message);
-			}
 		}
 
 		public Task<IResponse> Call(IRequest request)
