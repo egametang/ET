@@ -39,7 +39,7 @@ namespace ETModel
 
 		public Vector3 Dest;
 
-		public TaskCompletionSource<bool> moveTcs;
+		public ETTaskCompletionSource<bool> moveTcs;
 
 		public Vector3 Speed
 		{
@@ -122,20 +122,20 @@ namespace ETModel
 			this.Dest = dest;
 		}
 
-		public Task<bool> MoveToAsync(Vector3 dest, float speedValue, CancellationToken cancellationToken)
+		public ETTask<bool> MoveToAsync(Vector3 dest, float speedValue, CancellationToken cancellationToken)
 		{
 			if ((dest - this.GetParent<Unit>().Position).magnitude < 0.1f)
 			{
 				this.IsArrived = true;
-				return Task.FromResult(false);
+				return ETTask.FromResult(false);
 			}
 
 			if ((dest - this.Dest).magnitude < 0.1f)
 			{
-				return Task.FromResult(false);
+				return ETTask.FromResult(false);
 			}
 			
-			this.moveTcs = new TaskCompletionSource<bool>();
+			this.moveTcs = new ETTaskCompletionSource<bool>();
 			this.IsArrived = false;
 			Vector3 spd = dest - this.GetParent<Unit>().Position;
 			spd = spd.normalized * speedValue;

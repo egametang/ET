@@ -31,19 +31,19 @@ namespace ETHotfix
 			self.dbAddress = dbStartConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 
-		public static async Task Save(this DBProxyComponent self, ComponentWithId component, bool needCache = true)
+		public static async ETTask Save(this DBProxyComponent self, ComponentWithId component, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			await session.Call(new DBSaveRequest { Component = component, NeedCache = needCache});
 		}
 
-		public static async Task SaveBatch(this DBProxyComponent self, List<ComponentWithId> components, bool needCache = true)
+		public static async ETTask SaveBatch(this DBProxyComponent self, List<ComponentWithId> components, bool needCache = true)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			await session.Call(new DBSaveBatchRequest { Components = components, NeedCache = needCache});
 		}
 
-		public static async Task Save(this DBProxyComponent self, ComponentWithId component, bool needCache, CancellationToken cancellationToken)
+		public static async ETTask Save(this DBProxyComponent self, ComponentWithId component, bool needCache, CancellationToken cancellationToken)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			await session.Call(new DBSaveRequest { Component = component, NeedCache = needCache}, cancellationToken);
@@ -55,7 +55,7 @@ namespace ETHotfix
 			await session.Call(new DBSaveRequest { Component = component,  NeedCache = false, CollectionName = "Log" });
 		}
 
-		public static async Task<T> Query<T>(this DBProxyComponent self, long id, bool needCache = true) where T: ComponentWithId
+		public static async ETTask<T> Query<T>(this DBProxyComponent self, long id, bool needCache = true) where T: ComponentWithId
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id, NeedCache = needCache });
@@ -69,7 +69,7 @@ namespace ETHotfix
 		/// <param name="exp"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static async Task<List<ComponentWithId>> Query<T>(this DBProxyComponent self, Expression<Func<T ,bool>> exp) where T: ComponentWithId
+		public static async ETTask<List<ComponentWithId>> Query<T>(this DBProxyComponent self, Expression<Func<T ,bool>> exp) where T: ComponentWithId
 		{
 			ExpressionFilterDefinition<T> filter = new ExpressionFilterDefinition<T>(exp);
 			IBsonSerializerRegistry serializerRegistry = BsonSerializer.SerializerRegistry;
@@ -78,7 +78,7 @@ namespace ETHotfix
 			return await self.Query<T>(json);
 		}
 
-		public static async Task<List<ComponentWithId>> Query<T>(this DBProxyComponent self, List<long> ids, bool needCache = true) where T : ComponentWithId
+		public static async ETTask<List<ComponentWithId>> Query<T>(this DBProxyComponent self, List<long> ids, bool needCache = true) where T : ComponentWithId
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			DBQueryBatchResponse dbQueryBatchResponse = (DBQueryBatchResponse)await session.Call(new DBQueryBatchRequest { CollectionName = typeof(T).Name, IdList = ids, NeedCache = needCache});
@@ -92,7 +92,7 @@ namespace ETHotfix
 		/// <param name="json"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static async Task<List<ComponentWithId>> Query<T>(this DBProxyComponent self, string json) where T : ComponentWithId
+		public static async ETTask<List<ComponentWithId>> Query<T>(this DBProxyComponent self, string json) where T : ComponentWithId
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });

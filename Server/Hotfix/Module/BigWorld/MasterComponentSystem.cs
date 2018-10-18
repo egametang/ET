@@ -17,15 +17,15 @@ namespace ETHotfix
 			self.ghostsAddress.Remove(address);
 		}
 
-		public static Task<bool> Lock(this MasterComponent self, IPEndPoint address)
+		public static ETTask<bool> Lock(this MasterComponent self, IPEndPoint address)
 		{
 			if (self.lockedAddress == null)
 			{
 				self.lockedAddress = address;
-				return Task.FromResult(true);
+				return ETTask.FromResult(true);
 			}
 
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
 			LockInfo lockInfo = new LockInfo(address, tcs);
 			self.queue.Enqueue(lockInfo);
 			return tcs.Task;

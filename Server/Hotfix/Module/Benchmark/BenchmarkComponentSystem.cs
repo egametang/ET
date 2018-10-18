@@ -57,7 +57,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async Task Send(this BenchmarkComponent self, Session session, int j)
+		public static async ETTask Send(this BenchmarkComponent self, Session session, int j)
 		{
 			try
 			{

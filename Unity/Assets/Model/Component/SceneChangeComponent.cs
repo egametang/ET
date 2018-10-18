@@ -19,13 +19,13 @@ namespace ETModel
 	public class SceneChangeComponent: Component
 	{
 		public AsyncOperation loadMapOperation;
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource<bool> tcs;
 	    public float deltaTime;
 	    public int lastProgress = 0;
 
-		public Task<bool> ChangeSceneAsync(string sceneName)
+		public ETTask<bool> ChangeSceneAsync(string sceneName)
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			// 加载map
 			this.loadMapOperation = SceneManager.LoadSceneAsync(sceneName);
 			return this.tcs.Task;

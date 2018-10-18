@@ -17,7 +17,7 @@ namespace ETModel
 	{
 		private AssetBundleCreateRequest request;
 
-		private TaskCompletionSource<AssetBundle> tcs;
+		private ETTaskCompletionSource<AssetBundle> tcs;
 
 		public void Update()
 		{
@@ -26,7 +26,7 @@ namespace ETModel
 				return;
 			}
 
-			TaskCompletionSource<AssetBundle> t = tcs;
+			ETTaskCompletionSource<AssetBundle> t = tcs;
 			t.SetResult(this.request.assetBundle);
 		}
 
@@ -39,9 +39,9 @@ namespace ETModel
 			base.Dispose();
 		}
 
-		public Task<AssetBundle> LoadAsync(string path)
+		public ETTask<AssetBundle> LoadAsync(string path)
 		{
-			this.tcs = new TaskCompletionSource<AssetBundle>();
+			this.tcs = new ETTaskCompletionSource<AssetBundle>();
 			this.request = AssetBundle.LoadFromFileAsync(path);
 			return this.tcs.Task;
 		}

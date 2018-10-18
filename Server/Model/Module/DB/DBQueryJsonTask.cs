@@ -6,9 +6,9 @@ using MongoDB.Driver;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DBQueryJsonTaskAwakeSystem : AwakeSystem<DBQueryJsonTask, string, string, TaskCompletionSource<List<ComponentWithId>>>
+	public class DBQueryJsonTaskAwakeSystem : AwakeSystem<DBQueryJsonTask, string, string, ETTaskCompletionSource<List<ComponentWithId>>>
 	{
-		public override void Awake(DBQueryJsonTask self, string collectionName, string json, TaskCompletionSource<List<ComponentWithId>> tcs)
+		public override void Awake(DBQueryJsonTask self, string collectionName, string json, ETTaskCompletionSource<List<ComponentWithId>> tcs)
 		{
 			self.CollectionName = collectionName;
 			self.Json = json;
@@ -22,9 +22,9 @@ namespace ETModel
 
 		public string Json { get; set; }
 
-		public TaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
+		public ETTaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
 		
-		public override async Task Run()
+		public override async ETTask Run()
 		{
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 			try

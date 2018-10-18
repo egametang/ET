@@ -5,9 +5,9 @@ using MongoDB.Driver;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DBQueryTaskSystem : AwakeSystem<DBQueryTask, string, TaskCompletionSource<ComponentWithId>>
+	public class DBQueryTaskSystem : AwakeSystem<DBQueryTask, string, ETTaskCompletionSource<ComponentWithId>>
 	{
-		public override void Awake(DBQueryTask self, string collectionName, TaskCompletionSource<ComponentWithId> tcs)
+		public override void Awake(DBQueryTask self, string collectionName, ETTaskCompletionSource<ComponentWithId> tcs)
 		{
 			self.CollectionName = collectionName;
 			self.Tcs = tcs;
@@ -18,9 +18,9 @@ namespace ETModel
 	{
 		public string CollectionName { get; set; }
 
-		public TaskCompletionSource<ComponentWithId> Tcs { get; set; }
+		public ETTaskCompletionSource<ComponentWithId> Tcs { get; set; }
 
-		public override async Task Run()
+		public override async ETTask Run()
 		{
 			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();

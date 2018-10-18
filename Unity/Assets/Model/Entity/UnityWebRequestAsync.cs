@@ -21,7 +21,7 @@ namespace ETModel
 
 		public bool isCancel;
 
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource<bool> tcs;
 		
 		public override void Dispose()
 		{
@@ -82,9 +82,9 @@ namespace ETModel
 			this.tcs.SetResult(true);
 		}
 
-		public Task<bool> DownloadAsync(string url)
+		public ETTask<bool> DownloadAsync(string url)
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			
 			url = url.Replace(" ", "%20");
 			this.Request = UnityWebRequest.Get(url);

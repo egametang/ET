@@ -10,7 +10,7 @@ namespace ETHotfix
 	[ActorInterceptTypeHandler(AppType.Gate, ActorInterceptType.GateSession)]
 	public class GateSessionActorInterceptInterceptTypeHandler : IActorInterceptTypeHandler
 	{
-		public async Task Handle(Session session, Entity entity, object actorMessage)
+		public async ETTask Handle(Session session, Entity entity, object actorMessage)
 		{
 			try
 			{
@@ -19,7 +19,7 @@ namespace ETHotfix
 				Session clientSession = entity as Session;
 				iActorMessage.ActorId = 0;
 				clientSession.Send(iActorMessage);
-				await Task.CompletedTask;
+				await ETTask.CompletedTask;
 			}
 			catch (Exception e)
 			{

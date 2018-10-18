@@ -20,6 +20,6 @@ namespace ETModel
 		public LockStatus status = LockStatus.LockedNot;
 		public IPEndPoint address;
 		public int lockCount;
-		public readonly Queue<TaskCompletionSource<bool>> queue = new Queue<TaskCompletionSource<bool>>();
+		public readonly Queue<ETTaskCompletionSource<bool>> queue = new Queue<ETTaskCompletionSource<bool>>();
 	}
 }

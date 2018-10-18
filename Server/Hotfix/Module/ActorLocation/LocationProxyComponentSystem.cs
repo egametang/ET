@@ -22,31 +22,31 @@ namespace ETHotfix
 			self.LocationAddress = startConfig.GetComponent<InnerConfig>().IPEndPoint;
 		}
 
-		public static async Task Add(this LocationProxyComponent self, long key, long instanceId)
+		public static async ETTask Add(this LocationProxyComponent self, long key, long instanceId)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.LocationAddress);
 			await session.Call(new ObjectAddRequest() { Key = key, InstanceId = instanceId });
 		}
 
-		public static async Task Lock(this LocationProxyComponent self, long key, long instanceId, int time = 1000)
+		public static async ETTask Lock(this LocationProxyComponent self, long key, long instanceId, int time = 1000)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.LocationAddress);
 			await session.Call(new ObjectLockRequest() { Key = key, InstanceId = instanceId, Time = time });
 		}
 
-		public static async Task UnLock(this LocationProxyComponent self, long key, long oldInstanceId, long instanceId)
+		public static async ETTask UnLock(this LocationProxyComponent self, long key, long oldInstanceId, long instanceId)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.LocationAddress);
 			await session.Call(new ObjectUnLockRequest() { Key = key, OldInstanceId = oldInstanceId, InstanceId = instanceId});
 		}
 
-		public static async Task Remove(this LocationProxyComponent self, long key)
+		public static async ETTask Remove(this LocationProxyComponent self, long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.LocationAddress);
 			await session.Call(new ObjectRemoveRequest() { Key = key });
 		}
 
-		public static async Task<long> Get(this LocationProxyComponent self, long key)
+		public static async ETTask<long> Get(this LocationProxyComponent self, long key)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.LocationAddress);
 			ObjectGetResponse response = (ObjectGetResponse)await session.Call(new ObjectGetRequest() { Key = key });

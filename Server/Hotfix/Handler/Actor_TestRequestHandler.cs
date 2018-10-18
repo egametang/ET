@@ -7,9 +7,9 @@ namespace ETHotfix
 	[ActorMessageHandler(AppType.Map)]
 	public class Actor_TestRequestHandler : AMActorLocationRpcHandler<Unit, Actor_TestRequest, Actor_TestResponse>
 	{
-		protected override async Task Run(Unit unit, Actor_TestRequest message, Action<Actor_TestResponse> reply)
+		protected override async ETTask Run(Unit unit, Actor_TestRequest message, Action<Actor_TestResponse> reply)
 		{
-			await Task.CompletedTask;
+			await ETTask.CompletedTask;
 			reply(new Actor_TestResponse() {Response = "response actor rpc"});
 		}
 	}

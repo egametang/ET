@@ -20,7 +20,7 @@ namespace ETModel
 
 		public bool isCancel;
 
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource<bool> tcs;
 
 		public float Progress
 		{
@@ -70,36 +70,36 @@ namespace ETModel
 			t?.SetResult(true);
 		}
 
-		public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
+		public ETTask<bool> LoadFromCacheOrDownload(string url, Hash128 hash)
 		{
 			url = url.Replace(" ", "%20");
 			this.www = WWW.LoadFromCacheOrDownload(url, hash, 0);
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			return this.tcs.Task;
 		}
 
-		public Task<bool> LoadFromCacheOrDownload(string url, Hash128 hash, CancellationToken cancellationToken)
+		public ETTask<bool> LoadFromCacheOrDownload(string url, Hash128 hash, CancellationToken cancellationToken)
 		{
 			url = url.Replace(" ", "%20");
 			this.www = WWW.LoadFromCacheOrDownload(url, hash, 0);
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			cancellationToken.Register(() => { this.isCancel = true; });
 			return this.tcs.Task;
 		}
 
-		public Task<bool> DownloadAsync(string url)
+		public ETTask<bool> DownloadAsync(string url)
 		{
 			url = url.Replace(" ", "%20");
 			this.www = new WWW(url);
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			return this.tcs.Task;
 		}
 
-		public Task<bool> DownloadAsync(string url, CancellationToken cancellationToken)
+		public ETTask<bool> DownloadAsync(string url, CancellationToken cancellationToken)
 		{
 			url = url.Replace(" ", "%20");
 			this.www = new WWW(url);
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			cancellationToken.Register(() => { this.isCancel = true; });
 			return this.tcs.Task;
 		}

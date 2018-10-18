@@ -39,12 +39,12 @@ namespace ETHotfix
 	/// </summary>
 	public static class MailBoxComponentHelper
 	{
-		public static async Task AddLocation(this MailBoxComponent self)
+		public static async ETTask AddLocation(this MailBoxComponent self)
 		{
 			await Game.Scene.GetComponent<LocationProxyComponent>().Add(self.Entity.Id, self.Entity.InstanceId);
 		}
 
-		public static async Task RemoveLocation(this MailBoxComponent self)
+		public static async ETTask RemoveLocation(this MailBoxComponent self)
 		{
 			await Game.Scene.GetComponent<LocationProxyComponent>().Remove(self.Entity.Id);
 		}
@@ -63,14 +63,14 @@ namespace ETHotfix
 			t.SetResult(self.Queue.Dequeue());
 		}
 
-		private static Task<ActorMessageInfo> GetAsync(this MailBoxComponent self)
+		private static ETTask<ActorMessageInfo> GetAsync(this MailBoxComponent self)
 		{
 			if (self.Queue.Count > 0)
 			{
-				return Task.FromResult(self.Queue.Dequeue());
+				return ETTask.FromResult(self.Queue.Dequeue());
 			}
 
-			self.Tcs = new TaskCompletionSource<ActorMessageInfo>();
+			self.Tcs = new ETTaskCompletionSource<ActorMessageInfo>();
 			return self.Tcs.Task;
 		}
 

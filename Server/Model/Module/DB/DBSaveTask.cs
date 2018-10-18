@@ -6,9 +6,9 @@ namespace ETModel
 {
 
 	[ObjectSystem]
-	public class DbSaveTaskAwakeSystem : AwakeSystem<DBSaveTask, ComponentWithId, string, TaskCompletionSource<bool>>
+	public class DbSaveTaskAwakeSystem : AwakeSystem<DBSaveTask, ComponentWithId, string, ETTaskCompletionSource<bool>>
 	{
-		public override void Awake(DBSaveTask self, ComponentWithId component, string collectionName, TaskCompletionSource<bool> tcs)
+		public override void Awake(DBSaveTask self, ComponentWithId component, string collectionName, ETTaskCompletionSource<bool> tcs)
 		{
 			self.Component = component;
 			self.CollectionName = collectionName;
@@ -22,9 +22,9 @@ namespace ETModel
 
 		public string CollectionName { get; set; }
 
-		public TaskCompletionSource<bool> Tcs;
+		public ETTaskCompletionSource<bool> Tcs;
 
-		public override async Task Run()
+		public override async ETTask Run()
 		{
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 

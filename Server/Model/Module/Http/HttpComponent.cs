@@ -195,7 +195,7 @@ namespace ETModel
 		/// 调用处理方法
 		/// </summary>
 		/// <param name="context"></param>
-		private async Task InvokeHandler(HttpListenerContext context)
+		private async ETTask InvokeHandler(HttpListenerContext context)
 		{
 			context.Response.StatusCode = 404;
 

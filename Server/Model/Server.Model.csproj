@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Model</AssemblyName>
     <RootNamespace>Model</RootNamespace>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -19,6 +20,39 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncUnit.cs">
+      <Link>Base\Async\AsyncUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\CancellationTokenExtensions.cs">
+      <Link>Base\Async\CancellationTokenExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETAsyncTaskMethodBuilder.cs">
+      <Link>Base\Async\ETAsyncTaskMethodBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETAsyncTaskVoidMethodBuilder.cs">
+      <Link>Base\Async\ETAsyncTaskVoidMethodBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTask.cs">
+      <Link>Base\Async\ETTask.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskCompletionSource.cs">
+      <Link>Base\Async\ETTaskCompletionSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskFactory.cs">
+      <Link>Base\Async\ETTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskVoid.cs">
+      <Link>Base\Async\ETTaskVoid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\IAwaiter.cs">
+      <Link>Base\Async\IAwaiter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\LazyPromise.cs">
+      <Link>Base\Async\LazyPromise.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\MoveNextRunner.cs">
+      <Link>Base\Async\MoveNextRunner.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Color32.cs">
       <Link>Base\UnityMath\Color32.cs</Link>
     </Compile>

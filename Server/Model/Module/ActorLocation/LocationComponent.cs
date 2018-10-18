@@ -16,7 +16,7 @@ namespace ETModel
 		public override void Awake(LocationQueryTask self, long key)
 		{
 			self.Key = key;
-			self.Tcs = new TaskCompletionSource<long>();
+			self.Tcs = new ETTaskCompletionSource<long>();
 		}
 	}
 
@@ -24,9 +24,9 @@ namespace ETModel
 	{
 		public long Key;
 
-		public TaskCompletionSource<long> Tcs;
+		public ETTaskCompletionSource<long> Tcs;
 
-		public Task<long> Task
+		public ETTask<long> Task
 		{
 			get
 			{
@@ -163,13 +163,13 @@ namespace ETModel
 			}
 		}
 
-		public Task<long> GetAsync(long key)
+		public ETTask<long> GetAsync(long key)
 		{
 			if (!this.lockDict.ContainsKey(key))
 			{
 				this.locations.TryGetValue(key, out long instanceId);
 				Log.Info($"location get key: {key} {instanceId}");
-				return Task.FromResult(instanceId);
+				return ETTask.FromResult(instanceId);
 			}
 
 			LocationQueryTask task = ComponentFactory.CreateWithParent<LocationQueryTask, long>(this, key);

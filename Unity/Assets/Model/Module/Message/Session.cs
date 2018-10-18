@@ -183,10 +183,10 @@ namespace ETModel
 			action(response);
 		}
 
-		public Task<IResponse> Call(IRequest request)
+		public ETTask<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -197,11 +197,11 @@ namespace ETModel
 						throw new RpcException(response.Error, response.Message);
 					}
 
-					tcs.SetResult(response);
+					tcs.TrySetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
+					tcs.TrySetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
@@ -210,10 +210,10 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{

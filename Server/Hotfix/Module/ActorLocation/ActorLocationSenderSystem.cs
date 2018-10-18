@@ -91,15 +91,15 @@ namespace ETHotfix
 			t.SetResult(task);
 		}
 
-		private static Task<ActorTask> GetAsync(this ActorLocationSender self)
+		private static ETTask<ActorTask> GetAsync(this ActorLocationSender self)
 		{
 			if (self.WaitingTasks.Count > 0)
 			{
 				ActorTask task = self.WaitingTasks.Peek();
-				return Task.FromResult(task);
+				return ETTask.FromResult(task);
 			}
 
-			self.Tcs = new TaskCompletionSource<ActorTask>();
+			self.Tcs = new ETTaskCompletionSource<ActorTask>();
 			return self.Tcs.Task;
 		}
 
@@ -200,13 +200,13 @@ namespace ETHotfix
 		    self.Add(task);
 	    }
 
-		public static Task<IActorLocationResponse> Call(this ActorLocationSender self, IActorLocationRequest request)
+		public static ETTask<IActorLocationResponse> Call(this ActorLocationSender self, IActorLocationRequest request)
 		{
 			if (request == null)
 			{
 				throw new Exception($"actor location call message is null");
 			}
-			TaskCompletionSource<IActorLocationResponse> tcs = new TaskCompletionSource<IActorLocationResponse>();
+			ETTaskCompletionSource<IActorLocationResponse> tcs = new ETTaskCompletionSource<IActorLocationResponse>();
 			ActorTask task = new ActorTask(request, tcs);
 			self.Add(task);
 			return task.Tcs.Task;

@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-
-namespace ETModel
+﻿namespace ETModel
 {
 	public struct ActorTask
 	{
 		public IActorRequest ActorRequest;
 		
-		public TaskCompletionSource<IActorLocationResponse> Tcs;
+		public ETTaskCompletionSource<IActorLocationResponse> Tcs;
 
 		public ActorTask(IActorLocationMessage actorRequest)
 		{
@@ -14,7 +12,7 @@ namespace ETModel
 			this.Tcs = null;
 		}
 		
-		public ActorTask(IActorLocationRequest actorRequest, TaskCompletionSource<IActorLocationResponse> tcs)
+		public ActorTask(IActorLocationRequest actorRequest, ETTaskCompletionSource<IActorLocationResponse> tcs)
 		{
 			this.ActorRequest = actorRequest;
 			this.Tcs = tcs;

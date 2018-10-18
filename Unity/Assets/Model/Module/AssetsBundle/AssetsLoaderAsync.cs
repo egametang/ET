@@ -28,7 +28,7 @@ namespace ETModel
 
 		private AssetBundleRequest request;
 
-		private TaskCompletionSource<bool> tcs;
+		private ETTaskCompletionSource<bool> tcs;
 
 		public void Awake(AssetBundle ab)
 		{
@@ -42,7 +42,7 @@ namespace ETModel
 				return;
 			}
 
-			TaskCompletionSource<bool> t = tcs;
+			ETTaskCompletionSource<bool> t = tcs;
 			t.SetResult(true);
 		}
 
@@ -64,9 +64,9 @@ namespace ETModel
 			return this.request.allAssets;
 		}
 
-		private Task<bool> InnerLoadAllAssetsAsync()
+		private ETTask<bool> InnerLoadAllAssetsAsync()
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource<bool>();
 			this.request = assetBundle.LoadAllAssetsAsync();
 			return this.tcs.Task;
 		}
