@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -55,11 +54,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Model\Base\Async\ETAsyncTaskMethodBuilder.cs" />
-    <Compile Include="Assets\Model\Base\Async\ETAsyncTaskVoidMethodBuilder.cs" />
     <Compile Include="Assets\Model\Base\Async\AsyncMethodBuilderAttribute.cs" />
     <Compile Include="Assets\Model\Base\Async\AsyncUnit.cs" />
     <Compile Include="Assets\Model\Base\Async\CancellationTokenExtensions.cs" />
+    <Compile Include="Assets\Model\Base\Async\ETAsyncTaskMethodBuilder.cs" />
+    <Compile Include="Assets\Model\Base\Async\ETAsyncTaskVoidMethodBuilder.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTask.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskCompletionSource.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskFactory.cs" />

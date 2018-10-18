@@ -43,10 +43,6 @@ namespace ETModel
 
 				Game.Hotfix.GotoHotfix();
 
-				Log.Debug($"111111111111111111111111111111111111111");
-				await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
-				Log.Debug($"111111111111111111111111111111111111112");
-
 				Game.EventSystem.Run(EventIdType.TestHotfixSubscribMonoEvent, "TestHotfixSubscribMonoEvent");
 			}
 			catch (Exception e)

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace ETModel
 {
@@ -7,7 +6,7 @@ namespace ETModel
     {
         public TStateMachine StateMachine;
 
-        [DebuggerHidden]
+        //[DebuggerHidden]
         public void Run()
         {
             StateMachine.MoveNext();

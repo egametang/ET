@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using System.Threading;
 
 namespace ETModel
 {
@@ -30,35 +28,7 @@ namespace ETModel
         }
     }
 
-    public interface IResolvePromise
-    {
-        bool TrySetResult();
-    }
-
-    public interface IResolvePromise<T>
-    {
-        bool TrySetResult(T value);
-    }
-
-    public interface IRejectPromise
-    {
-        bool TrySetException(Exception e);
-    }
-
-    public interface ICancelPromise
-    {
-        bool TrySetCanceled();
-    }
-
-    public interface IPromise<T>: IResolvePromise<T>, IRejectPromise, ICancelPromise
-    {
-    }
-
-    public interface IPromise: IResolvePromise, IRejectPromise, ICancelPromise
-    {
-    }
-
-    public class ETTaskCompletionSource: IAwaiter, IPromise
+    public class ETTaskCompletionSource: IAwaiter
     {
         // State(= AwaiterStatus)
         private const int Pending = 0;
@@ -68,7 +38,7 @@ namespace ETModel
 
         private int state;
         private ExceptionHolder exception;
-        private object continuation; // action or list
+        private Action continuation; // action or list
 
         AwaiterStatus IAwaiter.Status => (AwaiterStatus) state;
 
@@ -95,68 +65,23 @@ namespace ETModel
                     throw new OperationCanceledException();
                 }
                 default:
-                    throw new NotSupportedException("UniTask does not allow call GetResult directly when task not completed. Please use 'await'.");
+                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
             }
         }
 
         void ICriticalNotifyCompletion.UnsafeOnCompleted(Action action)
         {
-            if (Interlocked.CompareExchange(ref continuation, action, null) == null)
+            this.continuation = action;
+            if (state != Pending)
             {
-                if (state != Pending)
-                {
-                    TryInvokeContinuation();
-                }
-            }
-            else
-            {
-                object c = continuation;
-                if (c is Action action1)
-                {
-                    var list = new List<Action>();
-                    list.Add(action1);
-                    list.Add(action);
-                    if (Interlocked.CompareExchange(ref continuation, list, action1) == action1)
-                    {
-                        goto TRYINVOKE;
-                    }
-                }
-
-                var l = (List<Action>) continuation;
-                lock (l)
-                {
-                    l.Add(action);
-                }
-
-                TRYINVOKE:
-                if (state != Pending)
-                {
-                    TryInvokeContinuation();
-                }
+                TryInvokeContinuation();
             }
         }
 
         private void TryInvokeContinuation()
         {
-            object c = Interlocked.Exchange(ref continuation, null);
-            if (c == null)
-            {
-                return;
-            }
-
-            if (c is Action action)
-            {
-                action.Invoke();
-            }
-            else
-            {
-                var l = (List<Action>) c;
-                int cnt = l.Count;
-                for (int i = 0; i < cnt; i++)
-                {
-                    l[i].Invoke();
-                }
-            }
+            this.continuation?.Invoke();
+            this.continuation = null;
         }
 
         public void SetResult()
@@ -181,10 +106,12 @@ namespace ETModel
 
         public bool TrySetResult()
         {
-            if (Interlocked.CompareExchange(ref this.state, Succeeded, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Succeeded;
 
             this.TryInvokeContinuation();
             return true;
@@ -193,10 +120,12 @@ namespace ETModel
 
         public bool TrySetException(Exception e)
         {
-            if (Interlocked.CompareExchange(ref this.state, Faulted, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Faulted;
 
             this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
             this.TryInvokeContinuation();
@@ -206,10 +135,12 @@ namespace ETModel
 
         public bool TrySetCanceled()
         {
-            if (Interlocked.CompareExchange(ref this.state, Canceled, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Canceled;
 
             this.TryInvokeContinuation();
             return true;
@@ -218,10 +149,12 @@ namespace ETModel
 
         public bool TrySetCanceled(OperationCanceledException e)
         {
-            if (Interlocked.CompareExchange(ref this.state, Canceled, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Canceled;
 
             this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
             this.TryInvokeContinuation();
@@ -235,7 +168,7 @@ namespace ETModel
         }
     }
 
-    public class ETTaskCompletionSource<T>: IAwaiter<T>, IPromise<T>
+    public class ETTaskCompletionSource<T>: IAwaiter<T>
     {
         // State(= AwaiterStatus)
         private const int Pending = 0;
@@ -246,7 +179,7 @@ namespace ETModel
         private int state;
         private T value;
         private ExceptionHolder exception;
-        private object continuation; // action or list
+        private Action continuation; // action or list
 
         bool IAwaiter.IsCompleted => state != Pending;
 
@@ -274,67 +207,23 @@ namespace ETModel
                     throw new OperationCanceledException();
                 }
                 default:
-                    throw new NotSupportedException("UniTask does not allow call GetResult directly when task not completed. Please use 'await'.");
+                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
             }
         }
 
         void ICriticalNotifyCompletion.UnsafeOnCompleted(Action action)
         {
-            if (Interlocked.CompareExchange(ref continuation, action, null) == null)
+            this.continuation = action;
+            if (state != Pending)
             {
-                if (state != Pending)
-                {
-                    TryInvokeContinuation();
-                }
-            }
-            else
-            {
-                var c = continuation;
-                if (c is Action action1)
-                {
-                    var list = new List<Action>();
-                    list.Add(action1);
-                    list.Add(action);
-                    if (Interlocked.CompareExchange(ref continuation, list, action1) == action1)
-                    {
-                        goto TRYINVOKE;
-                    }
-                }
-
-                var l = (List<Action>) continuation;
-                lock (l)
-                {
-                    l.Add(action);
-                }
-
-                TRYINVOKE:
-                if (state != Pending)
-                {
-                    TryInvokeContinuation();
-                }
+                TryInvokeContinuation();
             }
         }
 
         private void TryInvokeContinuation()
         {
-            object c = Interlocked.Exchange(ref continuation, null);
-            if (c == null)
-            {
-                return;
-            }
-
-            if (c is Action action)
-            {
-                action.Invoke();
-                return;
-            }
-
-            var l = (List<Action>) c;
-            int cnt = l.Count;
-            for (int i = 0; i < cnt; i++)
-            {
-                l[i].Invoke();
-            }
+            this.continuation?.Invoke();
+            this.continuation = null;
         }
 
         public void SetResult(T result)
@@ -359,10 +248,12 @@ namespace ETModel
 
         public bool TrySetResult(T result)
         {
-            if (Interlocked.CompareExchange(ref this.state, Succeeded, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Succeeded;
 
             this.value = result;
             this.TryInvokeContinuation();
@@ -372,10 +263,12 @@ namespace ETModel
 
         public bool TrySetException(Exception e)
         {
-            if (Interlocked.CompareExchange(ref this.state, Faulted, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Faulted;
 
             this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
             this.TryInvokeContinuation();
@@ -385,10 +278,12 @@ namespace ETModel
 
         public bool TrySetCanceled()
         {
-            if (Interlocked.CompareExchange(ref this.state, Canceled, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Canceled;
 
             this.TryInvokeContinuation();
             return true;
@@ -397,10 +292,12 @@ namespace ETModel
 
         public bool TrySetCanceled(OperationCanceledException e)
         {
-            if (Interlocked.CompareExchange(ref this.state, Canceled, Pending) != Pending)
+            if (this.state != Pending)
             {
                 return false;
             }
+
+            this.state = Canceled;
 
             this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
             this.TryInvokeContinuation();

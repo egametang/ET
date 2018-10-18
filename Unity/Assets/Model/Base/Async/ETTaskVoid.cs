@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace ETModel
@@ -11,7 +10,7 @@ namespace ETModel
         {
         }
 
-        [DebuggerHidden]
+        //[DebuggerHidden]
         public Awaiter GetAwaiter()
         {
             return new Awaiter();
@@ -19,21 +18,21 @@ namespace ETModel
 
         public struct Awaiter: ICriticalNotifyCompletion
         {
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public bool IsCompleted => true;
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public void GetResult()
             {
-                throw new Exception("UniTask can't await, always fire-and-forget. use Forget instead of await.");
+                throw new Exception("ETTask can't await, always fire-and-forget. use Forget instead of await.");
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public void OnCompleted(Action continuation)
             {
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public void UnsafeOnCompleted(Action continuation)
             {
             }

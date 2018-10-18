@@ -5,7 +5,7 @@ namespace ETModel
 {
     public partial struct ETTask
     {
-        private static readonly ETTask CanceledUniTask = new Func<ETTask>(() =>
+        private static readonly ETTask CanceledTask = new Func<ETTask>(() =>
         {
             var promise = new ETTaskCompletionSource<AsyncUnit>();
             promise.TrySetCanceled();
@@ -35,12 +35,12 @@ namespace ETModel
 
         public static ETTask FromCanceled()
         {
-            return CanceledUniTask;
+            return CanceledTask;
         }
 
         public static ETTask<T> FromCanceled<T>()
         {
-            return CanceledUniTaskCache<T>.Task;
+            return CanceledETTaskCache<T>.Task;
         }
 
         public static ETTask FromCanceled(CancellationToken token)
@@ -63,11 +63,11 @@ namespace ETModel
             return new ETTask<T>(factory);
         }
 
-        private static class CanceledUniTaskCache<T>
+        private static class CanceledETTaskCache<T>
         {
             public static readonly ETTask<T> Task;
 
-            static CanceledUniTaskCache()
+            static CanceledETTaskCache()
             {
                 var promise = new ETTaskCompletionSource<T>();
                 promise.TrySetCanceled();

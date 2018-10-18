@@ -7,7 +7,7 @@ namespace ETModel
     {
         private static readonly Action<object> cancellationTokenCallback = Callback;
 
-        public static (ETTask, CancellationTokenRegistration) ToUniTask(this CancellationToken cts)
+        public static (ETTask, CancellationTokenRegistration) ToETTask(this CancellationToken cts)
         {
             if (cts.IsCancellationRequested)
             {
