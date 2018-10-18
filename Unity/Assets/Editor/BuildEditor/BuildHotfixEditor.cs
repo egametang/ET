@@ -12,17 +12,19 @@ namespace ETEditor
         private const string CodeDir = "Assets/Res/Code/";
         private const string HotfixDll = "Unity.Hotfix.dll";
         private const string HotfixPdb = "Unity.Hotfix.pdb";
-        private const string HotfixMdb = "Unity.Hotfix.dll.mdb";
 
         static Startup()
         {
+            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
+            
+#if ILRuntime
             // Copy最新的pdb文件
             string[] pdbDirs = 
             {
-                "Temp/UnityVS_bin/Debug", 
-                "Temp/UnityVS_bin/Release", 
-                "Temp/Debug", 
-                "Temp/Release"
+                "./Temp/UnityVS_bin/Debug", 
+                "./Temp/UnityVS_bin/Release", 
+                "./Temp/bin/Debug", 
+                "./Temp/bin/Release"
             };
 
             DateTime dateTime = DateTime.MinValue;
@@ -48,11 +50,11 @@ namespace ETEditor
                 File.Copy(Path.Combine(newestPdb), Path.Combine(CodeDir, "Hotfix.pdb.bytes"), true);
                 Log.Info($"复制Hotfix.pdb到Res/Code完成");
             }
-            
-            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
-            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixMdb), Path.Combine(CodeDir, "Hotfix.mdb.bytes"), true);
+#else
+            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixPdb), Path.Combine(CodeDir, "Hotfix.pdb.bytes"), true);
+#endif
 
-            Log.Info($"复制Hotfix.dll, Hotfix.mdb到Res/Code完成");
+            Log.Info($"复制Hotfix.dll, Hotfix.pdb到Res/Code完成");
             AssetDatabase.Refresh ();
         }
     }
