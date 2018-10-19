@@ -95,7 +95,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async Task Handle(
+		public static async ETTask Handle(
 				this ActorMessageDispatherComponent self, MailBoxComponent mailBoxComponent, ActorMessageInfo actorMessageInfo)
 		{
 			// 有拦截器使用拦截器处理

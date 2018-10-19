@@ -89,7 +89,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async Task Release(this LockComponent self)
+		public static async ETTask Release(this LockComponent self)
 		{
 			--self.lockCount;
 			if (self.lockCount != 0)

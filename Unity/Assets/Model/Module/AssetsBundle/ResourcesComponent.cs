@@ -347,7 +347,7 @@ namespace ETModel
 		/// </summary>
 		/// <param name="assetBundleName"></param>
 		/// <returns></returns>
-		public async Task LoadBundleAsync(string assetBundleName)
+		public async ETTask LoadBundleAsync(string assetBundleName)
 		{
             assetBundleName = assetBundleName.ToLower();
 			string[] dependencies = AssetBundleHelper.GetSortedDependencies(assetBundleName);
@@ -362,7 +362,7 @@ namespace ETModel
 			}
         }
 
-		public async Task LoadOneBundleAsync(string assetBundleName)
+		public async ETTask LoadOneBundleAsync(string assetBundleName)
 		{
 			ABInfo abInfo;
 			if (this.bundles.TryGetValue(assetBundleName, out abInfo))

@@ -8,7 +8,7 @@ namespace ETHotfix
 	[ActorMessageHandler(AppType.Map)]
 	public class Actor_TransferHandler : AMActorRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>
 	{
-		protected override async Task Run(Unit unit, Actor_TransferRequest message, Action<Actor_TransferResponse> reply)
+		protected override async ETTask Run(Unit unit, Actor_TransferRequest message, Action<Actor_TransferResponse> reply)
 		{
 			Actor_TransferResponse response = new Actor_TransferResponse();
 

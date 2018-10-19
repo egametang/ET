@@ -33,7 +33,7 @@ namespace ETModel
 
 		public UnityWebRequestAsync webRequest;
 
-		public async Task StartAsync()
+		public async ETTask StartAsync()
 		{
 			// 获取远程的Version.txt
 			string versionUrl = "";
@@ -125,7 +125,7 @@ namespace ETModel
 			}
 		}
 
-		public async Task DownloadAsync()
+		public async ETTask DownloadAsync()
 		{
 			if (this.bundles.Count == 0 && this.downloadingBundle == "")
 			{
