@@ -5,27 +5,20 @@ namespace ETModel
 {
     public partial struct ETTask
     {
-        private static readonly ETTask CanceledTask = new Func<ETTask>(() =>
-        {
-            var promise = new ETTaskCompletionSource<AsyncUnit>();
-            promise.TrySetCanceled();
-            return new ETTask(promise);
-        })();
-
         public static ETTask CompletedTask => new ETTask();
 
         public static ETTask FromException(Exception ex)
         {
-            var promise = new ETTaskCompletionSource<AsyncUnit>();
-            promise.TrySetException(ex);
-            return new ETTask(promise);
+            ETTaskCompletionSource tcs = new ETTaskCompletionSource();
+            tcs.TrySetException(ex);
+            return tcs.Task;
         }
 
         public static ETTask<T> FromException<T>(Exception ex)
         {
-            var promise = new ETTaskCompletionSource<T>();
-            promise.TrySetException(ex);
-            return new ETTask<T>(promise);
+            var tcs = new ETTaskCompletionSource<T>();
+            tcs.TrySetException(ex);
+            return tcs.Task;
         }
 
         public static ETTask<T> FromResult<T>(T value)
@@ -35,7 +28,7 @@ namespace ETModel
 
         public static ETTask FromCanceled()
         {
-            return CanceledTask;
+            return CanceledETTaskCache.Task;
         }
 
         public static ETTask<T> FromCanceled<T>()
@@ -45,22 +38,28 @@ namespace ETModel
 
         public static ETTask FromCanceled(CancellationToken token)
         {
-            var promise = new ETTaskCompletionSource<AsyncUnit>();
-            promise.TrySetException(new OperationCanceledException(token));
-            return new ETTask(promise);
+            ETTaskCompletionSource tcs = new ETTaskCompletionSource();
+            tcs.TrySetException(new OperationCanceledException(token));
+            return tcs.Task;
         }
 
         public static ETTask<T> FromCanceled<T>(CancellationToken token)
         {
-            var promise = new ETTaskCompletionSource<T>();
-            promise.TrySetException(new OperationCanceledException(token));
-            return new ETTask<T>(promise);
+            var tcs = new ETTaskCompletionSource<T>();
+            tcs.TrySetException(new OperationCanceledException(token));
+            return tcs.Task;
         }
-
-        /// <summary>shorthand of new UniTask[T](Func[UniTask[T]] factory)</summary>
-        public static ETTask<T> Lazy<T>(Func<ETTask<T>> factory)
+        
+        private static class CanceledETTaskCache
         {
-            return new ETTask<T>(factory);
+            public static readonly ETTask Task;
+
+            static CanceledETTaskCache()
+            {
+                ETTaskCompletionSource tcs = new ETTaskCompletionSource();
+                tcs.TrySetCanceled();
+                Task = tcs.Task;
+            }
         }
 
         private static class CanceledETTaskCache<T>
@@ -69,9 +68,9 @@ namespace ETModel
 
             static CanceledETTaskCache()
             {
-                var promise = new ETTaskCompletionSource<T>();
-                promise.TrySetCanceled();
-                Task = new ETTask<T>(promise);
+                var taskCompletionSource = new ETTaskCompletionSource<T>();
+                taskCompletionSource.TrySetCanceled();
+                Task = taskCompletionSource.Task;
             }
         }
     }

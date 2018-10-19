@@ -4,30 +4,6 @@ using System.Runtime.ExceptionServices;
 
 namespace ETModel
 {
-    internal class ExceptionHolder
-    {
-        private readonly ExceptionDispatchInfo exception;
-        private bool calledGet;
-
-        public ExceptionHolder(ExceptionDispatchInfo exception)
-        {
-            this.exception = exception;
-        }
-
-        public ExceptionDispatchInfo GetException()
-        {
-            if (calledGet)
-            {
-                return this.exception;
-            }
-
-            this.calledGet = true;
-            GC.SuppressFinalize(this);
-
-            return exception;
-        }
-    }
-
     public class ETTaskCompletionSource: IAwaiter
     {
         // State(= AwaiterStatus)
@@ -37,7 +13,7 @@ namespace ETModel
         private const int Canceled = 3;
 
         private int state;
-        private ExceptionHolder exception;
+        private ExceptionDispatchInfo exception;
         private Action continuation; // action or list
 
         AwaiterStatus IAwaiter.Status => (AwaiterStatus) state;
@@ -53,15 +29,13 @@ namespace ETModel
                 case Succeeded:
                     return;
                 case Faulted:
-                    this.exception.GetException().Throw();
+                    this.exception?.Throw();
+                    this.exception = null;
                     return;
                 case Canceled:
                 {
-                    if (this.exception != null)
-                    {
-                        this.exception.GetException().Throw(); // guranteed operation canceled exception.
-                    }
-
+                    this.exception?.Throw(); // guranteed operation canceled exception.
+                    this.exception = null;
                     throw new OperationCanceledException();
                 }
                 default:
@@ -127,7 +101,7 @@ namespace ETModel
 
             this.state = Faulted;
 
-            this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
+            this.exception = ExceptionDispatchInfo.Capture(e);
             this.TryInvokeContinuation();
             return true;
 
@@ -156,7 +130,7 @@ namespace ETModel
 
             this.state = Canceled;
 
-            this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
+            this.exception = ExceptionDispatchInfo.Capture(e);
             this.TryInvokeContinuation();
             return true;
 
@@ -178,13 +152,12 @@ namespace ETModel
 
         private int state;
         private T value;
-        private ExceptionHolder exception;
+        private ExceptionDispatchInfo exception;
         private Action continuation; // action or list
 
         bool IAwaiter.IsCompleted => state != Pending;
 
         public ETTask<T> Task => new ETTask<T>(this);
-        public ETTask UnitTask => new ETTask(this);
 
         AwaiterStatus IAwaiter.Status => (AwaiterStatus) state;
 
@@ -195,15 +168,13 @@ namespace ETModel
                 case Succeeded:
                     return this.value;
                 case Faulted:
-                    this.exception.GetException().Throw();
+                    this.exception?.Throw();
+                    this.exception = null;
                     return default;
                 case Canceled:
                 {
-                    if (this.exception != null)
-                    {
-                        this.exception.GetException().Throw(); // guranteed operation canceled exception.
-                    }
-
+                    this.exception?.Throw(); // guranteed operation canceled exception.
+                    this.exception = null;
                     throw new OperationCanceledException();
                 }
                 default:
@@ -270,7 +241,7 @@ namespace ETModel
 
             this.state = Faulted;
 
-            this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
+            this.exception = ExceptionDispatchInfo.Capture(e);
             this.TryInvokeContinuation();
             return true;
 
@@ -299,7 +270,7 @@ namespace ETModel
 
             this.state = Canceled;
 
-            this.exception = new ExceptionHolder(ExceptionDispatchInfo.Capture(e));
+            this.exception = ExceptionDispatchInfo.Capture(e);
             this.TryInvokeContinuation();
             return true;
 

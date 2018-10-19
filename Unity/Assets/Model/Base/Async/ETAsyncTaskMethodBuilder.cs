@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security;
 
@@ -7,7 +6,7 @@ namespace ETModel
 {
     public struct ETAsyncTaskMethodBuilder
     {
-        private ETTaskCompletionSource promise;
+        private ETTaskCompletionSource tcs;
         private Action moveNext;
 
         // 1. Static Create method.
@@ -24,9 +23,9 @@ namespace ETModel
         {
             get
             {
-                if (promise != null)
+                if (this.tcs != null)
                 {
-                    return promise.Task;
+                    return this.tcs.Task;
                 }
 
                 if (moveNext == null)
@@ -34,8 +33,8 @@ namespace ETModel
                     return ETTask.CompletedTask;
                 }
 
-                this.promise = new ETTaskCompletionSource();
-                return this.promise.Task;
+                this.tcs = new ETTaskCompletionSource();
+                return this.tcs.Task;
             }
         }
 
@@ -43,18 +42,18 @@ namespace ETModel
         //[DebuggerHidden]
         public void SetException(Exception exception)
         {
-            if (promise == null)
+            if (this.tcs == null)
             {
-                promise = new ETTaskCompletionSource();
+                this.tcs = new ETTaskCompletionSource();
             }
 
             if (exception is OperationCanceledException ex)
             {
-                promise.TrySetCanceled(ex);
+                this.tcs.TrySetCanceled(ex);
             }
             else
             {
-                promise.TrySetException(exception);
+                this.tcs.TrySetException(exception);
             }
         }
 
@@ -67,12 +66,12 @@ namespace ETModel
             }
             else
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource();
+                    this.tcs = new ETTaskCompletionSource();
                 }
 
-                promise.TrySetResult();
+                this.tcs.TrySetResult();
             }
         }
 
@@ -84,9 +83,9 @@ namespace ETModel
         {
             if (moveNext == null)
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource(); // built future.
+                    this.tcs = new ETTaskCompletionSource(); // built future.
                 }
 
                 var runner = new MoveNextRunner<TStateMachine>();
@@ -106,9 +105,9 @@ namespace ETModel
         {
             if (moveNext == null)
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource(); // built future.
+                    this.tcs = new ETTaskCompletionSource(); // built future.
                 }
 
                 var runner = new MoveNextRunner<TStateMachine>();
@@ -121,8 +120,7 @@ namespace ETModel
 
         // 7. Start
         //[DebuggerHidden]
-        public void Start<TStateMachine>(ref TStateMachine stateMachine)
-                where TStateMachine : IAsyncStateMachine
+        public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
             stateMachine.MoveNext();
         }
@@ -137,7 +135,7 @@ namespace ETModel
     public struct ETAsyncTaskMethodBuilder<T>
     {
         private T result;
-        private ETTaskCompletionSource<T> promise;
+        private ETTaskCompletionSource<T> tcs;
         private Action moveNext;
 
         // 1. Static Create method.
@@ -154,9 +152,9 @@ namespace ETModel
         {
             get
             {
-                if (promise != null)
+                if (this.tcs != null)
                 {
-                    return new ETTask<T>(promise);
+                    return new ETTask<T>(this.tcs);
                 }
 
                 if (moveNext == null)
@@ -164,8 +162,8 @@ namespace ETModel
                     return new ETTask<T>(result);
                 }
 
-                this.promise = new ETTaskCompletionSource<T>();
-                return new ETTask<T>(this.promise);
+                this.tcs = new ETTaskCompletionSource<T>();
+                return this.tcs.Task;
             }
         }
 
@@ -173,37 +171,37 @@ namespace ETModel
         //[DebuggerHidden]
         public void SetException(Exception exception)
         {
-            if (promise == null)
+            if (this.tcs == null)
             {
-                promise = new ETTaskCompletionSource<T>();
+                this.tcs = new ETTaskCompletionSource<T>();
             }
 
             if (exception is OperationCanceledException ex)
             {
-                promise.TrySetCanceled(ex);
+                this.tcs.TrySetCanceled(ex);
             }
             else
             {
-                promise.TrySetException(exception);
+                this.tcs.TrySetException(exception);
             }
         }
 
         // 4. SetResult
         //[DebuggerHidden]
-        public void SetResult(T result)
+        public void SetResult(T ret)
         {
             if (moveNext == null)
             {
-                this.result = result;
+                this.result = ret;
             }
             else
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource<T>();
+                    this.tcs = new ETTaskCompletionSource<T>();
                 }
 
-                promise.TrySetResult(result);
+                this.tcs.TrySetResult(ret);
             }
         }
 
@@ -215,9 +213,9 @@ namespace ETModel
         {
             if (moveNext == null)
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource<T>(); // built future.
+                    this.tcs = new ETTaskCompletionSource<T>(); // built future.
                 }
 
                 var runner = new MoveNextRunner<TStateMachine>();
@@ -237,9 +235,9 @@ namespace ETModel
         {
             if (moveNext == null)
             {
-                if (promise == null)
+                if (this.tcs == null)
                 {
-                    promise = new ETTaskCompletionSource<T>(); // built future.
+                    this.tcs = new ETTaskCompletionSource<T>(); // built future.
                 }
 
                 var runner = new MoveNextRunner<TStateMachine>();
@@ -252,8 +250,7 @@ namespace ETModel
 
         // 7. Start
         //[DebuggerHidden]
-        public void Start<TStateMachine>(ref TStateMachine stateMachine)
-                where TStateMachine : IAsyncStateMachine
+        public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
             stateMachine.MoveNext();
         }

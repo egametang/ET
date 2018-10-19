@@ -55,16 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Model\Base\Async\AsyncMethodBuilderAttribute.cs" />
-    <Compile Include="Assets\Model\Base\Async\AsyncUnit.cs" />
-    <Compile Include="Assets\Model\Base\Async\CancellationTokenExtensions.cs" />
     <Compile Include="Assets\Model\Base\Async\ETAsyncTaskMethodBuilder.cs" />
-    <Compile Include="Assets\Model\Base\Async\ETAsyncTaskVoidMethodBuilder.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTask.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskCompletionSource.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskFactory.cs" />
-    <Compile Include="Assets\Model\Base\Async\ETTaskVoid.cs" />
     <Compile Include="Assets\Model\Base\Async\IAwaiter.cs" />
-    <Compile Include="Assets\Model\Base\Async\LazyPromise.cs" />
     <Compile Include="Assets\Model\Base\Async\MoveNextRunner.cs" />
     <Compile Include="Assets\Model\Base\DoubleMap.cs" />
     <Compile Include="Assets\Model\Base\Event\Env.cs" />
@@ -158,7 +153,6 @@
     <Compile Include="Assets\Model\Entity\Hotfix.cs" />
     <Compile Include="Assets\Model\Entity\Scene.cs" />
     <Compile Include="Assets\Model\Entity\UnityWebRequestAsync.cs" />
-    <Compile Include="Assets\Model\Entity\WWWAsync.cs" />
     <Compile Include="Assets\Model\Helper\ActionHelper.cs" />
     <Compile Include="Assets\Model\Helper\BundleHelper.cs" />
     <Compile Include="Assets\Model\Helper\GameObjectHelper.cs" />

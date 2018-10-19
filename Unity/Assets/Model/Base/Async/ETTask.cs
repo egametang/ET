@@ -10,20 +10,12 @@ namespace ETModel
     [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
     public partial struct ETTask: IEquatable<ETTask>
     {
-        private static readonly ETTask<AsyncUnit> DefaultAsyncUnitTask = new ETTask<AsyncUnit>(AsyncUnit.Default);
-
         private readonly IAwaiter awaiter;
 
         //[DebuggerHidden]
         public ETTask(IAwaiter awaiter)
         {
             this.awaiter = awaiter;
-        }
-
-        //[DebuggerHidden]
-        public ETTask(Func<ETTask> factory)
-        {
-            this.awaiter = new LazyPromise(factory);
         }
 
         //[DebuggerHidden]
@@ -45,23 +37,6 @@ namespace ETModel
         public Awaiter GetAwaiter()
         {
             return new Awaiter(this);
-        }
-
-        /// <summary>
-        /// returns (bool IsCanceled) instead of throws OperationCanceledException.
-        /// </summary>
-        public ETTask<bool> SuppressCancellationThrow()
-        {
-            AwaiterStatus status = Status;
-            switch (status)
-            {
-                case AwaiterStatus.Succeeded:
-                    return CompletedTasks.False;
-                case AwaiterStatus.Canceled:
-                    return CompletedTasks.True;
-                default:
-                    return new ETTask<bool>(new IsCanceledAwaiter(this.awaiter));
-            }
         }
 
         public bool Equals(ETTask other)
@@ -94,58 +69,6 @@ namespace ETModel
             return this.awaiter == null? "()"
                     : this.awaiter.Status == AwaiterStatus.Succeeded? "()"
                     : "(" + this.awaiter.Status + ")";
-        }
-
-        public static implicit operator ETTask<AsyncUnit>(ETTask task)
-        {
-            if (task.awaiter == null)
-            {
-                return DefaultAsyncUnitTask;
-            }
-
-            if (task.awaiter.IsCompleted)
-            {
-                return DefaultAsyncUnitTask;
-            }
-
-            // UniTask<T> -> UniTask is free but UniTask -> UniTask<T> requires wrapping cost.
-            return new ETTask<AsyncUnit>(new AsyncUnitAwaiter(task.awaiter));
-
-        }
-
-        private class AsyncUnitAwaiter: IAwaiter<AsyncUnit>
-        {
-            private readonly IAwaiter awaiter;
-
-            public AsyncUnitAwaiter(IAwaiter awaiter)
-            {
-                this.awaiter = awaiter;
-            }
-
-            public bool IsCompleted => awaiter.IsCompleted;
-
-            public AwaiterStatus Status => awaiter.Status;
-
-            public AsyncUnit GetResult()
-            {
-                awaiter.GetResult();
-                return AsyncUnit.Default;
-            }
-
-            public void OnCompleted(Action continuation)
-            {
-                awaiter.OnCompleted(continuation);
-            }
-
-            public void UnsafeOnCompleted(Action continuation)
-            {
-                awaiter.UnsafeOnCompleted(continuation);
-            }
-
-            void IAwaiter.GetResult()
-            {
-                awaiter.GetResult();
-            }
         }
 
         private class IsCanceledAwaiter: IAwaiter<bool>
@@ -262,13 +185,6 @@ namespace ETModel
         }
 
         //[DebuggerHidden]
-        public ETTask(Func<ETTask<T>> factory)
-        {
-            this.result = default;
-            this.awaiter = new LazyPromise<T>(factory);
-        }
-
-        //[DebuggerHidden]
         public AwaiterStatus Status => awaiter?.Status ?? AwaiterStatus.Succeeded;
 
         //[DebuggerHidden]
@@ -292,25 +208,6 @@ namespace ETModel
         public Awaiter GetAwaiter()
         {
             return new Awaiter(this);
-        }
-
-        /// <summary>
-        /// returns (bool IsCanceled, T Result) instead of throws OperationCanceledException.
-        /// </summary>
-        public ETTask<(bool IsCanceled, T Result)> SuppressCancellationThrow()
-        {
-            var status = Status;
-            if (status == AwaiterStatus.Succeeded)
-            {
-                return new ETTask<(bool, T)>((false, Result));
-            }
-
-            if (status == AwaiterStatus.Canceled)
-            {
-                return new ETTask<(bool, T)>((true, default));
-            }
-
-            return new ETTask<(bool, T)>(new IsCanceledAwaiter(awaiter));
         }
 
         public bool Equals(ETTask<T> other)
@@ -358,45 +255,6 @@ namespace ETModel
             }
 
             return new ETTask();
-        }
-
-        private class IsCanceledAwaiter: IAwaiter<(bool, T)>
-        {
-            private readonly IAwaiter<T> awaiter;
-
-            public IsCanceledAwaiter(IAwaiter<T> awaiter)
-            {
-                this.awaiter = awaiter;
-            }
-
-            public bool IsCompleted => awaiter.IsCompleted;
-
-            public AwaiterStatus Status => awaiter.Status;
-
-            public (bool, T) GetResult()
-            {
-                if (awaiter.Status == AwaiterStatus.Canceled)
-                {
-                    return (true, default);
-                }
-
-                return (false, awaiter.GetResult());
-            }
-
-            public void OnCompleted(Action continuation)
-            {
-                awaiter.OnCompleted(continuation);
-            }
-
-            public void UnsafeOnCompleted(Action continuation)
-            {
-                awaiter.UnsafeOnCompleted(continuation);
-            }
-
-            void IAwaiter.GetResult()
-            {
-                awaiter.GetResult();
-            }
         }
 
         public struct Awaiter: IAwaiter<T>
