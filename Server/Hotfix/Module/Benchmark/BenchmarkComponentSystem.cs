@@ -24,7 +24,7 @@ namespace ETHotfix
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, ipEndPoint, i);
+					self.TestAsync(networkComponent, ipEndPoint, i).NoAwait();
 				}
 			}
 			catch (Exception e)
@@ -33,7 +33,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async void TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
+		public static async ETVoid TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{

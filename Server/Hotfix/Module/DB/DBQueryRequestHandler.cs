@@ -6,7 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryRequestHandler : AMRpcHandler<DBQueryRequest, DBQueryResponse>
 	{
-		protected override async void Run(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)
+		protected override void Run(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)
 		{
 			DBQueryResponse response = new DBQueryResponse();
 			try

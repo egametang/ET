@@ -6,7 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBSaveBatchRequestHandler : AMRpcHandler<DBSaveBatchRequest, DBSaveBatchResponse>
 	{
-		protected override async void Run(Session session, DBSaveBatchRequest message, Action<DBSaveBatchResponse> reply)
+		protected override void Run(Session session, DBSaveBatchRequest message, Action<DBSaveBatchResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, DBSaveBatchRequest message, Action<DBSaveBatchResponse> reply)
 		{
 			DBSaveBatchResponse response = new DBSaveBatchResponse();
 			try

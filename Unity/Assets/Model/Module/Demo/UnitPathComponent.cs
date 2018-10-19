@@ -39,7 +39,7 @@ namespace ETModel
 			}
 		}
 
-		public async void StartMove(M2C_PathfindingResult message)
+		public async ETVoid StartMove(M2C_PathfindingResult message)
 		{
 			// 取消之前的移动协程
 			this.CancellationTokenSource?.Cancel();

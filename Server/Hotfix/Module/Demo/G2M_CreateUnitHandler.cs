@@ -7,7 +7,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.Map)]
 	public class G2M_CreateUnitHandler : AMRpcHandler<G2M_CreateUnit, M2G_CreateUnit>
 	{
-		protected override async void Run(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)
+		protected override void Run(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)
 		{
 			M2G_CreateUnit response = new M2G_CreateUnit();
 			try

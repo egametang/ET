@@ -8,7 +8,12 @@ namespace ETModel
 {
 	public class Init : MonoBehaviour
 	{
-		private async void Start()
+		private void Start()
+		{
+			this.StartAsync().NoAwait();
+		}
+		
+		private async ETVoid StartAsync()
 		{
 			try
 			{ 

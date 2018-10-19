@@ -22,7 +22,12 @@ namespace ETHotfix
     [ObjectSystem]
     public class ActorLocationSenderStartSystem : StartSystem<ActorLocationSender>
     {
-        public override async void Start(ActorLocationSender self)
+	    public override void Start(ActorLocationSender self)
+	    {
+		    StartAsync(self).NoAwait();
+	    }
+	    
+        public async ETVoid StartAsync(ActorLocationSender self)
         {
             self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
 
@@ -30,7 +35,7 @@ namespace ETHotfix
                     .Get(IdGenerater.GetAppIdFromId(self.ActorId))
                     .GetComponent<InnerConfig>().IPEndPoint;
 
-            self.UpdateAsync();
+            self.UpdateAsync().NoAwait();
         }
     }
 	
@@ -103,7 +108,7 @@ namespace ETHotfix
 			return self.Tcs.Task;
 		}
 
-		public static async void UpdateAsync(this ActorLocationSender self)
+		public static async ETVoid UpdateAsync(this ActorLocationSender self)
 		{
 			try
 			{

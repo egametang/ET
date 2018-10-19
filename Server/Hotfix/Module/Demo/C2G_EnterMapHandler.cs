@@ -7,7 +7,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.Gate)]
 	public class C2G_EnterMapHandler : AMRpcHandler<C2G_EnterMap, G2C_EnterMap>
 	{
-		protected override async void Run(Session session, C2G_EnterMap message, Action<G2C_EnterMap> reply)
+		protected override void Run(Session session, C2G_EnterMap message, Action<G2C_EnterMap> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, C2G_EnterMap message, Action<G2C_EnterMap> reply)
 		{
 			G2C_EnterMap response = new G2C_EnterMap();
 			try

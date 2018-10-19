@@ -26,8 +26,8 @@ namespace ETHotfix
                 await self.Entity.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationTokenSource.Token);
             }
         }
-
-        public static async void MoveTo(this UnitPathComponent self, Vector3 target)
+        
+        public static async ETVoid MoveTo(this UnitPathComponent self, Vector3 target)
         {
             if ((self.Target - target).magnitude < 0.1f)
             {

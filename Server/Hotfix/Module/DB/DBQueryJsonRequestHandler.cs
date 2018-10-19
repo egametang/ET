@@ -7,7 +7,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryJsonRequestHandler : AMRpcHandler<DBQueryJsonRequest, DBQueryJsonResponse>
 	{
-		protected override async void Run(Session session, DBQueryJsonRequest message, Action<DBQueryJsonResponse> reply)
+		protected override void Run(Session session, DBQueryJsonRequest message, Action<DBQueryJsonResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, DBQueryJsonRequest message, Action<DBQueryJsonResponse> reply)
 		{
 			DBQueryJsonResponse response = new DBQueryJsonResponse();
 			try

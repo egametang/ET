@@ -16,7 +16,12 @@ namespace ETModel
 	[ObjectSystem]
 	public class DbTaskQueueStartSystem : StartSystem<DBTaskQueue>
 	{
-		public override async void Start(DBTaskQueue self)
+		public override void Start(DBTaskQueue self)
+		{
+			StartAsync(self).NoAwait();
+		}
+		
+		public async ETVoid StartAsync(DBTaskQueue self)
 		{
 			long instanceId = self.InstanceId;
 			

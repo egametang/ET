@@ -79,7 +79,7 @@ namespace ETModel
 			return instanceId;
 		}
 
-		public async void Lock(long key, long instanceId, int time = 0)
+		public async ETVoid Lock(long key, long instanceId, int time = 0)
 		{
 			if (this.lockDict.ContainsKey(key))
 			{

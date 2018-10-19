@@ -8,7 +8,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.Realm)]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>
 	{
-		protected override async void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
+		protected override void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+
+		private async ETVoid RunAsync(Session session, C2R_Login message, Action<R2C_Login> reply)
 		{
 			R2C_Login response = new R2C_Login();
 			try

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace ETModel
@@ -7,24 +8,24 @@ namespace ETModel
     /// <summary>
     /// Lightweight unity specified task-like object.
     /// </summary>
-    [AsyncMethodBuilder(typeof (ETAsyncTaskMethodBuilder))]
+    [AsyncMethodBuilder(typeof (AsyncETTaskMethodBuilder))]
     public partial struct ETTask: IEquatable<ETTask>
     {
         private readonly IAwaiter awaiter;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public ETTask(IAwaiter awaiter)
         {
             this.awaiter = awaiter;
         }
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public AwaiterStatus Status => awaiter?.Status ?? AwaiterStatus.Succeeded;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public bool IsCompleted => awaiter?.IsCompleted ?? true;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void GetResult()
         {
             if (awaiter != null)
@@ -33,7 +34,7 @@ namespace ETModel
             }
         }
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public Awaiter GetAwaiter()
         {
             return new Awaiter(this);
@@ -71,69 +72,29 @@ namespace ETModel
                     : "(" + this.awaiter.Status + ")";
         }
 
-        private class IsCanceledAwaiter: IAwaiter<bool>
-        {
-            private readonly IAwaiter awaiter;
-
-            public IsCanceledAwaiter(IAwaiter awaiter)
-            {
-                this.awaiter = awaiter;
-            }
-
-            public bool IsCompleted => awaiter.IsCompleted;
-
-            public AwaiterStatus Status => awaiter.Status;
-
-            public bool GetResult()
-            {
-                if (awaiter.Status == AwaiterStatus.Canceled)
-                {
-                    return true;
-                }
-
-                awaiter.GetResult();
-                return false;
-            }
-
-            public void OnCompleted(Action continuation)
-            {
-                awaiter.OnCompleted(continuation);
-            }
-
-            public void UnsafeOnCompleted(Action continuation)
-            {
-                awaiter.UnsafeOnCompleted(continuation);
-            }
-
-            void IAwaiter.GetResult()
-            {
-                awaiter.GetResult();
-            }
-        }
-
         public struct Awaiter: IAwaiter
         {
             private readonly ETTask task;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public Awaiter(ETTask task)
             {
                 this.task = task;
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public bool IsCompleted => task.IsCompleted;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public AwaiterStatus Status => task.Status;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public void GetResult()
             {
                 task.GetResult();
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public void OnCompleted(Action continuation)
             {
                 if (task.awaiter != null)
@@ -146,7 +107,7 @@ namespace ETModel
                 }
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public void UnsafeOnCompleted(Action continuation)
             {
                 if (task.awaiter != null)
@@ -170,27 +131,27 @@ namespace ETModel
         private readonly T result;
         private readonly IAwaiter<T> awaiter;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public ETTask(T result)
         {
             this.result = result;
             this.awaiter = null;
         }
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public ETTask(IAwaiter<T> awaiter)
         {
             this.result = default;
             this.awaiter = awaiter;
         }
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public AwaiterStatus Status => awaiter?.Status ?? AwaiterStatus.Succeeded;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public bool IsCompleted => awaiter?.IsCompleted ?? true;
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public T Result
         {
             get
@@ -204,7 +165,7 @@ namespace ETModel
             }
         }
 
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public Awaiter GetAwaiter()
         {
             return new Awaiter(this);
@@ -261,31 +222,31 @@ namespace ETModel
         {
             private readonly ETTask<T> task;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public Awaiter(ETTask<T> task)
             {
                 this.task = task;
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public bool IsCompleted => task.IsCompleted;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public AwaiterStatus Status => task.Status;
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             void IAwaiter.GetResult()
             {
                 GetResult();
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public T GetResult()
             {
                 return task.Result;
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public void OnCompleted(Action continuation)
             {
                 if (task.awaiter != null)
@@ -298,7 +259,7 @@ namespace ETModel
                 }
             }
 
-            //[DebuggerHidden]
+            [DebuggerHidden]
             public void UnsafeOnCompleted(Action continuation)
             {
                 if (task.awaiter != null)

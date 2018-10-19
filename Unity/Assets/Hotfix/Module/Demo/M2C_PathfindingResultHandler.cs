@@ -12,7 +12,7 @@ namespace ETHotfix
 			
 			UnitPathComponent unitPathComponent = unit.GetComponent<UnitPathComponent>();
 
-			unitPathComponent.StartMove(message);
+			unitPathComponent.StartMove(message).NoAwait();
 
 			GizmosDebug.Instance.Path.Clear();
 			GizmosDebug.Instance.Path.Add(new Vector3(message.X, message.Y, message.Z));

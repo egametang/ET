@@ -28,7 +28,12 @@ namespace ETHotfix
 			this.account = rc.Get<GameObject>("Account");
 		}
 
-		public async void OnLogin()
+		public void OnLogin()
+		{
+			OnLoginAsync().NoAwait();
+		}
+
+		public async ETVoid OnLoginAsync()
 		{
 			try
 			{

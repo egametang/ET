@@ -7,7 +7,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryBatchRequestHandler : AMRpcHandler<DBQueryBatchRequest, DBQueryBatchResponse>
 	{
-		protected override async void Run(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
+		protected override void Run(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
 		{
 			DBQueryBatchResponse response = new DBQueryBatchResponse();
 			try

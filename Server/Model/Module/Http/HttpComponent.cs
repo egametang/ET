@@ -120,7 +120,7 @@ namespace ETModel
 
 				this.listener.Start();
 
-				this.Accept();
+				this.Accept().NoAwait();
 			}
 			catch (HttpListenerException e)
 			{
@@ -174,7 +174,7 @@ namespace ETModel
 			}
 		}
 
-		public async void Accept()
+		public async ETVoid Accept()
 		{
 			long instanceId = this.InstanceId;
 			

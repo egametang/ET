@@ -49,7 +49,7 @@ namespace ETHotfix
 			await session.Call(new DBSaveRequest { Component = component, NeedCache = needCache}, cancellationToken);
 		}
 
-		public static async void SaveLog(this DBProxyComponent self, ComponentWithId component)
+		public static async ETVoid SaveLog(this DBProxyComponent self, ComponentWithId component)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
 			await session.Call(new DBSaveRequest { Component = component,  NeedCache = false, CollectionName = "Log" });

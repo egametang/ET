@@ -49,7 +49,7 @@ namespace ETHotfix
 			}
 			else
 			{
-				self.RequestLock();
+				self.RequestLock().NoAwait();
 				await self.WaitLock();
 			}
 		}
@@ -66,7 +66,7 @@ namespace ETHotfix
 			return tcs.Task;
 		}
 
-		private static async void RequestLock(this LockComponent self)
+		private static async ETVoid RequestLock(this LockComponent self)
 		{
 			try
 			{

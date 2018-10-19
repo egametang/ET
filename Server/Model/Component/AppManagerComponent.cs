@@ -41,7 +41,7 @@ namespace ETModel
 				StartProcess(startConfig.AppId);
 			}
 
-			this.WatchProcessAsync();
+			this.WatchProcessAsync().NoAwait();
 		}
 
 		private void StartProcess(int appId)
@@ -71,7 +71,7 @@ namespace ETModel
 		/// <summary>
 		/// 监控启动的进程,如果进程挂掉了,重新拉起
 		/// </summary>
-		private async void WatchProcessAsync()
+		private async ETVoid WatchProcessAsync()
 		{
 			long instanceId = this.InstanceId;
 			

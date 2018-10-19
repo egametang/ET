@@ -9,7 +9,7 @@ namespace ETModel
 		public void Add(long key, string account)
 		{
 			this.sessionKey.Add(key, account);
-			this.TimeoutRemoveKey(key);
+			this.TimeoutRemoveKey(key).NoAwait();
 		}
 
 		public string Get(long key)
@@ -24,7 +24,7 @@ namespace ETModel
 			this.sessionKey.Remove(key);
 		}
 
-		private async void TimeoutRemoveKey(long key)
+		private async ETVoid TimeoutRemoveKey(long key)
 		{
 			await Game.Scene.GetComponent<TimerComponent>().WaitAsync(20000);
 			this.sessionKey.Remove(key);

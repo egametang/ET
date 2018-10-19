@@ -8,7 +8,7 @@ namespace ETModel
 	{
 		public long Id { get; set; }
 		public long Time { get; set; }
-		public ETTaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource tcs;
 	}
 
 	[ObjectSystem]
@@ -80,7 +80,7 @@ namespace ETModel
 					continue;
 				}
 				this.timers.Remove(timerId);
-				timer.tcs.TrySetResult(true);
+				timer.tcs.SetResult();
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace ETModel
 
 		public ETTask WaitTillAsync(long tillTime, CancellationToken cancellationToken)
 		{
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -105,7 +105,7 @@ namespace ETModel
 
 		public ETTask WaitTillAsync(long tillTime)
 		{
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -118,7 +118,7 @@ namespace ETModel
 
 		public ETTask WaitAsync(long time, CancellationToken cancellationToken)
 		{
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -132,7 +132,7 @@ namespace ETModel
 
 		public ETTask WaitAsync(long time)
 		{
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);

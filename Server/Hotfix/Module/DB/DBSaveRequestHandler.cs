@@ -6,7 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBSaveRequestHandler : AMRpcHandler<DBSaveRequest, DBSaveResponse>
 	{
-		protected override async void Run(Session session, DBSaveRequest message, Action<DBSaveResponse> reply)
+		protected override void Run(Session session, DBSaveRequest message, Action<DBSaveResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		protected async ETVoid RunAsync(Session session, DBSaveRequest message, Action<DBSaveResponse> reply)
 		{
 			DBSaveResponse response = new DBSaveResponse();
 			try

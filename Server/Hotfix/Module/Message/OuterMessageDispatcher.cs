@@ -6,7 +6,12 @@ namespace ETHotfix
 {
 	public class OuterMessageDispatcher: IMessageDispatcher
 	{
-		public async void Dispatch(Session session, ushort opcode, object message)
+		public void Dispatch(Session session, ushort opcode, object message)
+		{
+			DispatchAsync(session, opcode, message).NoAwait();
+		}
+		
+		public async ETVoid DispatchAsync(Session session, ushort opcode, object message)
 		{
 			try
 			{

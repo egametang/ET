@@ -1,24 +1,25 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security;
 
 namespace ETModel
 {
-    public struct ETAsyncTaskMethodBuilder
+    public struct AsyncETTaskMethodBuilder
     {
         private ETTaskCompletionSource tcs;
         private Action moveNext;
 
         // 1. Static Create method.
-        //[DebuggerHidden]
-        public static ETAsyncTaskMethodBuilder Create()
+        [DebuggerHidden]
+        public static AsyncETTaskMethodBuilder Create()
         {
-            ETAsyncTaskMethodBuilder builder = new ETAsyncTaskMethodBuilder();
+            AsyncETTaskMethodBuilder builder = new AsyncETTaskMethodBuilder();
             return builder;
         }
 
         // 2. TaskLike Task property.
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public ETTask Task
         {
             get
@@ -39,7 +40,7 @@ namespace ETModel
         }
 
         // 3. SetException
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetException(Exception exception)
         {
             if (this.tcs == null)
@@ -58,7 +59,7 @@ namespace ETModel
         }
 
         // 4. SetResult
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetResult()
         {
             if (moveNext == null)
@@ -76,7 +77,7 @@ namespace ETModel
         }
 
         // 5. AwaitOnCompleted
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
                 where TAwaiter : INotifyCompletion
                 where TStateMachine : IAsyncStateMachine
@@ -97,7 +98,7 @@ namespace ETModel
         }
 
         // 6. AwaitUnsafeOnCompleted
-        //[DebuggerHidden]
+        [DebuggerHidden]
         [SecuritySafeCritical]
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
                 where TAwaiter : ICriticalNotifyCompletion
@@ -119,14 +120,14 @@ namespace ETModel
         }
 
         // 7. Start
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
             stateMachine.MoveNext();
         }
 
         // 8. SetStateMachine
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetStateMachine(IAsyncStateMachine stateMachine)
         {
         }
@@ -139,7 +140,7 @@ namespace ETModel
         private Action moveNext;
 
         // 1. Static Create method.
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public static ETAsyncTaskMethodBuilder<T> Create()
         {
             var builder = new ETAsyncTaskMethodBuilder<T>();
@@ -147,7 +148,7 @@ namespace ETModel
         }
 
         // 2. TaskLike Task property.
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public ETTask<T> Task
         {
             get
@@ -168,7 +169,7 @@ namespace ETModel
         }
 
         // 3. SetException
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetException(Exception exception)
         {
             if (this.tcs == null)
@@ -187,7 +188,7 @@ namespace ETModel
         }
 
         // 4. SetResult
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetResult(T ret)
         {
             if (moveNext == null)
@@ -206,7 +207,7 @@ namespace ETModel
         }
 
         // 5. AwaitOnCompleted
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
                 where TAwaiter : INotifyCompletion
                 where TStateMachine : IAsyncStateMachine
@@ -227,7 +228,7 @@ namespace ETModel
         }
 
         // 6. AwaitUnsafeOnCompleted
-        //[DebuggerHidden]
+        [DebuggerHidden]
         [SecuritySafeCritical]
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
                 where TAwaiter : ICriticalNotifyCompletion
@@ -249,14 +250,14 @@ namespace ETModel
         }
 
         // 7. Start
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
             stateMachine.MoveNext();
         }
 
         // 8. SetStateMachine
-        //[DebuggerHidden]
+        [DebuggerHidden]
         public void SetStateMachine(IAsyncStateMachine stateMachine)
         {
         }

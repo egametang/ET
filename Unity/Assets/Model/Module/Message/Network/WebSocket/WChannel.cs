@@ -82,8 +82,8 @@ namespace ETModel
             {
                 return;
             }
-            this.StartRecv();
-            this.StartSend();
+            this.StartRecv().NoAwait();
+            this.StartSend().NoAwait();
         }
         
         private WService GetService()
@@ -91,7 +91,7 @@ namespace ETModel
             return (WService)this.service;
         }
 
-        public async void ConnectAsync(string url)
+        public async ETVoid ConnectAsync(string url)
         {
             try
             {
@@ -114,11 +114,11 @@ namespace ETModel
 
             if (this.isConnected)
             {
-                this.StartSend();
+                this.StartSend().NoAwait();
             }
         }
 
-        public async void StartSend()
+        public async ETVoid StartSend()
         {
             if (this.IsDisposed)
             {
@@ -164,7 +164,7 @@ namespace ETModel
             }
         }
 
-        public async void StartRecv()
+        public async ETVoid StartRecv()
         {
             if (this.IsDisposed)
             {

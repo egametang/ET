@@ -30,7 +30,7 @@ namespace ETHotfix
 	{
 		public override void Start(MailBoxComponent self)
 		{
-			self.HandleAsync();
+			self.HandleAsync().NoAwait();
 		}
 	}
 
@@ -74,7 +74,7 @@ namespace ETHotfix
 			return self.Tcs.Task;
 		}
 
-		public static async void HandleAsync(this MailBoxComponent self)
+		public static async ETVoid HandleAsync(this MailBoxComponent self)
 		{
 			ActorMessageDispatherComponent actorMessageDispatherComponent = Game.Scene.GetComponent<ActorMessageDispatherComponent>();
 			

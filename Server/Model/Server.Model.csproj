@@ -20,8 +20,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETAsyncTaskMethodBuilder.cs">
-      <Link>Base\Async\ETAsyncTaskMethodBuilder.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETTaskMethodBuilder.cs">
+      <Link>Base\Async\AsyncETTaskMethodBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs">
+      <Link>Base\Async\AsyncETVoidMethodBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTask.cs">
       <Link>Base\Async\ETTask.cs</Link>
@@ -31,6 +34,9 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskFactory.cs">
       <Link>Base\Async\ETTaskFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETVoid.cs">
+      <Link>Base\Async\ETVoid.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\IAwaiter.cs">
       <Link>Base\Async\IAwaiter.cs</Link>

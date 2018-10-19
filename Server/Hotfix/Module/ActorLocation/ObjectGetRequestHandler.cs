@@ -6,7 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.Location)]
 	public class ObjectGetRequestHandler : AMRpcHandler<ObjectGetRequest, ObjectGetResponse>
 	{
-		protected override async void Run(Session session, ObjectGetRequest message, Action<ObjectGetResponse> reply)
+		protected override void Run(Session session, ObjectGetRequest message, Action<ObjectGetResponse> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		private async ETVoid RunAsync(Session session, ObjectGetRequest message, Action<ObjectGetResponse> reply)
 		{
 			ObjectGetResponse response = new ObjectGetResponse();
 			try
