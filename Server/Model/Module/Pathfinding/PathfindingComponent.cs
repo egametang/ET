@@ -15,7 +15,7 @@ namespace ETModel
             self.AStarConfig.pathProcessor = self.PathProcessor;
             
             // 读取地图数据
-            self.AStarConfig.graphs = DeserializeHelper.Load("./graph.bytes");
+            self.AStarConfig.graphs = DeserializeHelper.Load("../Config/graph.bytes");
         }
     }
     

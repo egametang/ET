@@ -100,6 +100,7 @@
     </Compile>
     <EmbeddedResource Remove="Libs\**" />
     <None Remove="Libs\**" />
+    <None Remove="graph.bytes" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Model\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
@@ -348,10 +349,5 @@
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\ThirdParty\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="graph.bytes">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
