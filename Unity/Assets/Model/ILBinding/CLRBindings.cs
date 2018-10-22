@@ -53,7 +53,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_ResourcesComponent_Binding.Register(app);
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
-            ETModel_Actor_CreateUnits_Binding.Register(app);
             Google_Protobuf_Collections_RepeatedField_1_UnitInfo_Binding.Register(app);
             System_Collections_Generic_IEnumerator_1_UnitInfo_Binding.Register(app);
             ETModel_UnitComponent_Binding.Register(app);
@@ -117,7 +116,6 @@ namespace ILRuntime.Runtime.Generated
             ReferenceCollector_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             ETModel_ActionHelper_Binding.Register(app);
-            ETModel_Actor_TestRequest_Binding.Register(app);
             System_Threading_Tasks_Task_1_IResponse_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.Register(app);
             ETModel_Actor_TransferRequest_Binding.Register(app);

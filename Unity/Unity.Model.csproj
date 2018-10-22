@@ -164,9 +164,7 @@
     <Compile Include="Assets\Model\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Model\ILBinding\CLRBindings.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ActionHelper_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_Actor_CreateUnits_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Actor_Test_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_Actor_TestRequest_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Actor_TransferRequest_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_C2G_EnterMap_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_CameraComponent_Binding.cs" />

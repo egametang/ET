@@ -94,9 +94,9 @@ namespace ETModel {
 
   }
 
-  public partial class Actor_TestRequest : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TestRequest> _parser = new pb::MessageParser<Actor_TestRequest>(() => (Actor_TestRequest)MessagePool.Instance.Fetch(typeof(Actor_TestRequest)));
-    public static pb::MessageParser<Actor_TestRequest> Parser { get { return _parser; } }
+  public partial class C2M_TestRequest : pb::IMessage {
+    private static readonly pb::MessageParser<C2M_TestRequest> _parser = new pb::MessageParser<C2M_TestRequest>(() => (C2M_TestRequest)MessagePool.Instance.Fetch(typeof(C2M_TestRequest)));
+    public static pb::MessageParser<C2M_TestRequest> Parser { get { return _parser; } }
 
     private int rpcId_;
     public int RpcId {
@@ -179,9 +179,9 @@ namespace ETModel {
 
   }
 
-  public partial class Actor_TestResponse : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_TestResponse> _parser = new pb::MessageParser<Actor_TestResponse>(() => (Actor_TestResponse)MessagePool.Instance.Fetch(typeof(Actor_TestResponse)));
-    public static pb::MessageParser<Actor_TestResponse> Parser { get { return _parser; } }
+  public partial class M2C_TestResponse : pb::IMessage {
+    private static readonly pb::MessageParser<M2C_TestResponse> _parser = new pb::MessageParser<M2C_TestResponse>(() => (M2C_TestResponse)MessagePool.Instance.Fetch(typeof(M2C_TestResponse)));
+    public static pb::MessageParser<M2C_TestResponse> Parser { get { return _parser; } }
 
     private int rpcId_;
     public int RpcId {
@@ -731,9 +731,9 @@ namespace ETModel {
 
   }
 
-  public partial class Actor_CreateUnits : pb::IMessage {
-    private static readonly pb::MessageParser<Actor_CreateUnits> _parser = new pb::MessageParser<Actor_CreateUnits>(() => (Actor_CreateUnits)MessagePool.Instance.Fetch(typeof(Actor_CreateUnits)));
-    public static pb::MessageParser<Actor_CreateUnits> Parser { get { return _parser; } }
+  public partial class M2C_CreateUnits : pb::IMessage {
+    private static readonly pb::MessageParser<M2C_CreateUnits> _parser = new pb::MessageParser<M2C_CreateUnits>(() => (M2C_CreateUnits)MessagePool.Instance.Fetch(typeof(M2C_CreateUnits)));
+    public static pb::MessageParser<M2C_CreateUnits> Parser { get { return _parser; } }
 
     private int rpcId_;
     public int RpcId {

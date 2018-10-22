@@ -5,9 +5,9 @@ using Vector3 = UnityEngine.Vector3;
 namespace ETHotfix
 {
 	[MessageHandler]
-	public class Actor_CreateUnitsHandler : AMHandler<Actor_CreateUnits>
+	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
-		protected override void Run(ETModel.Session session, Actor_CreateUnits message)
+		protected override void Run(ETModel.Session session, M2C_CreateUnits message)
 		{	
 			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
 			

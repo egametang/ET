@@ -89,9 +89,9 @@
     <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Hotfix\Module\Config\IConfig.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Actor_CreateUnitsHandler.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\Actor_TestHandler.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\G2C_TestHotfixHandler.cs" />
+    <Compile Include="Assets\Hotfix\Module\Demo\M2C_CreateUnitsHandler.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\M2C_PathfindingResultHandler.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\OperaComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Demo\TestHotfixSubscribMonoEvent_LogString.cs" />
