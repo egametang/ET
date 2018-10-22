@@ -139,7 +139,7 @@ namespace ETHotfix
 			}
 		}
 
-		private static async Task RunTask(this ActorLocationSender self, ActorTask task)
+		private static async ETTask RunTask(this ActorLocationSender self, ActorTask task)
 		{
 			ActorMessageSender actorMessageSender = Game.Scene.GetComponent<ActorMessageSenderComponent>().Get(self.ActorId);
 			IActorResponse response = await actorMessageSender.Call(task.ActorRequest);

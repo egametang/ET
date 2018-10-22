@@ -58,7 +58,7 @@ namespace ETModel
 			this.request = null;
 		}
 
-		public async Task<UnityEngine.Object[]> LoadAllAssetsAsync()
+		public async ETTask<UnityEngine.Object[]> LoadAllAssetsAsync()
 		{
 			await InnerLoadAllAssetsAsync();
 			return this.request.allAssets;

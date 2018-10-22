@@ -12,7 +12,7 @@ namespace ETHotfix
 			session.Send(message);
 		}
 		
-		public static async Task<IActorResponse> Call(this ActorMessageSender self, IActorRequest message)
+		public static async ETTask<IActorResponse> Call(this ActorMessageSender self, IActorRequest message)
 		{
 			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.Address);
 			message.ActorId = self.ActorId;

@@ -55,7 +55,7 @@ namespace ETHotfix
 			}
 		}
 		
-		public static async Task Send(this WebSocketBenchmarkComponent self, Session session, int j)
+		public static async ETTask Send(this WebSocketBenchmarkComponent self, Session session, int j)
 		{
 			try
 			{

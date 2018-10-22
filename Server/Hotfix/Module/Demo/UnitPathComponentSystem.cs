@@ -8,7 +8,7 @@ namespace ETHotfix
 {
     public static class UnitPathComponentHelper
     {
-        public static async Task MoveAsync(this UnitPathComponent self, List<Vector3> path)
+        public static async ETTask MoveAsync(this UnitPathComponent self, List<Vector3> path)
         {
             if (path.Count == 0)
             {

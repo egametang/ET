@@ -235,7 +235,7 @@ namespace ETModel
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
 				object result = resp;
-				if (resp is Task t)
+				if (resp is ETTask t)
 				{
 					await t;
 					result = t.GetType().GetProperty("Result").GetValue(t, null);
