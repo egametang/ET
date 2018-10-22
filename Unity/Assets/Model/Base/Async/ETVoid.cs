@@ -25,6 +25,7 @@ namespace ETModel
             [DebuggerHidden]
             public void GetResult()
             {
+                throw new InvalidOperationException("ETAvoid cant await, use NoWait method instead!");
             }
 
             [DebuggerHidden]
