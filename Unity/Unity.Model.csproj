@@ -295,6 +295,7 @@
     <Compile Include="Assets\Model\Module\Demo\PlayerComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\PlayerFactory.cs" />
     <Compile Include="Assets\Model\Module\Demo\SessionComponent.cs" />
+    <Compile Include="Assets\Model\Module\Demo\TurnComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\Unit.cs" />
     <Compile Include="Assets\Model\Module\Demo\UnitComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\UnitFactory.cs" />

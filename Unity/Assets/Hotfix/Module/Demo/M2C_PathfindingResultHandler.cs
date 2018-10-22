@@ -10,6 +10,8 @@ namespace ETHotfix
 		{
 			Unit unit = ETModel.Game.Scene.GetComponent<UnitComponent>().Get(message.Id);
 			
+			
+			unit.GetComponent<AnimatorComponent>().SetFloatValue("Speed", 5f);
 			UnitPathComponent unitPathComponent = unit.GetComponent<UnitPathComponent>();
 
 			unitPathComponent.StartMove(message).NoAwait();

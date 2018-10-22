@@ -18,6 +18,7 @@ namespace ETModel
 	        unit.GameObject.transform.SetParent(parent.transform, false);
 			unit.AddComponent<AnimatorComponent>();
 	        unit.AddComponent<MoveComponent>();
+	        unit.AddComponent<TurnComponent>();
 	        unit.AddComponent<UnitPathComponent>();
 
             unitComponent.Add(unit);

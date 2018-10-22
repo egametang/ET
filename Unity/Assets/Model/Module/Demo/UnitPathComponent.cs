@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace ETModel
@@ -13,7 +12,7 @@ namespace ETModel
 
 		public CancellationTokenSource CancellationTokenSource;
 		
-		public async Task StartMove(CancellationToken cancellationToken)
+		public async ETTask StartMove(CancellationToken cancellationToken)
 		{
 			for (int i = 0; i < this.Path.Count; ++i)
 			{
@@ -33,8 +32,7 @@ namespace ETModel
 					}
 				}
 
-				MoveComponent moveComponent = this.Entity.GetComponent<MoveComponent>();
-				moveComponent.Turn(v);
+				this.Entity.GetComponent<TurnComponent>().Turn(v);
 				await this.Entity.GetComponent<MoveComponent>().MoveToAsync(v, speed, cancellationToken);
 			}
 		}
