@@ -30,6 +30,11 @@ namespace ETModel
 			this.UnitType = unitType;
 		}
 
+		public override void EndDeSerialize()
+		{
+			Game.EventSystem.Add(this);
+		}
+
 		public override void Dispose()
 		{
 			if (this.IsDisposed)

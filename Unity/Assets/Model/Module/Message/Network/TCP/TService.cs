@@ -24,7 +24,6 @@ namespace ETModel
 		/// </summary>
 		public TService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.AcceptCallback += acceptCallback;
 			
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -39,7 +38,6 @@ namespace ETModel
 
 		public TService()
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 		}
 		
 		public override void Dispose()

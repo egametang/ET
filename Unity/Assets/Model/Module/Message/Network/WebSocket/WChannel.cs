@@ -26,8 +26,6 @@ namespace ETModel
         
         public WChannel(HttpListenerWebSocketContext webSocketContext, AService service): base(service, ChannelType.Accept)
         {
-            this.InstanceId = IdGenerater.GenerateId();
-            
             this.WebSocketContext = webSocketContext;
 
             this.webSocket = webSocketContext.WebSocket;
@@ -40,8 +38,6 @@ namespace ETModel
         
         public WChannel(WebSocket webSocket, AService service): base(service, ChannelType.Connect)
         {
-            this.InstanceId = IdGenerater.GenerateId();
-
             this.webSocket = webSocket;
             
             this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);

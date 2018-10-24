@@ -16,8 +16,6 @@ namespace ETModel
 
         public WService(IEnumerable<string> prefixs, Action<AChannel> acceptCallback)
         {
-            this.InstanceId = IdGenerater.GenerateId();
-
             this.AcceptCallback += acceptCallback;
             
             this.httpListener = new HttpListener();
@@ -27,7 +25,6 @@ namespace ETModel
         
         public WService()
         {
-            this.InstanceId = IdGenerater.GenerateId();
         }
         
         public override AChannel GetChannel(long id)

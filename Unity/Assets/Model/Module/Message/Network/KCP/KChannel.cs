@@ -42,7 +42,6 @@ namespace ETModel
 		// accept
 		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
@@ -69,7 +68,6 @@ namespace ETModel
 		// connect
 		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
