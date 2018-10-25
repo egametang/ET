@@ -1,5 +1,3 @@
-using PF;
-
 namespace PF {
 	/** Restrict suitable nodes by if they have been searched by a FloodPath.
 	 *

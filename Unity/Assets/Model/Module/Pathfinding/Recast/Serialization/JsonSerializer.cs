@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using PF;
-
 #if ASTAR_NO_ZIP
 using Pathfinding.Serialization.Zip;
 #elif NETFX_CORE

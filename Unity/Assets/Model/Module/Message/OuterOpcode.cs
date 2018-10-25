@@ -1,4 +1,3 @@
-using ETModel;
 namespace ETModel
 {
 	[Message(OuterOpcode.Actor_Test)]

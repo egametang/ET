@@ -1,7 +1,3 @@
-using System.Threading;
-using ETModel;
-using PF;
-
 namespace PF {
 	/** Queue of paths to be processed by the system */
 	class ThreadControlQueue 

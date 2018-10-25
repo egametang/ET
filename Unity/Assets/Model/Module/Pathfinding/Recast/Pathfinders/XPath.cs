@@ -1,5 +1,3 @@
-using PF;
-
 namespace PF {
 	/** Extended Path.
 	 * \ingroup paths

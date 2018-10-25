@@ -1,6 +1,4 @@
 #define DECREASE_KEY
-using System.Collections.Generic;
-
 namespace PF {
 	/** Stores temporary node data for a single pathfinding request.
 	 * Every node has one PathNode per thread used.

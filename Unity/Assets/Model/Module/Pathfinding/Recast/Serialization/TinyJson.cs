@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System;
-using PF;
-using Guid = PF.Guid;
 
 #if NETFX_CORE
 using System.Linq;

@@ -1,5 +1,3 @@
-using PF;
-
 namespace PF {
 	/** Holds a coordinate in integers */
 	public struct Int3 : System.IEquatable<Int3> {

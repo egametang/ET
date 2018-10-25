@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
@@ -10,7 +8,7 @@ namespace ETHotfix
 	{
 		public override void Awake(MailBoxComponent self)
 		{
-			self.ActorInterceptType = ActorInterceptType.None;
+			self.MailboxType = MailboxType.MessageDispatcher;
 			self.Queue.Clear();
 		}
 	}
@@ -18,9 +16,9 @@ namespace ETHotfix
 	[ObjectSystem]
 	public class MailBoxComponentAwake1System : AwakeSystem<MailBoxComponent, string>
 	{
-		public override void Awake(MailBoxComponent self, string actorInterceptType)
+		public override void Awake(MailBoxComponent self, string mailboxType)
 		{
-			self.ActorInterceptType = actorInterceptType;
+			self.MailboxType = mailboxType;
 			self.Queue.Clear();
 		}
 	}
@@ -76,7 +74,7 @@ namespace ETHotfix
 
 		public static async ETVoid HandleAsync(this MailBoxComponent self)
 		{
-			ActorMessageDispatherComponent actorMessageDispatherComponent = Game.Scene.GetComponent<ActorMessageDispatherComponent>();
+			MailboxDispatcherComponent mailboxDispatcherComponent = Game.Scene.GetComponent<MailboxDispatcherComponent>();
 			
 			long instanceId = self.InstanceId;
 			
@@ -95,8 +93,8 @@ namespace ETHotfix
 						return;
 					}
 
-					// 根据这个actor的类型分发给相应的ActorHandler处理
-					await actorMessageDispatherComponent.Handle(self, info);
+					// 根据这个mailbox类型分发给相应的处理
+					await mailboxDispatcherComponent.Handle(self, info);
 				}
 				catch (Exception e)
 				{

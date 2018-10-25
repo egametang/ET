@@ -1,7 +1,4 @@
-﻿using System.Net;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace ETModel
+﻿namespace ETModel
 {
 	public class ClientConfig: AConfigComponent
 	{

@@ -1,5 +1,3 @@
-using PF;
-
 namespace PF {
 	/** Returns a path heading away from a specified point to avoid.
 	 * The search will terminate when G \> \a length (passed to the constructor) + FleePath.spread.\n

@@ -1,5 +1,3 @@
-using PF;
-
 namespace PF {
 	/** Transforms to and from world space to a 2D movement plane.
 	 * The transformation is guaranteed to be purely a rotation
