@@ -63,11 +63,12 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
 有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
-[module共享仓库](https://github.com/egametang/ET-Modules)   
+[module共享仓库](https://github.com/egametang/ET-Modules)  
 
 群友分享：  
-[框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
-[ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
+[ET学习笔记系列(咲夜詩写)](https://acgmart.com/unity/)   
+[框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)  
+[ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
 [linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
@@ -82,8 +83,9 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 
 视频教程：  
-[肉饼老师主讲](http://www.taikr.com/my/course/972)   
+[肉饼老师主讲](http://www.taikr.com/my/course/972)  
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
+[ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
   
 相关网站:  
