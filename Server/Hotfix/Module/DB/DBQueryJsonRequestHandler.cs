@@ -17,8 +17,7 @@ namespace ETHotfix
 			DBQueryJsonResponse response = new DBQueryJsonResponse();
 			try
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				List<ComponentWithId> components = await dbCacheComponent.GetJson(message.CollectionName, message.Json);
+				List<ComponentWithId> components = await Game.Scene.GetComponent<DBComponent>().GetJson(message.CollectionName, message.Json);
 				response.Components = components;
 
 				reply(response);

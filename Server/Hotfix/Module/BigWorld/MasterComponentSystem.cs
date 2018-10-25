@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using ETModel;
 
 namespace ETHotfix
@@ -17,7 +15,7 @@ namespace ETHotfix
 			self.ghostsAddress.Remove(address);
 		}
 
-		public static ETTask<bool> Lock(this MasterComponent self, IPEndPoint address)
+		public static ETTask Lock(this MasterComponent self, IPEndPoint address)
 		{
 			if (self.lockedAddress == null)
 			{
@@ -25,7 +23,7 @@ namespace ETHotfix
 				return ETTask.FromResult(true);
 			}
 
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			LockInfo lockInfo = new LockInfo(address, tcs);
 			self.queue.Enqueue(lockInfo);
 			return tcs.Task;
@@ -45,7 +43,7 @@ namespace ETHotfix
 			}
 			LockInfo lockInfo = self.queue.Dequeue();
 			self.lockedAddress = lockInfo.Address;
-			lockInfo.Tcs.SetResult(true);
+			lockInfo.Tcs.SetResult();
 		}
 	}
 }

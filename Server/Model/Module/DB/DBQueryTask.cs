@@ -21,20 +21,12 @@ namespace ETModel
 
 		public override async ETTask Run()
 		{
-			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
-			// 执行查询前先看看cache中是否已经存在
-			ComponentWithId component = dbCacheComponent.GetFromCache(this.CollectionName, this.Id);
-			if (component != null)
-			{
-				this.Tcs.SetResult(component);
-				return;
-			}
 			try
 			{
 				// 执行查询数据库任务
 				IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == this.Id);
-				component = await cursor.FirstOrDefaultAsync();
+				ComponentWithId component = await cursor.FirstOrDefaultAsync();
 				this.Tcs.SetResult(component);
 			}
 			catch (Exception e)

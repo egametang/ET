@@ -16,15 +16,9 @@ namespace ETHotfix
 			DBQueryResponse response = new DBQueryResponse();
 			try
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				ComponentWithId component = await dbCacheComponent.Get(message.CollectionName, message.Id);
+				ComponentWithId component = await Game.Scene.GetComponent<DBComponent>().Get(message.CollectionName, message.Id);
 
 				response.Component = component;
-
-				if (message.NeedCache && component != null)
-				{
-					dbCacheComponent.AddToCache(component, message.CollectionName);
-				}
 
 				reply(response);
 			}

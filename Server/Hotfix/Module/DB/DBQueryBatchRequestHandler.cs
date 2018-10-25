@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ETModel;
 
 namespace ETHotfix
@@ -17,18 +16,8 @@ namespace ETHotfix
 			DBQueryBatchResponse response = new DBQueryBatchResponse();
 			try
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				List<ComponentWithId> components = await dbCacheComponent.GetBatch(message.CollectionName, message.IdList);
-
-				response.Components = components;
-
-				if (message.NeedCache)
-				{
-					foreach (ComponentWithId component in components)
-					{
-						dbCacheComponent.AddToCache(component, message.CollectionName);
-					}
-				}
+				DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
+				response.Components = await dbComponent.GetBatch(message.CollectionName, message.IdList);
 
 				reply(response);
 			}

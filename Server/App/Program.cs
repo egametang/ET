@@ -92,7 +92,6 @@ namespace App
 						
 						//Game.Scene.AddComponent<DBComponent>();
 						//Game.Scene.AddComponent<DBProxyComponent>();
-						//Game.Scene.AddComponent<DBCacheComponent>();
 						
 						// location server需要的组件
 						Game.Scene.AddComponent<LocationComponent>();

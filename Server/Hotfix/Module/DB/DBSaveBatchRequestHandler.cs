@@ -16,22 +16,14 @@ namespace ETHotfix
 			DBSaveBatchResponse response = new DBSaveBatchResponse();
 			try
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
+				DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 
 				if (string.IsNullOrEmpty(message.CollectionName))
 				{
 					message.CollectionName = message.Components[0].GetType().Name;
 				}
 
-				if (message.NeedCache)
-				{
-					foreach (ComponentWithId component in message.Components)
-					{
-						dbCacheComponent.AddToCache(component, message.CollectionName);
-					}
-				}
-
-				await dbCacheComponent.AddBatch(message.Components, message.CollectionName);
+				await dbComponent.AddBatch(message.Components, message.CollectionName);
 
 				reply(response);
 			}

@@ -1,5 +1,4 @@
-﻿using System;
-using ETModel;
+﻿using ETModel;
 
 namespace ETHotfix
 {

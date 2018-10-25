@@ -60,9 +60,8 @@
 	{
 		int32 RpcId = 90;
 
-		bool NeedCache = 1;
-		string CollectionName = 2;
-		ComponentWithId Component = 3;
+		string CollectionName = 1;
+		ComponentWithId Component = 2;
 	}
 
 
@@ -77,9 +76,8 @@
 	{
 		int32 RpcId = 90;
 
-		bool NeedCache = 1;
-		string CollectionName = 2;
-		repeated ComponentWithId Components = 3;
+		string CollectionName = 1;
+		repeated ComponentWithId Components = 2;
 	}
 
 	message DBSaveResponse // IResponse
@@ -94,7 +92,6 @@
 		int32 RpcId = 90;
 		int64 Id = 1;
 		string CollectionName = 2;
-		bool NeedCache = 3;
 	}
 
 	message DBQueryResponse // IResponse
@@ -111,7 +108,6 @@
 		int32 RpcId = 90;
 		string CollectionName = 1;
 		repeated int64 IdList = 2;
-		bool NeedCache = 3;
 	}
 
 	message DBQueryBatchResponse // IResponse

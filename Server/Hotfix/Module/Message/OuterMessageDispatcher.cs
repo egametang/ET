@@ -1,6 +1,5 @@
 ﻿using System;
 using ETModel;
-using Google.Protobuf;
 
 namespace ETHotfix
 {

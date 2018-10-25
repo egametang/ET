@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
@@ -54,14 +52,14 @@ namespace ETHotfix
 			}
 		}
 
-		private static ETTask<bool> WaitLock(this LockComponent self)
+		private static ETTask WaitLock(this LockComponent self)
 		{
 			if (self.status == LockStatus.Locked)
 			{
 				return ETTask.FromResult(true);
 			}
 
-			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			self.queue.Enqueue(tcs);
 			return tcs.Task;
 		}
@@ -77,9 +75,9 @@ namespace ETHotfix
 
 				self.status = LockStatus.Locked;
 
-				foreach (ETTaskCompletionSource<bool> taskCompletionSource in self.queue)
+				foreach (ETTaskCompletionSource taskCompletionSource in self.queue)
 				{
-					taskCompletionSource.SetResult(true);
+					taskCompletionSource.SetResult();
 				}
 				self.queue.Clear();
 			}

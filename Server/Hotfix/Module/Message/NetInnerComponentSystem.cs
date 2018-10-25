@@ -1,5 +1,4 @@
-﻿using System.Net;
-using ETModel;
+﻿using ETModel;
 
 namespace ETHotfix
 {

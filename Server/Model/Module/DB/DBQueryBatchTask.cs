@@ -25,7 +25,6 @@ namespace ETModel
 		
 		public override async ETTask Run()
 		{
-			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 			List<ComponentWithId> result = new List<ComponentWithId>();
 
@@ -34,12 +33,8 @@ namespace ETModel
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					ComponentWithId component = dbCacheComponent.GetFromCache(this.CollectionName, id);
-					if (component == null)
-					{
-						IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id);
-						component = await cursor.FirstOrDefaultAsync();
-					}
+					IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id);
+					ComponentWithId component = await cursor.FirstOrDefaultAsync();
 					
 					if (component == null)
 					{

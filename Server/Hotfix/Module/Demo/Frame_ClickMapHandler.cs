@@ -1,6 +1,5 @@
 ﻿using ETModel;
 using PF;
-using ABPath = ETModel.ABPath;
 
 namespace ETHotfix
 {

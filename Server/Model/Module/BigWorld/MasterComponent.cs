@@ -6,9 +6,9 @@ namespace ETModel
 	public class LockInfo
 	{
 		public IPEndPoint Address;
-		public ETTaskCompletionSource<bool> Tcs;
+		public ETTaskCompletionSource Tcs;
 
-		public LockInfo(IPEndPoint address, ETTaskCompletionSource<bool> tcs)
+		public LockInfo(IPEndPoint address, ETTaskCompletionSource tcs)
 		{
 			this.Address = address;
 			this.Tcs = tcs;
