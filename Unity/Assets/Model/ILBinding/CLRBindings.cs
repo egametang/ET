@@ -58,7 +58,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_UnitComponent_Binding.Register(app);
             ETModel_UnitFactory_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
-            VInt3_Binding.Register(app);
             ETModel_PlayerComponent_Binding.Register(app);
             ETModel_Player_Binding.Register(app);
             ETModel_ComponentWithId_Binding.Register(app);

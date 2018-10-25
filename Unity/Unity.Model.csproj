@@ -90,16 +90,6 @@
     <Compile Include="Assets\Model\Base\IL\ILBindingAttribute.cs" />
     <Compile Include="Assets\Model\Base\Log.cs" />
     <Compile Include="Assets\Model\Base\LogType.cs" />
-    <Compile Include="Assets\Model\Base\Math\AcosLookupTable.cs" />
-    <Compile Include="Assets\Model\Base\Math\Atan2LookupTable.cs" />
-    <Compile Include="Assets\Model\Base\Math\IntMath.cs" />
-    <Compile Include="Assets\Model\Base\Math\SinCosLookupTable.cs" />
-    <Compile Include="Assets\Model\Base\Math\VFactor.cs" />
-    <Compile Include="Assets\Model\Base\Math\VInt.cs" />
-    <Compile Include="Assets\Model\Base\Math\VInt2.cs" />
-    <Compile Include="Assets\Model\Base\Math\VInt3.cs" />
-    <Compile Include="Assets\Model\Base\Math\VLine.cs" />
-    <Compile Include="Assets\Model\Base\Math\VRect.cs" />
     <Compile Include="Assets\Model\Base\MultiMap.cs" />
     <Compile Include="Assets\Model\Base\Object\BaseAttribute.cs" />
     <Compile Include="Assets\Model\Base\Object\Component.cs" />
@@ -273,7 +263,6 @@
     <Compile Include="Assets\Model\ILBinding\UnityEngine_UI_Button_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_UI_InputField_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_Vector3_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\VInt3_Binding.cs" />
     <Compile Include="Assets\Model\Init.cs" />
     <Compile Include="Assets\Model\Module\Actor\IActorMessage.cs" />
     <Compile Include="Assets\Model\Module\ActorLocation\IActorLocationMessage.cs" />
