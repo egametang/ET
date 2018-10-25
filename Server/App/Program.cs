@@ -36,7 +36,7 @@ namespace App
 				Log.Info($"server start........................ {startConfig.AppId} {startConfig.AppType}");
 
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
-				Game.Scene.AddComponent<MessageDispatherComponent>();
+				Game.Scene.AddComponent<MessageDispatcherComponent>();
 
 				// 根据不同的AppType添加不同的组件
 				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();

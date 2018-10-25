@@ -6,7 +6,7 @@
 		{
 			// 普通消息或者是Rpc请求消息
 			MessageInfo messageInfo = new MessageInfo(opcode, message);
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, messageInfo);
+			Game.Scene.GetComponent<MessageDispatcherComponent>().Handle(session, messageInfo);
 		}
 	}
 }

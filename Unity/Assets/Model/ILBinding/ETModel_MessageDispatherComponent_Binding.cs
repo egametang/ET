@@ -21,7 +21,7 @@ namespace ILRuntime.Runtime.Generated
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ETModel.MessageDispatherComponent);
+            Type type = typeof(ETModel.MessageDispatcherComponent);
             args = new Type[]{typeof(System.UInt16), typeof(ETModel.IMHandler)};
             method = type.GetMethod("RegisterHandler", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, RegisterHandler_0);
@@ -44,7 +44,7 @@ namespace ILRuntime.Runtime.Generated
             System.UInt16 @opcode = (ushort)ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ETModel.MessageDispatherComponent instance_of_this_method = (ETModel.MessageDispatherComponent)typeof(ETModel.MessageDispatherComponent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.MessageDispatcherComponent instance_of_this_method = (ETModel.MessageDispatcherComponent)typeof(ETModel.MessageDispatcherComponent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RegisterHandler(@opcode, @handler);

@@ -101,7 +101,7 @@
     <Compile Include="Assets\Hotfix\Module\Message\HotfixOpcode.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\IMHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\MessageDispatherComponent.cs" />
+    <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\MessagePool.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\OpcodeTypeComponent.cs" />
     <Compile Include="Assets\Hotfix\Module\Message\Session.cs" />
