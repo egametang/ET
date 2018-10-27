@@ -39,41 +39,97 @@ namespace ETEditor
 		private BuildOptions buildOptions = BuildOptions.AllowDebugging | BuildOptions.Development;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
-		[MenuItem("Tools/打包工具")]
+	    private string packetageName;
+
+        [MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
 			GetWindow(typeof(BuildEditor));
 		}
 
-		private void OnGUI() 
-		{
-			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
-			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
-			
-			switch (buildType)
-			{
-				case BuildType.Development:
-					this.buildOptions = BuildOptions.Development | BuildOptions.AutoRunPlayer | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
-					break;
-				case BuildType.Release:
-					this.buildOptions = BuildOptions.None;
-					break;
-			}
-			
-			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
+		private void OnGUI()
+        {
+            GUILayout.Label("---------------------------------------- FGUI打包标记");
 
-			if (GUILayout.Button("开始打包"))
-			{
-				if (this.platformType == PlatformType.None)
-				{
-					Log.Error("请选择打包平台!");
-					return;
-				}
-				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB);
-			}
-		}
+            UnityEngine.Object[] array = Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Deep);
+
+            GUILayout.Label("当前选中: " + array.Length + "个物体");
+
+            packetageName = EditorGUILayout.TextField("请输入资源所属包名: ", packetageName);
+
+            if (GUILayout.Button("标记FGUI打包资源"))
+            {
+                if (string.IsNullOrEmpty(packetageName))
+                {
+                    Log.Error("请设置包名!");
+                    return;
+                }
+
+                if (array.Length == 0)
+                {
+                    Log.Error("未选中需要标记的资源!");
+                    return;
+                }
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    string filepath = AssetDatabase.GetAssetPath(array[i]);
+                    AssetImporter import = AssetImporter.GetAtPath(filepath);
+
+                    // 需要区分配置文件和资源文件
+                    if (filepath.EndsWith(".bytes"))
+                    {
+                        import.assetBundleName = packetageName + "_cf" + ".unity3d";
+                    }
+                    else
+                    {
+                        import.assetBundleName = packetageName + "_res" + ".unity3d";
+                    }
+                }
+                Log.Debug("FGUI资源标记完毕!");
+            }
+
+            GUILayout.Label("\n----------------------------------------清除打包标记");
+
+            if (GUILayout.Button("清除全部AB包标记"))
+            {
+                ClearPackingTagAndAssetBundle();
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport | ImportAssetOptions.ForceUpdate);
+                Log.Debug("清除完成!");
+            }
+
+            GUILayout.Label("\n----------------------------------------ET打包工具");
+
+            this.platformType = (PlatformType) EditorGUILayout.EnumPopup(platformType);
+            this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
+            this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
+            this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
+
+            switch (buildType)
+            {
+                case BuildType.Development:
+                    this.buildOptions = BuildOptions.Development | BuildOptions.AutoRunPlayer | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
+                    break;
+                case BuildType.Release:
+                    this.buildOptions = BuildOptions.None;
+                    break;
+            }
+
+            this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField("BuildAssetBundleOptions(可多选): ", this.buildAssetBundleOptions);
+
+            GUILayout.Label("");
+
+            if (GUILayout.Button("开始打包"))
+            {
+                if (this.platformType == PlatformType.None)
+                {
+                    Log.Error("请选择打包平台!");
+                    return;
+                }
+                BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB);
+            }
+        }
 
 		private void SetPackingTagAndAssetBundle()
 		{
@@ -263,7 +319,7 @@ namespace ETEditor
 			List<string> paths = EditorResHelper.GetAllResourcePath("Assets/Res", true);
 			foreach (string pt in paths)
 			{
-				SetBundleAndAtlas(pt, "", true);
+                SetBundleAndAtlas(pt, "", true);
 			}
 		}
 
@@ -311,13 +367,12 @@ namespace ETEditor
 				return;
 			}
 
-			//Log.Info(path);
 			string bundleName = "";
 			if (name != "")
 			{
 				bundleName = $"{name}.unity3d";
 			}
-
+            
 			importer.assetBundleName = bundleName;
 		}
 
@@ -373,8 +428,8 @@ namespace ETEditor
 				{
 					bundleName = $"{name}.unity3d";
 				}
-
-				importer.assetBundleName = bundleName;
+			    //Log.Debug(path + " - " + bundleName);
+                importer.assetBundleName = bundleName;
 			}
 
 			TextureImporter textureImporter = importer as TextureImporter;

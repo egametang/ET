@@ -75,8 +75,6 @@ namespace ETModel
 
 				return instance.Type.FullName;
 			}
-
-
 		}
 	}
 }

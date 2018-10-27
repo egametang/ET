@@ -5,7 +5,8 @@
     {
         public override void Run()
         {
-			Game.Scene.GetComponent<UIComponent>().Create(UIType.UILoading);
+            // 创建FGUI检查更新面板
+            FGUI.Open<UI_CheckUpdate>();
         }
     }
 }

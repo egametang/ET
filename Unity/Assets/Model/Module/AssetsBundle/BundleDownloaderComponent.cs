@@ -129,7 +129,10 @@ namespace ETModel
 		{
 			if (this.bundles.Count == 0 && this.downloadingBundle == "")
 			{
-				return;
+                // 请自行设计刷新UI进度操作 *这边只做测试代码
+			    FGUI.GetShowingUI<UI_CheckUpdate>()?.UpdateState(1, 1, 0, "");
+			    FGUI.GetShowingUI<UI_CheckUpdate>()?.SetState(DownloadState.Done);
+                return;
 			}
 
 			try
@@ -138,7 +141,10 @@ namespace ETModel
 				{
 					if (this.bundles.Count == 0)
 					{
-						break;
+					    // 请自行设计刷新UI进度操作 *这边只做测试代码
+                        FGUI.GetShowingUI<UI_CheckUpdate>()?.UpdateState(1, 1, 0, "");
+					    FGUI.GetShowingUI<UI_CheckUpdate>()?.SetState(DownloadState.Done);
+                        break;
 					}
 
 					this.downloadingBundle = this.bundles.Dequeue();

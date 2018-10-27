@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Init.unity
-    guid: e0d691ac8c1d0454ba07089ea820e18a
+    path: Assets/Scenes/DreamGate.unity
+    guid: f68cede8227ef6846974d8c77a0b704c

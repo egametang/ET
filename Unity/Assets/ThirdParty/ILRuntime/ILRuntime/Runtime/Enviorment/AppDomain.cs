@@ -904,7 +904,7 @@ namespace ILRuntime.Runtime.Enviorment
             ILTypeInstance ins = Instantiate(type, args);
             return (T)ins.CLRInstance;
         }
-
+        
         /// <summary>
         /// Create a instance of the specified type
         /// </summary>

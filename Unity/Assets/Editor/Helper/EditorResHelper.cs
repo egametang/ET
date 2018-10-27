@@ -36,6 +36,7 @@ namespace ETModel
         public static List<string> GetAllResourcePath(string srcPath, bool subDire)
         {
             List<string> paths = new List<string>();
+            
             string[] files = Directory.GetFiles(srcPath);
             foreach (string str in files)
             {
@@ -45,14 +46,17 @@ namespace ETModel
                 }
                 paths.Add(str);
             }
+
             if (subDire)
             {
                 foreach (string subPath in Directory.GetDirectories(srcPath))
                 {
+                    paths.Add(subPath);
                     List<string> subFiles = GetAllResourcePath(subPath, true);
                     paths.AddRange(subFiles);
                 }
             }
+
             return paths;
         }
     }

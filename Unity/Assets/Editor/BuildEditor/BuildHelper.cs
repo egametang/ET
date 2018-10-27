@@ -92,7 +92,8 @@ namespace ETEditor
 			if (isBuildExe)
 			{
 				AssetDatabase.Refresh();
-				string[] levels = {
+				string[] levels = 
+				{
 					"Assets/Scenes/Init.unity",
 				};
 				Log.Info("开始EXE打包");
