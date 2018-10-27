@@ -1,3 +1,31 @@
+# 介绍：
+利用FairyGUI编辑器自带的代码生成功能, 通过直接获取根组件来访问到整个包的全部组件, 免去以往的手动定义Get组件的苦差, 并且配合ET一起使用效率更高更更力了! 这个UI框架是在群友写的基础上进行修改的, 想了解详情的可以到 -> 传送门: https://github.com/egametang/ET-Modules/tree/master/FairyGUI
+
+# 修改内容:
+1. 对类名进行了修改, 一律以FGUI作为开头, 避开了和ET原有Demo里的类名重复冲突
+2. 将FGUIBase基类继承ET的Entity, 使用ET的ComponentFactory.Create<T>进行实例化
+3. 由于继承Entity后, 将可以使用ObjectSystem来注册Awake, Start, Update等等方法
+4. FGUI工具类里增加GetShowingUI和GetUI方法
+5. 创建UI - 将原本传入Type改为传入泛型 ( 如: FGUI.Open<UI_Login>(); )
+6. 对ET的打包工具恢复清除全部AB包标记功能
+7. 对ET的打包工具新增FairyGUI资源打包标记功能
+8. 对FairyGUI从原本dll改为源码并且存放到3rd文件夹内 (方便需求修改源码)
+9. 对ILHelper增加部分FairyGUI的跨域方法
+
+# 注意事项
+1. 建议熟悉FairGUI和ET后再使用
+2. 我用u3d的2018.3Beta版本打包会出现报错(具体原因未知)
+  
+# 使用方法:
+1. 下载项目后直接打开 (我的unity3d版本是2017.4.3f1)
+2. FairyGUI内拼好UI后, 非热更发布到Assets/Resources/FGUI里面, 热更则发布到Asset/Res/FGUI/xxx (注意:AB包的加载和读取请自行实现), 并且勾选上生成代码, 代码发布路径自己选择, 也可以参考我的路径放在View文件夹内方便管理
+3. 代码生成后, 创建逻辑类到Logic文件夹, 继承FGUIBase后在Awake方法里进行初始化设置并且获得刚才FairyGUI自动生成的代码索引 (具体可以参考: UI_Login类)
+4. 完成以上步骤后 就可以开始愉快的撸逻辑了!
+
+作者: 许木大大
+
+#---------------------------------------我是一条分割线------------------------------------------
+
 # [English](https://github.com/egametang/Egametang/blob/master/README.md) 
 
 __讨论QQ群 : 474643097__
