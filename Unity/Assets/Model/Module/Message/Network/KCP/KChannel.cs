@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -39,9 +39,10 @@ namespace ETModel
 
 		private readonly MemoryStream memoryStream;
 
-		// accept
-		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
+        // accept
+        public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
@@ -49,14 +50,11 @@ namespace ETModel
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-			Kcp.KcpSetoutput(
-				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
-			);
+
+            Kcp.KcpSetoutput(
+                this.kcp,
+				Kcp_output
+            );
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -68,6 +66,7 @@ namespace ETModel
 		// connect
 		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
 		{
+			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
@@ -153,17 +152,15 @@ namespace ETModel
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
 			Kcp.KcpSetoutput(
 				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
+				Kcp_output
 			);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
 
 			this.isConnected = true;
+			this.lastRecvTime = this.GetService().TimeNow;
+
 			this.lastRecvTime = this.GetService().TimeNow;
 
 			HandleSend();
@@ -281,15 +278,15 @@ namespace ETModel
 				return;
 			}
 
-			// 超时断开连接
-			//if (timeNow - this.lastRecvTime > 40 * 1000)
-			//{
-			//	this.OnError(ErrorCode.ERR_KcpChannelTimeout);
-			//	return;
-			//}
+            // 超时断开连接
+            if (timeNow - this.lastRecvTime > 40 * 1000)
+            {
+                this.OnError(ErrorCode.ERR_KcpChannelTimeout);
+                return;
+            }
 
-			try
-			{
+            try
+            {
 				Kcp.KcpUpdate(this.kcp, timeNow);
 			}
 			catch (Exception e)
@@ -401,7 +398,14 @@ namespace ETModel
 			}
 		}
 
-		private void KcpSend(byte[] buffers, int length)
+		[AOT.MonoPInvokeCallback(typeof(kcp_output))]
+		public static int Kcp_output(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
+        {
+            KService.Output(bytes, len, user);
+            return len;
+        }
+
+        private void KcpSend(byte[] buffers, int length)
 		{
 			if (this.IsDisposed)
 			{
