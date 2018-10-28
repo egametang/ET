@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -49,14 +49,11 @@ namespace ETModel
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-			Kcp.KcpSetoutput(
-				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
-			);
+
+            Kcp.KcpSetoutput(
+                this.kcp,
+				Kcp_output
+            );
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -153,11 +150,7 @@ namespace ETModel
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
 			Kcp.KcpSetoutput(
 				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
+				Kcp_output
 			);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
@@ -401,7 +394,14 @@ namespace ETModel
 			}
 		}
 
-		private void KcpSend(byte[] buffers, int length)
+		[AOT.MonoPInvokeCallback(typeof(kcp_output))]
+		public static int Kcp_output(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
+        {
+            KService.Output(bytes, len, user);
+            return len;
+        }
+
+        private void KcpSend(byte[] buffers, int length)
 		{
 			if (this.IsDisposed)
 			{
