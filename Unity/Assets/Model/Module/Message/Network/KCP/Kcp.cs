@@ -3,9 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace ETModel
 {
-
-    
-    public delegate int kcp_output(IntPtr buf, int len, IntPtr kcp, IntPtr user);
+    public delegate int KcpOutput(IntPtr buf, int len, IntPtr kcp, IntPtr user);
 
     public class Kcp
     {
@@ -40,7 +38,7 @@ namespace ETModel
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern int ikcp_setmtu(IntPtr kcp, int mtu);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
-        private static extern void ikcp_setoutput(IntPtr kcp, kcp_output output);
+        private static extern void ikcp_setoutput(IntPtr kcp, KcpOutput output);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern void ikcp_update(IntPtr kcp, uint current);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
@@ -152,7 +150,7 @@ namespace ETModel
             return ikcp_setmtu(kcp, mtu);
         }
 
-        public static void KcpSetoutput(IntPtr kcp, kcp_output output)
+        public static void KcpSetoutput(IntPtr kcp, KcpOutput output)
         {
             if (kcp == IntPtr.Zero)
             {

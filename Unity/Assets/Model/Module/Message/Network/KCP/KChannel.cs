@@ -50,10 +50,7 @@ namespace ETModel
 			this.socket = socket;
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
 
-            Kcp.KcpSetoutput(
-                this.kcp,
-				Kcp_output
-            );
+            Kcp.KcpSetoutput(this.kcp, KcpOutput);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -148,10 +145,7 @@ namespace ETModel
 			this.RemoteConn = remoteConn;
 
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-			Kcp.KcpSetoutput(
-				this.kcp,
-				Kcp_output
-			);
+			Kcp.KcpSetoutput(this.kcp, KcpOutput);
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -394,8 +388,10 @@ namespace ETModel
 			}
 		}
 
-		[AOT.MonoPInvokeCallback(typeof(kcp_output))]
-		public static int Kcp_output(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
+#if ENABLE_IL2CPP
+		[AOT.MonoPInvokeCallback(typeof(KcpOutput))]
+#endif
+		public static int KcpOutput(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
         {
             KService.Output(bytes, len, user);
             return len;

@@ -24,9 +24,6 @@ namespace ETModel
 		public Vector3 StartPos;
 
 		public long needTime;
-
-		// 当前的移动速度
-		public float Speed = 5;
 		
 		public ETTaskCompletionSource moveTcs;
 
@@ -74,7 +71,7 @@ namespace ETModel
 				return ETTask.CompletedTask;
 			}
             
-			this.needTime = (long)(distance / this.Speed * 1000);
+			this.needTime = (long)(distance / speedValue * 1000);
 			
 			this.moveTcs = new ETTaskCompletionSource();
 			
