@@ -33,8 +33,6 @@ namespace ETModel
 
 		public ABInfo(string name, AssetBundle ab)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
-			
 			this.Name = name;
 			this.AssetBundle = ab;
 			this.RefCount = 1;

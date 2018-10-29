@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using Microsoft.IO;
 
 namespace ETModel
@@ -24,7 +23,6 @@ namespace ETModel
 		/// </summary>
 		public TService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.AcceptCallback += acceptCallback;
 			
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -39,7 +37,6 @@ namespace ETModel
 
 		public TService()
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 		}
 		
 		public override void Dispose()

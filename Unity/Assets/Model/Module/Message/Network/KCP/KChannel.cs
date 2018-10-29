@@ -42,7 +42,6 @@ namespace ETModel
 		// accept
 		public KChannel(uint localConn, uint remoteConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
@@ -50,14 +49,8 @@ namespace ETModel
 			this.remoteEndPoint = remoteEndPoint;
 			this.socket = socket;
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-			Kcp.KcpSetoutput(
-				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
-			);
+
+			SetOutput();
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -69,7 +62,6 @@ namespace ETModel
 		// connect
 		public KChannel(uint localConn, Socket socket, IPEndPoint remoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
 			this.LocalConn = localConn;
@@ -153,14 +145,7 @@ namespace ETModel
 			this.RemoteConn = remoteConn;
 
 			this.kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-			Kcp.KcpSetoutput(
-				this.kcp,
-				(bytes, len, k, user) =>
-				{
-					KService.Output(bytes, len, user);
-					return len;
-				}
-			);
+			SetOutput();
 			Kcp.KcpNodelay(this.kcp, 1, 10, 1, 1);
 			Kcp.KcpWndsize(this.kcp, 256, 256);
 			Kcp.KcpSetmtu(this.kcp, 470);
@@ -403,7 +388,27 @@ namespace ETModel
 			}
 		}
 
-		private void KcpSend(byte[] buffers, int length)
+		public void SetOutput()
+		{
+#if ENABLE_IL2CPP
+			Kcp.KcpSetoutput(this.kcp, KcpOutput);
+#else
+			// 跟上一行一样写法，pc跟linux会出错
+			Kcp.KcpSetoutput(this.kcp, (buf, i, ptr, user) => KcpOutput(buf, i, ptr, user));
+#endif
+		}
+		
+
+#if ENABLE_IL2CPP
+		[AOT.MonoPInvokeCallback(typeof(kcp_output))]
+#endif
+		public static int KcpOutput(IntPtr bytes, int len, IntPtr kcp, IntPtr user)
+        {
+            KService.Output(bytes, len, user);
+            return len;
+        }
+
+        private void KcpSend(byte[] buffers, int length)
 		{
 			if (this.IsDisposed)
 			{
