@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ETModel
 {
 	[BsonIgnoreExtraElements]
-	public abstract class Component : Object, IDisposable, IComponentSerialize
+	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
 		public long InstanceId { get; private set; }
@@ -84,12 +84,9 @@ namespace ETModel
 			}
 		}
 
-		public virtual void BeginSerialize()
+		public override void EndInit()
 		{
-		}
-
-		public virtual void EndDeSerialize()
-		{
+			Game.EventSystem.Deserialize(this);
 		}
 	}
 }

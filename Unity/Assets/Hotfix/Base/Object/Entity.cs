@@ -243,25 +243,5 @@ namespace ETHotfix
 				Log.Error(e);
 			}
 		}
-
-		public override void BeginSerialize()
-		{
-			base.BeginSerialize();
-
-			foreach (Component component in this.components)
-			{
-				component.BeginSerialize();
-			}
-		}
-
-		public override void EndDeSerialize()
-		{
-			base.EndDeSerialize();
-			
-			foreach (Component component in this.components)
-			{
-				component.EndDeSerialize();
-			}
-		}
 	}
 }

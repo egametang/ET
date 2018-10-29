@@ -101,7 +101,7 @@
     <Compile Include="Assets\Model\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Model\Base\Object\IAwakeSystem.cs" />
     <Compile Include="Assets\Model\Base\Object\IChangeSystem.cs" />
-    <Compile Include="Assets\Model\Base\Object\IComponentSerialize.cs" />
+    <Compile Include="Assets\Model\Base\Object\IDeserializeSystem.cs" />
     <Compile Include="Assets\Model\Base\Object\IDestroySystem.cs" />
     <Compile Include="Assets\Model\Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="Assets\Model\Base\Object\ILoadSystem.cs" />

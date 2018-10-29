@@ -70,7 +70,7 @@
     <Compile Include="Assets\Hotfix\Base\Object\EventSystem.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\IAwakeSystem.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\IChangeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IComponentSerialize.cs" />
+    <Compile Include="Assets\Hotfix\Base\Object\IDeserializeSystem.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\IDestroySystem.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\ILateUpdateSystem.cs" />
     <Compile Include="Assets\Hotfix\Base\Object\ILoadSystem.cs" />

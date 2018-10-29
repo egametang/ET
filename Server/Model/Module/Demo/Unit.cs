@@ -10,7 +10,7 @@ namespace ETModel
 	}
 
 	[ObjectSystem]
-	public class UnitSystem : AwakeSystem<Unit, UnitType>
+	public class UnitAwakeSystem : AwakeSystem<Unit, UnitType>
 	{
 		public override void Awake(Unit self, UnitType a)
 		{
@@ -28,11 +28,6 @@ namespace ETModel
 		public void Awake(UnitType unitType)
 		{
 			this.UnitType = unitType;
-		}
-
-		public override void EndDeSerialize()
-		{
-			Game.EventSystem.Add(this);
 		}
 
 		public override void Dispose()
