@@ -72,6 +72,7 @@ namespace ETModel
 			this.startSystems.Clear();
 			this.loadSystems.Clear();
 			this.changeSystems.Clear();
+			this.deserializeSystems.Clear();
 
 			foreach (Type type in types[typeof(ObjectSystemAttribute)])
 			{
