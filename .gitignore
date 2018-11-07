@@ -47,3 +47,4 @@ _ReSharper.CSharp/
 .DS_Store
 Server/.DS_Store
 /Server/.vscode/
+.objs/
