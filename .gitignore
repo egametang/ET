@@ -48,3 +48,4 @@ _ReSharper.CSharp/
 Server/.DS_Store
 /Server/.vscode/
 .vs/
+.objs/
