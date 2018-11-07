@@ -584,15 +584,15 @@ namespace PF
         {
             return new Vector3(
                                (float)(radians.x * 180 / System.Math.PI),
-                               (float)(radians.x * 180 / System.Math.PI),
-                               (float)(radians.x * 180 / System.Math.PI));
+                               (float)(radians.y * 180 / System.Math.PI),
+                               (float)(radians.z * 180 / System.Math.PI));
         }
         public static Vector3 Deg2Rad(Vector3 degrees)
         {
             return new Vector3(
                                (float)(degrees.x * System.Math.PI / 180),
-                               (float)(degrees.x * System.Math.PI / 180),
-                               (float)(degrees.x * System.Math.PI / 180));
+                               (float)(degrees.y * System.Math.PI / 180),
+                               (float)(degrees.z * System.Math.PI / 180));
         }
         
         public const float CosAngle20 = 0.9396926208f;
