@@ -2,22 +2,22 @@
 
 namespace ETModel
 {
-	public interface IDeserializeSystem
+	public interface ISerializeSystem
 	{
 		Type Type();
 		void Run(object o);
 	}
 
 	/// <summary>
-	/// 反序列化后执行的System
+	/// 列化前执行的System
 	/// 使用<see cref="MessageHandlerAttribute"/>来指定在哪个服务器上运行,如未指定不会运行
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class DeserializeSystem<T> : IDeserializeSystem
+	public abstract class SerializeSystem<T> : ISerializeSystem
 	{
 		public void Run(object o)
 		{
-			this.Deserialize((T)o);
+			this.Serialize((T)o);
 		}
 
 		public Type Type()
@@ -25,6 +25,6 @@ namespace ETModel
 			return typeof(T);
 		}
 
-		public abstract void Deserialize(T self);
+		public abstract void Serialize(T self);
 	}
 }
