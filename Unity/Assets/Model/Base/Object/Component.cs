@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ETModel
@@ -83,6 +83,11 @@ namespace ETModel
 				Game.ObjectPool.Recycle(this);
 			}
 		}
+
+	    public override void BeginInit()
+	    {
+	        Game.EventSystem.Serialize(this);
+	    }
 
 		public override void EndInit()
 		{

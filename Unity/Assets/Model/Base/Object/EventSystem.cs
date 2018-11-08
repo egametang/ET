@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -33,6 +33,8 @@ namespace ETModel
 		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateSystems = new UnOrderMultiMap<Type, ILateUpdateSystem>();
 
 		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
+
+	    private readonly UnOrderMultiMap<Type, ISerializeSystem> serializeSystems = new UnOrderMultiMap<Type, ISerializeSystem>();
 		
 		private readonly UnOrderMultiMap<Type, IDeserializeSystem> deserializeSystems = new UnOrderMultiMap<Type, IDeserializeSystem>();
 
@@ -73,6 +75,7 @@ namespace ETModel
 			this.loadSystems.Clear();
 			this.changeSystems.Clear();
 			this.destroySystems.Clear();
+		    this.serializeSystems.Clear();   
 			this.deserializeSystems.Clear();
 
 			foreach (Type type in types[typeof(ObjectSystemAttribute)])
@@ -109,6 +112,9 @@ namespace ETModel
 					case IChangeSystem changeSystem:
 						this.changeSystems.Add(changeSystem.Type(), changeSystem);
 						break;
+				    case ISerializeSystem serializeSystem:
+				        this.serializeSystems.Add(serializeSystem.Type(), serializeSystem);
+				        break;
 					case IDeserializeSystem deserializeSystem:
 						this.deserializeSystems.Add(deserializeSystem.Type(), deserializeSystem);
 						break;
@@ -197,6 +203,48 @@ namespace ETModel
 			this.allComponents.TryGetValue(id, out component);
 			return component;
 		}
+
+	    public void Serialize(Component component)
+	    {
+	        List<ISerializeSystem> iSerializeSystems = this.serializeSystems[component.GetType()];
+	        if (iSerializeSystems == null)
+	        {
+	            return;
+	        }
+#if SERVER
+		    AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
+#else
+	        AppType appType = AppType.ClientH | AppType.ClientM;
+#endif
+	        foreach (ISerializeSystem serializeSystem in iSerializeSystems)
+	        {
+	            if (serializeSystem == null)
+	            {
+	                continue;
+	            }
+
+	            object[] attrs = serializeSystem.Type().GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+	            if (attrs.Length == 0)
+	            {
+	                continue;
+	            }
+
+	            MessageHandlerAttribute messageHandlerAttribute = attrs[0] as MessageHandlerAttribute;
+	            if (!messageHandlerAttribute.Type.Is(appType))
+	            {
+	                continue;
+	            }
+
+	            try
+	            {
+	                serializeSystem.Run(component);
+	            }
+	            catch (Exception e)
+	            {
+	                Log.Error(e);
+	            }
+	        }
+	    }
 		
 		public void Deserialize(Component component)
 		{
@@ -205,13 +253,29 @@ namespace ETModel
 			{
 				return;
 			}
-
+#if SERVER
+		    AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
+#else
+		    AppType appType = AppType.ClientH | AppType.ClientM;
+#endif
 			foreach (IDeserializeSystem deserializeSystem in iDeserializeSystems)
 			{
 				if (deserializeSystem == null)
 				{
 					continue;
 				}
+
+			    object[] attrs = deserializeSystem.Type().GetCustomAttributes(typeof(MessageHandlerAttribute), false);
+			    if (attrs.Length == 0)
+			    {
+			        continue;
+			    }
+
+			    MessageHandlerAttribute messageHandlerAttribute = attrs[0] as MessageHandlerAttribute;
+			    if (!messageHandlerAttribute.Type.Is(appType))
+			    {
+			        continue;
+			    }
 
 				try
 				{
