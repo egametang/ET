@@ -244,6 +244,14 @@ namespace ETModel
 	                Log.Error(e);
 	            }
 	        }
+
+			if (component is Entity entity)
+	        {
+	            foreach (var cEntity in  entity.GetComponents())
+	            {
+	                Serialize(cEntity);
+	            }
+	        }
 	    }
 		
 		public void Deserialize(Component component)
@@ -286,6 +294,14 @@ namespace ETModel
 					Log.Error(e);
 				}
 			}
+
+			if (component is Entity entity)
+	        {
+	            foreach (var cEntity in  entity.GetComponents())
+	            {
+	                Deserialize(cEntity);
+	            }
+	        }
 		}
 
 		public void Awake(Component component)
