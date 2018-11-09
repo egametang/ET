@@ -122,7 +122,8 @@ namespace App
 						
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
-						
+
+						Game.Scene.AddComponent<ReplComponent>();
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
