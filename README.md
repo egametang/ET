@@ -1,4 +1,4 @@
-# [English](https://github.com/egametang/Egametang/blob/master/README.md) 
+# [English](https://github.com/egametang/Egametang/blob/master/README-ET.md) 
 
 __讨论QQ群 : 474643097__
 
@@ -42,11 +42,15 @@ erlang语言一大优势就是位置透明的消息机制，用户完全不用�
 ### 10.KCP ENET TCP Websocket协议无缝切换  
 ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。框架还支持使用KCP协议，KCP也是可靠UDP协议，据说比ENET性能更好，使用kcp请注意，需要自己加心跳机制，否则20秒没收到包，服务端将断开连接。协议可以无缝切换。  
 ### 11. 3D Recast寻路功能
-可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能  
-### 12.打包工具  
+可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能
+
+### 12. 服务端支持repl，也可以动态执行一段新代码
+这样就可以打印出进程中任何数据，大大简化了服务端查找问题的难度
+
+### 13.打包工具  
 ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
 
-### 13.还有很多很多功能，我就不详细介绍了  
+### 14.还有很多很多功能，我就不详细介绍了  
 a.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼  
 b.使用NLog库，打log及其方便，平常开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了  
 c.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。  
