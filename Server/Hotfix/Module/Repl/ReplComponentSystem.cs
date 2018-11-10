@@ -12,9 +12,11 @@ namespace ETHotfix
     {
         public override void Start(ReplComponent self)
         {
-            self.ScriptOptions = ScriptOptions.Default.WithFilePath(Environment.CurrentDirectory)
-                    .AddReferences(typeof (ReplComponent).Assembly);
-            
+            self.ScriptOptions = ScriptOptions.Default
+                    .WithMetadataResolver(ScriptMetadataResolver.Default.WithBaseDirectory(Environment.CurrentDirectory))
+                    .AddReferences(typeof (ReplComponent).Assembly)
+                    .AddImports("System");
+
             self.Run().NoAwait();
         }
     }
@@ -48,7 +50,7 @@ namespace ETHotfix
                     
                     line = line.Trim();
                     
-                    if (line == "quit")
+                    if (line == "exit")
                     {
                         self.ScriptState = null;
                         continue;
