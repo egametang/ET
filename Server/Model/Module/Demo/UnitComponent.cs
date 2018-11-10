@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 
 namespace ETModel
 {
 	public class UnitComponent: Component
 	{
+		[BsonElement]
+		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
 		private readonly Dictionary<long, Unit> idUnits = new Dictionary<long, Unit>();
 
 		public override void Dispose()

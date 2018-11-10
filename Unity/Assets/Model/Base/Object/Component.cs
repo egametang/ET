@@ -88,5 +88,10 @@ namespace ETModel
 		{
 			Game.EventSystem.Deserialize(this);
 		}
+		
+		public override string ToString()
+		{
+			return MongoHelper.ToJson(this);
+		}
 	}
 }
