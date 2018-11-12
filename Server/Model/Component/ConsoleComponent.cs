@@ -12,11 +12,17 @@ namespace ETModel
             self.Start().NoAwait();
         }
     }
+
+    public static class ConsoleMode
+    {
+        public const string None = "";
+        public const string Repl = "repl";
+    }
     
-    public class ConsoleComponent: Component
+    public class ConsoleComponent: Entity
     {
         public CancellationTokenSource CancellationTokenSource;
-        public string OutputPrefix = "";
+        public string Mode = "";
 
         public async ETVoid Start()
         {
@@ -28,7 +34,7 @@ namespace ETModel
                 {
                     string line = await Task.Factory.StartNew(() =>
                     {
-                        Console.Write($"{OutputPrefix}> ");
+                        Console.Write($"{this.Mode}> ");
                         return Console.In.ReadLine();
                     }, this.CancellationTokenSource.Token);
                     
@@ -36,7 +42,7 @@ namespace ETModel
 
                     switch (line)
                     {
-                        case "reload":
+                        case "reload": 
                             try
                             {
                                 Game.EventSystem.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
@@ -49,49 +55,56 @@ namespace ETModel
                         case "repl":
                             try
                             {
-                                this.OutputPrefix = "repl";
-                                Game.Scene.AddComponent<ReplComponent>();
+                                this.Mode = ConsoleMode.Repl;
+                                this.AddComponent<ReplComponent>();
                             }
                             catch (Exception e)
                             {
                                 Console.WriteLine(e);
                             }
                             break;
-                        default:
-                            ReplComponent replComponent = Game.Scene.GetComponent<ReplComponent>();
-                            if (replComponent == null)
+                        case "exit":
+                            switch (this.Mode)
                             {
-                                Console.WriteLine($"no command: {line}!");
-                                break;
+                                case ConsoleMode.Repl:
+                                    this.RemoveComponent<ReplComponent>();
+                                    break;
                             }
-                            
-                            try
+
+                            this.Mode = ConsoleMode.None;
+                            break;
+                        case "reset":
+                            switch (this.Mode)
                             {
-                                if (line == "exit")
+                                case ConsoleMode.Repl:
+                                    this.RemoveComponent<ReplComponent>();
+                                    this.AddComponent<ReplComponent>();
+                                    break;
+                            }
+                            break;
+                        default:
+                            switch (this.Mode)
+                            {
+                                case ConsoleMode.Repl:
                                 {
-                                    this.OutputPrefix = "";
-                                    Game.Scene.RemoveComponent<ReplComponent>();
+                                    ReplComponent replComponent = this.GetComponent<ReplComponent>();
+                                    if (replComponent == null)
+                                    {
+                                        Console.WriteLine($"no command: {line}!");
+                                        break;
+                                    }
+                            
+                                    try
+                                    {
+                                        await replComponent.Run(line, this.CancellationTokenSource.Token);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine(e);
+                                    }
+
                                     break;
                                 }
-
-                                switch (line)
-                                {
-                                    case "exit":
-                                        this.OutputPrefix = "";
-                                        Game.Scene.RemoveComponent<ReplComponent>();
-                                        break;
-                                    case "reset":
-                                        Game.Scene.RemoveComponent<ReplComponent>();
-                                        Game.Scene.AddComponent<ReplComponent>();
-                                        break;
-                                    default:
-                                        await replComponent.Run(line, this.CancellationTokenSource.Token);
-                                        break;
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
                             }
 
                             break;
