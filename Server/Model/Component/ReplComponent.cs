@@ -22,15 +22,40 @@ namespace ETModel
         public ScriptOptions ScriptOptions;
         public ScriptState ScriptState;
 
-        public async ETTask Run(string line, CancellationToken cancellationToken)
+        public async ETTask<bool> Run(string line, CancellationToken cancellationToken)
         {
-            if (this.ScriptState == null)
+            switch (line)
             {
-                this.ScriptState = await CSharpScript.RunAsync(line, this.ScriptOptions, cancellationToken: cancellationToken);
-            }
-            else
-            {
-                this.ScriptState = await this.ScriptState.ContinueWithAsync(line, cancellationToken: cancellationToken);
+                case "exit":
+                {
+                    this.Entity.RemoveComponent<ReplComponent>();
+                    return true;
+                }
+                case "reset":
+                {
+                    this.ScriptState = null;
+                    return false;
+                }
+                default:
+                {
+                    try
+                    {
+                        if (this.ScriptState == null)
+                        {
+                            this.ScriptState = await CSharpScript.RunAsync(line, this.ScriptOptions, cancellationToken: cancellationToken);
+                        }
+                        else
+                        {
+                            this.ScriptState = await this.ScriptState.ContinueWithAsync(line, cancellationToken: cancellationToken);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
+                    return false;
+                }
             }
         }
 

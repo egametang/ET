@@ -40,6 +40,41 @@ namespace ETModel
                     
                     line = line.Trim();
 
+                    if (this.Mode != "")
+                    {
+                        bool isExited = true;
+                        switch (this.Mode)
+                        {
+                            case ConsoleMode.Repl:
+                            {
+                                ReplComponent replComponent = this.GetComponent<ReplComponent>();
+                                if (replComponent == null)
+                                {
+                                    Console.WriteLine($"no command: {line}!");
+                                    break;
+                                }
+                            
+                                try
+                                {
+                                    isExited = await replComponent.Run(line, this.CancellationTokenSource.Token);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (isExited)
+                        {
+                            this.Mode = "";
+                        }
+
+                        continue;
+                    }
+
                     switch (line)
                     {
                         case "reload": 
@@ -63,50 +98,8 @@ namespace ETModel
                                 Console.WriteLine(e);
                             }
                             break;
-                        case "exit":
-                            switch (this.Mode)
-                            {
-                                case ConsoleMode.Repl:
-                                    this.RemoveComponent<ReplComponent>();
-                                    break;
-                            }
-
-                            this.Mode = ConsoleMode.None;
-                            break;
-                        case "reset":
-                            switch (this.Mode)
-                            {
-                                case ConsoleMode.Repl:
-                                    this.RemoveComponent<ReplComponent>();
-                                    this.AddComponent<ReplComponent>();
-                                    break;
-                            }
-                            break;
                         default:
-                            switch (this.Mode)
-                            {
-                                case ConsoleMode.Repl:
-                                {
-                                    ReplComponent replComponent = this.GetComponent<ReplComponent>();
-                                    if (replComponent == null)
-                                    {
-                                        Console.WriteLine($"no command: {line}!");
-                                        break;
-                                    }
-                            
-                                    try
-                                    {
-                                        await replComponent.Run(line, this.CancellationTokenSource.Token);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine(e);
-                                    }
-
-                                    break;
-                                }
-                            }
-
+                            Console.WriteLine($"no such command: {line}");
                             break;
                     }
                 }
