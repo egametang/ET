@@ -4,21 +4,21 @@ using PF;
 namespace ETModel
 {
     [ObjectSystem]
-    public class ABPathAwakeSystem : AwakeSystem<ABPath, Vector3, Vector3>
+    public class ABPathAwakeSystem : AwakeSystem<ABPathWrap, Vector3, Vector3>
     {
-        public override void Awake(ABPath self, Vector3 start, Vector3 end)
+        public override void Awake(ABPathWrap self, Vector3 start, Vector3 end)
         {
             self.Awake(start, end);
         }
     }
     
-    public class ABPath: Component
+    public class ABPathWrap: Component
     {
-        public Path Path { get; private set; }
+        public ABPath Path { get; private set; }
 
         public void Awake(Vector3 start, Vector3 end)
         {
-            this.Path = PF.ABPath.Construct(start, end);
+            this.Path = ABPath.Construct(start, end);
             this.Path.Claim(this);
         }
 

@@ -468,11 +468,9 @@
     <Compile Include="Assets\Model\Module\UI\UIType.cs" />
     <Compile Include="Assets\Model\Other\AppType.cs" />
     <Compile Include="Assets\Model\Other\Define.cs" />
-    <Compile Include="Assets\Model\Other\ECSView.cs" />
     <Compile Include="Assets\Model\Other\GizmosDebug.cs" />
     <Compile Include="Assets\Model\Other\IInstanceMethod.cs" />
     <Compile Include="Assets\Model\Other\ILMethod.cs" />
-    <Compile Include="Assets\Model\Other\MonoMethod.cs" />
     <Compile Include="Assets\Model\Other\MotionType.cs" />
     <Compile Include="Assets\Model\Other\ReferenceCollector.cs" />
     <Compile Include="Assets\Model\UI\UILoading\Component\UILoadingComponent.cs" />
