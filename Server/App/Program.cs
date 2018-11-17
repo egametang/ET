@@ -28,10 +28,10 @@ namespace App
 
 				IdGenerater.AppId = options.AppId;
 
-				LogManager.Configuration.Variables["appType"] = startConfig.AppType.ToString();
-				LogManager.Configuration.Variables["appId"] = startConfig.AppId.ToString();
-				LogManager.Configuration.Variables["appTypeFormat"] = $"{startConfig.AppType,-8}";
-				LogManager.Configuration.Variables["appIdFormat"] = $"{startConfig.AppId:D3}";
+				LogManager.Configuration.Variables["appType"] = $"{startConfig.AppType}";
+				LogManager.Configuration.Variables["appId"] = $"{startConfig.AppId}";
+				LogManager.Configuration.Variables["appTypeFormat"] = $"{startConfig.AppType, -8}";
+				LogManager.Configuration.Variables["appIdFormat"] = $"{startConfig.AppId:0000}";
 
 				Log.Info($"server start........................ {startConfig.AppId} {startConfig.AppType}");
 
