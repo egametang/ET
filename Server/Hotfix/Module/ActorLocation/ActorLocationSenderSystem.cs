@@ -21,7 +21,7 @@ namespace ETHotfix
     {
 	    public override void Start(ActorLocationSender self)
 	    {
-		    StartAsync(self).NoAwait();
+		    StartAsync(self).Coroutine();
 	    }
 	    
         public async ETVoid StartAsync(ActorLocationSender self)
@@ -32,7 +32,7 @@ namespace ETHotfix
                     .Get(IdGenerater.GetAppIdFromId(self.ActorId))
                     .GetComponent<InnerConfig>().IPEndPoint;
 
-            self.UpdateAsync().NoAwait();
+            self.UpdateAsync().Coroutine();
         }
     }
 	

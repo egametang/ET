@@ -7,7 +7,7 @@ namespace ETModel
     [AsyncMethodBuilder(typeof(AsyncETVoidMethodBuilder))]
     public struct ETVoid
     {
-        public void NoAwait()
+        public void Coroutine()
         {
         }
 

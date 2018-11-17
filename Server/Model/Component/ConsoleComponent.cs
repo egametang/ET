@@ -9,7 +9,7 @@ namespace ETModel
     {
         public override void Start(ConsoleComponent self)
         {
-            self.Start().NoAwait();
+            self.Start().Coroutine();
         }
     }
 

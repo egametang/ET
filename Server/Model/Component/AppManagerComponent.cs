@@ -41,7 +41,7 @@ namespace ETModel
 				StartProcess(startConfig.AppId);
 			}
 
-			this.WatchProcessAsync().NoAwait();
+			this.WatchProcessAsync().Coroutine();
 		}
 
 		private void StartProcess(int appId)

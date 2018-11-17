@@ -10,7 +10,7 @@ namespace ETModel
 	{
 		private void Start()
 		{
-			this.StartAsync().NoAwait();
+			this.StartAsync().Coroutine();
 		}
 		
 		private async ETVoid StartAsync()

@@ -31,7 +31,7 @@ namespace ETHotfix
 
 		private void EnterMap()
 		{
-			EnterMapAsync().NoAwait();
+			EnterMapAsync().Coroutine();
 		}
 		
 		private async ETVoid EnterMapAsync()

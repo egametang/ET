@@ -9,7 +9,7 @@ namespace ETHotfix
 	{
 		protected override void Run(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)
 		{
-			RunAsync(session, message, reply).NoAwait();
+			RunAsync(session, message, reply).Coroutine();
 		}
 		
 		protected async ETVoid RunAsync(Session session, G2M_CreateUnit message, Action<M2G_CreateUnit> reply)

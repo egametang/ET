@@ -33,6 +33,10 @@ namespace ETModel
                 awaiter.GetResult();
             }
         }
+        
+        public void Coroutine()
+        {
+        }
 
         [DebuggerHidden]
         public Awaiter GetAwaiter()
@@ -163,6 +167,10 @@ namespace ETModel
 
                 return this.awaiter.GetResult();
             }
+        }
+        
+        public void Coroutine()
+        {
         }
 
         [DebuggerHidden]

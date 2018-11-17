@@ -30,7 +30,7 @@ namespace ETHotfix
 
 		public void OnLogin()
 		{
-			OnLoginAsync().NoAwait();
+			OnLoginAsync().Coroutine();
 		}
 
 		public async ETVoid OnLoginAsync()

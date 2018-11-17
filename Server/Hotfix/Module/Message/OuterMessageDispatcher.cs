@@ -7,7 +7,7 @@ namespace ETHotfix
 	{
 		public void Dispatch(Session session, ushort opcode, object message)
 		{
-			DispatchAsync(session, opcode, message).NoAwait();
+			DispatchAsync(session, opcode, message).Coroutine();
 		}
 		
 		public async ETVoid DispatchAsync(Session session, ushort opcode, object message)

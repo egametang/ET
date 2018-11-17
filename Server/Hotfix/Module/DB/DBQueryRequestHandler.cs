@@ -8,7 +8,7 @@ namespace ETHotfix
 	{
 		protected override void Run(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)
 		{
-			RunAsync(session, message, reply).NoAwait();
+			RunAsync(session, message, reply).Coroutine();
 		}
 		
 		protected async ETVoid RunAsync(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)

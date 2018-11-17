@@ -23,7 +23,7 @@ namespace ETHotfix
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, ipEndPoint, i).NoAwait();
+					self.TestAsync(networkComponent, ipEndPoint, i).Coroutine();
 				}
 			}
 			catch (Exception e)
