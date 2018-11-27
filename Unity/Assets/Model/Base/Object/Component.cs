@@ -138,7 +138,11 @@ namespace ETModel
 			else
 			{
 #if !SERVER
-				UnityEngine.Object.Destroy(this.GameObject);
+
+				if (this.GameObject != null)
+				{
+					UnityEngine.Object.Destroy(this.GameObject);
+				}
 #endif
 			}
 		}
