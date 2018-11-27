@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
+#if !SERVER
+using UnityEngine;
+#endif
 
 namespace ETModel
 {
@@ -10,21 +13,17 @@ namespace ETModel
 	{
 		[BsonElement("C")]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components;
+		private HashSet<Component> components = new HashSet<Component>();
 
 		[BsonIgnore]
-		private Dictionary<Type, Component> componentDict;
+		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		public Entity()
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		protected Entity(long id): base(id)
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()
@@ -62,10 +61,6 @@ namespace ETModel
 			
 			component.Parent = this;
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -79,10 +74,6 @@ namespace ETModel
 
 			Component component = ComponentFactory.CreateWithParent(type, this);
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -97,10 +88,6 @@ namespace ETModel
 
 			K component = ComponentFactory.CreateWithParent<K>(this);
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -115,10 +102,6 @@ namespace ETModel
 
 			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -133,10 +116,6 @@ namespace ETModel
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -151,10 +130,6 @@ namespace ETModel
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
@@ -172,7 +147,6 @@ namespace ETModel
 				return;
 			}
 
-			this.components.Remove(component);
 			this.componentDict.Remove(type);
 
 			component.Dispose();
@@ -190,7 +164,6 @@ namespace ETModel
 				return;
 			}
 
-			this.components?.Remove(component);
 			this.componentDict.Remove(type);
 
 			component.Dispose();
@@ -219,6 +192,21 @@ namespace ETModel
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
+		}
+
+		public override void BeginInit()
+		{
+			base.BeginInit();
+
+			this.components.Clear();
+			
+			foreach (var kv in this.componentDict)
+			{
+				if (kv.Value is ISerializeToEntity)
+				{
+					this.components.Add(kv.Value);
+				}
+			}
 		}
 
 		public override void EndInit()

@@ -15,7 +15,24 @@ namespace ETHotfix
 	{
 		public static SessionComponent Instance;
 
-		public Session Session;
+		private Session session;
+
+		public Session Session
+		{
+			get
+			{
+				return this.session;
+			}
+			set
+			{
+				this.session = value;
+				
+				if (this.session != null)
+				{
+					this.session.Parent = this;
+				}
+			}
+		}
 
 		public void Awake()
 		{

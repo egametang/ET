@@ -42,6 +42,7 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=EE38E3D2_002D3D2A_002D4061_002DBD50_002DAE8568126C7D_002Fd_003AEntity_002Fd_003AConfig_002Ff_003AStartConfig_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=EE38E3D2_002D3D2A_002D4061_002DBD50_002DAE8568126C7D_002Fd_003AModule_002Fd_003AMessage_002Ff_003AAMRpcHandler_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=EE38E3D2_002D3D2A_002D4061_002DBD50_002DAE8568126C7D_002Fd_003AModule_002Fd_003AMessage_002Ff_003ANetInnerComponent_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">VISIBLE_FILES</s:String>
 	
 	
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=EnforceForeachStatementBraces/@EntryIndexedValue">HINT</s:String>

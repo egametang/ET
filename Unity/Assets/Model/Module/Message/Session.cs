@@ -47,6 +47,7 @@ namespace ETModel
 		public void Awake(AChannel aChannel)
 		{
 			this.channel = aChannel;
+			this.channel.Parent = this;
 			this.requestCallback.Clear();
 			long id = this.Id;
 			channel.ErrorCallback += (c, e) =>

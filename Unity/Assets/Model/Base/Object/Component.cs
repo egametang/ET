@@ -1,5 +1,9 @@
 ﻿using System;
+using ETModel;
 using MongoDB.Bson.Serialization.Attributes;
+#if UNITY_EDITOR
+using UnityEngine;
+#endif
 
 namespace ETModel
 {
@@ -7,7 +11,12 @@ namespace ETModel
 	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
-		public long InstanceId { get; private set; }
+		public long InstanceId { get; protected set; }
+		
+#if !SERVER
+		[BsonIgnore]
+		public GameObject GameObject { get; protected set; }
+#endif
 
 		[BsonIgnore]
 		private bool isFromPool;
@@ -28,8 +37,10 @@ namespace ETModel
 					return;
 				}
 
-				this.InstanceId = IdGenerater.GenerateId();
-				Game.EventSystem.Add(this);
+				if (this.InstanceId == 0)
+				{
+					this.InstanceId = IdGenerater.GenerateId();
+				}
 			}
 		}
 
@@ -41,9 +52,41 @@ namespace ETModel
 				return this.InstanceId == 0;
 			}
 		}
+
+		private Component parent;
 		
 		[BsonIgnore]
-		public Component Parent { get; set; }
+		public Component Parent
+		{
+			get
+			{
+				return this.parent;
+			}
+			set
+			{
+				this.parent = value;
+
+#if !SERVER
+				if (this.parent == null)
+				{
+					this.GameObject.transform.SetParent(GameObject.Find("/Global").transform, false);
+					return;
+				}
+
+				if (this.GameObject == null)
+				{
+					return;
+				}
+
+				if (this.parent.GameObject == null)
+				{
+					return;
+				}
+
+				this.GameObject.transform.SetParent(this.parent.GameObject.transform, false);
+#endif
+			} 
+		}
 
 		public T GetParent<T>() where T : Component
 		{
@@ -62,7 +105,17 @@ namespace ETModel
 		protected Component()
 		{
 			this.InstanceId = IdGenerater.GenerateId();
+#if !SERVER
+			if (!this.GetType().IsDefined(typeof(HideInHierarchy), true))
+			{
+				this.GameObject = new GameObject();
+				this.GameObject.name = this.GetType().Name;
+				this.GameObject.layer = LayerNames.GetLayerInt(LayerNames.HIDDEN);
+				this.GameObject.AddComponent<ComponentView>().Component = this;
+			}
+#endif
 		}
+
 
 		public virtual void Dispose()
 		{
@@ -81,6 +134,12 @@ namespace ETModel
 			if (this.IsFromPool)
 			{
 				Game.ObjectPool.Recycle(this);
+			}
+			else
+			{
+#if !SERVER
+				UnityEngine.Object.Destroy(this.GameObject);
+#endif
 			}
 		}
 
