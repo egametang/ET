@@ -45,5 +45,18 @@ namespace ETHotfix
 			}
 			queue.Enqueue(obj);
 		}
+		
+		public void Clear()
+		{
+			foreach (var kv in this.dictionary)
+			{
+				foreach (Component component in kv.Value)
+				{
+					component.IsFromPool = false;
+					component.Dispose();
+				}
+			}
+			this.dictionary.Clear();
+		}
 	}
 }
