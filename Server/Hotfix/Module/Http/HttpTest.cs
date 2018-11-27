@@ -35,7 +35,7 @@ namespace ETHotfix
 		}
 
 		[Get] // url-> /GetRechargeRecord
-		public async Task<HttpResult> GetRechargeRecord(long id)
+		public async ETTask<HttpResult> GetRechargeRecord(long id)
 		{
 			// var db = Game.Scene.GetComponent<DBProxyComponent>();
 

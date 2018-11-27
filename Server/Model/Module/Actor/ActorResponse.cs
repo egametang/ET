@@ -4,7 +4,7 @@
 	/// actor RPC消息响应
 	/// </summary>
 	[Message(Opcode.ActorResponse)]
-	public class ActorResponse : IActorResponse
+	public class ActorResponse : IActorLocationResponse
 	{
 		public int RpcId { get; set; }
 

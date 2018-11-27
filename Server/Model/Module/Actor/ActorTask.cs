@@ -1,22 +1,20 @@
-﻿using System.Threading.Tasks;
-
-namespace ETModel
+﻿namespace ETModel
 {
 	public struct ActorTask
 	{
-		public IActorMessage ActorMessage;
+		public IActorRequest ActorRequest;
 		
-		public TaskCompletionSource<IResponse> Tcs;
+		public ETTaskCompletionSource<IActorLocationResponse> Tcs;
 
-		public ActorTask(IActorMessage actorMessage)
+		public ActorTask(IActorLocationMessage actorRequest)
 		{
-			this.ActorMessage = actorMessage;
+			this.ActorRequest = actorRequest;
 			this.Tcs = null;
 		}
 		
-		public ActorTask(IActorMessage actorMessage, TaskCompletionSource<IResponse> tcs)
+		public ActorTask(IActorLocationRequest actorRequest, ETTaskCompletionSource<IActorLocationResponse> tcs)
 		{
-			this.ActorMessage = actorMessage;
+			this.ActorRequest = actorRequest;
 			this.Tcs = tcs;
 		}
 	}

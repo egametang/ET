@@ -1,9 +1,9 @@
-# [English](https://github.com/egametang/Egametang/blob/master/README.md) 
+# [English](https://github.com/egametang/Egametang/blob/master/README-ET.md) 
 
 __讨论QQ群 : 474643097__
 
 # ET的介绍：
-ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp协议等等  
+ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp websocket协议，支持服务端3D recast寻路等等  
 
 # ET的功能：
 ### 1.可用VS单步调试的分布式服务端，N变1  
@@ -39,12 +39,18 @@ erlang语言一大优势就是位置透明的消息机制，用户完全不用�
 客户端可以实现所有逻辑热更新，包括协议，config，ui等等  
 ### 9.客户端服务端用同一种语言，并且共享代码  
 下载ET框架，打开服务端工程，可以看到服务端引用了客户端很多代码，通过引用客户端代码的方式实现了双端共享代码。例如客户端服务端之间的网络消息两边完全共用一个文件即可，添加一个消息只需要修改一遍。  
-### 10.KCP ENET TCP协议无缝切换  
-ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。框架还支持使用KCP协议，KCP也是可靠UDP协议，据说比ENET性能更好，使用kcp请注意，需要自己加心跳机制，否则20秒没收到包，服务端将断开连接。三种协议可以无缝切换。  
-### 11.打包工具  
+### 10.KCP ENET TCP Websocket协议无缝切换  
+ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。框架还支持使用KCP协议，KCP也是可靠UDP协议，据说比ENET性能更好，使用kcp请注意，需要自己加心跳机制，否则20秒没收到包，服务端将断开连接。协议可以无缝切换。  
+### 11. 3D Recast寻路功能
+可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能
+
+### 12. 服务端支持repl，也可以动态执行一段新代码
+这样就可以打印出进程中任何数据，大大简化了服务端查找问题的难度
+
+### 13.打包工具  
 ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
 
-### 12.还有很多很多功能，我就不详细介绍了  
+### 14.还有很多很多功能，我就不详细介绍了  
 a.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼  
 b.使用NLog库，打log及其方便，平常开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了  
 c.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。  
@@ -61,11 +67,12 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
 有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
-[module共享仓库](https://github.com/egametang/ET-Modules)   
+[module共享仓库](https://github.com/egametang/ET-Modules)  
 
 群友分享：  
-[框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)   
-[ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)   
+[ET学习笔记系列(咲夜詩写)](https://acgmart.com/unity/)   
+[框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)  
+[ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
 [框架demo介绍](http://www.jianshu.com/p/f2ea0d26c7c1)  
 [linux部署](http://gad.qq.com/article/detail/35973)  
 [linux部署，mongo安装，资源服搭建](http://www.tinkingli.com/?p=25)  
@@ -80,14 +87,25 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
 
 视频教程：  
-[肉饼老师主讲](http://www.taikr.com/my/course/972)   
+[肉饼老师主讲](http://www.taikr.com/my/course/972)  
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
+[ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
   
 相关网站:  
 [ET框架问题讨论](http://www.etframework.cn/)  
   
 __讨论QQ群 : 474643097__
+
+# ET 4.0发布! 4.0将是一个长期支持版本，之后发现的bug，4.0也会进行修复  
+1.net core升级为2.1  
+2.网络方面：tcp网络改成了SocketAsyncEventArgs实现，kcp改成了使用c库实现，protobuf升级成了3.0，网络库方面unity客户端实现了0GC!  
+3.增加了Websocket支持，websocket跟tcp，udp接口完全兼容，使用十分简单  
+4.actor方面: actor增加原生actor，并且在原生actor基础上实现location actor，实现的更加清晰，使用更加方便易懂  
+5.数据库方面: DBProxyComponent实现了lambda表达式查询, 修复了一个超级异步阻塞bug  
+6.客户端使用asmdef实现了Hotfix库自动编译功能，并且完美支持Unity2018，再也不用自己搞引用问题了  
+7.修复了一大批bug  
+8. ......  
 
 
 # ET 3.6发布! 
@@ -136,3 +154,7 @@ __讨论QQ群 : 474643097__
 3.消息去掉了继承结构，其它客户端对接起来，更方便了。  
 4.增加了初步的Module机制，目录结构更清晰，社区分享代码更方便了。  
 5.优化了代码，3.0的代码更加清晰，结构更加合理，前后端代码几乎一模一样了  
+
+
+# 支付宝捐赠  
+![使用支付宝对该项目进行捐赠](https://github.com/egametang/ET/blob/master/Doc/donate.png)

@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DbQueryBatchTaskSystem : AwakeSystem<DBQueryBatchTask, List<long>, string, TaskCompletionSource<List<ComponentWithId>>>
+	public class DbQueryBatchTaskSystem : AwakeSystem<DBQueryBatchTask, List<long>, string, ETTaskCompletionSource<List<ComponentWithId>>>
 	{
-		public override void Awake(DBQueryBatchTask self, List<long> idList, string collectionName, TaskCompletionSource<List<ComponentWithId>> tcs)
+		public override void Awake(DBQueryBatchTask self, List<long> idList, string collectionName, ETTaskCompletionSource<List<ComponentWithId>> tcs)
 		{
 			self.IdList = idList;
 			self.CollectionName = collectionName;
@@ -23,11 +21,10 @@ namespace ETModel
 
 		public List<long> IdList { get; set; }
 
-		public TaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
+		public ETTaskCompletionSource<List<ComponentWithId>> Tcs { get; set; }
 		
-		public override async Task Run()
+		public override async ETTask Run()
 		{
-			DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
 			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
 			List<ComponentWithId> result = new List<ComponentWithId>();
 
@@ -36,12 +33,8 @@ namespace ETModel
 				// 执行查询数据库任务
 				foreach (long id in IdList)
 				{
-					ComponentWithId component = dbCacheComponent.GetFromCache(this.CollectionName, id);
-					if (component == null)
-					{
-						IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id);
-						component = await cursor.FirstOrDefaultAsync();
-					}
+					IAsyncCursor<ComponentWithId> cursor = await dbComponent.GetCollection(this.CollectionName).FindAsync((s) => s.Id == id);
+					ComponentWithId component = await cursor.FirstOrDefaultAsync();
 					
 					if (component == null)
 					{

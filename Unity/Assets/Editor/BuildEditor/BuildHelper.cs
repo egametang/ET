@@ -35,18 +35,13 @@ namespace ETEditor
 		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
-#if !UNITY_EDITOR_OSX
 			string currentDir = System.Environment.CurrentDirectory;
-			string path = Path.Combine(currentDir, @"..\FileServer\");
 			System.Diagnostics.Process process = new System.Diagnostics.Process();
-			process.StartInfo.FileName = "FileServer.exe";
-			process.StartInfo.WorkingDirectory = path;
+			process.StartInfo.FileName = "dotnet";
+			process.StartInfo.Arguments = "FileServer.dll";
+			process.StartInfo.WorkingDirectory = "../FileServer/";
 			process.StartInfo.CreateNoWindow = true;
 			process.Start();
-#else
-			string path = System.Environment.CurrentDirectory + "/../FileServer/";
-			("cd " + path + " && go run FileServer.go").Bash(path, true);
-#endif
 		}
 
 		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)
