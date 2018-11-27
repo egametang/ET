@@ -20,6 +20,7 @@ namespace ETModel
 		public void Awake(GameObject gameObject)
 		{
 			this.GameObject = gameObject;
+			this.GameObject.AddComponent<ComponentView>().Component = this;
 		}
 		
 		public Vector3 Position
