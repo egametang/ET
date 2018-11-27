@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ETModel
+﻿namespace ETModel
 {
 	public class ActorMessageHandlerAttribute : BaseAttribute
 	{

@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Net;
-using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, IPEndPoint>
+	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, string>
 	{
-		public override void Awake(BenchmarkComponent self, IPEndPoint a)
+		public override void Awake(BenchmarkComponent self, string a)
 		{
 			self.Awake(a);
 		}
 	}
 
-	public static class BenchmarkComponentEx
+	public static class BenchmarkComponentHelper
 	{
-		public static void Awake(this BenchmarkComponent self, IPEndPoint ipEndPoint)
+		public static void Awake(this BenchmarkComponent self, string address)
 		{
 			try
 			{
+				IPEndPoint ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, ipEndPoint, i);
+					self.TestAsync(networkComponent, ipEndPoint, i).Coroutine();
 				}
 			}
 			catch (Exception e)
@@ -32,7 +32,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async void TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
+		public static async ETVoid TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{
@@ -56,7 +56,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async Task Send(this BenchmarkComponent self, Session session, int j)
+		public static async ETTask Send(this BenchmarkComponent self, Session session, int j)
 		{
 			try
 			{

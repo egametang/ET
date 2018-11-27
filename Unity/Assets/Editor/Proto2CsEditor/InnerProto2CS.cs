@@ -18,7 +18,7 @@ namespace ETEditor
 	public static class InnerProto2CS
 	{
 		private const string protoPath = "../Proto/";
-		private const string serverMessagePath = "../Server/Hotfix/Module/Message/";
+		private const string serverMessagePath = "../Server/Model/Module/Message/";
 		private static readonly char[] splitChars = { ' ', '\t' };
 		private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 		
@@ -26,8 +26,8 @@ namespace ETEditor
 		public static void Proto2CS()
 		{
 			msgOpcode.Clear();
-			Proto2CS("ETHotfix", "InnerMessage.proto", serverMessagePath, "InnerOpcode", 1000);
-			GenerateOpcode("ETHotfix", "InnerOpcode", serverMessagePath);
+			Proto2CS("ETModel", "InnerMessage.proto", serverMessagePath, "InnerOpcode", 1000);
+			GenerateOpcode("ETModel", "InnerOpcode", serverMessagePath);
 
 			AssetDatabase.Refresh();
 		}

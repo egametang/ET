@@ -1,5 +1,4 @@
-﻿using System.Net;
-using ETModel;
+﻿using ETModel;
 
 namespace ETHotfix
 {
@@ -13,11 +12,21 @@ namespace ETHotfix
 	}
 
 	[ObjectSystem]
-	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, IPEndPoint>
+	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, string>
 	{
-		public override void Awake(NetInnerComponent self, IPEndPoint a)
+		public override void Awake(NetInnerComponent self, string a)
 		{
 			self.Awake(a);
+		}
+	}
+	
+	[ObjectSystem]
+	public class NetInnerComponentLoadSystem : LoadSystem<NetInnerComponent>
+	{
+		public override void Load(NetInnerComponent self)
+		{
+			self.MessagePacker = new MongoPacker();
+			self.MessageDispatcher = new InnerMessageDispatcher();
 		}
 	}
 
@@ -30,22 +39,22 @@ namespace ETHotfix
 		}
 	}
 
-	public static class NetInnerComponentEx
+	public static class NetInnerComponentHelper
 	{
 		public static void Awake(this NetInnerComponent self)
 		{
 			self.Awake(NetworkProtocol.TCP);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
-			self.AppType = self.Entity.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;
 		}
 
-		public static void Awake(this NetInnerComponent self, IPEndPoint ipEndPoint)
+		public static void Awake(this NetInnerComponent self, string address)
 		{
-			self.Awake(NetworkProtocol.TCP, ipEndPoint);
+			self.Awake(NetworkProtocol.TCP, address);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
-			self.AppType = self.Entity.GetComponent<StartConfigComponent>().StartConfig.AppType;
+			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;
 		}
 
 		public static void Update(this NetInnerComponent self)

@@ -1,0 +1,10 @@
+{
+    "name": "Unity.Model",
+    "references": [
+        "Unity.ThirdParty"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
+}
