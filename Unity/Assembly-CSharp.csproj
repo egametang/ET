@@ -605,6 +605,9 @@
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />
     <None Include="Assets\StreamingAssets\Version.txt" />
+    <Reference Include="UnityEditor.StandardEvents">
+      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -613,9 +616,6 @@
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>F:/Project/github/ET/myET/ET/Unity/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>E:/WorkProgramFiles/Unity/Unity-2018.2.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
