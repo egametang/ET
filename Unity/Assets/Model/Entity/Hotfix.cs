@@ -58,12 +58,12 @@ namespace ETModel
 			Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
 			GameObject code = (GameObject)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("code.unity3d", "Code");
 			
+			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			
 #if ILRuntime
 			Log.Debug($"当前使用的是ILRuntime模式");
 			this.appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-			
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
 
 			using (MemoryStream fs = new MemoryStream(assBytes))
 			using (MemoryStream p = new MemoryStream(pdbBytes))
@@ -74,13 +74,13 @@ namespace ETModel
 			this.start = new ILStaticMethod(this.appDomain, "ETHotfix.Init", "Start", 0);
 #else
 			Log.Debug($"当前使用的是Mono模式");
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+
 			this.assembly = Assembly.Load(assBytes, pdbBytes);
 
 			Type hotfixInit = this.assembly.GetType("ETHotfix.Init");
 			this.start = new MonoStaticMethod(hotfixInit, "Start");
 #endif
+			
 			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 		}
 	}

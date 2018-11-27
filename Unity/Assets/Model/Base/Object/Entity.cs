@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
-#if !SERVER
-using UnityEngine;
-#endif
 
 namespace ETModel
 {

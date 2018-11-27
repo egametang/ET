@@ -7,7 +7,7 @@ namespace ETModel
 	{
 		public static void Add(this Button.ButtonClickedEvent buttonClickedEvent, Action action)
 		{
-			buttonClickedEvent.AddListener(()=> { action(); });
+			buttonClickedEvent.AddListener(() => { action(); });
 		}
 	}
 }

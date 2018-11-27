@@ -31,10 +31,6 @@ namespace ETModel
 			}
 		}
 		
-		public int A = 1;
-
-		public AppType AppType;
-		
 		private readonly Dictionary<long, Player> idPlayers = new Dictionary<long, Player>();
 
 		public void Awake()

@@ -10,21 +10,17 @@ namespace ETHotfix
 	{
 		[BsonElement("C")]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components;
+		private HashSet<Component> components = new HashSet<Component>();
 
 		[BsonIgnore]
-		private Dictionary<Type, Component> componentDict;
+		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		public Entity()
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		protected Entity(long id): base(id)
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()
@@ -47,12 +43,12 @@ namespace ETHotfix
 					Log.Error(e);
 				}
 			}
-
+			
 			this.components.Clear();
 			this.componentDict.Clear();
 		}
 		
-		public Component AddComponent(Component component)
+		public virtual Component AddComponent(Component component)
 		{
 			Type type = component.GetType();
 			if (this.componentDict.ContainsKey(type))
@@ -62,15 +58,11 @@ namespace ETHotfix
 			
 			component.Parent = this;
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public Component AddComponent(Type type)
+		public virtual Component AddComponent(Type type)
 		{
 			if (this.componentDict.ContainsKey(type))
 			{
@@ -79,15 +71,11 @@ namespace ETHotfix
 
 			Component component = ComponentFactory.CreateWithParent(type, this);
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public K AddComponent<K>() where K : Component, new()
+		public virtual K AddComponent<K>() where K : Component, new()
 		{
 			Type type = typeof (K);
 			if (this.componentDict.ContainsKey(type))
@@ -97,15 +85,11 @@ namespace ETHotfix
 
 			K component = ComponentFactory.CreateWithParent<K>(this);
 
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public K AddComponent<K, P1>(P1 p1) where K : Component, new()
+		public virtual K AddComponent<K, P1>(P1 p1) where K : Component, new()
 		{
 			Type type = typeof (K);
 			if (this.componentDict.ContainsKey(type))
@@ -115,15 +99,11 @@ namespace ETHotfix
 
 			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
+		public virtual K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Component, new()
 		{
 			Type type = typeof (K);
 			if (this.componentDict.ContainsKey(type))
@@ -133,15 +113,11 @@ namespace ETHotfix
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
+		public virtual K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Component, new()
 		{
 			Type type = typeof (K);
 			if (this.componentDict.ContainsKey(type))
@@ -151,15 +127,11 @@ namespace ETHotfix
 
 			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
 			
-			if (component is ISerializeToEntity)
-			{
-				this.components.Add(component);
-			}
 			this.componentDict.Add(type, component);
 			return component;
 		}
 
-		public void RemoveComponent<K>() where K : Component
+		public virtual void RemoveComponent<K>() where K : Component
 		{
 			if (this.IsDisposed)
 			{
@@ -172,13 +144,12 @@ namespace ETHotfix
 				return;
 			}
 
-			this.components.Remove(component);
 			this.componentDict.Remove(type);
 
 			component.Dispose();
 		}
 
-		public void RemoveComponent(Type type)
+		public virtual void RemoveComponent(Type type)
 		{
 			if (this.IsDisposed)
 			{
@@ -190,7 +161,6 @@ namespace ETHotfix
 				return;
 			}
 
-			this.components?.Remove(component);
 			this.componentDict.Remove(type);
 
 			component.Dispose();
@@ -219,6 +189,21 @@ namespace ETHotfix
 		public Component[] GetComponents()
 		{
 			return this.componentDict.Values.ToArray();
+		}
+
+		public override void BeginInit()
+		{
+			base.BeginInit();
+
+			this.components.Clear();
+			
+			foreach (var kv in this.componentDict)
+			{
+				if (kv.Value is ISerializeToEntity)
+				{
+					this.components.Add(kv.Value);
+				}
+			}
 		}
 
 		public override void EndInit()
