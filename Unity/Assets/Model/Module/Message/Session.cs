@@ -64,8 +64,8 @@ namespace ETModel
 				return;
 			}
 
-			long id = this.Id;
-
+			this.Network.Remove(this.Id);
+			
 			base.Dispose();
 			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
@@ -80,7 +80,6 @@ namespace ETModel
 			//}
 			
 			this.channel.Dispose();
-			this.Network.Remove(id);
 			this.requestCallback.Clear();
 		}
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ETHotfix
 {
-	public class ObjectPool
+	public class ObjectPool: Component
 	{
 		private readonly Dictionary<Type, Queue<Component>> dictionary = new Dictionary<Type, Queue<Component>>();
 
@@ -36,6 +36,7 @@ namespace ETHotfix
         
 		public void Recycle(Component obj)
 		{
+			obj.Parent = this;
 			Type type = obj.GetType();
 			Queue<Component> queue;
 			if (!this.dictionary.TryGetValue(type, out queue))

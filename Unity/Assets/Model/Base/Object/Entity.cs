@@ -69,7 +69,7 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
 
-			Component component = ComponentFactory.CreateWithParent(type, this);
+			Component component = ComponentFactory.CreateWithParent(type, this, this.IsFromPool);
 
 			this.componentDict.Add(type, component);
 			return component;
@@ -83,7 +83,7 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K>(this);
+			K component = ComponentFactory.CreateWithParent<K>(this, this.IsFromPool);
 
 			this.componentDict.Add(type, component);
 			return component;
@@ -97,7 +97,7 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
 			return component;
@@ -111,7 +111,7 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
 			return component;
@@ -125,7 +125,7 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
 			return component;
