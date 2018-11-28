@@ -9,7 +9,7 @@ namespace ETHotfix
 	{
 		public override void Awake(UIComponent self)
 		{
-			self.Camera = GameObject.Find("/Global/UICamera");
+			self.Camera = Component.Global.transform.Find("UICamera").gameObject;
 		}
 	}
 	

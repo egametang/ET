@@ -14,6 +14,8 @@ namespace ETHotfix
 		public long InstanceId { get; protected set; }
 		
 #if !SERVER
+		public static GameObject Global { get; } = GameObject.Find("/Global");
+		
 		[BsonIgnore]
 		public GameObject GameObject { get; protected set; }
 #endif
@@ -69,16 +71,13 @@ namespace ETHotfix
 #if !SERVER
 				if (this.parent == null)
 				{
-					this.GameObject.transform.SetParent(GameObject.Find("/Global").transform, false);
+					this.GameObject.transform.SetParent(Global.transform, false);
 					return;
 				}
 
-				if (this.GameObject != null)
+				if (this.GameObject != null && this.parent.GameObject != null)
 				{
-					if (this.parent.GameObject != null)
-					{
-						this.GameObject.transform.SetParent(this.parent.GameObject.transform, false);
-					}
+					this.GameObject.transform.SetParent(this.parent.GameObject.transform, false);
 				}
 #endif
 			}
@@ -107,6 +106,7 @@ namespace ETHotfix
 				this.GameObject = new GameObject();
 				this.GameObject.name = this.GetType().Name;
 				this.GameObject.layer = LayerNames.GetLayerInt(LayerNames.HIDDEN);
+				this.GameObject.transform.SetParent(Global.transform, false);
 				this.GameObject.AddComponent<ComponentView>().Component = this;
 			}
 #endif

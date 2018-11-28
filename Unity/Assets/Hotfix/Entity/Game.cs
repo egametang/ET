@@ -24,8 +24,7 @@ namespace ETHotfix
 				{
 					return scene;
 				}
-				scene = new Scene() { Name = "ClientHotfix" };
-				scene.GameObject.transform.SetParent(scene.GameObject.transform.Find("/Global"));
+				scene = new Scene() { Name = "ClientH" };
 				return scene;
 			}
 		}
@@ -40,8 +39,7 @@ namespace ETHotfix
 				{
 					return objectPool;
 				}
-				objectPool = new ObjectPool();
-				objectPool.GameObject.transform.SetParent(GameObject.Find("/Global").transform);
+				objectPool = new ObjectPool() { Name = "ClientH" };
 				return objectPool;
 			}
 		}

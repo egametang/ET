@@ -24,8 +24,7 @@ namespace ETModel
 				{
 					return scene;
 				}
-				scene = new Scene();
-				scene.GameObject.transform.SetParent(GameObject.Find("/Global").transform);
+				scene = new Scene() { Name = "ClientM" };
 				return scene;
 			}
 		}
@@ -40,8 +39,7 @@ namespace ETModel
 				{
 					return objectPool;
 				}
-				objectPool = new ObjectPool();
-				objectPool.GameObject.transform.SetParent(GameObject.Find("/Global").transform);
+				objectPool = new ObjectPool() { Name = "ClientM" };
 				return objectPool;
 			}
 		}

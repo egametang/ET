@@ -14,6 +14,8 @@ namespace ETModel
 		public long InstanceId { get; protected set; }
 		
 #if !SERVER
+		public static GameObject Global { get; } = GameObject.Find("/Global");
+		
 		[BsonIgnore]
 		public GameObject GameObject { get; protected set; }
 #endif
@@ -69,23 +71,16 @@ namespace ETModel
 #if !SERVER
 				if (this.parent == null)
 				{
-					this.GameObject.transform.SetParent(GameObject.Find("/Global").transform, false);
+					this.GameObject.transform.SetParent(Global.transform, false);
 					return;
 				}
 
-				if (this.GameObject == null)
+				if (this.GameObject != null && this.parent.GameObject != null)
 				{
-					return;
+					this.GameObject.transform.SetParent(this.parent.GameObject.transform, false);
 				}
-
-				if (this.parent.GameObject == null)
-				{
-					return;
-				}
-
-				this.GameObject.transform.SetParent(this.parent.GameObject.transform, false);
 #endif
-			} 
+			}
 		}
 
 		public T GetParent<T>() where T : Component
@@ -111,6 +106,7 @@ namespace ETModel
 				this.GameObject = new GameObject();
 				this.GameObject.name = this.GetType().Name;
 				this.GameObject.layer = LayerNames.GetLayerInt(LayerNames.HIDDEN);
+				this.GameObject.transform.SetParent(Global.transform, false);
 				this.GameObject.AddComponent<ComponentView>().Component = this;
 			}
 #endif
@@ -138,7 +134,6 @@ namespace ETModel
 			else
 			{
 #if !SERVER
-
 				if (this.GameObject != null)
 				{
 					UnityEngine.Object.Destroy(this.GameObject);

@@ -12,8 +12,7 @@
 				{
 					return scene;
 				}
-				scene = new Scene() { Name = "ClientModel" };
-				scene.AddComponent<TimerComponent>();
+				scene = new Scene();
 				return scene;
 			}
 		}
