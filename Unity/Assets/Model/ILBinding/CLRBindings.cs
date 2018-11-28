@@ -15,6 +15,19 @@ namespace ILRuntime.Runtime.Generated
         {
             System_NotImplementedException_Binding.Register(app);
             System_String_Binding.Register(app);
+            System_Text_StringBuilder_Binding.Register(app);
+            System_Object_Binding.Register(app);
+            System_Collections_IEnumerable_Binding.Register(app);
+            System_Collections_IEnumerator_Binding.Register(app);
+            System_IDisposable_Binding.Register(app);
+            System_Type_Binding.Register(app);
+            Google_Protobuf_ByteString_Binding.Register(app);
+            ETModel_ByteHelper_Binding.Register(app);
+            System_Array_Binding.Register(app);
+            System_Reflection_MemberInfo_Binding.Register(app);
+            System_Reflection_PropertyInfo_Binding.Register(app);
+            System_Reflection_MethodBase_Binding.Register(app);
+            UnityEngine_Debug_Binding.Register(app);
             System_Exception_Binding.Register(app);
             System_Collections_IDictionary_Binding.Register(app);
             LitJson_JsonMapper_Binding.Register(app);
@@ -23,11 +36,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
-            System_IDisposable_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
-            System_Object_Binding.Register(app);
-            System_Reflection_MemberInfo_Binding.Register(app);
-            System_Type_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding.Register(app);
@@ -49,8 +58,11 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ETModel_Component_Binding.Register(app);
             ETModel_Scene_Binding.Register(app);
+            System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             ETModel_Entity_Binding.Register(app);
             ETModel_ResourcesComponent_Binding.Register(app);
+            ETModel_ConfigAttribute_Binding.Register(app);
+            ETModel_AppTypeHelper_Binding.Register(app);
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
             ETModel_Actor_CreateUnits_Binding.Register(app);
@@ -66,7 +78,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_Player_Binding.Register(app);
             ETModel_ComponentWithId_Binding.Register(app);
             ETModel_CameraComponent_Binding.Register(app);
-            System_Collections_IEnumerator_Binding.Register(app);
             ETModel_Actor_Test_Binding.Register(app);
             ETModel_Frame_ClickMap_Binding.Register(app);
             ETModel_MoveComponent_Binding.Register(app);
@@ -77,7 +88,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_RaycastHit_Binding.Register(app);
             ETModel_SessionComponent_Binding.Register(app);
             ETModel_Session_Binding.Register(app);
-            System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             System_Threading_Tasks_Task_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             Google_Protobuf_ProtoPreconditions_Binding.Register(app);
@@ -104,6 +114,7 @@ namespace ILRuntime.Runtime.Generated
             System_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             ETModel_NetworkComponent_Binding.Register(app);
             ETModel_IMessagePacker_Binding.Register(app);
+            ETModel_OpcodeHelper_Binding.Register(app);
             System_Threading_Tasks_TaskCompletionSource_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
             ETModel_ErrorCode_Binding.Register(app);

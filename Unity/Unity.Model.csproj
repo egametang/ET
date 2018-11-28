@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>6</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Unity.Model</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
   </PropertyGroup>
@@ -23,7 +23,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_13;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_13;UNITY_2017_4;UNITY_2017;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_ANDROID;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_EVENT_QUEUE;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_NATIVE_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_AR;ENABLE_SPATIALTRACKING;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_IL2CPP;NET_4_6;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE;NET45;ILRuntime;UNITY_HAS_GOOGLEVR;UNITY_HAS_TANGO;ENABLE_MONO</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -147,12 +147,15 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_Actor_Test_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Actor_TestRequest_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Actor_TransferRequest_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_AppTypeHelper_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_ByteHelper_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_C2G_EnterMap_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_CameraComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_CanvasConfig_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Component_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ComponentFactory_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ComponentWithId_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_ConfigAttribute_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_DoubleMap_2_UInt16_Type_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Entity_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ErrorCode_Binding.cs" />
@@ -174,6 +177,7 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_MessageProxy_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_MoveComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_NetworkComponent_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_OpcodeHelper_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_OpcodeTypeComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Player_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_PlayerComponent_Binding.cs" />
@@ -189,6 +193,7 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitFactory_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitInfo_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnOrderMultiMap_2_Type_ILTypeInstance_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\Google_Protobuf_ByteString_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_CodedInputStream_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_CodedOutputStream_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_Collections_RepeatedField_1_Google_Protobuf_Adapt_IMessage_Bi_t.cs" />
@@ -203,6 +208,7 @@
     <Compile Include="Assets\Model\ILBinding\ReferenceCollector_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Activator_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\System_Array_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Dictionary_2_Int32_Action_1_Google_Protobuf_Adapt__t.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.cs" />
@@ -229,6 +235,7 @@
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Queue_1_Int64_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_Generic_Queue_1_Object_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_IDictionary_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\System_Collections_IEnumerable_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Collections_IEnumerator_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Exception_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_IDisposable_Binding.cs" />
@@ -236,10 +243,13 @@
     <Compile Include="Assets\Model\ILBinding\System_NotImplementedException_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Object_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Reflection_MemberInfo_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\System_Reflection_MethodBase_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\System_Reflection_PropertyInfo_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Runtime_CompilerServices_TaskAwaiter_1_Google_Protobuf_Adapt_IMessage__t.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_String_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\System_Text_StringBuilder_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Threading_CancellationToken_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Threading_Tasks_Task_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor__t.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Threading_Tasks_Task_1_IResponse_Binding.cs" />
@@ -247,6 +257,7 @@
     <Compile Include="Assets\Model\ILBinding\System_Type_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_Camera_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_Component_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\UnityEngine_Debug_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_GameObject_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_Input_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\UnityEngine_LayerMask_Binding.cs" />
