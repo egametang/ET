@@ -16,6 +16,7 @@ namespace ETEditor
 
         static Startup()
         {
+#if ILRuntime
             // Copy最新的pdb文件
             string[] pdbDirs = 
             {
@@ -46,18 +47,21 @@ namespace ETEditor
                     dateTime = lastWriteTimeUtc;
                 }
             }
-            
+
             if (newestPdb != "")
             {
                 File.Copy(Path.Combine(newestDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
                 File.Copy(Path.Combine(newestPdb), Path.Combine(CodeDir, "Hotfix.pdb.bytes"), true);
                 Log.Info($"复制vs的Hotfix.dll跟Hotfix.pdb到Res/Code完成");
             }
+#else
             
-            //File.Copy(Path.Combine(ScriptAssembliesDir, HotfixDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
+            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
             File.Copy(Path.Combine(ScriptAssembliesDir, HotfixMdb), Path.Combine(CodeDir, "Hotfix.mdb.bytes"), true);
-
-            Log.Info($"复制Hotfix.mdb到Res/Code完成");
+            Log.Info($"复制unity的Hotfix.dll跟Hotfix.mdb到Res/Code完成");
+#endif
+    
+            
             AssetDatabase.Refresh ();
         }
     }
