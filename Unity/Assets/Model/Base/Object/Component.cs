@@ -1,7 +1,7 @@
 ﻿using System;
 using ETModel;
 using MongoDB.Bson.Serialization.Attributes;
-#if UNITY_EDITOR
+#if !SERVER
 using UnityEngine;
 #endif
 

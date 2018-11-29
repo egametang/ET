@@ -47,3 +47,4 @@ Server/.DS_Store
 /Server/.vscode/
 .vs/
 .objs/
+/Unity/.gradle
