@@ -93,7 +93,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
   
 相关网站:  
-[ET框架问题讨论](http://www.etframework.cn/)  
+[ET框架问题讨论](https://bbs.honorworkroom.com/forum.php)  
   
 __讨论QQ群 : 474643097__
 
