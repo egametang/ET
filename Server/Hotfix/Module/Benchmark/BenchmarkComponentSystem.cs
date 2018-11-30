@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
@@ -21,9 +22,9 @@ namespace ETHotfix
 			{
 				IPEndPoint ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				for (int i = 0; i < 1000; i++)
+				for (int i = 0; i < 2000; i++)
 				{
-					self.TestAsync(networkComponent, ipEndPoint, i).Coroutine();
+					self.TestAsync(networkComponent, ipEndPoint, i);
 				}
 			}
 			catch (Exception e)
@@ -32,7 +33,7 @@ namespace ETHotfix
 			}
 		}
 
-		public static async ETVoid TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
+		public static async void TestAsync(this BenchmarkComponent self, NetOuterComponent networkComponent, IPEndPoint ipEndPoint, int j)
 		{
 			try
 			{
@@ -46,17 +47,13 @@ namespace ETHotfix
 					}
 				}
 			}
-			catch (RpcException e)
-			{
-				Log.Error(e);
-			}
 			catch (Exception e)
 			{
 				Log.Error(e);
 			}
 		}
 
-		public static async ETTask Send(this BenchmarkComponent self, Session session, int j)
+		public static async Task Send(this BenchmarkComponent self, Session session, int j)
 		{
 			try
 			{

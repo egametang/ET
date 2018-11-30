@@ -8,12 +8,11 @@ namespace ETModel
 		PacketSize,
 		PacketBody
 	}
-
+	
 	public static class Packet
 	{
-		public static int SizeLength = 4;
-		public const int MinSize = 3;
-		public const int MaxSize = int.MaxValue;
+		public const int PacketSizeLength2 = 2;
+		public const int PacketSizeLength4 = 4;
 		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
 		public const int MessageIndex = 3;
@@ -26,9 +25,11 @@ namespace ETModel
 		private ParserState state;
 		public MemoryStream memoryStream;
 		private bool isOK;
+		private readonly int packetSizeLength;
 
-		public PacketParser(CircularBuffer buffer, MemoryStream memoryStream)
+		public PacketParser(int packetSizeLength, CircularBuffer buffer, MemoryStream memoryStream)
 		{
+			this.packetSizeLength = packetSizeLength;
 			this.buffer = buffer;
 			this.memoryStream = memoryStream;
 		}
@@ -46,24 +47,32 @@ namespace ETModel
 				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (this.buffer.Length < Packet.SizeLength)
+						if (this.buffer.Length < this.packetSizeLength)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.buffer.Read(this.memoryStream.GetBuffer(), 0, Packet.SizeLength);
+							this.buffer.Read(this.memoryStream.GetBuffer(), 0, this.packetSizeLength);
 							
-							switch (Packet.SizeLength)
+							switch (this.packetSizeLength)
 							{
-								case 4:
+								case Packet.PacketSizeLength4:
 									this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
+									if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < 3)
+									{
+										throw new Exception($"recv packet size error: {this.packetSize}");
+									}
 									break;
-								case 2:
+								case Packet.PacketSizeLength2:
 									this.packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
+									if (this.packetSize > ushort.MaxValue || this.packetSize < 3)
+									{
+										throw new Exception($"recv packet size error: {this.packetSize}");
+									}
 									break;
 								default:
-									throw new Exception("packet size must be 2 or 4!");
+									throw new Exception("packet size byte count must be 2 or 4!");
 							}
 
 							this.state = ParserState.PacketBody;

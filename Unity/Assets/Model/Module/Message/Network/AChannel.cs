@@ -14,7 +14,7 @@ namespace ETModel
 	{
 		public ChannelType ChannelType { get; }
 
-		protected AService service;
+		public AService Service { get; }
 
 		public abstract MemoryStream Stream { get; }
 		
@@ -65,7 +65,7 @@ namespace ETModel
 		{
 			this.Id = IdGenerater.GenerateId();
 			this.ChannelType = channelType;
-			this.service = service;
+			this.Service = service;
 		}
 
 		public abstract void Start();
@@ -81,7 +81,7 @@ namespace ETModel
 
 			base.Dispose();
 
-			this.service.Remove(this.Id);
+			this.Service.Remove(this.Id);
 		}
 	}
 }

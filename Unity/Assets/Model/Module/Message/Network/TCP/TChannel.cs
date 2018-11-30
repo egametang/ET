@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.IO;
 
 namespace ETModel
 {
@@ -27,15 +30,17 @@ namespace ETModel
 
 		private readonly PacketParser parser;
 
-		private readonly byte[] cache = new byte[Packet.SizeLength];
+		private readonly byte[] packetSizeCache;
 		
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
-			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
+			int packetSize = service.PacketSizeLength;
+			this.packetSizeCache = new byte[packetSize];
+			this.memoryStream = service.MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
+			this.parser = new PacketParser(packetSize, this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -47,11 +52,13 @@ namespace ETModel
 		
 		public TChannel(Socket socket, TService service): base(service, ChannelType.Accept)
 		{
-			this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
+			int packetSize = service.PacketSizeLength;
+			this.packetSizeCache = new byte[packetSize];
+			this.memoryStream = service.MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = socket;
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
+			this.parser = new PacketParser(packetSize, this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -81,7 +88,7 @@ namespace ETModel
 		
 		private TService GetService()
 		{
-			return (TService)this.service;
+			return (TService)this.Service;
 		}
 
 		public override MemoryStream Stream
@@ -116,19 +123,27 @@ namespace ETModel
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 
-			switch (Packet.SizeLength)
+			switch (this.GetService().PacketSizeLength)
 			{
-				case 4:
-					this.cache.WriteTo(0, (int) stream.Length);
+				case Packet.PacketSizeLength4:
+					if (stream.Length > ushort.MaxValue * 16)
+					{
+						throw new Exception($"send packet too large: {stream.Length}");
+					}
+					this.packetSizeCache.WriteTo(0, (int) stream.Length);
 					break;
-				case 2:
-					this.cache.WriteTo(0, (ushort) stream.Length);
+				case Packet.PacketSizeLength2:
+					if (stream.Length > ushort.MaxValue)
+					{
+						throw new Exception($"send packet too large: {stream.Length}");
+					}
+					this.packetSizeCache.WriteTo(0, (ushort) stream.Length);
 					break;
 				default:
 					throw new Exception("packet size must be 2 or 4!");
 			}
 
-			this.sendBuffer.Write(this.cache, 0, this.cache.Length);
+			this.sendBuffer.Write(this.packetSizeCache, 0, this.packetSizeCache.Length);
 			this.sendBuffer.Write(stream);
 
 			this.GetService().MarkNeedStartSend(this.Id);
@@ -245,19 +260,27 @@ namespace ETModel
 			// 收到消息回调
 			while (true)
 			{
-				if (!this.parser.Parse())
-				{
-					break;
-				}
-
-				MemoryStream stream = this.parser.GetPacket();
 				try
 				{
-					this.OnRead(stream);
+					if (!this.parser.Parse())
+					{
+						break;
+					}
 				}
-				catch (Exception exception)
+				catch (Exception ee)
 				{
-					Log.Error(exception);
+					Log.Error(ee);
+					this.OnError(ErrorCode.ERR_SocketError);
+					return;
+				}
+
+				try
+				{
+					this.OnRead(this.parser.GetPacket());
+				}
+				catch (Exception ee)
+				{
+					Log.Error(ee);
 				}
 			}
 
