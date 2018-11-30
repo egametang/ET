@@ -44,7 +44,7 @@ namespace ETHotfix
 	{
 		public static void Awake(this NetInnerComponent self)
 		{
-			self.Awake(NetworkProtocol.TCP);
+			self.Awake(NetworkProtocol.TCP, Packet.PacketSizeLength4);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;
@@ -52,7 +52,7 @@ namespace ETHotfix
 
 		public static void Awake(this NetInnerComponent self, string address)
 		{
-			self.Awake(NetworkProtocol.TCP, address);
+			self.Awake(NetworkProtocol.TCP, address, Packet.PacketSizeLength4);
 			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 			self.AppType = StartConfigComponent.Instance.StartConfig.AppType;

@@ -84,7 +84,7 @@ namespace ETModel
         
         private WService GetService()
         {
-            return (WService)this.service;
+            return (WService)this.Service;
         }
 
         public async void ConnectAsync(string url)

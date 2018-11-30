@@ -14,7 +14,15 @@ namespace ETModel
 	{
 		public ChannelType ChannelType { get; }
 
-		protected AService service;
+		private AService service;
+
+		public AService Service
+		{
+			get
+			{
+				return this.service;
+			}
+		}
 
 		public abstract MemoryStream Stream { get; }
 		

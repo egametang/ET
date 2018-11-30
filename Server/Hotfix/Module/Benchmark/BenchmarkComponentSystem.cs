@@ -22,7 +22,7 @@ namespace ETHotfix
 			{
 				IPEndPoint ipEndPoint = NetworkHelper.ToIPEndPoint(address);
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				for (int i = 0; i < 1000; i++)
+				for (int i = 0; i < 10000; i++)
 				{
 					self.TestAsync(networkComponent, ipEndPoint, i);
 				}
@@ -46,10 +46,6 @@ namespace ETHotfix
 						await self.Send(session, j);
 					}
 				}
-			}
-			catch (RpcException e)
-			{
-				Log.Error(e);
 			}
 			catch (Exception e)
 			{

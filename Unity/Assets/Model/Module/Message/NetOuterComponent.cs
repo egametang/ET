@@ -2,6 +2,6 @@
 {
 	public class NetOuterComponent : NetworkComponent
 	{
-		public NetworkProtocol Protocol = NetworkProtocol.KCP;
+		public NetworkProtocol Protocol = NetworkProtocol.TCP;
 	}
 }

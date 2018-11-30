@@ -132,7 +132,7 @@ namespace ETModel
 
 		private KService GetService()
 		{
-			return (KService)this.service;
+			return (KService)this.Service;
 		}
 
 		public void HandleConnnect(uint remoteConn)
