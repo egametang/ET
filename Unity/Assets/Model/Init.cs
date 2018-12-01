@@ -17,6 +17,7 @@ namespace ETModel
 		{
 			try
 			{
+                //用于跨线程调用
 				SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
 
 				DontDestroyOnLoad(gameObject);

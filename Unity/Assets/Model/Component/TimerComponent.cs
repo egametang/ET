@@ -43,11 +43,12 @@ namespace ETModel
 			}
 
 			long timeNow = TimeHelper.Now();
-
+            
 			if (timeNow < this.minTime)
 			{
 				return;
 			}
+            //当前时间超过了才继续执行
 			
 			foreach (KeyValuePair<long, List<long>> kv in this.timeId.GetDictionary())
 			{
@@ -59,7 +60,7 @@ namespace ETModel
 				}
 				this.timeOutTime.Enqueue(k);
 			}
-
+            //执行时间到了就取出
 			while(this.timeOutTime.Count > 0)
 			{
 				long time = this.timeOutTime.Dequeue();
@@ -102,6 +103,11 @@ namespace ETModel
 			return tcs.Task;
 		}
 
+        /// <summary>
+        /// 等待多时时间后执行
+        /// </summary>
+        /// <param name="tillTime"></param>
+        /// <returns></returns>
 		public ETTask WaitTillAsync(long tillTime)
 		{
 			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
@@ -128,7 +134,11 @@ namespace ETModel
 			cancellationToken.Register(() => { this.Remove(timer.Id); });
 			return tcs.Task;
 		}
-
+        /// <summary>
+        /// 等待多时时间后执行
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
 		public ETTask WaitAsync(long time)
 		{
 			ETTaskCompletionSource tcs = new ETTaskCompletionSource();

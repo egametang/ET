@@ -7,7 +7,7 @@ namespace ETModel
 	{
 		private readonly SortedDictionary<T, List<K>> dictionary = new SortedDictionary<T, List<K>>();
 
-		// 重用list
+		// 重用list,list缓存
 		private readonly Queue<List<K>> queue = new Queue<List<K>>();
 
 		public SortedDictionary<T, List<K>> GetDictionary()

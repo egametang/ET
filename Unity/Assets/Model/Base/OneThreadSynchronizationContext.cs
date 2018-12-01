@@ -4,6 +4,9 @@ using System.Threading;
 
 namespace ETModel
 {
+    /// <summary>
+    /// 跨线程 调用方法
+    /// </summary>
 	public class OneThreadSynchronizationContext : SynchronizationContext
 	{
 		public static OneThreadSynchronizationContext Instance { get; } = new OneThreadSynchronizationContext();

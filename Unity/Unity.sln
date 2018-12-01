@@ -1,5 +1,6 @@
-﻿Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Model", "Unity.Model.csproj", "{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ThirdParty", "Unity.ThirdParty.csproj", "{E15BADD2-3A26-309A-AB0F-DC5B08044350}"
@@ -33,8 +34,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
