@@ -305,7 +305,9 @@ namespace ETModel
 					AddResource(assetBundleName, assetName, resource);
 				}
 
-				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+				abInfo = new ABInfo(assetBundleName, null);
+				abInfo.Parent = this;
+				this.bundles[assetBundleName] = abInfo;
 #endif
 				return;
 			}
@@ -337,7 +339,9 @@ namespace ETModel
 				}
 			}
 
-			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
+			abInfo = new ABInfo(assetBundleName, assetBundle);
+			abInfo.Parent = this;
+			this.bundles[assetBundleName] = abInfo;
 		}
 
 		/// <summary>
@@ -382,7 +386,9 @@ namespace ETModel
 					AddResource(assetBundleName, assetName, resource);
 				}
 
-				this.bundles[assetBundleName] = new ABInfo(assetBundleName, null);
+				abInfo = new ABInfo(assetBundleName, null);
+				abInfo.Parent = this;
+				this.bundles[assetBundleName] = abInfo;
 #endif
 				return;
 			}
@@ -418,7 +424,9 @@ namespace ETModel
 				}
 			}
 
-			this.bundles[assetBundleName] = new ABInfo(assetBundleName, assetBundle);
+			abInfo = new ABInfo(assetBundleName, assetBundle);
+			abInfo.Parent = this;
+			this.bundles[assetBundleName] = abInfo;
 		}
 
 		public string DebugString()

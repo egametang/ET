@@ -9,8 +9,6 @@ namespace ETHotfix
 		{
 			try
 			{
-				Game.Scene.ModelScene = ETModel.Game.Scene;
-
 				// 注册热更层回调
 				ETModel.Game.Hotfix.Update = () => { Update(); };
 				ETModel.Game.Hotfix.LateUpdate = () => { LateUpdate(); };

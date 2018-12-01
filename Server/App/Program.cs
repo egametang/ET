@@ -35,6 +35,7 @@ namespace App
 
 				Log.Info($"server start........................ {startConfig.AppId} {startConfig.AppType}");
 
+				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<OpcodeTypeComponent>();
 				Game.Scene.AddComponent<MessageDispatcherComponent>();
 

@@ -23,16 +23,16 @@ namespace ILRuntime.Runtime.Generated
             FieldInfo field;
             Type[] args;
             Type type = typeof(UnityEngine.Vector3);
-            args = new Type[]{typeof(UnityEngine.Vector3), typeof(UnityEngine.Vector3)};
-            method = type.GetMethod("op_Subtraction", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, op_Subtraction_0);
 
             field = type.GetField("x", flag);
             app.RegisterCLRFieldGetter(field, get_x_0);
             app.RegisterCLRFieldSetter(field, set_x_0);
+            field = type.GetField("y", flag);
+            app.RegisterCLRFieldGetter(field, get_y_1);
+            app.RegisterCLRFieldSetter(field, set_y_1);
             field = type.GetField("z", flag);
-            app.RegisterCLRFieldGetter(field, get_z_1);
-            app.RegisterCLRFieldSetter(field, set_z_1);
+            app.RegisterCLRFieldGetter(field, get_z_2);
+            app.RegisterCLRFieldSetter(field, set_z_2);
 
             app.RegisterCLRCreateDefaultInstance(type, () => new UnityEngine.Vector3());
 
@@ -88,26 +88,6 @@ namespace ILRuntime.Runtime.Generated
             }
         }
 
-        static StackObject* op_Subtraction_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Vector3 @b = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Vector3 @a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-
-            var result_of_this_method = a - b;
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
 
         static object get_x_0(ref object o)
         {
@@ -120,11 +100,22 @@ namespace ILRuntime.Runtime.Generated
             p->x = (System.Single)v;
             h.Free();
         }
-        static object get_z_1(ref object o)
+        static object get_y_1(ref object o)
+        {
+            return ((UnityEngine.Vector3)o).y;
+        }
+        static void set_y_1(ref object o, object v)
+        {
+            var h = GCHandle.Alloc(o, GCHandleType.Pinned);
+            UnityEngine.Vector3* p = (UnityEngine.Vector3 *)(void *)h.AddrOfPinnedObject();
+            p->y = (System.Single)v;
+            h.Free();
+        }
+        static object get_z_2(ref object o)
         {
             return ((UnityEngine.Vector3)o).z;
         }
-        static void set_z_1(ref object o, object v)
+        static void set_z_2(ref object o, object v)
         {
             var h = GCHandle.Alloc(o, GCHandleType.Pinned);
             UnityEngine.Vector3* p = (UnityEngine.Vector3 *)(void *)h.AddrOfPinnedObject();

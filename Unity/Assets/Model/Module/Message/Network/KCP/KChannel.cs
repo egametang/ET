@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -132,7 +132,7 @@ namespace ETModel
 
 		private KService GetService()
 		{
-			return (KService)this.service;
+			return (KService)this.Service;
 		}
 
 		public void HandleConnnect(uint remoteConn)
@@ -250,7 +250,7 @@ namespace ETModel
 					return;
 				}
 				
-				if (timeNow - this.lastRecvTime < 200)
+				if (timeNow - this.lastRecvTime < 500)
 				{
 					return;
 				}

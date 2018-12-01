@@ -9,7 +9,7 @@ namespace ETModel
 	{
 		public AppType AppType;
 		
-		private AService Service;
+		protected AService Service;
 
 		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
 
@@ -17,30 +17,23 @@ namespace ETModel
 
 		public IMessageDispatcher MessageDispatcher { get; set; }
 
-		public void Awake(NetworkProtocol protocol)
+		public void Awake(NetworkProtocol protocol, int packetSize = Packet.PacketSizeLength2)
 		{
-			try
+			switch (protocol)
 			{
-				switch (protocol)
-				{
-					case NetworkProtocol.KCP:
-						this.Service = new KService();
-						break;
-					case NetworkProtocol.TCP:
-						this.Service = new TService();
-						break;
-					case NetworkProtocol.WebSocket:
-						this.Service = new WService();
-						break;
-				}
-			}
-			catch (Exception e)
-			{
-				throw new Exception($"{e}");
+				case NetworkProtocol.KCP:
+					this.Service = new KService() { Parent = this };
+					break;
+				case NetworkProtocol.TCP:
+					this.Service = new TService(packetSize) { Parent = this };
+					break;
+				case NetworkProtocol.WebSocket:
+					this.Service = new WService() { Parent = this };
+					break;
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, string address)
+		public void Awake(NetworkProtocol protocol, string address, int packetSize = Packet.PacketSizeLength2)
 		{
 			try
 			{
@@ -49,15 +42,15 @@ namespace ETModel
 				{
 					case NetworkProtocol.KCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new KService(ipEndPoint, this.OnAccept);
+						this.Service = new KService(ipEndPoint, this.OnAccept) { Parent = this };
 						break;
 					case NetworkProtocol.TCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new TService(ipEndPoint, this.OnAccept);
+						this.Service = new TService(packetSize, ipEndPoint, this.OnAccept) { Parent = this };
 						break;
 					case NetworkProtocol.WebSocket:
 						string[] prefixs = address.Split(';');
-						this.Service = new WService(prefixs, this.OnAccept);
+						this.Service = new WService(prefixs, this.OnAccept) { Parent = this };
 						break;
 				}
 			}

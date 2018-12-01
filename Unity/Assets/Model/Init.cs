@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
-using Google.Protobuf;
 using UnityEngine;
 
 namespace ETModel
@@ -23,6 +21,7 @@ namespace ETModel
 				DontDestroyOnLoad(gameObject);
 				Game.EventSystem.Add(DLLType.Model, typeof(Init).Assembly);
 
+				Game.Scene.AddComponent<TimerComponent>();
 				Game.Scene.AddComponent<GlobalConfigComponent>();
 				Game.Scene.AddComponent<NetOuterComponent>();
 				Game.Scene.AddComponent<ResourcesComponent>();

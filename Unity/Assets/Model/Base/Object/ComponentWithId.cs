@@ -1,4 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+#if !SERVER
+using UnityEngine;
+#endif
 
 namespace ETModel
 {
@@ -13,6 +16,7 @@ namespace ETModel
 
 		protected ComponentWithId()
 		{
+			this.Id = this.InstanceId;
 		}
 
 		protected ComponentWithId(long id)

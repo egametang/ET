@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -63,7 +64,7 @@ namespace ETModel
 				return;
 			}
 
-			long id = this.Id;
+			this.Network.Remove(this.Id);
 
 			base.Dispose();
 			
@@ -79,7 +80,7 @@ namespace ETModel
 			//}
 			
 			this.channel.Dispose();
-			this.Network.Remove(id);
+			
 			this.requestCallback.Clear();
 		}
 
@@ -181,10 +182,10 @@ namespace ETModel
 			action(response);
 		}
 
-		public ETTask<IResponse> Call(IRequest request)
+		public Task<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new ETTaskCompletionSource<IResponse>();
+			var tcs = new TaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -195,11 +196,11 @@ namespace ETModel
 						throw new RpcException(response.Error, response.Message);
 					}
 
-					tcs.TrySetResult(response);
+					tcs.SetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.TrySetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
@@ -208,10 +209,10 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new ETTaskCompletionSource<IResponse>();
+			var tcs = new TaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -286,12 +287,6 @@ namespace ETModel
 			stream.SetLength(Packet.MessageIndex);
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
-
-			if (stream.Length > ushort.MaxValue)
-			{
-				Log.Error($"message too large: {stream.Length}, opcode: {opcode}");
-				return;
-			}
 			
 			this.byteses[0][0] = flag;
 			this.byteses[1].WriteTo(0, opcode);

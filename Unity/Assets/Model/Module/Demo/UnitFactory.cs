@@ -12,10 +12,9 @@ namespace ETModel
 	        
             UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
             
-	        Unit unit = ComponentFactory.CreateWithId<Unit>(id);
-	        unit.GameObject = UnityEngine.Object.Instantiate(prefab);
-	        GameObject parent = GameObject.Find($"/Global/Unit");
-	        unit.GameObject.transform.SetParent(parent.transform, false);
+	        GameObject go = UnityEngine.Object.Instantiate(prefab);
+	        Unit unit = ComponentFactory.CreateWithId<Unit, GameObject>(id, go);
+	        
 			unit.AddComponent<AnimatorComponent>();
 	        unit.AddComponent<MoveComponent>();
 	        unit.AddComponent<TurnComponent>();

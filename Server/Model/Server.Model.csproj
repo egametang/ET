@@ -83,11 +83,17 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector4.cs">
       <Link>Base\UnityMath\Vector4.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
+      <Link>Component\Config\StartConfig.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\AConfigComponent.cs">
+      <Link>Module\Config\AConfigComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>

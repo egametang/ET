@@ -14,9 +14,4 @@
 	public interface IActorResponse : IResponse
 	{
 	}
-
-	public interface IFrameMessage : IMessage
-	{
-		long Id { get; set; }
-	}
 }

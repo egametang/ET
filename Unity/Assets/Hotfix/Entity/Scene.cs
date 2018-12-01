@@ -4,8 +4,6 @@ namespace ETHotfix
 {
 	public sealed class Scene: Entity
 	{
-		public ETModel.Scene ModelScene { get; set; } = new ETModel.Scene();
-
 		public string Name { get; set; }
 
 		public Scene()
@@ -26,8 +24,6 @@ namespace ETHotfix
 			}
 
 			base.Dispose();
-
-			this.ModelScene.Dispose();
 		}
 	}
 }
