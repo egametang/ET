@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -20,6 +18,6 @@ namespace ETModel
 		public LockStatus status = LockStatus.LockedNot;
 		public IPEndPoint address;
 		public int lockCount;
-		public readonly Queue<TaskCompletionSource<bool>> queue = new Queue<TaskCompletionSource<bool>>();
+		public readonly Queue<ETTaskCompletionSource> queue = new Queue<ETTaskCompletionSource>();
 	}
 }

@@ -55,6 +55,11 @@ namespace ETHotfix
 			object instance = opcodeTypeComponent.GetInstance(opcode);
 			object message = this.session.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
 
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+			{
+				Log.Msg(message);
+			}
+
 			if ((flag & 0x01) > 0)
 			{
 				IResponse response = message as IResponse;
@@ -74,7 +79,7 @@ namespace ETHotfix
 				return;
 			}
 
-			Game.Scene.GetComponent<MessageDispatherComponent>().Handle(session, new MessageInfo(opcode, message));
+			Game.Scene.GetComponent<MessageDispatcherComponent>().Handle(session, new MessageInfo(opcode, message));
 		}
 
 		public void Send(IMessage message)
@@ -90,13 +95,17 @@ namespace ETHotfix
 
 		public void Send(byte flag, ushort opcode, IMessage message)
 		{
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+			{
+				Log.Msg(message);
+			}
 			session.Send(flag, opcode, message);
 		}
 
-		public Task<IResponse> Call(IRequest request)
+		public ETTask<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -121,10 +130,10 @@ namespace ETHotfix
 			return tcs.Task;
 		}
 
-		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{

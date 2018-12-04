@@ -33,5 +33,10 @@ namespace ETModel
 		{
 			UnityEngine.Debug.Log(msg);
 		}
+
+		public static void Msg(object msg)
+		{
+			Debug(Dumper.DumpAsString(msg));
+		}
 	}
 }

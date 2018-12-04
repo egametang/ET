@@ -15,7 +15,12 @@ namespace ETModel
 	[ObjectSystem]
 	public class UiLoadingComponentStartSystem : StartSystem<UILoadingComponent>
 	{
-		public override async void Start(UILoadingComponent self)
+		public override void Start(UILoadingComponent self)
+		{
+			StartAsync(self).NoAwait();
+		}
+		
+		public async ETVoid StartAsync(UILoadingComponent self)
 		{
 			TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
 			long instanceId = self.InstanceId;

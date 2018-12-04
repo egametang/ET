@@ -1,0 +1,16 @@
+The A* Pathfinding Project uses some 3rd party code to handle zip compression and Json serialization.
+They were chosen for good compatibility with the Unity platform. Modifications have been done to reduce the size and improve their compatibility, especially with the iOS/iPhone platform.
+
+Their respective licenses are included in the folders.
+
+The Json library with modifications is hosted at bitbucket:
+	https://bitbucket.org/TowerOfBricks/jsonfx-for-unity3d
+
+Clipper Library with modifications:
+	https://bitbucket.org/TowerOfBricks/clipper
+
+Poly2Tri with modifications:
+	https://github.com/HalfVoxel/poly2tri-cs
+
+DotNetZip with modifications:
+	https://github.com/HalfVoxel/DotNetZip

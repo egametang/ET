@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -146,7 +144,11 @@ namespace ETModel
 				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 				object instance = opcodeTypeComponent.GetInstance(opcode);
 				message = this.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
-				//Log.Debug($"recv: {JsonHelper.ToJson(message)}");
+				
+				if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
+				{
+					Log.Msg(message);
+				}
 			}
 			catch (Exception e)
 			{
@@ -179,10 +181,10 @@ namespace ETModel
 			action(response);
 		}
 
-		public Task<IResponse> Call(IRequest request)
+		public ETTask<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -193,11 +195,11 @@ namespace ETModel
 						throw new RpcException(response.Error, response.Message);
 					}
 
-					tcs.SetResult(response);
+					tcs.TrySetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
+					tcs.TrySetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
@@ -206,10 +208,10 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -264,6 +266,19 @@ namespace ETModel
 			{
 				throw new Exception("session已经被Dispose了");
 			}
+			
+			if (OpcodeHelper.IsNeedDebugLogMessage(opcode) )
+			{
+#if !SERVER
+				if (OpcodeHelper.IsClientHotfixMessage(opcode))
+				{
+				}
+				else
+#endif
+				{
+					Log.Msg(message);
+				}
+			}
 
 			MemoryStream stream = this.Stream;
 			
@@ -271,6 +286,12 @@ namespace ETModel
 			stream.SetLength(Packet.MessageIndex);
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
+
+			if (stream.Length > ushort.MaxValue)
+			{
+				Log.Error($"message too large: {stream.Length}, opcode: {opcode}");
+				return;
+			}
 			
 			this.byteses[0][0] = flag;
 			this.byteses[1].WriteTo(0, opcode);

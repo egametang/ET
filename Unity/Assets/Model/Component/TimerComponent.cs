@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -8,7 +7,7 @@ namespace ETModel
 	{
 		public long Id { get; set; }
 		public long Time { get; set; }
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource tcs;
 	}
 
 	[ObjectSystem]
@@ -80,23 +79,18 @@ namespace ETModel
 					continue;
 				}
 				this.timers.Remove(timerId);
-				timer.tcs.SetResult(true);
+				timer.tcs.SetResult();
 			}
 		}
 
 		private void Remove(long id)
 		{
-			Timer timer;
-			if (!this.timers.TryGetValue(id, out timer))
-			{
-				return;
-			}
 			this.timers.Remove(id);
 		}
 
-		public Task WaitTillAsync(long tillTime, CancellationToken cancellationToken)
+		public ETTask WaitTillAsync(long tillTime, CancellationToken cancellationToken)
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -108,9 +102,9 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public Task WaitTillAsync(long tillTime)
+		public ETTask WaitTillAsync(long tillTime)
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = tillTime, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -121,9 +115,9 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public Task WaitAsync(long time, CancellationToken cancellationToken)
+		public ETTask WaitAsync(long time, CancellationToken cancellationToken)
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);
@@ -135,9 +129,9 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public Task WaitAsync(long time)
+		public ETTask WaitAsync(long time)
 		{
-			TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
 			Timer timer = new Timer { Id = IdGenerater.GenerateId(), Time = TimeHelper.Now() + time, tcs = tcs };
 			this.timers[timer.Id] = timer;
 			this.timeId.Add(timer.Time, timer.Id);

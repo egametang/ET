@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using ETModel;
 
 namespace ETHotfix
@@ -22,7 +21,7 @@ namespace ETHotfix
 				NetOuterComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
 				for (int i = 0; i < 1000; i++)
 				{
-					self.TestAsync(networkComponent, i, address);
+					self.TestAsync(networkComponent, i, address).NoAwait();
 				}
 			}
 			catch (Exception e)
@@ -31,7 +30,7 @@ namespace ETHotfix
 			}
 		}
 		
-		public static async void TestAsync(this WebSocketBenchmarkComponent self, NetOuterComponent networkComponent, int j, string address)
+		public static async ETVoid TestAsync(this WebSocketBenchmarkComponent self, NetOuterComponent networkComponent, int j, string address)
 		{
 			try
 			{
@@ -55,7 +54,7 @@ namespace ETHotfix
 			}
 		}
 		
-		public static async Task Send(this WebSocketBenchmarkComponent self, Session session, int j)
+		public static async ETTask Send(this WebSocketBenchmarkComponent self, Session session, int j)
 		{
 			try
 			{

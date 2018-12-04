@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Microsoft.IO;
 
 namespace ETModel
 {
@@ -12,9 +11,9 @@ namespace ETModel
 
 	public static class Packet
 	{
-		public const int SizeLength = 2;
+		public static int SizeLength = 4;
 		public const int MinSize = 3;
-		public const int MaxSize = 60000;
+		public const int MaxSize = int.MaxValue;
 		public const int FlagIndex = 0;
 		public const int OpcodeIndex = 1;
 		public const int MessageIndex = 3;
@@ -23,7 +22,7 @@ namespace ETModel
 	public class PacketParser
 	{
 		private readonly CircularBuffer buffer;
-		private ushort packetSize;
+		private int packetSize;
 		private ParserState state;
 		public MemoryStream memoryStream;
 		private bool isOK;
@@ -47,18 +46,26 @@ namespace ETModel
 				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (this.buffer.Length < 2)
+						if (this.buffer.Length < Packet.SizeLength)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.buffer.Read(this.memoryStream.GetBuffer(), 0, 2);
-							packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
-							if (packetSize < Packet.MinSize || packetSize > Packet.MaxSize)
+							this.buffer.Read(this.memoryStream.GetBuffer(), 0, Packet.SizeLength);
+							
+							switch (Packet.SizeLength)
 							{
-								throw new Exception($"packet size error: {this.packetSize}");
+								case 4:
+									this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
+									break;
+								case 2:
+									this.packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
+									break;
+								default:
+									throw new Exception("packet size must be 2 or 4!");
 							}
+
 							this.state = ParserState.PacketBody;
 						}
 						break;

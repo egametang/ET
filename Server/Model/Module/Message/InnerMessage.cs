@@ -94,8 +94,6 @@ namespace ETModel
 	{
 		public int RpcId { get; set; }
 
-		public bool NeedCache { get; set; }
-
 		public string CollectionName { get; set; }
 
 		public ComponentWithId Component { get; set; }
@@ -117,8 +115,6 @@ namespace ETModel
 	public partial class DBSaveBatchRequest: IRequest
 	{
 		public int RpcId { get; set; }
-
-		public bool NeedCache { get; set; }
 
 		public string CollectionName { get; set; }
 
@@ -146,8 +142,6 @@ namespace ETModel
 
 		public string CollectionName { get; set; }
 
-		public bool NeedCache { get; set; }
-
 	}
 
 	[Message(InnerOpcode.DBQueryResponse)]
@@ -171,8 +165,6 @@ namespace ETModel
 		public string CollectionName { get; set; }
 
 		public List<long> IdList = new List<long>();
-
-		public bool NeedCache { get; set; }
 
 	}
 
@@ -367,9 +359,13 @@ namespace ETModel
 
 		public string Message { get; set; }
 
+// 自己的unit id
+// 自己的unit id
 		public long UnitId { get; set; }
 
-		public int Count { get; set; }
+// 所有的unit
+// 所有的unit
+		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
 

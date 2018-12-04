@@ -45,5 +45,10 @@ namespace ETModel
         {
             globalLog.Fatal(message);
         }
+
+		public static void Msg(object message)
+		{
+			Debug(MongoHelper.ToJson(message));
+		}
     }
 }

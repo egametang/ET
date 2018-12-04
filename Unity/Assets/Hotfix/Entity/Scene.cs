@@ -2,21 +2,6 @@
 
 namespace ETHotfix
 {
-	public enum SceneType
-	{
-		Share,
-		Game,
-		Login,
-		Lobby,
-		Map,
-		Launcher,
-		Robot,
-		BehaviorTreeScene,
-		RobotClient,
-
-		Realm
-	}
-	
 	public sealed class Scene: Entity
 	{
 		public ETModel.Scene ModelScene { get; set; } = new ETModel.Scene();

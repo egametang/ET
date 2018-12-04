@@ -4,22 +4,20 @@ namespace ETModel
 {
 	public static class OpcodeHelper
 	{
-		private static readonly HashSet<ushort> needDebugLogMessageSet = new HashSet<ushort> { 1 };
+		private static readonly HashSet<ushort> ignoreDebugLogMessageSet = new HashSet<ushort>
+		{
+			OuterOpcode.C2R_Ping,
+			OuterOpcode.R2C_Ping,
+		};
 
 		public static bool IsNeedDebugLogMessage(ushort opcode)
 		{
-			//return true;
-			if (opcode > 1000)
+			if (ignoreDebugLogMessageSet.Contains(opcode))
 			{
-				return true;
+				return false;
 			}
 
-			if (needDebugLogMessageSet.Contains(opcode))
-			{
-				return true;
-			}
-
-			return false;
+			return true;
 		}
 
 		public static bool IsClientHotfixMessage(ushort opcode)

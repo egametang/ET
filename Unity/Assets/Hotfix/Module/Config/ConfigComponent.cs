@@ -46,6 +46,14 @@ namespace ETHotfix
 				{
 					continue;
 				}
+				
+				ConfigAttribute configAttribute = attrs[0] as ConfigAttribute;
+				// 只加载指定的配置
+				if (!configAttribute.Type.Is(AppType.ClientH))
+				{
+					continue;
+				}
+				
 				object obj = Activator.CreateInstance(type);
 
 				ACategory iCategory = obj as ACategory;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -14,13 +13,13 @@ namespace ETModel
 	/// </summary>
 	public class MailBoxComponent: Component
 	{
-		// 拦截器类型，默认没有拦截器
-		public string ActorInterceptType;
+		// Mailbox的类型
+		public string MailboxType;
 
 		// 队列处理消息
 		public Queue<ActorMessageInfo> Queue = new Queue<ActorMessageInfo>();
 
-		public TaskCompletionSource<ActorMessageInfo> Tcs;
+		public ETTaskCompletionSource<ActorMessageInfo> Tcs;
 
 		public override void Dispose()
 		{

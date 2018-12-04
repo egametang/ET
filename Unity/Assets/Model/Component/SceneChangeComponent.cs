@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ETModel
@@ -11,7 +10,7 @@ namespace ETModel
 		{
 			if (self.loadMapOperation.isDone)
 			{
-				self.tcs.SetResult(true);
+				self.tcs.SetResult();
 			}
 		}
 	}
@@ -19,15 +18,15 @@ namespace ETModel
 	public class SceneChangeComponent: Component
 	{
 		public AsyncOperation loadMapOperation;
-		public TaskCompletionSource<bool> tcs;
+		public ETTaskCompletionSource tcs;
 	    public float deltaTime;
 	    public int lastProgress = 0;
 
-		public Task<bool> ChangeSceneAsync(SceneType sceneEnum)
+		public ETTask ChangeSceneAsync(string sceneName)
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource();
 			// 加载map
-			this.loadMapOperation = SceneManager.LoadSceneAsync(sceneEnum.ToString());
+			this.loadMapOperation = SceneManager.LoadSceneAsync(sceneName);
 			return this.tcs.Task;
 		}
 
@@ -45,7 +44,7 @@ namespace ETModel
 
 		public void Finish()
 		{
-			this.tcs.SetResult(true);
+			this.tcs.SetResult();
 		}
 
 		public override void Dispose()
@@ -55,6 +54,13 @@ namespace ETModel
 				return;
 			}
 			base.Dispose();
+
+			if (this.Entity.IsDisposed)
+			{
+				return;
+			}
+			
+			this.Entity.RemoveComponent<SceneChangeComponent>();
 		}
 	}
 }

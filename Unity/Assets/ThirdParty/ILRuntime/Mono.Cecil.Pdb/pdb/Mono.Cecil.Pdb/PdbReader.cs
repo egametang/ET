@@ -93,8 +93,9 @@ namespace Mono.Cecil.Pdb
                 Guid guid;
                 var funcs = PdbFile.LoadFunctions(pdb_file, true, out age, out guid);
 
-                if (this.age != 0 && this.guid != guid)
-                    return false;
+                // 11111111111111111111111 这里做了点修改
+                //if (this.age != 0 && this.guid != guid)
+                //    return false;
 
                 foreach (PdbFunction function in funcs)
                     functions.Add(function.token, function);

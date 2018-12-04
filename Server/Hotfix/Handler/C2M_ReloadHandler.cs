@@ -6,7 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.Manager)]
 	public class C2M_ReloadHandler: AMRpcHandler<C2M_Reload, M2C_Reload>
 	{
-		protected override async void Run(Session session, C2M_Reload message, Action<M2C_Reload> reply)
+		protected override void Run(Session session, C2M_Reload message, Action<M2C_Reload> reply)
+		{
+			RunAsync(session, message, reply).NoAwait();
+		}
+		
+		private async ETVoid RunAsync(Session session, C2M_Reload message, Action<M2C_Reload> reply)
 		{
 			M2C_Reload response = new M2C_Reload();
 			if (message.Account != "panda" && message.Password != "panda")

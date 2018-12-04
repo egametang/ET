@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+#if !SERVER
+using System.Collections.Generic;		
+#endif
 
 namespace ETModel
 {

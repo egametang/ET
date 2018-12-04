@@ -28,7 +28,7 @@ namespace ETModel
 
 		private AssetBundleRequest request;
 
-		private TaskCompletionSource<bool> tcs;
+		private ETTaskCompletionSource tcs;
 
 		public void Awake(AssetBundle ab)
 		{
@@ -42,8 +42,8 @@ namespace ETModel
 				return;
 			}
 
-			TaskCompletionSource<bool> t = tcs;
-			t.SetResult(true);
+			ETTaskCompletionSource t = tcs;
+			t.SetResult();
 		}
 
 		public override void Dispose()
@@ -58,15 +58,15 @@ namespace ETModel
 			this.request = null;
 		}
 
-		public async Task<UnityEngine.Object[]> LoadAllAssetsAsync()
+		public async ETTask<UnityEngine.Object[]> LoadAllAssetsAsync()
 		{
 			await InnerLoadAllAssetsAsync();
 			return this.request.allAssets;
 		}
 
-		private Task<bool> InnerLoadAllAssetsAsync()
+		private ETTask InnerLoadAllAssetsAsync()
 		{
-			this.tcs = new TaskCompletionSource<bool>();
+			this.tcs = new ETTaskCompletionSource();
 			this.request = assetBundle.LoadAllAssetsAsync();
 			return this.tcs.Task;
 		}

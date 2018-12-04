@@ -43,13 +43,13 @@ namespace ETEditor
 					return;
 				}
 
-				Reload(this.managerAddress, this.account, this.password);
+				ReloadAsync(this.managerAddress, this.account, this.password).NoAwait();
 			}
 			
 			GUILayout.EndHorizontal();
 		}
-
-		private static async void Reload(string address, string account, string password)
+		
+		private static async ETVoid ReloadAsync(string address, string account, string password)
 		{
 			using (Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(address))
 			{

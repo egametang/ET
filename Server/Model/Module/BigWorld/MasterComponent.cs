@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
 	public class LockInfo
 	{
 		public IPEndPoint Address;
-		public TaskCompletionSource<bool> Tcs;
+		public ETTaskCompletionSource Tcs;
 
-		public LockInfo(IPEndPoint address, TaskCompletionSource<bool> tcs)
+		public LockInfo(IPEndPoint address, ETTaskCompletionSource tcs)
 		{
 			this.Address = address;
 			this.Tcs = tcs;

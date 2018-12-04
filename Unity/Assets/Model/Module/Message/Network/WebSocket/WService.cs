@@ -16,18 +16,15 @@ namespace ETModel
 
         public WService(IEnumerable<string> prefixs, Action<AChannel> acceptCallback)
         {
-            this.InstanceId = IdGenerater.GenerateId();
-
             this.AcceptCallback += acceptCallback;
             
             this.httpListener = new HttpListener();
 
-            StartAccept(prefixs);
+            StartAccept(prefixs).NoAwait();
         }
         
         public WService()
         {
-            this.InstanceId = IdGenerater.GenerateId();
         }
         
         public override AChannel GetChannel(long id)
@@ -47,7 +44,7 @@ namespace ETModel
 			ClientWebSocket webSocket = new ClientWebSocket();
             WChannel channel = new WChannel(webSocket, this);
             this.channels[channel.Id] = channel;
-            channel.ConnectAsync(address);
+            channel.ConnectAsync(address).NoAwait();
             return channel;
         }
 
@@ -68,7 +65,7 @@ namespace ETModel
             
         }
 
-        public async void StartAccept(IEnumerable<string> prefixs)
+        public async ETVoid StartAccept(IEnumerable<string> prefixs)
         {
             try
             {

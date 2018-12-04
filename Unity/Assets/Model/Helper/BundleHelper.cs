@@ -7,7 +7,7 @@ namespace ETModel
 {
 	public static class BundleHelper
 	{
-		public static async Task DownloadBundle()
+		public static async ETTask DownloadBundle()
 		{
 			if (Define.IsAsync)
 			{
