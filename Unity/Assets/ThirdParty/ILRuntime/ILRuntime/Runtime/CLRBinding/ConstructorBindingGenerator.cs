@@ -201,7 +201,7 @@ namespace ILRuntime.Runtime.CLRBinding
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = *(StackObject**)&ptr_of_this_method->Value;");
+                        var ___dst = ptr_of_this_method->ValueLong;");
 
                         if (p.ParameterType.IsValueType && !p.ParameterType.IsPrimitive && valueTypeBinders != null && valueTypeBinders.Contains(p.ParameterType))
                         {

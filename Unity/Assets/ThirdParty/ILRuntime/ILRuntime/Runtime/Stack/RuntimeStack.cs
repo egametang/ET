@@ -126,7 +126,7 @@ namespace ILRuntime.Runtime.Stack
                 {
                     StackObject* oriAddr = frame.ValueTypeBasePointer;
                     RelocateValueType(ret, ref frame.ValueTypeBasePointer, ref mStackBase);
-                    *(StackObject**)&ret->Value = oriAddr;
+                    ret->ValueLong = oriAddr;
                 }
                 ret++;
             }
@@ -141,7 +141,7 @@ namespace ILRuntime.Runtime.Stack
 
         void RelocateValueType(StackObject* src, ref StackObject* dst, ref int mStackBase)
         {
-            StackObject* descriptor = *(StackObject**)&src->Value;
+            StackObject* descriptor = src->ValueLong;
             if (descriptor > dst)
                 throw new StackOverflowException();
             *dst = *descriptor;
@@ -168,7 +168,7 @@ namespace ILRuntime.Runtime.Stack
                     case ObjectTypes.ValueTypeObjectReference:
                         var newAddr = endAddr;
                         RelocateValueType(addr, ref endAddr, ref mStackBase);
-                        *(StackObject**)&tarVal->Value = newAddr;
+                        tarVal->ValueLong = newAddr;
                         break;
                 }
             }
@@ -190,7 +190,7 @@ namespace ILRuntime.Runtime.Stack
                 }
                 ptr->ObjectType = ObjectTypes.ValueTypeObjectReference;
                 var dst = valueTypePtr;
-                *(StackObject**)&ptr->Value = dst;
+                ptr->ValueLong = dst;
                 dst->ObjectType = ObjectTypes.ValueTypeDescriptor;
                 dst->Value = type.GetHashCode();
                 dst->ValueLow = fieldCount;
@@ -288,7 +288,7 @@ namespace ILRuntime.Runtime.Stack
                         switch (val->ObjectType)
                         {
                             case ObjectTypes.ValueTypeObjectReference:
-                                ClearValueTypeObject(ft, *(StackObject**)&val->Value);
+                                ClearValueTypeObject(ft, val->ValueLong);
                                 break;
                             default:
                                 if (ft.IsValueType)
@@ -327,7 +327,7 @@ namespace ILRuntime.Runtime.Stack
                         {
                             case ObjectTypes.ValueTypeObjectReference:
                                 {
-                                    var dst = *(StackObject**)&val->Value;
+                                    var dst = val->ValueLong;
                                     ClearValueTypeObject(vt, dst);
                                 }
                                 break;
@@ -352,10 +352,10 @@ namespace ILRuntime.Runtime.Stack
             int start = int.MaxValue;
             int end = int.MinValue;
             StackObject* endAddr;
-            CountValueTypeManaged(esp, ref start, ref end, &endAddr);
+            CountValueTypeManaged(esp, ref start, ref end, out endAddr);
 
             if (endAddr == valueTypePtr)
-                valueTypePtr = *(StackObject**)&esp->Value;
+                valueTypePtr = esp->ValueLong;
             else
                 throw new NotSupportedException();
             if (start != int.MaxValue)
@@ -373,11 +373,11 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        void CountValueTypeManaged(StackObject* esp, ref int start, ref int end, StackObject** endAddr)
+        void CountValueTypeManaged(StackObject* esp, ref int start, ref int end, out StackObject* endAddr)
         {
-            StackObject* descriptor = *(StackObject**)&esp->Value;
+            StackObject* descriptor = esp->ValueLong;
             int cnt = descriptor->ValueLow;
-            *endAddr = ILIntepreter.Minus(descriptor, cnt + 1);
+            endAddr = ILIntepreter.Minus(descriptor, cnt + 1);
             for (int i = 0; i < cnt; i++)
             {
                 StackObject* addr = ILIntepreter.Minus(descriptor, i + 1);
@@ -399,7 +399,7 @@ namespace ILRuntime.Runtime.Stack
                         }
                         break;
                     case ObjectTypes.ValueTypeObjectReference:
-                        CountValueTypeManaged(addr, ref start, ref end, endAddr);
+                        CountValueTypeManaged(addr, ref start, ref end, out endAddr);
                         break;
                 }
 

@@ -45,6 +45,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_Type_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_List_1_ILTypeInstance_Binding.Register(app);
@@ -60,7 +62,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_EventAttribute_Binding.Register(app);
             ETModel_EventProxy_Binding.Register(app);
             ETModel_EventSystem_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ETModel_Entity_Binding.Register(app);
             ETModel_ResourcesComponent_Binding.Register(app);
@@ -83,8 +84,8 @@ namespace ILRuntime.Runtime.Generated
             ETModel_SceneChangeComponent_Binding.Register(app);
             ETModel_C2G_EnterMap_Binding.Register(app);
             ETModel_Session_Binding.Register(app);
-            ETModel_ETTask_1_IResponse_Binding.Register(app);
-            ETModel_ETTask_1_IResponse_Binding_Awaiter_Binding.Register(app);
+            System_Threading_Tasks_Task_1_IResponse_Binding.Register(app);
+            System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding.Register(app);
             ETModel_G2C_EnterMap_Binding.Register(app);
             ETModel_Player_Binding.Register(app);
             ETModel_M2C_CreateUnits_Binding.Register(app);
