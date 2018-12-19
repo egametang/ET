@@ -82,7 +82,7 @@ namespace ETHotfix
 			{
 				return null;
 			}
-			child = ComponentFactory.Create<UI, GameObject>(childGameObject);
+			child = ComponentFactory.Create<UI, string, GameObject>(name, childGameObject);
 			this.Add(child);
 			return child;
 		}
