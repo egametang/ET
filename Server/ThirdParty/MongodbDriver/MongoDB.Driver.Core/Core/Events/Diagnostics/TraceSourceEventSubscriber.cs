@@ -1,4 +1,4 @@
-﻿/* Copyright 2013-2015 MongoDB Inc.
+﻿/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -88,6 +88,11 @@ namespace MongoDB.Driver.Core.Events.Diagnostics
         private void Handle(ClusterDescriptionChangedEvent @event)
         {
             Info(TraceSourceEventHelper.ClusterIdBase + 8, "{0}: {1}", TraceSourceEventHelper.Label(@event.OldDescription.ClusterId), @event.NewDescription);
+        }
+
+        private void Handle(SdamInformationEvent @event)
+        {
+            Info(TraceSourceEventHelper.ClusterIdBase + 9, "{0}", @event);
         }
 
         // Servers

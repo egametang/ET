@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 MongoDB Inc.
+﻿/* Copyright 2016-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ namespace MongoDB.Driver.Core.Servers
         private readonly Action<ServerHeartbeatStartedEvent> _heartbeatStartedEventHandler;
         private readonly Action<ServerHeartbeatSucceededEvent> _heartbeatSucceededEventHandler;
         private readonly Action<ServerHeartbeatFailedEvent> _heartbeatFailedEventHandler;
+        private readonly Action<SdamInformationEvent> _sdamInformationEventHandler;
 
         public event EventHandler<ServerDescriptionChangedEventArgs> DescriptionChanged;
 
@@ -64,6 +65,7 @@ namespace MongoDB.Driver.Core.Servers
             eventSubscriber.TryGetEventHandler(out _heartbeatStartedEventHandler);
             eventSubscriber.TryGetEventHandler(out _heartbeatSucceededEventHandler);
             eventSubscriber.TryGetEventHandler(out _heartbeatFailedEventHandler);
+            eventSubscriber.TryGetEventHandler(out _sdamInformationEventHandler);
         }
 
         public ServerDescription Description => Interlocked.CompareExchange(ref _currentDescription, null, null);
@@ -91,7 +93,7 @@ namespace MongoDB.Driver.Core.Servers
 
         public void Invalidate()
         {
-            OnDescriptionChanged(_baseDescription);
+            SetDescriptionIfChanged(_baseDescription);
             RequestHeartbeat();
         }
 
@@ -113,7 +115,47 @@ namespace MongoDB.Driver.Core.Servers
             {
                 try
                 {
-                    await HeartbeatAsync(heartbeatCancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        await HeartbeatAsync(heartbeatCancellationToken).ConfigureAwait(false);
+                    }
+                    catch (OperationCanceledException) when (heartbeatCancellationToken.IsCancellationRequested)
+                    {
+                        // ignore OperationCanceledException when heartbeat cancellation is requested
+                    }
+                    catch (Exception unexpectedException)
+                    {
+                        // if we catch an exception here it's because of a bug in the driver (but we need to defend ourselves against that)
+
+                        var handler = _sdamInformationEventHandler;
+                        if (handler != null)
+                        {
+                            try
+                            {
+                                handler.Invoke(new SdamInformationEvent(() =>
+                                    string.Format(
+                                        "Unexpected exception in ServerMonitor.MonitorServerAsync: {0}",
+                                        unexpectedException.ToString())));
+                            }
+                            catch
+                            {
+                                // ignore any exceptions thrown by the handler (note: event handlers aren't supposed to throw exceptions)
+                            }
+                        }
+
+                        // since an unexpected exception was thrown set the server description to Unknown (with the unexpected exception)
+                        try
+                        {
+                            // keep this code as simple as possible to keep the surface area with any remaining possible bugs as small as possible
+                            var newDescription = _baseDescription.WithHeartbeatException(unexpectedException); // not With in case the bug is in With
+                            SetDescription(newDescription); // not SetDescriptionIfChanged in case the bug is in SetDescriptionIfChanged
+                        }
+                        catch
+                        {
+                            // if even the simple code in the try throws just give up (at least we've raised the unexpected exception via an SdamInformationEvent)
+                        }
+                    }
+
                     var newHeartbeatDelay = new HeartbeatDelay(metronome.GetNextTickDelay(), __minHeartbeatInterval);
                     var oldHeartbeatDelay = Interlocked.Exchange(ref _heartbeatDelay, newHeartbeatDelay);
                     if (oldHeartbeatDelay != null)
@@ -177,6 +219,7 @@ namespace MongoDB.Driver.Core.Servers
                     canonicalEndPoint: isMasterResult.Me,
                     electionId: isMasterResult.ElectionId,
                     lastWriteTimestamp: isMasterResult.LastWriteTimestamp,
+                    logicalSessionTimeout: isMasterResult.LogicalSessionTimeout,
                     maxBatchCount: isMasterResult.MaxBatchCount,
                     maxDocumentSize: isMasterResult.MaxDocumentSize,
                     maxMessageSize: isMasterResult.MaxMessageSize,
@@ -197,7 +240,7 @@ namespace MongoDB.Driver.Core.Servers
                 newDescription = newDescription.With(heartbeatException: heartbeatException);
             }
 
-            OnDescriptionChanged(newDescription);
+            SetDescriptionIfChanged(newDescription);
 
             return true;
         }
@@ -256,15 +299,8 @@ namespace MongoDB.Driver.Core.Servers
             }
         }
 
-        private void OnDescriptionChanged(ServerDescription newDescription)
+        private void OnDescriptionChanged(ServerDescription oldDescription, ServerDescription newDescription)
         {
-            var oldDescription = Interlocked.CompareExchange(ref _currentDescription, null, null);
-            if (oldDescription.Equals(newDescription))
-            {
-                return;
-            }
-            Interlocked.Exchange(ref _currentDescription, newDescription);
-
             var handler = DescriptionChanged;
             if (handler != null)
             {
@@ -272,6 +308,29 @@ namespace MongoDB.Driver.Core.Servers
                 try { handler(this, args); }
                 catch { } // ignore exceptions
             }
+        }
+
+        private void SetDescription(ServerDescription newDescription)
+        {
+            var oldDescription = Interlocked.CompareExchange(ref _currentDescription, null, null);
+            SetDescription(oldDescription, newDescription);
+        }
+
+        private void SetDescription(ServerDescription oldDescription, ServerDescription newDescription)
+        {
+            Interlocked.Exchange(ref _currentDescription, newDescription);
+            OnDescriptionChanged(oldDescription, newDescription);
+        }
+
+        private void SetDescriptionIfChanged(ServerDescription newDescription)
+        {
+            var oldDescription = Interlocked.CompareExchange(ref _currentDescription, null, null);
+            if (oldDescription.Equals(newDescription))
+            {
+                return;
+            }
+
+            SetDescription(oldDescription, newDescription);
         }
 
         private void ThrowIfDisposed()

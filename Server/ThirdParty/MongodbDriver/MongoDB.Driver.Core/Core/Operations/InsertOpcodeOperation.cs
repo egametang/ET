@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,16 +15,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
-using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Events;
 using MongoDB.Driver.Core.Misc;
-using MongoDB.Driver.Core.WireProtocol;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
@@ -39,11 +36,13 @@ namespace MongoDB.Driver.Core.Operations
         private bool? _bypassDocumentValidation;
         private readonly CollectionNamespace _collectionNamespace;
         private bool _continueOnError;
+        private readonly IReadOnlyList<TDocument> _documents;
         private readonly BatchableSource<TDocument> _documentSource;
         private int? _maxBatchCount;
         private int? _maxDocumentSize;
         private int? _maxMessageSize;
         private readonly MessageEncoderSettings _messageEncoderSettings;
+        private bool _retryRequested;
         private readonly IBsonSerializer<TDocument> _serializer;
         private WriteConcern _writeConcern;
 
@@ -52,9 +51,28 @@ namespace MongoDB.Driver.Core.Operations
         /// Initializes a new instance of the <see cref="InsertOpcodeOperation{TDocument}"/> class.
         /// </summary>
         /// <param name="collectionNamespace">The collection namespace.</param>
+        /// <param name="documents">The documents.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        public InsertOpcodeOperation(CollectionNamespace collectionNamespace, IEnumerable<TDocument> documents, IBsonSerializer<TDocument> serializer, MessageEncoderSettings messageEncoderSettings)
+        {
+            _collectionNamespace = Ensure.IsNotNull(collectionNamespace, nameof(collectionNamespace));
+            _documents =  Ensure.IsNotNull(documents, nameof(documents)).ToList();
+            _serializer = Ensure.IsNotNull(serializer, nameof(serializer));
+            _messageEncoderSettings = Ensure.IsNotNull(messageEncoderSettings, nameof(messageEncoderSettings));
+            _writeConcern = WriteConcern.Acknowledged;
+
+            _documentSource = new BatchableSource<TDocument>(_documents, canBeSplit: true);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsertOpcodeOperation{TDocument}"/> class.
+        /// </summary>
+        /// <param name="collectionNamespace">The collection namespace.</param>
         /// <param name="documentSource">The document source.</param>
         /// <param name="serializer">The serializer.</param>
         /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        [Obsolete("Use the constructor that takes an IEnumerable<TDocument> instead of a BatchableSource<TDocument>.")]
         public InsertOpcodeOperation(CollectionNamespace collectionNamespace, BatchableSource<TDocument> documentSource, IBsonSerializer<TDocument> serializer, MessageEncoderSettings messageEncoderSettings)
         {
             _collectionNamespace = Ensure.IsNotNull(collectionNamespace, nameof(collectionNamespace));
@@ -62,6 +80,8 @@ namespace MongoDB.Driver.Core.Operations
             _serializer = Ensure.IsNotNull(serializer, nameof(serializer));
             _messageEncoderSettings = Ensure.IsNotNull(messageEncoderSettings, nameof(messageEncoderSettings));
             _writeConcern = WriteConcern.Acknowledged;
+
+            _documents = _documentSource.GetBatchItems();
         }
 
         // properties
@@ -98,6 +118,17 @@ namespace MongoDB.Driver.Core.Operations
         {
             get { return _continueOnError; }
             set { _continueOnError = value; }
+        }
+
+        /// <summary>
+        /// Gets the documents.
+        /// </summary>
+        /// <value>
+        /// The documents.
+        /// </value>
+        public IReadOnlyList<TDocument> Documents
+        {
+            get { return _documents; }
         }
 
         /// <summary>
@@ -159,6 +190,16 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether retry is enabled for the operation.
+        /// </summary>
+        /// <value>A value indicating whether retry is enabled.</value>
+        public bool RetryRequested
+        {
+            get { return _retryRequested; }
+            set { _retryRequested = value; }
+        }
+
+        /// <summary>
         /// Gets the serializer.
         /// </summary>
         /// <value>
@@ -188,26 +229,17 @@ namespace MongoDB.Driver.Core.Operations
             Ensure.IsNotNull(binding, nameof(binding));
 
             using (EventContext.BeginOperation())
-            using (var channelSource = binding.GetWriteChannelSource(cancellationToken))
-            using (var channel = channelSource.GetChannel(cancellationToken))
+            using (var context = RetryableWriteContext.Create(binding, false, cancellationToken))
             {
-                if (Feature.WriteCommands.IsSupported(channel.ConnectionDescription.ServerVersion) && _writeConcern.IsAcknowledged)
+                if (Feature.WriteCommands.IsSupported(context.Channel.ConnectionDescription.ServerVersion) && _writeConcern.IsAcknowledged)
                 {
                     var emulator = CreateEmulator();
-                    var result = emulator.Execute(channel, cancellationToken);
+                    var result = emulator.Execute(context, cancellationToken);
                     return new[] { result };
                 }
                 else
                 {
-                    if (_documentSource.Batch == null)
-                    {
-                        return InsertMultipleBatches(channel, cancellationToken);
-                    }
-                    else
-                    {
-                        var result = InsertSingleBatch(channel, cancellationToken);
-                        return new[] { result };
-                    }
+                    return InsertBatches(context.Channel, cancellationToken);
                 }
             }
         }
@@ -218,26 +250,17 @@ namespace MongoDB.Driver.Core.Operations
             Ensure.IsNotNull(binding, nameof(binding));
 
             using (EventContext.BeginOperation())
-            using (var channelSource = await binding.GetWriteChannelSourceAsync(cancellationToken).ConfigureAwait(false))
-            using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
+            using (var context = await RetryableWriteContext.CreateAsync(binding, false, cancellationToken).ConfigureAwait(false))
             {
-                if (Feature.WriteCommands.IsSupported(channel.ConnectionDescription.ServerVersion) && _writeConcern.IsAcknowledged)
+                if (Feature.WriteCommands.IsSupported(context.Channel.ConnectionDescription.ServerVersion) && _writeConcern.IsAcknowledged)
                 {
                     var emulator = CreateEmulator();
-                    var result = await emulator.ExecuteAsync(channel, cancellationToken).ConfigureAwait(false);
+                    var result = await emulator.ExecuteAsync(context, cancellationToken).ConfigureAwait(false);
                     return new[] { result };
                 }
                 else
                 {
-                    if (_documentSource.Batch == null)
-                    {
-                        return await InsertMultipleBatchesAsync(channel, cancellationToken).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        var result = await InsertSingleBatchAsync(channel, cancellationToken).ConfigureAwait(false);
-                        return new[] { result };
-                    }
+                    return await InsertBatchesAsync(context.Channel, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
@@ -252,136 +275,138 @@ namespace MongoDB.Driver.Core.Operations
                 MaxBatchCount = _maxBatchCount,
                 MaxDocumentSize = _maxDocumentSize,
                 MaxMessageSize = _maxMessageSize,
+                RetryRequested = _retryRequested,
                 WriteConcern = _writeConcern
             };
         }
 
-        private WriteConcernResult ExecuteProtocol(IChannelHandle channel, WriteConcern batchWriteConcern, Func<bool> shouldSendGetLastError, CancellationToken cancellationToken)
+        private WriteConcernResult ExecuteProtocol(IChannelHandle channel, Batch batch, CancellationToken cancellationToken)
         {
             return channel.Insert<TDocument>(
                 _collectionNamespace,
-                batchWriteConcern,
+                batch.WriteConcern,
                 _serializer,
                 _messageEncoderSettings,
-                _documentSource,
+                batch.Documents,
                 _maxBatchCount,
                 _maxMessageSize,
                 _continueOnError,
-                shouldSendGetLastError,
+                batch.ShouldSendGetLastError,
                 cancellationToken);
         }
 
-        private Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, WriteConcern batchWriteConcern, Func<bool> shouldSendGetLastError, CancellationToken cancellationToken)
+        private Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, Batch batch, CancellationToken cancellationToken)
         {
             return channel.InsertAsync<TDocument>(
                 _collectionNamespace,
-                batchWriteConcern,
+                batch.WriteConcern,
                 _serializer,
                 _messageEncoderSettings,
-                _documentSource,
+                batch.Documents,
                 _maxBatchCount,
                 _maxMessageSize,
                 _continueOnError,
-                shouldSendGetLastError,
+                batch.ShouldSendGetLastError,
                 cancellationToken);
         }
 
-        private IEnumerable<WriteConcernResult> InsertMultipleBatches(IChannelHandle channel, CancellationToken cancellationToken)
+        private IEnumerable<WriteConcernResult> InsertBatches(IChannelHandle channel, CancellationToken cancellationToken)
         {
             var helper = new BatchHelper(_documentSource, _writeConcern, _continueOnError);
 
-            while (_documentSource.HasMore)
+            foreach (var batch in helper.GetBatches())
             {
-                WriteConcernResult result;
                 try
                 {
-                    result = ExecuteProtocol(channel, helper.BatchWriteConcern, helper.ShouldSendGetLastError, cancellationToken);
+                    batch.Result = ExecuteProtocol(channel, batch, cancellationToken);
                 }
                 catch (MongoWriteConcernException ex)
                 {
-                    result = helper.HandleException(ex);
+                    batch.Result = helper.HandleException(ex);
                     if (!_continueOnError)
                     {
                         return null;
                     }
                 }
-                helper.AddResult(result);
-
-                _documentSource.ClearBatch();
             }
 
             return helper.CreateFinalResultOrThrow();
         }
 
-        private async Task<IEnumerable<WriteConcernResult>> InsertMultipleBatchesAsync(IChannelHandle channel, CancellationToken cancellationToken)
+        private async Task<IEnumerable<WriteConcernResult>> InsertBatchesAsync(IChannelHandle channel, CancellationToken cancellationToken)
         {
             var helper = new BatchHelper(_documentSource, _writeConcern, _continueOnError);
 
-            while (_documentSource.HasMore)
+            foreach (var batch in helper.GetBatches())
             {
-                WriteConcernResult result;
                 try
                 {
-                    result = await ExecuteProtocolAsync(channel, helper.BatchWriteConcern, helper.ShouldSendGetLastError, cancellationToken).ConfigureAwait(false);
+                    batch.Result = await ExecuteProtocolAsync(channel, batch, cancellationToken).ConfigureAwait(false);
                 }
                 catch (MongoWriteConcernException ex)
                 {
-                    result = helper.HandleException(ex);
+                    batch.Result = helper.HandleException(ex);
                     if (!_continueOnError)
                     {
                         return null;
                     }
                 }
-                helper.AddResult(result);
-
-                _documentSource.ClearBatch();
             }
 
             return helper.CreateFinalResultOrThrow();
-        }
-
-        private WriteConcernResult InsertSingleBatch(IChannelHandle channel, CancellationToken cancellationToken)
-        {
-            return ExecuteProtocol(channel, _writeConcern, null, cancellationToken);
-        }
-
-        private Task<WriteConcernResult> InsertSingleBatchAsync(IChannelHandle channel, CancellationToken cancellationToken)
-        {
-            return ExecuteProtocolAsync(channel, _writeConcern, null, cancellationToken);
         }
 
         // nested types
+        private class Batch
+        {
+            public BatchableSource<TDocument> Documents;
+            public WriteConcernResult Result;
+            public Func<bool> ShouldSendGetLastError;
+            public WriteConcern WriteConcern;
+        }
+
         private class BatchHelper
         {
-            private readonly WriteConcern _batchWriteConcern;
+            // private fields
             private readonly bool _continueOnError;
+            private readonly BatchableSource<TDocument> _documentSource;
             private Exception _finalException;
-            private readonly List<WriteConcernResult> _results;
-            private Func<bool> _shouldSendGetLastError;
+            private readonly List<WriteConcernResult> _results = new List<WriteConcernResult>();
             private readonly WriteConcern _writeConcern;
 
+            // constructors
             public BatchHelper(BatchableSource<TDocument> documentSource, WriteConcern writeConcern, bool continueOnError)
             {
+                _documentSource = documentSource;
                 _writeConcern = writeConcern;
                 _continueOnError = continueOnError;
-                _results = writeConcern.IsAcknowledged ? new List<WriteConcernResult>() : null;
-                _batchWriteConcern = writeConcern;
-                _shouldSendGetLastError = null;
-                if (!writeConcern.IsAcknowledged && !continueOnError)
-                {
-                    _batchWriteConcern = WriteConcern.Acknowledged;
-                    _shouldSendGetLastError = () => documentSource.HasMore;
-                }
             }
 
-            public WriteConcern BatchWriteConcern { get { return _batchWriteConcern; } }
-            public Func<bool> ShouldSendGetLastError { get { return _shouldSendGetLastError; } }
-
-            public void AddResult(WriteConcernResult result)
+            // public methods
+            public IEnumerable<Batch> GetBatches()
             {
-                if (_results != null)
-                {
-                    _results.Add(result);
+                while (_documentSource.Count > 0)
+                {			
+                    var writeConcern = _writeConcern;
+                    Func<bool> shouldSendGetLastError = null;
+                    if (!writeConcern.IsAcknowledged && !_continueOnError)
+                    {
+                        writeConcern = WriteConcern.W1;
+                        shouldSendGetLastError = () => !_documentSource.AllItemsWereProcessed;
+                    }
+
+                    var batch = new Batch
+                    {
+                        Documents = _documentSource,
+                        WriteConcern = writeConcern,
+                        ShouldSendGetLastError = shouldSendGetLastError
+                    };
+
+                    yield return batch;
+
+                    _results.Add(batch.Result);
+
+                    _documentSource.AdvancePastProcessedItems();
                 }
             }
 
@@ -405,13 +430,22 @@ namespace MongoDB.Driver.Core.Operations
 
             public IEnumerable<WriteConcernResult> CreateFinalResultOrThrow()
             {
-                if (_writeConcern.IsAcknowledged && _finalException != null)
+                if (_writeConcern.IsAcknowledged)
                 {
-                    _finalException.Data["results"] = _results;
-                    throw _finalException;
+                    if (_finalException != null)
+                    {
+                        _finalException.Data["results"] = _results;
+                        throw _finalException;
+                    }
+                    else
+                    {
+                        return _results;
+                    }
                 }
-
-                return _results;
+                else
+                {
+                    return null;
+                }
             }
         }
     }

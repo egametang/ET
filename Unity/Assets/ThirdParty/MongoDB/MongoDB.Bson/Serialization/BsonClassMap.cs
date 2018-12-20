@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using MongoDB.Bson.IO;
@@ -55,7 +54,7 @@ namespace MongoDB.Bson.Serialization
         private readonly bool _isAnonymous;
         private readonly List<BsonMemberMap> _allMemberMaps; // includes inherited member maps
         private readonly ReadOnlyCollection<BsonMemberMap> _allMemberMapsReadonly;
-        private readonly List<BsonMemberMap> _declaredMemberMaps; // only the members declared in this class
+        private List<BsonMemberMap> _declaredMemberMaps; // only the members declared in this class
         private readonly BsonTrie<int> _elementTrie;
 
         private bool _frozen; // once a class map has been frozen no further changes are allowed
@@ -482,6 +481,7 @@ namespace MongoDB.Bson.Serialization
                             {
                                 _baseClassMap = LookupClassMap(baseType);
                             }
+                            _baseClassMap.Freeze();
                             _discriminatorIsRequired |= _baseClassMap._discriminatorIsRequired;
                             _hasRootClass |= (_isRootClass || _baseClassMap.HasRootClass);
                             _allMemberMaps.AddRange(_baseClassMap.AllMemberMaps);
@@ -491,6 +491,7 @@ namespace MongoDB.Bson.Serialization
                                 _ignoreExtraElementsIsInherited = true;
                             }
                         }
+                        _declaredMemberMaps = _declaredMemberMaps.OrderBy(m => m.Order).ToList(); // we're counting on OrderBy being a stable sort
                         _allMemberMaps.AddRange(_declaredMemberMaps);
 
                         if (_idMemberMap == null)
@@ -929,7 +930,7 @@ namespace MongoDB.Bson.Serialization
 
             _creatorMaps.Clear();
             _creator = null;
-            _declaredMemberMaps.Clear();
+            _declaredMemberMaps = new List<BsonMemberMap>();
             _discriminator = _classType.Name;
             _discriminatorIsRequired = false;
             _extraElementsMemberMap = null;
@@ -1193,44 +1194,9 @@ namespace MongoDB.Bson.Serialization
         {
             new ConventionRunner(_conventionPack).Apply(this);
 
-            OrderMembers();
             foreach (var memberMap in _declaredMemberMaps)
             {
                 TryFindShouldSerializeMethod(memberMap);
-            }
-        }
-
-        private void OrderMembers()
-        {
-            // only auto map properties declared in this class (and not in base classes)
-            var hasOrderedElements = false;
-            var hasUnorderedElements = false;
-            foreach (var memberMap in _declaredMemberMaps)
-            {
-                if (memberMap.Order != int.MaxValue)
-                {
-                    hasOrderedElements |= true;
-                }
-                else
-                {
-                    hasUnorderedElements |= true;
-                }
-            }
-
-            if (hasOrderedElements)
-            {
-                if (hasUnorderedElements)
-                {
-                    // split out the unordered elements and add them back at the end (because Sort is unstable, see online help)
-                    var unorderedElements = new List<BsonMemberMap>(_declaredMemberMaps.Where(pm => pm.Order == int.MaxValue));
-                    _declaredMemberMaps.RemoveAll(m => m.Order == int.MaxValue);
-                    _declaredMemberMaps.Sort((x, y) => x.Order.CompareTo(y.Order));
-                    _declaredMemberMaps.AddRange(unorderedElements);
-                }
-                else
-                {
-                    _declaredMemberMaps.Sort((x, y) => x.Order.CompareTo(y.Order));
-                }
             }
         }
 
@@ -1275,27 +1241,9 @@ namespace MongoDB.Bson.Serialization
                 Expression body;
                 var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
                 var classTypeInfo = _classType.GetTypeInfo();
-                ConstructorInfo defaultConstructor = classTypeInfo.GetConstructors(bindingFlags)
+                var defaultConstructor = classTypeInfo.GetConstructors(bindingFlags)
                     .Where(c => c.GetParameters().Length == 0)
                     .SingleOrDefault();
-                #if ENABLE_IL2CPP
-
-                if (defaultConstructor != null)
-                {
-                    _creator = () => defaultConstructor.Invoke(null);
-
-                }
-                else if(__getUninitializedObjectMethodInfo != null)
-                {
-
-                    _creator = () => __getUninitializedObjectMethodInfo.Invoke(null, new object[] { this._classType });
-                }
-                else
-                {
-                    var message = $"Type '{_classType.GetType().Name}' does not have a default constructor.";
-                    throw new BsonSerializationException(message);
-                }
-                #else
                 if (defaultConstructor != null)
                 {
                     // lambdaExpression = () => (object) new TClass()
@@ -1314,7 +1262,6 @@ namespace MongoDB.Bson.Serialization
 
                 var lambdaExpression = Expression.Lambda<Func<object>>(body);
                 _creator = lambdaExpression.Compile();
-                #endif
             }
             return _creator;
         }

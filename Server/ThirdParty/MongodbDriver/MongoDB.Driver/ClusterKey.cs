@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -54,6 +54,7 @@ namespace MongoDB.Driver
         private readonly int _minConnectionPoolSize;
         private readonly int _receiveBufferSize;
         private readonly string _replicaSetName;
+        private readonly string _sdamLogFilename;
         private readonly int _sendBufferSize;
         private readonly IReadOnlyList<MongoServerAddress> _servers;
         private readonly TimeSpan _serverSelectionTimeout;
@@ -80,6 +81,7 @@ namespace MongoDB.Driver
             int maxConnectionPoolSize,
             int minConnectionPoolSize,
             string replicaSetName,
+            string sdamLogFilename,
             IReadOnlyList<MongoServerAddress> servers,
             TimeSpan serverSelectionTimeout,
             TimeSpan socketTimeout,
@@ -104,6 +106,7 @@ namespace MongoDB.Driver
             _minConnectionPoolSize = minConnectionPoolSize;
             _receiveBufferSize = __defaultReceiveBufferSize; // TODO: add ReceiveBufferSize to MongoServerSettings?
             _replicaSetName = replicaSetName;
+            _sdamLogFilename = sdamLogFilename;
             _sendBufferSize = __defaultSendBufferSize; // TODO: add SendBufferSize to MongoServerSettings?
             _servers = servers;
             _serverSelectionTimeout = serverSelectionTimeout;
@@ -133,6 +136,7 @@ namespace MongoDB.Driver
         public int MinConnectionPoolSize { get { return _minConnectionPoolSize; } }
         public int ReceiveBufferSize { get { return _receiveBufferSize; } }
         public string ReplicaSetName { get { return _replicaSetName; } }
+        public string SdamLogFilename { get { return _sdamLogFilename; }}
         public int SendBufferSize { get { return _sendBufferSize; } }
         public IReadOnlyList<MongoServerAddress> Servers { get { return _servers; } }
         public TimeSpan ServerSelectionTimeout { get { return _serverSelectionTimeout; } }
@@ -177,6 +181,7 @@ namespace MongoDB.Driver
                 _minConnectionPoolSize == rhs._minConnectionPoolSize &&
                 _receiveBufferSize == rhs._receiveBufferSize &&
                 _replicaSetName == rhs._replicaSetName &&
+                _sdamLogFilename == rhs._sdamLogFilename &&
                 _sendBufferSize == rhs._sendBufferSize &&
                 _servers.SequenceEqual(rhs._servers) &&
                 _serverSelectionTimeout == rhs._serverSelectionTimeout &&

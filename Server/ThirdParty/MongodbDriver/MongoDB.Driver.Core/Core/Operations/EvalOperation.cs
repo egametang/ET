@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
+using MongoDB.Shared;
 
 namespace MongoDB.Driver.Core.Operations
 {
@@ -152,7 +153,7 @@ namespace MongoDB.Driver.Core.Operations
                 { "$eval", _function },
                 { "args", () => new BsonArray(_args), _args != null },
                 { "nolock", () => _noLock.Value, _noLock.HasValue },
-                { "maxTimeMS", () => _maxTime.Value.TotalMilliseconds, _maxTime.HasValue }
+                { "maxTimeMS", () => MaxTimeHelper.ToMaxTimeMS(_maxTime.Value), _maxTime.HasValue }
             };
         }
 

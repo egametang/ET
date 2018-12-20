@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ namespace MongoDB.Driver.Core.Operations
         private BsonDocument _filter;
         private readonly DatabaseNamespace _databaseNamespace;
         private readonly MessageEncoderSettings _messageEncoderSettings;
+        private bool? _nameOnly;
 
         // constructors
         /// <summary>
@@ -86,6 +87,18 @@ namespace MongoDB.Driver.Core.Operations
             get { return _messageEncoderSettings; }
         }
 
+        /// <summary>
+        /// Gets or sets the name only option.
+        /// </summary>
+        /// <value>
+        /// The name only option.
+        /// </value>
+        public bool? NameOnly
+        {
+            get { return _nameOnly; }
+            set { _nameOnly = value; }
+        }
+
         // public methods
         /// <inheritdoc/>
         public IAsyncCursor<BsonDocument> Execute(IReadBinding binding, CancellationToken cancellationToken)
@@ -95,7 +108,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetReadChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel);
                 return operation.Execute(channelBinding, cancellationToken);
@@ -110,7 +123,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetReadChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel);
                 return await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
@@ -122,11 +135,18 @@ namespace MongoDB.Driver.Core.Operations
         {
             if (Feature.ListCollectionsCommand.IsSupported(channel.ConnectionDescription.ServerVersion))
             {
-                return new ListCollectionsUsingCommandOperation(_databaseNamespace, _messageEncoderSettings) { Filter = _filter };
+                return new ListCollectionsUsingCommandOperation(_databaseNamespace, _messageEncoderSettings)
+                {
+                    Filter = _filter,
+                    NameOnly = _nameOnly
+                };
             }
             else
             {
-                return new ListCollectionsUsingQueryOperation(_databaseNamespace, _messageEncoderSettings) { Filter = _filter }; ;
+                return new ListCollectionsUsingQueryOperation(_databaseNamespace, _messageEncoderSettings)
+                {
+                    Filter = _filter
+                };
             }
         }
     }

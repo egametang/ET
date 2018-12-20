@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,24 +15,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Driver.Core.Bindings;
-using MongoDB.Driver.Core.Connections;
-using MongoDB.Driver.Core.Misc;
-using MongoDB.Driver.Core.Operations.ElementNameValidators;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
 {
-    internal class BulkInsertOperation : BulkUnmixedWriteOperationBase
+    internal class BulkInsertOperation : BulkUnmixedWriteOperationBase<InsertRequest>
     {
         // constructors
         public BulkInsertOperation(
@@ -43,83 +33,49 @@ namespace MongoDB.Driver.Core.Operations
         {
         }
 
-        // properties
-        protected override string CommandName
-        {
-            get { return "insert"; }
-        }
-
-        public new IEnumerable<InsertRequest> Requests
-        {
-            get { return base.Requests.Cast<InsertRequest>(); }
-        }
-
-        protected override string RequestsElementName
-        {
-            get { return "documents"; }
-        }
-
         // methods
-        protected override BatchSerializer CreateBatchSerializer(ConnectionDescription connectionDescription, int maxBatchCount, int maxBatchLength)
+        protected override IRetryableWriteOperation<BsonDocument> CreateBatchOperation(Batch batch)
         {
-            var isSystemIndexesCollection = CollectionNamespace.Equals(CollectionNamespace.DatabaseNamespace.SystemIndexesCollection);
-            var elementNameValidator = isSystemIndexesCollection ? (IElementNameValidator)NoOpElementNameValidator.Instance : CollectionElementNameValidator.Instance;
-            return new InsertBatchSerializer(connectionDescription, maxBatchCount, maxBatchLength, elementNameValidator);
-        }
-
-        protected override BulkUnmixedWriteOperationEmulatorBase CreateEmulator()
-        {
-            return new BulkInsertOperationEmulator(CollectionNamespace, Requests, MessageEncoderSettings)
+            return new RetryableInsertCommandOperation<InsertRequest>(CollectionNamespace, batch.Requests, InsertRequestSerializer.Instance, MessageEncoderSettings)
             {
-                MaxBatchCount = MaxBatchCount,
-                MaxBatchLength = MaxBatchLength,
+                BypassDocumentValidation = BypassDocumentValidation,
                 IsOrdered = IsOrdered,
+                MaxBatchCount = MaxBatchCount,
+                RetryRequested = RetryRequested,
                 WriteConcern = WriteConcern
             };
         }
 
-        // nested types
-        private class InsertBatchSerializer : BatchSerializer
+        protected override IExecutableInRetryableWriteContext<BulkWriteOperationResult> CreateEmulator()
         {
-            // fields
-            private IBsonSerializer _cachedSerializer;
-            private Type _cachedSerializerType;
-            private IElementNameValidator _elementNameValidator;
-
-            // constructors
-            public InsertBatchSerializer(ConnectionDescription connectionDescription, int maxBatchCount, int maxBatchLength, IElementNameValidator elementNameValidator)
-                : base(connectionDescription, maxBatchCount, maxBatchLength)
+            return new BulkInsertOperationEmulator(CollectionNamespace, Requests, MessageEncoderSettings)
             {
-                _elementNameValidator = elementNameValidator;
+                IsOrdered = IsOrdered,
+                MaxBatchCount = MaxBatchCount,
+                MaxBatchLength = MaxBatchLength,
+                WriteConcern = WriteConcern
+            };
+        }
+
+        protected override bool RequestHasCollation(InsertRequest request)
+        {
+            return false;
+        }
+
+        // nested types
+        private class InsertRequestSerializer : SealedClassSerializerBase<InsertRequest>
+        {
+            public static InsertRequestSerializer Instance = new InsertRequestSerializer();
+
+            protected override InsertRequest DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
+            {
+                var document = BsonDocumentSerializer.Instance.Deserialize(context, args);
+                return new InsertRequest(document);
             }
 
-            // methods
-            protected override void SerializeRequest(BsonSerializationContext context, WriteRequest request)
+            protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, InsertRequest value)
             {
-                var insertRequest = (InsertRequest)request;
-                var document = insertRequest.Document;
-
-                var actualType = document.GetType();
-                if (_cachedSerializerType != actualType)
-                {
-                    _cachedSerializer = BsonSerializer.LookupSerializer(actualType);
-                    _cachedSerializerType = actualType;
-                }
-
-                var serializer = _cachedSerializer;
-
-                var bsonWriter = (BsonBinaryWriter)context.Writer;
-                bsonWriter.PushMaxDocumentSize(ConnectionDescription.MaxDocumentSize);
-                bsonWriter.PushElementNameValidator(_elementNameValidator);
-                try
-                {
-                    serializer.Serialize(context, document);
-                }
-                finally
-                {
-                    bsonWriter.PopMaxDocumentSize();
-                    bsonWriter.PopElementNameValidator();
-                }
+                BsonDocumentSerializer.Instance.Serialize(context, args, value.Document);
             }
         }
     }

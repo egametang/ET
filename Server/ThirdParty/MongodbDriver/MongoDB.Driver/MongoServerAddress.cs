@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace MongoDB.Driver
     /// <summary>
     /// The address of a MongoDB server.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoServerAddress : IEquatable<MongoServerAddress>

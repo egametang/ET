@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using MongoDB.Bson.Serialization.Options;
 
 namespace MongoDB.Bson.Serialization.Serializers
@@ -265,16 +266,6 @@ namespace MongoDB.Bson.Serialization.Serializers
             }
         }
 
-        // protected methods
-        /// <summary>
-        /// Creates the instance.
-        /// </summary>
-        /// <returns>The instance.</returns>
-        protected override TDictionary CreateInstance()
-        {
-            return Activator.CreateInstance<TDictionary>();
-        }
-
         // explicit interface implementations
         IBsonSerializer IChildSerializerConfigurable.ChildSerializer
         {
@@ -290,5 +281,12 @@ namespace MongoDB.Bson.Serialization.Serializers
         {
             return WithDictionaryRepresentation(dictionaryRepresentation);
         }
+        
+        /// <inheritdoc/>
+        protected override ICollection<KeyValuePair<TKey, TValue>> CreateAccumulator()
+        {
+            return Activator.CreateInstance<TDictionary>();
+        }
+
     }
 }

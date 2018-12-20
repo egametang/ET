@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2016 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,11 +21,13 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
+using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Events;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.Servers;
 using MongoDB.Driver.Core.WireProtocol;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
+using MongoDB.Shared;
 
 namespace MongoDB.Driver.Core.Operations
 {
@@ -239,6 +241,7 @@ namespace MongoDB.Driver.Core.Operations
         /// <value>
         /// The max scan.
         /// </value>
+        [Obsolete("MaxScan was deprecated in server version 4.0.")]
         public int? MaxScan
         {
             get { return _maxScan; }
@@ -254,7 +257,7 @@ namespace MongoDB.Driver.Core.Operations
         public TimeSpan? MaxTime
         {
             get { return _maxTime; }
-            set { _maxTime = Ensure.IsNullOrGreaterThanZero(value, nameof(value)); }
+            set { _maxTime = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(value, nameof(value)); }
         }
 
         /// <summary>
@@ -393,6 +396,7 @@ namespace MongoDB.Driver.Core.Operations
         /// <value>
         /// Whether to use snapshot behavior.
         /// </value>
+        [Obsolete("Snapshot was deprecated in server version 3.7.4.")]
         public bool? Snapshot
         {
             get { return _snapshot; }
@@ -412,15 +416,16 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // methods
-        internal BsonDocument CreateCommand(SemanticVersion serverVersion, ServerType serverType)
+        internal BsonDocument CreateCommand(ConnectionDescription connectionDescription, ICoreSession session)
         {
-            Feature.ReadConcern.ThrowIfNotSupported(serverVersion, _readConcern);
-            Feature.Collation.ThrowIfNotSupported(serverVersion, _collation);
+            Feature.ReadConcern.ThrowIfNotSupported(connectionDescription.ServerVersion, _readConcern);
+            Feature.Collation.ThrowIfNotSupported(connectionDescription.ServerVersion, _collation);
 
             var firstBatchSize = _firstBatchSize ?? (_batchSize > 0 ? _batchSize : null);
-            var isShardRouter = serverType == ServerType.ShardRouter;
+            var isShardRouter = connectionDescription.IsMasterResult.ServerType == ServerType.ShardRouter;
 
-            var command = new BsonDocument
+            var readConcern = ReadConcernHelper.GetReadConcernForCommand(session, connectionDescription, _readConcern);
+            return new BsonDocument
             {
                 { "find", _collectionNamespace.CollectionName },
                 { "filter", _filter, _filter != null },
@@ -433,7 +438,7 @@ namespace MongoDB.Driver.Core.Operations
                 { "singleBatch", () => _limit < 0 || _singleBatch.Value, _limit < 0 || _singleBatch.HasValue },
                 { "comment", _comment, _comment != null },
                 { "maxScan", () => _maxScan.Value, _maxScan.HasValue },
-                { "maxTimeMS", () => _maxTime.Value.TotalMilliseconds, _maxTime.HasValue },
+                { "maxTimeMS", () => MaxTimeHelper.ToMaxTimeMS(_maxTime.Value), _maxTime.HasValue },
                 { "max", _max, _max != null },
                 { "min", _min, _min != null },
                 { "returnKey", () => _returnKey.Value, _returnKey.HasValue },
@@ -444,16 +449,14 @@ namespace MongoDB.Driver.Core.Operations
                 { "noCursorTimeout", () => _noCursorTimeout.Value, _noCursorTimeout.HasValue },
                 { "awaitData", true, _cursorType == CursorType.TailableAwait },
                 { "allowPartialResults", () => _allowPartialResults.Value, _allowPartialResults.HasValue && isShardRouter },
-                { "readConcern", () => _readConcern.ToBsonDocument(), !_readConcern.IsServerDefault },
-                { "collation", () => _collation.ToBsonDocument(), _collation != null }
+                { "collation", () => _collation.ToBsonDocument(), _collation != null },
+                { "readConcern", readConcern, readConcern != null }
             };
-
-            return command;
         }
 
-        private AsyncCursor<TDocument> CreateCursor(IChannelSourceHandle channelSource, BsonDocument commandResult, bool slaveOk)
+        private AsyncCursor<TDocument> CreateCursor(IChannelSourceHandle channelSource, BsonDocument commandResult)
         {
-            var getMoreChannelSource = new ServerChannelSource(channelSource.Server);
+            var getMoreChannelSource = new ServerChannelSource(channelSource.Server, channelSource.Session.Fork());
             var firstBatch = CreateCursorBatch(commandResult);
 
             return new AsyncCursor<TDocument>(
@@ -490,16 +493,15 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetReadChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var readPreference = binding.ReadPreference;
-                var slaveOk = readPreference != null && readPreference.ReadPreferenceMode != ReadPreferenceMode.Primary;
 
                 using (EventContext.BeginFind(_batchSize, _limit))
                 {
-                    var operation = CreateOperation(channel.ConnectionDescription.ServerVersion, channelSource.ServerDescription.Type);
-                    var commandResult = operation.Execute(binding, cancellationToken);
-                    return CreateCursor(channelSource, commandResult, slaveOk);
+                    var operation = CreateOperation(channel, channelBinding);
+                    var commandResult = operation.Execute(channelBinding, cancellationToken);
+                    return CreateCursor(channelSource, commandResult);
                 }
             }
         }
@@ -512,23 +514,22 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetReadChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var readPreference = binding.ReadPreference;
-                var slaveOk = readPreference != null && readPreference.ReadPreferenceMode != ReadPreferenceMode.Primary;
 
                 using (EventContext.BeginFind(_batchSize, _limit))
                 {
-                    var operation = CreateOperation(channel.ConnectionDescription.ServerVersion, channelSource.ServerDescription.Type);
-                    var commandResult = await operation.ExecuteAsync(binding, cancellationToken).ConfigureAwait(false);
-                    return CreateCursor(channelSource, commandResult, slaveOk);
+                    var operation = CreateOperation(channel, channelBinding);
+                    var commandResult = await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
+                    return CreateCursor(channelSource, commandResult);
                 }
             }
         }
 
-        private ReadCommandOperation<BsonDocument> CreateOperation(SemanticVersion serverVersion, ServerType serverType)
+        private ReadCommandOperation<BsonDocument> CreateOperation(IChannel channel, IBinding binding)
         {
-            var command = CreateCommand(serverVersion, serverType);
+            var command = CreateCommand(channel.ConnectionDescription, binding.Session);
             var operation = new ReadCommandOperation<BsonDocument>(
                 _collectionNamespace.DatabaseNamespace,
                 command,

@@ -1,4 +1,4 @@
-﻿/* Copyright 2015 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ namespace MongoDB.Driver.Core.Authentication
 
             using (var conversation = new SaslConversation(description.ConnectionId))
             {
-                var currentStep = _mechanism.Initialize(connection, description);
+                var currentStep = _mechanism.Initialize( connection, conversation, description);
 
                 var command = CreateStartCommand(currentStep);
                 while (true)
@@ -102,7 +102,7 @@ namespace MongoDB.Driver.Core.Authentication
 
             using (var conversation = new SaslConversation(description.ConnectionId))
             {
-                var currentStep = _mechanism.Initialize(connection, description);
+                var currentStep = _mechanism.Initialize(connection, conversation, description);
 
                 var command = CreateStartCommand(currentStep);
                 while (true)
@@ -127,6 +127,12 @@ namespace MongoDB.Driver.Core.Authentication
                     command = CreateContinueCommand(currentStep, result);
                 }
             }
+        }
+
+        /// <inheritdoc/>
+        public BsonDocument CustomizeInitialIsMasterCommand(BsonDocument isMasterCommand)
+        {
+            return isMasterCommand; 
         }
 
         private CommandWireProtocol<BsonDocument> CreateCommandProtocol(BsonDocument command)
@@ -275,9 +281,10 @@ namespace MongoDB.Driver.Core.Authentication
             /// Initializes the mechanism.
             /// </summary>
             /// <param name="connection">The connection.</param>
+            /// <param name="conversation">The SASL conversation.</param>
             /// <param name="description">The connection description.</param>
             /// <returns>The initial SASL step.</returns>
-            ISaslStep Initialize(IConnection connection, ConnectionDescription description);
+            ISaslStep Initialize(IConnection connection, SaslConversation conversation, ConnectionDescription description);
         }
 
         /// <summary>

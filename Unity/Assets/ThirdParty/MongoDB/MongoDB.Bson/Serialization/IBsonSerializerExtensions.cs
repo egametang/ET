@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 */
 
 using System;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson.Serialization
 {
@@ -71,6 +72,47 @@ namespace MongoDB.Bson.Serialization
         {
             var args = new BsonSerializationArgs { NominalType = serializer.ValueType };
             serializer.Serialize(context, args, value);
+        }
+
+        /// <summary>
+        /// Converts a value to a BsonValue by serializing it.
+        /// </summary>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The serialized value.</returns>
+        public static BsonValue ToBsonValue(this IBsonSerializer serializer, object value)
+        {
+            var document = new BsonDocument();
+            using (var writer = new BsonDocumentWriter(document))
+            {
+                var context = BsonSerializationContext.CreateRoot(writer);
+                writer.WriteStartDocument();
+                writer.WriteName("x");
+                serializer.Serialize(context, value);
+                writer.WriteEndDocument();
+            }
+            return document[0];
+        }
+
+        /// <summary>
+        /// Converts a value to a BsonValue by serializing it.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>The serialized value.</returns>
+        public static BsonValue ToBsonValue<TValue>(this IBsonSerializer<TValue> serializer, TValue value)
+        {
+            var document = new BsonDocument();
+            using (var writer = new BsonDocumentWriter(document))
+            {
+                var context = BsonSerializationContext.CreateRoot(writer);
+                writer.WriteStartDocument();
+                writer.WriteName("x");
+                serializer.Serialize(context, value);
+                writer.WriteEndDocument();
+            }
+            return document[0];
         }
     }
 }

@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -40,18 +40,6 @@ namespace MongoDB.Bson.Serialization
 
         // public methods
         /// <summary>
-        /// Deserializes a value.
-        /// </summary>
-        /// <param name="context">The deserialization context.</param>
-        /// <param name="args">The deserialization args.</param>
-        /// <returns>A deserialized value.</returns>
-        public override TClass Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
-        {
-            var backingDocument = BsonDocumentSerializer.Instance.Deserialize(context);
-            return CreateInstance(backingDocument);
-        }
-
-        /// <summary>
         /// Tries to get the serialization info for a member.
         /// </summary>
         /// <param name="memberName">Name of the member.</param>
@@ -64,19 +52,14 @@ namespace MongoDB.Bson.Serialization
             return _memberSerializationInfo.TryGetValue(memberName, out serializationInfo);
         }
 
-        /// <summary>
-        /// Serializes a value.
-        /// </summary>
-        /// <param name="context">The serialization context.</param>
-        /// <param name="args">The serialization args.</param>
-        /// <param name="value">The object.</param>
-        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, TClass value)
+        // protected methods
+        /// <inheritdoc />
+        protected override TClass DeserializeValue(BsonDeserializationContext context, BsonDeserializationArgs args)
         {
-            var backingDocument = ((BsonDocumentBackedClass)value).BackingDocument;
-            BsonDocumentSerializer.Instance.Serialize(context, backingDocument);
+            var backingDocument = BsonDocumentSerializer.Instance.Deserialize(context);
+            return CreateInstance(backingDocument);
         }
 
-        // protected methods
         /// <summary>
         /// Registers a member.
         /// </summary>
@@ -100,6 +83,13 @@ namespace MongoDB.Bson.Serialization
 
             var info = new BsonSerializationInfo(elementName, serializer, serializer.ValueType);
             _memberSerializationInfo.Add(memberName, info);
+        }
+
+        /// <inheritdoc />
+        protected override void SerializeValue(BsonSerializationContext context, BsonSerializationArgs args, TClass value)
+        {
+            var backingDocument = ((BsonDocumentBackedClass)value).BackingDocument;
+            BsonDocumentSerializer.Instance.Serialize(context, backingDocument);
         }
 
         /// <summary>

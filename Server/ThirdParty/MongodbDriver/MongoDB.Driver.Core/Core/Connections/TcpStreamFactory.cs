@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -179,7 +179,7 @@ namespace MongoDB.Driver.Core.Connections
                 {
                     var dnsEndPoint = endPoint as DnsEndPoint;
 #if NETSTANDARD1_5 || NETSTANDARD1_6
-                    await Task.Run(() => socket.Connect(endPoint)); // TODO: honor cancellationToken
+                    await socket.ConnectAsync(endPoint).ConfigureAwait(false); // TODO: honor cancellationToken
 #else
                     if (dnsEndPoint != null)
                     {
@@ -249,7 +249,33 @@ namespace MongoDB.Driver.Core.Connections
                 addressFamily = _settings.AddressFamily;
             }
 
-            return new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
+            var socket = new Socket(addressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            // not all platforms support IOControl
+            try
+            {
+                var keepAliveValues = new KeepAliveValues
+                {
+                    OnOff = 1,
+                    KeepAliveTime = 300000, // 300 seconds in milliseconds
+                    KeepAliveInterval = 10000 // 10 seconds in milliseconds
+                };
+                socket.IOControl(IOControlCode.KeepAliveValues, keepAliveValues.ToBytes(), null);
+            }
+            catch (PlatformNotSupportedException)
+            {
+                // most platforms should support this call to SetSocketOption, but just in case call it in a try/catch also
+                try
+                {
+                    socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
+                }
+                catch (PlatformNotSupportedException)
+                {
+                    // ignore PlatformNotSupportedException
+                }
+            }
+
+            return socket;
         }
 
         private async Task<EndPoint[]> ResolveEndPointsAsync(EndPoint initial)

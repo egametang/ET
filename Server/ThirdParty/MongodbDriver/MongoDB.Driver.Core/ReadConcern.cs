@@ -1,4 +1,4 @@
-﻿/* Copyright 2015 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace MongoDB.Driver
         private static readonly ReadConcern __linearizable = new ReadConcern(ReadConcernLevel.Linearizable);
         private static readonly ReadConcern __local = new ReadConcern(ReadConcernLevel.Local);
         private static readonly ReadConcern __majority = new ReadConcern(ReadConcernLevel.Majority);
-
+        private static readonly ReadConcern __snapshot = new ReadConcern(ReadConcernLevel.Snapshot);
         /// <summary>
         /// Gets a default read concern.
         /// </summary>
@@ -49,6 +49,11 @@ namespace MongoDB.Driver
         /// Gets a majority read concern.
         /// </summary>
         public static ReadConcern Majority => __majority;
+
+        /// <summary>
+        /// Gets a snapshot read concern.
+        /// </summary>
+        public static ReadConcern Snapshot => __snapshot;
 
         /// <summary>
         /// Creates a read concern from a document.
@@ -71,6 +76,8 @@ namespace MongoDB.Driver
                         return ReadConcern.Local;
                     case ReadConcernLevel.Majority:
                         return ReadConcern.Majority;
+                    case ReadConcernLevel.Snapshot:
+                        return ReadConcern.Snapshot;
                     default:
                         throw new NotSupportedException($"The level {level} is not supported.");
                 }
@@ -156,6 +163,9 @@ namespace MongoDB.Driver
                         break;
                     case ReadConcernLevel.Majority:
                         level = "majority";
+                        break;
+                    case ReadConcernLevel.Snapshot:
+                        level = "snapshot";
                         break;
                 }
             }

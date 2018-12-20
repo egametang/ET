@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.WireProtocol;
+using MongoDB.Driver.Core.WireProtocol.Messages;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Bindings
@@ -53,12 +54,78 @@ namespace MongoDB.Driver.Core.Bindings
         /// <param name="messageEncoderSettings">The message encoder settings.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the Command protocol.</returns>
+        [Obsolete("Use the newest overload instead.")]
         TResult Command<TResult>(
             DatabaseNamespace databaseNamespace,
             BsonDocument command,
             IElementNameValidator commandValidator,
             Func<CommandResponseHandling> responseHandling,
             bool slaveOk,
+            IBsonSerializer<TResult> resultSerializer,
+            MessageEncoderSettings messageEncoderSettings,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Executes a Command protocol.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="session">The session.</param>
+        /// <param name="readPreference">The read preference.</param>
+        /// <param name="databaseNamespace">The database namespace.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="commandValidator">The command validator.</param>
+        /// <param name="additionalOptions">The additional options.</param>
+        /// <param name="responseHandling">The response handling.</param>
+        /// <param name="slaveOk">if set to <c>true</c> sets the SlaveOk bit to true in the command message sent to the server.</param>
+        /// <param name="resultSerializer">The result serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The result of the Command protocol.
+        /// </returns>
+        [Obsolete("Use the newest overload instead.")]
+        TResult Command<TResult>(
+            ICoreSession session,
+            ReadPreference readPreference,
+            DatabaseNamespace databaseNamespace,
+            BsonDocument command,
+            IElementNameValidator commandValidator,
+            BsonDocument additionalOptions,
+            Func<CommandResponseHandling> responseHandling,
+            bool slaveOk,
+            IBsonSerializer<TResult> resultSerializer,
+            MessageEncoderSettings messageEncoderSettings,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Executes a Command protocol.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="session">The session.</param>
+        /// <param name="readPreference">The read preference.</param>
+        /// <param name="databaseNamespace">The database namespace.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="commandPayloads">The command payloads.</param>
+        /// <param name="commandValidator">The command validator.</param>
+        /// <param name="additionalOptions">The additional options.</param>
+        /// <param name="postWriteAction">The post write action.</param>
+        /// <param name="responseHandling">The response handling.</param>
+        /// <param name="resultSerializer">The result serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// The result of the Command protocol.
+        /// </returns>
+        TResult Command<TResult>(
+            ICoreSession session,
+            ReadPreference readPreference,
+            DatabaseNamespace databaseNamespace,
+            BsonDocument command,
+            IEnumerable<Type1CommandMessageSection> commandPayloads,
+            IElementNameValidator commandValidator,
+            BsonDocument additionalOptions,
+            Action<IMessageEncoderPostProcessor> postWriteAction,
+            CommandResponseHandling responseHandling,
             IBsonSerializer<TResult> resultSerializer,
             MessageEncoderSettings messageEncoderSettings,
             CancellationToken cancellationToken);
@@ -76,12 +143,78 @@ namespace MongoDB.Driver.Core.Bindings
         /// <param name="messageEncoderSettings">The message encoder settings.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A Task whose result is the result of the Command protocol.</returns>
+        [Obsolete("Use the newest overload instead.")]
         Task<TResult> CommandAsync<TResult>(
             DatabaseNamespace databaseNamespace,
             BsonDocument command,
             IElementNameValidator commandValidator,
             Func<CommandResponseHandling> responseHandling,
             bool slaveOk,
+            IBsonSerializer<TResult> resultSerializer,
+            MessageEncoderSettings messageEncoderSettings,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Executes a Command protocol.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="session">The session.</param>
+        /// <param name="readPreference">The read preference.</param>
+        /// <param name="databaseNamespace">The database namespace.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="commandValidator">The command validator.</param>
+        /// <param name="additionalOptions">The additional options.</param>
+        /// <param name="responseHandling">The response handling.</param>
+        /// <param name="slaveOk">if set to <c>true</c> sets the SlaveOk bit to true in the command message sent to the server.</param>
+        /// <param name="resultSerializer">The result serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task whose result is the result of the Command protocol.
+        /// </returns>
+        [Obsolete("Use the newest overload instead.")]
+        Task<TResult> CommandAsync<TResult>(
+            ICoreSession session,
+            ReadPreference readPreference,
+            DatabaseNamespace databaseNamespace,
+            BsonDocument command,
+            IElementNameValidator commandValidator,
+            BsonDocument additionalOptions,
+            Func<CommandResponseHandling> responseHandling,
+            bool slaveOk,
+            IBsonSerializer<TResult> resultSerializer,
+            MessageEncoderSettings messageEncoderSettings,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Executes a Command protocol.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="session">The session.</param>
+        /// <param name="readPreference">The read preference.</param>
+        /// <param name="databaseNamespace">The database namespace.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="commandPayloads">The command payloads.</param>
+        /// <param name="commandValidator">The command validator.</param>
+        /// <param name="additionalOptions">The additional options.</param>
+        /// <param name="postWriteAction">The post write action.</param>
+        /// <param name="responseHandling">The response handling.</param>
+        /// <param name="resultSerializer">The result serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>
+        /// A Task whose result is the result of the Command protocol.
+        /// </returns>
+        Task<TResult> CommandAsync<TResult>(
+            ICoreSession session,
+            ReadPreference readPreference,
+            DatabaseNamespace databaseNamespace,
+            BsonDocument command,
+            IEnumerable<Type1CommandMessageSection> commandPayloads,
+            IElementNameValidator commandValidator,
+            BsonDocument additionalOptions,
+            Action<IMessageEncoderPostProcessor> postWriteAction,
+            CommandResponseHandling responseHandling,
             IBsonSerializer<TResult> resultSerializer,
             MessageEncoderSettings messageEncoderSettings,
             CancellationToken cancellationToken);

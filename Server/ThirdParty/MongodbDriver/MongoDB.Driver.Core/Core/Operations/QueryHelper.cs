@@ -1,4 +1,4 @@
-﻿/* Copyright 2013-2016 MongoDB Inc.
+﻿/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -59,19 +59,30 @@ namespace MongoDB.Driver.Core.Operations
                 return null;
             }
 
+            // simple ReadPreferences of Primary and SecondaryPreferred are encoded in the slaveOk bit
+            if (readPreference.ReadPreferenceMode == ReadPreferenceMode.Primary || readPreference.ReadPreferenceMode == ReadPreferenceMode.SecondaryPreferred)
+            {
+                var hasTagSets = readPreference.TagSets != null && readPreference.TagSets.Count > 0;
+                if (!hasTagSets && !readPreference.MaxStaleness.HasValue)
+                {
+                    return null;
+                }
+            }
+
+            return CreateReadPreferenceDocument(readPreference);
+        }
+
+        public static BsonDocument CreateReadPreferenceDocument(ReadPreference readPreference)
+        {
+            if (readPreference == null)
+            {
+                return null;
+            }
+
             BsonArray tagSets = null;
             if (readPreference.TagSets != null && readPreference.TagSets.Count > 0)
             {
                 tagSets = new BsonArray(readPreference.TagSets.Select(ts => new BsonDocument(ts.Tags.Select(t => new BsonElement(t.Name, t.Value)))));
-            }
-
-            // simple ReadPreferences of Primary and SecondaryPreferred are encoded in the slaveOk bit
-            if (readPreference.ReadPreferenceMode == ReadPreferenceMode.Primary || readPreference.ReadPreferenceMode == ReadPreferenceMode.SecondaryPreferred)
-            {
-                if (tagSets == null && !readPreference.MaxStaleness.HasValue)
-                {
-                    return null;
-                }
             }
 
             var modeString = readPreference.ReadPreferenceMode.ToString();

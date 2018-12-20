@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Driver.Core.Async;
+using MongoDB.Driver.Core.Bindings;
 using MongoDB.Driver.Core.Clusters.ServerSelectors;
 using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver.Core.Events;
@@ -38,11 +40,30 @@ namespace MongoDB.Driver.Core.Clusters
         #region static
         // static fields
         private static readonly TimeSpan __minHeartbeatInterval = TimeSpan.FromMilliseconds(500);
-        private static readonly Range<int> __supportedWireVersionRange = new Range<int>(0, 3);
+        private static readonly Range<int> __supportedWireVersionRange = new Range<int>(2, 6);
+        private static readonly SemanticVersion __minSupportedServerVersion = new SemanticVersion(2, 6, 0);
         private static readonly IServerSelector __randomServerSelector = new RandomServerSelector();
+
+        // static properties
+        /// <summary>
+        /// Gets the minimum supported server version.
+        /// </summary>
+        /// <value>
+        /// The minimum supported server version
+        /// </value>
+        public static SemanticVersion MinSupportedServerVersion => __minSupportedServerVersion;
+
+        /// <summary>
+        /// Gets the supported wire version range.
+        /// </summary>
+        /// <value>
+        /// The supported wire version range.
+        /// </value>
+        public static Range<int> SupportedWireVersionRange => __supportedWireVersionRange;
         #endregion
 
         // fields
+        private readonly IClusterClock _clusterClock = new ClusterClock();
         private readonly ClusterId _clusterId;
         private ClusterDescription _description;
         private TaskCompletionSource<bool> _descriptionChangedTaskCompletionSource;
@@ -51,6 +72,7 @@ namespace MongoDB.Driver.Core.Clusters
         private readonly object _serverSelectionWaitQueueLock = new object();
         private int _serverSelectionWaitQueueSize;
         private readonly IClusterableServerFactory _serverFactory;
+        private readonly ICoreServerSessionPool _serverSessionPool;
         private readonly ClusterSettings _settings;
         private readonly InterlockedInt32 _state;
 
@@ -77,6 +99,8 @@ namespace MongoDB.Driver.Core.Clusters
             eventSubscriber.TryGetEventHandler(out _selectingServerEventHandler);
             eventSubscriber.TryGetEventHandler(out _selectedServerEventHandler);
             eventSubscriber.TryGetEventHandler(out _selectingServerFailedEventHandler);
+
+            _serverSessionPool = new CoreServerSessionPool(this);
         }
 
         // events
@@ -105,9 +129,14 @@ namespace MongoDB.Driver.Core.Clusters
         }
 
         // methods
+        public ICoreServerSession AcquireServerSession()
+        {
+            return _serverSessionPool.AcquireSession();
+        }
+
         protected IClusterableServer CreateServer(EndPoint endPoint)
         {
-            return _serverFactory.CreateServer(_clusterId, endPoint);
+            return _serverFactory.CreateServer(_clusterId, _clusterClock, endPoint);
         }
 
         public void Dispose()
@@ -252,6 +281,14 @@ namespace MongoDB.Driver.Core.Clusters
                     throw;
                 }
             }
+        }
+
+        public ICoreSessionHandle StartSession(CoreSessionOptions options)
+        {
+            options = options ?? new CoreSessionOptions();
+            var serverSession = AcquireServerSession();
+            var session = new CoreSession(this, serverSession, options);
+            return new CoreSessionHandle(session);
         }
 
         protected abstract bool TryGetServer(EndPoint endPoint, out IClusterableServer server);
@@ -406,7 +443,7 @@ namespace MongoDB.Driver.Core.Clusters
                     }
                 }
 
-                ThrowIfIncompatible(_description);
+                MongoIncompatibleDriverException.ThrowIfNotSupported(_description);
 
                 var connectedServers = _description.Servers.Where(s => s.State == ServerState.Connected);
                 var selectedServers = _selector.SelectServers(_description, connectedServers).ToList();
@@ -477,16 +514,6 @@ namespace MongoDB.Driver.Core.Clusters
                 }
 
                 return selector;
-            }
-            private void ThrowIfIncompatible(ClusterDescription description)
-            {
-                var isIncompatible = description.Servers
-                    .Any(sd => sd.WireVersionRange != null && !sd.WireVersionRange.Overlaps(__supportedWireVersionRange));
-
-                if (isIncompatible)
-                {
-                    throw new MongoIncompatibleDriverException(description);
-                }
             }
         }
 

@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+﻿/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,21 +20,30 @@ using System.Linq;
 namespace MongoDB.Driver.Core.Misc
 {
     /// <summary>
-    /// Represents a source of items that can be broken into batches.
+    /// Represents a batch of items that can be split if not all items can be processed at once.
     /// </summary>
     /// <typeparam name="T">The type of the items.</typeparam>
-    public sealed class BatchableSource<T>
+    public sealed class BatchableSource<T> : IBatchableSource<T>
     {
         #region static
-        // static fields
-        private static readonly T[] __emptyBatch = new T[0];
+        // private static methods
+        private static IReadOnlyList<T> EnumeratorToList(IEnumerator<T> enumerator)
+        {
+            var list = new List<T>();
+            while (enumerator.MoveNext())
+            {
+                list.Add(enumerator.Current);
+            }
+            return list;
+        }
         #endregion
 
         // fields
-        private IReadOnlyList<T> _batch;
-        private IEnumerator<T> _enumerator;
-        private bool _hasMore;
-        private Overflow _overflow;
+        private readonly bool _canBeSplit;
+        private int _count;
+        private readonly IReadOnlyList<T> _items;
+        private int _offset;
+        private int _processedCount;
 
         // constructors
         /// <summary>
@@ -45,185 +54,157 @@ namespace MongoDB.Driver.Core.Misc
         /// In that case using this overload is simpler than using an enumerator and using the other constructor.
         /// </remarks>
         /// <param name="batch">The single batch.</param>
+        [Obsolete("Use one of the other constructors instead.")]
         public BatchableSource(IEnumerable<T> batch)
+            : this(Ensure.IsNotNull(batch, nameof(batch)).ToList(), canBeSplit: true)
         {
-            _batch = Ensure.IsNotNull(batch, nameof(batch)).ToList();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BatchableSource{T}"/> class.
         /// </summary>
         /// <param name="enumerator">The enumerator that will provide the items for the batch.</param>
+        [Obsolete("Use one of the other constructors instead.")]
         public BatchableSource(IEnumerator<T> enumerator)
+            : this(EnumeratorToList(Ensure.IsNotNull(enumerator, nameof(enumerator))), canBeSplit: true)
         {
-            _enumerator = Ensure.IsNotNull(enumerator, nameof(enumerator));
-            _hasMore = true;
         }
 
-        // properties
         /// <summary>
-        /// Gets the most recent batch.
+        /// Initializes a new instance of the <see cref="BatchableSource{T}" /> class.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="canBeSplit">if set to <c>true</c> the batch can be split.</param>
+        public BatchableSource(IReadOnlyList<T> items, bool canBeSplit = false)
+            : this(Ensure.IsNotNull(items, nameof(items)), 0, items.Count, canBeSplit)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BatchableSource{T}"/> class.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="offset">The offset.</param>
+        /// <param name="count">The count.</param>
+        /// <param name="canBeSplit">if set to <c>true</c> the batch can be split.</param>
+        public BatchableSource(IReadOnlyList<T> items, int offset, int count, bool canBeSplit)
+        {
+            _items = Ensure.IsNotNull(items, nameof(items));
+            _offset = Ensure.IsBetween(offset, 0, items.Count, nameof(offset));
+            _count = Ensure.IsBetween(count, 0, items.Count - offset, nameof(count));
+            _canBeSplit = canBeSplit;
+            _processedCount = 0;
+        }
+
+        // public properties
+        /// <summary>
+        /// Gets a value indicating whether all items were processed.
         /// </summary>
         /// <value>
-        /// The most recent batch.
+        ///   <c>true</c> if all items were processed; otherwise, <c>false</c>.
         /// </value>
-        public IReadOnlyList<T> Batch
-        {
-            get { return _batch; }
-        }
+        public bool AllItemsWereProcessed => _processedCount == _count;
 
         /// <summary>
-        /// Gets the current item.
+        /// Gets a value indicating whether the batch can be split.
         /// </summary>
         /// <value>
-        /// The current item.
+        ///   <c>true</c> if the batch can be split; otherwise, <c>false</c>.
         /// </value>
-        public T Current
-        {
-            get
-            {
-                ThrowIfNotBatchable();
-                ThrowIfHasBatch();
-                return _enumerator.Current;
-            }
-        }
+        public bool CanBeSplit => _canBeSplit;
 
         /// <summary>
-        /// Gets a value indicating whether there are more items.
+        /// Gets the count.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if there are more items; otherwise, <c>false</c>.
+        /// The count.
         /// </value>
-        public bool HasMore
+        public int Count
         {
-            get
+            get { return _count; }
+        }
+
+        /// <summary>
+        /// Gets the items.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
+        public IReadOnlyList<T> Items => _items;
+
+        /// <summary>
+        /// Gets the offset.
+        /// </summary>
+        /// <value>
+        /// The offset.
+        /// </value>
+        public int Offset => _offset;
+
+        /// <summary>
+        /// Gets the count of processed items. Equal to zero until SetProcessedCount has been called.
+        /// </summary>
+        /// <value>
+        /// The count of processed items.
+        /// </value>
+        public int ProcessedCount => _processedCount;
+
+        // public methods
+        /// <summary>
+        /// Advances past the processed items.
+        /// </summary>
+        public void AdvancePastProcessedItems()
+        {
+            _offset = _offset + _processedCount;
+            _count = _count - _processedCount;
+            _processedCount = 0;
+        }
+
+        /// <summary>
+        /// Gets the items in the batch.
+        /// </summary>
+        /// <returns>
+        /// The items in the batch.
+        /// </returns>
+        public IReadOnlyList<T> GetBatchItems()
+        {
+            return _items.Skip(_offset).Take(_count).ToList();
+        }
+
+        /// <summary>
+        /// Gets the items that were processed.
+        /// </summary>
+        /// <returns>
+        /// The items that were processed.
+        /// </returns>
+        public IReadOnlyList<T> GetProcessedItems()
+        {
+            return _items.Skip(_offset).Take(_processedCount).ToList();
+        }
+
+        /// <summary>
+        /// Gets the items that were not processed.
+        /// </summary>
+        /// <returns>
+        /// The items that were not processed.
+        /// </returns>
+        public IReadOnlyList<T> GetUnprocessedItems()
+        {
+            return _items.Skip(_offset + _processedCount).Take(_count - _processedCount).ToList();
+        }
+
+        /// <summary>
+        /// Sets the processed count.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void SetProcessedCount(int value)
+        {
+            Ensure.IsBetween(value, 0, _count, nameof(value));
+            if (value != _count && !_canBeSplit)
             {
-                return _hasMore;
-            }
-        }
-
-        // methods
-        /// <summary>
-        /// Clears the most recent batch.
-        /// </summary>
-        public void ClearBatch()
-        {
-            ThrowIfNotBatchable();
-            _batch = null;
-        }
-
-        /// <summary>
-        /// Called when the last batch is complete.
-        /// </summary>
-        /// <param name="batch">The batch.</param>
-        public void EndBatch(IReadOnlyList<T> batch)
-        {
-            ThrowIfNotBatchable();
-            ThrowIfHasBatch();
-            _batch = batch;
-            _hasMore = false;
-        }
-
-        /// <summary>
-        /// Called when an intermediate batch is complete.
-        /// </summary>
-        /// <param name="batch">The batch.</param>
-        /// <param name="overflow">The overflow item.</param>
-        public void EndBatch(IReadOnlyList<T> batch, Overflow overflow)
-        {
-            ThrowIfNotBatchable();
-            ThrowIfHasBatch();
-            _batch = batch;
-            _overflow = overflow;
-            _hasMore = true;
-        }
-
-        /// <summary>
-        /// Gets all the remaining items that haven't been previously consumed.
-        /// </summary>
-        /// <returns>The remaining items.</returns>
-        public IEnumerable<T> GetRemainingItems()
-        {
-            if (_overflow != null)
-            {
-                yield return _overflow.Item;
-                _overflow = null;
+                throw new InvalidOperationException("The batch cannot be split.");
             }
 
-            if (_enumerator != null)
-            {
-                while (_enumerator.MoveNext())
-                {
-                    yield return _enumerator.Current;
-                }
-            }
-            else
-            {
-                foreach (var item in _batch)
-                {
-                    yield return item;
-                }
-                _batch = __emptyBatch;
-            }
-
-            _hasMore = false;
-        }
-
-        /// <summary>
-        /// Moves to the next item in the source.
-        /// </summary>
-        /// <returns>True if there are more items.</returns>
-        public bool MoveNext()
-        {
-            ThrowIfNotBatchable();
-            ThrowIfHasBatch();
-            return _enumerator.MoveNext();
-        }
-
-        /// <summary>
-        /// Starts a new batch.
-        /// </summary>
-        /// <returns>The overflow item of the previous batch if there is one; otherwise, null.</returns>
-        public Overflow StartBatch()
-        {
-            ThrowIfNotBatchable();
-            ThrowIfHasBatch();
-            var overflow = _overflow;
-            _overflow = null;
-            return overflow;
-        }
-
-        private void ThrowIfHasBatch()
-        {
-            if (_batch != null)
-            {
-                throw new InvalidOperationException("This method can only be called when there is no current batch.");
-            }
-        }
-
-        private void ThrowIfNotBatchable()
-        {
-            if (_enumerator == null)
-            {
-                throw new InvalidOperationException("This method can only be called when an enumerator was provided.");
-            }
-        }
-
-        // nested types
-        /// <summary>
-        /// Represents an overflow item that did not fit in the most recent batch and will be become the first item in the next batch.
-        /// </summary>
-        public class Overflow
-        {
-            /// <summary>
-            /// The item.
-            /// </summary>
-            public T Item;
-
-            /// <summary>
-            /// The state information, if any, that the consumer wishes to associate with the overflow item.
-            /// </summary>
-            public object State;
+            _processedCount = value;
         }
     }
 }

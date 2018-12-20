@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -40,7 +40,8 @@ namespace MongoDB.Driver.Core.Operations
         private int? _maxDocumentSize;
         private int? _maxWireDocumentSize;
         private readonly MessageEncoderSettings _messageEncoderSettings;
-        private readonly IEnumerable<WriteRequest> _requests;
+        private readonly List<WriteRequest> _requests;
+        private bool _retryRequested;
         private WriteConcern _writeConcern;
 
         // constructors
@@ -53,6 +54,20 @@ namespace MongoDB.Driver.Core.Operations
         public BulkMixedWriteOperation(
             CollectionNamespace collectionNamespace,
             IEnumerable<WriteRequest> requests,
+            MessageEncoderSettings messageEncoderSettings)
+            : this(collectionNamespace, Ensure.IsNotNull(requests, nameof(requests)).ToList(), messageEncoderSettings)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BulkMixedWriteOperation"/> class.
+        /// </summary>
+        /// <param name="collectionNamespace">The collection namespace.</param>
+        /// <param name="requests">The requests.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        public BulkMixedWriteOperation(
+            CollectionNamespace collectionNamespace,
+            List<WriteRequest> requests,
             MessageEncoderSettings messageEncoderSettings)
         {
             _collectionNamespace = Ensure.IsNotNull(collectionNamespace, nameof(collectionNamespace));
@@ -168,6 +183,18 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [retry requested].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [retry requested]; otherwise, <c>false</c>.
+        /// </value>
+        public bool RetryRequested
+        {
+            get { return _retryRequested; }
+            set { _retryRequested = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the write concern.
         /// </summary>
         /// <value>
@@ -184,15 +211,16 @@ namespace MongoDB.Driver.Core.Operations
         public BulkWriteOperationResult Execute(IWriteBinding binding, CancellationToken cancellationToken)
         {
             using (EventContext.BeginOperation())
-            using (var channelSource = binding.GetWriteChannelSource(cancellationToken))
-            using (var channel = channelSource.GetChannel(cancellationToken))
+            using (var context = RetryableWriteContext.Create(binding, _retryRequested, cancellationToken))
             {
-                var helper = new BatchHelper(this, channel);
+                EnsureCollationIsSupportedIfAnyRequestHasCollation(context);
+                context.DisableRetriesIfAnyWriteRequestIsNotRetryable(_requests);
+                var helper = new BatchHelper(_requests, _isOrdered, _writeConcern);
                 foreach (var batch in helper.GetBatches())
                 {
-                    batch.Result = ExecuteBatch(channel, batch.Run, batch.IsLast, cancellationToken);
+                    batch.Result = ExecuteBatch(context, batch, cancellationToken);
                 }
-                return helper.GetFinalResultOrThrow();
+                return helper.GetFinalResultOrThrow(context.Channel.ConnectionDescription.ConnectionId);
             }
         }
 
@@ -200,74 +228,95 @@ namespace MongoDB.Driver.Core.Operations
         public async Task<BulkWriteOperationResult> ExecuteAsync(IWriteBinding binding, CancellationToken cancellationToken)
         {
             using (EventContext.BeginOperation())
-            using (var channelSource = await binding.GetWriteChannelSourceAsync(cancellationToken).ConfigureAwait(false))
-            using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
+            using (var context = await RetryableWriteContext.CreateAsync(binding, _retryRequested, cancellationToken).ConfigureAwait(false))
             {
-                var helper = new BatchHelper(this, channel);
+                EnsureCollationIsSupportedIfAnyRequestHasCollation(context);
+                context.DisableRetriesIfAnyWriteRequestIsNotRetryable(_requests);
+                var helper = new BatchHelper(_requests, _isOrdered, _writeConcern);
                 foreach (var batch in helper.GetBatches())
                 {
-                    batch.Result = await ExecuteBatchAsync(channel, batch.Run, batch.IsLast, cancellationToken).ConfigureAwait(false);
+                    batch.Result = await ExecuteBatchAsync(context, batch, cancellationToken).ConfigureAwait(false);
                 }
-                return helper.GetFinalResultOrThrow();
+                return helper.GetFinalResultOrThrow(context.Channel.ConnectionDescription.ConnectionId);
             }
         }
 
         // private methods
-        private BulkDeleteOperation CreateDeleteOperation(IEnumerable<DeleteRequest> requests, bool isLast)
+        private IExecutableInRetryableWriteContext<BulkWriteOperationResult> CreateBulkDeleteOperation(Batch batch)
         {
+            var requests = batch.Requests.Cast<DeleteRequest>();
             return new BulkDeleteOperation(_collectionNamespace, requests, _messageEncoderSettings)
             {
                 MaxBatchCount = _maxBatchCount,
                 MaxBatchLength = _maxBatchLength,
-                WriteConcern = GetEffectiveWriteConcern(isLast)
+                WriteConcern = batch.WriteConcern,
+                RetryRequested = _retryRequested
             };
         }
 
-        private BulkInsertOperation CreateInsertOperation(IEnumerable<InsertRequest> requests, bool isLast)
+        private IExecutableInRetryableWriteContext<BulkWriteOperationResult> CreateBulkInsertOperation(Batch batch)
         {
+            var requests = batch.Requests.Cast<InsertRequest>();
             return new BulkInsertOperation(_collectionNamespace, requests, _messageEncoderSettings)
             {
                 BypassDocumentValidation = _bypassDocumentValidation,
+                IsOrdered = _isOrdered,
                 MaxBatchCount = _maxBatchCount,
                 MaxBatchLength = _maxBatchLength,
-                IsOrdered = _isOrdered,
                 MessageEncoderSettings = _messageEncoderSettings,
-                WriteConcern = GetEffectiveWriteConcern(isLast)
+                WriteConcern = batch.WriteConcern,
+                RetryRequested = _retryRequested
             };
         }
 
-        private BulkUpdateOperation CreateUpdateOperation(IEnumerable<UpdateRequest> requests, bool isLast)
+        private IExecutableInRetryableWriteContext<BulkWriteOperationResult> CreateBulkUpdateOperation(Batch batch)
         {
+            var requests = batch.Requests.Cast<UpdateRequest>();
             return new BulkUpdateOperation(_collectionNamespace, requests, _messageEncoderSettings)
             {
                 BypassDocumentValidation = _bypassDocumentValidation,
+                IsOrdered = _isOrdered,
                 MaxBatchCount = _maxBatchCount,
                 MaxBatchLength = _maxBatchLength,
-                IsOrdered = _isOrdered,
-                WriteConcern = GetEffectiveWriteConcern(isLast)
+                WriteConcern = batch.WriteConcern,
+                RetryRequested = _retryRequested
             };
         }
 
-        private BulkWriteBatchResult ExecuteBatch(IChannelHandle channel, Run run, bool isLast, CancellationToken cancellationToken)
+        private IExecutableInRetryableWriteContext<BulkWriteOperationResult> CreateUnmixedBatchOperation(Batch batch)
+        {
+            switch (batch.BatchType)
+            {
+                case WriteRequestType.Delete: return CreateBulkDeleteOperation(batch);
+                case WriteRequestType.Insert: return CreateBulkInsertOperation(batch);
+                case WriteRequestType.Update: return CreateBulkUpdateOperation(batch);
+                default: throw new ArgumentException("Invalid batch type.", nameof(batch));
+            }
+        }
+
+        private void EnsureCollationIsSupportedIfAnyRequestHasCollation(RetryableWriteContext context)
+        {
+            var serverVersion = context.Channel.ConnectionDescription.ServerVersion;
+            if (!Feature.Collation.IsSupported(serverVersion))
+            {
+                foreach (var request in _requests)
+                {
+                    if (RequestHasCollation(request))
+                    {
+                        throw new NotSupportedException($"Server version {serverVersion} does not support collations.");
+                    }
+                }
+            }
+        }
+
+        private BulkWriteBatchResult ExecuteBatch(RetryableWriteContext context, Batch batch, CancellationToken cancellationToken)
         {
             BulkWriteOperationResult result;
             MongoBulkWriteOperationException exception = null;
             try
             {
-                switch (run.RequestType)
-                {
-                    case WriteRequestType.Delete:
-                        result = ExecuteDeletes(channel, run.Requests.Cast<DeleteRequest>(), isLast, cancellationToken);
-                        break;
-                    case WriteRequestType.Insert:
-                        result = ExecuteInserts(channel, run.Requests.Cast<InsertRequest>(), isLast, cancellationToken);
-                        break;
-                    case WriteRequestType.Update:
-                        result = ExecuteUpdates(channel, run.Requests.Cast<UpdateRequest>(), isLast, cancellationToken);
-                        break;
-                    default:
-                        throw new MongoInternalException("Unrecognized RequestType.");
-                }
+                var operation = CreateUnmixedBatchOperation(batch);
+                result = operation.Execute(context, cancellationToken);
             }
             catch (MongoBulkWriteOperationException ex)
             {
@@ -275,29 +324,17 @@ namespace MongoDB.Driver.Core.Operations
                 exception = ex;
             }
 
-            return BulkWriteBatchResult.Create(result, exception, run.IndexMap);
+            return BulkWriteBatchResult.Create(result, exception, batch.IndexMap);
         }
 
-        private async Task<BulkWriteBatchResult> ExecuteBatchAsync(IChannelHandle channel, Run run, bool isLast, CancellationToken cancellationToken)
+        private async Task<BulkWriteBatchResult> ExecuteBatchAsync(RetryableWriteContext context, Batch batch, CancellationToken cancellationToken)
         {
             BulkWriteOperationResult result;
             MongoBulkWriteOperationException exception = null;
             try
             {
-                switch (run.RequestType)
-                {
-                    case WriteRequestType.Delete:
-                        result = await ExecuteDeletesAsync(channel, run.Requests.Cast<DeleteRequest>(), isLast, cancellationToken).ConfigureAwait(false);
-                        break;
-                    case WriteRequestType.Insert:
-                        result = await ExecuteInsertsAsync(channel, run.Requests.Cast<InsertRequest>(), isLast, cancellationToken).ConfigureAwait(false);
-                        break;
-                    case WriteRequestType.Update:
-                        result = await ExecuteUpdatesAsync(channel, run.Requests.Cast<UpdateRequest>(), isLast, cancellationToken).ConfigureAwait(false);
-                        break;
-                    default:
-                        throw new MongoInternalException("Unrecognized RequestType.");
-                }
+                var operation = CreateUnmixedBatchOperation(batch);
+                result = await operation.ExecuteAsync(context, cancellationToken).ConfigureAwait(false);
             }
             catch (MongoBulkWriteOperationException ex)
             {
@@ -305,232 +342,136 @@ namespace MongoDB.Driver.Core.Operations
                 exception = ex;
             }
 
-            return BulkWriteBatchResult.Create(result, exception, run.IndexMap);
+            return BulkWriteBatchResult.Create(result, exception, batch.IndexMap);
         }
 
-        private BulkWriteOperationResult ExecuteDeletes(IChannelHandle channel, IEnumerable<DeleteRequest> requests, bool isLast, CancellationToken cancellationToken)
+        private bool RequestHasCollation(WriteRequest request)
         {
-            var operation = CreateDeleteOperation(requests, isLast);
-            return operation.Execute(channel, cancellationToken);
-        }
-
-        private Task<BulkWriteOperationResult> ExecuteDeletesAsync(IChannelHandle channel, IEnumerable<DeleteRequest> requests, bool isLast, CancellationToken cancellationToken)
-        {
-            var operation = CreateDeleteOperation(requests, isLast);
-            return operation.ExecuteAsync(channel, cancellationToken);
-        }
-
-        private BulkWriteOperationResult ExecuteInserts(IChannelHandle channel, IEnumerable<InsertRequest> requests, bool isLast, CancellationToken cancellationToken)
-        {
-            var operation = CreateInsertOperation(requests, isLast);
-            return operation.Execute(channel, cancellationToken);
-        }
-
-        private Task<BulkWriteOperationResult> ExecuteInsertsAsync(IChannelHandle channel, IEnumerable<InsertRequest> requests, bool isLast, CancellationToken cancellationToken)
-        {
-            var operation = CreateInsertOperation(requests, isLast);
-            return operation.ExecuteAsync(channel, cancellationToken);
-        }
-
-        private BulkWriteOperationResult ExecuteUpdates(IChannelHandle channel, IEnumerable<UpdateRequest> requests, bool isLast, CancellationToken cancellationToken)
-        {
-            var operation = CreateUpdateOperation(requests, isLast);
-            return operation.Execute(channel, cancellationToken);
-        }
-
-        private Task<BulkWriteOperationResult> ExecuteUpdatesAsync(IChannelHandle channel, IEnumerable<UpdateRequest> requests, bool isLast, CancellationToken cancellationToken)
-        {
-            var operation = CreateUpdateOperation(requests, isLast);
-            return operation.ExecuteAsync(channel, cancellationToken);
-        }
-
-        private WriteConcern GetEffectiveWriteConcern(bool isLast)
-        {
-            if (_isOrdered && !isLast && !_writeConcern.IsAcknowledged)
+            DeleteRequest deleteRequest;
+            if ((deleteRequest = request as DeleteRequest) != null)
             {
-                return WriteConcern.W1; // explicitly do not use the server's default.
+                return deleteRequest.Collation != null;
             }
 
-            return _writeConcern;
+            UpdateRequest updateRequest;
+            if ((updateRequest = request as UpdateRequest) != null)
+            {
+                return updateRequest.Collation != null;
+            }
+
+            return false;
         }
 
         // nested types
+        private class Batch
+        {
+            public WriteRequestType BatchType;
+            public List<WriteRequest> Requests;
+            public IndexMap IndexMap;
+            public WriteConcern WriteConcern;
+            public BulkWriteBatchResult Result;
+        }
+
         private class BatchHelper
         {
+            // private fields
             private readonly List<BulkWriteBatchResult> _batchResults = new List<BulkWriteBatchResult>();
-            private readonly IChannelHandle _channel;
             private bool _hasWriteErrors;
-            private readonly BulkMixedWriteOperation _operation;
-            private IEnumerable<WriteRequest> _remainingRequests = Enumerable.Empty<WriteRequest>();
+            private readonly bool _isOrdered;
+            private List<WriteRequestWithIndex> _unprocessed;
+            private WriteConcern _writeConcern;
 
-            public BatchHelper(BulkMixedWriteOperation operation, IChannelHandle channel)
+            // constructors
+            public BatchHelper(IEnumerable<WriteRequest> requests, bool ordered, WriteConcern writeConcern)
             {
-                _operation = operation;
-                _channel = channel;
+                Ensure.IsNotNull(requests, nameof(requests));
+                _isOrdered = ordered;
+                _writeConcern = writeConcern;
+
+                _unprocessed = new List<WriteRequestWithIndex>();
+                var index = 0;
+                foreach (var request in requests)
+                {
+                    _unprocessed.Add(new WriteRequestWithIndex { Index = index++, Request = request });
+                }
             }
 
+            // public methods
             public IEnumerable<Batch> GetBatches()
             {
-                var runCount = 0;
-                var maxRunLength = Math.Min(_operation._maxBatchCount ?? int.MaxValue, _channel.ConnectionDescription.MaxBatchCount);
-                using (var runsEnumerator = (ReadAheadEnumerable<Run>.ReadAheadEnumerator)new ReadAheadEnumerable<Run>(FindRuns(maxRunLength)).GetEnumerator())
+                if (_unprocessed.Count == 0)
                 {
-                    while (runsEnumerator.MoveNext())
-                    {
-                        runCount++;
+                    throw new InvalidOperationException("Bulk write operation is empty.");
+                }
 
-                        if (_hasWriteErrors && _operation._isOrdered)
-                        {
-                            _remainingRequests = _remainingRequests.Concat(runsEnumerator.Current.Requests);
-                            continue;
-                        }
+                while (_unprocessed.Count > 0 && ShouldContinue())
+                {
+                    var batch = GetNextBatch();
 
-                        var batch = new Batch
-                        {
-                            IsLast = !runsEnumerator.HasNext,
-                            Run = runsEnumerator.Current
-                        };
-                        yield return batch;
-                        _batchResults.Add(batch.Result);
+                    yield return batch;
 
-                        _hasWriteErrors |= batch.Result.HasWriteErrors;
-                    }
-
-                    if (runCount == 0)
-                    {
-                        throw new InvalidOperationException("Bulk write operation is empty.");
-                    }
+                    _batchResults.Add(batch.Result);
+                    _hasWriteErrors |= batch.Result.HasWriteErrors;
                 }
             }
 
-            public BulkWriteOperationResult GetFinalResultOrThrow()
+            public BulkWriteOperationResult GetFinalResultOrThrow(ConnectionId connectionId)
             {
-                var combiner = new BulkWriteBatchResultCombiner(_batchResults, _operation._writeConcern.IsAcknowledged);
-                return combiner.CreateResultOrThrowIfHasErrors(_channel.ConnectionDescription.ConnectionId, _remainingRequests.ToList());
+                var combiner = new BulkWriteBatchResultCombiner(_batchResults, _writeConcern.IsAcknowledged);
+                return combiner.CreateResultOrThrowIfHasErrors(connectionId, _unprocessed.Select(r => r.Request).ToList());
             }
 
-            private IEnumerable<Run> FindOrderedRuns(int maxRunLength)
+            // private methods
+            private Batch GetNextBatch()
             {
-                Run run = null;
+                var batchType = _unprocessed[0].Request.RequestType;
 
-                var originalIndex = 0;
-                foreach (var request in _operation._requests)
+                List<WriteRequest> requests;
+                IndexMap indexMap;
+                if (_isOrdered)
                 {
-                    if (run == null)
-                    {
-                        run = new Run();
-                        run.Add(request, originalIndex);
-                    }
-                    else if (run.RequestType == request.RequestType)
-                    {
-                        if (run.Count == maxRunLength)
-                        {
-                            yield return run;
-                            run = new Run();
-                        }
-                        run.Add(request, originalIndex);
-                    }
-                    else
-                    {
-                        yield return run;
-                        run = new Run();
-                        run.Add(request, originalIndex);
-                    }
-
-                    originalIndex++;
-                }
-
-                if (run != null)
-                {
-                    yield return run;
-                }
-            }
-
-            private IEnumerable<Run> FindRuns(int maxRunLength)
-            {
-                if (_operation._isOrdered)
-                {
-                    return FindOrderedRuns(maxRunLength);
+                    var index = _unprocessed.FindIndex(r => r.Request.RequestType != batchType);
+                    var count = index == -1 ? _unprocessed.Count : index;
+                    requests = _unprocessed.Take(count).Select(r => r.Request).ToList();
+                    indexMap = new IndexMap.RangeBased(0, _unprocessed[0].Index, count);
+                    _unprocessed.RemoveRange(0, count);
                 }
                 else
                 {
-                    return FindUnorderedRuns(maxRunLength);
-                }
-            }
-
-            private IEnumerable<Run> FindUnorderedRuns(int maxRunLength)
-            {
-                var runs = new List<Run>();
-
-                var originalIndex = 0;
-                foreach (var request in _operation._requests)
-                {
-                    var run = runs.FirstOrDefault(r => r.RequestType == request.RequestType);
-
-                    if (run == null)
+                    var matching = _unprocessed.Where(r => r.Request.RequestType == batchType).ToList();
+                    requests = matching.Select(r => r.Request).ToList();
+                    indexMap = new IndexMap.DictionaryBased();
+                    for (var i = 0; i < matching.Count; i++)
                     {
-                        run = new Run();
-                        runs.Add(run);
+                        indexMap.Add(i, matching[i].Index);
                     }
-                    else if (run.Count == maxRunLength)
-                    {
-                        yield return run;
-                        runs.Remove(run);
-                        run = new Run();
-                        runs.Add(run);
-                    }
-
-                    run.Add(request, originalIndex);
-                    originalIndex++;
+                    _unprocessed = _unprocessed.Where(r => r.Request.RequestType != batchType).ToList();                 
                 }
 
-                foreach (var run in runs)
+                var writeConcern = _writeConcern;
+                if (!writeConcern.IsAcknowledged && _isOrdered && _unprocessed.Count > 0)
                 {
-                    yield return run;
+                    writeConcern = WriteConcern.W1; // explicitly do not use the server's default
                 }
+
+                return new Batch
+                {
+                    BatchType = batchType,
+                    Requests = requests,
+                    IndexMap = indexMap,
+                    WriteConcern = writeConcern
+                };
             }
 
-            public class Batch
+            private bool ShouldContinue()
             {
-                public bool IsLast;
-                public BulkWriteBatchResult Result;
-                public Run Run;
-            }
-        }
-
-        private class Run
-        {
-            // fields
-            private IndexMap _indexMap = new IndexMap.RangeBased();
-            private readonly List<WriteRequest> _requests = new List<WriteRequest>();
-
-            // properties
-            public int Count
-            {
-                get { return _requests.Count; }
+                return !_hasWriteErrors || !_isOrdered;
             }
 
-            public IndexMap IndexMap
+            private struct WriteRequestWithIndex
             {
-                get { return _indexMap; }
-            }
-
-            public List<WriteRequest> Requests
-            {
-                get { return _requests; }
-            }
-
-            public WriteRequestType RequestType
-            {
-                get { return _requests[0].RequestType; }
-            }
-
-            // methods
-            public void Add(WriteRequest request, int originalIndex)
-            {
-                var index = _requests.Count;
-                _indexMap = _indexMap.Add(index, originalIndex);
-                _requests.Add(request);
+                public WriteRequest Request;
+                public int Index;
             }
         }
     }

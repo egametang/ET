@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization
@@ -42,6 +44,11 @@ namespace MongoDB.Bson.Serialization
                 { typeof(ReadOnlyCollection<>), typeof(ReadOnlyCollectionSerializer<>) },
                 { typeof(Stack<>), typeof(StackSerializer<>) },
             };
+        }
+
+        private static bool IsOrIsChildOf(Type type, Type parent)
+        {
+            return type == parent || (type != null) && (type != typeof(object) && IsOrIsChildOf(type.GetTypeInfo().BaseType, parent));
         }
 
         /// <inheritdoc/>
@@ -93,6 +100,12 @@ namespace MongoDB.Bson.Serialization
                 }
             }
 
+            var readOnlyDictionarySerializer = GetReadOnlyDictionarySerializer(type, serializerRegistry);
+            if (readOnlyDictionarySerializer != null)
+            {
+                return readOnlyDictionarySerializer;
+            }
+
             return GetCollectionSerializer(type, serializerRegistry);
         }
 
@@ -142,7 +155,7 @@ namespace MongoDB.Bson.Serialization
                     }
                 }
             }
-
+            
             // the order of the tests is important
             if (implementedGenericDictionaryInterface != null)
             {
@@ -237,5 +250,62 @@ namespace MongoDB.Bson.Serialization
 
             return null;
         }
+
+        private List<Type> GetImplementedInterfaces(Type type)
+        {
+            return type.GetTypeInfo().IsInterface 
+                ? type.GetTypeInfo().GetInterfaces().Concat(new Type[]{type}).ToList()
+                : type.GetTypeInfo().GetInterfaces().ToList();
+        }
+            
+        private IBsonSerializer GetReadOnlyDictionarySerializer(Type type, IBsonSerializerRegistry serializerRegistry)
+        {
+            var typeInfo = type.GetTypeInfo();            
+            if (!typeInfo.IsGenericType 
+                || typeInfo.IsGenericTypeDefinition 
+                || typeInfo.GetGenericArguments().Length != 2)
+            {
+                return null;
+            }
+
+            var keyType = typeInfo.GetGenericArguments()[0];
+            var valueType = typeInfo.GetGenericArguments()[1];
+            var typeIsIReadOnlyDictionary =
+                type == typeof(IReadOnlyDictionary<,>).MakeGenericType(keyType, valueType);
+            var typeIsOrIsChildOfReadOnlyDictionary = 
+                IsOrIsChildOf(type, typeof(ReadOnlyDictionary<,>).MakeGenericType(keyType, valueType));
+
+            var implementedInterfaces = GetImplementedInterfaces(type);
+            var genericImplementedInterfaces = implementedInterfaces.Where(ii => ii.GetTypeInfo().IsGenericType);
+            var genericImplementedInterfaceDefinitions = 
+                genericImplementedInterfaces.Select(i => i.GetGenericTypeDefinition()).ToArray();
+            var implementsGenericReadOnlyDictionaryInterface =
+                genericImplementedInterfaceDefinitions.Contains(typeof(IReadOnlyDictionary<,>));
+            var implementsGenericDictionaryInterface = 
+                genericImplementedInterfaceDefinitions.Contains(typeof(IDictionary<,>));
+
+            if (typeIsIReadOnlyDictionary)
+            {
+                return CreateGenericSerializer(
+                    serializerTypeDefinition: typeof(ImpliedImplementationInterfaceSerializer<,>),
+                    typeArguments: new[] {type, typeof(ReadOnlyDictionary<,>).MakeGenericType(keyType, valueType)},
+                    serializerRegistry: serializerRegistry);
+            }
+                
+            if (typeIsOrIsChildOfReadOnlyDictionary
+                || (!typeInfo.IsInterface
+                    && implementsGenericReadOnlyDictionaryInterface
+                    && !implementsGenericDictionaryInterface))
+            {
+                return CreateGenericSerializer(
+                    serializerTypeDefinition: typeof(ReadOnlyDictionaryInterfaceImplementerSerializer<,,>),
+                    typeArguments: new[] {type, keyType, valueType},
+                    serializerRegistry: serializerRegistry);
+            }
+
+            return null;
+
+        }
+        
     }
 }

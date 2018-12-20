@@ -1,4 +1,4 @@
-/* Copyright 2010-2017 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -794,6 +794,16 @@ namespace MongoDB.Driver
         public FilterDefinition<TDocument> In<TField>(Expression<Func<TDocument, TField>> field, IEnumerable<TField> values)
         {
             return In(new ExpressionFieldDefinition<TDocument, TField>(field), values);
+        }
+
+        /// <summary>
+        /// Creates a json schema filter.
+        /// </summary>
+        /// <param name="schema">The json validation schema.</param>
+        /// <returns>A schema filter.</returns>
+        public FilterDefinition<TDocument> JsonSchema(BsonDocument schema)
+        {
+            return new BsonDocumentFilterDefinition<TDocument>(new BsonDocument("$jsonSchema", schema)); 
         }
 
         /// <summary>

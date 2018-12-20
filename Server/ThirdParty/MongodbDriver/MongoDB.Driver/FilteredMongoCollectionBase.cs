@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2017 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 * limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -79,10 +80,22 @@ namespace MongoDB.Driver
             return _wrappedCollection.Aggregate(filteredPipeline, options, cancellationToken);
         }
 
+        public override IAsyncCursor<TResult> Aggregate<TResult>(IClientSessionHandle session, PipelineDefinition<TDocument, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var filteredPipeline = CreateFilteredPipeline(pipeline);
+            return _wrappedCollection.Aggregate(session, filteredPipeline, options, cancellationToken);
+        }
+
         public override Task<IAsyncCursor<TResult>> AggregateAsync<TResult>(PipelineDefinition<TDocument, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var filteredPipeline = CreateFilteredPipeline(pipeline);
             return _wrappedCollection.AggregateAsync(filteredPipeline, options, cancellationToken);
+        }
+
+        public override Task<IAsyncCursor<TResult>> AggregateAsync<TResult>(IClientSessionHandle session, PipelineDefinition<TDocument, TResult> pipeline, AggregateOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var filteredPipeline = CreateFilteredPipeline(pipeline);
+            return _wrappedCollection.AggregateAsync(session, filteredPipeline, options, cancellationToken);
         }
 
         public override BulkWriteResult<TDocument> BulkWrite(IEnumerable<WriteModel<TDocument>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -90,19 +103,63 @@ namespace MongoDB.Driver
             return _wrappedCollection.BulkWrite(CombineModelFilters(requests), options, cancellationToken);
         }
 
+        public override BulkWriteResult<TDocument> BulkWrite(IClientSessionHandle session, IEnumerable<WriteModel<TDocument>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.BulkWrite(session, CombineModelFilters(requests), options, cancellationToken);
+        }
+
         public override Task<BulkWriteResult<TDocument>> BulkWriteAsync(IEnumerable<WriteModel<TDocument>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.BulkWriteAsync(CombineModelFilters(requests), options, cancellationToken);
         }
 
+        public override Task<BulkWriteResult<TDocument>> BulkWriteAsync(IClientSessionHandle session, IEnumerable<WriteModel<TDocument>> requests, BulkWriteOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.BulkWriteAsync(session, CombineModelFilters(requests), options, cancellationToken);
+        }
+
+        [Obsolete("Use CountDocuments or EstimatedDocumentCount instead.")]
         public override long Count(FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.Count(CombineFilters(filter), options, cancellationToken);
         }
 
+        [Obsolete("Use CountDocuments or EstimatedDocumentCount instead.")]
+        public override long Count(IClientSessionHandle session, FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.Count(session, CombineFilters(filter), options, cancellationToken);
+        }
+
+        [Obsolete("Use CountDocumentsAsync or EstimatedDocumentCountAsync instead.")]
         public override Task<long> CountAsync(FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.CountAsync(CombineFilters(filter), options, cancellationToken);
+        }
+
+        [Obsolete("Use CountDocumentsAsync or EstimatedDocumentCountAsync instead.")]
+        public override Task<long> CountAsync(IClientSessionHandle session, FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.CountAsync(session, CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override long CountDocuments(FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.CountDocuments(CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override long CountDocuments(IClientSessionHandle session, FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.CountDocuments(session, CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override Task<long> CountDocumentsAsync(FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.CountDocumentsAsync(CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override Task<long> CountDocumentsAsync(IClientSessionHandle session, FilterDefinition<TDocument> filter, CountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.CountDocumentsAsync(session, CombineFilters(filter), options, cancellationToken);
         }
 
         public override IAsyncCursor<TField> Distinct<TField>(FieldDefinition<TDocument, TField> field, FilterDefinition<TDocument> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -110,9 +167,29 @@ namespace MongoDB.Driver
             return _wrappedCollection.Distinct(field, CombineFilters(filter), options, cancellationToken);
         }
 
+        public override IAsyncCursor<TField> Distinct<TField>(IClientSessionHandle session, FieldDefinition<TDocument, TField> field, FilterDefinition<TDocument> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.Distinct(session, field, CombineFilters(filter), options, cancellationToken);
+        }
+
         public override Task<IAsyncCursor<TField>> DistinctAsync<TField>(FieldDefinition<TDocument, TField> field, FilterDefinition<TDocument> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.DistinctAsync(field, CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override Task<IAsyncCursor<TField>> DistinctAsync<TField>(IClientSessionHandle session, FieldDefinition<TDocument, TField> field, FilterDefinition<TDocument> filter, DistinctOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.DistinctAsync(session, field, CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override long EstimatedDocumentCount(EstimatedDocumentCountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new NotSupportedException("EstimatedDocumentCount is not supported for filtered collections.");
+        }
+
+        public override Task<long> EstimatedDocumentCountAsync(EstimatedDocumentCountOptions options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new NotSupportedException("EstimatedDocumentCountAsync is not supported for filtered collections.");
         }
 
         public override IAsyncCursor<TProjection> FindSync<TProjection>(FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -120,9 +197,19 @@ namespace MongoDB.Driver
             return _wrappedCollection.FindSync(CombineFilters(filter), options, cancellationToken);
         }
 
+        public override IAsyncCursor<TProjection> FindSync<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindSync(session, CombineFilters(filter), options, cancellationToken);
+        }
+
         public override Task<IAsyncCursor<TProjection>> FindAsync<TProjection>(FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.FindAsync(CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override Task<IAsyncCursor<TProjection>> FindAsync<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindAsync(session, CombineFilters(filter), options, cancellationToken);
         }
 
         public override TProjection FindOneAndDelete<TProjection>(FilterDefinition<TDocument> filter, FindOneAndDeleteOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -130,9 +217,19 @@ namespace MongoDB.Driver
             return _wrappedCollection.FindOneAndDelete(CombineFilters(filter), options, cancellationToken);
         }
 
+        public override TProjection FindOneAndDelete<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, FindOneAndDeleteOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndDelete(session, CombineFilters(filter), options, cancellationToken);
+        }
+
         public override Task<TProjection> FindOneAndDeleteAsync<TProjection>(FilterDefinition<TDocument> filter, FindOneAndDeleteOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.FindOneAndDeleteAsync(CombineFilters(filter), options, cancellationToken);
+        }
+
+        public override Task<TProjection> FindOneAndDeleteAsync<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, FindOneAndDeleteOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndDeleteAsync(session, CombineFilters(filter), options, cancellationToken);
         }
 
         public override TProjection FindOneAndReplace<TProjection>(FilterDefinition<TDocument> filter, TDocument replacement, FindOneAndReplaceOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -140,9 +237,19 @@ namespace MongoDB.Driver
             return _wrappedCollection.FindOneAndReplace(CombineFilters(filter), replacement, options, cancellationToken);
         }
 
+        public override TProjection FindOneAndReplace<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, TDocument replacement, FindOneAndReplaceOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndReplace(session, CombineFilters(filter), replacement, options, cancellationToken);
+        }
+
         public override Task<TProjection> FindOneAndReplaceAsync<TProjection>(FilterDefinition<TDocument> filter, TDocument replacement, FindOneAndReplaceOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.FindOneAndReplaceAsync(CombineFilters(filter), replacement, options, cancellationToken);
+        }
+
+        public override Task<TProjection> FindOneAndReplaceAsync<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, TDocument replacement, FindOneAndReplaceOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndReplaceAsync(session, CombineFilters(filter), replacement, options, cancellationToken);
         }
 
         public override TProjection FindOneAndUpdate<TProjection>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -150,9 +257,19 @@ namespace MongoDB.Driver
             return _wrappedCollection.FindOneAndUpdate(CombineFilters(filter), update, options, cancellationToken);
         }
 
+        public override TProjection FindOneAndUpdate<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndUpdate(session, CombineFilters(filter), update, options, cancellationToken);
+        }
+
         public override Task<TProjection> FindOneAndUpdateAsync<TProjection>(FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             return _wrappedCollection.FindOneAndUpdateAsync(CombineFilters(filter), update, options, cancellationToken);
+        }
+
+        public override Task<TProjection> FindOneAndUpdateAsync<TProjection>(IClientSessionHandle session, FilterDefinition<TDocument> filter, UpdateDefinition<TDocument> update, FindOneAndUpdateOptions<TDocument, TProjection> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return _wrappedCollection.FindOneAndUpdateAsync(session, CombineFilters(filter), update, options, cancellationToken);
         }
 
         public override IAsyncCursor<TResult> MapReduce<TResult>(BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<TDocument, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
@@ -162,11 +279,25 @@ namespace MongoDB.Driver
             return _wrappedCollection.MapReduce(map, reduce, options, cancellationToken);
         }
 
+        public override IAsyncCursor<TResult> MapReduce<TResult>(IClientSessionHandle session, BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<TDocument, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            options = options ?? new MapReduceOptions<TDocument, TResult>();
+            options.Filter = CombineFilters(options.Filter);
+            return _wrappedCollection.MapReduce(session, map, reduce, options, cancellationToken);
+        }
+
         public override Task<IAsyncCursor<TResult>> MapReduceAsync<TResult>(BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<TDocument, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             options = options ?? new MapReduceOptions<TDocument, TResult>();
             options.Filter = CombineFilters(options.Filter);
             return _wrappedCollection.MapReduceAsync(map, reduce, options, cancellationToken);
+        }
+
+        public override Task<IAsyncCursor<TResult>> MapReduceAsync<TResult>(IClientSessionHandle session, BsonJavaScript map, BsonJavaScript reduce, MapReduceOptions<TDocument, TResult> options = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            options = options ?? new MapReduceOptions<TDocument, TResult>();
+            options.Filter = CombineFilters(options.Filter);
+            return _wrappedCollection.MapReduceAsync(session, map, reduce, options, cancellationToken);
         }
 
         // private methods

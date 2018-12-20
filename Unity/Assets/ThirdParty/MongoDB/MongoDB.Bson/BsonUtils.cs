@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ namespace MongoDB.Bson
     /// </summary>
     public static class BsonUtils
     {
-
         // public static methods
         /// <summary>
         /// Gets a friendly class name suitable for use in error messages.
@@ -61,32 +60,13 @@ namespace MongoDB.Bson
         {
             if (s == null)
             {
-                throw new ArgumentNullException("s");
+                throw new ArgumentNullException(nameof(s));
             }
 
             byte[] bytes;
-            if ((s.Length & 1) != 0) 
+            if (!TryParseHexString(s, out bytes))
             {
-                s = "0" + s; // make length of s even
-            } 
-            bytes = new byte[s.Length / 2];
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                string hex = s.Substring(2 * i, 2);
-                try
-                {
-                    byte b = Convert.ToByte(hex, 16);
-                    bytes[i] = b;
-                }
-                catch (FormatException e)
-                {
-                    throw new FormatException(
-                        string.Format("Invalid hex string {0}. Problem with substring {1} starting at position {2}",
-                        s,
-                        hex,
-                        2 * i),
-                        e);
-                }
+                throw new FormatException("String should contain only hexadecimal digits.");
             }
 
             return bytes;
@@ -121,6 +101,16 @@ namespace MongoDB.Bson
         }
 
         /// <summary>
+        /// Converts a value to a hex character.
+        /// </summary>
+        /// <param name="value">The value (assumed to be between 0 and 15).</param>
+        /// <returns>The hex character.</returns>
+        public static char ToHexChar(int value)
+        {
+            return (char)(value + (value < 10 ? '0' : 'a' - 10));
+        }
+
+        /// <summary>
         /// Converts a byte array to a hex string.
         /// </summary>
         /// <param name="bytes">The byte array.</param>
@@ -131,12 +121,18 @@ namespace MongoDB.Bson
             {
                 throw new ArgumentNullException("bytes");
             }
-            var sb = new StringBuilder(bytes.Length * 2);
-            foreach (var b in bytes)
+
+            var length = bytes.Length;
+            var c = new char[length * 2];
+
+            for (int i = 0, j = 0; i < length; i++)
             {
-                sb.AppendFormat("{0:x2}", b);
+                var b = bytes[i];
+                c[j++] = ToHexChar(b >> 4);
+                c[j++] = ToHexChar(b & 0x0f);
             }
-            return sb.ToString();
+
+            return new string(c);
         }
 
         /// <summary>
@@ -200,17 +196,70 @@ namespace MongoDB.Bson
         /// <returns>True if the hex string was successfully parsed.</returns>
         public static bool TryParseHexString(string s, out byte[] bytes)
         {
-            try
+            bytes = null;
+
+            if (s == null)
             {
-                bytes = ParseHexString(s);
-            }
-            catch
-            {
-                bytes = null;
                 return false;
             }
 
+            var buffer = new byte[(s.Length + 1) / 2];
+
+            var i = 0;
+            var j = 0;
+
+            if ((s.Length % 2) == 1)
+            {
+                // if s has an odd length assume an implied leading "0"
+                int y;
+                if (!TryParseHexChar(s[i++], out y))
+                {
+                    return false;
+                }
+                buffer[j++] = (byte)y;
+            }
+
+            while (i < s.Length)
+            {
+                int x, y;
+                if (!TryParseHexChar(s[i++], out x))
+                {
+                    return false;
+                }
+                if (!TryParseHexChar(s[i++], out y))
+                {
+                    return false;
+                }
+                buffer[j++] = (byte)((x << 4) | y);
+            }
+
+            bytes = buffer;
             return true;
+        }
+
+        // private static methods
+        private static bool TryParseHexChar(char c, out int value)
+        {
+            if (c >= '0' && c <= '9')
+            {
+                value = c - '0';
+                return true;
+            }
+
+            if (c >= 'a' && c <= 'f')
+            {
+                value = 10 + (c - 'a');
+                return true;
+            }
+
+            if (c >= 'A' && c <= 'F')
+            {
+                value = 10 + (c - 'A');
+                return true;
+            }
+
+            value = 0;
+            return false;
         }
     }
 }

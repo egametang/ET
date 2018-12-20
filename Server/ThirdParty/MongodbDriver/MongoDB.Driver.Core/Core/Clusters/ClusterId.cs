@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ namespace MongoDB.Driver.Core.Clusters
     /// <summary>
     /// Represents a cluster identifier.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public sealed class ClusterId : IEquatable<ClusterId>

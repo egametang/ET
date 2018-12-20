@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using System.Text;
@@ -27,7 +27,7 @@ namespace MongoDB.Driver
     /// <summary>
     /// Represents a MongoDB configuration exception.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoConfigurationException : MongoClientException
@@ -52,7 +52,7 @@ namespace MongoDB.Driver
         {
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoConfigurationException"/> class.
         /// </summary>

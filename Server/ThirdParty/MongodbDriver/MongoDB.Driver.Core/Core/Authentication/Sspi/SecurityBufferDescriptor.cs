@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
             NumBuffers = buffers.Length;
 
             //Allocate memory for SecBuffer Array....
-#if NET45
+#if NET452
             BufferPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SecurityBuffer)) * NumBuffers);
 #else
             BufferPtr = Marshal.AllocHGlobal(Marshal.SizeOf<SecurityBuffer>() * NumBuffers);
@@ -73,21 +73,21 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
             for (int i = 0; i < buffers.Length; i++)
             {
                 var currentBuffer = buffers[i];
-#if NET45
+#if NET452
                 var currentOffset = i * Marshal.SizeOf(typeof(SecurityBuffer));
 #else
                 var currentOffset = i * Marshal.SizeOf<SecurityBuffer>();
 #endif
                 Marshal.WriteInt32(BufferPtr, currentOffset, currentBuffer.Count);
 
-#if NET45
+#if NET452
                 var length = currentOffset + Marshal.SizeOf(typeof(int));
 #else
                 var length = currentOffset + Marshal.SizeOf<int>();
 #endif
                 Marshal.WriteInt32(BufferPtr, length, (int)currentBuffer.BufferType);
 
-#if NET45
+#if NET452
                 length = currentOffset + Marshal.SizeOf(typeof(int)) + Marshal.SizeOf(typeof(int));
 #else
                 length = currentOffset + Marshal.SizeOf<int>() + Marshal.SizeOf<int>();
@@ -103,7 +103,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
             {
                 if (NumBuffers == 1)
                 {
-#if NET45
+#if NET452
                     var buffer = (SecurityBuffer)Marshal.PtrToStructure(BufferPtr, typeof(SecurityBuffer));
 #else
                     var buffer = Marshal.PtrToStructure<SecurityBuffer>(BufferPtr);
@@ -116,7 +116,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
                     // The 1st buffer is going to be empty. We can skip it.
                     for (int i = 1; i < NumBuffers; i++)
                     {
-#if NET45
+#if NET452
                         var currentOffset = i * Marshal.SizeOf(typeof(SecurityBuffer));
                         var totalLength = currentOffset + Marshal.SizeOf(typeof(int)) + Marshal.SizeOf(typeof(int));
 #else
@@ -149,7 +149,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
 
             if (NumBuffers == 1)
             {
-#if NET45
+#if NET452
                 var buffer = (SecurityBuffer)Marshal.PtrToStructure(BufferPtr, typeof(SecurityBuffer));
 #else
                 var buffer = Marshal.PtrToStructure<SecurityBuffer>(BufferPtr);
@@ -167,7 +167,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
 
                 for (int i = 0; i < NumBuffers; i++)
                 {
-#if NET45
+#if NET452
                     var currentOffset = i * Marshal.SizeOf(typeof(SecurityBuffer));
 #else
                     var currentOffset = i * Marshal.SizeOf<SecurityBuffer>();
@@ -179,13 +179,13 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
 
                 for (int i = 0, bufferIndex = 0; i < NumBuffers; i++)
                 {
-#if NET45
+#if NET452
                     var currentOffset = i * Marshal.SizeOf(typeof(SecurityBuffer));
 #else
                     var currentOffset = i * Marshal.SizeOf<SecurityBuffer>();
 #endif
                     var bytesToCopy = Marshal.ReadInt32(BufferPtr, currentOffset);
-#if NET45
+#if NET452
                     var length = currentOffset + Marshal.SizeOf(typeof(int)) + Marshal.SizeOf(typeof(int));
 #else
                     var length = currentOffset + Marshal.SizeOf<int>() + Marshal.SizeOf<int>();

@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
+using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Events;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
@@ -133,21 +134,22 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // methods
-        internal BsonDocument CreateCommand(SemanticVersion serverVersion)
+        internal BsonDocument CreateCommand(ConnectionDescription connectionDescription, ICoreSession session)
         {
-            Feature.ReadConcern.ThrowIfNotSupported(serverVersion, _readConcern);
+            Feature.ReadConcern.ThrowIfNotSupported(connectionDescription.ServerVersion, _readConcern);
 
+            var readConcern = ReadConcernHelper.GetReadConcernForCommand(session, connectionDescription, _readConcern);
             return new BsonDocument
             {
                 { "parallelCollectionScan", _collectionNamespace.CollectionName },
                 { "numCursors", _numberOfCursors },
-                { "readConcern", _readConcern.ToBsonDocument(), !_readConcern.IsServerDefault }
+                { "readConcern", readConcern, readConcern != null }
             };
         }
 
-        private ReadCommandOperation<BsonDocument> CreateOperation(SemanticVersion serverVersion)
+        private ReadCommandOperation<BsonDocument> CreateOperation(IChannel channel, IBinding binding)
         {
-            var command = CreateCommand(serverVersion);
+            var command = CreateCommand(channel.ConnectionDescription, binding.Session);
             return new ReadCommandOperation<BsonDocument>(_collectionNamespace.DatabaseNamespace, command, BsonDocumentSerializer.Instance, _messageEncoderSettings);
         }
 
@@ -155,7 +157,7 @@ namespace MongoDB.Driver.Core.Operations
         {
             var cursors = new List<AsyncCursor<TDocument>>();
 
-            using (var getMoreChannelSource = new ChannelSourceHandle(new ServerChannelSource(channelSource.Server)))
+            using (var getMoreChannelSource = new ChannelSourceHandle(new ServerChannelSource(channelSource.Server, channelSource.Session.Fork())))
             {
                 foreach (var cursorDocument in result["cursors"].AsBsonArray.Select(v => v["cursor"].AsBsonDocument))
                 {
@@ -198,9 +200,9 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetReadChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
+                var operation = CreateOperation(channel, channelBinding);
                 var result = operation.Execute(channelBinding, cancellationToken);
                 return CreateCursors(channelSource, operation.Command, result);
             }
@@ -214,9 +216,9 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetReadChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
+                var operation = CreateOperation(channel, channelBinding);
                 var result = await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
                 return CreateCursors(channelSource, operation.Command, result);
             }

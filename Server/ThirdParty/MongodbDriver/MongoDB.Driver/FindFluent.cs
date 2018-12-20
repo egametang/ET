@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,10 +29,12 @@ namespace MongoDB.Driver
         private readonly IMongoCollection<TDocument> _collection;
         private FilterDefinition<TDocument> _filter;
         private readonly FindOptions<TDocument, TProjection> _options;
+        private readonly IClientSessionHandle _session;
 
         // constructors
-        public FindFluent(IMongoCollection<TDocument> collection, FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options)
+        public FindFluent(IClientSessionHandle session, IMongoCollection<TDocument> collection, FilterDefinition<TDocument> filter, FindOptions<TDocument, TProjection> options)
         {
+            _session = session; // can be null
             _collection = Ensure.IsNotNull(collection, nameof(collection));
             _filter = Ensure.IsNotNull(filter, nameof(filter));
             _options = Ensure.IsNotNull(options, nameof(options));
@@ -57,16 +59,58 @@ namespace MongoDB.Driver
             return Project(projection);
         }
 
+        [Obsolete("Use CountDocuments instead.")]
         public override long Count(CancellationToken cancellationToken)
         {
             var options = CreateCountOptions();
-            return _collection.Count(_filter, options, cancellationToken);
+            if (_session == null)
+            {
+                return _collection.Count(_filter, options, cancellationToken);
+            }
+            else
+            {
+                return _collection.Count(_session, _filter, options, cancellationToken);
+            }
         }
 
+        [Obsolete("Use CountDocumentsAsync instead.")]
         public override Task<long> CountAsync(CancellationToken cancellationToken)
         {
             var options = CreateCountOptions();
-            return _collection.CountAsync(_filter, options, cancellationToken);
+            if (_session == null)
+            {
+                return _collection.CountAsync(_filter, options, cancellationToken);
+            }
+            else
+            {
+                return _collection.CountAsync(_session, _filter, options, cancellationToken);
+            }
+        }
+
+        public override long CountDocuments(CancellationToken cancellationToken)
+        {
+            var options = CreateCountOptions();
+            if (_session == null)
+            {
+                return _collection.CountDocuments(_filter, options, cancellationToken);
+            }
+            else
+            {
+                return _collection.CountDocuments(_session, _filter, options, cancellationToken);
+            }
+        }
+
+        public override Task<long> CountDocumentsAsync(CancellationToken cancellationToken)
+        {
+            var options = CreateCountOptions();
+            if (_session == null)
+            {
+                return _collection.CountDocumentsAsync(_filter, options, cancellationToken);
+            }
+            else
+            {
+                return _collection.CountDocumentsAsync(_session, _filter, options, cancellationToken);
+            }
         }
 
         public override IFindFluent<TDocument, TProjection> Limit(int? limit)
@@ -94,7 +138,7 @@ namespace MongoDB.Driver
                 Skip = _options.Skip,
                 Sort = _options.Sort,
             };
-            return new FindFluent<TDocument, TNewProjection>(_collection, _filter, newOptions);
+            return new FindFluent<TDocument, TNewProjection>(_session, _collection, _filter, newOptions);
         }
 
         public override IFindFluent<TDocument, TProjection> Skip(int? skip)
@@ -111,12 +155,26 @@ namespace MongoDB.Driver
 
         public override IAsyncCursor<TProjection> ToCursor(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _collection.FindSync(_filter, _options, cancellationToken);
+            if (_session == null)
+            {
+                return _collection.FindSync(_filter, _options, cancellationToken);
+            }
+            else
+            {
+                return _collection.FindSync(_session, _filter, _options, cancellationToken);
+            }
         }
 
         public override Task<IAsyncCursor<TProjection>> ToCursorAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _collection.FindAsync(_filter, _options, cancellationToken);
+            if (_session == null)
+            {
+                return _collection.FindAsync(_filter, _options, cancellationToken);
+            }
+            else
+            {
+                return _collection.FindAsync(_session, _filter, _options, cancellationToken);
+            }
         }
 
         public override string ToString()
@@ -189,15 +247,10 @@ namespace MongoDB.Driver
         // private methods
         private CountOptions CreateCountOptions()
         {
-            BsonValue hint = null;
-            if (_options.Modifiers != null)
-            {
-                _options.Modifiers.TryGetValue("$hint", out hint);
-            }
             return new CountOptions
             {
                 Collation = _options.Collation,
-                Hint = hint,
+                Hint = _options.Modifiers?.GetValue("$hint", null),
                 Limit = _options.Limit,
                 MaxTime = _options.MaxTime,
                 Skip = _options.Skip
