@@ -58,10 +58,10 @@ namespace ETModel
 		{
 			eventSystem = null;
 			
-			scene.Dispose();
+			scene?.Dispose();
 			scene = null;
 			
-			objectPool.Dispose();
+			objectPool?.Dispose();
 			objectPool = null;
 			
 			hotfix = null;
