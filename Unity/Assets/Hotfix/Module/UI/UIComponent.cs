@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ETModel;
 using UnityEngine;
 
@@ -38,6 +39,13 @@ namespace ETHotfix
 			}
 			this.uis.Remove(name);
 			ui.Dispose();
+		}
+		
+		public UI Get(string name)
+		{
+			UI ui = null;
+			this.uis.TryGetValue(name, out ui);
+			return ui;
 		}
 	}
 }
