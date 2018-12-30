@@ -4,6 +4,7 @@ namespace ETHotfix
 {
 	public interface IMessage: Google.Protobuf.IMessage
 	{
+
 	}
 	
 	public interface IRequest: IMessage
