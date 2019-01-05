@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -228,6 +228,7 @@ namespace MongoDB.Driver.Core.Operations
         /// <value>
         /// The max scan.
         /// </value>
+        [Obsolete("MaxScan was deprecated in server version 4.0.")]
         public int? MaxScan
         {
             get { return _maxScan; }
@@ -243,7 +244,7 @@ namespace MongoDB.Driver.Core.Operations
         public TimeSpan? MaxTime
         {
             get { return _maxTime; }
-            set { _maxTime = value; }
+            set { _maxTime = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(value, nameof(value)); }
         }
 
         /// <summary>
@@ -394,6 +395,7 @@ namespace MongoDB.Driver.Core.Operations
         /// <value>
         /// Whether to use snapshot behavior.
         /// </value>
+        [Obsolete("Snapshot was deprecated in server version 3.7.4.")]
         public bool? Snapshot
         {
             get { return _snapshot; }
@@ -420,7 +422,7 @@ namespace MongoDB.Driver.Core.Operations
 
             using (var channelSource = binding.GetReadChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
                 return operation.Execute(channelBinding, cancellationToken);
@@ -434,7 +436,7 @@ namespace MongoDB.Driver.Core.Operations
 
             using (var channelSource = await binding.GetReadChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
                 return await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
@@ -477,6 +479,7 @@ namespace MongoDB.Driver.Core.Operations
                 }
             }
 
+#pragma warning disable 618
             var operation = new FindCommandOperation<TDocument>(
                 _collectionNamespace,
                 _resultSerializer,
@@ -507,6 +510,7 @@ namespace MongoDB.Driver.Core.Operations
                 Snapshot = snapshot,
                 Sort = sort
             };
+#pragma warning restore
 
             return operation;
         }
@@ -522,6 +526,7 @@ namespace MongoDB.Driver.Core.Operations
                 throw new NotSupportedException($"OP_QUERY does not support collations.");
             }
 
+#pragma warning disable 618
             var operation = new FindOpcodeOperation<TDocument>(
                 _collectionNamespace,
                 _resultSerializer,
@@ -551,6 +556,7 @@ namespace MongoDB.Driver.Core.Operations
 
             return operation;
         }
+#pragma warning restore
 
         private IReadOperation<IAsyncCursor<TDocument>> CreateOperation(SemanticVersion serverVersion)
         {

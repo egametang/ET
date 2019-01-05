@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,15 +13,8 @@
 * limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using MongoDB.Driver.Core.Clusters;
-using MongoDB.Driver.Core.Connections;
 
 namespace MongoDB.Driver.Core.Servers
 {
@@ -35,8 +28,11 @@ namespace MongoDB.Driver.Core.Servers
         /// Creates the server.
         /// </summary>
         /// <param name="clusterId">The cluster identifier.</param>
+        /// <param name="clusterClock">The cluster clock.</param>
         /// <param name="endPoint">The end point.</param>
-        /// <returns>A server.</returns>
-        IClusterableServer CreateServer(ClusterId clusterId, EndPoint endPoint);
+        /// <returns>
+        /// A server.
+        /// </returns>
+        IClusterableServer CreateServer(ClusterId clusterId, IClusterClock clusterClock, EndPoint endPoint);
     }
 }

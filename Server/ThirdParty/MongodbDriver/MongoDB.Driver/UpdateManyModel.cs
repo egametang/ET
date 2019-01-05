@@ -1,4 +1,4 @@
-/* Copyright 2010-2017 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace MongoDB.Driver
     /// Model for updating many documents.
     /// </summary>
     /// <typeparam name="TDocument">The type of the document.</typeparam>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public sealed class UpdateManyModel<TDocument> : WriteModel<TDocument>

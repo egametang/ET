@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -148,21 +148,12 @@ namespace MongoDB.Bson.IO
 
             var bytes = _bsonStream.ReadBytes(size);
 
-            var guidRepresentation = GuidRepresentation.Unspecified;
-            if (subType == BsonBinarySubType.UuidLegacy || subType == BsonBinarySubType.UuidStandard)
+            GuidRepresentation guidRepresentation;
+            switch (subType)
             {
-                if (_settings.GuidRepresentation != GuidRepresentation.Unspecified)
-                {
-                    var expectedSubType = (_settings.GuidRepresentation == GuidRepresentation.Standard) ? BsonBinarySubType.UuidStandard : BsonBinarySubType.UuidLegacy;
-                    if (subType != expectedSubType)
-                    {
-                        var message = string.Format(
-                            "The GuidRepresentation for the reader is {0}, which requires the binary sub type to be {1}, not {2}.",
-                            _settings.GuidRepresentation, expectedSubType, subType);
-                        throw new FormatException(message);
-                    }
-                }
-                guidRepresentation = (subType == BsonBinarySubType.UuidStandard) ? GuidRepresentation.Standard : _settings.GuidRepresentation;
+                case BsonBinarySubType.UuidLegacy: guidRepresentation = _settings.GuidRepresentation; break;
+                case BsonBinarySubType.UuidStandard: guidRepresentation = GuidRepresentation.Standard; break;
+                default: guidRepresentation = GuidRepresentation.Unspecified; break;
             }
 
             State = GetNextState();

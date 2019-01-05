@@ -59,6 +59,12 @@ namespace ETModel
 			component.Parent = this;
 
 			this.componentDict.Add(type, component);
+
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -72,6 +78,12 @@ namespace ETModel
 			Component component = ComponentFactory.CreateWithParent(type, this, this.IsFromPool);
 
 			this.componentDict.Add(type, component);
+			
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -86,6 +98,12 @@ namespace ETModel
 			K component = ComponentFactory.CreateWithParent<K>(this, this.IsFromPool);
 
 			this.componentDict.Add(type, component);
+			
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -100,6 +118,12 @@ namespace ETModel
 			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
+			
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -114,6 +138,12 @@ namespace ETModel
 			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
+			
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -128,6 +158,12 @@ namespace ETModel
 			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3, this.IsFromPool);
 			
 			this.componentDict.Add(type, component);
+			
+			if (component is ISerializeToEntity)
+			{
+				this.components.Add(component);
+			}
+			
 			return component;
 		}
 
@@ -145,6 +181,7 @@ namespace ETModel
 			}
 
 			this.componentDict.Remove(type);
+			this.components.Remove(component);
 
 			component.Dispose();
 		}
@@ -162,6 +199,7 @@ namespace ETModel
 			}
 
 			this.componentDict.Remove(type);
+			this.components.Remove(component);
 
 			component.Dispose();
 		}
@@ -190,22 +228,7 @@ namespace ETModel
 		{
 			return this.componentDict.Values.ToArray();
 		}
-
-		public override void BeginInit()
-		{
-			base.BeginInit();
-
-			this.components.Clear();
-			
-			foreach (var kv in this.componentDict)
-			{
-				if (kv.Value is ISerializeToEntity)
-				{
-					this.components.Add(kv.Value);
-				}
-			}
-		}
-
+		
 		public override void EndInit()
 		{
 			try

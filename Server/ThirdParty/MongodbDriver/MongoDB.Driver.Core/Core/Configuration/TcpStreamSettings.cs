@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -61,6 +61,17 @@ namespace MongoDB.Driver.Core.Configuration
             _sendBufferSize = Ensure.IsGreaterThanZero(sendBufferSize.WithDefault(64 * 1024), "sendBufferSize");
             _socketConfigurator = socketConfigurator.WithDefault(null);
             _writeTimeout = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(writeTimeout.WithDefault(null), "writeTimeout");
+        }
+
+        internal TcpStreamSettings(TcpStreamSettings other)
+        {
+            _addressFamily = other.AddressFamily;
+            _connectTimeout = other.ConnectTimeout;
+            _readTimeout = other.ReadTimeout;
+            _receiveBufferSize = other.ReceiveBufferSize;
+            _sendBufferSize = other.SendBufferSize;
+            _socketConfigurator = other.SocketConfigurator;
+            _writeTimeout = other.WriteTimeout;
         }
 
         // properties

@@ -20,13 +20,19 @@ namespace ILRuntime.Runtime.Stack
         {
             get
             {
-                return (StackObject*)(this.Value << 32 | this.ValueLow);
+                fixed (int* i = &this.Value)
+                {
+                    ulong* p = (ulong*) i;
+                    return (StackObject*) (*p);
+                }
             }
             set
             {
-                long v = (long) value;
-                this.ValueLow = (int)(v & 0xffffffff);
-                this.Value = (int) (v >> 32);
+                fixed (int* i = &this.Value)
+                {
+                    ulong* p = (ulong*) i;
+                    *p = (ulong)value;
+                }
             }
         }
 

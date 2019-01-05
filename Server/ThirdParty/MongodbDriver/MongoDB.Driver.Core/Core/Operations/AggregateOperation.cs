@@ -1,4 +1,4 @@
-/* Copyright 2013-2017 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,9 +23,11 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
+using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Events;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
+using MongoDB.Shared;
 
 namespace MongoDB.Driver.Core.Operations
 {
@@ -40,6 +42,10 @@ namespace MongoDB.Driver.Core.Operations
         private int? _batchSize;
         private Collation _collation;
         private readonly CollectionNamespace _collectionNamespace;
+        private string _comment;
+        private readonly DatabaseNamespace _databaseNamespace;
+        private BsonValue _hint;
+        private TimeSpan? _maxAwaitTime;
         private TimeSpan? _maxTime;
         private readonly MessageEncoderSettings _messageEncoderSettings;
         private readonly IReadOnlyList<BsonDocument> _pipeline;
@@ -51,13 +57,31 @@ namespace MongoDB.Driver.Core.Operations
         /// <summary>
         /// Initializes a new instance of the <see cref="AggregateOperation{TResult}"/> class.
         /// </summary>
+        /// <param name="databaseNamespace">The database namespace.</param>
+        /// <param name="pipeline">The pipeline.</param>
+        /// <param name="resultSerializer">The result value serializer.</param>
+        /// <param name="messageEncoderSettings">The message encoder settings.</param>
+        public AggregateOperation(DatabaseNamespace databaseNamespace, IEnumerable<BsonDocument> pipeline, IBsonSerializer<TResult> resultSerializer, MessageEncoderSettings messageEncoderSettings)
+            : this(pipeline, resultSerializer, messageEncoderSettings)
+        {
+            _databaseNamespace = Ensure.IsNotNull(databaseNamespace, nameof(databaseNamespace));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateOperation{TResult}"/> class.
+        /// </summary>
         /// <param name="collectionNamespace">The collection namespace.</param>
         /// <param name="pipeline">The pipeline.</param>
         /// <param name="resultSerializer">The result value serializer.</param>
         /// <param name="messageEncoderSettings">The message encoder settings.</param>
         public AggregateOperation(CollectionNamespace collectionNamespace, IEnumerable<BsonDocument> pipeline, IBsonSerializer<TResult> resultSerializer, MessageEncoderSettings messageEncoderSettings)
+            : this(pipeline, resultSerializer, messageEncoderSettings)
         {
             _collectionNamespace = Ensure.IsNotNull(collectionNamespace, nameof(collectionNamespace));
+        }
+
+        private AggregateOperation(IEnumerable<BsonDocument> pipeline, IBsonSerializer<TResult> resultSerializer, MessageEncoderSettings messageEncoderSettings)
+        {
             _pipeline = Ensure.IsNotNull(pipeline, nameof(pipeline)).ToList();
             _resultSerializer = Ensure.IsNotNull(resultSerializer, nameof(resultSerializer));
             _messageEncoderSettings = Ensure.IsNotNull(messageEncoderSettings, nameof(messageEncoderSettings));
@@ -109,6 +133,53 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         /// <summary>
+        /// Gets or sets the comment.
+        /// </summary>
+        /// <value>
+        /// The comment.
+        /// </value>
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+
+        /// <summary>
+        /// Gets the database namespace.
+        /// </summary>
+        /// <value>
+        /// The database namespace.
+        /// </value>
+        public DatabaseNamespace DatabaseNamespace
+        {
+            get { return _databaseNamespace; }
+        }
+
+        /// <summary>
+        /// Gets or sets the hint. This must either be a BsonString representing the index name or a BsonDocument representing the key pattern of the index.
+        /// </summary>
+        /// <value>
+        /// The hint.
+        /// </value>
+        public BsonValue Hint
+        {
+            get { return _hint; }
+            set { _hint = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum await time.
+        /// </summary>
+        /// <value>
+        /// The maximum await time.
+        /// </value>
+        public TimeSpan? MaxAwaitTime
+        {
+            get { return _maxAwaitTime; }
+            set { _maxAwaitTime = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the maximum time the server should spend on this operation.
         /// </summary>
         /// <value>
@@ -117,7 +188,7 @@ namespace MongoDB.Driver.Core.Operations
         public TimeSpan? MaxTime
         {
             get { return _maxTime; }
-            set { _maxTime = value; }
+            set { _maxTime = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(value, nameof(value)); }
         }
 
         /// <summary>
@@ -187,9 +258,9 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetReadChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel);
+                var operation = CreateOperation(channel, channelBinding);
                 var result = operation.Execute(channelBinding, cancellationToken);
                 return CreateCursor(channelSource, channel, operation.Command, result);
             }
@@ -204,9 +275,9 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetReadChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference))
+            using (var channelBinding = new ChannelReadBinding(channelSource.Server, channel, binding.ReadPreference, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel);
+                var operation = CreateOperation(channel, channelBinding);
                 var result = await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
                 return CreateCursor(channelSource, channel, operation.Command, result);
             }
@@ -227,24 +298,27 @@ namespace MongoDB.Driver.Core.Operations
             };
         }
 
-        internal BsonDocument CreateCommand(SemanticVersion serverVersion)
+        internal BsonDocument CreateCommand(ConnectionDescription connectionDescription, ICoreSession session)
         {
-            Feature.ReadConcern.ThrowIfNotSupported(serverVersion, _readConcern);
-            Feature.Collation.ThrowIfNotSupported(serverVersion, _collation);
+            Feature.ReadConcern.ThrowIfNotSupported(connectionDescription.ServerVersion, _readConcern);
+            Feature.Collation.ThrowIfNotSupported(connectionDescription.ServerVersion, _collation);
 
+            var readConcern = ReadConcernHelper.GetReadConcernForCommand(session, connectionDescription, _readConcern);
             var command = new BsonDocument
             {
-                { "aggregate", _collectionNamespace.CollectionName },
+                { "aggregate", _collectionNamespace == null ? (BsonValue)1 : _collectionNamespace.CollectionName },
                 { "pipeline", new BsonArray(_pipeline) },
                 { "allowDiskUse", () => _allowDiskUse.Value, _allowDiskUse.HasValue },
-                { "maxTimeMS", () => _maxTime.Value.TotalMilliseconds, _maxTime.HasValue },
-                { "readConcern", () => _readConcern.ToBsonDocument(), !_readConcern.IsServerDefault },
-                { "collation", () => _collation.ToBsonDocument(), _collation != null }
+                { "maxTimeMS", () => MaxTimeHelper.ToMaxTimeMS(_maxTime.Value), _maxTime.HasValue },
+                { "collation", () => _collation.ToBsonDocument(), _collation != null },
+                { "hint", () => _hint, _hint != null },
+                { "comment", () => _comment, _comment != null },
+                { "readConcern", readConcern, readConcern != null }
             };
 
-            if (Feature.AggregateCursorResult.IsSupported(serverVersion))
+            if (Feature.AggregateCursorResult.IsSupported(connectionDescription.ServerVersion))
             {
-                var useCursor = _useCursor.GetValueOrDefault(true) || serverVersion >= new SemanticVersion(3, 5, 0);
+                var useCursor = _useCursor.GetValueOrDefault(true) || connectionDescription.ServerVersion >= new SemanticVersion(3, 5, 0);
                 if (useCursor)
                 {
                     command["cursor"] = new BsonDocument
@@ -257,11 +331,12 @@ namespace MongoDB.Driver.Core.Operations
             return command;
         }
 
-        private ReadCommandOperation<AggregateResult> CreateOperation(IChannelHandle channel)
+        private ReadCommandOperation<AggregateResult> CreateOperation(IChannel channel, IBinding binding)
         {
-            var command = CreateCommand(channel.ConnectionDescription.ServerVersion);
+            var databaseNamespace = _collectionNamespace == null ? _databaseNamespace : _collectionNamespace.DatabaseNamespace;
+            var command = CreateCommand(channel.ConnectionDescription, binding.Session);
             var serializer = new AggregateResultDeserializer(_resultSerializer);
-            return new ReadCommandOperation<AggregateResult>(CollectionNamespace.DatabaseNamespace, command, serializer, MessageEncoderSettings);
+            return new ReadCommandOperation<AggregateResult>(databaseNamespace, command, serializer, MessageEncoderSettings);
         }
 
         private AsyncCursor<TResult> CreateCursor(IChannelSourceHandle channelSource, IChannelHandle channel, BsonDocument command, AggregateResult result)
@@ -278,17 +353,18 @@ namespace MongoDB.Driver.Core.Operations
 
         private AsyncCursor<TResult> CreateCursorFromCursorResult(IChannelSourceHandle channelSource, BsonDocument command, AggregateResult result)
         {
-            var getMoreChannelSource = new ServerChannelSource(channelSource.Server);
+            var getMoreChannelSource = new ServerChannelSource(channelSource.Server, channelSource.Session.Fork());
             return new AsyncCursor<TResult>(
                 getMoreChannelSource,
-                CollectionNamespace,
+                result.CollectionNamespace,
                 command,
                 result.Results,
                 result.CursorId.GetValueOrDefault(0),
                 _batchSize,
                 null, // limit
                 _resultSerializer,
-                MessageEncoderSettings);
+                MessageEncoderSettings,
+                _maxAwaitTime);
         }
 
         private AsyncCursor<TResult> CreateCursorFromInlineResult(BsonDocument command, AggregateResult result)
@@ -302,7 +378,8 @@ namespace MongoDB.Driver.Core.Operations
                 null, // batchSize
                 null, // limit
                 _resultSerializer,
-                MessageEncoderSettings);
+                MessageEncoderSettings,
+                _maxAwaitTime);
         }
 
         private void EnsureIsReadOnlyPipeline()
@@ -316,6 +393,7 @@ namespace MongoDB.Driver.Core.Operations
         private class AggregateResult
         {
             public long? CursorId;
+            public CollectionNamespace CollectionNamespace;
             public TResult[] Results;
         }
 
@@ -374,18 +452,25 @@ namespace MongoDB.Driver.Core.Operations
                 while (reader.ReadBsonType() != 0)
                 {
                     var elementName = reader.ReadName();
-                    if (elementName == "id")
+                    switch (elementName)
                     {
-                        result.CursorId = new Int64Serializer().Deserialize(context);
-                    }
-                    else if (elementName == "firstBatch")
-                    {
-                        var arraySerializer = new ArraySerializer<TResult>(_resultSerializer);
-                        result.Results = arraySerializer.Deserialize(context);
-                    }
-                    else
-                    {
-                        reader.SkipValue();
+                        case "id":
+                            result.CursorId = new Int64Serializer().Deserialize(context);
+                            break;
+
+                        case "ns":
+                            var ns = reader.ReadString();
+                            result.CollectionNamespace = CollectionNamespace.FromFullName(ns);
+                            break;
+
+                        case "firstBatch":
+                            var arraySerializer = new ArraySerializer<TResult>(_resultSerializer);
+                            result.Results = arraySerializer.Deserialize(context);
+                            break;
+
+                        default:
+                            reader.SkipValue();
+                            break;
                     }
                 }
                 reader.ReadEndDocument();

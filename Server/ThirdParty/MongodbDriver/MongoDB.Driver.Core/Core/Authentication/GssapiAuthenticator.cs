@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -196,7 +196,7 @@ namespace MongoDB.Driver.Core.Authentication
                 get { return MechanismName; }
             }
 
-            public ISaslStep Initialize(IConnection connection, ConnectionDescription description)
+            public ISaslStep Initialize(IConnection connection, SaslConversation conversation, ConnectionDescription description)
             {
                 Ensure.IsNotNull(connection, nameof(connection));
                 Ensure.IsNotNull(description, nameof(description));
@@ -229,17 +229,19 @@ namespace MongoDB.Driver.Core.Authentication
                     }
                 }
 
-                return new FirstStep(_serviceName, hostName, _realm, _username, _password);
+                return new FirstStep(_serviceName, hostName, _realm, _username, _password, conversation);
             }
         }
 
         private class FirstStep : ISaslStep
         {
             private readonly string _authorizationId;
+            private byte[] _bytesToSendToServer;
+            private readonly Sspi.SecurityContext _context;
             private readonly SecureString _password;
             private readonly string _servicePrincipalName;
 
-            public FirstStep(string serviceName, string hostName, string realm, string username, SecureString password)
+            public FirstStep(string serviceName, string hostName, string realm, string username, SecureString password, SaslConversation conversation)
             {
                 _authorizationId = username;
                 _password = password;
@@ -248,20 +250,7 @@ namespace MongoDB.Driver.Core.Authentication
                 {
                     _servicePrincipalName += "@" + realm;
                 }
-            }
 
-            public byte[] BytesToSendToServer
-            {
-                get { return new byte[0]; }
-            }
-
-            public bool IsComplete
-            {
-                get { return false; }
-            }
-
-            public ISaslStep Transition(SaslConversation conversation, byte[] bytesReceivedFromServer)
-            {
                 SecurityCredential securityCredential;
                 try
                 {
@@ -273,11 +262,9 @@ namespace MongoDB.Driver.Core.Authentication
                     throw new MongoAuthenticationException(conversation.ConnectionId, "Unable to acquire security credential.", ex);
                 }
 
-                byte[] bytesToSendToServer;
-                Sspi.SecurityContext context;
                 try
                 {
-                    context = Sspi.SecurityContext.Initialize(securityCredential, _servicePrincipalName, bytesReceivedFromServer, out bytesToSendToServer);
+                    _context = Sspi.SecurityContext.Initialize(securityCredential, _servicePrincipalName, null, out _bytesToSendToServer);
                 }
                 catch (Win32Exception ex)
                 {
@@ -290,13 +277,36 @@ namespace MongoDB.Driver.Core.Authentication
                         throw new MongoAuthenticationException(conversation.ConnectionId, "Unable to initialize security context.", ex);
                     }
                 }
+            }
 
-                if (!context.IsInitialized)
+            public byte[] BytesToSendToServer
+            {
+                get { return _bytesToSendToServer; }
+            }
+
+            public bool IsComplete
+            {
+                get { return false; }
+            }
+
+            public ISaslStep Transition(SaslConversation conversation, byte[] bytesReceivedFromServer)
+            {
+                byte[] bytesToSendToServer;
+                try
                 {
-                    return new InitializeStep(_servicePrincipalName, _authorizationId, context, bytesToSendToServer);
+                    _context.Initialize(_servicePrincipalName, bytesReceivedFromServer, out bytesToSendToServer);
+                }
+                catch (Win32Exception ex)
+                {
+                    throw new MongoAuthenticationException(conversation.ConnectionId, "Unable to initialize security context", ex);
                 }
 
-                return new NegotiateStep(_authorizationId, context, bytesToSendToServer);
+                if (!_context.IsInitialized)
+                {
+                    return new InitializeStep(_servicePrincipalName, _authorizationId, _context, bytesToSendToServer);
+                }
+
+                return new NegotiateStep(_authorizationId, _context, bytesToSendToServer);
             }
         }
 

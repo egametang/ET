@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using MongoDB.Bson;
 using MongoDB.Driver.Core.Async;
 using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver.Core.Events;
+using MongoDB.Driver.Core.Events.Diagnostics;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.Servers;
 
@@ -51,6 +52,7 @@ namespace MongoDB.Driver.Core.Clusters
         private readonly Action<ClusterAddedServerEvent> _addedServerEventHandler;
         private readonly Action<ClusterRemovingServerEvent> _removingServerEventHandler;
         private readonly Action<ClusterRemovedServerEvent> _removedServerEventHandler;
+        private readonly Action<SdamInformationEvent> _sdamInformationEventHandler;
 
         // constructors
         public MultiServerCluster(ClusterSettings settings, IClusterableServerFactory serverFactory, IEventSubscriber eventSubscriber)
@@ -80,6 +82,7 @@ namespace MongoDB.Driver.Core.Clusters
             eventSubscriber.TryGetEventHandler(out _addedServerEventHandler);
             eventSubscriber.TryGetEventHandler(out _removingServerEventHandler);
             eventSubscriber.TryGetEventHandler(out _removedServerEventHandler);
+            eventSubscriber.TryGetEventHandler(out _sdamInformationEventHandler);
         }
 
         // methods
@@ -224,9 +227,31 @@ namespace MongoDB.Driver.Core.Clusters
                     var eventArgs = await _serverDescriptionChangedQueue.DequeueAsync(monitorServersCancellationToken).ConfigureAwait(false); // TODO: add timeout and cancellationToken to DequeueAsync
                     ProcessServerDescriptionChanged(eventArgs);
                 }
-                catch
+                catch (OperationCanceledException) when (monitorServersCancellationToken.IsCancellationRequested)
                 {
-                    // TODO: log this somewhere...
+                    // ignore OperationCanceledException when monitor servers cancellation is requested
+                }
+                catch (Exception unexpectedException)
+                {
+                    // if we catch an exception here it's because of a bug in the driver
+
+                    var handler = _sdamInformationEventHandler;
+                    if (handler != null)
+                    {
+                        try
+                        {
+                            handler.Invoke(new SdamInformationEvent(() =>
+                                string.Format(
+                                    "Unexpected exception in MultiServerCluster.MonitorServersAsync: {0}",
+                                    unexpectedException.ToString())));
+                        }
+                        catch
+                        {
+                            // ignore any exceptions thrown by the handler (note: event handlers aren't supposed to throw exceptions)
+                        }
+                    }
+
+                    // TODO: should we reset the cluster state in some way? (the state is undefined since an unexpected exception was thrown)
                 }
             }
         }
@@ -327,7 +352,10 @@ namespace MongoDB.Driver.Core.Clusters
                     if (_maxElectionInfo != null)
                     {
                         isCurrentPrimaryStale = _maxElectionInfo.IsStale(args.NewServerDescription.ReplicaSetConfig.Version.Value, args.NewServerDescription.ElectionId);
-                        var isReportedPrimaryStale = !isCurrentPrimaryStale;
+                        var isReportedPrimaryStale = _maxElectionInfo.IsFresher(
+                            args.NewServerDescription.ReplicaSetConfig.Version.Value,
+                            args.NewServerDescription.ElectionId); 
+                                
 
                         if (isReportedPrimaryStale && args.NewServerDescription.ElectionId != null)
                         {
@@ -336,6 +364,20 @@ namespace MongoDB.Driver.Core.Clusters
                             {
                                 var server = _servers.SingleOrDefault(x => EndPointHelper.Equals(args.NewServerDescription.EndPoint, x.EndPoint));
                                 server.Invalidate();
+                                
+                                _sdamInformationEventHandler?.Invoke(new SdamInformationEvent(() =>
+                                    string.Format(
+                                        @"Invalidating server: Setting ServerType to ""Unknown"" for {0} because it " + 
+                                        @"claimed to be the replica set primary for replica set ""{1}"" but sent a " + 
+                                        @"(setVersion, electionId) tuple of ({2}, {3}) that was less than than the " + 
+                                        @"largest tuple seen, (maxSetVersion, maxElectionId), of ({4}, {5}).",
+                                        args.NewServerDescription.EndPoint,
+                                        args.NewServerDescription.ReplicaSetConfig.Name,
+                                        args.NewServerDescription.ReplicaSetConfig.Version,
+                                        args.NewServerDescription.ElectionId, 
+                                        _maxElectionInfo.SetVersion,
+                                        _maxElectionInfo.ElectionId)));
+                                    
                                 return clusterDescription.WithServerDescription(
                                     new ServerDescription(server.ServerId, server.EndPoint));
                             }
@@ -344,6 +386,58 @@ namespace MongoDB.Driver.Core.Clusters
 
                     if (isCurrentPrimaryStale)
                     {
+                        if (_maxElectionInfo == null)
+                        {
+                            _sdamInformationEventHandler?.Invoke(new SdamInformationEvent(() =>
+                                string.Format(
+                                    @"Initializing (maxSetVersion, maxElectionId): Saving tuple " + 
+                                    @"(setVersion, electionId) of ({0}, {1}) as (maxSetVersion, maxElectionId) for " + 
+                                    @"replica set ""{2}"" because replica set primary {3} sent ({0}, {1}), the first " + 
+                                    @"(setVersion, electionId) tuple ever seen for replica set ""{4}"".",
+                                    args.NewServerDescription.ReplicaSetConfig.Version,
+                                    args.NewServerDescription.ElectionId,
+                                    args.NewServerDescription.ReplicaSetConfig.Name, 
+                                    args.NewServerDescription.EndPoint,
+                                    args.NewServerDescription.ReplicaSetConfig.Name)));
+                        }
+                        else
+                        {
+                            if (_maxElectionInfo.SetVersion < args.NewServerDescription.ReplicaSetConfig.Version.Value)
+                            {
+                                _sdamInformationEventHandler?.Invoke(new SdamInformationEvent(() =>
+                                    string.Format(
+                                        @"Updating stale setVersion: Updating the current " + 
+                                        @"(maxSetVersion, maxElectionId) tuple from ({0}, {1}) to ({2}, {3}) for " + 
+                                        @"replica set ""{4}"" because replica set primary {5} sent ({6}, {7})—a larger " + 
+                                        @"(setVersion, electionId) tuple then the saved tuple, ({0}, {1}).",
+                                        _maxElectionInfo.SetVersion,
+                                        _maxElectionInfo.ElectionId,
+                                        args.NewServerDescription.ReplicaSetConfig.Version,
+                                        args.NewServerDescription.ElectionId,
+                                        args.NewServerDescription.ReplicaSetConfig.Name,
+                                        args.NewServerDescription.EndPoint,
+                                        args.NewServerDescription.ReplicaSetConfig.Version,
+                                        args.NewServerDescription.ElectionId))) ;
+                            } 
+                            else // current primary is stale & setVersion is not stale ⇒ the electionId must be stale
+                            {
+                                _sdamInformationEventHandler?.Invoke(new SdamInformationEvent(() =>
+                                    string.Format(
+                                        @"Updating stale electionId: Updating the current " + 
+                                        @"(maxSetVersion, maxElectionId) tuple from ({0}, {1}) to ({2}, {3}) for " + 
+                                        @"replica set ""{4}"" because replica set primary {5} sent ({6}, {7})—" + 
+                                        @"a larger (setVersion, electionId) tuple than the saved tuple, ({0}, {1}).",
+                                        _maxElectionInfo.SetVersion, 
+                                        _maxElectionInfo.ElectionId,
+                                        args.NewServerDescription.ReplicaSetConfig.Version,
+                                        args.NewServerDescription.ElectionId,
+                                        args.NewServerDescription.ReplicaSetConfig.Name,
+                                        args.NewServerDescription.EndPoint,
+                                        args.NewServerDescription.ReplicaSetConfig.Version,
+                                        args.NewServerDescription.ElectionId)));
+                            }
+                        }
+                        
                         _maxElectionInfo = new ElectionInfo(
                             args.NewServerDescription.ReplicaSetConfig.Version.Value,
                             args.NewServerDescription.ElectionId);
@@ -522,6 +616,13 @@ namespace MongoDB.Driver.Core.Clusters
 
             public ElectionId ElectionId => _electionId;
 
+            public bool IsFresher(int setVersion, ElectionId electionId)
+            {
+                return 
+                    _setVersion > setVersion || 
+                    _setVersion == setVersion && _electionId != null && _electionId.CompareTo(electionId) > 0;
+            }
+            
             public bool IsStale(int setVersion, ElectionId electionId)
             {
                 if (_setVersion < setVersion)
@@ -532,13 +633,18 @@ namespace MongoDB.Driver.Core.Clusters
                 {
                     return false;
                 }
-
+                // Now it must be that _setVersion == setVersion
                 if (_electionId == null)
                 {
                     return true;
                 }
-
-                return _electionId.CompareTo(electionId) <= 0;
+                
+                return _electionId.CompareTo(electionId) < 0;
+                
+                /* above is equivalent to:
+                 * return
+                 *   _setVersion < setVersion
+                 *   || _setVersion == setVersion && (_electionId == null || _electionId.CompareTo(electionId) < 0); */
             }
         }
     }

@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -25,13 +25,14 @@ namespace MongoDB.Driver.Core.Operations
     /// <summary>
     /// Represents the details of a write concern error.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public sealed class BulkWriteConcernError
     {
         // fields
         private readonly int _code;
+        private readonly string _codeName;
         private readonly BsonDocument _details;
         private readonly string _message;
 
@@ -43,8 +44,21 @@ namespace MongoDB.Driver.Core.Operations
         /// <param name="message">The message.</param>
         /// <param name="details">The details.</param>
         public BulkWriteConcernError(int code, string message, BsonDocument details)
+            : this(code, null, message, details)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BulkWriteConcernError" /> class.
+        /// </summary>
+        /// <param name="code">The code.</param>
+        /// <param name="codeName">The name of the code.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="details">The details.</param>
+        public BulkWriteConcernError(int code, string codeName, string message, BsonDocument details)
         {
             _code = code;
+            _codeName = codeName;
             _details = details;
             _message = message;
         }
@@ -59,6 +73,17 @@ namespace MongoDB.Driver.Core.Operations
         public int Code
         {
             get { return _code; }
+        }
+
+        /// <summary>
+        /// Gets the name of the error code.
+        /// </summary>
+        /// <value>
+        /// The name of the error code.
+        /// </value>
+        public string CodeName
+        {
+            get { return _codeName; }
         }
 
         /// <summary>

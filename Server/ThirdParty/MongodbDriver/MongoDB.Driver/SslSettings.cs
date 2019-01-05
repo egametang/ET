@@ -1,4 +1,4 @@
-/* Copyright 2010-2017 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace MongoDB.Driver
         private static readonly IEqualityComparer<X509CertificateCollection> __certificateCollectionEqualityComparer = new X509CertificateCollectionEqualityComparer();
 
         // private fields
-        private bool _checkCertificateRevocation = true;
+        private bool _checkCertificateRevocation = false;
         private X509CertificateCollection _clientCertificateCollection;
         private LocalCertificateSelectionCallback _clientCertificateSelectionCallback;
         private SslProtocols _enabledSslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;

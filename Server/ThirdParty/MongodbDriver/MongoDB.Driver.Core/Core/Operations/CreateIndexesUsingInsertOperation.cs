@@ -1,4 +1,4 @@
-﻿/* Copyright 2013-2016 MongoDB Inc.
+﻿/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetWriteChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
                 foreach (var createIndexRequest in _requests)
                 {
@@ -114,7 +114,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetWriteChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
                 foreach (var createIndexRequest in _requests)
                 {
@@ -132,10 +132,9 @@ namespace MongoDB.Driver.Core.Operations
             var systemIndexesCollection = _collectionNamespace.DatabaseNamespace.SystemIndexesCollection;
             var document = createIndexRequest.CreateIndexDocument(serverVersion);
             document.InsertAt(0, new BsonElement("ns", _collectionNamespace.FullName));
-            var documentSource = new BatchableSource<BsonDocument>(new[] { document });
             return new InsertOpcodeOperation<BsonDocument>(
                 systemIndexesCollection,
-                documentSource,
+                new[] { document },
                 BsonDocumentSerializer.Instance,
                 _messageEncoderSettings);
         }

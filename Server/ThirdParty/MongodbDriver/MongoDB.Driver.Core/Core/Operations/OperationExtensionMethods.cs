@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,16 +33,20 @@ namespace MongoDB.Driver.Core.Operations
         /// <param name="operation">The read operation.</param>
         /// <param name="channelSource">The channel source.</param>
         /// <param name="readPreference">The read preference.</param>
+        /// <param name="session">The session.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result of the operation.</returns>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
         public static TResult Execute<TResult>(
             this IReadOperation<TResult> operation,
             IChannelSourceHandle channelSource,
             ReadPreference readPreference,
+            ICoreSessionHandle session,
             CancellationToken cancellationToken)
         {
             Ensure.IsNotNull(operation, nameof(operation));
-            using (var readBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), readPreference))
+            using (var readBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), readPreference, session.Fork()))
             {
                 return operation.Execute(readBinding, cancellationToken);
             }
@@ -54,15 +58,19 @@ namespace MongoDB.Driver.Core.Operations
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="operation">The write operation.</param>
         /// <param name="channelSource">The channel source.</param>
+        /// <param name="session">The session.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>The result of the operation.</returns>
+        /// <returns>
+        /// The result of the operation.
+        /// </returns>
         public static TResult Execute<TResult>(
             this IWriteOperation<TResult> operation,
             IChannelSourceHandle channelSource,
+            ICoreSessionHandle session,
             CancellationToken cancellationToken)
         {
             Ensure.IsNotNull(operation, nameof(operation));
-            using (var writeBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), ReadPreference.Primary))
+            using (var writeBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), ReadPreference.Primary, session.Fork()))
             {
                 return operation.Execute(writeBinding, cancellationToken);
             }
@@ -75,16 +83,20 @@ namespace MongoDB.Driver.Core.Operations
         /// <param name="operation">The read operation.</param>
         /// <param name="channelSource">The channel source.</param>
         /// <param name="readPreference">The read preference.</param>
+        /// <param name="session">The session.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A Task whose result is the result of the operation.</returns>
+        /// <returns>
+        /// A Task whose result is the result of the operation.
+        /// </returns>
         public static async Task<TResult> ExecuteAsync<TResult>(
             this IReadOperation<TResult> operation,
             IChannelSourceHandle channelSource,
             ReadPreference readPreference,
+            ICoreSessionHandle session,
             CancellationToken cancellationToken)
         {
             Ensure.IsNotNull(operation, nameof(operation));
-            using (var readBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), readPreference))
+            using (var readBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), readPreference, session.Fork()))
             {
                 return await operation.ExecuteAsync(readBinding, cancellationToken).ConfigureAwait(false);
             }
@@ -96,15 +108,19 @@ namespace MongoDB.Driver.Core.Operations
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="operation">The write operation.</param>
         /// <param name="channelSource">The channel source.</param>
+        /// <param name="session">The session.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>A Task whose result is the result of the operation.</returns>
+        /// <returns>
+        /// A Task whose result is the result of the operation.
+        /// </returns>
         public static async Task<TResult> ExecuteAsync<TResult>(
             this IWriteOperation<TResult> operation,
             IChannelSourceHandle channelSource,
+            ICoreSessionHandle session,
             CancellationToken cancellationToken)
         {
             Ensure.IsNotNull(operation, nameof(operation));
-            using (var writeBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), ReadPreference.Primary))
+            using (var writeBinding = new ChannelSourceReadWriteBinding(channelSource.Fork(), ReadPreference.Primary, session.Fork()))
             {
                 return await operation.ExecuteAsync(writeBinding, cancellationToken).ConfigureAwait(false);
             }

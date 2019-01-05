@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2015 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization.Options;
 
@@ -341,7 +342,7 @@ namespace MongoDB.Bson.Serialization.Serializers
         IBsonArraySerializer,
         IBsonDocumentSerializer,
         IBsonDictionarySerializer
-        where TDictionary : class, IDictionary<TKey, TValue>
+        where TDictionary : class, IEnumerable<KeyValuePair<TKey, TValue>>
     {
         // private constants
         private static class Flags
@@ -558,16 +559,42 @@ namespace MongoDB.Bson.Serialization.Serializers
 
         // protected methods
         /// <summary>
+        /// Creates an accumulator.
+        /// </summary>
+        /// <returns>The accumulator.</returns>
+        protected virtual ICollection<KeyValuePair<TKey, TValue>> CreateAccumulator()
+        {
+#pragma warning disable 618
+            return (ICollection<KeyValuePair<TKey, TValue>>)CreateInstance();
+#pragma warning restore 618
+        }
+        
+        // protected methods
+        /// <summary>
         /// Creates the instance.
         /// </summary>
         /// <returns>The instance.</returns>
-        protected abstract TDictionary CreateInstance();
+        [Obsolete("CreateInstance is deprecated. Please use CreateAccumulator instead.")]
+        protected virtual TDictionary CreateInstance()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Finalizes an accumulator.
+        /// </summary>
+        /// <param name="accumulator">The accumulator to finalize</param>
+        /// <returns>The instance.</returns>
+        protected virtual TDictionary FinalizeAccumulator(ICollection<KeyValuePair<TKey, TValue>> accumulator)
+        {
+            return (TDictionary)accumulator;
+        }
 
         // private methods
         private TDictionary DeserializeArrayRepresentation(BsonDeserializationContext context)
         {
-            var dictionary = CreateInstance();
 
+            var accumulator = CreateAccumulator();
             var bsonReader = context.Reader;
             bsonReader.ReadStartArray();
             while (bsonReader.ReadBsonType() != BsonType.EndOfDocument)
@@ -602,16 +629,16 @@ namespace MongoDB.Bson.Serialization.Serializers
                         throw CreateCannotDeserializeFromBsonTypeException(bsonType);
                 }
 
-                dictionary.Add(key, value);
+                accumulator.Add(new KeyValuePair<TKey, TValue>(key, value));
             }
             bsonReader.ReadEndArray();
 
-            return dictionary;
+            return FinalizeAccumulator(accumulator);
         }
 
         private TDictionary DeserializeDocumentRepresentation(BsonDeserializationContext context)
         {
-            var dictionary = CreateInstance();
+            var accumulator = CreateAccumulator();
 
             var bsonReader = context.Reader;
             bsonReader.ReadStartDocument();
@@ -619,11 +646,11 @@ namespace MongoDB.Bson.Serialization.Serializers
             {
                 var key = DeserializeKeyString(bsonReader.ReadName());
                 var value = _lazyValueSerializer.Value.Deserialize(context);
-                dictionary.Add(key, value);
+                accumulator.Add(new KeyValuePair<TKey, TValue>(key, value));
             }
             bsonReader.ReadEndDocument();
 
-            return dictionary;
+            return FinalizeAccumulator(accumulator);
         }
 
         private TKey DeserializeKeyString(string keyString)

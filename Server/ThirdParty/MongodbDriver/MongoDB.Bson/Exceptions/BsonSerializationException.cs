@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 */
 
 using System;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 
@@ -23,7 +23,7 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents a BSON serialization exception.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class BsonSerializationException : BsonException
@@ -56,7 +56,7 @@ namespace MongoDB.Bson
         {
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the BsonSerializationException class (this overload used by deserialization).
         /// </summary>

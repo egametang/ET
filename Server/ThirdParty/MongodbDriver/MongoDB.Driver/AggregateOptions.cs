@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2016 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 */
 
 using System;
+using MongoDB.Bson;
 using MongoDB.Driver.Core.Misc;
 
 namespace MongoDB.Driver
@@ -28,6 +29,9 @@ namespace MongoDB.Driver
         private int? _batchSize;
         private bool? _bypassDocumentValidation;
         private Collation _collation;
+        private string _comment;
+        private BsonValue _hint;
+        private TimeSpan? _maxAwaitTime;
         private TimeSpan? _maxTime;
         private ExpressionTranslationOptions _translationOptions;
         private bool? _useCursor;
@@ -70,12 +74,39 @@ namespace MongoDB.Driver
         }
 
         /// <summary>
+        /// Gets or sets the comment.
+        /// </summary>
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the hint. This must either be a BsonString representing the index name or a BsonDocument representing the key pattern of the index.
+        /// </summary>
+        public BsonValue Hint
+        {
+            get { return _hint; }
+            set { _hint = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum await time.
+        /// </summary>
+        public TimeSpan? MaxAwaitTime
+        {
+            get { return _maxAwaitTime; }
+            set { _maxAwaitTime = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the maximum time.
         /// </summary>
         public TimeSpan? MaxTime
         {
             get { return _maxTime; }
-            set { _maxTime = value; }
+            set { _maxTime = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(value, nameof(value)); }
         }
 
         /// <summary>

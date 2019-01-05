@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -128,9 +128,7 @@ namespace MongoDB.Bson.Serialization
 
             Dictionary<string, object> values = null;
             var document = default(TClass);
-#if NET45 || NETSTANDARD2_0
             ISupportInitialize supportsInitialization = null;
-#endif
             if (_classMap.HasCreatorMaps)
             {
                 // for creator-based deserialization we first gather the values in a dictionary and then call a matching creator
@@ -141,13 +139,11 @@ namespace MongoDB.Bson.Serialization
                 // for mutable classes we deserialize the values directly into the result object
                 document = (TClass)_classMap.CreateInstance();
 
-#if NET45 || NETSTANDARD2_0
                 supportsInitialization = document as ISupportInitialize;
                 if (supportsInitialization != null)
                 {
                     supportsInitialization.BeginInit();
                 }
-#endif
             }
 
             var discriminatorConvention = _classMap.GetDiscriminatorConvention();
@@ -286,12 +282,10 @@ namespace MongoDB.Bson.Serialization
 
             if (document != null)
             {
-#if NET45 || NETSTANDARD2_0
                 if (supportsInitialization != null)
                 {
                     supportsInitialization.EndInit();
                 }
-#endif
 
                 return document;
             }
@@ -433,13 +427,12 @@ namespace MongoDB.Bson.Serialization
             var creatorMap = ChooseBestCreator(values);
             var document = creatorMap.CreateInstance(values); // removes values consumed
 
-#if NET45 || NETSTANDARD2_0
             var supportsInitialization = document as ISupportInitialize;
             if (supportsInitialization != null)
             {
                 supportsInitialization.BeginInit();
             }
-#endif
+            
             // process any left over values that weren't passed to the creator
             foreach (var keyValuePair in values)
             {
@@ -453,12 +446,10 @@ namespace MongoDB.Bson.Serialization
                 }
             }
 
-#if NET45 || NETSTANDARD2_0
             if (supportsInitialization != null)
             {
                 supportsInitialization.EndInit();
             }
-#endif
 
             return (TClass)document;
         }

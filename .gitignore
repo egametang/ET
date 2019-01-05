@@ -48,3 +48,4 @@ Server/.DS_Store
 .vs/
 .objs/
 /Unity/.gradle
+/*.user

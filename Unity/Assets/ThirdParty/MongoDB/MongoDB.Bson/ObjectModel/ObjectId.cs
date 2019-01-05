@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ namespace MongoDB.Bson
     /// <summary>
     /// Represents an ObjectId (see also BsonObjectId).
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public struct ObjectId : IComparable<ObjectId>, IEquatable<ObjectId>, IConvertible
@@ -541,7 +541,32 @@ namespace MongoDB.Bson
         /// <returns>A string representation of the value.</returns>
         public override string ToString()
         {
-            return BsonUtils.ToHexString(ToByteArray());
+            var c = new char[24];
+            c[0] = BsonUtils.ToHexChar((_a >> 28) & 0x0f);
+            c[1] = BsonUtils.ToHexChar((_a >> 24) & 0x0f);
+            c[2] = BsonUtils.ToHexChar((_a >> 20) & 0x0f);
+            c[3] = BsonUtils.ToHexChar((_a >> 16) & 0x0f);
+            c[4] = BsonUtils.ToHexChar((_a >> 12) & 0x0f);
+            c[5] = BsonUtils.ToHexChar((_a >> 8) & 0x0f);
+            c[6] = BsonUtils.ToHexChar((_a >> 4) & 0x0f);
+            c[7] = BsonUtils.ToHexChar(_a & 0x0f);
+            c[8] = BsonUtils.ToHexChar((_b >> 28) & 0x0f);
+            c[9] = BsonUtils.ToHexChar((_b >> 24) & 0x0f);
+            c[10] = BsonUtils.ToHexChar((_b >> 20) & 0x0f);
+            c[11] = BsonUtils.ToHexChar((_b >> 16) & 0x0f);
+            c[12] = BsonUtils.ToHexChar((_b >> 12) & 0x0f);
+            c[13] = BsonUtils.ToHexChar((_b >> 8) & 0x0f);
+            c[14] = BsonUtils.ToHexChar((_b >> 4) & 0x0f);
+            c[15] = BsonUtils.ToHexChar(_b & 0x0f);
+            c[16] = BsonUtils.ToHexChar((_c >> 28) & 0x0f);
+            c[17] = BsonUtils.ToHexChar((_c >> 24) & 0x0f);
+            c[18] = BsonUtils.ToHexChar((_c >> 20) & 0x0f);
+            c[19] = BsonUtils.ToHexChar((_c >> 16) & 0x0f);
+            c[20] = BsonUtils.ToHexChar((_c >> 12) & 0x0f);
+            c[21] = BsonUtils.ToHexChar((_c >> 8) & 0x0f);
+            c[22] = BsonUtils.ToHexChar((_c >> 4) & 0x0f);
+            c[23] = BsonUtils.ToHexChar(_c & 0x0f);
+            return new string(c);
         }
 
         // explicit IConvertible implementation

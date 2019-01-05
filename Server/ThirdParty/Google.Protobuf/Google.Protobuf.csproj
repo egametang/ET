@@ -69,6 +69,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
   </ItemGroup>
 </Project>

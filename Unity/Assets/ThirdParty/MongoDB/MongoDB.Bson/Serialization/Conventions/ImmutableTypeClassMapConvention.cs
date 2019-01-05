@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 MongoDB Inc.
+﻿/* Copyright 2016-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -39,28 +39,45 @@ namespace MongoDB.Bson.Serialization.Conventions
                 return;
             }
 
+            var properties = typeInfo.GetProperties();
+            if (properties.Any(p => p.CanWrite))
+            {
+                return; // a type that has any writable properties is not immutable
+            }
+
+            var anyConstructorsWereMapped = false;
             foreach (var ctor in typeInfo.GetConstructors())
             {
                 var parameters = ctor.GetParameters();
-                var properties = typeInfo.GetProperties();
                 if (parameters.Length != properties.Length)
                 {
-                    continue;
+                    continue; // only consider constructors that have sufficient parameters to initialize all properties
                 }
 
                 var matches = parameters
                     .GroupJoin(properties,
                         parameter => parameter.Name,
                         property => property.Name,
-                        (parameter, props) => new { parameter, properties = props },
+                        (parameter, props) => new { Parameter = parameter, Properties = props },
                         StringComparer.OrdinalIgnoreCase);
 
-                if (matches.Any(m => m.properties.Count() != 1 || m.properties.ElementAt(0).CanWrite))
+                if (matches.Any(m => m.Properties.Count() != 1))
                 {
                     continue;
                 }
 
                 classMap.MapConstructor(ctor);
+
+                anyConstructorsWereMapped = true;
+            }
+
+            if (anyConstructorsWereMapped)
+            {
+                // if any constructors were mapped by this convention then map all the properties also
+                foreach (var property in properties)
+                {
+                    classMap.MapMember(property);
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -107,22 +107,6 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.JsonEncoders
         {
             Ensure.IsNotNull(message, nameof(message));
 
-            BsonValue documents;
-            if (message.DocumentSource.Batch == null)
-            {
-                documents = BsonNull.Value;
-            }
-            else
-            {
-                var array = new BsonArray();
-                foreach (var document in message.DocumentSource.Batch)
-                {
-                    var wrappedDocument = new BsonDocumentWrapper(document, _serializer);
-                    array.Add(wrappedDocument);
-                }
-                documents = array;
-            }
-
             var messageDocument = new BsonDocument
             {
                 { "opcode", "insert" },
@@ -132,7 +116,7 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.JsonEncoders
                 { "maxBatchCount", message.MaxBatchCount },
                 { "maxMessageSize", message.MaxMessageSize },
                 { "continueOnError", message.ContinueOnError },
-                { "documents", documents }
+                { "documents", WrapDocuments(message) }
             };
 
             var jsonWriter = CreateJsonWriter();
@@ -149,6 +133,28 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.JsonEncoders
         void IMessageEncoder.WriteMessage(MongoDBMessage message)
         {
             WriteMessage((InsertMessage<TDocument>)message);
+        }
+
+        // private methods
+        private BsonArray WrapDocuments(InsertMessage<TDocument> message)
+        {
+            var documentSource = message.DocumentSource;
+            var batchCount = Math.Min(documentSource.Count, message.MaxBatchCount);
+            if (batchCount < documentSource.Count && !documentSource.CanBeSplit)
+            {
+                throw new BsonSerializationException("Batch is too large.");
+            }
+
+            var wrappedDocuments = new BsonArray(batchCount);
+            for (var i = 0; i < batchCount; i++)
+            {
+                var document = documentSource.Items[documentSource.Offset + i];
+                var wrappedDocument = new BsonDocumentWrapper(document, _serializer);
+                wrappedDocuments.Add(wrappedDocument);
+            }
+            documentSource.SetProcessedCount(batchCount);
+
+            return wrappedDocuments;
         }
     }
 }

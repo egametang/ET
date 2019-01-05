@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,14 +16,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Driver.Core.Configuration;
 
 namespace MongoDB.Driver
 {
     /// <summary>
     /// Represents an immutable URL style connection string. See also MongoUrlBuilder.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoUrl : IEquatable<MongoUrl>
@@ -54,7 +57,9 @@ namespace MongoDB.Driver
         private readonly ReadConcernLevel? _readConcernLevel;
         private readonly ReadPreference _readPreference;
         private readonly string _replicaSetName;
+        private readonly bool? _retryWrites;
         private readonly TimeSpan _localThreshold;
+        private readonly ConnectionStringScheme _scheme;
         private readonly IEnumerable<MongoServerAddress> _servers;
         private readonly TimeSpan _serverSelectionTimeout;
         private readonly TimeSpan _socketTimeout;
@@ -67,6 +72,7 @@ namespace MongoDB.Driver
         private readonly TimeSpan _waitQueueTimeout;
         private readonly TimeSpan? _wTimeout;
         private readonly string _url;
+        private readonly string _originalUrl;
 
         // constructors
         /// <summary>
@@ -75,6 +81,8 @@ namespace MongoDB.Driver
         /// <param name="url">The URL containing the settings.</param>
         public MongoUrl(string url)
         {
+            _originalUrl = url;
+
             var builder = new MongoUrlBuilder(url); // parses url
             _applicationName = builder.ApplicationName;
             _authenticationMechanism = builder.AuthenticationMechanism;
@@ -98,6 +106,8 @@ namespace MongoDB.Driver
             _readConcernLevel = builder.ReadConcernLevel;
             _readPreference = builder.ReadPreference;
             _replicaSetName = builder.ReplicaSetName;
+            _retryWrites = builder.RetryWrites;
+            _scheme = builder.Scheme;
             _servers = builder.Servers;
             _serverSelectionTimeout = builder.ServerSelectionTimeout;
             _socketTimeout = builder.SocketTimeout;
@@ -320,6 +330,22 @@ namespace MongoDB.Driver
         public string ReplicaSetName
         {
             get { return _replicaSetName; }
+        }
+
+        /// <summary>
+        /// Gets whether writes will be retried.
+        /// </summary>
+        public bool? RetryWrites
+        {
+            get { return _retryWrites; }
+        }
+
+        /// <summary>
+        /// Gets the scheme.
+        /// </summary>
+        public ConnectionStringScheme Scheme
+        {
+            get { return _scheme; }
         }
 
         /// <summary>
@@ -555,6 +581,45 @@ namespace MongoDB.Driver
             }
 
             return new WriteConcern(_w, _wTimeout, _fsync, _journal);
+        }
+
+        /// <summary>
+        /// Resolves a connection string. If the connection string indicates more information is available
+        /// in the DNS system, it will acquire that information as well.
+        /// </summary>
+        /// <returns>A resolved MongoURL.</returns>
+        public MongoUrl Resolve()
+        {
+            if (_scheme == ConnectionStringScheme.MongoDB)
+            {
+                return this;
+            }
+
+            var connectionString = new ConnectionString(_originalUrl);
+
+            var resolved = connectionString.Resolve();
+
+            return new MongoUrl(resolved.ToString());
+        }
+
+        /// <summary>
+        /// Resolves a connection string. If the connection string indicates more information is available
+        /// in the DNS system, it will acquire that information as well.
+        /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A resolved MongoURL.</returns>
+        public async Task<MongoUrl> ResolveAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (_scheme == ConnectionStringScheme.MongoDB)
+            {
+                return this;
+            }
+
+            var connectionString = new ConnectionString(_originalUrl);
+
+            var resolved = await connectionString.ResolveAsync(cancellationToken).ConfigureAwait(false);
+
+            return new MongoUrl(resolved.ToString());
         }
 
         /// <summary>

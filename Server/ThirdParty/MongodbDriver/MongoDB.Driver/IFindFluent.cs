@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 * limitations under the License.
 */
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
@@ -53,6 +54,7 @@ namespace MongoDB.Driver
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The count.</returns>
+        [Obsolete("Use CountDocuments instead.")]
         long Count(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
@@ -60,7 +62,52 @@ namespace MongoDB.Driver
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A Task whose result is the count.</returns>
+        [Obsolete("Use CountDocumentsAsync instead.")]
         Task<long> CountAsync(CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Counts the number of documents.
+        /// </summary>
+        /// <remarks>
+        /// Note: when migrating from Count to CountDocuments the following query operations must be replaced:
+        /// 
+        /// <code>
+        /// +-------------+--------------------------------+
+        /// | Operator    | Replacement                    |
+        /// +=============+================================+
+        /// | $where      |  $expr                         |
+        /// +-------------+--------------------------------+
+        /// | $near       |  $geoWithin with $center       |
+        /// +-------------+--------------------------------+
+        /// | $nearSphere |  $geoWithin with $centerSphere |
+        /// +-------------+--------------------------------+
+        /// </code>
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The count.</returns>
+        long CountDocuments(CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Counts the number of documents.
+        /// </summary>
+        /// <remarks>
+        /// Note: when migrating from CountAsync to CountDocumentsAsync the following query operations must be replaced:
+        /// 
+        /// <code>
+        /// +-------------+--------------------------------+
+        /// | Operator    | Replacement                    |
+        /// +=============+================================+
+        /// | $where      |  $expr                         |
+        /// +-------------+--------------------------------+
+        /// | $near       |  $geoWithin with $center       |
+        /// +-------------+--------------------------------+
+        /// | $nearSphere |  $geoWithin with $centerSphere |
+        /// +-------------+--------------------------------+
+        /// </code>
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A Task whose result is the count.</returns>
+        Task<long> CountDocumentsAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Limits the number of documents.

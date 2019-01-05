@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2015 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Core.Bindings;
 using MongoDB.Driver.Core.Misc;
-using MongoDB.Driver.Core.WireProtocol;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
 {
-    internal class BulkInsertOperationEmulator : BulkUnmixedWriteOperationEmulatorBase
+    internal class BulkInsertOperationEmulator : BulkUnmixedWriteOperationEmulatorBase<InsertRequest>
     {
         // constructors
         public BulkInsertOperationEmulator(
@@ -37,10 +36,9 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         //  methods
-        protected override WriteConcernResult ExecuteProtocol(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken)
+        protected override WriteConcernResult ExecuteProtocol(IChannelHandle channel, InsertRequest request, CancellationToken cancellationToken)
         {
-            var insertRequest = (InsertRequest)request;
-            var documentSource = new BatchableSource<BsonDocument>(new[] { insertRequest.Document });
+            var documentSource = new BatchableSource<BsonDocument>(new[] { request.Document });
 
             return channel.Insert(
                 CollectionNamespace,
@@ -55,10 +53,9 @@ namespace MongoDB.Driver.Core.Operations
                 cancellationToken);
         }
 
-        protected override Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken)
+        protected override Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, InsertRequest request, CancellationToken cancellationToken)
         {
-            var insertRequest = (InsertRequest)request;
-            var documentSource = new BatchableSource<BsonDocument>(new[] { insertRequest.Document });
+            var documentSource = new BatchableSource<BsonDocument>(new[] { request.Document });
 
             return channel.InsertAsync(
                 CollectionNamespace,

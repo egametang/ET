@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using MongoDB.Driver.Core.Clusters;
@@ -28,7 +28,7 @@ namespace MongoDB.Driver.Core.Servers
     /// <summary>
     /// Represents a server identifier.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
     public sealed class ServerId : IEquatable<ServerId>, ISerializable
 #else
@@ -56,7 +56,7 @@ namespace MongoDB.Driver.Core.Servers
                 .GetHashCode();
         }
 
-#if NET45
+#if NET452
         private ServerId(SerializationInfo info, StreamingContext context)
         {
             _clusterId = (ClusterId)info.GetValue("_clusterId", typeof(ClusterId));
@@ -123,7 +123,7 @@ namespace MongoDB.Driver.Core.Servers
         }
 
         // explicit interface implementations
-#if NET45
+#if NET452
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("_clusterId", _clusterId);

@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 MongoDB Inc.
+﻿/* Copyright 2016-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ namespace MongoDB.Bson
     /// Represents a BSON Decimal128 value.
     /// </summary>
     /// <seealso cref="MongoDB.Bson.BsonValue" />
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class BsonDecimal128 : BsonValue, IComparable<BsonDecimal128>, IEquatable<BsonDecimal128>

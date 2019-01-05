@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -519,6 +520,28 @@ namespace MongoDB.Bson
         public override void Insert(int index, BsonValue value)
         {
             throw new NotSupportedException("RawBsonArray instances are immutable.");
+        }
+
+        /// <summary>
+        /// Materializes the RawBsonArray into a regular BsonArray.
+        /// </summary>
+        /// <param name="binaryReaderSettings">The binary reader settings.</param>
+        /// <returns>A BsonArray.</returns>
+        public BsonArray Materialize(BsonBinaryReaderSettings binaryReaderSettings)
+        {
+            ThrowIfDisposed();
+
+            // because BsonBinaryReader can only read documents at the top level we have to wrap the RawBsonArray in a document
+            var document = new BsonDocument("array", this);
+            var bytes = document.ToBson();
+
+            using (var stream = new MemoryStream(bytes))
+            using (var reader = new BsonBinaryReader(stream, binaryReaderSettings))
+            {
+                var context = BsonDeserializationContext.CreateRoot(reader);
+                var materializedDocument = BsonDocumentSerializer.Instance.Deserialize(context);
+                return materializedDocument["array"].AsBsonArray;
+            }
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
 
             var descriptor = new SecurityBufferDescriptor(buffers);
             bool contextAddRefSuccess = false;
-#if NET45
+#if NET452
             RuntimeHelpers.PrepareConstrainedRegions();
 #endif
             try
@@ -136,7 +136,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
 
             bool contextAddRefSuccess = false;
             SecurityPackageContextSizes sizes;
-#if NET45
+#if NET452
             RuntimeHelpers.PrepareConstrainedRegions();
 #endif
             try
@@ -179,7 +179,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
             };
 
             var descriptor = new SecurityBufferDescriptor(buffers);
-#if NET45
+#if NET452
             RuntimeHelpers.PrepareConstrainedRegions();
 #endif
             try
@@ -234,7 +234,7 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
             bool credentialAddRefSuccess = false;
             bool contextAddRefSuccess = false;
 
-#if NET45
+#if NET452
             RuntimeHelpers.PrepareConstrainedRegions();
 #endif
             try
@@ -349,14 +349,14 @@ namespace MongoDB.Driver.Core.Authentication.Sspi
                 }
 
                 var current = new IntPtr(array.ToInt64());
-#if NET45
+#if NET452
                 var size = Marshal.SizeOf(typeof(SecurityPackageInfo));
 #else
                 var size = Marshal.SizeOf<SecurityPackageInfo>();
 #endif
                 for (int i = 0; i < count; i++)
                 {
-#if NET45
+#if NET452
                     var package = (SecurityPackageInfo)Marshal.PtrToStructure(current, typeof(SecurityPackageInfo));
 #else
                     var package = Marshal.PtrToStructure< SecurityPackageInfo>(current);

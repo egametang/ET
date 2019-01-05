@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -113,22 +113,43 @@ namespace MongoDB.Driver.Core.Misc
         /// Maps the server response to a MongoNotPrimaryException or MongoNodeIsRecoveringException (if appropriate).
         /// </summary>
         /// <param name="connectionId">The connection identifier.</param>
+        /// <param name="command">The command.</param>
         /// <param name="response">The server response.</param>
         /// <param name="errorMessageFieldName">Name of the error message field.</param>
         /// <returns>The exception, or null if no exception necessary.</returns>
-        public static Exception MapNotPrimaryOrNodeIsRecovering(ConnectionId connectionId, BsonDocument response, string errorMessageFieldName)
+        public static Exception MapNotPrimaryOrNodeIsRecovering(ConnectionId connectionId, BsonDocument command, BsonDocument response, string errorMessageFieldName)
         {
+            BsonValue codeBsonValue;
+            if (response.TryGetValue("code", out codeBsonValue) && codeBsonValue.IsNumeric)
+            {
+                var code = (ServerErrorCode)codeBsonValue.ToInt32();
+                switch (code)
+                {
+                    case ServerErrorCode.NotMaster:
+                    case ServerErrorCode.NotMasterNoSlaveOk:
+                        return new MongoNotPrimaryException(connectionId, command, response);
+
+                    case ServerErrorCode.InterruptedAtShutdown:
+                    case ServerErrorCode.InterruptedDueToReplStateChange:
+                    case ServerErrorCode.NotMasterOrSecondary:
+                    case ServerErrorCode.PrimarySteppedDown:
+                    case ServerErrorCode.ShutdownInProgress:
+                        return new MongoNodeIsRecoveringException(connectionId, command, response);
+                }
+            }
+
             BsonValue errorMessageBsonValue;
             if (response.TryGetValue(errorMessageFieldName, out errorMessageBsonValue) && errorMessageBsonValue.IsString)
             {
                 var errorMessage = errorMessageBsonValue.ToString();
-                if (errorMessage.StartsWith("not master", StringComparison.OrdinalIgnoreCase))
+                if (errorMessage.IndexOf("node is recovering", StringComparison.OrdinalIgnoreCase) != -1 ||
+                    errorMessage.IndexOf("not master or secondary", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return new MongoNotPrimaryException(connectionId, response);
+                    return new MongoNodeIsRecoveringException(connectionId, command, response);
                 }
-                if (errorMessage.StartsWith("node is recovering", StringComparison.OrdinalIgnoreCase))
+                else if (errorMessage.IndexOf("not master", StringComparison.OrdinalIgnoreCase) != -1)
                 {
-                    return new MongoNodeIsRecoveringException(connectionId, response);
+                    return new MongoNotPrimaryException(connectionId, command, response);
                 }
             }
 

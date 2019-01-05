@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,15 +35,17 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages
         private readonly bool _noCursorTimeout;
         private readonly bool _oplogReplay;
         private readonly bool _partialOk;
+        private Action<IMessageEncoderPostProcessor> _postWriteAction;
         private readonly BsonDocument _query;
         private readonly IElementNameValidator _queryValidator;
+        private CommandResponseHandling _responseHandling = CommandResponseHandling.Return;
         private readonly int _skip;
         private readonly bool _slaveOk;
         private readonly bool _tailableCursor;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueryMessage"/> class.
+        /// Initializes a new instance of the <see cref="QueryMessage" /> class.
         /// </summary>
         /// <param name="requestId">The request identifier.</param>
         /// <param name="collectionNamespace">The collection namespace.</param>
@@ -157,6 +159,18 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages
         }
 
         /// <summary>
+        /// Gets or sets the delegate called to after the message has been written by the encoder.
+        /// </summary>
+        /// <value>
+        /// The post write delegate.
+        /// </value>
+        public Action<IMessageEncoderPostProcessor> PostWriteAction
+        {
+            get { return _postWriteAction; }
+            set { _postWriteAction = value; }
+        }
+
+        /// <summary>
         /// Gets the query.
         /// </summary>
         public BsonDocument Query
@@ -170,6 +184,25 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages
         public IElementNameValidator QueryValidator
         {
             get { return _queryValidator; }
+        }
+
+        /// <summary>
+        /// Gets or sets the response handling.
+        /// </summary>
+        /// <value>
+        /// The response handling.
+        /// </value>
+        public CommandResponseHandling ResponseHandling
+        {
+            get { return _responseHandling; }
+            set
+            {
+                if (value != CommandResponseHandling.Return && value != CommandResponseHandling.Ignore)
+                {
+                    throw new ArgumentException("CommandResponseHandling must be Return or Ignore.", nameof(value));
+                }
+                _responseHandling = value;
+            }
         }
 
         /// <summary>

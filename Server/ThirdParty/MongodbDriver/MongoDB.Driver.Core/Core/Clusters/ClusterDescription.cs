@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace MongoDB.Driver.Core.Clusters
     public sealed class ClusterDescription : IEquatable<ClusterDescription>
     {
         #region static
-        // static methods
+        // internal static methods
         internal static ClusterDescription CreateInitial(ClusterId clusterId, ClusterConnectionMode connectionMode)
         {
             return new ClusterDescription(
@@ -38,11 +38,46 @@ namespace MongoDB.Driver.Core.Clusters
                 ClusterType.Unknown,
                 Enumerable.Empty<ServerDescription>());
         }
+
+        // private static methods
+        private static TimeSpan? CalculateLogicalSessionTimeout(ClusterConnectionMode connectionMode, IEnumerable<ServerDescription> servers)
+        {
+            TimeSpan? logicalSessionTimeout = null;
+
+            foreach (var server in SelectServersThatDetermineWhetherSessionsAreSupported(connectionMode, servers))
+            {
+                if (server.LogicalSessionTimeout == null)
+                {
+                    return null;
+                }
+
+                if (logicalSessionTimeout == null || server.LogicalSessionTimeout.Value < logicalSessionTimeout.Value)
+                {
+                    logicalSessionTimeout = server.LogicalSessionTimeout;
+                }
+            }
+
+            return logicalSessionTimeout;
+        }
+
+        private static IEnumerable<ServerDescription> SelectServersThatDetermineWhetherSessionsAreSupported(ClusterConnectionMode connectionMode, IEnumerable<ServerDescription> servers)
+        {
+            var connectedServers = servers.Where(s => s.State == ServerState.Connected);
+            if (connectionMode == ClusterConnectionMode.Direct)
+            {
+                return connectedServers;
+            }
+            else
+            {
+                return connectedServers.Where(s => s.IsDataBearing);
+            }
+        }
         #endregion
 
         // fields
         private readonly ClusterId _clusterId;
         private readonly ClusterConnectionMode _connectionMode;
+        private readonly TimeSpan? _logicalSessionTimeout;
         private readonly IReadOnlyList<ServerDescription> _servers;
         private readonly ClusterType _type;
 
@@ -64,6 +99,7 @@ namespace MongoDB.Driver.Core.Clusters
             _connectionMode = connectionMode;
             _type = type;
             _servers = (servers ?? new ServerDescription[0]).OrderBy(n => n.EndPoint, new ToStringComparer<EndPoint>()).ToList();
+            _logicalSessionTimeout = CalculateLogicalSessionTimeout(_connectionMode, _servers);
         }
 
         // properties
@@ -81,6 +117,28 @@ namespace MongoDB.Driver.Core.Clusters
         public ClusterConnectionMode ConnectionMode
         {
             get { return _connectionMode; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this cluster is compatible with the driver.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this cluster is compatible with the driver; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCompatibleWithDriver
+        {
+            get
+            {
+                return _servers.All(s => s.IsCompatibleWithDriver);
+            }
+        }
+
+        /// <summary>
+        /// Gets the logical session timeout.
+        /// </summary>
+        public TimeSpan? LogicalSessionTimeout
+        {
+            get { return _logicalSessionTimeout; }
         }
 
         /// <summary>

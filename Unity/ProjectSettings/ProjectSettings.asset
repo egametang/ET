@@ -657,10 +657,10 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: NET45;ILRuntime
-    4: NET45
-    7: NET45
-    13: NET45;ILRuntime
+    1: NET452;ILRuntime
+    4: NET452;ILRuntime
+    7: NET452;ILRuntime
+    13: NET452;ILRuntime
   platformArchitecture:
     iOS: 2
   scriptingBackend:
@@ -673,7 +673,9 @@ PlayerSettings:
   allowUnsafeCode: 1
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
-  apiCompatibilityLevelPerPlatform: {}
+  apiCompatibilityLevelPerPlatform:
+    Android: 3
+    Standalone: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Unity

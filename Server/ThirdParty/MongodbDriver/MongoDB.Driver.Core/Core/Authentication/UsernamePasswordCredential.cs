@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ namespace MongoDB.Driver.Core.Authentication
     public sealed class UsernamePasswordCredential
     {
         // fields
+        private readonly Lazy<SecureString> _saslPreppedPassword;
         private string _source;
         private SecureString _password;
         private string _username;
@@ -40,10 +41,19 @@ namespace MongoDB.Driver.Core.Authentication
         public UsernamePasswordCredential(string source, string username, string password)
             : this(source, username, ConvertPasswordToSecureString(password))
         {
+            // Compute saslPreppedPassword immediately and store it securely while the password is already in
+            // managed memory. We don't create a closure over the password so that it will hopefully get 
+            // garbage-collected sooner rather than later.
+            var saslPreppedPassword = ConvertPasswordToSecureString(SaslPrepHelper.SaslPrepStored(password));
+            _saslPreppedPassword = new Lazy<SecureString>(() => saslPreppedPassword);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsernamePasswordCredential"/> class.
+        /// Less secure when used in conjunction with SCRAM-SHA-256, due to the need to store the password in a managed
+        /// string in order to SaslPrep it.
+        /// See <a href="https://github.com/mongodb/specifications/blob/master/source/auth/auth.rst#scram-sha-256">Driver Authentication: SCRAM-SHA-256</a>
+        /// for additional details.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="username">The username.</param>
@@ -53,6 +63,10 @@ namespace MongoDB.Driver.Core.Authentication
             _source = Ensure.IsNotNullOrEmpty(source, nameof(source));
             _username = Ensure.IsNotNullOrEmpty(username, nameof(username));
             _password = Ensure.IsNotNull(password, nameof(password));
+            // defer computing the saslPreppedPassword until we need to since this will leak the password into managed
+            // memory
+            _saslPreppedPassword = new Lazy<SecureString>(
+                () => ConvertPasswordToSecureString(SaslPrepHelper.SaslPrepStored(GetInsecurePassword())));
         }
 
         // properties
@@ -67,6 +81,17 @@ namespace MongoDB.Driver.Core.Authentication
             get { return _password; }
         }
 
+        /// <summary>
+        /// Gets the the SASLprepped password.
+        /// May create a cleartext copy of the password in managed memory the first time it is accessed.
+        /// Use only as needed e.g. for SCRAM-SHA-256.
+        /// </summary> 
+        /// <returns>The SASLprepped password.</returns>
+        public SecureString SaslPreppedPassword
+        {
+            get { return _saslPreppedPassword.Value; }
+        }
+        
         /// <summary>
         /// Gets the source.
         /// </summary>
@@ -102,7 +127,7 @@ namespace MongoDB.Driver.Core.Authentication
             }
             else
             {
-#if NET45
+#if NET452
                 var passwordIntPtr = Marshal.SecureStringToGlobalAllocUnicode(_password);
 #else
                 var passwordIntPtr = SecureStringMarshal.SecureStringToGlobalAllocUnicode(_password);

@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-#if !ENABLE_IL2CPP
-using System.Reflection.Emit;		
-#endif
+using System.Reflection.Emit;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace MongoDB.Bson.Serialization
@@ -541,7 +539,7 @@ namespace MongoDB.Bson.Serialization
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Empty:
-#if NET45
+#if NET452
                 case TypeCode.DBNull:
 #endif
                 case TypeCode.String:
@@ -582,30 +580,12 @@ namespace MongoDB.Bson.Serialization
                 throw new BsonSerializationException(message);
             }
 
-	        return (obj, value) => { fieldInfo.SetValue(obj, value); };
-		}
+            return (obj, value) => { fieldInfo.SetValue(obj, value); };
+        }
 
-		private Func<object, object> GetGetter()
+        private Func<object, object> GetGetter()
         {
-#if ENABLE_IL2CPP
-            PropertyInfo propertyInfo = _memberInfo as PropertyInfo;
-            if (propertyInfo != null)
-            {
-                MethodInfo getMethodInfo = propertyInfo.GetGetMethod();
-                if (getMethodInfo == null)
-                {
-                    var message = string.Format(
-                        "The property '{0} {1}' of class '{2}' has no 'get' accessor.",
-                        propertyInfo.PropertyType.FullName, propertyInfo.Name, propertyInfo.DeclaringType.FullName);
-                    throw new BsonSerializationException(message);
-                }
-                return (obj) => { return getMethodInfo.Invoke(obj, null); };
-            }
-
-            FieldInfo fieldInfo = _memberInfo as FieldInfo;
-            return (obj) => { return fieldInfo.GetValue(obj); };
-#else
-			var propertyInfo = _memberInfo as PropertyInfo;
+            var propertyInfo = _memberInfo as PropertyInfo;
             if (propertyInfo != null)
             {
                 var getMethodInfo = propertyInfo.GetMethod;
@@ -632,18 +612,11 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
-#endif
         }
-
 
         private Action<object, object> GetPropertySetter()
         {
-#if ENABLE_IL2CPP
-            var propertyInfo = (PropertyInfo) _memberInfo;
-
-            return (obj, value) => { propertyInfo.SetValue(obj, value); };
-#else
-			var propertyInfo = (PropertyInfo)_memberInfo;
+            var propertyInfo = (PropertyInfo)_memberInfo;
             var setMethodInfo = propertyInfo.SetMethod;
             if (IsReadOnly)
             {
@@ -667,7 +640,6 @@ namespace MongoDB.Bson.Serialization
             );
 
             return lambdaExpression.Compile();
-#endif
         }
 
         private void ThrowFrozenException()

@@ -1,6 +1,8 @@
 # [English](https://github.com/egametang/Egametang/blob/master/README-ET.md) 
 
-__讨论QQ群 : 474643097__
+__讨论QQ群 : 474643097__  
+
+[ET论坛](https://bbs.honorworkroom.com/forum.php)  
 
 # ET的介绍：
 ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp websocket协议，支持服务端3D recast寻路等等  
@@ -63,6 +65,9 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 使用方法：  
 [运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
   
+相关网站:  
+[ET论坛](https://bbs.honorworkroom.com/forum.php)  
+
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
@@ -91,9 +96,6 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
 [ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
-  
-相关网站:  
-[ET框架问题讨论](https://bbs.honorworkroom.com/forum.php)  
   
 __讨论QQ群 : 474643097__
 

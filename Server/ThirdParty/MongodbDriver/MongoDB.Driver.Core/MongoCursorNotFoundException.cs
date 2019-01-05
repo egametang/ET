@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 */
 
 using System;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using MongoDB.Bson;
@@ -26,7 +26,7 @@ namespace MongoDB.Driver
     /// <summary>
     /// Represents a MongoDB cursor not found exception.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoCursorNotFoundException : MongoQueryException
@@ -59,7 +59,7 @@ namespace MongoDB.Driver
             _cursorId = cursorId;
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoCursorNotFoundException"/> class.
         /// </summary>
@@ -85,7 +85,7 @@ namespace MongoDB.Driver
         }
 
         // methods
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
