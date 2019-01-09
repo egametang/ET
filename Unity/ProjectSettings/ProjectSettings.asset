@@ -625,7 +625,7 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: NET45;ILRuntime
+    1: NET45
     4: NET45
     7: NET45;ILRuntime
     13: NET45;ILRuntime

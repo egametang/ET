@@ -17,7 +17,7 @@
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
-    <UnityVersion>2017.4.9f1</UnityVersion>
+    <UnityVersion>2017.4.11f1</UnityVersion>
     <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
@@ -33,7 +33,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_9;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_11;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,201 +43,201 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_9;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2017_4_11;UNITY_2017_4;UNITY_2017;PLATFORM_ARCH_64;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_GRID;ENABLE_TILEMAP;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_DIRECTOR;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_TIMELINE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;ENABLE_SPRITE_MASKING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;ENABLE_MONO_BDWGC;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_VIDEO;ENABLE_RMGUI;ENABLE_PACKMAN;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_STYLE_SHEETS;ENABLE_LOCALIZATION;PLATFORM_STANDALONE_WIN;PLATFORM_STANDALONE;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_AR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;UNITY_PRO_LICENSE;NET45;ILRuntime</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\mscorlib.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.dll</HintPath>
     </Reference>
     <Reference Include="System.XML">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.XML.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.XML.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Core.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\Microsoft.CSharp.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\Microsoft.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>C:\Apps\Unity2017.4\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Xml.Linq.dll</HintPath>
+      <HintPath>C:\Apps\Unity2017\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WebModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.WebModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.WebModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StyleSheetsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.StyleSheetsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticlesLegacyModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ParticlesLegacyModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ParticlesLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Timeline">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIAutomation">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GoogleAudioSpatializer">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+      <HintPath>C:/Apps/Unity2017/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
@@ -251,17 +251,20 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/USER-PC/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    <Reference Include="Pathfinding.ClipperLib">
+      <HintPath>Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>C:/Apps/Unity2017.4/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    <Reference Include="Pathfinding.Poly2Tri">
+      <HintPath>Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+      <HintPath>Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.Editor.csproj">
-      <Project>{C17F48D3-964E-E97C-3D2E-966F7A6C6D93}</Project>
-      <Name>Unity.Editor</Name>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{CFBC0A95-3456-3439-6B2E-60FDE0FE5EE1}</Project>
+      <Name>Unity.ThirdParty</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Hotfix.csproj">
       <Project>{350246F3-F094-675F-855B-FB9B18C2B23E}</Project>
@@ -271,589 +274,190 @@
       <Project>{6396AEEA-8EF9-9740-4CEF-891CC997106C}</Project>
       <Name>Unity.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.Editor.csproj">
+      <Project>{C17F48D3-964E-E97C-3D2E-966F7A6C6D93}</Project>
+      <Name>Unity.Editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\AdaptHelper.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\ByteArray.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\ByteString.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedInputStream.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedOutputStream.ComputeSize.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\CodedOutputStream.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\FieldCodec.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\ICustomDiagnosticMessage.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\IMessage.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\InvalidProtocolBufferException.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\LimitedInputStream.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\MessageExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\MessageParser.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\PropertyInfoExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\ProtoPreconditions.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\RepeatedField.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\StreamExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\Google.Protobuf\WireFormat.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\CLRMethod.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ExceptionHandler.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\ILMethod.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Method\IMethod.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\CLRType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\ILGenericParameterType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\ILType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\TypeSystem\IType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\CLR\Utils\Extensions.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\ByReferenceKeyComparer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\DelegateExportAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\NeedAdaptorAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\ThreadSafeDictionary.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Other\UncheckedList.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\Extensions.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeConstructorInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeFieldInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeMethodInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeParameterInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimePropertyInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Reflection\ILRuntimeWrapperType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Adaptors\CLRCrossBindingAdaptors.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingCodeGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\BindingGeneratorExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\CommonBindingGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\ConstructorBindingGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\FieldBindingGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\MethodBindingGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\CLRBinding\ValueTypeBindingGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\BreakPointContext.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\BreakpointInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugMessageType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugService.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\DebugSocket.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSBindBreakpoint.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSDeleteBreakpoint.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSEnumChildren.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSExecute.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSResolveIndexer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSResolveVariable.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSStep.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCAttachResult.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCBindBreakpointResult.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCBreakpointHit.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCEnumChildrenResult.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCModuleLoaded.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCResolveVariableResult.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCStepComplete.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\SCThreadStarted.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\StackFrameInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\StepTypes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\VariableInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\AppDomain.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CLRRedirections.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\CrossBindingAdaptor.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\DelegateManager.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\InvocationContext.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Enviorment\ValueTypeBinder.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Extensions.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\DelegateAdapter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILIntepreter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILRuntimeException.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILTypeInstance.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\OpCodes\OpCode.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\OpCodes\OpCodeEnum.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\RuntimeStack.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackFrame.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Stack\StackObject.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\IJsonWrapper.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonData.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonException.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonMapper.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonMockWrapper.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\JsonWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\Lexer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\LitJson\ParserToken.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Code.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\CodeWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Document.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ExceptionHandler.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\ILProcessor.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Instruction.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\MethodBody.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCode.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\OpCodes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\SequencePoint.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\Symbols.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Cil\VariableReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\BlobHeap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Buffers.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\CodedIndex.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\ElementType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\GuidHeap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Heap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\MetadataToken.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Row.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\StringHeap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TableHeap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\TokenType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\UserStringHeap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.Metadata\Utilities.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\BinaryStreamWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ByteBufferEqualityComparer.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\DataDirectory.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Image.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\ImageWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\Section.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil.PE\TextMap.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ArrayType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyFlags.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyHashAlgorithm.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyLinkedResource.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyNameReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\AssemblyWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\BaseAssemblyResolver.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\CallSite.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\CustomAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\DefaultAssemblyResolver.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EmbeddedResource.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\EventReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ExportedType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FieldReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FileAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\FunctionPointerType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceMethod.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericInstanceType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\GenericParameterAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IConstantProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ICustomAttributeProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericInstance.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IGenericParameterProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMarshalInfoProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMemberDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataScope.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMetadataTokenProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\IMethodSignature.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Import.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\LinkedResource.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ManifestResourceAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MarshalInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberDefinitionCollection.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MemberReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataResolver.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MetadataSystem.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodCallingConvention.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodImplAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodReturnType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSemanticsAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\MethodSpecification.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Modifiers.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleKind.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ModuleReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\NativeType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterDefinitionCollection.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ParameterReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PinnedType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PInvokeInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PointerType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\PropertyReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\ReferenceType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\Resource.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\SecurityDeclaration.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\SentinelType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TargetRuntime.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeAttributes.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinition.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeDefinitionCollection.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeParser.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeReference.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSpecification.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\TypeSystem.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Cecil\VariantType.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\Collection.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Collections.Generic\ReadOnlyCollection.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoConvert.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono.Security.Cryptography\CryptoService.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Actions.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Empty.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.20\MonoCecil\Mono\Funcs.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitAccess.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\BitSet.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\CvInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DataStream.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiDbgHdr.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiHeader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiModuleInfo.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\DbiSecCon.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\Interfaces.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\IntHashTable.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\MsfDirectory.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbConstant.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbDebugException.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbException.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFile.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFileHeader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbFunction.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLine.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbLines.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbScope.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSlot.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\PdbSource.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Microsoft.Cci.Pdb\SourceLocationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedDocumentWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ISymUnmanagedWriter2.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\ModuleMetadata.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbHelper.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbReader.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\PdbWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymDocumentWriter.cs" />
-    <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil.Pdb\pdb\Mono.Cecil.Pdb\SymWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\BsonConstants.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\BsonDefaults.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\BsonExtensionMethods.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\BsonUtils.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Exceptions\BsonException.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Exceptions\BsonInternalException.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Exceptions\BsonSerializationException.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Exceptions\DuplicateBsonMemberMapAttributeException.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Exceptions\TruncationException.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ArrayElementNameAccelerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryReader.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderBookmark.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryReaderSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonBinaryWriterSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonChunkPool.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentReader.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderBookmark.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentReaderSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentWriterContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonDocumentWriterSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonReader.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonReaderBookmark.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonReaderSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonReaderState.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonStream.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonStreamAdapter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonStreamExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonTrie.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonWriterSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\BsonWriterState.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ByteArrayBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ByteArrayChunk.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ByteBufferFactory.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ByteBufferSlice.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ByteBufferStream.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\ContextType.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\CStringUtf8Encoding.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonChunk.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonChunkSource.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonReader.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonReaderExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IBsonWriterExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IByteBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\IElementNameValidator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\INameDecoder.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\InputBufferChunkSource.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonConvert.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonOutputMode.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonReader.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonReaderBookmark.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonReaderContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonReaderSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonScanner.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonToken.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonWriter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonWriterContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\JsonWriterSettings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\MultiChunkBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\NoOpElementNameValidator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\OutputBufferChunkSource.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\SingleChunkBuffer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\TrieNameDecoder.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\Utf8Encodings.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\Utf8Helper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\IO\Utf8NameDecoder.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonArray.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonBinaryData.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonBinarySubType.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonBoolean.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonDateTime.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonDecimal128.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonDocument.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonDocumentWrapper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonDouble.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonElement.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonInt32.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonInt64.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonJavaScript.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonJavaScriptWithScope.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonMaxKey.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonMinKey.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonNull.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonObjectId.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonRegularExpression.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonString.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonSymbol.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonSymbolTable.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonTimestamp.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonType.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonTypeMapper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonTypeMapperOptions.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonUndefined.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\BsonValue.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\Decimal128.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\GuidConverter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\GuidRepresentation.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\IConvertibleToBsonDocument.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\ICustomBsonTypeMapper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\LazyBsonArray.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\LazyBsonDocument.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\MaterializedOnDemandBsonArray.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\MaterializedOnDemandBsonDocument.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\ObjectId.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\RawBsonArray.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\RawBsonDocument.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\ObjectModel\UInt128.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\PowerOf2.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\AttributedSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonConstructorAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDateTimeOptionsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDefaultValueAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDictionaryOptionsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonDiscriminatorAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonElementAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonExtraElementsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonFactoryMethodAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIdAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreExtraElementsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreIfDefaultAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonIgnoreIfNullAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonKnownTypesAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonMemberMapAttributeUsageAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonNoIdAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonRepresentationAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonRequiredAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonSerializationOptionsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonSerializerAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\BsonTimeSpanOptionsAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonClassMapAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonCreatorMapAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonMemberMapAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Attributes\IBsonPostProcessingAttribute.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonClassMap.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonClassMapSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonCreatorMap.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationArgs.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonDeserializationContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonDocumentBackedClass.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonMemberMap.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonObjectModelSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializationArgs.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializationContext.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializationInfo.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializationProviderBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\BsonSerializerRegistry.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\CollectionsSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\AttributeConventionPack.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\CamelCaseElementNameConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionPack.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionRegistry.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ConventionRunner.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\DefaultConventionPack.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegateClassMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegateMemberMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\DelegatePostProcessingConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\EnumRepresentationConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\HierarchicalDiscriminatorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IClassMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IConventionPack.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ICreatorMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IDiscriminatorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreExtraElementsConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfDefaultConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IgnoreIfNullConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IMemberMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ImmutableTypeClassMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\IPostProcessingConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\LookupIdGeneratorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberDefaultValueConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\MemberNameElementNameConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedExtraElementsMemberConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedIdMemberConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\NamedParameterCreatorMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\NoIdMemberConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ObjectDiscriminatorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ReadWriteMemberFinderConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetClassMapConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ResetMemberMapsConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\ScalarDiscriminatorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\StandardDiscriminatorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Conventions\StringObjectIdIdGeneratorConvention.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\CreatorMapDelegateCompiler.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\DiscriminatedInterfaceSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\ExpressionVisitor.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonDictionarySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonDocumentSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonIdProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonPolymorphicSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerExtensions.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IBsonSerializerRegistry.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IChildSerializerConfigurable.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\ICreatorSelector.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\AscendingGuidGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonBinaryDataGuidGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\BsonObjectIdGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\CombGuidGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\GuidGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\NullIdChecker.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ObjectIdGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\StringObjectIdGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IdGenerators\ZeroIdChecker.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IDictionaryRepresentationConfigurable.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IIdGenerator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IRepresentationConfigurable.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\IRepresentationConverterConfigurable.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\MostArgumentsCreatorSelector.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Options\DictionaryRepresentation.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Options\RepresentationConverter.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Options\TimeSpanUnits.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\PrimitiveSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\AbstractClassSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BitArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BooleanSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBinaryDataSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonBooleanSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonClassMapSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDateTimeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDecimal128Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentBackedClassSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDocumentWrapperSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonDoubleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt32Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonInt64Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonJavaScriptSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonJavaScriptWithScopeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonMaxKeySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonMinKeySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonNullSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonObjectIdSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonRegularExpressionSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonStringSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonSymbolSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonTimestampSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonUndefinedSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueCSharpNullSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\BsonValueSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ByteSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\CharSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ClassSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\CultureInfoSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeOffsetSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DateTimeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\Decimal128Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DecimalSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionaryInterfaceImplementerSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DictionarySerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedInterfaceSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DiscriminatedWrapperSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DoubleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\DynamicDocumentBaseSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableInterfaceImplementerSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumerableSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\EnumSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ExpandoObjectSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\GuidSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ImpliedImplementationInterfaceSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\Int16Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\Int32Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\Int64Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\IPAddressSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\IPEndPointSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\KeyValuePairSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\LazyBsonDocumentSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\NullableGenericSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectIdSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ObjectSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\PartiallyRawBsonDocumentSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ProjectingDeserializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\QueueSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\RawBsonDocumentSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ReadOnlyCollectionSubclassSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SByteSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SealedClassSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializeAsNominalTypeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SerializerHelper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\SingleSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\StackSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\StringSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\StructSerializerBase.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\ThreeDimensionalArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\TimeSpanSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\TupleSerializers.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\TwoDimensionalArraySerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt16Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt32Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\UInt64Serializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\UndiscriminatedActualTypeSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\UriSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\Serializers\VersionSerializer.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\TypeMappingSerializationProvider.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Bson\Serialization\TypeNameDiscriminator.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\ApplicationNameHelper.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalDisposableClass.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalDisposableDerivedClass.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalDisposableStruct.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalEquatableClass.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalEquatableDerivedClass.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\CanonicalEquatableStruct.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\Hasher.cs" />
-    <Compile Include="Assets\ThirdParty\MongoDB\MongoDB.Shared\IncrementalMD5.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Behaviors\AIDestinationSetter.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Behaviors\Patrol.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\changelog.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\AIBase.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\AILerp.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\AIPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\IAstarAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\RichAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\RichPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\Seeker.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AI\TurnBasedAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\astarclasses.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AstarData.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AstarMath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\AstarPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\GraphUpdateScene.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\GraphUpdateShape.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\AnimationLink.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\ArrayPool.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\AstarDebugger.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\BinaryHeap.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\Draw.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\EditorResourceHelper.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\GraphEditorBase.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\GraphModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\GraphUpdateProcessor.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\GraphUtilities.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\Int3.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\ListPool.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\MovementUtilities.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\NodeLink.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\NodeLink2.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\NodeLink3.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\ObjectPool.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\PathInterpolator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\PathPool.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\PathProcessor.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\PathReturnQueue.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\StackPool.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\ThreadControlQueue.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\WindowsStoreCompatibility.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Misc\WorkItemProcessor.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Nodes\GraphNode.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Path.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\PathHandler.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\RVO\RVOAgent.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\RVO\RVOCoreObstacle.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\RVO\RVOCoreSimulator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\RVO\RVOLine.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\RVO\RVOQuadtree.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Serialization\JsonConverters.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Serialization\JsonSerializer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Serialization\SimpleJsonReplacement.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Serialization\SimpleZipReplacement.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Core\Serialization\TinyJson.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example11_RVO\GroupController.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example11_RVO\LightweightRVO.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example11_RVO\RVOAgentPlacer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example11_RVO\RVOExampleAgent.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralGridMover.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralWorld.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example13_Moving\BezierMover.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example13_Moving\LocalSpaceGraph.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example13_Moving\LocalSpaceRichAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example14_TurnBased_Hexagon\Astar3DButton.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example14_TurnBased_Hexagon\HexagonTrigger.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example14_TurnBased_Hexagon\TurnBasedDoor.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example14_TurnBased_Hexagon\TurnBasedManager.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example16_RVO 2D\ExampleMover.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example3_Recast_Navmesh1\MecanimBridge.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\Example8_PathTypes\PathTypesDemo.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\AstarSmoothFollow2.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\DoorController.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\DynamicGridObstacle.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\ManualRVOAgent.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAnimation.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\NavmeshClamp.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\ObjectPlacer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdate.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdateHandler.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\ExampleScenes\ExampleScripts\TargetMover.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Base.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\GridGenerator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\LayerGridGraphGenerator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NavmeshBase.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NavMeshGenerator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NodeClasses\GridNode.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NodeClasses\GridNodeBase.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NodeClasses\PointNode.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\NodeClasses\TriangleMeshNode.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\PointGenerator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\QuadtreeGraph.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\RecastGenerator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\BBTree.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\EuclideanEmbedding.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\GraphTransform.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\GridLookup.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\NavMeshRenderer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\NavmeshTile.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\ObjImporter.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\PointKDTree.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\RecastBBTree.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\RecastMeshGatherer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\RecastMeshObj.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\TileHandler.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\DebugUtility.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelClasses.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelContour.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelMesh.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelPolygonClipper.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRasterization.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRegion.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelUtility.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Legacy\LegacyAIPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Legacy\LegacyRichAI.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Legacy\LegacyRVOController.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Legacy\MiscLegacy.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\AdvancedSmooth.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\AlternativePath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\FunnelModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\Modifiers.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\RadiusModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\RaycastModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\SimpleSmoothModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Modifiers\StartEndModifier.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Navmesh\NavmeshAdd.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Navmesh\NavmeshCut.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Navmesh\RelevantGraphSurface.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Navmesh\TileHandlerHelper.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\PackageTools\EnumFlagAttribute.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\PackageTools\UniqueComponentAttribute.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\PackageTools\VersionedMonoBehaviour.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\ABPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\ConstantPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\FleePath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\FloodPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\FloodPathTracer.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\MultiTargetPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\RandomPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Pathfinders\XPath.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\RVO\RVOController.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\RVO\RVONavmesh.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\RVO\RVOObstacle.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\RVO\RVOSimulator.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\RVO\RVOSquareObstacle.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\TurnBased\BlockManager.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\TurnBased\SingleNodeBlocker.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\AnimationLinkTraverser.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarChecksum.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarMemory.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarParallel.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\AstarProfiler.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\DotNetReplacements.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\Funnel.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\GraphGizmoHelper.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\GraphUpdateUtilities.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\PathUtilities.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\RetainedGizmos.cs" />
+    <Compile Include="Assets\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Example8_PathTypes\SquareShader.shader" />
+    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
+    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
+    <None Include="Assets\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
+    <None Include="Assets\AstarPathfindingProject\Readme.txt" />
+    <None Include="Assets\AstarPathfindingProject\Readme_upgrading.txt" />
+    <None Include="Assets\AstarPathfindingProject\link.xml" />
+    <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\Navmesh.cginc" />
+    <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\Navmesh.shader" />
+    <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\NavmeshOutline.shader" />
+    <None Include="Assets\Plugins\AstarPathfindingProject\Clipper\ClipperLicense.txt" />
+    <None Include="Assets\Plugins\AstarPathfindingProject\DotNetZip\DotNetZipLicense.txt" />
+    <None Include="Assets\Plugins\AstarPathfindingProject\Poly2Tri\Poly2TriLicense.txt" />
+    <None Include="Assets\Plugins\AstarPathfindingProject\dependencies.txt" />
     <None Include="Assets\Res\Config\BuffConfig.txt" />
     <None Include="Assets\Res\Config\GlobalProto.txt" />
     <None Include="Assets\Res\Config\UnitConfig.txt" />

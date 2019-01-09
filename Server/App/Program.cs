@@ -4,6 +4,9 @@ using System.Net;
 using System.Threading;
 using ETModel;
 using NLog;
+using PF;
+using ABPath = ETModel.ABPath;
+using Path = System.IO.Path;
 
 namespace App
 {
@@ -80,7 +83,7 @@ namespace App
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
 						Game.Scene.AddComponent<ActorLocationSenderComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatherComponent>();
-						Game.Scene.AddComponent<ServerFrameComponent>();
+						Game.Scene.AddComponent<PathfindingComponent>();
 						break;
 					case AppType.AllServer:
 						Game.Scene.AddComponent<ActorMessageSenderComponent>();
@@ -99,7 +102,8 @@ namespace App
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						Game.Scene.AddComponent<GateSessionKeyComponent>();
 						Game.Scene.AddComponent<ConfigComponent>();
-						Game.Scene.AddComponent<ServerFrameComponent>();
+						//Game.Scene.AddComponent<ServerFrameComponent>();
+						Game.Scene.AddComponent<PathfindingComponent>();
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
@@ -116,7 +120,7 @@ namespace App
 					default:
 						throw new Exception($"命令行参数没有设置正确的AppType: {startConfig.AppType}");
 				}
-
+				
 				while (true)
 				{
 					try

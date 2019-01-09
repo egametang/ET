@@ -56,11 +56,9 @@ namespace ILRuntime.Runtime.Generated
             ETModel_Actor_CreateUnits_Binding.Register(app);
             Google_Protobuf_Collections_RepeatedField_1_UnitInfo_Binding.Register(app);
             System_Collections_Generic_IEnumerator_1_UnitInfo_Binding.Register(app);
-            ETModel_UnitInfo_Binding.Register(app);
             ETModel_UnitComponent_Binding.Register(app);
             ETModel_UnitFactory_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
-            ETModel_Unit_Binding.Register(app);
             VInt3_Binding.Register(app);
             ETModel_PlayerComponent_Binding.Register(app);
             ETModel_Player_Binding.Register(app);
@@ -68,8 +66,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_CameraComponent_Binding.Register(app);
             System_Collections_IEnumerator_Binding.Register(app);
             ETModel_Actor_Test_Binding.Register(app);
-            ETModel_Frame_ClickMap_Binding.Register(app);
-            ETModel_MoveComponent_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
             UnityEngine_Input_Binding.Register(app);
             UnityEngine_Camera_Binding.Register(app);

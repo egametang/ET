@@ -8,7 +8,7 @@ namespace ETModel
 
 		public static bool IsNeedDebugLogMessage(ushort opcode)
 		{
-			//return true;
+			return true;
 			if (opcode > 1000)
 			{
 				return true;
