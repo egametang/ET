@@ -12,6 +12,7 @@ namespace ETEditor
         private const string CodeDir = "Assets/Res/Code/";
         private const string HotfixDll = "Unity.Hotfix.dll";
         private const string HotfixPdb = "Unity.Hotfix.pdb";
+        private const string HotfixMdb = "Unity.Hotfix.dll.mdb";
 
         static Startup()
         {
@@ -52,8 +53,8 @@ namespace ETEditor
             }
 #else
             File.Copy(Path.Combine(ScriptAssembliesDir, HotfixDll), Path.Combine(CodeDir, "Hotfix.dll.bytes"), true);
-            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixPdb), Path.Combine(CodeDir, "Hotfix.pdb.bytes"), true);
-            Log.Info($"mono 复制Hotfix.dll, Hotfix.pdb到Res/Code完成");
+            File.Copy(Path.Combine(ScriptAssembliesDir, HotfixMdb), Path.Combine(CodeDir, "Hotfix.mdb.bytes"), true);
+            Log.Info($"mono 复制Hotfix.dll, Hotfix.mdb到Res/Code完成");
 #endif
 
             
