@@ -7,6 +7,18 @@ namespace ETHotfix
 	{
 		public static void Start()
 		{
+#if ILRuntime
+			if (!Define.IsILRuntime)
+			{
+				Log.Error("mono层是mono模式, 但是Hotfix层是ILRuntime模式");
+			}
+#else
+			if (Define.IsILRuntime)
+			{
+				Log.Error("mono层是ILRuntime模式, Hotfix层是mono模式");
+			}
+#endif
+			
 			try
 			{
 				// 注册热更层回调
