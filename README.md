@@ -90,6 +90,9 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 
 群友demo：  
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
+[牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+[背包系统](https://gitee.com/ECPS_admin/planc)  
+[ET小游戏合集](https://github.com/Acgmart/ET-MultiplyDemos)  
 
 视频教程：  
 [肉饼老师主讲](http://www.taikr.com/my/course/972)  
