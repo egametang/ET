@@ -60,7 +60,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @hitInfo;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {

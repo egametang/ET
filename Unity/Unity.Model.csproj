@@ -167,6 +167,7 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_ComponentFactory_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ComponentView_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ConfigAttribute_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_Define_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_DoubleMap_2_UInt16_Type_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Entity_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ErrorCode_Binding.cs" />

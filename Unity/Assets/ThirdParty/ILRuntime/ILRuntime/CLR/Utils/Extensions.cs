@@ -78,6 +78,8 @@ namespace ILRuntime.CLR.Utils
                         }
                         if (t == null)
                             t = appdomain.GetType(name);
+                        if (t != null && i.ParameterType.IsByReference)
+                            t = t.MakeByRefType();
                     }
 
                     param.Add(t);

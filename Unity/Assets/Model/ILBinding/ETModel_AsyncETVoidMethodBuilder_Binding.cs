@@ -44,7 +44,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 1)
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(ETModel.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, Start_1);
@@ -61,7 +61,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(ETModel.ETTask<Google.Protobuf.Adapt_IMessage.Adaptor>.Awaiter).MakeByRefType(), typeof(ETModel.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_3);
@@ -81,7 +81,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(ETModel.ETTask.Awaiter).MakeByRefType(), typeof(ETModel.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_6);
@@ -95,7 +95,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>).MakeByRefType(), typeof(ETModel.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_7);
@@ -187,7 +187,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @stateMachine;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -286,7 +286,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @stateMachine;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -341,7 +341,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @awaiter;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -463,7 +463,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @stateMachine;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -518,7 +518,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @awaiter;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -598,7 +598,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @stateMachine;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {
@@ -653,7 +653,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        var ___dst = ptr_of_this_method->ValueLong;
+                        var ___dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         object ___obj = @awaiter;
                         if (___dst->ObjectType >= ObjectTypes.Object)
                         {

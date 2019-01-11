@@ -16,26 +16,6 @@ namespace ILRuntime.Runtime.Stack
         public int Value;
         public int ValueLow;
 
-        public unsafe StackObject* ValueLong
-        {
-            get
-            {
-                fixed (int* i = &this.Value)
-                {
-                    ulong* p = (ulong*) i;
-                    return (StackObject*) (*p);
-                }
-            }
-            set
-            {
-                fixed (int* i = &this.Value)
-                {
-                    ulong* p = (ulong*) i;
-                    *p = (ulong)value;
-                }
-            }
-        }
-
         public static bool operator ==(StackObject a, StackObject b)
         {
             return (a.ObjectType == b.ObjectType) && (a.Value == b.Value) && (a.ValueLow == b.ValueLow);
@@ -109,11 +89,11 @@ namespace ILRuntime.Runtime.Stack
                     }
                 case ObjectTypes.StackObjectReference:
                     {
-                        return ToObject(esp->ValueLong, appdomain, mStack);
+                        return ToObject((ILIntepreter.ResolveReference(esp)), appdomain, mStack);
                     }
                 case ObjectTypes.ValueTypeObjectReference:
                     {
-                        StackObject* dst = esp->ValueLong;
+                        StackObject* dst = ILIntepreter.ResolveReference(esp);
                         IType type = appdomain.GetType(dst->Value);
                         if (type is ILType)
                         {
@@ -209,7 +189,7 @@ namespace ILRuntime.Runtime.Stack
         public unsafe static void Initialized(StackObject* esp, IType type)
         {
             var t = type.TypeForCLR;
-            if (type.IsPrimitive)
+            if (type.IsPrimitive || type.IsEnum)
             {
                 if (t == typeof(int) || t == typeof(uint) || t == typeof(short) || t == typeof(ushort) || t == typeof(byte) || t == typeof(sbyte) || t == typeof(char) || t == typeof(bool))
                 {

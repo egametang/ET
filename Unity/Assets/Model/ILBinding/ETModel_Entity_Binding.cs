@@ -40,7 +40,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.ResourcesComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_0);
@@ -54,7 +54,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.NetOuterComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_1);
@@ -68,7 +68,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.SessionComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AddComponent_2);
@@ -82,7 +82,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.PlayerComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_3);
@@ -96,7 +96,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.SceneChangeComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AddComponent_4);
@@ -110,7 +110,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.UnitComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_5);
@@ -124,7 +124,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.AnimatorComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_6);
@@ -138,7 +138,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.UnitPathComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_7);
@@ -152,7 +152,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.MessageDispatcherComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_8);
@@ -166,7 +166,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.OpcodeTypeComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_9);
@@ -180,7 +180,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.SessionCallbackComponent)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AddComponent_10);

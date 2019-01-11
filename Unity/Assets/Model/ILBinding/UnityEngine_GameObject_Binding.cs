@@ -47,7 +47,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.ComponentView)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AddComponent_2);
@@ -64,7 +64,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(global::ReferenceCollector)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_4);
@@ -78,7 +78,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Button)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_5);
@@ -92,7 +92,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.Text)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_6);
@@ -106,7 +106,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.UI.InputField)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_7);
@@ -120,7 +120,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.Canvas)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_8);
@@ -134,7 +134,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 0)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.Camera)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, GetComponent_9);
@@ -163,11 +163,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.transform;
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -201,11 +196,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.AddComponent<ETModel.ComponentView>();
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -237,11 +227,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.GetComponent<global::ReferenceCollector>();
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -257,11 +242,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Button>();
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -277,11 +257,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.Text>();
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -297,11 +272,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.GetComponent<UnityEngine.UI.InputField>();
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

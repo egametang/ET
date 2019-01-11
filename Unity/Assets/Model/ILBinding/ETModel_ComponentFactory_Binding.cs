@@ -40,7 +40,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.Player), typeof(System.Int64), typeof(System.Boolean)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, CreateWithId_0);

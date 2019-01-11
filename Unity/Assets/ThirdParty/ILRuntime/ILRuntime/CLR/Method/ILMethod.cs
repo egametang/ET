@@ -527,6 +527,8 @@ namespace ILRuntime.CLR.Method
             if (token is TypeReference)
             {
                 TypeReference _ref = ((TypeReference)token);
+                if (_ref.IsArray)
+                    return CheckHasGenericParamter(_ref.GetElementType());
                 if (_ref.IsGenericParameter)
                     return true;
                 if (_ref.IsGenericInstance)

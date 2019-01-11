@@ -40,7 +40,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(UnityEngine.TextAsset), typeof(UnityEngine.GameObject), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, Get_0);
@@ -71,11 +71,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = ETModel.GameObjectHelper.Get<UnityEngine.TextAsset>(@gameObject, @key);
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
