@@ -1,4 +1,4 @@
-# [English](https://github.com/egametang/Egametang/blob/master/README-ET.md) 
+# [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
 
 __讨论QQ群 : 474643097__  
 
