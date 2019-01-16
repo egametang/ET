@@ -6,7 +6,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace Pathfinding.Util {
 	/** Interpolates along a sequence of points */
 	public class PathInterpolator {
-		List<PF.Vector3> path;
+		List<Vector3> path;
 
 		float distanceToSegmentStart;
 		float currentDistance;
@@ -68,7 +68,7 @@ namespace Pathfinding.Util {
 		/** Set the path to interpolate along.
 		 * This will reset all interpolation variables.
 		 */
-		public void SetPath (List<PF.Vector3> path) {
+		public void SetPath (List<Vector3> path) {
 			this.path = path;
 			currentDistance = 0;
 			segmentIndex = 0;
@@ -125,7 +125,7 @@ namespace Pathfinding.Util {
 			MoveToSegment(bestIndex, bestFactor);
 		}
 
-		public void MoveToLocallyClosestPoint (PF.Vector3 point, bool allowForwards = true, bool allowBackwards = true) {
+		public void MoveToLocallyClosestPoint (Vector3 point, bool allowForwards = true, bool allowBackwards = true) {
 			if (path == null) return;
 
 			while (allowForwards && segmentIndex < path.Count - 2 && (path[segmentIndex+1] - point).sqrMagnitude <= (path[segmentIndex] - point).sqrMagnitude) {
@@ -141,12 +141,12 @@ namespace Pathfinding.Util {
 			float factor1 = 0, factor2 = 0, d1 = float.PositiveInfinity, d2 = float.PositiveInfinity;
 			if (segmentIndex > 0) {
 				factor1 = VectorMath.ClosestPointOnLineFactor(path[segmentIndex-1], path[segmentIndex], point);
-				d1 = (PF.Vector3.Lerp(path[segmentIndex-1], path[segmentIndex], factor1) - point).sqrMagnitude;
+				d1 = (Vector3.Lerp(path[segmentIndex-1], path[segmentIndex], factor1) - point).sqrMagnitude;
 			}
 
 			if (segmentIndex < path.Count - 1) {
 				factor2 = VectorMath.ClosestPointOnLineFactor(path[segmentIndex], path[segmentIndex+1], point);
-				d2 = (PF.Vector3.Lerp(path[segmentIndex], path[segmentIndex+1], factor2) - point).sqrMagnitude;
+				d2 = (Vector3.Lerp(path[segmentIndex], path[segmentIndex+1], factor2) - point).sqrMagnitude;
 			}
 
 			if (d1 < d2) MoveToSegment(segmentIndex - 1, factor1);

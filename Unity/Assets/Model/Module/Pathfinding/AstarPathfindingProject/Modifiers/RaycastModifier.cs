@@ -107,7 +107,7 @@ namespace Pathfinding {
 		}
 
 		static readonly int[] iterationsByQuality = new [] { 1, 2, 1, 3 };
-		static List<PF.Vector3> buffer = new List<PF.Vector3>();
+		static List<Vector3> buffer = new List<Vector3>();
 		static float[] DPCosts = new float[16];
 		static int[] DPParents = new int[16];
 
@@ -141,13 +141,13 @@ namespace Pathfinding {
 			p.vectorPath = points;
 		}
 
-		List<PF.Vector3> ApplyGreedy (Path p, List<PF.Vector3> points) {
+		List<Vector3> ApplyGreedy (Path p, List<Vector3> points) {
 			bool canBeOriginalNodes = points.Count == p.path.Count;
 			int startIndex = 0;
 
 			while (startIndex < points.Count) {
 				Vector3 start = points[startIndex];
-				var startNode = canBeOriginalNodes && points[startIndex] == (PF.Vector3)p.path[startIndex].position ? p.path[startIndex] : null;
+				var startNode = canBeOriginalNodes && points[startIndex] == (Vector3)p.path[startIndex].position ? p.path[startIndex] : null;
 				buffer.Add(start);
 
 				// Do a binary search to find the furthest node we can see from this node
@@ -185,7 +185,7 @@ namespace Pathfinding {
 			return points;
 		}
 
-		List<PF.Vector3> ApplyDP (Path p, List<PF.Vector3> points) {
+		List<Vector3> ApplyDP (Path p, List<Vector3> points) {
 			if (DPCosts.Length < points.Count) {
 				DPCosts = new float[points.Count];
 				DPParents = new int[points.Count];
@@ -195,15 +195,15 @@ namespace Pathfinding {
 
 			for (int i = 0; i < points.Count; i++) {
 				float d = DPCosts[i];
-				PF.Vector3 start = points[i];
-				var startIsOriginalNode = canBeOriginalNodes && start == (PF.Vector3)p.path[i].position;
+				Vector3 start = points[i];
+				var startIsOriginalNode = canBeOriginalNodes && start == (Vector3)p.path[i].position;
 				for (int j = i+1; j < points.Count; j++) {
 					// Total distance from the start to this point using the best simplified path
 					// The small additive constant is to make sure that the number of points is kept as small as possible
 					// even when the total distance is the same (which can happen with e.g multiple colinear points).
 					float d2 = d + (points[j] - start).magnitude + 0.0001f;
 					if (DPParents[j] == -1 || d2 < DPCosts[j]) {
-						var endIsOriginalNode = canBeOriginalNodes && points[j] == (PF.Vector3)p.path[j].position;
+						var endIsOriginalNode = canBeOriginalNodes && points[j] == (Vector3)p.path[j].position;
 						if (j == i+1 || ValidateLine(startIsOriginalNode ? p.path[i] : null, endIsOriginalNode ? p.path[j] : null, start, points[j])) {
 							DPCosts[j] = d2;
 							DPParents[j] = i;

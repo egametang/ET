@@ -97,7 +97,7 @@ namespace Pathfinding {
 				return;
 			}
 
-			List<PF.Vector3> path = null;
+			List<Vector3> path = null;
 
 			switch (smoothType) {
 			case SmoothType.Simple:
@@ -111,12 +111,12 @@ namespace Pathfinding {
 			}
 
 			if (path != p.vectorPath) {
-				ListPool<PF.Vector3>.Release(ref p.vectorPath);
+				ListPool<Vector3>.Release(ref p.vectorPath);
 				p.vectorPath = path;
 			}
 		}
 
-		public List<PF.Vector3> CurvedNonuniform (List<PF.Vector3> path) {
+		public List<Vector3> CurvedNonuniform (List<Vector3> path) {
 			if (maxSegmentLength <= 0) {
 				Debug.LogWarning("Max Segment Length is <= 0 which would cause DivByZero-exception or other nasty errors (avoid this)");
 				return path;
@@ -134,7 +134,7 @@ namespace Pathfinding {
 				}
 			}
 
-			List<PF.Vector3> subdivided = ListPool<PF.Vector3>.Claim(pointCounter);
+			List<Vector3> subdivided = ListPool<Vector3>.Claim(pointCounter);
 
 			// Set first velocity
 			Vector3 preEndVel = (path[1]-path[0]).normalized;
@@ -181,7 +181,7 @@ namespace Pathfinding {
 				   h4*tan2;
 		}
 
-		public List<PF.Vector3> SmoothOffsetSimple (List<PF.Vector3> path) {
+		public List<Vector3> SmoothOffsetSimple (List<Vector3> path) {
 			if (path.Count <= 2 || iterations <= 0) {
 				return path;
 			}
@@ -193,8 +193,8 @@ namespace Pathfinding {
 
 			int maxLength = (path.Count-2)*(int)Mathf.Pow(2, iterations)+2;
 
-			List<PF.Vector3> subdivided = ListPool<PF.Vector3>.Claim(maxLength);
-			List<PF.Vector3> subdivided2 = ListPool<PF.Vector3>.Claim(maxLength);
+			List<Vector3> subdivided = ListPool<Vector3>.Claim(maxLength);
+			List<Vector3> subdivided2 = ListPool<Vector3>.Claim(maxLength);
 
 			for (int i = 0; i < maxLength; i++) { subdivided.Add(Vector3.zero); subdivided2.Add(Vector3.zero); }
 
@@ -206,7 +206,7 @@ namespace Pathfinding {
 				int currentPathLength = (path.Count-2)*(int)Mathf.Pow(2, iteration)+2;
 
 				//Switch the arrays
-				List<PF.Vector3> tmp = subdivided;
+				List<Vector3> tmp = subdivided;
 				subdivided = subdivided2;
 				subdivided2 = tmp;
 
@@ -248,15 +248,15 @@ namespace Pathfinding {
 				subdivided[(path.Count-2)*(int)Mathf.Pow(2, iteration+1)+2-1] = subdivided2[currentPathLength-1];
 			}
 
-			ListPool<PF.Vector3>.Release(ref subdivided2);
+			ListPool<Vector3>.Release(ref subdivided2);
 
 			return subdivided;
 		}
 
-		public List<PF.Vector3> SmoothSimple (List<PF.Vector3> path) {
+		public List<Vector3> SmoothSimple (List<Vector3> path) {
 			if (path.Count < 2) return path;
 
-			List<PF.Vector3> subdivided;
+			List<Vector3> subdivided;
 
 			if (uniformLength) {
 				// Clamp to a small value to avoid the path being divided into a huge number of segments
@@ -269,7 +269,7 @@ namespace Pathfinding {
 
 				int estimatedNumberOfSegments = Mathf.FloorToInt(pathLength / maxSegmentLength);
 				// Get a list with an initial capacity high enough so that we can add all points
-				subdivided = ListPool<PF.Vector3>.Claim(estimatedNumberOfSegments+2);
+				subdivided = ListPool<Vector3>.Claim(estimatedNumberOfSegments+2);
 
 				float distanceAlong = 0;
 
@@ -299,7 +299,7 @@ namespace Pathfinding {
 				}
 
 				int steps = 1 << subdivisions;
-				subdivided = ListPool<PF.Vector3>.Claim((path.Count-1)*steps + 1);
+				subdivided = ListPool<Vector3>.Claim((path.Count-1)*steps + 1);
 				Polygon.Subdivide(path, subdivided, steps);
 			}
 
@@ -322,11 +322,11 @@ namespace Pathfinding {
 			return subdivided;
 		}
 
-		public List<PF.Vector3> SmoothBezier (List<PF.Vector3> path) {
+		public List<Vector3> SmoothBezier (List<Vector3> path) {
 			if (subdivisions < 0) subdivisions = 0;
 
 			int subMult = 1 << subdivisions;
-			List<PF.Vector3> subdivided = ListPool<PF.Vector3>.Claim();
+			List<Vector3> subdivided = ListPool<Vector3>.Claim();
 
 			for (int i = 0; i < path.Count-1; i++) {
 				Vector3 tangent1;

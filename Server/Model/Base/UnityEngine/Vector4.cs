@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PF
+namespace UnityEngine
 {
     [Serializable]
     public struct Vector4: IEquatable<Vector4>
@@ -41,31 +41,20 @@ namespace PF
         {
             this.x = this.y = this.z = this.w = value;
         }
-#if !SERVER
-        public static implicit operator Vector4(UnityEngine.Vector4 v4)
-        {
-            return new Vector4(v4.x, v4.y, v4.z, v4.w);
-        }
-        
-        public static implicit operator UnityEngine.Vector4(Vector4 v4)
-        {
-            return new UnityEngine.Vector4(v4.x, v4.y, v4.z, v4.w);
-        }
-#endif
 
         public override string ToString()
         {
             CultureInfo currentCulture = CultureInfo.CurrentCulture;
-            return string.Format((IFormatProvider) currentCulture, "{0}, {1}, {2}, {3}", (object) this.x.ToString((IFormatProvider) currentCulture),
-                                 (object) this.y.ToString((IFormatProvider) currentCulture),
-                                 (object) this.z.ToString((IFormatProvider) currentCulture),
-                                 (object) this.w.ToString((IFormatProvider) currentCulture));
+            return string.Format(currentCulture, "{0}, {1}, {2}, {3}", (object) this.x.ToString(currentCulture),
+                                 (object) this.y.ToString(currentCulture),
+                                 (object) this.z.ToString(currentCulture),
+                                 (object) this.w.ToString(currentCulture));
         }
 
         public bool Equals(Vector4 other)
         {
-            if ((double) this.x == (double) other.x && (double) this.y == (double) other.y && (double) this.z == (double) other.z)
-                return (double) this.w == (double) other.w;
+            if (this.x == (double) other.x && this.y == (double) other.y && this.z == (double) other.z)
+                return this.w == (double) other.w;
             return false;
         }
 
@@ -84,14 +73,14 @@ namespace PF
 
         public float Length()
         {
-            return (float) Math.Sqrt((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
-                                     (double) this.w * (double) this.w);
+            return (float) Math.Sqrt(this.x * (double) this.x + this.y * (double) this.y + this.z * (double) this.z +
+                                     this.w * (double) this.w);
         }
 
         public float LengthSquared()
         {
-            return (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
-                (double) this.w * (double) this.w);
+            return (float) (this.x * (double) this.x + this.y * (double) this.y + this.z * (double) this.z +
+                this.w * (double) this.w);
         }
 
         public static float Distance(Vector4 value1, Vector4 value2)
@@ -100,8 +89,8 @@ namespace PF
             float num2 = value1.y - value2.y;
             float num3 = value1.z - value2.z;
             float num4 = value1.w - value2.w;
-            return (float) Math.Sqrt((double) num1 * (double) num1 + (double) num2 * (double) num2 + (double) num3 * (double) num3 +
-                                     (double) num4 * (double) num4);
+            return (float) Math.Sqrt(num1 * (double) num1 + num2 * (double) num2 + num3 * (double) num3 +
+                                     num4 * (double) num4);
         }
 
         public static void Distance(ref Vector4 value1, ref Vector4 value2, out float result)
@@ -110,9 +99,9 @@ namespace PF
             float num2 = value1.y - value2.y;
             float num3 = value1.z - value2.z;
             float num4 = value1.w - value2.w;
-            float num5 = (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2 + (double) num3 * (double) num3 +
-                (double) num4 * (double) num4);
-            result = (float) Math.Sqrt((double) num5);
+            float num5 = (float) (num1 * (double) num1 + num2 * (double) num2 + num3 * (double) num3 +
+                num4 * (double) num4);
+            result = (float) Math.Sqrt(num5);
         }
 
         public static float DistanceSquared(Vector4 value1, Vector4 value2)
@@ -121,8 +110,8 @@ namespace PF
             float num2 = value1.y - value2.y;
             float num3 = value1.z - value2.z;
             float num4 = value1.w - value2.w;
-            return (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2 + (double) num3 * (double) num3 +
-                (double) num4 * (double) num4);
+            return (float) (num1 * (double) num1 + num2 * (double) num2 + num3 * (double) num3 +
+                num4 * (double) num4);
         }
 
         public static void DistanceSquared(ref Vector4 value1, ref Vector4 value2, out float result)
@@ -131,29 +120,29 @@ namespace PF
             float num2 = value1.y - value2.y;
             float num3 = value1.z - value2.z;
             float num4 = value1.w - value2.w;
-            result = (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2 + (double) num3 * (double) num3 +
-                (double) num4 * (double) num4);
+            result = (float) (num1 * (double) num1 + num2 * (double) num2 + num3 * (double) num3 +
+                num4 * (double) num4);
         }
 
         public static float Dot(Vector4 vector1, Vector4 vector2)
         {
-            return (float) ((double) vector1.x * (double) vector2.x + (double) vector1.y * (double) vector2.y +
-                (double) vector1.z * (double) vector2.z + (double) vector1.w * (double) vector2.w);
+            return (float) (vector1.x * (double) vector2.x + vector1.y * (double) vector2.y +
+                vector1.z * (double) vector2.z + vector1.w * (double) vector2.w);
         }
 
         public static void Dot(ref Vector4 vector1, ref Vector4 vector2, out float result)
         {
-            result = (float) ((double) vector1.x * (double) vector2.x + (double) vector1.y * (double) vector2.y +
-                (double) vector1.z * (double) vector2.z + (double) vector1.w * (double) vector2.w);
+            result = (float) (vector1.x * (double) vector2.x + vector1.y * (double) vector2.y +
+                vector1.z * (double) vector2.z + vector1.w * (double) vector2.w);
         }
 
         public void Normalize()
         {
-            float num1 = (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
-                (double) this.w * (double) this.w);
-            if ((double) num1 < (double) Mathf.Epsilon)
+            float num1 = (float) (this.x * (double) this.x + this.y * (double) this.y + this.z * (double) this.z +
+                this.w * (double) this.w);
+            if (num1 < (double) Mathf.Epsilon)
                 return;
-            float num2 = 1f / (float) Math.Sqrt((double) num1);
+            float num2 = 1f / (float) Math.Sqrt(num1);
             this.x *= num2;
             this.y *= num2;
             this.z *= num2;
@@ -162,11 +151,11 @@ namespace PF
 
         public static Vector4 Normalize(Vector4 vector)
         {
-            float num1 = (float) ((double) vector.x * (double) vector.x + (double) vector.y * (double) vector.y +
-                (double) vector.z * (double) vector.z + (double) vector.w * (double) vector.w);
-            if ((double) num1 < (double) Mathf.Epsilon)
+            float num1 = (float) (vector.x * (double) vector.x + vector.y * (double) vector.y +
+                vector.z * (double) vector.z + vector.w * (double) vector.w);
+            if (num1 < (double) Mathf.Epsilon)
                 return vector;
-            float num2 = 1f / (float) Math.Sqrt((double) num1);
+            float num2 = 1f / (float) Math.Sqrt(num1);
             Vector4 vector4;
             vector4.x = vector.x * num2;
             vector4.y = vector.y * num2;
@@ -177,15 +166,15 @@ namespace PF
 
         public static void Normalize(ref Vector4 vector, out Vector4 result)
         {
-            float num1 = (float) ((double) vector.x * (double) vector.x + (double) vector.y * (double) vector.y +
-                (double) vector.z * (double) vector.z + (double) vector.w * (double) vector.w);
-            if ((double) num1 < (double) Mathf.Epsilon)
+            float num1 = (float) (vector.x * (double) vector.x + vector.y * (double) vector.y +
+                vector.z * (double) vector.z + vector.w * (double) vector.w);
+            if (num1 < (double) Mathf.Epsilon)
             {
                 result = vector;
             }
             else
             {
-                float num2 = 1f / (float) Math.Sqrt((double) num1);
+                float num2 = 1f / (float) Math.Sqrt(num1);
                 result.x = vector.x * num2;
                 result.y = vector.y * num2;
                 result.z = vector.z * num2;
@@ -292,7 +281,7 @@ namespace PF
         public static Vector4 SmoothStep(Vector4 value1, Vector4 value2, float amount)
         {
             amount = (double) amount > 1.0? 1f : ((double) amount < 0.0? 0.0f : amount);
-            amount = (float) ((double) amount * (double) amount * (3.0 - 2.0 * (double) amount));
+            amount = (float) (amount * (double) amount * (3.0 - 2.0 * amount));
             Vector4 vector4;
             vector4.x = value1.x + (value2.x - value1.x) * amount;
             vector4.y = value1.y + (value2.y - value1.y) * amount;
@@ -304,7 +293,7 @@ namespace PF
         public static void SmoothStep(ref Vector4 value1, ref Vector4 value2, float amount, out Vector4 result)
         {
             amount = (double) amount > 1.0? 1f : ((double) amount < 0.0? 0.0f : amount);
-            amount = (float) ((double) amount * (double) amount * (3.0 - 2.0 * (double) amount));
+            amount = (float) (amount * (double) amount * (3.0 - 2.0 * amount));
             result.x = value1.x + (value2.x - value1.x) * amount;
             result.y = value1.y + (value2.y - value1.y) * amount;
             result.z = value1.z + (value2.z - value1.z) * amount;
@@ -315,19 +304,19 @@ namespace PF
         {
             float num1 = amount * amount;
             float num2 = amount * num1;
-            float num3 = (float) (2.0 * (double) num2 - 3.0 * (double) num1 + 1.0);
-            float num4 = (float) (-2.0 * (double) num2 + 3.0 * (double) num1);
+            float num3 = (float) (2.0 * num2 - 3.0 * num1 + 1.0);
+            float num4 = (float) (-2.0 * num2 + 3.0 * num1);
             float num5 = num2 - 2f * num1 + amount;
             float num6 = num2 - num1;
             Vector4 vector4;
-            vector4.x = (float) ((double) value1.x * (double) num3 + (double) value2.x * (double) num4 + (double) tangent1.x * (double) num5 +
-                (double) tangent2.x * (double) num6);
-            vector4.y = (float) ((double) value1.y * (double) num3 + (double) value2.y * (double) num4 + (double) tangent1.y * (double) num5 +
-                (double) tangent2.y * (double) num6);
-            vector4.z = (float) ((double) value1.z * (double) num3 + (double) value2.z * (double) num4 + (double) tangent1.z * (double) num5 +
-                (double) tangent2.z * (double) num6);
-            vector4.w = (float) ((double) value1.w * (double) num3 + (double) value2.w * (double) num4 + (double) tangent1.w * (double) num5 +
-                (double) tangent2.w * (double) num6);
+            vector4.x = (float) (value1.x * (double) num3 + value2.x * (double) num4 + tangent1.x * (double) num5 +
+                tangent2.x * (double) num6);
+            vector4.y = (float) (value1.y * (double) num3 + value2.y * (double) num4 + tangent1.y * (double) num5 +
+                tangent2.y * (double) num6);
+            vector4.z = (float) (value1.z * (double) num3 + value2.z * (double) num4 + tangent1.z * (double) num5 +
+                tangent2.z * (double) num6);
+            vector4.w = (float) (value1.w * (double) num3 + value2.w * (double) num4 + tangent1.w * (double) num5 +
+                tangent2.w * (double) num6);
             return vector4;
         }
 
@@ -336,18 +325,18 @@ namespace PF
         {
             float num1 = amount * amount;
             float num2 = amount * num1;
-            float num3 = (float) (2.0 * (double) num2 - 3.0 * (double) num1 + 1.0);
-            float num4 = (float) (-2.0 * (double) num2 + 3.0 * (double) num1);
+            float num3 = (float) (2.0 * num2 - 3.0 * num1 + 1.0);
+            float num4 = (float) (-2.0 * num2 + 3.0 * num1);
             float num5 = num2 - 2f * num1 + amount;
             float num6 = num2 - num1;
-            result.x = (float) ((double) value1.x * (double) num3 + (double) value2.x * (double) num4 + (double) tangent1.x * (double) num5 +
-                (double) tangent2.x * (double) num6);
-            result.y = (float) ((double) value1.y * (double) num3 + (double) value2.y * (double) num4 + (double) tangent1.y * (double) num5 +
-                (double) tangent2.y * (double) num6);
-            result.z = (float) ((double) value1.z * (double) num3 + (double) value2.z * (double) num4 + (double) tangent1.z * (double) num5 +
-                (double) tangent2.z * (double) num6);
-            result.w = (float) ((double) value1.w * (double) num3 + (double) value2.w * (double) num4 + (double) tangent1.w * (double) num5 +
-                (double) tangent2.w * (double) num6);
+            result.x = (float) (value1.x * (double) num3 + value2.x * (double) num4 + tangent1.x * (double) num5 +
+                tangent2.x * (double) num6);
+            result.y = (float) (value1.y * (double) num3 + value2.y * (double) num4 + tangent1.y * (double) num5 +
+                tangent2.y * (double) num6);
+            result.z = (float) (value1.z * (double) num3 + value2.z * (double) num4 + tangent1.z * (double) num5 +
+                tangent2.z * (double) num6);
+            result.w = (float) (value1.w * (double) num3 + value2.w * (double) num4 + tangent1.w * (double) num5 +
+                tangent2.w * (double) num6);
         }
 
         public static Vector4 Project(Vector4 vector, Vector4 onNormal)
@@ -500,15 +489,15 @@ namespace PF
 
         public static bool operator ==(Vector4 value1, Vector4 value2)
         {
-            if ((double) value1.x == (double) value2.x && (double) value1.y == (double) value2.y && (double) value1.z == (double) value2.z)
-                return (double) value1.w == (double) value2.w;
+            if (value1.x == (double) value2.x && value1.y == (double) value2.y && value1.z == (double) value2.z)
+                return value1.w == (double) value2.w;
             return false;
         }
 
         public static bool operator !=(Vector4 value1, Vector4 value2)
         {
-            if ((double) value1.x == (double) value2.x && (double) value1.y == (double) value2.y && (double) value1.z == (double) value2.z)
-                return (double) value1.w != (double) value2.w;
+            if (value1.x == (double) value2.x && value1.y == (double) value2.y && value1.z == (double) value2.z)
+                return value1.w != (double) value2.w;
             return true;
         }
 

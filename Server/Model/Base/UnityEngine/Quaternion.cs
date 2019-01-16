@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PF
+namespace UnityEngine
 {
     [Serializable]
     public struct Quaternion: IEquatable<Quaternion>

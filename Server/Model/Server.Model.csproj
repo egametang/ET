@@ -50,27 +50,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDeserializeSystem.cs">
       <Link>Base\Base\IDeserializeSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Mathf.cs">
-      <Link>Base\UnityMath\Mathf.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix3x3.cs">
-      <Link>Base\UnityMath\Matrix3x3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix4x4.cs">
-      <Link>Base\UnityMath\Matrix4x4.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Quaternion.cs">
-      <Link>Base\UnityMath\Quaternion.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector2.cs">
-      <Link>Base\UnityMath\Vector2.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector3.cs">
-      <Link>Base\UnityMath\Vector3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector4.cs">
-      <Link>Base\UnityMath\Vector4.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
       <Link>Component\Config\StartConfig.cs</Link>
     </Compile>

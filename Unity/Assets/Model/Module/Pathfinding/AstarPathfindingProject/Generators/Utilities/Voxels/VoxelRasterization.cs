@@ -152,12 +152,12 @@ namespace Pathfinding.Voxels {
 			// Transform from voxel space to graph space.
 			// then scale from voxel space (one unit equals one voxel)
 			// Finally add min
-			PF.Matrix4x4 voxelMatrix = PF.Matrix4x4.TRS(graphSpaceBounds.min, PF.Quaternion.identity, Vector3.one) * PF.Matrix4x4.Scale(new PF.Vector3(cellSize, cellHeight, cellSize));
+			Matrix4x4 voxelMatrix = Matrix4x4.TRS(graphSpaceBounds.min, Quaternion.identity, Vector3.one) * Matrix4x4.Scale(new Vector3(cellSize, cellHeight, cellSize));
 			transformVoxel2Graph = new GraphTransform(voxelMatrix);
 
 			// Transform from voxel space to world space
 			// add half a voxel to fix rounding
-			transform = graphTransform * voxelMatrix * PF.Matrix4x4.TRS(new Vector3(0.5f, 0, 0.5f), PF.Quaternion.identity, Vector3.one);
+			transform = graphTransform * voxelMatrix * Matrix4x4.TRS(new Vector3(0.5f, 0, 0.5f), Quaternion.identity, Vector3.one);
 
 			int maximumVoxelYCoord = (int)(graphSpaceBounds.size.y / cellHeight);
 

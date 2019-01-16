@@ -578,7 +578,7 @@ namespace Pathfinding.RVO.Sampled {
 							if (segment) {
 								// This part will only be reached for line obstacles (i.e not other agents)
 								if (det3 < radius) {
-									PF.Vector3 closestPointOnLine = VectorMath.ClosestPointOnSegment(segmentStart.ToPFV2(), segmentEnd.ToPFV2(), p.ToPFV2());
+									Vector3 closestPointOnLine = VectorMath.ClosestPointOnSegment(segmentStart.ToPFV2(), segmentEnd.ToPFV2(), p.ToPFV2());
 									var dirFromCenter = p.ToPFV2() - closestPointOnLine.ToV2();
 									float distToCenter;
 									gradient = VectorMath.Normalize(dirFromCenter, out distToCenter);

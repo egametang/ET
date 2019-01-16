@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF
 {
 	/** Integer Rectangle.

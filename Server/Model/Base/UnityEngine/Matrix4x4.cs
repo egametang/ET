@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PF
+namespace UnityEngine
 {
     [Serializable]
     public struct Matrix4x4: IEquatable<Matrix4x4>
@@ -32,24 +32,6 @@ namespace PF
                 this.m12 == 0.0f && this.m13 == 0.0f && this.m13 == 0.0f && this.m21 == 0.0f  && this.m23 == 0.0f && this.m23 == 0.0f  && this.m31 == 0.0f  && this.m32 == 0.0f  && this.m33 == 0.0f;
             }
         }
-#if !SERVER
-        public static implicit operator UnityEngine.Matrix4x4(PF.Matrix4x4 m)
-        {
-            return new UnityEngine.Matrix4x4(
-                                             new UnityEngine.Vector4(m.m00, m.m01, m.m02, m.m03), 
-                                             new UnityEngine.Vector4(m.m10, m.m11, m.m12, m.m13),
-                                             new UnityEngine.Vector4(m.m20, m.m21, m.m22, m.m23), 
-                                             new UnityEngine.Vector4(m.m30, m.m31, m.m32, m.m33));
-        }
-        
-        public static implicit operator Matrix4x4(UnityEngine.Matrix4x4 m)
-        {
-            return new Matrix4x4(m.m00, m.m01, m.m02, m.m03, 
-                                 m.m10, m.m11, m.m12, m.m13,
-                                 m.m20, m.m21, m.m22, m.m23, 
-                                 m.m30, m.m31, m.m32, m.m33);
-        }
-#endif
 
         public Vector3 up
         {

@@ -120,13 +120,6 @@
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="Assets\Model\Base\TryLocker.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Mathf.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Matrix3x3.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Matrix4x4.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Quaternion.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Vector2.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Vector3.cs" />
-    <Compile Include="Assets\Model\Base\UnityMath\Vector4.cs" />
     <Compile Include="Assets\Model\Base\UnOrderMultiMap.cs" />
     <Compile Include="Assets\Model\Component\Config\ClientConfig.cs" />
     <Compile Include="Assets\Model\Component\Config\DBConfig.cs" />
@@ -225,7 +218,6 @@
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_MessageParser_1_Google_Protobuf_Adapt_IMessage_Binding_Adapto_t.cs" />
     <Compile Include="Assets\Model\ILBinding\Google_Protobuf_ProtoPreconditions_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\LitJson_JsonMapper_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\PF_Vector3_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ReferenceCollector_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Action_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\System_Activator_Binding.cs" />

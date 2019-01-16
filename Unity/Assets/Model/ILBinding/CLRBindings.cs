@@ -103,7 +103,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_ETVoid_Binding.Register(app);
             ETModel_GizmosDebug_Binding.Register(app);
             System_Collections_Generic_List_1_Vector3_Binding.Register(app);
-            PF_Vector3_Binding.Register(app);
             Google_Protobuf_Collections_RepeatedField_1_Single_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
             UnityEngine_Input_Binding.Register(app);

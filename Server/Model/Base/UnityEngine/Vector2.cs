@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace PF
+namespace UnityEngine
 {
     [Serializable]
     public struct Vector2: IEquatable<Vector2>
@@ -11,17 +11,6 @@ namespace PF
         
         public float x;
         public float y;
-#if !SERVER
-        public static implicit operator UnityEngine.Vector2(Vector2 v2)
-        {
-            return new UnityEngine.Vector3(v2.x, v2.y);
-        }
-        
-        public static implicit operator Vector2(UnityEngine.Vector2 v2)
-        {
-            return new Vector2(v2.x, v2.y);
-        }
-#endif
         
         public static implicit operator Vector2(Vector3 v)
         {
@@ -70,11 +59,11 @@ namespace PF
         public override string ToString()
         {
             CultureInfo currentCulture = CultureInfo.CurrentCulture;
-            return string.Format((IFormatProvider) currentCulture, "{0}, {1}",
+            return string.Format(currentCulture, "{0}, {1}",
                                  new object[2]
                                  {
-                                     (object) this.x.ToString((IFormatProvider) currentCulture),
-                                     (object) this.y.ToString((IFormatProvider) currentCulture)
+                                     this.x.ToString(currentCulture),
+                                     this.y.ToString(currentCulture)
                                  });
         }
 
@@ -98,12 +87,12 @@ namespace PF
 
         public float Length()
         {
-            return (float) Math.Sqrt((double) this.x * (double) this.x + (double) this.y * (double) this.y);
+            return (float) Math.Sqrt(this.x * (double) this.x + this.y * (double) this.y);
         }
 
         public float LengthSquared()
         {
-            return (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y);
+            return (float) (this.x * (double) this.x + this.y * (double) this.y);
         }
         
         public float magnitude
@@ -126,47 +115,47 @@ namespace PF
         {
             float num1 = value1.x - value2.x;
             float num2 = value1.y - value2.y;
-            return (float) Math.Sqrt((double) num1 * (double) num1 + (double) num2 * (double) num2);
+            return (float) Math.Sqrt(num1 * (double) num1 + num2 * (double) num2);
         }
 
         public static void Distance(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             float num1 = value1.x - value2.x;
             float num2 = value1.y - value2.y;
-            float num3 = (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2);
-            result = (float) Math.Sqrt((double) num3);
+            float num3 = (float) (num1 * (double) num1 + num2 * (double) num2);
+            result = (float) Math.Sqrt(num3);
         }
 
         public static float DistanceSquared(Vector2 value1, Vector2 value2)
         {
             float num1 = value1.x - value2.x;
             float num2 = value1.y - value2.y;
-            return (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2);
+            return (float) (num1 * (double) num1 + num2 * (double) num2);
         }
 
         public static void DistanceSquared(ref Vector2 value1, ref Vector2 value2, out float result)
         {
             float num1 = value1.x - value2.x;
             float num2 = value1.y - value2.y;
-            result = (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2);
+            result = (float) (num1 * (double) num1 + num2 * (double) num2);
         }
 
         public void Normalize()
         {
-            float num1 = (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y);
-            if ((double) num1 < 9.99999974737875E-06)
+            float num1 = (float) (this.x * (double) this.x + this.y * (double) this.y);
+            if (num1 < 9.99999974737875E-06)
                 return;
-            float num2 = 1f / (float) Math.Sqrt((double) num1);
+            float num2 = 1f / (float) Math.Sqrt(num1);
             this.x *= num2;
             this.y *= num2;
         }
 
         public static Vector2 Normalize(Vector2 value)
         {
-            float num1 = (float) ((double) value.x * (double) value.x + (double) value.y * (double) value.y);
-            if ((double) num1 < 9.99999974737875E-06)
+            float num1 = (float) (value.x * (double) value.x + value.y * (double) value.y);
+            if (num1 < 9.99999974737875E-06)
                 return value;
-            float num2 = 1f / (float) Math.Sqrt((double) num1);
+            float num2 = 1f / (float) Math.Sqrt(num1);
             Vector2 vector2;
             vector2.x = value.x * num2;
             vector2.y = value.y * num2;
@@ -175,14 +164,14 @@ namespace PF
 
         public static void Normalize(ref Vector2 value, out Vector2 result)
         {
-            float num1 = (float) ((double) value.x * (double) value.x + (double) value.y * (double) value.y);
-            if ((double) num1 < 9.99999974737875E-06)
+            float num1 = (float) (value.x * (double) value.x + value.y * (double) value.y);
+            if (num1 < 9.99999974737875E-06)
             {
                 result = value;
             }
             else
             {
-                float num2 = 1f / (float) Math.Sqrt((double) num1);
+                float num2 = 1f / (float) Math.Sqrt(num1);
                 result.x = value.x * num2;
                 result.y = value.y * num2;
             }
@@ -198,7 +187,7 @@ namespace PF
 
         public static Vector2 Reflect(Vector2 vector, Vector2 normal)
         {
-            float num = (float) ((double) vector.x * (double) normal.x + (double) vector.y * (double) normal.y);
+            float num = (float) (vector.x * (double) normal.x + vector.y * (double) normal.y);
             Vector2 vector2;
             vector2.x = vector.x - 2f * num * normal.x;
             vector2.y = vector.y - 2f * num * normal.y;
@@ -207,7 +196,7 @@ namespace PF
 
         public static void Reflect(ref Vector2 vector, ref Vector2 normal, out Vector2 result)
         {
-            float num = (float) ((double) vector.x * (double) normal.x + (double) vector.y * (double) normal.y);
+            float num = (float) (vector.x * (double) normal.x + vector.y * (double) normal.y);
             result.x = vector.x - 2f * num * normal.x;
             result.y = vector.y - 2f * num * normal.y;
         }
@@ -283,7 +272,7 @@ namespace PF
         public static Vector2 SmoothStep(Vector2 value1, Vector2 value2, float amount)
         {
             amount = (double) amount > 1.0? 1f : ((double) amount < 0.0? 0.0f : amount);
-            amount = (float) ((double) amount * (double) amount * (3.0 - 2.0 * (double) amount));
+            amount = (float) (amount * (double) amount * (3.0 - 2.0 * amount));
             Vector2 vector2;
             vector2.x = value1.x + (value2.x - value1.x) * amount;
             vector2.y = value1.y + (value2.y - value1.y) * amount;
@@ -293,7 +282,7 @@ namespace PF
         public static void SmoothStep(ref Vector2 value1, ref Vector2 value2, float amount, out Vector2 result)
         {
             amount = (double) amount > 1.0? 1f : ((double) amount < 0.0? 0.0f : amount);
-            amount = (float) ((double) amount * (double) amount * (3.0 - 2.0 * (double) amount));
+            amount = (float) (amount * (double) amount * (3.0 - 2.0 * amount));
             result.x = value1.x + (value2.x - value1.x) * amount;
             result.y = value1.y + (value2.y - value1.y) * amount;
         }
@@ -314,12 +303,12 @@ namespace PF
 
         public static float Dot(Vector2 value1, Vector2 value2)
         {
-            return (float) ((double) value1.x * (double) value2.x + (double) value1.y * (double) value2.y);
+            return (float) (value1.x * (double) value2.x + value1.y * (double) value2.y);
         }
 
         public static void Dot(ref Vector2 value1, ref Vector2 value2, out float result)
         {
-            result = (float) ((double) value1.x * (double) value2.x + (double) value1.y * (double) value2.y);
+            result = (float) (value1.x * (double) value2.x + value1.y * (double) value2.y);
         }
 
         public static float Angle(Vector2 from, Vector2 to)
@@ -436,7 +425,7 @@ namespace PF
 
         public static bool operator ==(Vector2 lhs, Vector2 rhs)
         {
-            return (double) (lhs - rhs).sqrMagnitude < 9.99999943962493E-11;
+            return (lhs - rhs).sqrMagnitude < 9.99999943962493E-11;
         }
 
         public static bool operator !=(Vector2 lhs, Vector2 rhs)

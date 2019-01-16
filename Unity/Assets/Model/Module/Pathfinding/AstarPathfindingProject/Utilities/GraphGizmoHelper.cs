@@ -48,7 +48,7 @@ namespace Pathfinding.Util {
 				if (InSearchTree(node, debugData, debugPathID)) {
 					var pnode = debugData.GetPathNode(node);
 					if (pnode.parent != null) {
-						builder.DrawLine((PF.Vector3)node.position, (PF.Vector3)this.debugData.GetPathNode(node).parent.node.position, NodeColor(node));
+						builder.DrawLine((Vector3)node.position, (Vector3)this.debugData.GetPathNode(node).parent.node.position, NodeColor(node));
 					}
 				}
 			} else {
@@ -57,13 +57,13 @@ namespace Pathfinding.Util {
 				drawConnectionColor = NodeColor(node);
 				// Get the node position
 				// Cast it here to avoid doing it for every neighbour
-				drawConnectionStart = ((PF.Vector3)node.position).ToUnityV3();
+				drawConnectionStart = ((Vector3)node.position).ToUnityV3();
 				node.GetConnections(drawConnection);
 			}
 		}
 
 		void DrawConnection (GraphNode other) {
-			builder.DrawLine(drawConnectionStart, Vector3.Lerp((PF.Vector3)other.position, drawConnectionStart, 0.5f), drawConnectionColor);
+			builder.DrawLine(drawConnectionStart, Vector3.Lerp((Vector3)other.position, drawConnectionStart, 0.5f), drawConnectionColor);
 		}
 
 		/** Color to use for gizmos.

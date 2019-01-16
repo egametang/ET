@@ -53,7 +53,7 @@ namespace ILRuntime.Runtime.Generated
         }
         static void set_Path_0(ref object o, object v)
         {
-            ((ETModel.GizmosDebug)o).Path = (System.Collections.Generic.List<PF.Vector3>)v;
+            ((ETModel.GizmosDebug)o).Path = (System.Collections.Generic.List<UnityEngine.Vector3>)v;
         }
 
 
