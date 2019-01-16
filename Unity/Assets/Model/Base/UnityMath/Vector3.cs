@@ -8,14 +8,14 @@ namespace PF
     {
         private const float k1OverSqrt2 = 0.7071068f;
         private const float epsilon = 1E-05f;
-        private static readonly Vector3 _zero = new Vector3();
-        private static readonly Vector3 _one = new Vector3(1f, 1f, 1f);
-        private static readonly Vector3 _up = new Vector3(0.0f, 1f, 0.0f);
-        private static readonly Vector3 _down = new Vector3(0.0f, -1f, 0.0f);
-        private static readonly Vector3 _right = new Vector3(1f, 0.0f, 0.0f);
-        private static readonly Vector3 _left = new Vector3(-1f, 0.0f, 0.0f);
-        private static readonly Vector3 _forward = new Vector3(0.0f, 0.0f, 1f);
-        private static readonly Vector3 _backward = new Vector3(0.0f, 0.0f, -1f);
+        public static readonly Vector3 zero = new Vector3();
+        public static readonly Vector3 one = new Vector3(1f, 1f, 1f);
+        public static readonly Vector3 up = new Vector3(0.0f, 1f, 0.0f);
+        public static readonly Vector3 down = new Vector3(0.0f, -1f, 0.0f);
+        public static readonly Vector3 right = new Vector3(1f, 0.0f, 0.0f);
+        public static readonly Vector3 left = new Vector3(-1f, 0.0f, 0.0f);
+        public static readonly Vector3 forward = new Vector3(0.0f, 0.0f, 1f);
+        public static readonly Vector3 back = new Vector3(0.0f, 0.0f, -1f);
         public float x;
         public float y;
         public float z;
@@ -30,70 +30,6 @@ namespace PF
             return new Vector3(v3.x, v3.y, v3.z);
         }
 #endif
-
-        public static Vector3 zero
-        {
-            get
-            {
-                return Vector3._zero;
-            }
-        }
-
-        public static Vector3 one
-        {
-            get
-            {
-                return Vector3._one;
-            }
-        }
-
-        public static Vector3 up
-        {
-            get
-            {
-                return Vector3._up;
-            }
-        }
-
-        public static Vector3 down
-        {
-            get
-            {
-                return Vector3._down;
-            }
-        }
-
-        public static Vector3 right
-        {
-            get
-            {
-                return Vector3._right;
-            }
-        }
-
-        public static Vector3 left
-        {
-            get
-            {
-                return Vector3._left;
-            }
-        }
-
-        public static Vector3 forward
-        {
-            get
-            {
-                return Vector3._forward;
-            }
-        }
-
-        public static Vector3 back
-        {
-            get
-            {
-                return Vector3._backward;
-            }
-        }
 
         public Vector3(float x, float y, float z)
         {
@@ -216,7 +152,7 @@ namespace PF
         public void Normalize()
         {
             float num1 = (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z);
-            if ((double) num1 < (double) Vector3.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
                 return;
             float num2 = 1f / (float) Math.Sqrt((double) num1);
             this.x *= num2;
@@ -235,7 +171,7 @@ namespace PF
         public static Vector3 Normalize(Vector3 value)
         {
             float num1 = (float) ((double) value.x * (double) value.x + (double) value.y * (double) value.y + (double) value.z * (double) value.z);
-            if ((double) num1 < (double) Vector3.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
                 return value;
             float num2 = 1f / (float) Math.Sqrt((double) num1);
             Vector3 vector3;
@@ -248,7 +184,7 @@ namespace PF
         public static void Normalize(ref Vector3 value, out Vector3 result)
         {
             float num1 = (float) ((double) value.x * (double) value.x + (double) value.y * (double) value.y + (double) value.z * (double) value.z);
-            if ((double) num1 < (double) Vector3.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
             {
                 result = value;
             }
@@ -580,14 +516,14 @@ namespace PF
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent)
         {
             float num1 = Vector3.magnitudeStatic(ref normal);
-            if ((double) num1 > (double) Vector3.epsilon)
+            if ((double) num1 > (double) Mathf.Epsilon)
                 normal /= num1;
             else
                 normal = new Vector3(1f, 0.0f, 0.0f);
             float num2 = Vector3.Dot(normal, tangent);
             tangent -= num2 * normal;
             float num3 = Vector3.magnitudeStatic(ref tangent);
-            if ((double) num3 < (double) Vector3.epsilon)
+            if ((double) num3 < (double) Mathf.Epsilon)
                 tangent = Vector3.orthoNormalVectorFast(ref normal);
             else
                 tangent /= num3;
@@ -596,14 +532,14 @@ namespace PF
         public static void OrthoNormalize(ref Vector3 normal, ref Vector3 tangent, ref Vector3 binormal)
         {
             float num1 = Vector3.magnitudeStatic(ref normal);
-            if ((double) num1 > (double) Vector3.epsilon)
+            if ((double) num1 > (double) Mathf.Epsilon)
                 normal /= num1;
             else
                 normal = new Vector3(1f, 0.0f, 0.0f);
             float num2 = Vector3.Dot(normal, tangent);
             tangent -= num2 * normal;
             float num3 = Vector3.magnitudeStatic(ref tangent);
-            if ((double) num3 > (double) Vector3.epsilon)
+            if ((double) num3 > (double) Mathf.Epsilon)
                 tangent /= num3;
             else
                 tangent = Vector3.orthoNormalVectorFast(ref normal);
@@ -611,7 +547,7 @@ namespace PF
             float num5 = Vector3.Dot(normal, binormal);
             binormal -= num5 * normal + num4 * tangent;
             float num6 = Vector3.magnitudeStatic(ref binormal);
-            if ((double) num6 > (double) Vector3.epsilon)
+            if ((double) num6 > (double) Mathf.Epsilon)
                 binormal /= num6;
             else
                 binormal = Vector3.Cross(normal, tangent);
@@ -633,7 +569,7 @@ namespace PF
             to.Normalize();
             float result;
             Vector3.Dot(ref from, ref to, out result);
-            return MathHelper.ACos(MathHelper.Clamp(result, -1f, 1f)) * 57.29578f;
+            return Mathf.Cos(Mathf.Clamp(result, -1f, 1f)) * 57.29578f;
         }
 
         public static void Angle(ref Vector3 from, ref Vector3 to, out float result)
@@ -642,7 +578,7 @@ namespace PF
             to.Normalize();
             float result1;
             Vector3.Dot(ref from, ref to, out result1);
-            result = MathHelper.ACos(MathHelper.Clamp(result1, -1f, 1f)) * 57.29578f;
+            result = Mathf.Cos(Mathf.Clamp(result1, -1f, 1f)) * 57.29578f;
         }
 
         public static Vector3 operator -(Vector3 value)

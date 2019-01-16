@@ -50,26 +50,14 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDeserializeSystem.cs">
       <Link>Base\Base\IDeserializeSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Color32.cs">
-      <Link>Base\UnityMath\Color32.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\FrameworkResources.cs">
-      <Link>Base\UnityMath\FrameworkResources.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Mathf.cs">
       <Link>Base\UnityMath\Mathf.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\MathHelper.cs">
-      <Link>Base\UnityMath\MathHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix3x3.cs">
       <Link>Base\UnityMath\Matrix3x3.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix4x4.cs">
       <Link>Base\UnityMath\Matrix4x4.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\PackUtils.cs">
-      <Link>Base\UnityMath\PackUtils.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Quaternion.cs">
       <Link>Base\UnityMath\Quaternion.cs</Link>

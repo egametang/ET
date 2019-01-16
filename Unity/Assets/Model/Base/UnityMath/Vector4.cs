@@ -6,30 +6,13 @@ namespace PF
     [Serializable]
     public struct Vector4: IEquatable<Vector4>
     {
-        private static readonly float epsilon = 1E-05f;
-        private static Vector4 _zero = new Vector4();
-        private static Vector4 _one = new Vector4(1f, 1f, 1f, 1f);
+        public static readonly Vector4 zero = new Vector4();
+        public static readonly Vector4 one = new Vector4(1f, 1f, 1f, 1f);
         public float x;
         public float y;
         public float z;
         public float w;
-
-        public static Vector4 zero
-        {
-            get
-            {
-                return Vector4._zero;
-            }
-        }
-
-        public static Vector4 one
-        {
-            get
-            {
-                return Vector4._one;
-            }
-        }
-
+        
         public Vector4(float x, float y, float z, float w)
         {
             this.x = x;
@@ -168,7 +151,7 @@ namespace PF
         {
             float num1 = (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
                 (double) this.w * (double) this.w);
-            if ((double) num1 < (double) Vector4.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
                 return;
             float num2 = 1f / (float) Math.Sqrt((double) num1);
             this.x *= num2;
@@ -181,7 +164,7 @@ namespace PF
         {
             float num1 = (float) ((double) vector.x * (double) vector.x + (double) vector.y * (double) vector.y +
                 (double) vector.z * (double) vector.z + (double) vector.w * (double) vector.w);
-            if ((double) num1 < (double) Vector4.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
                 return vector;
             float num2 = 1f / (float) Math.Sqrt((double) num1);
             Vector4 vector4;
@@ -196,7 +179,7 @@ namespace PF
         {
             float num1 = (float) ((double) vector.x * (double) vector.x + (double) vector.y * (double) vector.y +
                 (double) vector.z * (double) vector.z + (double) vector.w * (double) vector.w);
-            if ((double) num1 < (double) Vector4.epsilon)
+            if ((double) num1 < (double) Mathf.Epsilon)
             {
                 result = vector;
             }

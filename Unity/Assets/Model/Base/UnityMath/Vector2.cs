@@ -6,9 +6,9 @@ namespace PF
     [Serializable]
     public struct Vector2: IEquatable<Vector2>
     {
-        private static readonly Vector2 _zero = new Vector2();
-        private static readonly Vector2 _one = new Vector2(1f, 1f);
-        private const float epsilon = 1E-05f;
+        public static readonly Vector2 zero = new Vector2();
+        public static readonly Vector2 one = new Vector2(1f, 1f);
+        
         public float x;
         public float y;
 #if !SERVER
@@ -31,22 +31,6 @@ namespace PF
         public static implicit operator Vector3(Vector2 v)
         {
             return new Vector3(v.x, v.y, 0.0f);
-        }
-
-        public static Vector2 zero
-        {
-            get
-            {
-                return Vector2._zero;
-            }
-        }
-
-        public static Vector2 one
-        {
-            get
-            {
-                return Vector2._one;
-            }
         }
 
         public Vector2(float x, float y)
@@ -344,7 +328,7 @@ namespace PF
             to.Normalize();
             float result;
             Vector2.Dot(ref from, ref to, out result);
-            return MathHelper.ACos(MathHelper.Clamp(result, -1f, 1f)) * 57.29578f;
+            return Mathf.Cos(Mathf.Clamp(result, -1f, 1f)) * 57.29578f;
         }
 
         public static void Angle(ref Vector2 from, ref Vector2 to, out float result)
@@ -353,7 +337,7 @@ namespace PF
             to.Normalize();
             float result1;
             Vector2.Dot(ref from, ref to, out result1);
-            result = MathHelper.ACos(MathHelper.Clamp(result1, -1f, 1f)) * 57.29578f;
+            result = Mathf.Cos(Mathf.Clamp(result1, -1f, 1f)) * 57.29578f;
         }
 
         public static Vector2 Add(Vector2 value1, Vector2 value2)

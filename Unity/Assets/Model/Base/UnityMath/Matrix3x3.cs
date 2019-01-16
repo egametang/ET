@@ -7,6 +7,8 @@ namespace PF
 {
 	public struct Matrix3x3
 	{
+		public static readonly Matrix3x3 identity = new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
+		
 		public float[] Data;
 
 		public Matrix3x3(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8)
@@ -16,14 +18,7 @@ namespace PF
 			Data[1] = m1; Data[4] = m4; Data[7] = m7;
 			Data[2] = m2; Data[5] = m5; Data[8] = m8;
 		}
-
-		public static Matrix3x3 identity
-		{
-			get
-			{
-				return new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
-			}
-		}
+		
 		public void SetZero()
 		{
 			Data[0] = 0f; Data[3] = 0f; Data[6] = 0f;

@@ -6,26 +6,19 @@ namespace PF
     [Serializable]
     public struct Quaternion: IEquatable<Quaternion>
     {
-        private static Quaternion _identity = new Quaternion(0.0f, 0.0f, 0.0f, 1f);
-        public float W;
-        public float X;
-        public float Y;
-        public float Z;
+        public static readonly Quaternion identity = new Quaternion(0.0f, 0.0f, 0.0f, 1f);
+        public float w;
+        public float x;
+        public float y;
+        public float z;
 
-        public static Quaternion identity
-        {
-            get
-            {
-                return Quaternion._identity;
-            }
-        }
 
         public Quaternion(float x, float y, float z, float w)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.W = w;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = w;
         }
 
         public Quaternion(float angle, Vector3 rkAxis)
@@ -33,10 +26,10 @@ namespace PF
             float num1 = angle * 0.5f;
             float num2 = (float) Math.Sin((double) num1);
             float num3 = (float) Math.Cos((double) num1);
-            this.X = rkAxis.x * num2;
-            this.Y = rkAxis.y * num2;
-            this.Z = rkAxis.z * num2;
-            this.W = num3;
+            this.x = rkAxis.x * num2;
+            this.y = rkAxis.y * num2;
+            this.z = rkAxis.z * num2;
+            this.w = num3;
         }
 
         public Quaternion(Vector3 xaxis, Vector3 yaxis, Vector3 zaxis)
@@ -65,16 +58,16 @@ namespace PF
             float num7 = yaw * 0.5f;
             float num8 = (float) Math.Sin((double) num7);
             float num9 = (float) Math.Cos((double) num7);
-            this.X = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
-            this.Y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
-            this.Z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
-            this.W = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
+            this.x = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
+            this.y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
+            this.z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
+            this.w = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
         }
         
 #if !SERVER
         public static implicit operator UnityEngine.Quaternion(Quaternion q)
         {
-            return new UnityEngine.Quaternion(q.X, q.Y, q.Z, q.W);
+            return new UnityEngine.Quaternion(q.x, q.y, q.z, q.w);
         }
         
         public static implicit operator Quaternion(UnityEngine.Quaternion q)
@@ -86,16 +79,16 @@ namespace PF
         public override string ToString()
         {
             CultureInfo currentCulture = CultureInfo.CurrentCulture;
-            return string.Format((IFormatProvider) currentCulture, "({0}, {1}, {2}, {3})", (object) this.X.ToString((IFormatProvider) currentCulture),
-                                 (object) this.Y.ToString((IFormatProvider) currentCulture),
-                                 (object) this.Z.ToString((IFormatProvider) currentCulture),
-                                 (object) this.W.ToString((IFormatProvider) currentCulture));
+            return string.Format((IFormatProvider) currentCulture, "({0}, {1}, {2}, {3})", (object) this.x.ToString((IFormatProvider) currentCulture),
+                                 (object) this.y.ToString((IFormatProvider) currentCulture),
+                                 (object) this.z.ToString((IFormatProvider) currentCulture),
+                                 (object) this.w.ToString((IFormatProvider) currentCulture));
         }
 
         public bool Equals(Quaternion other)
         {
-            if ((double) this.X == (double) other.X && (double) this.Y == (double) other.Y && (double) this.Z == (double) other.Z)
-                return (double) this.W == (double) other.W;
+            if ((double) this.x == (double) other.x && (double) this.y == (double) other.y && (double) this.z == (double) other.z)
+                return (double) this.w == (double) other.w;
             return false;
         }
 
@@ -109,73 +102,73 @@ namespace PF
 
         public override int GetHashCode()
         {
-            return this.X.GetHashCode() + this.Y.GetHashCode() + this.Z.GetHashCode() + this.W.GetHashCode();
+            return this.x.GetHashCode() + this.y.GetHashCode() + this.z.GetHashCode() + this.w.GetHashCode();
         }
 
         public float LengthSquared()
         {
-            return (float) ((double) this.X * (double) this.X + (double) this.Y * (double) this.Y + (double) this.Z * (double) this.Z +
-                (double) this.W * (double) this.W);
+            return (float) ((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
+                (double) this.w * (double) this.w);
         }
 
         public float Length()
         {
-            return (float) Math.Sqrt((double) this.X * (double) this.X + (double) this.Y * (double) this.Y + (double) this.Z * (double) this.Z +
-                                     (double) this.W * (double) this.W);
+            return (float) Math.Sqrt((double) this.x * (double) this.x + (double) this.y * (double) this.y + (double) this.z * (double) this.z +
+                                     (double) this.w * (double) this.w);
         }
 
         public void Normalize()
         {
-            float num = 1f / (float) Math.Sqrt((double) this.X * (double) this.X + (double) this.Y * (double) this.Y +
-                                               (double) this.Z * (double) this.Z + (double) this.W * (double) this.W);
-            this.X *= num;
-            this.Y *= num;
-            this.Z *= num;
-            this.W *= num;
+            float num = 1f / (float) Math.Sqrt((double) this.x * (double) this.x + (double) this.y * (double) this.y +
+                                               (double) this.z * (double) this.z + (double) this.w * (double) this.w);
+            this.x *= num;
+            this.y *= num;
+            this.z *= num;
+            this.w *= num;
         }
 
         public static Quaternion Normalize(Quaternion quaternion)
         {
-            float num = 1f / (float) Math.Sqrt((double) quaternion.X * (double) quaternion.X + (double) quaternion.Y * (double) quaternion.Y +
-                                               (double) quaternion.Z * (double) quaternion.Z + (double) quaternion.W * (double) quaternion.W);
+            float num = 1f / (float) Math.Sqrt((double) quaternion.x * (double) quaternion.x + (double) quaternion.y * (double) quaternion.y +
+                                               (double) quaternion.z * (double) quaternion.z + (double) quaternion.w * (double) quaternion.w);
             Quaternion quaternion1;
-            quaternion1.X = quaternion.X * num;
-            quaternion1.Y = quaternion.Y * num;
-            quaternion1.Z = quaternion.Z * num;
-            quaternion1.W = quaternion.W * num;
+            quaternion1.x = quaternion.x * num;
+            quaternion1.y = quaternion.y * num;
+            quaternion1.z = quaternion.z * num;
+            quaternion1.w = quaternion.w * num;
             return quaternion1;
         }
 
         public static void Normalize(ref Quaternion quaternion, out Quaternion result)
         {
-            float num = 1f / (float) Math.Sqrt((double) quaternion.X * (double) quaternion.X + (double) quaternion.Y * (double) quaternion.Y +
-                                               (double) quaternion.Z * (double) quaternion.Z + (double) quaternion.W * (double) quaternion.W);
-            result.X = quaternion.X * num;
-            result.Y = quaternion.Y * num;
-            result.Z = quaternion.Z * num;
-            result.W = quaternion.W * num;
+            float num = 1f / (float) Math.Sqrt((double) quaternion.x * (double) quaternion.x + (double) quaternion.y * (double) quaternion.y +
+                                               (double) quaternion.z * (double) quaternion.z + (double) quaternion.w * (double) quaternion.w);
+            result.x = quaternion.x * num;
+            result.y = quaternion.y * num;
+            result.z = quaternion.z * num;
+            result.w = quaternion.w * num;
         }
 
         public static Quaternion Inverse(Quaternion quaternion)
         {
-            float num = 1f / (float) ((double) quaternion.X * (double) quaternion.X + (double) quaternion.Y * (double) quaternion.Y +
-                (double) quaternion.Z * (double) quaternion.Z + (double) quaternion.W * (double) quaternion.W);
+            float num = 1f / (float) ((double) quaternion.x * (double) quaternion.x + (double) quaternion.y * (double) quaternion.y +
+                (double) quaternion.z * (double) quaternion.z + (double) quaternion.w * (double) quaternion.w);
             Quaternion quaternion1;
-            quaternion1.X = -quaternion.X * num;
-            quaternion1.Y = -quaternion.Y * num;
-            quaternion1.Z = -quaternion.Z * num;
-            quaternion1.W = quaternion.W * num;
+            quaternion1.x = -quaternion.x * num;
+            quaternion1.y = -quaternion.y * num;
+            quaternion1.z = -quaternion.z * num;
+            quaternion1.w = quaternion.w * num;
             return quaternion1;
         }
 
         public static void Inverse(ref Quaternion quaternion, out Quaternion result)
         {
-            float num = 1f / (float) ((double) quaternion.X * (double) quaternion.X + (double) quaternion.Y * (double) quaternion.Y +
-                (double) quaternion.Z * (double) quaternion.Z + (double) quaternion.W * (double) quaternion.W);
-            result.X = -quaternion.X * num;
-            result.Y = -quaternion.Y * num;
-            result.Z = -quaternion.Z * num;
-            result.W = quaternion.W * num;
+            float num = 1f / (float) ((double) quaternion.x * (double) quaternion.x + (double) quaternion.y * (double) quaternion.y +
+                (double) quaternion.z * (double) quaternion.z + (double) quaternion.w * (double) quaternion.w);
+            result.x = -quaternion.x * num;
+            result.y = -quaternion.y * num;
+            result.z = -quaternion.z * num;
+            result.w = quaternion.w * num;
         }
 
         public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
@@ -184,10 +177,10 @@ namespace PF
             float num2 = (float) Math.Sin((double) num1);
             float num3 = (float) Math.Cos((double) num1);
             Quaternion quaternion;
-            quaternion.X = axis.x * num2;
-            quaternion.Y = axis.y * num2;
-            quaternion.Z = axis.z * num2;
-            quaternion.W = num3;
+            quaternion.x = axis.x * num2;
+            quaternion.y = axis.y * num2;
+            quaternion.z = axis.z * num2;
+            quaternion.w = num3;
             return quaternion;
         }
 
@@ -196,10 +189,10 @@ namespace PF
             float num1 = angle * 0.5f;
             float num2 = (float) Math.Sin((double) num1);
             float num3 = (float) Math.Cos((double) num1);
-            result.X = axis.x * num2;
-            result.Y = axis.y * num2;
-            result.Z = axis.z * num2;
-            result.W = num3;
+            result.x = axis.x * num2;
+            result.y = axis.y * num2;
+            result.z = axis.z * num2;
+            result.w = num3;
         }
 
         public static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll)
@@ -214,10 +207,10 @@ namespace PF
             float num8 = (float) Math.Sin((double) num7);
             float num9 = (float) Math.Cos((double) num7);
             Quaternion quaternion;
-            quaternion.X = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
-            quaternion.Y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
-            quaternion.Z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
-            quaternion.W = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
+            quaternion.x = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
+            quaternion.y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
+            quaternion.z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
+            quaternion.w = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
             return quaternion;
         }
         
@@ -252,18 +245,18 @@ namespace PF
         private static Matrix3x3 QuaternionToMatrix(Quaternion q)
         {
             // Precalculate coordinate products
-            float x = q.X * 2.0F;
-            float y = q.Y * 2.0F;
-            float z = q.Z * 2.0F;
-            float xx = q.X * x;
-            float yy = q.Y * y;
-            float zz = q.Z * z;
-            float xy = q.X * y;
-            float xz = q.X * z;
-            float yz = q.Y * z;
-            float wx = q.W * x;
-            float wy = q.W * y;
-            float wz = q.W * z;
+            float x = q.x * 2.0F;
+            float y = q.y * 2.0F;
+            float z = q.z * 2.0F;
+            float xx = q.x * x;
+            float yy = q.y * y;
+            float zz = q.z * z;
+            float xy = q.x * y;
+            float xz = q.x * z;
+            float yz = q.y * z;
+            float wx = q.w * x;
+            float wy = q.w * y;
+            float wz = q.w * z;
 
             // Calculate 3x3 matrix from orthonormal basis
             Matrix3x3 m = Matrix3x3.identity;
@@ -365,11 +358,11 @@ namespace PF
             {
                 // |w| > 1/2, mafy as well choose w > 1/2
                 fRoot = Mathf.Sqrt(fTrace + 1.0f);  // 2w
-                q.W = 0.5f * fRoot;
+                q.w = 0.5f * fRoot;
                 fRoot = 0.5f / fRoot;  // 1/(4w)
-                q.X = (kRot.Get(2, 1) - kRot.Get(1, 2)) * fRoot;
-                q.Y = (kRot.Get(0, 2) - kRot.Get(2, 0)) * fRoot;
-                q.Z = (kRot.Get(1, 0) - kRot.Get(0, 1)) * fRoot;
+                q.x = (kRot.Get(2, 1) - kRot.Get(1, 2)) * fRoot;
+                q.y = (kRot.Get(0, 2) - kRot.Get(2, 0)) * fRoot;
+                q.z = (kRot.Get(1, 0) - kRot.Get(0, 1)) * fRoot;
             }
             else
             {
@@ -384,17 +377,17 @@ namespace PF
                 int k = s_iNext[j];
 
                 fRoot = Mathf.Sqrt(kRot.Get(i, i) - kRot.Get(j, j) - kRot.Get(k, k) + 1.0f);
-                float[] apkQuat = new float[3] { q.X, q.Y, q.Z };
+                float[] apkQuat = new float[3] { q.x, q.y, q.z };
 
                 apkQuat[i] = 0.5f * fRoot;
                 fRoot = 0.5f / fRoot;
-                q.W = (kRot.Get(k, j) - kRot.Get(j, k)) * fRoot;
+                q.w = (kRot.Get(k, j) - kRot.Get(j, k)) * fRoot;
                 apkQuat[j] = (kRot.Get(j, i) + kRot.Get(i, j)) * fRoot;
                 apkQuat[k] = (kRot.Get(k, i) + kRot.Get(i, k)) * fRoot;
 
-                q.X = apkQuat[0];
-                q.Y = apkQuat[1];
-                q.Z = apkQuat[2];
+                q.x = apkQuat[0];
+                q.y = apkQuat[1];
+                q.z = apkQuat[2];
             }
             q = Quaternion.Normalize(q);
 
@@ -466,10 +459,10 @@ namespace PF
             float num7 = yaw * 0.5f;
             float num8 = (float) Math.Sin((double) num7);
             float num9 = (float) Math.Cos((double) num7);
-            result.X = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
-            result.Y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
-            result.Z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
-            result.W = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
+            result.x = (float) ((double) num9 * (double) num5 * (double) num3 + (double) num8 * (double) num6 * (double) num2);
+            result.y = (float) ((double) num8 * (double) num6 * (double) num3 - (double) num9 * (double) num5 * (double) num2);
+            result.z = (float) ((double) num9 * (double) num6 * (double) num2 - (double) num8 * (double) num5 * (double) num3);
+            result.w = (float) ((double) num9 * (double) num6 * (double) num3 + (double) num8 * (double) num5 * (double) num2);
         }
 
         public static Quaternion CreateFromRotationMatrix(Matrix4x4 matrix)
@@ -479,11 +472,11 @@ namespace PF
             if ((double) num1 > 0.0)
             {
                 float num2 = (float) Math.Sqrt((double) num1 + 1.0);
-                quaternion.W = num2 * 0.5f;
+                quaternion.w = num2 * 0.5f;
                 float num3 = 0.5f / num2;
-                quaternion.X = (matrix.m21 - matrix.m12) * num3;
-                quaternion.Y = (matrix.m02 - matrix.m20) * num3;
-                quaternion.Z = (matrix.m10 - matrix.m01) * num3;
+                quaternion.x = (matrix.m21 - matrix.m12) * num3;
+                quaternion.y = (matrix.m02 - matrix.m20) * num3;
+                quaternion.z = (matrix.m10 - matrix.m01) * num3;
                 return quaternion;
             }
 
@@ -491,10 +484,10 @@ namespace PF
             {
                 float num2 = (float) Math.Sqrt(1.0 + (double) matrix.m00 - (double) matrix.m11 - (double) matrix.m22);
                 float num3 = 0.5f / num2;
-                quaternion.X = 0.5f * num2;
-                quaternion.Y = (matrix.m10 + matrix.m01) * num3;
-                quaternion.Z = (matrix.m20 + matrix.m02) * num3;
-                quaternion.W = (matrix.m21 - matrix.m12) * num3;
+                quaternion.x = 0.5f * num2;
+                quaternion.y = (matrix.m10 + matrix.m01) * num3;
+                quaternion.z = (matrix.m20 + matrix.m02) * num3;
+                quaternion.w = (matrix.m21 - matrix.m12) * num3;
                 return quaternion;
             }
 
@@ -502,19 +495,19 @@ namespace PF
             {
                 float num2 = (float) Math.Sqrt(1.0 + (double) matrix.m11 - (double) matrix.m00 - (double) matrix.m22);
                 float num3 = 0.5f / num2;
-                quaternion.X = (matrix.m01 + matrix.m10) * num3;
-                quaternion.Y = 0.5f * num2;
-                quaternion.Z = (matrix.m12 + matrix.m21) * num3;
-                quaternion.W = (matrix.m02 - matrix.m20) * num3;
+                quaternion.x = (matrix.m01 + matrix.m10) * num3;
+                quaternion.y = 0.5f * num2;
+                quaternion.z = (matrix.m12 + matrix.m21) * num3;
+                quaternion.w = (matrix.m02 - matrix.m20) * num3;
                 return quaternion;
             }
 
             float num4 = (float) Math.Sqrt(1.0 + (double) matrix.m22 - (double) matrix.m00 - (double) matrix.m11);
             float num5 = 0.5f / num4;
-            quaternion.X = (matrix.m02 + matrix.m20) * num5;
-            quaternion.Y = (matrix.m12 + matrix.m21) * num5;
-            quaternion.Z = 0.5f * num4;
-            quaternion.W = (matrix.m10 - matrix.m01) * num5;
+            quaternion.x = (matrix.m02 + matrix.m20) * num5;
+            quaternion.y = (matrix.m12 + matrix.m21) * num5;
+            quaternion.z = 0.5f * num4;
+            quaternion.w = (matrix.m10 - matrix.m01) * num5;
             return quaternion;
         }
 
@@ -524,58 +517,58 @@ namespace PF
             if ((double) num1 > 0.0)
             {
                 float num2 = (float) Math.Sqrt((double) num1 + 1.0);
-                result.W = num2 * 0.5f;
+                result.w = num2 * 0.5f;
                 float num3 = 0.5f / num2;
-                result.X = (matrix.m21 - matrix.m12) * num3;
-                result.Y = (matrix.m02 - matrix.m20) * num3;
-                result.Z = (matrix.m10 - matrix.m01) * num3;
+                result.x = (matrix.m21 - matrix.m12) * num3;
+                result.y = (matrix.m02 - matrix.m20) * num3;
+                result.z = (matrix.m10 - matrix.m01) * num3;
             }
             else if ((double) matrix.m00 >= (double) matrix.m11 && (double) matrix.m00 >= (double) matrix.m22)
             {
                 float num2 = (float) Math.Sqrt(1.0 + (double) matrix.m00 - (double) matrix.m11 - (double) matrix.m22);
                 float num3 = 0.5f / num2;
-                result.X = 0.5f * num2;
-                result.Y = (matrix.m10 + matrix.m01) * num3;
-                result.Z = (matrix.m20 + matrix.m02) * num3;
-                result.W = (matrix.m21 - matrix.m12) * num3;
+                result.x = 0.5f * num2;
+                result.y = (matrix.m10 + matrix.m01) * num3;
+                result.z = (matrix.m20 + matrix.m02) * num3;
+                result.w = (matrix.m21 - matrix.m12) * num3;
             }
             else if ((double) matrix.m11 > (double) matrix.m22)
             {
                 float num2 = (float) Math.Sqrt(1.0 + (double) matrix.m11 - (double) matrix.m00 - (double) matrix.m22);
                 float num3 = 0.5f / num2;
-                result.X = (matrix.m01 + matrix.m10) * num3;
-                result.Y = 0.5f * num2;
-                result.Z = (matrix.m12 + matrix.m21) * num3;
-                result.W = (matrix.m02 - matrix.m20) * num3;
+                result.x = (matrix.m01 + matrix.m10) * num3;
+                result.y = 0.5f * num2;
+                result.z = (matrix.m12 + matrix.m21) * num3;
+                result.w = (matrix.m02 - matrix.m20) * num3;
             }
             else
             {
                 float num2 = (float) Math.Sqrt(1.0 + (double) matrix.m22 - (double) matrix.m00 - (double) matrix.m11);
                 float num3 = 0.5f / num2;
-                result.X = (matrix.m02 + matrix.m20) * num3;
-                result.Y = (matrix.m12 + matrix.m21) * num3;
-                result.Z = 0.5f * num2;
-                result.W = (matrix.m10 - matrix.m01) * num3;
+                result.x = (matrix.m02 + matrix.m20) * num3;
+                result.y = (matrix.m12 + matrix.m21) * num3;
+                result.z = 0.5f * num2;
+                result.w = (matrix.m10 - matrix.m01) * num3;
             }
         }
 
         public static float Dot(Quaternion quaternion1, Quaternion quaternion2)
         {
-            return (float) ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W);
+            return (float) ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w);
         }
 
         public static void Dot(ref Quaternion quaternion1, ref Quaternion quaternion2, out float result)
         {
-            result = (float) ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W);
+            result = (float) ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w);
         }
 
         public static Quaternion Slerp(Quaternion quaternion1, Quaternion quaternion2, float amount)
         {
             float num1 = amount;
-            float num2 = (float) ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W);
+            float num2 = (float) ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w);
             bool flag = false;
             if ((double) num2 < 0.0)
             {
@@ -599,18 +592,18 @@ namespace PF
             }
 
             Quaternion quaternion;
-            quaternion.X = (float) ((double) num3 * (double) quaternion1.X + (double) num4 * (double) quaternion2.X);
-            quaternion.Y = (float) ((double) num3 * (double) quaternion1.Y + (double) num4 * (double) quaternion2.Y);
-            quaternion.Z = (float) ((double) num3 * (double) quaternion1.Z + (double) num4 * (double) quaternion2.Z);
-            quaternion.W = (float) ((double) num3 * (double) quaternion1.W + (double) num4 * (double) quaternion2.W);
+            quaternion.x = (float) ((double) num3 * (double) quaternion1.x + (double) num4 * (double) quaternion2.x);
+            quaternion.y = (float) ((double) num3 * (double) quaternion1.y + (double) num4 * (double) quaternion2.y);
+            quaternion.z = (float) ((double) num3 * (double) quaternion1.z + (double) num4 * (double) quaternion2.z);
+            quaternion.w = (float) ((double) num3 * (double) quaternion1.w + (double) num4 * (double) quaternion2.w);
             return quaternion;
         }
 
         public static void Slerp(ref Quaternion quaternion1, ref Quaternion quaternion2, float amount, out Quaternion result)
         {
             float num1 = amount;
-            float num2 = (float) ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W);
+            float num2 = (float) ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w);
             bool flag = false;
             if ((double) num2 < 0.0)
             {
@@ -633,10 +626,10 @@ namespace PF
                 num4 = flag? (float) -Math.Sin((double) num1 * (double) num5) * num6 : (float) Math.Sin((double) num1 * (double) num5) * num6;
             }
 
-            result.X = (float) ((double) num3 * (double) quaternion1.X + (double) num4 * (double) quaternion2.X);
-            result.Y = (float) ((double) num3 * (double) quaternion1.Y + (double) num4 * (double) quaternion2.Y);
-            result.Z = (float) ((double) num3 * (double) quaternion1.Z + (double) num4 * (double) quaternion2.Z);
-            result.W = (float) ((double) num3 * (double) quaternion1.W + (double) num4 * (double) quaternion2.W);
+            result.x = (float) ((double) num3 * (double) quaternion1.x + (double) num4 * (double) quaternion2.x);
+            result.y = (float) ((double) num3 * (double) quaternion1.y + (double) num4 * (double) quaternion2.y);
+            result.z = (float) ((double) num3 * (double) quaternion1.z + (double) num4 * (double) quaternion2.z);
+            result.w = (float) ((double) num3 * (double) quaternion1.w + (double) num4 * (double) quaternion2.w);
         }
 
         public static Quaternion Lerp(Quaternion quaternion1, Quaternion quaternion2, float amount)
@@ -644,28 +637,28 @@ namespace PF
             float num1 = amount;
             float num2 = 1f - num1;
             Quaternion quaternion = new Quaternion();
-            if ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W >= 0.0)
+            if ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w >= 0.0)
             {
-                quaternion.X = (float) ((double) num2 * (double) quaternion1.X + (double) num1 * (double) quaternion2.X);
-                quaternion.Y = (float) ((double) num2 * (double) quaternion1.Y + (double) num1 * (double) quaternion2.Y);
-                quaternion.Z = (float) ((double) num2 * (double) quaternion1.Z + (double) num1 * (double) quaternion2.Z);
-                quaternion.W = (float) ((double) num2 * (double) quaternion1.W + (double) num1 * (double) quaternion2.W);
+                quaternion.x = (float) ((double) num2 * (double) quaternion1.x + (double) num1 * (double) quaternion2.x);
+                quaternion.y = (float) ((double) num2 * (double) quaternion1.y + (double) num1 * (double) quaternion2.y);
+                quaternion.z = (float) ((double) num2 * (double) quaternion1.z + (double) num1 * (double) quaternion2.z);
+                quaternion.w = (float) ((double) num2 * (double) quaternion1.w + (double) num1 * (double) quaternion2.w);
             }
             else
             {
-                quaternion.X = (float) ((double) num2 * (double) quaternion1.X - (double) num1 * (double) quaternion2.X);
-                quaternion.Y = (float) ((double) num2 * (double) quaternion1.Y - (double) num1 * (double) quaternion2.Y);
-                quaternion.Z = (float) ((double) num2 * (double) quaternion1.Z - (double) num1 * (double) quaternion2.Z);
-                quaternion.W = (float) ((double) num2 * (double) quaternion1.W - (double) num1 * (double) quaternion2.W);
+                quaternion.x = (float) ((double) num2 * (double) quaternion1.x - (double) num1 * (double) quaternion2.x);
+                quaternion.y = (float) ((double) num2 * (double) quaternion1.y - (double) num1 * (double) quaternion2.y);
+                quaternion.z = (float) ((double) num2 * (double) quaternion1.z - (double) num1 * (double) quaternion2.z);
+                quaternion.w = (float) ((double) num2 * (double) quaternion1.w - (double) num1 * (double) quaternion2.w);
             }
 
-            float num3 = 1f / (float) Math.Sqrt((double) quaternion.X * (double) quaternion.X + (double) quaternion.Y * (double) quaternion.Y +
-                                                (double) quaternion.Z * (double) quaternion.Z + (double) quaternion.W * (double) quaternion.W);
-            quaternion.X *= num3;
-            quaternion.Y *= num3;
-            quaternion.Z *= num3;
-            quaternion.W *= num3;
+            float num3 = 1f / (float) Math.Sqrt((double) quaternion.x * (double) quaternion.x + (double) quaternion.y * (double) quaternion.y +
+                                                (double) quaternion.z * (double) quaternion.z + (double) quaternion.w * (double) quaternion.w);
+            quaternion.x *= num3;
+            quaternion.y *= num3;
+            quaternion.z *= num3;
+            quaternion.w *= num3;
             return quaternion;
         }
 
@@ -673,53 +666,53 @@ namespace PF
         {
             float num1 = amount;
             float num2 = 1f - num1;
-            if ((double) quaternion1.X * (double) quaternion2.X + (double) quaternion1.Y * (double) quaternion2.Y +
-                (double) quaternion1.Z * (double) quaternion2.Z + (double) quaternion1.W * (double) quaternion2.W >= 0.0)
+            if ((double) quaternion1.x * (double) quaternion2.x + (double) quaternion1.y * (double) quaternion2.y +
+                (double) quaternion1.z * (double) quaternion2.z + (double) quaternion1.w * (double) quaternion2.w >= 0.0)
             {
-                result.X = (float) ((double) num2 * (double) quaternion1.X + (double) num1 * (double) quaternion2.X);
-                result.Y = (float) ((double) num2 * (double) quaternion1.Y + (double) num1 * (double) quaternion2.Y);
-                result.Z = (float) ((double) num2 * (double) quaternion1.Z + (double) num1 * (double) quaternion2.Z);
-                result.W = (float) ((double) num2 * (double) quaternion1.W + (double) num1 * (double) quaternion2.W);
+                result.x = (float) ((double) num2 * (double) quaternion1.x + (double) num1 * (double) quaternion2.x);
+                result.y = (float) ((double) num2 * (double) quaternion1.y + (double) num1 * (double) quaternion2.y);
+                result.z = (float) ((double) num2 * (double) quaternion1.z + (double) num1 * (double) quaternion2.z);
+                result.w = (float) ((double) num2 * (double) quaternion1.w + (double) num1 * (double) quaternion2.w);
             }
             else
             {
-                result.X = (float) ((double) num2 * (double) quaternion1.X - (double) num1 * (double) quaternion2.X);
-                result.Y = (float) ((double) num2 * (double) quaternion1.Y - (double) num1 * (double) quaternion2.Y);
-                result.Z = (float) ((double) num2 * (double) quaternion1.Z - (double) num1 * (double) quaternion2.Z);
-                result.W = (float) ((double) num2 * (double) quaternion1.W - (double) num1 * (double) quaternion2.W);
+                result.x = (float) ((double) num2 * (double) quaternion1.x - (double) num1 * (double) quaternion2.x);
+                result.y = (float) ((double) num2 * (double) quaternion1.y - (double) num1 * (double) quaternion2.y);
+                result.z = (float) ((double) num2 * (double) quaternion1.z - (double) num1 * (double) quaternion2.z);
+                result.w = (float) ((double) num2 * (double) quaternion1.w - (double) num1 * (double) quaternion2.w);
             }
 
-            float num3 = 1f / (float) Math.Sqrt((double) result.X * (double) result.X + (double) result.Y * (double) result.Y +
-                                                (double) result.Z * (double) result.Z + (double) result.W * (double) result.W);
-            result.X *= num3;
-            result.Y *= num3;
-            result.Z *= num3;
-            result.W *= num3;
+            float num3 = 1f / (float) Math.Sqrt((double) result.x * (double) result.x + (double) result.y * (double) result.y +
+                                                (double) result.z * (double) result.z + (double) result.w * (double) result.w);
+            result.x *= num3;
+            result.y *= num3;
+            result.z *= num3;
+            result.w *= num3;
         }
 
         public void Conjugate()
         {
-            this.X = -this.X;
-            this.Y = -this.Y;
-            this.Z = -this.Z;
+            this.x = -this.x;
+            this.y = -this.y;
+            this.z = -this.z;
         }
 
         public static Quaternion Conjugate(Quaternion value)
         {
             Quaternion quaternion;
-            quaternion.X = -value.X;
-            quaternion.Y = -value.Y;
-            quaternion.Z = -value.Z;
-            quaternion.W = value.W;
+            quaternion.x = -value.x;
+            quaternion.y = -value.y;
+            quaternion.z = -value.z;
+            quaternion.w = value.w;
             return quaternion;
         }
 
         public static void Conjugate(ref Quaternion value, out Quaternion result)
         {
-            result.X = -value.X;
-            result.Y = -value.Y;
-            result.Z = -value.Z;
-            result.W = value.W;
+            result.x = -value.x;
+            result.y = -value.y;
+            result.z = -value.z;
+            result.w = value.w;
         }
 
         private static float Angle(Quaternion a, Quaternion b)
@@ -735,53 +728,53 @@ namespace PF
         public static Quaternion Negate(Quaternion quaternion)
         {
             Quaternion quaternion1;
-            quaternion1.X = -quaternion.X;
-            quaternion1.Y = -quaternion.Y;
-            quaternion1.Z = -quaternion.Z;
-            quaternion1.W = -quaternion.W;
+            quaternion1.x = -quaternion.x;
+            quaternion1.y = -quaternion.y;
+            quaternion1.z = -quaternion.z;
+            quaternion1.w = -quaternion.w;
             return quaternion1;
         }
 
         public static void Negate(ref Quaternion quaternion, out Quaternion result)
         {
-            result.X = -quaternion.X;
-            result.Y = -quaternion.Y;
-            result.Z = -quaternion.Z;
-            result.W = -quaternion.W;
+            result.x = -quaternion.x;
+            result.y = -quaternion.y;
+            result.z = -quaternion.z;
+            result.w = -quaternion.w;
         }
 
         public static Quaternion Sub(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            quaternion.X = quaternion1.X - quaternion2.X;
-            quaternion.Y = quaternion1.Y - quaternion2.Y;
-            quaternion.Z = quaternion1.Z - quaternion2.Z;
-            quaternion.W = quaternion1.W - quaternion2.W;
+            quaternion.x = quaternion1.x - quaternion2.x;
+            quaternion.y = quaternion1.y - quaternion2.y;
+            quaternion.z = quaternion1.z - quaternion2.z;
+            quaternion.w = quaternion1.w - quaternion2.w;
             return quaternion;
         }
 
         public static void Sub(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result)
         {
-            result.X = quaternion1.X - quaternion2.X;
-            result.Y = quaternion1.Y - quaternion2.Y;
-            result.Z = quaternion1.Z - quaternion2.Z;
-            result.W = quaternion1.W - quaternion2.W;
+            result.x = quaternion1.x - quaternion2.x;
+            result.y = quaternion1.y - quaternion2.y;
+            result.z = quaternion1.z - quaternion2.z;
+            result.w = quaternion1.w - quaternion2.w;
         }
 
         public static Vector3 Rotate(Quaternion rotation, Vector3 vector3)
         {
-            float num1 = rotation.X * 2f;
-            float num2 = rotation.Y * 2f;
-            float num3 = rotation.Z * 2f;
-            float num4 = rotation.X * num1;
-            float num5 = rotation.Y * num2;
-            float num6 = rotation.Z * num3;
-            float num7 = rotation.X * num2;
-            float num8 = rotation.X * num3;
-            float num9 = rotation.Y * num3;
-            float num10 = rotation.W * num1;
-            float num11 = rotation.W * num2;
-            float num12 = rotation.W * num3;
+            float num1 = rotation.x * 2f;
+            float num2 = rotation.y * 2f;
+            float num3 = rotation.z * 2f;
+            float num4 = rotation.x * num1;
+            float num5 = rotation.y * num2;
+            float num6 = rotation.z * num3;
+            float num7 = rotation.x * num2;
+            float num8 = rotation.x * num3;
+            float num9 = rotation.y * num3;
+            float num10 = rotation.w * num1;
+            float num11 = rotation.w * num2;
+            float num12 = rotation.w * num3;
             Vector3 vector3_1;
             vector3_1.x = (float) ((1.0 - ((double) num5 + (double) num6)) * (double) vector3.x +
                 ((double) num7 - (double) num12) * (double) vector3.y + ((double) num8 + (double) num11) * (double) vector3.z);
@@ -794,18 +787,18 @@ namespace PF
 
         public static void Rotate(ref Quaternion rotation, ref Vector3 vector3, out Vector3 result)
         {
-            float num1 = rotation.X * 2f;
-            float num2 = rotation.Y * 2f;
-            float num3 = rotation.Z * 2f;
-            float num4 = rotation.X * num1;
-            float num5 = rotation.Y * num2;
-            float num6 = rotation.Z * num3;
-            float num7 = rotation.X * num2;
-            float num8 = rotation.X * num3;
-            float num9 = rotation.Y * num3;
-            float num10 = rotation.W * num1;
-            float num11 = rotation.W * num2;
-            float num12 = rotation.W * num3;
+            float num1 = rotation.x * 2f;
+            float num2 = rotation.y * 2f;
+            float num3 = rotation.z * 2f;
+            float num4 = rotation.x * num1;
+            float num5 = rotation.y * num2;
+            float num6 = rotation.z * num3;
+            float num7 = rotation.x * num2;
+            float num8 = rotation.x * num3;
+            float num9 = rotation.y * num3;
+            float num10 = rotation.w * num1;
+            float num11 = rotation.w * num2;
+            float num12 = rotation.w * num3;
             result.x = (float) ((1.0 - ((double) num5 + (double) num6)) * (double) vector3.x + ((double) num7 - (double) num12) * (double) vector3.y +
                 ((double) num8 + (double) num11) * (double) vector3.z);
             result.y = (float) (((double) num7 + (double) num12) * (double) vector3.x + (1.0 - ((double) num4 + (double) num6)) * (double) vector3.y +
@@ -816,118 +809,118 @@ namespace PF
 
         public static Quaternion Multiply(Quaternion quaternion1, Quaternion quaternion2)
         {
-            float x1 = quaternion1.X;
-            float y1 = quaternion1.Y;
-            float z1 = quaternion1.Z;
-            float w1 = quaternion1.W;
-            float x2 = quaternion2.X;
-            float y2 = quaternion2.Y;
-            float z2 = quaternion2.Z;
-            float w2 = quaternion2.W;
+            float x1 = quaternion1.x;
+            float y1 = quaternion1.y;
+            float z1 = quaternion1.z;
+            float w1 = quaternion1.w;
+            float x2 = quaternion2.x;
+            float y2 = quaternion2.y;
+            float z2 = quaternion2.z;
+            float w2 = quaternion2.w;
             float num1 = (float) ((double) y1 * (double) z2 - (double) z1 * (double) y2);
             float num2 = (float) ((double) z1 * (double) x2 - (double) x1 * (double) z2);
             float num3 = (float) ((double) x1 * (double) y2 - (double) y1 * (double) x2);
             float num4 = (float) ((double) x1 * (double) x2 + (double) y1 * (double) y2 + (double) z1 * (double) z2);
             Quaternion quaternion;
-            quaternion.X = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
-            quaternion.Y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
-            quaternion.Z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
-            quaternion.W = w1 * w2 - num4;
+            quaternion.x = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
+            quaternion.y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
+            quaternion.z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
+            quaternion.w = w1 * w2 - num4;
             return quaternion;
         }
 
         public static void Multiply(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result)
         {
-            float x1 = quaternion1.X;
-            float y1 = quaternion1.Y;
-            float z1 = quaternion1.Z;
-            float w1 = quaternion1.W;
-            float x2 = quaternion2.X;
-            float y2 = quaternion2.Y;
-            float z2 = quaternion2.Z;
-            float w2 = quaternion2.W;
+            float x1 = quaternion1.x;
+            float y1 = quaternion1.y;
+            float z1 = quaternion1.z;
+            float w1 = quaternion1.w;
+            float x2 = quaternion2.x;
+            float y2 = quaternion2.y;
+            float z2 = quaternion2.z;
+            float w2 = quaternion2.w;
             float num1 = (float) ((double) y1 * (double) z2 - (double) z1 * (double) y2);
             float num2 = (float) ((double) z1 * (double) x2 - (double) x1 * (double) z2);
             float num3 = (float) ((double) x1 * (double) y2 - (double) y1 * (double) x2);
             float num4 = (float) ((double) x1 * (double) x2 + (double) y1 * (double) y2 + (double) z1 * (double) z2);
-            result.X = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
-            result.Y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
-            result.Z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
-            result.W = w1 * w2 - num4;
+            result.x = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
+            result.y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
+            result.z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
+            result.w = w1 * w2 - num4;
         }
 
         public static Quaternion operator -(Quaternion quaternion)
         {
             Quaternion quaternion1;
-            quaternion1.X = -quaternion.X;
-            quaternion1.Y = -quaternion.Y;
-            quaternion1.Z = -quaternion.Z;
-            quaternion1.W = -quaternion.W;
+            quaternion1.x = -quaternion.x;
+            quaternion1.y = -quaternion.y;
+            quaternion1.z = -quaternion.z;
+            quaternion1.w = -quaternion.w;
             return quaternion1;
         }
 
         public static bool operator ==(Quaternion quaternion1, Quaternion quaternion2)
         {
-            if ((double) quaternion1.X == (double) quaternion2.X && (double) quaternion1.Y == (double) quaternion2.Y &&
-                (double) quaternion1.Z == (double) quaternion2.Z)
-                return (double) quaternion1.W == (double) quaternion2.W;
+            if ((double) quaternion1.x == (double) quaternion2.x && (double) quaternion1.y == (double) quaternion2.y &&
+                (double) quaternion1.z == (double) quaternion2.z)
+                return (double) quaternion1.w == (double) quaternion2.w;
             return false;
         }
 
         public static bool operator !=(Quaternion quaternion1, Quaternion quaternion2)
         {
-            if ((double) quaternion1.X == (double) quaternion2.X && (double) quaternion1.Y == (double) quaternion2.Y &&
-                (double) quaternion1.Z == (double) quaternion2.Z)
-                return (double) quaternion1.W != (double) quaternion2.W;
+            if ((double) quaternion1.x == (double) quaternion2.x && (double) quaternion1.y == (double) quaternion2.y &&
+                (double) quaternion1.z == (double) quaternion2.z)
+                return (double) quaternion1.w != (double) quaternion2.w;
             return true;
         }
 
         public static Quaternion operator -(Quaternion quaternion1, Quaternion quaternion2)
         {
             Quaternion quaternion;
-            quaternion.X = quaternion1.X - quaternion2.X;
-            quaternion.Y = quaternion1.Y - quaternion2.Y;
-            quaternion.Z = quaternion1.Z - quaternion2.Z;
-            quaternion.W = quaternion1.W - quaternion2.W;
+            quaternion.x = quaternion1.x - quaternion2.x;
+            quaternion.y = quaternion1.y - quaternion2.y;
+            quaternion.z = quaternion1.z - quaternion2.z;
+            quaternion.w = quaternion1.w - quaternion2.w;
             return quaternion;
         }
 
         public static Quaternion operator *(Quaternion quaternion1, Quaternion quaternion2)
         {
-            float x1 = quaternion1.X;
-            float y1 = quaternion1.Y;
-            float z1 = quaternion1.Z;
-            float w1 = quaternion1.W;
-            float x2 = quaternion2.X;
-            float y2 = quaternion2.Y;
-            float z2 = quaternion2.Z;
-            float w2 = quaternion2.W;
+            float x1 = quaternion1.x;
+            float y1 = quaternion1.y;
+            float z1 = quaternion1.z;
+            float w1 = quaternion1.w;
+            float x2 = quaternion2.x;
+            float y2 = quaternion2.y;
+            float z2 = quaternion2.z;
+            float w2 = quaternion2.w;
             float num1 = (float) ((double) y1 * (double) z2 - (double) z1 * (double) y2);
             float num2 = (float) ((double) z1 * (double) x2 - (double) x1 * (double) z2);
             float num3 = (float) ((double) x1 * (double) y2 - (double) y1 * (double) x2);
             float num4 = (float) ((double) x1 * (double) x2 + (double) y1 * (double) y2 + (double) z1 * (double) z2);
             Quaternion quaternion;
-            quaternion.X = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
-            quaternion.Y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
-            quaternion.Z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
-            quaternion.W = w1 * w2 - num4;
+            quaternion.x = (float) ((double) x1 * (double) w2 + (double) x2 * (double) w1) + num1;
+            quaternion.y = (float) ((double) y1 * (double) w2 + (double) y2 * (double) w1) + num2;
+            quaternion.z = (float) ((double) z1 * (double) w2 + (double) z2 * (double) w1) + num3;
+            quaternion.w = w1 * w2 - num4;
             return quaternion;
         }
         
         public static Vector3 operator *(Quaternion rotation, Vector3 point)
         {
-            float num1 = rotation.X * 2f;
-            float num2 = rotation.Y * 2f;
-            float num3 = rotation.Z * 2f;
-            float num4 = rotation.X * num1;
-            float num5 = rotation.Y * num2;
-            float num6 = rotation.Z * num3;
-            float num7 = rotation.X * num2;
-            float num8 = rotation.X * num3;
-            float num9 = rotation.Y * num3;
-            float num10 = rotation.W * num1;
-            float num11 = rotation.W * num2;
-            float num12 = rotation.W * num3;
+            float num1 = rotation.x * 2f;
+            float num2 = rotation.y * 2f;
+            float num3 = rotation.z * 2f;
+            float num4 = rotation.x * num1;
+            float num5 = rotation.y * num2;
+            float num6 = rotation.z * num3;
+            float num7 = rotation.x * num2;
+            float num8 = rotation.x * num3;
+            float num9 = rotation.y * num3;
+            float num10 = rotation.w * num1;
+            float num11 = rotation.w * num2;
+            float num12 = rotation.w * num3;
             Vector3 vector3;
             vector3.x = (float) ((1.0 - ((double) num5 + (double) num6)) * (double) point.x + ((double) num7 - (double) num12) * (double) point.y + ((double) num8 + (double) num11) * (double) point.z);
             vector3.y = (float) (((double) num7 + (double) num12) * (double) point.x + (1.0 - ((double) num4 + (double) num6)) * (double) point.y + ((double) num9 - (double) num10) * (double) point.z);

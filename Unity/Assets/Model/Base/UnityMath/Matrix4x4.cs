@@ -6,7 +6,7 @@ namespace PF
     [Serializable]
     public struct Matrix4x4: IEquatable<Matrix4x4>
     {
-        private static readonly Matrix4x4 _identity = new Matrix4x4(1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f);
+        public static readonly Matrix4x4 identity = new Matrix4x4(1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f, 0.0f, 0.0f, 0.0f, 0.0f, 1f);
         public float m00;
         public float m01;
         public float m02;
@@ -23,14 +23,6 @@ namespace PF
         public float m31;
         public float m32;
         public float m33;
-
-        public static Matrix4x4 identity
-        {
-            get
-            {
-                return Matrix4x4._identity;
-            }
-        }
         
         public bool isIdentity
         {
@@ -360,127 +352,6 @@ namespace PF
             matrix.m33 = 1f;
         }
 
-        public static Matrix4x4 CreatePerspectiveFieldOfView(float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
-        {
-            if ((double) fieldOfView <= 0.0 || (double) fieldOfView >= 3.14159297943115)
-                throw new ArgumentOutOfRangeException(nameof (fieldOfView),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.OutRangeFieldOfView,
-                                                                    new object[1] { (object) nameof (fieldOfView) }));
-            if ((double) nearPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (nearPlaneDistance) }));
-            if ((double) farPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (farPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (farPlaneDistance) }));
-            if ((double) nearPlaneDistance >= (double) farPlaneDistance)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance), FrameworkResources.OppositePlanes);
-            float num1 = 1f / (float) Math.Tan((double) fieldOfView * 0.5);
-            float num2 = num1 / aspectRatio;
-            Matrix4x4 matrix44;
-            matrix44.m00 = num2;
-            matrix44.m10 = matrix44.m20 = matrix44.m30 = 0.0f;
-            matrix44.m11 = num1;
-            matrix44.m01 = matrix44.m21 = matrix44.m31 = 0.0f;
-            matrix44.m02 = matrix44.m12 = 0.0f;
-            matrix44.m22 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-            matrix44.m32 = -1f;
-            matrix44.m03 = matrix44.m13 = matrix44.m33 = 0.0f;
-            matrix44.m23 = (float) ((double) nearPlaneDistance * (double) farPlaneDistance /
-                ((double) nearPlaneDistance - (double) farPlaneDistance));
-            return matrix44;
-        }
-
-        public static void CreatePerspectiveFieldOfView(
-            float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance, out Matrix4x4 matrix)
-        {
-            if ((double) fieldOfView <= 0.0 || (double) fieldOfView >= 3.14159297943115)
-                throw new ArgumentOutOfRangeException(nameof (fieldOfView),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.OutRangeFieldOfView,
-                                                                    new object[1] { (object) nameof (fieldOfView) }));
-            if ((double) nearPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (nearPlaneDistance) }));
-            if ((double) farPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (farPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (farPlaneDistance) }));
-            if ((double) nearPlaneDistance >= (double) farPlaneDistance)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance), FrameworkResources.OppositePlanes);
-            float num1 = 1f / (float) Math.Tan((double) fieldOfView * 0.5);
-            float num2 = num1 / aspectRatio;
-            matrix.m00 = num2;
-            matrix.m10 = matrix.m20 = matrix.m30 = 0.0f;
-            matrix.m11 = num1;
-            matrix.m01 = matrix.m21 = matrix.m31 = 0.0f;
-            matrix.m02 = matrix.m12 = 0.0f;
-            matrix.m22 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-            matrix.m32 = -1f;
-            matrix.m03 = matrix.m13 = matrix.m33 = 0.0f;
-            matrix.m23 = (float) ((double) nearPlaneDistance * (double) farPlaneDistance / ((double) nearPlaneDistance - (double) farPlaneDistance));
-        }
-
-        public static Matrix4x4 CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance)
-        {
-            if ((double) nearPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (nearPlaneDistance) }));
-            if ((double) farPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (farPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (farPlaneDistance) }));
-            if ((double) nearPlaneDistance >= (double) farPlaneDistance)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance), FrameworkResources.OppositePlanes);
-            Matrix4x4 matrix44;
-            matrix44.m00 = 2f * nearPlaneDistance / width;
-            matrix44.m10 = matrix44.m20 = matrix44.m30 = 0.0f;
-            matrix44.m11 = 2f * nearPlaneDistance / height;
-            matrix44.m01 = matrix44.m21 = matrix44.m31 = 0.0f;
-            matrix44.m22 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-            matrix44.m02 = matrix44.m12 = 0.0f;
-            matrix44.m32 = -1f;
-            matrix44.m03 = matrix44.m13 = matrix44.m33 = 0.0f;
-            matrix44.m23 = (float) ((double) nearPlaneDistance * (double) farPlaneDistance /
-                ((double) nearPlaneDistance - (double) farPlaneDistance));
-            return matrix44;
-        }
-
-        public static void CreatePerspective(float width, float height, float nearPlaneDistance, float farPlaneDistance, out Matrix4x4 matrix)
-        {
-            if ((double) nearPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (nearPlaneDistance) }));
-            if ((double) farPlaneDistance <= 0.0)
-                throw new ArgumentOutOfRangeException(nameof (farPlaneDistance),
-                                                      string.Format((IFormatProvider) CultureInfo.CurrentCulture,
-                                                                    FrameworkResources.NegativePlaneDistance,
-                                                                    new object[1] { (object) nameof (farPlaneDistance) }));
-            if ((double) nearPlaneDistance >= (double) farPlaneDistance)
-                throw new ArgumentOutOfRangeException(nameof (nearPlaneDistance), FrameworkResources.OppositePlanes);
-            matrix.m00 = 2f * nearPlaneDistance / width;
-            matrix.m10 = matrix.m20 = matrix.m30 = 0.0f;
-            matrix.m11 = 2f * nearPlaneDistance / height;
-            matrix.m01 = matrix.m21 = matrix.m31 = 0.0f;
-            matrix.m22 = farPlaneDistance / (nearPlaneDistance - farPlaneDistance);
-            matrix.m02 = matrix.m12 = 0.0f;
-            matrix.m32 = -1f;
-            matrix.m03 = matrix.m13 = matrix.m33 = 0.0f;
-            matrix.m23 = (float) ((double) nearPlaneDistance * (double) farPlaneDistance / ((double) nearPlaneDistance - (double) farPlaneDistance));
-        }
-
         public static Matrix4x4 CreateOrthographic(float width, float height, float zNearPlane, float zFarPlane)
         {
             Matrix4x4 matrix44;
@@ -559,15 +430,15 @@ namespace PF
 
         public static Matrix4x4 CreateFromQuaternion(Quaternion quaternion)
         {
-            float num1 = quaternion.X * quaternion.X;
-            float num2 = quaternion.Y * quaternion.Y;
-            float num3 = quaternion.Z * quaternion.Z;
-            float num4 = quaternion.X * quaternion.Y;
-            float num5 = quaternion.Z * quaternion.W;
-            float num6 = quaternion.Z * quaternion.X;
-            float num7 = quaternion.Y * quaternion.W;
-            float num8 = quaternion.Y * quaternion.Z;
-            float num9 = quaternion.X * quaternion.W;
+            float num1 = quaternion.x * quaternion.x;
+            float num2 = quaternion.y * quaternion.y;
+            float num3 = quaternion.z * quaternion.z;
+            float num4 = quaternion.x * quaternion.y;
+            float num5 = quaternion.z * quaternion.w;
+            float num6 = quaternion.z * quaternion.x;
+            float num7 = quaternion.y * quaternion.w;
+            float num8 = quaternion.y * quaternion.z;
+            float num9 = quaternion.x * quaternion.w;
             Matrix4x4 matrix44;
             matrix44.m00 = (float) (1.0 - 2.0 * ((double) num2 + (double) num3));
             matrix44.m10 = (float) (2.0 * ((double) num4 + (double) num5));
@@ -590,15 +461,15 @@ namespace PF
 
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix4x4 matrix)
         {
-            float num1 = quaternion.X * quaternion.X;
-            float num2 = quaternion.Y * quaternion.Y;
-            float num3 = quaternion.Z * quaternion.Z;
-            float num4 = quaternion.X * quaternion.Y;
-            float num5 = quaternion.Z * quaternion.W;
-            float num6 = quaternion.Z * quaternion.X;
-            float num7 = quaternion.Y * quaternion.W;
-            float num8 = quaternion.Y * quaternion.Z;
-            float num9 = quaternion.X * quaternion.W;
+            float num1 = quaternion.x * quaternion.x;
+            float num2 = quaternion.y * quaternion.y;
+            float num3 = quaternion.z * quaternion.z;
+            float num4 = quaternion.x * quaternion.y;
+            float num5 = quaternion.z * quaternion.w;
+            float num6 = quaternion.z * quaternion.x;
+            float num7 = quaternion.y * quaternion.w;
+            float num8 = quaternion.y * quaternion.z;
+            float num9 = quaternion.x * quaternion.w;
             matrix.m00 = (float) (1.0 - 2.0 * ((double) num2 + (double) num3));
             matrix.m10 = (float) (2.0 * ((double) num4 + (double) num5));
             matrix.m20 = (float) (2.0 * ((double) num6 - (double) num7));
