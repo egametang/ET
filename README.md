@@ -99,7 +99,11 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
 [ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
-  
+
+.net core 游戏资源分享  
+[2D物理引擎Box2D](https://github.com/Zonciu/Box2DSharp)  
+[各种dotnet core项目收集](https://github.com/thangchung/awesome-dotnet-core)  
+
 __讨论QQ群 : 474643097__
 
 # ET 4.0发布! 4.0将是一个长期支持版本，之后发现的bug，4.0也会进行修复  
@@ -110,7 +114,7 @@ __讨论QQ群 : 474643097__
 5.数据库方面: DBProxyComponent实现了lambda表达式查询, 修复了一个超级异步阻塞bug  
 6.客户端使用asmdef实现了Hotfix库自动编译功能，并且完美支持Unity2018，再也不用自己搞引用问题了  
 7.修复了一大批bug  
-8. ......  
+1. ......  
 
 
 # ET 3.6发布! 
