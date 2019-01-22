@@ -33,7 +33,7 @@ namespace Pathfinding {
 
 			// Make sure no point arrays are null
 			for (int i = 0; i < scripts.Length; i++) {
-				scripts[i].points = scripts[i].points ?? new PF.Vector3[0];
+				scripts[i].points = scripts[i].points ?? new Vector3[0];
 			}
 
 			if (!points.hasMultipleDifferentValues && points.arraySize == 0) {
@@ -95,7 +95,7 @@ namespace Pathfinding {
 			if (GUILayout.Button("Clear all points")) {
 				for (int i = 0; i < scripts.Length; i++) {
 					Undo.RecordObject(scripts[i], "Clear points");
-					scripts[i].points = new PF.Vector3[0];
+					scripts[i].points = new Vector3[0];
 					scripts[i].RecalcConvex();
 				}
 			}
@@ -194,11 +194,11 @@ namespace Pathfinding {
 
 			// Make sure the points array is not null
 			if (script.points == null) {
-				script.points = new PF.Vector3[0];
+				script.points = new Vector3[0];
 				EditorUtility.SetDirty(script);
 			}
 
-			List<PF.Vector3> points = ListPool<PF.Vector3>.Claim();
+			List<Vector3> points = ListPool<Vector3>.Claim();
 			points.AddRange(script.points);
 
 			Matrix4x4 invMatrix = script.transform.worldToLocalMatrix;
@@ -245,7 +245,7 @@ namespace Pathfinding {
 				if (((int)Event.current.modifiers & (int)EventModifiers.Alt) != 0) {
 					if (Event.current.type == EventType.MouseDown && selectedPoint >= 0 && selectedPoint < points.Count) {
 						Undo.RecordObject(script, "Removed Point");
-						var arr = new List<PF.Vector3>(script.points);
+						var arr = new List<Vector3>(script.points);
 						arr.RemoveAt(selectedPoint);
 						points.RemoveAt(selectedPoint);
 						script.points = arr.ToArray();
@@ -291,7 +291,7 @@ namespace Pathfinding {
 							points.Insert(insertionIndex, rayhit);
 
 							Undo.RecordObject(script, "Added Point");
-							var arr = new List<PF.Vector3>(script.points);
+							var arr = new List<Vector3>(script.points);
 							arr.Insert(insertionIndex, invMatrix.MultiplyPoint3x4(rayhit));
 							script.points = arr.ToArray();
 							GUI.changed = true;
@@ -316,7 +316,7 @@ namespace Pathfinding {
 
 			// Make sure the convex hull stays up to date
 			script.RecalcConvex();
-			ListPool<PF.Vector3>.Release(ref points);
+			ListPool<Vector3>.Release(ref points);
 
 			if (GUI.changed) HandleUtility.Repaint();
 		}

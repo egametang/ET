@@ -1,4 +1,4 @@
-/* Copyright 2010-2017 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ namespace MongoDB.Driver
     /// <summary>
     /// Represents URL-style connection strings.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoUrlBuilder
@@ -60,6 +60,8 @@ namespace MongoDB.Driver
         private ReadConcernLevel? _readConcernLevel;
         private ReadPreference _readPreference;
         private string _replicaSetName;
+        private bool? _retryWrites;
+        private ConnectionStringScheme _scheme;
         private IEnumerable<MongoServerAddress> _servers;
         private TimeSpan _serverSelectionTimeout;
         private TimeSpan _socketTimeout;
@@ -99,6 +101,7 @@ namespace MongoDB.Driver
             _readConcernLevel = null;
             _readPreference = null;
             _replicaSetName = null;
+            _retryWrites = null;
             _localThreshold = MongoDefaults.LocalThreshold;
             _servers = new[] { new MongoServerAddress("localhost", 27017) };
             _serverSelectionTimeout = MongoDefaults.ServerSelectionTimeout;
@@ -421,6 +424,24 @@ namespace MongoDB.Driver
         }
 
         /// <summary>
+        /// Gets or sets whether to retry writes.
+        /// </summary>
+        public bool? RetryWrites
+        {
+            get { return _retryWrites; }
+            set { _retryWrites = value; }
+        }
+
+        /// <summary>
+        /// The scheme used to connect with mongodb.
+        /// </summary>
+        public ConnectionStringScheme Scheme
+        {
+            get { return _scheme; }
+            set { _scheme = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the address of the server (see also Servers if using more than one address).
         /// </summary>
         public MongoServerAddress Server
@@ -643,7 +664,9 @@ namespace MongoDB.Driver
                 _readPreference = new ReadPreference(connectionString.ReadPreference.Value, connectionString.ReadPreferenceTags, connectionString.MaxStaleness);
             }
             _replicaSetName = connectionString.ReplicaSet;
+            _retryWrites = connectionString.RetryWrites;
             _localThreshold = connectionString.LocalThreshold.GetValueOrDefault(MongoDefaults.LocalThreshold);
+            _scheme = connectionString.Scheme;
             _servers = connectionString.Hosts.Select(endPoint =>
             {
                 DnsEndPoint dnsEndPoint;
@@ -702,7 +725,14 @@ namespace MongoDB.Driver
         public override string ToString()
         {
             StringBuilder url = new StringBuilder();
-            url.Append("mongodb://");
+            if (_scheme == ConnectionStringScheme.MongoDB)
+            {
+                url.Append("mongodb://");
+            }
+            else
+            {
+                url.Append("mongodb+srv://");
+            }
             if (!string.IsNullOrEmpty(_username))
             {
                 url.Append(Uri.EscapeDataString(_username));
@@ -869,6 +899,10 @@ namespace MongoDB.Driver
             if (_guidRepresentation != MongoDefaults.GuidRepresentation)
             {
                 query.AppendFormat("uuidRepresentation={0};", (_guidRepresentation == GuidRepresentation.CSharpLegacy) ? "csharpLegacy" : MongoUtils.ToCamelCase(_guidRepresentation.ToString()));
+            }
+            if (_retryWrites.GetValueOrDefault(false))
+            {
+                query.AppendFormat("retryWrites=true;");
             }
             if (query.Length != 0)
             {

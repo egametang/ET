@@ -1,4 +1,4 @@
-﻿/* Copyright 2016-2017 MongoDB Inc.
+﻿/* Copyright 2016-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ namespace MongoDB.Driver.Core.Connections
             string architecture;
             string osVersion;
 
-#if NET45
+#if NET452
             if (Type.GetType("Mono.Runtime") != null)
             {
                 switch (Environment.OSVersion.Platform)

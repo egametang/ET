@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2015 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver.Core.Bindings;
@@ -22,7 +23,8 @@ using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
 {
-    internal abstract class BulkUnmixedWriteOperationEmulatorBase
+    internal abstract class BulkUnmixedWriteOperationEmulatorBase<TWriteRequest> : IExecutableInRetryableWriteContext<BulkWriteOperationResult>
+        where TWriteRequest : WriteRequest
     {
         // fields
         private readonly CollectionNamespace _collectionNamespace;
@@ -30,13 +32,21 @@ namespace MongoDB.Driver.Core.Operations
         private int? _maxBatchCount;
         private int? _maxBatchLength;
         private readonly MessageEncoderSettings _messageEncoderSettings;
-        private readonly IEnumerable<WriteRequest> _requests;
+        private readonly List<TWriteRequest> _requests;
         private WriteConcern _writeConcern = WriteConcern.Acknowledged;
 
         // constructors
         protected BulkUnmixedWriteOperationEmulatorBase(
             CollectionNamespace collectionNamespace,
-            IEnumerable<WriteRequest> requests,
+            IEnumerable<TWriteRequest> requests,
+            MessageEncoderSettings messageEncoderSettings)
+            : this(collectionNamespace, Ensure.IsNotNull(requests, nameof(requests)).ToList(), messageEncoderSettings)
+        {
+        }
+
+        protected BulkUnmixedWriteOperationEmulatorBase(
+            CollectionNamespace collectionNamespace,
+            List<TWriteRequest> requests,
             MessageEncoderSettings messageEncoderSettings)
         {
             _collectionNamespace = Ensure.IsNotNull(collectionNamespace, nameof(collectionNamespace));
@@ -73,7 +83,7 @@ namespace MongoDB.Driver.Core.Operations
             set { _isOrdered = value; }
         }
 
-        public IEnumerable<WriteRequest> Requests
+        public IEnumerable<TWriteRequest> Requests
         {
             get { return _requests; }
         }
@@ -85,33 +95,33 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // public methods
-        public BulkWriteOperationResult Execute(IChannelHandle channel, CancellationToken cancellationToken)
+        public BulkWriteOperationResult Execute(RetryableWriteContext context, CancellationToken cancellationToken)
         {
-            var helper = new BatchHelper(this, channel);
+            var helper = new BatchHelper(this, context.Channel);
             foreach (var batch in helper.GetBatches())
             {
-                batch.Result = EmulateSingleRequest(channel, batch.Request, batch.OriginalIndex, cancellationToken);
+                batch.Result = EmulateSingleRequest(context.Channel, batch.Request, batch.OriginalIndex, cancellationToken);
             }
             return helper.GetFinalResultOrThrow();
         }
 
-        public async Task<BulkWriteOperationResult> ExecuteAsync(IChannelHandle channel, CancellationToken cancellationToken)
+        public async Task<BulkWriteOperationResult> ExecuteAsync(RetryableWriteContext context, CancellationToken cancellationToken)
         {
-            var helper = new BatchHelper(this, channel);
+            var helper = new BatchHelper(this, context.Channel);
             foreach (var batch in helper.GetBatches())
             {
-                batch.Result = await EmulateSingleRequestAsync(channel, batch.Request, batch.OriginalIndex, cancellationToken).ConfigureAwait(false);
+                batch.Result = await EmulateSingleRequestAsync(context.Channel, batch.Request, batch.OriginalIndex, cancellationToken).ConfigureAwait(false);
             }
             return helper.GetFinalResultOrThrow();
         }
 
         // protected methods
-        protected abstract WriteConcernResult ExecuteProtocol(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken);
+        protected abstract WriteConcernResult ExecuteProtocol(IChannelHandle channel, TWriteRequest request, CancellationToken cancellationToken);
 
-        protected abstract Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken);
+        protected abstract Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, TWriteRequest request, CancellationToken cancellationToken);
 
         // private methods
-        private BulkWriteBatchResult EmulateSingleRequest(IChannelHandle channel, WriteRequest request, int originalIndex, CancellationToken cancellationToken)
+        private BulkWriteBatchResult EmulateSingleRequest(IChannelHandle channel, TWriteRequest request, int originalIndex, CancellationToken cancellationToken)
         {
             WriteConcernResult writeConcernResult = null;
             MongoWriteConcernException writeConcernException = null;
@@ -128,7 +138,7 @@ namespace MongoDB.Driver.Core.Operations
             return CreateSingleRequestResult(request, originalIndex, writeConcernResult, writeConcernException);
         }
 
-        private async Task<BulkWriteBatchResult> EmulateSingleRequestAsync(IChannelHandle channel, WriteRequest request, int originalIndex, CancellationToken cancellationToken)
+        private async Task<BulkWriteBatchResult> EmulateSingleRequestAsync(IChannelHandle channel, TWriteRequest request, int originalIndex, CancellationToken cancellationToken)
         {
             WriteConcernResult writeConcernResult = null;
             MongoWriteConcernException writeConcernException = null;
@@ -145,7 +155,7 @@ namespace MongoDB.Driver.Core.Operations
             return CreateSingleRequestResult(request, originalIndex, writeConcernResult, writeConcernException);
         }
 
-        private BulkWriteBatchResult CreateSingleRequestResult(WriteRequest request, int originalIndex, WriteConcernResult writeConcernResult, MongoWriteConcernException writeConcernException)
+        private BulkWriteBatchResult CreateSingleRequestResult(TWriteRequest request, int originalIndex, WriteConcernResult writeConcernResult, MongoWriteConcernException writeConcernException)
         {
             var indexMap = new IndexMap.RangeBased(0, originalIndex, 1);
             return BulkWriteBatchResult.Create(
@@ -161,10 +171,10 @@ namespace MongoDB.Driver.Core.Operations
             private readonly List<BulkWriteBatchResult> _batchResults = new List<BulkWriteBatchResult>();
             private readonly IChannelHandle _channel;
             private bool _hasWriteErrors;
-            private readonly BulkUnmixedWriteOperationEmulatorBase _operation;
-            private readonly List<WriteRequest> _remainingRequests = new List<WriteRequest>();
+            private readonly BulkUnmixedWriteOperationEmulatorBase<TWriteRequest> _operation;
+            private readonly List<TWriteRequest> _remainingRequests = new List<TWriteRequest>();
 
-            public BatchHelper(BulkUnmixedWriteOperationEmulatorBase operation, IChannelHandle channel)
+            public BatchHelper(BulkUnmixedWriteOperationEmulatorBase<TWriteRequest> operation, IChannelHandle channel)
             {
                 _operation = operation;
                 _channel = channel;
@@ -173,7 +183,7 @@ namespace MongoDB.Driver.Core.Operations
             public IEnumerable<Batch> GetBatches()
             {
                 var originalIndex = 0;
-                foreach (WriteRequest request in _operation._requests)
+                foreach (var request in _operation._requests)
                 {
                     if (_hasWriteErrors && _operation._isOrdered)
                     {
@@ -182,10 +192,12 @@ namespace MongoDB.Driver.Core.Operations
                     }
 
                     var batch = new Batch { Request = request, OriginalIndex = originalIndex };
-                    yield return batch;
-                    _batchResults.Add(batch.Result);
 
+                    yield return batch;
+
+                    _batchResults.Add(batch.Result);
                     _hasWriteErrors |= batch.Result.HasWriteErrors;
+
                     originalIndex++;
                 }
             }
@@ -199,7 +211,7 @@ namespace MongoDB.Driver.Core.Operations
             public class Batch
             {
                 public int OriginalIndex;
-                public WriteRequest Request;
+                public TWriteRequest Request;
                 public BulkWriteBatchResult Result;
             }
         }

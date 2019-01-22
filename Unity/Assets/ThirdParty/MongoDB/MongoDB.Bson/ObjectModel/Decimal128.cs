@@ -1,4 +1,4 @@
-﻿/* Copyright 2016 MongoDB Inc.
+﻿/* Copyright 2016-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using MongoDB.Bson.IO;
 
 namespace MongoDB.Bson
 {
     /// <summary>
     /// Represents a Decimal128 value.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public struct Decimal128 : IConvertible, IComparable<Decimal128>, IEquatable<Decimal128>
@@ -36,7 +37,9 @@ namespace MongoDB.Bson
         private const short __maxSignificandDigits = 34;
 
         // private static fields
-        private static readonly UInt128 __maxSignificand = UInt128.Parse("9999999999999999999999999999999999");
+        private static readonly UInt128 __maxSignificand = UInt128.Parse("9999999999999999999999999999999999"); // must be initialized before Decimal128.Parse is called
+        private static readonly Decimal128 __maxDecimalValue = Decimal128.Parse("79228162514264337593543950335");
+        private static readonly Decimal128 __minDecimalValue = Decimal128.Parse("-79228162514264337593543950335");
         private static readonly Decimal128 __maxValue = Decimal128.Parse("9999999999999999999999999999999999E+6111");
         private static readonly Decimal128 __minValue = Decimal128.Parse("-9999999999999999999999999999999999E+6111");
 
@@ -624,11 +627,12 @@ namespace MongoDB.Bson
         public static bool IsSNaN(Decimal128 d) => Flags.IsSNaN(d._highBits);
 
         /// <summary>
-        /// Gets a value indicating whether this instance is zero.
+        /// Returns a value indicating whether the specified number is zero.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is zero; otherwise, <c>false</c>.
-        /// </value>
+        /// <param name="d">A 128-bit decimal.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified number is zero; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsZero(Decimal128 d)
         {
             if (Flags.IsFirstForm(d._highBits) && GetSignificand(d).Equals(UInt128.Zero))
@@ -712,44 +716,62 @@ namespace MongoDB.Bson
         {
             if (Flags.IsFirstForm(d._highBits))
             {
-                var exponent = Decimal128.GetExponent(d);
+                if (Decimal128.IsZero(d))
+                {
+                    return decimal.Zero;
+                }
+                else if (Decimal128.Compare(d, __minDecimalValue) < 0 || Decimal128.Compare(d, __maxDecimalValue) > 0)
+                {
+                    throw new OverflowException("Value is too large or too small to be converted to a Decimal.");
+                }
 
-                // try to get the exponent within the range of 0 to -28
+                var isNegative = Decimal128.IsNegative(d);
+                var exponent = Decimal128.GetExponent(d);
+                var significand = Decimal128.GetSignificand(d);
+
+                // decimal significand must fit in 96 bits
+                while ((significand.High >> 32) != 0)
+                {
+                    uint remainder; // ignored
+                    significand = UInt128.Divide(significand, 10, out remainder);
+                    exponent += 1;
+                }
+
+                // decimal exponents must be between 0 and -28
                 if (exponent > 0)
                 {
-                    d = Decimal128.DecreaseExponent(d, 0);
-                    exponent = Decimal128.GetExponent(d);
+                    // bring exponent within range
+                    while (exponent > 0)
+                    {
+                        significand = UInt128.Multiply(significand, (uint)10);
+                        exponent -= 1;
+                    }
                 }
                 else if (exponent < -28)
                 {
-                    d = Decimal128.IncreaseExponent(d, -28);
-                    exponent = Decimal128.GetExponent(d);
-                }
-
-                // try to get the significand to have zeros for the high order 32 bits
-                var significand = Decimal128.GetSignificand(d);
-                while ((significand.High >> 32) != 0)
-                {
-                    uint remainder;
-                    var significandDividedBy10 = UInt128.Divide(significand, (uint)10, out remainder);
-                    if (remainder != 0)
+                    // check if exponent is too far out of range to possibly be brought within range
+                    if (exponent < -56)
                     {
-                        break;
+                        return decimal.Zero;
                     }
-                    exponent += 1;
-                    significand = significandDividedBy10;
-                }
 
+                    // bring exponent within range
+                    while (exponent < -28)
+                    {
+                        uint remainder; // ignored
+                        significand = UInt128.Divide(significand, (uint)10, out remainder);
+                        exponent += 1;
+                    }
 
-                if (exponent < -28 || exponent > 0 || (significand.High >> 32) != 0)
-                {
-                    throw new OverflowException("Value is too large or too small to be converted to a Decimal.");
+                    if (significand.Equals(UInt128.Zero))
+                    {
+                        return decimal.Zero;
+                    }
                 }
 
                 var lo = (int)significand.Low;
                 var mid = (int)(significand.Low >> 32);
                 var hi = (int)significand.High;
-                var isNegative = Decimal128.IsNegative(d);
                 var scale = (byte)(-exponent);
 
                 return new decimal(lo, mid, hi, isNegative, scale);
@@ -1191,28 +1213,24 @@ namespace MongoDB.Bson
             return significandString;
         }
 
-        private static Decimal128 DecreaseExponent(Decimal128 x, short goal)
+        private static void TryDecreaseExponent(ref UInt128 significand, ref short exponent, short goal)
         {
-            if (Decimal128.IsZero(x))
+            if (significand.Equals(UInt128.Zero))
             {
-                // return a zero with the desired exponent
-                return Decimal128.FromComponents(Decimal128.IsNegative(x), goal, UInt128.Zero);
+                exponent = goal;
+                return;
             }
 
-            var exponent = GetExponent(x);
-            var significand = GetSignificand(x);
             while (exponent > goal)
             {
                 var significandTimes10 = UInt128.Multiply(significand, (uint)10);
-                if (significandTimes10.CompareTo(Decimal128.__maxSignificand) <= 0)
+                if (significandTimes10.CompareTo(Decimal128.__maxSignificand) > 0)
                 {
                     break;
                 }
                 exponent -= 1;
                 significand = significandTimes10;
             }
-
-            return Decimal128.FromComponents(Decimal128.IsNegative(x), exponent, significand);
         }
 
         private static Decimal128 FromComponents(bool isNegative, short exponent, UInt128 significand)
@@ -1241,16 +1259,14 @@ namespace MongoDB.Bson
             return new UInt128(GetSignificandHighBits(d), GetSignificandLowBits(d));
         }
 
-        private static Decimal128 IncreaseExponent(Decimal128 x, short goal)
+        private static void TryIncreaseExponent(ref UInt128 significand, ref short exponent, short goal)
         {
-            if (Decimal128.IsZero(x))
+            if (significand.Equals(UInt128.Zero))
             {
-                // return a zero with the desired exponent
-                return Decimal128.FromComponents(Decimal128.IsNegative(x), goal, UInt128.Zero);
+                exponent = goal;
+                return;
             }
 
-            var exponent = GetExponent(x);
-            var significand = GetSignificand(x);
             while (exponent < goal)
             {
                 uint remainder;
@@ -1262,8 +1278,6 @@ namespace MongoDB.Bson
                 exponent += 1;
                 significand = significandDividedBy10;
             }
-
-            return Decimal128.FromComponents(Decimal128.IsNegative(x), exponent, significand);
         }
 
         private static short MapDecimal128BiasedExponentToExponent(short biasedExponent)
@@ -1414,7 +1428,7 @@ namespace MongoDB.Bson
         public Decimal128(double value)
         {
             // TODO: implement this more efficiently
-            var stringValue = value.ToString("G17");
+            var stringValue = JsonConvert.ToString(value);
             var decimal128Value = Decimal128.Parse(stringValue);
             _highBits = MapIEEEHighBitsToDecimal128HighBits(decimal128Value.GetIEEEHighBits());
             _lowBits = decimal128Value.GetIEEELowBits();
@@ -1428,7 +1442,7 @@ namespace MongoDB.Bson
         public Decimal128(float value)
         {
             // TODO: implement this more efficiently
-            var stringValue = value.ToString("G17");
+            var stringValue = JsonConvert.ToString(value);
             var decimal128Value = Decimal128.Parse(stringValue);
             _highBits = MapIEEEHighBitsToDecimal128HighBits(decimal128Value.GetIEEEHighBits());
             _lowBits = decimal128Value.GetIEEELowBits();
@@ -1881,7 +1895,10 @@ namespace MongoDB.Bson
             private int ComparePositiveNumbers(Decimal128 x, Decimal128 y)
             {
                 var xExponent = GetExponent(x);
+                var xSignificand = GetSignificand(x);
                 var yExponent = GetExponent(y);
+                var ySignificand = GetSignificand(y);
+
                 var exponentDifference = Math.Abs(xExponent - yExponent);
                 if (exponentDifference <= 66)
                 {
@@ -1889,19 +1906,19 @@ namespace MongoDB.Bson
                     // but we do know we can't eliminate an exponent difference larger than 66
                     if (xExponent < yExponent)
                     {
-                        x = IncreaseExponent(x, yExponent);
-                        y = DecreaseExponent(y, xExponent);
+                        TryIncreaseExponent(ref xSignificand, ref xExponent, yExponent);
+                        TryDecreaseExponent(ref ySignificand, ref yExponent, xExponent);
                     }
                     else if (xExponent > yExponent)
                     {
-                        x = DecreaseExponent(x, yExponent);
-                        y = IncreaseExponent(y, xExponent);
+                        TryDecreaseExponent(ref xSignificand, ref xExponent, yExponent);
+                        TryIncreaseExponent(ref ySignificand, ref yExponent, xExponent);
                     }
                 }
 
                 if (xExponent == yExponent)
                 {
-                    return GetSignificand(x).CompareTo(GetSignificand(y));
+                    return xSignificand.CompareTo(ySignificand);
                 }
                 else
                 {

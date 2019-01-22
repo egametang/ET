@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2016 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver.Linq.Expressions;
 
 namespace MongoDB.Driver.Linq.Processors
@@ -89,8 +90,6 @@ namespace MongoDB.Driver.Linq.Processors
             return serializer;
         }
 
-
-
         private IBsonSerializer BuildMemberInit(MemberInitExpression node)
         {
             var mapping = ProjectionMapper.Map(node);
@@ -99,6 +98,11 @@ namespace MongoDB.Driver.Linq.Processors
 
         private IBsonSerializer BuildNew(NewExpression node)
         {
+            if (node.Type == typeof(DateTime))
+            {
+                return DateTimeSerializer.UtcInstance;
+            }
+
             var mapping = ProjectionMapper.Map(node);
             return BuildProjectedSerializer(mapping);
         }

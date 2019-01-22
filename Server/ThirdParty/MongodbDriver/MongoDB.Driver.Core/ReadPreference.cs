@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MongoDB.Bson;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Shared;
 
@@ -90,6 +91,32 @@ namespace MongoDB.Driver
         public static ReadPreference SecondaryPreferred
         {
             get { return __secondaryPreferred; }
+        }
+
+        // public static methods
+        /// <summary>
+        /// Creates a new ReadPreference instance from a BsonDocument.
+        /// </summary>
+        /// <param name="document">The document.</param>
+        /// <returns>A ReadPreference.</returns>
+        public static ReadPreference FromBsonDocument(BsonDocument document)
+        {
+            ReadPreferenceMode mode = ReadPreferenceMode.Primary;
+
+            foreach (var element in document)
+            {
+                switch (element.Name)
+                {
+                    case "mode":
+                        mode = (ReadPreferenceMode)Enum.Parse(typeof(ReadPreferenceMode), element.Value.AsString, ignoreCase: true);
+                        break;
+
+                    default:
+                        throw new ArgumentException($"Invalid element in ReadConcern document: {element.Name}.");
+                }
+            }
+
+            return new ReadPreference(mode);
         }
         #endregion
 

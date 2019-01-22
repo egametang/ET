@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ namespace MongoDB.Bson.Serialization
         private readonly MemberInfo _memberInfo; // null if there is no corresponding constructor or factory method
         private readonly Delegate _delegate;
         private bool _isFrozen;
-        private IEnumerable<MemberInfo> _arguments; // the members that define the values for the delegate's parameters
+        private List<MemberInfo> _arguments; // the members that define the values for the delegate's parameters
 
         // these values are set when Freeze is called
-        private IEnumerable<string> _elementNames; // the element names of the serialized arguments
+        private List<string> _elementNames; // the element names of the serialized arguments
         private Dictionary<string, object> _defaultValues; // not all arguments have default values
 
         // constructors
@@ -116,8 +116,15 @@ namespace MongoDB.Bson.Serialization
 
                 var elementNames = new List<string>();
                 var defaultValues = new Dictionary<string, object>();
+
+                var expectedArgumentsCount = GetExpectedArgumentsCount();
                 if (_arguments != null)
                 {
+                    if (_arguments.Count != expectedArgumentsCount)
+                    {
+                        throw new BsonSerializationException($"Creator map for class {_classMap.ClassType.FullName} has {expectedArgumentsCount} arguments, not {_arguments.Count}.");
+                    }
+
                     foreach (var argument in _arguments)
                     {
                         var memberMap = allMemberMaps.FirstOrDefault(m => IsSameMember(m.MemberInfo, argument));
@@ -131,6 +138,13 @@ namespace MongoDB.Bson.Serialization
                         {
                             defaultValues.Add(memberMap.ElementName, memberMap.DefaultValue);
                         }
+                    }
+                }
+                else
+                {
+                    if (expectedArgumentsCount != 0)
+                    {
+                        throw new BsonSerializationException($"Creator map for class {_classMap.ClassType.FullName} has {expectedArgumentsCount} arguments, but none are configured.");
                     }
                 }
 
@@ -163,7 +177,15 @@ namespace MongoDB.Bson.Serialization
                 throw new ArgumentNullException("arguments");
             }
             if (_isFrozen) { ThrowFrozenException(); }
-            _arguments = new List<MemberInfo>(arguments);
+            var argumentsList = arguments.ToList(); // only enumerate once
+
+            var expectedArgumentsCount = GetExpectedArgumentsCount();
+            if (argumentsList.Count != expectedArgumentsCount)
+            {
+                throw new ArgumentException($"Creator map for class {_classMap.ClassType.FullName} has {expectedArgumentsCount} arguments, not {argumentsList.Count}.", nameof(arguments));
+            }
+
+            _arguments = argumentsList;
             return this;
         }
 
@@ -230,6 +252,39 @@ namespace MongoDB.Bson.Serialization
         }
 
         // private methods
+        private int GetExpectedArgumentsCount()
+        {
+            var constructorInfo = _memberInfo as ConstructorInfo;
+            if (constructorInfo != null)
+            {
+                return constructorInfo.GetParameters().Length;
+            }
+
+            var methodInfo = _memberInfo as MethodInfo;
+            if (methodInfo != null)
+            {
+                return methodInfo.GetParameters().Length;
+            }
+
+            var delegateParameters = _delegate.GetMethodInfo().GetParameters();
+            if (delegateParameters.Length == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                // check if delegate is closed over its first parameter
+                if (_delegate.Target != null && _delegate.Target.GetType() == delegateParameters[0].ParameterType)
+                {
+                    return delegateParameters.Length - 1;
+                }
+                else
+                {
+                    return delegateParameters.Length;
+                }
+            }
+        }
+
         private bool IsSameMember(MemberInfo a, MemberInfo b)
         {
             // two MemberInfos refer to the same member if the Module and MetadataToken are equal

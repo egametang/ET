@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -318,6 +318,43 @@ namespace MongoDB.Driver
                 buckets,
                 new ExpressionBucketOutputProjection<TInput, TValue, TOutput>(x => default(TValue), output, translationOptions),
                 options);
+        }
+
+        /// <summary>
+        /// Creates a $changeStream stage.
+        /// Normally you would prefer to use the Watch method of <see cref="IMongoCollection{TDocument}" />.
+        /// Only use this method if subsequent stages project away the resume token (the _id)
+        /// or you don't want the resulting cursor to automatically resume.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the input documents.</typeparam>
+        /// <param name="options">The options.</param>
+        /// <returns>The stage.</returns>
+        public static PipelineStageDefinition<TInput, ChangeStreamDocument<TInput>> ChangeStream<TInput>(
+            ChangeStreamStageOptions options = null)
+        {
+            options = options ?? new ChangeStreamStageOptions();
+
+            const string operatorName = "$changeStream";
+            var stage = new DelegatedPipelineStageDefinition<TInput, ChangeStreamDocument<TInput>>(
+                operatorName,
+                (s, sr) =>
+                {
+                    var renderedOptions = new BsonDocument
+                    {
+                        { "fullDocument", MongoUtils.ToCamelCase(options.FullDocument.ToString()) },
+                        { "allChangesForCluster", true, options.AllChangesForCluster ?? false },
+                        { "resumeAfter", options.ResumeAfter, options.ResumeAfter != null },
+                        { "startAtOperationTime", options.StartAtOperationTime, options.StartAtOperationTime != null }
+                    };
+                    var document = new BsonDocument(operatorName, renderedOptions);
+                    var outputSerializer = new ChangeStreamDocumentSerializer<TInput>(s);
+                    return new RenderedPipelineStageDefinition<ChangeStreamDocument<TInput>>(
+                        operatorName,
+                        document,
+                        outputSerializer);
+                });
+
+            return stage;
         }
 
         /// <summary>
@@ -772,6 +809,89 @@ namespace MongoDB.Driver
                 new ExpressionFieldDefinition<TForeignDocument>(foreignField),
                 new ExpressionFieldDefinition<TOutput>(@as),
                 options);
+        }
+
+        /// <summary>
+        /// Creates a $lookup stage.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the input documents.</typeparam>
+        /// <typeparam name="TForeignDocument">The type of the foreign collection documents.</typeparam>
+        /// <typeparam name="TAsElement">The type of the as field elements.</typeparam>
+        /// <typeparam name="TAs">The type of the as field.</typeparam>
+        /// <typeparam name="TOutput">The type of the output documents.</typeparam>
+        /// <param name="foreignCollection">The foreign collection.</param>
+        /// <param name="let">The "let" definition.</param>
+        /// <param name="lookupPipeline">The lookup pipeline.</param>
+        /// <param name="as">The as field in <typeparamref name="TOutput" /> in which to place the results of the lookup pipeline.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>The stage.</returns>
+        public static PipelineStageDefinition<TInput, TOutput> Lookup<TInput, TForeignDocument, TAsElement, TAs, TOutput>(
+            IMongoCollection<TForeignDocument> foreignCollection,
+            BsonDocument let,
+            PipelineDefinition<TForeignDocument, TAsElement> lookupPipeline,
+            FieldDefinition<TOutput, TAs> @as,
+            AggregateLookupOptions<TForeignDocument, TOutput> options = null)
+            where TAs : IEnumerable<TAsElement>
+        {
+            Ensure.IsNotNull(foreignCollection, nameof(foreignCollection));
+            Ensure.IsNotNull(lookupPipeline, nameof(lookupPipeline));
+            Ensure.IsNotNull(@as, nameof(@as));
+
+            options = options ?? new AggregateLookupOptions<TForeignDocument, TOutput>();
+            const string operatorName = "$lookup";
+            var stage = new DelegatedPipelineStageDefinition<TInput, TOutput>(
+                operatorName,
+                (inputSerializer, sr) =>
+                {
+                    var foreignSerializer = options.ForeignSerializer ?? foreignCollection.DocumentSerializer ?? inputSerializer as IBsonSerializer<TForeignDocument> ?? sr.GetSerializer<TForeignDocument>();
+                    var outputSerializer = options.ResultSerializer ?? inputSerializer as IBsonSerializer<TOutput> ?? sr.GetSerializer<TOutput>();
+                    var lookupPipelineDocuments = new BsonArray(lookupPipeline.Render(foreignSerializer, sr).Documents);
+
+                    var lookupBody = new BsonDocument
+                    {
+                        { "from", foreignCollection.CollectionNamespace.CollectionName },
+                        { "let", let, let != null },
+                        { "pipeline", lookupPipelineDocuments },
+                        { "as", @as.Render(outputSerializer, sr).FieldName }
+                    };
+
+                    return new RenderedPipelineStageDefinition<TOutput>(operatorName, new BsonDocument(operatorName, lookupBody), outputSerializer);
+                });
+
+            return stage;
+        }
+
+        /// <summary>
+        /// Creates a $lookup stage.
+        /// </summary>
+        /// <typeparam name="TInput">The type of the input documents.</typeparam>
+        /// <typeparam name="TForeignDocument">The type of the foreign collection documents.</typeparam>
+        /// <typeparam name="TAsElement">The type of the as field elements.</typeparam>
+        /// <typeparam name="TAs">The type of the as field.</typeparam>
+        /// <typeparam name="TOutput">The type of the output documents.</typeparam>
+        /// <param name="foreignCollection">The foreign collection.</param>
+        /// <param name="let">The "let" definition.</param>
+        /// <param name="lookupPipeline">The lookup pipeline.</param>
+        /// <param name="as">The as field in <typeparamref name="TOutput" /> in which to place the results of the lookup pipeline.</param>
+        /// <param name="options">The options.</param>
+        /// <returns>The stage.</returns>
+        public static PipelineStageDefinition<TInput, TOutput> Lookup<TInput, TForeignDocument, TAsElement, TAs, TOutput>(
+            IMongoCollection<TForeignDocument> foreignCollection,
+            BsonDocument let,
+            PipelineDefinition<TForeignDocument, TAsElement> lookupPipeline,
+            Expression<Func<TOutput, TAs>> @as,
+            AggregateLookupOptions<TForeignDocument, TOutput> options = null)
+            where TAs : IEnumerable<TAsElement>
+        {
+            Ensure.IsNotNull(foreignCollection, nameof(foreignCollection));
+            Ensure.IsNotNull(lookupPipeline, nameof(lookupPipeline));
+            Ensure.IsNotNull(@as, nameof(@as));
+
+            return Lookup<TInput, TForeignDocument, TAsElement, TAs, TOutput>(
+                foreignCollection, 
+                let,
+                lookupPipeline,
+                new ExpressionFieldDefinition<TOutput, TAs>(@as));
         }
 
         /// <summary>

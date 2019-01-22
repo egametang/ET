@@ -1,5 +1,6 @@
 ﻿using ETModel;
 using PF;
+using UnityEngine;
 
 namespace ETHotfix
 {
@@ -9,7 +10,7 @@ namespace ETHotfix
 		protected override void Run(Unit unit, Frame_ClickMap message)
 		{
 			Vector3 target = new Vector3(message.X, message.Y, message.Z);
-			unit.GetComponent<UnitPathComponent>().MoveTo(target).NoAwait();
+			unit.GetComponent<UnitPathComponent>().MoveTo(target).Coroutine();
 			
 		}
 	}

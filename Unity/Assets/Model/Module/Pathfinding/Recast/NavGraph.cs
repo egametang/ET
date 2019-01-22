@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF {
 	/** Exposes internal methods for graphs.
 	 * This is used to hide methods that should not be used by any user code

@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -127,7 +127,7 @@ namespace MongoDB.Bson.Serialization
             if (!_serializer.TryGetMemberSerializationInfo(memberName, out info))
             {
                 var message = string.Format("The member {0} does not exist.", memberName);
-                throw new ArgumentException("memberName", message);
+                throw new ArgumentException(message, "memberName");
             }
 
             var bsonValue = info.SerializeValue(value);

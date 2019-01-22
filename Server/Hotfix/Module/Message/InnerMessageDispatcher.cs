@@ -14,7 +14,7 @@ namespace ETHotfix
 					Entity entity = (Entity)Game.EventSystem.Get(iActorRequest.ActorId);
 					if (entity == null)
 					{
-						Log.Warning($"not found actor: {iActorRequest.ActorId}");
+						Log.Warning($"not found actor: {message}");
 						ActorResponse response = new ActorResponse
 						{
 							Error = ErrorCode.ERR_NotFoundActor,
@@ -33,7 +33,7 @@ namespace ETHotfix
 							RpcId = iActorRequest.RpcId
 						};
 						session.Reply(response);
-						Log.Error($"actor没有挂载MailBoxComponent组件: {entity.GetType().Name} {entity.Id}");
+						Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {message}");
 						return;
 					}
 				
@@ -45,14 +45,14 @@ namespace ETHotfix
 					Entity entity = (Entity)Game.EventSystem.Get(iactorMessage.ActorId);
 					if (entity == null)
 					{
-						Log.Error($"not found actor: {iactorMessage.ActorId}");
+						Log.Error($"not found actor: {message}");
 						return;
 					}
 	
 					MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
 					if (mailBoxComponent == null)
 					{
-						Log.Error($"actor not add MailBoxComponent: {iactorMessage.ActorId}");
+						Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {message}");
 						return;
 					}
 				

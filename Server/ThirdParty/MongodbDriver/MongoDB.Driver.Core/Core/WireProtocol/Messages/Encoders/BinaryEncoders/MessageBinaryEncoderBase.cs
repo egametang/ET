@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -65,6 +65,48 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.BinaryEncoders
                 {
                     return _encoderSettings.GetOrDefault(MessageEncoderSettingsName.ReadEncoding, Utf8Encodings.Strict);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of the document.
+        /// </summary>
+        /// <value>
+        /// The maximum size of the document.
+        /// </value>
+        protected int? MaxDocumentSize
+        {
+            get
+            {
+                return _encoderSettings?.GetOrDefault<int?>(MessageEncoderSettingsName.MaxDocumentSize, null);
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of the message.
+        /// </summary>
+        /// <value>
+        /// The maximum size of the message.
+        /// </value>
+        protected int? MaxMessageSize
+        {
+            get
+            {
+                return _encoderSettings?.GetOrDefault<int?>(MessageEncoderSettingsName.MaxMessageSize, null);
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of the wire document.
+        /// </summary>
+        /// <value>
+        /// The maximum size of the wire document.
+        /// </value>
+        protected int? MaxWireDocumentSize
+        {
+            get
+            {
+                return _encoderSettings?.GetOrDefault<int?>(MessageEncoderSettingsName.MaxWireDocumentSize, null);
             }
         }
 

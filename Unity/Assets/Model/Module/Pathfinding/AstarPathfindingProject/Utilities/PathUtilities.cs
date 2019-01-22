@@ -373,7 +373,7 @@ namespace Pathfinding {
 					Vector3 pt = center + dir;
 
 					if (g.Linecast(center, pt, nn.node, out hit)) {
-						if (hit.point == PF.Vector3.zero) {
+						if (hit.point == Vector3.zero) {
 							// Oops, linecast actually failed completely
 							// try again unless we have tried lots of times
 							// then we just continue anyway

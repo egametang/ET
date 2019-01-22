@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,7 +32,9 @@ namespace MongoDB.Driver.Core.Operations
     public class ListDatabasesOperation : IReadOperation<IAsyncCursor<BsonDocument>>
     {
         // fields
+        private BsonDocument _filter;
         private MessageEncoderSettings _messageEncoderSettings;
+        private bool? _nameOnly;
 
         // constructors
         /// <summary>
@@ -46,6 +48,18 @@ namespace MongoDB.Driver.Core.Operations
 
         // properties
         /// <summary>
+        /// Gets or sets the filter.
+        /// </summary>
+        /// <value>
+        /// The filter.
+        /// </value>
+        public BsonDocument Filter
+        {
+            get { return _filter; }
+            set { _filter = value; }
+        }
+
+        /// <summary>
         /// Gets the message encoder settings.
         /// </summary>
         /// <value>
@@ -54,6 +68,18 @@ namespace MongoDB.Driver.Core.Operations
         public MessageEncoderSettings MessageEncoderSettings
         {
             get { return _messageEncoderSettings; }
+        }
+
+        /// <summary>
+        /// Gets or sets the NameOnly flag.
+        /// </summary>
+        /// <value>
+        /// The NameOnly flag.
+        /// </value>
+        public bool? NameOnly
+        {
+            get { return _nameOnly; }
+            set { _nameOnly = value; }
         }
 
         // public methods
@@ -78,7 +104,12 @@ namespace MongoDB.Driver.Core.Operations
         // private methods
         internal BsonDocument CreateCommand()
         {
-            return new BsonDocument { { "listDatabases", 1 } };
+            return new BsonDocument
+            {
+                { "listDatabases", 1 },
+                { "filter", _filter, _filter != null },
+                { "nameOnly", _nameOnly, _nameOnly != null }
+            };
         }
 
         private IAsyncCursor<BsonDocument> CreateCursor(BsonDocument reply)

@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -65,6 +65,26 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.JsonEncoders
         }
 
         // methods
+        /// <inheritdoc/>
+        public IMessageEncoder GetCommandMessageEncoder()
+        {
+            return new CommandMessageJsonEncoder(_textReader, _textWriter, _encoderSettings);
+        }
+
+        /// <inheritdoc/>
+        public IMessageEncoder GetCommandRequestMessageEncoder()
+        {
+            var wrappedEncoder = (CommandMessageJsonEncoder)GetCommandMessageEncoder();
+            return new CommandRequestMessageJsonEncoder(wrappedEncoder);
+        }
+
+        /// <inheritdoc/>
+        public IMessageEncoder GetCommandResponseMessageEncoder()
+        {
+            var wrappedEncoder = (CommandMessageJsonEncoder)GetCommandMessageEncoder();
+            return new CommandResponseMessageJsonEncoder(wrappedEncoder);
+        }
+
         /// <inheritdoc/>
         public IMessageEncoder GetDeleteMessageEncoder()
         {

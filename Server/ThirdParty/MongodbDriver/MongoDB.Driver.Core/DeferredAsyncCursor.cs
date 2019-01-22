@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -31,18 +31,22 @@ namespace MongoDB.Driver
         private readonly Func<CancellationToken, IAsyncCursor<TDocument>> _execute;
         private readonly Func<CancellationToken, Task<IAsyncCursor<TDocument>>> _executeAsync;
         private IAsyncCursor<TDocument> _cursor;
+        private readonly Action _disposeAction;
         private bool _disposed;
 
         // constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeferredAsyncCursor{TDocument}"/> class.
+        /// Initializes a new instance of the <see cref="DeferredAsyncCursor{TDocument}" /> class.
         /// </summary>
+        /// <param name="disposeAction">The dispose action.</param>
         /// <param name="execute">The delegate to execute the first time MoveNext is called.</param>
         /// <param name="executeAsync">The delegate to execute the first time MoveNextAsync is called.</param>
         public DeferredAsyncCursor(
+            Action disposeAction,
             Func<CancellationToken, IAsyncCursor<TDocument>> execute,
             Func<CancellationToken, Task<IAsyncCursor<TDocument>>> executeAsync)
         {
+            _disposeAction = Ensure.IsNotNull(disposeAction, nameof(disposeAction));
             _execute = Ensure.IsNotNull(execute, nameof(execute));
             _executeAsync = Ensure.IsNotNull(executeAsync, nameof(executeAsync));
         }
@@ -95,6 +99,7 @@ namespace MongoDB.Driver
         {
             if (_cursor != null)
             {
+                _disposeAction();
                 _cursor.Dispose();
                 _cursor = null;
                 _disposed = true;

@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ namespace MongoDB.Driver.Core.Operations
     {
         // fields
         private readonly CollectionNamespace _collectionNamespace;
+        private TimeSpan? _maxTime;
         private readonly MessageEncoderSettings _messageEncoderSettings;
         private readonly IEnumerable<CreateIndexRequest> _requests;
         private WriteConcern _writeConcern = WriteConcern.Acknowledged;
@@ -102,6 +103,18 @@ namespace MongoDB.Driver.Core.Operations
             set { _writeConcern = Ensure.IsNotNull(value, nameof(value)); }
         }
 
+        /// <summary>
+        /// Gets or sets the max time.
+        /// </summary>
+        /// <value>
+        /// The max time
+        /// </value>
+        public TimeSpan? MaxTime
+        {
+            get { return _maxTime; }
+            set { _maxTime = Ensure.IsNullOrInfiniteOrGreaterThanOrEqualToZero(value, nameof(value)); }
+        }
+
         // public methods
         /// <inheritdoc/>
         public BsonDocument Execute(IWriteBinding binding, CancellationToken cancellationToken)
@@ -109,7 +122,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = binding.GetWriteChannelSource(cancellationToken))
             using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
                 return operation.Execute(channelBinding, cancellationToken);
@@ -122,7 +135,7 @@ namespace MongoDB.Driver.Core.Operations
             using (EventContext.BeginOperation())
             using (var channelSource = await binding.GetWriteChannelSourceAsync(cancellationToken).ConfigureAwait(false))
             using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
                 var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
                 return await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false);
@@ -136,6 +149,7 @@ namespace MongoDB.Driver.Core.Operations
             {
                 return new CreateIndexesUsingCommandOperation(_collectionNamespace, _requests, _messageEncoderSettings)
                 {
+                    MaxTime = _maxTime,
                     WriteConcern = _writeConcern
                 };
             }

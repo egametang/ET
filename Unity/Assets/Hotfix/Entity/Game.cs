@@ -1,7 +1,19 @@
-﻿namespace ETHotfix
+﻿using UnityEngine;
+
+namespace ETHotfix
 {
 	public static class Game
 	{
+		private static EventSystem eventSystem;
+
+		public static EventSystem EventSystem
+		{
+			get
+			{
+				return eventSystem ?? (eventSystem = new EventSystem());
+			}
+		}
+		
 		private static Scene scene;
 
 		public static Scene Scene
@@ -12,18 +24,8 @@
 				{
 					return scene;
 				}
-				scene = new Scene();
+				scene = new Scene() { Name = "ClientH" };
 				return scene;
-			}
-		}
-
-		private static EventSystem eventSystem;
-
-		public static EventSystem EventSystem
-		{
-			get
-			{
-				return eventSystem ?? (eventSystem = new EventSystem());
 			}
 		}
 
@@ -33,15 +35,23 @@
 		{
 			get
 			{
-				return objectPool ?? (objectPool = new ObjectPool());
+				if (objectPool != null)
+				{
+					return objectPool;
+				}
+				objectPool = new ObjectPool() { Name = "ClientH" };
+				return objectPool;
 			}
 		}
 
 		public static void Close()
 		{
-			scene.Dispose();
-			scene = null;
 			eventSystem = null;
+			
+			scene?.Dispose();
+			scene = null;
+			
+			objectPool?.Dispose();
 			objectPool = null;
 		}
 	}

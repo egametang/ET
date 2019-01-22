@@ -1,4 +1,4 @@
-﻿/* Copyright 2015 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 using System;
 using MongoDB.Driver.Core.Misc;
 
-#if NET45
+#if NET452
 using System.Runtime.Remoting.Messaging;
 #endif
 #if !NET45
@@ -157,7 +157,7 @@ namespace MongoDB.Driver.Core.Events
             }
         }
 
-#if NET45
+#if NET452
         private class AsyncLocal<T>
         {
             private readonly string __name;

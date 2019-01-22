@@ -119,7 +119,7 @@ namespace ETModel
 
 				this.listener.Start();
 
-				this.Accept().NoAwait();
+				this.Accept().Coroutine();
 			}
 			catch (HttpListenerException e)
 			{

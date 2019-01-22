@@ -40,7 +40,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 1)
+                    if(m.MatchGenericParameters(args, typeof(ETModel.Player), typeof(System.Int64), typeof(System.Boolean)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, CreateWithId_0);
@@ -58,13 +58,16 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Boolean @fromPool = ptr_of_this_method->Value == 1;
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int64 @id = *(long*)&ptr_of_this_method->Value;
 
 
-            var result_of_this_method = ETModel.ComponentFactory.CreateWithId<ETModel.Player>(@id);
+            var result_of_this_method = ETModel.ComponentFactory.CreateWithId<ETModel.Player>(@id, @fromPool);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

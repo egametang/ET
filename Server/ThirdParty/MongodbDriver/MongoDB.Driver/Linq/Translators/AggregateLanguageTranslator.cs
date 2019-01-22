@@ -1,4 +1,4 @@
-﻿/* Copyright 2015-2016 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -372,6 +372,12 @@ namespace MongoDB.Driver.Linq.Translators
                 {
                     return result;
                 }
+
+                if (node.Method.DeclaringType == typeof(DateTime)
+                    && TryTranslateStaticDateTimeMethodCall(node, out result))
+                {
+                    return result;
+                }
             }
             else
             {
@@ -423,6 +429,10 @@ namespace MongoDB.Driver.Linq.Translators
 
         private BsonValue TranslateNew(NewExpression node)
         {
+            if (node.Type == typeof(DateTime))
+            {
+                return TranslateNewDateTime(node);
+            }
             var mapping = ProjectionMapper.Map(node);
             return TranslateMapping(mapping);
         }
@@ -435,6 +445,54 @@ namespace MongoDB.Driver.Linq.Translators
                 bsonArray.Add(TranslateValue(item));
             }
             return bsonArray;
+        }
+
+        private BsonValue TranslateNewDateTime(NewExpression node)
+        {
+            BsonValue year = null;
+            BsonValue month = null;
+            BsonValue day = null;
+            BsonValue hour = null;
+            BsonValue minute = null;
+            BsonValue second = null;
+            BsonValue millisecond = null;
+
+            switch (node.Arguments.Count)
+            {
+                case 3:
+                    year = TranslateValue(node.Arguments[0]);
+                    month = TranslateValue(node.Arguments[1]);
+                    day = TranslateValue(node.Arguments[2]);
+                    break;
+                case 6:
+                    hour = TranslateValue(node.Arguments[3]);
+                    minute = TranslateValue(node.Arguments[4]);
+                    second = TranslateValue(node.Arguments[5]);
+                    goto case 3;
+                case 7:
+                    if (node.Arguments[6].Type == typeof(int))
+                    {
+                        millisecond = TranslateValue(node.Arguments[6]);
+                        goto case 6;
+                    }
+                    break;
+            }
+
+            if (year == null)
+            { 
+                throw new NotSupportedException($"The DateTime constructor {node} is not supported.");
+            }
+
+            return new BsonDocument("$dateFromParts", new BsonDocument
+            {
+                { "year", year, year != null },
+                { "month", month, month != null },
+                { "day", day, day != null },
+                { "hour", hour, hour != null },
+                { "minute", minute, minute != null },
+                { "second", second, second != null },
+                { "millisecond", millisecond, millisecond != null }
+            });
         }
 
         private BsonValue TranslateMapping(ProjectionMapping mapping)
@@ -763,8 +821,9 @@ namespace MongoDB.Driver.Linq.Translators
                             { "format", format },
                             { "date", field }
                         });
+                        return true;
                     }
-                    return true;
+                    break;
             }
 
             return false;
@@ -913,6 +972,26 @@ namespace MongoDB.Driver.Linq.Translators
             }
 
             result = null;
+            return false;
+        }
+
+        private bool TryTranslateStaticDateTimeMethodCall(MethodCallExpression node, out BsonValue result)
+        {
+            result = null;
+            switch (node.Method.Name)
+            {
+                case "Parse":
+                    if (node.Arguments.Count == 1)
+                    {
+                        result = new BsonDocument("$dateFromString", new BsonDocument
+                        {
+                            { "dateString", TranslateValue(node.Arguments[0]) }
+                        });
+                        return true;
+                    }
+                    break;
+            }
+
             return false;
         }
 

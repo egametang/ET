@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,28 +14,54 @@
 */
 
 using System;
-#if NET45
+using System.Linq;
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using MongoDB.Driver.Core.Clusters;
+using MongoDB.Driver.Core.Misc;
 
 namespace MongoDB.Driver
 {
     /// <summary>
     /// Represents a MongoDB incompatible driver exception.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public class MongoIncompatibleDriverException : MongoClientException
     {
         #region static
         // static methods
-        private static string FormatMessage(ClusterDescription clusterDescription)
+        internal static void ThrowIfNotSupported(ClusterDescription description)
         {
-            return string.Format(
-                "This version of the driver is not compatible with one or more of the servers to which it is connected: {0}.",
-                clusterDescription);
+            var isIncompatible = description.Servers
+                .Any(sd => sd.WireVersionRange != null && !sd.WireVersionRange.Overlaps(Cluster.SupportedWireVersionRange));
+
+            if (isIncompatible)
+            {
+                throw new MongoIncompatibleDriverException(description);
+            }
+        }
+
+        private static string FormatMessage(ClusterDescription description)
+        {
+            var incompatibleServer = description.Servers
+                .FirstOrDefault(sd => sd.WireVersionRange != null && !sd.WireVersionRange.Overlaps(Cluster.SupportedWireVersionRange));
+
+            if (incompatibleServer == null)
+            {
+                return $"This version of the driver requires wire version {Cluster.SupportedWireVersionRange}";
+            }
+
+            if (incompatibleServer.WireVersionRange.Max < Cluster.SupportedWireVersionRange.Min)
+            {
+                return $"Server at {EndPointHelper.ToString(incompatibleServer.EndPoint)} reports wire version {incompatibleServer.WireVersionRange.Max},"
+                    + $" but this version of the driver requires at least {Cluster.SupportedWireVersionRange.Min} (MongoDB {Cluster.MinSupportedServerVersion}).";
+            }
+
+            return $"Server at {EndPointHelper.ToString(incompatibleServer.EndPoint)} requires wire version {incompatibleServer.WireVersionRange.Min},"
+                + $" but this version of the driver only supports up to {Cluster.SupportedWireVersionRange.Max}.";
         }
         #endregion
 
@@ -49,7 +75,7 @@ namespace MongoDB.Driver
         {
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoIncompatibleDriverException"/> class.
         /// </summary>

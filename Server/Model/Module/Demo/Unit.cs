@@ -1,5 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using PF;
+﻿using PF;
+using UnityEngine;
 
 namespace ETModel
 {
@@ -22,7 +22,6 @@ namespace ETModel
 	{
 		public UnitType UnitType { get; private set; }
 		
-		[BsonIgnore]
 		public Vector3 Position { get; set; }
 		
 		public void Awake(UnitType unitType)

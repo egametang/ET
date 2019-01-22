@@ -1,6 +1,8 @@
-# [English](https://github.com/egametang/Egametang/blob/master/README.md) 
+# [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
 
-__讨论QQ群 : 474643097__
+__讨论QQ群 : 474643097__  
+
+[ET论坛](https://bbs.honorworkroom.com/forum.php)  
 
 # ET的介绍：
 ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp websocket协议，支持服务端3D recast寻路等等  
@@ -42,11 +44,15 @@ erlang语言一大优势就是位置透明的消息机制，用户完全不用�
 ### 10.KCP ENET TCP Websocket协议无缝切换  
 ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet是英雄联盟所使用的网络库，其特点是快速，并且网络丢包的情况下性能也非常好，这个我们做过测试TCP在丢包5%的情况下，moba游戏就卡的不行了，但是使用ENet，丢包20%仍然不会感到卡。非常强大。框架还支持使用KCP协议，KCP也是可靠UDP协议，据说比ENET性能更好，使用kcp请注意，需要自己加心跳机制，否则20秒没收到包，服务端将断开连接。协议可以无缝切换。  
 ### 11. 3D Recast寻路功能
-可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能  
-### 12.打包工具  
+可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能
+
+### 12. 服务端支持repl，也可以动态执行一段新代码
+这样就可以打印出进程中任何数据，大大简化了服务端查找问题的难度
+
+### 13.打包工具  
 ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
 
-### 13.还有很多很多功能，我就不详细介绍了  
+### 14.还有很多很多功能，我就不详细介绍了  
 a.及其方便检查CPU占用和内存泄漏检查，vs自带分析工具，不用再为性能和内存泄漏检查而烦恼  
 b.使用NLog库，打log及其方便，平常开发时，可以将所有服务器log打到一个文件中，再也不用一个个文件搜索log了  
 c.统一使用Mongodb的bson做序列化，消息和配置文件全部都是bson或者json，并且以后使用mongodb做数据库，再也不用做格式转换了。  
@@ -59,6 +65,9 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 使用方法：  
 [运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
   
+相关网站:  
+[ET论坛](https://bbs.honorworkroom.com/forum.php)  
+
 [组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
 [网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
 
@@ -81,16 +90,20 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 
 群友demo：  
 [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
+[牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+[背包系统](https://gitee.com/ECPS_admin/planc)  
+[ET小游戏合集](https://github.com/Acgmart/ET-MultiplyDemos)  
 
 视频教程：  
 [肉饼老师主讲](http://www.taikr.com/my/course/972)  
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
 [ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
-  
-相关网站:  
-[ET框架问题讨论](http://www.etframework.cn/)  
-  
+
+.net core 游戏资源分享  
+[2D物理引擎Box2D](https://github.com/Zonciu/Box2DSharp)  
+[各种dotnet core项目收集](https://github.com/thangchung/awesome-dotnet-core)  
+
 __讨论QQ群 : 474643097__
 
 # ET 4.0发布! 4.0将是一个长期支持版本，之后发现的bug，4.0也会进行修复  
@@ -101,7 +114,7 @@ __讨论QQ群 : 474643097__
 5.数据库方面: DBProxyComponent实现了lambda表达式查询, 修复了一个超级异步阻塞bug  
 6.客户端使用asmdef实现了Hotfix库自动编译功能，并且完美支持Unity2018，再也不用自己搞引用问题了  
 7.修复了一大批bug  
-8. ......  
+1. ......  
 
 
 # ET 3.6发布! 

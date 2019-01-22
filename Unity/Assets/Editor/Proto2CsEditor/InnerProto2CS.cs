@@ -78,7 +78,7 @@ namespace ETEditor
 					
 					sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
 					sb.Append($"\tpublic partial class {msgName}");
-					if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse" || parentClass == "IFrameMessage")
+					if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
 					{
 						sb.Append($": {parentClass}\n");
 					}

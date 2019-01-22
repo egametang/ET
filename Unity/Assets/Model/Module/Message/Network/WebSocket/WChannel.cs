@@ -78,13 +78,13 @@ namespace ETModel
             {
                 return;
             }
-            this.StartRecv().NoAwait();
-            this.StartSend().NoAwait();
+            this.StartRecv().Coroutine();
+            this.StartSend().Coroutine();
         }
         
         private WService GetService()
         {
-            return (WService)this.service;
+            return (WService)this.Service;
         }
 
         public async ETVoid ConnectAsync(string url)
@@ -110,7 +110,7 @@ namespace ETModel
 
             if (this.isConnected)
             {
-                this.StartSend().NoAwait();
+                this.StartSend().Coroutine();
             }
         }
 

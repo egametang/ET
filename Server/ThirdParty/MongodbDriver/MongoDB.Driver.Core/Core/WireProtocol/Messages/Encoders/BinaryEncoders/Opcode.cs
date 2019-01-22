@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders.BinaryEncoders
         Query = 2004,
         GetMore = 2005,
         Delete = 2006,
-        KillCursors = 2007
+        KillCursors = 2007,
+        OpMsg = 2013
     }
 }

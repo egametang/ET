@@ -43,7 +43,7 @@ namespace ETEditor
 					return;
 				}
 
-				ReloadAsync(this.managerAddress, this.account, this.password).NoAwait();
+				ReloadAsync(this.managerAddress, this.account, this.password).Coroutine();
 			}
 			
 			GUILayout.EndHorizontal();

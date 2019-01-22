@@ -9,7 +9,7 @@ namespace ETHotfix
 	{
 		protected override void Run(Session session, DBQueryJsonRequest message, Action<DBQueryJsonResponse> reply)
 		{
-			RunAsync(session, message, reply).NoAwait();
+			RunAsync(session, message, reply).Coroutine();
 		}
 		
 		protected async ETVoid RunAsync(Session session, DBQueryJsonRequest message, Action<DBQueryJsonResponse> reply)

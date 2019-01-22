@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -27,8 +27,6 @@ namespace MongoDB.Bson.IO
         // private fields
         private readonly Stream _baseStream;
         private readonly BsonStream _bsonStream;
-        private readonly BsonBinaryWriterSettings _settings; // same value as in base class just declared as derived class
-        private readonly Stack<int> _maxDocumentSizeStack = new Stack<int>();
         private BsonBinaryWriterContext _context;
 
         // constructors
@@ -60,8 +58,6 @@ namespace MongoDB.Bson.IO
 
             _baseStream = stream;
             _bsonStream = (stream as BsonStream) ?? new BsonStreamAdapter(stream);
-            _settings = settings; // already frozen by base class
-            _maxDocumentSizeStack.Push(_settings.MaxDocumentSize);
 
             _context = null;
             State = BsonWriterState.Initial;
@@ -88,6 +84,20 @@ namespace MongoDB.Bson.IO
         public BsonStream BsonStream
         {
             get { return _bsonStream; }
+        }
+
+        /// <inheritdoc />
+        public override long Position
+        {
+            get { return _baseStream.Position; }
+        }
+
+        /// <summary>
+        /// Gets the settings of the writer.
+        /// </summary>
+        public new BsonBinaryWriterSettings Settings
+        {
+            get {  return (BsonBinaryWriterSettings)base.Settings; }
         }
 
         // public methods
@@ -128,18 +138,20 @@ namespace MongoDB.Bson.IO
         /// <summary>
         /// Pops the max document size stack, restoring the previous max document size.
         /// </summary>
+        [Obsolete("Use PopSettings instead.")]
         public void PopMaxDocumentSize()
         {
-            _maxDocumentSizeStack.Pop();
+            PopSettings();
         }
 
         /// <summary>
         /// Pushes a new max document size onto the max document size stack.
         /// </summary>
         /// <param name="maxDocumentSize">The maximum size of the document.</param>
+        [Obsolete("Use PushSettings instead.")]
         public void PushMaxDocumentSize(int maxDocumentSize)
         {
-            _maxDocumentSizeStack.Push(Math.Min(maxDocumentSize, _maxDocumentSizeStack.Peek()));
+            PushSettings(s => ((BsonBinaryWriterSettings)s).MaxDocumentSize = maxDocumentSize);
         }
 
 #pragma warning disable 618 // about obsolete BsonBinarySubType.OldBinary
@@ -161,28 +173,28 @@ namespace MongoDB.Bson.IO
             switch (subType)
             {
                 case BsonBinarySubType.OldBinary:
-                    if (_settings.FixOldBinarySubTypeOnOutput)
+                    if (Settings.FixOldBinarySubTypeOnOutput)
                     {
                         subType = BsonBinarySubType.Binary; // replace obsolete OldBinary with new Binary sub type
                     }
                     break;
                 case BsonBinarySubType.UuidLegacy:
                 case BsonBinarySubType.UuidStandard:
-                    if (_settings.GuidRepresentation != GuidRepresentation.Unspecified)
+                    if (Settings.GuidRepresentation != GuidRepresentation.Unspecified)
                     {
-                        var expectedSubType = (_settings.GuidRepresentation == GuidRepresentation.Standard) ? BsonBinarySubType.UuidStandard : BsonBinarySubType.UuidLegacy;
+                        var expectedSubType = (Settings.GuidRepresentation == GuidRepresentation.Standard) ? BsonBinarySubType.UuidStandard : BsonBinarySubType.UuidLegacy;
                         if (subType != expectedSubType)
                         {
                             var message = string.Format(
                                 "The GuidRepresentation for the writer is {0}, which requires the subType argument to be {1}, not {2}.",
-                                _settings.GuidRepresentation, expectedSubType, subType);
+                                Settings.GuidRepresentation, expectedSubType, subType);
                             throw new BsonSerializationException(message);
                         }
-                        if (guidRepresentation != _settings.GuidRepresentation)
+                        if (guidRepresentation != Settings.GuidRepresentation)
                         {
                             var message = string.Format(
                                 "The GuidRepresentation for the writer is {0}, which requires the the guidRepresentation argument to also be {0}, not {1}.",
-                                _settings.GuidRepresentation, guidRepresentation);
+                                Settings.GuidRepresentation, guidRepresentation);
                             throw new BsonSerializationException(message);
                         }
                     }
@@ -413,7 +425,7 @@ namespace MongoDB.Bson.IO
 
             _bsonStream.WriteBsonType(BsonType.JavaScript);
             WriteNameHelper();
-            _bsonStream.WriteString(code, _settings.Encoding);
+            _bsonStream.WriteString(code, Settings.Encoding);
 
             State = GetNextState();
         }
@@ -434,7 +446,7 @@ namespace MongoDB.Bson.IO
             WriteNameHelper();
             _context = new BsonBinaryWriterContext(_context, ContextType.JavaScriptWithScope, _bsonStream.Position);
             _bsonStream.WriteInt32(0); // reserve space for size of JavaScript with scope value
-            _bsonStream.WriteString(code, _settings.Encoding);
+            _bsonStream.WriteString(code, Settings.Encoding);
 
             State = BsonWriterState.ScopeDocument;
         }
@@ -640,7 +652,7 @@ namespace MongoDB.Bson.IO
 
             _bsonStream.WriteBsonType(BsonType.String);
             WriteNameHelper();
-            _bsonStream.WriteString(value, _settings.Encoding);
+            _bsonStream.WriteString(value, Settings.Encoding);
 
             State = GetNextState();
         }
@@ -659,7 +671,7 @@ namespace MongoDB.Bson.IO
 
             _bsonStream.WriteBsonType(BsonType.Symbol);
             WriteNameHelper();
-            _bsonStream.WriteString(value, _settings.Encoding);
+            _bsonStream.WriteString(value, Settings.Encoding);
 
             State = GetNextState();
         }
@@ -722,9 +734,9 @@ namespace MongoDB.Bson.IO
         private void BackpatchSize()
         {
             var size = _bsonStream.Position - _context.StartPosition;
-            if (size > _maxDocumentSizeStack.Peek())
+            if (size > Settings.MaxDocumentSize)
             {
-                var message = string.Format("Size {0} is larger than MaxDocumentSize {1}.", size, _maxDocumentSizeStack.Peek());
+                var message = string.Format("Size {0} is larger than MaxDocumentSize {1}.", size, Settings.MaxDocumentSize);
                 throw new FormatException(message);
             }
 

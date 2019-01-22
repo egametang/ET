@@ -41,7 +41,7 @@ namespace ILRuntime.Runtime.Generated
             {
                 foreach(var m in lst)
                 {
-                    if(m.GetParameters().Length == 2)
+                    if(m.MatchGenericParameters(args, typeof(Google.Protobuf.FieldCodec<Google.Protobuf.Adapt_IMessage.Adaptor>), typeof(System.UInt32), typeof(Google.Protobuf.MessageParser<Google.Protobuf.Adapt_IMessage.Adaptor>)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, ForMessage_0);

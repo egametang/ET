@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF {
 	/** Finds all nodes within a specified distance from the start.

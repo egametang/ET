@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -164,7 +164,7 @@ namespace MongoDB.Bson.IO
         }
 
         // methods
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
@@ -173,7 +173,7 @@ namespace MongoDB.Bson.IO
         }
 #endif
 
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
         {
@@ -182,7 +182,7 @@ namespace MongoDB.Bson.IO
         }
 #endif
 
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override void Close()
         {
@@ -214,7 +214,7 @@ namespace MongoDB.Bson.IO
             base.Dispose(disposing);
         }
 
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override int EndRead(IAsyncResult asyncResult)
         {
@@ -223,7 +223,7 @@ namespace MongoDB.Bson.IO
         }
 #endif
 
-#if NET45
+#if NET452
         /// <inheritdoc/>
         public override void EndWrite(IAsyncResult asyncResult)
         {

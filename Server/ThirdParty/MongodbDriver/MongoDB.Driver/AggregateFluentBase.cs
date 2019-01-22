@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -86,6 +86,12 @@ namespace MongoDB.Driver
         }
 
         /// <inheritdoc />
+        public virtual IAggregateFluent<ChangeStreamDocument<TResult>> ChangeStream(ChangeStreamStageOptions options = null)
+        {
+            throw new NotImplementedException(); // implemented by subclasses
+        }
+
+        /// <inheritdoc />
         public virtual IAggregateFluent<AggregateCountResult> Count()
         {
             throw new NotImplementedException();
@@ -121,6 +127,18 @@ namespace MongoDB.Driver
 
         /// <inheritdoc />
         public virtual IAggregateFluent<TNewResult> Lookup<TForeignDocument, TNewResult>(string foreignCollectionName, FieldDefinition<TResult> localField, FieldDefinition<TForeignDocument> foreignField, FieldDefinition<TNewResult> @as, AggregateLookupOptions<TForeignDocument, TNewResult> options)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public virtual IAggregateFluent<TNewResult> Lookup<TForeignDocument, TAsElement, TAs, TNewResult>(
+            IMongoCollection<TForeignDocument> foreignCollection,
+            BsonDocument let,
+            PipelineDefinition<TForeignDocument, TAsElement> lookupPipeline,
+            FieldDefinition<TNewResult, TAs> @as,
+            AggregateLookupOptions<TForeignDocument, TNewResult> options = null)
+            where TAs : IEnumerable<TAsElement>
         {
             throw new NotImplementedException();
         }

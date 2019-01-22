@@ -1,4 +1,4 @@
-﻿/* Copyright 2010-2016 MongoDB Inc.
+﻿/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver.Core.Bindings;
-using MongoDB.Driver.Core.WireProtocol;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
 {
-    internal class BulkDeleteOperationEmulator : BulkUnmixedWriteOperationEmulatorBase
+    internal class BulkDeleteOperationEmulator : BulkUnmixedWriteOperationEmulatorBase<DeleteRequest>
     {
         // constructors
         public BulkDeleteOperationEmulator(
@@ -35,36 +34,34 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // methods
-        protected override WriteConcernResult ExecuteProtocol(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken)
+        protected override WriteConcernResult ExecuteProtocol(IChannelHandle channel, DeleteRequest request, CancellationToken cancellationToken)
         {
-            var deleteRequest = (DeleteRequest)request;
-            if (deleteRequest.Collation != null)
+            if (request.Collation != null)
             {
                 throw new NotSupportedException("OP_DELETE does not support collations.");
             }
-            var isMulti = deleteRequest.Limit == 0;
+            var isMulti = request.Limit == 0;
 
             return channel.Delete(
                CollectionNamespace,
-               deleteRequest.Filter,
+               request.Filter,
                isMulti,
                MessageEncoderSettings,
                WriteConcern,
                cancellationToken);
         }
 
-        protected override Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, WriteRequest request, CancellationToken cancellationToken)
+        protected override Task<WriteConcernResult> ExecuteProtocolAsync(IChannelHandle channel, DeleteRequest request, CancellationToken cancellationToken)
         {
-            var deleteRequest = (DeleteRequest)request;
-            var isMulti = deleteRequest.Limit == 0;
-            if (deleteRequest.Collation != null)
+            var isMulti = request.Limit == 0;
+            if (request.Collation != null)
             {
                 throw new NotSupportedException("OP_DELETE does not support collations.");
             }
 
             return channel.DeleteAsync(
                CollectionNamespace,
-               deleteRequest.Filter,
+               request.Filter,
                isMulti,
                MessageEncoderSettings,
                WriteConcern,

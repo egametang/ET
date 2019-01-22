@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -54,9 +54,19 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders
         public const string MaxDocumentSize = "MaxDocumentSize";
 
         /// <summary>
+        /// The name of the MaxMessageSize setting.
+        /// </summary>
+        public const string MaxMessageSize = "MaxMessageSize";
+
+        /// <summary>
         /// The name of the MaxSerializationDepth setting.
         /// </summary>
         public const string MaxSerializationDepth = "MaxSerializationDepth";
+
+        /// <summary>
+        /// The maximum wire document size.
+        /// </summary>
+        public const string MaxWireDocumentSize = nameof(MaxWireDocumentSize);
 
         /// <summary>
         /// The name of the ReadEncoding setting.
@@ -117,6 +127,20 @@ namespace MongoDB.Driver.Core.WireProtocol.Messages.Encoders
         {
             _settings.Add(name, value);
             return this;
+        }
+
+        /// <summary>
+        /// Clones this instance.
+        /// </summary>
+        /// <returns>The clone.</returns>
+        public MessageEncoderSettings Clone()
+        {
+            var clone = new MessageEncoderSettings();
+            foreach (var key in _settings.Keys)
+            {
+                clone.Add(key, _settings[key]);
+            }
+            return clone;
         }
 
         /// <inheritdoc/>

@@ -8,7 +8,7 @@ namespace ETHotfix
     {
         public override void Start(ActorLocationSenderComponent self)
         {
-            StartAsync(self).NoAwait();
+            StartAsync(self).Coroutine();
         }
         
         // 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟

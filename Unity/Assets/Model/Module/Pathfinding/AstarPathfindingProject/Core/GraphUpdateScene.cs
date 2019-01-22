@@ -39,10 +39,10 @@ namespace Pathfinding {
 	[HelpURL("http://arongranberg.com/astar/docs/class_pathfinding_1_1_graph_update_scene.php")]
 	public class GraphUpdateScene : GraphModifier {
 		/** Points which define the region to update */
-		public PF.Vector3[] points;
+		public Vector3[] points;
 
 		/** Private cached convex hull of the #points */
-		private PF.Vector3[] convexPoints;
+		private Vector3[] convexPoints;
 
 		/** Use the convex hull of the points instead of the original polygon.
 		 *
@@ -252,7 +252,7 @@ namespace Pathfinding {
 				GraphUpdateShape shape;
 				if (legacyMode && !legacyUseWorldSpace) {
 					// Used for compatibility with older versions
-					var worldPoints = new PF.Vector3[points.Length];
+					var worldPoints = new Vector3[points.Length];
 					for (int i = 0; i < points.Length; i++) worldPoints[i] = transform.TransformPoint(points[i]);
 					shape = new GraphUpdateShape(worldPoints, convex, Matrix4x4.identity, minBoundsHeight);
 				} else {
@@ -345,10 +345,10 @@ namespace Pathfinding {
 
 				for (int i = 0; i < pts.Length; i++) {
 					var next = (i+1) % pts.Length;
-					var p1 = matrix.MultiplyPoint3x4(pts[i] + PF.Vector3.up*(miny - pts[i].y));
-					var p2 = matrix.MultiplyPoint3x4(pts[i] + PF.Vector3.up*(maxy - pts[i].y));
-					var p1n = matrix.MultiplyPoint3x4(pts[next] + PF.Vector3.up*(miny - pts[next].y));
-					var p2n = matrix.MultiplyPoint3x4(pts[next] + PF.Vector3.up*(maxy - pts[next].y));
+					var p1 = matrix.MultiplyPoint3x4(pts[i] + Vector3.up*(miny - pts[i].y));
+					var p2 = matrix.MultiplyPoint3x4(pts[i] + Vector3.up*(maxy - pts[i].y));
+					var p1n = matrix.MultiplyPoint3x4(pts[next] + Vector3.up*(miny - pts[next].y));
+					var p2n = matrix.MultiplyPoint3x4(pts[next] + Vector3.up*(maxy - pts[next].y));
 					Gizmos.DrawLine(p1, p2);
 					Gizmos.DrawLine(p1, p1n);
 					Gizmos.DrawLine(p2, p2n);

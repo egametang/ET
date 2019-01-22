@@ -53,14 +53,13 @@ namespace ETModel
 			{
 				return;
 			}
-			base.Dispose();
 
 			if (this.Entity.IsDisposed)
 			{
-				return;
+				this.Entity.RemoveComponent<SceneChangeComponent>();
 			}
-			
-			this.Entity.RemoveComponent<SceneChangeComponent>();
+
+			base.Dispose();
 		}
 	}
 }

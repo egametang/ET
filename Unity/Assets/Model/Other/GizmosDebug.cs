@@ -7,7 +7,7 @@ namespace ETModel
     {
         public static GizmosDebug Instance { get; private set; }
 
-        public List<PF.Vector3> Path;
+        public List<Vector3> Path;
 
         private void Awake()
         {

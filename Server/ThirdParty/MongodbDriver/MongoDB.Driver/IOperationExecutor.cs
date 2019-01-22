@@ -1,4 +1,4 @@
-/* Copyright 2010-2015 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,5 +28,8 @@ namespace MongoDB.Driver
 
         TResult ExecuteWriteOperation<TResult>(IWriteBinding binding, IWriteOperation<TResult> operation, CancellationToken cancellationToken);
         Task<TResult> ExecuteWriteOperationAsync<TResult>(IWriteBinding binding, IWriteOperation<TResult> operation, CancellationToken cancellationToken);
+
+        IClientSessionHandle StartImplicitSession(CancellationToken cancellationToken);
+        Task<IClientSessionHandle> StartImplicitSessionAsync(CancellationToken cancellationToken);
     }
 }

@@ -5,20 +5,24 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace ETModel
 {
-	public enum UnitType
+	[ObjectSystem]
+	public class UnitAwakeSystem : AwakeSystem<Unit, GameObject>
 	{
-		Hero,
-		Npc
+		public override void Awake(Unit self, GameObject gameObject)
+		{
+			self.Awake(gameObject);
+		}
 	}
 	
+	[HideInHierarchy]
 	public sealed class Unit: Entity
 	{
-		public GameObject GameObject;
-		
-		public void Awake()
+		public void Awake(GameObject gameObject)
 		{
+			this.GameObject = gameObject;
+			this.GameObject.AddComponent<ComponentView>().Component = this;
 		}
-
+		
 		public Vector3 Position
 		{
 			get

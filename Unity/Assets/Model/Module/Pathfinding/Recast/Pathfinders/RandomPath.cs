@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF {
 	/** Finds a path in a random direction from the start node.
 	 * \ingroup paths

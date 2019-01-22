@@ -10,21 +10,17 @@ namespace ETModel
 	{
 		[BsonElement("C")]
 		[BsonIgnoreIfNull]
-		private HashSet<Component> components;
+		private HashSet<Component> components = new HashSet<Component>();
 
 		[BsonIgnore]
-		private Dictionary<Type, Component> componentDict;
+		private Dictionary<Type, Component> componentDict = new Dictionary<Type, Component>();
 
 		public Entity()
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		protected Entity(long id): base(id)
 		{
-			this.components = new HashSet<Component>();
-			this.componentDict = new Dictionary<Type, Component>();
 		}
 
 		public override void Dispose()
@@ -62,11 +58,13 @@ namespace ETModel
 			
 			component.Parent = this;
 
+			this.componentDict.Add(type, component);
+
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -77,13 +75,15 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {type.Name}");
 			}
 
-			Component component = ComponentFactory.CreateWithParent(type, this);
+			Component component = ComponentFactory.CreateWithParent(type, this, this.IsFromPool);
 
+			this.componentDict.Add(type, component);
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -95,13 +95,15 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K>(this);
+			K component = ComponentFactory.CreateWithParent<K>(this, this.IsFromPool);
 
+			this.componentDict.Add(type, component);
+			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -113,13 +115,15 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1);
+			K component = ComponentFactory.CreateWithParent<K, P1>(this, p1, this.IsFromPool);
+			
+			this.componentDict.Add(type, component);
 			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -131,13 +135,15 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2>(this, p1, p2, this.IsFromPool);
+			
+			this.componentDict.Add(type, component);
 			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -149,13 +155,15 @@ namespace ETModel
 				throw new Exception($"AddComponent, component already exist, id: {this.Id}, component: {typeof(K).Name}");
 			}
 
-			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3);
+			K component = ComponentFactory.CreateWithParent<K, P1, P2, P3>(this, p1, p2, p3, this.IsFromPool);
+			
+			this.componentDict.Add(type, component);
 			
 			if (component is ISerializeToEntity)
 			{
 				this.components.Add(component);
 			}
-			this.componentDict.Add(type, component);
+			
 			return component;
 		}
 
@@ -172,8 +180,8 @@ namespace ETModel
 				return;
 			}
 
-			this.components.Remove(component);
 			this.componentDict.Remove(type);
+			this.components.Remove(component);
 
 			component.Dispose();
 		}
@@ -190,8 +198,8 @@ namespace ETModel
 				return;
 			}
 
-			this.components?.Remove(component);
 			this.componentDict.Remove(type);
+			this.components.Remove(component);
 
 			component.Dispose();
 		}
@@ -220,7 +228,7 @@ namespace ETModel
 		{
 			return this.componentDict.Values.ToArray();
 		}
-
+		
 		public override void EndInit()
 		{
 			try

@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
 * limitations under the License.
 */
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver.Core.Bindings;
-using MongoDB.Driver.Core.Connections;
 using MongoDB.Driver.Core.Misc;
 using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 
 namespace MongoDB.Driver.Core.Operations
 {
-    internal class DeleteOpcodeOperationEmulator
+    internal class DeleteOpcodeOperationEmulator : IExecutableInRetryableWriteContext<WriteConcernResult>
     {
         // fields
         private readonly CollectionNamespace _collectionNamespace;
         private readonly DeleteRequest _request;
         private readonly MessageEncoderSettings _messageEncoderSettings;
+        private bool _retryRequested;
         private WriteConcern _writeConcern = WriteConcern.Acknowledged;
 
         // constructors
@@ -58,6 +57,12 @@ namespace MongoDB.Driver.Core.Operations
             get { return _messageEncoderSettings; }
         }
 
+        public bool RetryRequested
+        {
+            get { return _retryRequested; }
+            set { _retryRequested = value; }
+        }
+
         public WriteConcern WriteConcern
         {
             get { return _writeConcern; }
@@ -65,16 +70,16 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // public methods
-        public WriteConcernResult Execute(IChannelHandle channel, CancellationToken cancellationToken)
+        public WriteConcernResult Execute(RetryableWriteContext context, CancellationToken cancellationToken)
         {
-            Ensure.IsNotNull(channel, nameof(channel));
+            Ensure.IsNotNull(context, nameof(context));
 
             var operation = CreateOperation();
             BulkWriteOperationResult result;
             MongoBulkWriteOperationException exception = null;
             try
             {
-                result = operation.Execute(channel, cancellationToken);
+                result = operation.Execute(context, cancellationToken);
             }
             catch (MongoBulkWriteOperationException ex)
             {
@@ -82,19 +87,19 @@ namespace MongoDB.Driver.Core.Operations
                 exception = ex;
             }
 
-            return CreateResultOrThrow(channel, result, exception);
+            return CreateResultOrThrow(context.Channel, result, exception);
         }
 
-        public async Task<WriteConcernResult> ExecuteAsync(IChannelHandle channel, CancellationToken cancellationToken)
+        public async Task<WriteConcernResult> ExecuteAsync(RetryableWriteContext context, CancellationToken cancellationToken)
         {
-            Ensure.IsNotNull(channel, nameof(channel));
+            Ensure.IsNotNull(context, nameof(context));
 
             var operation = CreateOperation();
             BulkWriteOperationResult result;
             MongoBulkWriteOperationException exception = null;
             try
             {
-                result = await operation.ExecuteAsync(channel, cancellationToken).ConfigureAwait(false);
+                result = await operation.ExecuteAsync(context, cancellationToken).ConfigureAwait(false);
             }
             catch (MongoBulkWriteOperationException ex)
             {
@@ -102,7 +107,7 @@ namespace MongoDB.Driver.Core.Operations
                 exception = ex;
             }
 
-            return CreateResultOrThrow(channel, result, exception);
+            return CreateResultOrThrow(context.Channel, result, exception);
         }
 
         // private methods
@@ -111,6 +116,7 @@ namespace MongoDB.Driver.Core.Operations
             var requests = new[] { _request };
             return new BulkDeleteOperation(_collectionNamespace, requests, _messageEncoderSettings)
             {
+                RetryRequested = _retryRequested,
                 WriteConcern = _writeConcern
             };
         }

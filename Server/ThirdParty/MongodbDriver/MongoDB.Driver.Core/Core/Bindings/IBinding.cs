@@ -1,4 +1,4 @@
-/* Copyright 2013-2015 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,9 +21,24 @@ using MongoDB.Driver.Core.Clusters;
 namespace MongoDB.Driver.Core.Bindings
 {
     /// <summary>
+    /// Represents a read or write binding associated with a session.
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
+    public interface IBinding : IDisposable
+    {
+        /// <summary>
+        /// Gets the session.
+        /// </summary>
+        /// <value>
+        /// The session.
+        /// </value>
+        ICoreSessionHandle Session { get; }
+    }
+
+    /// <summary>
     /// Represents a binding that determines which channel source gets used for read operations.
     /// </summary>
-    public interface IReadBinding : IDisposable
+    public interface IReadBinding : IBinding
     {
         /// <summary>
         /// Gets the read preference.
@@ -51,7 +66,7 @@ namespace MongoDB.Driver.Core.Bindings
     /// <summary>
     /// Represents a binding that determines which channel source gets used for write operations.
     /// </summary>
-    public interface IWriteBinding : IDisposable
+    public interface IWriteBinding : IBinding
     {
         /// <summary>
         /// Gets a channel source for write operations.

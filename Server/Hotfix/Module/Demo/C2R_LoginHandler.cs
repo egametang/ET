@@ -9,7 +9,7 @@ namespace ETHotfix
 	{
 		protected override void Run(Session session, C2R_Login message, Action<R2C_Login> reply)
 		{
-			RunAsync(session, message, reply).NoAwait();
+			RunAsync(session, message, reply).Coroutine();
 		}
 
 		private async ETVoid RunAsync(Session session, C2R_Login message, Action<R2C_Login> reply)

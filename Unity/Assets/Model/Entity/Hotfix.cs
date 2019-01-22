@@ -16,15 +16,11 @@ namespace ETModel
 #endif
 
 		private IStaticMethod start;
+		private List<Type> hotfixTypes;
 
 		public Action Update;
 		public Action LateUpdate;
 		public Action OnApplicationQuit;
-
-		public Hotfix()
-		{
-
-		}
 
 		public void GotoHotfix()
 		{
@@ -36,34 +32,20 @@ namespace ETModel
 
 		public List<Type> GetHotfixTypes()
 		{
-#if ILRuntime
-			if (this.appDomain == null)
-			{
-				return new List<Type>();
-			}
-
-			return this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToList();
-#else
-			if (this.assembly == null)
-			{
-				return new List<Type>();
-			}
-			return this.assembly.GetTypes().ToList();
-#endif
+			return this.hotfixTypes;
 		}
-
 
 		public void LoadHotfixAssembly()
 		{
 			Game.Scene.GetComponent<ResourcesComponent>().LoadBundle($"code.unity3d");
 			GameObject code = (GameObject)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("code.unity3d", "Code");
 			
+			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
+			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+			
 #if ILRuntime
 			Log.Debug($"当前使用的是ILRuntime模式");
 			this.appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-			
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
 
 			using (MemoryStream fs = new MemoryStream(assBytes))
 			using (MemoryStream p = new MemoryStream(pdbBytes))
@@ -72,15 +54,19 @@ namespace ETModel
 			}
 
 			this.start = new ILStaticMethod(this.appDomain, "ETHotfix.Init", "Start", 0);
+			
+			this.hotfixTypes = this.appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToList();
 #else
 			Log.Debug($"当前使用的是Mono模式");
-			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
-			byte[] pdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;
+
 			this.assembly = Assembly.Load(assBytes, pdbBytes);
 
 			Type hotfixInit = this.assembly.GetType("ETHotfix.Init");
 			this.start = new MonoStaticMethod(hotfixInit, "Start");
+			
+			this.hotfixTypes = this.assembly.GetTypes().ToList();
 #endif
+			
 			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle($"code.unity3d");
 		}
 	}

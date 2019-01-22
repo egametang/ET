@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if NET45
+#if NET452
 using System.Runtime.Serialization;
 #endif
 using System.Text;
@@ -29,7 +29,7 @@ namespace MongoDB.Driver
     /// <summary>
     /// Represents a bulk write exception.
     /// </summary>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public abstract class MongoBulkWriteException : MongoServerException
@@ -54,7 +54,7 @@ namespace MongoDB.Driver
             _writeConcernError = writeConcernError;
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the MongoQueryException class (this overload supports deserialization).
         /// </summary>
@@ -86,7 +86,7 @@ namespace MongoDB.Driver
         }
 
         // methods
-#if NET45
+#if NET452
         /// <summary>
         /// Gets the object data.
         /// </summary>
@@ -124,7 +124,7 @@ namespace MongoDB.Driver
     /// Represents a bulk write exception.
     /// </summary>
     /// <typeparam name="TDocument">The type of the document.</typeparam>
-#if NET45
+#if NET452
     [Serializable]
 #endif
     public sealed class MongoBulkWriteException<TDocument> : MongoBulkWriteException
@@ -155,7 +155,7 @@ namespace MongoDB.Driver
             _unprocessedRequests = unprocessedRequests.ToList();
         }
 
-#if NET45
+#if NET452
         /// <summary>
         /// Initializes a new instance of the MongoQueryException class (this overload supports deserialization).
         /// </summary>
@@ -190,7 +190,7 @@ namespace MongoDB.Driver
         }
 
         // methods
-#if NET45
+#if NET452
         /// <summary>
         /// Gets the object data.
         /// </summary>

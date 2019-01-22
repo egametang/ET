@@ -1,4 +1,4 @@
-﻿/* Copyright 2015 MongoDB Inc.
+﻿/* Copyright 2015-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -30,10 +30,12 @@ namespace MongoDB.Driver
         /// Reads data committed locally.
         /// </summary>
         Local,
+
         /// <summary>
         /// Reads data committed to a majority of nodes.
         /// </summary>
         Majority,
+
         /// <summary>
         /// Avoids returning data from a "stale" primary 
         /// (one that has already been superseded by a new primary but doesn't know it yet). 
@@ -41,6 +43,11 @@ namespace MongoDB.Driver
         /// produce linearizable reads; they must be issued in conjunction with w:majority 
         /// writes to the same document(s) in order to be linearizable.
         /// </summary>
-        Linearizable
+        Linearizable,
+
+        /// <summary>
+        /// Snapshot read concern level.
+        /// </summary>
+        Snapshot
     }
 }

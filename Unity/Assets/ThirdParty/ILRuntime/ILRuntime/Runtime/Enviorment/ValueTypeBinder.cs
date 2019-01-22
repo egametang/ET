@@ -46,7 +46,7 @@ namespace ILRuntime.Runtime.Enviorment
             {
                 case ObjectTypes.ValueTypeObjectReference:
                     {
-                        var dst = *(StackObject**)&esp->Value;
+                        var dst = ILIntepreter.ResolveReference(esp);
                         var vb = ((CLRType)domain.GetType(dst->Value)).ValueTypeBinder as ValueTypeBinder<K>;
                         if (vb != null)
                         {
@@ -76,7 +76,7 @@ namespace ILRuntime.Runtime.Enviorment
                     break;
                 case ObjectTypes.ValueTypeObjectReference:
                     {
-                        var dst = *(StackObject**)&esp->Value;
+                        var dst = ILIntepreter.ResolveReference(esp);
                         var vb = ((CLRType)domain.GetType(dst->Value)).ValueTypeBinder as ValueTypeBinder<K>;
                         if (vb != null)
                         {
@@ -117,7 +117,7 @@ namespace ILRuntime.Runtime.Enviorment
             var a = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             if (a->ObjectType == ObjectTypes.ValueTypeObjectReference)
             {
-                var ptr = *(StackObject**)&a->Value;
+                var ptr = ILIntepreter.ResolveReference(a);
                 AssignFromStack(ref value, ptr, mStack);
                 if (shouldFree)
                     intp.FreeStackValueType(ptr_of_this_method);
@@ -175,7 +175,7 @@ namespace ILRuntime.Runtime.Enviorment
                     break;
                 case ObjectTypes.ValueTypeObjectReference:
                     {
-                        var dst = *((StackObject**)&ptr_of_this_method->Value);
+                        var dst = ILIntepreter.ResolveReference(ptr_of_this_method);
                         CopyValueTypeToStack(ref instance_of_this_method, dst, mStack);
                     }
                     break;
@@ -185,7 +185,7 @@ namespace ILRuntime.Runtime.Enviorment
         public void PushValue(ref T value, ILIntepreter intp, StackObject* ptr_of_this_method, IList<object> mStack)
         {
             intp.AllocValueType(ptr_of_this_method, clrType);
-            var dst = *((StackObject**)&ptr_of_this_method->Value);
+            var dst = ILIntepreter.ResolveReference(ptr_of_this_method);
             CopyValueTypeToStack(ref value, dst, mStack);
         }
     }

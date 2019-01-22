@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 MongoDB Inc.
+/* Copyright 2013-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace MongoDB.Driver.Core.Operations
     /// Represents a base class for find and modify operations.
     /// </summary>
     /// <typeparam name="TResult">The type of the result.</typeparam>
-    public abstract class FindAndModifyOperationBase<TResult> : IWriteOperation<TResult>
+    public abstract class FindAndModifyOperationBase<TResult> : IWriteOperation<TResult>, IRetryableWriteOperation<TResult>
     {
         // fields
         private Collation _collation;
@@ -42,6 +42,7 @@ namespace MongoDB.Driver.Core.Operations
         private readonly MessageEncoderSettings _messageEncoderSettings;
         private readonly IBsonSerializer<TResult> _resultSerializer;
         private WriteConcern _writeConcern;
+        private bool _retryRequested;
 
         // constructors
         /// <summary>
@@ -112,17 +113,50 @@ namespace MongoDB.Driver.Core.Operations
             set { _writeConcern = value; }
         }
 
+        /// <summary>
+        /// Gets or sets whether the operation can be retried.
+        /// </summary>
+        public bool RetryRequested
+        {
+            get { return _retryRequested; }
+            set { _retryRequested = value; }
+        }
+
         // public methods
         /// <inheritdoc/>
         public TResult Execute(IWriteBinding binding, CancellationToken cancellationToken)
         {
-            Ensure.IsNotNull(binding, nameof(binding));
+            return RetryableWriteOperationExecutor.Execute(this, binding, _retryRequested, cancellationToken);
+        }
 
-            using (var channelSource = binding.GetWriteChannelSource(cancellationToken))
-            using (var channel = channelSource.GetChannel(cancellationToken))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+        /// <inheritdoc/>
+        public TResult Execute(RetryableWriteContext context, CancellationToken cancellationToken)
+        {
+            return RetryableWriteOperationExecutor.Execute(this, context, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<TResult> ExecuteAsync(IWriteBinding binding, CancellationToken cancellationToken)
+        {
+            return RetryableWriteOperationExecutor.ExecuteAsync(this, binding, _retryRequested, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public Task<TResult> ExecuteAsync(RetryableWriteContext context, CancellationToken cancellationToken)
+        {
+            return RetryableWriteOperationExecutor.ExecuteAsync(this, context, cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public TResult ExecuteAttempt(RetryableWriteContext context, int attempt, long? transactionNumber, CancellationToken cancellationToken)
+        {
+            var binding = context.Binding;
+            var channelSource = context.ChannelSource;
+            var channel = context.Channel;
+
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
+                var operation = CreateOperation(channelBinding.Session, channel.ConnectionDescription, transactionNumber);
                 using (var rawBsonDocument = operation.Execute(channelBinding, cancellationToken))
                 {
                     return ProcessCommandResult(channel.ConnectionDescription.ConnectionId, rawBsonDocument);
@@ -131,15 +165,15 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         /// <inheritdoc/>
-        public async Task<TResult> ExecuteAsync(IWriteBinding binding, CancellationToken cancellationToken)
+        public async Task<TResult> ExecuteAttemptAsync(RetryableWriteContext context, int attempt, long? transactionNumber, CancellationToken cancellationToken)
         {
-            Ensure.IsNotNull(binding, nameof(binding));
+            var binding = context.Binding;
+            var channelSource = context.ChannelSource;
+            var channel = context.Channel;
 
-            using (var channelSource = await binding.GetWriteChannelSourceAsync(cancellationToken).ConfigureAwait(false))
-            using (var channel = await channelSource.GetChannelAsync(cancellationToken).ConfigureAwait(false))
-            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel))
+            using (var channelBinding = new ChannelReadWriteBinding(channelSource.Server, channel, binding.Session.Fork()))
             {
-                var operation = CreateOperation(channel.ConnectionDescription.ServerVersion);
+                var operation = CreateOperation(channelBinding.Session, channel.ConnectionDescription, transactionNumber);
                 using (var rawBsonDocument = await operation.ExecuteAsync(channelBinding, cancellationToken).ConfigureAwait(false))
                 {
                     return ProcessCommandResult(channel.ConnectionDescription.ConnectionId, rawBsonDocument);
@@ -148,11 +182,11 @@ namespace MongoDB.Driver.Core.Operations
         }
 
         // private methods
-        internal abstract BsonDocument CreateCommand(SemanticVersion serverVersion);
+        internal abstract BsonDocument CreateCommand(ICoreSessionHandle session, ConnectionDescription connectionDescription, long? transactionNumber);
 
-        private WriteCommandOperation<RawBsonDocument> CreateOperation(SemanticVersion serverVersion)
+        private WriteCommandOperation<RawBsonDocument> CreateOperation(ICoreSessionHandle session, ConnectionDescription connectionDescription, long? transactionNumber)
         {
-            var command = CreateCommand(serverVersion);
+            var command = CreateCommand(session, connectionDescription, transactionNumber);
             return new WriteCommandOperation<RawBsonDocument>(_collectionNamespace.DatabaseNamespace, command, RawBsonDocumentSerializer.Instance, _messageEncoderSettings)
             {
                 CommandValidator = GetCommandValidator()
@@ -173,15 +207,6 @@ namespace MongoDB.Driver.Core.Operations
                 Encoding = _messageEncoderSettings.GetOrDefault<UTF8Encoding>(MessageEncoderSettingsName.ReadEncoding, Utf8Encodings.Strict),
                 GuidRepresentation = _messageEncoderSettings.GetOrDefault<GuidRepresentation>(MessageEncoderSettingsName.GuidRepresentation, GuidRepresentation.CSharpLegacy)
             };
-
-            BsonValue writeConcernError;
-            if (rawBsonDocument.TryGetValue("writeConcernError", out writeConcernError))
-            {
-                var message = writeConcernError["errmsg"].AsString;
-                var response = rawBsonDocument.Materialize(binaryReaderSettings);
-                var writeConcernResult = new WriteConcernResult(response);
-                throw new MongoWriteConcernException(connectionId, message, writeConcernResult);
-            }
 
             using (var stream = new ByteBufferStream(rawBsonDocument.Slice, ownsBuffer: false))
             using (var reader = new BsonBinaryReader(stream, binaryReaderSettings))

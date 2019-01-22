@@ -26,6 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Module\Http\" />

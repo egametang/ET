@@ -11,10 +11,7 @@ namespace ETModel
 			List<string> addressIPs = new List<string>();
 			foreach (IPAddress address in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
 			{
-				if (address.AddressFamily.ToString() == "InterNetwork")
-				{
-					addressIPs.Add(address.ToString());
-				}
+				addressIPs.Add(address.ToString());
 			}
 			return addressIPs.ToArray();
 		}

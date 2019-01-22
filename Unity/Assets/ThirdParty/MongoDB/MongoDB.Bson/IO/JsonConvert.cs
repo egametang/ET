@@ -1,4 +1,4 @@
-/* Copyright 2010-2016 MongoDB Inc.
+/* Copyright 2010-present MongoDB Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -187,7 +187,7 @@ namespace MongoDB.Bson.IO
         /// <returns>A string.</returns>
         public static string ToString(double value)
         {
-            return value.ToString("R", NumberFormatInfo.InvariantInfo);
+            return value.ToString("G17", NumberFormatInfo.InvariantInfo);
         }
 
         /// <summary>
