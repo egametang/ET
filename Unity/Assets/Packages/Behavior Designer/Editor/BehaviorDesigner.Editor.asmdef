@@ -1,0 +1,10 @@
+{
+    "name": "BehaviorDesigner.Editor",
+    "references": [
+        "BehaviorDesigner.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using BehaviorDesigner.Runtime.Tasks;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
@@ -29,7 +30,16 @@ namespace ETModel
 			appdomain.DelegateManager.RegisterFunctionDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
 			appdomain.DelegateManager.RegisterMethodDelegate<Google.Protobuf.Adapt_IMessage.Adaptor>();
 
-			CLRBindings.Initialize(appdomain);
+            // Task Override
+            appdomain.DelegateManager.RegisterFunctionDelegate<TaskStatus>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<object, bool>();
+
+            // ParentTask Override
+            appdomain.DelegateManager.RegisterFunctionDelegate<TaskStatus, TaskStatus>();
+            appdomain.DelegateManager.RegisterMethodDelegate<int, TaskStatus>();
+            appdomain.DelegateManager.RegisterMethodDelegate<TaskStatus>();
+
+            CLRBindings.Initialize(appdomain);
 
 			// 注册适配器
 			Assembly assembly = typeof(Init).Assembly;

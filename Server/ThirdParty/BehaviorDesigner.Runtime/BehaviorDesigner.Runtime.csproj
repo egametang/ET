@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BehaviorDesignerRuntime">
+      <HintPath>Core\BehaviorDesignerRuntime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Actions\HotfixAction.cs" Link="Actions\HotfixAction.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Base\EntryTask.cs" Link="Base\EntryTask.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\HotfixComposite.cs" Link="Composites\HotfixComposite.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\Parallel.cs" Link="Composites\Parallel.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\ParallelComplete.cs" Link="Composites\ParallelComplete.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\ParallelSelector.cs" Link="Composites\ParallelSelector.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\PrioritySelector.cs" Link="Composites\PrioritySelector.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\RandomSelector.cs" Link="Composites\RandomSelector.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\RandomSequence.cs" Link="Composites\RandomSequence.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\Selector.cs" Link="Composites\Selector.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\SelectorEvaluator.cs" Link="Composites\SelectorEvaluator.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\Sequence.cs" Link="Composites\Sequence.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Composites\UtilitySelector.cs" Link="Composites\UtilitySelector.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Conditionals\HotfixConditional.cs" Link="Conditionals\HotfixConditional.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\ConditionalEvaluator.cs" Link="Decorators\ConditionalEvaluator.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\HotfixDecorator.cs" Link="Decorators\HotfixDecorator.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\Interrupt.cs" Link="Decorators\Interrupt.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\Inverter.cs" Link="Decorators\Inverter.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\Repeater.cs" Link="Decorators\Repeater.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\ReturnFailure.cs" Link="Decorators\ReturnFailure.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\ReturnSuccess.cs" Link="Decorators\ReturnSuccess.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\TaskGuard.cs" Link="Decorators\TaskGuard.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\UntilFailure.cs" Link="Decorators\UntilFailure.cs" />
+    <Compile Include="..\..\..\Unity\Assets\Packages\Behavior Designer\Runtime\Decorators\UntilSuccess.cs" Link="Decorators\UntilSuccess.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Base\" />
+    <Folder Include="Actions\" />
+    <Folder Include="Conditionals\" />
+    <Folder Include="Decorators\" />
+    <Folder Include="Composites\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UnityEngine\UnityEngine.csproj" />
+  </ItemGroup>
+
+</Project>

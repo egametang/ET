@@ -309,6 +309,7 @@
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ThirdParty\BehaviorDesigner.Runtime\BehaviorDesigner.Runtime.csproj" />
     <ProjectReference Include="..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
     <ProjectReference Include="..\ThirdParty\KcpLib\KcpLib.csproj" />
     <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
@@ -325,6 +326,9 @@
     <Folder Include="Module\Numeric\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="BehaviorDesignerRuntime">
+      <HintPath>..\ThirdParty\BehaviorDesigner.Runtime\Core\BehaviorDesignerRuntime.dll</HintPath>
+    </Reference>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\ThirdParty\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>

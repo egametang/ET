@@ -1,0 +1,5 @@
+{"Id":1001,"Name":"打印日志","Description":"打印一个Hello HotfixAction","ComponentName":"LogActionComponent","ParameterList":"{}"}
+{"Id":1002,"Name":"巡逻","Description":"利用寻路组件，在距离自身PatrolRange的MinPatrolRange和MaxPatrolRange交叉的圆形范围内随机走动，每次巡逻间隔时间WaitTime(毫秒)","ComponentName":"PatrolActionComponent","ParameterList":"{\"MinPatrolRange\":2,\"MaxPatrolRange\":4.2,\"WaitTime\":2000}"}
+{"Id":1003,"Name":"检测主角","Description":"检测主角是否在怪物所在的房间里","ComponentName":"WithInRoomActionComponent","ParameterList":"{\"GameEntityTypeList\":[1]}"}
+{"Id":1004,"Name":"追逐主角","Description":"追逐主角直到主角在TargetDistance范围内出现","ComponentName":"SeekActionComponent","ParameterList":"{\"GameEntityTypeList\":[1],\"TargetDistance\":3}"}
+{"Id":1005,"Name":"释放技能","Description":"通过优先级释放技能","ComponentName":"PlaySkillActionComponent","ParameterList":"{}"}

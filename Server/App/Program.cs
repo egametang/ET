@@ -117,15 +117,19 @@ namespace App
 						
 						// 配置管理
 						Game.Scene.AddComponent<ConfigComponent>();
-						
-						// recast寻路组件
-						Game.Scene.AddComponent<PathfindingComponent>();
+
+                        // 行为树Demo
+                        Game.Scene.AddComponent<BehaviorManagerComponent>();
+                        Game.EventSystem.Run(EventIdType.TestBehavior, "Demo");
+
+                        // recast寻路组件
+                        Game.Scene.AddComponent<PathfindingComponent>();
 						
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<UnitComponent>();
 
 						Game.Scene.AddComponent<ConsoleComponent>();
-						// Game.Scene.AddComponent<HttpComponent>();
+                        // Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
 						Game.Scene.AddComponent<NetOuterComponent>();
