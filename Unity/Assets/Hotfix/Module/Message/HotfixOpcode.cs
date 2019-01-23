@@ -31,6 +31,12 @@ namespace ETHotfix
 	[Message(HotfixOpcode.G2C_PlayerInfo)]
 	public partial class G2C_PlayerInfo : IResponse {}
 
+	[Message(HotfixOpcode.TestLoginRequest)]
+	public partial class TestLoginRequest : IRequest {}
+
+	[Message(HotfixOpcode.TestLoginResponse)]
+	public partial class TestLoginResponse : IResponse {}
+
 }
 namespace ETHotfix
 {
@@ -46,5 +52,7 @@ namespace ETHotfix
 		 public const ushort PlayerInfo = 10008;
 		 public const ushort C2G_PlayerInfo = 10009;
 		 public const ushort G2C_PlayerInfo = 10010;
+		 public const ushort TestLoginRequest = 10011;
+		 public const ushort TestLoginResponse = 10012;
 	}
 }

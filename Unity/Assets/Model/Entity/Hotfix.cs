@@ -59,6 +59,7 @@ namespace ETModel
 #if ILRuntime
 			Log.Debug($"当前使用的是ILRuntime模式");
 			this.appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
+            this.appDomain.DebugService.StartDebugService(56000);
 			GameObject code = (GameObject)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("code.unity3d", "Code");
 			byte[] assBytes = code.Get<TextAsset>("Hotfix.dll").bytes;
 			byte[] mdbBytes = code.Get<TextAsset>("Hotfix.pdb").bytes;

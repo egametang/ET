@@ -72,3 +72,19 @@ message G2C_PlayerInfo // IResponse
     repeated int32 TestRepeatedInt32 = 4;
     repeated int64 TestRepeatedInt64 = 5;
 }
+message TestLoginRequest // IRequest
+{
+	int32 RpcId = 90;
+	string	UsreName = 1;	// 帐号
+	string	Password = 2;	// 密码
+}
+
+message TestLoginResponse // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	string Address = 1;
+	int64 Key	    = 2;
+}
+

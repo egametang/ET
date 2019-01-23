@@ -55,6 +55,6 @@ MonoBehaviour:
   - key: Hotfix.dll
     gameObject: {fileID: 4900000, guid: ae44b218243cfc347af99a6875e9e11c, type: 3}
   - key: Hotfix.mdb
-    gameObject: {fileID: 4900000, guid: 23845562ede90da4c8bc06908a4c6667, type: 3}
+    gameObject: {fileID: 0}
   - key: Hotfix.pdb
     gameObject: {fileID: 4900000, guid: dd08ff64f788e7a4ba0f918632ff8d0f, type: 3}

@@ -78,7 +78,12 @@ namespace ETEditor
 			}
 			
 			Log.Info("开始资源打包");
-			BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
+            try {
+                BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
+            }
+            catch (FileLoadException ex) {
+                Log.Error(ex);
+            }
 			
 			GenerateVersionInfo(fold);
 			Log.Info("完成资源打包");
