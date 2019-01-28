@@ -43,10 +43,7 @@ namespace ETHotfix
                 TestLoginRequest request = new TestLoginRequest();
                 request.UsreName = accountValue;
                 request.Password = passwordValue;
-                // 创建一个ETModel层的Session,并且保存到ETModel.SessionComponent中
-
                 
-
                 // 创建一个ETHotfix层的Session, 并且保存到ETHotfix.SessionComponent中
                 if (Game.Scene.GetComponent<SessionComponent>() == null) {
                     IPEndPoint address = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
