@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 
 namespace ETModel
 {
@@ -242,7 +243,7 @@ namespace ETModel
 
 				if (result != null)
 				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream,Encoding.UTF8))
 					{
 						if (result.GetType() == typeof(string))
 						{
