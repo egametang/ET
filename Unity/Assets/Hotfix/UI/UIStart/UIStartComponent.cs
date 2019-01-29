@@ -43,13 +43,23 @@ namespace ETHotfix
                 TestLoginRequest request = new TestLoginRequest();
                 request.UsreName = accountValue;
                 request.Password = passwordValue;
-                
+
                 // 创建一个ETHotfix层的Session, 并且保存到ETHotfix.SessionComponent中
-                if (Game.Scene.GetComponent<SessionComponent>() == null) {
+                addSession: if (Game.Scene.GetComponent<SessionComponent>() == null) {
+                  
                     IPEndPoint address = NetworkHelper.ToIPEndPoint(GlobalConfigComponent.Instance.GlobalProto.Address);
                     ETModel.Session session = ETModel.Game.Scene.GetComponent<NetOuterComponent>().Create(address);
                     ETModel.Game.Scene.AddComponent<ETModel.SessionComponent>().Session = session;
                     Game.Scene.AddComponent<SessionComponent>().Session = ComponentFactory.Create<Session, ETModel.Session>(session);
+                }
+                else {
+                    //断线重连的逻辑
+                    ETModel.Session sesson = ETModel.Game.Scene.GetComponent<ETModel.SessionComponent>().Session;
+                    if (sesson.IsDisposed) {
+                        ETModel.Game.Scene.RemoveComponent<ETModel.SessionComponent>();
+                        Game.Scene.RemoveComponent<SessionComponent>();
+                        goto addSession;
+                    }
                 }
 
                 TestLoginResponse response = (TestLoginResponse)await SessionComponent.Instance.Session.Call(request);
