@@ -28,9 +28,7 @@ namespace ETHotfix
         {
             self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
 
-            self.Address = StartConfigComponent.Instance
-                    .Get(IdGenerater.GetAppIdFromId(self.ActorId))
-                    .GetComponent<InnerConfig>().IPEndPoint;
+            self.Address = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppIdFromId(self.ActorId));
 
             self.UpdateAsync().Coroutine();
         }
@@ -161,9 +159,7 @@ namespace ETHotfix
 					// 等待0.5s再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(500);
 					self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-					self.Address = StartConfigComponent.Instance
-							.Get(IdGenerater.GetAppIdFromId(self.ActorId))
-							.GetComponent<InnerConfig>().IPEndPoint;
+					self.Address = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppIdFromId(self.ActorId));
 					self.AllowGet();
 					return;
 				
