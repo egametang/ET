@@ -4,12 +4,11 @@ using ETModel;
 namespace ETHotfix
 {
     [ObjectSystem]
-    public class ActorLocationSenderAwakeSystem : AwakeSystem<ActorLocationSender, long>
+    public class ActorLocationSenderAwakeSystem : AwakeSystem<ActorLocationSender>
     {
-        public override void Awake(ActorLocationSender self, long id)
+        public override void Awake(ActorLocationSender self)
         {
             self.LastSendTime = TimeHelper.Now();
-	        self.Id = id;
             self.Tcs = null;
             self.FailTimes = 0;
             self.ActorId = 0;
