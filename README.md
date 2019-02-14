@@ -75,6 +75,8 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [module共享仓库](https://github.com/egametang/ET-Modules)  
 
 群友分享：  
+[行为树与fgui分支(Duke Chiang开发维护)](https://github.com/DukeChiang/ET.git)   
+[ET学习笔记系列(烟雨迷离半世殇写)](https://blog.csdn.net/qq_15020543/article/details/86766326)   
 [ET学习笔记系列(咲夜詩写)](https://acgmart.com/unity/)   
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)  
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
