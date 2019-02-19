@@ -56,10 +56,12 @@ namespace ETModel
 
 			if (this.Entity.IsDisposed)
 			{
-				this.Entity.RemoveComponent<SceneChangeComponent>();
+				return;
 			}
-
+			
 			base.Dispose();
+			
+			this.Entity.RemoveComponent<SceneChangeComponent>();
 		}
 	}
 }
