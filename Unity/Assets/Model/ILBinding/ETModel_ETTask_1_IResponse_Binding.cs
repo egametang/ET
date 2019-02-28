@@ -14,27 +14,24 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Runtime_CompilerServices_TaskAwaiter_1_IResponse_Binding
+    unsafe class ETModel_ETTask_1_IResponse_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>);
+            Type type = typeof(ETModel.ETTask<ETModel.IResponse>);
             args = new Type[]{};
-            method = type.GetMethod("get_IsCompleted", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_IsCompleted_0);
-            args = new Type[]{};
-            method = type.GetMethod("GetResult", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetResult_1);
+            method = type.GetMethod("GetAwaiter", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
 
-            app.RegisterCLRCreateDefaultInstance(type, () => new System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>());
+            app.RegisterCLRCreateDefaultInstance(type, () => new ETModel.ETTask<ETModel.IResponse>());
 
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse> instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ETModel.ETTask<ETModel.IResponse> instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -73,14 +70,14 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ETModel.ETTask<ETModel.IResponse>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
             }
         }
 
-        static StackObject* get_IsCompleted_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetAwaiter_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -88,30 +85,9 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse> instance_of_this_method = (System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>)typeof(System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ETModel.ETTask<ETModel.IResponse> instance_of_this_method = (ETModel.ETTask<ETModel.IResponse>)typeof(ETModel.ETTask<ETModel.IResponse>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
-            var result_of_this_method = instance_of_this_method.IsCompleted;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
-
-            __intp.Free(ptr_of_this_method);
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method ? 1 : 0;
-            return __ret + 1;
-        }
-
-        static StackObject* GetResult_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse> instance_of_this_method = (System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>)typeof(System.Runtime.CompilerServices.TaskAwaiter<ETModel.IResponse>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-
-            var result_of_this_method = instance_of_this_method.GetResult();
+            var result_of_this_method = instance_of_this_method.GetAwaiter();
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
