@@ -68,9 +68,6 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 相关网站:  
 [ET论坛](https://bbs.honorworkroom.com/forum.php)  
 
-[组件式设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BB%84%E4%BB%B6%E8%AE%BE%E8%AE%A1.md)   
-[网络层设计](https://github.com/egametang/Egametang/blob/master/Doc/%E7%BD%91%E7%BB%9C%E5%B1%82%E8%AE%BE%E8%AE%A1.md)   
-
 有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
 [module共享仓库](https://github.com/egametang/ET-Modules)  
 
@@ -90,11 +87,17 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET框架如何用MAC开发](http://www.tinkingli.com/?p=147)  
 [ET的动态添加事件和触发组件](http://www.tinkingli.com/?p=145)  
 
+商业项目:  
+1. [养不大](https://www.taptap.com/app/71064)  
+2. 天天躲猫猫2（ios2019春节下载排行19）  
+3. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+
 群友demo：  
-[斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
-[牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-[背包系统](https://gitee.com/ECPS_admin/planc)  
-[ET小游戏合集](https://github.com/Acgmart/ET-MultiplyDemos)  
+1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
+2. [背包系统](https://gitee.com/ECPS_admin/planc)  
+3. [ET小游戏合集](https://github.com/Acgmart/ET-MultiplyDemos)  
+
+
 
 视频教程：  
 [肉饼老师主讲](http://www.taikr.com/my/course/972)  
@@ -168,4 +171,4 @@ __讨论QQ群 : 474643097__
 
 
 # 支付宝捐赠  
-![使用支付宝对该项目进行捐赠](https://github.com/egametang/ET/blob/master/Doc/donate.png)
+![使用支付宝对该项目进行捐赠](https://github.com/egametang/ET/blob/master/Book/donate.png)
