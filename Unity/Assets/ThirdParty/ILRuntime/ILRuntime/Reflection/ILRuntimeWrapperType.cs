@@ -245,6 +245,11 @@ namespace ILRuntime.Reflection
             }
         }
 
+        public override Type GetGenericTypeDefinition()
+        {
+            return et.GetGenericTypeDefinition();
+        }
+
         public override bool IsGenericParameter
         {
             get

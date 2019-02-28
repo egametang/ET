@@ -7,9 +7,9 @@ namespace ETModel
 	{
 		public AppType Type { get; }
 
-		public ConfigAttribute(AppType type)
+		public ConfigAttribute(int type)
 		{
-			this.Type = type;
+			this.Type = (AppType)type;
 		}
 	}
 }
