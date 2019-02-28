@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -50,7 +49,10 @@ namespace ETModel
 
 			//Log.Debug($"desdroy assetbundle: {this.Name}");
 
-			this.AssetBundle?.Unload(true);
+			if (this.AssetBundle != null)
+			{
+				this.AssetBundle.Unload(true);
+			}
 		}
 	}
 	
