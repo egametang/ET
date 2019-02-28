@@ -205,6 +205,7 @@
     <Compile Include="Assets\Model\ILBinding\ETModel_Session_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_SessionCallbackComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_SessionComponent_Binding.cs" />
+    <Compile Include="Assets\Model\ILBinding\ETModel_StringHelper_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_Unit_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_UnitFactory_Binding.cs" />

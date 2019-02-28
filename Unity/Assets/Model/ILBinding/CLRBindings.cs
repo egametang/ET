@@ -140,6 +140,7 @@ namespace ILRuntime.Runtime.Generated
             ETModel_Component_Binding.Register(app);
             ETModel_IMessagePacker_Binding.Register(app);
             ETModel_OpcodeHelper_Binding.Register(app);
+            ETModel_StringHelper_Binding.Register(app);
             ETModel_ETTaskCompletionSource_1_Google_Protobuf_Adapt_IMessage_Binding_Adaptor_Binding.Register(app);
             System_Threading_CancellationToken_Binding.Register(app);
             ETModel_ErrorCode_Binding.Register(app);

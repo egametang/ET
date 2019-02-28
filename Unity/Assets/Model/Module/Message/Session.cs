@@ -23,7 +23,7 @@ namespace ETModel
 		private AChannel channel;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[2] };
+		private readonly byte[] opcodeBytes = new byte[2];
 
 		public NetworkComponent Network
 		{
@@ -128,13 +128,12 @@ namespace ETModel
 		private void Run(MemoryStream memoryStream)
 		{
 			memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			byte flag = memoryStream.GetBuffer()[Packet.FlagIndex];
 			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
-				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, flag, opcode, memoryStream);
+				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, opcode, memoryStream);
 				return;
 			}
 #endif
@@ -159,33 +158,28 @@ namespace ETModel
 				this.Network.Remove(this.Id);
 				return;
 			}
-
-			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
-			if ((flag & 0x01) == 0)
-			{
-				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
-				return;
-			}
 				
 			IResponse response = message as IResponse;
 			if (response == null)
 			{
-				throw new Exception($"flag is response, but message is not! {opcode}");
+				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
+				return;
 			}
+			
 			Action<IResponse> action;
 			if (!this.requestCallback.TryGetValue(response.RpcId, out action))
 			{
-				return;
+				throw new Exception($"not found rpc, response message: {StringHelper.MessageToStr(response)}");
 			}
 			this.requestCallback.Remove(response.RpcId);
 
 			action(response);
 		}
 
-		public Task<IResponse> Call(IRequest request)
+		public ETTask<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -205,14 +199,14 @@ namespace ETModel
 			};
 
 			request.RpcId = rpcId;
-			this.Send(0x00, request);
+			this.Send(request);
 			return tcs.Task;
 		}
 
-		public Task<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
 		{
 			int rpcId = ++RpcId;
-			var tcs = new TaskCompletionSource<IResponse>();
+			var tcs = new ETTaskCompletionSource<IResponse>();
 
 			this.requestCallback[rpcId] = (response) =>
 			{
@@ -234,13 +228,8 @@ namespace ETModel
 			cancellationToken.Register(() => this.requestCallback.Remove(rpcId));
 
 			request.RpcId = rpcId;
-			this.Send(0x00, request);
+			this.Send(request);
 			return tcs.Task;
-		}
-
-		public void Send(IMessage message)
-		{
-			this.Send(0x00, message);
 		}
 
 		public void Reply(IResponse message)
@@ -250,18 +239,18 @@ namespace ETModel
 				throw new Exception("session已经被Dispose了");
 			}
 
-			this.Send(0x01, message);
+			this.Send(message);
 		}
 
-		public void Send(byte flag, IMessage message)
+		public void Send(IMessage message)
 		{
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
 			
-			Send(flag, opcode, message);
+			Send(opcode, message);
 		}
 		
-		public void Send(byte flag, ushort opcode, object message)
+		public void Send(ushort opcode, object message)
 		{
 			if (this.IsDisposed)
 			{
@@ -288,14 +277,8 @@ namespace ETModel
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
 			
-			this.byteses[0][0] = flag;
-			this.byteses[1].WriteTo(0, opcode);
-			int index = 0;
-			foreach (var bytes in this.byteses)
-			{
-				Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
-				index += bytes.Length;
-			}
+			opcodeBytes.WriteTo(0, opcode);
+			Array.Copy(opcodeBytes, 0, stream.GetBuffer(), 0, opcodeBytes.Length);
 
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈

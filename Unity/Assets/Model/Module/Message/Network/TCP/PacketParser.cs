@@ -13,9 +13,8 @@ namespace ETModel
 	{
 		public const int PacketSizeLength2 = 2;
 		public const int PacketSizeLength4 = 4;
-		public const int FlagIndex = 0;
-		public const int OpcodeIndex = 1;
-		public const int MessageIndex = 3;
+		public const int OpcodeIndex = 0;
+		public const int MessageIndex = 2;
 	}
 
 	public class PacketParser
@@ -74,7 +73,6 @@ namespace ETModel
 								default:
 									throw new Exception("packet size byte count must be 2 or 4!");
 							}
-
 							this.state = ParserState.PacketBody;
 						}
 						break;
