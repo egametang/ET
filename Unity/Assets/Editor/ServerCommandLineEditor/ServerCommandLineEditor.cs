@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using ETModel;
 using MongoDB.Bson;
 using UnityEditor;
@@ -403,9 +404,7 @@ namespace ETEditor
 				}
 
 				string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
-
-				ProcessStartInfo info = new ProcessStartInfo("dotnet", arguments) { UseShellExecute = true, WorkingDirectory = @"../Bin/" };
-				Process.Start(info);
+				ProcessHelper.Run("dotnet", arguments, "../Bin/");
 			}
 			GUILayout.EndHorizontal();
 		}

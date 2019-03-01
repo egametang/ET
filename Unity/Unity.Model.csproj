@@ -115,6 +115,7 @@
     <Compile Include="Assets\Model\Base\Object\ObjectPool.cs" />
     <Compile Include="Assets\Model\Base\Object\ObjectSystemAttribute.cs" />
     <Compile Include="Assets\Model\Base\OneThreadSynchronizationContext.cs" />
+    <Compile Include="Assets\Model\Base\ProcessHelper.cs" />
     <Compile Include="Assets\Model\Base\QueueDictionary.cs" />
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\Events.cs" />
     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
