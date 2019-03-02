@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -19,6 +19,9 @@
 
     <ItemGroup>
       <Compile Remove=".vs\**" />
+      <Compile Include="..\..\Unity\Assets\Model\Base\ProcessHelper.cs">
+        <Link>ProcessHelper.cs</Link>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

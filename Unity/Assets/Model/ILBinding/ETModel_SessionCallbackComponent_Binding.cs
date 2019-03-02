@@ -41,7 +41,7 @@ namespace ILRuntime.Runtime.Generated
         }
         static void set_MessageCallback_0(ref object o, object v)
         {
-            ((ETModel.SessionCallbackComponent)o).MessageCallback = (System.Action<ETModel.Session, System.Byte, System.UInt16, System.IO.MemoryStream>)v;
+            ((ETModel.SessionCallbackComponent)o).MessageCallback = (System.Action<ETModel.Session, System.UInt16, System.IO.MemoryStream>)v;
         }
         static object get_DisposeCallback_1(ref object o)
         {

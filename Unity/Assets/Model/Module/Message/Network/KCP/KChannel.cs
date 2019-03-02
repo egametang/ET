@@ -387,14 +387,19 @@ namespace ETModel
 				this.OnError(ErrorCode.ERR_SocketCantSend);
 			}
 		}
+		
+#if !ENABLE_IL2CPP
+		private KcpOutput kcpOutput;
+#endif
 
 		public void SetOutput()
 		{
 #if ENABLE_IL2CPP
 			Kcp.KcpSetoutput(this.kcp, KcpOutput);
 #else
-			// 跟上一行一样写法，pc跟linux会出错
-			Kcp.KcpSetoutput(this.kcp, (buf, i, ptr, user) => KcpOutput(buf, i, ptr, user));
+			// 跟上一行一样写法，pc跟linux会出错, 保存防止被GC
+			kcpOutput = KcpOutput;
+			Kcp.KcpSetoutput(this.kcp, kcpOutput);
 #endif
 		}
 

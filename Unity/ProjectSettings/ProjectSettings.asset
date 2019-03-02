@@ -663,7 +663,7 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   scriptingDefineSymbols:
-    1: NET452
+    1: NET452;ILRuntime
     4: NET452;ILRuntime
     7: NET452;ILRuntime
     13: NET452;ILRuntime

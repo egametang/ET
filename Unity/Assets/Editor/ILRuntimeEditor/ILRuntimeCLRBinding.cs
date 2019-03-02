@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using ILRuntime.Runtime.Enviorment;
 using ETModel;
@@ -42,14 +43,14 @@ public class ILRuntimeCLRBinding
     {
         //用新的分析热更dll调用引用来生成绑定代码
         ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
-        using (System.IO.FileStream fs = new System.IO.FileStream("Assets/Res/Code/Hotfix.dll.bytes", System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        using (FileStream fs = new FileStream("Assets/Res/Code/Hotfix.dll.bytes", FileMode.Open, FileAccess.Read))
         {
-            domain.LoadAssembly(fs);
+	        domain.LoadAssembly(fs);
+	        //Crossbind Adapter is needed to generate the correct binding code
+	        ILHelper.InitILRuntime(domain);
+	        ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/Model/ILBinding");
+	        AssetDatabase.Refresh();
         }
-        //Crossbind Adapter is needed to generate the correct binding code
-        ILHelper.InitILRuntime(domain);
-        ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/Model/ILBinding");
-	    AssetDatabase.Refresh();
-	}
+    }
 }
 #endif

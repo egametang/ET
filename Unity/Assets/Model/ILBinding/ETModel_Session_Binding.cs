@@ -34,7 +34,7 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Network", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Network_3);
-            args = new Type[]{typeof(System.Byte), typeof(System.UInt16), typeof(System.Object)};
+            args = new Type[]{typeof(System.UInt16), typeof(System.Object)};
             method = type.GetMethod("Send", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Send_4);
 
@@ -58,11 +58,6 @@ namespace ILRuntime.Runtime.Generated
 
             var result_of_this_method = instance_of_this_method.Call(@request);
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
@@ -126,7 +121,7 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 4);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             System.Object @message = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
@@ -136,13 +131,10 @@ namespace ILRuntime.Runtime.Generated
             System.UInt16 @opcode = (ushort)ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Byte @flag = (byte)ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
             ETModel.Session instance_of_this_method = (ETModel.Session)typeof(ETModel.Session).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Send(@flag, @opcode, @message);
+            instance_of_this_method.Send(@opcode, @message);
 
             return __ret;
         }

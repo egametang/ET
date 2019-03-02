@@ -82,14 +82,7 @@ namespace ETEditor
 			{
 				string arguments =
 						$"-vzrtopg --password-file=./Tools/cwRsync/Config/rsync.secrets --exclude-from=./Tools/cwRsync/Config/exclude.txt --delete ./ {this.rsyncConfig.Account}@{this.rsyncConfig.Host}::Upload/{this.rsyncConfig.RelativePath} --chmod=ugo=rwX";
-				ProcessStartInfo startInfo = new ProcessStartInfo();
-				startInfo.FileName = @".\Tools\cwRsync\rsync.exe";
-				startInfo.Arguments = arguments;
-				startInfo.UseShellExecute = true;
-				startInfo.WorkingDirectory = @"..\";
-				Process p = Process.Start(startInfo);
-				p.WaitForExit();
-				Log.Info($"{startInfo.FileName} {startInfo.Arguments}");
+				ProcessHelper.Run(@"./Tools/cwRsync/rsync.exe", arguments, @"..\", waitExit: true);
 				Log.Info("同步完成!");
 			}
 		}
