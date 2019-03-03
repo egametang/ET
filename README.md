@@ -63,7 +63,7 @@ f.提供命令行配置工具，配置分布式非常简单
 ET框架的服务端是一个强大灵活的分布式服务端架构，完全可以满足绝大部分大型游戏需求。使用这套框架，客户端开发者就可以自己完成双端开发，节省大量人力物力，节省大量沟通时间。  
 
 使用方法：  
-[运行指南](https://github.com/egametang/Egametang/blob/master/Doc/%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
+[运行指南](https://github.com/egametang/ET/blob/master/Book/1.1%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
   
 相关网站:  
 [ET论坛](https://bbs.honorworkroom.com/forum.php)  
