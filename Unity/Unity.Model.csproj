@@ -57,6 +57,7 @@
     <Compile Include="Assets\Model\Base\Async\AsyncETTaskMethodBuilder.cs" />
     <Compile Include="Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs" />
     <Compile Include="Assets\Model\Base\Async\AsyncMethodBuilderAttribute.cs" />
+    <Compile Include="Assets\Model\Base\Async\ETCancellationTokenSource.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTask.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskCompletionSource.cs" />
     <Compile Include="Assets\Model\Base\Async\ETTaskFactory.cs" />
