@@ -11,7 +11,7 @@ namespace ETHotfix
 	public abstract class Component : Object, IDisposable
 	{
 		[BsonIgnore]
-		public long InstanceId { get; protected set; }
+		public long InstanceId { get; private set; }
 		
 #if !SERVER
 		public static GameObject Global { get; } = GameObject.Find("/Global");
@@ -41,7 +41,7 @@ namespace ETHotfix
 
 				if (this.InstanceId == 0)
 				{
-					this.InstanceId = IdGenerater.GenerateId();
+					this.InstanceId = IdGenerater.GenerateInstanceId();
 				}
 			}
 		}
@@ -99,7 +99,7 @@ namespace ETHotfix
 		
 		protected Component()
 		{
-			this.InstanceId = IdGenerater.GenerateId();
+			this.InstanceId = IdGenerater.GenerateInstanceId();
 #if !SERVER
 			if (!this.GetType().IsDefined(typeof(HideInHierarchy), true))
 			{

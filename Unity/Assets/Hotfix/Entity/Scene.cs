@@ -8,12 +8,10 @@ namespace ETHotfix
 
 		public Scene()
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 		}
 
 		public Scene(long id): base(id)
 		{
-			this.InstanceId = IdGenerater.GenerateId();
 		}
 
 		public override void Dispose()
