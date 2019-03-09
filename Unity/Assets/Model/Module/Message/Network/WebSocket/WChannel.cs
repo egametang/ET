@@ -12,7 +12,7 @@ namespace ETModel
 
         private readonly WebSocket webSocket;
 
-		private readonly Queue<byte[]> queue = new Queue<byte[]>();
+        private readonly Queue<byte[]> queue = new Queue<byte[]>();
 
         private bool isSending;
 
@@ -23,23 +23,23 @@ namespace ETModel
         private readonly MemoryStream recvStream;
 
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        
+
         public WChannel(HttpListenerWebSocketContext webSocketContext, AService service): base(service, ChannelType.Accept)
         {
             this.WebSocketContext = webSocketContext;
 
             this.webSocket = webSocketContext.WebSocket;
-            
+
             this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
             this.recvStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
             isConnected = true;
         }
-        
+
         public WChannel(WebSocket webSocket, AService service): base(service, ChannelType.Connect)
         {
             this.webSocket = webSocket;
-            
+
             this.memoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
             this.recvStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
@@ -52,15 +52,15 @@ namespace ETModel
             {
                 return;
             }
-            
+
             base.Dispose();
-            
+
             this.cancellationTokenSource.Cancel();
             this.cancellationTokenSource.Dispose();
             this.cancellationTokenSource = null;
-            
+
             this.webSocket.Dispose();
-            
+
             this.memoryStream.Dispose();
         }
 
@@ -71,27 +71,28 @@ namespace ETModel
                 return this.memoryStream;
             }
         }
-        
+
         public override void Start()
         {
             if (!this.isConnected)
             {
                 return;
             }
-            this.StartRecv();
-            this.StartSend();
-        }
-        
-        private WService GetService()
-        {
-            return (WService)this.Service;
+
+            this.StartRecv().Coroutine();
+            this.StartSend().Coroutine();
         }
 
-        public async void ConnectAsync(string url)
+        private WService GetService()
+        {
+            return (WService) this.Service;
+        }
+
+        public async ETVoid ConnectAsync(string url)
         {
             try
             {
-                await ((ClientWebSocket)this.webSocket).ConnectAsync(new Uri(url), cancellationTokenSource.Token);
+                await ((ClientWebSocket) this.webSocket).ConnectAsync(new Uri(url), cancellationTokenSource.Token);
                 isConnected = true;
                 this.Start();
             }
@@ -110,25 +111,26 @@ namespace ETModel
 
             if (this.isConnected)
             {
-                this.StartSend();
+                this.StartSend().Coroutine();
             }
         }
 
-        public async void StartSend()
+        public async ETVoid StartSend()
         {
             if (this.IsDisposed)
             {
                 return;
             }
+
             try
             {
                 if (this.isSending)
                 {
                     return;
                 }
-            
+
                 this.isSending = true;
-            
+
                 while (true)
                 {
                     if (this.queue.Count == 0)
@@ -160,54 +162,65 @@ namespace ETModel
             }
         }
 
-        public async void StartRecv()
+        public async ETVoid StartRecv()
         {
             if (this.IsDisposed)
             {
                 return;
             }
+
             try
             {
                 while (true)
                 {
-                    try
+#if SERVER
+                    ValueWebSocketReceiveResult receiveResult;
+#else
+                    WebSocketReceiveResult receiveResult;
+#endif
+                    int receiveCount = 0;
+                    do
                     {
 #if SERVER
-                        ValueWebSocketReceiveResult receiveResult = await this.webSocket.ReceiveAsync(new Memory<byte>(this.recvStream.GetBuffer(), 0, this.recvStream.Capacity), cancellationTokenSource.Token);
+                        receiveResult = await this.webSocket.ReceiveAsync(
+                            new Memory<byte>(this.recvStream.GetBuffer(), receiveCount, this.recvStream.Capacity - receiveCount),
+                            cancellationTokenSource.Token);
 #else
-                        WebSocketReceiveResult receiveResult = await this.webSocket.ReceiveAsync(new ArraySegment<byte>(this.recvStream.GetBuffer(), 0, this.recvStream.Capacity), cancellationTokenSource.Token);
+                        receiveResult = await this.webSocket.ReceiveAsync(
+                            new ArraySegment<byte>(this.recvStream.GetBuffer(), receiveCount, this.recvStream.Capacity - receiveCount), 
+                            cancellationTokenSource.Token);
 #endif
-                        
                         if (this.IsDisposed)
                         {
                             return;
                         }
-                        if (receiveResult.MessageType == WebSocketMessageType.Close)
-                        {
-                            this.OnError(ErrorCode.ERR_WebsocketPeerReset);
-                            return;
-                        }
 
-                        if (receiveResult.Count > ushort.MaxValue)
-                        {
-                            await this.webSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig, $"message too big: {receiveResult.Count}", cancellationTokenSource.Token);
-                            this.OnError(ErrorCode.ERR_WebsocketMessageTooBig);
-                            return;
-                        }
-                        
-                        this.recvStream.SetLength(receiveResult.Count);
-                        this.OnRead(this.recvStream);
+                        receiveCount += receiveResult.Count;
                     }
-                    catch (Exception)
+                    while (!receiveResult.EndOfMessage);
+
+                    if (receiveResult.MessageType == WebSocketMessageType.Close)
                     {
-                        this.OnError(ErrorCode.ERR_WebsocketRecvError);
+                        this.OnError(ErrorCode.ERR_WebsocketPeerReset);
                         return;
                     }
+
+                    if (receiveResult.Count > ushort.MaxValue)
+                    {
+                        await this.webSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig, $"message too big: {receiveResult.Count}",
+                            cancellationTokenSource.Token);
+                        this.OnError(ErrorCode.ERR_WebsocketMessageTooBig);
+                        return;
+                    }
+
+                    this.recvStream.SetLength(receiveResult.Count);
+                    this.OnRead(this.recvStream);
                 }
             }
             catch (Exception e)
             {
                 Log.Error(e);
+                this.OnError(ErrorCode.ERR_WebsocketRecvError);
             }
         }
     }
