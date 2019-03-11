@@ -72,7 +72,8 @@ namespace ETModel
             
             base.Dispose();
             
-            this.CancellationTokenSource?.Cancel();
+            this.CancellationTokenSource?.Dispose();
+            this.CancellationTokenSource = null;
         }
     }
 }
