@@ -39,7 +39,7 @@ namespace ETModel
         {
             get
             {
-#if UNITY_IOS
+#if UNITY_IOS || UNITY_STANDALONE_OSX
                 return $"file://{Application.streamingAssetsPath}";
 #else
                 return Application.streamingAssetsPath;
