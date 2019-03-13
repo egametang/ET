@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Path = System.IO.Path;
 
 namespace ETModel
 {
@@ -45,8 +46,7 @@ namespace ETModel
                     process.WaitForExit();
                     if (process.ExitCode != 0)
                     {
-                        throw new Exception(process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd() + "\n"
-                            + $"请在terminal中执行，目录{workingDirectory}, 命令{exe} {arguments}");
+                        throw new Exception($"{process.StandardOutput.ReadToEnd()} {process.StandardError.ReadToEnd()}");
                     }
                 }
 
@@ -54,7 +54,7 @@ namespace ETModel
             }
             catch (Exception e)
             {
-                throw new Exception($"请在terminal中执行，目录{workingDirectory}, 命令{exe} {arguments}", e);
+                throw new Exception($"dir: {Path.GetFullPath(workingDirectory)}, command: {exe} {arguments}", e);
             }
         }
     }
