@@ -225,7 +225,7 @@ namespace LitJson
 
             writer.Write ('"');
 
-	        //Ö±½Ó´æ´¢Ô­Ê¼×Ö·û´®£¬²»ÔÙ×öÈÎºÎ×ªÒå×Ö·ûµÄ½âÎö
+	        //Ö±ï¿½Ó´æ´¢Ô­Ê¼ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½×ªï¿½ï¿½ï¿½Ö·ï¿½ï¿½Ä½ï¿½ï¿½ï¿½
 	        writer.Write(str);
 	        writer.Write('"');
 	        return;
@@ -463,6 +463,17 @@ namespace LitJson
                 writer.Write (':');
 
             context.ExpectingValue = true;
+        }
+        
+        public void Write(float number)
+        {
+            DoValidation(Condition.Value);
+            PutNewline();
+ 
+            string str = number.ToString();
+            Put(str);
+ 
+            context.ExpectingValue = false;
         }
     }
 }
