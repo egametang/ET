@@ -83,7 +83,7 @@ namespace ETModel
 			// 一个数值可能会多种情况影响，比如速度,加个buff可能增加速度绝对值100，也有些buff增加10%速度，所以一个值可以由5个值进行控制其最终结果
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
 			this.NumericDic[final] = ((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetByKey(pct)) / 100 + this.GetByKey(finalAdd)) * (100 + this.GetByKey(finalPct)) / 100;
-			Game.EventSystem.Run(EventIdType.NumbericChange, this.Entity.Id, numericType, final);
+			Game.EventSystem.Run(EventIdType.NumbericChange, this.Entity.Id, (NumericType) final, final);
 		}
 	}
 }
