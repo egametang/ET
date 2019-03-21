@@ -249,6 +249,7 @@ namespace ETModel
 
 
 			this.bundles.Remove(assetBundleName);
+			resourceCache.Remove(assetBundleName);//推荐用MultiMap缓存已经删除的列表重复利用
 			abInfo.Dispose();
 			//Log.Debug($"cache count: {this.cacheDictionary.Count}");
 		}
@@ -341,7 +342,7 @@ namespace ETModel
 				}
 			}
 
-			abInfo = new ABInfo(assetBundleName, assetBundle);
+			abInfo = new ABInfo(assetBundleName, assetBundle);//推荐使用Factory对象池回收
 			abInfo.Parent = this;
 			this.bundles[assetBundleName] = abInfo;
 		}
