@@ -96,6 +96,9 @@ namespace ETModel
             {
                 queue = new ComponentQueue(type.Name);
 	            queue.Parent = this;
+#if !SERVER
+	            queue.GameObject.name = type.Name;
+#endif
 				this.dictionary.Add(type, queue);
             }
             queue.Enqueue(obj);
