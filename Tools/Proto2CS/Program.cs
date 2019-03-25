@@ -33,10 +33,8 @@ namespace ETTools
             // InnerMessage.proto生成cs代码
             InnerProto2CS.Proto2CS(); 
 
-            msgOpcode.Clear();
             Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100);
 
-            msgOpcode.Clear();
             Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);
             
             Console.WriteLine("proto2cs succeed!");
