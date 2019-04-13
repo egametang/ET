@@ -70,7 +70,6 @@ namespace ILRuntime.Runtime.Generated
             ETModel_AppTypeHelper_Binding.Register(app);
             ETModel_GameObjectHelper_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
-            ETModel_Actor_Test_Binding.Register(app);
             ETModel_AsyncETVoidMethodBuilder_Binding.Register(app);
             ETModel_GlobalConfigComponent_Binding.Register(app);
             ETModel_GlobalProto_Binding.Register(app);

@@ -147,7 +147,6 @@
     <Compile Include="Assets\Model\Helper\ResourcesHelper.cs" />
     <Compile Include="Assets\Model\ILBinding\CLRBindings.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_ActionHelper_Binding.cs" />
-    <Compile Include="Assets\Model\ILBinding\ETModel_Actor_Test_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_AnimatorComponent_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_AppTypeHelper_Binding.cs" />
     <Compile Include="Assets\Model\ILBinding\ETModel_AssetBundleHelper_Binding.cs" />
