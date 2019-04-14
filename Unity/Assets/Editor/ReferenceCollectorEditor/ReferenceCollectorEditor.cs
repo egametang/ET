@@ -87,9 +87,9 @@ public class ReferenceCollectorEditor: Editor
 		{
 			GUILayout.BeginHorizontal();
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("key");
-            property.stringValue = EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
+            EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
-            property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
+            EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
 			if (GUILayout.Button("X"))
 			{
 				delList.Add(i);
