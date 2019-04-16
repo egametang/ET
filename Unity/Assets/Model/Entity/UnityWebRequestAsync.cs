@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ETModel
@@ -17,6 +14,16 @@ namespace ETModel
 	
 	public class UnityWebRequestAsync : Component
 	{
+		public class AcceptAllCertificate: CertificateHandler
+		{
+			protected override bool ValidateCertificate(byte[] certificateData)
+			{
+				return true;
+			}
+		}
+		
+		public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
+		
 		public UnityWebRequest Request;
 
 		public bool isCancel;
@@ -88,6 +95,7 @@ namespace ETModel
 			
 			url = url.Replace(" ", "%20");
 			this.Request = UnityWebRequest.Get(url);
+			this.Request.certificateHandler = certificateHandler;
 			this.Request.SendWebRequest();
 			
 			return this.tcs.Task;
