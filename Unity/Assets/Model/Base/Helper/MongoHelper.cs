@@ -22,8 +22,6 @@ namespace ETModel
 
 				BsonClassMap.LookupClassMap(type);
 			}
-
-			BsonSerializer.RegisterSerializer(new EnumSerializer<NumericType>(BsonType.String));
 		}
 
 		public static string ToJson(object obj)
@@ -118,12 +116,8 @@ namespace ETModel
             ArraySerializer<int> aint = new ArraySerializer<int>();
             ArraySerializer<string> astring = new ArraySerializer<string>();
             ArraySerializer<long> along = new ArraySerializer<long>();
-
-            EnumerableInterfaceImplementerSerializer<List<int>> e =
-                new EnumerableInterfaceImplementerSerializer<List<int>>();
-
-            EnumerableInterfaceImplementerSerializer<List<int>, int> elistint =
-                new EnumerableInterfaceImplementerSerializer<List<int>, int>();
+            EnumerableInterfaceImplementerSerializer<List<int>> e = new EnumerableInterfaceImplementerSerializer<List<int>>();
+            EnumerableInterfaceImplementerSerializer<List<int>, int> elistint = new EnumerableInterfaceImplementerSerializer<List<int>, int>();
         }
 
 	}
