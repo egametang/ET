@@ -41,8 +41,10 @@
 		{
 			scene.Dispose();
 			scene = null;
-			eventSystem = null;
+					
 			objectPool = null;
+			
+			eventSystem = null;
 		}
 	}
 }

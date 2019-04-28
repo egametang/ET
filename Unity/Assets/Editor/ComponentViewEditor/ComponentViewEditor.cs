@@ -5,7 +5,6 @@ using ETModel;
 using ILRuntime.Runtime.Intepreter;
 using UnityEditor;
 using UnityEngine;
-using Component = ETModel.Component;
 
 namespace ETEditor
 {
@@ -74,7 +73,12 @@ namespace ETEditor
                             continue;
                         }
 
-                        value = typeDrawer.DrawAndGetNewValue(type, fieldInfo.Name, value, null);
+                        string fieldName = fieldInfo.Name;
+                        if (fieldName.Length > 17 && fieldName.Contains("k__BackingField"))
+                        {
+                            fieldName = fieldName.Substring(1, fieldName.Length - 17);
+                        }
+                        value = typeDrawer.DrawAndGetNewValue(type, fieldName, value, null);
                         fieldInfo.SetValue(obj, value);
                         break;
                     }
