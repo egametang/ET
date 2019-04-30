@@ -672,7 +672,7 @@ PlayerSettings:
     iOS: 2
   scriptingBackend:
     Android: 0
-    Standalone: 0
+    Standalone: 1
     iOS: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}

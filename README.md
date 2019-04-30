@@ -13,7 +13,7 @@ ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，�
 ### 2.随意可拆分功能的分布式服务端，1变N  
 分布式服务端要开发多种类型的服务器进程，比如Login server，gate server，battle server，chat server friend server等等一大堆各种server，传统开发方式需要预先知道当前的功能要放在哪个服务器上，当功能越来越多的时候，比如聊天功能之前在一个中心服务器上，之后需要拆出来单独做成一个服务器，这时会牵扯到大量迁移代码的工作，烦不胜烦。ET框架在平常开发的时候根本不太需要关心当前开发的这个功能会放在什么server上，只用一个进程进行开发，功能开发成组件的形式。发布的时候使用一份多进程的配置即可发布成多进程的形式，是不是很方便呢？随便你怎么拆分服务器。只需要修改极少的代码就可以进行拆分。不同的server挂上不同的组件就行了嘛！  
 ### 3.跨平台的分布式服务端  
-ET框架使用C#做服务端，现在C#是完全可以跨平台的，在linux上安装.netcore，即可，不需要修改任何代码，就能跑起来。性能方面，现在.netcore的性能非常强，比lua，python，js什么快的多了。做游戏服务端完全不在话下。平常我们开发的时候用VS在windows上开发调试，发布的时候发布到linux上即可。ET框架还提供了一键同步工具，打开unity->tools->rsync同步，即可同步代码到linux上，  
+ET框架使用C#做服务端，现在C#是完全可以跨平台的，在linux上安装.netcore，即可，不需要修改任何代码，就能跑起来。性能方面，现在.netcore的性能非常强，比lua，python，js什么快的多了。做游戏服务端完全不在话下。平常我们开发的时候用VS在windows上开发调试，发布的时候发布到linux上即可。ET框架还提供了一键同步工具，打开unity->tools->rsync同步，即可同步代码到linux上  
 ```bash
 ./Run.sh Config/StartConfig/192.168.12.188.txt 
 ```
@@ -23,7 +23,7 @@ C#天生支持异步变同步语法 async和await，比lua，python的协程强�
 
 ```c#
 // 发送C2R_Ping并且等待响应消息R2C_Ping
-R2C_Ping pong = await session.Call<R2C_Ping>(new C2R_Ping());
+R2C_Ping pong = await session.Call(new C2R_Ping()) as R2C_Ping;
 Log.Debug("收到R2C_Ping");
 
 // 向mongodb查询一个id为1的Player，并且等待返回
@@ -32,10 +32,10 @@ Log.Debug($"打印player name: {player.Name}")
 ```
 可以看出，有了async await，所有的服务器间的异步操作将变得非常连贯，不用再拆成多段逻辑。大大简化了分布式服务器开发  
 ### 5.提供类似erlang的actor消息机制  
-erlang语言一大优势就是位置透明的消息机制，用户完全不用关心对象在哪个进程，拿到id就可以对对象发送消息。ET框架也提供了actor消息机制，实体对象只需要挂上ActorComponent组件，这个实体对象就成了一个Actor，任何服务器只需要知道这个实体对象的id就可以向其发送消息，完全不用关心这个实体对象在哪个server，在哪台物理机器上。其实现原理也很简单，ET框架提供了一个位置服务器，所有挂载ActorComoponet的实体对象都会将自己的id跟位置注册到这个位置服务器，其它服务器向这个实体对象发送消息的时候如果不知道这个实体对象的位置，会先去位置服务器查询，查询到位置再进行发送。
+erlang语言一大优势就是位置透明的消息机制，用户完全不用关心对象在哪个进程，拿到id就可以对对象发送消息。ET框架也提供了actor消息机制，实体对象只需要挂上MailBoxComponent组件，这个实体对象就成了一个Actor，任何服务器只需要知道这个实体对象的id就可以向其发送消息，完全不用关心这个实体对象在哪个server，在哪台物理机器上。其实现原理也很简单，ET框架提供了一个位置服务器，所有挂载MailBoxComponent的实体对象都会将自己的id跟位置注册到这个位置服务器，其它服务器向这个实体对象发送消息的时候如果不知道这个实体对象的位置，会先去位置服务器查询，查询到位置再进行发送。
 ### 6.提供服务器不停服动态更新逻辑功能  
 热更是游戏服务器不可缺少的功能，ET框架使用的组件设计，可以做成守望先锋的设计，组件只有成员，无方法，将所有方法做成扩展方法放到热更dll中，运行时重新加载dll即可热更所有逻辑。
-### 7.客户端热更新一键切换  
+### 7.客户端使用C#热更新，热更新一键切换  
 因为ios的限制，之前unity热更新一般使用lua，导致unity3d开发人员要写两种代码，麻烦的要死。之后幸好出了ILRuntime库，利用ILRuntime库，unity3d可以利用C#语言加载热更新dll进行热更新。ILRuntime一个缺陷就是开发时候不支持VS debug，这有点不爽。ET框架使用了一个预编译指令ILRuntime，可以无缝切换。平常开发的时候不使用ILRuntime，而是使用Assembly.Load加载热更新动态库，这样可以方便用VS单步调试。在发布的时候，定义预编译指令ILRuntime就可以无缝切换成使用ILRuntime加载热更新动态库。这样开发起来及其方便，再也不用使用狗屎lua了  
 ### 8.客户端全热更新  
 客户端可以实现所有逻辑热更新，包括协议，config，ui等等  
@@ -47,7 +47,7 @@ ET框架不但支持TCP，而且支持可靠的UDP协议（ENET跟KCP），ENet�
 可以Unity导出场景数据，给服务端做recast寻路。做MMO非常方便，demo演示了服务端3d寻路功能
 
 ### 12. 服务端支持repl，也可以动态执行一段新代码
-这样就可以打印出进程中任何数据，大大简化了服务端查找问题的难度
+这样就可以打印出进程中任何数据，大大简化了服务端查找问题的难度，开启repl方法，直接在console中输入repl回车即可进入repl模式  
 
 ### 13.打包工具  
 ET框架带有一整套打包工具，完全傻瓜式。一键打包，自动分析共享资源。对比md5更新  
@@ -73,7 +73,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 
 群友分享：  
 [行为树与fgui分支(Duke Chiang开发维护)](https://github.com/DukeChiang/ET.git)   
-[ET学习笔记系列(烟雨迷离半世殇写)](https://blog.csdn.net/qq_15020543/article/details/86766326)   
+[ET学习笔记系列(烟雨迷离半世殇写)](https://www.lfzxb.top/)   
 [ET学习笔记系列(咲夜詩写)](https://acgmart.com/unity/)   
 [框架服务端运行流程](http://www.cnblogs.com/fancybit/p/et1.html)  
 [ET启动配置](http://www.cnblogs.com/fancybit/p/et2.html)  
