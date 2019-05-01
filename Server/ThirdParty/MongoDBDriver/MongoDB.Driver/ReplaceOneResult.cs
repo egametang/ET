@@ -92,7 +92,7 @@ namespace MongoDB.Driver
             private readonly BsonValue _upsertedId;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Acknowledged"/> class.
+            /// Initializes a new instance of the class.
             /// </summary>
             /// <param name="matchedCount">The matched count.</param>
             /// <param name="modifiedCount">The modified count.</param>

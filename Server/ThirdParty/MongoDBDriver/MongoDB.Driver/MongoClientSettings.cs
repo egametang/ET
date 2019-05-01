@@ -165,7 +165,7 @@ namespace MongoDB.Driver
         {
             get
             {
-                return _credentials.SingleOrDefault(); ;
+                return _credentials.SingleOrDefault();
             }
             set
             {

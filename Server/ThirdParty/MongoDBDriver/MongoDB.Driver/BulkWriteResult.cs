@@ -185,7 +185,7 @@ namespace MongoDB.Driver
 
             // constructors
             /// <summary>
-            /// Initializes a new instance of the <see cref="Acknowledged" /> class.
+            /// Initializes a new instance of the class.
             /// </summary>
             /// <param name="requestCount">The request count.</param>
             /// <param name="matchedCount">The matched count.</param>
@@ -272,7 +272,7 @@ namespace MongoDB.Driver
         {
             // constructors
             /// <summary>
-            /// Initializes a new instance of the <see cref="Unacknowledged"/> class.
+            /// Initializes a new instance of the class.
             /// </summary>
             /// <param name="requestCount">The request count.</param>
             /// <param name="processedRequests">The processed requests.</param>
