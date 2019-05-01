@@ -3,6 +3,9 @@
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <_TargetFrameworkDirectories>non_empty_path_generated_by_rider_editor_plugin</_TargetFrameworkDirectories>
+    <_FullFrameworkReferenceAssemblyPaths>non_empty_path_generated_by_rider_editor_plugin</_FullFrameworkReferenceAssemblyPaths>
+    <DisableHandlePackageFileConflicts>true</DisableHandlePackageFileConflicts>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,6 +54,9 @@
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>/Applications/Unity/2018.3.12f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>/Applications/Unity/2018.3.12f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/Microsoft.CSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1121,9 +1127,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp">
-      <HintPath>/Applications/Unity/2018.3.12f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/Microsoft.CSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
