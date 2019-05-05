@@ -95,6 +95,7 @@ namespace ETModel
 			if (e.SocketError != SocketError.Success)
 			{
 				Log.Error($"accept error {e.SocketError}");
+				this.AcceptAsync();
 				return;
 			}
 			TChannel channel = new TChannel(e.AcceptSocket, this);

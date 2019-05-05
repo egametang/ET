@@ -46,13 +46,13 @@ namespace ETHotfix
 
 		public static void Close()
 		{
-			eventSystem = null;
-			
 			scene?.Dispose();
 			scene = null;
 			
 			objectPool?.Dispose();
 			objectPool = null;
+			
+			eventSystem = null;
 		}
 	}
 }

@@ -241,6 +241,7 @@ PlayerSettings:
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
+  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
@@ -671,7 +672,7 @@ PlayerSettings:
     iOS: 2
   scriptingBackend:
     Android: 0
-    Standalone: 0
+    Standalone: 1
     iOS: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}

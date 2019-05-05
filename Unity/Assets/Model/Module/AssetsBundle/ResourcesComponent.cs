@@ -10,33 +10,24 @@ using UnityEditor;
 
 namespace ETModel
 {
+	[ObjectSystem]
+	public class ABInfoAwakeSystem : AwakeSystem<ABInfo, string, AssetBundle>
+	{
+		public override void Awake(ABInfo self, string abName, AssetBundle a)
+		{
+			self.AssetBundle = a;
+			self.Name = abName;
+			self.RefCount = 1;
+		}
+	}
+	
 	public class ABInfo : Component
 	{
-		private int refCount;
-		public string Name { get; }
+		public string Name { get; set; }
 
-		public int RefCount
-		{
-			get
-			{
-				return this.refCount;
-			}
-			set
-			{
-				//Log.Debug($"{this.Name} refcount: {value}");
-				this.refCount = value;
-			}
-		}
+		public int RefCount { get; set; }
 
-		public AssetBundle AssetBundle { get; }
-
-		public ABInfo(string name, AssetBundle ab)
-		{
-			this.Name = name;
-			this.AssetBundle = ab;
-			this.RefCount = 1;
-			//Log.Debug($"load assetbundle: {this.Name}");
-		}
+		public AssetBundle AssetBundle;
 
 		public override void Dispose()
 		{
@@ -53,6 +44,9 @@ namespace ETModel
 			{
 				this.AssetBundle.Unload(true);
 			}
+
+			this.RefCount = 0;
+			this.Name = "";
 		}
 	}
 	
@@ -191,7 +185,7 @@ namespace ETModel
 
 			foreach (var abInfo in this.bundles)
 			{
-				abInfo.Value?.AssetBundle?.Unload(true);
+				abInfo.Value.Dispose();
 			}
 
 			this.bundles.Clear();
@@ -217,7 +211,7 @@ namespace ETModel
 
 		public void UnloadBundle(string assetBundleName)
 		{
-			assetBundleName = assetBundleName.ToLower();
+			assetBundleName = assetBundleName.BundleNameToLower();
 
 			string[] dependencies = AssetBundleHelper.GetSortedDependencies(assetBundleName);
 
@@ -230,7 +224,7 @@ namespace ETModel
 
 		private void UnloadOneBundle(string assetBundleName)
 		{
-			assetBundleName = assetBundleName.ToLower();
+			assetBundleName = assetBundleName.BundleNameToLower();
 
 			ABInfo abInfo;
 			if (!this.bundles.TryGetValue(assetBundleName, out abInfo))
@@ -249,6 +243,7 @@ namespace ETModel
 
 
 			this.bundles.Remove(assetBundleName);
+			this.resourceCache.Remove(assetBundleName);
 			abInfo.Dispose();
 			//Log.Debug($"cache count: {this.cacheDictionary.Count}");
 		}
@@ -307,7 +302,7 @@ namespace ETModel
 					AddResource(assetBundleName, assetName, resource);
 				}
 
-				abInfo = new ABInfo(assetBundleName, null);
+				abInfo = ComponentFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
 				abInfo.Parent = this;
 				this.bundles[assetBundleName] = abInfo;
 #endif
@@ -341,8 +336,7 @@ namespace ETModel
 				}
 			}
 
-			abInfo = new ABInfo(assetBundleName, assetBundle);
-			abInfo.Parent = this;
+			abInfo = ComponentFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
 			this.bundles[assetBundleName] = abInfo;
 		}
 
@@ -388,8 +382,7 @@ namespace ETModel
 					AddResource(assetBundleName, assetName, resource);
 				}
 
-				abInfo = new ABInfo(assetBundleName, null);
-				abInfo.Parent = this;
+				abInfo = ComponentFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
 				this.bundles[assetBundleName] = abInfo;
 #endif
 				return;
@@ -426,8 +419,7 @@ namespace ETModel
 				}
 			}
 
-			abInfo = new ABInfo(assetBundleName, assetBundle);
-			abInfo.Parent = this;
+			abInfo = ComponentFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
 			this.bundles[assetBundleName] = abInfo;
 		}
 

@@ -64,7 +64,7 @@ namespace MongoDB.Driver
             private readonly long _deletedCount;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Acknowledged"/> class.
+            /// Initializes a new instance of the
             /// </summary>
             /// <param name="deletedCount">The deleted count.</param>
             public Acknowledged(long deletedCount)
