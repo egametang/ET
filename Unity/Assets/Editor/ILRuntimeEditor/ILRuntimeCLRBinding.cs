@@ -1,18 +1,14 @@
-﻿#if UNITY_EDITOR
+﻿#if ILRuntime
 using UnityEditor;
 using UnityEngine;
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using ILRuntime.Runtime.Enviorment;
 using ETModel;
 
-[System.Reflection.Obfuscation(Exclude = true)]
-public class ILRuntimeCLRBinding
+public static class ILRuntimeCLRBinding
 {
-    [MenuItem("Tools/ILRuntime/Generate CLR Binding Code")]
+    //[MenuItem("Tools/ILRuntime/Generate CLR Binding Code")]
     static void GenerateCLRBinding()
     {
         List<Type> types = new List<Type>();
@@ -41,6 +37,8 @@ public class ILRuntimeCLRBinding
     [MenuItem("Tools/ILRuntime/Generate CLR Binding Code by Analysis")]
     static void GenerateCLRBindingByAnalysis()
     {
+	    GenerateCLRBinding();
+	    
         //用新的分析热更dll调用引用来生成绑定代码
         ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
         using (FileStream fs = new FileStream("Assets/Res/Code/Hotfix.dll.bytes", FileMode.Open, FileAccess.Read))

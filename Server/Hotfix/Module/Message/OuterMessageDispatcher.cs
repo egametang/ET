@@ -20,10 +20,16 @@ namespace ETHotfix
 					ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(unitId);
 
 					int rpcId = actorLocationRequest.RpcId; // 这里要保存客户端的rpcId
+					long instanceId = session.InstanceId;
 					IResponse response = await actorLocationSender.Call(actorLocationRequest);
 					response.RpcId = rpcId;
 
-					session.Reply(response);
+					// session可能已经断开了，所以这里需要判断
+					if (session.InstanceId == instanceId)
+					{
+						session.Reply(response);
+					}
+					
 					break;
 				}
 				case IActorLocationMessage actorLocationMessage:
