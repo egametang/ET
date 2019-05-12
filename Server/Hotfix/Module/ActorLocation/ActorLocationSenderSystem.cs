@@ -8,10 +8,11 @@ namespace ETHotfix
     {
         public override void Awake(ActorLocationSender self)
         {
-            self.LastSendTime = TimeHelper.Now();
+            self.LastRecvTime = TimeHelper.Now();
             self.Tcs = null;
             self.FailTimes = 0;
             self.ActorId = 0;
+            self.WaitingTasks.Clear();
         }
     }
 
@@ -26,9 +27,6 @@ namespace ETHotfix
         public async ETVoid StartAsync(ActorLocationSender self)
         {
             self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-
-            self.Address = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppId(self.ActorId));
-
             self.UpdateAsync().Coroutine();
         }
     }
@@ -41,10 +39,10 @@ namespace ETHotfix
 	        self.RunError(ErrorCode.ERR_ActorRemove);
 	        
             self.Id = 0;
-            self.LastSendTime = 0;
-            self.Address = null;
+            self.LastRecvTime = 0;
             self.ActorId = 0;
             self.FailTimes = 0;
+            self.WaitingTasks.Clear();
             self.Tcs = null;
         }
     }
@@ -109,22 +107,24 @@ namespace ETHotfix
 				long instanceId = self.InstanceId;
 				while (true)
 				{
-					if (self.InstanceId != instanceId)
-					{
-						return;
-					}
 					ActorTask actorTask = await self.GetAsync();
 					
 					if (self.InstanceId != instanceId)
 					{
 						return;
 					}
+					
 					if (actorTask.ActorRequest == null)
 					{
 						return;
 					}
 
 					await self.RunTask(actorTask);
+					
+					if (self.InstanceId != instanceId)
+					{
+						return;
+					}
 				}
 			}
 			catch (Exception e)
@@ -158,7 +158,6 @@ namespace ETHotfix
 					// 等待0.5s再发送
 					await Game.Scene.GetComponent<TimerComponent>().WaitAsync(500);
 					self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
-					self.Address = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppId(self.ActorId));
 					self.AllowGet();
 					return;
 				
@@ -168,21 +167,25 @@ namespace ETHotfix
 					return;
 				
 				default:
-					self.LastSendTime = TimeHelper.Now();
+					self.LastRecvTime = TimeHelper.Now();
 					self.FailTimes = 0;
 					self.WaitingTasks.Dequeue();
-					
-					if (task.Tcs == null)
+
+					// 如果所有的发送消息都得到了返回，发送任务完成，那么删除这个ActorLocationSender，及时回收发送对象
+					if (self.WaitingTasks.Count == 0)
 					{
-						return;
+						self.GetParent<ActorLocationSenderComponent>().Remove(self.Id);
 					}
 					
-					IActorLocationResponse actorLocationResponse = response as IActorLocationResponse;
-					if (actorLocationResponse == null)
+					if (task.Tcs != null)
 					{
-						task.Tcs.SetException(new Exception($"actor location respose is not IActorLocationResponse, but is: {response.GetType().Name}"));
+						IActorLocationResponse actorLocationResponse = response as IActorLocationResponse;
+						if (actorLocationResponse == null)
+						{
+							task.Tcs.SetException(new Exception($"actor location respose is not IActorLocationResponse, but is: {response.GetType().Name}"));
+						}
+						task.Tcs.SetResult(actorLocationResponse);
 					}
-					task.Tcs.SetResult(actorLocationResponse);
 					return;
 			}
 		}
