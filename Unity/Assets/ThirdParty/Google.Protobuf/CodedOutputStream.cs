@@ -65,11 +65,11 @@ namespace Google.Protobuf
         /// </summary>
         public static readonly int DefaultBufferSize = 4096;
 
-        private readonly bool leaveOpen;
-        private readonly byte[] buffer;
-        private readonly int limit;
+        private bool leaveOpen;
+        private byte[] buffer;
+        private int limit;
         private int position;
-        private readonly Stream output;
+        private Stream output;
 
         #region Construction
         /// <summary>
@@ -90,6 +90,15 @@ namespace Google.Protobuf
         {
             this.output = null;
             this.buffer = buffer;
+            this.position = offset;
+            this.limit = offset + length;
+            leaveOpen = true; // Simple way of avoiding trying to dispose of a null reference
+        }
+        
+        public void Reset(byte[] buf, int offset, int length)
+        {
+            this.output = null;
+            this.buffer = buf;
             this.position = offset;
             this.limit = offset + length;
             leaveOpen = true; // Simple way of avoiding trying to dispose of a null reference
