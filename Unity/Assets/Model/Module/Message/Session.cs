@@ -153,14 +153,13 @@ namespace ETModel
 			catch (Exception e)
 			{
 				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
+				Log.Error($"opcode: {opcode} {this.Network.Count} {e}, ip: {this.RemoteAddress}");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
 				return;
 			}
-				
-			IResponse response = message as IResponse;
-			if (response == null)
+
+			if (!(message is IResponse response))
 			{
 				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
 				return;

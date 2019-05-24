@@ -61,14 +61,14 @@ namespace ETModel
 									this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
 									if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < Packet.MinPacketSize)
 									{
-										throw new Exception($"recv packet size error: {this.packetSize}");
+										throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");
 									}
 									break;
 								case Packet.PacketSizeLength2:
 									this.packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
 									if (this.packetSize > ushort.MaxValue || this.packetSize < Packet.MinPacketSize)
 									{
-										throw new Exception($"recv packet size error: {this.packetSize}");
+										throw new Exception($"recv packet size error:, 可能是外网探测端口: {this.packetSize}");
 									}
 									break;
 								default:

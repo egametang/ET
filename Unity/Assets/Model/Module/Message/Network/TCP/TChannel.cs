@@ -269,7 +269,7 @@ namespace ETModel
 				}
 				catch (Exception ee)
 				{
-					Log.Error(ee);
+					Log.Error($"ip: {this.RemoteAddress} {ee}");
 					this.OnError(ErrorCode.ERR_SocketError);
 					return;
 				}
