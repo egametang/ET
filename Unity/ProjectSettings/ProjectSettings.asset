@@ -106,11 +106,6 @@ PlayerSettings:
   xboxOneDisableEsram: 0
   xboxOnePresentImmediateThreshold: 0
   switchQueueCommandMemory: 0
-  switchQueueControlMemory: 16384
-  switchQueueComputeMemory: 262144
-  switchNVNShaderPoolsGranularity: 33554432
-  switchNVNDefaultPoolsGranularity: 16777216
-  switchNVNOtherPoolsGranularity: 16777216
   vulkanEnableSetSRGBWrite: 0
   m_SupportedAspectRatios:
     4:3: 1
@@ -241,7 +236,6 @@ PlayerSettings:
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
-  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
@@ -562,7 +556,6 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchUserAccountLockEnabled: 0
-  switchSystemResourceMemory: 16777216
   switchSupportedNpadStyles: 3
   switchNativeFsCacheSize: 32
   switchIsHoldTypeHorizontal: 0
@@ -672,7 +665,7 @@ PlayerSettings:
     iOS: 2
   scriptingBackend:
     Android: 0
-    Standalone: 1
+    Standalone: 0
     iOS: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
