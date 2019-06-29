@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 
 namespace ETModel
 {
@@ -119,7 +120,7 @@ namespace ETModel
 
 				this.listener.Start();
 
-				this.Accept().NoAwait();
+				this.Accept().Coroutine();
 			}
 			catch (HttpListenerException e)
 			{
@@ -234,7 +235,7 @@ namespace ETModel
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
 				object result = resp;
-				if (resp is ETTask t)
+				if (resp is ETTask<HttpResult> t)
 				{
 					await t;
 					result = t.GetType().GetProperty("Result").GetValue(t, null);
@@ -242,7 +243,7 @@ namespace ETModel
 
 				if (result != null)
 				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream,Encoding.UTF8))
 					{
 						if (result.GetType() == typeof(string))
 						{

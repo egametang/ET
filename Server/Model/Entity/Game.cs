@@ -13,7 +13,6 @@
 					return scene;
 				}
 				scene = new Scene();
-				scene.AddComponent<TimerComponent>();
 				return scene;
 			}
 		}
@@ -42,8 +41,10 @@
 		{
 			scene.Dispose();
 			scene = null;
-			eventSystem = null;
+					
 			objectPool = null;
+			
+			eventSystem = null;
 		}
 	}
 }

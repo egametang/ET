@@ -10,43 +10,11 @@ namespace ETEditor
 
 		public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 		
-		//[MenuItem("Tools/编译Hotfix")]
-		public static void BuildHotfix()
-		{
-			System.Diagnostics.Process process = new System.Diagnostics.Process();
-			string unityDir = System.Environment.GetEnvironmentVariable("Unity");
-			if (string.IsNullOrEmpty(unityDir))
-			{
-				Log.Error("没有设置Unity环境变量!");
-				return;
-			}
-			process.StartInfo.FileName = $@"{unityDir}\Editor\Data\MonoBleedingEdge\bin\mono.exe";
-			process.StartInfo.Arguments = $@"{unityDir}\Editor\Data\MonoBleedingEdge\lib\mono\xbuild\14.0\bin\xbuild.exe .\Hotfix\Unity.Hotfix.csproj";
-			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.WorkingDirectory = @".\";
-			process.StartInfo.RedirectStandardOutput = true;
-			process.StartInfo.RedirectStandardError = true;
-			process.Start();
-			string info = process.StandardOutput.ReadToEnd();
-			process.Close();
-			Log.Info(info);
-		}
-
+		
 		[MenuItem("Tools/web资源服务器")]
 		public static void OpenFileServer()
 		{
-#if !UNITY_EDITOR_OSX
-			string currentDir = System.Environment.CurrentDirectory;
-			string path = Path.Combine(currentDir, @"..\FileServer\");
-			System.Diagnostics.Process process = new System.Diagnostics.Process();
-			process.StartInfo.FileName = "FileServer.exe";
-			process.StartInfo.WorkingDirectory = path;
-			process.StartInfo.CreateNoWindow = true;
-			process.Start();
-#else
-			string path = System.Environment.CurrentDirectory + "/../FileServer/";
-			("cd " + path + " && go run FileServer.go").Bash(path, true);
-#endif
+			ProcessHelper.Run("dotnet", "FileServer.dll", "../FileServer/");
 		}
 
 		public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB)

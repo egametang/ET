@@ -102,7 +102,7 @@ namespace Pathfinding {
 
 		/** Used for drawing gizmos */
 		[System.NonSerialized]
-		List<PF.Vector3> lastCompletedVectorPath;
+		List<Vector3> lastCompletedVectorPath;
 
 		/** Used for drawing gizmos */
 		[System.NonSerialized]

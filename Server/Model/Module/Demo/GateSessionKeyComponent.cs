@@ -9,7 +9,7 @@ namespace ETModel
 		public void Add(long key, string account)
 		{
 			this.sessionKey.Add(key, account);
-			this.TimeoutRemoveKey(key).NoAwait();
+			this.TimeoutRemoveKey(key).Coroutine();
 		}
 
 		public string Get(long key)

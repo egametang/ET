@@ -1,6 +1,7 @@
 //#define ASTAR_NO_POOLING // Disable pooling for some reason. Maybe for debugging or just for measuring the difference.
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF {
 	/** Pools path objects to reduce load on the garbage collector */

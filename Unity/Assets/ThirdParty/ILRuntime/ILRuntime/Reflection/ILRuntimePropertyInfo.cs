@@ -223,7 +223,7 @@ namespace ILRuntime.Reflection
                         ctx.PushObject(obj);
                     for (int i = 0; i < getter.ParameterCount; i++)
                     {
-                        ctx.PushObject(index[i], !getter.Parameters[i].IsPrimitive);
+                        ctx.PushObject(index[i], !getter.Parameters[i].IsValueType);
                     }
                     ctx.Invoke();
                     return ctx.ReadObject(getter.ReturnType.TypeForCLR);
@@ -244,9 +244,9 @@ namespace ILRuntime.Reflection
                         ctx.PushObject(obj);
                     for (int i = 0; i < setter.ParameterCount - 1; i++)
                     {
-                        ctx.PushObject(index[i], !setter.Parameters[i].IsPrimitive);
+                        ctx.PushObject(index[i], !setter.Parameters[i].IsValueType);
                     }
-                    ctx.PushObject(value, !setter.Parameters[setter.ParameterCount - 1].IsPrimitive);
+                    ctx.PushObject(value, !setter.Parameters[setter.ParameterCount - 1].IsValueType);
                     ctx.Invoke();
                 }
             }

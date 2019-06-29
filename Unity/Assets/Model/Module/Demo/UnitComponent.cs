@@ -46,6 +46,7 @@ namespace ETModel
 		public void Add(Unit unit)
 		{
 			this.idUnits.Add(unit.Id, unit);
+			unit.Parent = this;
 		}
 
 		public Unit Get(long id)

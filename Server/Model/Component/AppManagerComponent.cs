@@ -41,7 +41,7 @@ namespace ETModel
 				StartProcess(startConfig.AppId);
 			}
 
-			this.WatchProcessAsync().NoAwait();
+			this.WatchProcessAsync().Coroutine();
 		}
 
 		private void StartProcess(int appId)
@@ -56,10 +56,7 @@ namespace ETModel
 			Log.Info($"{exe} {arguments}");
 			try
 			{
-				bool useShellExecute = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-				ProcessStartInfo info = new ProcessStartInfo { FileName = exe, Arguments = arguments, CreateNoWindow = true, UseShellExecute = useShellExecute };
-
-				Process process = Process.Start(info);
+				Process process = ProcessHelper.Run(exe, arguments);
 				this.processes.Add(startConfig.AppId, process);
 			}
 			catch (Exception e)

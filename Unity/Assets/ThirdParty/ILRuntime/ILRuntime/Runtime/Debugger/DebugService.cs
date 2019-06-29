@@ -20,6 +20,9 @@ namespace ILRuntime.Runtime.Debugger
         Runtime.Enviorment.AppDomain domain;
         Dictionary<int, LinkedList<BreakpointInfo>> activeBreakpoints = new Dictionary<int, LinkedList<BreakpointInfo>>();
         Dictionary<int, BreakpointInfo> breakpointMapping = new Dictionary<int, BreakpointInfo>();
+        Queue<KeyValuePair<int, VariableReference>> pendingReferences = new Queue<KeyValuePair<int, VariableReference>>();
+        Queue<KeyValuePair<int, VariableReference>> pendingEnuming = new Queue<KeyValuePair<int, VariableReference>>();
+        Queue<KeyValuePair<int, KeyValuePair<VariableReference, VariableReference>>> pendingIndexing = new Queue<KeyValuePair<int, KeyValuePair<VariableReference, VariableReference>>>();
         AutoResetEvent evt = new AutoResetEvent(false);
         
         public Action<string> OnBreakPoint;
@@ -91,7 +94,7 @@ namespace ILRuntime.Runtime.Debugger
             return false;
         }
 
-        public string GetStackTrance(ILIntepreter intepreper)
+        public string GetStackTrace(ILIntepreter intepreper)
         {
             StringBuilder sb = new StringBuilder();
             ILRuntime.CLR.Method.ILMethod m;
@@ -110,7 +113,8 @@ namespace ILRuntime.Runtime.Debugger
                 if (f.Address != null)
                 {
                     ins = m.Definition.Body.Instructions[f.Address.Value];
-                    var seq = FindSequencePoint(ins);
+                    
+                    var seq = FindSequencePoint(ins, m.Definition.DebugInformation.GetSequencePointMapping());
                     if (seq != null)
                     {
                         document = string.Format("{0}:Line {1}", seq.Document.Url, seq.StartLine);
@@ -130,7 +134,8 @@ namespace ILRuntime.Runtime.Debugger
                 arg--;
             if (arg->ObjectType == ObjectTypes.StackObjectReference)
             {
-                arg = *(StackObject**)&arg->Value;
+                var addr = *(long*)&arg->Value;
+                arg = (StackObject*)addr;
             }
             ILTypeInstance instance = arg->ObjectType != ObjectTypes.Null ? intepreter.Stack.ManagedStack[arg->Value] as ILTypeInstance : null;
             if (instance == null)
@@ -179,7 +184,9 @@ namespace ILRuntime.Runtime.Debugger
                     var v = StackObject.ToObject(val, intepreter.AppDomain, intepreter.Stack.ManagedStack);
                     if (v == null)
                         v = "null";
-                    string name = string.IsNullOrEmpty(lv.Name) ? "v" + lv.Index : lv.Name;
+                    string vName = null;
+                    m.Definition.DebugInformation.TryGetName(lv, out vName);                    
+                    string name = string.IsNullOrEmpty(vName) ? "v" + lv.Index : vName;
                     sb.AppendFormat("{0} {1} = {2}", lv.VariableType.Name, name, v);
                     if ((i % 3 == 0 && i != 0) || i == m.LocalVariableCount - 1)
                         sb.AppendLine();
@@ -194,13 +201,14 @@ namespace ILRuntime.Runtime.Debugger
             return sb.ToString();
         }
 
-        internal static Mono.Cecil.Cil.SequencePoint FindSequencePoint(Mono.Cecil.Cil.Instruction ins)
+        internal static Mono.Cecil.Cil.SequencePoint FindSequencePoint(Mono.Cecil.Cil.Instruction ins, IDictionary<Mono.Cecil.Cil.Instruction, Mono.Cecil.Cil.SequencePoint> seqMapping)
         {
             Mono.Cecil.Cil.Instruction cur = ins;
-            while (cur.SequencePoint == null && cur.Previous != null)
+            Mono.Cecil.Cil.SequencePoint sp;
+            while (!seqMapping.TryGetValue(cur, out sp) && cur.Previous != null)
                 cur = cur.Previous;
 
-            return cur.SequencePoint;
+            return sp;
         }
 
         unsafe StackObject* Add(StackObject* a, int b)
@@ -304,7 +312,7 @@ namespace ILRuntime.Runtime.Debugger
 
                 if (lst != null)
                 {
-                    var sp = method.Definition.Body.Instructions[ip].SequencePoint;
+                    var sp = method.Definition.DebugInformation.GetSequencePoint(method.Definition.Body.Instructions[ip]);
                     if (sp != null)
                     {
                         foreach (var i in lst)
@@ -321,7 +329,7 @@ namespace ILRuntime.Runtime.Debugger
 
                 if (!bpHit)
                 {
-                    var sp = method.Definition.Body.Instructions[ip].SequencePoint;
+                    var sp = method.Definition.DebugInformation.GetSequencePoint(method.Definition.Body.Instructions[ip]);//.SequencePoint;
                     if (sp != null && IsSequenceValid(sp))
                     {
                         switch (intp.CurrentStepType)
@@ -387,7 +395,7 @@ namespace ILRuntime.Runtime.Debugger
             StackFrame[] frames = intp.Stack.Frames.ToArray();
             Mono.Cecil.Cil.Instruction ins = null;
             ILMethod m;
-            StackFrameInfo[] frameInfos = new StackFrameInfo[frames.Length];
+            List<StackFrameInfo> frameInfos = new List<StackFrameInfo>();
 
             for (int j = 0; j < frames.Length; j++)
             {
@@ -399,7 +407,8 @@ namespace ILRuntime.Runtime.Debugger
                 if (f.Address != null)
                 {
                     ins = m.Definition.Body.Instructions[f.Address.Value];
-                    var seq = FindSequencePoint(ins);
+
+                    var seq = FindSequencePoint(ins, m.Definition.DebugInformation.GetSequencePointMapping());
                     if (seq != null)
                     {
                         info.DocumentName = seq.Document.Url;
@@ -408,6 +417,8 @@ namespace ILRuntime.Runtime.Debugger
                         info.EndLine = seq.EndLine - 1;
                         info.EndColumn = seq.EndColumn - 1;
                     }
+                    else
+                        continue;
                 }
                 StackFrame topFrame = f;
                 m = topFrame.Method;
@@ -451,7 +462,9 @@ namespace ILRuntime.Runtime.Debugger
                     var val = Add(topFrame.LocalVarPointer, locIdx);
                     var v = StackObject.ToObject(val, intp.AppDomain, intp.Stack.ManagedStack);
                     var type = intp.AppDomain.GetType(lv.VariableType, m.DeclearingType, m);
-                    string name = string.IsNullOrEmpty(lv.Name) ? "v" + lv.Index : lv.Name;
+                    string vName = null;
+                    m.Definition.DebugInformation.TryGetName(lv, out vName);
+                    string name = string.IsNullOrEmpty(vName) ? "v" + lv.Index : vName;
                     VariableInfo vinfo = VariableInfo.FromObject(v);
                     vinfo.Address = (long)val;
                     vinfo.Name = name;
@@ -459,9 +472,9 @@ namespace ILRuntime.Runtime.Debugger
                     vinfo.Expandable = GetValueExpandable(val, intp.Stack.ManagedStack);
                     info.LocalVariables[i] = vinfo;
                 }
-                frameInfos[j] = info;
+                frameInfos.Add(info);
             }
-            return frameInfos;
+            return frameInfos.ToArray();
         }
 
         internal unsafe VariableInfo[] EnumChildren(int threadHashCode, VariableReference parent)
@@ -469,6 +482,16 @@ namespace ILRuntime.Runtime.Debugger
             ILIntepreter intepreter;
             if (AppDomain.Intepreters.TryGetValue(threadHashCode, out intepreter))
             {
+#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+                if (domain.IsNotUnityMainThread())
+                {
+                    lock (pendingEnuming)
+                    {
+                        pendingEnuming.Enqueue(new KeyValuePair<int, VariableReference>(threadHashCode, parent));
+                    }
+                    return null;
+                }
+#endif
                 object obj;
                 var info = ResolveVariable(threadHashCode, parent, out obj);
                 if (obj != null)
@@ -651,6 +674,8 @@ namespace ILRuntime.Runtime.Debugger
                 {
                     if (i.GetIndexParameters().Length > 0)
                         continue;
+                    if (i.GetCustomAttributes(typeof(ObsoleteAttribute), true).Length > 0)
+                        continue;
                     var val = i.GetValue(obj, null);
                     VariableInfo info = VariableInfo.FromObject(val);
                     info.Type = VariableTypes.PropertyReference;
@@ -679,6 +704,17 @@ namespace ILRuntime.Runtime.Debugger
             res = null;
             if (AppDomain.Intepreters.TryGetValue(threadHashCode, out intepreter))
             {
+#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+                if (domain.IsNotUnityMainThread())
+                {
+                    lock (pendingIndexing)
+                    {
+                        pendingIndexing.Enqueue(new KeyValuePair<int, KeyValuePair<VariableReference, VariableReference>>(threadHashCode, new KeyValuePair<VariableReference, VariableReference>(body, idx)));
+                    }
+                    res = null;
+                    return new VariableInfo() { Type = VariableTypes.Pending };
+                }
+#endif
                 object obj;
                 var info = ResolveVariable(threadHashCode, body, out obj);
                 if (obj != null)
@@ -765,6 +801,63 @@ namespace ILRuntime.Runtime.Debugger
                 return VariableInfo.NullReferenceExeption;
         }
 
+        internal void ResolvePendingRequests()
+        {
+            lock (pendingReferences)
+            {
+                while (pendingReferences.Count > 0)
+                {
+                    VariableInfo info;
+                    var r = pendingReferences.Dequeue();
+                    try
+                    {
+                        object res;
+                        info = ResolveVariable(r.Key, r.Value, out res);
+                    }
+                    catch (Exception ex)
+                    {
+                        info = VariableInfo.GetException(ex);
+                    }
+                    server.SendSCResolveVariableResult(info);
+                }
+            }
+            lock (pendingEnuming)
+            {
+                while (pendingEnuming.Count > 0)
+                {
+                    VariableInfo[] info;
+                    var r = pendingEnuming.Dequeue();
+                    try
+                    {
+                        info = EnumChildren(r.Key, r.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        info = new VariableInfo[] { VariableInfo.GetException(ex) };
+                    }
+                    server.SendSCEnumChildrenResult(info);
+                }
+            }
+            lock (pendingIndexing)
+            {
+                while (pendingIndexing.Count > 0)
+                {
+                    VariableInfo info;
+                    var r = pendingIndexing.Dequeue();
+                    try
+                    {
+                        object res;
+                        info = ResolveIndexAccess(r.Key, r.Value.Key, r.Value.Value, out res);
+                    }
+                    catch (Exception ex)
+                    {
+                        info = VariableInfo.GetException(ex);
+                    }
+                    server.SendSCResolveVariableResult(info);
+                }
+            }
+        }
+
         internal unsafe VariableInfo ResolveVariable(int threadHashCode, VariableReference variable, out object res)
         {
             ILIntepreter intepreter;
@@ -773,6 +866,17 @@ namespace ILRuntime.Runtime.Debugger
             {
                 if (variable != null)
                 {
+#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
+                    if (domain.IsNotUnityMainThread())
+                    {
+                        lock (pendingReferences)
+                        {
+                            pendingReferences.Enqueue(new KeyValuePair<int, VariableReference>(threadHashCode, variable));
+                        }
+                        res = null;
+                        return new VariableInfo() { Type = VariableTypes.Pending };
+                    }
+#endif
                     switch (variable.Type)
                     {
                         case VariableTypes.Normal:
@@ -814,7 +918,26 @@ namespace ILRuntime.Runtime.Debugger
                                     {
                                         var addr = Minus(frame.LocalVarPointer, m.ParameterCount + 1);
                                         var v = StackObject.ToObject(addr, intepreter.AppDomain, intepreter.Stack.ManagedStack);
-                                        return ResolveMember(v, variable.Name, out res);
+                                        var result = ResolveMember(v, variable.Name, out res);
+                                        if (result.Type == VariableTypes.NotFound)
+                                        {
+                                            ILTypeInstance ins = v as ILTypeInstance;
+                                            if (ins != null)
+                                            {
+                                                var ilType = ins.Type.ReflectionType;
+                                                var fields = ilType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                                                foreach (var f in fields)
+                                                {
+                                                    if (f.Name.Contains("_this"))
+                                                    {
+                                                        result = ResolveMember(f.GetValue(v), variable.Name, out res);
+                                                        if (result.Type != VariableTypes.NotFound)
+                                                            return result;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        return result;
                                     }
                                     else
                                     {
@@ -897,22 +1020,44 @@ namespace ILRuntime.Runtime.Debugger
             }
             else
             {
-                var pi = type.GetProperty(name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                if (pi != null)
+                var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                string match = string.Format("<{0}>", name);
+                foreach (var f in fields)
                 {
-                    res = pi.GetValue(obj, null);
-                    VariableInfo info = VariableInfo.FromObject(res);
+                    if (f.Name.Contains(match))
+                    {
+                        res = f.GetValue(obj);
+                        VariableInfo info = VariableInfo.FromObject(res);
 
-                    info.Address = 0;
-                    info.Name = name;
-                    info.Type = VariableTypes.PropertyReference;
-                    info.TypeName = pi.PropertyType.FullName;
-                    info.IsPrivate = pi.GetGetMethod(true).IsPrivate;
-                    info.IsProtected = pi.GetGetMethod(true).IsFamily;
-                    info.Expandable = res != null && !pi.PropertyType.IsPrimitive;
-                    return info;
+                        info.Address = 0;
+                        info.Name = name;
+                        info.Type = VariableTypes.FieldReference;
+                        info.TypeName = f.FieldType.FullName;
+                        info.IsPrivate = f.IsPrivate;
+                        info.IsProtected = f.IsFamily;
+                        info.Expandable = res != null && !f.FieldType.IsPrimitive;
+
+                        return info;
+                    }
                 }
             }
+
+            var pi = type.GetProperty(name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (pi != null)
+            {
+                res = pi.GetValue(obj, null);
+                VariableInfo info = VariableInfo.FromObject(res);
+
+                info.Address = 0;
+                info.Name = name;
+                info.Type = VariableTypes.PropertyReference;
+                info.TypeName = pi.PropertyType.FullName;
+                info.IsPrivate = pi.GetGetMethod(true).IsPrivate;
+                info.IsProtected = pi.GetGetMethod(true).IsFamily;
+                info.Expandable = res != null && !pi.PropertyType.IsPrimitive;
+                return info;
+            }
+
             return VariableInfo.GetCannotFind(name);
         }
 
@@ -955,6 +1100,9 @@ namespace ILRuntime.Runtime.Debugger
         {
             activeBreakpoints.Clear();
             breakpointMapping.Clear();
+            pendingEnuming.Clear();
+            pendingReferences.Clear();
+            pendingIndexing.Clear();
             foreach (var j in AppDomain.Intepreters)
             {
                 j.Value.ClearDebugState();
@@ -1004,7 +1152,7 @@ namespace ILRuntime.Runtime.Debugger
                 if (i < esp)
                 {
                     if (i->ObjectType == ObjectTypes.ValueTypeObjectReference)
-                        VisitValueTypeReference(*(StackObject**)&i->Value, leakVObj);
+                        VisitValueTypeReference(ILIntepreter.ResolveReference(i), leakVObj);
                 }
                 if (isLocal)
                 {
@@ -1061,13 +1209,13 @@ namespace ILRuntime.Runtime.Debugger
             {
                 case ObjectTypes.StackObjectReference:
                     {
-                        sb.Append(string.Format("Value:0x{0:X8}", (long)*(StackObject**)&esp->Value));
+                        sb.Append(string.Format("Value:0x{0:X8}", (long)ILIntepreter.ResolveReference(esp)));
                     }
                     break;
                 case ObjectTypes.ValueTypeObjectReference:
                     {
                         object obj = null;
-                        var dst = *(StackObject**)&esp->Value;
+                        var dst = ILIntepreter.ResolveReference(esp);
                         if (dst > valueTypeEnd)
                             obj = StackObject.ToObject(esp, domain, mStack);
                         if (obj != null)
@@ -1075,7 +1223,7 @@ namespace ILRuntime.Runtime.Debugger
 
                         text += string.Format("({0})", domain.GetType(dst->Value));
                     }
-                    sb.Append(string.Format("Value:0x{0:X8} Text:{1} ", (long)*(StackObject**)&esp->Value, text));
+                    sb.Append(string.Format("Value:0x{0:X8} Text:{1} ", (long)ILIntepreter.ResolveReference(esp), text));
                     break;
                 default:
                     {
@@ -1104,7 +1252,7 @@ namespace ILRuntime.Runtime.Debugger
                 var ptr = Minus(esp, i + 1);
                 if (ptr->ObjectType == ObjectTypes.ValueTypeObjectReference)
                 {
-                    VisitValueTypeReference(*(StackObject**)&ptr->Value, leak);
+                    VisitValueTypeReference(ILIntepreter.ResolveReference(ptr), leak);
                 }
             }
         }

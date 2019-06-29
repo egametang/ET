@@ -2,7 +2,18 @@
 {
 	public static class IdGenerater
 	{
-		public static long AppId { private get; set; }
+		private static long instanceIdGenerator;
+		
+		private static long appId;
+		
+		public static long AppId
+		{
+			set
+			{
+				appId = value;
+				instanceIdGenerator = appId << 48;
+			}
+		}
 
 		private static ushort value;
 
@@ -10,12 +21,17 @@
 		{
 			long time = TimeHelper.ClientNowSeconds();
 
-			return (AppId << 48) + (time << 16) + ++value;
+			return (appId << 48) + (time << 16) + ++value;
+		}
+		
+		public static long GenerateInstanceId()
+		{
+			return ++instanceIdGenerator;
 		}
 
-		public static int GetAppIdFromId(long id)
+		public static int GetAppId(long v)
 		{
-			return (int)(id >> 48);
+			return (int)(v >> 48);
 		}
 	}
 }

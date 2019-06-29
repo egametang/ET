@@ -23,6 +23,8 @@ namespace ETModel
 		/// 默认层
 		/// </summary>
 		public const string DEFAULT = "Default";
+		
+		public const string HIDDEN = "Hidden";
 
 		/// <summary>
 		/// 通过Layers名字得到对应层

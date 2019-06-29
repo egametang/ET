@@ -50,7 +50,7 @@ namespace ETHotfix
 		            ETModel.SessionComponent.Instance.Session.Send(frameClickMap);
 
 					// 测试actor rpc消息
-					this.TestActor().NoAwait();
+					this.TestActor().Coroutine();
 				}
             }
         }

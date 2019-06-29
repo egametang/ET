@@ -28,7 +28,7 @@ namespace ETHotfix
 	{
 		public override void Start(MailBoxComponent self)
 		{
-			self.HandleAsync().NoAwait();
+			self.HandleAsync().Coroutine();
 		}
 	}
 

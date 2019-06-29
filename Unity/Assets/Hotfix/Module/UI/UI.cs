@@ -1,34 +1,31 @@
 ﻿using System.Collections.Generic;
+using ETModel;
 using UnityEngine;
 
 namespace ETHotfix
 {
-	[ETModel.ObjectSystem]
-	public class UiAwakeSystem : AwakeSystem<UI, GameObject>
+	[ObjectSystem]
+	public class UiAwakeSystem : AwakeSystem<UI, string, GameObject>
 	{
-		public override void Awake(UI self, GameObject gameObject)
+		public override void Awake(UI self, string name, GameObject gameObject)
 		{
-			self.Awake(gameObject);
+			self.Awake(name, gameObject);
 		}
 	}
 	
+	[HideInHierarchy]
 	public sealed class UI: Entity
 	{
-		public string Name
-		{
-			get
-			{
-				return this.GameObject.name;
-			}
-		}
-
-		public GameObject GameObject { get; private set; }
+		public string Name { get; private set; }
 
 		public Dictionary<string, UI> children = new Dictionary<string, UI>();
 		
-		public void Awake(GameObject gameObject)
+		public void Awake(string name, GameObject gameObject)
 		{
 			this.children.Clear();
+			gameObject.AddComponent<ComponentView>().Component = this;
+			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
+			this.Name = name;
 			this.GameObject = gameObject;
 		}
 
@@ -84,7 +81,7 @@ namespace ETHotfix
 			{
 				return null;
 			}
-			child = ComponentFactory.Create<UI, GameObject>(childGameObject);
+			child = ComponentFactory.Create<UI, string, GameObject>(name, childGameObject);
 			this.Add(child);
 			return child;
 		}

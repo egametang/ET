@@ -5,7 +5,7 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class MailboxDispatcherComponentStartSystem: AwakeSystem<MailboxDispatcherComponent>
+	public class MailboxDispatcherComponentAwakeSystem: AwakeSystem<MailboxDispatcherComponent>
 	{
 		public override void Awake(MailboxDispatcherComponent self)
 		{

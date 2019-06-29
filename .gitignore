@@ -19,8 +19,6 @@ Opt/
 bin/
 Bin/
 obj/
-Packages/
-packages/
 _ReSharper.CSharp/
 *.opensdf
 *.sdf
@@ -48,3 +46,6 @@ _ReSharper.CSharp/
 Server/.DS_Store
 /Server/.vscode/
 .vs/
+.objs/
+/Unity/.gradle
+/*.user

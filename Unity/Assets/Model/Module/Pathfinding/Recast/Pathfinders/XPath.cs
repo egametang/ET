@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF {
 	/** Extended Path.
 	 * \ingroup paths

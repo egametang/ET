@@ -72,6 +72,7 @@ namespace ETModel
 			this.startSystems.Clear();
 			this.loadSystems.Clear();
 			this.changeSystems.Clear();
+			this.destroySystems.Clear();
 			this.deserializeSystems.Clear();
 
 			foreach (Type type in types[typeof(ObjectSystemAttribute)])
@@ -190,10 +191,10 @@ namespace ETModel
 			this.allComponents.Remove(instanceId);
 		}
 
-		public Component Get(long id)
+		public Component Get(long instanceId)
 		{
 			Component component = null;
-			this.allComponents.TryGetValue(id, out component);
+			this.allComponents.TryGetValue(instanceId, out component);
 			return component;
 		}
 		

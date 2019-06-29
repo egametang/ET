@@ -23,20 +23,20 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ETModel.IdGenerater);
             args = new Type[]{};
-            method = type.GetMethod("GenerateId", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GenerateId_0);
+            method = type.GetMethod("GenerateInstanceId", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GenerateInstanceId_0);
 
 
         }
 
 
-        static StackObject* GenerateId_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GenerateInstanceId_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = ETModel.IdGenerater.GenerateId();
+            var result_of_this_method = ETModel.IdGenerater.GenerateInstanceId();
 
             __ret->ObjectType = ObjectTypes.Long;
             *(long*)&__ret->Value = result_of_this_method;

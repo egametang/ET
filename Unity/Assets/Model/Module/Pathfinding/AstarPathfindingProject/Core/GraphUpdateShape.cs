@@ -16,8 +16,8 @@ namespace Pathfinding {
 	 * \see Pathfinding.GraphUpdateObject.shape
 	 */
 	public class GraphUpdateShape {
-		PF.Vector3[] _points;
-		PF.Vector3[] _convexPoints;
+		Vector3[] _points;
+		Vector3[] _convexPoints;
 		bool _convex;
 		Vector3 right = Vector3.right;
 		Vector3 forward = Vector3.forward;
@@ -28,7 +28,7 @@ namespace Pathfinding {
 		/** Gets or sets the points of the polygon in the shape.
 		 * These points should be specified in clockwise order.
 		 * Will automatically calculate the convex hull if #convex is set to true */
-		public PF.Vector3[] points {
+		public Vector3[] points {
 			get {
 				return _points;
 			}
@@ -64,7 +64,7 @@ namespace Pathfinding {
 		 *			include any points inside it (as testing for inclusion is done in 3D space when updating graphs). This ensures
 		 *			 that the shape has at least the minimum height (in the up direction that the matrix specifies).
 		 */
-		public GraphUpdateShape (PF.Vector3[] points, bool convex, Matrix4x4 matrix, float minimumHeight) {
+		public GraphUpdateShape (Vector3[] points, bool convex, Matrix4x4 matrix, float minimumHeight) {
 			this.convex = convex;
 			this.points = points;
 			origin = matrix.MultiplyPoint3x4(Vector3.zero);
@@ -83,7 +83,7 @@ namespace Pathfinding {
 			return GetBounds(convex ? _convexPoints : points, right, up, forward, origin, minimumHeight);
 		}
 
-		public static Bounds GetBounds (PF.Vector3[] points, Matrix4x4 matrix, float minimumHeight) {
+		public static Bounds GetBounds (Vector3[] points, Matrix4x4 matrix, float minimumHeight) {
 			var origin = matrix.MultiplyPoint3x4(Vector3.zero);
 			var right = matrix.MultiplyPoint3x4(Vector3.right) - origin;
 			var up = matrix.MultiplyPoint3x4(Vector3.up) - origin;
@@ -92,7 +92,7 @@ namespace Pathfinding {
 			return GetBounds(points, right, up, forward, origin, minimumHeight);
 		}
 
-		static Bounds GetBounds (PF.Vector3[] points, Vector3 right, Vector3 up, Vector3 forward, Vector3 origin, float minimumHeight) {
+		static Bounds GetBounds (Vector3[] points, Vector3 right, Vector3 up, Vector3 forward, Vector3 origin, float minimumHeight) {
 			if (points == null || points.Length == 0) return new Bounds();
 			float miny = points[0].y, maxy = points[0].y;
 			for (int i = 0; i < points.Length; i++) {

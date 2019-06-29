@@ -133,12 +133,12 @@ namespace Pathfinding {
 		}
 
 		public override void Apply (Path p) {
-			List<PF.Vector3> vs = p.vectorPath;
+			List<Vector3> vs = p.vectorPath;
 
-			List<PF.Vector3> res = Apply(vs);
+			List<Vector3> res = Apply(vs);
 
 			if (res != vs) {
-				ListPool<PF.Vector3>.Release(ref p.vectorPath);
+				ListPool<Vector3>.Release(ref p.vectorPath);
 				p.vectorPath = res;
 			}
 		}
@@ -149,7 +149,7 @@ namespace Pathfinding {
 		bool[] dir = new bool[10];
 
 		/** Apply this modifier on a raw Vector3 list */
-		public List<PF.Vector3> Apply (List<PF.Vector3> vs) {
+		public List<Vector3> Apply (List<Vector3> vs) {
 			if (vs == null || vs.Count < 3) return vs;
 
 			/** \todo Do something about these allocations */
@@ -253,7 +253,7 @@ namespace Pathfinding {
 				}
 			}
 
-			List<PF.Vector3> res = ListPool<PF.Vector3>.Claim();
+			List<Vector3> res = ListPool<Vector3>.Claim();
 			res.Add(vs[0]);
 			if (detail < 1) detail = 1;
 			float step = (float)(2*Math.PI)/detail;

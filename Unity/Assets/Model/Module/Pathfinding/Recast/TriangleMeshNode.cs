@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF {
 	/** Interface for something that holds a triangle based navmesh */
 	public interface INavmeshHolder : ITransformedGraph, INavmesh {

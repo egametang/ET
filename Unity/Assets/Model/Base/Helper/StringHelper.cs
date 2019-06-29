@@ -58,5 +58,14 @@ namespace ETModel
 			}
 			return sb.ToString();
 		}
+		
+		public static string MessageToStr(object message)
+		{
+#if SERVER
+			return MongoHelper.ToJson(message);
+#else
+			return Dumper.DumpAsString(message);
+#endif
+		}
 	}
 }

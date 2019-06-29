@@ -6,16 +6,13 @@ namespace ETModel
 	// 知道对方的Id，使用这个类发actor消息
 	public class ActorLocationSender : ComponentWithId
 	{
-		// actor的地址
-		public IPEndPoint Address;
-
 		public long ActorId;
 		
 		// 还没发送的消息
 		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();
 
-		// 最近发送消息的时间
-		public long LastSendTime;
+		// 最近接收消息的时间
+		public long LastRecvTime;
 		
 		public int FailTimes;
 

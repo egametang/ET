@@ -11,7 +11,7 @@ namespace ETModel
 			{
 				throw new Exception($"actor id is 0");
 			}
-			IPEndPoint ipEndPoint = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppIdFromId(actorId));
+			IPEndPoint ipEndPoint = StartConfigComponent.Instance.GetInnerAddress(IdGenerater.GetAppId(actorId));
 			ActorMessageSender actorMessageSender = new ActorMessageSender(actorId, ipEndPoint);
 			return actorMessageSender;
 		}

@@ -1,4 +1,5 @@
 #define DECREASE_KEY
+
 namespace PF {
 	/** Stores temporary node data for a single pathfinding request.
 	 * Every node has one PathNode per thread used.

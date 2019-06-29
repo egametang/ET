@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -22,7 +23,7 @@ namespace ETModel
 		private AChannel channel;
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly List<byte[]> byteses = new List<byte[]>() { new byte[1], new byte[2] };
+		private readonly byte[] opcodeBytes = new byte[2];
 
 		public NetworkComponent Network
 		{
@@ -63,7 +64,7 @@ namespace ETModel
 				return;
 			}
 
-			long id = this.Id;
+			this.Network.Remove(this.Id);
 
 			base.Dispose();
 			
@@ -79,7 +80,7 @@ namespace ETModel
 			//}
 			
 			this.channel.Dispose();
-			this.Network.Remove(id);
+			
 			this.requestCallback.Clear();
 		}
 
@@ -127,13 +128,12 @@ namespace ETModel
 		private void Run(MemoryStream memoryStream)
 		{
 			memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			byte flag = memoryStream.GetBuffer()[Packet.FlagIndex];
 			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 			
 #if !SERVER
 			if (OpcodeHelper.IsClientHotfixMessage(opcode))
 			{
-				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, flag, opcode, memoryStream);
+				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, opcode, memoryStream);
 				return;
 			}
 #endif
@@ -153,28 +153,22 @@ namespace ETModel
 			catch (Exception e)
 			{
 				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error($"opcode: {opcode} {this.Network.Count} {e} ");
+				Log.Error($"opcode: {opcode} {this.Network.Count} {e}, ip: {this.RemoteAddress}");
 				this.Error = ErrorCode.ERR_PacketParserError;
 				this.Network.Remove(this.Id);
 				return;
 			}
 
-			// flag第一位为1表示这是rpc返回消息,否则交由MessageDispatcher分发
-			if ((flag & 0x01) == 0)
+			if (!(message is IResponse response))
 			{
 				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
 				return;
 			}
-				
-			IResponse response = message as IResponse;
-			if (response == null)
-			{
-				throw new Exception($"flag is response, but message is not! {opcode}");
-			}
+			
 			Action<IResponse> action;
 			if (!this.requestCallback.TryGetValue(response.RpcId, out action))
 			{
-				return;
+				throw new Exception($"not found rpc, response message: {StringHelper.MessageToStr(response)}");
 			}
 			this.requestCallback.Remove(response.RpcId);
 
@@ -195,16 +189,16 @@ namespace ETModel
 						throw new RpcException(response.Error, response.Message);
 					}
 
-					tcs.TrySetResult(response);
+					tcs.SetResult(response);
 				}
 				catch (Exception e)
 				{
-					tcs.TrySetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
+					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
 				}
 			};
 
 			request.RpcId = rpcId;
-			this.Send(0x00, request);
+			this.Send(request);
 			return tcs.Task;
 		}
 
@@ -233,13 +227,8 @@ namespace ETModel
 			cancellationToken.Register(() => this.requestCallback.Remove(rpcId));
 
 			request.RpcId = rpcId;
-			this.Send(0x00, request);
+			this.Send(request);
 			return tcs.Task;
-		}
-
-		public void Send(IMessage message)
-		{
-			this.Send(0x00, message);
 		}
 
 		public void Reply(IResponse message)
@@ -249,18 +238,18 @@ namespace ETModel
 				throw new Exception("session已经被Dispose了");
 			}
 
-			this.Send(0x01, message);
+			this.Send(message);
 		}
 
-		public void Send(byte flag, IMessage message)
+		public void Send(IMessage message)
 		{
 			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
 			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
 			
-			Send(flag, opcode, message);
+			Send(opcode, message);
 		}
 		
-		public void Send(byte flag, ushort opcode, object message)
+		public void Send(ushort opcode, object message)
 		{
 			if (this.IsDisposed)
 			{
@@ -286,21 +275,9 @@ namespace ETModel
 			stream.SetLength(Packet.MessageIndex);
 			this.Network.MessagePacker.SerializeTo(message, stream);
 			stream.Seek(0, SeekOrigin.Begin);
-
-			if (stream.Length > ushort.MaxValue)
-			{
-				Log.Error($"message too large: {stream.Length}, opcode: {opcode}");
-				return;
-			}
 			
-			this.byteses[0][0] = flag;
-			this.byteses[1].WriteTo(0, opcode);
-			int index = 0;
-			foreach (var bytes in this.byteses)
-			{
-				Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
-				index += bytes.Length;
-			}
+			opcodeBytes.WriteTo(0, opcode);
+			Array.Copy(opcodeBytes, 0, stream.GetBuffer(), 0, opcodeBytes.Length);
 
 #if SERVER
 			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈

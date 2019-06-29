@@ -22,13 +22,13 @@ namespace Pathfinding {
 		public ConstantTurn turnConstruct2 = new ConstantTurn();
 
 		public override void Apply (Path p) {
-			PF.Vector3[] vectorPath = p.vectorPath.ToArray();
+			Vector3[] vectorPath = p.vectorPath.ToArray();
 
 			if (vectorPath == null || vectorPath.Length <= 2) {
 				return;
 			}
 
-			List<PF.Vector3> newPath = new List<PF.Vector3>();
+			List<Vector3> newPath = new List<Vector3>();
 			newPath.Add(vectorPath[0]);
 
 			TurnConstructor.turningRadius = turningRadius;
@@ -65,7 +65,7 @@ namespace Pathfinding {
 			p.vectorPath = newPath;
 		}
 
-		void EvaluatePaths (List<Turn> turnList, List<PF.Vector3> output) {
+		void EvaluatePaths (List<Turn> turnList, List<Vector3> output) {
 			turnList.Sort();
 
 			for (int j = 0; j < turnList.Count; j++) {
@@ -110,7 +110,7 @@ namespace Pathfinding {
 				vaLeft = vaRight + Math.PI;
 			}
 
-			public override void Prepare (int i, PF.Vector3[] vectorPath) {
+			public override void Prepare (int i, Vector3[] vectorPath) {
 				preRightCircleCenter = rightCircleCenter;
 				preLeftCircleCenter = leftCircleCenter;
 
@@ -273,7 +273,7 @@ namespace Pathfinding {
 				}
 			}
 
-			public override void GetPath (Turn turn, List<PF.Vector3> output) {
+			public override void GetPath (Turn turn, List<Vector3> output) {
 				switch (turn.id) {
 				case 0:
 					//Right - Point to tangent
@@ -325,7 +325,7 @@ namespace Pathfinding {
 
 			bool clockwise;
 
-			public override void Prepare (int i, PF.Vector3[] vectorPath) {}
+			public override void Prepare (int i, Vector3[] vectorPath) {}
 
 			public override void TangentToTangent (List<Turn> turnList) {
 				Vector3 preNormal = Vector3.Cross(t1, Vector3.up);
@@ -354,7 +354,7 @@ namespace Pathfinding {
 				turnList.Add(new Turn((float)beta, this, 0));
 			}
 
-			public override void GetPath (Turn turn, List<PF.Vector3> output) {
+			public override void GetPath (Turn turn, List<Vector3> output) {
 				AddCircleSegment(gamma1, gamma2, clockwise, circleCenter, output, (circleCenter - current).magnitude);
 
 				normal = (current - circleCenter).normalized;
@@ -393,15 +393,15 @@ namespace Pathfinding {
 
 			public static bool changedPreviousTangent = false;
 
-			public abstract void Prepare (int i, PF.Vector3[] vectorPath);
+			public abstract void Prepare (int i, Vector3[] vectorPath);
 			public virtual void  OnTangentUpdate () {}
 			public virtual void  PointToTangent (List<Turn> turnList) {}
 			public virtual void  TangentToPoint (List<Turn> turnList) {}
 			public virtual void TangentToTangent (List<Turn> turnList) {}
-			public abstract void GetPath (Turn turn, List<PF.Vector3> output);
+			public abstract void GetPath (Turn turn, List<Vector3> output);
 			//abstract void Evaluate (Turn turn);
 
-			public static void Setup (int i, PF.Vector3[] vectorPath) {
+			public static void Setup (int i, Vector3[] vectorPath) {
 				current = vectorPath[i];
 				prev = vectorPath[i-1];
 				next = vectorPath[i+1];
@@ -426,7 +426,7 @@ namespace Pathfinding {
 
 			//Utilities
 
-			public void AddCircleSegment (double startAngle, double endAngle, bool clockwise, Vector3 center, List<PF.Vector3> output, float radius) {
+			public void AddCircleSegment (double startAngle, double endAngle, bool clockwise, Vector3 center, List<Vector3> output, float radius) {
 				double step = ThreeSixtyRadians / 100;
 
 				if (clockwise) {
@@ -543,7 +543,7 @@ namespace Pathfinding {
 				this.constructor = constructor;
 			}
 
-			public void GetPath (List<PF.Vector3> output) {
+			public void GetPath (List<Vector3> output) {
 				constructor.GetPath(this, output);
 			}
 

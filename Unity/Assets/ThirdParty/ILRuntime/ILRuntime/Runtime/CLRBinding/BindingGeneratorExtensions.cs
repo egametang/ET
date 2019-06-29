@@ -277,7 +277,7 @@ namespace ILRuntime.Runtime.CLRBinding
             }
         }
 
-        internal static void GetReturnValueCode(this Type type, StringBuilder sb)
+        internal static void GetReturnValueCode(this Type type, StringBuilder sb, Enviorment.AppDomain domain)
         {
             if (type.IsPrimitive)
             {
@@ -355,16 +355,51 @@ namespace ILRuntime.Runtime.CLRBinding
                     isBox = "";
                 if (!type.IsSealed && type != typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance))
                 {
-                    sb.Append(@"            object obj_result_of_this_method = result_of_this_method;
+                    if(domain == null || CheckAssignableToCrossBindingAdapters(domain, type))
+                    {
+                        sb.Append(@"            object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
             {    
                 return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance");
-                    sb.Append(isBox);
-                    sb.AppendLine(@");
+                        sb.Append(isBox);
+                        sb.AppendLine(@");
             }");
+                    }
+                    else if (typeof(CrossBindingAdaptorType).IsAssignableFrom(type))
+                    {
+                        sb.AppendLine(string.Format("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method.ILInstance{0});", isBox));
+                        return;
+                    }
+                    
                 }
                 sb.AppendLine(string.Format("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method{0});", isBox));
             }
+        }
+
+        static bool CheckAssignableToCrossBindingAdapters(Enviorment.AppDomain domain, Type type)
+        {
+            if (type == typeof(object))
+                return true;
+            bool res = domain.CrossBindingAdaptors.ContainsKey(type);
+            if (!res)
+            {
+                var baseType = type.BaseType;
+                if (baseType != null && baseType != typeof(object))
+                {
+                    res = CheckAssignableToCrossBindingAdapters(domain, baseType);
+                }
+            }
+            if (!res)
+            {
+                var interfaces = type.GetInterfaces();
+                foreach(var i in interfaces)
+                {
+                    res = CheckAssignableToCrossBindingAdapters(domain, i);
+                    if (res)
+                        break;
+                }
+            }
+            return res;
         }
 
         internal static bool HasByRefParam(this ParameterInfo[] param)

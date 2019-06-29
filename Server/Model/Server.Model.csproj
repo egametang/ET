@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Model</AssemblyName>
     <RootNamespace>Model</RootNamespace>
     <LangVersion>7.3</LangVersion>
@@ -26,6 +26,9 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs">
       <Link>Base\Async\AsyncETVoidMethodBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETCancellationTokenSource.cs">
+      <Link>Base\Async\ETCancellationTokenSource.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTask.cs">
       <Link>Base\Async\ETTask.cs</Link>
     </Compile>
@@ -44,47 +47,26 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\MoveNextRunner.cs">
       <Link>Base\Async\MoveNextRunner.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MongoHelper.cs">
+      <Link>Base\Helper\MongoHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDeserializeSystem.cs">
       <Link>Base\Base\IDeserializeSystem.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Color32.cs">
-      <Link>Base\UnityMath\Color32.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Base\ProcessHelper.cs">
+      <Link>Base/ProcessHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\FrameworkResources.cs">
-      <Link>Base\UnityMath\FrameworkResources.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Mathf.cs">
-      <Link>Base\UnityMath\Mathf.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\MathHelper.cs">
-      <Link>Base\UnityMath\MathHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix3x3.cs">
-      <Link>Base\UnityMath\Matrix3x3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Matrix4x4.cs">
-      <Link>Base\UnityMath\Matrix4x4.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\PackUtils.cs">
-      <Link>Base\UnityMath\PackUtils.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Quaternion.cs">
-      <Link>Base\UnityMath\Quaternion.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector2.cs">
-      <Link>Base\UnityMath\Vector2.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector3.cs">
-      <Link>Base\UnityMath\Vector3.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\UnityMath\Vector4.cs">
-      <Link>Base\UnityMath\Vector4.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
+      <Link>Component\Config\StartConfig.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\AConfigComponent.cs">
+      <Link>Module\Config\AConfigComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
@@ -328,15 +310,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.9.0" />
     <PackageReference Include="NLog" Version="4.5.4" />
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
     <ProjectReference Include="..\ThirdParty\KcpLib\KcpLib.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />

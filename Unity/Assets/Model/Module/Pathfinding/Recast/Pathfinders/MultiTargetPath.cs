@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace PF {
 	/** A path which searches from one point to a number of different targets in one search or from a number of different start points to a single target.

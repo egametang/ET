@@ -17,7 +17,7 @@ namespace ETModel
 	{
 		public override void Start(DBTaskQueue self)
 		{
-			StartAsync(self).NoAwait();
+			StartAsync(self).Coroutine();
 		}
 		
 		public async ETVoid StartAsync(DBTaskQueue self)

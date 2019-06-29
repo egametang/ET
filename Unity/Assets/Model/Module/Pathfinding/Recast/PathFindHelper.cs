@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace PF
 {
     /** What data to draw the graph debugging with */

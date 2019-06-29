@@ -67,6 +67,11 @@ namespace ETModel
 		{
 #if SERVER
 			Type type = this.GetType(opcode);
+			if (type == null)
+			{
+				// 服务端因为有人探测端口，有可能会走到这一步，如果找不到opcode，抛异常
+				throw new Exception($"not found opcode: {opcode}");
+			}
 			return Activator.CreateInstance(type);
 #else
 			return this.typeMessages[opcode];
