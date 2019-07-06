@@ -7,7 +7,7 @@ namespace ETHotfix
 	[MessageHandler(AppType.Gate)]
 	public class C2G_PlayerInfoHandler : AMRpcHandler<C2G_PlayerInfo, G2C_PlayerInfo>
 	{
-		protected override void Run(Session session, C2G_PlayerInfo message, Action<G2C_PlayerInfo> reply)
+		protected override async ETTask Run(Session session, C2G_PlayerInfo request, G2C_PlayerInfo response, Action reply)
 		{
 			G2C_PlayerInfo g2CPlayerInfo = new G2C_PlayerInfo();
 			g2CPlayerInfo.PlayerInfo = new PlayerInfo();
@@ -21,7 +21,7 @@ namespace ETHotfix
 			g2CPlayerInfo.TestRepeatedInt64.Add(8);
 			g2CPlayerInfo.TestRepeatedString.Add("9");
 			g2CPlayerInfo.TestRepeatedString.Add("10");
-			reply(g2CPlayerInfo);
+			reply();
 		}
 	}
 }

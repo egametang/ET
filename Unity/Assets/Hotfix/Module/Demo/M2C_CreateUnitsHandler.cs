@@ -1,5 +1,4 @@
 ﻿using ETModel;
-using PF;
 using Vector3 = UnityEngine.Vector3;
 
 namespace ETHotfix
@@ -7,7 +6,7 @@ namespace ETHotfix
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
-		protected override void Run(ETModel.Session session, M2C_CreateUnits message)
+		protected override async ETTask Run(ETModel.Session session, M2C_CreateUnits message)
 		{	
 			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
 			
@@ -20,6 +19,8 @@ namespace ETHotfix
 				Unit unit = UnitFactory.Create(unitInfo.UnitId);
 				unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 			}
+
+			await ETTask.CompletedTask;
 		}
 	}
 }
