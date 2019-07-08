@@ -1,0 +1,13 @@
+{
+    "name": "Unity.Hotfix",
+    "references": [
+        "Unity.Model",
+        "Unity.ThirdParty"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true
+}

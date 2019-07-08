@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace ETModel
 {
@@ -53,7 +53,7 @@ namespace ETModel
 
 		public void Awake()
 		{
-			StartConfig startConfig = Game.Scene.GetComponent<StartConfigComponent>().StartConfig;
+			StartConfig startConfig = StartConfigComponent.Instance.StartConfig;
 			this.appType = startConfig.AppType;
 			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
@@ -120,7 +120,7 @@ namespace ETModel
 
 				this.listener.Start();
 
-				this.Accept();
+				this.Accept().Coroutine();
 			}
 			catch (HttpListenerException e)
 			{
@@ -174,7 +174,7 @@ namespace ETModel
 			}
 		}
 
-		public async void Accept()
+		public async ETVoid Accept()
 		{
 			long instanceId = this.InstanceId;
 			
@@ -195,7 +195,7 @@ namespace ETModel
 		/// 调用处理方法
 		/// </summary>
 		/// <param name="context"></param>
-		private async Task InvokeHandler(HttpListenerContext context)
+		private async ETTask InvokeHandler(HttpListenerContext context)
 		{
 			context.Response.StatusCode = 404;
 
@@ -235,7 +235,7 @@ namespace ETModel
 				// 自动把返回值，以json方式响应。
 				object resp = methodInfo.Invoke(httpHandler, args);
 				object result = resp;
-				if (resp is Task t)
+				if (resp is ETTask<HttpResult> t)
 				{
 					await t;
 					result = t.GetType().GetProperty("Result").GetValue(t, null);
@@ -243,7 +243,7 @@ namespace ETModel
 
 				if (result != null)
 				{
-					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream))
+					using (StreamWriter sw = new StreamWriter(context.Response.OutputStream,Encoding.UTF8))
 					{
 						if (result.GetType() == typeof(string))
 						{

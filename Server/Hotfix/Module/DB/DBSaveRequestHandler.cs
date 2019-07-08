@@ -6,28 +6,16 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBSaveRequestHandler : AMRpcHandler<DBSaveRequest, DBSaveResponse>
 	{
-		protected override async void Run(Session session, DBSaveRequest message, Action<DBSaveResponse> reply)
+		protected override async ETTask Run(Session session, DBSaveRequest request, DBSaveResponse response, Action reply)
 		{
-			DBSaveResponse response = new DBSaveResponse();
-			try
+			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
+			if (string.IsNullOrEmpty(request.CollectionName))
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				if (string.IsNullOrEmpty(message.CollectionName))
-				{
-					message.CollectionName = message.Component.GetType().Name;
-				}
+				request.CollectionName = request.Component.GetType().Name;
+			}
 
-				if (message.NeedCache)
-				{
-					dbCacheComponent.AddToCache(message.Component, message.CollectionName);
-				}
-				await dbCacheComponent.Add(message.Component, message.CollectionName);
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			await dbComponent.Add(request.Component, request.CollectionName);
+			reply();
 		}
 	}
 }

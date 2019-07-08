@@ -39,6 +39,7 @@ namespace ILRuntime.CLR.TypeSystem
         List<ILType> genericInstances;
         bool isDelegate;
         ILRuntimeType reflectionType;
+        ILType genericDefinition;
         IType firstCLRBaseType, firstCLRInterface;
         int hashCode = -1;
         static int instance_id = 0x10000000;
@@ -280,7 +281,14 @@ namespace ILRuntime.CLR.TypeSystem
             if (!def.IsGenericParameter)
             {
                 if (def is TypeSpecification)
-                    RetriveDefinitino(def.GetElementType());
+                {
+                    if (def.IsByReference || def is ArrayType)
+                    {
+                        definition = null;
+                    }
+                    else
+                        RetriveDefinitino(((TypeSpecification)def).ElementType);
+                }
                 else
                     definition = def as TypeDefinition;
             }
@@ -292,6 +300,11 @@ namespace ILRuntime.CLR.TypeSystem
             {
                 return genericArguments != null;
             }
+        }
+
+        public ILType GetGenericDefinition()
+        {
+            return genericDefinition;
         }
         public KeyValuePair<string, IType>[] GenericArguments
         {
@@ -327,6 +340,8 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
+                if (IsArray)
+                    return false;
                 if (isValueType == null)
                     isValueType = definition.IsValueType;
 
@@ -419,7 +434,7 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return definition.IsEnum;
+                return definition != null ? definition.IsEnum : false;
             }
         }
 
@@ -476,12 +491,12 @@ namespace ILRuntime.CLR.TypeSystem
         void InitializeInterfaces()
         {
             interfaceInitialized = true;
-            if (definition.HasInterfaces)
+            if (definition != null && definition.HasInterfaces)
             {
                 interfaces = new IType[definition.Interfaces.Count];
                 for (int i = 0; i < interfaces.Length; i++)
                 {
-                    interfaces[i] = appdomain.GetType(definition.Interfaces[i], this, null);
+                    interfaces[i] = appdomain.GetType(definition.Interfaces[i].InterfaceType, this, null);
                     //only one clrInterface is valid
                     if (interfaces[i] is CLRType && firstCLRInterface == null)
                     {
@@ -501,14 +516,14 @@ namespace ILRuntime.CLR.TypeSystem
         }
         void InitializeBaseType()
         {
-            if (definition.BaseType != null)
+            if (definition != null && definition.BaseType != null)
             {
                 bool specialProcess = false;
                 List<int> spIdx = null;
                 if (definition.BaseType.IsGenericInstance)
                 {
                     GenericInstanceType git = definition.BaseType as GenericInstanceType;
-                    var elementType = appdomain.GetType(definition.BaseType.GetElementType(), this, null);
+                    var elementType = appdomain.GetType(git.ElementType, this, null);
                     if (elementType is CLRType)
                     {
                         for (int i = 0; i < git.GenericArguments.Count; i++)
@@ -527,7 +542,7 @@ namespace ILRuntime.CLR.TypeSystem
                 if (specialProcess)
                 {
                     //如果泛型参数是自身，则必须要特殊处理，否则会StackOverflow
-                    var elementType = appdomain.GetType(definition.BaseType.GetElementType(), this, null);
+                    var elementType = appdomain.GetType(((GenericInstanceType)definition.BaseType).ElementType, this, null);
                     foreach (var i in appdomain.CrossBindingAdaptors)
                     {
                         if (i.Key.IsGenericType && !i.Key.IsGenericTypeDefinition)
@@ -639,6 +654,8 @@ namespace ILRuntime.CLR.TypeSystem
         {
             methods = new Dictionary<string, List<ILMethod>>();
             constructors = new List<ILMethod>();
+            if (definition == null)
+                return;
             foreach (var i in definition.Methods)
             {
                 if (i.IsConstructor)
@@ -816,7 +833,7 @@ namespace ILRuntime.CLR.TypeSystem
                         continue;
                     }
 
-                    
+
                     if (p2 != p)
                     {
                         match = false;
@@ -940,6 +957,11 @@ namespace ILRuntime.CLR.TypeSystem
         void InitializeFields()
         {
             fieldMapping = new Dictionary<string, int>();
+            if(definition == null)
+            {
+                fieldTypes = new IType[0];
+                fieldDefinitions = new FieldDefinition[0];
+            }
             fieldTypes = new IType[definition.Fields.Count];
             fieldDefinitions = new FieldDefinition[definition.Fields.Count];
             var fields = definition.Fields;
@@ -1057,6 +1079,31 @@ namespace ILRuntime.CLR.TypeSystem
             }
             return res;
         }
+
+        public ILTypeInstance Instantiate(object[] args)
+        {
+            var res = new ILTypeInstance(this);
+            var argsTypes = new List<IType>(args.Length);
+            foreach (var o in args)
+            {
+                if (o is ILTypeInstance)
+                {
+                    argsTypes.Add(((ILTypeInstance)o).Type);
+                }
+                else
+                {
+                    argsTypes.Add(appdomain.GetType(o.GetType()));
+                }
+            }
+            var m = GetConstructor(argsTypes);
+            if (m != null)
+            {
+                appdomain.Invoke(m, res, args);
+            }
+
+            return res;
+        }
+
         public IType MakeGenericInstance(KeyValuePair<string, IType>[] genericArguments)
         {
             if (genericInstances == null)
@@ -1076,6 +1123,7 @@ namespace ILRuntime.CLR.TypeSystem
                     return i;
             }
             var res = new ILType(definition, appdomain);
+            res.genericDefinition = this;
             res.genericArguments = genericArguments;
 
             genericInstances.Add(res);
@@ -1099,7 +1147,7 @@ namespace ILRuntime.CLR.TypeSystem
             if (arrayTypes == null)
                 arrayTypes = new Dictionary<int, IType>();
             IType atype;
-            if(!arrayTypes.TryGetValue(rank, out atype))
+            if (!arrayTypes.TryGetValue(rank, out atype))
             {
                 var def = new ArrayType(typeRef, rank);
                 atype = new ILType(def, appdomain);
@@ -1114,6 +1162,8 @@ namespace ILRuntime.CLR.TypeSystem
         public IType ResolveGenericType(IType contextType)
         {
             var ga = contextType.GenericArguments;
+            if (definition == null)
+                return null;
             IType[] kv = new IType[definition.GenericParameters.Count];
             for (int i = 0; i < kv.Length; i++)
             {
@@ -1145,6 +1195,30 @@ namespace ILRuntime.CLR.TypeSystem
             }
 
             return null;
+        }
+
+        public int GetStaticFieldSizeInMemory(HashSet<object> traversed)
+        {
+            return staticInstance != null ? staticInstance.GetSizeInMemory(traversed) : 0;
+        }
+
+        public unsafe int GetMethodBodySizeInMemory()
+        {
+            int size = 0;
+            if(methods != null)
+            {
+                foreach(var i in methods)
+                {
+                    foreach(var j in i.Value)
+                    {
+                        if (j.HasBody)
+                        {
+                            size += j.Body.Length * sizeof(Runtime.Intepreter.OpCodes.OpCode);
+                        }
+                    }
+                }
+            }
+            return size;
         }
 
         public override int GetHashCode()

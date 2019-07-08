@@ -1,21 +1,14 @@
 syntax = "proto3";
 package ETModel;
 
-message Actor_Test // IActorMessage
-{
-	int32 RpcId = 90;
-	int64 ActorId = 93;
-	string Info = 1;
-}
-
-message Actor_TestRequest // IActorRequest
+message C2M_TestRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
 	string request = 1;
 }
 
-message Actor_TestResponse // IActorResponse
+message M2C_TestResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
@@ -23,14 +16,14 @@ message Actor_TestResponse // IActorResponse
 	string response = 1;
 }
 
-message Actor_TransferRequest // IActorRequest
+message Actor_TransferRequest // IActorLocationRequest
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
 	int32 MapIndex = 1;
 }
 
-message Actor_TransferResponse // IActorResponse
+message Actor_TransferResponse // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
@@ -47,30 +40,52 @@ message G2C_EnterMap // IResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
+	// 自己的unit id
 	int64 UnitId = 1;
-	int32 Count  = 2;
+	// 所有的unit
+	repeated UnitInfo Units = 2;
 }
 
 message UnitInfo
 {
 	int64 UnitId  = 1;
-	int32 X       = 2;
-	int32 Z       = 3;
+
+	float X = 2;
+	float Y = 3;
+	float Z = 4;
 }
 
-message Actor_CreateUnits // IActorMessage
+message M2C_CreateUnits // IActorMessage
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
     repeated UnitInfo Units = 1;
 }
 
-message Frame_ClickMap // IFrameMessage
+message Frame_ClickMap // IActorLocationMessage
 {
 	int32 RpcId = 90;
+	int64 ActorId = 93;
 	int64 Id = 94;
-	int32 X = 1;
-	int32 Z = 2;
+	
+	float X = 1;
+	float Y = 2;
+	float Z = 3;
+}
+
+message M2C_PathfindingResult // IActorMessage
+{
+	int64 ActorId = 93;
+	
+	int64 Id = 1;
+
+	float X = 2;
+	float Y = 3;
+	float Z = 4;
+	
+	repeated float Xs = 5;
+	repeated float Ys = 6;
+	repeated float Zs = 7;
 }
 
 
@@ -88,4 +103,18 @@ message R2C_Ping // IResponse
 
 message G2C_Test // IMessage
 {
+}
+
+message C2M_Reload // IRequest
+{
+	int32 RpcId = 90;
+	string Account = 1;
+	string Password = 2;
+}
+
+message M2C_Reload // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
 }

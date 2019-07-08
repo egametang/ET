@@ -27,7 +27,8 @@ namespace ILRuntime.Reflection
             parameters = new ILRuntimeParameterInfo[m.ParameterCount];
             for (int i = 0; i < m.ParameterCount; i++)
             {
-                parameters[i] = new ILRuntimeParameterInfo(m.Parameters[i]);
+                var pd = m.Definition.Parameters[i];
+                parameters[i] = new ILRuntimeParameterInfo(pd, m.Parameters[i], this);
             }
         }
 
@@ -135,7 +136,7 @@ namespace ILRuntime.Reflection
 
         public override ParameterInfo[] GetParameters()
         {
-            throw new NotImplementedException();
+            return parameters;
         }
 
         public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)

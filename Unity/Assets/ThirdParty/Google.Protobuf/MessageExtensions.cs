@@ -40,6 +40,7 @@ namespace Google.Protobuf
     public static class MessageExtensions
     {
         public static CodedInputStream inputStream = new CodedInputStream(new byte[0]);
+        public static CodedOutputStream outputStream = new CodedOutputStream(new byte[0]);
         
         /// <summary>
         /// Merges data from the given byte array into an existing message.
@@ -138,13 +139,14 @@ namespace Google.Protobuf
         /// </summary>
         /// <param name="message">The message to write to the stream.</param>
         /// <param name="output">The stream to write to.</param>
-        public static void WriteTo(this IMessage message, Stream output)
+        public static void WriteTo(this IMessage message, MemoryStream output)
         {
+            // 这里做了修改，去掉CodedOutputStream的gc
             ProtoPreconditions.CheckNotNull(message, "message");
             ProtoPreconditions.CheckNotNull(output, "output");
-            CodedOutputStream codedOutput = new CodedOutputStream(output);
-            message.WriteTo(codedOutput);
-            codedOutput.Flush();
+            outputStream.Reset(output.GetBuffer(), (int)output.Length, (int)(output.Capacity - output.Length));
+            message.WriteTo(outputStream);
+            output.SetLength(outputStream.Position);
         }
 
         /// <summary>

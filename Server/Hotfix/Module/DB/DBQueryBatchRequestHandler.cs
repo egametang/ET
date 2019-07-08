@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ETModel;
 
 namespace ETHotfix
@@ -7,30 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryBatchRequestHandler : AMRpcHandler<DBQueryBatchRequest, DBQueryBatchResponse>
 	{
-		protected override async void Run(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
+		protected override async ETTask Run(Session session, DBQueryBatchRequest request, DBQueryBatchResponse response, Action reply)
 		{
-			DBQueryBatchResponse response = new DBQueryBatchResponse();
-			try
-			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				List<ComponentWithId> components = await dbCacheComponent.GetBatch(message.CollectionName, message.IdList);
+			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
+			response.Components = await dbComponent.GetBatch(request.CollectionName, request.IdList);
 
-				response.Components = components;
-
-				if (message.NeedCache)
-				{
-					foreach (ComponentWithId component in components)
-					{
-						dbCacheComponent.AddToCache(component, message.CollectionName);
-					}
-				}
-
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			reply();
 		}
 	}
 }

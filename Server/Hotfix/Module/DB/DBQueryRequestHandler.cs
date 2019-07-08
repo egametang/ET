@@ -6,27 +6,13 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryRequestHandler : AMRpcHandler<DBQueryRequest, DBQueryResponse>
 	{
-		protected override async void Run(Session session, DBQueryRequest message, Action<DBQueryResponse> reply)
+		protected override async ETTask Run(Session session, DBQueryRequest request, DBQueryResponse response, Action reply)
 		{
-			DBQueryResponse response = new DBQueryResponse();
-			try
-			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-				ComponentWithId component = await dbCacheComponent.Get(message.CollectionName, message.Id);
+			ComponentWithId component = await Game.Scene.GetComponent<DBComponent>().Get(request.CollectionName, request.Id);
 
-				response.Component = component;
+			response.Component = component;
 
-				if (message.NeedCache && component != null)
-				{
-					dbCacheComponent.AddToCache(component, message.CollectionName);
-				}
-
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			reply();
 		}
 	}
 }

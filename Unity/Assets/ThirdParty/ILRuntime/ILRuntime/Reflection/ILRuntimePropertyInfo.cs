@@ -19,7 +19,6 @@ namespace ILRuntime.Reflection
 
         object[] customAttributes;
         Type[] attributeTypes;
-        static object[] param = new object[1];
 
         public ILMethod Getter
         {
@@ -215,13 +214,44 @@ namespace ILRuntime.Reflection
 
         public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
         {
-            return appdomain.Invoke(getter, obj, null);
+            var indexCnt = index != null ? index.Length : 0;
+            if (getter.ParameterCount <= indexCnt)
+            {
+                using (var ctx = appdomain.BeginInvoke(getter))
+                {
+                    if (!IsStatic)
+                        ctx.PushObject(obj);
+                    for (int i = 0; i < getter.ParameterCount; i++)
+                    {
+                        ctx.PushObject(index[i], !getter.Parameters[i].IsValueType);
+                    }
+                    ctx.Invoke();
+                    return ctx.ReadObject(getter.ReturnType.TypeForCLR);
+                }
+            }
+            else
+                throw new ArgumentException("Index count mismatch");
         }
 
         public override void SetValue(object obj, object value, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
         {
-            param[0] = value;
-            appdomain.Invoke(setter, obj, param);
+            var indexCnt = index != null ? index.Length : 0;
+            if (setter.ParameterCount <= indexCnt + 1)
+            {
+                using (var ctx = appdomain.BeginInvoke(setter))
+                {
+                    if (!IsStatic)
+                        ctx.PushObject(obj);
+                    for (int i = 0; i < setter.ParameterCount - 1; i++)
+                    {
+                        ctx.PushObject(index[i], !setter.Parameters[i].IsValueType);
+                    }
+                    ctx.PushObject(value, !setter.Parameters[setter.ParameterCount - 1].IsValueType);
+                    ctx.Invoke();
+                }
+            }
+            else
+                throw new ArgumentException("Index count mismatch");
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -16,7 +15,12 @@ namespace ETModel
 	[ObjectSystem]
 	public class DbTaskQueueStartSystem : StartSystem<DBTaskQueue>
 	{
-		public override async void Start(DBTaskQueue self)
+		public override void Start(DBTaskQueue self)
+		{
+			StartAsync(self).Coroutine();
+		}
+		
+		public async ETVoid StartAsync(DBTaskQueue self)
 		{
 			long instanceId = self.InstanceId;
 			
@@ -47,7 +51,7 @@ namespace ETModel
 	{
 		public Queue<DBTask> queue = new Queue<DBTask>();
 
-		public TaskCompletionSource<DBTask> tcs;
+		public ETTaskCompletionSource<DBTask> tcs;
 
 		public void Add(DBTask task)
 		{
@@ -62,15 +66,15 @@ namespace ETModel
 			this.queue.Enqueue(task);
 		}
 
-		public Task<DBTask> Get()
+		public ETTask<DBTask> Get()
 		{
 			if (this.queue.Count > 0)
 			{
 				DBTask task = this.queue.Dequeue();
-				return Task.FromResult(task);
+				return ETTask.FromResult(task);
 			}
 
-			TaskCompletionSource<DBTask> t = new TaskCompletionSource<DBTask>();
+			ETTaskCompletionSource<DBTask> t = new ETTaskCompletionSource<DBTask>();
 			this.tcs = t;
 			return t.Task;
 		}

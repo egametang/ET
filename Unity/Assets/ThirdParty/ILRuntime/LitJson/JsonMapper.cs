@@ -450,8 +450,11 @@ namespace LitJson
                 if (value_type is ILRuntime.Reflection.ILRuntimeType)
                     instance = ((ILRuntime.Reflection.ILRuntimeType)value_type).ILType.Instantiate();
                 else
+                {
+                    if (value_type is ILRuntime.Reflection.ILRuntimeWrapperType)
+                        value_type = ((ILRuntime.Reflection.ILRuntimeWrapperType)value_type).RealType;
                     instance = Activator.CreateInstance(value_type);
-                
+                }
                 while (true) {
                     reader.Read ();
 
@@ -711,6 +714,8 @@ namespace LitJson
             };
             RegisterImporter (base_importers_table, typeof (string),
                               typeof (DateTime), importer);
+            
+            RegisterImporter<double, float>(input => Convert.ToSingle(input));
         }
 
         private static void RegisterImporter (
@@ -749,6 +754,11 @@ namespace LitJson
 
             if (obj is String) {
                 writer.Write ((string) obj);
+                return;
+            }
+            
+            if (obj is Single) {
+                writer.Write((float)obj);
                 return;
             }
 
@@ -909,7 +919,7 @@ namespace LitJson
                 delegate { return new JsonData (); }, json);
         }
 
-		public static T ToObject<T> (JsonReader reader)
+        public static T ToObject<T> (JsonReader reader)
         {
             return (T) ReadValue (typeof (T), reader);
         }

@@ -36,6 +36,8 @@ namespace ILRuntime.CLR.TypeSystem
 
         bool IsPrimitive { get; }
 
+        bool IsEnum { get; }
+
         bool IsByRef { get; }
 
         bool IsInterface { get; }

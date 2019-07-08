@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
 	public struct ActorMessageInfo
 	{
 		public Session Session;
-		public IActorMessage Message;
+		public object Message;
 	}
 
 	/// <summary>
@@ -14,12 +13,13 @@ namespace ETModel
 	/// </summary>
 	public class MailBoxComponent: Component
 	{
-		public string ActorType;
+		// Mailbox的类型
+		public string MailboxType;
 
 		// 队列处理消息
 		public Queue<ActorMessageInfo> Queue = new Queue<ActorMessageInfo>();
 
-		public TaskCompletionSource<ActorMessageInfo> Tcs;
+		public ETTaskCompletionSource<ActorMessageInfo> Tcs;
 
 		public override void Dispose()
 		{

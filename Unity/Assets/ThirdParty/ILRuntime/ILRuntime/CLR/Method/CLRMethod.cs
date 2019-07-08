@@ -17,12 +17,14 @@ namespace ILRuntime.CLR.Method
         MethodInfo def;
         ConstructorInfo cDef;
         List<IType> parameters;
+        ParameterInfo[] parametersCLR;
         ILRuntime.Runtime.Enviorment.AppDomain appdomain;
         CLRType declaringType;
         ParameterInfo[] param;
         bool isConstructor;
         CLRRedirectionDelegate redirect;
         IType[] genericArguments;
+        Type[] genericArgumentsCLR;
         object[] invocationParam;
         bool isDelegateInvoke;
         int hashCode = -1;
@@ -95,6 +97,21 @@ namespace ILRuntime.CLR.Method
 
         public IType[] GenericArguments { get { return genericArguments; } }
 
+        public Type[] GenericArgumentsCLR
+        {
+            get
+            {
+                if(genericArgumentsCLR == null)
+                {
+                    if (cDef != null)
+                        genericArgumentsCLR = cDef.GetGenericArguments();
+                    else
+                        genericArgumentsCLR = def.GetGenericArguments();
+                }
+                return genericArgumentsCLR;
+            }
+        }
+
         internal CLRMethod(MethodInfo def, CLRType type, ILRuntime.Runtime.Enviorment.AppDomain domain)
         {
             this.def = def;
@@ -161,6 +178,21 @@ namespace ILRuntime.CLR.Method
                     InitParameters();
                 }
                 return parameters;
+            }
+        }
+
+        public ParameterInfo[] ParametersCLR
+        {
+            get
+            {
+                if(parametersCLR == null)
+                {
+                    if (cDef != null)
+                        parametersCLR = cDef.GetParameters();
+                    else
+                        parametersCLR = def.GetParameters();
+                }
+                return parametersCLR;
             }
         }
 
@@ -268,7 +300,9 @@ namespace ILRuntime.CLR.Method
 
                 if (!def.IsStatic)
                 {
-                    instance = declaringType.TypeForCLR.CheckCLRTypes(StackObject.ToObject((Minus(esp, paramCount + 1)), appdomain, mStack));
+                    instance = StackObject.ToObject((Minus(esp, paramCount + 1)), appdomain, mStack);
+                    if (!(instance is Reflection.ILRuntimeWrapperType))
+                        instance = declaringType.TypeForCLR.CheckCLRTypes(instance);
                     if (declaringType.IsValueType)
                         instance = ILIntepreter.CheckAndCloneValueType(instance, appdomain);
                     if (instance == null)
@@ -298,7 +332,8 @@ namespace ILRuntime.CLR.Method
                 {
                     case ObjectTypes.StackObjectReference:
                         {
-                            var dst = *(StackObject**)&p->Value;
+                            var addr = *(long*)&p->Value;
+                            var dst = (StackObject*)addr;
                             if (dst->ObjectType >= ObjectTypes.Object)
                             {
                                 var obj = val;

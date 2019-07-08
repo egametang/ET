@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,7 @@ using ILRuntime.Runtime.Stack;
 
 namespace ILRuntime.Runtime
 {
-    static class Extensions
+    public static class Extensions
     {
         public static void GetClassName(this Type type, out string clsName, out string realClsName, out bool isByRef, bool simpleClassName = false)
         {
@@ -71,7 +71,7 @@ namespace ILRuntime.Runtime
             else
             {
                 clsName = simpleClassName ? "" : (!string.IsNullOrEmpty(type.Namespace) ? type.Namespace.Replace(".", "_") + "_" : "");
-                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : null;
+                realNamespace = !string.IsNullOrEmpty(type.Namespace) ? type.Namespace + "." : "global::";
             }
             clsName = clsName + type.Name.Replace(".", "_").Replace("`", "_").Replace("<", "_").Replace(">", "_");
             bool isGeneric = false;
@@ -265,6 +265,95 @@ namespace ILRuntime.Runtime
                 return ((ILRuntime.Runtime.Intepreter.ILTypeInstance)value).Type.ReflectionType;
             else
                 return value.GetType();
+        }
+
+        public static bool MatchGenericParameters(this System.Reflection.MethodInfo m, Type[] genericArguments, Type returnType, params Type[] parameters)
+        {
+            var param = m.GetParameters();
+            if (param.Length == parameters.Length)
+            {
+                var args = m.GetGenericArguments();
+                if (args.MatchGenericParameters(m.ReturnType, returnType, genericArguments))
+                {
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        if (!args.MatchGenericParameters(param[i].ParameterType, parameters[i], genericArguments))
+                            return false;
+                    }
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        public static bool MatchGenericParameters(this Type[] args, Type type, Type q, Type[] genericArguments)
+        {
+            if (type.IsGenericParameter)
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (args[i] == type)
+                    {
+                        return q == genericArguments[i];
+                    }
+                }
+                throw new NotSupportedException();
+            }
+            else
+            {
+                if (type.IsArray)
+                {
+                    if (q.IsArray)
+                    {
+                        return MatchGenericParameters(args, type.GetElementType(), q.GetElementType(), genericArguments);
+                    }
+                    else
+                        return false;
+                }
+                else if (type.IsByRef)
+                {
+                    if (q.IsByRef)
+                    {
+                        return MatchGenericParameters(args, type.GetElementType(), q.GetElementType(), genericArguments);
+                    }
+                    else
+                        return false;
+                }
+                else if (type.IsGenericType)
+                {
+                    if (q.IsGenericType)
+                    {
+                        var t1 = type.GetGenericTypeDefinition();
+                        var t2 = type.GetGenericTypeDefinition();
+                        if (t1 == t2)
+                        {
+                            var argA = type.GetGenericArguments();
+                            var argB = q.GetGenericArguments();
+                            if (argA.Length == argB.Length)
+                            {
+                                for (int i = 0; i < argA.Length; i++)
+                                {
+                                    if (!MatchGenericParameters(args, argA[i], argB[i], genericArguments))
+                                        return false;
+                                }
+                                return true;
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                else
+                    return type == q;
+            }
         }
     }
 }

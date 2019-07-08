@@ -6,34 +6,18 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBSaveBatchRequestHandler : AMRpcHandler<DBSaveBatchRequest, DBSaveBatchResponse>
 	{
-		protected override async void Run(Session session, DBSaveBatchRequest message, Action<DBSaveBatchResponse> reply)
+		protected override async ETTask Run(Session session, DBSaveBatchRequest request, DBSaveBatchResponse response, Action reply)
 		{
-			DBSaveBatchResponse response = new DBSaveBatchResponse();
-			try
+			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
+
+			if (string.IsNullOrEmpty(request.CollectionName))
 			{
-				DBCacheComponent dbCacheComponent = Game.Scene.GetComponent<DBCacheComponent>();
-
-				if (string.IsNullOrEmpty(message.CollectionName))
-				{
-					message.CollectionName = message.Components[0].GetType().Name;
-				}
-
-				if (message.NeedCache)
-				{
-					foreach (ComponentWithId component in message.Components)
-					{
-						dbCacheComponent.AddToCache(component, message.CollectionName);
-					}
-				}
-
-				await dbCacheComponent.AddBatch(message.Components, message.CollectionName);
-
-				reply(response);
+				request.CollectionName = request.Components[0].GetType().Name;
 			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+
+			await dbComponent.AddBatch(request.Components, request.CollectionName);
+
+			reply();
 		}
 	}
 }
