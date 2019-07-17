@@ -21,6 +21,7 @@ namespace ETHotfix
 			response.TestRepeatedString.Add("9");
 			response.TestRepeatedString.Add("10");
 			reply();
+			await ETTask.CompletedTask;
 		}
 	}
 }
