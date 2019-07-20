@@ -8,5 +8,7 @@ namespace ETModel
 	public class DBProxyComponent: Component
 	{
 		public IPEndPoint dbAddress;
+		
+		public MultiMap<string, object> TcsQueue = new MultiMap<string, object>();
 	}
 }
