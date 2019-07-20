@@ -136,7 +136,19 @@ namespace ETHotfix
 		private static async ETTask RunTask(this ActorLocationSender self, ActorTask task)
 		{
 			ActorMessageSender actorMessageSender = Game.Scene.GetComponent<ActorMessageSenderComponent>().Get(self.ActorId);
-			IActorResponse response = await actorMessageSender.Call(task.ActorRequest);
+			IActorResponse response;
+			try
+			{
+				// 这里必须使用不抛异常的rpc，因为服务端handler很可能出现错误，返回一个rpc fail的错误，结果这里抛了异常
+				// 这里抛了异常就会导致队列中的消息无法继续发送，导致整个actorlocationsender堵塞
+				response = await actorMessageSender.CallWithoutException(task.ActorRequest);
+			}
+			catch (Exception e)
+			{
+				self.GetParent<ActorLocationSenderComponent>().Remove(self.Id);
+				return;
+			}
+			
 			
 			// 发送成功
 			switch (response.Error)

@@ -17,5 +17,12 @@ namespace ETHotfix
 			message.ActorId = self.ActorId;
 			return (IActorResponse)await session.Call(message);
 		}
+		
+		public static async ETTask<IActorResponse> CallWithoutException(this ActorMessageSender self, IActorRequest message)
+		{
+			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.Address);
+			message.ActorId = self.ActorId;
+			return (IActorResponse)await session.CallWithoutException(message);
+		}
 	}
 }
