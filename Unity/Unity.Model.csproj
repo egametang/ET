@@ -70,6 +70,7 @@
     <Compile Include="Assets\Model\Base\Async\ETVoid.cs" />
     <Compile Include="Assets\Model\Base\Async\IAwaiter.cs" />
     <Compile Include="Assets\Model\Base\Async\MoveNextRunner.cs" />
+    <Compile Include="Assets\Model\Base\CoroutineLockComponent.cs" />
     <Compile Include="Assets\Model\Base\DoubleMap.cs" />
     <Compile Include="Assets\Model\Base\Event\Env.cs" />
     <Compile Include="Assets\Model\Base\Event\EnvKey.cs" />
