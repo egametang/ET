@@ -91,6 +91,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 1. [养不大](https://www.taptap.com/app/71064)  
 2. 天天躲猫猫2（ios2019春节下载排行19）  
 3. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+4. [五星麻将](https://github.com/wufanjoin/fivestar)  
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  
