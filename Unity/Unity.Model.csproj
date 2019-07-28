@@ -70,7 +70,6 @@
     <Compile Include="Assets\Model\Base\Async\ETVoid.cs" />
     <Compile Include="Assets\Model\Base\Async\IAwaiter.cs" />
     <Compile Include="Assets\Model\Base\Async\MoveNextRunner.cs" />
-    <Compile Include="Assets\Model\Base\CoroutineLockComponent.cs" />
     <Compile Include="Assets\Model\Base\DoubleMap.cs" />
     <Compile Include="Assets\Model\Base\Event\Env.cs" />
     <Compile Include="Assets\Model\Base\Event\EnvKey.cs" />
@@ -303,6 +302,7 @@
     <Compile Include="Assets\Model\Module\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Model\Module\Config\ConfigHelper.cs" />
     <Compile Include="Assets\Model\Module\Config\IConfig.cs" />
+    <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\AnimatorComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\CameraComponent.cs" />
     <Compile Include="Assets\Model\Module\Demo\Config\UnitConfig.cs" />
