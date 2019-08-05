@@ -144,6 +144,7 @@ namespace ETModel
         public static ETAsyncTaskMethodBuilder<T> Create()
         {
             var builder = new ETAsyncTaskMethodBuilder<T>();
+            Console.WriteLine("1");
             return builder;
         }
 
@@ -153,6 +154,7 @@ namespace ETModel
         {
             get
             {
+                Console.WriteLine("2");
                 if (this.tcs != null)
                 {
                     return new ETTask<T>(this.tcs);
@@ -172,6 +174,7 @@ namespace ETModel
         [DebuggerHidden]
         public void SetException(Exception exception)
         {
+            Console.WriteLine("3");
             if (this.tcs == null)
             {
                 this.tcs = new ETTaskCompletionSource<T>();
@@ -191,6 +194,7 @@ namespace ETModel
         [DebuggerHidden]
         public void SetResult(T ret)
         {
+            Console.WriteLine("4");
             if (moveNext == null)
             {
                 this.result = ret;
@@ -212,6 +216,7 @@ namespace ETModel
                 where TAwaiter : INotifyCompletion
                 where TStateMachine : IAsyncStateMachine
         {
+            Console.WriteLine("5");
             if (moveNext == null)
             {
                 if (this.tcs == null)
@@ -234,6 +239,7 @@ namespace ETModel
                 where TAwaiter : ICriticalNotifyCompletion
                 where TStateMachine : IAsyncStateMachine
         {
+            Console.WriteLine("6");
             if (moveNext == null)
             {
                 if (this.tcs == null)
@@ -253,6 +259,7 @@ namespace ETModel
         [DebuggerHidden]
         public void Start<TStateMachine>(ref TStateMachine stateMachine) where TStateMachine : IAsyncStateMachine
         {
+            Console.WriteLine("7");
             stateMachine.MoveNext();
         }
 
@@ -260,6 +267,7 @@ namespace ETModel
         [DebuggerHidden]
         public void SetStateMachine(IAsyncStateMachine stateMachine)
         {
+            Console.WriteLine("8");
         }
     }
 }

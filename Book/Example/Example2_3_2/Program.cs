@@ -10,19 +10,19 @@ namespace Example2_3_2
 
         private static long time;
         private static TaskCompletionSource<bool> tcs;
-        
+
         static void Main(string[] args)
         {
             Console.WriteLine($"主线程: {Thread.CurrentThread.ManagedThreadId}");
 
             Crontine();
-            
+
             while (true)
             {
                 Thread.Sleep(1);
 
                 CheckTimerOut();
-                
+
                 ++loopCount;
                 if (loopCount % 10000 == 0)
                 {
@@ -30,7 +30,7 @@ namespace Example2_3_2
                 }
             }
         }
-        
+
         private static async void Crontine()
         {
             await WaitTimeAsync(5000);
@@ -56,7 +56,7 @@ namespace Example2_3_2
             time = 0;
             tcs.SetResult(true);
         }
-        
+
         private static Task WaitTimeAsync(int waitTime)
         {
             TaskCompletionSource<bool> t = new TaskCompletionSource<bool>();

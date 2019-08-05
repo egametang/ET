@@ -7,10 +7,18 @@ namespace App
 {
 	internal static class Program
 	{
-		private static void Main(string[] args)
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static void Main(string[] args)
 		{
-			// 异步方法全部会回掉到主线程
-			SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
+
+            logger.Trace("Trace Message");
+            logger.Debug("Debug Message");
+            logger.Info("Info Message");
+            logger.Error("Error Message");
+            logger.Fatal("Fatal Message");
+
+            // 异步方法全部会回掉到主线程
+            SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
 			
 			try
 			{			

@@ -31,6 +31,18 @@ namespace ETHotfix
 	[Message(HotfixOpcode.G2C_PlayerInfo)]
 	public partial class G2C_PlayerInfo : IResponse {}
 
+	[Message(HotfixOpcode.C2R_LoginFC)]
+	public partial class C2R_LoginFC : IRequest {}
+
+	[Message(HotfixOpcode.R2C_LoginFC)]
+	public partial class R2C_LoginFC : IResponse {}
+
+	[Message(HotfixOpcode.C2G_LoginGateFC)]
+	public partial class C2G_LoginGateFC : IRequest {}
+
+	[Message(HotfixOpcode.G2C_LoginGateFC)]
+	public partial class G2C_LoginGateFC : IResponse {}
+
 }
 namespace ETHotfix
 {
@@ -46,5 +58,9 @@ namespace ETHotfix
 		 public const ushort PlayerInfo = 10008;
 		 public const ushort C2G_PlayerInfo = 10009;
 		 public const ushort G2C_PlayerInfo = 10010;
+		 public const ushort C2R_LoginFC = 10011;
+		 public const ushort R2C_LoginFC = 10012;
+		 public const ushort C2G_LoginGateFC = 10013;
+		 public const ushort G2C_LoginGateFC = 10014;
 	}
 }

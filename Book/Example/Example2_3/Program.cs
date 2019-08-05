@@ -41,6 +41,7 @@ namespace Example2_3
         {
             Console.WriteLine($"当前线程: {Thread.CurrentThread.ManagedThreadId}, WaitTimeAsync finsih loopCount的值是: {loopCount}");
             WaitTimeAsync(4000, WaitTimeAsyncCallback2);
+            Console.WriteLine("Over!!");
         }
         
         private static void WaitTimeAsyncCallback2()
@@ -74,6 +75,7 @@ namespace Example2_3
         {
             time = DateTime.Now.Ticks / 10000 + waitTime;
             action = a;
+            Console.WriteLine("wait"+waitTime);
         }
     }
 }

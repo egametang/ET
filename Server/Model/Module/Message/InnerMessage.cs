@@ -378,4 +378,26 @@ namespace ETModel
 
 	}
 
+	[Message(InnerOpcode.R2G_GetLoginKeyFC)]
+	public partial class R2G_GetLoginKeyFC: IRequest
+	{
+		public int RpcId { get; set; }
+
+		public string Account { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2R_GetLoginKeyFC)]
+	public partial class G2R_GetLoginKeyFC: IResponse
+	{
+		public int RpcId { get; set; }
+
+		public int Error { get; set; }
+
+		public string Message { get; set; }
+
+		public long Key { get; set; }
+
+	}
+
 }

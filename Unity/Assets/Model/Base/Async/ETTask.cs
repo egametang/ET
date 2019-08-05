@@ -173,7 +173,7 @@ namespace ETModel
         {
         }
 
-        [DebuggerHidden]
+        //[DebuggerHidden]
         public Awaiter GetAwaiter()
         {
             return new Awaiter(this);
@@ -236,7 +236,7 @@ namespace ETModel
                 this.task = task;
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public bool IsCompleted => task.IsCompleted;
 
             [DebuggerHidden]
@@ -248,13 +248,13 @@ namespace ETModel
                 GetResult();
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public T GetResult()
             {
                 return task.Result;
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public void OnCompleted(Action continuation)
             {
                 if (task.awaiter != null)
@@ -267,7 +267,7 @@ namespace ETModel
                 }
             }
 
-            [DebuggerHidden]
+            //[DebuggerHidden]
             public void UnsafeOnCompleted(Action continuation)
             {
                 if (task.awaiter != null)

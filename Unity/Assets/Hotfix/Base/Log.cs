@@ -22,6 +22,7 @@ namespace ETHotfix
 		public static void Error(Exception e)
 		{
 			ETModel.Log.Error(e.ToStr());
+      
 		}
 
 		public static void Error(string msg)

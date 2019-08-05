@@ -249,3 +249,20 @@ message G2M_SessionDisconnect // IActorLocationMessage
     int32 RpcId = 90;
     int64 ActorId = 94;
 }
+
+
+message R2G_GetLoginKeyFC // IRequest
+{
+    int32 RpcId = 90;
+    string Account = 1;
+}
+
+message G2R_GetLoginKeyFC // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    int64 Key = 1;
+}
+

@@ -145,7 +145,7 @@ namespace ETModel
     public class ETTaskCompletionSource<T>: IAwaiter<T>
     {
         // State(= AwaiterStatus)
-        private const int Pending = 0;
+        private const int Pending = 0;//未发生的
         private const int Succeeded = 1;
         private const int Faulted = 2;
         private const int Canceled = 3;
@@ -163,6 +163,7 @@ namespace ETModel
 
         T IAwaiter<T>.GetResult()
         {
+            //Console.WriteLine($"GetResult:{this.state.ToString()}");
             switch (this.state)
             {
                 case Succeeded:

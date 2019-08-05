@@ -35,5 +35,7 @@ namespace ETModel
 		 public const ushort G2M_CreateUnit = 1031;
 		 public const ushort M2G_CreateUnit = 1032;
 		 public const ushort G2M_SessionDisconnect = 1033;
+		 public const ushort R2G_GetLoginKeyFC = 1034;
+		 public const ushort G2R_GetLoginKeyFC = 1035;
 	}
 }

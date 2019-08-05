@@ -101,11 +101,12 @@ namespace ETHotfix
 			{
 				try
 				{
-					if (ErrorCode.IsRpcNeedThrowException(response.Error))
+                    Log.Warning($"ETTask:{response.RpcId}");
+                    if (ErrorCode.IsRpcNeedThrowException(response.Error))
 					{
 						throw new RpcException(response.Error, response.Message);
 					}
-
+                    
 					tcs.SetResult(response);
 				}
 				catch (Exception e)
