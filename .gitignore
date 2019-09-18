@@ -5,7 +5,6 @@
 
 *.pyc
 *.suo
-*.user
 
 .settings/
 .localhistory/
@@ -20,8 +19,6 @@ Opt/
 bin/
 Bin/
 obj/
-Packages/
-packages/
 _ReSharper.CSharp/
 *.opensdf
 *.sdf
@@ -33,3 +30,22 @@ _ReSharper.CSharp/
 /Log
 /Temp
 /Logs
+/Unity/CSharp60Support/compilation.log
+/.vs
+/Server/.vs/
+/Unity/.vs/
+/Tools/MongoDB
+/Excel/md5.txt
+/Release
+.idea/
+/Unity/Logs
+/Unity/Assets/StreamingAssets/
+/netcoreapp2.0
+/Unity/Assets/StreamingAssets.meta
+.DS_Store
+Server/.DS_Store
+/Server/.vscode/
+.vs/
+.objs/
+/Unity/.gradle
+/*.user

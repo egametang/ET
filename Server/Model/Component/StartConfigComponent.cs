@@ -1,38 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Base;
-using CommandLine;
+using System.Linq;
+using System.Net;
 
-namespace Model
+namespace ETModel
 {
-	[ObjectEvent]
-	public class OptionsComponentEvent : ObjectEvent<StartConfigComponent>, IAwake<string[]>
+	[ObjectSystem]
+	public class StartConfigComponentSystem : AwakeSystem<StartConfigComponent, string, int>
 	{
-		public void Awake(string[] args)
+		public override void Awake(StartConfigComponent self, string a, int b)
 		{
-			this.GetValue().Awake(args);
+			self.Awake(a, b);
 		}
 	}
-
+	
 	public class StartConfigComponent: Component
 	{
-		private readonly List<StartConfig> allConfigs = new List<StartConfig>();
+		public static StartConfigComponent Instance { get; private set; }
+		
+		private Dictionary<int, StartConfig> configDict;
+		
+		private Dictionary<int, IPEndPoint> innerAddressDict = new Dictionary<int, IPEndPoint>();
+		
+		public StartConfig StartConfig { get; private set; }
 
-		private readonly Dictionary<int, StartConfig> configDict = new Dictionary<int, StartConfig>();
+		public StartConfig DBConfig { get; private set; }
 
-		public Options Options = new Options();
+		public StartConfig RealmConfig { get; private set; }
 
-		public StartConfig MyConfig { get; private set; }
+		public StartConfig LocationConfig { get; private set; }
 
-		public void Awake(string[] args)
+		public List<StartConfig> MapConfigs { get; private set; }
+
+		public List<StartConfig> GateConfigs { get; private set; }
+
+		public void Awake(string path, int appId)
 		{
-			if (!Parser.Default.ParseArguments(args, this.Options))
-			{
-				throw new Exception($"命令行格式错误!");
-			}
+			Instance = this;
 			
-			string[] ss = File.ReadAllText(this.Options.Config).Split('\n');
+			this.configDict = new Dictionary<int, StartConfig>();
+			this.MapConfigs = new List<StartConfig>();
+			this.GateConfigs = new List<StartConfig>();
+
+			string[] ss = File.ReadAllText(path).Split('\n');
 			foreach (string s in ss)
 			{
 				string s2 = s.Trim();
@@ -43,26 +54,94 @@ namespace Model
 				try
 				{
 					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
-					this.allConfigs.Add(startConfig);
 					this.configDict.Add(startConfig.AppId, startConfig);
+
+					InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
+					if (innerConfig != null)
+					{
+						this.innerAddressDict.Add(startConfig.AppId, innerConfig.IPEndPoint);
+					}
+
+					if (startConfig.AppType.Is(AppType.Realm))
+					{
+						this.RealmConfig = startConfig;
+					}
+
+					if (startConfig.AppType.Is(AppType.Location))
+					{
+						this.LocationConfig = startConfig;
+					}
+
+					if (startConfig.AppType.Is(AppType.DB))
+					{
+						this.DBConfig = startConfig;
+					}
+
+					if (startConfig.AppType.Is(AppType.Map))
+					{
+						this.MapConfigs.Add(startConfig);
+					}
+
+					if (startConfig.AppType.Is(AppType.Gate))
+					{
+						this.GateConfigs.Add(startConfig);
+					}
 				}
-				catch (Exception)
+				catch (Exception e)
 				{
-					Log.Error($"config错误: {s2}");
+					Log.Error($"config错误: {s2} {e}");
 				}
 			}
 
-			this.MyConfig = this.Get(this.Options.AppId);
+			this.StartConfig = this.Get(appId);
+		}
+
+		public override void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			base.Dispose();
+			
+			Instance = null;
 		}
 
 		public StartConfig Get(int id)
 		{
-			return this.configDict[id];
+			try
+			{
+				return this.configDict[id];
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"not found startconfig: {id}", e);
+			}
+		}
+		
+		public IPEndPoint GetInnerAddress(int id)
+		{
+			try
+			{
+				return this.innerAddressDict[id];
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"not found innerAddress: {id}", e);
+			}
 		}
 
 		public StartConfig[] GetAll()
 		{
-			return this.allConfigs.ToArray();
+			return this.configDict.Values.ToArray();
+		}
+
+		public int Count
+		{
+			get
+			{
+				return this.configDict.Count;
+			}
 		}
 	}
 }

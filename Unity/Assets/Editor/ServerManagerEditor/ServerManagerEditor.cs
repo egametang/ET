@@ -1,81 +1,67 @@
-﻿using System.Collections.Generic;
-using Base;
-using Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using ETModel;
+using MongoDB.Bson;
 using UnityEditor;
 using UnityEngine;
 
-namespace MyEditor
+namespace ETEditor
 {
-	public class ServerManagerEditor : EditorWindow
+	public class ServerManagerEditor: EditorWindow
 	{
 		private string managerAddress;
+		private string account;
+		private string password;
 
-		private bool isAll;
-
-		private readonly List<AppType> serverTypes = AppTypeHelper.GetServerTypes();
-		private bool[] isCheck;
-
-		[MenuItem("Tools/服务器管理")]
+		[MenuItem("Tools/服务器管理工具")]
 		private static void ShowWindow()
 		{
-			GetWindow(typeof(ServerManagerEditor));
-		}
-
-		private void OnEnable()
-		{
-			this.isCheck = new bool[this.serverTypes.Count];
+			GetWindow(typeof (ServerManagerEditor));
 		}
 
 		private void OnGUI()
 		{
-			if (!Application.isPlaying)
-			{
-				GUILayout.Label("请启动游戏!");
-				return;
-			}
-
-
-			AppType reloadType = AppType.None;
-			this.isAll = GUILayout.Toggle(this.isAll, "All");
-			if (this.isAll)
-			{
-				for (int i = 0; i < this.isCheck.Length; ++i)
-				{
-					this.isCheck[i] = true;
-				}
-			}
-
-			for (int i = 0; i < this.serverTypes.Count; ++i)
-			{
-				this.isCheck[i] = GUILayout.Toggle(this.isCheck[i], this.serverTypes[i].ToString());
-				if (!this.isCheck[i])
-				{
-					this.isAll = false;
-				}
-			}
+			GUILayout.BeginHorizontal();
 			
-			this.managerAddress = EditorGUILayout.TextField("Manager Address: ", this.managerAddress);
-
+			GUILayout.Label("Manager外网地址:");
+			managerAddress = EditorGUILayout.TextField(this.managerAddress);
+			
+			GUILayout.Label("帐号:");
+			this.account = GUILayout.TextField(this.account);
+			
+			GUILayout.Label("密码:");
+			this.password = GUILayout.TextField(this.password);
+			
 			if (GUILayout.Button("Reload"))
 			{
-				for(int i = 0; i < this.isCheck.Length; ++i)
+				if (!Application.isPlaying)
 				{
-					if (this.isCheck[i])
-					{
-						reloadType = reloadType | this.serverTypes[i];
-					}
+					Log.Error($"Reload必须先启动客户端!");
+					return;
 				}
-				NetworkComponent networkComponent = Game.Scene.GetComponent<NetOuterComponent>();
-				Session session = networkComponent.Get($"{this.managerAddress}");
+
+				ReloadAsync(this.managerAddress, this.account, this.password).Coroutine();
+			}
+			
+			GUILayout.EndHorizontal();
+		}
+		
+		private static async ETVoid ReloadAsync(string address, string account, string password)
+		{
+			using (Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(address))
+			{
 				try
 				{
-					session.Call<C2M_Reload, M2C_Reload>(new C2M_Reload { AppType = reloadType });
+					await session.Call(new C2M_Reload() {Account = account, Password = password});	
+					Log.Info($"Reload服务端成功!");
 				}
-				catch (RpcException e)
+				catch (Exception e)
 				{
-					Log.Error(e.ToString());
+					Log.Error(e);
 				}
-				Log.Info("Reload OK!");
 			}
 		}
 	}

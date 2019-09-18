@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 78396926cbbfc4ac3b48fc5fc34a87d1
+labels:
+- Pathfinder
+timeCreated: 1473972492
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - gizmoSurfaceMaterial: {fileID: 2100000, guid: 5ce51318bbfb1466188b929a68a6bd3a,
+      type: 2}
+  - gizmoLineMaterial: {fileID: 2100000, guid: 91035448860ba4e708919485c73f7edc, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

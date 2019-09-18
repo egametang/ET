@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>../../Proto/</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>../../Proto/</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove=".vs\**" />
+      <Compile Include="..\..\Unity\Assets\Model\Base\ProcessHelper.cs">
+        <Link>ProcessHelper.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove=".vs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove=".vs\**" />
+    </ItemGroup>
+
+</Project>

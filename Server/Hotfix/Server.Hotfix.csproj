@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Hotfix</AssemblyName>
+    <RootNamespace>ETHotfix</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\Bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
+    <OutputPath>..\..\Bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Other\**" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetOuterComponentSystem.cs">
+      <Link>Module\Message\NetOuterComponentSystem.cs</Link>
+    </Compile>
+    <EmbeddedResource Remove="Other\**" />
+    <None Remove="Other\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Server.Model.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Module\Http\" />
+  </ItemGroup>
+</Project>

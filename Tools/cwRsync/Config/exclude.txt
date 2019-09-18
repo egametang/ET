@@ -1,6 +1,5 @@
 .git/
 Logs/
-Tools/
 Bin/
 Server/packages/
 Temp/
@@ -8,3 +7,12 @@ Server/Server.sdf
 Unity/Library/
 Unity/Temp/
 */obj
+IOS-Build
+Unity/Assets/Res/
+Unity/Assets/Resources/
+Unity/Assets/Bundles/
+Unity/Assets/Scenes/
+.vs/
+.idea/
+Release/
+Unity/Assets/StreamingAssets/

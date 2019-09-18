@@ -1,0 +1,251 @@
+syntax = "proto3";
+package ETModel;
+
+/// <summary>
+/// 传送unit
+/// </summary>
+message M2M_TrasferUnitRequest // IRequest
+{
+    int32 RpcId = 90;
+    Unit Unit = 1;
+}
+
+message M2M_TrasferUnitResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    int64 InstanceId = 1;
+}
+
+message M2A_Reload // IRequest
+{
+    int32 RpcId = 90;
+}
+
+message A2M_Reload // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message G2G_LockRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Id = 1;
+    string Address = 2;
+}
+
+message G2G_LockResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message G2G_LockReleaseRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Id = 1;
+    string Address = 2;
+}
+
+message G2G_LockReleaseResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message DBSaveRequest // IRequest
+{
+    int32 RpcId = 90;
+
+    string CollectionName = 1;
+    ComponentWithId Component = 2;
+}
+
+
+message DBSaveBatchResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message DBSaveBatchRequest // IRequest
+{
+    int32 RpcId = 90;
+
+    string CollectionName = 1;
+    repeated ComponentWithId Components = 2;
+}
+
+message DBSaveResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message DBQueryRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Id = 1;
+    string CollectionName = 2;
+}
+
+message DBQueryResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    ComponentWithId Component = 1;
+}
+
+message DBQueryBatchRequest // IRequest
+{
+    int32 RpcId = 90;
+    string CollectionName = 1;
+    repeated int64 IdList = 2;
+}
+
+message DBQueryBatchResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    repeated ComponentWithId Components = 1;
+}
+
+message DBQueryJsonRequest // IRequest
+{
+    int32 RpcId = 90;
+    string CollectionName = 1;
+    string Json = 2;
+}
+
+message DBQueryJsonResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    repeated ComponentWithId Components = 1;
+}
+
+message ObjectAddRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Key = 1;
+    int64 InstanceId = 2;
+}
+
+message ObjectAddResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message ObjectRemoveRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Key = 1;
+}
+
+message ObjectRemoveResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message ObjectLockRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Key = 1;
+    int64 InstanceId = 2;
+    int32 Time = 3;
+}
+
+message ObjectLockResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message ObjectUnLockRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Key = 1;
+    int64 OldInstanceId = 2;
+    int64 InstanceId = 3;
+}
+
+message ObjectUnLockResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
+
+message ObjectGetRequest // IRequest
+{
+    int32 RpcId = 90;
+    int64 Key = 1;
+}
+
+message ObjectGetResponse // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    int64 InstanceId = 1;
+}
+
+message R2G_GetLoginKey // IRequest
+{
+    int32 RpcId = 90;
+    string Account = 1;
+}
+
+message G2R_GetLoginKey // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    int64 Key = 1;
+}
+
+message G2M_CreateUnit // IRequest
+{
+    int32 RpcId = 90;
+    int64 PlayerId = 1;
+    int64 GateSessionId = 2;
+}
+
+message M2G_CreateUnit // IResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+
+    // 自己的unit id
+    int64 UnitId = 1;
+    // 所有的unit
+    repeated UnitInfo Units = 2;
+}
+
+message G2M_SessionDisconnect // IActorLocationMessage
+{
+    int32 RpcId = 90;
+    int64 ActorId = 94;
+}

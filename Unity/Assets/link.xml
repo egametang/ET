@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="Unity.Model" preserve="all"/>
+  <assembly fullname="Unity.ThirdParty" preserve="all"/>
+  <assembly fullname="UnityEngine" preserve="all"/>
+  <assembly fullname="System" preserve="all"/>
+</linker>
