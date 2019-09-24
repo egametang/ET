@@ -1,13 +1,43 @@
 fileFormatVersion: 2
 guid: fe33c6edd001f4cc2a772cb71aff86be
 PluginImporter:
-  serializedVersion: 1
+  externalObjects: {}
+  serializedVersion: 2
   iconMap: {}
   executionOrder: {}
+  defineConstraints: []
   isPreloaded: 0
   isOverridable: 0
+  isExplicitlyReferenced: 0
+  validateReferences: 1
   platformData:
-    Any:
+  - first:
+      '': Linux
+    second:
+      enabled: 1
+      settings:
+        CPU: x86
+  - first:
+      '': LinuxUniversal
+    second:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      '': OSXIntel
+    second:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      '': OSXIntel64
+    second:
+      enabled: 1
+      settings:
+        CPU: AnyCPU
+  - first:
+      Any: 
+    second:
       enabled: 1
       settings:
         Exclude Editor: 0
@@ -20,45 +50,53 @@ PluginImporter:
         Exclude Win: 0
         Exclude Win64: 0
         Exclude WindowsStoreApps: 1
-    Editor:
+  - first:
+      Editor: Editor
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
         OS: AnyOS
-    Linux:
-      enabled: 1
-      settings:
-        CPU: x86
-    Linux64:
-      enabled: 1
-      settings:
-        CPU: x86_64
-    LinuxUniversal:
+  - first:
+      Facebook: Win
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    OSXIntel:
+  - first:
+      Facebook: Win64
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    OSXIntel64:
+  - first:
+      Standalone: Linux64
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    OSXUniversal:
+  - first:
+      Standalone: OSXUniversal
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    Win:
+  - first:
+      Standalone: Win
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    Win64:
+  - first:
+      Standalone: Win64
+    second:
       enabled: 1
       settings:
         CPU: AnyCPU
-    WindowsStoreApps:
+  - first:
+      Windows Store Apps: WindowsStoreApps
+    second:
       enabled: 0
       settings:
         CPU: AnyCPU
