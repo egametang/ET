@@ -1,4 +1,4 @@
-using System.Threading;
+﻿using System.Collections.Generic;
 
 namespace ETModel
 {
@@ -7,7 +7,6 @@ namespace ETModel
     {
         public override void Awake(ETCancellationTokenSource self)
         {
-            self.CancellationTokenSource = new CancellationTokenSource();
         }
     }
     
@@ -16,47 +15,56 @@ namespace ETModel
     {
         public override void Awake(ETCancellationTokenSource self, long afterTimeCancel)
         {
-            self.CancellationTokenSource = new CancellationTokenSource();
             self.CancelAfter(afterTimeCancel).Coroutine();
         }
     }
     
-    public class ETCancellationTokenSource: Component
+    [ObjectSystem]
+    public class ETCancellationTokenSourceDestroySystem: DestroySystem<ETCancellationTokenSource>
     {
-        public CancellationTokenSource CancellationTokenSource;
+        public override void Destroy(ETCancellationTokenSource self)
+        {
+            self.cancellationTokens.Clear();
+        }
+    }
+    
+    public class ETCancellationTokenSource: Entity
+    {
+        public readonly List<ETCancellationToken> cancellationTokens = new List<ETCancellationToken>();
 
         public void Cancel()
         {
-            this.CancellationTokenSource.Cancel();
+            foreach (ETCancellationToken token in this.cancellationTokens)
+            {
+                token.Cancel();
+            }
+            
             this.Dispose();
         }
 
         public async ETVoid CancelAfter(long afterTimeCancel)
         {
-            await Game.Scene.GetComponent<TimerComponent>().WaitAsync(afterTimeCancel);
-            this.CancellationTokenSource.Cancel();
-            this.Dispose();
-        }
-
-        public CancellationToken Token
-        {
-            get
-            {
-                return this.CancellationTokenSource.Token;
-            }
-        }
-
-        public override void Dispose()
-        {
-            if (this.IsDisposed)
+            long instanceId = this.InstanceId;
+            
+            await TimerComponent.Instance.WaitAsync(afterTimeCancel);
+            
+            if (this.InstanceId != instanceId)
             {
                 return;
             }
-            
-            base.Dispose();
-            
-            this.CancellationTokenSource?.Dispose();
-            this.CancellationTokenSource = null;
+            this.Dispose();
+        }
+
+        public ETCancellationToken Token
+        {
+            get
+            {
+                ETCancellationToken etCancellationToken = EntityFactory.Create<ETCancellationToken>(this.Domain);
+                this.cancellationTokens.Add(etCancellationToken);
+
+                etCancellationToken.Parent = this;
+                return etCancellationToken;
+            }
         }
     }
 }

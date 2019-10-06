@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ETModel
 {
-	public class UnitPathComponent : Component
+	public class UnitPathComponent : Entity
 	{
 		public List<Vector3> Path = new List<Vector3>();
 
@@ -32,8 +32,8 @@ namespace ETModel
 					}
 				}
 
-				this.Entity.GetComponent<TurnComponent>().Turn(v);
-				await this.Entity.GetComponent<MoveComponent>().MoveToAsync(v, speed, cancellationToken);
+				this.Parent.GetComponent<TurnComponent>().Turn(v);
+				await this.Parent.GetComponent<MoveComponent>().MoveToAsync(v, speed, cancellationToken);
 			}
 		}
 

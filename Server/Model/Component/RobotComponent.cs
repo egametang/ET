@@ -1,6 +1,6 @@
 ﻿namespace ETModel
 {
-	public class RobotComponent: Component
+	public class RobotComponent: Entity
 	{
 		public override void Dispose()
 		{

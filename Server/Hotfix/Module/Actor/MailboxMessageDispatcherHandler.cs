@@ -6,15 +6,14 @@ namespace ETHotfix
 	/// <summary>
 	/// 消息分发类型的Mailbox,对mailbox中的消息进行分发处理
 	/// </summary>
-	[MailboxHandler(AppType.AllServer, MailboxType.MessageDispatcher)]
+	[MailboxHandler(MailboxType.MessageDispatcher)]
 	public class MailboxMessageDispatcherHandler : IMailboxHandler
 	{
 		public async ETTask Handle(Session session, Entity entity, object actorMessage)
 		{
 			try
 			{
-				await Game.Scene.GetComponent<ActorMessageDispatcherComponent>().Handle(
-					entity, new ActorMessageInfo() { Session = session, Message = actorMessage });
+				await ActorMessageDispatcherComponent.Instance.Handle(entity, session, actorMessage);
 			}
 			catch (Exception e)
 			{

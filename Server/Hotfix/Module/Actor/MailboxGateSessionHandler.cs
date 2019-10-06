@@ -6,7 +6,7 @@ namespace ETHotfix
 	/// <summary>
 	/// gate session类型的Mailbox，收到的actor消息直接转发给客户端
 	/// </summary>
-	[MailboxHandler(AppType.Gate, MailboxType.GateSession)]
+	[MailboxHandler(MailboxType.GateSession)]
 	public class MailboxGateSessionHandler : IMailboxHandler
 	{
 		public async ETTask Handle(Session session, Entity entity, object actorMessage)

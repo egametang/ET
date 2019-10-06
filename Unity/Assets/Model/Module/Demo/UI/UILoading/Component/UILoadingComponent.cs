@@ -8,7 +8,7 @@ namespace ETModel
 	{
 		public override void Awake(UILoadingComponent self)
 		{
-			self.text = self.GetParent<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
+			self.text = self.GetParent<UI>().ViewGO.Get<GameObject>("Text").GetComponent<Text>();
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace ETModel
 		}
 	}
 
-	public class UILoadingComponent : Component
+	public class UILoadingComponent : Entity
 	{
 		public Text text;
 	}

@@ -15,7 +15,7 @@ namespace ETHotfix
 				GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset(UIType.UILogin.StringToAB(), UIType.UILogin);
 				GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject);
 
-		        UI ui = ComponentFactory.Create<UI, string, GameObject>(UIType.UILogin, gameObject, false);
+		        UI ui = EntityFactory.Create<UI, string, GameObject>(Game.Scene, UIType.UILogin, gameObject);
 
 				ui.AddComponent<UILoginComponent>();
 				return ui;

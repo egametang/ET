@@ -3,12 +3,12 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[MessageHandler(AppType.Location)]
-	public class ObjectUnLockRequestHandler : AMRpcHandler<ObjectUnLockRequest, ObjectUnLockResponse>
+	[MessageHandler]
+	public class ObjectUnLockRequestHandler : AMActorRpcHandler<Scene, ObjectUnLockRequest, ObjectUnLockResponse>
 	{
-		protected override async ETTask Run(Session session, ObjectUnLockRequest request, ObjectUnLockResponse response, Action reply)
+		protected override async ETTask Run(Scene scene, ObjectUnLockRequest request, ObjectUnLockResponse response, Action reply)
 		{
-			Game.Scene.GetComponent<LocationComponent>().UnLock(request.Key, request.OldInstanceId, request.InstanceId);
+			scene.GetComponent<LocationComponent>().UnLock(request.Key, request.OldInstanceId, request.InstanceId);
 			reply();
 			await ETTask.CompletedTask;
 		}

@@ -31,26 +31,11 @@ namespace ETHotfix
 
 		public static void Load(this ConfigComponent self)
 		{
-			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
-			
 			self.AllConfig.Clear();
-			List<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
 
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof (ConfigAttribute), false);
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
-				
-				ConfigAttribute configAttribute = attrs[0] as ConfigAttribute;
-				// 只加载指定的配置
-				if (!configAttribute.Type.Is(appType))
-				{
-					continue;
-				}
-				
 				object obj = Activator.CreateInstance(type);
 
 				ACategory iCategory = obj as ACategory;

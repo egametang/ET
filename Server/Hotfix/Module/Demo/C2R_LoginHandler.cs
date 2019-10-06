@@ -4,7 +4,7 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[MessageHandler(AppType.Realm)]
+	[MessageHandler]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>
 	{
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response, Action reply)
@@ -17,9 +17,9 @@ namespace ETHotfix
 			//}
 
 			// 随机分配一个Gate
-			StartConfig config = Game.Scene.GetComponent<RealmGateAddressComponent>().GetAddress();
+			StartConfig config = RealmGateAddressHelper.GetGate();
 			//Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
-			IPEndPoint innerAddress = config.GetComponent<InnerConfig>().IPEndPoint;
+			string innerAddress = config.GetComponent<InnerConfig>().Address;
 			Session gateSession = Game.Scene.GetComponent<NetInnerComponent>().Get(innerAddress);
 
 			// 向gate请求一个key,客户端可以拿着这个key连接gate

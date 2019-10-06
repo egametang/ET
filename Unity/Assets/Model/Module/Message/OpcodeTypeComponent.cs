@@ -4,10 +4,11 @@ using System.Collections.Generic;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class OpcodeTypeComponentSystem : AwakeSystem<OpcodeTypeComponent>
+	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
 	{
 		public override void Awake(OpcodeTypeComponent self)
 		{
+			OpcodeTypeComponent.Instance = self;
 			self.Load();
 		}
 	}
@@ -20,9 +21,20 @@ namespace ETModel
 			self.Load();
 		}
 	}
-
-	public class OpcodeTypeComponent : Component
+	
+	[ObjectSystem]
+	public class OpcodeTypeComponentDestroySystem : DestroySystem<OpcodeTypeComponent>
 	{
+		public override void Destroy(OpcodeTypeComponent self)
+		{
+			OpcodeTypeComponent.Instance = null;
+		}
+	}
+
+	public class OpcodeTypeComponent : Entity
+	{
+		public static OpcodeTypeComponent Instance;
+		
 		private readonly DoubleMap<ushort, Type> opcodeTypes = new DoubleMap<ushort, Type>();
 		
 		private readonly Dictionary<ushort, object> typeMessages = new Dictionary<ushort, object>();
@@ -32,7 +44,7 @@ namespace ETModel
 			this.opcodeTypes.Clear();
 			this.typeMessages.Clear();
 			
-			List<Type> types = Game.EventSystem.GetTypes(typeof(MessageAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(MessageAttribute));
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
@@ -76,16 +88,6 @@ namespace ETModel
 #else
 			return this.typeMessages[opcode];
 #endif
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
 		}
 	}
 }

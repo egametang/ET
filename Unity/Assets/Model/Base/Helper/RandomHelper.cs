@@ -6,18 +6,18 @@ namespace ETModel
 	{
 		private static readonly Random random = new Random();
 
+		private static byte[] byte8 = new byte[8]; 
+
 		public static UInt64 RandUInt64()
 		{
-			var bytes = new byte[8];
-			random.NextBytes(bytes);
-			return BitConverter.ToUInt64(bytes, 0);
+			random.NextBytes(byte8);
+			return BitConverter.ToUInt64(byte8, 0);
 		}
 
 		public static Int64 RandInt64()
 		{
-			var bytes = new byte[8];
-			random.NextBytes(bytes);
-			return BitConverter.ToInt64(bytes, 0);
+			random.NextBytes(byte8);
+			return BitConverter.ToInt64(byte8, 0);
 		}
 
 		/// <summary>

@@ -21,22 +21,29 @@ namespace ETHotfix
 			self.Load();
 		}
 	}
+	
+	[ObjectSystem]
+	public class MailboxDispatcherComponentDestroySystem: DestroySystem<MailboxDispatcherComponent>
+	{
+		public override void Destroy(MailboxDispatcherComponent self)
+		{
+			self.MailboxHandlers.Clear();
+		}
+	}
 
 	public static class MailboxDispatcherComponentHelper
 	{
 		public static void Awake(this MailboxDispatcherComponent self)
 		{
+			MailboxDispatcherComponent.Instance = self;
 			self.Load();
 		}
 
 		public static void Load(this MailboxDispatcherComponent self)
 		{
-			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
-
 			self.MailboxHandlers.Clear();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(MailboxHandlerAttribute));
-
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(MailboxHandlerAttribute));
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(MailboxHandlerAttribute), false);
@@ -46,20 +53,15 @@ namespace ETHotfix
 				}
 
 				MailboxHandlerAttribute mailboxHandlerAttribute = (MailboxHandlerAttribute) attrs[0];
-				if (!mailboxHandlerAttribute.Type.Is(appType))
-				{
-					continue;
-				}
 
 				object obj = Activator.CreateInstance(type);
 
-				IMailboxHandler iMailboxHandler = obj as IMailboxHandler;
-				if (iMailboxHandler == null)
+				if (!(obj is IMailboxHandler iMailboxHandler))
 				{
 					throw new Exception($"actor handler not inherit IEntityActorHandler: {obj.GetType().FullName}");
 				}
 
-				self.MailboxHandlers.Add(mailboxHandlerAttribute.MailboxType, iMailboxHandler);
+				self.MailboxHandlers.Add((int)mailboxHandlerAttribute.MailboxType, iMailboxHandler);
 			}
 		}
 
@@ -67,12 +69,11 @@ namespace ETHotfix
 		/// 根据mailbox类型做不同的处理
 		/// </summary>
 		public static async ETTask Handle(
-				this MailboxDispatcherComponent self, MailBoxComponent mailBoxComponent, Session session, object message)
+				this MailboxDispatcherComponent self, Entity entity, MailboxType mailboxType, Session session, object message)
 		{
-			IMailboxHandler iMailboxHandler;
-			if (self.MailboxHandlers.TryGetValue(mailBoxComponent.MailboxType, out iMailboxHandler))
+			if (self.MailboxHandlers.TryGetValue((int) mailboxType, out IMailboxHandler iMailboxHandler))
 			{
-				await iMailboxHandler.Handle(session, mailBoxComponent.Entity, message);
+				await iMailboxHandler.Handle(session, entity, message);
 			}
 		}
 	}

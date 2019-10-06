@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ETModel
 {
-    public class MoveComponent: Component
+    public class MoveComponent: Entity
     {
         public Vector3 Target;
 
@@ -21,7 +21,7 @@ namespace ETModel
         
         // 开启协程移动,每100毫秒移动一次，并且协程取消的时候会计算玩家真实移动
         // 比方说玩家移动了2500毫秒,玩家有新的目标,这时旧的移动协程结束,将计算250毫秒移动的位置，而不是300毫秒移动的位置
-        public async ETTask StartMove(CancellationToken cancellationToken)
+        public async ETTask StartMove(ETCancellationToken cancellationToken)
         {
             Unit unit = this.GetParent<Unit>();
             this.StartPos = unit.Position;
@@ -68,7 +68,7 @@ namespace ETModel
             }
         }
         
-        public async ETTask MoveToAsync(Vector3 target, CancellationToken cancellationToken)
+        public async ETTask MoveToAsync(Vector3 target, ETCancellationToken cancellationToken)
         {
             // 新目标点离旧目标点太近，不设置新的
             if ((target - this.Target).sqrMagnitude < 0.01f)

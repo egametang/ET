@@ -24,7 +24,7 @@ namespace ETModel
 	/// <summary>
 	/// Config组件会扫描所有的有ConfigAttribute标签的配置,加载进来
 	/// </summary>
-	public class ConfigComponent: Component
+	public class ConfigComponent: Entity
 	{
 		private Dictionary<Type, ACategory> allConfig = new Dictionary<Type, ACategory>();
 
@@ -36,7 +36,7 @@ namespace ETModel
 		public void Load()
 		{
 			this.allConfig.Clear();
-			List<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
 
 			foreach (Type type in types)
 			{

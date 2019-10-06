@@ -10,7 +10,7 @@ namespace ETModel
 #if !SERVER
 	[HideInHierarchy]
 #endif
-	public abstract class AConfigComponent: Component, ISerializeToEntity
+	public abstract class AConfigComponent: Entity, ISerializeToEntity
 	{
 	}
 }
