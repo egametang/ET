@@ -43,7 +43,7 @@
 					return;
 				}
 				
-				await MailboxDispatcherComponent.Instance.Handle(entity, mailBoxComponent.MailboxType, ss, iActorRequest);
+				await mailBoxComponent.Handle(ss, iActorRequest);
 			}
 		}
 
@@ -68,7 +68,7 @@
 				}
 				
 				Session ss = NetInnerComponent.Instance.Get(replyId);
-				await MailboxDispatcherComponent.Instance.Handle(entity, mailBoxComponent.MailboxType, ss, iActorMessage);
+				await mailBoxComponent.Handle(ss, iActorMessage);
 			}
 		}
     }

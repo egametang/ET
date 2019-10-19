@@ -17,7 +17,7 @@ namespace ETHotfix
 			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await ActorMessageSenderComponent.Instance.Call(
 				config.SceneInstanceId, new R2G_GetLoginKey() {Account = request.Account});
 
-			string outerAddress = config.GetComponent<OuterConfig>().Address2;
+			string outerAddress = config.GetParent<StartConfig>().GetComponent<OuterConfig>().Address2;
 
 			response.Address = outerAddress;
 			response.Key = g2RGetLoginKey.Key;

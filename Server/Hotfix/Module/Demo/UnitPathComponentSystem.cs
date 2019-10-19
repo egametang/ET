@@ -39,7 +39,7 @@ namespace ETHotfix
             Unit unit = self.GetParent<Unit>();
             
             
-            PathfindingComponent pathfindingComponent = Game.Scene.GetComponent<PathfindingComponent>();
+            PathfindingComponent pathfindingComponent = self.Domain.GetComponent<PathfindingComponent>();
             self.ABPath = EntityFactory.Create<ABPathWrap, Vector3, Vector3>(self.Domain, unit.Position, new Vector3(target.x, target.y, target.z));
             pathfindingComponent.Search(self.ABPath);
             Log.Debug($"find result: {self.ABPath.Result.ListToString()}");

@@ -51,8 +51,6 @@ namespace ETModel
 				Game.Scene.AddComponent<ActorLocationSenderComponent>();
 				// 访问location server的组件
 				Game.Scene.AddComponent<LocationProxyComponent>();
-				// 这两个组件是处理actor消息使用的
-				Game.Scene.AddComponent<MailboxDispatcherComponent>();
 				Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
 				// 数值订阅组件
 				Game.Scene.AddComponent<NumericWatcherComponent>();

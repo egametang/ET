@@ -637,11 +637,18 @@ namespace ETModel
 			{
 				return;
 			}
-			foreach (AEvent<A> aEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					aEvent?.Run(a);
+					if (obj is AEvent<A> aEvent)
+					{
+						aEvent.Run(a);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						 eventProxy.Handle(a);
+					}
 				}
 				catch (Exception e)
 				{
@@ -657,11 +664,18 @@ namespace ETModel
 			{
 				return;
 			}
-			foreach (AEvent<A, B> aEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					aEvent.Run(a, b);
+					if (obj is AEvent<A, B> aEvent)
+					{
+						aEvent.Run(a, b);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						eventProxy.Handle(a, b);
+					}
 				}
 				catch (Exception e)
 				{
@@ -677,11 +691,18 @@ namespace ETModel
 			{
 				return;
 			}
-			foreach (AEvent<A, B, C> aEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					aEvent.Run(a, b, c);
+					if (obj is AEvent<A, B, C> aEvent)
+					{
+						aEvent.Run(a, b, c);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						eventProxy.Handle(a, b, c);
+					}
 				}
 				catch (Exception e)
 				{

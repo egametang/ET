@@ -36,7 +36,7 @@ namespace ETModel
             this.tcs = new ETTaskCompletionSource();
             // 加载map
             this.loadMapOperation = SceneManager.LoadSceneAsync(sceneName);
-            this.loadMapOperation.allowSceneActivation = false;
+            //this.loadMapOperation.allowSceneActivation = false;
             return this.tcs.Task;
         }
 

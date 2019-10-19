@@ -303,7 +303,6 @@ namespace ETModel
 				}
 
 				abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
-				abInfo.Parent = this;
 				this.bundles[assetBundleName] = abInfo;
 #endif
 				return;

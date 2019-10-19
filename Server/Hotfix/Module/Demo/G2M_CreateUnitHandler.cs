@@ -24,7 +24,7 @@ namespace ETHotfix
 			
 			// 广播创建的unit
 			M2C_CreateUnits createUnits = new M2C_CreateUnits();
-			Unit[] units = Game.Scene.GetComponent<UnitComponent>().GetAll();
+			Unit[] units = scene.GetComponent<UnitComponent>().GetAll();
 			foreach (Unit u in units)
 			{
 				UnitInfo unitInfo = new UnitInfo();

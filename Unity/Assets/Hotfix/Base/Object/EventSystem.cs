@@ -17,10 +17,8 @@ namespace ETHotfix
 	public sealed class EventSystem
 	{
 		private readonly Dictionary<long, Entity> allComponents = new Dictionary<long, Entity>();
-
-		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
 		
-		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
+		private readonly List<Type> types = new List<Type>();
 
 		private readonly Dictionary<string, List<object>> allEvents = new Dictionary<string, List<object>>();
 
@@ -51,41 +49,31 @@ namespace ETHotfix
 		private Queue<long> lateUpdates = new Queue<long>();
 		private Queue<long> lateUpdates2 = new Queue<long>();
 
-		public void Add(DLLType dllType, Assembly assembly)
+		public EventSystem()
 		{
-			this.assemblies[dllType] = assembly;
 			this.types.Clear();
-			foreach (Assembly value in this.assemblies.Values)
-			{
-				foreach (Type type in value.GetTypes())
-				{
-					if (type.IsAbstract)
-					{
-						continue;
-					}
-
-					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
-					if (objects.Length == 0)
-					{
-						continue;
-					}
-
-					BaseAttribute baseAttribute = (BaseAttribute) objects[0];
-					this.types.Add(baseAttribute.AttributeType, type);
-				}
-			}
-
-			this.awakeSystems.Clear();
-			this.lateUpdateSystems.Clear();
-			this.updateSystems.Clear();
-			this.startSystems.Clear();
-			this.loadSystems.Clear();
-			this.changeSystems.Clear();
-			this.destroySystems.Clear();
-			this.deserializeSystems.Clear();
 			
-			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
+			List<Type> ts = ETModel.Game.Hotfix.GetHotfixTypes();
+			
+			foreach (Type type in ts)
 			{
+				// ILRuntime无法判断是否有Attribute
+				//if (type.GetCustomAttributes(typeof (Attribute), false).Length == 0)
+				//{
+				//	continue;
+				//}
+				this.types.Add(type);	
+			}
+			
+			foreach (Type type in types)
+			{
+				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
+
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+
 				object obj = Activator.CreateInstance(type);
 
 				switch (obj)
@@ -118,7 +106,7 @@ namespace ETHotfix
 			}
 
 			this.allEvents.Clear();
-			foreach (Type type in types[typeof(EventAttribute)])
+			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
 
@@ -132,10 +120,33 @@ namespace ETHotfix
 						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
 					}
 					this.RegisterEvent(aEventAttribute.Type, iEvent);
+
+					// hotfix的事件也要注册到mono层，hotfix可以订阅mono层的事件
+					Action<List<object>> action = list => { Handle(iEvent, list); };
+					ETModel.Game.EventSystem.RegisterEvent(aEventAttribute.Type, new EventProxy(action));
 				}
 			}
-			
+
 			this.Load();
+		}
+		
+		public static void Handle(IEvent iEvent, List<object> param)
+		{
+			switch (param.Count)
+			{
+				case 0:
+					iEvent.Handle();
+					break;
+				case 1:
+					iEvent.Handle(param[0]);
+					break;
+				case 2:
+					iEvent.Handle(param[0], param[1]);
+					break;
+				case 3:
+					iEvent.Handle(param[0], param[1], param[2]);
+					break;
+			}
 		}
 
 		public void RegisterEvent(string eventId, IEvent e)
@@ -146,29 +157,10 @@ namespace ETHotfix
 			}
 			this.allEvents[eventId].Add(e);
 		}
-
-		public Assembly Get(DLLType dllType)
-		{
-			return this.assemblies[dllType];
-		}
-		
-		public HashSet<Type> GetTypes(Type systemAttributeType)
-		{
-			if (!this.types.ContainsKey(systemAttributeType))
-			{
-				return new HashSet<Type>();
-			}
-			return this.types[systemAttributeType];
-		}
 		
 		public List<Type> GetTypes()
 		{
-			List<Type> allTypes = new List<Type>();
-			foreach (Assembly assembly in this.assemblies.Values)
-			{
-				allTypes.AddRange(assembly.GetTypes());
-			}
-			return allTypes;
+			return this.types;
 		}
 
 		public void RegisterSystem(Entity component, bool isRegister = true)
