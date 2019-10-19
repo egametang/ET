@@ -241,6 +241,8 @@ namespace ETModel
 
 		public long Key { get; set; }
 
+		public long GateId { get; set; }
+
 	}
 
 	[Message(InnerOpcode.G2M_CreateUnit)]

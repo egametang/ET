@@ -11,6 +11,7 @@ namespace ETHotfix
 			long key = RandomHelper.RandInt64();
 			scene.GetComponent<GateSessionKeyComponent>().Add(key, request.Account);
 			response.Key = key;
+			response.GateId = scene.Id;
 			reply();
 			await ETTask.CompletedTask;
 		}

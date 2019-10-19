@@ -15,12 +15,14 @@ message R2C_Login // IResponse
 	string Message = 92;
 	string Address = 1;
 	int64 Key	    = 2;
+	int64 GateId = 3;
 }
 
 message C2G_LoginGate // IRequest
 {
 	int32 RpcId = 90;
 	int64 Key = 1;	// 帐号
+	int64 GateId = 2;
 }
 
 message G2C_LoginGate // IResponse

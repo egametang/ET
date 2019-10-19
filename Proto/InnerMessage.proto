@@ -11,7 +11,7 @@ message M2M_TrasferUnitRequest // IActorRequest
     Unit Unit = 1;
 }
 
-message M2M_TrasferUnitResponse // IActorResponse
+message M2M_TrasferUnitResponse // IActorResponseG2R_GetLoginKey
 {
     int32 RpcId = 90;
     int32 Error = 91;
@@ -149,6 +149,7 @@ message G2R_GetLoginKey // IActorResponse
     string Message = 92;
 
     int64 Key = 1;
+    int64 GateId = 2;
 }
 
 message G2M_CreateUnit // IActorRequest

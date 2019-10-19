@@ -8,7 +8,13 @@ namespace ETHotfix
 	{
 		protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response, Action reply)
 		{
-			string account = Game.Scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
+			Scene scene = Game.Scene.Get(request.GateId);
+			if (scene == null)
+			{
+				return;
+			}
+			
+			string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
 			if (account == null)
 			{
 				response.Error = ErrorCode.ERR_ConnectGateKeyError;
@@ -17,7 +23,7 @@ namespace ETHotfix
 				return;
 			}
 			Player player = EntityFactory.Create<Player, string>(Game.Scene, account);
-			Game.Scene.GetComponent<PlayerComponent>().Add(player);
+			scene.GetComponent<PlayerComponent>().Add(player);
 			session.AddComponent<SessionPlayerComponent>().Player = player;
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 

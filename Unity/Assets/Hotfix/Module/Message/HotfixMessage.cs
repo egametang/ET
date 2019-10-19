@@ -144,6 +144,14 @@ namespace ETHotfix {
       }
     }
 
+    private long gateId_;
+    public long GateId {
+      get { return gateId_; }
+      set {
+        gateId_ = value;
+      }
+    }
+
     public void WriteTo(pb::CodedOutputStream output) {
       if (Address.Length != 0) {
         output.WriteRawTag(10);
@@ -152,6 +160,10 @@ namespace ETHotfix {
       if (Key != 0L) {
         output.WriteRawTag(16);
         output.WriteInt64(Key);
+      }
+      if (GateId != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(GateId);
       }
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
@@ -184,12 +196,16 @@ namespace ETHotfix {
       if (Key != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Key);
       }
+      if (GateId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(GateId);
+      }
       return size;
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
       address_ = "";
       key_ = 0;
+      gateId_ = 0;
       rpcId_ = 0;
       error_ = 0;
       message_ = "";
@@ -205,6 +221,10 @@ namespace ETHotfix {
           }
           case 16: {
             Key = input.ReadInt64();
+            break;
+          }
+          case 24: {
+            GateId = input.ReadInt64();
             break;
           }
           case 720: {
@@ -248,10 +268,22 @@ namespace ETHotfix {
       }
     }
 
+    private long gateId_;
+    public long GateId {
+      get { return gateId_; }
+      set {
+        gateId_ = value;
+      }
+    }
+
     public void WriteTo(pb::CodedOutputStream output) {
       if (Key != 0L) {
         output.WriteRawTag(8);
         output.WriteInt64(Key);
+      }
+      if (GateId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(GateId);
       }
       if (RpcId != 0) {
         output.WriteRawTag(208, 5);
@@ -267,11 +299,15 @@ namespace ETHotfix {
       if (Key != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Key);
       }
+      if (GateId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(GateId);
+      }
       return size;
     }
 
     public void MergeFrom(pb::CodedInputStream input) {
       key_ = 0;
+      gateId_ = 0;
       rpcId_ = 0;
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
@@ -281,6 +317,10 @@ namespace ETHotfix {
             break;
           case 8: {
             Key = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            GateId = input.ReadInt64();
             break;
           }
           case 720: {
