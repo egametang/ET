@@ -451,8 +451,8 @@ namespace ETModel
 			
 			if (GUILayout.Button("启动"))
 			{
-				string arguments = $"App.dll --config={this.fileName}";
-				ProcessHelper.Run("dotnet", arguments, "../Bin/");
+				string arguments = $"--config={this.fileName}";
+				ProcessHelper.Run("App.exe", arguments, "../Bin/");
 			}
 			if (GUILayout.Button("启动数据库"))
 			{
