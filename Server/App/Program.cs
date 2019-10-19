@@ -54,8 +54,9 @@ namespace ETModel
 				// 这两个组件是处理actor消息使用的
 				Game.Scene.AddComponent<MailboxDispatcherComponent>();
 				Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
-				// manager server组件，用来管理其它进程使用
+				// 数值订阅组件
 				Game.Scene.AddComponent<NumericWatcherComponent>();
+				// 控制台组件
 				Game.Scene.AddComponent<ConsoleComponent>();
 
 

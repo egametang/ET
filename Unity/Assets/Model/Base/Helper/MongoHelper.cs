@@ -33,7 +33,16 @@ namespace ETModel
                 {
                     continue;
                 }
-                BsonClassMap.LookupClassMap(type);
+
+                try
+                {
+	                BsonClassMap.LookupClassMap(type);
+                }
+                catch (Exception e)
+                {
+	                Log.Error($"11111111111111111: {type.Name} {e}");
+                }
+                
             }
 #if SERVER
             BsonSerializer.RegisterSerializer(typeof(Vector3), new StructBsonSerialize<Vector3>());

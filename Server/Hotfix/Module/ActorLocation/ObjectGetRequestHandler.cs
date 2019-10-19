@@ -3,7 +3,7 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[MessageHandler]
+	[ActorMessageHandler]
 	public class ObjectGetRequestHandler : AMActorRpcHandler<Scene, ObjectGetRequest, ObjectGetResponse>
 	{
 		protected override async ETTask Run(Scene scene, ObjectGetRequest request, ObjectGetResponse response, Action reply)

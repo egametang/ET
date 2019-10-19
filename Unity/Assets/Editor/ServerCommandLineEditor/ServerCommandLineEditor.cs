@@ -251,14 +251,14 @@ namespace ETModel
 				if (GUILayout.Button("添加组件", GUILayout.Height(16)))
 				{
 					Assembly assembly = Assembly.GetAssembly(typeof(Init));
-					Type type = assembly.GetType($"ET.{this.st.ToString()}");
+					Type type = assembly.GetType($"ETModel.{this.st.ToString()}");
 					startConfig.AddComponent(type);
 				}
 				
 				if (GUILayout.Button("删除组件", GUILayout.Height(16)))
 				{
 					Assembly assembly = Assembly.GetAssembly(typeof(Init));
-					Type type = assembly.GetType($"ET.{this.st.ToString()}");
+					Type type = assembly.GetType($"ETModel.{this.st.ToString()}");
 					startConfig.RemoveComponent(type);
 				}
 				

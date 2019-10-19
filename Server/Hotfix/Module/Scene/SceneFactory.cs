@@ -25,10 +25,6 @@ namespace ETHotfix
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
-                    if (name == "GateMap")
-                    {
-                        return scene;
-                    }
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

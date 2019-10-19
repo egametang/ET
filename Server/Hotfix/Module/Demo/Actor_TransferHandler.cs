@@ -4,7 +4,7 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[ActorMessageHandler(AppType.Map)]
+	[ActorMessageHandler]
 	public class Actor_TransferHandler : AMActorRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>
 	{
 		protected override async ETTask Run(Unit unit, Actor_TransferRequest request, Actor_TransferResponse response, Action reply)

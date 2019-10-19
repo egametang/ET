@@ -3,7 +3,7 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[MessageHandler]
+	[ActorMessageHandler]
 	public class R2G_GetLoginKeyHandler : AMActorRpcHandler<Scene, R2G_GetLoginKey, G2R_GetLoginKey>
 	{
 		protected override async ETTask Run(Scene scene, R2G_GetLoginKey request, G2R_GetLoginKey response, Action reply)

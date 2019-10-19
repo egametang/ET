@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ETHotfix
 {
-	[MessageHandler]
+	[ActorMessageHandler]
 	public class G2M_CreateUnitHandler : AMActorRpcHandler<Scene, G2M_CreateUnit, M2G_CreateUnit>
 	{
 		protected override async ETTask Run(Scene scene, G2M_CreateUnit request, M2G_CreateUnit response, Action reply)
