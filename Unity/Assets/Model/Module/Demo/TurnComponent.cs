@@ -11,7 +11,7 @@ namespace ETModel
 		}
 	}
 
-	public class TurnComponent : Component
+	public class TurnComponent : Entity
 	{
 		// turn
 		public Quaternion To;
@@ -43,7 +43,7 @@ namespace ETModel
 		/// </summary>
 		public void Turn2D(Vector3 dir, float turnTime = 0.1f)
 		{
-			Vector3 nexpos = this.GetParent<Unit>().GameObject.transform.position + dir;
+			Vector3 nexpos = this.GetParent<Unit>().ViewGO.transform.position + dir;
 			Turn(nexpos, turnTime);
 		}
 

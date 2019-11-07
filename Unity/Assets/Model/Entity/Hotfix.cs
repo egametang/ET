@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
+#if !ILRuntime
+using System.Reflection;
+#endif
 
 namespace ETModel
 {
-	public sealed class Hotfix : Object
+	public sealed class Hotfix: Object
 	{
 #if ILRuntime
 		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
+		private MemoryStream dllStream;
+		private MemoryStream pdbStream;
 #else
 		private Assembly assembly;
 #endif
@@ -47,11 +51,9 @@ namespace ETModel
 			Log.Debug($"当前使用的是ILRuntime模式");
 			this.appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 
-			using (MemoryStream fs = new MemoryStream(assBytes))
-			using (MemoryStream p = new MemoryStream(pdbBytes))
-			{
-				this.appDomain.LoadAssembly(fs, p, new Mono.Cecil.Pdb.PdbReaderProvider());
-			}
+			this.dllStream = new MemoryStream(assBytes);
+			this.pdbStream = new MemoryStream(pdbBytes);
+			this.appDomain.LoadAssembly(this.dllStream, this.pdbStream, new Mono.Cecil.Pdb.PdbReaderProvider());
 
 			this.start = new ILStaticMethod(this.appDomain, "ETHotfix.Init", "Start", 0);
 			

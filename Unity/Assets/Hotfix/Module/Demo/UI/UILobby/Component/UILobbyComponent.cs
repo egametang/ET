@@ -13,14 +13,14 @@ namespace ETHotfix
 		}
 	}
 	
-	public class UILobbyComponent : Component
+	public class UILobbyComponent : Entity
 	{
 		private GameObject enterMap;
 		private Text text;
 
 		public void Awake()
 		{
-			ReferenceCollector rc = this.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
+			ReferenceCollector rc = this.GetParent<UI>().ViewGO.GetComponent<ReferenceCollector>();
 			
 			enterMap = rc.Get<GameObject>("EnterMap");
 			enterMap.GetComponent<Button>().onClick.Add(this.EnterMap);
@@ -30,7 +30,7 @@ namespace ETHotfix
 
 		private void EnterMap()
 		{
-			MapHelper.EnterMapAsync().Coroutine();
+			MapHelper.EnterMapAsync("Map").Coroutine();
 		}
 		
 

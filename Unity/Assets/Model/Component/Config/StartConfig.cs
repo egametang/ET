@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 #if !SERVER
 using UnityEngine;
@@ -9,13 +10,46 @@ namespace ETModel
 #if !SERVER
 	[HideInHierarchy]
 #endif
+	[NoObjectPool]
 	public class StartConfig: Entity
 	{
-		public int AppId { get; set; }
+		[BsonIgnore]
+		public long SceneInstanceId { get; set; }
+		
+		public List<StartConfig> List = new List<StartConfig>();
 
-		[BsonRepresentation(BsonType.String)]
-		public AppType AppType { get; set; }
+		public void Add(StartConfig startConfig)
+		{
+			startConfig.parent = this;
+			this.List.Add(startConfig);
+		}
 
-		public string ServerIP { get; set; }
+		public StartConfig Get(long id)
+		{
+			foreach (StartConfig startConfig in this.List)
+			{
+				if (startConfig.Id == id)
+				{
+					return startConfig;
+				}
+			}
+
+			return null;
+		}
+
+		public void Remove(StartConfig startConfig)
+		{
+			this.List.Remove(startConfig);
+		}
+
+		public override void EndInit()
+		{
+			base.EndInit();
+
+			foreach (StartConfig startConfig in this.List)
+			{
+				startConfig.parent = this;
+			}
+		}
 	}
 }

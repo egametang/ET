@@ -23,7 +23,7 @@ namespace ETHotfix
                     self.BroadcastPath(path, i, 3);
                 }
                 Vector3 v3 = path[i];
-                await self.Entity.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationTokenSource.Token);
+                await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationTokenSource.Token);
             }
         }
         
@@ -39,13 +39,13 @@ namespace ETHotfix
             Unit unit = self.GetParent<Unit>();
             
             
-            PathfindingComponent pathfindingComponent = Game.Scene.GetComponent<PathfindingComponent>();
-            self.ABPath = ComponentFactory.Create<ABPathWrap, Vector3, Vector3>(unit.Position, new Vector3(target.x, target.y, target.z));
+            PathfindingComponent pathfindingComponent = self.Domain.GetComponent<PathfindingComponent>();
+            self.ABPath = EntityFactory.Create<ABPathWrap, Vector3, Vector3>(self.Domain, unit.Position, new Vector3(target.x, target.y, target.z));
             pathfindingComponent.Search(self.ABPath);
             Log.Debug($"find result: {self.ABPath.Result.ListToString()}");
             
             self.CancellationTokenSource?.Cancel();
-            self.CancellationTokenSource = new CancellationTokenSource();
+            self.CancellationTokenSource = EntityFactory.Create<ETCancellationTokenSource>(self.Domain);
             await self.MoveAsync(self.ABPath.Result);
             self.CancellationTokenSource.Dispose();
             self.CancellationTokenSource = null;
@@ -73,7 +73,7 @@ namespace ETHotfix
                 m2CPathfindingResult.Ys.Add(v.y);
                 m2CPathfindingResult.Zs.Add(v.z);
             }
-            MessageHelper.Broadcast(m2CPathfindingResult);
+            MessageHelper.Broadcast(unit, m2CPathfindingResult);
         }
     }
 }

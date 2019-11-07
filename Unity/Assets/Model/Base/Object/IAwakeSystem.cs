@@ -26,6 +26,11 @@ namespace ETModel
 	{
 		void Run(object o, A a, B b, C c);
 	}
+	
+	public interface IAwake<A, B, C, D>
+	{
+		void Run(object o, A a, B b, C c, D d);
+	}
 
 	public abstract class AwakeSystem<T> : IAwakeSystem, IAwake
 	{

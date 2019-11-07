@@ -1,36 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Net;
-
-namespace ETModel
+﻿namespace ETModel
 {
-	// 知道对方的Id，使用这个类发actor消息
-	public class ActorLocationSender : ComponentWithId
-	{
-		// actor的地址
-		public IPEndPoint Address;
+    // 知道对方的Id，使用这个类发actor消息
+    public class ActorLocationSender : Entity
+    {
+        public long ActorId;
 
-		public long ActorId;
+        // 最近接收或者发送消息的时间
+        public long LastSendOrRecvTime;
 		
-		// 还没发送的消息
-		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();
+        public int FailTimes;
 
-		// 最近发送消息的时间
-		public long LastSendTime;
-		
-		public int FailTimes;
-
-		public const int MaxFailTimes = 5;
-		
-		public ETTaskCompletionSource<ActorTask> Tcs;
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			
-			base.Dispose();
-		}
-	}
+        public const int MaxFailTimes = 5;
+    }
 }

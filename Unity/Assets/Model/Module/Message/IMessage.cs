@@ -16,7 +16,7 @@
 		int RpcId { get; set; }
 	}
 
-	public class ResponseMessage : IResponse
+	public class ErrorResponse : IResponse
 	{
 		public int Error { get; set; }
 		public string Message { get; set; }

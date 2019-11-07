@@ -37,9 +37,8 @@ namespace ETModel
 	/// <summary>
 	/// http请求分发器
 	/// </summary>
-	public class HttpComponent : Component
+	public class HttpComponent : Entity
 	{
-		public AppType appType;
 		public HttpListener listener;
 		public HttpConfig HttpConfig;
 		public Dictionary<string, IHttpHandler> dispatcher;
@@ -54,7 +53,6 @@ namespace ETModel
 		public void Awake()
 		{
 			StartConfig startConfig = StartConfigComponent.Instance.StartConfig;
-			this.appType = startConfig.AppType;
 			this.HttpConfig = startConfig.GetComponent<HttpConfig>();
 
 			this.Load();
@@ -67,7 +65,7 @@ namespace ETModel
 			this.getHandlers = new Dictionary<string, MethodInfo>();
 			this.postHandlers = new Dictionary<string, MethodInfo>();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(HttpHandlerAttribute));
 
 			foreach (Type type in types)
 			{
@@ -78,10 +76,6 @@ namespace ETModel
 				}
 
 				HttpHandlerAttribute httpHandlerAttribute = (HttpHandlerAttribute)attrs[0];
-				if (!httpHandlerAttribute.AppType.Is(this.appType))
-				{
-					continue;
-				}
 
 				object obj = Activator.CreateInstance(type);
 

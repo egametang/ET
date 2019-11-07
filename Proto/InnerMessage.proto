@@ -4,13 +4,14 @@ package ETModel;
 /// <summary>
 /// 传送unit
 /// </summary>
-message M2M_TrasferUnitRequest // IRequest
+message M2M_TrasferUnitRequest // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     Unit Unit = 1;
 }
 
-message M2M_TrasferUnitResponse // IResponse
+message M2M_TrasferUnitResponse // IActorResponseG2R_GetLoginKey
 {
     int32 RpcId = 90;
     int32 Error = 91;
@@ -19,189 +20,113 @@ message M2M_TrasferUnitResponse // IResponse
     int64 InstanceId = 1;
 }
 
-message M2A_Reload // IRequest
+message M2A_Reload // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
 }
 
-message A2M_Reload // IResponse
+message A2M_Reload // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
 
-message G2G_LockRequest // IRequest
+message G2G_LockRequest // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Id = 1;
     string Address = 2;
 }
 
-message G2G_LockResponse // IResponse
+message G2G_LockResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
 
-message G2G_LockReleaseRequest // IRequest
+message G2G_LockReleaseRequest // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Id = 1;
     string Address = 2;
 }
 
-message G2G_LockReleaseResponse // IResponse
+message G2G_LockReleaseResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
 
-message DBSaveRequest // IRequest
+message ObjectAddRequest // IActorRequest
 {
     int32 RpcId = 90;
-
-    string CollectionName = 1;
-    ComponentWithId Component = 2;
-}
-
-
-message DBSaveBatchResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-}
-
-message DBSaveBatchRequest // IRequest
-{
-    int32 RpcId = 90;
-
-    string CollectionName = 1;
-    repeated ComponentWithId Components = 2;
-}
-
-message DBSaveResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-}
-
-message DBQueryRequest // IRequest
-{
-    int32 RpcId = 90;
-    int64 Id = 1;
-    string CollectionName = 2;
-}
-
-message DBQueryResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-
-    ComponentWithId Component = 1;
-}
-
-message DBQueryBatchRequest // IRequest
-{
-    int32 RpcId = 90;
-    string CollectionName = 1;
-    repeated int64 IdList = 2;
-}
-
-message DBQueryBatchResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-
-    repeated ComponentWithId Components = 1;
-}
-
-message DBQueryJsonRequest // IRequest
-{
-    int32 RpcId = 90;
-    string CollectionName = 1;
-    string Json = 2;
-}
-
-message DBQueryJsonResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-
-    repeated ComponentWithId Components = 1;
-}
-
-message ObjectAddRequest // IRequest
-{
-    int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Key = 1;
     int64 InstanceId = 2;
 }
 
-message ObjectAddResponse // IResponse
+message ObjectAddResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
-
-message ObjectRemoveRequest // IRequest
+message ObjectLockRequest // IActorRequest
 {
     int32 RpcId = 90;
-    int64 Key = 1;
-}
-
-message ObjectRemoveResponse // IResponse
-{
-    int32 RpcId = 90;
-    int32 Error = 91;
-    string Message = 92;
-}
-
-message ObjectLockRequest // IRequest
-{
-    int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Key = 1;
     int64 InstanceId = 2;
     int32 Time = 3;
 }
-
-message ObjectLockResponse // IResponse
+message ObjectLockResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
 
-message ObjectUnLockRequest // IRequest
+message ObjectUnLockRequest // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Key = 1;
     int64 OldInstanceId = 2;
     int64 InstanceId = 3;
 }
-
-message ObjectUnLockResponse // IResponse
+message ObjectUnLockResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 }
 
-message ObjectGetRequest // IRequest
+message ObjectRemoveRequest // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 Key = 1;
 }
+message ObjectRemoveResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-message ObjectGetResponse // IResponse
+message ObjectGetRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+}
+message ObjectGetResponse // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
@@ -210,29 +135,32 @@ message ObjectGetResponse // IResponse
     int64 InstanceId = 1;
 }
 
-message R2G_GetLoginKey // IRequest
+message R2G_GetLoginKey // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     string Account = 1;
 }
 
-message G2R_GetLoginKey // IResponse
+message G2R_GetLoginKey // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;
     string Message = 92;
 
     int64 Key = 1;
+    int64 GateId = 2;
 }
 
-message G2M_CreateUnit // IRequest
+message G2M_CreateUnit // IActorRequest
 {
     int32 RpcId = 90;
+    int64 ActorId = 93;
     int64 PlayerId = 1;
     int64 GateSessionId = 2;
 }
 
-message M2G_CreateUnit // IResponse
+message M2G_CreateUnit // IActorResponse
 {
     int32 RpcId = 90;
     int32 Error = 91;

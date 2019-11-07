@@ -19,19 +19,19 @@ namespace ETModel
 	{
 		public void Awake(GameObject gameObject)
 		{
-			this.GameObject = gameObject;
-			this.GameObject.AddComponent<ComponentView>().Component = this;
+			this.ViewGO = gameObject;
+			this.ViewGO.AddComponent<ComponentView>().Component = this;
 		}
 		
 		public Vector3 Position
 		{
 			get
 			{
-				return GameObject.transform.position;
+				return ViewGO.transform.position;
 			}
 			set
 			{
-				GameObject.transform.position = value;
+				ViewGO.transform.position = value;
 			}
 		}
 
@@ -39,11 +39,11 @@ namespace ETModel
 		{
 			get
 			{
-				return GameObject.transform.rotation;
+				return ViewGO.transform.rotation;
 			}
 			set
 			{
-				GameObject.transform.rotation = value;
+				ViewGO.transform.rotation = value;
 			}
 		}
 

@@ -4,15 +4,7 @@ namespace ETModel
 {
 	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request: class, IActorRequest where Response : class, IActorResponse
 	{
-		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
-		{
-			Log.Error(e);
-			response.Error = ErrorCode.ERR_RpcFail;
-			response.Message = e.ToString();
-			reply(response);
-		}
-
-		protected abstract ETTask Run(E unit, Request message, Action<Response> reply);
+		protected abstract ETTask Run(E unit, Request request, Response response, Action reply);
 
 		public async ETTask Handle(Session session, Entity entity, object actorMessage)
 		{
@@ -32,24 +24,36 @@ namespace ETModel
 				}
 
 				int rpcId = request.RpcId;
-				
 				long instanceId = session.InstanceId;
-				
-				await this.Run(e, request, response =>
+				Response response = Activator.CreateInstance<Response>();
+
+				void Reply()
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session InstanceId是否一样
 					if (session.InstanceId != instanceId)
 					{
 						return;
 					}
+
 					response.RpcId = rpcId;
-					
 					session.Reply(response);
-				});
+				}
+
+				try
+				{
+					await this.Run(e, request, response, Reply);
+				}
+				catch (Exception exception)
+				{
+					Log.Error(exception);
+					response.Error = ErrorCode.ERR_RpcFail;
+					response.Message = e.ToString();
+					Reply();
+				}
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {actorMessage.GetType().FullName}", e);
+				Log.Error($"解释消息失败: {actorMessage.GetType().FullName}\n{e}");
 			}
 		}
 

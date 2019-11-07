@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Options;
 
 namespace ETModel
 {
-	public class UnitComponent: Component
+	public class UnitComponent: Entity
 	{
 		[BsonElement]
 		[BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
@@ -29,6 +29,7 @@ namespace ETModel
 		public void Add(Unit unit)
 		{
 			this.idUnits.Add(unit.Id, unit);
+			unit.Parent = this;
 		}
 
 		public Unit Get(long id)

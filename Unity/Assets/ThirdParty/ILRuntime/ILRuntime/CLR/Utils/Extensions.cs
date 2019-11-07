@@ -30,7 +30,7 @@ namespace ILRuntime.CLR.Utils
                     if ((t == null && def.IsGenericInstance) || (t != null && t.HasGenericParameter))
                     {
                         GenericInstanceMethod gim = (GenericInstanceMethod)def;
-                        string name = i.ParameterType.IsByReference ? i.ParameterType.GetElementType().FullName : i.ParameterType.FullName;
+                        string name = i.ParameterType.IsByReference ? ((ByReferenceType)i.ParameterType).ElementType.FullName : i.ParameterType.FullName;
                         
                         for (int j = 0; j < gim.GenericArguments.Count; j++)
                         {

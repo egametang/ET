@@ -13,7 +13,7 @@ namespace ETModel
         }
     }
     
-    public class ABPathWrap: Component
+    public class ABPathWrap: Entity
     {
         public ABPath Path { get; private set; }
 

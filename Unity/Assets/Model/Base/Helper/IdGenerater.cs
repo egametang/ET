@@ -1,21 +1,52 @@
 ﻿namespace ETModel
 {
-	public static class IdGenerater
-	{
-		public static long AppId { private get; set; }
+    public static class IdGenerater
+    {
+        public const int HeadPos = 50;
+		
+        private static long appId;
 
-		private static ushort value;
+        public static long Head { get; private set; }
+		
+        public static long AppId
+        {
+            set
+            {
+                appId = value;
+                Head = value << HeadPos;
+            }
+            get
+            {
+                return appId;
+            }
+        }
 
-		public static long GenerateId()
-		{
-			long time = TimeHelper.ClientNowSeconds();
+        public static long HeadMask = 0x0003ffffffffffff;
 
-			return (AppId << 48) + (time << 16) + ++value;
-		}
+        private static ushort value;
 
-		public static int GetAppIdFromId(long id)
-		{
-			return (int)(id >> 48);
-		}
-	}
+        private static int sceneId = 100000;
+		
+        public static long GenerateSceneId()
+        {
+            return ++sceneId;
+        }
+		
+        public static long GenerateSceneInstanceId(long id)
+        {
+            return IdGenerater.Head + id;
+        }
+
+        public static long GenerateId()
+        {
+            long time = TimeHelper.ClientNowSeconds();
+
+            return Head + (time << 18) + ++value;
+        }
+
+        public static int GetProcessId(long v)
+        {
+            return (int)(v >> HeadPos);
+        }
+    }
 }

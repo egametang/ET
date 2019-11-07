@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ETModel
 {
-    public class UnitPathComponent: Component
+    public class UnitPathComponent: Entity
     {
         public Vector3 Target;
 
@@ -13,7 +13,7 @@ namespace ETModel
         
         public List<Vector3> Path;
 
-        public CancellationTokenSource CancellationTokenSource;
+        public ETCancellationTokenSource CancellationTokenSource;
 
         public ABPathWrap ABPath
         {

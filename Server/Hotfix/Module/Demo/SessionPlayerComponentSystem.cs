@@ -8,8 +8,7 @@ namespace ETHotfix
 		public override void Destroy(SessionPlayerComponent self)
 		{
 			// 发送断线消息
-			ActorLocationSender actorLocationSender = Game.Scene.GetComponent<ActorLocationSenderComponent>().Get(self.Player.UnitId);
-			actorLocationSender.Send(new G2M_SessionDisconnect());
+			ActorLocationSenderComponent.Instance.Send(self.Player.UnitId, new G2M_SessionDisconnect());
 			Game.Scene.GetComponent<PlayerComponent>()?.Remove(self.Player.Id);
 		}
 	}
