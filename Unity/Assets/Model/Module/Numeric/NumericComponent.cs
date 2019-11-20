@@ -11,7 +11,7 @@ namespace ETModel
 		}
 	}
 
-	public class NumericComponent: Component
+	public class NumericComponent: Entity
 	{
 		public Dictionary<int, int> NumericDic = new Dictionary<int, int>();
 
@@ -94,7 +94,7 @@ namespace ETModel
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
 			int result = (int)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f * 10000);
 			this.NumericDic[final] = result;
-			Game.EventSystem.Run(EventIdType.NumbericChange, this.Entity.Id, (NumericType) final, result);
+			Game.EventSystem.Run(EventIdType.NumbericChange, this.Parent.Id, (NumericType) final, result);
 		}
 	}
 }

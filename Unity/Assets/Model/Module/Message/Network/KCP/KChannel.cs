@@ -66,7 +66,6 @@ namespace ETModel
 
 			this.LocalConn = localConn;
 			this.socket = socket;
-		        this.RemoteAddress = remoteEndPoint;
 			this.remoteEndPoint = remoteEndPoint;
 			this.lastRecvTime = kService.TimeNow;
 			this.createTime = kService.TimeNow;
@@ -355,10 +354,6 @@ namespace ETModel
 
 				this.OnRead(this.memoryStream);
 			}
-		}
-
-		public override void Start()
-		{
 		}
 
 		public void Output(IntPtr bytes, int count)

@@ -5,24 +5,57 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Conventions;
+using UnityEngine;
 
 namespace ETModel
 {
 	public static class MongoHelper
 	{
-		static MongoHelper()
-		{
-			Type[] types = typeof(Game).Assembly.GetTypes();
-			foreach (Type type in types)
-			{
-				if (!type.IsSubclassOf(typeof(Component)))
-				{
-					continue;
-				}
+        static MongoHelper()
+        {
+	        // 自动注册IgnoreExtraElements
+	        
+	        ConventionPack conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
+	        
+	        ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
+	        
+            Type[] types = typeof(Game).Assembly.GetTypes();
+           
+            foreach (Type type in types)
+            {
+                if (!type.IsSubclassOf(typeof(Entity)))
+                {
+                    continue;
+                }
 
-				BsonClassMap.LookupClassMap(type);
-			}
-		}
+                if (type.IsGenericType)
+                {
+                    continue;
+                }
+
+                try
+                {
+	                BsonClassMap.LookupClassMap(type);
+                }
+                catch (Exception e)
+                {
+	                Log.Error($"11111111111111111: {type.Name} {e}");
+                }
+                
+            }
+#if SERVER
+            BsonSerializer.RegisterSerializer(typeof(Vector3), new StructBsonSerialize<Vector3>());
+#else
+            BsonSerializer.RegisterSerializer(typeof(Vector4), new StructBsonSerialize<Vector4>());
+            BsonSerializer.RegisterSerializer(typeof(Vector2Int), new StructBsonSerialize<Vector2Int>());
+#endif
+        }
+        
+        public static void Init()
+        {
+	        // 调用这个是为了调用MongoHelper的静态方法
+        }
 
 		public static string ToJson(object obj)
 		{
@@ -121,4 +154,6 @@ namespace ETModel
         }
 
 	}
+
+
 }

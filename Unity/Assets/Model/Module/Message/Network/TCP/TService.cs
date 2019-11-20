@@ -16,7 +16,7 @@ namespace ETModel
 		
 		public RecyclableMemoryStreamManager MemoryStreamManager = new RecyclableMemoryStreamManager();
 		
-		public HashSet<long> needStartSendChannel = new HashSet<long>();
+		public List<long> needStartSendChannel = new List<long>();
 		
 		public int PacketSizeLength { get; }
 		
@@ -100,7 +100,8 @@ namespace ETModel
 			}
 			TChannel channel = new TChannel(e.AcceptSocket, this);
 			this.idChannels[channel.Id] = channel;
-
+			channel.Parent = this;
+			
 			try
 			{
 				this.OnAccept(channel);
@@ -129,7 +130,7 @@ namespace ETModel
 		{
 			TChannel channel = new TChannel(ipEndPoint, this);
 			this.idChannels[channel.Id] = channel;
-
+			channel.Parent = this;
 			return channel;
 		}
 

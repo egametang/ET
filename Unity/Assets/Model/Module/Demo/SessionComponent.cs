@@ -9,7 +9,7 @@
 		}
 	}
 
-	public class SessionComponent: Component
+	public class SessionComponent: Entity
 	{
 		public static SessionComponent Instance;
 

@@ -12,7 +12,7 @@ namespace ETModel
 		}
 	}
 	
-	public class UnitComponent: Component
+	public class UnitComponent: Entity
 	{
 		public static UnitComponent Instance { get; private set; }
 

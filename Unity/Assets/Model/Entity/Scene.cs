@@ -1,38 +1,39 @@
 ﻿namespace ETModel
 {
-	public static class SceneType
-	{
-		public const string Share = "Share";
-		public const string Game = "Game";
-		public const string Login = "Login";
-		public const string Lobby = "Lobby";
-		public const string Map = "Map";
-		public const string Launcher = "Launcher";
-		public const string Robot = "Robot";
-		public const string RobotClient = "RobotClient";
-		public const string Realm = "Realm";
-	}
-	
-	public sealed class Scene: Entity
-	{
-		public string Name { get; set; }
-
-		public Scene()
-		{
-		}
-
-		public Scene(long id): base(id)
-		{
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
-		}
-	}
+    public sealed class Scene: Entity
+    {
+        public SceneType SceneType { get; set; }
+        public string Name { get; set; }
+        
+        public new Entity Domain
+        {
+            get
+            {
+                return this.domain;
+            }
+            set
+            {
+                this.domain = value;
+            }
+        }
+		
+        public new Entity Parent
+        {
+            get
+            {
+                return this.parent;
+            }
+            set
+            {
+                this.parent = value;
+                this.parent.Children.Add(this.Id, this);
+#if !SERVER
+                if (this.ViewGO != null && this.parent.ViewGO != null)
+                {
+                    this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
+                }
+#endif
+            }
+        }
+    }
 }

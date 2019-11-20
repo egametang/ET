@@ -1,2 +1,0 @@
-{ "_t" : "StartConfig", "C" : [{ "_t" : "InnerConfig", "Address" : "127.0.0.1:20000" }, { "_t" : "OuterConfig", "Address" : "http://*:8080/", "Address2" : "ws://127.0.0.1:8080" }], "AppId" : 1, "AppType" : "Manager", "ServerIP" : "*" }
-{ "_t" : "StartConfig", "C" : [{ "_t" : "ClientConfig", "Address" : "ws://127.0.0.1:8080" }], "AppId" : 2, "AppType" : "BenchmarkWebsocketClient", "ServerIP" : "*" }

@@ -1,16 +1,293 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
-using ETModel;
-using MongoDB.Bson;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace ETEditor
+namespace ETModel
 {
+	enum StartConfigComponentType
+	{
+		ClientConfig,
+		DBConfig,
+		SceneConfig,
+		HttpConfig,
+		InnerConfig,
+		OuterConfig,
+		ProcessConfig,
+		CopyConfig,
+		MapConfig,
+	}
+	
+	[ObjectSystem]
+	class StartConfigDrawerAwakeSystem : AwakeSystem<StartConfigDrawer, int>
+	{
+		public override void Awake(StartConfigDrawer self, int level)
+		{
+			StartConfig startConfig = self.GetParent<StartConfig>();
+			foreach (var childStartConfig in startConfig.List)
+			{
+				childStartConfig.AddComponentNoPool<StartConfigDrawer, int>(level + 1);
+			}
+
+			self.level = level;
+		}
+	}
+	
+#if !SERVER
+	[HideInHierarchy]
+#endif
+	[NoObjectPool]
+	public class StartConfigDrawer: Entity
+	{
+		public GUIStyle style = new GUIStyle();
+
+		public int level;
+
+		public bool isFold = true;
+
+		private StartConfigComponentType st;
+
+		public StartConfigDrawer()
+		{
+			this.Id = IdGenerater.GenerateId();
+			
+			this.style.normal.textColor = Color.red;
+			this.style.alignment = TextAnchor.MiddleLeft;
+			this.style.fixedHeight = 16;
+		}
+
+		public bool OnGUI()
+		{
+			StartConfig startConfig = this.GetParent<StartConfig>();
+			GUILayout.BeginHorizontal(GUILayout.Height(16));
+
+			if (this.level > 0)
+			{
+				string s = "";
+				for (int i = 1; i < this.level; ++i)
+				{
+					s += $"    ";
+				}
+				GUILayout.Label(s, GUILayout.Width(20 * this.level));
+			}
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(240), GUILayout.Height(16));
+				this.isFold = EditorGUILayout.Foldout(isFold, $"子配置数量:{startConfig.List.Count}");
+				
+				if (GUILayout.Button("添加子配置", GUILayout.Height(16), GUILayout.Width(75)))
+				{
+					StartConfig s = new StartConfig();
+					startConfig.Add(s);
+					s.AddComponentNoPool<StartConfigDrawer, int>(this.level + 1);
+					
+					for (int i = 0; i < startConfig.List.Count; ++i)
+					{
+						startConfig.List[i].Id = i + 1;
+					}
+
+					this.isFold = true;
+					return false;
+				}
+				if (GUILayout.Button("上", GUILayout.Height(16), GUILayout.Width(30)))
+				{
+					StartConfig parentStartConfig = startConfig.GetParent<StartConfig>();
+					int index = parentStartConfig.List.IndexOf(startConfig);
+					if (index == 0)
+					{
+						return true;
+					}
+
+					parentStartConfig.List.Remove(startConfig);
+					parentStartConfig.List.Insert(index - 1, startConfig);
+					for (int i = 0; i < parentStartConfig.List.Count; ++i)
+					{
+						parentStartConfig.List[i].Id = i + 1;
+					}
+
+					return false;
+				}
+				if (GUILayout.Button("下", GUILayout.Height(16), GUILayout.Width(30)))
+				{
+					StartConfig parentStartConfig = startConfig.GetParent<StartConfig>();
+					int index = parentStartConfig.List.IndexOf(startConfig);
+					if (index == parentStartConfig.List.Count - 1)
+					{
+						return true;
+					}
+					parentStartConfig.List.Remove(startConfig);
+					parentStartConfig.List.Insert(index + 1, startConfig);
+					for (int i = 0; i < parentStartConfig.List.Count; ++i)
+					{
+						parentStartConfig.List[i].Id = i + 1;
+					}
+					return false;
+				}
+				GUILayout.EndHorizontal();
+			}
+
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(50));
+				GUILayout.Label($"Id: ");
+				startConfig.Id = EditorGUILayout.LongField(startConfig.Id, GUILayout.Width(30));
+				GUILayout.EndHorizontal();
+			}
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(200));
+				ProcessConfig processConfig = startConfig.GetComponent<ProcessConfig>();
+				if (processConfig != null)
+				{
+					GUILayout.Label($"  ProcessConfig(", this.style);
+					GUILayout.Label($"服务器IP: ");
+					processConfig.ServerIP = EditorGUILayout.TextField(processConfig.ServerIP, GUILayout.Width(100));
+					GUILayout.Label($"),", this.style);
+				}
+				GUILayout.EndHorizontal();
+			}
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(200));
+				SceneConfig sceneConfig = startConfig.GetComponent<SceneConfig>();
+				if (sceneConfig != null)
+				{
+					GUILayout.Label($"  SceneConfig(", this.style);
+					GUILayout.Label($"SceneType: ");
+					sceneConfig.SceneType = (SceneType)EditorGUILayout.EnumPopup(sceneConfig.SceneType, GUILayout.Width(100));
+					GUILayout.Label($"Name: ");
+					sceneConfig.Name = EditorGUILayout.TextField(sceneConfig.Name, GUILayout.Width(100));
+					GUILayout.Label($"),", this.style);
+				}
+				GUILayout.EndHorizontal();
+			}
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(150));
+				InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
+				if (innerConfig != null)
+				{
+					GUILayout.Label($"  InnerConfig(", this.style);
+					GUILayout.Label($"内网地址:");
+					innerConfig.Address = EditorGUILayout.TextField(innerConfig.Address, GUILayout.Width(120));
+					GUILayout.Label($"),", this.style);
+				}
+
+				GUILayout.EndHorizontal();
+			}
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(350));
+				OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
+				if (outerConfig != null)
+				{
+					GUILayout.Label($"  OuterConfig(", this.style);
+					GUILayout.Label($"外网地址:");
+					outerConfig.Address = EditorGUILayout.TextField(outerConfig.Address, GUILayout.Width(120));
+					GUILayout.Label($"外网地址2:");
+					outerConfig.Address2 = EditorGUILayout.TextField(outerConfig.Address2, GUILayout.Width(120));
+					GUILayout.Label($"),", this.style);
+				}
+
+				GUILayout.EndHorizontal();
+			}
+			
+			{
+            	GUILayout.BeginHorizontal(GUILayout.Width(50));
+                CopyConfig copyConfig = startConfig.GetComponent<CopyConfig>();
+            	if (copyConfig != null)
+            	{
+            		GUILayout.Label($"  CopyConfig(", this.style);
+            		GUILayout.Label($"),", this.style);
+            	}
+            
+            	GUILayout.EndHorizontal();
+            }
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(50));
+				MapConfig mapConfig = startConfig.GetComponent<MapConfig>();
+				if (mapConfig != null)
+				{
+					GUILayout.Label($"  MapConfig(", this.style);
+					GUILayout.Label($"MapType: ");
+					mapConfig.MapType = (MapType)EditorGUILayout.EnumPopup(mapConfig.MapType, GUILayout.Width(100));
+					GUILayout.Label($"),", this.style);
+				}
+            
+				GUILayout.EndHorizontal();
+			}
+			
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(350));
+				ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
+				if (clientConfig != null)
+				{
+					GUILayout.Label($"  ClientConfig(", this.style);
+					GUILayout.Label($"连接地址:");
+					clientConfig.Address = EditorGUILayout.TextField(clientConfig.Address, GUILayout.Width(120));
+					GUILayout.Label($"),", this.style);
+				}
+
+				DBConfig dbConfig = startConfig.GetComponent<DBConfig>();
+				if (dbConfig != null)
+				{
+					GUILayout.Label($"  DBConfig(", this.style);
+					GUILayout.Label($"连接串:");
+					dbConfig.ConnectionString = EditorGUILayout.TextField(dbConfig.ConnectionString);
+
+					GUILayout.Label($"DBName:");
+					dbConfig.DBName = EditorGUILayout.TextField(dbConfig.DBName);
+					GUILayout.Label($"),", this.style);
+				}
+				GUILayout.EndHorizontal();
+			}
+
+			{
+				GUILayout.BeginHorizontal(GUILayout.Width(200), GUILayout.Height(16));
+				this.st = (StartConfigComponentType) EditorGUILayout.EnumPopup(this.st, GUILayout.Width(100));
+
+				if (GUILayout.Button("添加组件", GUILayout.Height(16)))
+				{
+					Assembly assembly = Assembly.GetAssembly(typeof(Init));
+					Type type = assembly.GetType($"ETModel.{this.st.ToString()}");
+					startConfig.AddComponent(type);
+				}
+				
+				if (GUILayout.Button("删除组件", GUILayout.Height(16)))
+				{
+					Assembly assembly = Assembly.GetAssembly(typeof(Init));
+					Type type = assembly.GetType($"ETModel.{this.st.ToString()}");
+					startConfig.RemoveComponent(type);
+				}
+				
+				if (GUILayout.Button("删除该行配置", GUILayout.Height(16)))
+				{
+					startConfig.GetParent<StartConfig>().Remove(startConfig);
+					return false;
+				}
+				
+				GUILayout.EndHorizontal();
+			}
+
+			GUILayout.EndHorizontal();
+			
+			if (this.isFold)
+			{
+				foreach (StartConfig child in startConfig.List)
+				{
+					if (child.GetComponent<StartConfigDrawer>()?.OnGUI() == false)
+					{
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+	}
+	
 	public class ServerCommandLineEditor: EditorWindow
 	{
 		private const string ConfigDir = @"../Config/StartConfig/";
@@ -23,20 +300,18 @@ namespace ETEditor
 
 		private string newFileName = "";
 
-		private int copyNum = 1;
-
-		private AppType AppType = AppType.None;
-
-		private readonly List<StartConfig> startConfigs = new List<StartConfig>();
+		private StartConfig startConfig;
 
 		[MenuItem("Tools/命令行配置")]
 		private static void ShowWindow()
 		{
+			Game.EventSystem.Add(DLLType.Editor, typeof(ServerCommandLineEditor).Assembly);
 			GetWindow(typeof (ServerCommandLineEditor));
 		}
 
 		private void OnEnable()
 		{
+			Game.EventSystem.Add(DLLType.Editor, typeof(ServerCommandLineEditor).Assembly);
 			this.files = this.GetConfigFiles();
 			if (this.files.Count > 0)
 			{
@@ -47,11 +322,7 @@ namespace ETEditor
 
 		public void ClearConfig()
 		{
-			foreach (StartConfig startConfig in this.startConfigs)
-			{
-				startConfig.Dispose();
-			}
-			this.startConfigs.Clear();
+			startConfig?.Dispose();
 		}
 
 		private List<string> GetConfigFiles()
@@ -75,18 +346,8 @@ namespace ETEditor
 			try
 			{
 				this.ClearConfig();
-				string[] ss = File.ReadAllText(filePath).Split('\n');
-				foreach (string s in ss)
-				{
-					s2 = s.Trim();
-					if (s2 == "")
-					{
-						continue;
-					}
-
-					StartConfig startConfig = MongoHelper.FromJson<StartConfig>(s2);
-					this.startConfigs.Add(startConfig);
-				}
+				startConfig = MongoHelper.FromJson<StartConfig>(File.ReadAllText(filePath));
+				this.startConfig.AddComponentNoPool<StartConfigDrawer, int>(0);
 			}
 			catch (Exception e)
 			{
@@ -102,14 +363,7 @@ namespace ETEditor
 		private void Save()
 		{
 			string path = this.GetFilePath();
-			using (StreamWriter sw = new StreamWriter(new FileStream(path, FileMode.Create)))
-			{
-				foreach (StartConfig startConfig in this.startConfigs)
-				{
-					sw.Write(MongoHelper.ToJson(startConfig));
-					sw.Write('\n');
-				}
-			}
+			File.WriteAllText(path, MongoHelper.ToJson(startConfig));
 		}
 
 		private Vector2 scrollPos;
@@ -133,9 +387,14 @@ namespace ETEditor
 
 				if (GUILayout.Button("添加"))
 				{
+					this.ClearConfig();
+					
+					this.startConfig = new StartConfig();
+					startConfig.AddComponent<StartConfigDrawer>();
 					this.fileName = this.newFileName;
 					this.newFileName = "";
-					File.WriteAllText(this.GetFilePath(), "");
+					File.WriteAllText(this.GetFilePath(), MongoHelper.ToJson(this.startConfig));
+					
 					this.files = this.GetConfigFiles();
 					this.selectedIndex = this.files.IndexOf(this.fileName);
 					this.LoadConfig();
@@ -177,209 +436,13 @@ namespace ETEditor
 
 				GUILayout.EndHorizontal();
 			}
-
+			
 			scrollPos = GUILayout.BeginScrollView(this.scrollPos, true, true);
-			for (int i = 0; i < this.startConfigs.Count; ++i)
-			{
-				StartConfig startConfig = this.startConfigs[i];
-
-				
-				GUILayout.BeginHorizontal();
-				{
-					GUILayout.BeginHorizontal(GUILayout.Width(1700));
-					{
-						GUILayout.BeginHorizontal(GUILayout.Width(350));
-						GUILayout.Label($"AppId:");
-						startConfig.AppId = EditorGUILayout.IntField(startConfig.AppId, GUILayout.Width(30));
-						GUILayout.Label($"服务器IP:");
-						startConfig.ServerIP = EditorGUILayout.TextField(startConfig.ServerIP, GUILayout.Width(100));
-						GUILayout.Label($"AppType:");
-						startConfig.AppType = (AppType) EditorGUILayout.EnumPopup(startConfig.AppType);
-						GUILayout.EndHorizontal();
-					}
-					{
-						GUILayout.BeginHorizontal(GUILayout.Width(150));
-						InnerConfig innerConfig = startConfig.GetComponent<InnerConfig>();
-						if (innerConfig != null)
-						{
-							GUILayout.Label($"内网地址:");
-							innerConfig.Address = EditorGUILayout.TextField(innerConfig.Address, GUILayout.Width(120));
-						}
-
-						GUILayout.EndHorizontal();
-					}
-					{
-						GUILayout.BeginHorizontal(GUILayout.Width(350));
-						OuterConfig outerConfig = startConfig.GetComponent<OuterConfig>();
-						if (outerConfig != null)
-						{
-							GUILayout.Label($"外网地址:");
-							outerConfig.Address = EditorGUILayout.TextField(outerConfig.Address, GUILayout.Width(120));
-							GUILayout.Label($"外网地址2:");
-							outerConfig.Address2 = EditorGUILayout.TextField(outerConfig.Address2, GUILayout.Width(120));
-						}
-
-						GUILayout.EndHorizontal();
-					}
-					{
-						GUILayout.BeginHorizontal(GUILayout.Width(350));
-						ClientConfig clientConfig = startConfig.GetComponent<ClientConfig>();
-						if (clientConfig != null)
-						{
-							GUILayout.Label($"连接地址:");
-							clientConfig.Address = EditorGUILayout.TextField(clientConfig.Address, GUILayout.Width(120));
-						}
-
-						HttpConfig httpConfig = startConfig.GetComponent<HttpConfig>();
-						if (httpConfig != null)
-						{
-							GUILayout.Label($"AppId:");
-							httpConfig.AppId = EditorGUILayout.IntField(httpConfig.AppId, GUILayout.Width(20));
-							GUILayout.Label($"AppKey:");
-							httpConfig.AppKey = EditorGUILayout.TextField(httpConfig.AppKey);
-							GUILayout.Label($"Url:");
-							httpConfig.Url = EditorGUILayout.TextField(httpConfig.Url);
-							GUILayout.Label($"ManagerSystemUrl:");
-							httpConfig.ManagerSystemUrl = EditorGUILayout.TextField(httpConfig.ManagerSystemUrl);
-						}
-
-						DBConfig dbConfig = startConfig.GetComponent<DBConfig>();
-						if (dbConfig != null)
-						{
-							GUILayout.Label($"Connection:");
-							dbConfig.ConnectionString = EditorGUILayout.TextField(dbConfig.ConnectionString);
-
-							GUILayout.Label($"DBName:");
-							dbConfig.DBName = EditorGUILayout.TextField(dbConfig.DBName);
-						}
-
-						GUILayout.EndHorizontal();
-					}
-					GUILayout.EndHorizontal();
-				}
-
-				{
-					GUILayout.BeginHorizontal();
-					if (GUILayout.Button("删除"))
-					{
-						this.startConfigs.Remove(startConfig);
-						break;
-					}
-
-					if (GUILayout.Button("复制"))
-					{
-						for (int j = 1; j < this.copyNum + 1; ++j)
-						{
-							StartConfig newStartConfig = MongoHelper.FromBson<StartConfig>(startConfig.ToBson());
-							newStartConfig.AppId += j;
-							this.startConfigs.Add(newStartConfig);
-						}
-
-						break;
-					}
-
-					if (i >= 0)
-					{
-						if (GUILayout.Button("上移"))
-						{
-							if (i == 0)
-							{
-								break;
-							}
-							StartConfig s = this.startConfigs[i];
-							this.startConfigs.RemoveAt(i);
-							this.startConfigs.Insert(i - 1, s);
-							for (int j = 0; j < startConfigs.Count; ++j)
-							{
-								this.startConfigs[j].AppId = j + 1;
-							}
-
-							break;
-						}
-					}
-
-					if (i <= this.startConfigs.Count - 1)
-					{
-						if (GUILayout.Button("下移"))
-						{
-							if (i == this.startConfigs.Count - 1)
-							{
-								break;
-							}
-							StartConfig s = this.startConfigs[i];
-							this.startConfigs.RemoveAt(i);
-							this.startConfigs.Insert(i + 1, s);
-							for (int j = 0; j < startConfigs.Count; ++j)
-							{
-								this.startConfigs[j].AppId = j + 1;
-							}
-
-							break;
-						}
-					}
-					GUILayout.EndHorizontal();
-				}
-				GUILayout.EndHorizontal();
-			}
+			
+			startConfig.GetComponent<StartConfigDrawer>()?.OnGUI();
+			
 			GUILayout.EndScrollView();
 			
-			
-			
-			
-
-			GUILayout.Label("");
-
-			GUILayout.BeginHorizontal();
-			this.copyNum = EditorGUILayout.IntField("复制数量: ", this.copyNum);
-
-			GUILayout.Label($"添加的AppType:");
-			this.AppType = (AppType) EditorGUILayout.EnumPopup(this.AppType);
-
-			if (GUILayout.Button("添加一行配置"))
-			{
-				StartConfig newStartConfig = new StartConfig();
-
-				newStartConfig.AppType = this.AppType;
-
-				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager))
-				{
-					newStartConfig.AddComponent<OuterConfig>();
-				}
-
-				if (this.AppType.Is(AppType.Gate | AppType.Realm | AppType.Manager | AppType.Http | AppType.DB | AppType.Map | AppType.Location))
-				{
-					newStartConfig.AddComponent<InnerConfig>();
-				}
-
-				if (this.AppType.Is(AppType.Http))
-				{
-					newStartConfig.AddComponent<HttpConfig>();
-				}
-
-				if (this.AppType.Is(AppType.DB))
-				{
-					newStartConfig.AddComponent<DBConfig>();
-				}
-				
-				if (this.AppType.Is(AppType.Benchmark))
-				{
-					newStartConfig.AddComponent<ClientConfig>();
-				}
-				
-				if (this.AppType.Is(AppType.BenchmarkWebsocketServer))
-				{
-					newStartConfig.AddComponent<OuterConfig>();
-				}
-				
-				if (this.AppType.Is(AppType.BenchmarkWebsocketClient))
-				{
-					newStartConfig.AddComponent<ClientConfig>();
-				}
-
-				this.startConfigs.Add(newStartConfig);
-			}
-			GUILayout.EndHorizontal();
-
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("保存"))
 			{
@@ -388,23 +451,12 @@ namespace ETEditor
 			
 			if (GUILayout.Button("启动"))
 			{
-				StartConfig startConfig = null;
-				foreach (StartConfig config in this.startConfigs)
-				{
-					if (config.AppType.Is(AppType.Manager))
-					{
-						startConfig = config;
-					}
-				}
-
-				if (startConfig == null)
-				{
-					Log.Error("没有配置Manager!");
-					return;
-				}
-
-				string arguments = $"App.dll --appId={startConfig.AppId} --appType={startConfig.AppType} --config=../Config/StartConfig/{this.fileName}";
-				ProcessHelper.Run("dotnet", arguments, "../Bin/");
+				string arguments = $"--config={this.fileName}";
+				ProcessHelper.Run("App.exe", arguments, "../Bin/");
+			}
+			if (GUILayout.Button("启动数据库"))
+			{
+				ProcessHelper.Run("mongod", @"--dbpath=db", "../Database/bin/");
 			}
 			GUILayout.EndHorizontal();
 		}
