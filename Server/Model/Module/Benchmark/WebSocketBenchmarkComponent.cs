@@ -1,6 +1,6 @@
 ﻿namespace ETModel
 {
-	public class WebSocketBenchmarkComponent: Component
+	public class WebSocketBenchmarkComponent: Entity
 	{
 		public int k;
 

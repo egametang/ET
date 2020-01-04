@@ -2,8 +2,20 @@
 
 namespace ETModel
 {
-	public class LocationProxyComponent : Component
+	public class LocationProxyComponent : Entity
 	{
-		public IPEndPoint LocationAddress;
+		public static LocationProxyComponent Instance;
+
+		public override void Dispose()
+		{
+			if (this.IsDisposed)
+			{
+				return;
+			}
+			
+			base.Dispose();
+
+			Instance = null;
+		}
 	}
 }

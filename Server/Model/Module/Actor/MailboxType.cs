@@ -1,8 +1,9 @@
 ﻿namespace ETModel
 {
-    public static partial class MailboxType
-    {
-	    public const string MessageDispatcher = "Dispatcher";
-		public const string GateSession = "GateSession";
-    }
+	public enum MailboxType
+	{
+		MessageDispatcher,
+		UnOrderMessageDispatcher,
+		GateSession,
+	}
 }

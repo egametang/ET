@@ -22,7 +22,7 @@ namespace ETHotfix
 		}
 	}
 
-	public class OperaComponent: Component
+	public class OperaComponent: Entity
     {
         public Vector3 ClickPoint;
 

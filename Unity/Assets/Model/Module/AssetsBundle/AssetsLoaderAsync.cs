@@ -22,7 +22,7 @@ namespace ETModel
 		}
 	}
 
-	public class AssetsLoaderAsync : Component
+	public class AssetsLoaderAsync : Entity
 	{
 		private AssetBundle assetBundle;
 

@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace ETModel
 {
-	public abstract class NetworkComponent : Component
+	public abstract class NetworkComponent : Entity
 	{
-		public AppType AppType;
-		
 		protected AService Service;
 
-		private readonly Dictionary<long, Session> sessions = new Dictionary<long, Session>();
+		public readonly Dictionary<long, Session> Sessions = new Dictionary<long, Session>();
 
 		public IMessagePacker MessagePacker { get; set; }
 
 		public IMessageDispatcher MessageDispatcher { get; set; }
 
-		public void Awake(NetworkProtocol protocol, int packetSize = Packet.PacketSizeLength2)
+		public void Awake(NetworkProtocol protocol, int packetSize = Packet.PacketSizeLength4)
 		{
 			switch (protocol)
 			{
@@ -33,7 +30,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, string address, int packetSize = Packet.PacketSizeLength2)
+		public void Awake(NetworkProtocol protocol, string address, int packetSize = Packet.PacketSizeLength4)
 		{
 			try
 			{
@@ -42,15 +39,15 @@ namespace ETModel
 				{
 					case NetworkProtocol.KCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new KService(ipEndPoint, this.OnAccept) { Parent = this };
+						this.Service = new KService(ipEndPoint, (channel)=> { this.OnAccept(channel); }) { Parent = this };
 						break;
 					case NetworkProtocol.TCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new TService(packetSize, ipEndPoint, this.OnAccept) { Parent = this };
+						this.Service = new TService(packetSize, ipEndPoint, (channel)=> { this.OnAccept(channel); }) { Parent = this };
 						break;
 					case NetworkProtocol.WebSocket:
 						string[] prefixs = address.Split(';');
-						this.Service = new WService(prefixs, this.OnAccept) { Parent = this };
+						this.Service = new WService(prefixs, (channel)=> { this.OnAccept(channel); }) { Parent = this };
 						break;
 				}
 			}
@@ -62,31 +59,32 @@ namespace ETModel
 
 		public int Count
 		{
-			get { return this.sessions.Count; }
+			get { return this.Sessions.Count; }
 		}
 
-		public void OnAccept(AChannel channel)
+		public virtual Session OnAccept(AChannel channel)
 		{
-			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
-			this.sessions.Add(session.Id, session);
-			session.Start();
+			Session session = EntityFactory.CreateWithParent<Session, AChannel>(this, channel);
+			this.Sessions.Add(session.Id, session);
+			channel.Start();
+			return session;
 		}
 
 		public virtual void Remove(long id)
 		{
 			Session session;
-			if (!this.sessions.TryGetValue(id, out session))
+			if (!this.Sessions.TryGetValue(id, out session))
 			{
 				return;
 			}
-			this.sessions.Remove(id);
+			this.Sessions.Remove(id);
 			session.Dispose();
 		}
 
 		public Session Get(long id)
 		{
 			Session session;
-			this.sessions.TryGetValue(id, out session);
+			this.Sessions.TryGetValue(id, out session);
 			return session;
 		}
 
@@ -96,9 +94,9 @@ namespace ETModel
 		public Session Create(IPEndPoint ipEndPoint)
 		{
 			AChannel channel = this.Service.ConnectChannel(ipEndPoint);
-			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
-			this.sessions.Add(session.Id, session);
-			session.Start();
+			Session session = EntityFactory.CreateWithParent<Session, AChannel>(this, channel);
+			this.Sessions.Add(session.Id, session);
+			channel.Start();
 			return session;
 		}
 		
@@ -108,9 +106,9 @@ namespace ETModel
 		public Session Create(string address)
 		{
 			AChannel channel = this.Service.ConnectChannel(address);
-			Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
-			this.sessions.Add(session.Id, session);
-			session.Start();
+			Session session = EntityFactory.CreateWithParent<Session, AChannel>(this, channel);
+			this.Sessions.Add(session.Id, session);
+			channel.Start();
 			return session;
 		}
 
@@ -131,11 +129,6 @@ namespace ETModel
 			}
 
 			base.Dispose();
-
-			foreach (Session session in this.sessions.Values.ToArray())
-			{
-				session.Dispose();
-			}
 
 			this.Service.Dispose();
 		}

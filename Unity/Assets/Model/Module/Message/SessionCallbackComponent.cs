@@ -3,9 +3,9 @@ using System.IO;
 
 namespace ETModel
 {
-	public class SessionCallbackComponent: Component
+	public class SessionCallbackComponent: Entity
 	{
-		public Action<Session, byte, ushort, MemoryStream> MessageCallback;
+		public Action<Session, ushort, MemoryStream> MessageCallback;
 		public Action<Session> DisposeCallback;
 
 		public override void Dispose()

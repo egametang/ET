@@ -5,7 +5,7 @@ namespace ETHotfix
 {
     public static class MapHelper
     {
-        public static async ETVoid EnterMapAsync()
+        public static async ETVoid EnterMapAsync(string sceneName)
         {
             try
             {
@@ -18,7 +18,7 @@ namespace ETHotfix
                 // 切换到map场景
                 using (SceneChangeComponent sceneChangeComponent = ETModel.Game.Scene.AddComponent<SceneChangeComponent>())
                 {
-                    await sceneChangeComponent.ChangeSceneAsync(SceneType.Map);
+                    await sceneChangeComponent.ChangeSceneAsync(sceneName);
                 }
 				
                 G2C_EnterMap g2CEnterMap = await ETModel.SessionComponent.Instance.Session.Call(new C2G_EnterMap()) as G2C_EnterMap;

@@ -15,14 +15,14 @@ namespace ETHotfix
 		}
 	}
 	
-	public class UILoginComponent: Component
+	public class UILoginComponent: Entity
 	{
 		private GameObject account;
 		private GameObject loginBtn;
 
 		public void Awake()
 		{
-			ReferenceCollector rc = this.GetParent<UI>().GameObject.GetComponent<ReferenceCollector>();
+			ReferenceCollector rc = this.GetParent<UI>().ViewGO.GetComponent<ReferenceCollector>();
 			loginBtn = rc.Get<GameObject>("LoginBtn");
 			loginBtn.GetComponent<Button>().onClick.Add(OnLogin);
 			this.account = rc.Get<GameObject>("Account");
@@ -30,7 +30,7 @@ namespace ETHotfix
 
 		public void OnLogin()
 		{
-			LoginHelper.OnLoginAsync(this.account.GetComponent<InputField>().text).Coroutine();
+			LoginHelper.OnLoginAsync(this.Domain, this.account.GetComponent<InputField>().text).Coroutine();
 		}
 	}
 }

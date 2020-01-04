@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>Model</AssemblyName>
     <RootNamespace>Model</RootNamespace>
     <LangVersion>7.3</LangVersion>
@@ -26,6 +26,12 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs">
       <Link>Base\Async\AsyncETVoidMethodBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETCancellationToken.cs">
+      <Link>Base\Async\ETCancellationToken.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETCancellationTokenSource.cs">
+      <Link>Base\Async\ETCancellationTokenSource.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTask.cs">
       <Link>Base\Async\ETTask.cs</Link>
     </Compile>
@@ -47,11 +53,101 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MongoHelper.cs">
       <Link>Base\Helper\MongoHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\ListComponent.cs">
+      <Link>Base\ListComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\MultiMapSet.cs">
+      <Link>Base\MultiMapSet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\BaseAttribute.cs">
+      <Link>Base\Object\BaseAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Entity.cs">
+      <Link>Base\Object\Entity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityCreateComponet.cs">
+      <Link>Base\Object\EntityCreateComponet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityEventAttribute.cs">
+      <Link>Base\Object\EntityEventAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityFactory.cs">
+      <Link>Base\Object\EntityFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventProxy.cs">
+      <Link>Base\Object\EventProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventSystem.cs">
+      <Link>Base\Object\EventSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IAwakeSystem.cs">
+      <Link>Base\Object\IAwakeSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IChangeSystem.cs">
+      <Link>Base\Object\IChangeSystem.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDeserializeSystem.cs">
-      <Link>Base\Base\IDeserializeSystem.cs</Link>
+      <Link>Base\Object\IDeserializeSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDestroySystem.cs">
+      <Link>Base\Object\IDestroySystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILateUpdateSystem.cs">
+      <Link>Base\Object\ILateUpdateSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILoadSystem.cs">
+      <Link>Base\Object\ILoadSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ISerializeToEntity.cs">
+      <Link>Base\Object\ISerializeToEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IStartSystem.cs">
+      <Link>Base\Object\IStartSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IUpdateSystem.cs">
+      <Link>Base\Object\IUpdateSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\NoMemoryCheck.cs">
+      <Link>Base\Object\NoMemoryCheck.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\NoObjectPool.cs">
+      <Link>Base\Object\NoObjectPool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Object.cs">
+      <Link>Base\Object\Object.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectPool.cs">
+      <Link>Base\Object\ObjectPool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectSystemAttribute.cs">
+      <Link>Base\Object\ObjectSystemAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Pool.cs">
+      <Link>Base\Pool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\ProcessHelper.cs">
+      <Link>Base/ProcessHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\StructBsonSerialize.cs">
+      <Link>Base\StructBsonSerialize.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMapSet.cs">
+      <Link>Base\UnOrderMultiMapSet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\CopyConfig.cs">
+      <Link>Component\Config\CopyConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ProcessConfig.cs">
+      <Link>Component\Config\ProcessConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Component\Config\SceneConfig.cs">
+      <Link>Component\Config\SceneConfig.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
       <Link>Component\Config\StartConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\SceneType.cs">
+      <Link>Entity\SceneType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
@@ -61,6 +157,21 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\AConfigComponent.cs">
       <Link>Module\Config\AConfigComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLock.cs">
+      <Link>Module\CoroutineLock\CoroutineLock.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs">
+      <Link>Module\CoroutineLock\CoroutineLockComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueue.cs">
+      <Link>Module\CoroutineLock\CoroutineLockQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs">
+      <Link>Module\CoroutineLock\CoroutineLockQueueType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
+      <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>
@@ -100,25 +211,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\TimeHelper.cs" Link="Base\Helper\TimeHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\ZipHelper.cs" Link="Base\Helper\ZipHelper.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\MultiMap.cs" Link="Base\MultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\BaseAttribute.cs" Link="Base\Base\BaseAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Component.cs" Link="Base\Base\Component.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ComponentFactory.cs" Link="Base\Base\ComponentFactory.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ComponentWithId.cs" Link="Base\Base\ComponentWithId.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Entity.cs" Link="Base\Base\Entity.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityEventAttribute.cs" Link="Base\Base\EntityEventAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventProxy.cs" Link="Base\Base\EventProxy.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventSystem.cs" Link="Base\Base\EventSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IAwakeSystem.cs" Link="Base\Base\IAwakeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IChangeSystem.cs" Link="Base\Base\IChangeSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IDestroySystem.cs" Link="Base\Base\IDestroySystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILateUpdateSystem.cs" Link="Base\Base\ILateUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ILoadSystem.cs" Link="Base\Base\ILoadSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ISerializeToEntity.cs" Link="Base\Base\ISerializeToEntity.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IStartSystem.cs" Link="Base\Base\IStartSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\IUpdateSystem.cs" Link="Base\Base\IUpdateSystem.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\Object.cs" Link="Base\Base\Object.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectPool.cs" Link="Base\Base\ObjectPool.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\ObjectSystemAttribute.cs" Link="Base\Base\ObjectSystemAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\OneThreadSynchronizationContext.cs" Link="Base\OneThreadSynchronizationContext.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\QueueDictionary.cs" Link="Base\QueueDictionary.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
@@ -163,6 +255,9 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\ProtobufPacker.cs" Link="Module\Message\ProtobufPacker.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\SessionIdleCheckComponent.cs">
+      <Link>Module\Message\SessionIdleCheckComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
@@ -317,12 +412,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />
-    <Folder Include="Base\Base\" />
     <Folder Include="Component\Config\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Message\MessagePool\" />
     <Folder Include="Module\Numeric\" />
+    <Folder Include="Module\Scene" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">

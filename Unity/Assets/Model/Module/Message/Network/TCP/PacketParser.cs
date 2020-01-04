@@ -13,9 +13,9 @@ namespace ETModel
 	{
 		public const int PacketSizeLength2 = 2;
 		public const int PacketSizeLength4 = 4;
-		public const int FlagIndex = 0;
-		public const int OpcodeIndex = 1;
-		public const int MessageIndex = 3;
+		public const int MinPacketSize = 2;
+		public const int OpcodeIndex = 0;
+		public const int MessageIndex = 2;
 	}
 
 	public class PacketParser
@@ -59,22 +59,21 @@ namespace ETModel
 							{
 								case Packet.PacketSizeLength4:
 									this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
-									if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < 3)
+									if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < Packet.MinPacketSize)
 									{
-										throw new Exception($"recv packet size error: {this.packetSize}");
+										throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");
 									}
 									break;
 								case Packet.PacketSizeLength2:
 									this.packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
-									if (this.packetSize > ushort.MaxValue || this.packetSize < 3)
+									if (this.packetSize > ushort.MaxValue || this.packetSize < Packet.MinPacketSize)
 									{
-										throw new Exception($"recv packet size error: {this.packetSize}");
+										throw new Exception($"recv packet size error:, 可能是外网探测端口: {this.packetSize}");
 									}
 									break;
 								default:
 									throw new Exception("packet size byte count must be 2 or 4!");
 							}
-
 							this.state = ParserState.PacketBody;
 						}
 						break;

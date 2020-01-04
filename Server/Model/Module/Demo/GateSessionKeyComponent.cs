@@ -2,7 +2,7 @@
 
 namespace ETModel
 {
-	public class GateSessionKeyComponent : Component
+	public class GateSessionKeyComponent : Entity
 	{
 		private readonly Dictionary<long, string> sessionKey = new Dictionary<long, string>();
 		

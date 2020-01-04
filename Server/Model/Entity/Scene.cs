@@ -2,24 +2,38 @@
 {
 	public sealed class Scene: Entity
 	{
+		public SceneType SceneType { get; set; }
+		
 		public string Name { get; set; }
 
-		public Scene()
+		public Scene Get(long id)
 		{
+			return (Scene)this.Children[id];
 		}
 
-		public Scene(long id): base(id)
+		public new Entity Domain
 		{
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
+			get
 			{
-				return;
+				return this.domain;
 			}
-
-			base.Dispose();
+			set
+			{
+				this.domain = value;
+			}
+		}
+		
+		public new Entity Parent
+		{
+			get
+			{
+				return this.parent;
+			}
+			set
+			{
+				this.parent = value;
+				this.parent.Children.Add(this.Id, this);
+			}
 		}
 	}
 }

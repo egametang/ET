@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
+using ETModel;
 
 namespace ETTools
 {
@@ -16,16 +18,23 @@ namespace ETTools
     {
         public static void Main()
         {
-            Run("protoc.exe", "--csharp_out=\"../Unity/Assets/Model/Module/Message/\" --proto_path=\"./\" OuterMessage.proto");
-            Run("protoc.exe", "--csharp_out=\"../Unity/Assets/Hotfix/Module/Message/\" --proto_path=\"./\" HotfixMessage.proto");
+            string protoc = "";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                protoc = "protoc.exe";
+            }
+            else
+            {
+                protoc = "protoc";
+            }
+            ProcessHelper.Run(protoc, "--csharp_out=\"../Unity/Assets/Model/Module/Message/\" --proto_path=\"./\" OuterMessage.proto", waitExit: true);
+            ProcessHelper.Run(protoc, "--csharp_out=\"../Unity/Assets/Hotfix/Module/Message/\" --proto_path=\"./\" HotfixMessage.proto", waitExit: true);
 
             // InnerMessage.proto生成cs代码
             InnerProto2CS.Proto2CS(); 
 
-            msgOpcode.Clear();
             Proto2CS("ETModel", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 100);
 
-            msgOpcode.Clear();
             Proto2CS("ETHotfix", "HotfixMessage.proto", hotfixMessagePath, "HotfixOpcode", 10000);
             
             Console.WriteLine("proto2cs succeed!");
@@ -36,28 +45,6 @@ namespace ETTools
         private const string hotfixMessagePath = "../Unity/Assets/Hotfix/Module/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
-
-        public static void Run(string exe, string arguments)
-        {
-            Console.WriteLine($"execute: {exe} {arguments}");
-            ProcessStartInfo info = new ProcessStartInfo
-            {
-                FileName = exe,
-                Arguments = arguments,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                WorkingDirectory = ".",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-            };
-
-            Process process = Process.Start(info);
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new Exception(process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd());
-            }
-        }
 
         public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode, bool isClient = true)
         {

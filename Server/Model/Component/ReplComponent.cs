@@ -17,7 +17,7 @@ namespace ETModel
         }
     }
     
-    public class ReplComponent: Component
+    public class ReplComponent: Entity
     {
         public ScriptOptions ScriptOptions;
         public ScriptState ScriptState;
@@ -28,7 +28,7 @@ namespace ETModel
             {
                 case "exit":
                 {
-                    this.Entity.RemoveComponent<ReplComponent>();
+                    this.Parent.RemoveComponent<ReplComponent>();
                     return true;
                 }
                 case "reset":

@@ -13,7 +13,7 @@ namespace ETModel
 		}
 	}
 
-	public class MoveComponent : Component
+	public class MoveComponent : Entity
 	{
 		public Vector3 Target;
 

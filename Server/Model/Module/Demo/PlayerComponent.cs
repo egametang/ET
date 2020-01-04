@@ -12,7 +12,7 @@ namespace ETModel
 		}
 	}
 	
-	public class PlayerComponent : Component
+	public class PlayerComponent : Entity
 	{
 		public static PlayerComponent Instance { get; private set; }
 
