@@ -232,9 +232,7 @@ namespace ETHotfix
 		public override void EndInit()
 		{
 			try
-			{
-				base.EndInit();
-				
+			{				
 				this.componentDict.Clear();
 
 				if (this.components != null)
@@ -245,6 +243,8 @@ namespace ETHotfix
 						this.componentDict.Add(component.GetType(), component);
 					}
 				}
+
+        base.EndInit();
 			}
 			catch (Exception e)
 			{
