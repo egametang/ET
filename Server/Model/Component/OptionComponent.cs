@@ -12,7 +12,7 @@ namespace ETModel
 		}
 	}
 	
-	public class OptionComponent : Component
+	public class OptionComponent : Entity
 	{
 		public Options Options { get; set; }
 

@@ -20,7 +20,7 @@ namespace ETModel
 		}
 	}
 
-	public class CameraComponent : Component
+	public class CameraComponent : Entity
 	{
 		// 战斗摄像机
 		public Camera mainCamera;

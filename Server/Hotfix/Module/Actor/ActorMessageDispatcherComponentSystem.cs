@@ -5,10 +5,11 @@ using ETModel;
 namespace ETHotfix
 {
 	[ObjectSystem]
-	public class ActorMessageDispatcherComponentStartSystem: AwakeSystem<ActorMessageDispatcherComponent>
+	public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
 	{
 		public override void Awake(ActorMessageDispatcherComponent self)
 		{
+			ActorMessageDispatcherComponent.Instance = self;
 			self.Awake();
 		}
 	}
@@ -19,6 +20,16 @@ namespace ETHotfix
 		public override void Load(ActorMessageDispatcherComponent self)
 		{
 			self.Load();
+		}
+	}
+	
+	[ObjectSystem]
+	public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
+	{
+		public override void Destroy(ActorMessageDispatcherComponent self)
+		{
+			self.ActorMessageHandlers.Clear();
+			ActorMessageDispatcherComponent.Instance = null;
 		}
 	}
 
@@ -34,27 +45,11 @@ namespace ETHotfix
 
 		public static void Load(this ActorMessageDispatcherComponent self)
 		{
-			AppType appType = StartConfigComponent.Instance.StartConfig.AppType;
-
 			self.ActorMessageHandlers.Clear();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(ActorMessageHandlerAttribute));
-
-			types = Game.EventSystem.GetTypes(typeof (ActorMessageHandlerAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ActorMessageHandlerAttribute));
 			foreach (Type type in types)
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), false);
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
-				
-				ActorMessageHandlerAttribute messageHandlerAttribute = (ActorMessageHandlerAttribute) attrs[0];
-				if (!messageHandlerAttribute.Type.Is(appType))
-				{
-					continue;
-				}
-
 				object obj = Activator.CreateInstance(type);
 
 				IMActorHandler imHandler = obj as IMActorHandler;
@@ -72,14 +67,14 @@ namespace ETHotfix
 		/// 分发actor消息
 		/// </summary>
 		public static async ETTask Handle(
-				this ActorMessageDispatcherComponent self, Entity entity, ActorMessageInfo actorMessageInfo)
+				this ActorMessageDispatcherComponent self, Entity entity, Session session, object message)
 		{
-			if (!self.ActorMessageHandlers.TryGetValue(actorMessageInfo.Message.GetType(), out IMActorHandler handler))
+			if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out IMActorHandler handler))
 			{
-				throw new Exception($"not found message handler: {MongoHelper.ToJson(actorMessageInfo.Message)}");
+				throw new Exception($"not found message handler: {message}");
 			}
 
-			await handler.Handle(actorMessageInfo.Session, entity, actorMessageInfo.Message);
+			await handler.Handle(session, entity, message);
 		}
 	}
 }

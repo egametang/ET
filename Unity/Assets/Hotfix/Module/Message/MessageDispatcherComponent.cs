@@ -25,7 +25,7 @@ namespace ETHotfix
 	/// <summary>
 	/// 消息分发组件
 	/// </summary>
-	public class MessageDispatcherComponent : Component
+	public class MessageDispatcherComponent : Entity
 	{
 		private readonly Dictionary<ushort, List<IMHandler>> handlers = new Dictionary<ushort, List<IMHandler>>();
 
@@ -59,7 +59,7 @@ namespace ETHotfix
 				}
 				
 				Type messageType = iMHandler.GetMessageType();
-				ushort opcode = this.Entity.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
+				ushort opcode = this.Parent.GetComponent<OpcodeTypeComponent>().GetOpcode(messageType);
 				if (opcode != 0)
 				{
 					this.RegisterHandler(opcode, iMHandler);

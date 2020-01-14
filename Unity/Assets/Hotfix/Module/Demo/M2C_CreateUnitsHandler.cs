@@ -16,7 +16,7 @@ namespace ETHotfix
 				{
 					continue;
 				}
-				Unit unit = UnitFactory.Create(unitInfo.UnitId);
+				Unit unit = UnitFactory.Create(ETModel.Game.Scene, unitInfo.UnitId);
 				unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 			}
 

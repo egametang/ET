@@ -1,6 +1,6 @@
 ﻿namespace ETModel
 {
-	public class SessionPlayerComponent : Component
+	public class SessionPlayerComponent : Entity
 	{
 		public Player Player;
 	}

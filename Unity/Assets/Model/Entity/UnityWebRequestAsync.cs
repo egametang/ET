@@ -12,7 +12,7 @@ namespace ETModel
 		}
 	}
 	
-	public class UnityWebRequestAsync : Component
+	public class UnityWebRequestAsync : Entity
 	{
 		public class AcceptAllCertificate: CertificateHandler
 		{

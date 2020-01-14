@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace PF
 {
-    public class AStarConfig: Component
+    public class AStarConfig: Entity
     {
         public static AStarConfig Instance { get; private set; }
 

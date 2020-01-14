@@ -42,7 +42,7 @@ namespace MongoDB.Bson.Serialization
             .GetTypeInfo()
             .Assembly
             .GetType("System.Runtime.Serialization.FormatterServices")
-            .GetTypeInfo()
+            ?.GetTypeInfo()
             ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 
         private static int __freezeNestingLevel = 0;

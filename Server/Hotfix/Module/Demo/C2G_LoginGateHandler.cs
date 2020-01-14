@@ -3,12 +3,18 @@ using ETModel;
 
 namespace ETHotfix
 {
-	[MessageHandler(AppType.Gate)]
+	[MessageHandler]
 	public class C2G_LoginGateHandler : AMRpcHandler<C2G_LoginGate, G2C_LoginGate>
 	{
 		protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response, Action reply)
 		{
-			string account = Game.Scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
+			Scene scene = Game.Scene.Get(request.GateId);
+			if (scene == null)
+			{
+				return;
+			}
+			
+			string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
 			if (account == null)
 			{
 				response.Error = ErrorCode.ERR_ConnectGateKeyError;
@@ -16,10 +22,10 @@ namespace ETHotfix
 				reply();
 				return;
 			}
-			Player player = ComponentFactory.Create<Player, string>(account);
-			Game.Scene.GetComponent<PlayerComponent>().Add(player);
+			Player player = EntityFactory.Create<Player, string>(Game.Scene, account);
+			scene.GetComponent<PlayerComponent>().Add(player);
 			session.AddComponent<SessionPlayerComponent>().Player = player;
-			session.AddComponent<MailBoxComponent, string>(MailboxType.GateSession);
+			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 
 			response.PlayerId = player.Id;
 			reply();

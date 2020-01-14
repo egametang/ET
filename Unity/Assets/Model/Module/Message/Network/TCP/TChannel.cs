@@ -24,13 +24,13 @@ namespace ETModel
 
 		private bool isSending;
 
-		private bool isRecving;
-
 		private bool isConnected;
 
 		private readonly PacketParser parser;
 
 		private readonly byte[] packetSizeCache;
+
+		private readonly IPEndPoint remoteIpEndPoint;
 		
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
@@ -44,8 +44,8 @@ namespace ETModel
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
-			this.RemoteAddress = ipEndPoint;
-
+			this.RemoteAddress = ipEndPoint.ToString();
+			this.remoteIpEndPoint = ipEndPoint;
 			this.isConnected = false;
 			this.isSending = false;
 		}
@@ -62,8 +62,8 @@ namespace ETModel
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
-			this.RemoteAddress = (IPEndPoint)socket.RemoteEndPoint;
-			
+			this.RemoteAddress = socket.RemoteEndPoint.ToString();
+			this.remoteIpEndPoint = (IPEndPoint)socket.RemoteEndPoint;
 			this.isConnected = true;
 			this.isSending = false;
 		}
@@ -85,6 +85,18 @@ namespace ETModel
 			this.socket = null;
 			this.memoryStream.Dispose();
 		}
+
+		public override void Start()
+		{
+			if (this.ChannelType == ChannelType.Accept)
+			{
+				this.StartRecv();
+			}
+			else
+			{
+				this.ConnectAsync(this.remoteIpEndPoint);
+			}
+		}
 		
 		private TService GetService()
 		{
@@ -97,23 +109,6 @@ namespace ETModel
 			{
 				return this.memoryStream;
 			}
-		}
-
-		public override void Start()
-		{
-			if (!this.isConnected)
-			{
-				this.ConnectAsync(this.RemoteAddress);
-				return;
-			}
-
-			if (!this.isRecving)
-			{
-				this.isRecving = true;
-				this.StartRecv();
-			}
-
-			this.GetService().MarkNeedStartSend(this.Id);
 		}
 		
 		public override void Send(MemoryStream stream)
@@ -196,8 +191,8 @@ namespace ETModel
 
 			e.RemoteEndPoint = null;
 			this.isConnected = true;
-			
-			this.Start();
+			this.StartRecv();
+			this.GetService().MarkNeedStartSend(this.Id);
 		}
 
 		private void OnDisconnectComplete(object o)
@@ -206,7 +201,7 @@ namespace ETModel
 			this.OnError((int)e.SocketError);
 		}
 
-		private void StartRecv()
+		public void StartRecv()
 		{
 			int size = this.recvBuffer.ChunkSize - this.recvBuffer.LastIndex;
 			this.RecvAsync(this.recvBuffer.Last, this.recvBuffer.LastIndex, size);

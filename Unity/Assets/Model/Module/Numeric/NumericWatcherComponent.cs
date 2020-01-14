@@ -24,7 +24,7 @@ namespace ETModel
 	/// <summary>
 	/// 监视数值变化组件,分发监听
 	/// </summary>
-	public class NumericWatcherComponent : Component
+	public class NumericWatcherComponent : Entity
 	{
 		private Dictionary<NumericType, List<INumericWatcher>> allWatchers;
 
@@ -37,7 +37,7 @@ namespace ETModel
 		{
 			this.allWatchers = new Dictionary<NumericType, List<INumericWatcher>>();
 
-			List<Type> types = Game.EventSystem.GetTypes(typeof(NumericWatcherAttribute));
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(NumericWatcherAttribute));
 			foreach (Type type in types)
 			{
 				object[] attrs = type.GetCustomAttributes(typeof(NumericWatcherAttribute), false);

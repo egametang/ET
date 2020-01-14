@@ -13,7 +13,7 @@ namespace ETModel
 		}
 	}
 
-	public class AssetsBundleLoaderAsync : Component
+	public class AssetsBundleLoaderAsync : Entity
 	{
 		private AssetBundleCreateRequest request;
 

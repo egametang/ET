@@ -22,7 +22,7 @@ namespace ETModel
 		}
 	}
 
-	public class AnimatorComponent : Component
+	public class AnimatorComponent : Entity
 	{
 		public Dictionary<string, AnimationClip> animationClips = new Dictionary<string, AnimationClip>();
 		public HashSet<string> Parameter = new HashSet<string>();
@@ -35,7 +35,7 @@ namespace ETModel
 
 		public void Awake()
 		{
-			Animator animator = this.GetParent<Unit>().GameObject.GetComponent<Animator>();
+			Animator animator = this.GetParent<Unit>().ViewGO.GetComponent<Animator>();
 
 			if (animator == null)
 			{

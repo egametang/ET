@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace ETModel
 {
@@ -13,12 +15,13 @@ namespace ETModel
 
 	public sealed class EventSystem
 	{
-		private readonly Dictionary<long, Component> allComponents = new Dictionary<long, Component>();
+		private readonly Dictionary<long, Entity> allComponents = new Dictionary<long, Entity>();
 
 		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
-		private readonly UnOrderMultiMap<Type, Type> types = new UnOrderMultiMap<Type, Type>();
+		
+		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
 
-		private readonly Dictionary<string, List<IEvent>> allEvents = new Dictionary<string, List<IEvent>>();
+		private readonly Dictionary<string, List<object>> allEvents = new Dictionary<string, List<object>>();
 
 		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
 
@@ -55,7 +58,12 @@ namespace ETModel
 			{
 				foreach (Type type in value.GetTypes())
 				{
-					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), false);
+					if (type.IsAbstract)
+					{
+						continue;
+					}
+
+					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
 					if (objects.Length == 0)
 					{
 						continue;
@@ -74,16 +82,9 @@ namespace ETModel
 			this.changeSystems.Clear();
 			this.destroySystems.Clear();
 			this.deserializeSystems.Clear();
-
-			foreach (Type type in types[typeof(ObjectSystemAttribute)])
+			
+			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(ObjectSystemAttribute), false);
-
-				if (attrs.Length == 0)
-				{
-					continue;
-				}
-
 				object obj = Activator.CreateInstance(type);
 
 				switch (obj)
@@ -116,23 +117,26 @@ namespace ETModel
 			}
 
 			this.allEvents.Clear();
-			foreach (Type type in types[typeof(EventAttribute)])
+			if (this.types.ContainsKey(typeof (EventAttribute)))
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
-
-				foreach (object attr in attrs)
+				foreach (Type type in types[typeof(EventAttribute)])
 				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
-					object obj = Activator.CreateInstance(type);
-					IEvent iEvent = obj as IEvent;
-					if (iEvent == null)
+					object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
+
+					foreach (object attr in attrs)
 					{
-						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
+						EventAttribute aEventAttribute = (EventAttribute)attr;
+						object obj = Activator.CreateInstance(type);
+						IEvent iEvent = obj as IEvent;
+						if (iEvent == null)
+						{
+							Log.Error($"{obj.GetType().Name} 没有继承IEvent");
+						}
+						this.RegisterEvent(aEventAttribute.Type, iEvent);
 					}
-					this.RegisterEvent(aEventAttribute.Type, iEvent);
 				}
 			}
-
+			
 			this.Load();
 		}
 
@@ -140,7 +144,7 @@ namespace ETModel
 		{
 			if (!this.allEvents.ContainsKey(eventId))
 			{
-				this.allEvents.Add(eventId, new List<IEvent>());
+				this.allEvents.Add(eventId, new List<object>());
 			}
 			this.allEvents[eventId].Add(e);
 		}
@@ -150,23 +154,38 @@ namespace ETModel
 			return this.assemblies[dllType];
 		}
 		
-		public List<Type> GetTypes(Type systemAttributeType)
+		public HashSet<Type> GetTypes(Type systemAttributeType)
 		{
 			if (!this.types.ContainsKey(systemAttributeType))
 			{
-				return new List<Type>();
+				return new HashSet<Type>();
 			}
 			return this.types[systemAttributeType];
 		}
-
-		public void Add(Component component)
+		
+		public List<Type> GetTypes()
 		{
-			this.allComponents.Add(component.InstanceId, component);
+			List<Type> allTypes = new List<Type>();
+			foreach (Assembly assembly in this.assemblies.Values)
+			{
+				allTypes.AddRange(assembly.GetTypes());
+			}
+			return allTypes;
+		}
 
+		public void RegisterSystem(Entity component, bool isRegister = true)
+		{
+			if (!isRegister)
+			{
+				this.Remove(component.InstanceId);
+				return;
+			}
+			this.allComponents.Add(component.InstanceId, component);
+			
 			Type type = component.GetType();
 
 			if (this.loadSystems.ContainsKey(type))
-			{
+			{ 
 				this.loaders.Enqueue(component.InstanceId);
 			}
 
@@ -191,14 +210,19 @@ namespace ETModel
 			this.allComponents.Remove(instanceId);
 		}
 
-		public Component Get(long instanceId)
+		public Entity Get(long instanceId)
 		{
-			Component component = null;
+			Entity component = null;
 			this.allComponents.TryGetValue(instanceId, out component);
 			return component;
 		}
 		
-		public void Deserialize(Component component)
+		public bool IsRegister(long instanceId)
+		{
+			return this.allComponents.ContainsKey(instanceId);
+		}
+		
+		public void Deserialize(Entity component)
 		{
 			List<IDeserializeSystem> iDeserializeSystems = this.deserializeSystems[component.GetType()];
 			if (iDeserializeSystems == null)
@@ -224,7 +248,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(Component component)
+		public void Awake(Entity component)
 		{
 			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
@@ -256,7 +280,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake<P1>(Component component, P1 p1)
+		public void Awake<P1>(Entity component, P1 p1)
 		{
 			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
@@ -288,7 +312,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake<P1, P2>(Component component, P1 p1, P2 p2)
+		public void Awake<P1, P2>(Entity component, P1 p1, P2 p2)
 		{
 			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
@@ -320,7 +344,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake<P1, P2, P3>(Component component, P1 p1, P2 p2, P3 p3)
+		public void Awake<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
 		{
 			List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
 			if (iAwakeSystems == null)
@@ -352,7 +376,39 @@ namespace ETModel
 			}
 		}
 
-		public void Change(Component component)
+        public void Awake<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
+        {
+            List<IAwakeSystem> iAwakeSystems = this.awakeSystems[component.GetType()];
+            if (iAwakeSystems == null)
+            {
+                return;
+            }
+
+            foreach (IAwakeSystem aAwakeSystem in iAwakeSystems)
+            {
+                if (aAwakeSystem == null)
+                {
+                    continue;
+                }
+
+                IAwake<P1, P2, P3, P4> iAwake = aAwakeSystem as IAwake<P1, P2, P3, P4>;
+                if (iAwake == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    iAwake.Run(component, p1, p2, p3, p4);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+
+        public void Change(Entity component)
 		{
 			List<IChangeSystem> iChangeSystems = this.changeSystems[component.GetType()];
 			if (iChangeSystems == null)
@@ -383,7 +439,7 @@ namespace ETModel
 			while (this.loaders.Count > 0)
 			{
 				long instanceId = this.loaders.Dequeue();
-				Component component;
+				Entity component;
 				if (!this.allComponents.TryGetValue(instanceId, out component))
 				{
 					continue;
@@ -398,7 +454,7 @@ namespace ETModel
 				{
 					continue;
 				}
-
+				
 				this.loaders2.Enqueue(instanceId);
 
 				foreach (ILoadSystem iLoadSystem in iLoadSystems)
@@ -422,7 +478,7 @@ namespace ETModel
 			while (this.starts.Count > 0)
 			{
 				long instanceId = this.starts.Dequeue();
-				Component component;
+				Entity component;
 				if (!this.allComponents.TryGetValue(instanceId, out component))
 				{
 					continue;
@@ -448,7 +504,7 @@ namespace ETModel
 			}
 		}
 
-		public void Destroy(Component component)
+		public void Destroy(Entity component)
 		{
 			List<IDestroySystem> iDestroySystems = this.destroySystems[component.GetType()];
 			if (iDestroySystems == null)
@@ -473,7 +529,7 @@ namespace ETModel
 				}
 			}
 		}
-
+		
 		public void Update()
 		{
 			this.Start();
@@ -481,7 +537,7 @@ namespace ETModel
 			while (this.updates.Count > 0)
 			{
 				long instanceId = this.updates.Dequeue();
-				Component component;
+				Entity component;
 				if (!this.allComponents.TryGetValue(instanceId, out component))
 				{
 					continue;
@@ -520,7 +576,7 @@ namespace ETModel
 			while (this.lateUpdates.Count > 0)
 			{
 				long instanceId = this.lateUpdates.Dequeue();
-				Component component;
+				Entity component;
 				if (!this.allComponents.TryGetValue(instanceId, out component))
 				{
 					continue;
@@ -556,16 +612,16 @@ namespace ETModel
 
 		public void Run(string type)
 		{
-			List<IEvent> iEvents;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEvent iEvent in iEvents)
+			foreach (AEvent aEvent in iEvents)
 			{
 				try
 				{
-					iEvent?.Handle();
+					aEvent.Run();
 				}
 				catch (Exception e)
 				{
@@ -576,16 +632,23 @@ namespace ETModel
 
 		public void Run<A>(string type, A a)
 		{
-			List<IEvent> iEvents;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEvent iEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					iEvent?.Handle(a);
+					if (obj is AEvent<A> aEvent)
+					{
+						aEvent.Run(a);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						 eventProxy.Handle(a);
+					}
 				}
 				catch (Exception e)
 				{
@@ -596,16 +659,23 @@ namespace ETModel
 
 		public void Run<A, B>(string type, A a, B b)
 		{
-			List<IEvent> iEvents;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEvent iEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					iEvent?.Handle(a, b);
+					if (obj is AEvent<A, B> aEvent)
+					{
+						aEvent.Run(a, b);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						eventProxy.Handle(a, b);
+					}
 				}
 				catch (Exception e)
 				{
@@ -616,22 +686,87 @@ namespace ETModel
 
 		public void Run<A, B, C>(string type, A a, B b, C c)
 		{
-			List<IEvent> iEvents;
+			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(type, out iEvents))
 			{
 				return;
 			}
-			foreach (IEvent iEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
-					iEvent?.Handle(a, b, c);
+					if (obj is AEvent<A, B, C> aEvent)
+					{
+						aEvent.Run(a, b, c);
+					}
+					else if (obj is EventProxy eventProxy)
+					{
+						eventProxy.Handle(a, b, c);
+					}
 				}
 				catch (Exception e)
 				{
 					Log.Error(e);
 				}
 			}
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			HashSet<Type> noParent = new HashSet<Type>();
+			Dictionary<Type, int> typeCount = new Dictionary<Type, int>();
+			
+			HashSet<Type> noDomain = new HashSet<Type>();
+			
+			foreach (var kv in this.allComponents)
+			{
+				Type type = kv.Value.GetType();
+				if (kv.Value.Parent == null)
+				{
+					noParent.Add(type);
+				}
+				
+				if (kv.Value.Domain == null)
+				{
+					noDomain.Add(type);
+				}
+				
+				if (typeCount.ContainsKey(type))
+				{
+					typeCount[type]++;
+				}
+				else
+				{
+					typeCount[type] = 1;
+				}
+			}
+
+			sb.AppendLine("not set parent type: ");
+			foreach (Type type in noParent)
+			{
+				sb.AppendLine($"\t{type.Name}");	
+			}
+			
+			sb.AppendLine("not set domain type: ");
+			foreach (Type type in noDomain)
+			{
+				sb.AppendLine($"\t{type.Name}");	
+			}
+
+			IOrderedEnumerable<KeyValuePair<Type, int>> orderByDescending = typeCount.OrderByDescending(s => s.Value);
+			
+			sb.AppendLine("Entity Count: ");
+			foreach (var kv in orderByDescending)
+			{
+				if (kv.Value == 1)
+				{
+					continue;
+				}
+				sb.AppendLine($"\t{kv.Key.Name}: {kv.Value}");
+			}
+
+			return sb.ToString();
 		}
 	}
 }

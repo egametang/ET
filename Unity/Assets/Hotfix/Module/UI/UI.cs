@@ -26,7 +26,7 @@ namespace ETHotfix
 			gameObject.AddComponent<ComponentView>().Component = this;
 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
 			this.Name = name;
-			this.GameObject = gameObject;
+			this.ViewGO = gameObject;
 		}
 
 		public override void Dispose()
@@ -43,13 +43,13 @@ namespace ETHotfix
 				ui.Dispose();
 			}
 			
-			UnityEngine.Object.Destroy(GameObject);
+			UnityEngine.Object.Destroy(this.ViewGO);
 			children.Clear();
 		}
 
 		public void SetAsFirstSibling()
 		{
-			this.GameObject.transform.SetAsFirstSibling();
+			this.ViewGO.transform.SetAsFirstSibling();
 		}
 
 		public void Add(UI ui)
@@ -76,12 +76,12 @@ namespace ETHotfix
 			{
 				return child;
 			}
-			GameObject childGameObject = this.GameObject.transform.Find(name)?.gameObject;
+			GameObject childGameObject = this.ViewGO.transform.Find(name)?.gameObject;
 			if (childGameObject == null)
 			{
 				return null;
 			}
-			child = ComponentFactory.Create<UI, string, GameObject>(name, childGameObject);
+			child = EntityFactory.Create<UI, string, GameObject>(this.Domain, name, childGameObject);
 			this.Add(child);
 			return child;
 		}

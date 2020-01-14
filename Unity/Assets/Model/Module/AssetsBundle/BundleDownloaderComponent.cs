@@ -19,7 +19,7 @@ namespace ETModel
 	/// <summary>
 	/// 用来对比web端的资源，比较md5，对比下载资源
 	/// </summary>
-	public class BundleDownloaderComponent : Component
+	public class BundleDownloaderComponent : Entity
 	{
 		private VersionConfig remoteVersionConfig;
 		
@@ -32,6 +32,30 @@ namespace ETModel
 		public string downloadingBundle;
 
 		public UnityWebRequestAsync webRequest;
+		
+		public override void Dispose()
+		{
+				if (this.IsDisposed)
+				{
+						return;
+				}
+
+				if (this.Parent.IsDisposed)
+				{
+						return;
+				}
+
+				base.Dispose();
+
+				this.remoteVersionConfig = null;
+				this.TotalSize = 0;
+				this.bundles = null;
+				this.downloadedBundles = null;
+				this.downloadingBundle = null;
+				this.webRequest?.Dispose();
+
+				this.Parent.RemoveComponent<BundleDownloaderComponent>();
+		}
 
 		public async ETTask StartAsync()
 		{
@@ -39,7 +63,7 @@ namespace ETModel
 			string versionUrl = "";
 			try
 			{
-				using (UnityWebRequestAsync webRequestAsync = ComponentFactory.Create<UnityWebRequestAsync>())
+				using (UnityWebRequestAsync webRequestAsync = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
 				{
 					versionUrl = GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + "Version.txt";
 					//Log.Debug(versionUrl);
@@ -57,7 +81,7 @@ namespace ETModel
 			// 获取streaming目录的Version.txt
 			VersionConfig streamingVersionConfig;
 			string versionPath = Path.Combine(PathHelper.AppResPath4Web, "Version.txt");
-			using (UnityWebRequestAsync request = ComponentFactory.Create<UnityWebRequestAsync>())
+			using (UnityWebRequestAsync request = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
 			{
 				await request.DownloadAsync(versionPath);
 				streamingVersionConfig = JsonHelper.FromJson<VersionConfig>(request.Request.downloadHandler.text);
@@ -147,7 +171,7 @@ namespace ETModel
 					{
 						try
 						{
-							using (this.webRequest = ComponentFactory.Create<UnityWebRequestAsync>())
+							using (this.webRequest = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
 							{
 								await this.webRequest.DownloadAsync(GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + this.downloadingBundle);
 								byte[] data = this.webRequest.Request.downloadHandler.data;

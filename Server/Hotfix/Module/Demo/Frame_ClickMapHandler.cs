@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ETHotfix
 {
-	[ActorMessageHandler(AppType.Map)]
+	[ActorMessageHandler]
 	public class Frame_ClickMapHandler : AMActorLocationHandler<Unit, Frame_ClickMap>
 	{
 		protected override async ETTask Run(Unit unit, Frame_ClickMap message)

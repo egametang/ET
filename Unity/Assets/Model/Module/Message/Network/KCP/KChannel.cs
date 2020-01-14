@@ -356,10 +356,6 @@ namespace ETModel
 			}
 		}
 
-		public override void Start()
-		{
-		}
-
 		public void Output(IntPtr bytes, int count)
 		{
 			if (this.IsDisposed)

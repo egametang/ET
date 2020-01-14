@@ -13,6 +13,10 @@ namespace ETModel
 		public const int ERR_ActorRemove = 100004;
 		public const int ERR_PacketParserError = 100005;
 		public const int ERR_ConnectGateKeyError = 100006;
+		
+		public const int ERR_RpcFail = 102001;
+		public const int ERR_ReloadFail = 102003;
+		public const int ERR_ActorLocationNotFound = 102004;
 		public const int ERR_KcpCantConnect = 102005;
 		public const int ERR_KcpChannelTimeout = 102006;
 		public const int ERR_KcpRemoteDisconnect = 102007;
@@ -20,6 +24,9 @@ namespace ETModel
 		public const int ERR_SocketCantSend = 102009;
 		public const int ERR_SocketError = 102010;
 		public const int ERR_KcpWaitSendSizeTooLarge = 102011;
+		public const int ERR_ActorNotOnline = 102012;
+		public const int ERR_ActorTimeout = 102013;
+		public const int ERR_SessionSendOrRecvTimeout = 102014;
 
 		public const int ERR_WebsocketPeerReset = 103001;
 		public const int ERR_WebsocketMessageTooBig = 103002;
@@ -28,10 +35,6 @@ namespace ETModel
 		public const int ERR_WebsocketSendError = 103005;
 		public const int ERR_WebsocketRecvError = 103006;
 		
-		public const int ERR_RpcFail = 102001;
-		public const int ERR_ReloadFail = 102003;
-		
-		public const int ERR_ActorLocationNotFound = 102004;
 		
 		//-----------------------------------
 		// 小于这个Rpc会抛异常，大于这个异常的error需要自己判断处理，也就是说需要处理的错误应该要大于该值
