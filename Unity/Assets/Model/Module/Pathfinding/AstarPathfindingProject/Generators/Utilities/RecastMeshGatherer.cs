@@ -210,8 +210,8 @@ namespace Pathfinding.Recast {
 				return;
 
 			// Original heightmap size
-			int heightmapWidth = terrainData.heightmapWidth;
-			int heightmapDepth = terrainData.heightmapHeight;
+			int heightmapWidth = terrainData.heightmapResolution;
+			int heightmapDepth = terrainData.heightmapResolution;
 
 			// Sample the terrain heightmap
 			float[, ] heights = terrainData.GetHeights(0, 0, heightmapWidth, heightmapDepth);
