@@ -185,12 +185,12 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\WebSocket\WService.cs">
       <Link>Module\Message\Network\WebSocket\WService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\MessagePool.cs">
-      <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
-    </Compile>
     <EmbeddedResource Remove="Libs\**" />
     <None Remove="Libs\**" />
     <None Remove="graph.bytes" />
+    <Compile Remove="Module\Scene\**" />
+    <EmbeddedResource Remove="Module\Scene\**" />
+    <None Remove="Module\Scene\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Model\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
@@ -394,8 +394,6 @@
       <Link>Module\Pathfinding\Recast\WindowsStoreCompatibility.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Other\AppType.cs" Link="Other\AppType.cs" />
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
@@ -417,7 +415,6 @@
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Message\MessagePool\" />
     <Folder Include="Module\Numeric\" />
-    <Folder Include="Module\Scene" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">

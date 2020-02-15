@@ -22,5 +22,8 @@
 		public const string LoadingFinish = "LoadingFinish";
 		public const string TestHotfixSubscribMonoEvent = "TestHotfixSubscribMonoEvent";
 		public const string MaxModelEvent = "MaxModelEvent";
+		public const string InitSceneStart = "InitSceneStart";
+		public const string LoginFinish = "LoginFinish";
+		public const string EnterMapFinish = "EnterMapFinish";
 	}
 }

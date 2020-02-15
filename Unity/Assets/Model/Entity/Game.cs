@@ -44,16 +44,6 @@ namespace ETModel
 			}
 		}
 
-		private static Hotfix hotfix;
-
-		public static Hotfix Hotfix
-		{
-			get
-			{
-				return hotfix ?? (hotfix = new Hotfix());
-			}
-		}
-
 		public static void Close()
 		{
 			scene?.Dispose();
@@ -61,8 +51,6 @@ namespace ETModel
 			
 			objectPool?.Dispose();
 			objectPool = null;
-			
-			hotfix = null;
 			
 			eventSystem = null;
 		}

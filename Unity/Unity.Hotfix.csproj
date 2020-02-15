@@ -62,82 +62,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Hotfix\Base\Event\EventIdType.cs" />
-    <Compile Include="Assets\Hotfix\Base\Event\IEvent.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\ArrayHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\AssetBundleHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\Dumper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\ExceptionHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Helper\JsonHelper.cs" />
-    <Compile Include="Assets\Hotfix\Base\Log.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\Entity.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EntityCreateComponet.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EntityFactory.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EntityType.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\EventSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IAwakeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IChangeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IDeserializeSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IDestroySystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ILateUpdateSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ILoadSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ISerializeToEntity.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IStartSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\IUpdateSystem.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\Object.cs" />
-    <Compile Include="Assets\Hotfix\Base\Object\ObjectPool.cs" />
-    <Compile Include="Assets\Hotfix\Entity\Game.cs" />
-    <Compile Include="Assets\Hotfix\Entity\Scene.cs" />
-    <Compile Include="Assets\Hotfix\Init.cs" />
-    <Compile Include="Assets\Hotfix\Module\Actor\IActorMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\ActorLocation\IActorLocationMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ACategory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ConfigComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\ConfigHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Config\IConfig.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Config\UnitConfig.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\G2C_TestHotfixHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Helper\LoginHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\Helper\MapHelper.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\M2C_CreateUnitsHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\M2C_PathfindingResultHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\OperaComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\TestHotfixSubscribMonoEvent_LogString.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\Component\UILobbyComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\EnterMapFinish_RemoveLobbyUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\LoginFinish_CreateLobbyUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILobby\System\UILobbyFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\Component\UILoginComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\InitSceneStart_CreateLoginUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\LoginFinish_RemoveLoginUI.cs" />
-    <Compile Include="Assets\Hotfix\Module\Demo\UI\UILogin\System\UILoginFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\AMHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixMessageDispatcher.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\HotfixOpcode.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IMHandler.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\IMessage.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\MessagePool.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\OpcodeTypeComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\Session.cs" />
-    <Compile Include="Assets\Hotfix\Module\Message\SessionComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\IUIFactory.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UI.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UIComponent.cs" />
-    <Compile Include="Assets\Hotfix\Module\UI\UIType.cs" />
+    <Compile Include="Assets\Hotfix\Module\Message\NetOuterComponentSystem.cs" />
     <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TestRunner">
-      <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Apps/Unity/2019.3.0f6/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -366,9 +297,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Source/ET/Unity/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>C:/Source/ET/Unity/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Apps/Unity/2019.3.0f6/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

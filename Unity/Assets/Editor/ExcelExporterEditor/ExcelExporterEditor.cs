@@ -121,7 +121,7 @@ public class ExcelExporterEditor : EditorWindow
 			ISheet sheet = xssfWorkbook.GetSheetAt(0);
 			sb.Append(csHead);
 
-			sb.Append($"\t[Config((int)({GetCellString(sheet, 0, 0)}))]\n");
+			sb.Append($"\t[Config]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
 			sb.Append("\t{\n");
 			sb.Append("\t}\n\n");
@@ -291,14 +291,7 @@ public class ExcelExporterEditor : EditorWindow
 
 				if (fieldName == "Id" || fieldName == "_id")
 				{
-					if (this.isClient)
-					{
-						fieldName = "Id";
-					}
-					else
-					{
-						fieldName = "_id";
-					}
+					fieldName = "_id";
 				}
 
 				string fieldType = cellInfos[j].Type;
