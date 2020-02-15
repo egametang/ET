@@ -53,7 +53,7 @@ public class ExcelExporterEditor : EditorWindow
 	{
 		try
 		{
-			const string clientPath = "./Assets/Res/Config";
+			const string clientPath = "./Assets/Bundles/Config";
 
 			if (GUILayout.Button("导出客户端配置"))
 			{
