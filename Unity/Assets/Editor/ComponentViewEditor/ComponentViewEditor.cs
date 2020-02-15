@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using ETModel;
-using ILRuntime.Runtime.Intepreter;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,10 +14,6 @@ namespace ETEditor
         {
             ComponentView componentView = (ComponentView) target;
             object component = componentView.Component;
-            if (component.GetType() == typeof (ILTypeInstance))
-            {
-                return;
-            }
             ComponentViewHelper.Draw(component);
         }
     }
