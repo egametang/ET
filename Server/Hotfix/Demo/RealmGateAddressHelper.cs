@@ -1,16 +1,17 @@
-﻿using ETModel;
+﻿using System.Collections.Generic;
+using ETModel;
 
 namespace ETHotfix
 {
 	public static class RealmGateAddressHelper
 	{
-		public static StartConfig GetGate()
+		public static StartSceneConfig GetGate(int zone)
 		{
-			int count = StartConfigComponent.Instance.Gates.Count;
+			List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Gates[zone];
+			
+			int n = RandomHelper.RandomNumber(0, zoneGates.Count);
 
-			int n = RandomHelper.RandomNumber(0, count);
-
-			return StartConfigComponent.Instance.Gates[n];
+			return zoneGates[n];
 		}
 	}
 }

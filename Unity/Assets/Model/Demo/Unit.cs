@@ -17,21 +17,22 @@ namespace ETModel
 	[HideInHierarchy]
 	public sealed class Unit: Entity
 	{
+		public GameObject GameObject;
+		
 		public void Awake(GameObject gameObject)
 		{
-			this.ViewGO = gameObject;
-			this.ViewGO.AddComponent<ComponentView>().Component = this;
+			this.GameObject = gameObject;
 		}
 		
 		public Vector3 Position
 		{
 			get
 			{
-				return ViewGO.transform.position;
+				return GameObject.transform.position;
 			}
 			set
 			{
-				ViewGO.transform.position = value;
+				GameObject.transform.position = value;
 			}
 		}
 
@@ -39,22 +40,12 @@ namespace ETModel
 		{
 			get
 			{
-				return ViewGO.transform.rotation;
+				return GameObject.transform.rotation;
 			}
 			set
 			{
-				ViewGO.transform.rotation = value;
+				GameObject.transform.rotation = value;
 			}
-		}
-
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
 		}
 	}
 }

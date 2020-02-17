@@ -1,58 +1,39 @@
-﻿using UnityEngine;
-
-namespace ETModel
+﻿namespace ETModel
 {
-	public static class Game
-	{
-		private static EventSystem eventSystem;
+    public static class Game
+    {
+        public static EventSystem EventSystem
+        {
+            get
+            {
+                return EventSystem.Instance;
+            }
+        }
 
-		public static EventSystem EventSystem
-		{
-			get
-			{
-				return eventSystem ?? (eventSystem = new EventSystem());
-			}
-		}
+        private static Scene scene;
+
+        public static Scene Scene
+        {
+            get
+            {
+                return scene ?? (scene = EntitySceneFactory.CreateScene(1, SceneType.Process, "Process"));
+            }
+        }
+
+        public static ObjectPool ObjectPool
+        {
+            get
+            {
+                return ObjectPool.Instance;
+            }
+        }
 		
-		private static Scene scene;
-
-		public static Scene Scene
-		{
-			get
-			{
-				if (scene != null)
-				{
-					return scene;
-				}
-				scene = new Scene() { Name = "ClientM" };
-				return scene;
-			}
-		}
-
-		private static ObjectPool objectPool;
-
-		public static ObjectPool ObjectPool
-		{
-			get
-			{
-				if (objectPool != null)
-				{
-					return objectPool;
-				}
-				objectPool = new ObjectPool() { Name = "ClientM" };
-				return objectPool;
-			}
-		}
-
-		public static void Close()
-		{
-			scene?.Dispose();
-			scene = null;
-			
-			objectPool?.Dispose();
-			objectPool = null;
-			
-			eventSystem = null;
-		}
-	}
+        public static void Close()
+        {
+            scene?.Dispose();
+            scene = null;
+            ObjectPool.Instance.Dispose();
+            EventSystem.Instance.Dispose();
+        }
+    }
 }

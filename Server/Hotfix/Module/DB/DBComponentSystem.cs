@@ -6,14 +6,12 @@ using MongoDB.Driver;
 namespace ETModel
 {
 	[ObjectSystem]
-	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, DBConfig>
+	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string>
 	{
-		public override void Awake(DBComponent self, DBConfig dbConfig)
+		public override void Awake(DBComponent self, string dbConnection, string dbName)
 		{
-			
-			string connectionString = dbConfig.ConnectionString;
-			self.mongoClient = new MongoClient(connectionString);
-			self.database = self.mongoClient.GetDatabase(dbConfig.DBName);
+			self.mongoClient = new MongoClient(dbConnection);
+			self.database = self.mongoClient.GetDatabase(dbName);
 			
 			self.Transfers.Clear();
 			foreach (Type type in Game.EventSystem.GetTypes())

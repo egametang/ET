@@ -80,7 +80,7 @@ namespace ETModel
                         case "reload": 
                             try
                             {
-                                Game.EventSystem.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
+                                Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
                             }
                             catch (Exception e)
                             {

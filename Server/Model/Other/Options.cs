@@ -1,15 +1,10 @@
-﻿#if SERVER
-using CommandLine;
-#endif
+﻿using CommandLine;
 
 namespace ETModel
 {
-	public class Options
+	public class Options: Entity
 	{
-		[Option("id", Required = false, Default = 1)]
-		public int Id { get; set; }
-
-		[Option("config", Required = false, Default = "AllServer.txt")]
-		public string Config { get; set; }
+		[Option("process", Required = false, Default = 1)]
+		public int Process { get; set; }
 	}
 }

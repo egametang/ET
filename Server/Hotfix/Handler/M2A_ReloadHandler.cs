@@ -8,7 +8,7 @@ namespace ETHotfix
 	{
 		protected override async ETTask Run(Session session, M2A_Reload request, A2M_Reload response, Action reply)
 		{
-			Game.EventSystem.Add(DLLType.Hotfix, DllHelper.GetHotfixAssembly());
+			Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
 			reply();
 			await ETTask.CompletedTask;
 		}

@@ -61,8 +61,7 @@ public class ExcelExporterEditor : EditorWindow
 				
 				ExportAll(clientPath);
 				
-				ExportAllClass(@"./Assets/Model/Module/Demo/Config", "namespace ETModel\n{\n");
-				ExportAllClass(@"./Assets/Hotfix/Module/Demo/Config", "using ETModel;\n\nnamespace ETHotfix\n{\n");
+				ExportAllClass(@"./Assets/Model/Demo/Config", "namespace ETModel\n{\n");
 				
 				Log.Info($"导出客户端配置完成!");
 			}
@@ -73,7 +72,7 @@ public class ExcelExporterEditor : EditorWindow
 				
 				ExportAll(ServerConfigPath);
 				
-				ExportAllClass(@"../Server/Model/Module/Demo/Config", "namespace ETModel\n{\n");
+				ExportAllClass(@"../Server/Model/Demo/Config", "namespace ETModel\n{\n");
 				
 				Log.Info($"导出服务端配置完成!");
 			}
@@ -124,9 +123,14 @@ public class ExcelExporterEditor : EditorWindow
 			sb.Append($"\t[Config]\n");
 			sb.Append($"\tpublic partial class {protoName}Category : ACategory<{protoName}>\n");
 			sb.Append("\t{\n");
+			sb.Append($"\t\tpublic static {protoName}Category Instance;\n");
+			sb.Append($"\t\tpublic {protoName}Category()\n");
+			sb.Append("\t\t{\n");
+			sb.Append($"\t\t\tInstance = this;\n");
+			sb.Append("\t\t}\n");
 			sb.Append("\t}\n\n");
 
-			sb.Append($"\tpublic class {protoName}: IConfig\n");
+			sb.Append($"\tpublic partial class {protoName}: IConfig\n");
 			sb.Append("\t{\n");
 			sb.Append("\t\tpublic long Id { get; set; }\n");
 
@@ -279,7 +283,7 @@ public class ExcelExporterEditor : EditorWindow
 				string fieldValue = GetCellString(row, j);
 				if (fieldValue == "")
 				{
-					throw new Exception($"sheet: {sheet.SheetName} 中有空白字段 {i},{j}");
+					continue;
 				}
 
 				if (j > 2)

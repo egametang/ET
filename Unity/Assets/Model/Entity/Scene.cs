@@ -2,8 +2,24 @@
 {
     public sealed class Scene: Entity
     {
-        public SceneType SceneType { get; set; }
-        public string Name { get; set; }
+        public int Zone { get; }
+        public SceneType SceneType { get; }
+        public string Name { get; }
+        
+        public Scene(long id, int zone, SceneType sceneType, string name)
+        {
+            this.Id = id;
+            this.InstanceId = id;
+            this.Zone = zone;
+            this.SceneType = sceneType;
+            this.Name = name;
+            this.IsCreate = true;
+        }
+        
+        public Scene Get(long id)
+        {
+            return (Scene)this.Children?[id];
+        }
         
         public new Entity Domain
         {
@@ -25,15 +41,30 @@
             }
             set
             {
+                if (value == null)
+                {
+                    this.parent = this;
+                    return;
+                }
                 this.parent = value;
                 this.parent.Children.Add(this.Id, this);
-#if !SERVER
-                if (this.ViewGO != null && this.parent.ViewGO != null)
-                {
-                    this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
-                }
+#if UNITY_EDITOR
+                this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
 #endif
             }
+        }
+    }
+    
+    public static class SceneEx
+    {
+        public static int DomainZone(this Entity entity)
+        {
+            return ((Scene) entity.Domain).Zone;
+        }
+        
+        public static Scene DomainScene(this Entity entity)
+        {
+            return (Scene) entity.Domain;
         }
     }
 }

@@ -19,15 +19,5 @@
 		{
 			this.Account = account;
 		}
-		
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-
-			base.Dispose();
-		}
 	}
 }

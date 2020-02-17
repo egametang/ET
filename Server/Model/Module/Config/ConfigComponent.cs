@@ -8,6 +8,8 @@ namespace ETModel
 	/// </summary>
 	public class ConfigComponent: Entity
 	{
+		public static ConfigComponent Instance;
+		
 		public Dictionary<Type, ACategory> AllConfig = new Dictionary<Type, ACategory>();
 	}
 }

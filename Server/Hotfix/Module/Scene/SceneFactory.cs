@@ -6,12 +6,13 @@ namespace ETHotfix
     {
         public static async ETTask<Scene> Create(Entity parent, string name, SceneType sceneType)
         {
-            return await Create(parent, IdGenerater.GenerateSceneId(), name, sceneType);
+            long id = IdGenerater.GenerateId();
+            return await Create(parent, id, parent.DomainZone(), name, sceneType);
         }
         
-        public static async ETTask<Scene> Create(Entity parent, long id, string name, SceneType sceneType)
+        public static async ETTask<Scene> Create(Entity parent, long id, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
-            Scene scene = EntityFactory.CreateScene(id, name, sceneType);
+            Scene scene = EntitySceneFactory.CreateScene(id, zone, sceneType, name);
             scene.Parent = parent;
 
             scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);
@@ -19,8 +20,10 @@ namespace ETHotfix
             switch (scene.SceneType)
             {
                 case SceneType.Realm:
+                    scene.AddComponent<NetOuterComponent, string>($"{startSceneConfig.OuterPort}:{startSceneConfig.OuterPort}");
                     break;
                 case SceneType.Gate:
+                    scene.AddComponent<NetOuterComponent, string>($"{startSceneConfig.OuterPort}:{startSceneConfig.OuterPort}");
                     scene.AddComponent<PlayerComponent>();
                     scene.AddComponent<GateSessionKeyComponent>();
                     break;

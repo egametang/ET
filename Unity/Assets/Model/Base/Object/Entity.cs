@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 #if !SERVER
 using UnityEngine;
@@ -11,12 +12,13 @@ namespace ETModel
 	public enum EntityStatus: byte
 	{
 		None = 0,
-		IsFromPool = 0x01,
-		IsRegister = 0x02,
-		IsComponent = 0x04
+		IsFromPool = 1,
+		IsRegister = 1 << 1,
+		IsComponent = 1 << 2,
+		IsCreate = 1 << 3,
 	}
 	
-	public partial class Entity : Object, IDisposable
+	public partial class Entity : Object
 	{
 		private static readonly Pool<HashSet<Entity>> hashSetPool = new Pool<HashSet<Entity>>();
 		
@@ -27,13 +29,10 @@ namespace ETModel
 		
 		[BsonIgnore]
 		public long InstanceId { get; set; }
-		
-#if !SERVER
-		public static GameObject Global { get; } = GameObject.Find("/Global");
-		
-		[BsonIgnore]
-		public GameObject ViewGO { get; set; }
-#endif
+
+		protected Entity()
+		{
+		}
 
 		[BsonIgnore]
 		private EntityStatus status = EntityStatus.None;
@@ -55,18 +54,11 @@ namespace ETModel
 				{
 					this.status &= ~EntityStatus.IsFromPool;
 				}
-
-				if (this.InstanceId == 0)
-				{
-					this.InstanceId = IdGenerater.GenerateId();
-				}
-
-				this.IsRegister = value;
 			}
 		}
 		
 		[BsonIgnore]
-		private bool IsRegister
+		public bool IsRegister
 		{
 			get
 			{
@@ -86,7 +78,8 @@ namespace ETModel
 				{
 					this.status &= ~EntityStatus.IsRegister;
 				}
-				Game.EventSystem.RegisterSystem(this, value);
+
+				EventSystem.Instance.RegisterSystem(this, value);
 			}
 		}
 		
@@ -106,6 +99,26 @@ namespace ETModel
 				else
 				{
 					this.status &= ~EntityStatus.IsComponent;
+				}
+			}
+		}
+		
+		[BsonIgnore]
+		public bool IsCreate
+		{
+			get
+			{
+				return (this.status & EntityStatus.IsCreate) == EntityStatus.IsCreate;
+			}
+			set
+			{
+				if (value)
+				{
+					this.status |= EntityStatus.IsCreate;
+				}
+				else
+				{
+					this.status &= ~EntityStatus.IsCreate;
 				}
 			}
 		}
@@ -172,7 +185,7 @@ namespace ETModel
 			{
 				if (this.parent != null)
 				{
-					throw new Exception($"Component parent is null: {this.GetType().Name}");
+					throw new Exception($"Component parent is not null: {this.GetType().Name}");
 				}
 
 				this.parent = value;
@@ -185,17 +198,9 @@ namespace ETModel
 
 		private void AfterSetParent()
 		{
-			if (this.parent.domain != null)
-			{
-				this.Domain = this.parent.domain;
-			}
+			this.Domain = this.parent.domain;
 
-			// 检测自己的domain是不是跟父亲一样
-			if (this.Domain != null && this.parent.Domain != null && this.Domain.InstanceId != this.parent.Domain.InstanceId && !(this is Scene))
-			{
-				Log.Error($"自己的domain跟parent不一样: {this.GetType().Name}");
-			}
-#if !SERVER
+#if UNITY_EDITOR
 			if (this.ViewGO != null && this.parent.ViewGO != null)
 			{
 				this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
@@ -210,7 +215,7 @@ namespace ETModel
 		
 		public override string ToString()
 		{
-			return MongoHelper.ToJson(this);
+			return this.ToJson();
 		}
 		
 		
@@ -240,12 +245,39 @@ namespace ETModel
 				Entity preDomain = this.domain;
 				this.domain = value;
 				
-				if (!(this.domain is Scene))
-				{
-					throw new Exception($"domain is not scene: {this.GetType().Name}");
-				}
+				//if (!(this.domain is Scene))
+				//{
+				//	throw new Exception($"domain is not scene: {this.GetType().Name}");
+				//}
 				
-				this.domain = value;
+				if (preDomain == null)
+				{
+					this.InstanceId = IdGenerater.GenerateInstanceId();
+
+					// 反序列化出来的需要设置父子关系
+					if (!this.IsCreate)
+					{
+						if (this.componentsDB != null)
+						{
+							foreach (Entity component in this.componentsDB)
+							{
+								component.IsComponent = true;
+								this.Components.Add(component.GetType(), component);
+								component.parent = this;
+							}
+						}
+
+						if (this.childrenDB != null)
+						{
+							foreach (Entity child in this.childrenDB)
+							{
+								child.IsComponent = false;
+								this.Children.Add(child.Id, child);
+								child.parent = this;
+							}
+						}
+					}
+				}
 				
 				// 是否注册跟parent一致
 				if (this.parent != null)
@@ -270,41 +302,36 @@ namespace ETModel
 					}
 				}
 				
-				if (preDomain == null && !this.IsFromPool)
+				if (preDomain == null && !this.IsCreate)
 				{
-					Game.EventSystem.Deserialize(this);
+					EventSystem.Instance.Deserialize(this);
 				}
 			}
 		}
 
 		[BsonElement("Children")]
 		[BsonIgnoreIfNull]
-		private HashSet<Entity> childrenDB;
+		protected HashSet<Entity> childrenDB;
 
 		[BsonIgnore]
-		private Dictionary<long, Entity> children;
+		protected Dictionary<long, Entity> children;
 		
 		[BsonIgnore]
 		public Dictionary<long, Entity> Children 
 		{
 			get
 			{
-				if (this.children == null)
-				{
-					this.children = childrenPool.Fetch();
-				}
-
-				return this.children;
+				return this.children ?? (this.children = childrenPool.Fetch());
 			}
 		}
 		
-		private void AddChild(Entity entity)
+		public void AddChild(Entity entity)
 		{
 			this.Children.Add(entity.Id, entity);
 			this.AddChildDB(entity);
 		}
 		
-		private void RemoveChild(Entity entity)
+		public void RemoveChild(Entity entity)
 		{
 			if (this.children == null)
 			{
@@ -334,7 +361,7 @@ namespace ETModel
 			this.childrenDB.Add(entity);
 		}
 		
-		private void RemoveChildDB(Entity entity)
+		public void RemoveChildDB(Entity entity)
 		{
 			if (!(entity is ISerializeToEntity))
 			{
@@ -358,6 +385,12 @@ namespace ETModel
 			}
 		}
 
+		public void RemoveAllChild()
+		{
+			this.children.Clear();
+			this.childrenDB.Clear();
+		}
+
 		[BsonElement("C")]
 		[BsonIgnoreIfNull]
 		private HashSet<Entity> componentsDB;
@@ -370,81 +403,31 @@ namespace ETModel
 		{
 			get
 			{
-				return this.components;
+				return this.components ?? (this.components = dictPool.Fetch());
 			}
 		}
 		
-		protected Entity()
-		{
-			this.InstanceId = IdGenerater.GenerateId();
-
-#if !SERVER
-			if (!this.GetType().IsDefined(typeof (HideInHierarchy), true))
-			{
-				this.ViewGO = new GameObject();
-				this.ViewGO.name = this.GetType().Name;
-				this.ViewGO.layer = LayerNames.GetLayerInt(LayerNames.HIDDEN);
-				this.ViewGO.transform.SetParent(Global.transform, false);
-				this.ViewGO.AddComponent<ComponentView>().Component = this;
-			}
-#endif
-		}
-
-		public virtual void Dispose()
+		public override void Dispose()
 		{
 			if (this.IsDisposed)
 			{
 				return;
 			}
 
-			long instanceId = this.InstanceId;
+			EventSystem.Instance.Remove(this.InstanceId);
 			this.InstanceId = 0;
 			
-			Game.EventSystem.Remove(instanceId);
-
-			// 触发Destroy事件
-			Game.EventSystem.Destroy(this);
-
-			this.domain = null;
-		
-			// 清理Children
-			if (this.children != null)
-			{
-				var deletes = this.children;
-				this.children = null;
-
-				foreach (Entity child in deletes.Values)
-				{
-					child.Dispose();
-				}
-
-				deletes.Clear();
-				childrenPool.Recycle(deletes);
-				
-				if (this.childrenDB != null)
-				{
-					this.childrenDB.Clear();
-					// 从池中创建的才需要回到池中,从db中不需要回收
-					if (this.IsFromPool)
-					{
-						hashSetPool.Recycle(this.childrenDB);
-						this.childrenDB = null;
-					}
-				}
-			}
-
 			// 清理Component
 			if (this.components != null)
 			{
-				var deletes = this.components;
-				this.components = null;
-				foreach (var kv in deletes)
+				foreach (var kv in this.components)
 				{
 					kv.Value.Dispose();
 				}
 				
-				deletes.Clear();
-				dictPool.Recycle(deletes);
+				this.components.Clear();
+				dictPool.Recycle(this.components);
+				this.components = null;
 				
 				// 从池中创建的才需要回到池中,从db中不需要回收
 				if (this.componentsDB != null)
@@ -458,63 +441,60 @@ namespace ETModel
 					}
 				}
 			}
+			
+			// 清理Children
+			if (this.children != null)
+			{
+				foreach (Entity child in this.children.Values)
+				{
+					child.Dispose();
+				}
 
-			if (this.IsComponent)
-			{
-				this.parent?.RemoveComponent(this);
+				this.children.Clear();
+				childrenPool.Recycle(this.children);
+				this.children = null;
+				
+				if (this.childrenDB != null)
+				{
+					this.childrenDB.Clear();
+					// 从池中创建的才需要回到池中,从db中不需要回收
+					if (this.IsFromPool)
+					{
+						hashSetPool.Recycle(this.childrenDB);
+						this.childrenDB = null;
+					}
+				}
 			}
-			else
+			
+			// 触发Destroy事件
+			EventSystem.Instance.Destroy(this);
+			
+			this.domain = null;
+
+			if (this.parent != null && !this.parent.IsDisposed)
 			{
-				this.parent?.RemoveChild(this);	
+				if (this.IsComponent)
+				{
+					this.parent.RemoveComponent(this);
+				}
+				else
+				{
+					this.parent.RemoveChild(this);
+				}
 			}
 
 			this.parent = null;
 
 			if (this.IsFromPool)
 			{
-				Game.ObjectPool.Recycle(this);
+				ObjectPool.Instance.Recycle(this);
 			}
 			else
 			{
-#if !SERVER
-				if (this.ViewGO != null)
-				{
-					UnityEngine.Object.Destroy(this.ViewGO);
-				}
-#endif
+				base.Dispose();
 			}
 
 			status = EntityStatus.None;
-		}
-		
-		public override void EndInit()
-		{
-			try
-			{
-				if (this.childrenDB != null)
-				{
-					foreach (Entity child in this.childrenDB)
-					{
-						child.IsComponent = false;
-						this.AddChild(child);
-						child.parent = this;
-					}
-				}
-				
-				if (this.componentsDB != null)
-				{
-					foreach (Entity component in this.componentsDB)
-					{
-						component.IsComponent = true;
-						this.AddToComponent(component.GetType(), component);
-						component.parent = this;
-					}
-				}
-			}
-			catch (Exception e)
-			{
-				Log.Error(e);
-			}
 		}
 		
 		private void AddToComponentsDB(Entity component)

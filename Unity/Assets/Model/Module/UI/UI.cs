@@ -17,6 +17,8 @@ namespace ETModel
 	[HideInHierarchy]
 	public sealed class UI: Entity
 	{
+		public GameObject GameObject;
+		
 		public string Name { get; private set; }
 
 		public Dictionary<string, UI> children = new Dictionary<string, UI>();
@@ -27,7 +29,7 @@ namespace ETModel
 			gameObject.AddComponent<ComponentView>().Component = this;
 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
 			this.Name = name;
-			this.ViewGO = gameObject;
+			this.GameObject = gameObject;
 		}
 
 		public override void Dispose()

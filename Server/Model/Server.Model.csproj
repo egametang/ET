@@ -134,17 +134,14 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMapSet.cs">
       <Link>Base\UnOrderMultiMapSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\CopyConfig.cs">
-      <Link>Component\Config\CopyConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\EntitySceneFactory.cs">
+      <Link>Entity\EntitySceneFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ProcessConfig.cs">
-      <Link>Component\Config\ProcessConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\Game.cs">
+      <Link>Entity\Game.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\SceneConfig.cs">
-      <Link>Component\Config\SceneConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
-      <Link>Component\Config\StartConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\Scene.cs">
+      <Link>Entity\Scene.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Entity\SceneType.cs">
       <Link>Entity\SceneType.cs</Link>
@@ -218,11 +215,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
@@ -410,7 +402,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />
-    <Folder Include="Component\Config\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Message\MessagePool\" />

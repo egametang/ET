@@ -1,0 +1,2 @@
+{"_id":1,"InnerIP":"127.0.0.1","InnerPort":"20001","OuterIP":"127.0.0.1"}
+{"_id":2,"InnerIP":"127.0.0.2","InnerPort":"20002","OuterIP":"127.0.0.2"}

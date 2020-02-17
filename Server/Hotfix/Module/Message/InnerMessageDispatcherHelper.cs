@@ -11,10 +11,12 @@
 
 		public static async ETVoid HandleIActorRequest(Session session, IActorRequest iActorRequest)
 		{
-			long replyId = IdGenerater.GetProcessId(iActorRequest.ActorId);
-			iActorRequest.ActorId = iActorRequest.ActorId & IdGenerater.HeadMask | IdGenerater.Head;
+			InstanceIdStruct instanceIdStruct = new InstanceIdStruct(iActorRequest.ActorId);
+			int replyId = instanceIdStruct.Process;
+			instanceIdStruct.Process = IdGenerater.Process;
+			iActorRequest.ActorId = instanceIdStruct.ToLong();
 
-			string address = StartConfigComponent.Instance.GetProcessInnerAddress(replyId);
+			string address = StartProcessConfigCategory.Instance.Get(replyId).InnerAddress;
 			Session ss = NetInnerComponent.Instance.Get(address);
 			Entity entity = Game.EventSystem.Get(iActorRequest.ActorId);
 			if (entity == null)
@@ -47,8 +49,10 @@
 
 		public static async ETVoid HandleIActorMessage(Session session, IActorMessage iActorMessage)
 		{
-			long replyId = IdGenerater.GetProcessId(iActorMessage.ActorId);
-			iActorMessage.ActorId = iActorMessage.ActorId & IdGenerater.HeadMask | IdGenerater.Head;
+			InstanceIdStruct instanceIdStruct = new InstanceIdStruct(iActorMessage.ActorId);
+			int replyId = instanceIdStruct.Process;
+			instanceIdStruct.Process = IdGenerater.Process;
+			iActorMessage.ActorId = instanceIdStruct.ToLong();
 			
 			Entity entity = Game.EventSystem.Get(iActorMessage.ActorId);
 			if (entity == null)
