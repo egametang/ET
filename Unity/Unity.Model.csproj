@@ -161,7 +161,6 @@
      <Compile Include="Assets\Model\Helper\BundleHelper.cs" />
      <Compile Include="Assets\Model\Helper\PathHelper.cs" />
      <Compile Include="Assets\Model\Helper\PositionHelper.cs" />
-     <Compile Include="Assets\Model\Helper\ResourcesHelper.cs" />
      <Compile Include="Assets\Model\Module\Actor\IActorMessage.cs" />
      <Compile Include="Assets\Model\Module\ActorLocation\IActorLocationMessage.cs" />
      <Compile Include="Assets\Model\Module\AssetsBundle\AssetsBundleLoaderAsync.cs" />

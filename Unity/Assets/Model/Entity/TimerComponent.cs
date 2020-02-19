@@ -6,13 +6,13 @@ namespace ET
 {
 	public interface ITimer
 	{
-		void Run();
+		void Run(bool isTimeout);
 	}
     
     [ObjectSystem]
-	public class OnceWaitTimerAwakeSystem : AwakeSystem<OnceWaitTimer, ETTaskCompletionSource>
+	public class OnceWaitTimerAwakeSystem : AwakeSystem<OnceWaitTimer, ETTaskCompletionSource<bool>>
 	{
-		public override void Awake(OnceWaitTimer self, ETTaskCompletionSource callback)
+		public override void Awake(OnceWaitTimer self, ETTaskCompletionSource<bool> callback)
 		{
 			self.Callback = callback;
 		}
@@ -20,20 +20,20 @@ namespace ET
 	
 	public class OnceWaitTimer: Entity, ITimer
 	{
-		public ETTaskCompletionSource Callback { get; set; }
+		public ETTaskCompletionSource<bool> Callback { get; set; }
 		
-		public void Run()
+		public void Run(bool isTimeout)
 		{
-			ETTaskCompletionSource tcs = this.Callback;
+			ETTaskCompletionSource<bool> tcs = this.Callback;
 			this.GetParent<TimerComponent>().Remove(this.Id);
-			tcs.SetResult();
+			tcs.SetResult(isTimeout);
 		}
 	}
 	
 	[ObjectSystem]
-	public class OnceTimerAwakeSystem : AwakeSystem<OnceTimer, Action>
+	public class OnceTimerAwakeSystem : AwakeSystem<OnceTimer, Action<bool>>
 	{
-		public override void Awake(OnceTimer self, Action callback)
+		public override void Awake(OnceTimer self, Action<bool> callback)
 		{
 			self.Callback = callback;
 		}
@@ -41,13 +41,13 @@ namespace ET
 	
 	public class OnceTimer: Entity, ITimer
 	{
-		public Action Callback { get; set; }
+		public Action<bool> Callback { get; set; }
 		
-		public void Run()
+		public void Run(bool isTimeout)
 		{
 			try
 			{
-				this.Callback.Invoke();
+				this.Callback.Invoke(isTimeout);
 			}
 			catch (Exception e)
 			{
@@ -57,9 +57,9 @@ namespace ET
 	}
 	
 	[ObjectSystem]
-	public class RepeatedTimerAwakeSystem : AwakeSystem<RepeatedTimer, long, Action>
+	public class RepeatedTimerAwakeSystem : AwakeSystem<RepeatedTimer, long, Action<bool>>
 	{
-		public override void Awake(RepeatedTimer self, long repeatedTime, Action callback)
+		public override void Awake(RepeatedTimer self, long repeatedTime, Action<bool> callback)
 		{
 			self.Awake(repeatedTime, callback);
 		}
@@ -67,7 +67,7 @@ namespace ET
 	
 	public class RepeatedTimer: Entity, ITimer
 	{
-		public void Awake(long repeatedTime, Action callback)
+		public void Awake(long repeatedTime, Action<bool> callback)
 		{
 			this.StartTime = TimeHelper.Now();
 			this.RepeatedTime = repeatedTime;
@@ -82,9 +82,9 @@ namespace ET
 		// 下次一是第几次触发
 		private int Count { get; set; }
 		
-		public Action Callback { private get; set; }
+		public Action<bool> Callback { private get; set; }
 		
-		public void Run()
+		public void Run(bool isTimeout)
 		{
 			++this.Count;
 			TimerComponent timerComponent = this.GetParent<TimerComponent>();
@@ -93,7 +93,7 @@ namespace ET
 
 			try
 			{
-				this.Callback.Invoke();
+				this.Callback.Invoke(isTimeout);
 			}
 			catch (Exception e)
 			{
@@ -205,62 +205,85 @@ namespace ET
 					continue;
 				}
 				
-				timer.Run();
+				timer.Run(true);
 			}
 		}
 
-		public ETTask WaitTillAsync(long tillTime, ETCancellationToken cancellationToken)
+		public async ETTask<bool> WaitTillAsync(long tillTime, ETCancellationToken cancellationToken)
 		{
 			if (TimeHelper.Now() > tillTime)
 			{
-				return ETTask.CompletedTask;
+				return true;
 			}
-			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource>(this, tcs);
+			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource<bool>>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
-			cancellationToken.Register(() => { this.Remove(timer.Id); });
-			return tcs.Task;
+			
+			long instanceId = timer.InstanceId;
+			cancellationToken.Register(() =>
+			{
+				if (instanceId != timer.InstanceId)
+				{
+					return;
+				}
+				
+				timer.Run(false);
+				
+				this.Remove(timer.Id);
+			});
+			return await tcs.Task;
 		}
 
-		public ETTask WaitTillAsync(long tillTime)
+		public async ETTask<bool> WaitTillAsync(long tillTime)
 		{
 			if (TimeHelper.Now() > tillTime)
 			{
-				return ETTask.CompletedTask;
+				return true;
 			}
-			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource>(this, tcs);
+			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource<bool>>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
-			return tcs.Task;
+			return await tcs.Task;
 		}
 
-		public ETTask WaitAsync(long time, ETCancellationToken cancellationToken)
+		public async ETTask<bool> WaitAsync(long time, ETCancellationToken cancellationToken)
 		{
 			long tillTime = TimeHelper.Now() + time;
 
             if (TimeHelper.Now() > tillTime)
             {
-                return ETTask.CompletedTask;
+                return true;
             }
 
-            ETTaskCompletionSource tcs = new ETTaskCompletionSource();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource>(this, tcs);
+            ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource<bool>>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
-			cancellationToken.Register(() => { this.Remove(timer.Id); });
-			return tcs.Task;
+			long instanceId = timer.InstanceId;
+			cancellationToken.Register(() =>
+			{
+				if (instanceId != timer.InstanceId)
+				{
+					return;
+				}
+				
+				timer.Run(false);
+				
+				this.Remove(timer.Id);
+			});
+			return await tcs.Task;
 		}
 
-		public ETTask WaitAsync(long time)
+		public async ETTask<bool> WaitAsync(long time)
 		{
 			long tillTime = TimeHelper.Now() + time;
-			ETTaskCompletionSource tcs = new ETTaskCompletionSource();
-			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource>(this, tcs);
+			ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+			OnceWaitTimer timer = EntityFactory.CreateWithParent<OnceWaitTimer, ETTaskCompletionSource<bool>>(this, tcs);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
-			return tcs.Task;
+			return await tcs.Task;
 		}
 
 		/// <summary>

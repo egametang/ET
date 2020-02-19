@@ -74,6 +74,7 @@
      <Compile Include="Assets\HotfixView\Demo\Unit\AfterUnitCreate_CreateUnitView.cs" />
      <Compile Include="Assets\HotfixView\Helper\ActionHelper.cs" />
      <Compile Include="Assets\HotfixView\Helper\GameObjectHelper.cs" />
+     <Compile Include="Assets\HotfixView\Helper\ResourcesHelper.cs" />
      <Compile Include="Assets\HotfixView\Init.cs" />
      <None Include="Assets\HotfixView\Unity.HotfixView.asmdef" />
  <Reference Include="UnityEditor.UI">

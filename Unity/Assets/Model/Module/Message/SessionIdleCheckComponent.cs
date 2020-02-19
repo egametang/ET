@@ -21,7 +21,10 @@
             RepeatedTimer repeatedTimer = TimerComponent.Instance.GetRepeatedTimer(self.RepeatedTimer);
             if (repeatedTimer != null)
             {
-                repeatedTimer.Callback = self.Check;
+                repeatedTimer.Callback = (isTimeout) =>
+                {
+                    self.Check();
+                };
             }
         }
     }
