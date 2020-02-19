@@ -5,12 +5,12 @@ namespace ET
 {
     public static class LoginHelper
     {
-        public static async ETVoid OnLoginAsync(Entity domain, string account)
+        public static async ETVoid OnLoginAsync(Entity domain, string address, string account)
         {
             try
             {
                 // 创建一个ETModel层的Session
-                Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(GlobalConfigComponent.Instance.GlobalProto.Address);
+                Session session = Game.Scene.GetComponent<NetOuterComponent>().Create(address);
 				
                 // 创建一个ETHotfix层的Session, ETHotfix的Session会通过ETModel层的Session发送消息
                 Session realmSession = EntityFactory.Create<Session, Session>(domain, session);

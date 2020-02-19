@@ -1,17 +1,12 @@
 {
-    "name": "Unity.Editor",
+    "name": "Unity.ModelView",
     "references": [
-        "Unity.Model",
-        "Unity.ThirdParty",
-        "Unity.ModelView",
-        "Unity.Hotfix",
-        "Unity.HotfixView"
+        "GUID:997f003cfffd9ec4fae70c0ac9b0ec2b",
+        "GUID:bebd02018e98e44409a761968a7cbcd9"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

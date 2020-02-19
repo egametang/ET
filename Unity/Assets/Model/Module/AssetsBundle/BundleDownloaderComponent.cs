@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace ET
 {
 	[ObjectSystem]
-	public class UiBundleDownloaderComponentAwakeSystem : AwakeSystem<BundleDownloaderComponent>
+	public class BundleDownloaderComponentAwakeSystem : AwakeSystem<BundleDownloaderComponent>
 	{
 		public override void Awake(BundleDownloaderComponent self)
 		{
@@ -57,7 +57,7 @@ namespace ET
 				this.Parent.RemoveComponent<BundleDownloaderComponent>();
 		}
 
-		public async ETTask StartAsync()
+		public async ETTask StartAsync(string url)
 		{
 			// 获取远程的Version.txt
 			string versionUrl = "";
@@ -65,7 +65,7 @@ namespace ET
 			{
 				using (UnityWebRequestAsync webRequestAsync = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
 				{
-					versionUrl = GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + "Version.txt";
+					versionUrl = url + "StreamingAssets/" + "Version.txt";
 					//Log.Debug(versionUrl);
 					await webRequestAsync.DownloadAsync(versionUrl);
 					remoteVersionConfig = JsonHelper.FromJson<VersionConfig>(webRequestAsync.Request.downloadHandler.text);
@@ -149,7 +149,7 @@ namespace ET
 			}
 		}
 
-		public async ETTask DownloadAsync()
+		public async ETTask DownloadAsync(string url)
 		{
 			if (this.bundles.Count == 0 && this.downloadingBundle == "")
 			{
@@ -173,7 +173,7 @@ namespace ET
 						{
 							using (this.webRequest = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
 							{
-								await this.webRequest.DownloadAsync(GlobalConfigComponent.Instance.GlobalProto.GetUrl() + "StreamingAssets/" + this.downloadingBundle);
+								await this.webRequest.DownloadAsync(url + "StreamingAssets/" + this.downloadingBundle);
 								byte[] data = this.webRequest.Request.downloadHandler.data;
 
 								string path = Path.Combine(PathHelper.AppHotfixResPath, this.downloadingBundle);

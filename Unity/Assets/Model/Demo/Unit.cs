@@ -5,46 +5,43 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace ET
 {
-	[ObjectSystem]
-	public class UnitAwakeSystem : AwakeSystem<Unit, GameObject>
-	{
-		public override void Awake(Unit self, GameObject gameObject)
-		{
-			self.Awake(gameObject);
-		}
-	}
-	
-	[HideInHierarchy]
 	public sealed class Unit: Entity
 	{
-		public GameObject GameObject;
-		
-		public void Awake(GameObject gameObject)
+		public int ConfigId;
+
+		public UnitConfig Config
 		{
-			this.GameObject = gameObject;
+			get
+			{
+				return UnitConfigCategory.Instance.Get(this.ConfigId);
+			}
 		}
+		
+		private Vector3 position;
 		
 		public Vector3 Position
 		{
 			get
 			{
-				return GameObject.transform.position;
+				return position;
 			}
 			set
 			{
-				GameObject.transform.position = value;
+				this.position = value;
 			}
 		}
+
+		private Quaternion rotation;
 
 		public Quaternion Rotation
 		{
 			get
 			{
-				return GameObject.transform.rotation;
+				return rotation;
 			}
 			set
 			{
-				GameObject.transform.rotation = value;
+				this.rotation = value;
 			}
 		}
 	}

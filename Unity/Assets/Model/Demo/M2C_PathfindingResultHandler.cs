@@ -16,12 +16,12 @@ namespace ET
 
 			unitPathComponent.StartMove(message).Coroutine();
 
-			GizmosDebug.Instance.Path.Clear();
-			GizmosDebug.Instance.Path.Add(new Vector3(message.X, message.Y, message.Z));
-			for (int i = 0; i < message.Xs.Count; ++i)
-			{
-				GizmosDebug.Instance.Path.Add(new Vector3(message.Xs[i], message.Ys[i], message.Zs[i]));
-			}
+			//GizmosDebug.Instance.Path.Clear();
+			//GizmosDebug.Instance.Path.Add(new Vector3(message.X, message.Y, message.Z));
+			//for (int i = 0; i < message.Xs.Count; ++i)
+			//{
+			//	GizmosDebug.Instance.Path.Add(new Vector3(message.Xs[i], message.Ys[i], message.Zs[i]));
+			//}
 
 			await ETTask.CompletedTask;
 		}

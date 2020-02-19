@@ -12,10 +12,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}</ProjectGuid>
+    <ProjectGuid>{2F8409C1-DA01-D464-DBF2-00C6449E459E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Unity.Model</AssemblyName>
+    <AssemblyName>Unity.ModelView</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
@@ -58,302 +58,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Model\Base\Async\AsyncETTaskMethodBuilder.cs" />
-     <Compile Include="Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs" />
-     <Compile Include="Assets\Model\Base\Async\AsyncMethodBuilderAttribute.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETCancellationToken.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETCancellationTokenSource.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETTask.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETTaskCompletionSource.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETTaskFactory.cs" />
-     <Compile Include="Assets\Model\Base\Async\ETVoid.cs" />
-     <Compile Include="Assets\Model\Base\Async\IAwaiter.cs" />
-     <Compile Include="Assets\Model\Base\Async\MoveNextRunner.cs" />
-     <Compile Include="Assets\Model\Base\DoubleMap.cs" />
-     <Compile Include="Assets\Model\Base\Event\Env.cs" />
-     <Compile Include="Assets\Model\Base\Event\EnvKey.cs" />
-     <Compile Include="Assets\Model\Base\Event\EventAttribute.cs" />
-     <Compile Include="Assets\Model\Base\Event\EventIdType.cs" />
-     <Compile Include="Assets\Model\Base\Event\IEvent.cs" />
-     <Compile Include="Assets\Model\Base\Helper\ByteHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\Dumper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\EnumHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\FileHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\IdGenerater.cs" />
-     <Compile Include="Assets\Model\Base\Helper\JsonHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\MD5Helper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\MethodInfoHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\MongoHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\NetHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\ObjectHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\RandomHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\StringHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\TimeHelper.cs" />
-     <Compile Include="Assets\Model\Base\Helper\ZipHelper.cs" />
-     <Compile Include="Assets\Model\Base\ListComponent.cs" />
-     <Compile Include="Assets\Model\Base\Log.cs" />
-     <Compile Include="Assets\Model\Base\LogType.cs" />
-     <Compile Include="Assets\Model\Base\MultiMap.cs" />
-     <Compile Include="Assets\Model\Base\MultiMapSet.cs" />
-     <Compile Include="Assets\Model\Base\Object\BaseAttribute.cs" />
-     <Compile Include="Assets\Model\Base\Object\ComponentView.cs" />
-     <Compile Include="Assets\Model\Base\Object\Entity.cs" />
-     <Compile Include="Assets\Model\Base\Object\EntityCreateComponet.cs" />
-     <Compile Include="Assets\Model\Base\Object\EntityEventAttribute.cs" />
-     <Compile Include="Assets\Model\Base\Object\EntityFactory.cs" />
-     <Compile Include="Assets\Model\Base\Object\EventProxy.cs" />
-     <Compile Include="Assets\Model\Base\Object\EventSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\HideInHierarchy.cs" />
-     <Compile Include="Assets\Model\Base\Object\IAwakeSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\IChangeSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\IDeserializeSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\IDestroySystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\ILateUpdateSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\ILoadSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\ISerializeToEntity.cs" />
-     <Compile Include="Assets\Model\Base\Object\IStartSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\IUpdateSystem.cs" />
-     <Compile Include="Assets\Model\Base\Object\NoMemoryCheck.cs" />
-     <Compile Include="Assets\Model\Base\Object\NoObjectPool.cs" />
-     <Compile Include="Assets\Model\Base\Object\Object.cs" />
-     <Compile Include="Assets\Model\Base\Object\ObjectPool.cs" />
-     <Compile Include="Assets\Model\Base\Object\ObjectSystemAttribute.cs" />
-     <Compile Include="Assets\Model\Base\OneThreadSynchronizationContext.cs" />
-     <Compile Include="Assets\Model\Base\Pool.cs" />
-     <Compile Include="Assets\Model\Base\ProcessHelper.cs" />
-     <Compile Include="Assets\Model\Base\QueueDictionary.cs" />
-     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\Events.cs" />
-     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
-     <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
-     <Compile Include="Assets\Model\Base\StructBsonSerialize.cs" />
-     <Compile Include="Assets\Model\Base\TryLocker.cs" />
-     <Compile Include="Assets\Model\Base\UnOrderMultiMap.cs" />
-     <Compile Include="Assets\Model\Base\UnOrderMultiMapSet.cs" />
-     <Compile Include="Assets\Model\Demo\AnimatorComponent.cs" />
-     <Compile Include="Assets\Model\Demo\CameraComponent.cs" />
-     <Compile Include="Assets\Model\Demo\Config\StartProcessConfig.cs" />
-     <Compile Include="Assets\Model\Demo\Config\StartSceneConfig.cs" />
-     <Compile Include="Assets\Model\Demo\Config\StartZoneConfig.cs" />
-     <Compile Include="Assets\Model\Demo\Config\UnitConfig.cs" />
-     <Compile Include="Assets\Model\Demo\G2C_TestHotfixHandler.cs" />
-     <Compile Include="Assets\Model\Demo\GlobalProto.cs" />
-     <Compile Include="Assets\Model\Demo\Helper\LoginHelper.cs" />
-     <Compile Include="Assets\Model\Demo\Helper\MapHelper.cs" />
-     <Compile Include="Assets\Model\Demo\Helper\UnitFactory.cs" />
-     <Compile Include="Assets\Model\Demo\M2C_CreateUnitsHandler.cs" />
-     <Compile Include="Assets\Model\Demo\M2C_PathfindingResultHandler.cs" />
-     <Compile Include="Assets\Model\Demo\MoveComponent.cs" />
-     <Compile Include="Assets\Model\Demo\OperaComponent.cs" />
-     <Compile Include="Assets\Model\Demo\Player.cs" />
-     <Compile Include="Assets\Model\Demo\PlayerComponent.cs" />
-     <Compile Include="Assets\Model\Demo\PlayerFactory.cs" />
-     <Compile Include="Assets\Model\Demo\SessionComponent.cs" />
-     <Compile Include="Assets\Model\Demo\TurnComponent.cs" />
-     <Compile Include="Assets\Model\Demo\Unit.cs" />
-     <Compile Include="Assets\Model\Demo\UnitComponent.cs" />
-     <Compile Include="Assets\Model\Demo\UnitPathComponent.cs" />
-     <Compile Include="Assets\Model\Entity\EntitySceneFactory.cs" />
-     <Compile Include="Assets\Model\Entity\Game.cs" />
-     <Compile Include="Assets\Model\Entity\Scene.cs" />
-     <Compile Include="Assets\Model\Entity\SceneChangeComponent.cs" />
-     <Compile Include="Assets\Model\Entity\SceneType.cs" />
-     <Compile Include="Assets\Model\Entity\TimerComponent.cs" />
-     <Compile Include="Assets\Model\Helper\BundleHelper.cs" />
-     <Compile Include="Assets\Model\Helper\PathHelper.cs" />
-     <Compile Include="Assets\Model\Helper\PositionHelper.cs" />
-     <Compile Include="Assets\Model\Helper\ResourcesHelper.cs" />
-     <Compile Include="Assets\Model\Module\Actor\IActorMessage.cs" />
-     <Compile Include="Assets\Model\Module\ActorLocation\IActorLocationMessage.cs" />
-     <Compile Include="Assets\Model\Module\AssetsBundle\AssetsBundleLoaderAsync.cs" />
-     <Compile Include="Assets\Model\Module\AssetsBundle\AssetsLoaderAsync.cs" />
-     <Compile Include="Assets\Model\Module\AssetsBundle\BundleDownloaderComponent.cs" />
-     <Compile Include="Assets\Model\Module\AssetsBundle\ResourcesComponent.cs" />
-     <Compile Include="Assets\Model\Module\AssetsBundle\VersionConfig.cs" />
-     <Compile Include="Assets\Model\Module\Config\ACategory.cs" />
-     <Compile Include="Assets\Model\Module\Config\AConfigComponent.cs" />
-     <Compile Include="Assets\Model\Module\Config\ConfigAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Config\ConfigComponent.cs" />
-     <Compile Include="Assets\Model\Module\Config\ConfigHelper.cs" />
-     <Compile Include="Assets\Model\Module\Config\IConfig.cs" />
-     <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLock.cs" />
-     <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs" />
-     <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockQueue.cs" />
-     <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs" />
-     <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockType.cs" />
-     <Compile Include="Assets\Model\Module\Message\AMHandler.cs" />
-     <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
-     <Compile Include="Assets\Model\Module\Message\IMHandler.cs" />
-     <Compile Include="Assets\Model\Module\Message\IMessage.cs" />
-     <Compile Include="Assets\Model\Module\Message\IMessageDispatcher.cs" />
-     <Compile Include="Assets\Model\Module\Message\IMessagePacker.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessageAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessageDispatcherComponent.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessageHandlerAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessageInfo.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessagePool.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessageProxy.cs" />
-     <Compile Include="Assets\Model\Module\Message\NetOuterComponent.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\AChannel.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\AService.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\Circularbuffer.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\KCP\KChannel.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\KCP\KService.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\KCP\Kcp.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\NetworkHelper.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\TCP\PacketParser.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\TCP\TChannel.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\TCP\TService.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\WebSocket\WChannel.cs" />
-     <Compile Include="Assets\Model\Module\Message\Network\WebSocket\WService.cs" />
-     <Compile Include="Assets\Model\Module\Message\NetworkComponent.cs" />
-     <Compile Include="Assets\Model\Module\Message\Opcode.cs" />
-     <Compile Include="Assets\Model\Module\Message\OpcodeHelper.cs" />
-     <Compile Include="Assets\Model\Module\Message\OpcodeTypeComponent.cs" />
-     <Compile Include="Assets\Model\Module\Message\OuterMessage.cs" />
-     <Compile Include="Assets\Model\Module\Message\OuterMessageDispatcher.cs" />
-     <Compile Include="Assets\Model\Module\Message\OuterOpcode.cs" />
-     <Compile Include="Assets\Model\Module\Message\ProtobufHelper.cs" />
-     <Compile Include="Assets\Model\Module\Message\ProtobufPacker.cs" />
-     <Compile Include="Assets\Model\Module\Message\RpcException.cs" />
-     <Compile Include="Assets\Model\Module\Message\Session.cs" />
-     <Compile Include="Assets\Model\Module\Message\SessionCallbackComponent.cs" />
-     <Compile Include="Assets\Model\Module\Message\SessionIdleCheckComponent.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\INumericWatcher.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericComponent.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericType.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericWatcherComponent.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\AIDestinationSetter.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\Patrol.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AIBase.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AILerp.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AIPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\IAstarAI.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\Seeker.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\TurnBasedAI.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AstarData.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AstarPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\GraphUpdateScene.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\GraphUpdateShape.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\AstarDebugger.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\Draw.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\EditorResourceHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphEditorBase.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphUpdateProcessor.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\GraphUtilities.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\MovementUtilities.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\NodeLink.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\PathInterpolator.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\StackPool.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\Misc\WorkItemProcessor.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOAgent.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOCoreObstacle.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOCoreSimulator.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOLine.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\RVO\RVOQuadtree.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\astarclasses.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Example3_Recast_Navmesh1\MecanimBridge.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAnimation.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdate.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdateHandler.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\ExampleScripts\TargetMover.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\ObjImporter.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastBBTree.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastMeshGatherer.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\RecastMeshObj.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelClasses.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelContour.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelMesh.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelPolygonClipper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRasterization.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRegion.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelUtility.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\MathHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\AdvancedSmooth.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\AlternativePath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\FunnelModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\Modifiers.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\RadiusModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\RaycastModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\SimpleSmoothModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Modifiers\StartEndModifier.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Navmesh\RelevantGraphSurface.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\EnumFlagAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\UniqueComponentAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\PackageTools\VersionedMonoBehaviour.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOController.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVONavmesh.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOObstacle.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOSimulator.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\RVO\RVOSquareObstacle.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\BlockManager.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\TurnBased\SingleNodeBlocker.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\UnityHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\AstarParallel.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\AstarProfiler.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\GraphGizmoHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\GraphUpdateUtilities.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\PathUtilities.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\RetainedGizmos.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\changelog.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\AStarConfig.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\ArrayPool.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarChecksum.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarDeserializer.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarMath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\AstarMemory.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\BBTree.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\BinaryHeap.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\EuclideanEmbedding.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Funnel.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\GraphNode.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\GraphTransform.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Guid.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\INavmesh.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Int3.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\IntRect.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\ListPool.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\NN.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavGraph.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavmeshBase.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\NavmeshTile.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\ObjectPool.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Path.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathFindHelper.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathHandler.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathPool.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathProcessor.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\PathReturnQueue.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\ABPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\ConstantPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FleePath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FloodPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\FloodPathTracer.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\MultiTargetPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\RandomPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Pathfinders\XPath.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\RecastGenerator.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\JsonSerializer.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\SimpleZipReplacement.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\Serialization\TinyJson.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\ThreadControlQueue.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\TriangleMeshNode.cs" />
-     <Compile Include="Assets\Model\Module\Pathfinding\Recast\WindowsStoreCompatibility.cs" />
-     <Compile Include="Assets\Model\Module\UnityWebRequest\UnityWebRequestAsync.cs" />
-     <Compile Include="Assets\Model\Other\AppType.cs" />
-     <Compile Include="Assets\Model\Other\Define.cs" />
-     <Compile Include="Assets\Model\Other\MotionType.cs" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Readme.txt" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Readme_upgrading.txt" />
-     <None Include="Assets\Model\Unity.Model.asmdef" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\link.xml" />
-     <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
+     <Compile Include="Assets\ModelView\Demo\GlobalConfigComponent.cs" />
+     <Compile Include="Assets\ModelView\Demo\UI\UILoading\UILoadingComponent.cs" />
+     <Compile Include="Assets\ModelView\Demo\UI\UILobby\UILobbyComponent.cs" />
+     <Compile Include="Assets\ModelView\Demo\UI\UILogin\UILoginComponent.cs" />
+     <Compile Include="Assets\ModelView\GizmosDebug.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\CanvasConfig.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\LayerNames.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UI.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIComponent.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIFactoryAttribute.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIType.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIViewComponent.cs" />
+     <Compile Include="Assets\ModelView\ReferenceCollector.cs" />
+     <None Include="Assets\ModelView\Unity.ModelView.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
@@ -941,6 +659,10 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Unity.Model.csproj">
+      <Project>{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}</Project>
+      <Name>Unity.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.ThirdParty.csproj">
       <Project>{E15BADD2-3A26-309A-AB0F-DC5B08044350}</Project>
       <Name>Unity.ThirdParty</Name>

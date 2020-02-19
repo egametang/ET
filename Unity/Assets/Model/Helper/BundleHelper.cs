@@ -7,7 +7,7 @@ namespace ET
 {
 	public static class BundleHelper
 	{
-		public static async ETTask DownloadBundle()
+		public static async ETTask DownloadBundle(string url)
 		{
 			if (Define.IsAsync)
 			{
@@ -15,11 +15,11 @@ namespace ET
 				{
 					using (BundleDownloaderComponent bundleDownloaderComponent = Game.Scene.AddComponent<BundleDownloaderComponent>())
 					{
-						await bundleDownloaderComponent.StartAsync();
+						await bundleDownloaderComponent.StartAsync(url);
 						
 						Game.EventSystem.Run(EventIdType.LoadingBegin);
 						
-						await bundleDownloaderComponent.DownloadAsync();
+						await bundleDownloaderComponent.DownloadAsync(url);
 					}
 					
 					Game.EventSystem.Run(EventIdType.LoadingFinish);
