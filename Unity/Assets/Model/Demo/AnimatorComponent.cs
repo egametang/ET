@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class AnimatorComponentAwakeSystem : AwakeSystem<AnimatorComponent>

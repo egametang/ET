@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ETModel;
+package ET;
 
 /// <summary>
 /// 传送unit

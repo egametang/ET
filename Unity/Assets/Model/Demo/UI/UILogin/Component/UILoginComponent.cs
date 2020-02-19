@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Net;
-using ETModel;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class UiLoginComponentSystem : AwakeSystem<UILoginComponent>

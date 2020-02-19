@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace ETModel
+namespace ET
 {
     /// <summary>
     /// Lightweight unity specified task-like object.

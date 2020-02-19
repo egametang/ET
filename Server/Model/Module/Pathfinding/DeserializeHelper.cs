@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PF;
 using Guid = PF.Guid;
 
-namespace ETModel
+namespace ET
 {
     public static class DeserializeHelper
     {

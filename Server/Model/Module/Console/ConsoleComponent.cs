@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ETModel
+namespace ET
 {
     [ObjectSystem]
     public class ConsoleComponentAwakeSystem : StartSystem<ConsoleComponent>

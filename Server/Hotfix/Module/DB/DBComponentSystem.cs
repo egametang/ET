@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using MongoDB.Driver;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string>

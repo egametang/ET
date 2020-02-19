@@ -1,8 +1,8 @@
-﻿using ETModel;
+﻿
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class UiLobbyComponentSystem : AwakeSystem<UILobbyComponent>

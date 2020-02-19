@@ -2,7 +2,7 @@
 using System.Threading;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class MoveComponentUpdateSystem : UpdateSystem<MoveComponent>

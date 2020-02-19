@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using UnityEngine;
 #endif
 
-namespace ETModel
+namespace ET
 {
 	[Flags]
 	public enum EntityStatus: byte

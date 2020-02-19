@@ -1,6 +1,6 @@
 ﻿﻿using System;
 
-namespace ETModel
+namespace ET
 {
     public class NoMemoryCheck: Attribute
     {

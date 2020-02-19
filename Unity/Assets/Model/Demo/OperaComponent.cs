@@ -1,8 +1,8 @@
 ﻿using System;
-using ETModel;
+
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     [ObjectSystem]
     public class OperaComponentAwakeSystem : AwakeSystem<OperaComponent>
@@ -47,7 +47,7 @@ namespace ETModel
 		            frameClickMap.X = this.ClickPoint.x;
 		            frameClickMap.Y = this.ClickPoint.y;
 		            frameClickMap.Z = this.ClickPoint.z;
-		            ETModel.SessionComponent.Instance.Session.Send(frameClickMap);
+		            SessionComponent.Instance.Session.Send(frameClickMap);
 
 					// 测试actor rpc消息
 					this.TestActor().Coroutine();

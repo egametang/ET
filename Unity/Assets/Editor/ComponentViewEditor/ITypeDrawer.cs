@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETEditor
+namespace ET
 {
     public interface ITypeDrawer
     {

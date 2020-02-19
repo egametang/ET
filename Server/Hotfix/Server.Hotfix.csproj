@@ -21,6 +21,12 @@
     <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\NetOuterComponentSystem.cs">
       <Link>Module\Message\NetOuterComponentSystem.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
+      <Link>Module\Numeric\NumericChangeEvent_NotifyWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
+      <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
+    </Compile>
     <EmbeddedResource Remove="Other\**" />
     <None Remove="Other\**" />
   </ItemGroup>

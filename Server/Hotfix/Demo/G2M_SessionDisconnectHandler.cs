@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETHotfix
+namespace ET
 {
 	[ActorMessageHandler]
 	public class G2M_SessionDisconnectHandler : AMActorLocationHandler<Unit, G2M_SessionDisconnect>

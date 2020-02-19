@@ -1,5 +1,5 @@
-using ETModel;
-namespace ETModel
+
+namespace ET
 {
 	[Message(OuterOpcode.C2M_TestRequest)]
 	public partial class C2M_TestRequest : IActorLocationRequest {}
@@ -79,7 +79,7 @@ namespace ETModel
 	public partial class G2C_PlayerInfo : IResponse {}
 
 }
-namespace ETModel
+namespace ET
 {
 	public static partial class OuterOpcode
 	{

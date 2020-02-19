@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
     [Event(EventIdType.LoadingFinish)]
     public class LoadingFinishEvent_RemoveLoadingUI : AEvent

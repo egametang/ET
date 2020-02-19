@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
 	/// <summary>
 	/// actor RPC消息响应

@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
 	[ObjectSystem]
 	public class UnitGateComponentAwakeSystem : AwakeSystem<UnitGateComponent, long>

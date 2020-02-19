@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[MessageHandler]
 	public class C2R_LoginHandler : AMRpcHandler<C2R_Login, R2C_Login>

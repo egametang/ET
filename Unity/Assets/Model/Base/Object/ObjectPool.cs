@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	public class ComponentQueue: Object
 	{

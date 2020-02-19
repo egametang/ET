@@ -1,5 +1,5 @@
 syntax = "proto3";
-package ETModel;
+package ET;
 
 message C2M_TestRequest // IActorLocationRequest
 {

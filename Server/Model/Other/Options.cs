@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace ETModel
+namespace ET
 {
 	public class Options: Entity
 	{

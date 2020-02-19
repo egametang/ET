@@ -146,6 +146,9 @@
     <Compile Include="..\..\Unity\Assets\Model\Entity\SceneType.cs">
       <Link>Entity\SceneType.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\TimerComponent.cs">
+      <Link>Entity\TimerComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
@@ -215,7 +218,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
@@ -250,12 +252,21 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\SessionIdleCheckComponent.cs">
       <Link>Module\Message\SessionIdleCheckComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs" Link="Module\Numeric\NumericType.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs">
+      <Link>Module\Numeric\INumericWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs">
+      <Link>Module\Numeric\NumericComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs">
+      <Link>Module\Numeric\NumericType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs">
+      <Link>Module\Numeric\NumericWatcherAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs">
+      <Link>Module\Numeric\NumericWatcherComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Pathfinding\Recast\ArrayPool.cs">
       <Link>Module\Pathfinding\Recast\ArrayPool.cs</Link>
     </Compile>
@@ -405,7 +416,6 @@
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Message\MessagePool\" />
-    <Folder Include="Module\Numeric\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">

@@ -1,7 +1,7 @@
 using System;
-using ETModel;
 
-namespace ETModel
+
+namespace ET
 {
     public static class MapHelper
     {
@@ -10,18 +10,18 @@ namespace ETModel
             try
             {
                 // 加载Unit资源
-                ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
+                ResourcesComponent resourcesComponent = ET.Game.Scene.GetComponent<ResourcesComponent>();
                 await resourcesComponent.LoadBundleAsync($"unit.unity3d");
 
                 // 加载场景资源
-                await ETModel.Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync("map.unity3d");
+                await ET.Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync("map.unity3d");
                 // 切换到map场景
-                using (SceneChangeComponent sceneChangeComponent = ETModel.Game.Scene.AddComponent<SceneChangeComponent>())
+                using (SceneChangeComponent sceneChangeComponent = ET.Game.Scene.AddComponent<SceneChangeComponent>())
                 {
                     await sceneChangeComponent.ChangeSceneAsync(sceneName);
                 }
 				
-                G2C_EnterMap g2CEnterMap = await ETModel.SessionComponent.Instance.Session.Call(new C2G_EnterMap()) as G2C_EnterMap;
+                G2C_EnterMap g2CEnterMap = await ET.SessionComponent.Instance.Session.Call(new C2G_EnterMap()) as G2C_EnterMap;
                 PlayerComponent.Instance.MyPlayer.UnitId = g2CEnterMap.UnitId;
 				
                 Game.Scene.AddComponent<OperaComponent>();

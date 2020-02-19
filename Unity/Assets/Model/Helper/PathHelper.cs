@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public static class PathHelper
     {     /// <summary>

@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETModel
+namespace ET
 {
 	[Event(EventIdType.InitSceneStart)]
 	public class InitSceneStart_CreateLoginUI: AEvent

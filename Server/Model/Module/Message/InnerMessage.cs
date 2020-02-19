@@ -1,6 +1,6 @@
-using ETModel;
+
 using System.Collections.Generic;
-namespace ETModel
+namespace ET
 {
 /// <summary>
 /// 传送unit

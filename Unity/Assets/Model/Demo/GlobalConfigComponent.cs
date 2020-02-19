@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
 	[ObjectSystem]
 	public class GlobalConfigComponentAwakeSystem : AwakeSystem<GlobalConfigComponent>

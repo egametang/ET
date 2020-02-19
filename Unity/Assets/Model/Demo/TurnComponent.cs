@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class TurnComponentUpdateSystem : UpdateSystem<TurnComponent>

@@ -1,6 +1,6 @@
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
     [Event(EventIdType.AfterScenesAdd)]
     public class AfterScenesAdd_CreateScene: AEvent

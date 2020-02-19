@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace ETModel
+namespace ET
 {
 	public abstract class NetworkComponent : Entity
 	{

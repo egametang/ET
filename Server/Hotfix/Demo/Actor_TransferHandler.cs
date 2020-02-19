@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[ActorMessageHandler]
 	public class Actor_TransferHandler : AMActorRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>

@@ -1,8 +1,8 @@
 ﻿using System;
-using ETModel;
+
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public static class UILobbyFactory
     {
@@ -10,7 +10,7 @@ namespace ETModel
         {
 	        try
 	        {
-				ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
+				ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
 		        resourcesComponent.LoadBundle(UIType.UILobby.StringToAB());
 				GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset(UIType.UILobby.StringToAB(), UIType.UILobby);
 				GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject);

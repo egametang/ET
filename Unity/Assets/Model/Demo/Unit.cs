@@ -3,7 +3,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class UnitAwakeSystem : AwakeSystem<Unit, GameObject>

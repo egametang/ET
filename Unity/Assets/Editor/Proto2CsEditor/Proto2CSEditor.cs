@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using ETModel;
+
 using UnityEditor;
 
-namespace ETEditor
+namespace ET
 {
 	internal class OpcodeInfo
 	{

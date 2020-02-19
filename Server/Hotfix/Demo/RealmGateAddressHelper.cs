@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	public static class RealmGateAddressHelper
 	{

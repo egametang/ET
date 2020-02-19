@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.Networking;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class UnityWebRequestUpdateSystem : UpdateSystem<UnityWebRequestAsync>

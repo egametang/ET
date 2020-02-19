@@ -5,7 +5,7 @@ using System.Threading;
 using CommandLine;
 using NLog;
 
-namespace ETModel
+namespace ET
 {
 	internal static class Program
 	{

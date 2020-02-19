@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
     [ObjectSystem]
     public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>

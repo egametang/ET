@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.IO;
 
-namespace ETModel
+namespace ET
 {
 	public sealed class TService : AService
 	{

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace ETModel
+namespace ET
 {
     public class ListComponent <T> : Entity
     {

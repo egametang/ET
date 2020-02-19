@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Path = System.IO.Path;
 
-namespace ETModel
+namespace ET
 {
     public static class ProcessHelper
     {

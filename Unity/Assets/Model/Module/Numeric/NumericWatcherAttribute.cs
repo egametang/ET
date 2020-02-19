@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
 	public class NumericWatcherAttribute : BaseAttribute
 	{

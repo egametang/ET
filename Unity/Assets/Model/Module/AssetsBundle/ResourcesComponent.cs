@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class ABInfoAwakeSystem : AwakeSystem<ABInfo, string, AssetBundle>

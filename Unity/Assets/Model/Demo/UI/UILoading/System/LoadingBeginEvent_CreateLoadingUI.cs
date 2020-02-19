@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     [Event(EventIdType.LoadingBegin)]
     public class LoadingBeginEvent_CreateLoadingUI : AEvent<Entity>

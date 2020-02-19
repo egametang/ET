@@ -1,4 +1,4 @@
-namespace ETModel
+namespace ET
 {
 	[Config]
 	public partial class StartProcessConfigCategory : ACategory<StartProcessConfig>

@@ -60,6 +60,8 @@
   <ItemGroup>
      <Compile Include="Assets\Hotfix\Module\Config\ConfigComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\NetOuterComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
+     <Compile Include="Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
      <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

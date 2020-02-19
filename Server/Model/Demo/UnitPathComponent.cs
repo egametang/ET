@@ -3,7 +3,7 @@ using System.Threading;
 using PF;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public class UnitPathComponent: Entity
     {

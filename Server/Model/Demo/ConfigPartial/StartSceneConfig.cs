@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace ETModel
+namespace ET
 {
-    public partial class StartSceneConfigCategory: ISupportInitialize
+    public partial class StartSceneConfigCategory
     {
         public MultiMap<int, StartSceneConfig> Gates = new MultiMap<int, StartSceneConfig>();
         
@@ -23,7 +23,7 @@ namespace ETModel
             return this.ZoneScenesByName[zone][name];
         }
         
-        public void EndInit()
+        public override void EndInit()
         {
             foreach (StartSceneConfig startSceneConfig in this.GetAll().Values)
             {

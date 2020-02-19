@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using ETModel;
+
 using UnityEditor;
 using UnityEngine;
 
-namespace ETEditor
+namespace ET
 {
     public class GlobalProtoEditor: EditorWindow
     {

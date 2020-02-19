@@ -6,7 +6,7 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace ETModel
+namespace ET
 {
     public class StructBsonSerialize<TValue> : StructSerializerBase<TValue> where TValue : struct
     {

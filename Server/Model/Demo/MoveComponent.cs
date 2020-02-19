@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public class MoveComponent: Entity
     {

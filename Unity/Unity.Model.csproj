@@ -129,10 +129,6 @@
      <Compile Include="Assets\Model\Base\TryLocker.cs" />
      <Compile Include="Assets\Model\Base\UnOrderMultiMap.cs" />
      <Compile Include="Assets\Model\Base\UnOrderMultiMapSet.cs" />
-     <Compile Include="Assets\Model\Component\Config\GlobalProto.cs" />
-     <Compile Include="Assets\Model\Component\GlobalConfigComponent.cs" />
-     <Compile Include="Assets\Model\Component\SceneChangeComponent.cs" />
-     <Compile Include="Assets\Model\Component\TimerComponent.cs" />
      <Compile Include="Assets\Model\Demo\AnimatorComponent.cs" />
      <Compile Include="Assets\Model\Demo\CameraComponent.cs" />
      <Compile Include="Assets\Model\Demo\Config\StartProcessConfig.cs" />
@@ -140,6 +136,8 @@
      <Compile Include="Assets\Model\Demo\Config\StartZoneConfig.cs" />
      <Compile Include="Assets\Model\Demo\Config\UnitConfig.cs" />
      <Compile Include="Assets\Model\Demo\G2C_TestHotfixHandler.cs" />
+     <Compile Include="Assets\Model\Demo\GlobalConfigComponent.cs" />
+     <Compile Include="Assets\Model\Demo\GlobalProto.cs" />
      <Compile Include="Assets\Model\Demo\Helper\LoginHelper.cs" />
      <Compile Include="Assets\Model\Demo\Helper\MapHelper.cs" />
      <Compile Include="Assets\Model\Demo\M2C_CreateUnitsHandler.cs" />
@@ -170,8 +168,9 @@
      <Compile Include="Assets\Model\Entity\EntitySceneFactory.cs" />
      <Compile Include="Assets\Model\Entity\Game.cs" />
      <Compile Include="Assets\Model\Entity\Scene.cs" />
+     <Compile Include="Assets\Model\Entity\SceneChangeComponent.cs" />
      <Compile Include="Assets\Model\Entity\SceneType.cs" />
-     <Compile Include="Assets\Model\Entity\UnityWebRequestAsync.cs" />
+     <Compile Include="Assets\Model\Entity\TimerComponent.cs" />
      <Compile Include="Assets\Model\Helper\ActionHelper.cs" />
      <Compile Include="Assets\Model\Helper\BundleHelper.cs" />
      <Compile Include="Assets\Model\Helper\GameObjectHelper.cs" />
@@ -236,12 +235,10 @@
      <Compile Include="Assets\Model\Module\Message\SessionCallbackComponent.cs" />
      <Compile Include="Assets\Model\Module\Message\SessionIdleCheckComponent.cs" />
      <Compile Include="Assets\Model\Module\Numeric\INumericWatcher.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericComponent.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericType.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericWatcherComponent.cs" />
-     <Compile Include="Assets\Model\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
      <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\AIDestinationSetter.cs" />
      <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Behaviors\Patrol.cs" />
      <Compile Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\Core\AI\AIBase.cs" />
@@ -368,11 +365,11 @@
      <Compile Include="Assets\Model\Module\UI\UIComponent.cs" />
      <Compile Include="Assets\Model\Module\UI\UIFactoryAttribute.cs" />
      <Compile Include="Assets\Model\Module\UI\UIType.cs" />
+     <Compile Include="Assets\Model\Module\UI\UIViewComponent.cs" />
+     <Compile Include="Assets\Model\Module\UnityWebRequest\UnityWebRequestAsync.cs" />
      <Compile Include="Assets\Model\Other\AppType.cs" />
      <Compile Include="Assets\Model\Other\Define.cs" />
      <Compile Include="Assets\Model\Other\GizmosDebug.cs" />
-     <Compile Include="Assets\Model\Other\IInstanceMethod.cs" />
-     <Compile Include="Assets\Model\Other\MonoStaticMethod.cs" />
      <Compile Include="Assets\Model\Other\MotionType.cs" />
      <Compile Include="Assets\Model\Other\ReferenceCollector.cs" />
      <None Include="Assets\Model\Module\Pathfinding\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />

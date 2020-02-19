@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using ETModel;
+
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	[ObjectSystem]
 	public class UiAwakeSystem : AwakeSystem<UI, string, GameObject>

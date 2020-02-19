@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETModel
+namespace ET
 {
 	[Event(EventIdType.LoginFinish)]
 	public class LoginFinish_CreateLobbyUI: AEvent

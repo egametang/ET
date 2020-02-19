@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public class GizmosDebug: MonoBehaviour
     {

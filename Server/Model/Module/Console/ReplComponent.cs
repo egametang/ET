@@ -3,7 +3,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace ETModel
+namespace ET
 {
     [ObjectSystem]
     public class ReplComponentAwakeSystem : AwakeSystem<ReplComponent>

@@ -1,8 +1,8 @@
 ﻿using System;
-using ETModel;
+
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public static class UILoginFactory
     {
@@ -10,7 +10,7 @@ namespace ETModel
         {
 	        try
 	        {
-				ResourcesComponent resourcesComponent = ETModel.Game.Scene.GetComponent<ResourcesComponent>();
+				ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
 				resourcesComponent.LoadBundle(UIType.UILogin.StringToAB());
 				GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset(UIType.UILogin.StringToAB(), UIType.UILogin);
 				GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject);

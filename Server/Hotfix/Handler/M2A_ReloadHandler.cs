@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[MessageHandler]
 	public class M2A_ReloadHandler : AMRpcHandler<M2A_Reload, A2M_Reload>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ETModel
+namespace ET
 {
 	/// <summary>
 	/// Actor消息分发组件

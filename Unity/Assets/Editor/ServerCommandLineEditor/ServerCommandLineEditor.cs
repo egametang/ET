@@ -6,7 +6,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public class ServerCommandLineEditor: EditorWindow
     {

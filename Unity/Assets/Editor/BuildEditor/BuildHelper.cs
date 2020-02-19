@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using ETModel;
+
 using UnityEditor;
 
-namespace ETEditor
+namespace ET
 {
 	public static class BuildHelper
 	{

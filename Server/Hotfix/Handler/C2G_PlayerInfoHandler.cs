@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	// 用来测试消息包含复杂类型，是否产生gc
 	[MessageHandler]

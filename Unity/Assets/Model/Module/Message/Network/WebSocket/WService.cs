@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.WebSockets;
 using Microsoft.IO;
 
-namespace ETModel
+namespace ET
 {
     public class WService: AService
     {

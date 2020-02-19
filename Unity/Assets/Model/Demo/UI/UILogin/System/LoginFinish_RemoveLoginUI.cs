@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETModel
+namespace ET
 {
 	[Event(EventIdType.LoginFinish)]
 	public class LoginFinish_RemoveLoginUI: AEvent
@@ -8,7 +8,7 @@ namespace ETModel
 		public override void Run()
 		{
 			Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILogin);
-			ETModel.Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle(UIType.UILogin.StringToAB());
+			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle(UIType.UILogin.StringToAB());
 		}
 	}
 }

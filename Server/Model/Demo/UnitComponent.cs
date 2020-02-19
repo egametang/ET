@@ -3,7 +3,7 @@ using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 
-namespace ETModel
+namespace ET
 {
 	public class UnitComponent: Entity
 	{

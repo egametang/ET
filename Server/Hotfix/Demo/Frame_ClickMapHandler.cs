@@ -1,8 +1,8 @@
-﻿using ETModel;
+﻿
 using PF;
 using UnityEngine;
 
-namespace ETHotfix
+namespace ET
 {
 	[ActorMessageHandler]
 	public class Frame_ClickMapHandler : AMActorLocationHandler<Unit, Frame_ClickMap>

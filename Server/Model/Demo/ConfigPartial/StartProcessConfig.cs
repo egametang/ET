@@ -1,14 +1,11 @@
 using System.ComponentModel;
 
-namespace ETModel
+namespace ET
 {
-	public partial class StartProcessConfigCategory : ISupportInitialize
+	public partial class StartProcessConfigCategory
 	{
-		
-		
-		public void EndInit()
+		public override void EndInit()
 		{
-			
 		}
 	}
 	

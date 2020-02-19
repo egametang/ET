@@ -1,14 +1,14 @@
-﻿using ETModel;
+﻿
 using Vector3 = UnityEngine.Vector3;
 
-namespace ETModel
+namespace ET
 {
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
-		protected override async ETTask Run(ETModel.Session session, M2C_CreateUnits message)
+		protected override async ETTask Run(Session session, M2C_CreateUnits message)
 		{	
-			UnitComponent unitComponent = ETModel.Game.Scene.GetComponent<UnitComponent>();
+			UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)
 			{
@@ -16,7 +16,7 @@ namespace ETModel
 				{
 					continue;
 				}
-				Unit unit = UnitFactory.Create(ETModel.Game.Scene, unitInfo.UnitId);
+				Unit unit = UnitFactory.Create(Game.Scene, unitInfo.UnitId);
 				unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 			}
 

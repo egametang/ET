@@ -1,7 +1,7 @@
 ﻿using PF;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	public enum UnitType
 	{

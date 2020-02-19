@@ -5,7 +5,7 @@ using System.Text;
 using Google.Protobuf;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public static class Dumper
     {

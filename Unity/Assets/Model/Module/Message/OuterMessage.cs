@@ -6,7 +6,7 @@
 using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using scg = global::System.Collections.Generic;
-namespace ETModel {
+namespace ET {
 
   #region Messages
   public partial class C2M_TestRequest : pb::IMessage {
@@ -453,13 +453,13 @@ namespace ETModel {
       }
     }
 
-    private static readonly pb::FieldCodec<global::ETModel.UnitInfo> _repeated_units_codec
-        = pb::FieldCodec.ForMessage(18, global::ETModel.UnitInfo.Parser);
-    private pbc::RepeatedField<global::ETModel.UnitInfo> units_ = new pbc::RepeatedField<global::ETModel.UnitInfo>();
+    private static readonly pb::FieldCodec<global::ET.UnitInfo> _repeated_units_codec
+        = pb::FieldCodec.ForMessage(18, global::ET.UnitInfo.Parser);
+    private pbc::RepeatedField<global::ET.UnitInfo> units_ = new pbc::RepeatedField<global::ET.UnitInfo>();
     /// <summary>
     /// 所有的unit
     /// </summary>
-    public pbc::RepeatedField<global::ETModel.UnitInfo> Units {
+    public pbc::RepeatedField<global::ET.UnitInfo> Units {
       get { return units_; }
       set { units_ = value; }
     }
@@ -666,10 +666,10 @@ namespace ETModel {
       }
     }
 
-    private static readonly pb::FieldCodec<global::ETModel.UnitInfo> _repeated_units_codec
-        = pb::FieldCodec.ForMessage(10, global::ETModel.UnitInfo.Parser);
-    private pbc::RepeatedField<global::ETModel.UnitInfo> units_ = new pbc::RepeatedField<global::ETModel.UnitInfo>();
-    public pbc::RepeatedField<global::ETModel.UnitInfo> Units {
+    private static readonly pb::FieldCodec<global::ET.UnitInfo> _repeated_units_codec
+        = pb::FieldCodec.ForMessage(10, global::ET.UnitInfo.Parser);
+    private pbc::RepeatedField<global::ET.UnitInfo> units_ = new pbc::RepeatedField<global::ET.UnitInfo>();
+    public pbc::RepeatedField<global::ET.UnitInfo> Units {
       get { return units_; }
       set { units_ = value; }
     }
@@ -2152,18 +2152,18 @@ namespace ETModel {
       }
     }
 
-    private global::ETModel.PlayerInfo playerInfo_;
-    public global::ETModel.PlayerInfo PlayerInfo {
+    private global::ET.PlayerInfo playerInfo_;
+    public global::ET.PlayerInfo PlayerInfo {
       get { return playerInfo_; }
       set {
         playerInfo_ = value;
       }
     }
 
-    private static readonly pb::FieldCodec<global::ETModel.PlayerInfo> _repeated_playerInfos_codec
-        = pb::FieldCodec.ForMessage(18, global::ETModel.PlayerInfo.Parser);
-    private pbc::RepeatedField<global::ETModel.PlayerInfo> playerInfos_ = new pbc::RepeatedField<global::ETModel.PlayerInfo>();
-    public pbc::RepeatedField<global::ETModel.PlayerInfo> PlayerInfos {
+    private static readonly pb::FieldCodec<global::ET.PlayerInfo> _repeated_playerInfos_codec
+        = pb::FieldCodec.ForMessage(18, global::ET.PlayerInfo.Parser);
+    private pbc::RepeatedField<global::ET.PlayerInfo> playerInfos_ = new pbc::RepeatedField<global::ET.PlayerInfo>();
+    public pbc::RepeatedField<global::ET.PlayerInfo> PlayerInfos {
       get { return playerInfos_; }
       set { playerInfos_ = value; }
     }
@@ -2254,7 +2254,7 @@ namespace ETModel {
             break;
           case 10: {
             if (playerInfo_ == null) {
-              playerInfo_ = new global::ETModel.PlayerInfo();
+              playerInfo_ = new global::ET.PlayerInfo();
             }
             input.ReadMessage(playerInfo_);
             break;

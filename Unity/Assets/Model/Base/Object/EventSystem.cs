@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ETModel
+namespace ET
 {
 	public enum DLLType
 	{

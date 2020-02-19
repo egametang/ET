@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
- namespace ETModel
+ namespace ET
 {
 	[StructLayout(LayoutKind.Sequential, Pack = 1)]
 	public struct IdStruct

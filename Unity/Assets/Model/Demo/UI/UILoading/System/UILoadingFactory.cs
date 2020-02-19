@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public static class UILoadingFactory
     {

@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETHotfix
+namespace ET
 {
     public static class MessageHelper
     {
