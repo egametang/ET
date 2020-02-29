@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ETModel
+namespace ET
 {
 	public class FileVersionInfo
 	{

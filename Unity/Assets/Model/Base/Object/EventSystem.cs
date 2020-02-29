@@ -4,20 +4,35 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ETModel
+namespace ET
 {
 	public enum DLLType
 	{
+		Core,
 		Model,
 		Hotfix,
 		Editor,
 	}
 
-	public sealed class EventSystem
+	public sealed class EventSystem: IDisposable
 	{
+		private static EventSystem instance;
+
+		public static EventSystem Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					instance = new EventSystem();
+				}
+				return instance;
+			}
+		}
+		
 		private readonly Dictionary<long, Entity> allComponents = new Dictionary<long, Entity>();
 
-		private readonly Dictionary<DLLType, Assembly> assemblies = new Dictionary<DLLType, Assembly>();
+		private readonly Dictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 		
 		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
 
@@ -38,7 +53,7 @@ namespace ETModel
 		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
 		
 		private readonly UnOrderMultiMap<Type, IDeserializeSystem> deserializeSystems = new UnOrderMultiMap<Type, IDeserializeSystem>();
-
+		
 		private Queue<long> updates = new Queue<long>();
 		private Queue<long> updates2 = new Queue<long>();
 		
@@ -50,9 +65,14 @@ namespace ETModel
 		private Queue<long> lateUpdates = new Queue<long>();
 		private Queue<long> lateUpdates2 = new Queue<long>();
 
-		public void Add(DLLType dllType, Assembly assembly)
+		private EventSystem()
 		{
-			this.assemblies[dllType] = assembly;
+			this.Add(typeof(EventSystem).Assembly);
+		}
+
+		public void Add(Assembly assembly)
+		{
+			this.assemblies[assembly.ManifestModule.ScopeName] = assembly;
 			this.types.Clear();
 			foreach (Assembly value in this.assemblies.Values)
 			{
@@ -69,8 +89,10 @@ namespace ETModel
 						continue;
 					}
 
-					BaseAttribute baseAttribute = (BaseAttribute) objects[0];
-					this.types.Add(baseAttribute.AttributeType, type);
+					foreach (BaseAttribute baseAttribute in objects)
+					{
+						this.types.Add(baseAttribute.AttributeType, type);
+					}
 				}
 			}
 
@@ -86,7 +108,6 @@ namespace ETModel
 			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
 			{
 				object obj = Activator.CreateInstance(type);
-
 				switch (obj)
 				{
 					case IAwakeSystem objectSystem:
@@ -117,27 +138,29 @@ namespace ETModel
 			}
 
 			this.allEvents.Clear();
-			if (this.types.ContainsKey(typeof (EventAttribute)))
+			foreach (Type type in types[typeof(EventAttribute)])
 			{
-				foreach (Type type in types[typeof(EventAttribute)])
-				{
-					object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
+				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
 
-					foreach (object attr in attrs)
+				foreach (object attr in attrs)
+				{
+					EventAttribute aEventAttribute = (EventAttribute)attr;
+					object obj = Activator.CreateInstance(type);
+					IEvent iEvent = obj as IEvent;
+					if (iEvent == null)
 					{
-						EventAttribute aEventAttribute = (EventAttribute)attr;
-						object obj = Activator.CreateInstance(type);
-						IEvent iEvent = obj as IEvent;
-						if (iEvent == null)
-						{
-							Log.Error($"{obj.GetType().Name} 没有继承IEvent");
-						}
-						this.RegisterEvent(aEventAttribute.Type, iEvent);
+						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
 					}
+					this.RegisterEvent(aEventAttribute.Type, iEvent);
 				}
 			}
 			
 			this.Load();
+		}
+		
+		public Assembly GetAssembly(string name)
+		{
+			return this.assemblies[name];
 		}
 
 		public void RegisterEvent(string eventId, IEvent e)
@@ -147,11 +170,6 @@ namespace ETModel
 				this.allEvents.Add(eventId, new List<object>());
 			}
 			this.allEvents[eventId].Add(e);
-		}
-
-		public Assembly Get(DLLType dllType)
-		{
-			return this.assemblies[dllType];
 		}
 		
 		public HashSet<Type> GetTypes(Type systemAttributeType)
@@ -617,10 +635,15 @@ namespace ETModel
 			{
 				return;
 			}
-			foreach (AEvent aEvent in iEvents)
+			foreach (object obj in iEvents)
 			{
 				try
 				{
+					if (!(obj is AEvent aEvent))
+					{
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
+					}
 					aEvent.Run();
 				}
 				catch (Exception e)
@@ -641,14 +664,12 @@ namespace ETModel
 			{
 				try
 				{
-					if (obj is AEvent<A> aEvent)
+					if (!(obj is AEvent<A> aEvent))
 					{
-						aEvent.Run(a);
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
 					}
-					else if (obj is EventProxy eventProxy)
-					{
-						 eventProxy.Handle(a);
-					}
+					aEvent.Run(a);
 				}
 				catch (Exception e)
 				{
@@ -668,14 +689,12 @@ namespace ETModel
 			{
 				try
 				{
-					if (obj is AEvent<A, B> aEvent)
+					if (!(obj is AEvent<A, B> aEvent))
 					{
-						aEvent.Run(a, b);
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
 					}
-					else if (obj is EventProxy eventProxy)
-					{
-						eventProxy.Handle(a, b);
-					}
+					aEvent.Run(a, b);
 				}
 				catch (Exception e)
 				{
@@ -695,14 +714,12 @@ namespace ETModel
 			{
 				try
 				{
-					if (obj is AEvent<A, B, C> aEvent)
+					if (!(obj is AEvent<A, B, C> aEvent))
 					{
-						aEvent.Run(a, b, c);
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
 					}
-					else if (obj is EventProxy eventProxy)
-					{
-						eventProxy.Handle(a, b, c);
-					}
+					aEvent.Run(a, b, c);
 				}
 				catch (Exception e)
 				{
@@ -710,7 +727,7 @@ namespace ETModel
 				}
 			}
 		}
-
+		
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();
@@ -767,6 +784,11 @@ namespace ETModel
 			}
 
 			return sb.ToString();
+		}
+
+		public void Dispose()
+		{
+			instance = null;
 		}
 	}
 }

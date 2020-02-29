@@ -1,6 +1,6 @@
 using PF;
 
-namespace ETModel
+namespace ET
 {
     [ObjectSystem]
     public class PathfindingComponentAwakeSystem : AwakeSystem<PathfindingComponent>

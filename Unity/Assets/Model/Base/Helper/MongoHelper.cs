@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Conventions;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	public static class MongoHelper
 	{

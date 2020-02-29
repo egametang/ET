@@ -4,7 +4,7 @@ using System.IO;
 using System.Net.WebSockets;
 using System.Threading;
 
-namespace ETModel
+namespace ET
 {
     public class WChannel: AChannel
     {

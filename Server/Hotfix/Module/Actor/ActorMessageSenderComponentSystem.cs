@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
     [ObjectSystem]
     public class ActorMessageSenderComponentAwakeSystem : AwakeSystem<ActorMessageSenderComponent>
@@ -57,59 +57,48 @@ namespace ETHotfix
             {
                 throw new Exception($"actor id is 0: {MongoHelper.ToJson(message)}");
             }
-            string address = StartConfigComponent.Instance.GetProcessInnerAddress(IdGenerater.GetProcessId(actorId));
+            int process = IdGenerater.GetProcess(actorId);
+            string address = StartProcessConfigCategory.Instance.Get(process).InnerAddress;
             Session session = NetInnerComponent.Instance.Get(address);
             message.ActorId = actorId;
             session.Send(message);
         }
 		
-        public static ETTask<IActorResponse> Call(this ActorMessageSenderComponent self, long actorId, IActorRequest message)
+        public static ETTask<IActorResponse> Call(this ActorMessageSenderComponent self, long actorId, IActorRequest message, bool exception = true)
         {
             if (actorId == 0)
             {
                 throw new Exception($"actor id is 0: {MongoHelper.ToJson(message)}");
             }
-            
-            string address = StartConfigComponent.Instance.GetProcessInnerAddress(IdGenerater.GetProcessId(actorId));
-            Session session = NetInnerComponent.Instance.Get(address);
-            message.ActorId = actorId & IdGenerater.HeadMask | IdGenerater.Head;
-            message.RpcId = ++self.RpcId;
-			
+
             var tcs = new ETTaskCompletionSource<IActorResponse>();
+            
+            int process = IdGenerater.GetProcess(actorId);
+            string address = StartProcessConfigCategory.Instance.Get(process).InnerAddress;
+            Session session = NetInnerComponent.Instance.Get(address);
+            InstanceIdStruct instanceIdStruct = new InstanceIdStruct(actorId);
+            instanceIdStruct.Process = IdGenerater.Process;
+            message.ActorId = instanceIdStruct.ToLong();
+            message.RpcId = ++self.RpcId;
+
             self.requestCallback.Add(message.RpcId, new ActorMessageSender((response) =>
             {
-                if (ErrorCode.IsRpcNeedThrowException(response.Error))
+                if (exception && ErrorCode.IsRpcNeedThrowException(response.Error))
                 {
                     tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
                     return;
                 }
 
-                
                 tcs.SetResult(response);
             }));
             session.Send(message);
+
             return tcs.Task;
         }
 		
-        public static ETTask<IActorResponse> CallWithoutException(this ActorMessageSenderComponent self, long actorId,  IActorRequest message)
+        public static async ETTask<IActorResponse> CallWithoutException(this ActorMessageSenderComponent self, long actorId,  IActorRequest message)
         {
-            if (actorId == 0)
-            {
-                throw new Exception($"actor id is 0: {MongoHelper.ToJson(message)}");
-            }
-            
-            string address = StartConfigComponent.Instance.GetProcessInnerAddress(IdGenerater.GetProcessId(actorId));
-            Session session = NetInnerComponent.Instance.Get(address);
-            message.ActorId = actorId & IdGenerater.HeadMask | IdGenerater.Head;
-            message.RpcId = ++self.RpcId;
-			
-            var tcs = new ETTaskCompletionSource<IActorResponse>();
-            self.requestCallback.Add(message.RpcId, new ActorMessageSender((response) =>
-            {
-                tcs.SetResult(response);
-            }));
-            session.Send(message);
-            return tcs.Task;
+            return await self.Call(actorId, message, false);
         }
 		
         public static void RunMessage(this ActorMessageSenderComponent self, IActorResponse response)

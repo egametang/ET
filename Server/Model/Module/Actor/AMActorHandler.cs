@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class, IActorMessage
 	{

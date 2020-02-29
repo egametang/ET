@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[ObjectSystem]
 	public class WebSocketBenchmarkComponentSystem : AwakeSystem<WebSocketBenchmarkComponent, string>

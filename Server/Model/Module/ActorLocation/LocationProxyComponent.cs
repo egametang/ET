@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ETModel
+namespace ET
 {
 	public class LocationProxyComponent : Entity
 	{

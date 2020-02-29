@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Model</AssemblyName>
     <RootNamespace>Model</RootNamespace>
     <LangVersion>7.3</LangVersion>
@@ -134,20 +134,20 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMapSet.cs">
       <Link>Base\UnOrderMultiMapSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\CopyConfig.cs">
-      <Link>Component\Config\CopyConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\EntitySceneFactory.cs">
+      <Link>Entity\EntitySceneFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ProcessConfig.cs">
-      <Link>Component\Config\ProcessConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\Game.cs">
+      <Link>Entity\Game.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\SceneConfig.cs">
-      <Link>Component\Config\SceneConfig.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\StartConfig.cs">
-      <Link>Component\Config\StartConfig.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\Scene.cs">
+      <Link>Entity\Scene.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Entity\SceneType.cs">
       <Link>Entity\SceneType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Entity\TimerComponent.cs">
+      <Link>Entity\TimerComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
@@ -185,12 +185,12 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\WebSocket\WService.cs">
       <Link>Module\Message\Network\WebSocket\WService.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\MessagePool.cs">
-      <Link>Module\Message\MessagePool\ETHotfix\MessagePool.cs</Link>
-    </Compile>
     <EmbeddedResource Remove="Libs\**" />
     <None Remove="Libs\**" />
     <None Remove="graph.bytes" />
+    <Compile Remove="Module\Scene\**" />
+    <EmbeddedResource Remove="Module\Scene\**" />
+    <None Remove="Module\Scene\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Model\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
@@ -218,12 +218,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\ClientConfig.cs" Link="Component\Config\ClientConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\DBConfig.cs" Link="Module\DB\DBConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\HttpConfig.cs" Link="Module\Http\HttpConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\InnerConfig.cs" Link="Module\Message\InnerConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\Config\OuterConfig.cs" Link="Module\Message\OuterConfig.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Component\TimerComponent.cs" Link="Component\TimerComponent.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
@@ -258,12 +252,21 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\SessionIdleCheckComponent.cs">
       <Link>Module\Message\SessionIdleCheckComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs" Link="Module\Numeric\INumericWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" Link="Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs" Link="Module\Numeric\NumericComponent.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs" Link="Module\Numeric\NumericType.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" Link="Module\Numeric\NumericWatcherAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs" Link="Module\Numeric\NumericWatcherComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs">
+      <Link>Module\Numeric\INumericWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs">
+      <Link>Module\Numeric\NumericComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs">
+      <Link>Module\Numeric\NumericType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs">
+      <Link>Module\Numeric\NumericWatcherAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs">
+      <Link>Module\Numeric\NumericWatcherComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Pathfinding\Recast\ArrayPool.cs">
       <Link>Module\Pathfinding\Recast\ArrayPool.cs</Link>
     </Compile>
@@ -394,8 +397,6 @@
       <Link>Module\Pathfinding\Recast\WindowsStoreCompatibility.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Other\AppType.cs" Link="Other\AppType.cs" />
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixMessage.cs" Link="Module\Message\HotfixMessage.cs" />
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\HotfixOpcode.cs" Link="Module\Message\HotfixOpcode.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
@@ -412,12 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />
-    <Folder Include="Component\Config\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
     <Folder Include="Module\Message\MessagePool\" />
-    <Folder Include="Module\Numeric\" />
-    <Folder Include="Module\Scene" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">

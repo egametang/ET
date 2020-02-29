@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ETModel
+namespace ET
 {
 	/// <summary>
 	/// 消息分发组件

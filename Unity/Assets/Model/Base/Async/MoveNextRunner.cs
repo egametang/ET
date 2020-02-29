@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace ETModel
+namespace ET
 {
     internal class MoveNextRunner<TStateMachine> where TStateMachine : IAsyncStateMachine
     {

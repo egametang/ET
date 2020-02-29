@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.IO;
 
-namespace ETModel
+namespace ET
 {
 	/// <summary>
 	/// 封装Socket,将回调push到主线程处理

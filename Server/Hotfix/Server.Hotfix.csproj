@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Hotfix</AssemblyName>
     <RootNamespace>ETHotfix</RootNamespace>
     <LangVersion>7.3</LangVersion>
@@ -18,8 +18,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Other\**" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetOuterComponentSystem.cs">
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\NetOuterComponentSystem.cs">
       <Link>Module\Message\NetOuterComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
+      <Link>Module\Numeric\NumericChangeEvent_NotifyWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
+      <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
     </Compile>
     <EmbeddedResource Remove="Other\**" />
     <None Remove="Other\**" />
@@ -29,8 +35,5 @@
     <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
     <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
     <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Module\Http\" />
   </ItemGroup>
 </Project>

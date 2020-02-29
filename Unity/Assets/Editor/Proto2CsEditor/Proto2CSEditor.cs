@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using ETModel;
+
 using UnityEditor;
 
-namespace ETEditor
+namespace ET
 {
 	internal class OpcodeInfo
 	{
@@ -15,7 +15,7 @@ namespace ETEditor
 		[MenuItem("Tools/Proto2CS")]
 		public static void AllProto2CS()
 		{
-			Process process = ProcessHelper.Run("dotnet", "Proto2CS.dll", "../Proto/", true);
+			Process process = ProcessHelper.Run("dotnet", "Proto2CS.dll", "../Proto/", false);
 			Log.Info(process.StandardOutput.ReadToEnd());
 			AssetDatabase.Refresh();
 		}

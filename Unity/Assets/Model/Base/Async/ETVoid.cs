@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace ETModel
+namespace ET
 {
     [AsyncMethodBuilder(typeof(AsyncETVoidMethodBuilder))]
     public struct ETVoid

@@ -1,7 +1,7 @@
 using System;
 using UnityEditor;
 
-namespace ETEditor
+namespace ET
 {
     [TypeDrawer]
     public class UnityObjectTypeDrawer: ITypeDrawer

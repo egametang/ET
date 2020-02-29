@@ -2,7 +2,7 @@
 using System.Text;
 using MongoDB.Driver;
 
-namespace ETModel
+namespace ET
 {
 	/// <summary>
 	/// 用来缓存数据

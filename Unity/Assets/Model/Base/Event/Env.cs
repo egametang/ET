@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ETModel
+namespace ET
 {
 	public class Env
 	{

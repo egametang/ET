@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	// 知道对方的instanceId，使用这个类发actor消息
 	public struct ActorMessageSender

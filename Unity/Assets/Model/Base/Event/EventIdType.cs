@@ -1,4 +1,4 @@
-﻿namespace ETModel
+﻿namespace ET
 {
 	public static class EventIdType
 	{
@@ -22,5 +22,9 @@
 		public const string LoadingFinish = "LoadingFinish";
 		public const string TestHotfixSubscribMonoEvent = "TestHotfixSubscribMonoEvent";
 		public const string MaxModelEvent = "MaxModelEvent";
+		public const string InitSceneStart = "InitSceneStart";
+		public const string LoginFinish = "LoginFinish";
+		public const string EnterMapFinish = "EnterMapFinish";
+		public const string AfterUnitCreate = "AfterUnitCreate";
 	}
 }

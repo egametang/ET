@@ -1,93 +1,148 @@
-﻿﻿using System;
+﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	public static class EntityFactory
 	{
 		public static Entity CreateWithParent(Type type, Entity parent)
 		{
-			Entity component = Game.ObjectPool.Fetch(type);
-			component.Domain = parent.Domain;
-			component.Id = component.InstanceId;
+			Entity component = Entity.Create(type, true);
+			component.Id = IdGenerater.GenerateId();
 			component.Parent = parent;
 			
-			Game.EventSystem.Awake(component);
+			EventSystem.Instance.Awake(component);
 			return component;
 		}
 
 		public static T CreateWithParent<T>(Entity parent) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = parent.Domain;
-			component.Id = component.InstanceId;
+			T component = (T)Entity.Create(type, true);
+			component.Id = IdGenerater.GenerateId();
 			component.Parent = parent;
 			
-			Game.EventSystem.Awake(component);
+			EventSystem.Instance.Awake(component);
 			return component;
 		}
 
 		public static T CreateWithParent<T, A>(Entity parent, A a) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = parent.Domain;
-			component.Id = component.InstanceId;
+			T component = (T)Entity.Create(type, true);
+			component.Id = IdGenerater.GenerateId();
 			component.Parent = parent;
 			
-			Game.EventSystem.Awake(component, a);
+			EventSystem.Instance.Awake(component, a);
 			return component;
 		}
 
 		public static T CreateWithParent<T, A, B>(Entity parent, A a, B b) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = parent.Domain;
-			component.Id = component.InstanceId;
+			T component = (T)Entity.Create(type, true);
+			component.Id = IdGenerater.GenerateId();
 			component.Parent = parent;
 			
-			Game.EventSystem.Awake(component, a, b);
+			EventSystem.Instance.Awake(component, a, b);
 			return component;
 		}
 
 		public static T CreateWithParent<T, A, B, C>(Entity parent, A a, B b, C c, bool fromPool = true) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = parent.Domain;
-			component.Id = component.InstanceId;
+			T component = (T)Entity.Create(type, true);
+			component.Id = IdGenerater.GenerateId();
 			component.Parent = parent;
 			
-			Game.EventSystem.Awake(component, a, b, c);
+			EventSystem.Instance.Awake(component, a, b, c);
 			return component;
 		}
 
         public static T CreateWithParent<T, A, B, C, D>(Entity parent, A a, B b, C c, D d, bool fromPool = true) where T : Entity
         {
             Type type = typeof(T);
-
-            T component = (T)Game.ObjectPool.Fetch(type);
-            component.Domain = parent.Domain;
-            component.Id = component.InstanceId;
+            T component = (T)Entity.Create(type, true);
+            component.Id = IdGenerater.GenerateId();
             component.Parent = parent;
             
-            Game.EventSystem.Awake(component, a, b, c, d);
+            EventSystem.Instance.Awake(component, a, b, c, d);
+            return component;
+        }
+        
+        
+		public static Entity CreateWithParentAndId(Type type, Entity parent, long id)
+		{
+			Entity component = Entity.Create(type, true);
+			component.Id = id;
+			component.Parent = parent;
+			
+			EventSystem.Instance.Awake(component);
+			return component;
+		}
+
+		public static T CreateWithParentAndId<T>(Entity parent, long id) where T : Entity
+		{
+			Type type = typeof (T);
+			T component = (T)Entity.Create(type, true);
+			component.Id = id;
+			component.Parent = parent;
+			
+			EventSystem.Instance.Awake(component);
+			return component;
+		}
+
+		public static T CreateWithParentAndId<T, A>(Entity parent, long id, A a) where T : Entity
+		{
+			Type type = typeof (T);
+			T component = (T)Entity.Create(type, true);
+			component.Id = id;
+			component.Parent = parent;
+			
+			EventSystem.Instance.Awake(component, a);
+			return component;
+		}
+
+		public static T CreateWithParentAndId<T, A, B>(Entity parent, long id, A a, B b) where T : Entity
+		{
+			Type type = typeof (T);
+			T component = (T)Entity.Create(type, true);
+			component.Id = id;
+			component.Parent = parent;
+			
+			EventSystem.Instance.Awake(component, a, b);
+			return component;
+		}
+
+		public static T CreateWithParentAndId<T, A, B, C>(Entity parent, long id, A a, B b, C c, bool fromPool = true) where T : Entity
+		{
+			Type type = typeof (T);
+			T component = (T)Entity.Create(type, true);
+			component.Id = id;
+			component.Parent = parent;
+			
+			EventSystem.Instance.Awake(component, a, b, c);
+			return component;
+		}
+
+        public static T CreateWithParentAndId<T, A, B, C, D>(Entity parent, long id, A a, B b, C c, D d, bool fromPool = true) where T : Entity
+        {
+            Type type = typeof(T);
+            T component = (T)Entity.Create(type, true);
+            component.Id = id;
+            component.Parent = parent;
+            
+            EventSystem.Instance.Awake(component, a, b, c, d);
             return component;
         }
         
         
         public static Entity Create(Entity domain, Type type)
         {
-	        Entity component = Game.ObjectPool.Fetch(type);
-	        component.Domain = domain ?? component;
-	        component.Id = component.InstanceId;
+	        Entity component = Entity.Create(type, true);
+	        component.Domain = domain;
+	        component.Id = IdGenerater.GenerateId();
 	        
-	        Game.EventSystem.Awake(component);
+	        EventSystem.Instance.Awake(component);
 	        return component;
         }
 
@@ -95,130 +150,81 @@ namespace ETModel
         public static T Create<T>(Entity domain) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
-			component.Id = component.InstanceId;
-			Game.EventSystem.Awake(component);
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
+			component.Id = IdGenerater.GenerateId();
+			EventSystem.Instance.Awake(component);
 			return component;
 		}
 
 		public static T Create<T, A>(Entity domain, A a) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
-			component.Id = component.InstanceId;
-			Game.EventSystem.Awake(component, a);
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
+			component.Id = IdGenerater.GenerateId();
+			EventSystem.Instance.Awake(component, a);
 			return component;
 		}
 
 		public static T Create<T, A, B>(Entity domain, A a, B b) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
-			component.Id = component.InstanceId;
-			Game.EventSystem.Awake(component, a, b);
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
+			component.Id = IdGenerater.GenerateId();
+			EventSystem.Instance.Awake(component, a, b);
 			return component;
 		}
 
 		public static T Create<T, A, B, C>(Entity domain, A a, B b, C c) where T : Entity
 		{
 			Type type = typeof (T);
-
-			T component = (T) Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
-			component.Id = component.InstanceId;
-			Game.EventSystem.Awake(component, a, b, c);
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
+			component.Id = IdGenerater.GenerateId();
+			EventSystem.Instance.Awake(component, a, b, c);
 			return component;
 		}
 
 		public static T CreateWithId<T>(Entity domain, long id) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
 			component.Id = id;
-			Game.EventSystem.Awake(component);
+			EventSystem.Instance.Awake(component);
 			return component;
 		}
 
 		public static T CreateWithId<T, A>(Entity domain, long id, A a) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
 			component.Id = id;
-			Game.EventSystem.Awake(component, a);
+			EventSystem.Instance.Awake(component, a);
 			return component;
 		}
 
 		public static T CreateWithId<T, A, B>(Entity domain, long id, A a, B b) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
 			component.Id = id;
-			Game.EventSystem.Awake(component, a, b);
+			EventSystem.Instance.Awake(component, a, b);
 			return component;
 		}
 
 		public static T CreateWithId<T, A, B, C>(Entity domain, long id, A a, B b, C c) where T : Entity
 		{
 			Type type = typeof (T);
-			
-			T component = (T)Game.ObjectPool.Fetch(type);
-			component.Domain = domain ?? component;
+			T component = (T)Entity.Create(type, true);
+			component.Domain = domain;
 			component.Id = id;
-			Game.EventSystem.Awake(component, a, b, c);
+			EventSystem.Instance.Awake(component, a, b, c);
 			return component;
 		}
-		
-#if SERVER
-		public static Scene CreateScene(long id, string name, SceneType sceneType, Scene parent = null)
-		{
-			Scene scene = (Scene)Game.ObjectPool.Fetch(typeof(Scene));
-			scene.Id = id;
-			
-			Game.EventSystem.Remove(scene.InstanceId);
-			
-			// 高14位是进程id
-			scene.InstanceId = IdGenerater.GenerateSceneInstanceId(id);
-			
-			Game.EventSystem.RegisterSystem(scene);
-			
-			if (parent != null)
-			{
-				scene.Parent = parent;
-			}
-			scene.Domain = scene;
-
-			scene.Name = name;
-			scene.SceneType = sceneType;
-			
-			return scene;
-		}
-#endif
-		
-		public static Scene CreateScene(SceneType sceneType, string name, Scene parent = null,long id = 0)
-		{
-			Scene scene = (Scene)Game.ObjectPool.Fetch(typeof(Scene));
-			scene.Id = id != 0 ? id : IdGenerater.GenerateId();
-			scene.Name = name;
-			scene.SceneType = sceneType;
-			if (parent != null)
-			{
-				scene.Parent = parent;
-			}
-			scene.Domain = scene;
-			return scene;
-		}
-
 	}
 }

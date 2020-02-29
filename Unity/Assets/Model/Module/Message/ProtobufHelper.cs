@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using Google.Protobuf;
 
-namespace ETModel
+namespace ET
 {
 	public static class ProtobufHelper
 	{

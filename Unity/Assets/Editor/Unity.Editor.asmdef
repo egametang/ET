@@ -2,12 +2,20 @@
     "name": "Unity.Editor",
     "references": [
         "Unity.Model",
-        "Unity.ThirdParty"
+        "Unity.ThirdParty",
+        "Unity.ModelView",
+        "Unity.Hotfix",
+        "Unity.HotfixView"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": true
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

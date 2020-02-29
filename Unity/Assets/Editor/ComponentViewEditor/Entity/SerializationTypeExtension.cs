@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace ETEditor
+namespace ET
 {
     public static class SerializationTypeExtension
     {
