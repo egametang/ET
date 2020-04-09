@@ -182,3 +182,6 @@ __讨论QQ群 : 474643097__
 
 # 支付宝捐赠  
 ![使用支付宝对该项目进行捐赠](https://github.com/egametang/ET/blob/master/Book/donate.png)
+
+# 友情链接  
+[xasset](https://github.com/xasset/xasset) 致力于为 Unity 项目提供了一套 精简稳健 的资源管理环境  

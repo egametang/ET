@@ -4,7 +4,7 @@ namespace ETModel
 {
 	public abstract class AMActorLocationHandler<E, Message>: IMActorHandler where E: Entity where Message : class, IActorLocationMessage
 	{
-		protected abstract void Run(E entity, Message message);
+		protected abstract ETTask Run(E entity, Message message);
 
 		public async ETTask Handle(Session session, Entity entity, object actorMessage)
 		{
@@ -24,10 +24,15 @@ namespace ETModel
 			ActorResponse actorResponse = new ActorResponse();
 			actorResponse.RpcId = msg.RpcId;
 			session.Reply(actorResponse);
-			
-			this.Run(e, msg);
-			
-			await ETTask.CompletedTask;
+
+			try
+			{
+				await this.Run(e, msg);
+			}
+			catch (Exception exception)
+			{
+				Log.Error(exception);
+			}
 		}
 
 		public Type GetMessageType()

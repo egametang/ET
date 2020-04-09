@@ -4,17 +4,9 @@ namespace ETModel
 {
 	public abstract class AMRpcHandler<Request, Response>: IMHandler where Request : class, IRequest where Response : class, IResponse 
 	{
-		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
-		{
-			Log.Error(e);
-			response.Error = ErrorCode.ERR_RpcFail;
-			response.Message = e.ToString();
-			reply(response);
-		}
+		protected abstract ETTask Run(Session session, Request request, Response response, Action reply);
 
-		protected abstract void Run(Session session, Request message, Action<Response> reply);
-
-		public void Handle(Session session, object message)
+		public async ETVoid Handle(Session session, object message)
 		{
 			try
 			{
@@ -25,10 +17,10 @@ namespace ETModel
 				}
 
 				int rpcId = request.RpcId;
-
 				long instanceId = session.InstanceId;
-				
-				this.Run(session, request, response =>
+				Response response = Activator.CreateInstance<Response>();
+
+				void Reply()
 				{
 					// 等回调回来,session可以已经断开了,所以需要判断session InstanceId是否一样
 					if (session.InstanceId != instanceId)
@@ -38,11 +30,24 @@ namespace ETModel
 
 					response.RpcId = rpcId;
 					session.Reply(response);
-				});
+				}
+
+				try
+				{
+					await this.Run(session, request, response, Reply);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+					response.Error = ErrorCode.ERR_RpcFail;
+					response.Message = e.ToString();
+					Reply();
+				}
+				
 			}
 			catch (Exception e)
 			{
-				throw new Exception($"解释消息失败: {message.GetType().FullName}", e);
+				Log.Error($"解释消息失败: {message.GetType().FullName}\n{e}");
 			}
 		}
 

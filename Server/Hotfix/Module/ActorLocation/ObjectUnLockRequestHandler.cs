@@ -6,18 +6,11 @@ namespace ETHotfix
 	[MessageHandler(AppType.Location)]
 	public class ObjectUnLockRequestHandler : AMRpcHandler<ObjectUnLockRequest, ObjectUnLockResponse>
 	{
-		protected override void Run(Session session, ObjectUnLockRequest message, Action<ObjectUnLockResponse> reply)
+		protected override async ETTask Run(Session session, ObjectUnLockRequest request, ObjectUnLockResponse response, Action reply)
 		{
-			ObjectUnLockResponse response = new ObjectUnLockResponse();
-			try
-			{
-				Game.Scene.GetComponent<LocationComponent>().UnLockAndUpdate(message.Key, message.OldInstanceId, message.InstanceId);
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			Game.Scene.GetComponent<LocationComponent>().UnLockAndUpdate(request.Key, request.OldInstanceId, request.InstanceId);
+			reply();
+			await ETTask.CompletedTask;
 		}
 	}
 }

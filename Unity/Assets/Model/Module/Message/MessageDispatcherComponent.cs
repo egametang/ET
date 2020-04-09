@@ -87,7 +87,7 @@ namespace ETModel
 			{
 				try
 				{
-					ev.Handle(session, messageInfo.Message);
+					ev.Handle(session, messageInfo.Message).Coroutine();
 				}
 				catch (Exception e)
 				{

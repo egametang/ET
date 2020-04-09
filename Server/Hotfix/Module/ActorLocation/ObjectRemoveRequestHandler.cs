@@ -6,18 +6,11 @@ namespace ETHotfix
 	[MessageHandler(AppType.Location)]
 	public class ObjectRemoveRequestHandler : AMRpcHandler<ObjectRemoveRequest, ObjectRemoveResponse>
 	{
-		protected override void Run(Session session, ObjectRemoveRequest message, Action<ObjectRemoveResponse> reply)
+		protected override async ETTask Run(Session session, ObjectRemoveRequest request, ObjectRemoveResponse response, Action reply)
 		{
-			ObjectRemoveResponse response = new ObjectRemoveResponse();
-			try
-			{
-				Game.Scene.GetComponent<LocationComponent>().Remove(message.Key);
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			Game.Scene.GetComponent<LocationComponent>().Remove(request.Key);
+			reply();
+			await ETTask.CompletedTask;
 		}
 	}
 }

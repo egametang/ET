@@ -6,25 +6,12 @@ namespace ETHotfix
 	[MessageHandler(AppType.DB)]
 	public class DBQueryBatchRequestHandler : AMRpcHandler<DBQueryBatchRequest, DBQueryBatchResponse>
 	{
-		protected override void Run(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
+		protected override async ETTask Run(Session session, DBQueryBatchRequest request, DBQueryBatchResponse response, Action reply)
 		{
-			RunAsync(session, message, reply).Coroutine();
-		}
-		
-		protected async ETVoid RunAsync(Session session, DBQueryBatchRequest message, Action<DBQueryBatchResponse> reply)
-		{
-			DBQueryBatchResponse response = new DBQueryBatchResponse();
-			try
-			{
-				DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
-				response.Components = await dbComponent.GetBatch(message.CollectionName, message.IdList);
+			DBComponent dbComponent = Game.Scene.GetComponent<DBComponent>();
+			response.Components = await dbComponent.GetBatch(request.CollectionName, request.IdList);
 
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			reply();
 		}
 	}
 }

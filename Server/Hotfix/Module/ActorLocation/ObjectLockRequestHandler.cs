@@ -6,18 +6,10 @@ namespace ETHotfix
 	[MessageHandler(AppType.Location)]
 	public class ObjectLockRequestHandler : AMRpcHandler<ObjectLockRequest, ObjectLockResponse>
 	{
-		protected override void Run(Session session, ObjectLockRequest message, Action<ObjectLockResponse> reply)
+		protected override async ETTask Run(Session session, ObjectLockRequest request, ObjectLockResponse response, Action reply)
 		{
-			ObjectLockResponse response = new ObjectLockResponse();
-			try
-			{
-				Game.Scene.GetComponent<LocationComponent>().Lock(message.Key, message.InstanceId, message.Time).Coroutine();
-				reply(response);
-			}
-			catch (Exception e)
-			{
-				ReplyError(response, e, reply);
-			}
+			Game.Scene.GetComponent<LocationComponent>().Lock(request.Key, request.InstanceId, request.Time).Coroutine();
+			reply();
 		}
 	}
 }
