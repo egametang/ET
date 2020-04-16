@@ -21,10 +21,7 @@
             RepeatedTimer repeatedTimer = TimerComponent.Instance.GetRepeatedTimer(self.RepeatedTimer);
             if (repeatedTimer != null)
             {
-                repeatedTimer.Callback = (isTimeout) =>
-                {
-                    self.Check();
-                };
+                repeatedTimer.Callback = self.Check;
             }
         }
     }
@@ -44,7 +41,7 @@
     
     public static class SessionIdleCheckerComponentSystem
     {
-        public static void Check(this SessionIdleCheckerComponent self)
+        public static void Check(this SessionIdleCheckerComponent self, bool isTimeOut)
         {
             Session session = self.GetParent<Session>();
             long timeNow = TimeHelper.Now();
