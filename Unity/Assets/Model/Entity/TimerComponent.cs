@@ -93,7 +93,7 @@ namespace ET
 
 			try
 			{
-				this.Callback.Invoke(isTimeout);
+				this.Callback?.Invoke(isTimeout);
 			}
 			catch (Exception e)
 			{
@@ -292,14 +292,14 @@ namespace ET
 		/// <param name="time"></param>
 		/// <param name="action"></param>
 		/// <returns></returns>
-		public long NewRepeatedTimer(long time, Action action)
+		public long NewRepeatedTimer(long time, Action<bool> action)
 		{
 			if (time < 30)
 			{
 				throw new Exception($"repeated time < 30");
 			}
 			long tillTime = TimeHelper.Now() + time;
-			RepeatedTimer timer = EntityFactory.CreateWithParent<RepeatedTimer, long, Action>(this, time, action);
+			RepeatedTimer timer = EntityFactory.CreateWithParent<RepeatedTimer, long, Action<bool>>(this, time, action);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return timer.Id;

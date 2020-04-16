@@ -20,10 +20,10 @@ namespace ET
             switch (scene.SceneType)
             {
                 case SceneType.Realm:
-                    scene.AddComponent<NetOuterComponent, string>($"{startSceneConfig.OuterPort}:{startSceneConfig.OuterPort}");
+                    scene.AddComponent<NetOuterComponent, string>(startSceneConfig.OuterAddress);
                     break;
                 case SceneType.Gate:
-                    scene.AddComponent<NetOuterComponent, string>($"{startSceneConfig.OuterPort}:{startSceneConfig.OuterPort}");
+                    scene.AddComponent<NetOuterComponent, string>(startSceneConfig.OuterAddress);
                     scene.AddComponent<PlayerComponent>();
                     scene.AddComponent<GateSessionKeyComponent>();
                     break;

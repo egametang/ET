@@ -28,7 +28,7 @@ namespace ET
     
     public static class ActorMessageSenderComponentSystem
     {
-        public static void Check(this ActorMessageSenderComponent self)
+        public static void Check(this ActorMessageSenderComponent self, bool isTimeOut)
         {
             long timeNow = TimeHelper.Now();
             foreach ((int key, ActorMessageSender value) in self.requestCallback)

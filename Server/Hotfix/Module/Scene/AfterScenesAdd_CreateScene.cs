@@ -7,13 +7,14 @@ namespace ET
     {
         public override void Run()
         {
+            Game.Scene.AddComponent<ConfigComponent>();
+
             Options options = Game.Scene.GetComponent<Options>();
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(options.Process);
             
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
-            Game.Scene.AddComponent<ConfigComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
             // 发送普通actor消息
             Game.Scene.AddComponent<ActorMessageSenderComponent>();
