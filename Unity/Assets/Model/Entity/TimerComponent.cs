@@ -330,9 +330,9 @@ namespace ET
 			(timer as IDisposable)?.Dispose();
 		}
 		
-		public long NewOnceTimer(long tillTime, Action action)
+		public long NewOnceTimer(long tillTime, Action<bool> action)
 		{
-			OnceTimer timer = EntityFactory.CreateWithParent<OnceTimer, Action>(this, action);
+			OnceTimer timer = EntityFactory.CreateWithParent<OnceTimer, Action<bool>>(this, action);
 			this.timers[timer.Id] = timer;
 			AddToTimeId(tillTime, timer.Id);
 			return timer.Id;
