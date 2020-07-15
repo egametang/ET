@@ -5,118 +5,49 @@ using System.Security;
 
 namespace ET
 {
-    public struct AsyncETTaskMethodBuilder
+    public struct ETAsyncTaskMethodBuilder
     {
-        private ETTaskCompletionSource tcs;
-        private Action moveNext;
+        public ETTaskCompletionSource Tcs;
 
         // 1. Static Create method.
         [DebuggerHidden]
-        public static AsyncETTaskMethodBuilder Create()
+        public static ETAsyncTaskMethodBuilder Create()
         {
-            AsyncETTaskMethodBuilder builder = new AsyncETTaskMethodBuilder();
+            ETAsyncTaskMethodBuilder builder = new ETAsyncTaskMethodBuilder() { Tcs = new ETTaskCompletionSource() };
             return builder;
         }
 
         // 2. TaskLike Task property.
         [DebuggerHidden]
-        public ETTask Task
-        {
-            get
-            {
-                if (this.tcs != null)
-                {
-                    return this.tcs.Task;
-                }
-
-                if (moveNext == null)
-                {
-                    return ETTask.CompletedTask;
-                }
-
-                this.tcs = new ETTaskCompletionSource();
-                return this.tcs.Task;
-            }
-        }
+        public ETTask Task => this.Tcs.Task;
 
         // 3. SetException
         [DebuggerHidden]
         public void SetException(Exception exception)
         {
-            if (this.tcs == null)
-            {
-                this.tcs = new ETTaskCompletionSource();
-            }
-
-            if (exception is OperationCanceledException ex)
-            {
-                this.tcs.TrySetCanceled(ex);
-            }
-            else
-            {
-                this.tcs.TrySetException(exception);
-            }
+            this.Tcs.SetException(exception);
         }
 
         // 4. SetResult
         [DebuggerHidden]
         public void SetResult()
         {
-            if (moveNext == null)
-            {
-            }
-            else
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource();
-                }
-
-                this.tcs.TrySetResult();
-            }
+            this.Tcs.SetResult();
         }
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-                where TAwaiter : INotifyCompletion
-                where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource(); // built future.
-                }
-
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.OnCompleted(moveNext);
+            awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-                where TAwaiter : ICriticalNotifyCompletion
-                where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource(); // built future.
-                }
-
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.UnsafeOnCompleted(moveNext);
+            awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 7. Start
@@ -135,118 +66,47 @@ namespace ET
 
     public struct ETAsyncTaskMethodBuilder<T>
     {
-        private T result;
-        private ETTaskCompletionSource<T> tcs;
-        private Action moveNext;
+        public ETTaskCompletionSource<T> Tcs;
 
         // 1. Static Create method.
         [DebuggerHidden]
         public static ETAsyncTaskMethodBuilder<T> Create()
         {
-            var builder = new ETAsyncTaskMethodBuilder<T>();
+            ETAsyncTaskMethodBuilder<T> builder = new ETAsyncTaskMethodBuilder<T>() { Tcs = new ETTaskCompletionSource<T>() };
             return builder;
         }
 
         // 2. TaskLike Task property.
         [DebuggerHidden]
-        public ETTask<T> Task
-        {
-            get
-            {
-                if (this.tcs != null)
-                {
-                    return new ETTask<T>(this.tcs);
-                }
-
-                if (moveNext == null)
-                {
-                    return new ETTask<T>(result);
-                }
-
-                this.tcs = new ETTaskCompletionSource<T>();
-                return this.tcs.Task;
-            }
-        }
+        public ETTask<T> Task => this.Tcs.Task;
 
         // 3. SetException
         [DebuggerHidden]
         public void SetException(Exception exception)
         {
-            if (this.tcs == null)
-            {
-                this.tcs = new ETTaskCompletionSource<T>();
-            }
-
-            if (exception is OperationCanceledException ex)
-            {
-                this.tcs.TrySetCanceled(ex);
-            }
-            else
-            {
-                this.tcs.TrySetException(exception);
-            }
+            this.Tcs.SetException(exception);
         }
 
         // 4. SetResult
         [DebuggerHidden]
         public void SetResult(T ret)
         {
-            if (moveNext == null)
-            {
-                this.result = ret;
-            }
-            else
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource<T>();
-                }
-
-                this.tcs.TrySetResult(ret);
-            }
+            this.Tcs.SetResult(ret);
         }
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-                where TAwaiter : INotifyCompletion
-                where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource<T>(); // built future.
-                }
-
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.OnCompleted(moveNext);
+            awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-                where TAwaiter : ICriticalNotifyCompletion
-                where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                if (this.tcs == null)
-                {
-                    this.tcs = new ETTaskCompletionSource<T>(); // built future.
-                }
-
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.UnsafeOnCompleted(moveNext);
+            awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 7. Start

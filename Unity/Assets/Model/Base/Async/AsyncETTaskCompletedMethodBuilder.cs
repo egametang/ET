@@ -5,19 +5,18 @@ using System.Security;
 
 namespace ET
 {
-    public struct AsyncETVoidMethodBuilder
+    public struct AsyncETTaskCompletedMethodBuilder
     {
         // 1. Static Create method.
         [DebuggerHidden]
-        public static AsyncETVoidMethodBuilder Create()
+        public static AsyncETTaskCompletedMethodBuilder Create()
         {
-            AsyncETVoidMethodBuilder builder = new AsyncETVoidMethodBuilder();
+            AsyncETTaskCompletedMethodBuilder builder = new AsyncETTaskCompletedMethodBuilder();
             return builder;
         }
 
         // 2. TaskLike Task property(void)
-        [DebuggerHidden]
-        public ETVoid Task => default;
+        public ETTaskCompleted Task => default;
 
         // 3. SetException
         [DebuggerHidden]

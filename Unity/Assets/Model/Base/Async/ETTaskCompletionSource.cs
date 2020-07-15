@@ -1,63 +1,58 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 
 namespace ET
 {
-    public class ETTaskCompletionSource: IAwaiter
+    public class ETTaskCompletionSource: ICriticalNotifyCompletion
     {
-        // State(= AwaiterStatus)
-        private const int Pending = 0;
-        private const int Succeeded = 1;
-        private const int Faulted = 2;
-        private const int Canceled = 3;
-
-        private int state;
+        private AwaiterStatus state;
         private ExceptionDispatchInfo exception;
         private Action continuation; // action or list
 
-        AwaiterStatus IAwaiter.Status => (AwaiterStatus) state;
-
-        bool IAwaiter.IsCompleted => state != Pending;
-
+        [DebuggerHidden]
         public ETTask Task => new ETTask(this);
 
-        void IAwaiter.GetResult()
-        {
-            switch (this.state)
-            {
-                case Succeeded:
-                    return;
-                case Faulted:
-                    this.exception?.Throw();
-                    this.exception = null;
-                    return;
-                case Canceled:
-                {
-                    this.exception?.Throw(); // guranteed operation canceled exception.
-                    this.exception = null;
-                    throw new OperationCanceledException();
-                }
-                default:
-                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
-            }
-        }
+        [DebuggerHidden]
+        public AwaiterStatus Status => state;
 
-        void ICriticalNotifyCompletion.UnsafeOnCompleted(Action action)
+        [DebuggerHidden]
+        public bool IsCompleted => state != AwaiterStatus.Pending;
+
+        [DebuggerHidden]
+        public void UnsafeOnCompleted(Action action)
         {
             this.continuation = action;
-            if (state != Pending)
+            if (state != AwaiterStatus.Pending)
             {
                 TryInvokeContinuation();
             }
         }
 
-        private void TryInvokeContinuation()
+        [DebuggerHidden]
+        public void OnCompleted(Action action)
         {
-            this.continuation?.Invoke();
-            this.continuation = null;
+            this.UnsafeOnCompleted(action);
         }
 
+        [DebuggerHidden]
+        public void GetResult()
+        {
+            switch (this.state)
+            {
+                case AwaiterStatus.Succeeded:
+                    return;
+                case AwaiterStatus.Faulted:
+                    this.exception?.Throw();
+                    this.exception = null;
+                    return;
+                default:
+                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
+            }
+        }
+
+        [DebuggerHidden]
         public void SetResult()
         {
             if (this.TrySetResult())
@@ -68,6 +63,7 @@ namespace ET
             throw new InvalidOperationException("TaskT_TransitionToFinal_AlreadyCompleted");
         }
 
+        [DebuggerHidden]
         public void SetException(Exception e)
         {
             if (this.TrySetException(e))
@@ -78,125 +74,98 @@ namespace ET
             throw new InvalidOperationException("TaskT_TransitionToFinal_AlreadyCompleted");
         }
 
-        public bool TrySetResult()
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Succeeded;
-
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        public bool TrySetException(Exception e)
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Faulted;
-
-            this.exception = ExceptionDispatchInfo.Capture(e);
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        public bool TrySetCanceled()
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Canceled;
-
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        public bool TrySetCanceled(OperationCanceledException e)
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Canceled;
-
-            this.exception = ExceptionDispatchInfo.Capture(e);
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        void INotifyCompletion.OnCompleted(Action action)
-        {
-            ((ICriticalNotifyCompletion) this).UnsafeOnCompleted(action);
-        }
-    }
-
-    public class ETTaskCompletionSource<T>: IAwaiter<T>
-    {
-        // State(= AwaiterStatus)
-        private const int Pending = 0;
-        private const int Succeeded = 1;
-        private const int Faulted = 2;
-        private const int Canceled = 3;
-
-        private int state;
-        private T value;
-        private ExceptionDispatchInfo exception;
-        private Action continuation; // action or list
-
-        bool IAwaiter.IsCompleted => state != Pending;
-
-        public ETTask<T> Task => new ETTask<T>(this);
-
-        AwaiterStatus IAwaiter.Status => (AwaiterStatus) state;
-
-        T IAwaiter<T>.GetResult()
-        {
-            switch (this.state)
-            {
-                case Succeeded:
-                    return this.value;
-                case Faulted:
-                    this.exception?.Throw();
-                    this.exception = null;
-                    return default;
-                case Canceled:
-                {
-                    this.exception?.Throw(); // guranteed operation canceled exception.
-                    this.exception = null;
-                    throw new OperationCanceledException();
-                }
-                default:
-                    throw new NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'.");
-            }
-        }
-
-        void ICriticalNotifyCompletion.UnsafeOnCompleted(Action action)
-        {
-            this.continuation = action;
-            if (state != Pending)
-            {
-                TryInvokeContinuation();
-            }
-        }
-
+        [DebuggerHidden]
         private void TryInvokeContinuation()
         {
             this.continuation?.Invoke();
             this.continuation = null;
         }
 
+        [DebuggerHidden]
+        private bool TrySetResult()
+        {
+            if (this.state != AwaiterStatus.Pending)
+            {
+                return false;
+            }
+
+            this.state = AwaiterStatus.Succeeded;
+
+            this.TryInvokeContinuation();
+            return true;
+        }
+
+        [DebuggerHidden]
+        private bool TrySetException(Exception e)
+        {
+            if (this.state != AwaiterStatus.Pending)
+            {
+                return false;
+            }
+
+            this.state = AwaiterStatus.Faulted;
+
+            this.exception = ExceptionDispatchInfo.Capture(e);
+            this.TryInvokeContinuation();
+            return true;
+        }
+    }
+
+    public class ETTaskCompletionSource<T>: ICriticalNotifyCompletion
+    {
+        private AwaiterStatus state;
+        private T value;
+        private ExceptionDispatchInfo exception;
+        private Action continuation; // action or list
+
+        [DebuggerHidden]
+        public ETTask<T> Task => new ETTask<T>(this);
+
+        [DebuggerHidden]
+        public ETTaskCompletionSource<T> GetAwaiter()
+        {
+            return this;
+        }
+
+        [DebuggerHidden]
+        public T GetResult()
+        {
+            switch (this.state)
+            {
+                case AwaiterStatus.Succeeded:
+                    return this.value;
+                case AwaiterStatus.Faulted:
+                    this.exception?.Throw();
+                    this.exception = null;
+                    return default;
+                default:
+                    throw new NotSupportedException("ETask does not allow call GetResult directly when task not completed. Please use 'await'.");
+            }
+        }
+
+        [DebuggerHidden]
+        public bool IsCompleted => state != AwaiterStatus.Pending;
+
+        [DebuggerHidden]
+        public AwaiterStatus Status => state;
+
+        [DebuggerHidden]
+        public void UnsafeOnCompleted(Action action)
+        {
+            this.continuation = action;
+            if (state != AwaiterStatus.Pending)
+            {
+                TryInvokeContinuation();
+            }
+        }
+
+        [DebuggerHidden]
+        public void OnCompleted(Action action)
+        {
+            this.UnsafeOnCompleted(action);
+        }
+
+        [DebuggerHidden]
         public void SetResult(T result)
         {
             if (this.TrySetResult(result))
@@ -207,6 +176,7 @@ namespace ET
             throw new InvalidOperationException("TaskT_TransitionToFinal_AlreadyCompleted");
         }
 
+        [DebuggerHidden]
         public void SetException(Exception e)
         {
             if (this.TrySetException(e))
@@ -217,73 +187,41 @@ namespace ET
             throw new InvalidOperationException("TaskT_TransitionToFinal_AlreadyCompleted");
         }
 
-        public bool TrySetResult(T result)
+        [DebuggerHidden]
+        private void TryInvokeContinuation()
         {
-            if (this.state != Pending)
+            this.continuation?.Invoke();
+            this.continuation = null;
+        }
+
+        [DebuggerHidden]
+        private bool TrySetResult(T result)
+        {
+            if (this.state != AwaiterStatus.Pending)
             {
                 return false;
             }
 
-            this.state = Succeeded;
+            this.state = AwaiterStatus.Succeeded;
 
             this.value = result;
             this.TryInvokeContinuation();
             return true;
-
         }
 
-        public bool TrySetException(Exception e)
+        [DebuggerHidden]
+        private bool TrySetException(Exception e)
         {
-            if (this.state != Pending)
+            if (this.state != AwaiterStatus.Pending)
             {
                 return false;
             }
 
-            this.state = Faulted;
+            this.state = AwaiterStatus.Faulted;
 
             this.exception = ExceptionDispatchInfo.Capture(e);
             this.TryInvokeContinuation();
             return true;
-
-        }
-
-        public bool TrySetCanceled()
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Canceled;
-
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        public bool TrySetCanceled(OperationCanceledException e)
-        {
-            if (this.state != Pending)
-            {
-                return false;
-            }
-
-            this.state = Canceled;
-
-            this.exception = ExceptionDispatchInfo.Capture(e);
-            this.TryInvokeContinuation();
-            return true;
-
-        }
-
-        void IAwaiter.GetResult()
-        {
-            ((IAwaiter<T>) this).GetResult();
-        }
-
-        void INotifyCompletion.OnCompleted(Action action)
-        {
-            ((ICriticalNotifyCompletion) this).UnsafeOnCompleted(action);
         }
     }
 }

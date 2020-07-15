@@ -13,7 +13,7 @@ namespace ET
         
         public List<Vector3> Path;
 
-        public ETCancellationTokenSource CancellationTokenSource;
+        public ETCancellationToken CancellationToken;
 
         public ABPathWrap ABPath
         {

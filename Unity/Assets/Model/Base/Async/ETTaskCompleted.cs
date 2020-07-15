@@ -4,16 +4,22 @@ using System.Runtime.CompilerServices;
 
 namespace ET
 {
-    [AsyncMethodBuilder(typeof (AsyncETVoidMethodBuilder))]
-    public struct ETVoid: ICriticalNotifyCompletion
+    [AsyncMethodBuilder(typeof (AsyncETTaskCompletedMethodBuilder))]
+    public struct ETTaskCompleted: ICriticalNotifyCompletion
     {
         [DebuggerHidden]
-        public void Coroutine()
+        public ETTaskCompleted GetAwaiter()
         {
+            return this;
         }
 
         [DebuggerHidden]
         public bool IsCompleted => true;
+
+        [DebuggerHidden]
+        public void GetResult()
+        {
+        }
 
         [DebuggerHidden]
         public void OnCompleted(Action continuation)

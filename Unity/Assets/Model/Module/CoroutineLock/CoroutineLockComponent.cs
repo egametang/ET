@@ -41,7 +41,7 @@ namespace ET
             this.list.Clear();
         }
 
-        public ETTask<CoroutineLock> Wait(CoroutineLockType coroutineLockType, long key)
+        public async ETTask<CoroutineLock> Wait(CoroutineLockType coroutineLockType, long key)
         {
             CoroutineLockQueueType coroutineLockQueueType = this.list[(int) coroutineLockType];
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
@@ -49,12 +49,12 @@ namespace ET
                 queue = EntityFactory.Create<CoroutineLockQueue>(this.Domain);
                 coroutineLockQueueType.Add(key, queue);
                 
-                return ETTask.FromResult(EntityFactory.CreateWithParent<CoroutineLock, CoroutineLockType, long>(this, coroutineLockType, key));
+                return EntityFactory.CreateWithParent<CoroutineLock, CoroutineLockType, long>(this, coroutineLockType, key);
             }
             
             ETTaskCompletionSource<CoroutineLock> tcs = new ETTaskCompletionSource<CoroutineLock>();
             queue.Enqueue(tcs);
-            return tcs.Task;
+            return await tcs.Task;
         }
         
         public void Notify(CoroutineLockType coroutineLockType, long key)

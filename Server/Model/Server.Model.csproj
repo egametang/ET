@@ -20,35 +20,38 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETTaskCompletedMethodBuilder.cs">
+      <Link>Base\Async\AsyncETTaskCompletedMethodBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETTaskMethodBuilder.cs">
       <Link>Base\Async\AsyncETTaskMethodBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncETVoidMethodBuilder.cs">
       <Link>Base\Async\AsyncETVoidMethodBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\AsyncMethodBuilderAttribute.cs">
+      <Link>Base\Async\AsyncMethodBuilderAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETCancellationToken.cs">
       <Link>Base\Async\ETCancellationToken.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETCancellationTokenSource.cs">
-      <Link>Base\Async\ETCancellationTokenSource.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTask.cs">
       <Link>Base\Async\ETTask.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskCompleted.cs">
+      <Link>Base\Async\ETTaskCompleted.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskCompletionSource.cs">
       <Link>Base\Async\ETTaskCompletionSource.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskFactory.cs">
-      <Link>Base\Async\ETTaskFactory.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETTaskHelper.cs">
+      <Link>Base\Async\ETTaskHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\ETVoid.cs">
       <Link>Base\Async\ETVoid.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\IAwaiter.cs">
       <Link>Base\Async\IAwaiter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\Async\MoveNextRunner.cs">
-      <Link>Base\Async\MoveNextRunner.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MongoHelper.cs">
       <Link>Base\Helper\MongoHelper.cs</Link>

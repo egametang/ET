@@ -51,13 +51,13 @@ namespace ET
 			unit.Position = Vector3.Lerp(this.StartPos, this.Target, amount);
 		}
 
-		public ETTask MoveToAsync(Vector3 target, float speedValue, CancellationToken cancellationToken)
+		public async ETTask MoveToAsync(Vector3 target, float speedValue, CancellationToken cancellationToken)
 		{
 			Unit unit = this.GetParent<Unit>();
 			
 			if ((target - this.Target).magnitude < 0.1f)
 			{
-				return ETTask.CompletedTask;
+				return;
 			}
 			
 			this.Target = target;
@@ -68,7 +68,7 @@ namespace ET
 			float distance = (this.Target - this.StartPos).magnitude;
 			if (Math.Abs(distance) < 0.1f)
 			{
-				return ETTask.CompletedTask;
+				return;
 			}
             
 			this.needTime = (long)(distance / speedValue * 1000);
@@ -79,7 +79,7 @@ namespace ET
 			{
 				this.moveTcs = null;
 			});
-			return this.moveTcs.Task;
+			await this.moveTcs.Task;
 		}
 	}
 }

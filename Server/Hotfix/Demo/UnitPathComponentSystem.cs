@@ -23,7 +23,7 @@ namespace ET
                     self.BroadcastPath(path, i, 3);
                 }
                 Vector3 v3 = path[i];
-                await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationTokenSource.Token);
+                await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationToken);
             }
         }
         
@@ -44,11 +44,10 @@ namespace ET
             pathfindingComponent.Search(self.ABPath);
             Log.Debug($"find result: {self.ABPath.Result.ListToString()}");
             
-            self.CancellationTokenSource?.Cancel();
-            self.CancellationTokenSource = EntityFactory.Create<ETCancellationTokenSource>(self.Domain);
+            self.CancellationToken?.Cancel();
+            self.CancellationToken = new ETCancellationToken();
             await self.MoveAsync(self.ABPath.Result);
-            self.CancellationTokenSource.Dispose();
-            self.CancellationTokenSource = null;
+            self.CancellationToken = null;
         }
 
         // 从index找接下来3个点，广播
