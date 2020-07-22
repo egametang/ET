@@ -13,8 +13,7 @@ namespace ET
 	public partial class StartProcessConfig: IConfig
 	{
 		public long Id { get; set; }
-		public string InnerIP;
+		public int MachineId;
 		public string InnerPort;
-		public string OuterIP;
 	}
 }

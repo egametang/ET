@@ -11,7 +11,27 @@ namespace ET
 	
 	public partial class StartProcessConfig: ISupportInitialize
 	{
-		public string InnerAddress;
+		private string innerAddress;
+
+		public string InnerAddress
+		{
+			get
+			{
+				if (this.innerAddress == null)
+				{
+					this.innerAddress = $"{StartMachineConfigCategory.Instance.Get(this.MachineId)}:{this.InnerPort}";
+				}
+				return this.innerAddress;
+			}
+		}
+
+		public string OuterIP
+		{
+			get
+			{
+				return StartMachineConfigCategory.Instance.Get(this.MachineId).OuterIP;
+			}
+		}
 
 		public void BeginInit()
 		{
@@ -19,7 +39,6 @@ namespace ET
 
 		public void EndInit()
 		{
-			this.InnerAddress = $"{this.InnerIP}:{this.InnerPort}";
 		}
 	}
 }
