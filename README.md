@@ -4,6 +4,8 @@ __讨论QQ群 : 474643097__
 
 [ET论坛](https://bbs.honorworkroom.com/forum.php)  
 
+# 注意！现在master正在开发中，商业使用请用5.0分支，6.0（master分支）可以参考
+
 # ET的介绍：
 ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp websocket协议，支持服务端3D recast寻路等等  
 
@@ -102,6 +104,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 
 视频教程：  
 [肉饼老师主讲](http://www.taikr.com/my/course/972)  
+[官剑铭主讲]https://edu.manew.com/course/796
 [ET新手教程-初见主讲](https://pan.baidu.com/s/1a5-j2R5QctZpC9n3sMC9QQ) 密码: ru1j  
 [ET新手教程新版-初见主讲](https://www.bilibili.com/video/av33280463/?redirectFrom=h5)  
 [ET在Mac上运行指南-L主讲](https://pan.baidu.com/s/1VUQbdd1Yio7ULFXwAv7X7A) 密码: l3e3  
