@@ -17,12 +17,12 @@ namespace ET
 					{
 						await bundleDownloaderComponent.StartAsync(url);
 						
-						Game.EventSystem.Run(EventIdType.LoadingBegin);
+						Game.EventSystem.Publish(new EventType.LoadingBegin() {Scene = Game.Scene});
 						
 						await bundleDownloaderComponent.DownloadAsync(url);
 					}
 					
-					Game.EventSystem.Run(EventIdType.LoadingFinish);
+					Game.EventSystem.Publish(new EventType.LoadingFinish());
 					
 					Game.Scene.GetComponent<ResourcesComponent>().LoadOneBundle("StreamingAssets");
 					ResourcesComponent.AssetBundleManifestObject = (AssetBundleManifest)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("StreamingAssets", "AssetBundleManifest");

@@ -1,9 +1,9 @@
 ﻿namespace ET
 {
-    [Event(EventIdType.LoadingFinish)]
-    public class LoadingFinishEvent_RemoveLoadingUI : AEvent
+    [Event]
+    public class LoadingFinishEvent_RemoveLoadingUI : AEvent<EventType.LoadingFinish>
     {
-        public override void Run()
+        public override void Run(EventType.LoadingFinish args)
         {
 			Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILoading);
         }

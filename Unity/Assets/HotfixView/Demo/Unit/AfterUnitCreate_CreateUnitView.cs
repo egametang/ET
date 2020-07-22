@@ -2,10 +2,10 @@
 
 namespace ET
 {
-    [Event(EventIdType.AfterUnitCreate)]
-    public class AfterUnitCreate_CreateUnitView: AEvent<Unit>
+    [Event]
+    public class AfterUnitCreate_CreateUnitView: AEvent<EventType.AfterUnitCreate>
     {
-        public override void Run(Unit unit)
+        public override void Run(EventType.AfterUnitCreate args)
         {
             // Unit View层
             ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
@@ -14,7 +14,7 @@ namespace ET
 	        
             GameObject go = UnityEngine.Object.Instantiate(prefab);
             
-            unit.AddComponent<AnimatorComponent>();
+            args.Unit.AddComponent<AnimatorComponent>();
         }
     }
 }

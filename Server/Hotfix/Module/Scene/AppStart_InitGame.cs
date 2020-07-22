@@ -2,10 +2,15 @@
 
 namespace ET
 {
-    [Event(EventIdType.AfterScenesAdd)]
-    public class AfterScenesAdd_CreateScene: AEvent
+    [Event]
+    public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        public override void Run()
+        public override void Run(EventType.AppStart args)
+        {
+            RunAsync().Coroutine();
+        }
+        
+        public async ETVoid RunAsync()
         {
             Game.Scene.AddComponent<ConfigComponent>();
 
@@ -30,11 +35,6 @@ namespace ET
 				
             Game.Scene.AddComponent<NetInnerComponent, string>(processConfig.InnerAddress);
             
-            RunInner().Coroutine();
-        }
-
-        public async ETVoid RunInner()
-        {
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(IdGenerater.Process);
             foreach (StartSceneConfig startConfig in processScenes)
             {

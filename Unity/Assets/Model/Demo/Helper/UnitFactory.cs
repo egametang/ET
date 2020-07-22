@@ -12,7 +12,7 @@ namespace ET
 	        unit.AddComponent<TurnComponent>();
 	        unit.AddComponent<UnitPathComponent>();
 
-	        Game.EventSystem.Run(EventIdType.AfterUnitCreate, unit);
+	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
 	        
 	        UnitComponent unitComponent = Game.Scene.GetComponent<UnitComponent>();
             unitComponent.Add(unit);

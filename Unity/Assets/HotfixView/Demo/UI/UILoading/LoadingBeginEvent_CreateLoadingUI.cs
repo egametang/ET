@@ -2,12 +2,12 @@
 
 namespace ET
 {
-    [Event(EventIdType.LoadingBegin)]
-    public class LoadingBeginEvent_CreateLoadingUI : AEvent<Entity>
+    [Event()]
+    public class LoadingBeginEvent_CreateLoadingUI : AEvent<EventType.LoadingBegin>
     {
-        public override void Run(Entity domain)
+        public override void Run(EventType.LoadingBegin args)
         {
-            UI ui = UILoadingFactory.Create(domain);
+            UI ui = UILoadingFactory.Create(args.Scene);
 			Game.Scene.GetComponent<UIComponent>().Add(ui);
         }
     }

@@ -1,12 +1,12 @@
 ﻿namespace ET
 {
 	// 分发数值监听
-	[Event(EventIdType.NumbericChange)]
-	public class NumericChangeEvent_NotifyWatcher: AEvent<long, NumericType, int>
+	[Event]
+	public class NumericChangeEvent_NotifyWatcher: AEvent<EventType.NumbericChange>
 	{
-		public override void Run(long id, NumericType numericType, int value)
+		public override void Run(EventType.NumbericChange args)
 		{
-			Game.Scene.GetComponent<NumericWatcherComponent>().Run(numericType, id, value);
+			Game.Scene.GetComponent<NumericWatcherComponent>().Run(args.NumericType, args.Parent.Id, args.New);
 		}
 	}
 }

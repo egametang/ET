@@ -77,9 +77,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\EntityFactory.cs">
       <Link>Base\Object\EntityFactory.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventProxy.cs">
-      <Link>Base\Object\EventProxy.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Object\EventSystem.cs">
       <Link>Base\Object\EventSystem.cs</Link>
     </Compile>

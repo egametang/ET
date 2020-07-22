@@ -2,6 +2,17 @@
 
 namespace ET
 {
+	namespace EventType
+	{
+		public struct NumbericChange
+		{
+			public Entity Parent;
+			public NumericType NumericType;
+			public int Old;
+			public int New;
+		}
+	}
+	
 	[ObjectSystem]
 	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>
 	{
@@ -92,9 +103,16 @@ namespace ET
 
 			// 一个数值可能会多种情况影响，比如速度,加个buff可能增加速度绝对值100，也有些buff增加10%速度，所以一个值可以由5个值进行控制其最终结果
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
+			int old = this.NumericDic[final];
 			int result = (int)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f * 10000);
 			this.NumericDic[final] = result;
-			Game.EventSystem.Run(EventIdType.NumbericChange, this.Parent.Id, (NumericType) final, result);
+			Game.EventSystem.Publish(new EventType.NumbericChange()
+			{
+				Parent = this.Parent, 
+				NumericType = (NumericType) final,
+				Old = old,
+				New = result
+			});
 		}
 	}
 }

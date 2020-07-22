@@ -36,7 +36,7 @@ namespace ET
 		
 		private readonly UnOrderMultiMapSet<Type, Type> types = new UnOrderMultiMapSet<Type, Type>();
 
-		private readonly Dictionary<string, List<object>> allEvents = new Dictionary<string, List<object>>();
+		private readonly Dictionary<Type, List<object>> allEvents = new Dictionary<Type, List<object>>();
 
 		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
 
@@ -140,19 +140,12 @@ namespace ET
 			this.allEvents.Clear();
 			foreach (Type type in types[typeof(EventAttribute)])
 			{
-				object[] attrs = type.GetCustomAttributes(typeof(EventAttribute), false);
-
-				foreach (object attr in attrs)
+				object obj = Activator.CreateInstance(type);
+				if (!this.allEvents.ContainsKey(type))
 				{
-					EventAttribute aEventAttribute = (EventAttribute)attr;
-					object obj = Activator.CreateInstance(type);
-					IEvent iEvent = obj as IEvent;
-					if (iEvent == null)
-					{
-						Log.Error($"{obj.GetType().Name} 没有继承IEvent");
-					}
-					this.RegisterEvent(aEventAttribute.Type, iEvent);
+					this.allEvents.Add(type, new List<object>());
 				}
+				this.allEvents[type].Add(obj);
 			}
 			
 			this.Load();
@@ -161,15 +154,6 @@ namespace ET
 		public Assembly GetAssembly(string name)
 		{
 			return this.assemblies[name];
-		}
-
-		public void RegisterEvent(string eventId, IEvent e)
-		{
-			if (!this.allEvents.ContainsKey(eventId))
-			{
-				this.allEvents.Add(eventId, new List<object>());
-			}
-			this.allEvents[eventId].Add(e);
 		}
 		
 		public HashSet<Type> GetTypes(Type systemAttributeType)
@@ -628,10 +612,10 @@ namespace ET
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
 
-		public void Run(string type)
+		public void Publish<T>(T a) where T: struct
 		{
 			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
+			if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
 			{
 				return;
 			}
@@ -639,32 +623,7 @@ namespace ET
 			{
 				try
 				{
-					if (!(obj is AEvent aEvent))
-					{
-						Log.Error($"event error: {obj.GetType().Name}");
-						continue;
-					}
-					aEvent.Run();
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
-			}
-		}
-
-		public void Run<A>(string type, A a)
-		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
-			{
-				return;
-			}
-			foreach (object obj in iEvents)
-			{
-				try
-				{
-					if (!(obj is AEvent<A> aEvent))
+					if (!(obj is AEvent<T> aEvent))
 					{
 						Log.Error($"event error: {obj.GetType().Name}");
 						continue;
@@ -678,55 +637,6 @@ namespace ET
 			}
 		}
 
-		public void Run<A, B>(string type, A a, B b)
-		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
-			{
-				return;
-			}
-			foreach (object obj in iEvents)
-			{
-				try
-				{
-					if (!(obj is AEvent<A, B> aEvent))
-					{
-						Log.Error($"event error: {obj.GetType().Name}");
-						continue;
-					}
-					aEvent.Run(a, b);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
-			}
-		}
-
-		public void Run<A, B, C>(string type, A a, B b, C c)
-		{
-			List<object> iEvents;
-			if (!this.allEvents.TryGetValue(type, out iEvents))
-			{
-				return;
-			}
-			foreach (object obj in iEvents)
-			{
-				try
-				{
-					if (!(obj is AEvent<A, B, C> aEvent))
-					{
-						Log.Error($"event error: {obj.GetType().Name}");
-						continue;
-					}
-					aEvent.Run(a, b, c);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
-			}
-		}
 		
 		public override string ToString()
 		{

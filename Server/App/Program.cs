@@ -36,7 +36,7 @@ namespace ET
 				Log.Info($"server start........................ {Game.Scene.Id}");
 
 				// 先加这里，后面删掉
-				Game.EventSystem.Run(EventIdType.AfterScenesAdd);
+				Game.EventSystem.Publish(new EventType.AppStart());
 				
 				while (true)
 				{
