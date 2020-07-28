@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
@@ -104,7 +104,6 @@
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\Vector4TypeDrawer.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawerAttribute.cs" />
      <Compile Include="Assets\Editor\ExcelExporterEditor\ExcelExporterEditor.cs" />
-     <Compile Include="Assets\Editor\GlobalConfigEditor\GlobalConfigEditor.cs" />
      <Compile Include="Assets\Editor\Helper\EditorResHelper.cs" />
      <Compile Include="Assets\Editor\ILRuntimeEditor\ILRuntimeCLRBinding.cs" />
      <Compile Include="Assets\Editor\Proto2CsEditor\InnerProto2CS.cs" />

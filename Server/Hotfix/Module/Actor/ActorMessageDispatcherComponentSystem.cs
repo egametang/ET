@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
 	public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
 	{
 		public override void Awake(ActorMessageDispatcherComponent self)
@@ -14,7 +13,6 @@ namespace ET
 		}
 	}
 
-	[ObjectSystem]
 	public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
 	{
 		public override void Load(ActorMessageDispatcherComponent self)
@@ -23,7 +21,6 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
 	public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
 	{
 		public override void Destroy(ActorMessageDispatcherComponent self)

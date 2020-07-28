@@ -3,7 +3,6 @@
 
 namespace ET
 {
-	[ObjectSystem]
 	public class MailBoxComponentAwakeSystem : AwakeSystem<MailBoxComponent>
 	{
 		public override void Awake(MailBoxComponent self)
@@ -12,7 +11,6 @@ namespace ET
 		}
 	}
 
-	[ObjectSystem]
 	public class MailBoxComponentAwake1System : AwakeSystem<MailBoxComponent, MailboxType>
 	{
 		public override void Awake(MailBoxComponent self, MailboxType mailboxType)

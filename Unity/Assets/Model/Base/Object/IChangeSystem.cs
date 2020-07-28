@@ -8,6 +8,7 @@ namespace ET
 		void Run(object o);
 	}
 
+	[ObjectSystem]
 	public abstract class ChangeSystem<T> : IChangeSystem
 	{
 		public void Run(object o)

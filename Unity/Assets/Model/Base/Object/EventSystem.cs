@@ -6,14 +6,6 @@ using System.Text;
 
 namespace ET
 {
-	public enum DLLType
-	{
-		Core,
-		Model,
-		Hotfix,
-		Editor,
-	}
-
 	public sealed class EventSystem: IDisposable
 	{
 		private static EventSystem instance;
@@ -22,11 +14,7 @@ namespace ET
 		{
 			get
 			{
-				if (instance == null)
-				{
-					instance = new EventSystem();
-				}
-				return instance;
+				return instance ?? (instance = new EventSystem());
 			}
 		}
 		
@@ -140,12 +128,18 @@ namespace ET
 			this.allEvents.Clear();
 			foreach (Type type in types[typeof(EventAttribute)])
 			{
-				object obj = Activator.CreateInstance(type);
-				if (!this.allEvents.ContainsKey(type))
+				IEvent obj = Activator.CreateInstance(type) as IEvent;
+				if (obj == null)
 				{
-					this.allEvents.Add(type, new List<object>());
+					throw new Exception($"type not is AEvent: {obj.GetType().Name}");
 				}
-				this.allEvents[type].Add(obj);
+
+				Type eventType = obj.GetEventType();
+				if (!this.allEvents.ContainsKey(eventType))
+				{
+					this.allEvents.Add(eventType, new List<object>());
+				}
+				this.allEvents[eventType].Add(obj);
 			}
 			
 			this.Load();
@@ -611,8 +605,8 @@ namespace ET
 
 			ObjectHelper.Swap(ref this.lateUpdates, ref this.lateUpdates2);
 		}
-
-		public void Publish<T>(T a) where T: struct
+		
+		public async ETTask Publish<T>(T a) where T: struct
 		{
 			List<object> iEvents;
 			if (!this.allEvents.TryGetValue(typeof(T), out iEvents))
@@ -628,7 +622,7 @@ namespace ET
 						Log.Error($"event error: {obj.GetType().Name}");
 						continue;
 					}
-					aEvent.Run(a);
+					await aEvent.Run(a);
 				}
 				catch (Exception e)
 				{
@@ -637,7 +631,6 @@ namespace ET
 			}
 		}
 
-		
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

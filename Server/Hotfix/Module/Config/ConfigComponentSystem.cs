@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
     public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>
     {
         public override void Awake(ConfigComponent self)
@@ -14,7 +13,6 @@ namespace ET
         }
     }
 
-    [ObjectSystem]
     public class ConfigLoadSystem : LoadSystem<ConfigComponent>
     {
         public override void Load(ConfigComponent self)
@@ -23,7 +21,6 @@ namespace ET
         }
     }
     
-    [ObjectSystem]
     public class ConfigDestroySystem : DestroySystem<ConfigComponent>
     {
 	    public override void Destroy(ConfigComponent self)

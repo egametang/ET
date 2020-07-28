@@ -2,8 +2,19 @@
 
 namespace ET
 {
-	public abstract class AEvent<A> where A: struct
+	public interface IEvent
 	{
-		public abstract void Run(A a);
+		Type GetEventType();
+	}
+	
+	
+	public abstract class AEvent<A>: IEvent where A: struct
+	{
+		public Type GetEventType()
+		{
+			return typeof (A);
+		}
+
+		public abstract ETTask Run(A a);
 	}
 }

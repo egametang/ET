@@ -13,7 +13,7 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
+	
 	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>
 	{
 		public override void Awake(NumericComponent self)

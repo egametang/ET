@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
 	{
 		public override void Awake(Session self, AChannel b)

@@ -2,7 +2,6 @@ using PF;
 
 namespace ET
 {
-    [ObjectSystem]
     public class PathfindingComponentAwakeSystem : AwakeSystem<PathfindingComponent>
     {
         public override void Awake(PathfindingComponent self)

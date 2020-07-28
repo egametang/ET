@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-	[ObjectSystem]
 	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, string>
 	{
 		public override void Awake(BenchmarkComponent self, string a)

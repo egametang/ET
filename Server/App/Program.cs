@@ -29,13 +29,12 @@ namespace ET
 				
 				Game.Scene.AddComponent(options);
 				
-				IdGenerater.Process = (byte) options.Process;
+				IdGenerater.Process = options.Process;
 				
 				LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Scene.Id:0000}";
 				
 				Log.Info($"server start........................ {Game.Scene.Id}");
 
-				// 先加这里，后面删掉
 				Game.EventSystem.Publish(new EventType.AppStart());
 				
 				while (true)

@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class UnityWebRequestUpdateSystem : UpdateSystem<UnityWebRequestAsync>
 	{
 		public override void Update(UnityWebRequestAsync self)
@@ -89,7 +89,7 @@ namespace ET
 			this.tcs.SetResult();
 		}
 
-		public ETTask DownloadAsync(string url)
+		public async ETTask DownloadAsync(string url)
 		{
 			this.tcs = new ETTaskCompletionSource();
 			
@@ -98,7 +98,7 @@ namespace ET
 			this.Request.certificateHandler = certificateHandler;
 			this.Request.SendWebRequest();
 			
-			return this.tcs.Task;
+			await this.tcs.Task;
 		}
 	}
 }

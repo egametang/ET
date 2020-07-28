@@ -8,6 +8,7 @@ namespace ET
 		void Run(object o);
 	}
 
+	[ObjectSystem]
 	public abstract class DestroySystem<T> : IDestroySystem
 	{
 		public void Run(object o)

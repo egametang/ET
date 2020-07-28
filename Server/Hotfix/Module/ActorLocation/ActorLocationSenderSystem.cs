@@ -3,7 +3,6 @@
 
 namespace ET
 {
-    [ObjectSystem]
     public class ActorLocationSenderAwakeSystem: AwakeSystem<ActorLocationSender>
     {
         public override void Awake(ActorLocationSender self)
@@ -24,7 +23,6 @@ namespace ET
         }
     }
 
-    [ObjectSystem]
     public class ActorLocationSenderDestroySystem: DestroySystem<ActorLocationSender>
     {
         public override void Destroy(ActorLocationSender self)

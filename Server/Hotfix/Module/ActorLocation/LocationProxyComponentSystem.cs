@@ -3,7 +3,6 @@
 
 namespace ET
 {
-	[ObjectSystem]
 	public class LocationProxyComponentSystem : AwakeSystem<LocationProxyComponent>
 	{
 		public override void Awake(LocationProxyComponent self)

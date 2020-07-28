@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
 	public class LockInfoAwakeSystem : AwakeSystem<LockInfo, long, CoroutineLock>
 	{
 		public override void Awake(LockInfo self, long lockInstanceId, CoroutineLock coroutineLock)

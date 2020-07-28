@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis.Scripting;
 
 namespace ET
 {
-    [ObjectSystem]
     public class ReplComponentAwakeSystem : AwakeSystem<ReplComponent>
     {
         public override void Awake(ReplComponent self)

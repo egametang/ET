@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class MessageDispatcherComponentAwakeSystem : AwakeSystem<MessageDispatcherComponent>
 	{
 		public override void Awake(MessageDispatcherComponent t)
@@ -12,7 +12,7 @@ namespace ET
 		}
 	}
 
-	[ObjectSystem]
+	
 	public class MessageDispatcherComponentLoadSystem : LoadSystem<MessageDispatcherComponent>
 	{
 		public override void Load(MessageDispatcherComponent self)

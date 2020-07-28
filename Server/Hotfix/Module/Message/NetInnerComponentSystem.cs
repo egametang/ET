@@ -2,7 +2,6 @@
 
 namespace ET
 {
-	[ObjectSystem]
 	public class NetInnerComponentAwakeSystem : AwakeSystem<NetInnerComponent>
 	{
 		public override void Awake(NetInnerComponent self)
@@ -14,7 +13,6 @@ namespace ET
 		}
 	}
 
-	[ObjectSystem]
 	public class NetInnerComponentAwake1System : AwakeSystem<NetInnerComponent, string>
 	{
 		public override void Awake(NetInnerComponent self, string a)
@@ -26,7 +24,6 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
 	public class NetInnerComponentLoadSystem : LoadSystem<NetInnerComponent>
 	{
 		public override void Load(NetInnerComponent self)
@@ -36,7 +33,6 @@ namespace ET
 		}
 	}
 
-	[ObjectSystem]
 	public class NetInnerComponentUpdateSystem : UpdateSystem<NetInnerComponent>
 	{
 		public override void Update(NetInnerComponent self)

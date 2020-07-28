@@ -2,7 +2,7 @@
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class UIComponentAwakeSystem : AwakeSystem<UIComponent>
 	{
 		public override void Awake(UIComponent self)

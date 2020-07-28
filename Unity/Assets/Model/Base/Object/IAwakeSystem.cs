@@ -32,6 +32,7 @@ namespace ET
 		void Run(object o, A a, B b, C c, D d);
 	}
 
+	[ObjectSystem]
 	public abstract class AwakeSystem<T> : IAwakeSystem, IAwake
 	{
 		public Type Type()
@@ -47,6 +48,7 @@ namespace ET
 		public abstract void Awake(T self);
 	}
 
+	[ObjectSystem]
 	public abstract class AwakeSystem<T, A> : IAwakeSystem, IAwake<A>
 	{
 		public Type Type()
@@ -62,6 +64,7 @@ namespace ET
 		public abstract void Awake(T self, A a);
 	}
 
+	[ObjectSystem]
 	public abstract class AwakeSystem<T, A, B> : IAwakeSystem, IAwake<A, B>
 	{
 		public Type Type()
@@ -77,6 +80,7 @@ namespace ET
 		public abstract void Awake(T self, A a, B b);
 	}
 
+	[ObjectSystem]
 	public abstract class AwakeSystem<T, A, B, C> : IAwakeSystem, IAwake<A, B, C>
 	{
 		public Type Type()

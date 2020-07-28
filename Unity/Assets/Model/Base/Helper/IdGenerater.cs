@@ -77,8 +77,6 @@
 	
 	public static class IdGenerater
 	{
-		public const int MaxZone = 1024;
-		
 		private static int process;
 		private static uint value;
 		

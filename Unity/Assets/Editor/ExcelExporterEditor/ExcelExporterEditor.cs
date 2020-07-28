@@ -62,7 +62,7 @@ namespace ET
 
                     ExportAll(clientPath);
 
-                    ExportAllClass(@"./Assets/Model/Demo/Config", "namespace ET\n{\n");
+                    ExportAllClass(@"./Assets/Model/Config", "namespace ET\n{\n");
 
                     Log.Info($"导出客户端配置完成!");
                 }
@@ -73,7 +73,7 @@ namespace ET
 
                     ExportAll(ServerConfigPath);
 
-                    ExportAllClass(@"../Server/Model/Demo/Config", "namespace ET\n{\n");
+                    ExportAllClass(@"../Server/Model/Config", "namespace ET\n{\n");
 
                     Log.Info($"导出服务端配置完成!");
                 }

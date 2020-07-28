@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [ObjectSystem]
     public class ConsoleComponentAwakeSystem : StartSystem<ConsoleComponent>
     {
         public override void Start(ConsoleComponent self)

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ET
 {
-    [ObjectSystem]
     public class ABPathAwakeSystem : AwakeSystem<ABPathWrap, Vector3, Vector3>
     {
         public override void Awake(ABPathWrap self, Vector3 start, Vector3 end)

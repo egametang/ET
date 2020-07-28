@@ -3,16 +3,17 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
 	{
 		public override void Awake(NumericWatcherComponent self)
 		{
+			NumericWatcherComponent.Instance = self;
 			self.Awake();
 		}
 	}
 
-	[ObjectSystem]
+	
 	public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
 	{
 		public override void Load(NumericWatcherComponent self)
@@ -26,6 +27,8 @@ namespace ET
 	/// </summary>
 	public class NumericWatcherComponent : Entity
 	{
+		public static NumericWatcherComponent Instance { get; set; }
+		
 		private Dictionary<NumericType, List<INumericWatcher>> allWatchers;
 
 		public void Awake()

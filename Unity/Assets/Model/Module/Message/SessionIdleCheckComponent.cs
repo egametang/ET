@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [ObjectSystem]
+    
     public class SessionIdleCheckerComponentAwakeSystem : AwakeSystem<SessionIdleCheckerComponent, int, int, int>
     {
         public override void Awake(SessionIdleCheckerComponent self, int checkInteral, int recvMaxIdleTime, int sendMaxIdleTime)
@@ -13,7 +13,7 @@
         }
     }
     
-    [ObjectSystem]
+    
     public class SessionIdleCheckerComponentLoadSystem : LoadSystem<SessionIdleCheckerComponent>
     {
         public override void Load(SessionIdleCheckerComponent self)
@@ -26,7 +26,7 @@
         }
     }
     
-    [ObjectSystem]
+    
     public class SessionIdleCheckerComponentDestroySystem : DestroySystem<SessionIdleCheckerComponent>
     {
         public override void Destroy(SessionIdleCheckerComponent self)

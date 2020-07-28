@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentAwakeSystem : AwakeSystem<OpcodeTypeComponent>
 	{
 		public override void Awake(OpcodeTypeComponent self)
@@ -13,7 +13,7 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentLoadSystem : LoadSystem<OpcodeTypeComponent>
 	{
 		public override void Load(OpcodeTypeComponent self)
@@ -22,7 +22,7 @@ namespace ET
 		}
 	}
 	
-	[ObjectSystem]
+	
 	public class OpcodeTypeComponentDestroySystem : DestroySystem<OpcodeTypeComponent>
 	{
 		public override void Destroy(OpcodeTypeComponent self)

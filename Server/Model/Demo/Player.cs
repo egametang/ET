@@ -1,6 +1,5 @@
 ﻿namespace ET
 {
-	[ObjectSystem]
 	public class PlayerSystem : AwakeSystem<Player, string>
 	{
 		public override void Awake(Player self, string a)

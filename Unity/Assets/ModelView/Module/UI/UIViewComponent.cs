@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-	[ObjectSystem]
+	
 	public class UIViewComponentAwakeSystem : AwakeSystem<UIViewComponent>
 	{
 		public override void Awake(UIViewComponent self)

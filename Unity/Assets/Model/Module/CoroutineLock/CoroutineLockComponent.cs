@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [ObjectSystem]
+    
     public class CoroutineLockComponentSystem : AwakeSystem<CoroutineLockComponent>
     {
         public override void Awake(CoroutineLockComponent self)

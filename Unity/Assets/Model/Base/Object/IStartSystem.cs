@@ -8,6 +8,7 @@ namespace ET
 		void Run(object o);
 	}
 
+	[ObjectSystem]
 	public abstract class StartSystem<T> : IStartSystem
 	{
 		public void Run(object o)

@@ -3,7 +3,6 @@
 
 namespace ET
 {
-	[ObjectSystem]
 	public class WebSocketBenchmarkComponentSystem : AwakeSystem<WebSocketBenchmarkComponent, string>
 	{
 		public override void Awake(WebSocketBenchmarkComponent self, string address)

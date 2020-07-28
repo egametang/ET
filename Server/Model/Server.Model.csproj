@@ -53,6 +53,21 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\Async\IAwaiter.cs">
       <Link>Base\Async\IAwaiter.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Entity\EntitySceneFactory.cs">
+      <Link>Base\Entity\EntitySceneFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Entity\Game.cs">
+      <Link>Base\Entity\Game.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Entity\Scene.cs">
+      <Link>Base\Entity\Scene.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Entity\SceneType.cs">
+      <Link>Base\Entity\SceneType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Base\Entity\TimerComponent.cs">
+      <Link>Base\Entity\TimerComponent.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\MongoHelper.cs">
       <Link>Base\Helper\MongoHelper.cs</Link>
     </Compile>
@@ -134,21 +149,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMapSet.cs">
       <Link>Base\UnOrderMultiMapSet.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Entity\EntitySceneFactory.cs">
-      <Link>Entity\EntitySceneFactory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Entity\Game.cs">
-      <Link>Entity\Game.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Entity\Scene.cs">
-      <Link>Entity\Scene.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Entity\SceneType.cs">
-      <Link>Entity\SceneType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Entity\TimerComponent.cs">
-      <Link>Entity\TimerComponent.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
       <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
     </Compile>
@@ -194,8 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Model\Base\DoubleMap.cs" Link="Base\DoubleMap.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Event\Env.cs" Link="Base\Event\Env.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\Event\EnvKey.cs" Link="Base\Event\EnvKey.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\Event\EventAttribute.cs" Link="Base\Event\EventAttribute.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\Event\IEvent.cs" Link="Base\Event\IEvent.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\Helper\ByteHelper.cs" Link="Base\Helper\ByteHelper.cs" />
@@ -396,7 +394,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Pathfinding\Recast\WindowsStoreCompatibility.cs">
       <Link>Module\Pathfinding\Recast\WindowsStoreCompatibility.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Other\AppType.cs" Link="Other\AppType.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.2.1" />
