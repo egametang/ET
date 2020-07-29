@@ -7,7 +7,7 @@ namespace ET
 		Type GetEventType();
 	}
 	
-	
+	[Event]
 	public abstract class AEvent<A>: IEvent where A: struct
 	{
 		public Type GetEventType()

@@ -214,7 +214,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\Events.cs" Link="Base\RecyclableMemoryStream\Events.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" Link="Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Base\TryLocker.cs" Link="Base\TryLocker.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Base\UnOrderMultiMap.cs" Link="Base\UnOrderMultiMap.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />

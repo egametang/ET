@@ -11,7 +11,7 @@ namespace ET
             //await BundleHelper.DownloadBundle("1111");
 
             // 加载配置
-            Game.Scene.GetComponent<ResourcesComponent>().LoadBundle("config.unity3d");
+            Game.Scene.AddComponent<ResourcesComponent>().LoadBundle("config.unity3d");
             Game.Scene.AddComponent<ConfigComponent>();
             Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle("config.unity3d");
             Game.Scene.AddComponent<OpcodeTypeComponent>();

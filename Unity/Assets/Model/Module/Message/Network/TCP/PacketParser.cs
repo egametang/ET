@@ -11,8 +11,7 @@ namespace ET
 	
 	public static class Packet
 	{
-		public const int PacketSizeLength2 = 2;
-		public const int PacketSizeLength4 = 4;
+		public const int PacketSizeLength = 4;
 		public const int MinPacketSize = 2;
 		public const int OpcodeIndex = 0;
 		public const int MessageIndex = 2;
@@ -25,11 +24,9 @@ namespace ET
 		private ParserState state;
 		public MemoryStream memoryStream;
 		private bool isOK;
-		private readonly int packetSizeLength;
 
-		public PacketParser(int packetSizeLength, CircularBuffer buffer, MemoryStream memoryStream)
+		public PacketParser(CircularBuffer buffer, MemoryStream memoryStream)
 		{
-			this.packetSizeLength = packetSizeLength;
 			this.buffer = buffer;
 			this.memoryStream = memoryStream;
 		}
@@ -47,32 +44,18 @@ namespace ET
 				switch (this.state)
 				{
 					case ParserState.PacketSize:
-						if (this.buffer.Length < this.packetSizeLength)
+						if (this.buffer.Length < Packet.PacketSizeLength)
 						{
 							finish = true;
 						}
 						else
 						{
-							this.buffer.Read(this.memoryStream.GetBuffer(), 0, this.packetSizeLength);
+							this.buffer.Read(this.memoryStream.GetBuffer(), 0, Packet.PacketSizeLength);
 							
-							switch (this.packetSizeLength)
+							this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
+							if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < Packet.MinPacketSize)
 							{
-								case Packet.PacketSizeLength4:
-									this.packetSize = BitConverter.ToInt32(this.memoryStream.GetBuffer(), 0);
-									if (this.packetSize > ushort.MaxValue * 16 || this.packetSize < Packet.MinPacketSize)
-									{
-										throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");
-									}
-									break;
-								case Packet.PacketSizeLength2:
-									this.packetSize = BitConverter.ToUInt16(this.memoryStream.GetBuffer(), 0);
-									if (this.packetSize > ushort.MaxValue || this.packetSize < Packet.MinPacketSize)
-									{
-										throw new Exception($"recv packet size error:, 可能是外网探测端口: {this.packetSize}");
-									}
-									break;
-								default:
-									throw new Exception("packet size byte count must be 2 or 4!");
+								throw new Exception($"recv packet size error, 可能是外网探测端口: {this.packetSize}");
 							}
 							this.state = ParserState.PacketBody;
 						}

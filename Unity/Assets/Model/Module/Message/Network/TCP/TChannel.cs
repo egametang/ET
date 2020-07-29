@@ -34,13 +34,12 @@ namespace ET
 		
 		public TChannel(IPEndPoint ipEndPoint, TService service): base(service, ChannelType.Connect)
 		{
-			int packetSize = service.PacketSizeLength;
-			this.packetSizeCache = new byte[packetSize];
+			this.packetSizeCache = new byte[4];
 			this.memoryStream = service.MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(packetSize, this.recvBuffer, this.memoryStream);
+			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -52,13 +51,12 @@ namespace ET
 		
 		public TChannel(Socket socket, TService service): base(service, ChannelType.Accept)
 		{
-			int packetSize = service.PacketSizeLength;
-			this.packetSizeCache = new byte[packetSize];
+			this.packetSizeCache = new byte[Packet.PacketSizeLength];
 			this.memoryStream = service.MemoryStreamManager.GetStream("message", ushort.MaxValue);
 			
 			this.socket = socket;
 			this.socket.NoDelay = true;
-			this.parser = new PacketParser(packetSize, this.recvBuffer, this.memoryStream);
+			this.parser = new PacketParser(this.recvBuffer, this.memoryStream);
 			this.innArgs.Completed += this.OnComplete;
 			this.outArgs.Completed += this.OnComplete;
 
@@ -118,25 +116,11 @@ namespace ET
 				throw new Exception("TChannel已经被Dispose, 不能发送消息");
 			}
 
-			switch (this.GetService().PacketSizeLength)
+			if (stream.Length > ushort.MaxValue * 16)
 			{
-				case Packet.PacketSizeLength4:
-					if (stream.Length > ushort.MaxValue * 16)
-					{
-						throw new Exception($"send packet too large: {stream.Length}");
-					}
-					this.packetSizeCache.WriteTo(0, (int) stream.Length);
-					break;
-				case Packet.PacketSizeLength2:
-					if (stream.Length > ushort.MaxValue)
-					{
-						throw new Exception($"send packet too large: {stream.Length}");
-					}
-					this.packetSizeCache.WriteTo(0, (ushort) stream.Length);
-					break;
-				default:
-					throw new Exception("packet size must be 2 or 4!");
+				throw new Exception($"send packet too large: {stream.Length}");
 			}
+			this.packetSizeCache.WriteTo(0, (int) stream.Length);
 
 			this.sendBuffer.Write(this.packetSizeCache, 0, this.packetSizeCache.Length);
 			this.sendBuffer.Write(stream);

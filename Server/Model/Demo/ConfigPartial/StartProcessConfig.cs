@@ -19,7 +19,7 @@ namespace ET
 			{
 				if (this.innerAddress == null)
 				{
-					this.innerAddress = $"{StartMachineConfigCategory.Instance.Get(this.MachineId)}:{this.InnerPort}";
+					this.innerAddress = $"{StartMachineConfigCategory.Instance.Get(this.MachineId).InnerIP}:{this.InnerPort}";
 				}
 				return this.innerAddress;
 			}

@@ -127,7 +127,6 @@
      <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStream.cs" />
      <Compile Include="Assets\Model\Base\RecyclableMemoryStream\RecyclableMemoryStreamManager.cs" />
      <Compile Include="Assets\Model\Base\StructBsonSerialize.cs" />
-     <Compile Include="Assets\Model\Base\TryLocker.cs" />
      <Compile Include="Assets\Model\Base\UnOrderMultiMap.cs" />
      <Compile Include="Assets\Model\Base\UnOrderMultiMapSet.cs" />
      <Compile Include="Assets\Model\Config\StartMachineConfig.cs" />
