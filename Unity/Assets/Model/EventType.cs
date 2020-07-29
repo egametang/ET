@@ -5,6 +5,16 @@
         public struct AppStart
         {
         }
+        
+        public struct AfterCreateZoneScene
+        {
+            public Scene ZoneScene;
+        }
+        
+        public struct AfterCreateLoginScene
+        {
+            public Scene LoginScene;
+        }
 
         public struct LoginFinish
         {
@@ -17,6 +27,7 @@
 
         public struct LoadingFinish
         {
+            public Scene Scene;
         }
 
         public struct EnterMapFinish

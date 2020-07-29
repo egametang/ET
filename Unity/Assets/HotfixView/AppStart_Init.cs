@@ -18,7 +18,7 @@ namespace ET
             Game.Scene.AddComponent<MessageDispatcherComponent>();
 
 
-            SceneFactory.CreateZoneScene(1, 0, "Game");
+            Scene zoneScene = await SceneFactory.CreateZoneScene(1, 0, "Game");
         }
     }
 }

@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace ET
 {
-	public abstract class ACategory : Object
+	public abstract class ACategory: ISupportInitialize
 	{
 		public abstract Type ConfigType { get; }
+
+		public virtual void BeginInit()
+		{
+		}
+
+		public virtual void EndInit()
+		{
+		}
 	}
 
 	/// <summary>
@@ -17,7 +26,7 @@ namespace ET
 	{
 		protected Dictionary<long, T> dict;
 
-		public override void BeginInit()
+		public virtual void BeginInit()
 		{
 			this.dict = new Dictionary<long, T>();
 
@@ -50,7 +59,7 @@ namespace ET
 			}
 		}
 
-		public override void EndInit()
+		public virtual void EndInit()
 		{
 		}
 

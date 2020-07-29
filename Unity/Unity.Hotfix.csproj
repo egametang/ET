@@ -65,6 +65,7 @@
      <Compile Include="Assets\Hotfix\Move\M2C_PathfindingResultHandler.cs" />
      <Compile Include="Assets\Hotfix\Scene\LoginHelper.cs" />
      <Compile Include="Assets\Hotfix\Scene\MapHelper.cs" />
+     <Compile Include="Assets\Hotfix\Scene\SceneFactory.cs" />
      <Compile Include="Assets\Hotfix\Unit\M2C_CreateUnitsHandler.cs" />
      <Compile Include="Assets\Hotfix\Unit\PlayerFactory.cs" />
      <Compile Include="Assets\Hotfix\Unit\UnitFactory.cs" />

@@ -13,5 +13,6 @@
 		// 客户端Model层
 		Client = 30,
 		Zone = 31,
+		Login = 32,
 	}
 }

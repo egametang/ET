@@ -61,13 +61,14 @@
      <Compile Include="Assets\ModelView\Camera\CameraComponent.cs" />
      <Compile Include="Assets\ModelView\GizmosDebug.cs" />
      <Compile Include="Assets\ModelView\Init.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\AUIEvent.cs" />
      <Compile Include="Assets\ModelView\Module\UI\CanvasConfig.cs" />
      <Compile Include="Assets\ModelView\Module\UI\LayerNames.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UI.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIEventAttribute.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UIComponent.cs" />
-     <Compile Include="Assets\ModelView\Module\UI\UIFactoryAttribute.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UIType.cs" />
-     <Compile Include="Assets\ModelView\Module\UI\UIViewComponent.cs" />
+     <Compile Include="Assets\ModelView\Module\UI\UIEventComponent.cs" />
      <Compile Include="Assets\ModelView\Opera\OperaComponent.cs" />
      <Compile Include="Assets\ModelView\ReferenceCollector.cs" />
      <Compile Include="Assets\ModelView\Scene\SceneChangeComponent.cs" />

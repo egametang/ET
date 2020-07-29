@@ -3,16 +3,17 @@ using UnityEngine;
 
 namespace ET
 {
-    public static class UILoadingFactory
+	[UIEvent(UIType.UILoading)]
+    public class UILoadingEvent: AUIEvent
     {
-        public static UI Create(Entity domain)
+        public override async ETTask<UI> OnCreate(UIComponent uiComponent)
         {
 	        try
 	        {
 				GameObject bundleGameObject = ((GameObject)Resources.Load("KV")).Get<GameObject>(UIType.UILoading);
 				GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
 				go.layer = LayerMask.NameToLayer(LayerNames.UI);
-				UI ui = EntityFactory.Create<UI, string, GameObject>(domain, UIType.UILoading, go);
+				UI ui = EntityFactory.Create<UI, string, GameObject>(uiComponent.Domain, UIType.UILoading, go);
 
 				ui.AddComponent<UILoadingComponent>();
 				return ui;
@@ -24,8 +25,9 @@ namespace ET
 	        }
 		}
 
-	    public static void Remove(string type)
-	    {
-	    }
+        public override void OnRemove(UIComponent uiComponent)
+        {
+	        uiComponent.Remove(UIType.UILoading);
+        }
     }
 }

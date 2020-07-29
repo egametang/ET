@@ -4,7 +4,7 @@
     {
         public override async ETTask Run(EventType.LoadingFinish args)
         {
-			Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILoading);
+            args.Scene.GetComponent<UIComponent>().Remove(UIType.UILoading);
         }
     }
 }

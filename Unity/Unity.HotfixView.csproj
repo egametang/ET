@@ -60,18 +60,20 @@
   <ItemGroup>
      <Compile Include="Assets\HotfixView\AppStart_Init.cs" />
      <Compile Include="Assets\HotfixView\Module\Resource\GameObjectHelper.cs" />
-     <Compile Include="Assets\HotfixView\Scene\SceneFactory.cs" />
+     <Compile Include="Assets\HotfixView\Module\UI\UIComponentSystem.cs" />
+     <Compile Include="Assets\HotfixView\Module\UI\UIEventComponentSystem.cs" />
+     <Compile Include="Assets\HotfixView\Scene\AfterCreateZoneScene_AddComponent.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingBeginEvent_CreateLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingFinishEvent_RemoveLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\UILoadingComponentSystem.cs" />
-     <Compile Include="Assets\HotfixView\UI\UILoading\UILoadingFactory.cs" />
+     <Compile Include="Assets\HotfixView\UI\UILoading\UILoadingEvent.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\EnterMapFinish_RemoveLobbyUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\LoginFinish_CreateLobbyUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyComponentSystem.cs" />
-     <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyFactory.cs" />
+     <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyEvent.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginComponentSystem.cs" />
-     <Compile Include="Assets\HotfixView\UI\UILogin\UILoginFactory.cs" />
+     <Compile Include="Assets\HotfixView\UI\UILogin\UILoginEvent.cs" />
      <Compile Include="Assets\HotfixView\Unit\AfterUnitCreate_CreateUnitView.cs" />
      <None Include="Assets\HotfixView\Unity.HotfixView.asmdef" />
  <Reference Include="UnityEditor.UI">
