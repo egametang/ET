@@ -1,2 +1,0 @@
-This folder contains a number of example scenes which I hope will help you get started with the A* Pathfinding Project easier and faster.
-The folder is in no way required by the rest of the library and may be deleted if you wish. However in the ExampleScripts folder you might find useful scripts which you might want to keep.

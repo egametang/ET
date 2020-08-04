@@ -29,7 +29,6 @@ namespace ET
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
-                    scene.AddComponent<PathfindingComponent>();
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

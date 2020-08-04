@@ -58,27 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\AstarPathfindingProject\AIBaseEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\AILerpEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\AstarPathEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\AstarUpdateChecker.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\AstarUpdateWindow.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\CustomGraphEditorAttribute.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\GraphEditors\GraphEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\GraphEditors\RecastGraphEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\GraphUpdateSceneEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\ModifierEditors\RaycastModifierEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\ModifierEditors\SmoothModifierEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\PackageTools\EditorBase.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\PackageTools\EditorGUIx.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\PackageTools\EnumFlagDrawer.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\PackageTools\OptimizationHandler.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\RVOControllerEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\RVONavmeshEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\RVOSimulatorEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\RVOSquareObstacleEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\RecastMeshObjEditor.cs" />
-     <Compile Include="Assets\Editor\AstarPathfindingProject\SeekerEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\BuildEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\BuildHelper.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\ComponentViewEditor.cs" />
@@ -114,9 +93,6 @@
      <Compile Include="Assets\Editor\ServerCommandLineEditor\ServerCommandLineEditor.cs" />
      <Compile Include="Assets\Editor\ServerManagerEditor\ServerManagerEditor.cs" />
      <None Include="Assets\Editor\Unity.Editor.asmdef" />
-     <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\Navmesh.cginc" />
-     <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\NavmeshOutline.shader" />
-     <None Include="Assets\Editor\AstarPathfindingProject\EditorAssets\Materials\Navmesh.shader" />
  <Reference Include="UnityEditor.UI">
  <HintPath>C:/Source/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>

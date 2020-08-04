@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public class UIEventAttribute: Attribute
+    public class UIEventAttribute: BaseAttribute
     {
         public string UIType { get; }
 
