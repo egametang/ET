@@ -21,11 +21,11 @@ namespace ET
 		
 		public string Name { get; private set; }
 
-		public Dictionary<string, UI> children = new Dictionary<string, UI>();
+		public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
 		
 		public void Awake(string name, GameObject gameObject)
 		{
-			this.children.Clear();
+			this.nameChildren.Clear();
 			gameObject.AddComponent<ComponentView>().Component = this;
 			gameObject.layer = LayerMask.NameToLayer(LayerNames.UI);
 			this.Name = name;
@@ -41,45 +41,45 @@ namespace ET
 			
 			base.Dispose();
 
-			foreach (UI ui in this.children.Values)
+			foreach (UI ui in this.nameChildren.Values)
 			{
 				ui.Dispose();
 			}
 			
-			UnityEngine.Object.Destroy(this.ViewGO);
-			children.Clear();
+			UnityEngine.Object.Destroy(this.GameObject);
+			this.nameChildren.Clear();
 		}
 
 		public void SetAsFirstSibling()
 		{
-			this.ViewGO.transform.SetAsFirstSibling();
+			this.GameObject.transform.SetAsFirstSibling();
 		}
 
 		public void Add(UI ui)
 		{
-			this.children.Add(ui.Name, ui);
+			this.nameChildren.Add(ui.Name, ui);
 			ui.Parent = this;
 		}
 
 		public void Remove(string name)
 		{
 			UI ui;
-			if (!this.children.TryGetValue(name, out ui))
+			if (!this.nameChildren.TryGetValue(name, out ui))
 			{
 				return;
 			}
-			this.children.Remove(name);
+			this.nameChildren.Remove(name);
 			ui.Dispose();
 		}
 
 		public UI Get(string name)
 		{
 			UI child;
-			if (this.children.TryGetValue(name, out child))
+			if (this.nameChildren.TryGetValue(name, out child))
 			{
 				return child;
 			}
-			GameObject childGameObject = this.ViewGO.transform.Find(name)?.gameObject;
+			GameObject childGameObject = this.GameObject.transform.Find(name)?.gameObject;
 			if (childGameObject == null)
 			{
 				return null;

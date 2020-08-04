@@ -1,10 +1,14 @@
-﻿using Quaternion = UnityEngine.Quaternion;
+﻿using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 namespace ET
 {
 	public sealed class Unit: Entity
 	{
+		// 先放这里，去掉ViewGO，后面挪到显示层
+		public GameObject GameObject;
+		
 		public int ConfigId;
 
 		public UnitConfig Config

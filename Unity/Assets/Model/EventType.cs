@@ -16,6 +16,11 @@
             public Scene LoginScene;
         }
 
+        public struct AppStartInitFinish
+        {
+            public Scene ZoneScene;
+        }
+
         public struct LoginFinish
         {
             public Scene ZoneScene;

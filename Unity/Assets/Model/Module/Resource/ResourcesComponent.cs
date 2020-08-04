@@ -165,9 +165,19 @@ namespace ET
 		}
 	}
 	
+	public class ResourcesComponentAwakeSystem: AwakeSystem<ResourcesComponent>
+	{
+		public override void Awake(ResourcesComponent self)
+		{
+			ResourcesComponent.Instance = self;
+		}
+	}
+	
 
 	public class ResourcesComponent : Entity
 	{
+		public static ResourcesComponent Instance;
+		
 		public static AssetBundleManifest AssetBundleManifestObject { get; set; }
 
 		private readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
