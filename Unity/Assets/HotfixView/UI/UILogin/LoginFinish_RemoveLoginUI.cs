@@ -6,8 +6,7 @@ namespace ET
 	{
 		public override async ETTask Run(EventType.LoginFinish args)
 		{
-			Game.Scene.GetComponent<UIComponent>().Remove(UIType.UILogin);
-			Game.Scene.GetComponent<ResourcesComponent>().UnloadBundle(UIType.UILogin.StringToAB());
+			await UIHelper.Remove(args.ZoneScene, UIType.UILogin);
 		}
 	}
 }

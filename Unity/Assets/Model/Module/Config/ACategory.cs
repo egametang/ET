@@ -26,28 +26,17 @@ namespace ET
 	{
 		protected Dictionary<long, T> dict;
 
-		public virtual void BeginInit()
+		public override void BeginInit()
 		{
-			this.dict = new Dictionary<long, T>();
-
 			string configStr = ConfigHelper.GetText(typeof(T).Name);
 
-			foreach (string str in configStr.Split(new[] { "\n" }, StringSplitOptions.None))
+			try
 			{
-				try
-				{
-					string str2 = str.Trim();
-					if (str2 == "")
-					{
-						continue;
-					}
-					T t = ConfigHelper.ToObject<T>(str2);
-					this.dict.Add(t.Id, t);
-				}
-				catch (Exception e)
-				{
-					throw new Exception($"parser json fail: {str}", e);
-				}
+				this.dict = ConfigHelper.ToObject<Dictionary<long, T>>(configStr);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"parser json fail: {configStr}", e);
 			}
 		}
 
@@ -59,7 +48,7 @@ namespace ET
 			}
 		}
 
-		public virtual void EndInit()
+		public override void EndInit()
 		{
 		}
 

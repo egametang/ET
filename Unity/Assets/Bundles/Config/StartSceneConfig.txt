@@ -1,5 +1,7 @@
-{"_id":1,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm","OuterPort":10002}
-{"_id":2,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1","OuterPort":10003}
-{"_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2","OuterPort":10004}
-{"_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location"}
-{"_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map"}
+[
+[1, {"_id":1,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm","OuterPort":10002}],
+[2, {"_id":2,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1","OuterPort":10003}],
+[3, {"_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2","OuterPort":10004}],
+[4, {"_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location"}],
+[5, {"_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map"}],
+]

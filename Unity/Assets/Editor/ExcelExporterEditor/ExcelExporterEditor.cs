@@ -62,7 +62,7 @@ namespace ET
 
                     ExportAll(clientPath);
 
-                    ExportAllClass(@"./Assets/Model/Config", "namespace ET\n{\n");
+                    ExportAllClass(@"./Assets/Model/Config", "using MongoDB.Bson.Serialization.Attributes;\n\nnamespace ET\n{\n");
 
                     Log.Info($"导出客户端配置完成!");
                 }
@@ -73,7 +73,7 @@ namespace ET
 
                     ExportAll(ServerConfigPath);
 
-                    ExportAllClass(@"../Server/Model/Config", "namespace ET\n{\n");
+                    ExportAllClass(@"../Server/Model/Config", "using MongoDB.Bson.Serialization.Attributes;\n\nnamespace ET\n{\n");
 
                     Log.Info($"导出服务端配置完成!");
                 }
@@ -135,6 +135,7 @@ namespace ET
 
                 sb.Append($"\tpublic partial class {protoName}: IConfig\n");
                 sb.Append("\t{\n");
+                sb.Append("\t\t[BsonId]\n");
                 sb.Append("\t\tpublic long Id { get; set; }\n");
 
                 int cellCount = sheet.GetRow(3).LastCellNum;
@@ -233,11 +234,13 @@ namespace ET
             using (FileStream txt = new FileStream(exportPath, FileMode.Create))
             using (StreamWriter sw = new StreamWriter(txt))
             {
+                sw.WriteLine('[');
                 for (int i = 0; i < xssfWorkbook.NumberOfSheets; ++i)
                 {
                     ISheet sheet = xssfWorkbook.GetSheetAt(i);
                     ExportSheet(sheet, sw);
                 }
+                sw.WriteLine(']');
             }
 
             Log.Info($"{protoName}导表完成");
@@ -265,7 +268,6 @@ namespace ET
                 }
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append("{");
                 IRow row = sheet.GetRow(i);
                 for (int j = 2; j < cellCount; ++j)
                 {
@@ -303,13 +305,14 @@ namespace ET
                     if (fieldName == "Id" || fieldName == "_id")
                     {
                         fieldName = "_id";
+                        sb.Append($"[{fieldValue}, {{");
                     }
 
                     string fieldType = cellInfos[j].Type;
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                sb.Append("}");
+                sb.Append("}],");
                 sw.WriteLine(sb.ToString());
             }
         }

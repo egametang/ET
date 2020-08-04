@@ -63,6 +63,7 @@
      <Compile Include="Assets\HotfixView\Module\UI\UIComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Module\UI\UIEventComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Scene\AfterCreateZoneScene_AddComponent.cs" />
+     <Compile Include="Assets\HotfixView\UI\UIHelper.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingBeginEvent_CreateLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingFinishEvent_RemoveLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\UILoadingComponentSystem.cs" />
@@ -71,6 +72,7 @@
      <Compile Include="Assets\HotfixView\UI\UILobby\LoginFinish_CreateLobbyUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyEvent.cs" />
+     <Compile Include="Assets\HotfixView\UI\UILogin\AfterCreateZoneScene_CreateLoginUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginEvent.cs" />

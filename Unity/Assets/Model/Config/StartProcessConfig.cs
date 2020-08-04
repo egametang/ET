@@ -1,3 +1,5 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace ET
 {
 	[Config]
@@ -12,6 +14,7 @@ namespace ET
 
 	public partial class StartProcessConfig: IConfig
 	{
+		[BsonId]
 		public long Id { get; set; }
 		public int MachineId;
 		public string InnerPort;

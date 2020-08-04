@@ -1,2 +1,4 @@
-{"_id":1,"DBConnection":"mongdb://127.0.0.1","DBName":"ET1"}
-{"_id":2,"DBConnection":"mongdb://127.0.0.1","DBName":"ET2"}
+[
+[1, {"_id":1,"DBConnection":"mongdb://127.0.0.1","DBName":"ET1"}],
+[2, {"_id":2,"DBConnection":"mongdb://127.0.0.1","DBName":"ET2"}],
+]

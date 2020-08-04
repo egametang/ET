@@ -18,6 +18,7 @@
 
         public struct LoginFinish
         {
+            public Scene ZoneScene;
         }
 
         public struct LoadingBegin
