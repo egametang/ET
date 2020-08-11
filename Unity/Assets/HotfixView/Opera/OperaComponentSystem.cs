@@ -7,7 +7,7 @@ namespace ET
     {
         public override void Awake(OperaComponent self)
         {
-            self.Awake();
+            self.mapMask = LayerMask.GetMask("Map");
         }
     }
 
