@@ -62,8 +62,11 @@
      <Compile Include="Assets\HotfixView\Module\Resource\GameObjectHelper.cs" />
      <Compile Include="Assets\HotfixView\Module\UI\UIComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Module\UI\UIEventComponentSystem.cs" />
+     <Compile Include="Assets\HotfixView\Opera\OperaComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Scene\AfterCreateZoneScene_AddComponent.cs" />
+     <Compile Include="Assets\HotfixView\Scene\SceneChangeComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Scene\SceneFactory.cs" />
+     <Compile Include="Assets\HotfixView\Scene\SceneHelper.cs" />
      <Compile Include="Assets\HotfixView\UI\UIHelper.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingBeginEvent_CreateLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingFinishEvent_RemoveLoadingUI.cs" />
@@ -78,6 +81,7 @@
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginEvent.cs" />
      <Compile Include="Assets\HotfixView\Unit\AfterUnitCreate_CreateUnitView.cs" />
+     <Compile Include="Assets\HotfixView\Unit\AnimatorComponentSystem.cs" />
      <None Include="Assets\HotfixView\Unity.HotfixView.asmdef" />
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -674,6 +678,10 @@
     <ProjectReference Include="Unity.ModelView.csproj">
       <Project>{2F8409C1-DA01-D464-DBF2-00C6449E459E}</Project>
       <Name>Unity.ModelView</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{E15BADD2-3A26-309A-AB0F-DC5B08044350}</Project>
+      <Name>Unity.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

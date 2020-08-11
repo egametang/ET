@@ -5,7 +5,7 @@ namespace ET
 {
     public static class MapHelper
     {
-        public static async ETVoid EnterMapAsync(string sceneName)
+        public static async ETVoid EnterMapAsync(Scene zoneScene, string sceneName)
         {
             try
             {
@@ -22,8 +22,7 @@ namespace ET
                     await sceneChangeComponent.ChangeSceneAsync(sceneName);
                 }
 				*/
-                G2C_EnterMap g2CEnterMap = await SessionComponent.Instance.Session.Call(new C2G_EnterMap()) as G2C_EnterMap;
-                PlayerComponent.Instance.MyPlayer.UnitId = g2CEnterMap.UnitId;
+                G2C_EnterMap g2CEnterMap = await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_EnterMap()) as G2C_EnterMap;
 				
                 //Game.Scene.AddComponent<OperaComponent>();
 				

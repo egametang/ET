@@ -19,7 +19,7 @@ namespace ET
     {
         public static void EnterMap(this UILobbyComponent self)
         {
-            MapHelper.EnterMapAsync("Map").Coroutine();
+            MapHelper.EnterMapAsync(self.ZoneScene(), "Map").Coroutine();
         }
     }
 }

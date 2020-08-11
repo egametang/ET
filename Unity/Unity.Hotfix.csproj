@@ -65,8 +65,10 @@
      <Compile Include="Assets\Hotfix\Move\M2C_PathfindingResultHandler.cs" />
      <Compile Include="Assets\Hotfix\Scene\LoginHelper.cs" />
      <Compile Include="Assets\Hotfix\Scene\MapHelper.cs" />
+     <Compile Include="Assets\Hotfix\Session\SessionComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Unit\M2C_CreateUnitsHandler.cs" />
-     <Compile Include="Assets\Hotfix\Unit\PlayerFactory.cs" />
+     <Compile Include="Assets\Hotfix\Unit\TurnComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Unit\UnitComponent.cs" />
      <Compile Include="Assets\Hotfix\Unit\UnitFactory.cs" />
      <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
  <Reference Include="UnityEditor.UI">
