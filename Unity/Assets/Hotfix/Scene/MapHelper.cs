@@ -26,7 +26,7 @@ namespace ET
 				
                 //Game.Scene.AddComponent<OperaComponent>();
 				
-                Game.EventSystem.Publish(new EventType.EnterMapFinish());
+                Game.EventSystem.Publish(new EventType.EnterMapFinish() {ZoneScene = zoneScene});
             }
             catch (Exception e)
             {

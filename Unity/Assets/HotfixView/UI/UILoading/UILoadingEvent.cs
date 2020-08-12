@@ -27,7 +27,6 @@ namespace ET
 
         public override void OnRemove(UIComponent uiComponent)
         {
-	        uiComponent.Remove(UIType.UILoading);
         }
     }
 }

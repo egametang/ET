@@ -6,7 +6,7 @@ namespace ET
     {
         public override async ETTask Run(EventType.LoadingBegin args)
         {
-            await args.Scene.GetComponent<UIComponent>().Create(UIType.UILoading);
+            await UIHelper.Create(args.Scene, UIType.UILoading);
         }
     }
 }

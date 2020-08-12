@@ -38,6 +38,7 @@
 
         public struct EnterMapFinish
         {
+            public Scene ZoneScene;
         }
 
         public struct AfterUnitCreate

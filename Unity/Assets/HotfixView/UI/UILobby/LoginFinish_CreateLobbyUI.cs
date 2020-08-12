@@ -6,7 +6,7 @@ namespace ET
 	{
 		public override async ETTask Run(EventType.LoginFinish args)
 		{
-			await Game.Scene.GetComponent<UIComponent>().Create(UIType.UILobby);
+			await UIHelper.Create(args.ZoneScene, UIType.UILobby);
 		}
 	}
 }

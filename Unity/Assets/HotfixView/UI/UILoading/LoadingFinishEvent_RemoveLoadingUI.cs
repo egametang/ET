@@ -4,7 +4,7 @@
     {
         public override async ETTask Run(EventType.LoadingFinish args)
         {
-            args.Scene.GetComponent<UIComponent>().Remove(UIType.UILoading);
+            await UIHelper.Create(args.Scene, UIType.UILoading);
         }
     }
 }

@@ -14,10 +14,11 @@ namespace ET
 	/// </summary>
 	public static class UIComponentSystem
 	{
-		public static async ETTask Create(this UIComponent self, string uiType)
+		public static async ETTask<UI> Create(this UIComponent self, string uiType)
 		{
 			UI ui = await UIEventComponent.Instance.OnCreate(self, uiType);
 			self.UIs.Add(uiType, ui);
+			return ui;
 		}
 
 		public static void Remove(this UIComponent self, string uiType)
