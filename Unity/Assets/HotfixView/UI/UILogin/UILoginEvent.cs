@@ -13,7 +13,7 @@ namespace ET
             GameObject bundleGameObject = (GameObject) resourcesComponent.GetAsset(UIType.UILogin.StringToAB(), UIType.UILogin);
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject);
 
-            UI ui = EntityFactory.Create<UI, string, GameObject>(uiComponent.Domain, UIType.UILogin, gameObject);
+            UI ui = EntityFactory.CreateWithParent<UI, string, GameObject>(uiComponent, UIType.UILogin, gameObject);
 
             ui.AddComponent<UILoginComponent>();
             return ui;

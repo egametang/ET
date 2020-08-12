@@ -68,7 +68,10 @@
      <Compile Include="Assets\ModelView\Module\UI\UIEventAttribute.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UIComponent.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UIType.cs" />
-     <Compile Include="Assets\ModelView\Module\UI\UIEventComponent.cs" />
+     <Compile Include="Assets\ModelView\MonoBehaviour\GizmosDebug.cs" />
+     <Compile Include="Assets\ModelView\MonoBehaviour\Init.cs" />
+     <Compile Include="Assets\ModelView\MonoBehaviour\ReferenceCollector.cs" />
+     <Compile Include="Assets\ModelView\MonoBehaviour\UILayerScript.cs" />
      <Compile Include="Assets\ModelView\Opera\OperaComponent.cs" />
      <Compile Include="Assets\ModelView\ReferenceCollector.cs" />
      <Compile Include="Assets\ModelView\Scene\SceneChangeComponent.cs" />

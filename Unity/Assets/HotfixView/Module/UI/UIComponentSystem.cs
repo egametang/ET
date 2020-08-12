@@ -17,7 +17,6 @@ namespace ET
 		public static async ETTask Create(this UIComponent self, string uiType)
 		{
 			UI ui = await UIEventComponent.Instance.OnCreate(self, uiType);
-			
 			self.UIs.Add(uiType, ui);
 		}
 

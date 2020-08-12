@@ -14,7 +14,6 @@ namespace ET
 		}
 	}
 	
-	[HideInHierarchy]
 	public sealed class UI: Entity
 	{
 		public GameObject GameObject;

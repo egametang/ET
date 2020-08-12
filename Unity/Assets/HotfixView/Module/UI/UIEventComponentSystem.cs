@@ -9,6 +9,14 @@ namespace ET
 		public override void Awake(UIEventComponent self)
 		{
 			UIEventComponent.Instance = self;
+			
+			GameObject uiRoot = GameObject.Find("/Global/UI");
+			ReferenceCollector referenceCollector = uiRoot.GetComponent<ReferenceCollector>();
+			
+			self.UILayers.Add((int)UILayer.Hidden, referenceCollector.Get<GameObject>(UILayer.Hidden.ToString()).transform);
+			self.UILayers.Add((int)UILayer.Low, referenceCollector.Get<GameObject>(UILayer.Low.ToString()).transform);
+			self.UILayers.Add((int)UILayer.Mid, referenceCollector.Get<GameObject>(UILayer.Mid.ToString()).transform);
+			self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
 
 			var uiEvents = Game.EventSystem.GetTypes(typeof (UIEventAttribute));
 			foreach (Type type in uiEvents)
@@ -36,6 +44,8 @@ namespace ET
 			try
 			{
 				UI ui = await self.UIEvents[uiType].OnCreate(uiComponent);
+				UILayer uiLayer = ui.GameObject.GetComponent<UILayerScript>().UILayer;
+				ui.GameObject.transform.SetParent(self.UILayers[(int)uiLayer]);
 				return ui;
 			}
 			catch (Exception e)
