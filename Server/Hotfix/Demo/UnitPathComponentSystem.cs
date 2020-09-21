@@ -34,6 +34,14 @@ namespace ET
             self.Target = target;
 
             Unit unit = self.GetParent<Unit>();
+            unit.Position = target;
+
+            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
+            m2CPathfindingResult.X = unit.Position.x;
+            m2CPathfindingResult.Y = unit.Position.y;
+            m2CPathfindingResult.Z = unit.Position.z;
+            m2CPathfindingResult.Id = unit.Id;
+            MessageHelper.Broadcast(unit, m2CPathfindingResult);
         }
 
         // 从index找接下来3个点，广播
@@ -46,8 +54,6 @@ namespace ET
             m2CPathfindingResult.Y = unitPos.y;
             m2CPathfindingResult.Z = unitPos.z;
             m2CPathfindingResult.Id = unit.Id;
-            
-            
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
         }
     }
