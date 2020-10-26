@@ -8,17 +8,12 @@ namespace ETModel
 	{
 		public long ActorId;
 		
-		// 还没发送的消息
-		public Queue<ActorTask> WaitingTasks = new Queue<ActorTask>();
-
 		// 最近接收消息的时间
 		public long LastRecvTime;
 		
 		public int FailTimes;
 
 		public const int MaxFailTimes = 5;
-		
-		public ETTaskCompletionSource<ActorTask> Tcs;
 
 		public override void Dispose()
 		{

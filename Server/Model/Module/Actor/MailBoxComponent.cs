@@ -16,11 +16,6 @@ namespace ETModel
 		// Mailbox的类型
 		public string MailboxType;
 
-		// 队列处理消息
-		public Queue<ActorMessageInfo> Queue = new Queue<ActorMessageInfo>();
-
-		public ETTaskCompletionSource<ActorMessageInfo> Tcs;
-
 		public override void Dispose()
 		{
 			if (this.IsDisposed)
@@ -29,10 +24,6 @@ namespace ETModel
 			}
 
 			base.Dispose();
-
-			var t = this.Tcs;
-			this.Tcs = null;
-			t?.SetResult(new ActorMessageInfo());
 		}
 	}
 }

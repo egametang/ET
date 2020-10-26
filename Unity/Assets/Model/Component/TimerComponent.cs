@@ -19,8 +19,20 @@ namespace ETModel
 		}
 	}
 
+
+	[ObjectSystem]
+	public class TimerComponentAwakeSystem : AwakeSystem<TimerComponent>
+	{
+		public override void Awake(TimerComponent self)
+		{
+			TimerComponent.Instance = self;
+		}
+	}
+
 	public class TimerComponent : Component
 	{
+		public static TimerComponent Instance;
+
 		private readonly Dictionary<long, Timer> timers = new Dictionary<long, Timer>();
 
 		/// <summary>

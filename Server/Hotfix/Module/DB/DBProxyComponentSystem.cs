@@ -53,11 +53,47 @@ namespace ETHotfix
 			await session.Call(new DBSaveRequest { Component = component, CollectionName = "Log" });
 		}
 
-		public static async ETTask<T> Query<T>(this DBProxyComponent self, long id) where T: ComponentWithId
+		public static ETTask<T> Query<T>(this DBProxyComponent self, long id) where T: ComponentWithId
 		{
-			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
-			DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id });
-			return (T)dbQueryResponse.Component;
+			string key = typeof (T).Name + id;
+			ETTaskCompletionSource<T> tcs = new ETTaskCompletionSource<T>();
+			if (self.TcsQueue.ContainsKey(key))
+			{
+				self.TcsQueue.Add(key, tcs);
+				return tcs.Task;
+			}
+			
+			self.TcsQueue.Add(key, tcs);
+			self.QueryInner<T>(id, key).Coroutine();
+			return tcs.Task;
+		}
+		
+		private static async ETVoid QueryInner<T>(this DBProxyComponent self, long id, string key) where T: ComponentWithId
+		{
+			try
+			{
+				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
+				DBQueryResponse dbQueryResponse = (DBQueryResponse)await session.Call(new DBQueryRequest { CollectionName = typeof(T).Name, Id = id });
+				T result = (T)dbQueryResponse.Component;
+
+				object[] tcss = self.TcsQueue.GetAll(key);
+				self.TcsQueue.Remove(key);
+			
+				foreach (ETTaskCompletionSource<T> tcs in tcss)
+				{
+					tcs.SetResult(result);
+				}
+			}
+			catch (Exception e)
+			{
+				object[] tcss = self.TcsQueue.GetAll(key);
+				self.TcsQueue.Remove(key);
+			
+				foreach (ETTaskCompletionSource<T> tcs in tcss)
+				{
+					tcs.SetException(e);
+				}
+			}
 		}
 		
 		/// <summary>
@@ -90,11 +126,47 @@ namespace ETHotfix
 		/// <param name="json"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static async ETTask<List<ComponentWithId>> Query<T>(this DBProxyComponent self, string json) where T : ComponentWithId
+		public static ETTask<List<ComponentWithId>> Query<T>(this DBProxyComponent self, string json) where T : ComponentWithId
 		{
-			Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
-			DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
-			return dbQueryJsonResponse.Components;
+			string key = typeof (T).Name + json;
+			ETTaskCompletionSource<List<ComponentWithId>> tcs = new ETTaskCompletionSource<List<ComponentWithId>>();
+			if (self.TcsQueue.ContainsKey(key))
+			{
+				self.TcsQueue.Add(key, tcs);
+				return tcs.Task;
+			}
+			
+			self.TcsQueue.Add(key, tcs);
+			self.QueryInner<T>(json, key).Coroutine();
+			return tcs.Task;
+		}
+		
+		private static async ETVoid QueryInner<T>(this DBProxyComponent self, string json, string key) where T : ComponentWithId
+		{
+			try
+			{
+				Session session = Game.Scene.GetComponent<NetInnerComponent>().Get(self.dbAddress);
+				DBQueryJsonResponse dbQueryJsonResponse = (DBQueryJsonResponse)await session.Call(new DBQueryJsonRequest { CollectionName = typeof(T).Name, Json = json });
+				var result = dbQueryJsonResponse.Components;
+				
+				object[] tcss = self.TcsQueue.GetAll(key);
+				self.TcsQueue.Remove(key);
+			
+				foreach (ETTaskCompletionSource<List<ComponentWithId>> tcs in tcss)
+				{
+					tcs.SetResult(result);
+				}
+			}
+			catch (Exception e)
+			{
+				object[] tcss = self.TcsQueue.GetAll(key);
+				self.TcsQueue.Remove(key);
+			
+				foreach (ETTaskCompletionSource<List<ComponentWithId>> tcs in tcss)
+				{
+					tcs.SetException(e);
+				}
+			}
 		}
 	}
 }

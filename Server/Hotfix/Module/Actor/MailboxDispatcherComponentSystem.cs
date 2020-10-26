@@ -67,12 +67,12 @@ namespace ETHotfix
 		/// 根据mailbox类型做不同的处理
 		/// </summary>
 		public static async ETTask Handle(
-				this MailboxDispatcherComponent self, MailBoxComponent mailBoxComponent, ActorMessageInfo actorMessageInfo)
+				this MailboxDispatcherComponent self, MailBoxComponent mailBoxComponent, Session session, object message)
 		{
 			IMailboxHandler iMailboxHandler;
 			if (self.MailboxHandlers.TryGetValue(mailBoxComponent.MailboxType, out iMailboxHandler))
 			{
-				await iMailboxHandler.Handle(actorMessageInfo.Session, mailBoxComponent.Entity, actorMessageInfo.Message);
+				await iMailboxHandler.Handle(session, mailBoxComponent.Entity, message);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ETModel;
 
 namespace ETHotfix
@@ -50,6 +51,37 @@ namespace ETHotfix
                     self.Remove(id);
                 }
             }
+        }
+    }
+
+    public static class ActorLocationSenderComponent_Ex
+    {
+        public static async ETTask<ActorLocationSender> Get(this ActorLocationSenderComponent self, long id)
+        {
+            if (id == 0)
+            {
+                throw new Exception($"actor id is 0");
+            }
+            if (self.ActorLocationSenders.TryGetValue(id, out ActorLocationSender actorLocationSender))
+            {
+                return actorLocationSender;
+            }
+
+            actorLocationSender = ComponentFactory.CreateWithId<ActorLocationSender>(id);
+            actorLocationSender.Parent = self;
+            await actorLocationSender.GetActorId();
+            self.ActorLocationSenders[id] = actorLocationSender;
+            return actorLocationSender;
+        }
+
+        public static void Remove(this ActorLocationSenderComponent self, long id)
+        {
+            if (!self.ActorLocationSenders.TryGetValue(id, out ActorLocationSender actorMessageSender))
+            {
+                return;
+            }
+            self.ActorLocationSenders.Remove(id);
+            actorMessageSender.Dispose();
         }
     }
 }
