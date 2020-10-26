@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace ETModel
+namespace ET
 {
 	public enum NetworkProtocol
 	{

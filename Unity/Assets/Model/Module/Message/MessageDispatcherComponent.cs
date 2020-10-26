@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ETModel
+namespace ET
 {
-	[ObjectSystem]
+	
 	public class MessageDispatcherComponentAwakeSystem : AwakeSystem<MessageDispatcherComponent>
 	{
 		public override void Awake(MessageDispatcherComponent t)
@@ -12,7 +12,7 @@ namespace ETModel
 		}
 	}
 
-	[ObjectSystem]
+	
 	public class MessageDispatcherComponentLoadSystem : LoadSystem<MessageDispatcherComponent>
 	{
 		public override void Load(MessageDispatcherComponent self)

@@ -1,9 +1,8 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
-	[ObjectSystem]
 	public class LocationProxyComponentSystem : AwakeSystem<LocationProxyComponent>
 	{
 		public override void Awake(LocationProxyComponent self)
@@ -22,28 +21,28 @@ namespace ETHotfix
 		public static async ETTask Add(this LocationProxyComponent self, long key, long instanceId)
 		{
 			await MessageHelper.CallActor(
-				StartConfigComponent.Instance.GetInstanceId(SceneType.Location), 
+				StartSceneConfigCategory.Instance.LocationConfig.SceneId, 
 				new ObjectAddRequest() { Key = key, InstanceId = instanceId });
 		}
 
 		public static async ETTask Lock(this LocationProxyComponent self, long key, long instanceId, int time = 1000)
 		{
 			await MessageHelper.CallActor(
-				StartConfigComponent.Instance.GetInstanceId(SceneType.Location), 
+				StartSceneConfigCategory.Instance.LocationConfig.SceneId, 
 				new ObjectLockRequest() { Key = key, InstanceId = instanceId, Time = time });
 		}
 
 		public static async ETTask UnLock(this LocationProxyComponent self, long key, long oldInstanceId, long instanceId)
 		{
 			await MessageHelper.CallActor(
-				StartConfigComponent.Instance.GetInstanceId(SceneType.Location),
+				StartSceneConfigCategory.Instance.LocationConfig.SceneId,
 				new ObjectUnLockRequest() { Key = key, OldInstanceId = oldInstanceId, InstanceId = instanceId });
 		}
 
 		public static async ETTask Remove(this LocationProxyComponent self, long key)
 		{
 			await MessageHelper.CallActor(
-				StartConfigComponent.Instance.GetInstanceId(SceneType.Location),
+				StartSceneConfigCategory.Instance.LocationConfig.SceneId,
 				new ObjectRemoveRequest() { Key = key });
 		}
 
@@ -55,7 +54,7 @@ namespace ETHotfix
 			}
 			ObjectGetResponse response =
 					(ObjectGetResponse)await MessageHelper.CallActor(
-						StartConfigComponent.Instance.GetInstanceId(SceneType.Location), 
+						StartSceneConfigCategory.Instance.LocationConfig.SceneId, 
 						new ObjectGetRequest() { Key = key });
 			return response.InstanceId;
 		}

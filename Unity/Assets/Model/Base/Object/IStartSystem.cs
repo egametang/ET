@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	public interface IStartSystem
 	{
@@ -8,6 +8,7 @@ namespace ETModel
 		void Run(object o);
 	}
 
+	[ObjectSystem]
 	public abstract class StartSystem<T> : IStartSystem
 	{
 		public void Run(object o)

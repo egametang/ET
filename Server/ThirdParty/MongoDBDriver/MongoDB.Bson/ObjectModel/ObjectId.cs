@@ -377,7 +377,7 @@ namespace MongoDB.Bson
         // private static methods
         private static int GetAppDomainId()
         {
-#if NETSTANDARD1_5 || NETSTANDARD1_6
+#if NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP
             return 1;
 #else
             return AppDomain.CurrentDomain.Id;

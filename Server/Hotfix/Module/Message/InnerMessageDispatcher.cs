@@ -1,6 +1,6 @@
-﻿using ETModel;
+﻿
 
-namespace ETHotfix
+namespace ET
 {
     public class InnerMessageDispatcher: IMessageDispatcher
     {

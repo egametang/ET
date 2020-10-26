@@ -3,12 +3,10 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security;
 
-namespace ETModel
+namespace ET
 {
     public struct AsyncETVoidMethodBuilder
     {
-        private Action moveNext;
-
         // 1. Static Create method.
         [DebuggerHidden]
         public static AsyncETVoidMethodBuilder Create()
@@ -18,6 +16,7 @@ namespace ETModel
         }
 
         // 2. TaskLike Task property(void)
+        [DebuggerHidden]
         public ETVoid Task => default;
 
         // 3. SetException
@@ -36,35 +35,17 @@ namespace ETModel
 
         // 5. AwaitOnCompleted
         [DebuggerHidden]
-        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : INotifyCompletion
-            where TStateMachine : IAsyncStateMachine
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : INotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.OnCompleted(moveNext);
+            awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
         // 6. AwaitUnsafeOnCompleted
         [DebuggerHidden]
         [SecuritySafeCritical]
-        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : ICriticalNotifyCompletion
-            where TStateMachine : IAsyncStateMachine
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(ref TAwaiter awaiter, ref TStateMachine stateMachine) where TAwaiter : ICriticalNotifyCompletion where TStateMachine : IAsyncStateMachine
         {
-            if (moveNext == null)
-            {
-                var runner = new MoveNextRunner<TStateMachine>();
-                moveNext = runner.Run;
-                runner.StateMachine = stateMachine; // set after create delegate.
-            }
-
-            awaiter.UnsafeOnCompleted(moveNext);
+            awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
         }
 
         // 7. Start

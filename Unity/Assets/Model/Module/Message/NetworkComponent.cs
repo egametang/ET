@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace ETModel
+namespace ET
 {
 	public abstract class NetworkComponent : Entity
 	{
@@ -14,7 +14,7 @@ namespace ETModel
 
 		public IMessageDispatcher MessageDispatcher { get; set; }
 
-		public void Awake(NetworkProtocol protocol, int packetSize = Packet.PacketSizeLength4)
+		public void Awake(NetworkProtocol protocol)
 		{
 			switch (protocol)
 			{
@@ -22,7 +22,7 @@ namespace ETModel
 					this.Service = new KService() { Parent = this };
 					break;
 				case NetworkProtocol.TCP:
-					this.Service = new TService(packetSize) { Parent = this };
+					this.Service = new TService() { Parent = this };
 					break;
 				case NetworkProtocol.WebSocket:
 					this.Service = new WService() { Parent = this };
@@ -30,7 +30,7 @@ namespace ETModel
 			}
 		}
 
-		public void Awake(NetworkProtocol protocol, string address, int packetSize = Packet.PacketSizeLength4)
+		public void Awake(NetworkProtocol protocol, string address)
 		{
 			try
 			{
@@ -43,7 +43,7 @@ namespace ETModel
 						break;
 					case NetworkProtocol.TCP:
 						ipEndPoint = NetworkHelper.ToIPEndPoint(address);
-						this.Service = new TService(packetSize, ipEndPoint, (channel)=> { this.OnAccept(channel); }) { Parent = this };
+						this.Service = new TService(ipEndPoint, (channel)=> { this.OnAccept(channel); }) { Parent = this };
 						break;
 					case NetworkProtocol.WebSocket:
 						string[] prefixs = address.Split(';');

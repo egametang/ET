@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace ETModel
+namespace ET
 {
 	public static class DllHelper
 	{

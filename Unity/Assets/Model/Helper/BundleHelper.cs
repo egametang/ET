@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
 	public static class BundleHelper
 	{
-		public static async ETTask DownloadBundle()
+		public static async ETTask DownloadBundle(string url)
 		{
 			if (Define.IsAsync)
 			{
@@ -15,14 +15,14 @@ namespace ETModel
 				{
 					using (BundleDownloaderComponent bundleDownloaderComponent = Game.Scene.AddComponent<BundleDownloaderComponent>())
 					{
-						await bundleDownloaderComponent.StartAsync();
+						await bundleDownloaderComponent.StartAsync(url);
 						
-						Game.EventSystem.Run(EventIdType.LoadingBegin);
+						Game.EventSystem.Publish(new EventType.LoadingBegin() {Scene = Game.Scene});
 						
-						await bundleDownloaderComponent.DownloadAsync();
+						await bundleDownloaderComponent.DownloadAsync(url);
 					}
 					
-					Game.EventSystem.Run(EventIdType.LoadingFinish);
+					Game.EventSystem.Publish(new EventType.LoadingFinish());
 					
 					Game.Scene.GetComponent<ResourcesComponent>().LoadOneBundle("StreamingAssets");
 					ResourcesComponent.AssetBundleManifestObject = (AssetBundleManifest)Game.Scene.GetComponent<ResourcesComponent>().GetAsset("StreamingAssets", "AssetBundleManifest");

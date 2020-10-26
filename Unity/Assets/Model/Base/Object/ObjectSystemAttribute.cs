@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class ObjectSystemAttribute: BaseAttribute

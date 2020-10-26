@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
-	[ObjectSystem]
 	public class MessageDispatcherComponentAwakeSystem : AwakeSystem<MessageDispatcherComponent>
 	{
 		public override void Awake(MessageDispatcherComponent self)
@@ -14,7 +13,6 @@ namespace ETHotfix
 		}
 	}
 
-	[ObjectSystem]
 	public class MessageDispatcherComponentLoadSystem : LoadSystem<MessageDispatcherComponent>
 	{
 		public override void Load(MessageDispatcherComponent self)
@@ -23,7 +21,6 @@ namespace ETHotfix
 		}
 	}
 	
-	[ObjectSystem]
 	public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
 	{
 		public override void Destroy(MessageDispatcherComponent self)

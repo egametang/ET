@@ -2,41 +2,27 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace ETModel
+namespace ET
 {
-    [AsyncMethodBuilder(typeof(AsyncETVoidMethodBuilder))]
-    public struct ETVoid
+    [AsyncMethodBuilder(typeof (AsyncETVoidMethodBuilder))]
+    public struct ETVoid: ICriticalNotifyCompletion
     {
+        [DebuggerHidden]
         public void Coroutine()
         {
         }
 
         [DebuggerHidden]
-        public Awaiter GetAwaiter()
+        public bool IsCompleted => true;
+
+        [DebuggerHidden]
+        public void OnCompleted(Action continuation)
         {
-            return new Awaiter();
         }
 
-        public struct Awaiter : ICriticalNotifyCompletion
+        [DebuggerHidden]
+        public void UnsafeOnCompleted(Action continuation)
         {
-            [DebuggerHidden]
-            public bool IsCompleted => true;
-
-            [DebuggerHidden]
-            public void GetResult()
-            {
-                throw new InvalidOperationException("ETAvoid can not await, use Coroutine method instead!");
-            }
-
-            [DebuggerHidden]
-            public void OnCompleted(Action continuation)
-            {
-            }
-
-            [DebuggerHidden]
-            public void UnsafeOnCompleted(Action continuation)
-            {
-            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using Microsoft.IO;
 
-namespace ETModel
+namespace ET
 {
 	public sealed class TService : AService
 	{
@@ -18,14 +18,11 @@ namespace ETModel
 		
 		public List<long> needStartSendChannel = new List<long>();
 		
-		public int PacketSizeLength { get; }
-		
 		/// <summary>
 		/// 即可做client也可做server
 		/// </summary>
-		public TService(int packetSizeLength, IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
+		public TService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
 		{
-			this.PacketSizeLength = packetSizeLength;
 			this.AcceptCallback += acceptCallback;
 			
 			this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -38,9 +35,8 @@ namespace ETModel
 			this.AcceptAsync();
 		}
 
-		public TService(int packetSizeLength)
+		public TService()
 		{
-			this.PacketSizeLength = packetSizeLength;
 		}
 		
 		public override void Dispose()

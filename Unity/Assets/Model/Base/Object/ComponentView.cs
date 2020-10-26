@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ETModel
+namespace ET
 {
     public class ComponentView: MonoBehaviour
     {

@@ -8,7 +8,7 @@ using Microsoft.IO;
 using System.Runtime.InteropServices;
 #endif
 
-namespace ETModel
+namespace ET
 {
 	public static class KcpProtocalType
 	{

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
-	[ObjectSystem]
 	public class BenchmarkComponentSystem : AwakeSystem<BenchmarkComponent, string>
 	{
 		public override void Awake(BenchmarkComponent self, string a)

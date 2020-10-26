@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace ETModel
+namespace ET
 {
-	[ObjectSystem]
+	
 	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
 	{
 		public override void Awake(Session self, AChannel b)

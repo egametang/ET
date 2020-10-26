@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[ActorMessageHandler]
 	public class ObjectAddRequestHandler : AMActorRpcHandler<Scene, ObjectAddRequest, ObjectAddResponse>

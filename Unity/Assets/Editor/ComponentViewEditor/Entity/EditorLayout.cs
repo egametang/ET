@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace ETEditor
+namespace ET
 {
     public static class Styles
     {

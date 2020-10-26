@@ -1,9 +1,8 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
-    [ObjectSystem]
     public class ActorLocationSenderAwakeSystem: AwakeSystem<ActorLocationSender>
     {
         public override void Awake(ActorLocationSender self)
@@ -24,7 +23,6 @@ namespace ETHotfix
         }
     }
 
-    [ObjectSystem]
     public class ActorLocationSenderDestroySystem: DestroySystem<ActorLocationSender>
     {
         public override void Destroy(ActorLocationSender self)

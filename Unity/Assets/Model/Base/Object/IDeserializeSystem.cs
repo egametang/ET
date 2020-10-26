@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ETModel
+namespace ET
 {
 	public interface IDeserializeSystem
 	{
@@ -13,6 +13,7 @@ namespace ETModel
 	/// 要小心使用这个System，因为对象假如要保存到数据库，到dbserver也会进行反序列化，那么也会执行该System
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+	[ObjectSystem]
 	public abstract class DeserializeSystem<T> : IDeserializeSystem
 	{
 		public void Run(object o)

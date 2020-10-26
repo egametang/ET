@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[MessageHandler]
 	public class C2R_PingHandler : AMRpcHandler<C2R_Ping, R2C_Ping>

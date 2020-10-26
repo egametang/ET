@@ -1,107 +1,83 @@
-﻿﻿using System;
+﻿using System;
 
-namespace ETModel
+namespace ET
 {
-	public partial class Entity
-	{
-		private Entity CreateWithComponentParent(Type type)
-		{
-			Entity component;
-			if (type.IsDefined(typeof (NoObjectPool), false))
-			{
-				component = (Entity)Activator.CreateInstance(type);
-			}
-			else
-			{
-				component = Game.ObjectPool.Fetch(type);	
-			}
+    public partial class Entity
+    {
+        public static Entity Create(Type type, bool isFromPool)
+        {
+            Entity component;
+            if (isFromPool)
+            {
+                component = (Entity)ObjectPool.Instance.Fetch(type);
+            }
+            else
+            {
+                component = (Entity)Activator.CreateInstance(type);
+            }
+            component.IsFromPool = isFromPool;
+            component.IsCreate = true;
+            component.Id = 0;
+            return component;
+        }
+		
+        private Entity CreateWithComponentParent(Type type, bool isFromPool = true)
+        {
+            Entity component = Create(type, isFromPool);
 			
-			this.Domain = parent.Domain;
-			component.Id = parent.Id;
-			component.ComponentParent = parent;
+            component.Id = parent.Id;
+            component.ComponentParent = parent;
 			
-			Game.EventSystem.Awake(component);
-			return component;
-		}
+            EventSystem.Instance.Awake(component);
+            return component;
+        }
 
-		private T CreateWithComponentParent<T>(bool isFromPool = true) where T : Entity
-		{
-			Type type = typeof (T);
-			Entity component;
-			if (!isFromPool)
-			{
-				component = (Entity)Activator.CreateInstance(type);
-			}
-			else
-			{
-				component = Game.ObjectPool.Fetch(type);	
-			}
-			component.Domain = this.Domain;
-			component.Id = this.Id;
-			component.ComponentParent = this;
+        private T CreateWithComponentParent<T>(bool isFromPool = true) where T : Entity
+        {
+            Type type = typeof (T);
+            Entity component = Create(type, isFromPool);
 			
-			Game.EventSystem.Awake(component);
-			return (T)component;
-		}
+            component.Id = this.Id;
+            component.ComponentParent = this;
+			
+            EventSystem.Instance.Awake(component);
+            return (T)component;
+        }
 
-		private T CreateWithComponentParent<T, A>(A a, bool isFromPool = true) where T : Entity
-		{
-			Type type = typeof (T);
-			Entity component;
-			if (!isFromPool)
-			{
-				component = (Entity)Activator.CreateInstance(type);
-			}
-			else
-			{
-				component = Game.ObjectPool.Fetch(type);	
-			}
-			component.Domain = this.Domain;
-			component.Id = this.Id;
-			component.ComponentParent = this;
+        private T CreateWithComponentParent<T, A>(A a, bool isFromPool = true) where T : Entity
+        {
+            Type type = typeof (T);
+            Entity component = Create(type, isFromPool);
 			
-			Game.EventSystem.Awake(component, a);
-			return (T)component;
-		}
+            component.Id = this.Id;
+            component.ComponentParent = this;
+			
+            EventSystem.Instance.Awake(component, a);
+            return (T)component;
+        }
 
-		private T CreateWithComponentParent<T, A, B>(A a, B b, bool isFromPool = true) where T : Entity
-		{
-			Type type = typeof (T);
-			Entity component;
-			if (!isFromPool)
-			{
-				component = (Entity)Activator.CreateInstance(type);
-			}
-			else
-			{
-				component = Game.ObjectPool.Fetch(type);	
-			}
-			component.Domain = this.Domain;
-			component.Id = this.Id;
-			component.ComponentParent = this;
+        private T CreateWithComponentParent<T, A, B>(A a, B b, bool isFromPool = true) where T : Entity
+        {
+            Type type = typeof (T);
+            Entity component = Create(type, isFromPool);
 			
-			Game.EventSystem.Awake(component, a, b);
-			return (T)component;
-		}
+            component.Id = this.Id;
+            component.ComponentParent = this;
+			
+            EventSystem.Instance.Awake(component, a, b);
+            return (T)component;
+        }
 
-		private T CreateWithComponentParent<T, A, B, C>(A a, B b, C c, bool isFromPool = true) where T : Entity
-		{
-			Type type = typeof (T);
-			Entity component;
-			if (!isFromPool)
-			{
-				component = (Entity)Activator.CreateInstance(type);
-			}
-			else
-			{
-				component = Game.ObjectPool.Fetch(type);	
-			}
-			component.Domain = this.Domain;
-			component.Id = this.Id;
-			component.ComponentParent = this;
+        private T CreateWithComponentParent<T, A, B, C>(A a, B b, C c, bool isFromPool = true) where T : Entity
+        {
+            Type type = typeof (T);
+            Entity component = Create(type, isFromPool);
 			
-			Game.EventSystem.Awake(component, a, b, c);
-			return (T)component;
-		}
-	}
+            component.Id = this.Id;
+            component.ComponentParent = this;
+			
+            EventSystem.Instance.Awake(component, a, b, c);
+            return (T)component;
+        }
+    }
 }

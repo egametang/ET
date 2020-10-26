@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ETModel;
+
 using UnityEditor;
 
-namespace ETEditor
+namespace ET
 {
 	[Flags]
 	public enum HeadFlag
@@ -41,7 +41,7 @@ namespace ETEditor
 			string s = File.ReadAllText(proto);
 
 			StringBuilder sb = new StringBuilder();
-			sb.Append("using ETModel;\n");
+			sb.Append("\n");
 			sb.Append("using System.Collections.Generic;\n");
 			sb.Append($"namespace {ns}\n");
 			sb.Append("{\n");
