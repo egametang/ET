@@ -2,7 +2,7 @@
 
 __讨论QQ群 : 474643097__  
 
-[ET论坛](https://bbs.honorworkroom.com/forum.php)  
+[ET论坛](https://et-framework.cn)  
 
 # 注意！现在master正在开发中，商业使用请用5.0分支，6.0（master分支）可以参考
 
