@@ -156,12 +156,11 @@
      <Compile Include="Assets\Model\Module\Message\IMHandler.cs" />
      <Compile Include="Assets\Model\Module\Message\IMessage.cs" />
      <Compile Include="Assets\Model\Module\Message\IMessageDispatcher.cs" />
-     <Compile Include="Assets\Model\Module\Message\IMessagePacker.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageAttribute.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageDispatcherComponent.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageHandlerAttribute.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageInfo.cs" />
-     <Compile Include="Assets\Model\Module\Message\MessagePool.cs" />
+     <Compile Include="Assets\Model\Module\Message\MessagePackHelper.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageProxy.cs" />
      <Compile Include="Assets\Model\Module\Message\NetOuterComponent.cs" />
      <Compile Include="Assets\Model\Module\Message\Network\AChannel.cs" />
@@ -184,7 +183,6 @@
      <Compile Include="Assets\Model\Module\Message\OuterMessageDispatcher.cs" />
      <Compile Include="Assets\Model\Module\Message\OuterOpcode.cs" />
      <Compile Include="Assets\Model\Module\Message\ProtobufHelper.cs" />
-     <Compile Include="Assets\Model\Module\Message\ProtobufPacker.cs" />
      <Compile Include="Assets\Model\Module\Message\RpcException.cs" />
      <Compile Include="Assets\Model\Module\Message\Session.cs" />
      <Compile Include="Assets\Model\Module\Message\SessionCallbackComponent.cs" />
