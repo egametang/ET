@@ -21,8 +21,9 @@ namespace ET
             Game.Scene.AddComponent<MessageDispatcherComponent>();
             Game.Scene.AddComponent<UIEventComponent>();
 
+            ResourcesComponent.Instance.LoadBundle("unit.unity3d");
 
-            Scene zoneScene = await SceneFactory.CreateZoneScene(1, 0, "Game");
+            Scene zoneScene = await SceneFactory.CreateZoneScene(0, 0, "Game");
 
             await Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }
