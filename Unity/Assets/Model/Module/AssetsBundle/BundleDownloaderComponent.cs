@@ -32,6 +32,30 @@ namespace ETModel
 		public string downloadingBundle;
 
 		public UnityWebRequestAsync webRequest;
+		
+		public override void Dispose()
+		{
+				if (this.IsDisposed)
+				{
+						return;
+				}
+
+				if (this.Entity.IsDisposed)
+				{
+						return;
+				}
+
+				base.Dispose();
+
+				this.remoteVersionConfig = null;
+				this.TotalSize = 0;
+				this.bundles = null;
+				this.downloadedBundles = null;
+				this.downloadingBundle = null;
+				this.webRequest?.Dispose();
+
+				this.Entity.RemoveComponent<BundleDownloaderComponent>();
+		}
 
 		public async ETTask StartAsync()
 		{

@@ -22,32 +22,5 @@ namespace ETModel
 			}
 			this.ActorLocationSenders.Clear();
 		}
-
-		public ActorLocationSender Get(long id)
-		{
-			if (id == 0)
-			{
-				throw new Exception($"actor id is 0");
-			}
-			if (this.ActorLocationSenders.TryGetValue(id, out ActorLocationSender actorLocationSender))
-			{
-				return actorLocationSender;
-			}
-			
-			actorLocationSender = ComponentFactory.CreateWithId<ActorLocationSender>(id);
-			actorLocationSender.Parent = this;
-			this.ActorLocationSenders[id] = actorLocationSender;
-			return actorLocationSender;
-		}
-		
-		public void Remove(long id)
-		{
-			if (!this.ActorLocationSenders.TryGetValue(id, out ActorLocationSender actorMessageSender))
-			{
-				return;
-			}
-			this.ActorLocationSenders.Remove(id);
-			actorMessageSender.Dispose();
-		}
 	}
 }

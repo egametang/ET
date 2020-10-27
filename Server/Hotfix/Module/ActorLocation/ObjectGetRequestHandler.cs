@@ -8,7 +8,7 @@ namespace ETHotfix
 	{
 		protected override async ETTask Run(Session session, ObjectGetRequest request, ObjectGetResponse response, Action reply)
 		{
-			long instanceId = await Game.Scene.GetComponent<LocationComponent>().GetAsync(request.Key);
+			long instanceId = await Game.Scene.GetComponent<LocationComponent>().Get(request.Key);
 			if (instanceId == 0)
 			{
 				response.Error = ErrorCode.ERR_ActorLocationNotFound;
