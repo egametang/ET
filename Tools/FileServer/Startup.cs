@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
 
 namespace ETFileServer
 {
@@ -16,17 +16,12 @@ namespace ETFileServer
         {
             services.AddDirectoryBrowser();  //开启目录浏览
         }
-       
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true)
-                .Build();
-
-            string configDir = config["DirectoryPath"];
+            string configDir = Program.mConfig["DirectoryPath"];
             
             configDir = new DirectoryInfo(configDir).FullName;
             Console.WriteLine(configDir);
