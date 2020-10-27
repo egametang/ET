@@ -22,7 +22,6 @@ namespace ET
 		}
 	}
 	
-	
 	public class NetOuterComponentLoadSystem : LoadSystem<NetOuterComponent>
 	{
 		public override void Load(NetOuterComponent self)

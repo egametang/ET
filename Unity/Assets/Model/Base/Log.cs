@@ -71,7 +71,7 @@ namespace ET
 
 		public static void Msg(object msg)
 		{
-			Debug(Dumper.DumpAsString(msg));
+			Debug(MongoHelper.ToJson(msg));
 		}
 	}
 }

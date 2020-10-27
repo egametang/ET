@@ -129,19 +129,11 @@ namespace ET
 			memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
 			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
 			
-#if !SERVER
-			if (OpcodeHelper.IsClientHotfixMessage(opcode))
-			{
-				this.GetComponent<SessionCallbackComponent>().MessageCallback.Invoke(this, opcode, memoryStream);
-				return;
-			}
-#endif
-			
 			object message;
 			try
 			{
-				object instance = OpcodeTypeComponent.Instance.GetInstance(opcode);
-				message = this.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
+				Type type = OpcodeTypeComponent.Instance.GetType(opcode);
+				message = this.Network.MessagePacker.DeserializeFrom(type, memoryStream);
 
 				if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
 				{

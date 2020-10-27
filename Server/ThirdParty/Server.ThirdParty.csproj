@@ -40,6 +40,12 @@
       <None Remove="Google.Protobuf\RepeatedField.cs.meta" />
       <None Remove="Google.Protobuf\StreamExtensions.cs.meta" />
       <None Remove="Google.Protobuf\WireFormat.cs.meta" />
+      <None Update="libkcp.dylib">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="libkcp.so">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
