@@ -179,6 +179,9 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetOuterComponent.cs">
       <Link>Module\Message\NetOuterComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\KCP\Kcp.cs">
+      <Link>Module\Message\Network\KCP\Kcp.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\Network\WebSocket\WChannel.cs">
       <Link>Module\Message\Network\WebSocket\WChannel.cs</Link>
     </Compile>
@@ -272,11 +275,7 @@
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
-    <ProjectReference Include="..\ThirdParty\KcpLib\KcpLib.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Bson\MongoDB.Bson.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
-    <ProjectReference Include="..\ThirdParty\MongoDBDriver\MongoDB.Driver\MongoDB.Driver.csproj" />
+    <ProjectReference Include="..\ThirdParty\Server.ThirdParty.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Base\RecyclableMemoryStream\" />
