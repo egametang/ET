@@ -211,7 +211,7 @@ namespace ET
                 this.headRequest.SendWebRequest();
                 await this.tcs.Task;
                 this.totalBytes = long.Parse(this.headRequest.GetResponseHeader("Content-Length"));
-                Log.Debug($"totalBytes {this.totalBytes.ToGMK2()}");
+                Log.Debug($"totalBytes {this.totalBytes}");
                 this.headRequest?.Dispose();
                 this.headRequest = null;
 
@@ -226,7 +226,7 @@ namespace ET
                 fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
                 //获取已下载长度
                 this.byteWrites = fileStream.Length;
-                Log.Debug($"byteWrites {this.byteWrites.ToGMK2()}");
+                Log.Debug($"byteWrites {this.byteWrites}");
                 if (this.byteWrites == this.totalBytes)
                 {
                     Log.Debug("已经下载完成2");
