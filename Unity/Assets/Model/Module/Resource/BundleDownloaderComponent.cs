@@ -12,7 +12,6 @@ namespace ET
 		{
 			self.bundles = new Queue<string>();
 			self.downloadedBundles = new HashSet<string>();
-			self.downloadingBundle = "";
 		}
 	}
 
@@ -29,9 +28,8 @@ namespace ET
 
 		public HashSet<string> downloadedBundles;
 
-		public string downloadingBundle;
-
-		public UnityWebRequestAsync webRequest;
+		//多任务同时下载
+		public List<UnityWebRequestAsync> webRequests = new List<UnityWebRequestAsync>();
 		
 		public override void Dispose()
 		{
@@ -51,8 +49,11 @@ namespace ET
 				this.TotalSize = 0;
 				this.bundles = null;
 				this.downloadedBundles = null;
-				this.downloadingBundle = null;
-				this.webRequest?.Dispose();
+				foreach (UnityWebRequestAsync webRequest in this.webRequests)
+				{
+					webRequest.Dispose();
+				}
+				webRequests.Clear();
 
 				this.Parent.RemoveComponent<BundleDownloaderComponent>();
 		}
@@ -136,14 +137,15 @@ namespace ET
 				}
 
 				long alreadyDownloadBytes = 0;
+				//已经下载完成的
 				foreach (string downloadedBundle in this.downloadedBundles)
 				{
-					long size = this.remoteVersionConfig.FileInfoDict[downloadedBundle].Size;
-					alreadyDownloadBytes += size;
+					alreadyDownloadBytes += this.remoteVersionConfig.FileInfoDict[downloadedBundle].Size;
 				}
-				if (this.webRequest != null)
+				//当前正在下载的
+				foreach (UnityWebRequestAsync webRequest in webRequests)
 				{
-					alreadyDownloadBytes += (long)this.webRequest.Request.downloadedBytes;
+					alreadyDownloadBytes += (long) webRequest.Request.downloadedBytes;
 				}
 				return (int)(alreadyDownloadBytes * 100f / this.TotalSize);
 			}
@@ -151,50 +153,69 @@ namespace ET
 
 		public async ETTask DownloadAsync(string url)
 		{
-			if (this.bundles.Count == 0 && this.downloadingBundle == "")
+			if (this.bundles.Count == 0)
 			{
 				return;
 			}
-
 			try
 			{
-				while (true)
-				{
-					if (this.bundles.Count == 0)
-					{
-						break;
-					}
+				//正在下载的文件个数
+				int downloadingCount = 0;
+				//下载单个文件
+                async void downloadFile()
+                {
+                    if (this.bundles.Count == 0)
+                        return;
+                    downloadingCount++;
+                    //取出一个进行下载
+                    string downloading = this.bundles.Dequeue();
+                    Log.Debug($"开始下载({downloadingCount}):{downloading}");
+                    try
+                    {
 
-					this.downloadingBundle = this.bundles.Dequeue();
-
-					while (true)
-					{
-						try
-						{
-							using (this.webRequest = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
-							{
-								await this.webRequest.DownloadAsync(url + "StreamingAssets/" + this.downloadingBundle);
-								byte[] data = this.webRequest.Request.downloadHandler.data;
-
-								string path = Path.Combine(PathHelper.AppHotfixResPath, this.downloadingBundle);
-								using (FileStream fs = new FileStream(path, FileMode.Create))
-								{
-									fs.Write(data, 0, data.Length);
-								}
-							}
-						}
-						catch (Exception e)
-						{
-							Log.Error($"download bundle error: {this.downloadingBundle}\n{e}");
-							continue;
-						}
-
-						break;
-					}
-					this.downloadedBundles.Add(this.downloadingBundle);
-					this.downloadingBundle = "";
-					this.webRequest = null;
-				}
+                        using (UnityWebRequestAsync webRequest = EntityFactory.Create<UnityWebRequestAsync>(this.Domain))
+                        {
+                            webRequests.Add(webRequest);
+                            await webRequest.DownloadAsync(url + "StreamingAssets/" + downloading);
+                            byte[] data = webRequest.Request.downloadHandler.data;
+                            webRequests.Remove(webRequest);
+                            string path = Path.Combine(PathHelper.AppHotfixResPath, downloading);
+                            using (FileStream fs = new FileStream(path, FileMode.Create))
+                            {
+	                            fs.Write(data, 0, data.Length);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        //下载异常跳过
+                        Log.Error($"download bundle error: {downloading}\n{e}");
+                    }
+                    finally
+                    {
+	                    downloadingCount--;
+                    }
+                    //正常下载
+                    this.downloadedBundles.Add(downloading);
+                    Log.Debug($"download bundle Finish: {downloading}\n");
+                }
+                /*
+                //最多同时下载n个文件 下载40M(400~500)个文件测试时间(ms)对比
+                //等待n个任务同时完成再继续 1~61616 2~44796 3~34377 4~31918 5~27184 6~25564 7~22817 8~22719
+                //完成1个补充1个最大n个任务 1~61309 8~11871 9~10843 10~10600 15~9309 20~9146 100~9195
+                */
+                
+                //最大任务数量20 速度从61秒提升到9秒
+                int maxCount = 20;
+                while (true)
+                {
+	                await TimerComponent.Instance.WaitAsync(10);
+	                //需要下载队列取完 正在下载为0表示完成更新
+	                if (this.bundles.Count == 0 && downloadingCount == 0)
+		                break;
+	                for (int i = downloadingCount; i < maxCount; i++)
+		                downloadFile();
+                }
 			}
 			catch (Exception e)
 			{
