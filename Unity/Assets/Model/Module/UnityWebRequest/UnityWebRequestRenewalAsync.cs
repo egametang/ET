@@ -182,6 +182,19 @@ namespace ET
 
             this.tcs.SetResult();
         }
+        
+        //检测是不是同一个文件
+        bool CheckSameFile(string modifiedTime)
+        {
+            string cacheValue = PlayerPrefs.GetString(Url);
+            string currentValue = this.totalBytes+"|"+modifiedTime;
+            if (cacheValue == currentValue)
+                return true;
+            PlayerPrefs.SetString(Url, currentValue);
+            PlayerPrefs.Save();
+            Log.Debug($"断点续传下载一个新的文件:{Url} cacheValue:{cacheValue} currentValue:{currentValue}");
+            return false;
+        }
 
         /// <summary>
         /// 断点续传入口
@@ -211,7 +224,7 @@ namespace ET
                 this.headRequest.SendWebRequest();
                 await this.tcs.Task;
                 this.totalBytes = long.Parse(this.headRequest.GetResponseHeader("Content-Length"));
-                Log.Debug($"totalBytes {this.totalBytes}");
+                Log.Debug($"totalBytes: {this.totalBytes}");
                 this.headRequest?.Dispose();
                 this.headRequest = null;
 
@@ -226,7 +239,10 @@ namespace ET
                 fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
                 //获取已下载长度
                 this.byteWrites = fileStream.Length;
-                Log.Debug($"byteWrites {this.byteWrites}");
+                //通过本地缓存的服务器文件修改时间和文件总长度检测服务器是否是同一个文件 不是同一个从头开始写入
+                if (!CheckSameFile(modifiedTime))
+                    this.byteWrites = 0;
+                Log.Debug($"byteWrites: {this.byteWrites}");
                 if (this.byteWrites == this.totalBytes)
                 {
                     Log.Debug("已经下载完成2");
