@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACE;FEAT_SAFE</DefineConstants>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DefineConstants>TRACE;FEAT_SAFE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
+      <None Remove="Google.Protobuf\CodedOutputStream.cs.meta" />
+      <None Remove="Google.Protobuf\FieldCodec.cs.meta" />
+      <None Remove="Google.Protobuf\CodedOutputStream.ComputeSize.cs.meta" />
+      <None Remove="Google.Protobuf\CodedInputStream.cs.meta" />
+      <None Remove="Google.Protobuf\ByteString.cs.meta" />
+      <None Remove="Google.Protobuf\ByteArray.cs.meta" />
+      <None Remove="Google.Protobuf\ICustomDiagnosticMessage.cs.meta" />
+      <None Remove="Google.Protobuf\IMessage.cs.meta" />
+      <None Remove="Google.Protobuf\InvalidProtocolBufferException.cs.meta" />
+      <None Remove="Google.Protobuf\LimitedInputStream.cs.meta" />
+      <None Remove="Google.Protobuf\MessageExtensions.cs.meta" />
+      <None Remove="Google.Protobuf\MessageParser.cs.meta" />
+      <None Remove="Google.Protobuf\PropertyInfoExtensions.cs.meta" />
+      <None Remove="Google.Protobuf\ProtoPreconditions.cs.meta" />
+      <None Remove="Google.Protobuf\RepeatedField.cs.meta" />
+      <None Remove="Google.Protobuf\StreamExtensions.cs.meta" />
+      <None Remove="Google.Protobuf\WireFormat.cs.meta" />
+      <None Update="libkcp.dylib">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="libkcp.so">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DnsClient" Version="1.0.7" />
+    </ItemGroup>
+
+</Project>

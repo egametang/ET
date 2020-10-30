@@ -41,7 +41,7 @@ namespace MongoDB.Driver.GridFS
         public abstract GridFSFileInfo<TFileId> FileInfo { get; }
 
         // public methods
-#if NETSTANDARD1_5 || NETSTANDARD1_6
+#if NETSTANDARD1_5 || NETSTANDARD1_6 || NETCOREAPP
         /// <summary>
         /// Closes the GridFS stream.
         /// </summary>

@@ -8,7 +8,6 @@ namespace ET
 		{
 			NetInnerComponent.Instance = self;
 			self.Awake(NetworkProtocol.TCP);
-			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 		}
 	}
@@ -19,7 +18,6 @@ namespace ET
 		{
 			NetInnerComponent.Instance = self;
 			self.Awake(NetworkProtocol.TCP, a);
-			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 		}
 	}
@@ -28,7 +26,6 @@ namespace ET
 	{
 		public override void Load(NetInnerComponent self)
 		{
-			self.MessagePacker = new MongoPacker();
 			self.MessageDispatcher = new InnerMessageDispatcher();
 		}
 	}

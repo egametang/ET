@@ -2,7 +2,7 @@
 
 __讨论QQ群 : 474643097__  
 
-[ET论坛](https://bbs.honorworkroom.com/forum.php)  
+[ET论坛](https://et-framework.cn)  
 
 # 注意！现在master正在开发中，商业使用请用5.0分支，6.0（master分支）可以参考
 
@@ -68,7 +68,7 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [运行指南](https://github.com/egametang/ET/blob/master/Book/1.1%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97.md)  
   
 相关网站:  
-[ET论坛](https://bbs.honorworkroom.com/forum.php)  
+[ET论坛](https://et-framework.cn)  
 
 有自己觉得写得不错的Module可以pr提交到下面的库中，造福大家!  
 [module共享仓库](https://github.com/egametang/ET-Modules)  

@@ -107,19 +107,6 @@ namespace ET
 			}
 		}
 		
-		public static object FromBson(object instance, byte[] bytes, int index, int count)
-		{
-			using (MemoryStream memoryStream = new MemoryStream(bytes, index, count))
-			{
-				return BsonSerializer.Deserialize(memoryStream, instance.GetType());
-			}
-		}
-		
-		public static object FromBson(object instance, Stream stream)
-		{
-			return BsonSerializer.Deserialize(stream, instance.GetType());
-		}
-		
 		public static object FromStream(Type type, Stream stream)
 		{
 			return BsonSerializer.Deserialize(stream, type);

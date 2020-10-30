@@ -12,7 +12,8 @@ namespace ET
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 	        
             GameObject go = UnityEngine.Object.Instantiate(prefab);
-            
+            GameObject.DontDestroyOnLoad(go);
+            args.Unit.GameObject = go;
             args.Unit.AddComponent<AnimatorComponent>();
         }
     }

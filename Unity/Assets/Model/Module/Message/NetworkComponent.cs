@@ -10,8 +10,6 @@ namespace ET
 
 		public readonly Dictionary<long, Session> Sessions = new Dictionary<long, Session>();
 
-		public IMessagePacker MessagePacker { get; set; }
-
 		public IMessageDispatcher MessageDispatcher { get; set; }
 
 		public void Awake(NetworkProtocol protocol)

@@ -442,7 +442,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - key: Unit
-    gameObject: {fileID: 0}
+    gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b,
+      type: 3}
 --- !u!1 &872594939
 GameObject:
   m_ObjectHideFlags: 0
