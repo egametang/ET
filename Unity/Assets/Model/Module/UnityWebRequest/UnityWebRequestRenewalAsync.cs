@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ET
@@ -224,6 +225,7 @@ namespace ET
                 this.headRequest.SendWebRequest();
                 await this.tcs.Task;
                 this.totalBytes = long.Parse(this.headRequest.GetResponseHeader("Content-Length"));
+                string modifiedTime = this.headRequest.GetResponseHeader("Last-Modified");
                 Log.Debug($"totalBytes: {this.totalBytes}");
                 this.headRequest?.Dispose();
                 this.headRequest = null;
@@ -231,10 +233,6 @@ namespace ET
                 #endregion
 
                 #region Check Local File
-
-                var dirPath = Path.GetDirectoryName(filePath);
-                //如果路径不存在就创建
-                dirPath.CreateDirectory();
                 //打开或创建
                 fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
                 //获取已下载长度
