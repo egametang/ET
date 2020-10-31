@@ -198,6 +198,7 @@
      <Compile Include="Assets\Model\Module\Resource\ResourcesComponent.cs" />
      <Compile Include="Assets\Model\Module\Resource\VersionConfig.cs" />
      <Compile Include="Assets\Model\Module\UnityWebRequest\UnityWebRequestAsync.cs" />
+     <Compile Include="Assets\Model\Module\UnityWebRequest\UnityWebRequestRenewalAsync.cs" />
      <Compile Include="Assets\Model\Session\SessionComponent.cs" />
      <Compile Include="Assets\Model\Unit\TurnComponent.cs" />
      <Compile Include="Assets\Model\Unit\Unit.cs" />
