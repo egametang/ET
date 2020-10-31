@@ -221,7 +221,8 @@ namespace ET
 
                 var dirPath = Path.GetDirectoryName(filePath);
                 //如果路径不存在就创建
-                dirPath.CreateDirectory();
+                if (!Directory.Exists(dirPath))
+                    Directory.CreateDirectory(dirPath ?? throw new InvalidOperationException($"UnityWebRequestRenewalAsync Write File:{filePath} Directory is null"));
                 //打开或创建
                 fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
                 //获取已下载长度
