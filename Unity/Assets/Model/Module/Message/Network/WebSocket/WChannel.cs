@@ -205,7 +205,7 @@ namespace ET
                         return;
                     }
 
-                    if (receiveResult.Count > ushort.MaxValue)
+                    if (receiveCount > ushort.MaxValue)
                     {
                         await this.webSocket.CloseAsync(WebSocketCloseStatus.MessageTooBig, $"message too big: {receiveResult.Count}",
                             cancellationTokenSource.Token);
@@ -213,7 +213,7 @@ namespace ET
                         return;
                     }
 
-                    this.recvStream.SetLength(receiveResult.Count);
+                    this.recvStream.SetLength(receiveCount);
                     this.OnRead(this.recvStream);
                 }
             }
