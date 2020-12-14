@@ -29,7 +29,7 @@ namespace ETHotfix
 
 		private async ETVoid HandleIActorRequest(Session session, IActorRequest message)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(message.ActorId))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, message.ActorId))
 			{
 				Entity entity = (Entity)Game.EventSystem.Get(message.ActorId);
 				if (entity == null)
@@ -63,7 +63,7 @@ namespace ETHotfix
 
 		private async ETVoid HandleIActorMessage(Session session, IActorMessage message)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(message.ActorId))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, message.ActorId))
 			{
 				Entity entity = (Entity)Game.EventSystem.Get(message.ActorId);
 				if (entity == null)
