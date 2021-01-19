@@ -11,7 +11,7 @@
 			{
 				await sceneChangeComponent.ChangeSceneAsync("Map");
 			}
-            Game.Scene.Get(0).AddComponent<OperaComponent>();
+            Game.Scene.Get(1).AddComponent<OperaComponent>();
             await UIHelper.Remove(args.ZoneScene, UIType.UILobby);
 		}
 	}
