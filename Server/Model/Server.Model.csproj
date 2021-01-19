@@ -9,14 +9,16 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0;SERVER</DefineConstants>
+    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE;RELEASE;NETCOREAPP2_0;SERVER</DefineConstants>
+    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Libs\**" />
@@ -279,10 +281,5 @@
     <Folder Include="Base\RecyclableMemoryStream\" />
     <Folder Include="Module\Message\Network\KCP\" />
     <Folder Include="Module\Message\Network\TCP\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Pathfinding.Ionic.Zip.Reduced, Version=1.9.1.9000, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\ThirdParty\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

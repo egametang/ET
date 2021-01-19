@@ -12,6 +12,7 @@ namespace ET
         
         public static async ETTask<Scene> Create(Entity parent, long id, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
+            await ETTask.CompletedTask;
             Scene scene = EntitySceneFactory.CreateScene(id, zone, sceneType, name);
             scene.Parent = parent;
 

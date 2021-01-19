@@ -254,6 +254,9 @@
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Applications/Unity/Hub/Editor/2019.4.12f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor.VR">
+ <HintPath>/Applications/Unity/Hub/Editor/2019.4.12f1/Unity.app/Contents/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>/Applications/Unity/Hub/Editor/2019.4.12f1/Unity.app/Contents/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
