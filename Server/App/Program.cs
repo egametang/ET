@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using ETModel;
 using NLog;
@@ -47,11 +47,13 @@ namespace App
 				switch (startConfig.AppType)
 				{
 					case AppType.Manager:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<AppManagerComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						break;
 					case AppType.Realm:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<MailboxDispatcherComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
@@ -60,6 +62,7 @@ namespace App
 						Game.Scene.AddComponent<RealmGateAddressComponent>();
 						break;
 					case AppType.Gate:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<PlayerComponent>();
 						Game.Scene.AddComponent<MailboxDispatcherComponent>();
 						Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
@@ -73,8 +76,10 @@ namespace App
 					case AppType.Location:
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<LocationComponent>();
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						break;
 					case AppType.Map:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<NetInnerComponent, string>(innerConfig.Address);
 						Game.Scene.AddComponent<UnitComponent>();
 						Game.Scene.AddComponent<LocationProxyComponent>();
@@ -131,13 +136,16 @@ namespace App
 						// Game.Scene.AddComponent<HttpComponent>();
 						break;
 					case AppType.Benchmark:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<BenchmarkComponent, string>(clientConfig.Address);
 						break;
 					case AppType.BenchmarkWebsocketServer:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<NetOuterComponent, string>(outerConfig.Address);
 						break;
 					case AppType.BenchmarkWebsocketClient:
+						Game.Scene.AddComponent<CoroutineLockComponent>();
 						Game.Scene.AddComponent<NetOuterComponent>();
 						Game.Scene.AddComponent<WebSocketBenchmarkComponent, string>(clientConfig.Address);
 						break;
