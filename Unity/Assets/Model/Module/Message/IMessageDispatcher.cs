@@ -1,7 +1,9 @@
-﻿namespace ET
+﻿using System.IO;
+
+namespace ET
 {
-	public interface IMessageDispatcher
-	{
-		void Dispatch(Session session, ushort opcode, object message);
-	}
+    public interface IMessageDispatcher
+    {
+        void Dispatch(Session session, MemoryStream message);
+    }
 }

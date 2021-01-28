@@ -2,276 +2,204 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace ET
 {
-	
-	public class SessionAwakeSystem : AwakeSystem<Session, AChannel>
-	{
-		public override void Awake(Session self, AChannel b)
-		{
-			self.Awake(b);
-		}
-	}
+    [ObjectSystem]
+    public class SessionAwakeSystem: AwakeSystem<Session, AService>
+    {
+        public override void Awake(Session self, AService aService)
+        {
+            self.Awake(aService);
+        }
+    }
 
-	public sealed class Session : Entity
-	{
-		private static int RpcId { get; set; }
-		private AChannel channel;
+    public sealed class Session: Entity
+    {
+        private readonly struct RpcInfo
+        {
+            public readonly IRequest Request;
+            public readonly ETTaskCompletionSource<IResponse> Tcs;
 
-		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
-		private readonly byte[] opcodeBytes = new byte[2];
+            public RpcInfo(IRequest request)
+            {
+                this.Request = request;
+                this.Tcs = new ETTaskCompletionSource<IResponse>();
+            }
+        }
 
-		public long LastRecvTime { get; private set; }
-		public long LastSendTime { get; private set; }
+        public AService AService;
+        
+        private static int RpcId
+        {
+            get;
+            set;
+        }
 
-		public NetworkComponent Network
-		{
-			get
-			{
-				return this.GetParent<NetworkComponent>();
-			}
-		}
+        private readonly Dictionary<int, RpcInfo> requestCallbacks = new Dictionary<int, RpcInfo>();
+        
+        public long LastRecvTime
+        {
+            get;
+            set;
+        }
 
-		public int Error
-		{
-			get
-			{
-				return this.channel.Error;
-			}
-			set
-			{
-				this.channel.Error = value;
-			}
-		}
+        public long LastSendTime
+        {
+            get;
+            set;
+        }
 
-		public void Awake(AChannel aChannel)
-		{
-			long timeNow = TimeHelper.Now();
-			this.LastRecvTime = timeNow;
-			this.LastSendTime = timeNow;
-			
-			this.channel = aChannel;
-			this.requestCallback.Clear();
-			long id = this.Id;
-			channel.ErrorCallback += (c, e) =>
-			{
-				this.Network.Remove(id); 
-			};
-			channel.ReadCallback += this.OnRead;
-		}
-		
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
+        public int Error
+        {
+            get;
+            set;
+        }
 
-			this.Network.Remove(this.Id);
+        public void Awake(AService aService)
+        {
+            this.AService = aService;
+            long timeNow = TimeHelper.ClientNow();
+            this.LastRecvTime = timeNow;
+            this.LastSendTime = timeNow;
 
-			base.Dispose();
-			
-			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
-			{
-				action.Invoke(new ErrorResponse { Error = this.Error });
-			}
-
-			int error = this.channel.Error;
-			if (this.channel.Error != 0)
-			{
-				Log.Info($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
-			}
-			
-			this.channel.Dispose();
-			
-			this.requestCallback.Clear();
-		}
-
-		public string RemoteAddress
-		{
-			get
-			{
-				return this.channel.RemoteAddress;
-			}
-		}
-
-		public ChannelType ChannelType
-		{
-			get
-			{
-				return this.channel.ChannelType;
-			}
-		}
-
-		public MemoryStream Stream
-		{
-			get
-			{
-				return this.channel.Stream;
-			}
-		}
-
-		public void OnRead(MemoryStream memoryStream)
-		{
-			try
-			{
-				this.Run(memoryStream);
-			}
-			catch (Exception e)
-			{
-				Log.Error(e);
-			}
-		}
-
-		private void Run(MemoryStream memoryStream)
-		{
-			memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-			
-			object message;
-			try
-			{
-				Type type = OpcodeTypeComponent.Instance.GetType(opcode);
-				message = MessagePackHelper.DeserializeFrom(opcode, type, memoryStream);
-
-				if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
-				{
-					Log.Msg(message);
-				}
-			}
-			catch (Exception e)
-			{
-				// 出现任何消息解析异常都要断开Session，防止客户端伪造消息
-				Log.Error($"opcode: {opcode} {this.Network.Count} {e}, ip: {this.RemoteAddress}");
-				this.Error = ErrorCode.ERR_PacketParserError;
-				this.Network.Remove(this.Id);
-				return;
-			}
-
-			RunMessage(opcode, message);
-		}
-
-		private void RunMessage(ushort opcode, object message)
-		{
-			this.LastRecvTime = TimeHelper.Now();
+            this.requestCallbacks.Clear();
             
-			if (!(message is IResponse response))
-			{
-				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
-				return;
-			}
-			
-#if SERVER
-			if (message is IActorResponse)
-			{
-				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
-				return;
-			}
-#endif
+            Log.Info($"session create: zone: {this.DomainZone()} id: {this.Id} {timeNow} ");
+        }
+
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            int zone = this.DomainZone();
+            long id = this.Id;
+
+            base.Dispose();
+
+            this.AService.RemoveChannel(this.Id);
             
-			Action<IResponse> action;
-			if (!this.requestCallback.TryGetValue(response.RpcId, out action))
-			{
-				throw new Exception($"not found rpc, response message: {StringHelper.MessageToStr(response)}");
-			}
-			this.requestCallback.Remove(response.RpcId);
+            foreach (RpcInfo responseCallback in this.requestCallbacks.Values.ToArray())
+            {
+                responseCallback.Tcs.SetException(new RpcException(this.Error, $"session dispose: {id} {this.RemoteAddress}"));
+            }
+
+            Log.Info($"session dispose: {this.RemoteAddress} zone: {zone} id: {id} ErrorCode: {this.Error}, please see ErrorCode.cs! {TimeHelper.ClientNow()}");
+
+            this.requestCallbacks.Clear();
+        }
+
+        public IPEndPoint RemoteAddress
+        {
+            get;
+            set;
+        }
+
+        public void OnRead(ushort opcode, IResponse response)
+        {
+            OpcodeHelper.LogMsg(this.DomainZone(), opcode, response);
             
-			action(response);
-		}
-		
-		public ETTask<IResponse> CallWithoutException(IRequest request)
-		{
-			int rpcId = ++RpcId;
-			var tcs = new ETTaskCompletionSource<IResponse>();
-			this.requestCallback[rpcId] = (response) =>
-			{
-				if (response is ErrorResponse)
-				{
-					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
-					return;
-				}
-				
-				tcs.SetResult(response);
-			};
+            if (!this.requestCallbacks.TryGetValue(response.RpcId, out var action))
+            {
+                return;
+            }
 
-			request.RpcId = rpcId;
-			this.Send(request);
-			return tcs.Task;
-		}
+            this.requestCallbacks.Remove(response.RpcId);
+            if (ErrorCode.IsRpcNeedThrowException(response.Error))
+            {
+                action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
+                return;
+            }
+            action.Tcs.SetResult(response);
+        }
+        
+        public async ETTask<IResponse> Call(IRequest request, ETCancellationToken cancellationToken)
+        {
+            int rpcId = ++RpcId;
+            RpcInfo rpcInfo = new RpcInfo(request);
+            this.requestCallbacks[rpcId] = rpcInfo;
+            request.RpcId = rpcId;
 
-		public ETTask<IResponse> Call(IRequest request)
-		{
-			int rpcId = ++RpcId;
-			var tcs = new ETTaskCompletionSource<IResponse>();
-			this.requestCallback[rpcId] = (response) =>
-			{
-				if (response is ErrorResponse)
-				{
-					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
-					return;
-				}
-				
-				if (ErrorCode.IsRpcNeedThrowException(response.Error))
-				{
-					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
-					return;
-				}
+            this.Send(request);
+            
+            void CancelAction()
+            {
+                if (!this.requestCallbacks.TryGetValue(rpcId, out RpcInfo action))
+                {
+                    return;
+                }
 
-				tcs.SetResult(response);
-			};
+                this.requestCallbacks.Remove(rpcId);
+                Type responseType = OpcodeTypeComponent.Instance.GetResponseType(action.Request.GetType());
+                IResponse response = (IResponse) Activator.CreateInstance(responseType);
+                response.Error = ErrorCode.ERR_Cancel;
+                action.Tcs.SetResult(response);
+            }
 
-			request.RpcId = rpcId;
-			this.Send(request);
-			return tcs.Task;
-		}
+            IResponse ret;
+            try
+            {
+                cancellationToken?.Add(CancelAction);
+                ret = await rpcInfo.Tcs.Task;
+            }
+            finally
+            {
+                cancellationToken?.Remove(CancelAction);
+            }
+            return ret;
+        }
 
-		public void Reply(IResponse message)
-		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("session已经被Dispose了");
-			}
-			this.Send(message);
-		}
+        public async ETTask<IResponse> Call(IRequest request)
+        {
+            int rpcId = ++RpcId;
+            RpcInfo rpcInfo = new RpcInfo(request);
+            this.requestCallbacks[rpcId] = rpcInfo;
+            request.RpcId = rpcId;
+            this.Send(request);
+            return await rpcInfo.Tcs.Task;
+        }
 
-		public void Send(IMessage message)
-		{
-			ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(message.GetType());
-			
-			Send(opcode, message);
-		}
-		
-		public void Send(ushort opcode, object message)
-		{
-			if (this.IsDisposed)
-			{
-				throw new Exception("session已经被Dispose了");
-			}
+        public void Reply(IResponse message)
+        {
+            this.Send(message);
+        }
 
-			this.LastSendTime = TimeHelper.Now();
-			
-			if (OpcodeHelper.IsNeedDebugLogMessage(opcode) )
-			{
-				Log.Msg(message);
-			}
-
-			MemoryStream stream = this.Stream;
-			
-			stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-			stream.SetLength(Packet.MessageIndex);
-			MessagePackHelper.SerializeTo(opcode, message, stream);
-			stream.Seek(0, SeekOrigin.Begin);
-			
-			opcodeBytes.WriteTo(0, opcode);
-			Array.Copy(opcodeBytes, 0, stream.GetBuffer(), 0, opcodeBytes.Length);
-			
-			this.Send(stream);
-		}
-
-		public void Send(MemoryStream stream)
-		{
-			channel.Send(stream);
-		}
-	}
+        public void Send(IMessage message)
+        {
+            switch (this.AService.ServiceType)
+            {
+                case ServiceType.Inner:
+                {
+                    (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(0, message);
+                    OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
+                    this.Send(0, stream);
+                    break;
+                }
+                case ServiceType.Outer:
+                {
+                    (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(message);
+                    OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
+                    this.Send(0, stream);
+                    break;
+                }
+            }
+        }
+        
+        public void Send(long actorId, IMessage message)
+        {
+            (ushort opcode, MemoryStream stream) = MessageSerializeHelper.MessageToStream(actorId, message);
+            OpcodeHelper.LogMsg(this.DomainZone(), opcode, message);
+            this.Send(actorId, stream);
+        }
+        
+        public void Send(long actorId, MemoryStream memoryStream)
+        {
+            this.LastSendTime = TimeHelper.ClientNow();
+            this.AService.SendStream(this.Id, actorId, memoryStream);
+        }
+    }
 }

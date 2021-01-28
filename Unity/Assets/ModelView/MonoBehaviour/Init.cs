@@ -12,7 +12,7 @@ namespace ET
 		{
 			try
 			{
-				SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
+				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 				
 				DontDestroyOnLoad(gameObject);
 
@@ -38,7 +38,7 @@ namespace ET
 
 		private void Update()
 		{
-			OneThreadSynchronizationContext.Instance.Update();
+			ThreadSynchronizationContext.Instance.Update();
 			Game.EventSystem.Update();
 		}
 

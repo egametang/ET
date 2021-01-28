@@ -2,9 +2,10 @@
 
 namespace ET
 {
-	public interface IMActorHandler
-	{
-		ETTask Handle(Session session, Entity entity, object actorMessage);
-		Type GetMessageType();
-	}
+    public interface IMActorHandler
+    {
+        ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply);
+        Type GetRequestType();
+        Type GetResponseType();
+    }
 }

@@ -20,8 +20,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Other\**" />
-    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\NetOuterComponentSystem.cs">
-      <Link>Module\Message\NetOuterComponentSystem.cs</Link>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\MessageDispatcherComponentSystem.cs">
+      <Link>Module\Message\MessageDispatcherComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\NetKcpComponentSystem.cs">
+      <Link>Module\Message\NetKcpComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\NetThreadComponentSystem.cs">
+      <Link>Module\Message\NetThreadComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\SessionAcceptTimeoutComponentSystem.cs">
+      <Link>Module\Message\SessionAcceptTimeoutComponentSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\Message\SessionIdleCheckerComponentSystem.cs">
+      <Link>Module\Message\SessionIdleCheckerComponentSystem.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs">
       <Link>Module\Numeric\NumericChangeEvent_NotifyWatcher.cs</Link>

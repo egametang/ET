@@ -1,44 +1,37 @@
-using System.ComponentModel;
+using System.Net;
 
 namespace ET
 {
-	public partial class StartProcessConfigCategory
-	{
-		public override void EndInit()
-		{
-		}
-	}
-	
-	public partial class StartProcessConfig: ISupportInitialize
-	{
-		private string innerAddress;
+    public partial class StartProcessConfig
+    {
+        private IPEndPoint innerIPPort;
 
-		public string InnerAddress
-		{
-			get
-			{
-				if (this.innerAddress == null)
-				{
-					this.innerAddress = $"{StartMachineConfigCategory.Instance.Get(this.MachineId).InnerIP}:{this.InnerPort}";
-				}
-				return this.innerAddress;
-			}
-		}
+        public long SceneId;
 
-		public string OuterIP
-		{
-			get
-			{
-				return StartMachineConfigCategory.Instance.Get(this.MachineId).OuterIP;
-			}
-		}
+        public IPEndPoint InnerIPPort
+        {
+            get
+            {
+                if (this.innerIPPort == null)
+                {
+                    this.innerIPPort = NetworkHelper.ToIPEndPoint($"{this.InnerIP}:{this.InnerPort}");
+                }
 
-		public void BeginInit()
-		{
-		}
+                return this.innerIPPort;
+            }
+        }
 
-		public void EndInit()
-		{
-		}
-	}
+        public string InnerIP => this.StartMachineConfig.InnerIP;
+
+        public string OuterIP => this.StartMachineConfig.OuterIP;
+
+        public StartMachineConfig StartMachineConfig => StartMachineConfigCategory.Instance.Get(this.MachineId);
+
+        public void EndInit()
+        {
+            InstanceIdStruct instanceIdStruct = new InstanceIdStruct((int)this.Id, 0);
+            this.SceneId = instanceIdStruct.ToLong();
+            Log.Info($"StartProcess info: {this.MachineId} {this.Id} {this.SceneId}");
+        }
+    }
 }

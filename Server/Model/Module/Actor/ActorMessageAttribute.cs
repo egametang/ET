@@ -2,13 +2,13 @@
 
 namespace ET
 {
-	public class ActorMessageAttribute : Attribute
-	{
-		public ushort Opcode { get; private set; }
+    public class ActorMessageAttribute: Attribute
+    {
+        public ushort Opcode { get; private set; }
 
-		public ActorMessageAttribute(ushort opcode)
-		{
-			this.Opcode = opcode;
-		}
-	}
+        public ActorMessageAttribute(ushort opcode)
+        {
+            this.Opcode = opcode;
+        }
+    }
 }

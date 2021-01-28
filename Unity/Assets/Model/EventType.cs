@@ -5,6 +5,12 @@
         public struct AppStart
         {
         }
+
+        public struct PingChange
+        {
+            public Scene ZoneScene;
+            public long Ping;
+        }
         
         public struct AfterCreateZoneScene
         {
