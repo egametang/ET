@@ -5,17 +5,9 @@ using System.Linq;
 
 namespace ET
 {
-	public abstract class ACategory: ISupportInitialize
+	public abstract class ACategory: ProtoObject
 	{
 		public abstract Type ConfigType { get; }
-
-		public virtual void BeginInit()
-		{
-		}
-
-		public virtual void EndInit()
-		{
-		}
 	}
 
 	/// <summary>

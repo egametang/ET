@@ -148,6 +148,18 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\TypeModel.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\DiscriminatedUnion.Serializable.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\FieldDecorator.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonReader.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Netstandard15Polyfill.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Extensions.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\ParserToken.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonException.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\IJsonWrapper.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonWriter.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\UnityTypeBindings.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonData.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Lexer.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonMapper.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonMockWrapper.cs" />
      <None Include="Assets\ThirdParty\Unity.ThirdParty.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -398,6 +410,9 @@
  <Reference Include="Pathfinding.Ionic.Zip.Reduced">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
  </Reference>
+ <Reference Include="CommandLine">
+ <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
+ </Reference>
  <Reference Include="Pathfinding.ClipperLib">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
  </Reference>
@@ -409,9 +424,6 @@
  </Reference>
  <Reference Include="Pathfinding.Poly2Tri">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
- </Reference>
- <Reference Include="CommandLine">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>

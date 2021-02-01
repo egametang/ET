@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Model</AssemblyName>
-    <RootNamespace>Model</RootNamespace>
+    <RootNamespace>ET</RootNamespace>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -21,6 +20,10 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+
+    <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
+      <Link>Base\MongoHelper.cs</Link>
+    </Compile>
 
     <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>

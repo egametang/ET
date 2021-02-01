@@ -21,7 +21,7 @@ namespace ET
 
 		public static T ToObject<T>(string str)
 		{
-			return MongoHelper.FromJson<T>(str);
+			return JsonHelper.FromJson<T>(str);
 		}
 	}
 }
