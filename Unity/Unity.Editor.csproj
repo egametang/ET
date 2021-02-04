@@ -62,6 +62,7 @@
      <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\BuildEditor.cs" />
      <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
+     <Compile Include="Assets\Editor\Helper\MongoHelper.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\ComponentViewEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\ETBuildSettings.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\CharTypeDrawer.cs" />
@@ -85,7 +86,6 @@
      <Compile Include="Assets\Editor\Proto2CsEditor\InnerProto2CS.cs" />
      <Compile Include="Assets\Editor\RsyncEditor\RsyncConfig.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\StringTypeDrawer.cs" />
-     <Compile Include="Assets\Editor\Helper\MongoHelper.cs" />
      <None Include="Assets\Editor\Unity.Editor.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

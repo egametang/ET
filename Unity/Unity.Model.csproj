@@ -52,6 +52,11 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Model\Generate\Config\StartMachineConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartProcessConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\UnitConfig.cs" />
      <Compile Include="Assets\Model\Helper\PathHelper.cs" />
      <Compile Include="Assets\Model\Unit\TurnComponent.cs" />
      <Compile Include="Assets\Model\Core\DoubleMap.cs" />
@@ -72,7 +77,6 @@
      <Compile Include="Assets\Model\Module\Resource\AssetsLoaderAsync.cs" />
      <Compile Include="Assets\Model\Core\Helper\EnumHelper.cs" />
      <Compile Include="Assets\Model\Core\Object\BaseAttribute.cs" />
-     <Compile Include="Assets\Model\Config\UnitConfig.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs" />
      <Compile Include="Assets\Model\Unit\Unit.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageSerializeHelper.cs" />
@@ -131,12 +135,9 @@
      <Compile Include="Assets\Model\Module\Message\MessageHandlerAttribute.cs" />
      <Compile Include="Assets\Model\Core\Event\EventAttribute.cs" />
      <Compile Include="Assets\Model\Core\Object\NoObjectPool.cs" />
-     <Compile Include="Assets\Model\Config\StartMachineConfig.cs" />
-     <Compile Include="Assets\Model\Config\StartZoneConfig.cs" />
      <Compile Include="Assets\Model\Core\Object\Object.cs" />
      <Compile Include="Assets\Model\Module\Message\OpcodeHelper.cs" />
      <Compile Include="Assets\Model\Module\Numeric\INumericWatcher.cs" />
-     <Compile Include="Assets\Model\Config\StartSceneConfig.cs" />
      <Compile Include="Assets\Model\Module\Network\KService.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs" />
      <Compile Include="Assets\Model\Core\Object\EntityFactory.cs" />
@@ -172,7 +173,6 @@
      <Compile Include="Assets\Model\Core\Object\ObjectSystemAttribute.cs" />
      <Compile Include="Assets\Model\Module\Config\ConfigHelper.cs" />
      <Compile Include="Assets\Model\Core\Entity\Game.cs" />
-     <Compile Include="Assets\Model\Config\StartProcessConfig.cs" />
      <Compile Include="Assets\Model\Core\StructBsonSerialize.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLock.cs" />
      <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
