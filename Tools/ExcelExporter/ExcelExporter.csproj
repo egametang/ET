@@ -13,5 +13,11 @@
     <ItemGroup>
       <PackageReference Include="EPPlus" Version="5.5.2" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Update="Template.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
 </Project>
