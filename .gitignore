@@ -49,3 +49,4 @@ Server/.DS_Store
 .objs/
 /Unity/.gradle
 /*.user
+ToolApp/

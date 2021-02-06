@@ -1,0 +1,4 @@
+{"list":[
+{"_id":1,"DBConnection":"mongdb://127.0.0.1"},
+{"_id":2,"DBConnection":"mongdb://127.0.0.1"},
+]}

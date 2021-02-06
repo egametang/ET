@@ -52,11 +52,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Model\Generate\Config\StartMachineConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartProcessConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\UnitConfig.cs" />
      <Compile Include="Assets\Model\Helper\PathHelper.cs" />
      <Compile Include="Assets\Model\Unit\TurnComponent.cs" />
      <Compile Include="Assets\Model\Core\DoubleMap.cs" />
@@ -202,6 +197,11 @@
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
+     <Compile Include="Assets\Model\Generate\Config\UnitConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartProcessConfig.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartMachineConfig.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

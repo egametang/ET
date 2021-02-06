@@ -240,7 +240,7 @@ namespace ET
         }
 
         // 缓存包依赖，不用每次计算
-        public static Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
+        public Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
 
         public bool Contains(string bundleName)
         {

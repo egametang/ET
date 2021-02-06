@@ -1,0 +1,7 @@
+{"list":[
+{"_id":1,"Process":1,"Zone":1,"SceneType":"Realm","Name":"Realm"},
+{"_id":2,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate1"},
+{"_id":3,"Process":1,"Zone":1,"SceneType":"Gate","Name":"Gate2"},
+{"_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location"},
+{"_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map"},
+]}
