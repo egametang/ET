@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace ET
 {
+    [ProtoContract]
     [Config]
     public partial class StartZoneConfigCategory : ProtoObject
     {
@@ -26,7 +26,7 @@ namespace ET
 		
         public override void AfterDeserialization()
         {
-            foreach (StartMachineConfig config in list)
+            foreach (StartZoneConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
@@ -62,10 +62,11 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.First();
+            return this.dict.Values.GetEnumerator().Current;
         }
     }
 
+    [ProtoContract]
 	public partial class StartZoneConfig: IConfig
 	{
 		[ProtoMember(1, IsRequired  = true)]

@@ -62,7 +62,8 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.First();
+
+            return this.dict.Values.GetEnumerator().Current;
         }
     }
 

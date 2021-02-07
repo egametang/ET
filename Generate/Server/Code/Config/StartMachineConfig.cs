@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace ET
 {
+    [ProtoContract]
     [Config]
     public partial class StartMachineConfigCategory : ProtoObject
     {
@@ -62,10 +62,11 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.First();
+            return this.dict.Values.GetEnumerator().Current;
         }
     }
 
+    [ProtoContract]
 	public partial class StartMachineConfig: IConfig
 	{
 		[ProtoMember(1, IsRequired  = true)]

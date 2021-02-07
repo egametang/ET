@@ -60,6 +60,7 @@
      <Compile Include="Assets\Model\Module\Message\MessageProxy.cs" />
      <Compile Include="Assets\Model\EventType.cs" />
      <Compile Include="Assets\Model\Core\UnOrderMultiMapSet.cs" />
+     <Compile Include="Assets\Model\Generate\Config\UnitConfig.cs" />
      <Compile Include="Assets\Model\Core\Entity\SceneType.cs" />
      <Compile Include="Assets\Model\Module\Message\SessionIdleCheckerComponent.cs" />
      <Compile Include="Assets\Model\Core\Helper\NetworkHelper.cs" />
@@ -72,6 +73,7 @@
      <Compile Include="Assets\Model\Module\Resource\AssetsLoaderAsync.cs" />
      <Compile Include="Assets\Model\Core\Helper\EnumHelper.cs" />
      <Compile Include="Assets\Model\Core\Object\BaseAttribute.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs" />
      <Compile Include="Assets\Model\Unit\Unit.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageSerializeHelper.cs" />
@@ -84,6 +86,7 @@
      <Compile Include="Assets\Model\Core\Helper\MethodInfoHelper.cs" />
      <Compile Include="Assets\Model\Module\Network\Kcp.cs" />
      <Compile Include="Assets\Model\Core\Helper\FileHelper.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartProcessConfig.cs" />
      <Compile Include="Assets\Model\Core\Log\UnityLogger.cs" />
      <Compile Include="Assets\Model\Core\Object\HideInHierarchy.cs" />
      <Compile Include="Assets\Model\Module\Config\ConfigAttribute.cs" />
@@ -154,6 +157,7 @@
      <Compile Include="Assets\Model\Module\Message\SessionAcceptTimeoutComponent.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericComponent.cs" />
      <Compile Include="Assets\Model\Module\Message\Session.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartMachineConfig.cs" />
      <Compile Include="Assets\Model\Core\Object\NoMemoryCheck.cs" />
      <Compile Include="Assets\Model\Core\ObjectWait.cs" />
      <Compile Include="Assets\Model\Core\Object\Entity.cs" />
@@ -175,6 +179,7 @@
      <Compile Include="Assets\Model\Generate\OuterProtoOpcode.cs" />
      <Compile Include="Assets\Model\Core\Object\ProtoObject.cs" />
      <Compile Include="Assets\Model\Module\Message\ProtobufHelper.cs" />
+     <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
      <Compile Include="Assets\Model\Module\Message\NetThreadComponent.cs" />
      <Compile Include="Assets\Model\Core\Helper\TimeHelper.cs" />
      <Compile Include="Assets\Model\Core\Object\ISerializeToEntity.cs" />
@@ -197,11 +202,6 @@
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
-     <Compile Include="Assets\Model\Generate\Config\UnitConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartProcessConfig.cs" />
-     <Compile Include="Assets\Model\Generate\Config\StartMachineConfig.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
