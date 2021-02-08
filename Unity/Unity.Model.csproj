@@ -52,6 +52,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Model\Core\FunctionCallback.cs" />
      <Compile Include="Assets\Model\Helper\PathHelper.cs" />
      <Compile Include="Assets\Model\Unit\TurnComponent.cs" />
      <Compile Include="Assets\Model\Core\DoubleMap.cs" />
@@ -91,7 +92,6 @@
      <Compile Include="Assets\Model\Core\Object\HideInHierarchy.cs" />
      <Compile Include="Assets\Model\Module\Config\ConfigAttribute.cs" />
      <Compile Include="Assets\Model\Core\Async\AsyncETVoidMethodBuilder.cs" />
-     <Compile Include="Assets\Model\Module\Config\ACategory.cs" />
      <Compile Include="Assets\Model\Module\Message\PingComponent.cs" />
      <Compile Include="Assets\Model\Core\Object\EntityCreateComponet.cs" />
      <Compile Include="Assets\Model\Module\Message\RpcException.cs" />
@@ -165,12 +165,10 @@
      <Compile Include="Assets\Model\Core\MultiMap.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericWatcherAttribute.cs" />
      <Compile Include="Assets\Model\Core\LogType.cs" />
-     <Compile Include="Assets\Model\Module\Config\AConfigComponent.cs" />
      <Compile Include="Assets\Model\Core\Async\ETTaskCompleted.cs" />
      <Compile Include="Assets\Model\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Model\Core\Pool.cs" />
      <Compile Include="Assets\Model\Core\Object\ObjectSystemAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Config\ConfigHelper.cs" />
      <Compile Include="Assets\Model\Core\Entity\Game.cs" />
      <Compile Include="Assets\Model\Core\StructBsonSerialize.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLock.cs" />

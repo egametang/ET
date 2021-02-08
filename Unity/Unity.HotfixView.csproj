@@ -52,6 +52,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\HotfixView\Helper\LoadConfigHelper.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
      <Compile Include="Assets\HotfixView\Scene\SceneFactory.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyEvent.cs" />

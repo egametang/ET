@@ -10,6 +10,6 @@ namespace ET
     {
         public static ConfigComponent Instance;
 		
-        public Dictionary<Type, ACategory> AllConfig = new Dictionary<Type, ACategory>();
+        public Dictionary<Type, object> AllConfig = new Dictionary<Type, object>();
     }
 }
