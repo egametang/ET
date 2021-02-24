@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace ET
 {
+    [ProtoContract]
     [Config]
     public partial class StartSceneConfigCategory : ProtoObject
     {
@@ -24,14 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-        public override void AfterDeserialization()
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
         {
             foreach (StartSceneConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            base.AfterDeserialization();
+            this.EndInit();
         }
 		
         public StartSceneConfig Get(int id)
@@ -62,18 +63,31 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.First();
+            return this.dict.Values.GetEnumerator().Current;
         }
     }
 
-	public partial class StartSceneConfig: IConfig
+    [ProtoContract]
+	public partial class StartSceneConfig: ProtoObject, IConfig
 	{
-		[BsonId]
+		[ProtoMember(1, IsRequired  = true)]
 		public int Id { get; set; }
-		public int Process;
-		public int Zone;
-		public string SceneType;
-		public string Name;
-		public int OuterPort;
+		[ProtoMember(2, IsRequired  = true)]
+		public int Process { get; set; }
+		[ProtoMember(3, IsRequired  = true)]
+		public int Zone { get; set; }
+		[ProtoMember(4, IsRequired  = true)]
+		public string SceneType { get; set; }
+		[ProtoMember(5, IsRequired  = true)]
+		public string Name { get; set; }
+		[ProtoMember(6, IsRequired  = true)]
+		public int OuterPort { get; set; }
+
+
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
+        {
+            this.EndInit();
+        }
 	}
 }

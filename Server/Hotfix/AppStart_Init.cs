@@ -8,9 +8,9 @@ namespace ET
     {
         public override async ETTask Run(EventType.AppStart args)
         {
-            FunctionCallback.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
-            
             Game.Scene.AddComponent<ConfigComponent>();
+            
+            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
             await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);

@@ -13,7 +13,7 @@ namespace ET
             foreach (var kv in keys)
             {
                 TextAsset v = kv.Value as TextAsset;
-                string key = $"{kv.Key}.bytes";
+                string key = kv.Key;
                 output[key] = v.bytes;
             }
         }

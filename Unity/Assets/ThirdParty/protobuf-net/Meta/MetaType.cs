@@ -707,7 +707,7 @@ namespace ProtoBuf.Meta
                 else if (member is MethodInfo method)
                 {
                     if (isEnum) continue;
-                    AttributeMap[] memberAttribs = AttributeMap.Create(model, method, false);
+                    AttributeMap[] memberAttribs = AttributeMap.Create(model, method, true);
                     if (memberAttribs != null && memberAttribs.Length > 0)
                     {
                         CheckForCallback(method, memberAttribs, "ProtoBuf.ProtoBeforeSerializationAttribute", ref callbacks, 0);

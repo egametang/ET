@@ -41,13 +41,33 @@ namespace ET
     {
         private static string template;
 
-        private const string excelDir = "../../Excel";
+        private const string clientClassDir = "../../../Unity/Assets/Model/Generate/Config";
+        private const string serverClassDir = "../../../Server/Model/Generate/Config";
         
-        private const string classDir = "../../Generate/{0}/Code/Config";
+        private const string excelDir = "../../../Excel";
         
-        private const string jsonDir = "../../Generate/{0}/Json";
+        private const string jsonDir = "./{0}/Json";
         
-        private const string protoDir = "../../Generate/{0}/Proto";
+        private const string clientProtoDir = "../../../Unity/Assets/Bundles/Config";
+        private const string serverProtoDir = "../../../Config";
+
+        private static string GetProtoDir(ConfigType configType)
+        {
+            if (configType == ConfigType.Client)
+            {
+                return clientProtoDir;
+            }
+            return serverProtoDir;
+        }
+        
+        private static string GetClassDir(ConfigType configType)
+        {
+            if (configType == ConfigType.Client)
+            {
+                return clientClassDir;
+            }
+            return serverClassDir;
+        }
         
         static void Main(string[] args)
         {
@@ -115,7 +135,7 @@ namespace ET
 
         static void ExportClass(string protoName, List<HeadInfo> classField, ConfigType configType)
         {
-            string dir = string.Format(classDir, configType.ToString());
+            string dir = GetClassDir(configType);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -245,7 +265,7 @@ namespace ET
         // 根据生成的类，动态编译把json转成protobuf
         private static void ExportExcelProtobuf(ConfigType configType)
         {
-            string classPath = string.Format(classDir, configType);
+            string classPath = GetClassDir(configType);
             List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
             List<string> protoNames = new List<string>();
             foreach (string classFile in Directory.GetFiles(classPath, "*.cs"))
@@ -293,7 +313,7 @@ namespace ET
 
             Assembly ass = Assembly.Load(memSteam.ToArray());
 
-            string dir = string.Format(protoDir, configType.ToString());
+            string dir = GetProtoDir(configType);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);

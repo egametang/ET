@@ -52,7 +52,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\HotfixView\Helper\LoadConfigHelper.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
      <Compile Include="Assets\HotfixView\Scene\SceneFactory.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyEvent.cs" />
@@ -75,6 +74,7 @@
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingBeginEvent_CreateLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILoading\UILoadingEvent.cs" />
+     <Compile Include="Assets\HotfixView\Helper\LoadConfigHelper.cs" />
      <Compile Include="Assets\HotfixView\Unit\AnimatorComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Scene\AfterCreateZoneScene_AddComponent.cs" />
      <None Include="Assets\HotfixView\Unity.HotfixView.asmdef" />

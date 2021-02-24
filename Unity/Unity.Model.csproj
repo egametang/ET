@@ -52,7 +52,6 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Model\Core\FunctionCallback.cs" />
      <Compile Include="Assets\Model\Helper\PathHelper.cs" />
      <Compile Include="Assets\Model\Unit\TurnComponent.cs" />
      <Compile Include="Assets\Model\Core\DoubleMap.cs" />

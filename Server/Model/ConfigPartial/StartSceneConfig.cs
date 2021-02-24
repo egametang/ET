@@ -103,11 +103,11 @@ namespace ET
             }
         }
 
-        public void BeginInit()
+        public override void BeginInit()
         {
         }
 
-        public void EndInit()
+        public override void EndInit()
         {
             this.Type = EnumHelper.FromString<SceneType>(this.SceneType);
             InstanceIdStruct instanceIdStruct = new InstanceIdStruct(this.Process, (uint) this.Id);

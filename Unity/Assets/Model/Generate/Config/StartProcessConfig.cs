@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MongoDB.Bson.Serialization.Attributes;
 using ProtoBuf;
 
 namespace ET
 {
+    [ProtoContract]
     [Config]
     public partial class StartProcessConfigCategory : ProtoObject
     {
@@ -24,14 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-        public override void AfterDeserialization()
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
         {
             foreach (StartProcessConfig config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            base.AfterDeserialization();
+            this.EndInit();
         }
 		
         public StartProcessConfig Get(int id)
@@ -62,17 +63,25 @@ namespace ET
             {
                 return null;
             }
-            return this.dict.Values.First();
+            return this.dict.Values.GetEnumerator().Current;
         }
     }
 
-	public partial class StartProcessConfig: IConfig
+    [ProtoContract]
+	public partial class StartProcessConfig: ProtoObject, IConfig
 	{
-        [ProtoMember(1, IsRequired  = true)]
+		[ProtoMember(1, IsRequired  = true)]
 		public int Id { get; set; }
-        [ProtoMember(2, IsRequired  = true)]
+		[ProtoMember(2, IsRequired  = true)]
 		public int MachineId { get; set; }
-        [ProtoMember(3, IsRequired  = true)]
+		[ProtoMember(3, IsRequired  = true)]
 		public string InnerPort { get; set; }
+
+
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
+        {
+            this.EndInit();
+        }
 	}
 }

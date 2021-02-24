@@ -25,8 +25,8 @@ namespace ET
     public static class InnerProto2CS
     {
         private const string protoPath = ".";
-        private const string clientMessagePath = "../Unity/Assets/Model/Module/Message/";
-        private const string serverMessagePath = "../Server/Model/Module/Message/";
+        private const string clientMessagePath = "../../Unity/Assets/Model/Module/Message/";
+        private const string serverMessagePath = "../../Server/Model/Module/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 

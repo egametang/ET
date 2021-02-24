@@ -7,9 +7,9 @@ namespace ET
     {
         public static void LoadAllConfigBytes(Dictionary<string, byte[]> output)
         {
-            foreach (string file in Directory.GetFiles($"../Generate/Server/Proto", "*.bytes"))
+            foreach (string file in Directory.GetFiles($"../Config", "*.bytes"))
             {
-                string key = $"{Path.GetFileName(file)}.bytes";
+                string key = Path.GetFileNameWithoutExtension(file);
                 output[key] = File.ReadAllBytes(file);
             }
         }

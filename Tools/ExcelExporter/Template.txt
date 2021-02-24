@@ -24,14 +24,15 @@ namespace ET
             Instance = this;
         }
 		
-        public override void AfterDeserialization()
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
         {
             foreach ((ConfigName) config in list)
             {
                 this.dict.Add(config.Id, config);
             }
             list.Clear();
-            base.AfterDeserialization();
+            this.EndInit();
         }
 		
         public (ConfigName) Get(int id)
@@ -67,8 +68,14 @@ namespace ET
     }
 
     [ProtoContract]
-	public partial class (ConfigName): IConfig
+	public partial class (ConfigName): ProtoObject, IConfig
 	{
 (Fields)
+
+		[ProtoAfterDeserialization]
+        public void AfterDeserialization()
+        {
+            this.EndInit();
+        }
 	}
 }

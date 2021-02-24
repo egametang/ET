@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <RootNamespace>ET</RootNamespace>
     </PropertyGroup>
     
@@ -11,11 +12,11 @@
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>../../ToolsApp/ExcelExporter/</OutputPath>
+      <OutputPath>./Bin</OutputPath>
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>../../ToolsApp/ExcelExporter/</OutputPath>
+      <OutputPath>./Bin</OutputPath>
     </PropertyGroup>
     
     <ItemGroup>

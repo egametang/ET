@@ -39,12 +39,6 @@ namespace ET
         public virtual void BeginInit()
         {
         }
-
-        [ProtoAfterDeserialization]
-        public virtual void AfterDeserialization()
-        {
-            this.EndInit();
-        }
         
         public virtual void EndInit()
         {
