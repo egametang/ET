@@ -15,7 +15,7 @@ namespace ET
         /// <returns></returns>
         public static long ClientNow()
         {
-            return Game.TimeInfo.ClientNow();
+            return Game.TimeInfo.ClientNow()/10000;
         }
 
         public static long ClientNowSeconds()
