@@ -28,7 +28,8 @@ namespace ET
             Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
             // 数值订阅组件
             Game.Scene.AddComponent<NumericWatcherComponent>();
-				
+
+            Game.Scene.AddComponent<NetThreadComponent>();
             Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(processConfig.InnerIPPort);
             
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);

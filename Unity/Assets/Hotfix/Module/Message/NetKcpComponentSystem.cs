@@ -11,7 +11,7 @@ namespace ET
         {
             self.MessageDispatcher = new OuterMessageDispatcher();
             
-            self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
+            self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
             self.Service.ErrorCallback += self.OnError;
             self.Service.ReadCallback += self.OnRead;
 
@@ -26,7 +26,7 @@ namespace ET
         {
             self.MessageDispatcher = new OuterMessageDispatcher();
             
-            self.Service = new KService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
+            self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
             self.Service.ErrorCallback += self.OnError;
             self.Service.ReadCallback += self.OnRead;
             self.Service.AcceptCallback += self.OnAccept;

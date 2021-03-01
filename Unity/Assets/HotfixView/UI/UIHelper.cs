@@ -10,6 +10,7 @@ namespace ET
         public static async ETTask Remove(Scene scene, string uiType)
         {
             scene.GetComponent<UIComponent>().Remove(uiType);
+            await ETTask.CompletedTask;
         }
     }
 }

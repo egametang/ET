@@ -15,6 +15,7 @@ namespace ET
             GameObject.DontDestroyOnLoad(go);
             args.Unit.GameObject = go;
             args.Unit.AddComponent<AnimatorComponent>();
+            await ETTask.CompletedTask;
         }
     }
 }

@@ -75,7 +75,7 @@ namespace ET
 		[ProtoMember(2, IsRequired  = true)]
 		public int MachineId { get; set; }
 		[ProtoMember(3, IsRequired  = true)]
-		public string InnerPort { get; set; }
+		public int InnerPort { get; set; }
 
 
 		[ProtoAfterDeserialization]
