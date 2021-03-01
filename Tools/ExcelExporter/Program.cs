@@ -211,7 +211,7 @@ namespace ET
             for (int row = 6; row <= worksheet.Dimension.End.Row; ++row)
             {
                 sb.Append("{");
-                for (int col = 3; col < worksheet.Dimension.End.Column; ++col)
+                for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
                     HeadInfo headInfo = headInfos[col];
                     if (headInfo.FieldAttribute == null)
