@@ -42,7 +42,9 @@ namespace ET
 					{
 						Thread.Sleep(1);
 						ThreadSynchronizationContext.Instance.Update();
-						Game.EventSystem.Update();
+						Game.Update();
+						Game.LateUpdate();
+						Game.FrameFinish();
 					}
 					catch (Exception e)
 					{

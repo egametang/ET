@@ -63,7 +63,6 @@ namespace ET
                     this.outrActorMessage.Add(messageAttribute.Opcode);
                 }
                 
-                /*
                 // 检查request response
                 if (typeof (IRequest).IsAssignableFrom(type))
                 {
@@ -83,7 +82,6 @@ namespace ET
                     ResponseTypeAttribute responseTypeAttribute = attrs[0] as ResponseTypeAttribute;
                     this.requestResponse.Add(type, responseTypeAttribute.Type);
                 }
-                */
             }
         }
 
@@ -106,7 +104,7 @@ namespace ET
         {
             if (!this.requestResponse.TryGetValue(request, out Type response))
             {
-                throw new Exception($"not found response type, request type: {request.GetType()}");
+                throw new Exception($"not found response type, request type: {request.GetType().Name}");
             }
             return response;
         }

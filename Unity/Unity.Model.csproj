@@ -101,7 +101,6 @@
      <Compile Include="Assets\Model\Core\Event\IEvent.cs" />
      <Compile Include="Assets\Model\Module\Message\SessionCallbackComponent.cs" />
      <Compile Include="Assets\Model\Module\Network\Circularbuffer.cs" />
-     <Compile Include="Assets\Model\Generate\OuterProtoMessage.cs" />
      <Compile Include="Assets\Model\Module\ActorLocation\IActorLocationMessage.cs" />
      <Compile Include="Assets\Model\Core\Async\AsyncMethodBuilderAttribute.cs" />
      <Compile Include="Assets\Model\Core\MultiDictionary.cs" />
@@ -173,7 +172,6 @@
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLock.cs" />
      <Compile Include="Assets\Model\Module\Message\ErrorCode.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\PacketParser.cs" />
-     <Compile Include="Assets\Model\Generate\OuterProtoOpcode.cs" />
      <Compile Include="Assets\Model\Core\Object\ProtoObject.cs" />
      <Compile Include="Assets\Model\Module\Message\ProtobufHelper.cs" />
      <Compile Include="Assets\Model\Generate\Config\StartSceneConfig.cs" />
@@ -199,6 +197,8 @@
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
+     <Compile Include="Assets\Model\Generate\Message\OuterOpcode.cs" />
+     <Compile Include="Assets\Model\Generate\Message\OuterMessage.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

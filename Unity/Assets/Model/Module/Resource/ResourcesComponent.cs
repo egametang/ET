@@ -489,7 +489,7 @@ namespace ET
 
                 if (isScene)
                 {
-                    p = Path.Combine(Application.dataPath, "../../AssetBundles/Windows_Scene/", assetBundleName);
+                    p = Path.Combine(Application.dataPath, "../SceneBundle/", assetBundleName);
                     if (File.Exists(p)) // 如果场景有预先打包
                     {
                         using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.CreateWithParent<AssetsBundleLoaderAsync>(this))
