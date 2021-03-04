@@ -16,7 +16,7 @@
 
     <ItemGroup>
       <None Update="libkcp.dylib">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="libkcp.so">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -76,6 +76,7 @@
      <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
      <Compile Include="Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs" />
      <Compile Include="Assets\Model\Unit\Unit.cs" />
+     <Compile Include="Assets\Model\Generate\Message\OuterMessage.cs" />
      <Compile Include="Assets\Model\Module\Message\MessageSerializeHelper.cs" />
      <Compile Include="Assets\Model\Core\Object\IUpdateSystem.cs" />
      <Compile Include="Assets\Model\Core\Object\EventSystem.cs" />
@@ -183,6 +184,7 @@
      <Compile Include="Assets\Model\Module\Network\KChannel.cs" />
      <Compile Include="Assets\Model\Core\Object\EntityEventAttribute.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TService.cs" />
+     <Compile Include="Assets\Model\Generate\Message\OuterOpcode.cs" />
      <Compile Include="Assets\Model\Core\MultiMapComponent.cs" />
      <Compile Include="Assets\Model\Helper\PositionHelper.cs" />
      <Compile Include="Assets\Model\Core\ListComponent.cs" />
@@ -197,8 +199,6 @@
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
-     <Compile Include="Assets\Model\Generate\Message\OuterOpcode.cs" />
-     <Compile Include="Assets\Model\Generate\Message\OuterMessage.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
