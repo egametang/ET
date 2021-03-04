@@ -4,6 +4,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <RootNamespace>ET</RootNamespace>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
     
     <PropertyGroup>

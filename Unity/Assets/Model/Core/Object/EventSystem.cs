@@ -617,12 +617,17 @@ namespace ET
 			{
 				try
 				{
+					using var list = ListComponent<ETTask>.Create();
+					
 					if (!(obj is AEvent<T> aEvent))
 					{
 						Log.Error($"event error: {obj.GetType().Name}");
 						continue;
 					}
-					await aEvent.Run(a);
+
+					list.List.Add(aEvent.Handle(a));
+
+					await ETTaskHelper.WaitAll(list.List);
 				}
 				catch (Exception e)
 				{

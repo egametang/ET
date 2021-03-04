@@ -2,7 +2,7 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        public override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(EventType.AppStart args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
