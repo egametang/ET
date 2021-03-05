@@ -7,12 +7,8 @@ namespace ET
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
 
-            // 下载ab包
-            //await BundleHelper.DownloadBundle("1111");
-
             // 加载配置
             Game.Scene.AddComponent<ResourcesComponent>();
-            
             ResourcesComponent.Instance.LoadBundle("config.unity3d");
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
@@ -21,7 +17,7 @@ namespace ET
             
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
-            Game.Scene.AddComponent<UIEventComponent>();
+            
             Game.Scene.AddComponent<NetThreadComponent>();
 
             ResourcesComponent.Instance.LoadBundle("unit.unity3d");
