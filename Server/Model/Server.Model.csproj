@@ -68,8 +68,20 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Config\AConfigComponent.cs">
       <Link>Module\Config\AConfigComponent.cs</Link>
     </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLock.cs">
+      <Link>Module\CoroutineLock\CoroutineLock.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs">
       <Link>Module\CoroutineLock\CoroutineLockComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueue.cs">
+      <Link>Module\CoroutineLock\CoroutineLockQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs">
+      <Link>Module\CoroutineLock\CoroutineLockQueueType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
+      <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
       <Link>Module\Message\MessagePool\ETModel\MessagePool.cs</Link>

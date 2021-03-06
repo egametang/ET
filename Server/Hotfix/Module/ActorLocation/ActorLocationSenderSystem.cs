@@ -31,7 +31,7 @@ namespace ETHotfix
     {
 		public static async ETTask GetActorId(this ActorLocationSender self)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(self.Id))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ActorLocationSender, self.Id))
 			{
 				self.ActorId = await Game.Scene.GetComponent<LocationProxyComponent>().Get(self.Id);
 			}
@@ -40,7 +40,7 @@ namespace ETHotfix
         private static async ETTask<IActorResponse> Run(this ActorLocationSender self, IActorRequest iActorRequest)
         {
             long instanceId = self.InstanceId;
-            using (await CoroutineLockComponent.Instance.Wait(self.Id))
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ActorLocationSender, self.Id))
             {
                 if (self.InstanceId != instanceId)
                 {

@@ -52,7 +52,7 @@ namespace ETModel
 
 		public async ETTask Add(long key, long instanceId)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(key + (int)AppType.Location))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
 			{
 				this.locations[key] = instanceId;
 				Log.Info($"location add key: {key} instanceId: {instanceId}");
@@ -61,7 +61,7 @@ namespace ETModel
 
 		public async ETTask Remove(long key)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(key + (int)AppType.Location))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
 			{
 				this.locations.Remove(key);
 				Log.Info($"location remove key: {key}");
@@ -70,7 +70,7 @@ namespace ETModel
 
 		public async ETTask<long> Get(long key)
 		{
-			using (await CoroutineLockComponent.Instance.Wait(key + (int)AppType.Location))
+			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
 			{
 				this.locations.TryGetValue(key, out long instanceId);
 				Log.Info($"location get key: {key} {instanceId}");
@@ -93,7 +93,7 @@ namespace ETModel
 				return;
 			}
 			
-			CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(key + (int)AppType.Location);
+			CoroutineLock coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key);
 
 			LockInfo lockInfo = ComponentFactory.Create<LockInfo, long, CoroutineLock>(instanceId, coroutineLock);
 			
