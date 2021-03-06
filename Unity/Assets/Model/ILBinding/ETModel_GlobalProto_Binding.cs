@@ -26,6 +26,7 @@ namespace ILRuntime.Runtime.Generated
             field = type.GetField("Address", flag);
             app.RegisterCLRFieldGetter(field, get_Address_0);
             app.RegisterCLRFieldSetter(field, set_Address_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_Address_0, AssignFromStack_Address_0);
 
 
         }
@@ -36,10 +37,26 @@ namespace ILRuntime.Runtime.Generated
         {
             return ((ETModel.GlobalProto)o).Address;
         }
+
+        static StackObject* CopyToStack_Address_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((ETModel.GlobalProto)o).Address;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_Address_0(ref object o, object v)
         {
             ((ETModel.GlobalProto)o).Address = (System.String)v;
         }
+
+        static StackObject* AssignFromStack_Address_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.String @Address = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((ETModel.GlobalProto)o).Address = @Address;
+            return ptr_of_this_method;
+        }
+
 
 
     }

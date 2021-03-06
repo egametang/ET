@@ -26,6 +26,7 @@ namespace ILRuntime.Runtime.Generated
             field = type.GetField("IsILRuntime", flag);
             app.RegisterCLRFieldGetter(field, get_IsILRuntime_0);
             app.RegisterCLRFieldSetter(field, set_IsILRuntime_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_IsILRuntime_0, AssignFromStack_IsILRuntime_0);
 
 
         }
@@ -36,10 +37,28 @@ namespace ILRuntime.Runtime.Generated
         {
             return ETModel.Define.IsILRuntime;
         }
+
+        static StackObject* CopyToStack_IsILRuntime_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ETModel.Define.IsILRuntime;
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method ? 1 : 0;
+            return __ret + 1;
+        }
+
         static void set_IsILRuntime_0(ref object o, object v)
         {
             ETModel.Define.IsILRuntime = (System.Boolean)v;
         }
+
+        static StackObject* AssignFromStack_IsILRuntime_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Boolean @IsILRuntime = ptr_of_this_method->Value == 1;
+            ETModel.Define.IsILRuntime = @IsILRuntime;
+            return ptr_of_this_method;
+        }
+
 
 
     }
