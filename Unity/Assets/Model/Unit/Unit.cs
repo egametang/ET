@@ -19,32 +19,29 @@ namespace ET
 			}
 		}
 		
-		private Vector3 position;
-		
 		public Vector3 Position
 		{
 			get
 			{
-				return position;
+				return GameObject.transform.position;
 			}
 			set
 			{
-				this.position = value;
+				GameObject.transform.position = value;
 			}
 		}
-
-		private Quaternion rotation;
 
 		public Quaternion Rotation
 		{
 			get
 			{
-				return rotation;
+				return GameObject.transform.rotation;
 			}
 			set
 			{
-				this.rotation = value;
+				GameObject.transform.rotation = value;
 			}
 		}
+
 	}
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace ET
@@ -20,7 +21,7 @@ namespace ET
                     self.BroadcastPath(path, i, 3);
                 }
                 Vector3 v3 = path[i];
-                //await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationToken);
+                await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationToken);
             }
             await ETTask.CompletedTask;
         }
@@ -35,15 +36,20 @@ namespace ET
             self.Target = target;
 
             Unit unit = self.GetParent<Unit>();
-            unit.Position = target;
 
-            M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
-            m2CPathfindingResult.X = unit.Position.x;
-            m2CPathfindingResult.Y = unit.Position.y;
-            m2CPathfindingResult.Z = unit.Position.z;
-            m2CPathfindingResult.Id = unit.Id;
-            MessageHelper.Broadcast(unit, m2CPathfindingResult);
-            await ETTask.CompletedTask;
+            RecastPathComponent recastPathComponent = self.Domain.GetComponent<RecastPathComponent>();
+            RecastPath recastPath = EntityFactory.Create<RecastPath>((Entity)self.Domain);
+            recastPath.StartPos = unit.Position;
+            recastPath.EndPos = new Vector3(target.x, target.y, target.z);
+            self.RecastPath = recastPath;
+            //TODO 因为目前阶段只有一张地图，所以默认mapId为10001
+            recastPathComponent.SearchPath(10001, self.RecastPath);
+            //Log.Debug($"------start Pos: {self.RecastPath.StartPos}\n------end Pos: {self.RecastPath.EndPos}\n------find result: {self.RecastPath.Results.ListToString()}");
+
+            self.CancellationToken?.Cancel();
+            self.CancellationToken = new ETCancellationToken();
+            await self.MoveAsync(self.RecastPath.Results);
+            self.CancellationToken = null;
         }
 
         // 从index找接下来3个点，广播
@@ -56,7 +62,19 @@ namespace ET
             m2CPathfindingResult.Y = unitPos.y;
             m2CPathfindingResult.Z = unitPos.z;
             m2CPathfindingResult.Id = unit.Id;
-            MessageHelper.Broadcast(unit, m2CPathfindingResult);
+
+            for (int i = 0; i < offset; ++i)
+            {
+                if (index + i >= self.RecastPath.Results.Count)
+                {
+                    break;
+                }
+                Vector3 v = self.RecastPath.Results[index + i];
+                m2CPathfindingResult.Xs.Add(v.x);
+                m2CPathfindingResult.Ys.Add(v.y);
+                m2CPathfindingResult.Zs.Add(v.z);
+            }
+            MessageHelper.Broadcast(self.GetParent<Unit>(), m2CPathfindingResult) ;
         }
     }
 }
