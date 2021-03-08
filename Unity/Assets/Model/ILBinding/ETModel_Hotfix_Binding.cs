@@ -30,12 +30,15 @@ namespace ILRuntime.Runtime.Generated
             field = type.GetField("Update", flag);
             app.RegisterCLRFieldGetter(field, get_Update_0);
             app.RegisterCLRFieldSetter(field, set_Update_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_Update_0, AssignFromStack_Update_0);
             field = type.GetField("LateUpdate", flag);
             app.RegisterCLRFieldGetter(field, get_LateUpdate_1);
             app.RegisterCLRFieldSetter(field, set_LateUpdate_1);
+            app.RegisterCLRFieldBinding(field, CopyToStack_LateUpdate_1, AssignFromStack_LateUpdate_1);
             field = type.GetField("OnApplicationQuit", flag);
             app.RegisterCLRFieldGetter(field, get_OnApplicationQuit_2);
             app.RegisterCLRFieldSetter(field, set_OnApplicationQuit_2);
+            app.RegisterCLRFieldBinding(field, CopyToStack_OnApplicationQuit_2, AssignFromStack_OnApplicationQuit_2);
 
 
         }
@@ -61,26 +64,74 @@ namespace ILRuntime.Runtime.Generated
         {
             return ((ETModel.Hotfix)o).Update;
         }
+
+        static StackObject* CopyToStack_Update_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((ETModel.Hotfix)o).Update;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_Update_0(ref object o, object v)
         {
             ((ETModel.Hotfix)o).Update = (System.Action)v;
         }
+
+        static StackObject* AssignFromStack_Update_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Action @Update = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((ETModel.Hotfix)o).Update = @Update;
+            return ptr_of_this_method;
+        }
+
         static object get_LateUpdate_1(ref object o)
         {
             return ((ETModel.Hotfix)o).LateUpdate;
         }
+
+        static StackObject* CopyToStack_LateUpdate_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((ETModel.Hotfix)o).LateUpdate;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_LateUpdate_1(ref object o, object v)
         {
             ((ETModel.Hotfix)o).LateUpdate = (System.Action)v;
         }
+
+        static StackObject* AssignFromStack_LateUpdate_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Action @LateUpdate = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((ETModel.Hotfix)o).LateUpdate = @LateUpdate;
+            return ptr_of_this_method;
+        }
+
         static object get_OnApplicationQuit_2(ref object o)
         {
             return ((ETModel.Hotfix)o).OnApplicationQuit;
         }
+
+        static StackObject* CopyToStack_OnApplicationQuit_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((ETModel.Hotfix)o).OnApplicationQuit;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_OnApplicationQuit_2(ref object o, object v)
         {
             ((ETModel.Hotfix)o).OnApplicationQuit = (System.Action)v;
         }
+
+        static StackObject* AssignFromStack_OnApplicationQuit_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Action @OnApplicationQuit = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((ETModel.Hotfix)o).OnApplicationQuit = @OnApplicationQuit;
+            return ptr_of_this_method;
+        }
+
 
 
     }

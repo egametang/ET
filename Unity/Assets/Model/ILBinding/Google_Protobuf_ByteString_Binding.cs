@@ -26,6 +26,7 @@ namespace ILRuntime.Runtime.Generated
             field = type.GetField("bytes", flag);
             app.RegisterCLRFieldGetter(field, get_bytes_0);
             app.RegisterCLRFieldSetter(field, set_bytes_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_bytes_0, AssignFromStack_bytes_0);
 
 
         }
@@ -36,10 +37,26 @@ namespace ILRuntime.Runtime.Generated
         {
             return ((Google.Protobuf.ByteString)o).bytes;
         }
+
+        static StackObject* CopyToStack_bytes_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((Google.Protobuf.ByteString)o).bytes;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_bytes_0(ref object o, object v)
         {
             ((Google.Protobuf.ByteString)o).bytes = (System.Byte[])v;
         }
+
+        static StackObject* AssignFromStack_bytes_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Byte[] @bytes = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((Google.Protobuf.ByteString)o).bytes = @bytes;
+            return ptr_of_this_method;
+        }
+
 
 
     }

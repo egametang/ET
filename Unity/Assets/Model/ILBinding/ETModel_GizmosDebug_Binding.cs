@@ -30,6 +30,7 @@ namespace ILRuntime.Runtime.Generated
             field = type.GetField("Path", flag);
             app.RegisterCLRFieldGetter(field, get_Path_0);
             app.RegisterCLRFieldSetter(field, set_Path_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_Path_0, AssignFromStack_Path_0);
 
 
         }
@@ -51,10 +52,26 @@ namespace ILRuntime.Runtime.Generated
         {
             return ((ETModel.GizmosDebug)o).Path;
         }
+
+        static StackObject* CopyToStack_Path_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((ETModel.GizmosDebug)o).Path;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
         static void set_Path_0(ref object o, object v)
         {
             ((ETModel.GizmosDebug)o).Path = (System.Collections.Generic.List<UnityEngine.Vector3>)v;
         }
+
+        static StackObject* AssignFromStack_Path_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Collections.Generic.List<UnityEngine.Vector3> @Path = (System.Collections.Generic.List<UnityEngine.Vector3>)typeof(System.Collections.Generic.List<UnityEngine.Vector3>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((ETModel.GizmosDebug)o).Path = @Path;
+            return ptr_of_this_method;
+        }
+
 
 
     }

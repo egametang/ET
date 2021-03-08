@@ -53,7 +53,7 @@ namespace ETModel
 
 			this.dllStream = new MemoryStream(assBytes);
 			this.pdbStream = new MemoryStream(pdbBytes);
-			this.appDomain.LoadAssembly(this.dllStream, this.pdbStream, new Mono.Cecil.Pdb.PdbReaderProvider());
+			this.appDomain.LoadAssembly(this.dllStream, this.pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
 
 			this.start = new ILStaticMethod(this.appDomain, "ETHotfix.Init", "Start", 0);
 			

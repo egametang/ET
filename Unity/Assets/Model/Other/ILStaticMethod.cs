@@ -1,14 +1,16 @@
-﻿using ILRuntime.CLR.Method;
+﻿
+using ILRuntime.CLR.Method;
+using ILRuntime.Runtime.Enviorment;
 
 namespace ETModel
 {
 	public class ILStaticMethod : IStaticMethod
 	{
-		private readonly ILRuntime.Runtime.Enviorment.AppDomain appDomain;
+		private readonly AppDomain appDomain;
 		private readonly IMethod method;
 		private readonly object[] param;
 
-		public ILStaticMethod(ILRuntime.Runtime.Enviorment.AppDomain appDomain, string typeName, string methodName, int paramsCount)
+		public ILStaticMethod(AppDomain appDomain, string typeName, string methodName, int paramsCount)
 		{
 			this.appDomain = appDomain;
 			this.method = appDomain.GetType(typeName).GetMethod(methodName, paramsCount);
