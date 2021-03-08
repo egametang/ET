@@ -41,7 +41,6 @@ namespace ET
 					try
 					{
 						Thread.Sleep(1);
-						ThreadSynchronizationContext.Instance.Update();
 						Game.Update();
 						Game.LateUpdate();
 						Game.FrameFinish();
