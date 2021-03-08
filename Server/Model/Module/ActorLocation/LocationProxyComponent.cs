@@ -1,21 +1,19 @@
-﻿using System.Net;
-
-namespace ET
+﻿namespace ET
 {
-	public class LocationProxyComponent : Entity
-	{
-		public static LocationProxyComponent Instance;
+    public class LocationProxyComponent: Entity
+    {
+        public static LocationProxyComponent Instance;
 
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			
-			base.Dispose();
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
 
-			Instance = null;
-		}
-	}
+            base.Dispose();
+
+            Instance = null;
+        }
+    }
 }

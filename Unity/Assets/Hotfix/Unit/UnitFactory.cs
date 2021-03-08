@@ -12,7 +12,7 @@ namespace ET
 
 	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
 	        
-	        UnitComponent unitComponent = Game.Scene.Get(0).GetComponent<UnitComponent>();
+	        UnitComponent unitComponent = Game.Scene.Get(1).GetComponent<UnitComponent>();
             unitComponent.Add(unit);
             return unit;
         }

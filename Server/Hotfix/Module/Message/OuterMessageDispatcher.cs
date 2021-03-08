@@ -1,11 +1,26 @@
 ﻿
 
+using System;
+using System.IO;
+
 namespace ET
 {
 	public class OuterMessageDispatcher: IMessageDispatcher
 	{
-		public void Dispatch(Session session, ushort opcode, object message)
+		public void Dispatch(Session session, MemoryStream memoryStream)
 		{
+			ushort opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.KcpOpcodeIndex);
+			Type type = OpcodeTypeComponent.Instance.GetType(opcode);
+			object message = MessageSerializeHelper.DeserializeFrom(opcode, type, memoryStream);
+
+			if (message is IResponse response)
+			{
+				session.OnRead(opcode, response);
+				return;
+			}
+
+			OpcodeHelper.LogMsg(session.DomainZone(), opcode, message);
+			
 			DispatchAsync(session, opcode, message).Coroutine();
 		}
 		
@@ -46,7 +61,7 @@ namespace ET
 				default:
 				{
 					// 非Actor消息
-					MessageDispatcherComponent.Instace.Handle(session, new MessageInfo(opcode, message));
+					MessageDispatcherComponent.Instance.Handle(session, opcode, message);
 					break;
 				}
 			}

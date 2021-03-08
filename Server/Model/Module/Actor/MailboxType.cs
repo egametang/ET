@@ -1,9 +1,9 @@
 ﻿namespace ET
 {
-	public enum MailboxType
-	{
-		MessageDispatcher,
-		UnOrderMessageDispatcher,
-		GateSession,
-	}
+    public enum MailboxType
+    {
+        MessageDispatcher,
+        UnOrderMessageDispatcher,
+        GateSession,
+    }
 }

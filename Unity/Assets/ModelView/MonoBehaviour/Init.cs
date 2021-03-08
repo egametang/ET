@@ -12,7 +12,7 @@ namespace ET
 		{
 			try
 			{
-				SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
+				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 				
 				DontDestroyOnLoad(gameObject);
 
@@ -28,6 +28,10 @@ namespace ET
 					Game.EventSystem.Add(assembly);	
 				}
 				
+				ProtobufHelper.Init();
+				
+				Game.Options = new Options();
+				
 				Game.EventSystem.Publish(new EventType.AppStart());
 			}
 			catch (Exception e)
@@ -38,7 +42,7 @@ namespace ET
 
 		private void Update()
 		{
-			OneThreadSynchronizationContext.Instance.Update();
+			ThreadSynchronizationContext.Instance.Update();
 			Game.EventSystem.Update();
 		}
 

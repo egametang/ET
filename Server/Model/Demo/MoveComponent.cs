@@ -25,7 +25,7 @@ namespace ET
         {
             Unit unit = this.GetParent<Unit>();
             this.StartPos = unit.Position;
-            this.StartTime = TimeHelper.Now();
+            this.StartTime = TimeHelper.ClientNow();
             float distance = (this.Target - this.StartPos).magnitude;
             if (Math.Abs(distance) < 0.1f)
             {
@@ -37,9 +37,9 @@ namespace ET
             TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
             
             // 协程如果取消，将算出玩家的真实位置，赋值给玩家
-            cancellationToken.Register(() =>
+            cancellationToken.Add(() =>
             {
-                long timeNow = TimeHelper.Now();
+                long timeNow = TimeHelper.ClientNow();
                 if (timeNow - this.StartTime >= this.needTime)
                 {
                     unit.Position = this.Target;
@@ -55,7 +55,7 @@ namespace ET
             {
                 await timerComponent.WaitAsync(50, cancellationToken);
                 
-                long timeNow = TimeHelper.Now();
+                long timeNow = TimeHelper.ClientNow();
                 
                 if (timeNow - this.StartTime >= this.needTime)
                 {

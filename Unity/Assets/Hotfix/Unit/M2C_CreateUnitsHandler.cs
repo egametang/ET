@@ -6,9 +6,9 @@ namespace ET
 	[MessageHandler]
 	public class M2C_CreateUnitsHandler : AMHandler<M2C_CreateUnits>
 	{
-		protected override async ETTask Run(Session session, M2C_CreateUnits message)
+		protected override async ETVoid Run(Session session, M2C_CreateUnits message)
 		{	
-			UnitComponent unitComponent = Game.Scene.Get(0).GetComponent<UnitComponent>();
+			UnitComponent unitComponent = Game.Scene.Get(1).GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)
 			{

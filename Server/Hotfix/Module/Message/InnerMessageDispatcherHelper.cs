@@ -1,75 +1,113 @@
-﻿﻿
+﻿using System;
+using System.IO;
 
- namespace ET
+namespace ET
 {
     public static class InnerMessageDispatcherHelper
     {
-        public static async ETVoid HandleIActorResponse(Session session, IActorResponse iActorResponse)
-		{
-			ActorMessageSenderComponent.Instance.RunMessage(iActorResponse);
-		}
+        public static void HandleIActorResponse(ushort opcode, long actorId, IActorResponse iActorResponse)
+        {
+            ActorMessageSenderComponent.Instance.RunMessage(actorId, iActorResponse);
+        }
 
-		public static async ETVoid HandleIActorRequest(Session session, IActorRequest iActorRequest)
-		{
-			InstanceIdStruct instanceIdStruct = new InstanceIdStruct(iActorRequest.ActorId);
-			int replyId = instanceIdStruct.Process;
-			instanceIdStruct.Process = IdGenerater.Process;
-			iActorRequest.ActorId = instanceIdStruct.ToLong();
+        public static void HandleIActorRequest(ushort opcode, long actorId, IActorRequest iActorRequest, Action<IActorResponse> reply)
+        {
+            Entity entity = Game.EventSystem.Get(actorId);
+            if (entity == null)
+            {
+                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
+                return;
+            }
 
-			string address = StartProcessConfigCategory.Instance.Get(replyId).InnerAddress;
-			Session ss = NetInnerComponent.Instance.Get(address);
-			Entity entity = Game.EventSystem.Get(iActorRequest.ActorId);
-			if (entity == null)
-			{
-				Log.Warning($"not found actor: {MongoHelper.ToJson(iActorRequest)}");
-				ActorResponse response = new ActorResponse
-				{
-					Error = ErrorCode.ERR_NotFoundActor,
-					RpcId = iActorRequest.RpcId,
-				};
-				ss.Reply(response);
-				return;
-			}
-	
-			MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
-			if (mailBoxComponent == null)
-			{
-				ActorResponse response = new ActorResponse
-				{
-					Error = ErrorCode.ERR_ActorNoMailBoxComponent,
-					RpcId = iActorRequest.RpcId,
-				};
-				ss.Reply(response);
-				Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {iActorRequest}");
-				return;
-			}
-			
-			await mailBoxComponent.Handle(ss, iActorRequest);
-		}
+            MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+            if (mailBoxComponent == null)
+            {
+                FailResponse(iActorRequest, ErrorCode.ERR_ActorNoMailBoxComponent, reply);
+                return;
+            }
 
-		public static async ETVoid HandleIActorMessage(Session session, IActorMessage iActorMessage)
-		{
-			InstanceIdStruct instanceIdStruct = new InstanceIdStruct(iActorMessage.ActorId);
-			int replyId = instanceIdStruct.Process;
-			instanceIdStruct.Process = IdGenerater.Process;
-			iActorMessage.ActorId = instanceIdStruct.ToLong();
-			
-			Entity entity = Game.EventSystem.Get(iActorMessage.ActorId);
-			if (entity == null)
-			{
-				Log.Error($"not found actor: {MongoHelper.ToJson(iActorMessage)}");
-				return;
-			}
-	
-			MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
-			if (mailBoxComponent == null)
-			{
-				Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {iActorMessage}");
-				return;
-			}
-			
-			Session ss = NetInnerComponent.Instance.Get(replyId);
-			await mailBoxComponent.Handle(ss, iActorMessage);
-		}
+            switch (mailBoxComponent.MailboxType)
+            {
+                case MailboxType.MessageDispatcher:
+                {
+                    async ETVoid MessageDispatcherHandler()
+                    {
+                        long instanceId = entity.InstanceId;
+                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                        {
+                            if (entity.InstanceId != instanceId)
+                            {
+                                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
+                                return;
+                            }
+
+                            await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorRequest, reply);
+                        }
+                    }
+                    
+                    MessageDispatcherHandler().Coroutine();
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    ActorMessageDispatcherComponent.Instance.Handle(entity, iActorRequest, reply).Coroutine();
+                    break;
+                }
+            }
+        }
+
+        private static void FailResponse(IActorRequest iActorRequest, int error, Action<IActorResponse> reply)
+        {
+            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, error);
+            reply.Invoke(response);
+        }
+
+
+        public static void HandleIActorMessage(ushort opcode, long actorId, IActorMessage iActorMessage)
+        {
+            OpcodeHelper.LogMsg(opcode, actorId, iActorMessage);
+
+            Entity entity = Game.EventSystem.Get(actorId);
+            if (entity == null)
+            {
+                Log.Error($"not found actor: {actorId} {iActorMessage}");
+                return;
+            }
+
+            MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
+            if (mailBoxComponent == null)
+            {
+                Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {iActorMessage}");
+                return;
+            }
+
+            switch (mailBoxComponent.MailboxType)
+            {
+                
+                case MailboxType.MessageDispatcher:
+                {
+                    async ETVoid MessageDispatcherHandler()
+                    {
+                        long instanceId = entity.InstanceId;
+                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, actorId))
+                        {
+                            if (entity.InstanceId != instanceId)
+                            {
+                                return;
+                            }
+
+                            await ActorMessageDispatcherComponent.Instance.Handle(entity, iActorMessage, null);
+                        }
+                    }
+                    MessageDispatcherHandler().Coroutine();
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    ActorMessageDispatcherComponent.Instance.Handle(entity, iActorMessage, null).Coroutine();
+                    break;
+                }
+            }
+        }
     }
 }
