@@ -21,12 +21,12 @@ namespace ET
 
         public static bool IsOuterMessage(ushort opcode)
         {
-            return opcode < 10000;
+            return opcode >= 20000;
         }
 
         public static bool IsInnerMessage(ushort opcode)
         {
-            return opcode >= 10000;
+            return opcode < 20000;
         }
 
         public static void LogMsg(int zone, ushort opcode, object message)
