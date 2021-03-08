@@ -1,7 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>ET</RootNamespace>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -14,34 +16,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="MongoDBDriver\MongoDB.Driver.Core\obj\**" />
-      <None Remove="Google.Protobuf\CodedOutputStream.cs.meta" />
-      <None Remove="Google.Protobuf\FieldCodec.cs.meta" />
-      <None Remove="Google.Protobuf\CodedOutputStream.ComputeSize.cs.meta" />
-      <None Remove="Google.Protobuf\CodedInputStream.cs.meta" />
-      <None Remove="Google.Protobuf\ByteString.cs.meta" />
-      <None Remove="Google.Protobuf\ByteArray.cs.meta" />
-      <None Remove="Google.Protobuf\ICustomDiagnosticMessage.cs.meta" />
-      <None Remove="Google.Protobuf\IMessage.cs.meta" />
-      <None Remove="Google.Protobuf\InvalidProtocolBufferException.cs.meta" />
-      <None Remove="Google.Protobuf\LimitedInputStream.cs.meta" />
-      <None Remove="Google.Protobuf\MessageExtensions.cs.meta" />
-      <None Remove="Google.Protobuf\MessageParser.cs.meta" />
-      <None Remove="Google.Protobuf\PropertyInfoExtensions.cs.meta" />
-      <None Remove="Google.Protobuf\ProtoPreconditions.cs.meta" />
-      <None Remove="Google.Protobuf\RepeatedField.cs.meta" />
-      <None Remove="Google.Protobuf\StreamExtensions.cs.meta" />
-      <None Remove="Google.Protobuf\WireFormat.cs.meta" />
       <None Update="libkcp.dylib">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="libkcp.so">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -49,7 +25,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="DnsClient" Version="1.0.7" />
+      <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\**\*.cs">
+        <Link>protobuf-net\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      </Compile>
     </ItemGroup>
 
 </Project>

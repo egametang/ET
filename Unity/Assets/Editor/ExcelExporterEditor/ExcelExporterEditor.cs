@@ -234,13 +234,13 @@ namespace ET
             using (FileStream txt = new FileStream(exportPath, FileMode.Create))
             using (StreamWriter sw = new StreamWriter(txt))
             {
-                sw.WriteLine('[');
+                sw.WriteLine("{");
                 for (int i = 0; i < xssfWorkbook.NumberOfSheets; ++i)
                 {
                     ISheet sheet = xssfWorkbook.GetSheetAt(i);
                     ExportSheet(sheet, sw);
                 }
-                sw.WriteLine(']');
+                sw.WriteLine("}");
             }
 
             Log.Info($"{protoName}导表完成");
@@ -305,14 +305,14 @@ namespace ET
                     if (fieldName == "Id" || fieldName == "_id")
                     {
                         fieldName = "_id";
-                        sb.Append($"[{fieldValue}, {{");
+                        sb.Append("{\"" + fieldValue + "\":{{");
                     }
 
                     string fieldType = cellInfos[j].Type;
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                sb.Append("}],");
+                sb.Append("}},");
                 sw.WriteLine(sb.ToString());
             }
         }
@@ -343,17 +343,46 @@ namespace ET
 
         private static string GetCellString(ISheet sheet, int i, int j)
         {
-            return sheet.GetRow(i)?.GetCell(j)?.ToString() ?? "";
+            IRow _irow = sheet.GetRow(i);
+            if(_irow != null)
+            {
+               return GetCellString(_irow, j);
+            }
+            return "";
         }
 
         private static string GetCellString(IRow row, int i)
         {
-            return row?.GetCell(i)?.ToString() ?? "";
+            ICell _icell = row.GetCell(i);
+            if (_icell != null)
+            {
+                return GetCellString(_icell); ;
+            }
+            return "";
         }
 
         private static string GetCellString(ICell cell)
         {
-            return cell?.ToString() ?? "";
+            if (cell != null)
+            {
+                if(cell.CellType == CellType.Numeric || (cell.CellType == CellType.Formula && cell.CachedFormulaResultType == CellType.Numeric))
+                {
+                    return cell.NumericCellValue.ToString();
+                }
+                else if (cell.CellType == CellType.String || (cell.CellType == CellType.Formula && cell.CachedFormulaResultType == CellType.String))
+                {
+                    return cell.StringCellValue.ToString();
+                }
+                else if (cell.CellType == CellType.Boolean || (cell.CellType == CellType.Formula && cell.CachedFormulaResultType == CellType.Boolean))
+                {
+                    return cell.BooleanCellValue.ToString();
+                }
+                else
+                {
+                    return cell.ToString();
+                }
+            }
+            return "";
         }
     }
 }

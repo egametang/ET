@@ -1,38 +1,38 @@
-﻿using System;
+using System;
 
 namespace ET
 {
-	public abstract class AMHandler<Message> : IMHandler where Message: class
-	{
-		protected abstract ETTask Run(Session session, Message message);
+    [MessageHandler]
+    public abstract class AMHandler<Message>: IMHandler where Message : class
+    {
+        protected abstract ETVoid Run(Session session, Message message);
 
-		public async ETVoid Handle(Session session, object msg)
-		{
-			Message message = msg as Message;
-			if (message == null)
-			{
-				Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof(Message).Name}");
-				return;
-			}
-			if (session.IsDisposed)
-			{
-				Log.Error($"session disconnect {msg}");
-				return;
-			}
+        public void Handle(Session session, object msg)
+        {
+            Message message = msg as Message;
+            if (message == null)
+            {
+                Log.Error($"消息类型转换错误: {msg.GetType().Name} to {typeof (Message).Name}");
+                return;
+            }
 
-			try
-			{
-				await this.Run(session, message);
-			}
-			catch (Exception e)
-			{
-				Log.Error(e);
-			}
-		}
+            if (session.IsDisposed)
+            {
+                Log.Error($"session disconnect {msg}");
+                return;
+            }
 
-		public Type GetMessageType()
-		{
-			return typeof(Message);
-		}
-	}
+            this.Run(session, message).Coroutine();
+        }
+
+        public Type GetMessageType()
+        {
+            return typeof (Message);
+        }
+
+        public Type GetResponseType()
+        {
+            return null;
+        }
+    }
 }

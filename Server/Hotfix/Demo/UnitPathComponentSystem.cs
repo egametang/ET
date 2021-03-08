@@ -22,6 +22,7 @@ namespace ET
                 Vector3 v3 = path[i];
                 //await self.Parent.GetComponent<MoveComponent>().MoveToAsync(v3, self.CancellationToken);
             }
+            await ETTask.CompletedTask;
         }
         
         public static async ETVoid MoveTo(this UnitPathComponent self, Vector3 target)
@@ -42,6 +43,7 @@ namespace ET
             m2CPathfindingResult.Z = unit.Position.z;
             m2CPathfindingResult.Id = unit.Id;
             MessageHelper.Broadcast(unit, m2CPathfindingResult);
+            await ETTask.CompletedTask;
         }
 
         // 从index找接下来3个点，广播

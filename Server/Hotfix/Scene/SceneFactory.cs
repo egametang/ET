@@ -1,17 +1,20 @@
 
 
+using System.Net;
+
 namespace ET
 {
     public static class SceneFactory
     {
         public static async ETTask<Scene> Create(Entity parent, string name, SceneType sceneType)
         {
-            long id = IdGenerater.GenerateId();
+            long id = IdGenerater.Instance.GenerateId();
             return await Create(parent, id, parent.DomainZone(), name, sceneType);
         }
         
         public static async ETTask<Scene> Create(Entity parent, long id, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
+            await ETTask.CompletedTask;
             Scene scene = EntitySceneFactory.CreateScene(id, zone, sceneType, name);
             scene.Parent = parent;
 
@@ -20,10 +23,10 @@ namespace ET
             switch (scene.SceneType)
             {
                 case SceneType.Realm:
-                    scene.AddComponent<NetOuterComponent, string>(startSceneConfig.OuterAddress);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
                     break;
                 case SceneType.Gate:
-                    scene.AddComponent<NetOuterComponent, string>(startSceneConfig.OuterAddress);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
                     scene.AddComponent<PlayerComponent>();
                     scene.AddComponent<GateSessionKeyComponent>();
                     break;

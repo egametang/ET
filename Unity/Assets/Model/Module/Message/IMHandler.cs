@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 
 namespace ET
 {
-	public interface IMHandler
-	{
-		ETVoid Handle(Session session, object message);
-		Type GetMessageType();
-	}
+    public interface IMHandler
+    {
+        void Handle(Session session, object message);
+        Type GetMessageType();
+
+        Type GetResponseType();
+    }
 }
