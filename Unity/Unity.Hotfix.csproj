@@ -54,11 +54,13 @@
   <ItemGroup>
      <Compile Include="Assets\Hotfix\Module\Message\NetThreadComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Scene\LoginHelper.cs" />
+     <Compile Include="Assets\Hotfix\Unit\MoveComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
      <Compile Include="Assets\Hotfix\Unit\M2C_CreateUnitsHandler.cs" />
      <Compile Include="Assets\Hotfix\Module\Config\ConfigComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\SessionIdleCheckerComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\NetKcpComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Unit\UnitPathComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\OuterMessageDispatcher.cs" />
      <Compile Include="Assets\Hotfix\Move\M2C_PathfindingResultHandler.cs" />

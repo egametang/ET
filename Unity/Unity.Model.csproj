@@ -191,6 +191,7 @@
      <Compile Include="Assets\Model\Core\Log\NLogger.cs" />
      <Compile Include="Assets\Model\Core\Async\ETTaskCompletionSource.cs" />
      <Compile Include="Assets\Model\Core\Helper\StringHelper.cs" />
+     <Compile Include="Assets\Model\Unit\MoveComponent.cs" />
      <Compile Include="Assets\Model\Module\Message\MessagePool.cs" />
      <Compile Include="Assets\Model\Module\Config\IConfig.cs" />
      <Compile Include="Assets\Model\Module\Message\ResponseTypeAttribute.cs" />
@@ -199,6 +200,7 @@
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
+     <Compile Include="Assets\Model\Unit\UnitPathComponent.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

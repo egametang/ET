@@ -16,15 +16,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Update="libkcp.dylib">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-        <None Update="libkcp.so">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
-    <ItemGroup>
         <None Include="..\..\RecastNavMesh\RecastNavDll.dll">
             <Link>RecastNavDll.dll</Link>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -39,6 +30,17 @@
         <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\**\*.cs">
             <Link>protobuf-net\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\Unity\Assets\Plugins\MacOS\libkcp.dylib">
+        <Link>libkcp.dylib</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\..\Unity\Assets\Plugins\x86_64\kcp.dll">
+        <Link>kcp.dll</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

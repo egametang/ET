@@ -268,7 +268,7 @@ namespace ET
                     // https://bbs.csdn.net/topics/392618929?list=676344
                     polyCount = recast_getcountpoly(id);
                     IntPtr polys = recast_getpathpoly(id);
-                    if (polys != null && polys.ToPointer() != null)
+                    if (polys.ToPointer() != null)
                     {
                         int[] arrPolys = new int[polyCount];
                         Marshal.Copy(polys, arrPolys, 0, polyCount);
