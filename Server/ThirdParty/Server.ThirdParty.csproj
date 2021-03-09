@@ -7,31 +7,38 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DefineConstants>TRACE;FEAT_SAFE</DefineConstants>
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DefineConstants>TRACE;SERVER;FEAT_SAFE</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DefineConstants>TRACE;FEAT_SAFE</DefineConstants>
+        <DefineConstants>TRACE;SERVER;FEAT_SAFE</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="libkcp.dylib">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="libkcp.so">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="libkcp.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="libkcp.so">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+        <None Include="..\..\RecastNavMesh\RecastNavDll.dll">
+            <Link>RecastNavDll.dll</Link>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\**\*.cs">
-        <Link>protobuf-net\%(RecursiveDir)%(FileName)%(Extension)</Link>
-      </Compile>
+        <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\**\*.cs">
+            <Link>protobuf-net\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
     </ItemGroup>
 
 </Project>
