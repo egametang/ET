@@ -58,6 +58,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\BufferPool.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ServiceModel\XmlProtoSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ExtensibleUtil.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonReader.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoConverterAttribute.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\DiscriminatedUnion.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\DecimalSerializer.cs" />
@@ -68,6 +69,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\RuntimeTypeModel.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\SByteSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\ParseableSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\ParserToken.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\TupleSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\MemberSpecifiedDecorator.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\TagDecorator.cs" />
@@ -77,6 +79,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\TypeFormatEventArgs.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\CompiledSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoIgnoreAttribute.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonMapper.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoContractAttribute.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ImplicitFields.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\DefaultValueDecorator.cs" />
@@ -90,6 +93,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\SubItemSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Properties\AssemblyInfo.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\StringSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonWriter.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\SystemTypeSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\BufferExtension.cs" />
@@ -99,8 +103,10 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\NetObjectCache.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoReader.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\Int32Serializer.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Lexer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\Int64Serializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\CallbackSet.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Extensions.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\IProtoTypeSerializer.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Compiler\CompilerDelegates.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoMemberAttribute.cs" />
@@ -111,8 +117,11 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\PrefixStyle.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\ImmutableCollectionDecorator.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\BooleanSerializer.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonException.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonData.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Compiler\Local.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\UriDecorator.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\UnityTypeBindings.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Compiler\CompilerContext.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\PropertyDecorator.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\SingleSerializer.cs" />
@@ -125,9 +134,11 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\TypeModel.InputOutput.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\BclHelpers.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\JsonMockWrapper.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\KeyValuePairProxy.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoWriter.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\IProtoInputT.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\Netstandard15Polyfill.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\GlobalSuppressions.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\DataFormat.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoMapAttribute.cs" />
@@ -139,6 +150,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\BasicList.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\ProtoSyntax.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Helpers.cs" />
+     <Compile Include="Assets\ThirdParty\LitJson\IJsonWrapper.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\NullDecorator.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\Meta\AttributeMap.cs" />
@@ -395,23 +407,14 @@
  <Reference Include="NPOI.OpenXml4Net">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/Editor/npoi/NPOI.OpenXml4Net.dll</HintPath>
  </Reference>
- <Reference Include="Pathfinding.Ionic.Zip.Reduced">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.ClipperLib">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
+ <Reference Include="CommandLine">
+ <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Tracker.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.Poly2Tri">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
- </Reference>
- <Reference Include="CommandLine">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>

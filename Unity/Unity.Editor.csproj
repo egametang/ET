@@ -52,6 +52,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\RecastNavDataExporter\NavMeshExporter.cs" />
      <Compile Include="Assets\Editor\BuildEditor\BuildHelper.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\FloatTypeDrawer.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\Vector2TypeDrawer.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets\Editor\ReferenceCollectorEditor\ReferenceCollectorEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\BuildEditor.cs" />
      <Compile Include="Assets\Editor\RsyncEditor\RsyncEditor.cs" />
+     <Compile Include="Assets\Editor\Helper\MongoHelper.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\ComponentViewEditor.cs" />
      <Compile Include="Assets\Editor\BuildEditor\ETBuildSettings.cs" />
      <Compile Include="Assets\Editor\ComponentViewEditor\TypeDrawer\CharTypeDrawer.cs" />
@@ -332,23 +334,14 @@
  <Reference Include="NPOI.OpenXml4Net">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/Editor/npoi/NPOI.OpenXml4Net.dll</HintPath>
  </Reference>
- <Reference Include="Pathfinding.Ionic.Zip.Reduced">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.ClipperLib">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
+ <Reference Include="CommandLine">
+ <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Tracker.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.Poly2Tri">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
- </Reference>
- <Reference Include="CommandLine">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>

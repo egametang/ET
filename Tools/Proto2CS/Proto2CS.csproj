@@ -2,19 +2,22 @@
 
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>../../Proto/</OutputPath>
+      <OutputPath>./Bin</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>../../Proto/</OutputPath>
+      <OutputPath>./Bin</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>

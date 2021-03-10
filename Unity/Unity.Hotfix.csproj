@@ -52,24 +52,26 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Hotfix\Module\Message\NetThreadComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Scene\LoginHelper.cs" />
+     <Compile Include="Assets\Hotfix\Unit\MoveComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
      <Compile Include="Assets\Hotfix\Unit\M2C_CreateUnitsHandler.cs" />
      <Compile Include="Assets\Hotfix\Module\Config\ConfigComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Module\Message\SessionIdleCheckerComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Module\Message\NetKcpComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Unit\UnitPathComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
+     <Compile Include="Assets\Hotfix\Module\Message\OuterMessageDispatcher.cs" />
      <Compile Include="Assets\Hotfix\Move\M2C_PathfindingResultHandler.cs" />
      <Compile Include="Assets\Hotfix\Unit\UnitComponent.cs" />
      <Compile Include="Assets\Hotfix\Unit\UnitFactory.cs" />
      <Compile Include="Assets\Hotfix\Scene\MapHelper.cs" />
+     <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Module\Message\PingComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Unit\TurnComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Session\SessionComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\PingComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\NetKcpComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\SessionAcceptTimeoutComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\OuterMessageDispatcher.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\SessionIdleCheckerComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Module\Message\NetThreadComponentSystem.cs" />
      <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -317,23 +319,14 @@
  <Reference Include="NPOI.OpenXml4Net">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/Editor/npoi/NPOI.OpenXml4Net.dll</HintPath>
  </Reference>
- <Reference Include="Pathfinding.Ionic.Zip.Reduced">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.ClipperLib">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Clipper/Pathfinding.ClipperLib.dll</HintPath>
+ <Reference Include="CommandLine">
+ <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Library/PackageCache/com.unity.analytics@3.5.3/Unity.Analytics.Tracker.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="Pathfinding.Poly2Tri">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/AstarPathfindingProject/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
- </Reference>
- <Reference Include="CommandLine">
- <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/CommandLine.dll</HintPath>
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>/Users/tanghai/Documents/ET/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>

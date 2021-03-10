@@ -1,143 +1,141 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using UnityEngine;
 
 namespace ET
 {
-	public class ComponentQueue: Object
-	{
-		public string TypeName { get; }
-		
-		private readonly Queue<Object> queue = new Queue<Object>();
+    public class ComponentQueue: Object
+    {
+        public string TypeName
+        {
+            get;
+        }
 
-		public ComponentQueue(string typeName)
-		{
-			this.TypeName = typeName;
-		}
+        private readonly Queue<Object> queue = new Queue<Object>();
 
-		public void Enqueue(Object entity)
-		{
-			this.queue.Enqueue(entity);
-		}
+        public ComponentQueue(string typeName)
+        {
+            this.TypeName = typeName;
+        }
 
-		public Object Dequeue()
-		{
-			return this.queue.Dequeue();
-		}
+        public void Enqueue(Object entity)
+        {
+            this.queue.Enqueue(entity);
+        }
 
-		public Object Peek()
-		{
-			return this.queue.Peek();
-		}
+        public Object Dequeue()
+        {
+            return this.queue.Dequeue();
+        }
 
-		public Queue<Object> Queue
-		{
-			get
-			{
-				return this.queue;
-			}
-		}
+        public Object Peek()
+        {
+            return this.queue.Peek();
+        }
 
-		public int Count
-		{
-			get
-			{
-				return this.queue.Count;
-			}
-		}
+        public Queue<Object> Queue => this.queue;
 
-		public override void Dispose()
-		{
-			while (this.queue.Count > 0)
-			{
-				Object component = this.queue.Dequeue();
-				component.Dispose();
-			}
-		}
-	}
-	
+        public int Count => this.queue.Count;
+
+        public override void Dispose()
+        {
+            while (this.queue.Count > 0)
+            {
+                Object component = this.queue.Dequeue();
+                component.Dispose();
+            }
+        }
+    }
+
     public class ObjectPool: Object
     {
-	    private static ObjectPool instance;
+        private static ObjectPool instance;
 
-	    public static ObjectPool Instance
-	    {
-		    get
-		    {
-			    if (instance == null)
-			    {
-				    instance = new ObjectPool();
-			    }
+        public static ObjectPool Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ObjectPool();
+                }
 
-			    return instance;
-		    }
-	    }
-	    
+                return instance;
+            }
+        }
+
         public readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
 
         public Object Fetch(Type type)
         {
-	        Object obj;
-	        if (!this.dictionary.TryGetValue(type, out ComponentQueue queue))
+            Object obj;
+            if (!this.dictionary.TryGetValue(type, out ComponentQueue queue))
             {
-	            obj = (Object)Activator.CreateInstance(type);
+                obj = (Object) Activator.CreateInstance(type);
             }
-	        else if (queue.Count == 0)
+            else if (queue.Count == 0)
             {
-	            obj = (Object)Activator.CreateInstance(type);
+                obj = (Object) Activator.CreateInstance(type);
             }
             else
             {
-	            obj = queue.Dequeue();
+                obj = queue.Dequeue();
             }
+
             return obj;
         }
 
-        public T Fetch<T>() where T: Object
-		{
-            T t = (T) this.Fetch(typeof(T));
-			return t;
-		}
-        
+        public T Fetch<T>() where T : Object
+        {
+            T t = (T) this.Fetch(typeof (T));
+            return t;
+        }
+
         public void Recycle(Object obj)
         {
             Type type = obj.GetType();
-	        ComponentQueue queue;
+            ComponentQueue queue;
             if (!this.dictionary.TryGetValue(type, out queue))
             {
                 queue = new ComponentQueue(type.Name);
-	            
-#if UNITY_EDITOR
-	            if (queue.ViewGO != null)
-	            {
-		            queue.ViewGO.transform.SetParent(this.ViewGO.transform);
-		            queue.ViewGO.name = $"{type.Name}s";
-	            }
+
+#if UNITY_EDITOR && VIEWGO
+                if (queue.ViewGO != null)
+                {
+                    queue.ViewGO.transform.SetParent(this.ViewGO.transform);
+                    queue.ViewGO.name = $"{type.Name}s";
+                }
 #endif
-				this.dictionary.Add(type, queue);
+                this.dictionary.Add(type, queue);
             }
-            
-#if UNITY_EDITOR
-	        if (obj.ViewGO != null)
-	        {
-		        obj.ViewGO.transform.SetParent(queue.ViewGO.transform);
-	        }
+
+#if UNITY_EDITOR && VIEWGO
+            if (obj.ViewGO != null)
+            {
+                obj.ViewGO.transform.SetParent(queue.ViewGO.transform);
+            }
 #endif
             queue.Enqueue(obj);
         }
 
-	    public override void Dispose()
-	    {
-		    foreach (var kv in this.dictionary)
-		    {
-			    kv.Value.Dispose();
-		    }
-		    this.dictionary.Clear();
-		    instance = null;
-	    }
+        public void Clear()
+        {
+            foreach (KeyValuePair<Type, ComponentQueue> kv in this.dictionary)
+            {
+                kv.Value.Dispose();
+            }
+
+            this.dictionary.Clear();
+        }
+
+        public override void Dispose()
+        {
+            foreach (KeyValuePair<Type, ComponentQueue> kv in this.dictionary)
+            {
+                kv.Value.Dispose();
+            }
+
+            this.dictionary.Clear();
+            instance = null;
+        }
     }
 }

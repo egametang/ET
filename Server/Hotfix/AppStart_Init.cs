@@ -6,9 +6,12 @@ namespace ET
 {
     public class AppStart_Init: AEvent<EventType.AppStart>
     {
-        public override async ETTask Run(EventType.AppStart args)
+        protected override async ETTask Run(EventType.AppStart args)
         {
             Game.Scene.AddComponent<ConfigComponent>();
+            
+            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
+            await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
             
@@ -25,7 +28,8 @@ namespace ET
             Game.Scene.AddComponent<ActorMessageDispatcherComponent>();
             // 数值订阅组件
             Game.Scene.AddComponent<NumericWatcherComponent>();
-				
+
+            Game.Scene.AddComponent<NetThreadComponent>();
             Game.Scene.AddComponent<NetInnerComponent, IPEndPoint>(processConfig.InnerIPPort);
             
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);

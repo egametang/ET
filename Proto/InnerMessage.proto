@@ -4,6 +4,7 @@ package ET;
 /// <summary>
 /// 传送unit
 /// </summary>
+//ResponseType M2M_TrasferUnitResponse
 message M2M_TrasferUnitRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -20,6 +21,7 @@ message M2M_TrasferUnitResponse // IActorResponse
     int64 InstanceId = 1;
 }
 
+//ResponseType A2M_Reload
 message M2A_Reload // IActorRequest
 {
     int32 RpcId = 90;
@@ -33,6 +35,7 @@ message A2M_Reload // IActorResponse
     string Message = 92;
 }
 
+//ResponseType G2G_LockResponse
 message G2G_LockRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -48,6 +51,7 @@ message G2G_LockResponse // IActorResponse
     string Message = 92;
 }
 
+//ResponseType G2G_LockReleaseResponse
 message G2G_LockReleaseRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -63,6 +67,7 @@ message G2G_LockReleaseResponse // IActorResponse
     string Message = 92;
 }
 
+//ResponseType ObjectAddResponse
 message ObjectAddRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -77,6 +82,8 @@ message ObjectAddResponse // IActorResponse
     int32 Error = 91;
     string Message = 92;
 }
+
+//ResponseType ObjectLockResponse
 message ObjectLockRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -92,6 +99,7 @@ message ObjectLockResponse // IActorResponse
     string Message = 92;
 }
 
+//ResponseType ObjectUnLockResponse
 message ObjectUnLockRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -107,6 +115,7 @@ message ObjectUnLockResponse // IActorResponse
     string Message = 92;
 }
 
+//ResponseType ObjectRemoveResponse
 message ObjectRemoveRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -120,6 +129,7 @@ message ObjectRemoveResponse // IActorResponse
     string Message = 92;
 }
 
+//ResponseType ObjectGetResponse
 message ObjectGetRequest // IActorRequest
 {
     int32 RpcId = 90;
@@ -135,6 +145,7 @@ message ObjectGetResponse // IActorResponse
     int64 InstanceId = 1;
 }
 
+//ResponseType G2R_GetLoginKey
 message R2G_GetLoginKey // IActorRequest
 {
     int32 RpcId = 90;
@@ -152,6 +163,7 @@ message G2R_GetLoginKey // IActorResponse
     int64 GateId = 2;
 }
 
+//ResponseType M2G_CreateUnit
 message G2M_CreateUnit // IActorRequest
 {
     int32 RpcId = 90;

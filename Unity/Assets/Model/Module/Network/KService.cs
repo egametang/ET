@@ -99,8 +99,12 @@ namespace ET
             this.ThreadSynchronizationContext = threadSynchronizationContext;
             this.StartTime = TimeHelper.ClientNow();
             this.socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            this.socket.SendBufferSize = Kcp.OneM * 64;
-            this.socket.ReceiveBufferSize = Kcp.OneM * 64;
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                this.socket.SendBufferSize = Kcp.OneM * 64;
+                this.socket.ReceiveBufferSize = Kcp.OneM * 64;
+            }
+
             this.socket.Bind(ipEndPoint);
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {

@@ -25,23 +25,33 @@ namespace ET
     public static class InnerProto2CS
     {
         private const string protoPath = ".";
-        private const string clientMessagePath = "../Unity/Assets/Model/Module/Message/";
-        private const string serverMessagePath = "../Server/Model/Module/Message/";
+        private const string clientMessagePath = "../../../Unity/Assets/Model/Generate/Message/";
+        private const string serverMessagePath = "../../../Server/Model/Generate/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 
         public static void Proto2CS()
         {
             msgOpcode.Clear();
-            Proto2CS("ET", "InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
+            Proto2CS("ET", "../../../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
             GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
             
-            Proto2CS("ET", "OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
+            Proto2CS("ET", "../../../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
+            GenerateOpcode("ET", "OuterOpcode", serverMessagePath);
+            
+            Proto2CS("ET", "../../../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
             GenerateOpcode("ET", "OuterOpcode", clientMessagePath);
+            
+ 
         }
 
         public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode)
         {
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+            
             msgOpcode.Clear();
             string proto = Path.Combine(protoPath, protoName);
             string csPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(proto) + ".cs");
@@ -63,6 +73,13 @@ namespace ET
 
                 if (newline == "")
                 {
+                    continue;
+                }
+                
+                if (newline.StartsWith("//ResponseType"))
+                {
+                    string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
+                    sb.AppendLine($"\t[ResponseType(typeof({responseType}))]");
                     continue;
                 }
 
@@ -140,12 +157,17 @@ namespace ET
             }
 
             sb.Append("}\n");
-
-            File.WriteAllText(csPath, sb.ToString());
+            using FileStream txt = new FileStream(csPath, FileMode.Create, FileAccess.ReadWrite);
+            using StreamWriter sw = new StreamWriter(txt);
+            sw.Write(sb.ToString());
         }
 
         private static void GenerateOpcode(string ns, string outputFileName, string outputPath)
         {
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"namespace {ns}");
             sb.AppendLine("{");
@@ -160,7 +182,10 @@ namespace ET
             sb.AppendLine("}");
 
             string csPath = Path.Combine(outputPath, outputFileName + ".cs");
-            File.WriteAllText(csPath, sb.ToString());
+            
+            using FileStream txt = new FileStream(csPath, FileMode.Create);
+            using StreamWriter sw = new StreamWriter(txt);
+            sw.Write(sb.ToString());
         }
 
         private static void Repeated(StringBuilder sb, string ns, string newline)

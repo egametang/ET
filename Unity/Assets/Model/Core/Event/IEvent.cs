@@ -15,6 +15,18 @@ namespace ET
 			return typeof (A);
 		}
 
-		public abstract ETTask Run(A a);
+		protected abstract ETTask Run(A a);
+
+		public async ETTask Handle(A a)
+		{
+			try
+			{
+				await Run(a);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+			}
+		}
 	}
 }

@@ -1,4 +1,0 @@
-[
-[1, {"_id":1,"MachineId":1,"InnerPort":"20001"}],
-[2, {"_id":2,"MachineId":1,"InnerPort":"20002"}],
-]

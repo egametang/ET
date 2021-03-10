@@ -10,11 +10,11 @@ namespace ET
     
     public class Options
     {
-        [Option("StartConfig", Required = true)]
-        public string StartConfig { get; set; }
-
-        [Option("ServerType", Required = false, Default = ServerType.Game, HelpText = "serverType enum")]
-        public ServerType ServerType { get; set; }
+        //[Option("StartConfig", Required = true)]
+        //public string StartConfig { get; set; }
+//
+        //[Option("ServerType", Required = false, Default = ServerType.Game, HelpText = "serverType enum")]
+        //public ServerType ServerType { get; set; }
 
         [Option("Develop", Required = false, Default = 0, HelpText = "develop mode")]
         public int Develop { get; set; }

@@ -240,7 +240,7 @@ namespace ET
         }
 
         // 缓存包依赖，不用每次计算
-        public static Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
+        public Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
 
         public bool Contains(string bundleName)
         {
@@ -489,7 +489,7 @@ namespace ET
 
                 if (isScene)
                 {
-                    p = Path.Combine(Application.dataPath, "../../AssetBundles/Windows_Scene/", assetBundleName);
+                    p = Path.Combine(Application.dataPath, "../SceneBundle/", assetBundleName);
                     if (File.Exists(p)) // 如果场景有预先打包
                     {
                         using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.CreateWithParent<AssetsBundleLoaderAsync>(this))

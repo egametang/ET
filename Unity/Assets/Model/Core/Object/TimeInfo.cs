@@ -28,7 +28,7 @@ namespace ET
 
         public long FrameTime;
 
-        public TimeInfo()
+        private TimeInfo()
         {
             this.FrameTime = this.ClientNow();
         }
@@ -49,7 +49,7 @@ namespace ET
         // 线程安全
         public long ClientNow()
         {
-            return DateTime.Now.Ticks - this.dt1970.Ticks;
+            return (DateTime.Now.Ticks - this.dt1970.Ticks) / 10000;
         }
         
         public long ServerNow()

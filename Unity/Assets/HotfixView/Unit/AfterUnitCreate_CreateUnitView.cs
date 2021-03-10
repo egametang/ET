@@ -4,7 +4,7 @@ namespace ET
 {
     public class AfterUnitCreate_CreateUnitView: AEvent<EventType.AfterUnitCreate>
     {
-        public override async ETTask Run(EventType.AfterUnitCreate args)
+        protected override async ETTask Run(EventType.AfterUnitCreate args)
         {
             // Unit View层
             ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
@@ -15,6 +15,7 @@ namespace ET
             GameObject.DontDestroyOnLoad(go);
             args.Unit.GameObject = go;
             args.Unit.AddComponent<AnimatorComponent>();
+            await ETTask.CompletedTask;
         }
     }
 }

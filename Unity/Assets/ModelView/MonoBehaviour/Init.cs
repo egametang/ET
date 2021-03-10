@@ -28,6 +28,10 @@ namespace ET
 					Game.EventSystem.Add(assembly);	
 				}
 				
+				ProtobufHelper.Init();
+				
+				Game.Options = new Options();
+				
 				Game.EventSystem.Publish(new EventType.AppStart());
 			}
 			catch (Exception e)

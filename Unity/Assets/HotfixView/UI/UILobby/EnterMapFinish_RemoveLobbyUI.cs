@@ -2,7 +2,7 @@
 {
 	public class EnterMapFinish_RemoveLobbyUI: AEvent<EventType.EnterMapFinish>
 	{
-		public override async ETTask Run(EventType.EnterMapFinish args)
+		protected override async ETTask Run(EventType.EnterMapFinish args)
 		{
 			// 加载场景资源
 			await Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync("map.unity3d");

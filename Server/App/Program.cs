@@ -19,6 +19,7 @@ namespace ET
 				Game.EventSystem.Add(typeof(Game).Assembly);
 				Game.EventSystem.Add(DllHelper.GetHotfixAssembly());
 				
+				ProtobufHelper.Init();
 				MongoHelper.Init();
 				
 				// 命令行参数
@@ -40,8 +41,9 @@ namespace ET
 					try
 					{
 						Thread.Sleep(1);
-						ThreadSynchronizationContext.Instance.Update();
-						Game.EventSystem.Update();
+						Game.Update();
+						Game.LateUpdate();
+						Game.FrameFinish();
 					}
 					catch (Exception e)
 					{

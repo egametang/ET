@@ -8,7 +8,9 @@ namespace ET
         {
 	        Unit unit = EntityFactory.CreateWithId<Unit>(domain, id);
 	        
+	        unit.AddComponent<MoveComponent>();
 	        unit.AddComponent<TurnComponent>();
+	        unit.AddComponent<UnitPathComponent>();
 
 	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
 	        

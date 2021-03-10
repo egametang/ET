@@ -234,13 +234,13 @@ namespace ET
             using (FileStream txt = new FileStream(exportPath, FileMode.Create))
             using (StreamWriter sw = new StreamWriter(txt))
             {
-                sw.WriteLine('[');
+                sw.WriteLine("{");
                 for (int i = 0; i < xssfWorkbook.NumberOfSheets; ++i)
                 {
                     ISheet sheet = xssfWorkbook.GetSheetAt(i);
                     ExportSheet(sheet, sw);
                 }
-                sw.WriteLine(']');
+                sw.WriteLine("}");
             }
 
             Log.Info($"{protoName}导表完成");
@@ -305,14 +305,14 @@ namespace ET
                     if (fieldName == "Id" || fieldName == "_id")
                     {
                         fieldName = "_id";
-                        sb.Append($"[{fieldValue}, {{");
+                        sb.Append("{\"" + fieldValue + "\":{{");
                     }
 
                     string fieldType = cellInfos[j].Type;
                     sb.Append($"\"{fieldName}\":{Convert(fieldType, fieldValue)}");
                 }
 
-                sb.Append("}],");
+                sb.Append("}},");
                 sw.WriteLine(sb.ToString());
             }
         }

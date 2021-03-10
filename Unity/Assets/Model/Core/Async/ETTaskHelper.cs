@@ -108,5 +108,22 @@ namespace ET
                 await coroutineBlocker.WaitAsync();
             }
         }
+        
+        public static async ETTask WaitAll(List<ETTask> tasks)
+        {
+            CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
+            foreach (ETTask task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
+            await coroutineBlocker.WaitAsync();
+
+            async ETVoid RunOneTask(ETTask task)
+            {
+                await task;
+                await coroutineBlocker.WaitAsync();
+            }
+        }
     }
 }

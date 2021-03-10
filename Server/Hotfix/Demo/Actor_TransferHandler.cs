@@ -5,7 +5,7 @@ using System.Net;
 namespace ET
 {
 	[ActorMessageHandler]
-	public class Actor_TransferHandler : AMActorRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>
+	public class Actor_TransferHandler : AMActorLocationRpcHandler<Unit, Actor_TransferRequest, Actor_TransferResponse>
 	{
 		protected override async ETTask Run(Unit unit, Actor_TransferRequest request, Actor_TransferResponse response, Action reply)
 		{

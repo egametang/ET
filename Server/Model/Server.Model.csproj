@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Model</AssemblyName>
-    <RootNamespace>Model</RootNamespace>
-    <LangVersion>7.3</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>ET</RootNamespace>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
@@ -22,8 +22,16 @@
   </PropertyGroup>
   <ItemGroup>
 
+    <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
+      <Link>Base\MongoHelper.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\**\*.cs">
+      <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
     
     <Compile Remove="Libs\**" />
@@ -36,9 +44,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Config\AConfigComponent.cs">
-      <Link>Module\Config\AConfigComponent.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLock.cs">
       <Link>Module\CoroutineLock\CoroutineLock.cs</Link>
@@ -88,11 +93,13 @@
     <Compile Remove="Base\RecyclableMemoryStream\**" />
     <EmbeddedResource Remove="Base\RecyclableMemoryStream\**" />
     <None Remove="Base\RecyclableMemoryStream\**" />
+    <Compile Remove="Module\Config\ConfigHelper.cs" />
+    <Compile Remove="Module\Config\ConfigComponent.cs" />
+    <Compile Remove="Module\Config\**" />
+    <EmbeddedResource Remove="Module\Config\**" />
+    <None Remove="Module\Config\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Unity\Assets\Model\Module\Config\ACategory.cs" Link="Module\Config\ACategory.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Config\ConfigAttribute.cs" Link="Module\Config\ConfigAttribute.cs" />
-    <Compile Include="..\..\Unity\Assets\Model\Module\Config\IConfig.cs" Link="Module\Config\IConfig.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />

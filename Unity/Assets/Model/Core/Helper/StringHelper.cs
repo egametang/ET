@@ -58,10 +58,5 @@ namespace ET
 			}
 			return sb.ToString();
 		}
-		
-		public static string MessageToStr(object message)
-		{
-			return MongoHelper.ToJson(message);
-		}
 	}
 }
