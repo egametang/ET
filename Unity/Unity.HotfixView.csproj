@@ -58,7 +58,6 @@
      <Compile Include="Assets\HotfixView\UI\UILoading\LoadingFinishEvent_RemoveLoadingUI.cs" />
      <Compile Include="Assets\HotfixView\UI\UILobby\UILobbyComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Unit\AfterUnitCreate_CreateUnitView.cs" />
-     <Compile Include="Assets\HotfixView\Scene\SceneHelper.cs" />
      <Compile Include="Assets\HotfixView\Module\UI\UIComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Module\UI\UIEventComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\UI\UILogin\UILoginEvent.cs" />

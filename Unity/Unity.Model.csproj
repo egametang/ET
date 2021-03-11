@@ -201,6 +201,7 @@
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Model\Module\Network\AChannel.cs" />
      <Compile Include="Assets\Model\Unit\UnitPathComponent.cs" />
+     <Compile Include="Assets\Model\Scene\SceneHelper.cs" />
      <None Include="Assets\Model\Unity.Model.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

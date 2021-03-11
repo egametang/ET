@@ -20,11 +20,10 @@ namespace ET
 		
         public async ETVoid StartAsync(UILoadingComponent self)
         {
-            TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
             long instanceId = self.InstanceId;
             while (true)
             {
-                await timerComponent.WaitAsync(1000);
+                await TimerComponent.Instance.WaitAsync(1000);
 
                 if (self.InstanceId != instanceId)
                 {

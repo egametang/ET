@@ -392,7 +392,7 @@ namespace ET
 
 		private void OnError(int error)
 		{
-			Log.Error($"TChannel error: {error} {this.RemoteAddress}");
+			Log.Info($"TChannel OnError: {error} {this.RemoteAddress}");
 			
 			long channelId = this.Id;
 			

@@ -8,7 +8,7 @@ namespace ET
 	{
 		protected override async ETVoid Run(Session session, M2C_CreateUnits message)
 		{	
-			UnitComponent unitComponent = Game.Scene.Get(1).GetComponent<UnitComponent>();
+			UnitComponent unitComponent = session.Domain.GetComponent<UnitComponent>();
 			
 			foreach (UnitInfo unitInfo in message.Units)
 			{
@@ -16,7 +16,7 @@ namespace ET
 				{
 					continue;
 				}
-				Unit unit = UnitFactory.Create(Game.Scene, unitInfo.UnitId);
+				Unit unit = UnitFactory.Create(session.Domain, unitInfo.UnitId);
 				unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 			}
 

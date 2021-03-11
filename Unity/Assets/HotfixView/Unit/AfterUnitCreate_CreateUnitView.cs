@@ -7,8 +7,7 @@ namespace ET
         protected override async ETTask Run(EventType.AfterUnitCreate args)
         {
             // Unit View层
-            ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
-            GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
+            GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset("Unit.unity3d", "Unit");
             GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
 	        
             GameObject go = UnityEngine.Object.Instantiate(prefab);

@@ -34,8 +34,6 @@ namespace ET
             
             this.needTime = (long)(distance / this.Speed * 1000);
             
-            TimerComponent timerComponent = Game.Scene.GetComponent<TimerComponent>();
-            
             // 协程如果取消，将算出玩家的真实位置，赋值给玩家
             cancellationToken?.Add(() =>
             {
@@ -54,7 +52,7 @@ namespace ET
             while (true)
             {
                 //新版TimerComponent实现不同于5.0的TimerComponent，需要自己判断是取消还是自然结束，并且return，否则将不会取消任务，并可能会造成cancellationToken泄漏
-                if (!await timerComponent.WaitAsync(50, cancellationToken))
+                if (!await TimerComponent.Instance.WaitAsync(50, cancellationToken))
                 {
                     return;
                 }
