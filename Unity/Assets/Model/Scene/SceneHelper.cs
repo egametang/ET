@@ -11,10 +11,5 @@ namespace ET
         {
             return (Scene) entity.Domain;
         }
-        
-        public static Scene ZoneScene(this Entity entity)
-        {
-            return Game.Scene.Get(entity.DomainZone());
-        }
     }
 }

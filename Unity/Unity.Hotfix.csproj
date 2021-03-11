@@ -72,6 +72,8 @@
      <Compile Include="Assets\Hotfix\Unit\TurnComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Session\SessionComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\SessionAcceptTimeoutComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Scene\ZoneSceneFlagComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Scene\ZoneSceneManagerComponentSystem.cs" />
      <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
