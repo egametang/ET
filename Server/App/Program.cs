@@ -34,6 +34,13 @@ namespace ET
 				
 				Log.Info($"server start........................ {Game.Scene.Id}");
 
+				Log.Trace("Trace");
+				Log.Info("Info");
+				Log.Debug("Debug");
+				Log.Warning("Info");
+				Log.Error("Error");
+				
+				
 				Game.EventSystem.Publish(new EventType.AppStart());
 				
 				while (true)

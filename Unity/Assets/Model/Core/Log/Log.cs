@@ -76,7 +76,7 @@ namespace ET
             {
                 return;
             }
-            StackTrace st = new StackTrace(1, true);
+            StackTrace st = new StackTrace(skipFrames:1, fNeedFileInfo:true);
             ILog.Trace($"{msg}\n{st}");
         }
 
