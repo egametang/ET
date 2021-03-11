@@ -94,7 +94,8 @@ namespace ET
         {
             StackTrace st = new StackTrace(1, true);
             ErrorCallback?.Invoke($"{msg}\n{st}");
-            ILog.Error($"{msg}\n{st}");
+            // ILog.Error($"{msg}\n{st}");
+            ILog.Error("{msg}\n{st}", msg, st);
         }
 
         public static void Error(Exception e)
@@ -112,7 +113,8 @@ namespace ET
             }
             DebugCallback?.Invoke(message, args);
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{string.Format(message, args)}\n{st}");
+            // ILog.Trace($"{string.Format(message, args)}\n{st}");
+            ILog.Trace(message+"\n"+st, args);
         }
 
         public static void Warning(string message, params object[] args)
@@ -121,7 +123,8 @@ namespace ET
             {
                 return;
             }
-            ILog.Warning(string.Format(message, args));
+            // ILog.Warning(string.Format(message, args));
+            ILog.Warning(message, args);
         }
 
         public static void Info(string message, params object[] args)
@@ -130,7 +133,8 @@ namespace ET
             {
                 return;
             }
-            ILog.Info(string.Format(message, args));
+            // ILog.Info(string.Format(message, args));
+            ILog.Info(message, args);
         }
 
         public static void Debug(string message, params object[] args)
@@ -140,14 +144,14 @@ namespace ET
                 return;
             }
             DebugCallback?.Invoke(message, args);
-            ILog.Debug(string.Format(message, args));
+            // ILog.Debug(string.Format(message, args));
+            ILog.Debug(message, args);
 
         }
-
         public static void Error(string message, params object[] args)
         {
             StackTrace st = new StackTrace(1, true);
-            string s = string.Format(message, args) + '\n' + st;
+            string     s  = string.Format(message, args) + '\n' + st;
             ErrorCallback?.Invoke(s);
             ILog.Error(s);
         }
