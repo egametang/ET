@@ -16,8 +16,7 @@ namespace ET
 				{
 					continue;
 				}
-				Unit unit = UnitFactory.Create(session.Domain, unitInfo.UnitId);
-				unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
+				Unit unit = UnitFactory.Create(session.Domain, unitInfo);
 			}
 
 			await ETTask.CompletedTask;

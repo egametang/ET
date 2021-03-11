@@ -52,10 +52,10 @@ message G2C_EnterMap // IResponse
 message UnitInfo
 {
 	int64 UnitId  = 1;
-
-	float X = 2;
-	float Y = 3;
-	float Z = 4;
+    int32 ConfigId = 2;
+	float X = 3;
+	float Y = 4;
+	float Z = 5;
 }
 
 message M2C_CreateUnits // IActorMessage

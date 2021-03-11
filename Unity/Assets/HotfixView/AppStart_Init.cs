@@ -21,6 +21,8 @@ namespace ET
             Game.Scene.AddComponent<NetThreadComponent>();
 
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
+            
+            Game.Scene.AddComponent<GlobalComponent>();
 
             ResourcesComponent.Instance.LoadBundle("unit.unity3d");
 

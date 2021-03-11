@@ -111,12 +111,15 @@ namespace ET
 		public long UnitId { get; set; }
 
 		[ProtoMember(2)]
-		public float X { get; set; }
+		public int ConfigId { get; set; }
 
 		[ProtoMember(3)]
-		public float Y { get; set; }
+		public float X { get; set; }
 
 		[ProtoMember(4)]
+		public float Y { get; set; }
+
+		[ProtoMember(5)]
 		public float Z { get; set; }
 
 	}

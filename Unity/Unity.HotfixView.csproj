@@ -76,6 +76,7 @@
      <Compile Include="Assets\HotfixView\Helper\LoadConfigHelper.cs" />
      <Compile Include="Assets\HotfixView\Unit\AnimatorComponentSystem.cs" />
      <Compile Include="Assets\HotfixView\Scene\AfterCreateZoneScene_AddComponent.cs" />
+     <Compile Include="Assets\HotfixView\Global\GlobalComponentSystem.cs" />
      <None Include="Assets\HotfixView\Unity.HotfixView.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

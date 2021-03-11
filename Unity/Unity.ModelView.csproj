@@ -71,6 +71,8 @@
      <Compile Include="Assets\ModelView\UI\UILoading\UILoadingComponent.cs" />
      <Compile Include="Assets\ModelView\Module\UI\CanvasConfig.cs" />
      <Compile Include="Assets\ModelView\Module\UI\UIEventAttribute.cs" />
+     <Compile Include="Assets\ModelView\Unit\GameObjectComponent.cs" />
+     <Compile Include="Assets\ModelView\Global\GlobalComponent.cs" />
      <None Include="Assets\ModelView\Unity.ModelView.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

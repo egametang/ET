@@ -37,7 +37,7 @@ namespace ET
 		/// </summary>
 		public static void Turn2D(this TurnComponent self, Vector3 dir, float turnTime = 0.1f)
 		{
-			Vector3 nexpos = self.GetParent<Unit>().GameObject.transform.position + dir;
+			Vector3 nexpos = self.GetParent<Unit>().Position + dir;
 			self.Turn(nexpos, turnTime);
 		}
 

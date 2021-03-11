@@ -6,6 +6,16 @@
         {
         }
 
+        public struct ChangePosition
+        {
+            public Unit Unit;
+        }
+
+        public struct ChangeRotation
+        {
+            public Unit Unit;
+        }
+
         public struct PingChange
         {
             public Scene ZoneScene;

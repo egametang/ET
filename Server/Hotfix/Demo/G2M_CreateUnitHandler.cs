@@ -8,7 +8,7 @@ namespace ET
 	{
 		protected override async ETTask Run(Scene scene, G2M_CreateUnit request, M2G_CreateUnit response, Action reply)
 		{
-			Unit unit = EntityFactory.CreateWithId<Unit>(scene, IdGenerater.Instance.GenerateId());
+			Unit unit = EntityFactory.CreateWithId<Unit, int>(scene, IdGenerater.Instance.GenerateId(), 1001);
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<UnitPathComponent>();
 			unit.Position = new Vector3(-10, 0, -10);
@@ -30,6 +30,7 @@ namespace ET
 				unitInfo.Y = u.Position.y;
 				unitInfo.Z = u.Position.z;
 				unitInfo.UnitId = u.Id;
+				unitInfo.ConfigId = u.ConfigId;
 				createUnits.Units.Add(unitInfo);
 			}
 			MessageHelper.Broadcast(unit, createUnits);
