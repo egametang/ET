@@ -3,21 +3,25 @@
 namespace ET
 {
     [ObjectSystem]
-    public class LocationProxyComponentSystem: AwakeSystem<LocationProxyComponent>
+    public class LocationProxyComponentAwakeSystem: AwakeSystem<LocationProxyComponent>
     {
         public override void Awake(LocationProxyComponent self)
         {
-            self.Awake();
+            LocationProxyComponent.Instance = self;
+        }
+    }
+    
+    [ObjectSystem]
+    public class LocationProxyComponentDestroySystem: DestroySystem<LocationProxyComponent>
+    {
+        public override void Destroy(LocationProxyComponent self)
+        {
+            LocationProxyComponent.Instance = null;
         }
     }
 
-    public static class LocationProxyComponentEx
+    public static class LocationProxyComponentSystem
     {
-        public static void Awake(this LocationProxyComponent self)
-        {
-            LocationProxyComponent.Instance = self;
-        }
-        
         private static long GetLocationSceneId(long key)
         {
             return StartSceneConfigCategory.Instance.LocationConfig.SceneId;

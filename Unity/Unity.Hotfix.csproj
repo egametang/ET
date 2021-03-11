@@ -53,28 +53,28 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Hotfix\Module\Message\NetThreadComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Scene\LoginHelper.cs" />
-     <Compile Include="Assets\Hotfix\Unit\MoveComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\MoveComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericChangeEvent_NotifyWatcher.cs" />
-     <Compile Include="Assets\Hotfix\Unit\M2C_CreateUnitsHandler.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\M2C_CreateUnitsHandler.cs" />
      <Compile Include="Assets\Hotfix\Module\Config\ConfigComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\SessionIdleCheckerComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\NetKcpComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Unit\UnitPathComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\UnitPathComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\OuterMessageDispatcher.cs" />
-     <Compile Include="Assets\Hotfix\Move\M2C_PathfindingResultHandler.cs" />
-     <Compile Include="Assets\Hotfix\Unit\UnitComponent.cs" />
-     <Compile Include="Assets\Hotfix\Unit\UnitFactory.cs" />
-     <Compile Include="Assets\Hotfix\Scene\MapHelper.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Move\M2C_PathfindingResultHandler.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\UnitComponent.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\UnitFactory.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\MessageDispatcherComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\PingComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Unit\TurnComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Session\SessionComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\TurnComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Session\SessionComponentSystem.cs" />
      <Compile Include="Assets\Hotfix\Module\Message\SessionAcceptTimeoutComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Scene\ZoneSceneFlagComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Scene\ZoneSceneManagerComponentSystem.cs" />
-     <Compile Include="Assets\Hotfix\Unit\UnitSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\Unit\UnitSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\MapHelper.cs" />
+     <Compile Include="Assets\Hotfix\Core\Scene\ZoneSceneFlagComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Core\Scene\ZoneSceneManagerComponentSystem.cs" />
+     <Compile Include="Assets\Hotfix\Demo\LoginHelper.cs" />
      <None Include="Assets\Hotfix\Unity.Hotfix.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.2.2f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

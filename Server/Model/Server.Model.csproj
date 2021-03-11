@@ -63,41 +63,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
       <Link>Module\Message\MessageDispatcherComponent.cs</Link>
     </Compile>
-    <EmbeddedResource Remove="Libs\**" />
-    <None Remove="Libs\**" />
-    <None Remove="graph.bytes" />
-    <Compile Remove="Module\Scene\**" />
-    <EmbeddedResource Remove="Module\Scene\**" />
-    <None Remove="Module\Scene\**" />
-    <Compile Remove="Base\Async\**" />
-    <EmbeddedResource Remove="Base\Async\**" />
-    <None Remove="Base\Async\**" />
-    <Compile Remove="Base\Entity\**" />
-    <EmbeddedResource Remove="Base\Entity\**" />
-    <None Remove="Base\Entity\**" />
-    <Compile Remove="Base\Event\**" />
-    <EmbeddedResource Remove="Base\Event\**" />
-    <None Remove="Base\Event\**" />
-    <Compile Remove="Module\Message\Network\KCP\**" />
-    <EmbeddedResource Remove="Module\Message\Network\KCP\**" />
-    <None Remove="Module\Message\Network\KCP\**" />
-    <Compile Remove="Module\Message\Network\TCP\**" />
-    <EmbeddedResource Remove="Module\Message\Network\TCP\**" />
-    <None Remove="Module\Message\Network\TCP\**" />
-    <Compile Remove="Module\Message\Network\WebSocket\**" />
-    <EmbeddedResource Remove="Module\Message\Network\WebSocket\**" />
-    <None Remove="Module\Message\Network\WebSocket\**" />
-    <Compile Remove="Module\Message\Network\**" />
-    <EmbeddedResource Remove="Module\Message\Network\**" />
-    <None Remove="Module\Message\Network\**" />
-    <Compile Remove="Base\RecyclableMemoryStream\**" />
-    <EmbeddedResource Remove="Base\RecyclableMemoryStream\**" />
-    <None Remove="Base\RecyclableMemoryStream\**" />
-    <Compile Remove="Module\Config\ConfigHelper.cs" />
-    <Compile Remove="Module\Config\ConfigComponent.cs" />
-    <Compile Remove="Module\Config\**" />
-    <EmbeddedResource Remove="Module\Config\**" />
-    <None Remove="Module\Config\**" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
