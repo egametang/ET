@@ -75,10 +75,18 @@ namespace ET
             {
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                foreach (string path in Directory.GetFiles(excelDir, "*.xlsx"))
-                {
+                
+                // U:\ETDoc\ET\Tools\ExcelExporter\Bin
+                // "../../../Excel"  -> U:\ETDoc\ET\Excel
+                foreach (string path in Directory.GetFiles(excelDir, "*.xlsx")) // 循环读取.xlsx文件
+                { 
+                    // C#8 “using”语句隐式作用域
+                    // 变量都会在当前作用域结束时以相反的顺序自动释放
+                    
                     using Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     using ExcelPackage p = new ExcelPackage(stream);
+                    
+                    // 返回指定路径字符串的文件名，不带扩展名。 例如：StartMachineConfig
                     string name = Path.GetFileNameWithoutExtension(path);
                 
                     ExportExcelClass(p, name, ConfigType.Client);
@@ -111,12 +119,21 @@ namespace ET
             ExportClass(name, classField, configType);
         }
         
+        /// <summary>
+        /// 导入类型和字段信息
+        /// </summary>
+        /// <param name="worksheet">表格</param>
+        /// <param name="classField">类字段列表</param>
+        /// <param name="uniqeField">唯一的字段名</param>
+        /// <param name="configType">类型：服务器 客户端</param>
         static void ExportSheetClass(ExcelWorksheet worksheet, List<HeadInfo> classField, HashSet<string> uniqeField, ConfigType configType)
         {
             const int row = 2;
+            // worksheet.Dimension 工作表的维度，从左上角单元格到右下角。
             for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
-                string fieldName = worksheet.Cells[row + 2, col].Text.Trim();
+                string fieldName = worksheet.Cells[row + 2, col].Text.Trim(); // 从第4行第3列也就是C4单元格开始
+                // 判空和是否重复，字段名是唯一的。
                 if (fieldName == "")
                 {
                     continue;
@@ -125,23 +142,29 @@ namespace ET
                 {
                     continue;
                 }
-                string fieldCS = worksheet.Cells[row, col].Text.Trim();
-                string fieldDesc = worksheet.Cells[row + 1, col].Text.Trim();
-                string fieldType = worksheet.Cells[row + 3, col].Text.Trim();
-
+                
+                string fieldCS   = worksheet.Cells[row, col].Text.Trim();     // C2 : 特性
+                string fieldDesc = worksheet.Cells[row + 1, col].Text.Trim(); // C3 : Field描述
+                string fieldType = worksheet.Cells[row + 3, col].Text.Trim(); // C5 : Type
+        
+                // 一个属性字段的定义，添加到列表中
                 classField.Add(new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType));
             }
         }
 
         static void ExportClass(string protoName, List<HeadInfo> classField, ConfigType configType)
         {
+            // 判断需要生成的文件放在哪个目录，根据ConfigType
             string dir = GetClassDir(configType);
+            
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
             }
+            // 导出的路径和文件名
             string exportPath = Path.Combine(dir, $"{protoName}.cs");
             
+            // 创建和写入
             using FileStream txt = new FileStream(exportPath, FileMode.Create);
             using StreamWriter sw = new StreamWriter(txt);
             
@@ -156,7 +179,8 @@ namespace ET
                 sb.Append($"\t\t[ProtoMember({i + 1}, IsRequired  = true)]\n");
                 sb.Append($"\t\tpublic {headInfo.FieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
-            string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
+            // 将模板中的特定处改为对应的名字
+            string content = template.Replace("(ConfigName)", protoName).Replace("(Fields)", sb.ToString());
             sw.Write(content);
         }
 #endregion
