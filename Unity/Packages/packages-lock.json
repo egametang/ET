@@ -12,15 +12,6 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.ads": {
-      "version": "3.5.2",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
-      },
-      "url": "https://packages.unity.cn"
-    },
     "com.unity.analytics": {
       "version": "3.5.3",
       "depth": 0,
@@ -61,30 +52,16 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.cn"
-    },
-    "com.unity.ide.vscode": {
-      "version": "1.2.3",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.cn"
-    },
-    "com.unity.multiplayer-hlapi": {
-      "version": "1.0.8",
+      "version": "2.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "nuget.mono-cecil": "0.1.6-preview"
+        "com.unity.test-framework": "1.1.9"
       },
       "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
-      "version": "1.1.20",
+      "version": "1.1.22",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -95,7 +72,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.3",
+      "version": "3.0.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -123,13 +100,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "nuget.mono-cecil": {
-      "version": "0.1.6-preview",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.cn"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
