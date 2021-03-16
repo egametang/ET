@@ -20,6 +20,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Other\**" />
+    <Compile Include="..\..\Unity\Assets\Hotfix\Demo\Move\MoveComponentSystem.cs">
+      <Link>Demo\Move\MoveComponentSystem.cs</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Assets\Hotfix\Module\Config\ConfigComponentSystem.cs">
       <Link>Module\Config\ConfigComponentSystem.cs</Link>
     </Compile>

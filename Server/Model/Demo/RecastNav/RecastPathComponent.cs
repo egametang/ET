@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ET;
+using UnityEngine;
 
 namespace ET
 {
@@ -39,9 +40,9 @@ namespace ET
         /// <summary>
         /// 寻路
         /// </summary>
-        public void SearchPath(int mapId, RecastPath recastPath)
+        public void SearchPath(int mapId, Vector3 from, Vector3 to, List<Vector3> result)
         {
-            GetRecastPathProcessor(mapId).CalculatePath(recastPath);
+            GetRecastPathProcessor(mapId).CalculatePath(from, to, result);
         }
 
         public RecastPathProcessor GetRecastPathProcessor(int mapId)

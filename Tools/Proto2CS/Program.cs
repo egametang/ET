@@ -104,14 +104,14 @@ namespace ET
 
                     sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
-                    sb.Append($"\tpublic partial class {msgName}");
+                    sb.Append($"\tpublic partial class {msgName}: Object");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
-                        sb.Append($": {parentClass}\n");
+                        sb.Append($", {parentClass}\n");
                     }
                     else if (parentClass != "")
                     {
-                        sb.Append($": {parentClass}\n");
+                        sb.Append($", {parentClass}\n");
                     }
                     else
                     {

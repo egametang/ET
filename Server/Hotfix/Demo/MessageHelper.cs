@@ -13,10 +13,6 @@ namespace ET
             foreach (Unit u in units)
             {
                 UnitGateComponent unitGateComponent = u.GetComponent<UnitGateComponent>();
-                if (unitGateComponent.IsDisconnect)
-                {
-                    continue;
-                }
                 SendActor(unitGateComponent.GateSessionActorId, message);
             }
         }

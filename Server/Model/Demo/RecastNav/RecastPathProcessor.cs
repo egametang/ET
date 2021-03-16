@@ -36,9 +36,9 @@ namespace ET
         /// </summary>
         public int MapId;
 
-        public void CalculatePath(RecastPath recastPath)
+        public void CalculatePath(Vector3 from, Vector3 to, List<Vector3> result)
         {
-            if (RecastInterface.FindPath(this.MapId, recastPath.StartPos, recastPath.EndPos))
+            if (RecastInterface.FindPath(this.MapId, from, to))
             {
                 RecastInterface.Smooth(this.MapId, 2f, 0.5f);
                 {
@@ -47,7 +47,7 @@ namespace ET
                     for (int i = 0; i < smoothCount; ++i)
                     {
                         Vector3 node = new Vector3(smooths[i * 3], smooths[i * 3 + 1], smooths[i * 3 + 2]);
-                        recastPath.Results.Add(node);
+                        result.Add(node);
                     }
                 }
             }

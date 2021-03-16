@@ -10,31 +10,31 @@ namespace ET
 		{
 			Unit unit = EntityFactory.CreateWithId<Unit, int>(scene, IdGenerater.Instance.GenerateId(), 1001);
 			unit.AddComponent<MoveComponent>();
-			unit.AddComponent<UnitPathComponent>();
 			unit.Position = new Vector3(-10, 0, -10);
-
+			
+			NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+			numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
+			
 			unit.AddComponent<MailBoxComponent>();
 			await unit.AddLocation();
 			unit.AddComponent<UnitGateComponent, long>(request.GateSessionId);
 			scene.GetComponent<UnitComponent>().Add(unit);
 			response.UnitId = unit.Id;
 			
-			
-			// 广播创建的unit
+			// 把自己广播给周围的人
 			M2C_CreateUnits createUnits = new M2C_CreateUnits();
+			createUnits.Units.Add(UnitHelper.CreateUnitInfo(unit));
+			MessageHelper.Broadcast(unit, createUnits);
+			
+			// 把周围的人通知给自己
+			createUnits.Units.Clear();
 			Unit[] units = scene.GetComponent<UnitComponent>().GetAll();
 			foreach (Unit u in units)
 			{
-				UnitInfo unitInfo = new UnitInfo();
-				unitInfo.X = u.Position.x;
-				unitInfo.Y = u.Position.y;
-				unitInfo.Z = u.Position.z;
-				unitInfo.UnitId = u.Id;
-				unitInfo.ConfigId = u.ConfigId;
-				createUnits.Units.Add(unitInfo);
+				createUnits.Units.Add(UnitHelper.CreateUnitInfo(u));
 			}
-			MessageHelper.Broadcast(unit, createUnits);
-			
+			MessageHelper.SendActor(unit.GetComponent<UnitGateComponent>().GateSessionActorId, createUnits);
+
 			reply();
 		}
 	}

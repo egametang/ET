@@ -10,8 +10,11 @@ namespace ET
 	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 	        
 	        unit.AddComponent<MoveComponent>();
-	        unit.AddComponent<TurnComponent>();
-	        unit.AddComponent<UnitPathComponent>();
+	        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+	        for (int i = 0; i < unitInfo.Ks.Count; ++i)
+	        {
+		        numericComponent.Set((NumericType)unitInfo.Ks[i], unitInfo.Vs[i]);
+	        }
 
 	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
             unitComponent.Add(unit);
