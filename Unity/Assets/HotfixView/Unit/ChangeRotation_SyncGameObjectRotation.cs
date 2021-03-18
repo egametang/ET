@@ -8,6 +8,7 @@ namespace ET
         {
             Transform transform = args.Unit.GetComponent<GameObjectComponent>().GameObject.transform;
             transform.rotation = args.Unit.Rotation;
+            await ETTask.CompletedTask;
         }
     }
 }
