@@ -26,7 +26,7 @@ namespace ET
 
 		private async ETVoid TimeoutRemoveKey(long key)
 		{
-			await Game.Scene.GetComponent<TimerComponent>().WaitAsync(20000);
+			await TimerComponent.Instance.WaitAsync(20000);
 			this.sessionKey.Remove(key);
 		}
 	}

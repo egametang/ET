@@ -10,6 +10,6 @@ namespace ET
 
 	    public int mapMask;
 
-	    public readonly Frame_ClickMap frameClickMap = new Frame_ClickMap();
+	    public readonly C2M_PathfindingResult frameClickMap = new C2M_PathfindingResult();
     }
 }

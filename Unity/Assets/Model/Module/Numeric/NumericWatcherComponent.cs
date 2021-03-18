@@ -58,7 +58,7 @@ namespace ET
 			}
 		}
 
-		public void Run(NumericType numericType, long id, int value)
+		public void Run(NumericType numericType, long id, long value)
 		{
 			List<INumericWatcher> list;
 			if (!this.allWatchers.TryGetValue(numericType, out list))

@@ -8,12 +8,7 @@ namespace ET
 	{
 		protected override async ETTask Run(Session session, C2G_LoginGate request, G2C_LoginGate response, Action reply)
 		{
-			Scene scene = Game.Scene.Get(request.GateId);
-			if (scene == null)
-			{
-				return;
-			}
-			
+			Scene scene = session.DomainScene();
 			string account = scene.GetComponent<GateSessionKeyComponent>().Get(request.Key);
 			if (account == null)
 			{

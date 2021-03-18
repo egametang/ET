@@ -78,7 +78,7 @@ namespace ET
                 
                 if (newline.StartsWith("//ResponseType"))
                 {
-                    string responseType = line.Split(" ")[1];
+                    string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
                     sb.AppendLine($"\t[ResponseType(typeof({responseType}))]");
                     continue;
                 }
@@ -104,14 +104,14 @@ namespace ET
 
                     sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
                     sb.Append($"\t[ProtoContract]\n");
-                    sb.Append($"\tpublic partial class {msgName}");
+                    sb.Append($"\tpublic partial class {msgName}: Object");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
-                        sb.Append($": {parentClass}\n");
+                        sb.Append($", {parentClass}\n");
                     }
                     else if (parentClass != "")
                     {
-                        sb.Append($": {parentClass}\n");
+                        sb.Append($", {parentClass}\n");
                     }
                     else
                     {

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 13964, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnablePreviewPackages: 0
-  m_EnablePackageDependencies: 0
+  m_EnablePreviewPackages: 1
+  m_EnablePackageDependencies: 1
   m_AdvancedSettingsExpanded: 1
   m_ScopedRegistriesSettingsExpanded: 1
-  oneTimeWarningShown: 0
+  oneTimeWarningShown: 1
   m_Registries:
   - m_Id: main
     m_Name: 

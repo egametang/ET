@@ -6,7 +6,7 @@ namespace ET
 	[ResponseType(typeof(M2C_TestResponse))]
 	[Message(OuterOpcode.C2M_TestRequest)]
 	[ProtoContract]
-	public partial class C2M_TestRequest: IActorLocationRequest
+	public partial class C2M_TestRequest: Object, IActorLocationRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -21,7 +21,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_TestResponse)]
 	[ProtoContract]
-	public partial class M2C_TestResponse: IActorLocationResponse
+	public partial class M2C_TestResponse: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -40,7 +40,7 @@ namespace ET
 	[ResponseType(typeof(Actor_TransferResponse))]
 	[Message(OuterOpcode.Actor_TransferRequest)]
 	[ProtoContract]
-	public partial class Actor_TransferRequest: IActorLocationRequest
+	public partial class Actor_TransferRequest: Object, IActorLocationRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -55,7 +55,7 @@ namespace ET
 
 	[Message(OuterOpcode.Actor_TransferResponse)]
 	[ProtoContract]
-	public partial class Actor_TransferResponse: IActorLocationResponse
+	public partial class Actor_TransferResponse: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -71,7 +71,7 @@ namespace ET
 	[ResponseType(typeof(G2C_EnterMap))]
 	[Message(OuterOpcode.C2G_EnterMap)]
 	[ProtoContract]
-	public partial class C2G_EnterMap: IRequest
+	public partial class C2G_EnterMap: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -80,7 +80,7 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_EnterMap)]
 	[ProtoContract]
-	public partial class G2C_EnterMap: IResponse
+	public partial class G2C_EnterMap: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -105,25 +105,34 @@ namespace ET
 
 	[Message(OuterOpcode.UnitInfo)]
 	[ProtoContract]
-	public partial class UnitInfo
+	public partial class UnitInfo: Object
 	{
 		[ProtoMember(1)]
 		public long UnitId { get; set; }
 
 		[ProtoMember(2)]
-		public float X { get; set; }
+		public int ConfigId { get; set; }
 
 		[ProtoMember(3)]
-		public float Y { get; set; }
+		public float X { get; set; }
 
 		[ProtoMember(4)]
+		public float Y { get; set; }
+
+		[ProtoMember(5)]
 		public float Z { get; set; }
+
+		[ProtoMember(6)]
+		public List<int> Ks = new List<int>();
+
+		[ProtoMember(7)]
+		public List<long> Vs = new List<long>();
 
 	}
 
 	[Message(OuterOpcode.M2C_CreateUnits)]
 	[ProtoContract]
-	public partial class M2C_CreateUnits: IActorMessage
+	public partial class M2C_CreateUnits: Object, IActorMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -136,9 +145,9 @@ namespace ET
 
 	}
 
-	[Message(OuterOpcode.Frame_ClickMap)]
+	[Message(OuterOpcode.C2M_PathfindingResult)]
 	[ProtoContract]
-	public partial class Frame_ClickMap: IActorLocationMessage
+	public partial class C2M_PathfindingResult: Object, IActorLocationMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -162,7 +171,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_PathfindingResult)]
 	[ProtoContract]
-	public partial class M2C_PathfindingResult: IActorMessage
+	public partial class M2C_PathfindingResult: Object, IActorMessage
 	{
 		[ProtoMember(93)]
 		public long ActorId { get; set; }
@@ -190,10 +199,43 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.M2C_Stop)]
+	[ProtoContract]
+	public partial class M2C_Stop: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public long Id { get; set; }
+
+		[ProtoMember(3)]
+		public float X { get; set; }
+
+		[ProtoMember(4)]
+		public float Y { get; set; }
+
+		[ProtoMember(5)]
+		public float Z { get; set; }
+
+		[ProtoMember(6)]
+		public float A { get; set; }
+
+		[ProtoMember(7)]
+		public float B { get; set; }
+
+		[ProtoMember(8)]
+		public float C { get; set; }
+
+		[ProtoMember(9)]
+		public float W { get; set; }
+
+	}
+
 	[ResponseType(typeof(G2C_Ping))]
 	[Message(OuterOpcode.C2G_Ping)]
 	[ProtoContract]
-	public partial class C2G_Ping: IRequest
+	public partial class C2G_Ping: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -202,7 +244,7 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_Ping)]
 	[ProtoContract]
-	public partial class G2C_Ping: IResponse
+	public partial class G2C_Ping: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -220,14 +262,14 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_Test)]
 	[ProtoContract]
-	public partial class G2C_Test: IMessage
+	public partial class G2C_Test: Object, IMessage
 	{
 	}
 
 	[ResponseType(typeof(M2C_Reload))]
 	[Message(OuterOpcode.C2M_Reload)]
 	[ProtoContract]
-	public partial class C2M_Reload: IRequest
+	public partial class C2M_Reload: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -242,7 +284,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_Reload)]
 	[ProtoContract]
-	public partial class M2C_Reload: IResponse
+	public partial class M2C_Reload: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -258,7 +300,7 @@ namespace ET
 	[ResponseType(typeof(R2C_Login))]
 	[Message(OuterOpcode.C2R_Login)]
 	[ProtoContract]
-	public partial class C2R_Login: IRequest
+	public partial class C2R_Login: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -273,7 +315,7 @@ namespace ET
 
 	[Message(OuterOpcode.R2C_Login)]
 	[ProtoContract]
-	public partial class R2C_Login: IResponse
+	public partial class R2C_Login: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -298,7 +340,7 @@ namespace ET
 	[ResponseType(typeof(G2C_LoginGate))]
 	[Message(OuterOpcode.C2G_LoginGate)]
 	[ProtoContract]
-	public partial class C2G_LoginGate: IRequest
+	public partial class C2G_LoginGate: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -313,7 +355,7 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_LoginGate)]
 	[ProtoContract]
-	public partial class G2C_LoginGate: IResponse
+	public partial class G2C_LoginGate: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -331,7 +373,7 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_TestHotfixMessage)]
 	[ProtoContract]
-	public partial class G2C_TestHotfixMessage: IMessage
+	public partial class G2C_TestHotfixMessage: Object, IMessage
 	{
 		[ProtoMember(1)]
 		public string Info { get; set; }
@@ -341,7 +383,7 @@ namespace ET
 	[ResponseType(typeof(M2C_TestActorResponse))]
 	[Message(OuterOpcode.C2M_TestActorRequest)]
 	[ProtoContract]
-	public partial class C2M_TestActorRequest: IActorLocationRequest
+	public partial class C2M_TestActorRequest: Object, IActorLocationRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -356,7 +398,7 @@ namespace ET
 
 	[Message(OuterOpcode.M2C_TestActorResponse)]
 	[ProtoContract]
-	public partial class M2C_TestActorResponse: IActorLocationResponse
+	public partial class M2C_TestActorResponse: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -374,7 +416,7 @@ namespace ET
 
 	[Message(OuterOpcode.PlayerInfo)]
 	[ProtoContract]
-	public partial class PlayerInfo: IMessage
+	public partial class PlayerInfo: Object, IMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -384,7 +426,7 @@ namespace ET
 	[ResponseType(typeof(G2C_PlayerInfo))]
 	[Message(OuterOpcode.C2G_PlayerInfo)]
 	[ProtoContract]
-	public partial class C2G_PlayerInfo: IRequest
+	public partial class C2G_PlayerInfo: Object, IRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -393,7 +435,7 @@ namespace ET
 
 	[Message(OuterOpcode.G2C_PlayerInfo)]
 	[ProtoContract]
-	public partial class G2C_PlayerInfo: IResponse
+	public partial class G2C_PlayerInfo: Object, IResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }

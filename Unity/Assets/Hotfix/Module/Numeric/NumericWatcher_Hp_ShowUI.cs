@@ -6,7 +6,7 @@
 	[NumericWatcher(NumericType.Hp)]
 	public class NumericWatcher_Hp_ShowUI : INumericWatcher
 	{
-		public void Run(long id, int value)
+		public void Run(long id, long value)
 		{
 		}
 	}

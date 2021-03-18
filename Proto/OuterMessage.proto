@@ -52,10 +52,12 @@ message G2C_EnterMap // IResponse
 message UnitInfo
 {
 	int64 UnitId  = 1;
-
-	float X = 2;
-	float Y = 3;
-	float Z = 4;
+    int32 ConfigId = 2;
+	float X = 3;
+	float Y = 4;
+	float Z = 5;
+	repeated int32 Ks = 6;
+	repeated int64 Vs = 7;
 }
 
 message M2C_CreateUnits // IActorMessage
@@ -65,7 +67,7 @@ message M2C_CreateUnits // IActorMessage
     repeated UnitInfo Units = 1;
 }
 
-message Frame_ClickMap // IActorLocationMessage
+message C2M_PathfindingResult // IActorLocationMessage
 {
 	int32 RpcId = 90;
 	int64 ActorId = 93;
@@ -89,6 +91,21 @@ message M2C_PathfindingResult // IActorMessage
 	repeated float Xs = 5;
 	repeated float Ys = 6;
 	repeated float Zs = 7;
+}
+
+message M2C_Stop // IActorMessage
+{
+	int32 Error = 1;
+	
+	int64 Id = 2;
+	float X = 3;
+    float Y = 4;
+    float Z = 5;
+    
+    float A = 6;
+    float B = 7;
+    float C = 8;
+    float W = 9;
 }
 
 //ResponseType G2C_Ping

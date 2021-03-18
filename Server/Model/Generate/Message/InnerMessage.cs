@@ -9,7 +9,7 @@ namespace ET
 	[ResponseType(typeof(M2M_TrasferUnitResponse))]
 	[Message(InnerOpcode.M2M_TrasferUnitRequest)]
 	[ProtoContract]
-	public partial class M2M_TrasferUnitRequest: IActorRequest
+	public partial class M2M_TrasferUnitRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -24,7 +24,7 @@ namespace ET
 
 	[Message(InnerOpcode.M2M_TrasferUnitResponse)]
 	[ProtoContract]
-	public partial class M2M_TrasferUnitResponse: IActorResponse
+	public partial class M2M_TrasferUnitResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -43,7 +43,7 @@ namespace ET
 	[ResponseType(typeof(A2M_Reload))]
 	[Message(InnerOpcode.M2A_Reload)]
 	[ProtoContract]
-	public partial class M2A_Reload: IActorRequest
+	public partial class M2A_Reload: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -55,7 +55,7 @@ namespace ET
 
 	[Message(InnerOpcode.A2M_Reload)]
 	[ProtoContract]
-	public partial class A2M_Reload: IActorResponse
+	public partial class A2M_Reload: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -71,7 +71,7 @@ namespace ET
 	[ResponseType(typeof(G2G_LockResponse))]
 	[Message(InnerOpcode.G2G_LockRequest)]
 	[ProtoContract]
-	public partial class G2G_LockRequest: IActorRequest
+	public partial class G2G_LockRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -89,7 +89,7 @@ namespace ET
 
 	[Message(InnerOpcode.G2G_LockResponse)]
 	[ProtoContract]
-	public partial class G2G_LockResponse: IActorResponse
+	public partial class G2G_LockResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -105,7 +105,7 @@ namespace ET
 	[ResponseType(typeof(G2G_LockReleaseResponse))]
 	[Message(InnerOpcode.G2G_LockReleaseRequest)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseRequest: IActorRequest
+	public partial class G2G_LockReleaseRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -123,7 +123,7 @@ namespace ET
 
 	[Message(InnerOpcode.G2G_LockReleaseResponse)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseResponse: IActorResponse
+	public partial class G2G_LockReleaseResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -139,7 +139,7 @@ namespace ET
 	[ResponseType(typeof(ObjectAddResponse))]
 	[Message(InnerOpcode.ObjectAddRequest)]
 	[ProtoContract]
-	public partial class ObjectAddRequest: IActorRequest
+	public partial class ObjectAddRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -157,7 +157,7 @@ namespace ET
 
 	[Message(InnerOpcode.ObjectAddResponse)]
 	[ProtoContract]
-	public partial class ObjectAddResponse: IActorResponse
+	public partial class ObjectAddResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -173,7 +173,7 @@ namespace ET
 	[ResponseType(typeof(ObjectLockResponse))]
 	[Message(InnerOpcode.ObjectLockRequest)]
 	[ProtoContract]
-	public partial class ObjectLockRequest: IActorRequest
+	public partial class ObjectLockRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -194,7 +194,7 @@ namespace ET
 
 	[Message(InnerOpcode.ObjectLockResponse)]
 	[ProtoContract]
-	public partial class ObjectLockResponse: IActorResponse
+	public partial class ObjectLockResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -210,7 +210,7 @@ namespace ET
 	[ResponseType(typeof(ObjectUnLockResponse))]
 	[Message(InnerOpcode.ObjectUnLockRequest)]
 	[ProtoContract]
-	public partial class ObjectUnLockRequest: IActorRequest
+	public partial class ObjectUnLockRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -231,7 +231,7 @@ namespace ET
 
 	[Message(InnerOpcode.ObjectUnLockResponse)]
 	[ProtoContract]
-	public partial class ObjectUnLockResponse: IActorResponse
+	public partial class ObjectUnLockResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -247,7 +247,7 @@ namespace ET
 	[ResponseType(typeof(ObjectRemoveResponse))]
 	[Message(InnerOpcode.ObjectRemoveRequest)]
 	[ProtoContract]
-	public partial class ObjectRemoveRequest: IActorRequest
+	public partial class ObjectRemoveRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -262,7 +262,7 @@ namespace ET
 
 	[Message(InnerOpcode.ObjectRemoveResponse)]
 	[ProtoContract]
-	public partial class ObjectRemoveResponse: IActorResponse
+	public partial class ObjectRemoveResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -278,7 +278,7 @@ namespace ET
 	[ResponseType(typeof(ObjectGetResponse))]
 	[Message(InnerOpcode.ObjectGetRequest)]
 	[ProtoContract]
-	public partial class ObjectGetRequest: IActorRequest
+	public partial class ObjectGetRequest: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -293,7 +293,7 @@ namespace ET
 
 	[Message(InnerOpcode.ObjectGetResponse)]
 	[ProtoContract]
-	public partial class ObjectGetResponse: IActorResponse
+	public partial class ObjectGetResponse: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -312,7 +312,7 @@ namespace ET
 	[ResponseType(typeof(G2R_GetLoginKey))]
 	[Message(InnerOpcode.R2G_GetLoginKey)]
 	[ProtoContract]
-	public partial class R2G_GetLoginKey: IActorRequest
+	public partial class R2G_GetLoginKey: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -327,7 +327,7 @@ namespace ET
 
 	[Message(InnerOpcode.G2R_GetLoginKey)]
 	[ProtoContract]
-	public partial class G2R_GetLoginKey: IActorResponse
+	public partial class G2R_GetLoginKey: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -349,7 +349,7 @@ namespace ET
 	[ResponseType(typeof(M2G_CreateUnit))]
 	[Message(InnerOpcode.G2M_CreateUnit)]
 	[ProtoContract]
-	public partial class G2M_CreateUnit: IActorRequest
+	public partial class G2M_CreateUnit: Object, IActorRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -367,7 +367,7 @@ namespace ET
 
 	[Message(InnerOpcode.M2G_CreateUnit)]
 	[ProtoContract]
-	public partial class M2G_CreateUnit: IActorResponse
+	public partial class M2G_CreateUnit: Object, IActorResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -392,7 +392,7 @@ namespace ET
 
 	[Message(InnerOpcode.G2M_SessionDisconnect)]
 	[ProtoContract]
-	public partial class G2M_SessionDisconnect: IActorLocationMessage
+	public partial class G2M_SessionDisconnect: Object, IActorLocationMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }

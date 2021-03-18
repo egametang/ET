@@ -8,8 +8,8 @@ namespace ET
 		{
 			public Entity Parent;
 			public NumericType NumericType;
-			public int Old;
-			public int New;
+			public long Old;
+			public long New;
 		}
 	}
 	
@@ -24,7 +24,7 @@ namespace ET
 
 	public class NumericComponent: Entity
 	{
-		public Dictionary<int, int> NumericDic = new Dictionary<int, int>();
+		public Dictionary<int, long> NumericDic = new Dictionary<int, long>();
 
 		public void Awake()
 		{
@@ -43,10 +43,20 @@ namespace ET
 
 		public int GetAsInt(NumericType numericType)
 		{
+			return (int)GetByKey((int)numericType);
+		}
+		
+		public long GetAsLong(NumericType numericType)
+		{
 			return GetByKey((int)numericType);
 		}
 		
 		public int GetAsInt(int numericType)
+		{
+			return (int)GetByKey(numericType);
+		}
+		
+		public long GetAsLong(int numericType)
 		{
 			return GetByKey(numericType);
 		}
@@ -60,8 +70,13 @@ namespace ET
 		{
 			this[nt] = value;
 		}
+		
+		public void Set(NumericType nt, long value)
+		{
+			this[nt] = value;
+		}
 
-		public int this[NumericType numericType]
+		public long this[NumericType numericType]
 		{
 			get
 			{
@@ -69,7 +84,7 @@ namespace ET
 			}
 			set
 			{
-				int v = this.GetByKey((int) numericType);
+				long v = this.GetByKey((int) numericType);
 				if (v == value)
 				{
 					return;
@@ -81,9 +96,9 @@ namespace ET
 			}
 		}
 
-		private int GetByKey(int key)
+		private long GetByKey(int key)
 		{
-			int value = 0;
+			long value = 0;
 			this.NumericDic.TryGetValue(key, out value);
 			return value;
 		}
@@ -103,8 +118,8 @@ namespace ET
 
 			// 一个数值可能会多种情况影响，比如速度,加个buff可能增加速度绝对值100，也有些buff增加10%速度，所以一个值可以由5个值进行控制其最终结果
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
-			int old = this.NumericDic[final];
-			int result = (int)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f * 10000);
+			long old = this.NumericDic[final];
+			long result = (long)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f * 10000);
 			this.NumericDic[final] = result;
 			Game.EventSystem.Publish(new EventType.NumbericChange()
 			{
