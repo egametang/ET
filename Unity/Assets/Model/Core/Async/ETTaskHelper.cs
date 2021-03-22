@@ -43,7 +43,7 @@ namespace ET
 
         public static async ETTask WaitAny<T>(ETTask<T>[] tasks)
         {
-            if (tasks?.Length == 0)
+            if (tasks == null || tasks.Length == 0)
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace ET
 
         public static async ETTask WaitAny(ETTask[] tasks)
         {
-            if (tasks?.Length == 0)
+            if (tasks == null || tasks.Length == 0)
             {
                 return;
             }
@@ -87,6 +87,10 @@ namespace ET
 
         public static async ETTask WaitAll<T>(ETTask<T>[] tasks)
         {
+            if (tasks == null || tasks.Length == 0)
+            {
+                return;
+            }
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
             foreach (ETTask<T> task in tasks)
             {
@@ -104,6 +108,10 @@ namespace ET
 
         public static async ETTask WaitAll(ETTask[] tasks)
         {
+            if (tasks == null || tasks.Length == 0)
+            {
+                return;
+            }
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
             foreach (ETTask task in tasks)
             {
@@ -121,6 +129,10 @@ namespace ET
         
         public static async ETTask WaitAll(List<ETTask> tasks)
         {
+            if (tasks == null || tasks.Count == 0)
+            {
+                return;
+            }
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
             foreach (ETTask task in tasks)
             {
