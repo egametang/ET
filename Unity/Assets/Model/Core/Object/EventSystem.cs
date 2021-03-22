@@ -613,26 +613,24 @@ namespace ET
 			{
 				return;
 			}
+			using var list = ListComponent<ETTask>.Create();
+
 			foreach (object obj in iEvents)
 			{
-				try
+				if (!(obj is AEvent<T> aEvent))
 				{
-					using var list = ListComponent<ETTask>.Create();
-					
-					if (!(obj is AEvent<T> aEvent))
-					{
-						Log.Error($"event error: {obj.GetType().Name}");
-						continue;
-					}
-
-					list.List.Add(aEvent.Handle(a));
-
-					await ETTaskHelper.WaitAll(list.List);
+					Log.Error($"event error: {obj.GetType().Name}");
+					continue;
 				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
+				list.List.Add(aEvent.Handle(a));
+			}
+			try
+			{
+				await ETTaskHelper.WaitAll(list.List);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
 			}
 		}
 
