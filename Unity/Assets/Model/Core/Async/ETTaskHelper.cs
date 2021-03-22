@@ -43,6 +43,11 @@ namespace ET
 
         public static async ETTask WaitAny<T>(ETTask<T>[] tasks)
         {
+            if (tasks?.Length == 0)
+            {
+                return;
+            }
+            
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
             foreach (ETTask<T> task in tasks)
             {
@@ -60,6 +65,11 @@ namespace ET
 
         public static async ETTask WaitAny(ETTask[] tasks)
         {
+            if (tasks?.Length == 0)
+            {
+                return;
+            }
+            
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
             foreach (ETTask task in tasks)
             {
