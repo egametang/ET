@@ -455,23 +455,17 @@ namespace ET
             
             string[] dependencies = GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
-            using var tasts = ListComponent<ETTask>.Create();
-            async ETTask loadDependency(string dependency)
-            {
-                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode()))
-                {
-                    await this.LoadOneBundleAsync(dependency, isScene);
-                }
-            }
             foreach (string dependency in dependencies)
             {
                 if (string.IsNullOrEmpty(dependency))
                 {
                     continue;
                 }
-                tasts.List.Add(loadDependency(dependency));
+                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode()))
+                {
+                    await this.LoadOneBundleAsync(dependency, isScene);
+                }
             }
-            await ETTaskHelper.WaitAll(tasts.List);
         }
         
         private async ETTask LoadOneBundleAsync(string assetBundleName, bool isScene)
