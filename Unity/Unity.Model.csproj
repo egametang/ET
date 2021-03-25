@@ -69,7 +69,6 @@
      <Compile Include="Assets\Model\Core\Async\ETCancellationToken.cs" />
      <Compile Include="Assets\Model\Core\Object\IAwakeSystem.cs" />
      <Compile Include="Assets\Model\Module\Numeric\NumericType.cs" />
-     <Compile Include="Assets\Model\Module\Resource\AssetsLoaderAsync.cs" />
      <Compile Include="Assets\Model\Core\Helper\EnumHelper.cs" />
      <Compile Include="Assets\Model\Core\Object\BaseAttribute.cs" />
      <Compile Include="Assets\Model\Generate\Config\StartZoneConfig.cs" />
@@ -198,7 +197,6 @@
      <Compile Include="Assets\Model\Module\Message\MessagePool.cs" />
      <Compile Include="Assets\Model\Module\Config\IConfig.cs" />
      <Compile Include="Assets\Model\Module\Message\ResponseTypeAttribute.cs" />
-     <Compile Include="Assets\Model\Module\Resource\AssetsBundleLoaderAsync.cs" />
      <Compile Include="Assets\Model\Core\Object\ObjectPool.cs" />
      <Compile Include="Assets\Model\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Model\Module\NetworkTCP\TChannel.cs" />
