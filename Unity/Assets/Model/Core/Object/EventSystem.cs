@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -60,86 +61,90 @@ namespace ET
 
 		public void Add(Assembly assembly)
 		{
-			this.assemblies[assembly.ManifestModule.ScopeName] = assembly;
-			this.types.Clear();
-			foreach (Assembly value in this.assemblies.Values)
+			if (this.assemblies.ContainsKey(assembly.ManifestModule.ScopeName))
 			{
-				foreach (Type type in value.GetTypes())
-				{
-					if (type.IsAbstract)
-					{
-						continue;
-					}
-
-					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
-					if (objects.Length == 0)
-					{
-						continue;
-					}
-
-					foreach (BaseAttribute baseAttribute in objects)
-					{
-						this.types.Add(baseAttribute.AttributeType, type);
-					}
-				}
+				return;
 			}
-
-			this.awakeSystems.Clear();
-			this.lateUpdateSystems.Clear();
-			this.updateSystems.Clear();
-			this.startSystems.Clear();
-			this.loadSystems.Clear();
-			this.changeSystems.Clear();
-			this.destroySystems.Clear();
-			this.deserializeSystems.Clear();
 			
-			foreach (Type type in this.GetTypes(typeof(ObjectSystemAttribute)))
+			// map assembly
+			this.assemblies[assembly.ManifestModule.ScopeName] = assembly;
+			var newTypes = new UnOrderMultiMapSet<Type, Type>();
+			foreach (Type type in assembly.GetTypes())
 			{
-				object obj = Activator.CreateInstance(type);
-				switch (obj)
+				if (type.IsAbstract)
 				{
-					case IAwakeSystem objectSystem:
-						this.awakeSystems.Add(objectSystem.Type(), objectSystem);
-						break;
-					case IUpdateSystem updateSystem:
-						this.updateSystems.Add(updateSystem.Type(), updateSystem);
-						break;
-					case ILateUpdateSystem lateUpdateSystem:
-						this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
-						break;
-					case IStartSystem startSystem:
-						this.startSystems.Add(startSystem.Type(), startSystem);
-						break;
-					case IDestroySystem destroySystem:
-						this.destroySystems.Add(destroySystem.Type(), destroySystem);
-						break;
-					case ILoadSystem loadSystem:
-						this.loadSystems.Add(loadSystem.Type(), loadSystem);
-						break;
-					case IChangeSystem changeSystem:
-						this.changeSystems.Add(changeSystem.Type(), changeSystem);
-						break;
-					case IDeserializeSystem deserializeSystem:
-						this.deserializeSystems.Add(deserializeSystem.Type(), deserializeSystem);
-						break;
+					continue;
+				}
+
+				object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
+				if (objects.Length == 0)
+				{
+					continue;
+				}
+
+				foreach (BaseAttribute baseAttribute in objects)
+				{
+					newTypes.Add(baseAttribute.AttributeType, type);
+					this.types.Add(baseAttribute.AttributeType, type);
 				}
 			}
 
-			this.allEvents.Clear();
-			foreach (Type type in types[typeof(EventAttribute)])
+			// system
+			var typeofObjectSystemAttribute = typeof (ObjectSystemAttribute);
+			if (newTypes.ContainsKey(typeofObjectSystemAttribute))
 			{
-				IEvent obj = Activator.CreateInstance(type) as IEvent;
-				if (obj == null)
+				foreach (Type type in newTypes[typeofObjectSystemAttribute])
 				{
-					throw new Exception($"type not is AEvent: {obj.GetType().Name}");
+					object obj = Activator.CreateInstance(type);
+					switch (obj)
+					{
+						case IAwakeSystem objectSystem:
+							this.awakeSystems.Add(objectSystem.Type(), objectSystem);
+							break;
+						case IUpdateSystem updateSystem:
+							this.updateSystems.Add(updateSystem.Type(), updateSystem);
+							break;
+						case ILateUpdateSystem lateUpdateSystem:
+							this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
+							break;
+						case IStartSystem startSystem:
+							this.startSystems.Add(startSystem.Type(), startSystem);
+							break;
+						case IDestroySystem destroySystem:
+							this.destroySystems.Add(destroySystem.Type(), destroySystem);
+							break;
+						case ILoadSystem loadSystem:
+							this.loadSystems.Add(loadSystem.Type(), loadSystem);
+							break;
+						case IChangeSystem changeSystem:
+							this.changeSystems.Add(changeSystem.Type(), changeSystem);
+							break;
+						case IDeserializeSystem deserializeSystem:
+							this.deserializeSystems.Add(deserializeSystem.Type(), deserializeSystem);
+							break;
+					}
 				}
+			}
+			
+			// events
+			var typeofEventAttribute = typeof (EventAttribute);
+			if (newTypes.ContainsKey(typeofEventAttribute))
+			{
+				foreach (Type type in newTypes[typeofEventAttribute])
+				{
+					IEvent obj = Activator.CreateInstance(type) as IEvent;
+					if (obj == null)
+					{
+						throw new Exception($"type not is AEvent: {obj.GetType().Name}");
+					}
 
-				Type eventType = obj.GetEventType();
-				if (!this.allEvents.ContainsKey(eventType))
-				{
-					this.allEvents.Add(eventType, new List<object>());
+					Type eventType = obj.GetEventType();
+					if (!this.allEvents.ContainsKey(eventType))
+					{
+						this.allEvents.Add(eventType, new List<object>());
+					}
+					this.allEvents[eventType].Add(obj);
 				}
-				this.allEvents[eventType].Add(obj);
 			}
 			
 			this.Load();
