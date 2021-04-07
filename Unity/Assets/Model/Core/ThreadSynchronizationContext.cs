@@ -22,7 +22,7 @@ namespace ET
 
         public void Update()
         {
-            while (true)
+            for(int i=0;i<100;i++)
             {
                 if (!this.queue.TryDequeue(out a))
                 {
