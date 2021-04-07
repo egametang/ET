@@ -25,8 +25,8 @@ namespace ET
         {
             Entity component = Create(type, isFromPool);
 			
-            component.Id = parent.Id;
-            component.ComponentParent = parent;
+            component.Id = this.Id;
+            component.ComponentParent = this;
 			
             EventSystem.Instance.Awake(component);
             return component;
