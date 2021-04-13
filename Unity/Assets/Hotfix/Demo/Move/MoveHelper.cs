@@ -8,7 +8,7 @@ namespace ET
         // 可以多次调用，多次调用的话会取消上一次的协程
         public static async ETTask<int> MoveToAsync(this Unit unit, Vector3 targetPos, ETCancellationToken cancellationToken = null)
         {
-            C2M_PathfindingResult msg = new C2M_PathfindingResult();
+            C2M_PathfindingResult msg = new C2M_PathfindingResult() {X = targetPos.x, Y = targetPos.y, Z = targetPos.z};
             unit.Domain.GetComponent<SessionComponent>().Session.Send(msg);
 
             ObjectWait objectWait = unit.GetComponent<ObjectWait>();
@@ -17,7 +17,7 @@ namespace ET
             objectWait.Notify(new WaitType.Wait_UnitStop() { Error = WaitTypeError.Cancel });
             
             // 一直等到unit发送stop
-            WaitType.Wait_UnitStop waitUnitStop = await objectWait.Wait<WaitType.Wait_UnitStop>();
+            WaitType.Wait_UnitStop waitUnitStop = await objectWait.Wait<WaitType.Wait_UnitStop>(cancellationToken);
             return waitUnitStop.Error;
         }
     }
