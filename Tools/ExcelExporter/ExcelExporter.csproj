@@ -14,10 +14,12 @@
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
       <OutputPath>./Bin</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <OutputPath>./Bin</OutputPath>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
     
     <ItemGroup>

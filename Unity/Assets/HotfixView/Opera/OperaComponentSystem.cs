@@ -34,24 +34,7 @@ namespace ET
                     self.frameClickMap.Y = self.ClickPoint.y;
                     self.frameClickMap.Z = self.ClickPoint.z;
                     self.DomainScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
-
-                    // 测试actor rpc消息
-                    self.TestActor().Coroutine();
                 }
-            }
-        }
-
-        public static async ETVoid TestActor(this OperaComponent self)
-        {
-            try
-            {
-                M2C_TestActorResponse response = (M2C_TestActorResponse)await self.Domain.GetComponent<SessionComponent>().Session.Call(
-                    new C2M_TestActorRequest() { Info = "actor rpc request" });
-                Log.Info(response.Info);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
             }
         }
     }

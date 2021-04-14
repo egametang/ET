@@ -9,10 +9,12 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DefineConstants>TRACE;SERVER;FEAT_SAFE</DefineConstants>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DefineConstants>TRACE;SERVER;FEAT_SAFE</DefineConstants>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>

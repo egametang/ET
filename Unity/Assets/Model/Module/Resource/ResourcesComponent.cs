@@ -19,6 +19,7 @@ namespace ET
             self.AssetBundle = a;
             self.Name = abName;
             self.RefCount = 1;
+            self.AlreadyLoadAssets = false;
         }
     }
 
@@ -31,24 +32,20 @@ namespace ET
 
             self.RefCount = 0;
             self.Name = "";
+            self.AlreadyLoadAssets = false;
+            self.AssetBundle = null;
         }
     }
 
     public class ABInfo: Entity
     {
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
 
-        public int RefCount
-        {
-            get;
-            set;
-        }
+        public int RefCount { get; set; }
 
         public AssetBundle AssetBundle;
+
+        public bool AlreadyLoadAssets;
 
         public void Destroy(bool unload = true)
         {
@@ -64,6 +61,22 @@ namespace ET
     // 用于字符串转换，减少GC
     public static class AssetBundleHelper
     {
+        public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
+        {
+            var tcs = new ETTaskCompletionSource<AssetBundle>();
+            AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(path);
+            request.completed += operation => { tcs.SetResult(request.assetBundle); };
+            return await tcs;
+        }
+
+        public static async ETTask<UnityEngine.Object[]> UnityLoadAssetAsync(AssetBundle assetBundle)
+        {
+            var tcs = new ETTaskCompletionSource<UnityEngine.Object[]>();
+            AssetBundleRequest request = assetBundle.LoadAllAssetsAsync();
+            request.completed += operation => { tcs.SetResult(request.allAssets); };
+            return await tcs;
+        }
+
         public static string IntToString(this int value)
         {
             string result;
@@ -120,37 +133,29 @@ namespace ET
 
     public class ResourcesComponent: Entity
     {
-        public static ResourcesComponent Instance
-        {
-            get;
-            set;
-        }
+        public static ResourcesComponent Instance { get; set; }
 
-        public AssetBundleManifest AssetBundleManifestObject
-        {
-            get;
-            set;
-        }
-        
+        private AssetBundleManifest AssetBundleManifestObject { get; set; }
+
         public Dictionary<int, string> IntToStringDict = new Dictionary<int, string>();
 
         public Dictionary<string, string> StringToABDict = new Dictionary<string, string>();
 
         public Dictionary<string, string> BundleNameToLowerDict = new Dictionary<string, string>() { { "StreamingAssets", "StreamingAssets" } };
 
-
-        private readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+        private readonly Dictionary<string, Dictionary<string, UnityEngine.Object>> resourceCache =
+                new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
 
         private readonly Dictionary<string, ABInfo> bundles = new Dictionary<string, ABInfo>();
 
         public void Awake()
         {
             Instance = this;
-            
+
             if (Define.IsAsync)
             {
-			    LoadOneBundle("StreamingAssets");
-			    AssetBundleManifestObject = (AssetBundleManifest)GetAsset("StreamingAssets", "AssetBundleManifest");
+                LoadOneBundle("StreamingAssets");
+                AssetBundleManifestObject = (AssetBundleManifest) GetAsset("StreamingAssets", "AssetBundleManifest");
             }
         }
 
@@ -165,7 +170,7 @@ namespace ET
 
             Instance = null;
 
-            foreach (KeyValuePair<string, ABInfo> abInfo in this.bundles)
+            foreach (var abInfo in this.bundles)
             {
                 abInfo.Value.Destroy();
             }
@@ -177,7 +182,7 @@ namespace ET
             this.BundleNameToLowerDict.Clear();
         }
 
-        private string[] GetDependencies(string assetBundleName, bool isScene = false)
+        private string[] GetDependencies(string assetBundleName)
         {
             string[] dependencies = new string[0];
             if (DependenciesCache.TryGetValue(assetBundleName, out dependencies))
@@ -188,10 +193,7 @@ namespace ET
             if (!Define.IsAsync)
             {
 #if UNITY_EDITOR
-                if (isScene == false)
-                {
-                    dependencies = AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
-                }
+                dependencies = AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
 #endif
             }
             else
@@ -203,19 +205,19 @@ namespace ET
             return dependencies;
         }
 
-        public string[] GetSortedDependencies(string assetBundleName, bool isScene = false)
+        private string[] GetSortedDependencies(string assetBundleName)
         {
-            Dictionary<string, int> info = new Dictionary<string, int>();
-            List<string> parents = new List<string>();
-            CollectDependencies(parents, assetBundleName, info, isScene);
+            var info = new Dictionary<string, int>();
+            var parents = new List<string>();
+            CollectDependencies(parents, assetBundleName, info);
             string[] ss = info.OrderBy(x => x.Value).Select(x => x.Key).ToArray();
             return ss;
         }
 
-        private void CollectDependencies(List<string> parents, string assetBundleName, Dictionary<string, int> info, bool isScene = false)
+        private void CollectDependencies(List<string> parents, string assetBundleName, Dictionary<string, int> info)
         {
             parents.Add(assetBundleName);
-            string[] deps = GetDependencies(assetBundleName, isScene);
+            string[] deps = GetDependencies(assetBundleName);
             foreach (string parent in parents)
             {
                 if (!info.ContainsKey(parent))
@@ -233,14 +235,14 @@ namespace ET
                     throw new Exception($"包有循环依赖，请重新标记: {assetBundleName} {dep}");
                 }
 
-                CollectDependencies(parents, dep, info, isScene);
+                CollectDependencies(parents, dep, info);
             }
 
             parents.RemoveAt(parents.Count - 1);
         }
 
         // 缓存包依赖，不用每次计算
-        public Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
+        private readonly Dictionary<string, string[]> DependenciesCache = new Dictionary<string, string[]>();
 
         public bool Contains(string bundleName)
         {
@@ -286,6 +288,7 @@ namespace ET
                     {
                         await TimerComponent.Instance.WaitFrameAsync();
                     }
+
                     this.UnloadBundle(bundle, unload);
                 }
             }
@@ -325,7 +328,7 @@ namespace ET
             {
                 return;
             }
-            
+
             //Log.Debug($"---------------truly unload one bundle {assetBundleName} refcount: {abInfo.RefCount}");
             this.bundles.Remove(assetBundleName);
             this.resourceCache.Remove(assetBundleName);
@@ -357,7 +360,7 @@ namespace ET
             //Log.Debug($"-----------dep load finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
-        public void AddResource(string bundleName, string assetName, UnityEngine.Object resource)
+        private void AddResource(string bundleName, string assetName, UnityEngine.Object resource)
         {
             Dictionary<string, UnityEngine.Object> dict;
             if (!this.resourceCache.TryGetValue(bundleName.BundleNameToLower(), out dict))
@@ -379,7 +382,7 @@ namespace ET
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 return;
             }
-            
+
             if (!Define.IsAsync)
             {
                 string[] realPath = null;
@@ -392,8 +395,6 @@ namespace ET
                     AddResource(assetBundleName, assetName, resource);
                 }
 
-            
-              
                 if (realPath.Length > 0)
                 {
                     abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
@@ -430,7 +431,7 @@ namespace ET
             if (!assetBundle.isStreamedSceneAssetBundle)
             {
                 // 异步load资源到内存cache住
-                UnityEngine.Object[] assets = assetBundle.LoadAllAssets();
+                var assets = assetBundle.LoadAllAssets();
                 foreach (UnityEngine.Object asset in assets)
                 {
                     AddResource(assetBundleName, asset.name, asset);
@@ -439,42 +440,61 @@ namespace ET
 
             abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
             this.bundles[assetBundleName] = abInfo;
-            
+
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
         }
 
         /// <summary>
-        /// 异步加载assetbundle
+        /// 异步加载assetbundle, 加载ab包分两部分，第一部分是从硬盘加载，第二部分加载all assets。两者不能同时并发
         /// </summary>
-        /// <param name="assetBundleName"></param>
-        /// <param name="isScene"></param>
-        /// <returns></returns>
-        public async ETTask LoadBundleAsync(string assetBundleName, bool isScene = false)
+        public async ETTask LoadBundleAsync(string assetBundleName)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
-            
+
             string[] dependencies = GetSortedDependencies(assetBundleName);
             //Log.Debug($"-----------dep load async start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
-            using var tasts = ListComponent<ETTask>.Create();
-            async ETTask loadDependency(string dependency)
+
+            using (var abInfos = ListComponent<ABInfo>.Create())
             {
-                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode()))
+                async ETTask LoadDependency(string dependency, List<ABInfo> abInfosList)
                 {
-                    await this.LoadOneBundleAsync(dependency, isScene);
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, dependency.GetHashCode()))
+                    {
+                        ABInfo abInfo = await this.LoadOneBundleAsync(dependency);
+                        if (abInfo == null || abInfo.RefCount > 1)
+                        {
+                            return;
+                        }
+
+                        abInfosList.Add(abInfo);
+                    }
+                }
+
+                // LoadFromFileAsync部分可以并发加载
+                using (var tasks = ListComponent<ETTask>.Create())
+                {
+                    foreach (string dependency in dependencies)
+                    {
+                        tasks.List.Add(LoadDependency(dependency, abInfos.List));
+                    }
+
+                    await ETTaskHelper.WaitAll(tasks.List);
+                }
+
+                // ab包从硬盘加载完成，可以再并发加载all assets
+                using (var tasks = ListComponent<ETTask>.Create())
+                {
+                    foreach (ABInfo abInfo in abInfos.List)
+                    {
+                        tasks.List.Add(LoadOneBundleAllAssets(abInfo));
+                    }
+
+                    await ETTaskHelper.WaitAll(tasks.List);
                 }
             }
-            foreach (string dependency in dependencies)
-            {
-                if (string.IsNullOrEmpty(dependency))
-                {
-                    continue;
-                }
-                tasts.List.Add(loadDependency(dependency));
-            }
-            await ETTaskHelper.WaitAll(tasts.List);
         }
-        
-        private async ETTask LoadOneBundleAsync(string assetBundleName, bool isScene)
+
+        private async ETTask<ABInfo> LoadOneBundleAsync(string assetBundleName)
         {
             assetBundleName = assetBundleName.BundleNameToLower();
             ABInfo abInfo;
@@ -482,65 +502,40 @@ namespace ET
             {
                 ++abInfo.RefCount;
                 //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
-                return;
+                return null;
             }
 
             string p = "";
             AssetBundle assetBundle = null;
-            
+
             if (!Define.IsAsync)
             {
 #if UNITY_EDITOR
-
-                if (isScene)
+                string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
+                foreach (string s in realPath)
                 {
-                    p = Path.Combine(Application.dataPath, "../SceneBundle/", assetBundleName);
-                    if (File.Exists(p)) // 如果场景有预先打包
-                    {
-                        using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.CreateWithParent<AssetsBundleLoaderAsync>(this))
-                        {
-                            assetBundle = await assetsBundleLoaderAsync.LoadAsync(p);
-                        }
+                    string assetName = Path.GetFileNameWithoutExtension(s);
+                    UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
+                    AddResource(assetBundleName, assetName, resource);
+                }
 
-                        if (assetBundle == null)
-                        {
-                            // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                            Log.Warning($"Scene bundle not found: {assetBundleName}");
-                            return;
-                        }
-                        
-                        abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
-                        this.bundles[assetBundleName] = abInfo;
-                    }
+                if (realPath.Length > 0)
+                {
+                    abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
+                    this.bundles[assetBundleName] = abInfo;
+                    //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 }
                 else
                 {
-                    string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
-                    foreach (string s in realPath)
-                    {
-                        string assetName = Path.GetFileNameWithoutExtension(s);
-                        UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
-                        AddResource(assetBundleName, assetName, resource);
-                    }
-
-                    if (realPath.Length > 0)
-                    {
-                        abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, null);
-                        this.bundles[assetBundleName] = abInfo;
-                        //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
-                    }
-                    else
-                    {
-                        Log.Error("Bundle not exist! BundleName: " + assetBundleName);
-                    }
+                    Log.Error("Bundle not exist! BundleName: " + assetBundleName);
                 }
+
                 // 编辑器模式也不能同步加载
-                await TimerComponent.Instance.WaitAsync(20);
+                await TimerComponent.Instance.WaitAsync(100);
 #endif
-                return;
+                return abInfo;
             }
 
-            
             p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
             if (!File.Exists(p))
             {
@@ -550,40 +545,47 @@ namespace ET
             if (!File.Exists(p))
             {
                 Log.Error("Async load bundle not exist! BundleName : " + p);
-                return;
+                return null;
             }
 
-            using (AssetsBundleLoaderAsync assetsBundleLoaderAsync = EntityFactory.CreateWithParent<AssetsBundleLoaderAsync>(this))
-            {
-                assetBundle = await assetsBundleLoaderAsync.LoadAsync(p);
-            }
+            assetBundle = await AssetBundleHelper.UnityLoadBundleAsync(p);
 
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
                 Log.Warning($"assets bundle not found: {assetBundleName}");
-                return;
-            }
-
-            if (!assetBundle.isStreamedSceneAssetBundle)
-            {
-                // 异步load资源到内存cache住
-                UnityEngine.Object[] assets;
-                using (AssetsLoaderAsync assetsLoaderAsync = EntityFactory.CreateWithParent<AssetsLoaderAsync, AssetBundle>(this, assetBundle))
-                {
-                    assets = await assetsLoaderAsync.LoadAllAssetsAsync();
-                }
-
-                foreach (UnityEngine.Object asset in assets)
-                {
-                    AddResource(assetBundleName, asset.name, asset);
-                }
+                return null;
             }
 
             abInfo = EntityFactory.CreateWithParent<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
             this.bundles[assetBundleName] = abInfo;
-            
+            return abInfo;
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+        }
+
+        // 加载ab包中的all assets
+        private async ETTask LoadOneBundleAllAssets(ABInfo abInfo)
+        {
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode()))
+            {
+                if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
+                {
+                    return;
+                }
+
+                if (abInfo.AssetBundle != null && !abInfo.AssetBundle.isStreamedSceneAssetBundle)
+                {
+                    // 异步load资源到内存cache住
+                    var assets = await AssetBundleHelper.UnityLoadAssetAsync(abInfo.AssetBundle);
+
+                    foreach (UnityEngine.Object asset in assets)
+                    {
+                        AddResource(abInfo.Name, asset.name, asset);
+                    }
+                }
+
+                abInfo.AlreadyLoadAssets = true;
+            }
         }
 
         public string DebugString()
