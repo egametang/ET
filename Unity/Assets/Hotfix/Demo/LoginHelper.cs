@@ -284,21 +284,13 @@ namespace ET
             try
             {
                 Log.Debug($"登陆成功");
-                // TimeHelper.SetServerTimeStamp(g2CLoginGate.ServerTime);
-                // BaseModel.SetSelf(g2CLoginGate.User);
                 // ETModel.SDK.SdkManager.JpushSetAlias(g2CLoginGate.User.UserId.ToString());
-                // Log.Debug($" JPushBinding.GetRegistrationId() : {JPush.GetRegistrationId()}");
-                // //添加心跳组件
-                // ETModel.Session session = ETModel.SessionComponent.Instance.Session;
-                // session.AddComponent<HeartbeatComponent, ETModel.Session>(session);
                 // #region Test
                 // //保存用户信息 创建Player
                 // // Player player = ComponentFactory.CreateWithId<Player>(g2CLoginGate.User.UserId);
                 // // PlayerComponent playerComponent = Game.Scene.GetComponent<PlayerComponent>();
                 // // playerComponent.MyPlayer = player;
                 // #endregion
-                // Game.Scene.GetComponent<ModelComponent>().Load();
-                // StagesComponent.Intance.StartStage(StageType.Lobby, true).Coroutine();
                 await Game.EventSystem.Publish(new EventType.LoginFinish() {ZoneScene = zoneScene});
             }
             catch (Exception e)
