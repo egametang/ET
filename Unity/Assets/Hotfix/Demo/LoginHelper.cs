@@ -139,11 +139,12 @@ namespace ET
                 // 创建一个gate Session,并且保存到SessionComponent中
                 Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
                 gateSession.GetComponent<SessionCallbackComponent>().DisposeCallback = GateSessionDispose;
-                gateSession.AddComponent<PingComponent>();
+           
+                G2C_LoginGate response = await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId}) as G2C_LoginGate;
+     		
+		gateSession.AddComponent<PingComponent>();
                 zoneScene.GetComponent<SessionComponent>().Session = gateSession;
 				
-                G2C_LoginGate response = await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId}) as G2C_LoginGate;
-
                 if (response == null)
                     throw new Exception($"登陆网关服失败 Error:response is null");
                 if (!string.IsNullOrEmpty(response.Message))
@@ -212,7 +213,7 @@ namespace ET
                 case ErrorCode.ERR_KcpRemoteDisconnect: //这是服务 没了
                     tips = "服务器断开连接！";
                     break; 
-                case (int)System.Net.Sockets.SocketError.ConnectionRefused:
+                case (int)System.Net.Sockets.SocketError.ConnectionRefused://服务器没开
                     tips = "服务器可能未启动！";
                     break;
                 case (int)System.Net.Sockets.SocketError.NotConnected: //处理真实没有网络的情况 可以直接弹出tip不打开弹出一直重连相当于走default
@@ -255,10 +256,6 @@ namespace ET
                 loginState.NetworkState = E_NetworkState.Connect;
                 loginState.ReconnectionCount = 0;
                 loginState.IsAutoLogin = true;//登陆成功后设置为可以自动登陆
-            }
-            else
-            {
-                loginState.NetworkState = E_NetworkState.Disconnect;
             }
             //关闭菊花
             //UIHelper.HideWaiting();
@@ -304,15 +301,7 @@ namespace ET
         private static void ConnectFailure(Scene zoneScene)
         {
             Log.Debug($"登陆失败");
-            // UIHelper.ShowTips("连接失败 选择是否重新连接");
-            // //连接失败进行重连
-            // UIHelper.ShowPopup("网络连接失败是否重试", delegate(bool flag)
-            //     {
-            //         //登陆失败的话 如果有凭证 就删除凭证
-            //         ModelComponent.Get<LoginModel>().mData.LoginVoucher = null;
-            //         if (flag)
-            //             LoginHelper.AgainLoginAndConnect(false);
-            //     });
+            // UIHelper.ShowTips("连接失败");
         }
         #endregion
 
