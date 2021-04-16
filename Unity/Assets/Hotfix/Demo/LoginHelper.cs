@@ -113,7 +113,7 @@ namespace ET
                 R2C_Login response;
                 using (Session relamSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address)))
                 {
-                    relamSession.GetComponent<SessionCallbackComponent>().DisposeCallback = RealmSessionDispose;
+                    relamSession.AddComponent<SessionCallbackComponent>().DisposeCallback = RealmSessionDispose;
                     response = await relamSession.Call(new C2R_Login() { Account = account, Password = "111111" }) as R2C_Login;
                 }
                 if (response == null)
@@ -138,7 +138,7 @@ namespace ET
                 Log.Debug($"连接网关服 address:{r2CLogin.Address}");
                 // 创建一个gate Session,并且保存到SessionComponent中
                 Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
-                gateSession.GetComponent<SessionCallbackComponent>().DisposeCallback = GateSessionDispose;
+                gateSession.AddComponent<SessionCallbackComponent>().DisposeCallback = GateSessionDispose;
            
                 G2C_LoginGate response = await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId}) as G2C_LoginGate;
      		
