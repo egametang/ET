@@ -142,7 +142,7 @@ namespace ET
            
                 G2C_LoginGate response = await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId}) as G2C_LoginGate;
      		
-		gateSession.AddComponent<PingComponent>();
+		        gateSession.AddComponent<PingComponent>();
                 zoneScene.GetComponent<SessionComponent>().Session = gateSession;
 				
                 if (response == null)
