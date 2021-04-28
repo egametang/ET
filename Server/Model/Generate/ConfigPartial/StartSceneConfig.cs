@@ -67,7 +67,7 @@ namespace ET
         {
             get
             {
-                return StartZoneConfigCategory.Instance.Get(this.Process);
+                return StartZoneConfigCategory.Instance.Get(this.Zone);
             }
         }
 
