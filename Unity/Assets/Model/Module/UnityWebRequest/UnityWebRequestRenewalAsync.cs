@@ -33,7 +33,7 @@ namespace ET
 
         public bool isCancel;
 
-        public ETTaskCompletionSource tcs;
+        public ETTask tcs;
 
         //请求资源类型
         private class RequestType
@@ -76,17 +76,24 @@ namespace ET
             get
             {
                 foreach (UnityWebRequest webRequest in this.dataRequests)
+                {
                     if (!string.IsNullOrEmpty(webRequest.error))
+                    {
                         return webRequest.error;
+                    }
+                }
+
                 return "";
             }
         }
 
         //批量开启任务下载
-        void DownloadPackages()
+        private void DownloadPackages()
         {
             if (dataRequests.Count >= maxCount || this.downloadIndex == totalBytes - 1)
+            {
                 return;
+            }
 
             //开启一个下载任务
             void DownloadPackage(long start, long end)
@@ -104,17 +111,22 @@ namespace ET
             for (int i = dataRequests.Count; i < maxCount; i++)
             {
                 long start = this.byteWrites + i * packageLength;
-                long end   = this.byteWrites + (i + 1) * packageLength - 1;
+                long end = this.byteWrites + (i + 1) * packageLength - 1;
                 if (end > this.totalBytes)
+                {
                     end = this.totalBytes - 1;
+                }
+
                 DownloadPackage(start, end);
                 if (end == this.totalBytes - 1)
+                {
                     break;
+                }
             }
         }
 
         //一次批量下载完成后写文件
-        void WritePackages()
+        private void WritePackages()
         {
             //写入单个包
             void WritePackage(UnityWebRequest webRequest)
@@ -140,7 +152,7 @@ namespace ET
         }
 
         //更新文件体下载
-        void UpdatePackages()
+        private void UpdatePackages()
         {
             if (this.isCancel)
             {
@@ -156,13 +168,17 @@ namespace ET
 
             this.WritePackages();
             if (this.byteWrites == this.totalBytes)
+            {
                 this.tcs.SetResult();
+            }
             else
+            {
                 this.DownloadPackages();
+            }
         }
 
         //更新文件头下载
-        void UpdateHead()
+        private void UpdateHead()
         {
             if (this.isCancel)
             {
@@ -183,14 +199,17 @@ namespace ET
 
             this.tcs.SetResult();
         }
-        
+
         //检测是不是同一个文件
-        bool CheckSameFile(string modifiedTime)
+        private bool CheckSameFile(string modifiedTime)
         {
             string cacheValue = PlayerPrefs.GetString(Url);
-            string currentValue = this.totalBytes+"|"+modifiedTime;
+            string currentValue = this.totalBytes + "|" + modifiedTime;
             if (cacheValue == currentValue)
+            {
                 return true;
+            }
+
             PlayerPrefs.SetString(Url, currentValue);
             PlayerPrefs.Save();
             Log.Debug($"断点续传下载一个新的文件:{Url} cacheValue:{cacheValue} currentValue:{currentValue}");
@@ -209,10 +228,10 @@ namespace ET
         {
             try
             {
-                url                = url.Replace(" ", "%20");
-                this.Url           = url;
+                url = url.Replace(" ", "%20");
+                this.Url = url;
                 this.packageLength = packageLength;
-                this.maxCount      = maxCount;
+                this.maxCount = maxCount;
                 Log.Debug("Web Request:" + url);
 
                 #region Download File Header
@@ -220,10 +239,10 @@ namespace ET
                 this.requestType = RequestType.Head;
                 //下载文件头
                 Log.Debug($"Request Head: {Url}");
-                this.tcs         = new ETTaskCompletionSource();
+                this.tcs = ETTask.Create(true);
                 this.headRequest = UnityWebRequest.Head(Url);
                 this.headRequest.SendWebRequest();
-                await this.tcs.Task;
+                await this.tcs;
                 this.totalBytes = long.Parse(this.headRequest.GetResponseHeader("Content-Length"));
                 string modifiedTime = this.headRequest.GetResponseHeader("Last-Modified");
                 Log.Debug($"totalBytes: {this.totalBytes}");
@@ -233,13 +252,17 @@ namespace ET
                 #endregion
 
                 #region Check Local File
+
                 //打开或创建
                 fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write);
                 //获取已下载长度
                 this.byteWrites = fileStream.Length;
                 //通过本地缓存的服务器文件修改时间和文件总长度检测服务器是否是同一个文件 不是同一个从头开始写入
                 if (!CheckSameFile(modifiedTime))
+                {
                     this.byteWrites = 0;
+                }
+
                 Log.Debug($"byteWrites: {this.byteWrites}");
                 if (this.byteWrites == this.totalBytes)
                 {
@@ -257,9 +280,9 @@ namespace ET
                 //下载文件数据
                 requestType = RequestType.Data;
                 Log.Debug($"Request Data: {Url}");
-                this.tcs = new ETTaskCompletionSource();
+                this.tcs = ETTask.Create(true);
                 this.DownloadPackages();
-                await this.tcs.Task;
+                await this.tcs;
 
                 #endregion
             }
@@ -276,7 +299,10 @@ namespace ET
             get
             {
                 if (this.totalBytes == 0)
+                {
                     return 0;
+                }
+
                 return (float) ((this.byteWrites + ByteDownloaded) / (double) this.totalBytes);
             }
         }
@@ -288,7 +314,10 @@ namespace ET
             {
                 long length = 0;
                 foreach (UnityWebRequest dataRequest in this.dataRequests)
+                {
                     length += dataRequest.downloadHandler.data.Length;
+                }
+
                 return length;
             }
         }
@@ -296,9 +325,14 @@ namespace ET
         public void Update()
         {
             if (this.requestType == RequestType.Head)
+            {
                 this.UpdateHead();
+            }
+
             if (this.requestType == RequestType.Data)
+            {
                 this.UpdatePackages();
+            }
         }
 
         public override void Dispose()
@@ -312,12 +346,15 @@ namespace ET
             headRequest?.Dispose();
             headRequest = null;
             foreach (UnityWebRequest dataRequest in this.dataRequests)
+            {
                 dataRequest.Dispose();
+            }
+
             dataRequests.Clear();
             this.fileStream?.Close();
             this.fileStream?.Dispose();
             this.fileStream = null;
-            this.isCancel   = false;
+            this.isCancel = false;
         }
     }
 }

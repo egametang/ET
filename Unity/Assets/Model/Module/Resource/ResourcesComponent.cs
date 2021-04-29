@@ -63,7 +63,7 @@ namespace ET
     {
         public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
         {
-            var tcs = new ETTaskCompletionSource<AssetBundle>();
+            var tcs = ETTask<AssetBundle>.Create(true);
             AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(path);
             request.completed += operation => { tcs.SetResult(request.assetBundle); };
             return await tcs;
@@ -71,7 +71,7 @@ namespace ET
 
         public static async ETTask<UnityEngine.Object[]> UnityLoadAssetAsync(AssetBundle assetBundle)
         {
-            var tcs = new ETTaskCompletionSource<UnityEngine.Object[]>();
+            var tcs = ETTask<UnityEngine.Object[]>.Create(true);
             AssetBundleRequest request = assetBundle.LoadAllAssetsAsync();
             request.completed += operation => { tcs.SetResult(request.allAssets); };
             return await tcs;

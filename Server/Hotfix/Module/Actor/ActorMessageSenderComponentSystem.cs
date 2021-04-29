@@ -139,14 +139,14 @@ namespace ET
                 throw new Exception($"actor id is 0: {memoryStream.ToActorMessage()}");
             }
 
-            var tcs = new ETTaskCompletionSource<IActorResponse>();
+            var tcs = ETTask<IActorResponse>.Create(true);
             
             self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, memoryStream, tcs, needException));
             
             self.Send(actorId, memoryStream);
 
             long beginTime = TimeHelper.ServerFrameTime();
-            IActorResponse response = await tcs.Task;
+            IActorResponse response = await tcs;
             long endTime = TimeHelper.ServerFrameTime();
 
             long costTime = endTime - beginTime;

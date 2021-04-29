@@ -5,6 +5,6 @@ namespace ET
     public class SceneChangeComponent: Entity
     {
         public AsyncOperation loadMapOperation;
-        public ETTaskCompletionSource tcs;
+        public ETTask tcs;
     }
 }

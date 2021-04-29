@@ -59,12 +59,6 @@
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs">
       <Link>Module\CoroutineLock\CoroutineLockComponent.cs</Link>
     </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueue.cs">
-      <Link>Module\CoroutineLock\CoroutineLockQueue.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockQueueType.cs">
-      <Link>Module\CoroutineLock\CoroutineLockQueueType.cs</Link>
-    </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
       <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>

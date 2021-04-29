@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    public enum AwaiterStatus
+    public enum AwaiterStatus: byte
     {
         /// <summary>The operation has not yet completed.</summary>
         Pending = 0,

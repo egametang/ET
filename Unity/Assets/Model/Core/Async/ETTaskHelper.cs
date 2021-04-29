@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -8,7 +9,7 @@ namespace ET
         {
             private int count;
 
-            private List<ETTaskCompletionSource> tcss = new List<ETTaskCompletionSource>();
+            private List<ETTask> tcss = new List<ETTask>();
 
             public CoroutineBlocker(int count)
             {
@@ -25,9 +26,9 @@ namespace ET
 
                 if (this.count == 0)
                 {
-                    List<ETTaskCompletionSource> t = this.tcss;
+                    List<ETTask> t = this.tcss;
                     this.tcss = null;
-                    foreach (ETTaskCompletionSource ttcs in t)
+                    foreach (ETTask ttcs in t)
                     {
                         ttcs.SetResult();
                     }
@@ -35,105 +36,142 @@ namespace ET
                     return;
                 }
 
-                ETTaskCompletionSource tcs = new ETTaskCompletionSource();
+                ETTask tcs = ETTask.Create(true);
+
                 tcss.Add(tcs);
-                await tcs.Task;
+                await tcs;
             }
         }
 
-        public static async ETTask WaitAny<T>(ETTask<T>[] tasks)
+        public static async ETTask<bool> WaitAny<T>(ETTask<T>[] tasks, ETCancellationToken cancellationToken = null)
         {
-            if (tasks == null || tasks.Length == 0)
+            if (tasks.Length == 0)
             {
-                return;
+                return false;
             }
-            
+
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
+
             foreach (ETTask<T> task in tasks)
             {
                 RunOneTask(task).Coroutine();
             }
-
-            await coroutineBlocker.WaitAsync();
 
             async ETVoid RunOneTask(ETTask<T> task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+
+            await coroutineBlocker.WaitAsync();
+
+            if (cancellationToken == null)
+            {
+                return true;
+            }
+
+            return !cancellationToken.IsCancel();
         }
 
-        public static async ETTask WaitAny(ETTask[] tasks)
+        public static async ETTask<bool> WaitAny(ETTask[] tasks, ETCancellationToken cancellationToken = null)
         {
-            if (tasks == null || tasks.Length == 0)
+            if (tasks.Length == 0)
             {
-                return;
+                return false;
             }
-            
+
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(2);
+
             foreach (ETTask task in tasks)
             {
                 RunOneTask(task).Coroutine();
             }
-
-            await coroutineBlocker.WaitAsync();
 
             async ETVoid RunOneTask(ETTask task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+
+            await coroutineBlocker.WaitAsync();
+
+            if (cancellationToken == null)
+            {
+                return true;
+            }
+
+            return !cancellationToken.IsCancel();
         }
 
-        public static async ETTask WaitAll<T>(ETTask<T>[] tasks)
+        public static async ETTask<bool> WaitAll<T>(ETTask<T>[] tasks, ETCancellationToken cancellationToken = null)
         {
-            if (tasks == null || tasks.Length == 0)
+            if (tasks.Length == 0)
             {
-                return;
+                return false;
             }
+
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
+
             foreach (ETTask<T> task in tasks)
             {
                 RunOneTask(task).Coroutine();
             }
-
-            await coroutineBlocker.WaitAsync();
 
             async ETVoid RunOneTask(ETTask<T> task)
             {
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
-        }
-
-        public static async ETTask WaitAll(ETTask[] tasks)
-        {
-            if (tasks == null || tasks.Length == 0)
-            {
-                return;
-            }
-            CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
-            foreach (ETTask task in tasks)
-            {
-                RunOneTask(task).Coroutine();
-            }
 
             await coroutineBlocker.WaitAsync();
 
-            async ETVoid RunOneTask(ETTask task)
+            if (cancellationToken == null)
             {
-                await task;
-                await coroutineBlocker.WaitAsync();
+                return true;
             }
+
+            return !cancellationToken.IsCancel();
         }
-        
-        public static async ETTask WaitAll(List<ETTask> tasks)
+
+        public static async ETTask<bool> WaitAll<T>(List<ETTask<T>> tasks, ETCancellationToken cancellationToken = null)
         {
-            if (tasks == null || tasks.Count == 0)
+            if (tasks.Count == 0)
             {
-                return;
+                return false;
             }
+
             CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
+
+            foreach (ETTask<T> task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
+            async ETVoid RunOneTask(ETTask<T> task)
+            {
+                await task;
+                await coroutineBlocker.WaitAsync();
+            }
+
+            await coroutineBlocker.WaitAsync();
+
+            if (cancellationToken == null)
+            {
+                return true;
+            }
+
+            return !cancellationToken.IsCancel();
+        }
+
+        public static async ETTask<bool> WaitAll(ETTask[] tasks, ETCancellationToken cancellationToken = null)
+        {
+            if (tasks.Length == 0)
+            {
+                return false;
+            }
+
+            CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Length + 1);
+
             foreach (ETTask task in tasks)
             {
                 RunOneTask(task).Coroutine();
@@ -146,6 +184,43 @@ namespace ET
                 await task;
                 await coroutineBlocker.WaitAsync();
             }
+
+            if (cancellationToken == null)
+            {
+                return true;
+            }
+
+            return !cancellationToken.IsCancel();
+        }
+
+        public static async ETTask<bool> WaitAll(List<ETTask> tasks, ETCancellationToken cancellationToken = null)
+        {
+            if (tasks.Count == 0)
+            {
+                return false;
+            }
+
+            CoroutineBlocker coroutineBlocker = new CoroutineBlocker(tasks.Count + 1);
+
+            foreach (ETTask task in tasks)
+            {
+                RunOneTask(task).Coroutine();
+            }
+
+            await coroutineBlocker.WaitAsync();
+
+            async ETVoid RunOneTask(ETTask task)
+            {
+                await task;
+                await coroutineBlocker.WaitAsync();
+            }
+
+            if (cancellationToken == null)
+            {
+                return true;
+            }
+
+            return !cancellationToken.IsCancel();
         }
     }
 }

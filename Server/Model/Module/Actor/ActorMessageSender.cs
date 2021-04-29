@@ -14,9 +14,9 @@ namespace ET
 
         public bool NeedException { get; }
 
-        public ETTaskCompletionSource<IActorResponse> Tcs { get; }
+        public ETTask<IActorResponse> Tcs { get; }
 
-        public ActorMessageSender(long actorId, MemoryStream memoryStream, ETTaskCompletionSource<IActorResponse> tcs, bool needException)
+        public ActorMessageSender(long actorId, MemoryStream memoryStream, ETTask<IActorResponse> tcs, bool needException)
         {
             this.ActorId = actorId;
             this.MemoryStream = memoryStream;

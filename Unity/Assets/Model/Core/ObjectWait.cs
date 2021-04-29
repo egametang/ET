@@ -51,21 +51,21 @@ namespace ET
 
         public class ResultCallback<K>: IDestroyRun where K : struct, IWaitType
         {
-            private readonly ETTaskCompletionSource<K> tcs;
+            private readonly ETTask<K> tcs;
             private readonly long timer;
 
             public ResultCallback()
             {
-                this.tcs = new ETTaskCompletionSource<K>();
+                this.tcs = ETTask<K>.Create(true);
             }
             
             public ResultCallback(long timer)
             {
                 this.timer = timer;
-                this.tcs = new ETTaskCompletionSource<K>();
+                this.tcs = ETTask<K>.Create(true);
             }
 
-            public ETTask<K> Task => this.tcs.Task;
+            public ETTask<K> Task => this.tcs;
 
             public void SetResult(K k)
             {
