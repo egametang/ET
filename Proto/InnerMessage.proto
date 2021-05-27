@@ -1,178 +1,191 @@
-	/// <summary>
-	/// 传送unit
-	/// </summary>
-	message M2M_TrasferUnitRequest // IRequest
-	{
-		required Unit Unit = 1;
-	}
-	
-	message M2M_TrasferUnitResponse // IResponse
-	{
-		required int64 InstanceId = 1;
-	}
-	
-	message M2A_Reload // IRequest
-	{
-	}
+syntax = "proto3";
+package ET;
 
-	message A2M_Reload // IResponse
-	{
-	}
+/// <summary>
+/// 传送unit
+/// </summary>
+//ResponseType M2M_TrasferUnitResponse
+message M2M_TrasferUnitRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    Unit Unit = 1;
+}
 
-	message G2G_LockRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string Address = 2;
-	}
+message M2M_TrasferUnitResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
 
-	message G2G_LockResponse // IResponse
-	{
-	}
+    int64 InstanceId = 1;
+}
 
-	message G2G_LockReleaseRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string Address = 2;
-	}
+//ResponseType A2M_Reload
+message M2A_Reload // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+}
 
-	message G2G_LockReleaseResponse // IResponse
-	{
-	}
+message A2M_Reload // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBSaveRequest // IRequest
-	{
-		required bool NeedCache = 1;
+//ResponseType G2G_LockResponse
+message G2G_LockRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Id = 1;
+    string Address = 2;
+}
 
-		required string CollectionName = 2;
+message G2G_LockResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-		required ComponentWithId Component = 3;
-	}
+//ResponseType G2G_LockReleaseResponse
+message G2G_LockReleaseRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Id = 1;
+    string Address = 2;
+}
 
+message G2G_LockReleaseResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBSaveBatchResponse // IResponse
-	{
-	}
+//ResponseType ObjectAddResponse
+message ObjectAddRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+    int64 InstanceId = 2;
+}
 
-	message DBSaveBatchRequest // IRequest
-	{
-		required bool NeedCache = 1;
-		required string CollectionName = 2;
-		repeated ComponentWithId Components = 3;
-	}
+message ObjectAddResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBSaveResponse // IResponse
-	{
-	}
+//ResponseType ObjectLockResponse
+message ObjectLockRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+    int64 InstanceId = 2;
+    int32 Time = 3;
+}
+message ObjectLockResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBQueryRequest // IRequest
-	{
-		required int64 Id = 1;
-		required string CollectionName = 2;
-		required bool NeedCache = 3;
-	}
+//ResponseType ObjectUnLockResponse
+message ObjectUnLockRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+    int64 OldInstanceId = 2;
+    int64 InstanceId = 3;
+}
+message ObjectUnLockResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBQueryResponse // IResponse
-	{
-		required ComponentWithId Component = 1;
-	}
+//ResponseType ObjectRemoveResponse
+message ObjectRemoveRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+}
+message ObjectRemoveResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
+}
 
-	message DBQueryBatchRequest // IRequest
-	{
-		required string CollectionName = 1;
-		repeated int64 IdList = 2;
-		required bool NeedCache = 3;
-	}
+//ResponseType ObjectGetResponse
+message ObjectGetRequest // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 Key = 1;
+}
+message ObjectGetResponse // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
 
-	message DBQueryBatchResponse // IResponse
-	{
-		repeated ComponentWithId Components = 1;
-	}
+    int64 InstanceId = 1;
+}
 
-	message DBQueryJsonRequest // IRequest
-	{
-		required string CollectionName = 1;
-		required string Json = 2;
-	}
+//ResponseType G2R_GetLoginKey
+message R2G_GetLoginKey // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    string Account = 1;
+}
 
-	message DBQueryJsonResponse // IResponse
-	{
-		repeated ComponentWithId Components = 1;
-	}
+message G2R_GetLoginKey // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
 
-	message ObjectAddRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 InstanceId = 2;
-	}
+    int64 Key = 1;
+    int64 GateId = 2;
+}
 
-	message ObjectAddResponse // IResponse
-	{
-	}
+//ResponseType M2G_CreateUnit
+message G2M_CreateUnit // IActorRequest
+{
+    int32 RpcId = 90;
+    int64 ActorId = 93;
+    int64 PlayerId = 1;
+    int64 GateSessionId = 2;
+}
 
-	message ObjectRemoveRequest // IRequest
-	{
-		required int64 Key = 1;
-	}
+message M2G_CreateUnit // IActorResponse
+{
+    int32 RpcId = 90;
+    int32 Error = 91;
+    string Message = 92;
 
-	message ObjectRemoveResponse // IResponse
-	{
-	}
+    // 自己的unit id
+    int64 UnitId = 1;
+    // 所有的unit
+    repeated UnitInfo Units = 2;
+}
 
-	message ObjectLockRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 InstanceId = 2;
-		required int Time = 3;
-	}
-
-	message ObjectLockResponse // IResponse
-	{
-	}
-
-	message ObjectUnLockRequest // IRequest
-	{
-		required int64 Key = 1;
-		required int64 OldInstanceId = 2;
-		required int64 InstanceId = 3;
-	}
-
-	message ObjectUnLockResponse // IResponse
-	{
-	}
-
-	message ObjectGetRequest // IRequest
-	{
-		required int64 Key = 1;
-	}
-
-	message ObjectGetResponse // IResponse
-	{
-		required int64 InstanceId = 1;
-	}
-
-	message R2G_GetLoginKey // IRequest
-	{
-		required string Account = 1;
-	}
-
-	message G2R_GetLoginKey // IResponse
-	{
-		required int64 Key = 1;
-	}
-
-	message G2M_CreateUnit // IRequest
-	{
-		required int64 PlayerId = 1;
-		required int64 GateSessionId = 2;
-	}
-
-	message M2G_CreateUnit // IResponse
-	{
-		required int64 UnitId = 1;
-		required int Count = 2;
-	}
-
-	message G2M_SessionDisconnect // IActorMessage
-	{
-	}
+message G2M_SessionDisconnect // IActorLocationMessage
+{
+    int32 RpcId = 90;
+    int64 ActorId = 94;
 }

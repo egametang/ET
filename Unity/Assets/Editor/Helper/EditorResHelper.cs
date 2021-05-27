@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace ETModel
+namespace ET
 {
     public class EditorResHelper
     {

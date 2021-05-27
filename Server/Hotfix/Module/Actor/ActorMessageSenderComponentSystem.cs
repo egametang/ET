@@ -1,50 +1,174 @@
-﻿using System.Collections.Generic;
-using ETModel;
+﻿using System;
+using System.IO;
 
-namespace ETHotfix
+namespace ET
 {
     [ObjectSystem]
-    public class ActorMessageSenderComponentSystem : StartSystem<ActorMessageSenderComponent>
+    public class ActorMessageSenderComponentAwakeSystem: AwakeSystem<ActorMessageSenderComponent>
     {
-        // 每10s扫描一次过期的actorproxy进行回收,过期时间是1分钟
-        public override async void Start(ActorMessageSenderComponent self)
+        public override void Awake(ActorMessageSenderComponent self)
         {
-            List<long> timeoutActorProxyIds = new List<long>();
+            ActorMessageSenderComponent.Instance = self;
 
-            while (true)
+            self.TimeoutCheckTimer = TimerComponent.Instance.NewRepeatedTimer(1000, self.Check);
+        }
+    }
+
+    [ObjectSystem]
+    public class ActorMessageSenderComponentDestroySystem: DestroySystem<ActorMessageSenderComponent>
+    {
+        public override void Destroy(ActorMessageSenderComponent self)
+        {
+            ActorMessageSenderComponent.Instance = null;
+            TimerComponent.Instance.Remove(ref self.TimeoutCheckTimer);
+            self.TimeoutCheckTimer = 0;
+            self.TimeoutActorMessageSenders.Clear();
+        }
+    }
+
+    public static class ActorMessageSenderComponentSystem
+    {
+        public static void Run(ActorMessageSender self, IActorResponse response)
+        {
+            if (response.Error == ErrorCode.ERR_ActorTimeout)
             {
-                await Game.Scene.GetComponent<TimerComponent>().WaitAsync(10000);
+                self.Tcs.SetException(new Exception($"Rpc error: request, 注意Actor消息超时，请注意查看是否死锁或者没有reply: actorId: {self.ActorId} {self.MemoryStream.ToActorMessage()}, response: {response}"));
+                return;
+            }
 
-                if (self.IsDisposed)
+            if (self.NeedException && ErrorCode.IsRpcNeedThrowException(response.Error))
+            {
+                self.Tcs.SetException(new Exception($"Rpc error: actorId: {self.ActorId} request: {self.MemoryStream.ToActorMessage()}, response: {response}"));
+                return;
+            }
+
+            self.Tcs.SetResult(response);
+        }
+        
+        public static void Check(this ActorMessageSenderComponent self)
+        {
+            long timeNow = TimeHelper.ServerNow();
+            foreach ((int key, ActorMessageSender value) in self.requestCallback)
+            {
+                // 因为是顺序发送的，所以，检测到第一个不超时的就退出
+                if (timeNow < value.CreateTime + ActorMessageSenderComponent.TIMEOUT_TIME)
                 {
-                    return;
+                    break;
                 }
 
-                timeoutActorProxyIds.Clear();
+                self.TimeoutActorMessageSenders.Add(key);
+            }
 
-                long timeNow = TimeHelper.Now();
-                foreach (long id in self.ActorMessageSenders.Keys)
+            foreach (int rpcId in self.TimeoutActorMessageSenders)
+            {
+                ActorMessageSender actorMessageSender = self.requestCallback[rpcId];
+                self.requestCallback.Remove(rpcId);
+                try
                 {
-                    ActorMessageSender actorMessageSender = self.Get(id);
-                    if (actorMessageSender == null)
-                    {
-                        continue;
-                    }
-
-                    if (timeNow < actorMessageSender.LastSendTime + 60 * 1000)
-                    {
-                        continue;
-                    }
-
-                    actorMessageSender.Error = ErrorCode.ERR_ActorTimeOut;
-                    timeoutActorProxyIds.Add(id);
+                    IActorResponse response = ActorHelper.CreateResponse((IActorRequest)actorMessageSender.MemoryStream.ToActorMessage(), ErrorCode.ERR_ActorTimeout);
+                    Run(actorMessageSender, response);
                 }
-
-                foreach (long id in timeoutActorProxyIds)
+                catch (Exception e)
                 {
-                    self.Remove(id);
+                    Log.Error(e.ToString());
                 }
             }
+
+            self.TimeoutActorMessageSenders.Clear();
+        }
+
+        public static void Send(this ActorMessageSenderComponent self, long actorId, IMessage message)
+        {
+            if (actorId == 0)
+            {
+                throw new Exception($"actor id is 0: {message}");
+            }
+            
+            ProcessActorId processActorId = new ProcessActorId(actorId);
+            Session session = NetInnerComponent.Instance.Get(processActorId.Process);
+            session.Send(processActorId.ActorId, message);
+        }
+        
+        public static void Send(this ActorMessageSenderComponent self, long actorId, MemoryStream memoryStream)
+        {
+            if (actorId == 0)
+            {
+                throw new Exception($"actor id is 0: {memoryStream.ToActorMessage()}");
+            }
+            
+            ProcessActorId processActorId = new ProcessActorId(actorId);
+            Session session = NetInnerComponent.Instance.Get(processActorId.Process);
+            session.Send(processActorId.ActorId, memoryStream);
+        }
+
+
+        public static int GetRpcId(this ActorMessageSenderComponent self)
+        {
+            return ++self.RpcId;
+        }
+
+        public static async ETTask<IActorResponse> Call(
+                this ActorMessageSenderComponent self,
+                long actorId,
+                IActorRequest request,
+                bool needException = true
+        )
+        {
+            request.RpcId = self.GetRpcId();
+            
+            if (actorId == 0)
+            {
+                throw new Exception($"actor id is 0: {request}");
+            }
+
+            (ushort _, MemoryStream stream) = MessageSerializeHelper.MessageToStream(0, request);
+
+            return await self.Call(actorId, request.RpcId, stream, needException);
+        }
+        
+        public static async ETTask<IActorResponse> Call(
+                this ActorMessageSenderComponent self,
+                long actorId,
+                int rpcId,
+                MemoryStream memoryStream,
+                bool needException = true
+        )
+        {
+            if (actorId == 0)
+            {
+                throw new Exception($"actor id is 0: {memoryStream.ToActorMessage()}");
+            }
+
+            var tcs = ETTask<IActorResponse>.Create(true);
+            
+            self.requestCallback.Add(rpcId, new ActorMessageSender(actorId, memoryStream, tcs, needException));
+            
+            self.Send(actorId, memoryStream);
+
+            long beginTime = TimeHelper.ServerFrameTime();
+            IActorResponse response = await tcs;
+            long endTime = TimeHelper.ServerFrameTime();
+
+            long costTime = endTime - beginTime;
+            if (costTime > 200)
+            {
+                Log.Warning("actor rpc time > 200: {0} {1}", costTime, memoryStream.ToActorMessage());
+            }
+            
+            return response;
+        }
+
+        public static void RunMessage(this ActorMessageSenderComponent self, long actorId, IActorResponse response)
+        {
+            ActorMessageSender actorMessageSender;
+            if (!self.requestCallback.TryGetValue(response.RpcId, out actorMessageSender))
+            {
+                return;
+            }
+
+            self.requestCallback.Remove(response.RpcId);
+            
+            Run(actorMessageSender, response);
         }
     }
 }

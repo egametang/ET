@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Threading.Tasks;
 
-namespace ETModel
+namespace ET
 {
-	public interface IMActorHandler
-	{
-		Task Handle(Session session, Entity entity, IActorMessage actorRequest);
-		Type GetMessageType();
-	}
+    public interface IMActorHandler
+    {
+        ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply);
+        Type GetRequestType();
+        Type GetResponseType();
+    }
 }

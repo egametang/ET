@@ -1,60 +1,19 @@
 ﻿using System.Collections.Generic;
 
-namespace ETModel
+namespace ET
 {
-	public class ActorMessageSenderComponent: Component
-	{
-		public readonly Dictionary<long, ActorMessageSender> ActorMessageSenders = new Dictionary<long, ActorMessageSender>();
+    public class ActorMessageSenderComponent: Entity
+    {
+        public static long TIMEOUT_TIME = 40 * 1000;
 
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			base.Dispose();
-			foreach (ActorMessageSender actorMessageSender in this.ActorMessageSenders.Values)
-			{
-				actorMessageSender.Dispose();
-			}
-			this.ActorMessageSenders.Clear();
-		}
+        public static ActorMessageSenderComponent Instance { get; set; }
 
-		public ActorMessageSender Get(long id)
-		{
-			if (this.ActorMessageSenders.TryGetValue(id, out ActorMessageSender actorMessageSender))
-			{
-				return actorMessageSender;
-			}
-			
-			actorMessageSender = ComponentFactory.CreateWithId<ActorMessageSender>(id);
-			actorMessageSender.Parent = this;
-			this.ActorMessageSenders[id] = actorMessageSender;
-			return actorMessageSender;
-		}
-		
-		public ActorMessageSender GetWithActorId(long actorId)
-		{
-			if (this.ActorMessageSenders.TryGetValue(actorId, out ActorMessageSender actorMessageSender))
-			{
-				return actorMessageSender;
-			}
-			
-			actorMessageSender = ComponentFactory.CreateWithId<ActorMessageSender, long>(actorId, actorId);
-			actorMessageSender.Parent = this;
-			this.ActorMessageSenders[actorId] = actorMessageSender;
-			return actorMessageSender;
-		}
+        public int RpcId;
 
-		public void Remove(long id)
-		{
-			ActorMessageSender actorMessageSender;
-			if (!this.ActorMessageSenders.TryGetValue(id, out actorMessageSender))
-			{
-				return;
-			}
-			this.ActorMessageSenders.Remove(id);
-			actorMessageSender.Dispose();
-		}
-	}
+        public readonly SortedDictionary<int, ActorMessageSender> requestCallback = new SortedDictionary<int, ActorMessageSender>();
+
+        public long TimeoutCheckTimer;
+
+        public List<int> TimeoutActorMessageSenders = new List<int>();
+    }
 }

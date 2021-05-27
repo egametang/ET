@@ -1,97 +1,44 @@
 ﻿using System;
-using System.Threading.Tasks;
 
-namespace ETModel
+namespace ET
 {
-	public abstract class AMActorHandler<E, Message>: IMActorHandler where E: Entity where Message : class 
-	{
-		protected abstract Task Run(E entity, Message message);
+    [ActorMessageHandler]
+    public abstract class AMActorHandler<E, Message>: IMActorHandler where E : Entity where Message : class, IActorMessage
+    {
+        protected abstract ETTask Run(E entity, Message message);
 
-		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
-		{
-			Message msg = actorRequest as Message;
-			if (msg == null)
-			{
-				Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Message).Name}");
-				return;
-			}
-			E e = entity as E;
-			if (e == null)
-			{
-				Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-				return;
-			}
+        public async ETTask Handle(Entity entity, object actorMessage, Action<IActorResponse> reply)
+        {
+            Message msg = actorMessage as Message;
+            if (msg == null)
+            {
+                Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Message).Name}");
+                return;
+            }
 
-			int rpcId = actorRequest.RpcId;
-			ActorResponse response = new ActorResponse
-			{
-				RpcId = rpcId
-			};
-			session.Reply(response);
+            E e = entity as E;
+            if (e == null)
+            {
+                Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Message).Name}");
+                return;
+            }
 
-			await this.Run(e, msg);
-		}
+            await this.Run(e, msg);
+        }
 
-		public Type GetMessageType()
-		{
-			return typeof (Message);
-		}
-	}
+        public Type GetRequestType()
+        {
+            if (typeof (IActorLocationMessage).IsAssignableFrom(typeof (Message)))
+            {
+                Log.Error($"message is IActorLocationMessage but handler is AMActorHandler: {typeof (Message)}");
+            }
 
-	public abstract class AMActorRpcHandler<E, Request, Response>: IMActorHandler where E: Entity where Request: class, IActorRequest where Response : class, IActorResponse
-	{
-		protected static void ReplyError(Response response, Exception e, Action<Response> reply)
-		{
-			Log.Error(e);
-			response.Error = ErrorCode.ERR_RpcFail;
-			response.Message = e.ToString();
-			reply(response);
-		}
+            return typeof (Message);
+        }
 
-		protected abstract Task Run(E unit, Request message, Action<Response> reply);
-
-		public async Task Handle(Session session, Entity entity, IActorMessage actorRequest)
-		{
-			try
-			{
-				Request request = actorRequest as Request;
-				if (request == null)
-				{
-					Log.Error($"消息类型转换错误: {actorRequest.GetType().FullName} to {typeof (Request).Name}");
-					return;
-				}
-				E e = entity as E;
-				if (e == null)
-				{
-					Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof(E).Name}");
-					return;
-				}
-
-				int rpcId = request.RpcId;
-				
-				long instanceId = session.InstanceId;
-				
-				await this.Run(e, request, response =>
-				{
-					// 等回调回来,session可以已经断开了,所以需要判断session InstanceId是否一样
-					if (session.InstanceId != instanceId)
-					{
-						return;
-					}
-					response.RpcId = rpcId;
-					
-					session.Reply(response);
-				});
-			}
-			catch (Exception e)
-			{
-				throw new Exception($"解释消息失败: {actorRequest.GetType().FullName}", e);
-			}
-		}
-
-		public Type GetMessageType()
-		{
-			return typeof (Request);
-		}
-	}
+        public Type GetResponseType()
+        {
+            return null;
+        }
+    }
 }
