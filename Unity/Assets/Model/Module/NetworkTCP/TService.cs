@@ -124,6 +124,7 @@ namespace ET
 			this.acceptor?.Close();
 			this.acceptor = null;
 			this.innArgs.Dispose();
+			this.innArgs.Completed -= OnComplete;
 			ThreadSynchronizationContext = null;
 			
 			foreach (long id in this.idChannels.Keys.ToArray())
