@@ -1,10 +1,10 @@
 # [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
 
-__讨论QQ群 : 474643097__  
+# __讨论QQ群 : 474643097__  
 
-[ET论坛](https://et-framework.cn)  
+# [ET论坛](https://et-framework.cn)  
 
-# 注意！现在master(6.0版)还在开发中，不过基本架构已经完成
+# 注意！现在master(6.0版)还在开发中，不过基本架构已经完成, 客户端热更新已经有多个版本实现，参考最下面的友情链接
 
 # ET的介绍：
 ET是一个开源的游戏客户端（基于unity3d）服务端双端框架，服务端是使用C# .net core开发的分布式游戏服务端，其特点是开发效率高，性能强，双端共享逻辑代码，客户端服务端热更机制完善，同时支持可靠udp tcp websocket协议，支持服务端3D recast寻路等等  
@@ -111,7 +111,6 @@ ET框架的服务端是一个强大灵活的分布式服务端架构，完全可
 [ET框架系列教程-烟雨主讲-6.0版本](https://space.bilibili.com/33595745/favlist?fid=759596845&ftype=create)
 
 .net core 游戏资源分享  
-[2D物理引擎Box2D](https://github.com/Zonciu/Box2DSharp)  
 [各种dotnet core项目收集](https://github.com/thangchung/awesome-dotnet-core)  
 
 __讨论QQ群 : 474643097__
@@ -198,5 +197,8 @@ __讨论QQ群 : 474643097__
 ![使用支付宝对该项目进行捐赠](https://github.com/egametang/ET/blob/master/Book/donate.png)
 
 # 友情链接  
+[Box2DSharp](https://github.com/Zonciu/Box2DSharp)  box2d的C#移植版，性能很强  
 [xasset](https://github.com/xasset/xasset) 致力于为 Unity 项目提供了一套 精简稳健 的资源管理环境  
 [QFramework](https://github.com/liangxiegame/QFramework) Your first K.I.S.S Unity3d Framework  
+[ETCsharpToXLua](https://github.com/zzjfengqing/ETCsharpToXLua) 字母哥使用csharp.lua实现的ET客户端热更新  
+[et-6-with-ilruntime](https://www.lfzxb.top/et-6-with-ilruntime) 烟雨使用ILRuntime实现的ET客户端热更新  
