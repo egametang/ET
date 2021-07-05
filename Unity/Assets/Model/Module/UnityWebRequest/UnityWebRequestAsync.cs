@@ -28,7 +28,7 @@ namespace ET
 
 		public bool isCancel;
 
-		public ETTaskCompletionSource tcs;
+		public ETTask tcs;
 		
 		public override void Dispose()
 		{
@@ -91,14 +91,14 @@ namespace ET
 
 		public async ETTask DownloadAsync(string url)
 		{
-			this.tcs = new ETTaskCompletionSource();
+			this.tcs = ETTask.Create(true);
 			
 			url = url.Replace(" ", "%20");
 			this.Request = UnityWebRequest.Get(url);
 			this.Request.certificateHandler = certificateHandler;
 			this.Request.SendWebRequest();
 			
-			await this.tcs.Task;
+			await this.tcs;
 		}
 	}
 }

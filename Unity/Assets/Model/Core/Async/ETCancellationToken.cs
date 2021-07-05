@@ -18,14 +18,14 @@ namespace ET
             this.actions?.Remove(callback);
         }
 
+        public bool IsCancel()
+        {
+            return this.actions == null;
+        }
+
         public void Cancel()
         {
             if (this.actions == null)
-            {
-                return;
-            }
-            
-            if (this.actions.Count == 0)
             {
                 return;
             }
@@ -53,11 +53,6 @@ namespace ET
         public async ETVoid CancelAfter(long afterTimeCancel)
         {
             if (this.actions == null)
-            {
-                return;
-            }
-
-            if (this.actions.Count == 0)
             {
                 return;
             }

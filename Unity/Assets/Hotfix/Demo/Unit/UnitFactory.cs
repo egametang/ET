@@ -16,6 +16,10 @@ namespace ET
 		        numericComponent.Set((NumericType)unitInfo.Ks[i], unitInfo.Vs[i]);
 	        }
 
+	        unit.AddComponent<ObjectWait>();
+
+	        unit.AddComponent<XunLuoPathComponent>();
+
 	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
             unitComponent.Add(unit);
             

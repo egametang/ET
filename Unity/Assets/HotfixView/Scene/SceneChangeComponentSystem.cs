@@ -16,7 +16,7 @@ namespace ET
                 return;
             }
             
-            ETTaskCompletionSource tcs = self.tcs;
+            ETTask tcs = self.tcs;
             self.tcs = null;
             tcs.SetResult();
         }
@@ -36,11 +36,11 @@ namespace ET
     {
         public static async ETTask ChangeSceneAsync(this SceneChangeComponent self, string sceneName)
         {
-            self.tcs = new ETTaskCompletionSource();
+            self.tcs = ETTask.Create(true);
             // 加载map
             self.loadMapOperation = SceneManager.LoadSceneAsync(sceneName);
             //this.loadMapOperation.allowSceneActivation = false;
-            await self.tcs.Task;
+            await self.tcs;
         }
         
         public static int Process(this SceneChangeComponent self)

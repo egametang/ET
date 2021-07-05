@@ -136,7 +136,7 @@ namespace ET
             {
                 case TimerClass.OnceWaitTimer:
                 {
-                    ETTaskCompletionSource<bool> tcs = timerAction.Callback as ETTaskCompletionSource<bool>;
+                    ETTask<bool> tcs = timerAction.Callback as ETTask<bool>;
                     this.Remove(timerAction.Id);
                     tcs.SetResult(true);
                     break;
@@ -175,7 +175,7 @@ namespace ET
                 return true;
             }
 
-            ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+            ETTask<bool> tcs = ETTask<bool>.Create(true);
             TimerAction timer = EntityFactory.CreateWithParent<TimerAction, TimerClass, long, object>(this, TimerClass.OnceWaitTimer, 0, tcs, true);
             this.AddTimer(tillTime, timer);
             long timerId = timer.Id;
@@ -192,7 +192,7 @@ namespace ET
             try
             {
                 cancellationToken?.Add(CancelAction);
-                ret = await tcs.Task;
+                ret = await tcs;
             }
             finally
             {
@@ -214,7 +214,7 @@ namespace ET
             }
             long tillTime = TimeHelper.ServerNow() + time;
 
-            ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+            ETTask<bool> tcs = ETTask<bool>.Create(true);
             
             TimerAction timer = EntityFactory.CreateWithParent<TimerAction, TimerClass, long, object>(this, TimerClass.OnceWaitTimer, 0, tcs, true);
             this.AddTimer(tillTime, timer);
@@ -232,7 +232,7 @@ namespace ET
             try
             {
                 cancellationToken?.Add(CancelAction);
-                ret = await tcs.Task;
+                ret = await tcs;
             }
             finally
             {

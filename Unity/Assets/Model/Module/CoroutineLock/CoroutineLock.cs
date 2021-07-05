@@ -1,33 +1,25 @@
-﻿namespace ET
-{
-    public class CoroutineLockSystem : AwakeSystem<CoroutineLock, CoroutineLockType, long>
-    {
-        public override void Awake(CoroutineLock self, CoroutineLockType coroutineLockType, long key)
-        {
-            self.Awake(coroutineLockType, key);
-        }
-    }  
+using System;
 
-    public class CoroutineLock: Entity
+namespace ET
+{
+    public readonly struct CoroutineLock: IDisposable
     {
-        private CoroutineLockType coroutineLockType;
-        private long key;
-        
-        public void Awake(CoroutineLockType type, long k)
+        private readonly CoroutineLockComponent coroutineLockComponent;
+        private readonly CoroutineLockType coroutineLockType;
+        private readonly long key;
+        private readonly short index;
+
+        public CoroutineLock(CoroutineLockComponent coroutineLockComponent, CoroutineLockType type, long k, short index)
         {
+            this.coroutineLockComponent = coroutineLockComponent;
             this.coroutineLockType = type;
             this.key = k;
+            this.index = index;
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-            base.Dispose();
-            
-            CoroutineLockComponent.Instance.Notify(coroutineLockType, this.key);
+            coroutineLockComponent.Notify(coroutineLockType, this.key, this.index);
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace System.Runtime.CompilerServices
+﻿#if !SERVER
+namespace System.Runtime.CompilerServices
 {
-#if !NOT_CLIENT
     public sealed class AsyncMethodBuilderAttribute: Attribute
     {
         public Type BuilderType
@@ -13,5 +13,5 @@
             BuilderType = builderType;
         }
     }
-#endif
 }
+#endif

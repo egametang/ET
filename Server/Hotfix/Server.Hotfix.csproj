@@ -47,8 +47,10 @@
     <Compile Include="..\..\Unity\Assets\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
       <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
     </Compile>
-    <EmbeddedResource Remove="Other\**" />
-    <None Remove="Other\**" />
+
+    <Compile Include="..\..\Unity\Assets\Hotfix\Module\AI\**\*.cs">
+      <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />

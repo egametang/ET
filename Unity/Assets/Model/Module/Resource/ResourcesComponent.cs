@@ -63,7 +63,7 @@ namespace ET
     {
         public static async ETTask<AssetBundle> UnityLoadBundleAsync(string path)
         {
-            var tcs = new ETTaskCompletionSource<AssetBundle>();
+            var tcs = ETTask<AssetBundle>.Create(true);
             AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(path);
             request.completed += operation => { tcs.SetResult(request.assetBundle); };
             return await tcs;
@@ -71,7 +71,7 @@ namespace ET
 
         public static async ETTask<UnityEngine.Object[]> UnityLoadAssetAsync(AssetBundle assetBundle)
         {
-            var tcs = new ETTaskCompletionSource<UnityEngine.Object[]>();
+            var tcs = ETTask<UnityEngine.Object[]>.Create(true);
             AssetBundleRequest request = assetBundle.LoadAllAssetsAsync();
             request.completed += operation => { tcs.SetResult(request.allAssets); };
             return await tcs;
@@ -385,8 +385,9 @@ namespace ET
 
             if (!Define.IsAsync)
             {
-                string[] realPath = null;
+                
 #if UNITY_EDITOR
+				string[] realPath = null;
                 realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
                 foreach (string s in realPath)
                 {
@@ -542,11 +543,13 @@ namespace ET
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
 
-            if (!File.Exists(p))
-            {
-                Log.Error("Async load bundle not exist! BundleName : " + p);
-                return null;
-            }
+            Log.Info("Async load bundle BundleName : " + p);
+
+            // if (!File.Exists(p))
+            // {
+            //     Log.Error("Async load bundle not exist! BundleName : " + p);
+            //     return null;
+            // }
 
             assetBundle = await AssetBundleHelper.UnityLoadBundleAsync(p);
 

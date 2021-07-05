@@ -20,12 +20,12 @@ namespace ET
         private readonly struct RpcInfo
         {
             public readonly IRequest Request;
-            public readonly ETTaskCompletionSource<IResponse> Tcs;
+            public readonly ETTask<IResponse> Tcs;
 
             public RpcInfo(IRequest request)
             {
                 this.Request = request;
-                this.Tcs = new ETTaskCompletionSource<IResponse>();
+                this.Tcs = ETTask<IResponse>.Create(true);
             }
         }
 
@@ -144,7 +144,7 @@ namespace ET
             try
             {
                 cancellationToken?.Add(CancelAction);
-                ret = await rpcInfo.Tcs.Task;
+                ret = await rpcInfo.Tcs;
             }
             finally
             {
@@ -160,7 +160,7 @@ namespace ET
             this.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
             this.Send(request);
-            return await rpcInfo.Tcs.Task;
+            return await rpcInfo.Tcs;
         }
 
         public void Reply(IResponse message)

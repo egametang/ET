@@ -15,11 +15,13 @@ namespace ET
         [DebuggerHidden]
         public bool IsCompleted => true;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void OnCompleted(Action continuation)
         {
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
         public void UnsafeOnCompleted(Action continuation)
         {

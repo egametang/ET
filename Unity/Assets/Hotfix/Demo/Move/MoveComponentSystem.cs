@@ -77,7 +77,7 @@ namespace ET
             self.IsTurnHorizontal = true;
             self.TurnTime = turnTime;
             self.Speed = speed;
-            ETTaskCompletionSource<bool> tcs = new ETTaskCompletionSource<bool>();
+            ETTask<bool> tcs = ETTask<bool>.Create(true);
             self.Callback = (ret) => { tcs.SetResult(ret); };
 
             Game.EventSystem.Publish(new EventType.MoveStart(){Unit = self.GetParent<Unit>()}).Coroutine();
@@ -93,7 +93,7 @@ namespace ET
             try
             {
                 cancellationToken?.Add(CancelAction);
-                moveRet = await tcs.Task;
+                moveRet = await tcs;
             }
             finally
             {

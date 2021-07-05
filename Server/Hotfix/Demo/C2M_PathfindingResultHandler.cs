@@ -10,7 +10,7 @@ namespace ET
 		{
 			Vector3 target = new Vector3(message.X, message.Y, message.Z);
 
-			MoveHelper.FindPathMoveToAsync(unit, target).Coroutine();
+			unit.FindPathMoveToAsync(target).Coroutine();
 			
 			await ETTask.CompletedTask;
 		}

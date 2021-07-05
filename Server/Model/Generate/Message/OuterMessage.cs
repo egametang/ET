@@ -140,7 +140,7 @@ namespace ET
 		[ProtoMember(93)]
 		public long ActorId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public List<UnitInfo> Units = new List<UnitInfo>();
 
 	}
@@ -155,9 +155,6 @@ namespace ET
 		[ProtoMember(93)]
 		public long ActorId { get; set; }
 
-		[ProtoMember(94)]
-		public long Id { get; set; }
-
 		[ProtoMember(1)]
 		public float X { get; set; }
 
@@ -166,6 +163,18 @@ namespace ET
 
 		[ProtoMember(3)]
 		public float Z { get; set; }
+
+	}
+
+	[Message(OuterOpcode.C2M_Stop)]
+	[ProtoContract]
+	public partial class C2M_Stop: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
 
 	}
 
