@@ -62,6 +62,11 @@ namespace ET
             {
                 return false;
             }
+            // ERR_RpcFail一定要返回
+            if (error == ERR_RpcFail)
+            {
+                return false;
+            }
             // ws平台返回错误专用的值
             if (error == -1)
             {
