@@ -20,7 +20,7 @@ namespace ET
 
         static Log()
         {
-#if SERVER
+#if NOT_UNITY
             ILog = new NLogger("Server");
 #else
             ILog = new UnityLogger();
@@ -150,6 +150,25 @@ namespace ET
             string s = string.Format(message, args) + '\n' + st;
             ErrorCallback?.Invoke(s);
             ILog.Error(s);
+        }
+        
+        public static void Console(string message)
+        {
+            if (Game.Options.Console == 1)
+            {
+                System.Console.WriteLine(message);
+            }
+            ILog.Debug(message);
+        }
+        
+        public static void Console(string message, params object[] args)
+        {
+            string s = string.Format(message, args);
+            if (Game.Options.Console == 1)
+            {
+                System.Console.WriteLine(s);
+            }
+            ILog.Debug(s);
         }
     }
 }

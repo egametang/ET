@@ -19,11 +19,6 @@ namespace ET
 			return new Vector3(pos.x, 0, pos.z);
 		}
 
-		public static Quaternion AngleToQuaternion(int angle)
-		{
-			return Quaternion.AngleAxis(-angle, Vector3.up) * Quaternion.AngleAxis(90, Vector3.up);
-		}
-
 		public static Quaternion GetVector3ToQuaternion(Vector3 source, Vector3 dire)
 		{
 			Vector3 nowPos = source;
@@ -49,11 +44,6 @@ namespace ET
             return Vector2.Distance(d1, d2);
         }
 
-        public static Quaternion GetAngleToQuaternion(float angle)
-		{
-			return Quaternion.AngleAxis(-angle, Vector3.up) * Quaternion.AngleAxis(90, Vector3.up);
-		}
-
 		public static float Vector3ToAngle360(Vector3 from, Vector3 to)
 		{
 			float angle = Vector3.Angle(from, to);
@@ -77,28 +67,6 @@ namespace ET
             float denominator = Mathf.Sqrt(A * A + B * B);
             Vector2 pointVe2 = point.IgnoreYAxis();
             return Mathf.Abs((A * pointVe2.x + B * pointVe2.y + C) / denominator); ;
-        }
-        /// <summary>
-        /// 判断射线是否碰撞到球体，如果碰撞到，返回射线起点到碰撞点之间的距离
-        /// </summary>
-        /// <param name="ray"></param>
-        /// <param name="center"></param>
-        /// <param name="redius"></param>
-        /// <param name="dist"></param>
-        /// <returns></returns>
-        public static bool RayCastSphere(Ray ray, Vector3 center, float redius, out float dist)
-        {
-            dist = 0;
-            Vector3 ma = center - ray.origin;
-            float distance = Vector3.Cross(ma, ray.direction).magnitude / ray.direction.magnitude;
-            if (distance < redius)
-            {
-                float op = GGTheorem(Vector3.Distance(center, ray.origin), distance);
-                float rp = GGTheorem(redius, distance);
-                dist = op - rp;
-                return true;
-            }
-            return false;
         }
         /// <summary>
         /// 勾股定理

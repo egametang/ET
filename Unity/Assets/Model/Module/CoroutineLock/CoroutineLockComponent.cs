@@ -1,32 +1,32 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ET
 {
-    using CoroutineLockQueue = SortedDictionary<int, ETTask<CoroutineLock>>;
-    using CoroutineLockQueueType = Dictionary<long, SortedDictionary<int, ETTask<CoroutineLock>>>;
-    
-    public struct CoroutineLockTimer
-    {
-        public CoroutineLockType CoroutineLockType;
-        public long Key;
-        public int N;
-        
-        public CoroutineLockTimer(CoroutineLockType coroutineLockType, long key, int n)
-        {
-            this.CoroutineLockType = coroutineLockType;
-            this.Key = key;
-            this.N = n;
-        }
-    }
-    
     [ObjectSystem]
-    public class CoroutineLockComponentSystem: AwakeSystem<CoroutineLockComponent>
+    public class CoroutineLockComponentAwakeSystem: AwakeSystem<CoroutineLockComponent>
     {
         public override void Awake(CoroutineLockComponent self)
         {
-            self.Awake();
+            CoroutineLockComponent.Instance = self;
+            for (int i = 0; i < self.list.Capacity; ++i)
+            {
+                self.list.Add(EntityFactory.CreateWithId<CoroutineLockQueueType>(self.Domain, ++self.idGenerator));
+            }
+        }
+    }
+
+    [ObjectSystem]
+    public class CoroutineLockComponentDestroySystem: DestroySystem<CoroutineLockComponent>
+    {
+        public override void Destroy(CoroutineLockComponent self)
+        {
+            self.list.Clear();
+            self.nextFrameRun.Clear();
+            self.timers.Clear();
+            self.timeOutIds.Clear();
+            self.timerOutTimer.Clear();
+            self.idGenerator = 0;
+            self.minTime = 0;
         }
     }
 
@@ -34,223 +34,156 @@ namespace ET
     {
         public override void Update(CoroutineLockComponent self)
         {
-            self.Update();
-        }
-    }
-
-    public class CoroutineLockComponent: Entity
-    {
-        public static CoroutineLockComponent Instance
-        {
-            get;
-            private set;
-        }
-
-        private int n;
-        
-        private readonly Queue<CoroutineLockQueue> coroutineLockQueuePool = new Queue<CoroutineLockQueue>();
-
-        private CoroutineLockQueue FetchCoroutineLockQueue()
-        {
-            if (this.coroutineLockQueuePool.Count == 0)
-            {
-                return new CoroutineLockQueue();
-            }
-
-            return this.coroutineLockQueuePool.Dequeue();
-        }
-        
-        private void RecycleCoroutineLockQueue(CoroutineLockQueue coroutineLockQueue)
-        {
-            this.coroutineLockQueuePool.Enqueue(coroutineLockQueue);
-        }
-
-        private readonly List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>((int) CoroutineLockType.Max);
-
-        private readonly Queue<(CoroutineLockType, long)> nextFrameRun = new Queue<(CoroutineLockType, long)>();
-
-        private readonly MultiMap<long, CoroutineLockTimer> timers = new MultiMap<long, CoroutineLockTimer>();
-        
-        private readonly Queue<long> timeOutIds = new Queue<long>();
-
-        private readonly Queue<CoroutineLockTimer> timerOutTimer = new Queue<CoroutineLockTimer>();
-
-        private long minTime;
-
-        public void Awake()
-        {
-            Instance = this;
-            for (int i = 0; i < this.list.Capacity; ++i)
-            {
-                this.list.Add(new CoroutineLockQueueType());
-            }
-        }
-
-        public void Update()
-        {
-            int count = this.nextFrameRun.Count;
+            // 检测超时的CoroutineLock
+            TimeoutCheck(self);
+            
+            int count = self.nextFrameRun.Count;
             // 注意这里不能将this.nextFrameRun.Count 放到for循环中，因为循环过程中会有对象继续加入队列
             for (int i = 0; i < count; ++i)
             {
-                (CoroutineLockType coroutineLockType, long key) = this.nextFrameRun.Dequeue();
-                this.Notify(coroutineLockType, key, 1);
+                (CoroutineLockType coroutineLockType, long key) = self.nextFrameRun.Dequeue();
+                self.Notify(coroutineLockType, key, 0);
             }
-
-            TimeoutCheck();
         }
-
-        // 这里没有用TimerComponent，是为了避免每个计时器一个回调的gc
-        private void TimeoutCheck()
+        
+        public void TimeoutCheck(CoroutineLockComponent self)
         {
             // 超时的锁
-            if (this.timers.Count == 0)
+            if (self.timers.Count == 0)
             {
                 return;
             }
 
             long timeNow = TimeHelper.ClientFrameTime();
 
-            if (timeNow < this.minTime)
+            if (timeNow < self.minTime)
             {
                 return;
             }
 
-            foreach (KeyValuePair<long, List<CoroutineLockTimer>> kv in this.timers)
+            foreach (KeyValuePair<long, List<CoroutineLockTimer>> kv in self.timers)
             {
                 long k = kv.Key;
                 if (k > timeNow)
                 {
-                    minTime = k;
+                    self.minTime = k;
                     break;
                 }
 
-                this.timeOutIds.Enqueue(k);
+                self.timeOutIds.Enqueue(k);
             }
             
-            this.timerOutTimer.Clear();
+            self.timerOutTimer.Clear();
             
-            while (this.timeOutIds.Count > 0)
+            while (self.timeOutIds.Count > 0)
             {
-                long time = this.timeOutIds.Dequeue();
-                foreach (CoroutineLockTimer coroutineLockTimer in this.timers[time])
+                long time = self.timeOutIds.Dequeue();
+                foreach (CoroutineLockTimer coroutineLockTimer in self.timers[time])
                 {
-                    this.timerOutTimer.Enqueue(coroutineLockTimer);
+                    self.timerOutTimer.Enqueue(coroutineLockTimer);
                 }
-                this.timers.Remove(time);
+                self.timers.Remove(time);
             }
             
-            while (this.timerOutTimer.Count > 0)
+            while (self.timerOutTimer.Count > 0)
             {
-                CoroutineLockTimer coroutineLockTimer = this.timerOutTimer.Dequeue();
-
-                CoroutineLockQueueType coroutineLockQueueType = this.list[(int) coroutineLockTimer.CoroutineLockType];
-                if (!coroutineLockQueueType.TryGetValue(coroutineLockTimer.Key, out CoroutineLockQueue queue))
+                CoroutineLockTimer coroutineLockTimer = self.timerOutTimer.Dequeue();
+                if (coroutineLockTimer.CoroutineLockInstanceId != coroutineLockTimer.CoroutineLock.InstanceId)
                 {
                     continue;
                 }
-                if (!queue.TryGetValue(coroutineLockTimer.N, out ETTask<CoroutineLock> tcs))
-                {
-                    continue;
-                }
-                
-                queue.Remove(coroutineLockTimer.N);
-                
-                if (queue.Count == 0)
-                {
-                    this.RecycleCoroutineLockQueue(queue);
-                    coroutineLockQueueType.Remove(coroutineLockTimer.Key);
-                }
-                
-                CoroutineLockType coroutineLockType = coroutineLockTimer.CoroutineLockType;
-                long key = coroutineLockTimer.Key;
-                
-                tcs.SetException(new Exception($"coroutineLock timeout maybe have deadlock: {coroutineLockType} {key}"));
+
+                CoroutineLock coroutineLock = coroutineLockTimer.CoroutineLock;
+                // 超时直接调用下一个锁
+                self.NextFrameRun(coroutineLock.coroutineLockType, coroutineLock.key);
+                coroutineLock.coroutineLockType = CoroutineLockType.None; // 上面调用了下一个, dispose不再调用
             }
         }
+    }
 
-        public override void Dispose()
+    public static class CoroutineLockComponentSystem
+    {
+        public static void NextFrameRun(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key)
         {
-            if (this.IsDisposed)
+            self.nextFrameRun.Enqueue((coroutineLockType, key));
+        }
+
+        public static void AddTimer(this CoroutineLockComponent self, long tillTime, CoroutineLock coroutineLock)
+        {
+            self.timers.Add(tillTime, new CoroutineLockTimer(coroutineLock));
+            if (tillTime < self.minTime)
             {
-                return;
+                self.minTime = tillTime;
             }
-
-            base.Dispose();
-
-            this.list.Clear();
         }
 
-        public async ETTask<CoroutineLock> Wait(CoroutineLockType coroutineLockType, long key, int time = 60000)
+        public static async ETTask<CoroutineLock> Wait(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time = 60000)
         {
-            CoroutineLockQueueType coroutineLockQueueType = this.list[(int) coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType = self.list[(int) coroutineLockType];
+   
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
             {
-                coroutineLockQueueType.Add(key, FetchCoroutineLockQueue());
-
-                return new CoroutineLock(this, coroutineLockType, key, 1);
+                coroutineLockQueueType.Add(key, EntityFactory.CreateWithId<CoroutineLockQueue>(self.Domain, ++self.idGenerator, true));
+                return self.CreateCoroutineLock(coroutineLockType, key, time, 1);
             }
 
             ETTask<CoroutineLock> tcs = ETTask<CoroutineLock>.Create(true);
+            queue.Add(tcs, time);
             
-            int i = ++this.n;
-            if (time > 0)
-            {
-                long tillTime = TimeHelper.ClientFrameTime() + time;
-                CoroutineLockTimer coroutineLockTimer = new CoroutineLockTimer(coroutineLockType, key, i);
-                this.timers.Add(tillTime, coroutineLockTimer);
-                if (tillTime < this.minTime)
-                {
-                    this.minTime = tillTime;
-                }
-            }
-            queue.Add(i, tcs);
             return await tcs;
         }
 
-        public int GetCount(CoroutineLockType coroutineLockType, long key)
+        public static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time, int count)
         {
-            CoroutineLockQueueType coroutineLockQueueType = this.list[(int) coroutineLockType];
-            if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
+            CoroutineLock coroutineLock = EntityFactory.CreateWithId<CoroutineLock, CoroutineLockType, long, int>(self.Domain, ++self.idGenerator, coroutineLockType, key, count, true);
+            if (time > 0)
             {
-                return 0;
+                self.AddTimer(TimeHelper.ClientFrameTime() + time, coroutineLock);
             }
-
-            return queue.Count;
+            return coroutineLock;
         }
 
-        public void Notify(CoroutineLockType coroutineLockType, long key, short index)
+        public static void Notify(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int count)
         {
-            if (this.list.Count == 0) // 客户端关闭了
-            {
-                return;
-            }
-            CoroutineLockQueueType coroutineLockQueueType = this.list[(int) coroutineLockType];
+            CoroutineLockQueueType coroutineLockQueueType = self.list[(int) coroutineLockType];
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
             {
                 return;
-                // coroutineLockQueueType是空的也正常，因为有些协程锁可能超时删除了
-                //throw new Exception($"first work notify not find queue");
             }
 
             if (queue.Count == 0)
             {
-                this.RecycleCoroutineLockQueue(queue);
                 coroutineLockQueueType.Remove(key);
                 return;
             }
             
-            // 注意因为协程锁Dispose会调用下一个协程，如果队列过多，堆栈可能溢出，所以这里限制了一次最多递归10层，
-            // 超出则记录一下，下一帧再继续
-            if (index > 10)
+#if NOT_UNITY
+            const int frameCoroutineCount = 5;
+#else
+            const int frameCoroutineCount = 10;
+#endif
+
+            if (count > frameCoroutineCount)
             {
-                this.nextFrameRun.Enqueue((coroutineLockType, key));
+                self.NextFrameRun(coroutineLockType, key);
                 return;
             }
-
-            var kv = queue.First();
-            var tcs = kv.Value;
-            queue.Remove(kv.Key);
-            tcs.SetResult(new CoroutineLock(this, coroutineLockType, key, (short)(index + 1)));
+            
+            CoroutineLockInfo coroutineLockInfo = queue.Dequeue();
+            coroutineLockInfo.Tcs.SetResult(self.CreateCoroutineLock(coroutineLockType, key, coroutineLockInfo.Time, count));
         }
+    }
+
+    public class CoroutineLockComponent: Entity
+    {
+        public static CoroutineLockComponent Instance;
+        
+        public List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>((int) CoroutineLockType.Max);
+        public Queue<(CoroutineLockType, long)> nextFrameRun = new Queue<(CoroutineLockType, long)>();
+        public MultiMap<long, CoroutineLockTimer> timers = new MultiMap<long, CoroutineLockTimer>();
+        public Queue<long> timeOutIds = new Queue<long>();
+        public Queue<CoroutineLockTimer> timerOutTimer = new Queue<CoroutineLockTimer>();
+        public long idGenerator;
+        public long minTime;
     }
 }

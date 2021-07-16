@@ -37,6 +37,19 @@ namespace ET
             {
                 await SceneFactory.Create(Game.Scene, startConfig.SceneId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
             }
+
+            switch (Game.Options.AppType)
+            {
+                case AppType.Server:
+                    break;
+                case AppType.Watcher:
+                    break;
+            }
+
+            if (Game.Options.Console == 1)
+            {
+                Game.Scene.AddComponent<ConsoleComponent>();
+            }
         }
     }
 }

@@ -22,6 +22,15 @@ namespace ET
     
     public static class ConfigComponentSystem
 	{
+		public static void LoadOneConfig(this ConfigComponent self, Type configType)
+		{
+			byte[] oneConfigBytes = ConfigComponent.GetOneConfigBytes(configType.FullName);
+
+			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+
+			self.AllConfig[configType] = category;
+		}
+		
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();

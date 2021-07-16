@@ -10,6 +10,8 @@ namespace ET
     {
         public static Action<Dictionary<string, byte[]>> GetAllConfigBytes;
         
+        public static Func<string, byte[]> GetOneConfigBytes;
+        
         public static ConfigComponent Instance;
 		
         public Dictionary<Type, object> AllConfig = new Dictionary<Type, object>();
