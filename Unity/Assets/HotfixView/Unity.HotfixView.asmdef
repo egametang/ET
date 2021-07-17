@@ -1,10 +1,12 @@
 {
     "name": "Unity.HotfixView",
+    "rootNamespace": "ET",
     "references": [
         "GUID:703e1d0810996ed4b9064f1041de8bdc",
         "GUID:997f003cfffd9ec4fae70c0ac9b0ec2b",
         "GUID:f7aec9df9b7212e448c697d7ebf558a3",
-        "GUID:bebd02018e98e44409a761968a7cbcd9"
+        "GUID:bebd02018e98e44409a761968a7cbcd9",
+        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

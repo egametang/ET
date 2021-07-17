@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace ET
 {
-#if !NOT_UNITY
     public class ComponentView: MonoBehaviour
     {
         public object Component
@@ -11,5 +10,4 @@ namespace ET
             set;
         }
     }
-#endif
 }

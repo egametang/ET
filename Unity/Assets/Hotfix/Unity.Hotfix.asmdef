@@ -1,5 +1,6 @@
 {
     "name": "Unity.Hotfix",
+    "rootNamespace": "ET",
     "references": [
         "Unity.Model",
         "Unity.ThirdParty"

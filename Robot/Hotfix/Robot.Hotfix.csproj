@@ -56,5 +56,9 @@
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
     </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Robot" />
+    </ItemGroup>
 
 </Project>

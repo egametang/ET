@@ -2,19 +2,16 @@
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using UnityEngine;
 
 namespace ET
 {
-	public class Init : MonoBehaviour
+	public class Entry : IEntry
 	{
-		private void Start()
+		public void Start()
 		{
 			try
 			{
 				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-				
-				DontDestroyOnLoad(gameObject);
 
 				string[] assemblyNames = { "Unity.Model.dll", "Unity.Hotfix.dll", "Unity.ModelView.dll", "Unity.HotfixView.dll" };
 				
@@ -40,18 +37,18 @@ namespace ET
 			}
 		}
 
-		private void Update()
+		public void Update()
 		{
 			ThreadSynchronizationContext.Instance.Update();
 			Game.EventSystem.Update();
 		}
 
-		private void LateUpdate()
+		public void LateUpdate()
 		{
 			Game.EventSystem.LateUpdate();
 		}
 
-		private void OnApplicationQuit()
+		public void OnApplicationQuit()
 		{
 			Game.Close();
 		}
