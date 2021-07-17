@@ -29,8 +29,10 @@ namespace ET
                         .WithParsed(o => { options = o; });
 
                 Game.Options = options;
-				
-                LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Scene.Id:0000}";
+
+                Game.ILog = new NLogger(Game.Options.AppType.ToString());
+                
+                LogManager.Configuration.Variables["appIdFormat"] = $"{Game.Options.Process:000000}";
 				
                 Log.Info($"server start........................ {Game.Scene.Id}");
 

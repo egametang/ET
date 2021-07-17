@@ -32,6 +32,8 @@ namespace ET
 
         public static Options Options;
 
+        public static ILog ILog;
+
         public static List<Action> FrameFinishCallback = new List<Action>();
 
         public static void Update()

@@ -22,7 +22,7 @@ namespace ET
 					{
 						continue;
 					}
-					Game.EventSystem.Add(assembly);	
+					Game.EventSystem.Add(assembly);
 				}
 				
 				ProtobufHelper.Init();
