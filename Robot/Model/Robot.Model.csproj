@@ -84,6 +84,10 @@
         <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
             <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\Console\**\*.cs">
+            <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />

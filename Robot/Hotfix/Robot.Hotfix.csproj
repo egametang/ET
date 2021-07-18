@@ -52,13 +52,27 @@
             <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-        <Compile Include="..\..\Unity\Assets\Hotfix\Demo\**\*.cs">
+        <Compile Include="..\..\Unity\Assets\Hotfix\Demo\**\*.cs"> 
             <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Config\**\*.cs">
+            <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Hotfix\Module\Console\**\*.cs">
+            <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Hotfix\Config\**\*.cs">
+            <Link>Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="Robot" />
+      <Folder Include="..\..\Server\Hotfix\Helper">
+        <Link>Helper</Link>
+      </Folder>
     </ItemGroup>
 
 </Project>

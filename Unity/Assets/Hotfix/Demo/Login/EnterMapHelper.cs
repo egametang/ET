@@ -3,9 +3,9 @@ using System;
 
 namespace ET
 {
-    public static class MapHelper
+    public static class EnterMapHelper
     {
-        public static async ETVoid EnterMapAsync(Scene zoneScene, string sceneName)
+        public static async ETTask EnterMapAsync(Scene zoneScene)
         {
             try
             {

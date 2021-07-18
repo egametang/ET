@@ -10,6 +10,7 @@ namespace ET
         public const string ShowMemory = "M";
         public const string Repl = "Repl";
         public const string Debugger = "Debugger";
+        public const string CreateRobot = "CreateRobot";
     }
 
     public class ConsoleComponent: Entity

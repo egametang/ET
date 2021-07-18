@@ -11,8 +11,6 @@ namespace ET
             Game.Scene.AddComponent<ResourcesComponent>();
             ResourcesComponent.Instance.LoadBundle("config.unity3d");
             Game.Scene.AddComponent<ConfigComponent>();
-            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.GetAllConfigBytes;
-            ConfigComponent.GetOneConfigBytes = LoadConfigHelper.GetOneConfigBytes;
             await ConfigComponent.Instance.LoadAsync();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             
@@ -29,7 +27,7 @@ namespace ET
 
             ResourcesComponent.Instance.LoadBundle("unit.unity3d");
 
-            Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Process");
+            Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
 
             await Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }

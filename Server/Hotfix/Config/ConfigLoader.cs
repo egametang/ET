@@ -3,9 +3,9 @@ using System.IO;
 
 namespace ET
 {
-    public static class LoadConfigHelper
+    public class ConfigLoader: IConfigLoader
     {
-        public static void GetAllConfigBytes(Dictionary<string, byte[]> output)
+        public void GetAllConfigBytes(Dictionary<string, byte[]> output)
         {
             foreach (string file in Directory.GetFiles($"../Config", "*.bytes"))
             {
@@ -14,7 +14,7 @@ namespace ET
             }
         }
         
-        public static byte[] GetOneConfigBytes(string configName)
+        public byte[] GetOneConfigBytes(string configName)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/{configName}.bytes");
             return configBytes;

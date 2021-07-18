@@ -9,6 +9,7 @@ namespace ET
 	public class UILoginComponent: Entity
 	{
 		public GameObject account;
+		public GameObject password;
 		public GameObject loginBtn;
 	}
 }

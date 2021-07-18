@@ -9,9 +9,6 @@ namespace ET
         protected override async ETTask Run(EventType.AppStart args)
         {
             Game.Scene.AddComponent<ConfigComponent>();
-            
-            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.GetAllConfigBytes;
-            ConfigComponent.GetOneConfigBytes = LoadConfigHelper.GetOneConfigBytes;
             await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
@@ -36,7 +33,7 @@ namespace ET
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
             foreach (StartSceneConfig startConfig in processScenes)
             {
-                await SceneFactory.Create(Game.Scene, startConfig.InstanceId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
+                await SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
             }
 
             switch (Game.Options.AppType)

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 namespace ET
 {
-    public static class LoadConfigHelper
+    public class ConfigLoader: IConfigLoader
     {
-        public static void GetAllConfigBytes(Dictionary<string, byte[]> output)
+        public void GetAllConfigBytes(Dictionary<string, byte[]> output)
         {
             Dictionary<string, UnityEngine.Object> keys = ResourcesComponent.Instance.GetBundleAll("config.unity3d");
 
@@ -17,8 +16,8 @@ namespace ET
                 output[key] = v.bytes;
             }
         }
-        
-        public static byte[] GetOneConfigBytes(string configName)
+
+        public byte[] GetOneConfigBytes(string configName)
         {
             TextAsset v = ResourcesComponent.Instance.GetAsset("config.unity3d", configName) as TextAsset;
             return v.bytes;

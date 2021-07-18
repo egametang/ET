@@ -210,6 +210,10 @@ namespace ET
             
             for (int row = 6; row <= worksheet.Dimension.End.Row; ++row)
             {
+                if (worksheet.Cells[row, 3].Text.Trim() == "")
+                {
+                    continue;
+                }
                 sb.Append("{");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
@@ -253,6 +257,10 @@ namespace ET
                 case "long":
                 case "float":
                 case "double":
+                    if (value == "")
+                    {
+                        return "0";
+                    }
                     return value;
                 case "string":
                     return $"\"{value}\"";

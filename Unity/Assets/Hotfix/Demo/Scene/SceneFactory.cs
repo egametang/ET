@@ -2,9 +2,9 @@ namespace ET
 {
     public static class SceneFactory
     {
-        public static async ETTask<Scene> CreateZoneScene(int zone, string name)
+        public static async ETTask<Scene> CreateZoneScene(int zone, string name, Entity parent)
         {
-            Scene zoneScene = EntitySceneFactory.CreateScene(Game.IdGenerater.GenerateId(), zone, SceneType.Zone, name, Game.Scene);
+            Scene zoneScene = EntitySceneFactory.CreateScene(Game.IdGenerater.GenerateInstanceId(), zone, SceneType.Zone, name, parent);
             zoneScene.AddComponent<ZoneSceneFlagComponent>();
             zoneScene.AddComponent<NetKcpComponent>();
             zoneScene.AddComponent<UnitComponent>();
