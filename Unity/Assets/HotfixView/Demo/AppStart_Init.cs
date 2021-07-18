@@ -11,7 +11,8 @@ namespace ET
             Game.Scene.AddComponent<ResourcesComponent>();
             ResourcesComponent.Instance.LoadBundle("config.unity3d");
             Game.Scene.AddComponent<ConfigComponent>();
-            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
+            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.GetAllConfigBytes;
+            ConfigComponent.GetOneConfigBytes = LoadConfigHelper.GetOneConfigBytes;
             await ConfigComponent.Instance.LoadAsync();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             

@@ -10,7 +10,8 @@ namespace ET
         {
             Game.Scene.AddComponent<ConfigComponent>();
             
-            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes;
+            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.GetAllConfigBytes;
+            ConfigComponent.GetOneConfigBytes = LoadConfigHelper.GetOneConfigBytes;
             await ConfigComponent.Instance.LoadAsync();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
