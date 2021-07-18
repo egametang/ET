@@ -18,10 +18,10 @@
             set;
         }
 
-        public Scene(long id, int zone, SceneType sceneType, string name)
+        public Scene(long instanceId, int zone, SceneType sceneType, string name)
         {
-            this.Id = id;
-            this.InstanceId = id;
+            this.Id = instanceId;
+            this.InstanceId = instanceId;
             this.Zone = zone;
             this.SceneType = sceneType;
             this.Name = name;

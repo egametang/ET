@@ -20,8 +20,7 @@ namespace ET
                 {
                     return scene;
                 }
-                InstanceIdStruct instanceIdStruct = new InstanceIdStruct(Options.Process, 0);
-                scene = EntitySceneFactory.CreateScene(instanceIdStruct.ToLong(), 0, SceneType.Process, "Process");
+                scene = EntitySceneFactory.CreateScene(IdGenerater.Instance.GenerateInstanceId(), 0, SceneType.Process, "Process");
                 return scene;
             }
         }

@@ -8,14 +8,14 @@ namespace ET
     {
         public static async ETTask<Scene> Create(Entity parent, string name, SceneType sceneType)
         {
-            long id = IdGenerater.Instance.GenerateId();
+            long id = IdGenerater.Instance.GenerateInstanceId();
             return await Create(parent, id, parent.DomainZone(), name, sceneType);
         }
         
-        public static async ETTask<Scene> Create(Entity parent, long id, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
+        public static async ETTask<Scene> Create(Entity parent, long instanceId, int zone, string name, SceneType sceneType, StartSceneConfig startSceneConfig = null)
         {
             await ETTask.CompletedTask;
-            Scene scene = EntitySceneFactory.CreateScene(id, zone, sceneType, name);
+            Scene scene = EntitySceneFactory.CreateScene(instanceId, zone, sceneType, name);
             scene.Parent = parent;
 
             scene.AddComponent<MailBoxComponent, MailboxType>(MailboxType.UnOrderMessageDispatcher);

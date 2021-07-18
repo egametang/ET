@@ -36,7 +36,7 @@ namespace ET
             var processScenes = StartSceneConfigCategory.Instance.GetByProcess(Game.Options.Process);
             foreach (StartSceneConfig startConfig in processScenes)
             {
-                await SceneFactory.Create(Game.Scene, startConfig.SceneId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
+                await SceneFactory.Create(Game.Scene, startConfig.InstanceId, startConfig.Zone, startConfig.Name, startConfig.Type, startConfig);
             }
 
             switch (Game.Options.AppType)
