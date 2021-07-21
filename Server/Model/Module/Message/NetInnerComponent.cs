@@ -25,7 +25,5 @@ namespace ET
         public static NetInnerComponent Instance;
 
         public IMessageDispatcher MessageDispatcher { get; set; }
-        
-        public Random Random = new Random(Guid.NewGuid().GetHashCode());
     }
 }

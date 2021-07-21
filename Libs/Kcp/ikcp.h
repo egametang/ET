@@ -362,7 +362,7 @@ extern "C" {
 	KCPDLL void ikcp_setlog(void(*writelog)(const char *buf, int len, ikcpcb *kcp, void *user));
 
 // user/upper level recv: returns size, returns below zero for EAGAIN
-	KCPDLL int ikcp_recv(ikcpcb *kcp, char *buffer, int len);
+	KCPDLL int ikcp_recv(ikcpcb *kcp, char *buffer, int index, int len);
 
 // user/upper level send, returns below zero for error
 	KCPDLL int ikcp_send(ikcpcb *kcp, const char *buffer, int offset, int len);

@@ -95,7 +95,7 @@ namespace ET
         // 这个channelId是由CreateConnectChannelId生成的
         public static Session Create(this NetInnerComponent self, IPEndPoint ipEndPoint)
         {
-            uint localConn = self.Service.CreateRandomLocalConn(self.Random);
+            uint localConn = self.Service.CreateRandomLocalConn();
             long channelId = self.Service.CreateConnectChannelId(localConn);
             Session session = self.CreateInner(channelId, ipEndPoint);
             return session;

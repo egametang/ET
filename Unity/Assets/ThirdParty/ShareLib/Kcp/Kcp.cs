@@ -13,7 +13,7 @@ namespace ET
     {
         public const int OneM = 1024 * 1024;
         public const int InnerMaxWaitSize = 1024 * 1024;
-        public const int OuterMaxWaitSize = 1024 * 10;
+        public const int OuterMaxWaitSize = 1024 * 1024;
         
         
         private static KcpOutput KcpOutput;
@@ -24,7 +24,6 @@ namespace ET
 #else
         const string KcpDLL = "kcp";
 #endif
-
         
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern uint ikcp_check(IntPtr kcp, uint current);
@@ -41,7 +40,7 @@ namespace ET
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern int ikcp_peeksize(IntPtr kcp);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
-        private static extern int ikcp_recv(IntPtr kcp, byte[] buffer, int len);
+        private static extern int ikcp_recv(IntPtr kcp, byte[] buffer, int index, int len);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
         private static extern void ikcp_release(IntPtr kcp);
         [DllImport(KcpDLL, CallingConvention=CallingConvention.Cdecl)]
@@ -129,18 +128,19 @@ namespace ET
             return ret;
         }
 
-        public static int KcpRecv(IntPtr kcp, byte[] buffer, int len)
+        public static int KcpRecv(IntPtr kcp, byte[] buffer, int index, int len)
         {
             if (kcp == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
 
-            if (buffer.Length != len)
+            if (buffer.Length < index + len)
             {
-                throw new Exception($"kcp error, KcpRecv error: {len}");
+                throw new Exception($"kcp error, KcpRecv error: {index} {len}");
             }
-            int ret = ikcp_recv(kcp, buffer, len);
+            
+            int ret = ikcp_recv(kcp, buffer, index, len);
             return ret;
         }
 
