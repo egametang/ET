@@ -13,7 +13,7 @@ namespace ET
     
     public class Options
     {
-        [Option("ServerType", Required = false, Default = AppType.Server, HelpText = "serverType enum")]
+        [Option("AppType", Required = false, Default = AppType.Server, HelpText = "serverType enum")]
         public AppType AppType { get; set; }
 
         [Option("Process", Required = false, Default = 1)]
