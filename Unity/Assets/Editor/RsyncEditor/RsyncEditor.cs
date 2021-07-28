@@ -82,7 +82,7 @@ namespace ET
 			{
 				string arguments =
 						$"-vzrtopg --password-file=./Tools/cwRsync/Config/rsync.secrets --exclude-from=./Tools/cwRsync/Config/exclude.txt --delete ./ {this.rsyncConfig.Account}@{this.rsyncConfig.Host}::Upload/{this.rsyncConfig.RelativePath} --chmod=ugo=rwX";
-				ProcessHelper.Run(@"./Tools/cwRsync/rsync.exe", arguments, @"..\", waitExit: true);
+				ProcessHelper.Run(@"./Tools/cwRsync/rsync.exe", arguments, @"..\");
 				Log.Info("同步完成!");
 			}
 		}

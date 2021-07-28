@@ -76,6 +76,8 @@ namespace ET
 		public string InnerIP { get; set; }
 		[ProtoMember(3, IsRequired  = true)]
 		public string OuterIP { get; set; }
+		[ProtoMember(4, IsRequired  = true)]
+		public string WatcherPort { get; set; }
 
 
 		[ProtoAfterDeserialization]

@@ -5,6 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
+    <AssemblyName>Server</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,10 +24,6 @@
     <OutputPath>..\..\Bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.10" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />
