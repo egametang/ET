@@ -74,7 +74,7 @@ namespace ET
                 RecastPathProcessor recastPathProcessor = EntityFactory.Create<RecastPathProcessor>(this.domain);
                 recastPathProcessor.MapId = mapId;
                 m_RecastPathProcessorDic[mapId] = recastPathProcessor;
-                Log.Info($"加载Id为{mapId}的地图Nav数据成功！");
+                Log.Debug($"加载Id为{mapId}的地图Nav数据成功！");
             }
         }
 
@@ -94,11 +94,11 @@ namespace ET
             m_RecastPathProcessorDic.Remove(mapId);
             if (RecastInterface.FreeMap(mapId))
             {
-                Log.Info($"地图： {mapId}  释放成功");
+                Log.Debug($"地图： {mapId}  释放成功");
             }
             else
             {
-                Log.Info($"地图： {mapId}  释放失败");
+                Log.Debug($"地图： {mapId}  释放失败");
             }
         }
 

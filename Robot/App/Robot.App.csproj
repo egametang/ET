@@ -26,4 +26,16 @@
       <ProjectReference Include="..\Model\Robot.Model.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="..\..\Server\App\NLog.config">
+        <Link>NLog.config</Link>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\Server\App\NLog.xsd">
+        <Link>NLog.xsd</Link>
+      </Content>
+    </ItemGroup>
+
 </Project>

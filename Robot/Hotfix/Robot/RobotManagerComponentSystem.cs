@@ -3,13 +3,6 @@ using System.Linq;
 
 namespace ET
 {
-    public class RobotManagerComponentAwakeSystem: AwakeSystem<RobotManagerComponent>
-    {
-        public override void Awake(RobotManagerComponent self)
-        {
-        }
-    }
-
     public static class RobotManagerComponentSystem
     {
         public static async ETTask<Scene> NewRobot(this RobotManagerComponent self, int zone)

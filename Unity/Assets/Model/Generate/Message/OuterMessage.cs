@@ -389,4 +389,38 @@ namespace ET
 
 	}
 
+	[ResponseType(typeof(M2C_TestRobotCase))]
+	[Message(OuterOpcode.C2M_TestRobotCase)]
+	[ProtoContract]
+	public partial class C2M_TestRobotCase: Object, IActorLocationRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(1)]
+		public int N { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_TestRobotCase)]
+	[ProtoContract]
+	public partial class M2C_TestRobotCase: Object, IActorLocationResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int N { get; set; }
+
+	}
+
 }

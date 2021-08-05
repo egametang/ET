@@ -739,7 +739,7 @@ namespace ETEditor
                     {
                         string dest = System.IO.Path.Combine(outputServerFolder, name);
                         System.IO.File.Copy(file, dest, true); //复制文件
-                        Log.Info($"Recast：从{file}复制obj文件到{dest}成功");
+                        Log.Debug($"Recast：从{file}复制obj文件到{dest}成功");
                     }
                 }
             }

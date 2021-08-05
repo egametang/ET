@@ -543,7 +543,7 @@ namespace ET
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
 
-            Log.Info("Async load bundle BundleName : " + p);
+            Log.Debug("Async load bundle BundleName : " + p);
 
             // if (!File.Exists(p))
             // {
