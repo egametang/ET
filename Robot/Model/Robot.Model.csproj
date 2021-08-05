@@ -33,6 +33,10 @@
             <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs"> 
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
             <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

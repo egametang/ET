@@ -21,9 +21,13 @@ namespace ET
         // 3. SetException
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [DebuggerHidden]
-        public void SetException(Exception exception)
+        public void SetException(Exception e)
         {
-            Log.Error(exception);
+#if NOT_UNITY
+            Log.Error(e);
+#else
+            UnityEngine.Debug.LogError(e);
+#endif
         }
 
         // 4. SetResult

@@ -46,20 +46,12 @@ namespace ET
             }
             catch (Exception e)
             {
+#if NOT_UNITY
                 Log.Error(e);
+#else
+                UnityEngine.Debug.LogError(e);
+#endif
             }
-        }
-
-        public async ETVoid CancelAfter(long afterTimeCancel)
-        {
-            if (this.actions == null)
-            {
-                return;
-            }
-
-            await TimerComponent.Instance.WaitAsync(afterTimeCancel);
-            
-            this.Invoke();
         }
     }
 }
