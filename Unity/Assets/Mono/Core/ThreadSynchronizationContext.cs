@@ -35,7 +35,11 @@ namespace ET
                 }
                 catch (Exception e)
                 {
+#if NOT_UNITY
                     Log.Error(e);
+#else
+                    UnityEngine.Debug.LogError(e);
+#endif
                 }
             }
         }
@@ -53,9 +57,13 @@ namespace ET
                 {
                     action();
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Log.Error(ex);
+#if NOT_UNITY
+                    Log.Error(e);
+#else
+                    UnityEngine.Debug.LogError(e);
+#endif
                 }
 
                 return;

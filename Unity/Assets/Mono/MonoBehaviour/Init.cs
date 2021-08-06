@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using UnityEngine;
 
 namespace ET
@@ -18,6 +19,8 @@ namespace ET
 		
 		private void Awake()
 		{
+			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+			
 			DontDestroyOnLoad(gameObject);
 			
 			Assembly modelAssembly = null;

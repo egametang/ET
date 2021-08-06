@@ -66,7 +66,6 @@ namespace ET
             sb.Append("{\n");
 
             bool isMsgStart = false;
-            string parentClass = "";
             foreach (string line in s.Split('\n'))
             {
                 string newline = line.Trim();
@@ -90,7 +89,7 @@ namespace ET
 
                 if (newline.StartsWith("message"))
                 {
-                    parentClass = "";
+                    string parentClass = "";
                     isMsgStart = true;
                     string msgName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
                     string[] ss = newline.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries);

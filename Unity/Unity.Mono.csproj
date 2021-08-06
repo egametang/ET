@@ -78,6 +78,8 @@
      <Compile Include="Assets\Mono\MonoBehaviour\CanvasConfig.cs" />
      <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskHelper.cs" />
+     <Compile Include="Assets\Mono\Core\ThreadSynchronizationContext.cs" />
+     <Compile Include="Assets\Mono\Core\Helper\ProcessHelper.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>/Applications/Unity/Hub/Editor/2020.3.11f1c1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>

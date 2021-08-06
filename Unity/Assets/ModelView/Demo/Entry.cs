@@ -11,8 +11,6 @@ namespace ET
 		{
 			try
 			{
-				SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-
 				string[] assemblyNames = { "Unity.Model.dll", "Unity.Hotfix.dll", "Unity.ModelView.dll", "Unity.HotfixView.dll" };
 				
 				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
