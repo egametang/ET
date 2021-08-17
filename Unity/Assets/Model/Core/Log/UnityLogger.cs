@@ -1,4 +1,4 @@
-﻿#if !NOT_CLIENT
+﻿#if !NOT_UNITY
 using System;
 
 namespace ET

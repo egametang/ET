@@ -5,6 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
+    <AssemblyName>Server</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,20 +14,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
+    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
+    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.4" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Model\Server.Model.csproj" />

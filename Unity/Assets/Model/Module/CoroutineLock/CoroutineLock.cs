@@ -2,24 +2,41 @@ using System;
 
 namespace ET
 {
-    public readonly struct CoroutineLock: IDisposable
+    [ObjectSystem]
+    public class CoroutineLockAwakeSystem: AwakeSystem<CoroutineLock, CoroutineLockType, long, int>
     {
-        private readonly CoroutineLockComponent coroutineLockComponent;
-        private readonly CoroutineLockType coroutineLockType;
-        private readonly long key;
-        private readonly short index;
-
-        public CoroutineLock(CoroutineLockComponent coroutineLockComponent, CoroutineLockType type, long k, short index)
+        public override void Awake(CoroutineLock self, CoroutineLockType type, long k, int count)
         {
-            this.coroutineLockComponent = coroutineLockComponent;
-            this.coroutineLockType = type;
-            this.key = k;
-            this.index = index;
+            self.coroutineLockType = type;
+            self.key = k;
+            self.count = count;
         }
+    }
 
-        public void Dispose()
+    [ObjectSystem]
+    public class CoroutineLockDestroySystem: DestroySystem<CoroutineLock>
+    {
+        public override void Destroy(CoroutineLock self)
         {
-            coroutineLockComponent.Notify(coroutineLockType, this.key, this.index);
+            if (self.coroutineLockType != CoroutineLockType.None)
+            {
+                CoroutineLockComponent.Instance.Notify(self.coroutineLockType, self.key, self.count + 1);
+            }
+            else
+            {
+                // CoroutineLockType.None说明协程锁超时了
+                Log.Error($"coroutine lock timeout: {self.coroutineLockType} {self.key} {self.count}");
+            }
+            self.coroutineLockType = CoroutineLockType.None;
+            self.key = 0;
+            self.count = 0;
         }
+    }
+    
+    public class CoroutineLock: Entity
+    {
+        public CoroutineLockType coroutineLockType;
+        public long key;
+        public int count;
     }
 }

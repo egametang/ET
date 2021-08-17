@@ -14,5 +14,6 @@
 		Client = 30,
 		Zone = 31,
 		Login = 32,
+		Robot = 33,
 	}
 }

@@ -24,10 +24,7 @@ namespace ET
 		 public const ushort C2G_LoginGate = 20020;
 		 public const ushort G2C_LoginGate = 20021;
 		 public const ushort G2C_TestHotfixMessage = 20022;
-		 public const ushort C2M_TestActorRequest = 20023;
-		 public const ushort M2C_TestActorResponse = 20024;
-		 public const ushort PlayerInfo = 20025;
-		 public const ushort C2G_PlayerInfo = 20026;
-		 public const ushort G2C_PlayerInfo = 20027;
+		 public const ushort C2M_TestRobotCase = 20023;
+		 public const ushort M2C_TestRobotCase = 20024;
 	}
 }

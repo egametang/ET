@@ -187,41 +187,18 @@ message G2C_TestHotfixMessage // IMessage
 	string Info = 1;
 }
 
-//ResponseType M2C_TestActorResponse
-message C2M_TestActorRequest // IActorLocationRequest
+//ResponseType M2C_TestRobotCase
+message C2M_TestRobotCase // IActorLocationRequest
 {
 	int32 RpcId = 90;
-	int64 ActorId = 91;
-	string Info = 1;
+	int64 ActorId = 93;
+	int32 N = 1;
 }
 
-message M2C_TestActorResponse // IActorLocationResponse
+message M2C_TestRobotCase // IActorLocationResponse
 {
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
-	string Info = 1;
-}
-
-message PlayerInfo // IMessage
-{
-	int32 RpcId = 90;
-}
-
-//ResponseType G2C_PlayerInfo
-message C2G_PlayerInfo // IRequest
-{
-	int32 RpcId = 90;
-}
-
-message G2C_PlayerInfo // IResponse
-{
-	int32 RpcId = 90;
-	int32 Error = 91;
-	string Message = 92;
-	PlayerInfo PlayerInfo = 1;
-	repeated PlayerInfo PlayerInfos = 2;
-    repeated string TestRepeatedString = 3;
-    repeated int32 TestRepeatedInt32 = 4;
-    repeated int64 TestRepeatedInt64 = 5;
+	int32 N = 1;
 }

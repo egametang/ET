@@ -31,7 +31,6 @@ namespace ET
 #else
             BsonSerializer.RegisterSerializer(typeof (Vector4), new StructBsonSerialize<Vector4>());
             BsonSerializer.RegisterSerializer(typeof (Vector3), new StructBsonSerialize<Vector3>());
-            BsonSerializer.RegisterSerializer(typeof (Vector2Int), new StructBsonSerialize<Vector2Int>());
 #endif
 
             var types = Game.EventSystem.GetTypes();

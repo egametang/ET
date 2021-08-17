@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 
-#if NOT_CLIENT
+#if NOT_UNITY
 using NLog;
 #endif
 
@@ -11,19 +11,15 @@ namespace ET
 {
     public static class Log
     {
-        public const int TraceLevel = 1;
-        public const int DebugLevel = 2;
-        public const int InfoLevel = 3;
-        public const int WarningLevel = 4;
-        
-        public static ILog ILog { get; }
+        private const int TraceLevel = 1;
+        private const int DebugLevel = 2;
+        private const int InfoLevel = 3;
+        private const int WarningLevel = 4;
 
         static Log()
         {
-#if SERVER
-            ILog = new NLogger("Server");
-#else
-            ILog = new UnityLogger();
+#if !NOT_UNITY
+            Game.ILog = new UnityLogger();
 #endif
         }
 
@@ -37,18 +33,14 @@ namespace ET
             return Game.Options.LogLevel <= level;
         }
         
-        public static Action<string, object[]> DebugCallback;
-        public static Action<string> ErrorCallback;
-
         public static void Trace(string msg)
         {
             if (!CheckLogLevel(DebugLevel))
             {
                 return;
             }
-            DebugCallback?.Invoke(msg, null);
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{msg}\n{st}");
+            Game.ILog.Trace($"{msg}\n{st}");
         }
 
         public static void Debug(string msg)
@@ -57,8 +49,7 @@ namespace ET
             {
                 return;
             }
-            DebugCallback?.Invoke(msg, null);
-            ILog.Debug(msg);
+            Game.ILog.Debug(msg);
         }
 
         public static void Info(string msg)
@@ -67,7 +58,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Info(msg);
+            Game.ILog.Info(msg);
         }
 
         public static void TraceInfo(string msg)
@@ -77,7 +68,7 @@ namespace ET
                 return;
             }
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{msg}\n{st}");
+            Game.ILog.Trace($"{msg}\n{st}");
         }
 
         public static void Warning(string msg)
@@ -87,21 +78,19 @@ namespace ET
                 return;
             }
 
-            ILog.Warning(msg);
+            Game.ILog.Warning(msg);
         }
 
         public static void Error(string msg)
         {
             StackTrace st = new StackTrace(1, true);
-            ErrorCallback?.Invoke($"{msg}\n{st}");
-            ILog.Error($"{msg}\n{st}");
+            Game.ILog.Error($"{msg}\n{st}");
         }
 
         public static void Error(Exception e)
         {
             string str = e.ToString();
-            ErrorCallback?.Invoke(str);
-            ILog.Error(str);
+            Game.ILog.Error(str);
         }
 
         public static void Trace(string message, params object[] args)
@@ -110,9 +99,8 @@ namespace ET
             {
                 return;
             }
-            DebugCallback?.Invoke(message, args);
             StackTrace st = new StackTrace(1, true);
-            ILog.Trace($"{string.Format(message, args)}\n{st}");
+            Game.ILog.Trace($"{string.Format(message, args)}\n{st}");
         }
 
         public static void Warning(string message, params object[] args)
@@ -121,7 +109,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Warning(string.Format(message, args));
+            Game.ILog.Warning(string.Format(message, args));
         }
 
         public static void Info(string message, params object[] args)
@@ -130,7 +118,7 @@ namespace ET
             {
                 return;
             }
-            ILog.Info(string.Format(message, args));
+            Game.ILog.Info(string.Format(message, args));
         }
 
         public static void Debug(string message, params object[] args)
@@ -139,8 +127,7 @@ namespace ET
             {
                 return;
             }
-            DebugCallback?.Invoke(message, args);
-            ILog.Debug(string.Format(message, args));
+            Game.ILog.Debug(string.Format(message, args));
 
         }
 
@@ -148,8 +135,26 @@ namespace ET
         {
             StackTrace st = new StackTrace(1, true);
             string s = string.Format(message, args) + '\n' + st;
-            ErrorCallback?.Invoke(s);
-            ILog.Error(s);
+            Game.ILog.Error(s);
+        }
+        
+        public static void Console(string message)
+        {
+            if (Game.Options.Console == 1)
+            {
+                System.Console.WriteLine(message);
+            }
+            Game.ILog.Debug(message);
+        }
+        
+        public static void Console(string message, params object[] args)
+        {
+            string s = string.Format(message, args);
+            if (Game.Options.Console == 1)
+            {
+                System.Console.WriteLine(s);
+            }
+            Game.ILog.Debug(s);
         }
     }
 }

@@ -9,13 +9,13 @@
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
+    <DefineConstants>TRACE2_0;NOT_UNITY;SERVER</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE2_0;SERVER;NOT_CLIENT</DefineConstants>
+    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
     <OutputPath>..\..\Bin\</OutputPath>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -30,6 +30,11 @@
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
+      <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+    
+
     <Compile Include="..\..\Unity\Assets\Model\Demo\Move\MoveComponent.cs">
       <Link>Demo\Move\MoveComponent.cs</Link>
     </Compile>
@@ -40,6 +45,10 @@
 
     <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
       <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
+      <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
     
     <Compile Remove="Libs\**" />
@@ -52,15 +61,6 @@
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
       <Link>Module\Actor\IActorMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLock.cs">
-      <Link>Module\CoroutineLock\CoroutineLock.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockComponent.cs">
-      <Link>Module\CoroutineLock\CoroutineLockComponent.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\CoroutineLockType.cs">
-      <Link>Module\CoroutineLock\CoroutineLockType.cs</Link>
     </Compile>
     <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
       <Link>Module\Message\MessageDispatcherComponent.cs</Link>
@@ -136,12 +136,12 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.2.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.9.0" />
-    <PackageReference Include="NLog" Version="4.5.4" />
-    <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ThirdParty\Server.ThirdParty.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
   </ItemGroup>
 </Project>

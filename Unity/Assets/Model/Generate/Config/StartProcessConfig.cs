@@ -76,6 +76,8 @@ namespace ET
 		public int MachineId { get; set; }
 		[ProtoMember(3, IsRequired  = true)]
 		public int InnerPort { get; set; }
+		[ProtoMember(4, IsRequired  = true)]
+		public string AppName { get; set; }
 
 
 		[ProtoAfterDeserialization]

@@ -15,7 +15,7 @@ namespace ET
 		{
 			get
 			{
-				return instance ?? (instance = new EventSystem());
+				return instance ??= new EventSystem();
 			}
 		}
 		
@@ -172,6 +172,11 @@ namespace ET
 				allTypes.AddRange(assembly.GetTypes());
 			}
 			return allTypes;
+		}
+
+		public Type GetType(string typeName)
+		{
+			return typeof (Game).Assembly.GetType(typeName);
 		}
 
 		public void RegisterSystem(Entity component, bool isRegister = true)

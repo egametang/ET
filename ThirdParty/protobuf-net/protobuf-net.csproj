@@ -1,0 +1,307 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>protobuf_net</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\BclHelpers.cs">
+        <Link>protobuf-net\BclHelpers.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\BufferExtension.cs">
+        <Link>protobuf-net\BufferExtension.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\BufferPool.cs">
+        <Link>protobuf-net\BufferPool.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\CallbackAttributes.cs">
+        <Link>protobuf-net\CallbackAttributes.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Compiler\CompilerContext.cs">
+        <Link>protobuf-net\Compiler\CompilerContext.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Compiler\CompilerDelegates.cs">
+        <Link>protobuf-net\Compiler\CompilerDelegates.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Compiler\Local.cs">
+        <Link>protobuf-net\Compiler\Local.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\DataFormat.cs">
+        <Link>protobuf-net\DataFormat.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\DiscriminatedUnion.cs">
+        <Link>protobuf-net\DiscriminatedUnion.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\DiscriminatedUnion.Serializable.cs">
+        <Link>protobuf-net\DiscriminatedUnion.Serializable.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Extensible.cs">
+        <Link>protobuf-net\Extensible.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ExtensibleUtil.cs">
+        <Link>protobuf-net\ExtensibleUtil.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\GlobalSuppressions.cs">
+        <Link>protobuf-net\GlobalSuppressions.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Helpers.cs">
+        <Link>protobuf-net\Helpers.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\IExtensible.cs">
+        <Link>protobuf-net\IExtensible.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\IExtension.cs">
+        <Link>protobuf-net\IExtension.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ImplicitFields.cs">
+        <Link>protobuf-net\ImplicitFields.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\IProtoInputT.cs">
+        <Link>protobuf-net\IProtoInputT.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\IProtoOutputT.cs">
+        <Link>protobuf-net\IProtoOutputT.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\KeyValuePairProxy.cs">
+        <Link>protobuf-net\KeyValuePairProxy.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\AttributeMap.cs">
+        <Link>protobuf-net\Meta\AttributeMap.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\BasicList.cs">
+        <Link>protobuf-net\Meta\BasicList.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\CallbackSet.cs">
+        <Link>protobuf-net\Meta\CallbackSet.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\MetaType.cs">
+        <Link>protobuf-net\Meta\MetaType.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\ProtoSyntax.cs">
+        <Link>protobuf-net\Meta\ProtoSyntax.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\RuntimeTypeModel.cs">
+        <Link>protobuf-net\Meta\RuntimeTypeModel.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\SubType.cs">
+        <Link>protobuf-net\Meta\SubType.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\TypeFormatEventArgs.cs">
+        <Link>protobuf-net\Meta\TypeFormatEventArgs.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\TypeModel.cs">
+        <Link>protobuf-net\Meta\TypeModel.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\TypeModel.InputOutput.cs">
+        <Link>protobuf-net\Meta\TypeModel.InputOutput.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Meta\ValueMember.cs">
+        <Link>protobuf-net\Meta\ValueMember.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\NetObjectCache.cs">
+        <Link>protobuf-net\NetObjectCache.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\PrefixStyle.cs">
+        <Link>protobuf-net\PrefixStyle.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Properties\AssemblyInfo.cs">
+        <Link>protobuf-net\Properties\AssemblyInfo.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoContractAttribute.cs">
+        <Link>protobuf-net\ProtoContractAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoConverterAttribute.cs">
+        <Link>protobuf-net\ProtoConverterAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoEnumAttribute.cs">
+        <Link>protobuf-net\ProtoEnumAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoException.cs">
+        <Link>protobuf-net\ProtoException.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoIgnoreAttribute.cs">
+        <Link>protobuf-net\ProtoIgnoreAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoIncludeAttribute.cs">
+        <Link>protobuf-net\ProtoIncludeAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoMapAttribute.cs">
+        <Link>protobuf-net\ProtoMapAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoMemberAttribute.cs">
+        <Link>protobuf-net\ProtoMemberAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoReader.cs">
+        <Link>protobuf-net\ProtoReader.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ProtoWriter.cs">
+        <Link>protobuf-net\ProtoWriter.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\SerializationContext.cs">
+        <Link>protobuf-net\SerializationContext.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializer.cs">
+        <Link>protobuf-net\Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ArrayDecorator.cs">
+        <Link>protobuf-net\Serializers\ArrayDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\BlobSerializer.cs">
+        <Link>protobuf-net\Serializers\BlobSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\BooleanSerializer.cs">
+        <Link>protobuf-net\Serializers\BooleanSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ByteSerializer.cs">
+        <Link>protobuf-net\Serializers\ByteSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\CharSerializer.cs">
+        <Link>protobuf-net\Serializers\CharSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\CompiledSerializer.cs">
+        <Link>protobuf-net\Serializers\CompiledSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\DateTimeSerializer.cs">
+        <Link>protobuf-net\Serializers\DateTimeSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\DecimalSerializer.cs">
+        <Link>protobuf-net\Serializers\DecimalSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\DefaultValueDecorator.cs">
+        <Link>protobuf-net\Serializers\DefaultValueDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\DoubleSerializer.cs">
+        <Link>protobuf-net\Serializers\DoubleSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\EnumSerializer.cs">
+        <Link>protobuf-net\Serializers\EnumSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\FieldDecorator.cs">
+        <Link>protobuf-net\Serializers\FieldDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\GuidSerializer.cs">
+        <Link>protobuf-net\Serializers\GuidSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ImmutableCollectionDecorator.cs">
+        <Link>protobuf-net\Serializers\ImmutableCollectionDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\Int16Serializer.cs">
+        <Link>protobuf-net\Serializers\Int16Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\Int32Serializer.cs">
+        <Link>protobuf-net\Serializers\Int32Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\Int64Serializer.cs">
+        <Link>protobuf-net\Serializers\Int64Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\IProtoSerializer.cs">
+        <Link>protobuf-net\Serializers\IProtoSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\IProtoTypeSerializer.cs">
+        <Link>protobuf-net\Serializers\IProtoTypeSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ISerializerProxy.cs">
+        <Link>protobuf-net\Serializers\ISerializerProxy.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ListDecorator.cs">
+        <Link>protobuf-net\Serializers\ListDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\MapDecorator.cs">
+        <Link>protobuf-net\Serializers\MapDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\MemberSpecifiedDecorator.cs">
+        <Link>protobuf-net\Serializers\MemberSpecifiedDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\NetObjectSerializer.cs">
+        <Link>protobuf-net\Serializers\NetObjectSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\NullDecorator.cs">
+        <Link>protobuf-net\Serializers\NullDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ParseableSerializer.cs">
+        <Link>protobuf-net\Serializers\ParseableSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\PropertyDecorator.cs">
+        <Link>protobuf-net\Serializers\PropertyDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ProtoDecoratorBase.cs">
+        <Link>protobuf-net\Serializers\ProtoDecoratorBase.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\ReflectedUriDecorator.cs">
+        <Link>protobuf-net\Serializers\ReflectedUriDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\SByteSerializer.cs">
+        <Link>protobuf-net\Serializers\SByteSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\SingleSerializer.cs">
+        <Link>protobuf-net\Serializers\SingleSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\StringSerializer.cs">
+        <Link>protobuf-net\Serializers\StringSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\SubItemSerializer.cs">
+        <Link>protobuf-net\Serializers\SubItemSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\SurrogateSerializer.cs">
+        <Link>protobuf-net\Serializers\SurrogateSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\SystemTypeSerializer.cs">
+        <Link>protobuf-net\Serializers\SystemTypeSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\TagDecorator.cs">
+        <Link>protobuf-net\Serializers\TagDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\TimeSpanSerializer.cs">
+        <Link>protobuf-net\Serializers\TimeSpanSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\TupleSerializer.cs">
+        <Link>protobuf-net\Serializers\TupleSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\TypeSerializer.cs">
+        <Link>protobuf-net\Serializers\TypeSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\UInt16Serializer.cs">
+        <Link>protobuf-net\Serializers\UInt16Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\UInt32Serializer.cs">
+        <Link>protobuf-net\Serializers\UInt32Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\UInt64Serializer.cs">
+        <Link>protobuf-net\Serializers\UInt64Serializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\Serializers\UriDecorator.cs">
+        <Link>protobuf-net\Serializers\UriDecorator.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs">
+        <Link>protobuf-net\ServiceModel\ProtoBehaviorAttribute.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs">
+        <Link>protobuf-net\ServiceModel\ProtoBehaviorExtensionElement.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ServiceModel\ProtoEndpointBehavior.cs">
+        <Link>protobuf-net\ServiceModel\ProtoEndpointBehavior.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ServiceModel\ProtoOperationBehavior.cs">
+        <Link>protobuf-net\ServiceModel\ProtoOperationBehavior.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\ServiceModel\XmlProtoSerializer.cs">
+        <Link>protobuf-net\ServiceModel\XmlProtoSerializer.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\SubItemToken.cs">
+        <Link>protobuf-net\SubItemToken.cs</Link>
+      </Compile>
+      <Compile Include="..\..\Unity\Assets\ThirdParty\protobuf-net\WireType.cs">
+        <Link>protobuf-net\WireType.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+</Project>

@@ -22,13 +22,22 @@ namespace ET
     
     public static class ConfigComponentSystem
 	{
+		public static void LoadOneConfig(this ConfigComponent self, Type configType)
+		{
+			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(configType.FullName);
+
+			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+
+			self.AllConfig[configType] = category;
+		}
+		
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
 			HashSet<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
 			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
-			ConfigComponent.GetAllConfigBytes(configBytes);
+			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
 			List<Task> listTasks = new List<Task>();
 

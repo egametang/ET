@@ -395,7 +395,7 @@ void ikcp_setlog(void(*op)(const char *buf, int len, ikcpcb *kcp, void *user))
 //---------------------------------------------------------------------
 // user/upper level recv: returns size, returns below zero for EAGAIN
 //---------------------------------------------------------------------
-int ikcp_recv(ikcpcb *kcp, char *buffer, int len)
+int ikcp_recv(ikcpcb *kcp, char *buffer, int index, int len)
 {
 	struct IQUEUEHEAD *p;
 	int ispeek = (len < 0)? 1 : 0;
@@ -403,6 +403,7 @@ int ikcp_recv(ikcpcb *kcp, char *buffer, int len)
 	int recover = 0;
 	IKCPSEG *seg;
 	assert(kcp);
+	buffer += index;
 
 	if (iqueue_is_empty(&kcp->rcv_queue))
 		return -1;

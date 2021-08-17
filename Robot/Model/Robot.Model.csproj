@@ -1,0 +1,102 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>ET</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>../../Bin/</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <OutputPath>../../Bin/</OutputPath>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
+          <Link>Base\MongoHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\Model\Module\Config\**\*.cs">
+            <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs">
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs"> 
+            <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
+            <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\Network\**\*.cs">
+            <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\**\*.cs">
+            <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\NetworkTCP\**\*.cs">
+            <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\Message\**\*.cs">
+            <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\Message\**\*.cs">
+            <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\**\*.cs">
+            <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Demo\**\*.cs">
+            <Link>Demo\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Generate\**\*.cs">
+            <Link>Generate\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\Actor\**\*.cs">
+            <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\Actor\**\*.cs">
+            <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\**\*.cs">
+            <Link>Module\ActorLocation\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
+            <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\Console\**\*.cs">
+            <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
+      <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
+      <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -8,7 +8,7 @@ namespace ET
     /// </summary>
     public class ConfigComponent: Entity
     {
-        public static Action<Dictionary<string, byte[]>> GetAllConfigBytes;
+        public IConfigLoader ConfigLoader;
         
         public static ConfigComponent Instance;
 		

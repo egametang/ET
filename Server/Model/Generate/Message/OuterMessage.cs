@@ -389,25 +389,25 @@ namespace ET
 
 	}
 
-	[ResponseType(typeof(M2C_TestActorResponse))]
-	[Message(OuterOpcode.C2M_TestActorRequest)]
+	[ResponseType(typeof(M2C_TestRobotCase))]
+	[Message(OuterOpcode.C2M_TestRobotCase)]
 	[ProtoContract]
-	public partial class C2M_TestActorRequest: Object, IActorLocationRequest
+	public partial class C2M_TestRobotCase: Object, IActorLocationRequest
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(93)]
 		public long ActorId { get; set; }
 
 		[ProtoMember(1)]
-		public string Info { get; set; }
+		public int N { get; set; }
 
 	}
 
-	[Message(OuterOpcode.M2C_TestActorResponse)]
+	[Message(OuterOpcode.M2C_TestRobotCase)]
 	[ProtoContract]
-	public partial class M2C_TestActorResponse: Object, IActorLocationResponse
+	public partial class M2C_TestRobotCase: Object, IActorLocationResponse
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
@@ -419,56 +419,7 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
-		public string Info { get; set; }
-
-	}
-
-	[Message(OuterOpcode.PlayerInfo)]
-	[ProtoContract]
-	public partial class PlayerInfo: Object, IMessage
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-	}
-
-	[ResponseType(typeof(G2C_PlayerInfo))]
-	[Message(OuterOpcode.C2G_PlayerInfo)]
-	[ProtoContract]
-	public partial class C2G_PlayerInfo: Object, IRequest
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-	}
-
-	[Message(OuterOpcode.G2C_PlayerInfo)]
-	[ProtoContract]
-	public partial class G2C_PlayerInfo: Object, IResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
-		public int Error { get; set; }
-
-		[ProtoMember(92)]
-		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public PlayerInfo PlayerInfo { get; set; }
-
-		[ProtoMember(2)]
-		public List<PlayerInfo> PlayerInfos = new List<PlayerInfo>();
-
-		[ProtoMember(3)]
-		public List<string> TestRepeatedString = new List<string>();
-
-		[ProtoMember(4)]
-		public List<int> TestRepeatedInt32 = new List<int>();
-
-		[ProtoMember(5)]
-		public List<long> TestRepeatedInt64 = new List<long>();
+		public int N { get; set; }
 
 	}
 

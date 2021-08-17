@@ -14,6 +14,8 @@ namespace ET
 
         public StartSceneConfig LocationConfig;
         
+        public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
+        
         public List<StartSceneConfig> GetByProcess(int process)
         {
             return this.ProcessScenes[process];
@@ -44,6 +46,9 @@ namespace ET
                     case SceneType.Location:
                         this.LocationConfig = startSceneConfig;
                         break;
+                    case SceneType.Robot:
+                        this.Robots.Add(startSceneConfig);
+                        break;
                 }
             }
         }
@@ -51,7 +56,7 @@ namespace ET
     
     public partial class StartSceneConfig: ISupportInitialize
     {
-        public long SceneId;
+        public long InstanceId;
         
         public SceneType Type;
 
@@ -111,7 +116,7 @@ namespace ET
         {
             this.Type = EnumHelper.FromString<SceneType>(this.SceneType);
             InstanceIdStruct instanceIdStruct = new InstanceIdStruct(this.Process, (uint) this.Id);
-            this.SceneId = instanceIdStruct.ToLong();
+            this.InstanceId = instanceIdStruct.ToLong();
         }
     }
 }

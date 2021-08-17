@@ -25,16 +25,13 @@
     <ItemGroup>
       <PackageReference Include="EPPlus" Version="5.5.2" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.9.0" />
+      <PackageReference Include="MongoDB.Bson" Version="2.13.0" />
     </ItemGroup>
     
     <ItemGroup>
       <None Update="Template.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-    
-    <ItemGroup>
-      <ProjectReference Include="..\..\Server\ThirdParty\Server.ThirdParty.csproj" />
     </ItemGroup>
     
     <ItemGroup>
@@ -47,6 +44,10 @@
       <Compile Include="..\..\Unity\Assets\Model\Module\Config\IConfig.cs">
         <Link>IConfig.cs</Link>
       </Compile>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
     </ItemGroup>
 
 </Project>
