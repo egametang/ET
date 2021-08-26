@@ -2,9 +2,8 @@
 
 namespace ET
 {
-	public interface IDeserializeSystem
+	public interface IDeserializeSystem: ISystemType
 	{
-		Type Type();
 		void Run(object o);
 	}
 
@@ -19,6 +18,11 @@ namespace ET
 		public void Run(object o)
 		{
 			this.Deserialize((T)o);
+		}
+		
+		public Type SystemType()
+		{
+			return typeof(IDeserializeSystem);
 		}
 
 		public Type Type()

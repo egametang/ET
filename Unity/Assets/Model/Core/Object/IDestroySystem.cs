@@ -2,9 +2,8 @@
 
 namespace ET
 {
-	public interface IDestroySystem
+	public interface IDestroySystem: ISystemType
 	{
-		Type Type();
 		void Run(object o);
 	}
 
@@ -14,6 +13,11 @@ namespace ET
 		public void Run(object o)
 		{
 			this.Destroy((T)o);
+		}
+		
+		public Type SystemType()
+		{
+			return typeof(IDestroySystem);
 		}
 
 		public Type Type()

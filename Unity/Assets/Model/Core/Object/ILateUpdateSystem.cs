@@ -2,9 +2,8 @@
 
 namespace ET
 {
-	public interface ILateUpdateSystem
+	public interface ILateUpdateSystem: ISystemType
 	{
-		Type Type();
 		void Run(object o);
 	}
 
@@ -19,6 +18,11 @@ namespace ET
 		public Type Type()
 		{
 			return typeof(T);
+		}
+		
+		public Type SystemType()
+		{
+			return typeof(ILateUpdateSystem);
 		}
 
 		public abstract void LateUpdate(T self);

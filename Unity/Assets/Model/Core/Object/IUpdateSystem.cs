@@ -2,9 +2,8 @@
 
 namespace ET
 {
-	public interface IUpdateSystem
+	public interface IUpdateSystem: ISystemType
 	{
-		Type Type();
 		void Run(object o);
 	}
 
@@ -19,6 +18,11 @@ namespace ET
 		public Type Type()
 		{
 			return typeof(T);
+		}
+		
+		public Type SystemType()
+		{
+			return typeof(IUpdateSystem);
 		}
 
 		public abstract void Update(T self);

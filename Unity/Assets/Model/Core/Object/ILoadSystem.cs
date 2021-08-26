@@ -2,9 +2,8 @@
 
 namespace ET
 {
-	public interface ILoadSystem
+	public interface ILoadSystem: ISystemType
 	{
-		Type Type();
 		void Run(object o);
 	}
 
@@ -15,10 +14,15 @@ namespace ET
 		{
 			this.Load((T)o);
 		}
-
+		
 		public Type Type()
 		{
 			return typeof(T);
+		}
+		
+		public Type SystemType()
+		{
+			return typeof(ILoadSystem);
 		}
 
 		public abstract void Load(T self);
