@@ -8,17 +8,13 @@ namespace ET
         public override void Awake(UILoadingComponent self)
         {
             self.text = self.GetParent<UI>().GameObject.Get<GameObject>("Text").GetComponent<Text>();
+            self.StartAsync().Coroutine();
         }
     }
 
-    public class UiLoadingComponentStartSystem : StartSystem<UILoadingComponent>
+    public static class UiLoadingComponentSystem
     {
-        public override void Start(UILoadingComponent self)
-        {
-            StartAsync(self).Coroutine();
-        }
-		
-        public async ETVoid StartAsync(UILoadingComponent self)
+        public static async ETVoid StartAsync(this UILoadingComponent self)
         {
             long instanceId = self.InstanceId;
             while (true)

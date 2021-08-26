@@ -11,6 +11,8 @@ namespace ET
         public override void Awake(ConsoleComponent self)
         {
             self.Load();
+            
+            self.Start().Coroutine();
         }
     }
 
@@ -20,15 +22,6 @@ namespace ET
         public override void Load(ConsoleComponent self)
         {
             self.Load();
-        }
-    }
-    
-    [ObjectSystem]
-    public class ConsoleComponentStartSystem: StartSystem<ConsoleComponent>
-    {
-        public override void Start(ConsoleComponent self)
-        {
-            self.Start().Coroutine();
         }
     }
 

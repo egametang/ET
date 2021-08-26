@@ -28,8 +28,6 @@ namespace ET
 
 		private readonly UnOrderMultiMap<Type, IAwakeSystem> awakeSystems = new UnOrderMultiMap<Type, IAwakeSystem>();
 
-		private readonly UnOrderMultiMap<Type, IStartSystem> startSystems = new UnOrderMultiMap<Type, IStartSystem>();
-
 		private readonly UnOrderMultiMap<Type, IDestroySystem> destroySystems = new UnOrderMultiMap<Type, IDestroySystem>();
 
 		private readonly UnOrderMultiMap<Type, ILoadSystem> loadSystems = new UnOrderMultiMap<Type, ILoadSystem>();
@@ -37,8 +35,6 @@ namespace ET
 		private readonly UnOrderMultiMap<Type, IUpdateSystem> updateSystems = new UnOrderMultiMap<Type, IUpdateSystem>();
 
 		private readonly UnOrderMultiMap<Type, ILateUpdateSystem> lateUpdateSystems = new UnOrderMultiMap<Type, ILateUpdateSystem>();
-
-		private readonly UnOrderMultiMap<Type, IChangeSystem> changeSystems = new UnOrderMultiMap<Type, IChangeSystem>();
 		
 		private readonly UnOrderMultiMap<Type, IDeserializeSystem> deserializeSystems = new UnOrderMultiMap<Type, IDeserializeSystem>();
 		
@@ -87,9 +83,7 @@ namespace ET
 			this.awakeSystems.Clear();
 			this.lateUpdateSystems.Clear();
 			this.updateSystems.Clear();
-			this.startSystems.Clear();
 			this.loadSystems.Clear();
-			this.changeSystems.Clear();
 			this.destroySystems.Clear();
 			this.deserializeSystems.Clear();
 			
@@ -107,17 +101,11 @@ namespace ET
 					case ILateUpdateSystem lateUpdateSystem:
 						this.lateUpdateSystems.Add(lateUpdateSystem.Type(), lateUpdateSystem);
 						break;
-					case IStartSystem startSystem:
-						this.startSystems.Add(startSystem.Type(), startSystem);
-						break;
 					case IDestroySystem destroySystem:
 						this.destroySystems.Add(destroySystem.Type(), destroySystem);
 						break;
 					case ILoadSystem loadSystem:
 						this.loadSystems.Add(loadSystem.Type(), loadSystem);
-						break;
-					case IChangeSystem changeSystem:
-						this.changeSystems.Add(changeSystem.Type(), changeSystem);
 						break;
 					case IDeserializeSystem deserializeSystem:
 						this.deserializeSystems.Add(deserializeSystem.Type(), deserializeSystem);
@@ -193,11 +181,6 @@ namespace ET
 			if (this.updateSystems.ContainsKey(type))
 			{
 				this.updates.Enqueue(component.InstanceId);
-			}
-
-			if (this.startSystems.ContainsKey(type))
-			{
-				this.starts.Enqueue(component.InstanceId);
 			}
 
 			if (this.lateUpdateSystems.ContainsKey(type))
@@ -409,33 +392,7 @@ namespace ET
             }
         }
 
-        public void Change(Entity component)
-		{
-			List<IChangeSystem> iChangeSystems = this.changeSystems[component.GetType()];
-			if (iChangeSystems == null)
-			{
-				return;
-			}
-
-			foreach (IChangeSystem iChangeSystem in iChangeSystems)
-			{
-				if (iChangeSystem == null)
-				{
-					continue;
-				}
-
-				try
-				{
-					iChangeSystem.Run(component);
-				}
-				catch (Exception e)
-				{
-					Log.Error(e);
-				}
-			}
-		}
-
-		public void Load()
+        public void Load()
 		{
 			while (this.loaders.Count > 0)
 			{
@@ -474,37 +431,6 @@ namespace ET
 			ObjectHelper.Swap(ref this.loaders, ref this.loaders2);
 		}
 
-		private void Start()
-		{
-			while (this.starts.Count > 0)
-			{
-				long instanceId = this.starts.Dequeue();
-				Entity component;
-				if (!this.allComponents.TryGetValue(instanceId, out component))
-				{
-					continue;
-				}
-
-				List<IStartSystem> iStartSystems = this.startSystems[component.GetType()];
-				if (iStartSystems == null)
-				{
-					continue;
-				}
-				
-				foreach (IStartSystem iStartSystem in iStartSystems)
-				{
-					try
-					{
-						iStartSystem.Run(component);
-					}
-					catch (Exception e)
-					{
-						Log.Error(e);
-					}
-				}
-			}
-		}
-
 		public void Destroy(Entity component)
 		{
 			List<IDestroySystem> iDestroySystems = this.destroySystems[component.GetType()];
@@ -533,8 +459,6 @@ namespace ET
 		
 		public void Update()
 		{
-			this.Start();
-			
 			while (this.updates.Count > 0)
 			{
 				long instanceId = this.updates.Dequeue();
