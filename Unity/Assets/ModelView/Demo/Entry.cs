@@ -15,7 +15,7 @@ namespace ET
 				
 				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 				{
-					string assemblyName = assembly.ManifestModule.Name;
+					string assemblyName = $"{assembly.GetName().Name}.dll";
 					if (!assemblyNames.Contains(assemblyName))
 					{
 						continue;
