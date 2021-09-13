@@ -88,7 +88,7 @@ namespace ET
 
 		public void Add(Assembly assembly)
 		{
-			this.assemblies[assembly.ManifestModule.ScopeName] = assembly;
+			this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
 			this.types.Clear();
 			foreach (Assembly value in this.assemblies.Values)
 			{
