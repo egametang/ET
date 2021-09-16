@@ -63,7 +63,7 @@ namespace ET
             }
         }
 
-        public readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
+        private readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
 
         public Object Fetch(Type type)
         {

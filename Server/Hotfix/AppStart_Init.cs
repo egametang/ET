@@ -10,11 +10,13 @@ namespace ET
             {
                 case AppType.ExcelExporter:
                 {
+                    Game.Options.Console = 1;
                     ExcelExporter.Export();
                     return;
                 }
                 case AppType.Proto2CS:
                 {
+                    Game.Options.Console = 1;
                     Proto2CS.Export();
                     return;
                 }
