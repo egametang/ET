@@ -86,12 +86,6 @@
 
                 this.parent = value;
                 this.parent.Children.Add(this.Id, this);
-#if UNITY_EDITOR && VIEWGO
-                if (this.ViewGO != null)
-                {
-                    this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
-                }
-#endif
             }
         }
     }

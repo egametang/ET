@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-#if !SERVER
-
-#endif
 
 namespace ET
 {
@@ -196,13 +192,6 @@ namespace ET
         private void AfterSetParent()
         {
             this.Domain = this.parent.domain;
-
-#if UNITY_EDITOR && VIEWGO
-            if (this.ViewGO != null && this.parent.ViewGO != null)
-            {
-                this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
-            }
-#endif
         }
 
         public T GetParent<T>() where T : Entity
