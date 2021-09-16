@@ -11,38 +11,35 @@ namespace ET
         public int Opcode;
     }
 
-    public static class Program
+    public static class Proto2CS
     {
-        public static void Main()
+        public static void Export()
         {
             // InnerMessage.proto生成cs代码
             InnerProto2CS.Proto2CS();
-
-            Console.WriteLine("proto2cs succeed!");
+            Log.Console("proto2cs succeed!");
         }
     }
 
     public static class InnerProto2CS
     {
         private const string protoPath = ".";
-        private const string clientMessagePath = "../../../Unity/Assets/Model/Generate/Message/";
-        private const string serverMessagePath = "../../../Server/Model/Generate/Message/";
+        private const string clientMessagePath = "../Unity/Assets/Model/Generate/Message/";
+        private const string serverMessagePath = "../Server/Model/Generate/Message/";
         private static readonly char[] splitChars = { ' ', '\t' };
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 
         public static void Proto2CS()
         {
             msgOpcode.Clear();
-            Proto2CS("ET", "../../../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
+            Proto2CS("ET", "../Proto/InnerMessage.proto", serverMessagePath, "InnerOpcode", 10000);
             GenerateOpcode("ET", "InnerOpcode", serverMessagePath);
-            
-            Proto2CS("ET", "../../../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
+
+            Proto2CS("ET", "../Proto/OuterMessage.proto", serverMessagePath, "OuterOpcode", 20000);
             GenerateOpcode("ET", "OuterOpcode", serverMessagePath);
-            
-            Proto2CS("ET", "../../../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
+
+            Proto2CS("ET", "../Proto/OuterMessage.proto", clientMessagePath, "OuterOpcode", 20000);
             GenerateOpcode("ET", "OuterOpcode", clientMessagePath);
-            
- 
         }
 
         public static void Proto2CS(string ns, string protoName, string outputPath, string opcodeClassName, int startOpcode)
@@ -51,7 +48,7 @@ namespace ET
             {
                 Directory.CreateDirectory(outputPath);
             }
-            
+
             msgOpcode.Clear();
             string proto = Path.Combine(protoPath, protoName);
             string csPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(proto) + ".cs");
@@ -74,7 +71,7 @@ namespace ET
                 {
                     continue;
                 }
-                
+
                 if (newline.StartsWith("//ResponseType"))
                 {
                     string responseType = line.Split(" ")[1].TrimEnd('\r', '\n');
@@ -167,6 +164,7 @@ namespace ET
             {
                 Directory.CreateDirectory(outputPath);
             }
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"namespace {ns}");
             sb.AppendLine("{");
@@ -181,7 +179,7 @@ namespace ET
             sb.AppendLine("}");
 
             string csPath = Path.Combine(outputPath, outputFileName + ".cs");
-            
+
             using FileStream txt = new FileStream(csPath, FileMode.Create);
             using StreamWriter sw = new StreamWriter(txt);
             sw.Write(sb.ToString());
@@ -256,7 +254,7 @@ namespace ET
                 string name = ss[1];
                 int n = int.Parse(ss[3]);
                 string typeCs = ConvertType(type);
-                
+
                 sb.Append($"\t\t[ProtoMember({n})]\n");
                 sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
             }
