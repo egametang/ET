@@ -31,7 +31,7 @@ namespace ET
         public long InstanceId
         {
             get;
-            set;
+            protected set;
         }
 
         protected Entity()
@@ -44,7 +44,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsFromPool
+        private bool IsFromPool
         {
             get => (this.status & EntityStatus.IsFromPool) == EntityStatus.IsFromPool;
             set
@@ -62,7 +62,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsRegister
+        protected bool IsRegister
         {
             get => (this.status & EntityStatus.IsRegister) == EntityStatus.IsRegister;
             set
@@ -105,7 +105,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public bool IsCreate
+        protected bool IsCreate
         {
             get => (this.status & EntityStatus.IsCreate) == EntityStatus.IsCreate;
             set
@@ -298,7 +298,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<long, Entity> Children => this.children ?? (this.children = childrenPool.Fetch());
+        public Dictionary<long, Entity> Children => this.children ??= childrenPool.Fetch();
 
         private void AddChild(Entity entity)
         {
@@ -331,10 +331,7 @@ namespace ET
                 return;
             }
 
-            if (this.childrenDB == null)
-            {
-                this.childrenDB = hashSetPool.Fetch();
-            }
+            this.childrenDB ??= hashSetPool.Fetch();
 
             this.childrenDB.Add(entity);
         }
@@ -374,7 +371,7 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<Type, Entity> Components => this.components ?? (this.components = dictPool.Fetch());
+        public Dictionary<Type, Entity> Components => this.components ??= dictPool.Fetch();
 
         public override void Dispose()
         {
