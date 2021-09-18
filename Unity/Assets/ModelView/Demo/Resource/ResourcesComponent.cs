@@ -184,7 +184,7 @@ namespace ET
 
         private string[] GetDependencies(string assetBundleName)
         {
-            string[] dependencies = new string[0];
+            string[] dependencies = Array.Empty<string>();
             if (DependenciesCache.TryGetValue(assetBundleName, out dependencies))
             {
                 return dependencies;
@@ -276,22 +276,25 @@ namespace ET
 
             return resource;
         }
-
-        public async ETTask UnloadBundles(List<string> bundleList, bool unload = true)
+        
+        // 一帧卸载一个包，避免卡死
+        public async ETTask UnloadBundleAsync(string assetBundleName, bool unload = true)
         {
-            int i = 0;
-            foreach (string bundle in bundleList)
-            {
-                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, bundle.GetHashCode()))
-                {
-                    if (++i % 5 == 0)
-                    {
-                        await TimerComponent.Instance.WaitFrameAsync();
-                    }
+            assetBundleName = assetBundleName.BundleNameToLower();
 
-                    this.UnloadBundle(bundle, unload);
+            string[] dependencies = GetSortedDependencies(assetBundleName);
+
+            //Log.Debug($"-----------dep unload start {assetBundleName} dep: {dependencies.ToList().ListToString()}");
+            foreach (string dependency in dependencies)
+            {
+                using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, assetBundleName.GetHashCode()))
+                {
+                    this.UnloadOneBundle(dependency, unload);
+                    
+                    await TimerComponent.Instance.WaitFrameAsync();
                 }
             }
+            //Log.Debug($"-----------dep unload finish {assetBundleName} dep: {dependencies.ToList().ListToString()}");
         }
 
         // 只允许场景设置unload为false
