@@ -136,7 +136,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="2.9.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
   </ItemGroup>
   <ItemGroup>

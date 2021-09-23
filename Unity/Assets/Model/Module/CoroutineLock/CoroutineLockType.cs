@@ -9,6 +9,7 @@ namespace ET
         UnitId,                    // Map服务器上线下线时使用
         DB,
         Resources,
+        ResourcesLoader,
 
         Max, // 这个必须在最后
     }

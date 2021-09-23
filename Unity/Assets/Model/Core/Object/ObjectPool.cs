@@ -63,7 +63,7 @@ namespace ET
             }
         }
 
-        public readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
+        private readonly Dictionary<Type, ComponentQueue> dictionary = new Dictionary<Type, ComponentQueue>();
 
         public Object Fetch(Type type)
         {
@@ -97,23 +97,8 @@ namespace ET
             if (!this.dictionary.TryGetValue(type, out queue))
             {
                 queue = new ComponentQueue(type.Name);
-
-#if UNITY_EDITOR && VIEWGO
-                if (queue.ViewGO != null)
-                {
-                    queue.ViewGO.transform.SetParent(this.ViewGO.transform);
-                    queue.ViewGO.name = $"{type.Name}s";
-                }
-#endif
                 this.dictionary.Add(type, queue);
             }
-
-#if UNITY_EDITOR && VIEWGO
-            if (obj.ViewGO != null)
-            {
-                obj.ViewGO.transform.SetParent(queue.ViewGO.transform);
-            }
-#endif
             queue.Enqueue(obj);
         }
 

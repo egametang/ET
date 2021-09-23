@@ -8,7 +8,10 @@ namespace ET
         {
             var units = unit.Domain.GetComponent<UnitComponent>().GetAll();
 
-            if (units == null) return;
+            if (units == null)
+            {
+                return;
+            }
 
             foreach (Unit u in units)
             {

@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -8,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Attributes;
 using OfficeOpenXml;
 using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
@@ -37,39 +35,21 @@ namespace ET
         }
     }
     
-    class Program
+    public static class ExcelExporter
     {
         private static string template;
 
-        private const string clientClassDir = "../../../Unity/Assets/Model/Generate/Config";
-        private const string serverClassDir = "../../../Server/Model/Generate/Config";
+        private const string clientClassDir = "../Unity/Assets/Model/Generate/Config";
+        private const string serverClassDir = "../Server/Model/Generate/Config";
         
-        private const string excelDir = "../../../Excel";
+        private const string excelDir = "../Excel";
         
         private const string jsonDir = "./{0}/Json";
         
-        private const string clientProtoDir = "../../../Unity/Assets/Bundles/Config";
-        private const string serverProtoDir = "../../../Config";
-
-        private static string GetProtoDir(ConfigType configType)
-        {
-            if (configType == ConfigType.Client)
-            {
-                return clientProtoDir;
-            }
-            return serverProtoDir;
-        }
+        private const string clientProtoDir = "../Unity/Assets/Bundles/Config";
+        private const string serverProtoDir = "../Config";
         
-        private static string GetClassDir(ConfigType configType)
-        {
-            if (configType == ConfigType.Client)
-            {
-                return clientClassDir;
-            }
-            return serverClassDir;
-        }
-        
-        static void Main(string[] args)
+        public static void Export()
         {
             try
             {
@@ -99,6 +79,25 @@ namespace ET
             }
         }
 
+        private static string GetProtoDir(ConfigType configType)
+        {
+            if (configType == ConfigType.Client)
+            {
+                return clientProtoDir;
+            }
+            return serverProtoDir;
+        }
+        
+        private static string GetClassDir(ConfigType configType)
+        {
+            if (configType == ConfigType.Client)
+            {
+                return clientClassDir;
+            }
+            return serverClassDir;
+        }
+        
+        
 #region 导出class
         static void ExportExcelClass(ExcelPackage p, string name, ConfigType configType)
         {
@@ -283,21 +282,31 @@ namespace ET
             }
             
             List<PortableExecutableReference> references = new List<PortableExecutableReference>();
-            
-            string assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(object).Assembly.Location).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(ProtoMemberAttribute).Assembly.Location).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(BsonDefaultValueAttribute).Assembly.Location).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(IConfig).Assembly.Location).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(Attribute).Assembly.Location).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(Path.Combine(assemblyPath, "mscorlib.dll")).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(Path.Combine(assemblyPath, "System.dll")).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(Path.Combine(assemblyPath, "System.Core.dll")).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(Path.Combine(assemblyPath, "System.Runtime.dll")).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(Path.Combine(assemblyPath, "netstandard.dll")).GetReference());
-            references.Add(AssemblyMetadata.CreateFromFile(typeof(ISupportInitialize).Assembly.Location).GetReference());
-           
-            
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (Assembly assembly in assemblies)
+            {
+                try
+                {
+                    if (assembly.IsDynamic)
+                    {
+                        continue;
+                    }
+
+                    if (assembly.Location == "")
+                    {
+                        continue;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+                PortableExecutableReference reference = MetadataReference.CreateFromFile(assembly.Location);
+                references.Add(reference);
+            }
+
             CSharpCompilation compilation = CSharpCompilation.Create(
                 null, 
                 syntaxTrees.ToArray(), 

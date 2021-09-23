@@ -47,6 +47,9 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.8.0" />
+      <PackageReference Include="EPPlus" Version="5.7.4" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.11.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
       <PackageReference Include="mongocsharpdriver" Version="2.13.0" />
       <PackageReference Include="MongoDB.Bson" Version="2.13.0" />
       <PackageReference Include="NLog" Version="4.7.10" />

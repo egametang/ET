@@ -1,5 +1,3 @@
-
-
 using System.Net;
 
 namespace ET
@@ -8,6 +6,22 @@ namespace ET
     {
         protected override async ETTask Run(EventType.AppStart args)
         {
+            switch (Game.Options.AppType)
+            {
+                case AppType.ExcelExporter:
+                {
+                    Game.Options.Console = 1;
+                    ExcelExporter.Export();
+                    return;
+                }
+                case AppType.Proto2CS:
+                {
+                    Game.Options.Console = 1;
+                    Proto2CS.Export();
+                    return;
+                }
+            }
+
             Game.Scene.AddComponent<ConfigComponent>();
             await ConfigComponent.Instance.LoadAsync();
 

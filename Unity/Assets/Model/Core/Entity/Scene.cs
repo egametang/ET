@@ -18,7 +18,7 @@
             set;
         }
 
-        public Scene(long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = instanceId;
             this.InstanceId = instanceId;
@@ -26,11 +26,13 @@
             this.SceneType = sceneType;
             this.Name = name;
             this.IsCreate = true;
-            
+            this.IsRegister = true;
+            this.Parent = parent;
+            this.Domain = this;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
-        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name)
+        public Scene(long id, long instanceId, int zone, SceneType sceneType, string name, Entity parent)
         {
             this.Id = id;
             this.InstanceId = instanceId;
@@ -38,7 +40,9 @@
             this.SceneType = sceneType;
             this.Name = name;
             this.IsCreate = true;
-            
+            this.IsRegister = true;
+            this.Parent = parent;
+            this.Domain = this;
             Log.Info($"scene create: {this.SceneType} {this.Name} {this.Id} {this.InstanceId} {this.Zone}");
         }
 
@@ -86,12 +90,6 @@
 
                 this.parent = value;
                 this.parent.Children.Add(this.Id, this);
-#if UNITY_EDITOR && VIEWGO
-                if (this.ViewGO != null)
-                {
-                    this.ViewGO.transform.SetParent(this.parent.ViewGO.transform, false);
-                }
-#endif
             }
         }
     }

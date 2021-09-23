@@ -45,7 +45,7 @@
       "url": "https://packages.unity.cn"
     },
     "com.unity.test-framework": {
-      "version": "1.1.24",
+      "version": "1.1.29",
       "depth": 1,
       "source": "registry",
       "dependencies": {
