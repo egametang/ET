@@ -14,7 +14,7 @@ namespace ET
 				GameObject bundleGameObject = ((GameObject)Resources.Load("KV")).Get<GameObject>(UIType.UILoading);
 				GameObject go = UnityEngine.Object.Instantiate(bundleGameObject);
 				go.layer = LayerMask.NameToLayer(LayerNames.UI);
-				UI ui = EntityFactory.CreateWithParent<UI, string, GameObject>(uiComponent, UIType.UILoading, go);
+				UI ui = Entity.Create<UI, string, GameObject>(uiComponent, UIType.UILoading, go);
 
 				ui.AddComponent<UILoadingComponent>();
 				return ui;

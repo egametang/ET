@@ -21,7 +21,6 @@ namespace ET
     {
         public static void Add(this UnitComponent self, Unit unit)
         {
-            unit.Parent = self;
             self.idUnits.Add(unit.Id, unit);
         }
 

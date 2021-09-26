@@ -71,7 +71,7 @@ namespace ET
 
             if (RecastInterface.LoadMap(mapId, navDataPath))
             {
-                RecastPathProcessor recastPathProcessor = EntityFactory.Create<RecastPathProcessor>(this.domain);
+                RecastPathProcessor recastPathProcessor = Entity.Create<RecastPathProcessor>(this);
                 recastPathProcessor.MapId = mapId;
                 m_RecastPathProcessorDic[mapId] = recastPathProcessor;
                 Log.Debug($"加载Id为{mapId}的地图Nav数据成功！");

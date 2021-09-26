@@ -129,6 +129,7 @@ namespace ET
         [BsonIgnore]
         protected Entity parent;
 
+        // 可以改变parent，但是不能设置为null
         [IgnoreDataMember]
         [BsonIgnore]
         public Entity Parent
@@ -136,37 +137,37 @@ namespace ET
             get => this.parent;
             set
             {
+                if (value == null)
+                {
+                    throw new Exception($"cant set parent null: {this.GetType().Name}");
+                }
+                
                 if (value == this)
                 {
                     throw new Exception($"cant set parent self: {this.GetType().Name}");
                 }
 
+                // 严格限制parent必须要有domain,也就是说parent必须在数据树上面
+                if (value.Domain == null)
+                {
+                    throw new Exception($"cant set parent because parent domain is null: {this.GetType().Name} {value.GetType().Name}");
+                }
+
                 if (this.parent != null) // 之前有parent
                 {
                     // parent相同，不设置
-                    if (value != null && this.parent.InstanceId == value.InstanceId)
+                    if (this.parent == value)
                     {
                         Log.Error($"重复设置了Parent: {this.GetType().Name} parent: {this.parent.GetType().Name}");
                         return;
                     }
-
                     this.parent.RemoveChild(this);
                 }
                 
-                
-                if (value == null)
-                {
-                    this.parent = null;
-                    this.IsComponent = false;
-                    this.Domain = null;
-                }
-                else
-                {
-                    this.parent = value;
-                    this.parent.AddChild(this);
-                    this.IsComponent = false;
-                    this.Domain = this.parent.domain;
-                }
+                this.parent = value;
+                this.parent.AddChild(this);
+                this.IsComponent = false;
+                this.Domain = this.parent.domain;
             }
         }
 
@@ -183,16 +184,9 @@ namespace ET
                 }
 
                 this.parent = value;
-
                 this.IsComponent = true;
-
-                AfterSetParent();
+                this.Domain = this.parent.domain;
             }
-        }
-
-        private void AfterSetParent()
-        {
-            this.Domain = this.parent.domain;
         }
 
         public T GetParent<T>() where T : Entity
@@ -218,29 +212,30 @@ namespace ET
         [BsonIgnore]
         public Entity Domain
         {
-            get => this.domain;
-            set
+            get
             {
-                if (this.InstanceId == 0)
+                return this.domain;
+            }
+            private set
+            {
+                if (value == null)
                 {
-                    this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    throw new Exception($"domain cant set null: {this.GetType().Name}");
+                }
+                
+                if (this.domain == value)
+                {
+                    return;
                 }
                 
                 Entity preDomain = this.domain;
                 this.domain = value;
                 
-                // 是否注册跟parent一致
-                if (this.parent != null)
+                if (preDomain == null)
                 {
-                    this.IsRegister = this.Parent.IsRegister;
-                }
-                else
-                {
-                    this.IsRegister = false;
-                }
-
-                if (preDomain == null && !this.IsCreate)
-                {
+                    this.InstanceId = IdGenerater.Instance.GenerateInstanceId();
+                    this.IsRegister = true;
+                    
                     // 反序列化出来的需要设置父子关系
                     if (this.componentsDB != null)
                     {
@@ -280,7 +275,7 @@ namespace ET
                     }
                 }
 
-                if (preDomain == null && !this.IsCreate)
+                if (preDomain == null)
                 {
                     EventSystem.Instance.Deserialize(this);
                 }
@@ -380,7 +375,7 @@ namespace ET
                 return;
             }
 
-            EventSystem.Instance.Remove(this.InstanceId);
+            this.IsRegister = false;
             this.InstanceId = 0;
 
             // 清理Component

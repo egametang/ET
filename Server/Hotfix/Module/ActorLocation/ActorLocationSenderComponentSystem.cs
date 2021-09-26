@@ -62,7 +62,7 @@ namespace ET
                 return (ActorLocationSender) actorLocationSender;
             }
 
-            actorLocationSender = EntityFactory.CreateWithParentAndId<ActorLocationSender>(self, id);
+            actorLocationSender = Entity.CreateWithId<ActorLocationSender>(self, id);
             return (ActorLocationSender) actorLocationSender;
         }
 

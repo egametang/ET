@@ -6,7 +6,10 @@ namespace ET
     {
         public static Unit Create(Entity domain, UnitInfo unitInfo)
         {
-	        Unit unit = EntityFactory.CreateWithId<Unit, int>(domain, unitInfo.UnitId, unitInfo.ConfigId);
+	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
+	        Unit unit = Entity.CreateWithId<Unit, int>(unitComponent, unitInfo.UnitId, unitInfo.ConfigId);
+	        unitComponent.Add(unit);
+	        
 	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 	        
 	        unit.AddComponent<MoveComponent>();
@@ -19,11 +22,8 @@ namespace ET
 	        unit.AddComponent<ObjectWait>();
 
 	        unit.AddComponent<XunLuoPathComponent>();
-
-	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
-            unitComponent.Add(unit);
-            
-            Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
+	        
+	        Game.EventSystem.Publish(new EventType.AfterUnitCreate() {Unit = unit});
             return unit;
         }
     }

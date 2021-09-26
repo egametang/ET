@@ -57,7 +57,6 @@ namespace ET
 		public void Add(UI ui)
 		{
 			this.nameChildren.Add(ui.Name, ui);
-			ui.Parent = this;
 		}
 
 		public void Remove(string name)
@@ -83,7 +82,7 @@ namespace ET
 			{
 				return null;
 			}
-			child = EntityFactory.Create<UI, string, GameObject>(this.Domain, name, childGameObject);
+			child = Entity.Create<UI, string, GameObject>(this, name, childGameObject);
 			this.Add(child);
 			return child;
 		}

@@ -8,7 +8,8 @@ namespace ET
 	{
 		protected override async ETTask Run(Scene scene, G2M_CreateUnit request, M2G_CreateUnit response, Action reply)
 		{
-			Unit unit = EntityFactory.CreateWithId<Unit, int>(scene, IdGenerater.Instance.GenerateId(), 1001);
+			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
+			Unit unit = Entity.CreateWithId<Unit, int>(unitComponent, IdGenerater.Instance.GenerateId(), 1001);
 			unit.AddComponent<MoveComponent>();
 			unit.Position = new Vector3(-10, 0, -10);
 			
@@ -18,7 +19,7 @@ namespace ET
 			unit.AddComponent<MailBoxComponent>();
 			await unit.AddLocation();
 			unit.AddComponent<UnitGateComponent, long>(request.GateSessionId);
-			scene.GetComponent<UnitComponent>().Add(unit);
+			unitComponent.Add(unit);
 			response.UnitId = unit.Id;
 			
 			// 把自己广播给周围的人
