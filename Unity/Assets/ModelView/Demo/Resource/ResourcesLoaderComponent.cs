@@ -9,23 +9,25 @@ namespace ET
         {
             async ETTask UnLoadAsync()
             {
-                using ListComponent<string> list = ListComponent<string>.Create();
-            
-                list.List.AddRange(self.LoadedResource);
-                self.LoadedResource = null;
-            
-                // 延迟5秒卸载包，因为包卸载是引用技术，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
-                await TimerComponent.Instance.WaitAsync(5000);
-                
-                foreach (string abName in list.List)
+                using (ListComponent<string> list = ListComponent<string>.Create())
                 {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0))
+                    list.List.AddRange(self.LoadedResource);
+                    self.LoadedResource = null;
+
+                    // 延迟5秒卸载包，因为包卸载是引用技术，5秒之内假如重新有逻辑加载了这个包，那么可以避免一次卸载跟加载
+                    await TimerComponent.Instance.WaitAsync(5000);
+
+                    foreach (string abName in list.List)
                     {
-                        if (ResourcesComponent.Instance == null)
+                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.ResourcesLoader, abName.GetHashCode(), 0))
                         {
-                            return;
+                            if (ResourcesComponent.Instance == null)
+                            {
+                                return;
+                            }
+
+                            await ResourcesComponent.Instance.UnloadBundleAsync(abName);
                         }
-                        await ResourcesComponent.Instance.UnloadBundleAsync(abName);
                     }
                 }
             }

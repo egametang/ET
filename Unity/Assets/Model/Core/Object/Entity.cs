@@ -275,8 +275,9 @@ namespace ET
                     }
                 }
 
-                if (preDomain == null)
+                if (!this.IsCreate)
                 {
+                    this.IsCreate = true;
                     EventSystem.Instance.Deserialize(this);
                 }
             }
@@ -293,7 +294,17 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<long, Entity> Children => this.children ??= childrenPool.Fetch();
+        public Dictionary<long, Entity> Children
+        {
+            get
+            {
+                if (this.children == null)
+                {
+                    this.children = childrenPool.Fetch();
+                }
+                return this.children;
+            }
+        }
 
         private void AddChild(Entity entity)
         {
@@ -326,7 +337,7 @@ namespace ET
                 return;
             }
 
-            this.childrenDB ??= hashSetPool.Fetch();
+            this.childrenDB = this.childrenDB ?? hashSetPool.Fetch();
 
             this.childrenDB.Add(entity);
         }
@@ -366,7 +377,17 @@ namespace ET
 
         [IgnoreDataMember]
         [BsonIgnore]
-        public Dictionary<Type, Entity> Components => this.components ??= dictPool.Fetch();
+        public Dictionary<Type, Entity> Components
+        {
+            get
+            {
+                if (this.components == null)
+                {
+                    this.components = dictPool.Fetch();
+                }
+                return this.components;
+            }
+        }
 
         public override void Dispose()
         {

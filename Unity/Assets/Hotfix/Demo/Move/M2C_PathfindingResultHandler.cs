@@ -11,14 +11,15 @@ namespace ET
 
 			float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
 
-			using var list = ListComponent<Vector3>.Create();
-			
-			for (int i = 0; i < message.Xs.Count; ++i)
+			using (var list = ListComponent<Vector3>.Create())
 			{
-				list.List.Add(new Vector3(message.Xs[i], message.Ys[i], message.Zs[i]));
-			}
+				for (int i = 0; i < message.Xs.Count; ++i)
+				{
+					list.List.Add(new Vector3(message.Xs[i], message.Ys[i], message.Zs[i]));
+				}
 
-			await unit.GetComponent<MoveComponent>().MoveToAsync(list.List, speed);
+				await unit.GetComponent<MoveComponent>().MoveToAsync(list.List, speed);
+			}
 		}
 	}
 }

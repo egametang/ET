@@ -58,7 +58,11 @@ namespace ET
 		{
 			get
 			{
-				return instance ??= new EventSystem();
+				if (instance == null)
+				{
+					instance = new EventSystem();
+				}
+				return instance;
 			}
 		}
 		
@@ -532,24 +536,27 @@ namespace ET
 			{
 				return;
 			}
-			using var list = ListComponent<ETTask>.Create();
 
-			foreach (object obj in iEvents)
+			using (var list = ListComponent<ETTask>.Create())
 			{
-				if (!(obj is AEvent<T> aEvent))
+				foreach (object obj in iEvents)
 				{
-					Log.Error($"event error: {obj.GetType().Name}");
-					continue;
+					if (!(obj is AEvent<T> aEvent))
+					{
+						Log.Error($"event error: {obj.GetType().Name}");
+						continue;
+					}
+
+					list.List.Add(aEvent.Handle(a));
 				}
-				list.List.Add(aEvent.Handle(a));
-			}
-			try
-			{
-				await ETTaskHelper.WaitAll(list.List);
-			}
-			catch (Exception e)
-			{
-				Log.Error(e);
+				try
+				{
+					await ETTaskHelper.WaitAll(list.List);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 
