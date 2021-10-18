@@ -87,7 +87,7 @@ namespace ET
         // 这个channelId是由CreateAcceptChannelId生成的
         public static void OnAccept(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
-            Session session = Entity.CreateWithId<Session, AService>(self, channelId, self.Service);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
             session.RemoteAddress = ipEndPoint;
             //session.AddComponent<SessionIdleCheckerComponent, int, int, int>(NetThreadComponent.checkInteral, NetThreadComponent.recvMaxIdleTime, NetThreadComponent.sendMaxIdleTime);
         }
@@ -103,7 +103,7 @@ namespace ET
 
         private static Session CreateInner(this NetInnerComponent self, long channelId, IPEndPoint ipEndPoint)
         {
-            Session session = Entity.CreateWithId<Session, AService>(self, channelId, self.Service);
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
 
             session.RemoteAddress = ipEndPoint;
 

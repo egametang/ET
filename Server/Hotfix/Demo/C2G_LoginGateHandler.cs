@@ -19,7 +19,7 @@ namespace ET
 			}
 
 			PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
-			Player player = Entity.Create<Player, string>(playerComponent, account);
+			Player player = playerComponent.AddChild<Player, string>(account);
 			playerComponent.Add(player);
 			session.AddComponent<SessionPlayerComponent>().Player = player;
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);

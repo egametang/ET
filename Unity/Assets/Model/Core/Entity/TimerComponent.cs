@@ -176,7 +176,7 @@ namespace ET
             }
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
-            TimerAction timer = Entity.Create<TimerAction, TimerClass, long, object>(this, TimerClass.OnceWaitTimer, 0, tcs, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceWaitTimer, 0, tcs, true);
             this.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
@@ -216,7 +216,7 @@ namespace ET
 
             ETTask<bool> tcs = ETTask<bool>.Create(true);
             
-            TimerAction timer = Entity.Create<TimerAction, TimerClass, long, object>(this, TimerClass.OnceWaitTimer, 0, tcs, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceWaitTimer, 0, tcs, true);
             this.AddTimer(tillTime, timer);
             long timerId = timer.Id;
 
@@ -262,7 +262,7 @@ namespace ET
 			}
 #endif
             long tillTime = TimeHelper.ServerNow() + time;
-            TimerAction timer = Entity.Create<TimerAction, TimerClass, long, object>(this, TimerClass.RepeatedTimer, time, action, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.RepeatedTimer, time, action, true);
             this.AddTimer(tillTime, timer);
             return timer.Id;
         }
@@ -300,7 +300,7 @@ namespace ET
             {
                 Log.Error($"new once time too small: {tillTime}");
             }
-            TimerAction timer = Entity.Create<TimerAction, TimerClass, long, object>(this, TimerClass.OnceTimer, 0, action, true);
+            TimerAction timer = this.AddChild<TimerAction, TimerClass, long, object>(TimerClass.OnceTimer, 0, action, true);
             this.AddTimer(tillTime, timer);
             return timer.Id;
         }

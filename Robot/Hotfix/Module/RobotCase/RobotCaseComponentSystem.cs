@@ -31,7 +31,7 @@ namespace ET
         public static async ETTask<RobotCase> New(this RobotCaseComponent self)
         {
             await ETTask.CompletedTask;
-            RobotCase robotCase = Entity.Create<RobotCase>(self);
+            RobotCase robotCase = self.AddChild<RobotCase>();
             return robotCase;
         }
     }

@@ -401,7 +401,7 @@ namespace ET
 
                 if (realPath.Length > 0)
                 {
-                    abInfo = Entity.Create<ABInfo, string, AssetBundle>(this, assetBundleName, null);
+                    abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
                     this.bundles[assetBundleName] = abInfo;
                     //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 }
@@ -442,7 +442,7 @@ namespace ET
                 }
             }
 
-            abInfo = Entity.Create<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
+            abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
             this.bundles[assetBundleName] = abInfo;
 
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
@@ -525,7 +525,7 @@ namespace ET
 
                 if (realPath.Length > 0)
                 {
-                    abInfo = Entity.Create<ABInfo, string, AssetBundle>(this, assetBundleName, null);
+                    abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
                     this.bundles[assetBundleName] = abInfo;
                     //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
                 }
@@ -563,7 +563,7 @@ namespace ET
                 return null;
             }
 
-            abInfo = Entity.Create<ABInfo, string, AssetBundle>(this, assetBundleName, assetBundle);
+            abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
             this.bundles[assetBundleName] = abInfo;
             return abInfo;
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");

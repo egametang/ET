@@ -7,7 +7,7 @@ namespace ET
         public static Unit Create(Entity domain, UnitInfo unitInfo)
         {
 	        UnitComponent unitComponent = domain.GetComponent<UnitComponent>();
-	        Unit unit = Entity.CreateWithId<Unit, int>(unitComponent, unitInfo.UnitId, unitInfo.ConfigId);
+	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        unitComponent.Add(unit);
 	        
 	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);

@@ -9,7 +9,7 @@ namespace ET
 		protected override async ETTask Run(Scene scene, G2M_CreateUnit request, M2G_CreateUnit response, Action reply)
 		{
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
-			Unit unit = Entity.CreateWithId<Unit, int>(unitComponent, IdGenerater.Instance.GenerateId(), 1001);
+			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 1001);
 			unit.AddComponent<MoveComponent>();
 			unit.Position = new Vector3(-10, 0, -10);
 			

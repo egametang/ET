@@ -547,95 +547,6 @@ namespace ET
             return child as K;
         }
 
-        public Entity AddComponent(Entity component)
-        {
-            Type type = component.GetType();
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            component.ComponentParent = this;
-
-            this.AddToComponent(type, component);
-
-            return component;
-        }
-
-        public Entity AddComponent(Type type)
-        {
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            Entity component = CreateWithComponentParent(type);
-
-            this.AddToComponent(type, component);
-
-            return component;
-        }
-
-        public K AddComponent<K>() where K : Entity, new()
-        {
-            Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            K component = CreateWithComponentParent<K>();
-
-            this.AddToComponent(type, component);
-            
-            return component;
-        }
-
-        public K AddComponent<K, P1>(P1 p1) where K : Entity, new()
-        {
-            Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            K component = CreateWithComponentParent<K, P1>(p1);
-
-            this.AddToComponent(type, component);
-
-            return component;
-        }
-
-        public K AddComponent<K, P1, P2>(P1 p1, P2 p2) where K : Entity, new()
-        {
-            Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            K component = CreateWithComponentParent<K, P1, P2>(p1, p2);
-
-            this.AddToComponent(type, component);
-
-            return component;
-        }
-
-        public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3) where K : Entity, new()
-        {
-            Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type))
-            {
-                throw new Exception($"entity already has component: {type.FullName}");
-            }
-
-            K component = CreateWithComponentParent<K, P1, P2, P3>(p1, p2, p3);
-
-            this.AddToComponent(type, component);
-
-            return component;
-        }
-
         public void RemoveComponent<K>() where K : Entity
         {
             if (this.IsDisposed)
@@ -733,6 +644,226 @@ namespace ET
                 return null;
             }
 
+            return component;
+        }
+        
+        private static Entity Create(Type type, bool isFromPool)
+        {
+            Entity component;
+            if (isFromPool)
+            {
+                component = (Entity)ObjectPool.Instance.Fetch(type);
+            }
+            else
+            {
+                component = (Entity)Activator.CreateInstance(type);
+            }
+            component.IsFromPool = isFromPool;
+            component.IsCreate = true;
+            component.Id = 0;
+            return component;
+        }
+
+        public Entity AddComponent(Entity component)
+        {
+            Type type = component.GetType();
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            component.ComponentParent = this;
+
+            this.AddToComponent(type, component);
+
+            return component;
+        }
+
+        public Entity AddComponent(Type type, bool isFromPool = false)
+        {
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            Entity component = Create(type, isFromPool);
+            component.Id = this.Id;
+            component.ComponentParent = this;
+            EventSystem.Instance.Awake(component);
+
+            this.AddToComponent(type, component);
+
+            return component;
+        }
+
+        public K AddComponent<K>(bool isFromPool = false) where K : Entity, new()
+        {
+            Type type = typeof (K);
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            Entity component = Create(type, isFromPool);
+            component.Id = this.Id;
+            component.ComponentParent = this;
+            EventSystem.Instance.Awake(component);
+
+            this.AddToComponent(type, component);
+            
+            return component as K;
+        }
+
+        public K AddComponent<K, P1>(P1 p1, bool isFromPool = false) where K : Entity, new()
+        {
+            Type type = typeof (K);
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            Entity component = Create(type, isFromPool);
+            component.Id = this.Id;
+            component.ComponentParent = this;
+            EventSystem.Instance.Awake(component, p1);
+
+            this.AddToComponent(type, component);
+
+            return component as K;
+        }
+
+        public K AddComponent<K, P1, P2>(P1 p1, P2 p2, bool isFromPool = false) where K : Entity, new()
+        {
+            Type type = typeof (K);
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            Entity component = Create(type, isFromPool);
+            component.Id = this.Id;
+            component.ComponentParent = this;
+            EventSystem.Instance.Awake(component, p1, p2);
+            
+            this.AddToComponent(type, component);
+
+            return component as K;
+        }
+
+        public K AddComponent<K, P1, P2, P3>(P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : Entity, new()
+        {
+            Type type = typeof (K);
+            if (this.components != null && this.components.ContainsKey(type))
+            {
+                throw new Exception($"entity already has component: {type.FullName}");
+            }
+
+            Entity component = Create(type, isFromPool);
+            component.Id = this.Id;
+            component.ComponentParent = this;
+            EventSystem.Instance.Awake(component, p1, p2, p3);
+
+            this.AddToComponent(type, component);
+
+            return component as K;
+        }
+
+        public T AddChild<T>(bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = IdGenerater.Instance.GenerateId();
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component);
+            return component;
+        }
+
+        public T AddChild<T, A>(A a, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = IdGenerater.Instance.GenerateId();
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a);
+            return component;
+        }
+
+        public T AddChild<T, A, B>(A a, B b, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = IdGenerater.Instance.GenerateId();
+            component.Parent = parent;
+
+            EventSystem.Instance.Awake(component, a, b);
+            return component;
+        }
+
+        public T AddChild<T, A, B, C>(A a, B b, C c, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = IdGenerater.Instance.GenerateId();
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a, b, c);
+            return component;
+        }
+
+        public T AddChild<T, A, B, C, D>(A a, B b, C c, D d, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = IdGenerater.Instance.GenerateId();
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a, b, c, d);
+            return component;
+        }
+
+        public T AddChildWithId<T>(long id, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = id;
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component);
+            return component;
+        }
+
+        public T AddChildWithId<T, A>(long id, A a, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = id;
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a);
+            return component;
+        }
+
+        public T AddChildWithId<T, A, B>(long id, A a, B b, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = id;
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a, b);
+            return component;
+        }
+
+        public T AddChildWithId<T, A, B, C>(long id, A a, B b, C c, bool isFromPool = false) where T : Entity
+        {
+            Type type = typeof (T);
+            T component = (T) Entity.Create(type, isFromPool);
+            component.Id = id;
+            component.Parent = this;
+
+            EventSystem.Instance.Awake(component, a, b, c);
             return component;
         }
     }

@@ -10,7 +10,7 @@ namespace ET
             CoroutineLockComponent.Instance = self;
             for (int i = 0; i < self.list.Capacity; ++i)
             {
-                self.list.Add(Entity.CreateWithId<CoroutineLockQueueType>(self, ++self.idGenerator));
+                self.list.Add(self.AddChildWithId<CoroutineLockQueueType>(++self.idGenerator));
             }
         }
     }
@@ -123,7 +123,7 @@ namespace ET
    
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
             {
-                coroutineLockQueueType.Add(key, Entity.CreateWithId<CoroutineLockQueue>(self, ++self.idGenerator, true));
+                coroutineLockQueueType.Add(key, self.AddChildWithId<CoroutineLockQueue>(++self.idGenerator, true));
                 return self.CreateCoroutineLock(coroutineLockType, key, time, 1);
             }
 
@@ -135,7 +135,7 @@ namespace ET
 
         public static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time, int count)
         {
-            CoroutineLock coroutineLock = Entity.CreateWithId<CoroutineLock, CoroutineLockType, long, int>(self, ++self.idGenerator, coroutineLockType, key, count, true);
+            CoroutineLock coroutineLock = self.AddChildWithId<CoroutineLock, CoroutineLockType, long, int>(++self.idGenerator, coroutineLockType, key, count, true);
             if (time > 0)
             {
                 self.AddTimer(TimeHelper.ClientFrameTime() + time, coroutineLock);

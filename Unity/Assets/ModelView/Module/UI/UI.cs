@@ -82,7 +82,7 @@ namespace ET
 			{
 				return null;
 			}
-			child = Entity.Create<UI, string, GameObject>(this, name, childGameObject);
+			child = this.AddChild<UI, string, GameObject>(name, childGameObject);
 			this.Add(child);
 			return child;
 		}
