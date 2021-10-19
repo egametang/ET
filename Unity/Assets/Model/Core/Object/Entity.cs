@@ -795,7 +795,7 @@ namespace ET
             Type type = typeof (T);
             T component = (T) Entity.Create(type, isFromPool);
             component.Id = IdGenerater.Instance.GenerateId();
-            component.Parent = parent;
+            component.Parent = this;
 
             EventSystem.Instance.Awake(component, a, b);
             return component;
