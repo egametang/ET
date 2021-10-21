@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using UnityEngine;
@@ -22,17 +23,30 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			DontDestroyOnLoad(gameObject);
-			
+
 			Assembly modelAssembly = null;
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+
+			if (Define.IsEditor)
 			{
-				string assemblyName = $"{assembly.GetName().Name}.dll";
-				if (assemblyName != "Unity.ModelView.dll")
+				UnityEngine.Debug.Log("unity editor mode!");
+				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 				{
-					continue;
+					string assemblyName = $"{assembly.GetName().Name}.dll";
+					if (assemblyName != "Unity.ModelView.dll")
+					{
+						continue;
+					}
+
+					modelAssembly = assembly;
+					break;
 				}
-				modelAssembly = assembly;
-				break;
+			}
+			else
+			{
+				UnityEngine.Debug.Log("unity script mode!");
+				byte[] dllBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.dll");
+				byte[] pdbBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.pdb");
+				modelAssembly = Assembly.Load(dllBytes, pdbBytes);
 			}
 
 			Type initType = modelAssembly.GetType("ET.Entry");

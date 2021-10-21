@@ -27,7 +27,7 @@ namespace ET
 				
 				Game.Options = new Options();
 				
-				Game.EventSystem.Publish(new EventType.AppStart());
+				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 			}
 			catch (Exception e)
 			{

@@ -4,10 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-
-#endif
 
 namespace ET
 {
@@ -192,9 +188,10 @@ namespace ET
 
             if (!Define.IsAsync)
             {
-#if UNITY_EDITOR
-                dependencies = AssetDatabase.GetAssetBundleDependencies(assetBundleName, true);
-#endif
+                if (Define.IsEditor)
+                {
+                    dependencies = Define.GetAssetBundleDependencies(assetBundleName, true);
+                }
             }
             else
             {
@@ -388,28 +385,28 @@ namespace ET
 
             if (!Define.IsAsync)
             {
-                
-#if UNITY_EDITOR
-				string[] realPath = null;
-                realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
-                foreach (string s in realPath)
+                if (Define.IsEditor)
                 {
-                    string assetName = Path.GetFileNameWithoutExtension(s);
-                    UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
-                    AddResource(assetBundleName, assetName, resource);
-                }
+                    string[] realPath = null;
+                    realPath = Define.GetAssetPathsFromAssetBundle(assetBundleName);
+                    foreach (string s in realPath)
+                    {
+                        string assetName = Path.GetFileNameWithoutExtension(s);
+                        UnityEngine.Object resource = Define.LoadAssetAtPath(s);
+                        AddResource(assetBundleName, assetName, resource);
+                    }
 
-                if (realPath.Length > 0)
-                {
-                    abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
-                    this.bundles[assetBundleName] = abInfo;
-                    //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+                    if (realPath.Length > 0)
+                    {
+                        abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
+                        this.bundles[assetBundleName] = abInfo;
+                        //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+                    }
+                    else
+                    {
+                        Log.Error($"assets bundle not found: {assetBundleName}");
+                    }
                 }
-                else
-                {
-                    Log.Error($"assets bundle not found: {assetBundleName}");
-                }
-#endif
                 return;
             }
 
@@ -514,30 +511,32 @@ namespace ET
 
             if (!Define.IsAsync)
             {
-#if UNITY_EDITOR
-                string[] realPath = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName);
-                foreach (string s in realPath)
+                if (Define.IsEditor)
                 {
-                    string assetName = Path.GetFileNameWithoutExtension(s);
-                    UnityEngine.Object resource = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(s);
-                    AddResource(assetBundleName, assetName, resource);
-                }
+                    string[] realPath = Define.GetAssetPathsFromAssetBundle(assetBundleName);
+                    foreach (string s in realPath)
+                    {
+                        string assetName = Path.GetFileNameWithoutExtension(s);
+                        UnityEngine.Object resource = Define.LoadAssetAtPath(s);
+                        AddResource(assetBundleName, assetName, resource);
+                    }
 
-                if (realPath.Length > 0)
-                {
-                    abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
-                    this.bundles[assetBundleName] = abInfo;
-                    //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
-                }
-                else
-                {
-                    Log.Error("Bundle not exist! BundleName: " + assetBundleName);
-                }
+                    if (realPath.Length > 0)
+                    {
+                        abInfo = this.AddChild<ABInfo, string, AssetBundle>(assetBundleName, null);
+                        this.bundles[assetBundleName] = abInfo;
+                        //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
+                    }
+                    else
+                    {
+                        Log.Error("Bundle not exist! BundleName: " + assetBundleName);
+                    }
 
-                // 编辑器模式也不能同步加载
-                await TimerComponent.Instance.WaitAsync(100);
-#endif
-                return abInfo;
+                    // 编辑器模式也不能同步加载
+                    await TimerComponent.Instance.WaitAsync(100);
+                    
+                    return abInfo;
+                }
             }
 
             p = Path.Combine(PathHelper.AppHotfixResPath, assetBundleName);
