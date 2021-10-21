@@ -1,10 +1,17 @@
-#pragma once
-
 // Macro to put before functions that need to be exposed to C#
-#ifdef _WIN32
-#define DLLEXPORT __declspec(dllexport)
+#ifdef DLL_EXPORTS
+#define INTERPRETER_DLL _declspec(dllexport)
 #else
-#define DLLEXPORT 
+#define INTERPRETER_DLL
 #endif
 
-DLLEXPORT void InterpreterInit(char* bundleDir, const char* dllName);
+#ifdef __cplusplus
+extern "C" {
+#endif
+    INTERPRETER_DLL void interpreter_set_log(void(*writelog)(const char* buf, int len));
+
+    INTERPRETER_DLL void interpreter_init(const char* bundleDir, const char* dllName);
+
+#ifdef __cplusplus
+}
+#endif

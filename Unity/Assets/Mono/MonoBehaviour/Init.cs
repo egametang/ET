@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
@@ -43,10 +44,20 @@ namespace ET
 			}
 			else
 			{
+				byte[] log = new byte[1024];
+				Interpreter.InterpreterSetLog((buff, n) =>
+				{
+					Marshal.Copy(buff, log, 0, n);
+					UnityEngine.Debug.Log(log.Utf8ToStr(0, n));
+				});
+				Interpreter.InterpreterInit("./Temp/Bin/Debug/", "Unity.Script.dll");
+				
+				/*
 				UnityEngine.Debug.Log("unity script mode!");
 				byte[] dllBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.dll");
 				byte[] pdbBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.pdb");
 				modelAssembly = Assembly.Load(dllBytes, pdbBytes);
+				*/
 			}
 
 			Type initType = modelAssembly.GetType("ET.Entry");
