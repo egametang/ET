@@ -50,7 +50,7 @@ namespace ET
 					Marshal.Copy(buff, log, 0, n);
 					UnityEngine.Debug.Log(log.Utf8ToStr(0, n));
 				});
-				Interpreter.InterpreterInit("./Temp/Bin/Debug/", "Unity.Script.dll");
+				Interpreter.InterpreterInit(@"E:\ET\Unity\UnityScript\", "Unity.Script.dll");
 				
 				/*
 				UnityEngine.Debug.Log("unity script mode!");

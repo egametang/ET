@@ -10,6 +10,8 @@ extern "C" {
 #endif
     INTERPRETER_DLL void interpreter_set_log(void(*writelog)(const char* buf, int len));
 
+    INTERPRETER_DLL void interpreter_log(const char* str);
+
     INTERPRETER_DLL void interpreter_init(const char* bundleDir, const char* dllName);
 
 #ifdef __cplusplus
