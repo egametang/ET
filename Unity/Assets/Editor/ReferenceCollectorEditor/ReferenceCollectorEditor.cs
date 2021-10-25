@@ -43,6 +43,9 @@ public class ReferenceCollectorEditor: Editor
 			if (gameObjectProperty.objectReferenceValue == null)
 			{
 				dataProperty.DeleteArrayElementAtIndex(i);
+				EditorUtility.SetDirty(referenceCollector);
+				serializedObject.ApplyModifiedProperties();
+				serializedObject.UpdateIfRequiredOrScript();
 			}
 		}
 	}
@@ -69,7 +72,7 @@ public class ReferenceCollectorEditor: Editor
 		}
 		if (GUILayout.Button("全部删除"))
 		{
-			dataProperty.ClearArray();
+			referenceCollector.Clear();
 		}
 		if (GUILayout.Button("删除空引用"))
 		{
