@@ -44,6 +44,20 @@ namespace ET
 			}
 			else
 			{
+				UnityEngine.Debug.Log("unity standalone mode!");
+				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+				{
+					string assemblyName = $"{assembly.GetName().Name}.dll";
+					if (assemblyName != "Unity.ModelView.dll")
+					{
+						continue;
+					}
+
+					modelAssembly = assembly;
+					break;
+				}
+				
+				/*
 				byte[] log = new byte[1024];
 				Interpreter.InterpreterSetLog((buff, n) =>
 				{
@@ -52,7 +66,7 @@ namespace ET
 				});
 				Interpreter.InterpreterInit(@"E:\ET\Unity\UnityScript\", "Unity.Script.dll");
 				
-				/*
+				
 				UnityEngine.Debug.Log("unity script mode!");
 				byte[] dllBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.dll");
 				byte[] pdbBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.pdb");

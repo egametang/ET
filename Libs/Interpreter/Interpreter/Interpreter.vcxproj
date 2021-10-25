@@ -88,7 +88,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\Include;$(SolutionDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Libs;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)Bin</OutDir>
+    <OutDir>$(SolutionDir)Bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
