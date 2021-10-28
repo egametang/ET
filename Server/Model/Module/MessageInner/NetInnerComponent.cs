@@ -24,6 +24,6 @@ namespace ET
 
         public static NetInnerComponent Instance;
 
-        public IMessageDispatcher MessageDispatcher { get; set; }
+        public int SessionStreamDispatcherType { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Net;
 
 namespace ET
 {
-    public class InnerMessageDispatcher: IMessageDispatcher
+    [SessionStreamDispatcher(SessionStreamDispatcherType.SessionStreamDispatcherServerInner)]
+    public class SessionStreamDispatcherServerInner: ISessionStreamDispatcher
     {
         public void Dispatch(Session session, MemoryStream memoryStream)
         {

@@ -5,11 +5,11 @@ using System.Net;
 namespace ET
 {
     [ObjectSystem]
-    public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent>
+    public class NetKcpComponentAwakeSystem: AwakeSystem<NetKcpComponent, int>
     {
-        public override void Awake(NetKcpComponent self)
+        public override void Awake(NetKcpComponent self, int sessionStreamDispatcherType)
         {
-            self.MessageDispatcher = new OuterMessageDispatcher();
+            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Outer);
             self.Service.ErrorCallback += self.OnError;
@@ -20,11 +20,11 @@ namespace ET
     }
 
     [ObjectSystem]
-    public class NetKcpComponentAwake1System: AwakeSystem<NetKcpComponent, IPEndPoint>
+    public class NetKcpComponentAwake1System: AwakeSystem<NetKcpComponent, IPEndPoint, int>
     {
-        public override void Awake(NetKcpComponent self, IPEndPoint address)
+        public override void Awake(NetKcpComponent self, IPEndPoint address, int sessionStreamDispatcherType)
         {
-            self.MessageDispatcher = new OuterMessageDispatcher();
+            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Outer);
             self.Service.ErrorCallback += self.OnError;
@@ -32,15 +32,6 @@ namespace ET
             self.Service.AcceptCallback += self.OnAccept;
 
             NetThreadComponent.Instance.Add(self.Service);
-        }
-    }
-
-    [ObjectSystem]
-    public class NetKcpComponentLoadSystem: LoadSystem<NetKcpComponent>
-    {
-        public override void Load(NetKcpComponent self)
-        {
-            self.MessageDispatcher = new OuterMessageDispatcher();
         }
     }
 
@@ -65,7 +56,7 @@ namespace ET
             }
 
             session.LastRecvTime = TimeHelper.ClientNow();
-            self.MessageDispatcher.Dispatch(session, memoryStream);
+            SessionStreamDispatcher.Instance.Dispatch(self.SessionStreamDispatcherType, session, memoryStream);
         }
 
         public static void OnError(this NetKcpComponent self, long channelId, int error)

@@ -25,6 +25,12 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Compile Include="..\..\Server\Hotfix\Demo\Session\InnerMessageDispatcherHelper.cs">
+          <Link>Server\Session\InnerMessageDispatcherHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Server\Hotfix\Demo\Session\SessionStreamDispatcherServerInner.cs">
+          <Link>Server\Session\SessionStreamDispatcherServerInner.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Assets\Hotfix\Module\AI\**\*.cs">
             <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -48,6 +54,11 @@
         <Compile Include="..\..\Server\Hotfix\Module\Message\**\*.cs">
             <Link>Module\Message\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+
+        <Compile Include="..\..\Server\Hotfix\Module\MessageInner\**\*.cs">
+            <Link>Module\MessageInner\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        
         <Compile Include="..\..\Server\Hotfix\Module\NetworkTCP\**\*.cs">
             <Link>Module\NetworkTCP\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -60,6 +71,10 @@
             <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
+        <Compile Include="..\..\Unity\Assets\Hotfix\Module\Ping\**\*.cs">
+            <Link>Module\Ping\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\Server\Hotfix\Module\Console\**\*.cs">
             <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -70,9 +85,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <Folder Include="..\..\Server\Hotfix\Helper">
-        <Link>Helper</Link>
-      </Folder>
+      <Folder Include="Server" />
     </ItemGroup>
 
 </Project>

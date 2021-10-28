@@ -7,12 +7,12 @@ using System.Threading;
 namespace ET
 {
     [ObjectSystem]
-    public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent>
+    public class NetInnerComponentAwakeSystem: AwakeSystem<NetInnerComponent, int>
     {
-        public override void Awake(NetInnerComponent self)
+        public override void Awake(NetInnerComponent self, int sessionStreamDispatcherType)
         {
             NetInnerComponent.Instance = self;
-            self.MessageDispatcher = new InnerMessageDispatcher();
+            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
             
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, ServiceType.Inner);
             self.Service.ErrorCallback += self.OnError;
@@ -23,12 +23,12 @@ namespace ET
     }
 
     [ObjectSystem]
-    public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint>
+    public class NetInnerComponentAwake1System: AwakeSystem<NetInnerComponent, IPEndPoint, int>
     {
-        public override void Awake(NetInnerComponent self, IPEndPoint address)
+        public override void Awake(NetInnerComponent self, IPEndPoint address, int sessionStreamDispatcherType)
         {
             NetInnerComponent.Instance = self;
-            self.MessageDispatcher = new InnerMessageDispatcher();
+            self.SessionStreamDispatcherType = sessionStreamDispatcherType;
 
             self.Service = new TService(NetThreadComponent.Instance.ThreadSynchronizationContext, address, ServiceType.Inner);
             self.Service.ErrorCallback += self.OnError;
@@ -36,15 +36,6 @@ namespace ET
             self.Service.AcceptCallback += self.OnAccept;
 
             NetThreadComponent.Instance.Add(self.Service);
-        }
-    }
-
-    [ObjectSystem]
-    public class NetInnerComponentLoadSystem: LoadSystem<NetInnerComponent>
-    {
-        public override void Load(NetInnerComponent self)
-        {
-            self.MessageDispatcher = new InnerMessageDispatcher();
         }
     }
 
@@ -69,7 +60,7 @@ namespace ET
             }
 
             session.LastRecvTime = TimeHelper.ClientNow();
-            self.MessageDispatcher.Dispatch(session, memoryStream);
+            SessionStreamDispatcher.Instance.Dispatch(self.SessionStreamDispatcherType, session, memoryStream);
         }
 
         public static void OnError(this NetInnerComponent self, long channelId, int error)
