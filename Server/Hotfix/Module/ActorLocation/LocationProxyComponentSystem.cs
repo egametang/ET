@@ -34,7 +34,7 @@ namespace ET
                 new ObjectAddRequest() { Key = key, InstanceId = instanceId });
         }
 
-        public static async ETTask Lock(this LocationProxyComponent self, long key, long instanceId, int time = 1000)
+        public static async ETTask Lock(this LocationProxyComponent self, long key, long instanceId, int time = 60000)
         {
             Log.Info($"location proxy lock {key}, {instanceId} {TimeHelper.ServerNow()}");
             await MessageHelper.CallActor(GetLocationSceneId(key),

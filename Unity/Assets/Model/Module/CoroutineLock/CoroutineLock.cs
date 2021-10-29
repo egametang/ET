@@ -9,7 +9,7 @@ namespace ET
         {
             self.coroutineLockType = type;
             self.key = k;
-            self.count = count;
+            self.level = count;
         }
     }
 
@@ -20,16 +20,16 @@ namespace ET
         {
             if (self.coroutineLockType != CoroutineLockType.None)
             {
-                CoroutineLockComponent.Instance.Notify(self.coroutineLockType, self.key, self.count + 1);
+                CoroutineLockComponent.Instance.RunNextCoroutine(self.coroutineLockType, self.key, self.level + 1);
             }
             else
             {
                 // CoroutineLockType.None说明协程锁超时了
-                Log.Error($"coroutine lock timeout: {self.coroutineLockType} {self.key} {self.count}");
+                Log.Error($"coroutine lock timeout: {self.coroutineLockType} {self.key} {self.level}");
             }
             self.coroutineLockType = CoroutineLockType.None;
             self.key = 0;
-            self.count = 0;
+            self.level = 0;
         }
     }
     
@@ -37,6 +37,6 @@ namespace ET
     {
         public CoroutineLockType coroutineLockType;
         public long key;
-        public int count;
+        public int level;
     }
 }

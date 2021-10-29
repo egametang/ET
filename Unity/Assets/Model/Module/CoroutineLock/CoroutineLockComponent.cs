@@ -37,16 +37,15 @@ namespace ET
             // 检测超时的CoroutineLock
             TimeoutCheck(self);
             
-            int count = self.nextFrameRun.Count;
-            // 注意这里不能将this.nextFrameRun.Count 放到for循环中，因为循环过程中会有对象继续加入队列
-            for (int i = 0; i < count; ++i)
+            // 循环过程中会有对象继续加入队列
+            while(self.nextFrameRun.Count > 0)
             {
-                (CoroutineLockType coroutineLockType, long key) = self.nextFrameRun.Dequeue();
-                self.Notify(coroutineLockType, key, 0);
+                (CoroutineLockType coroutineLockType, long key, int count) = self.nextFrameRun.Dequeue();
+                self.Notify(coroutineLockType, key, count);
             }
         }
-        
-        public void TimeoutCheck(CoroutineLockComponent self)
+
+        private void TimeoutCheck(CoroutineLockComponent self)
         {
             // 超时的锁
             if (self.timers.Count == 0)
@@ -95,7 +94,7 @@ namespace ET
 
                 CoroutineLock coroutineLock = coroutineLockTimer.CoroutineLock;
                 // 超时直接调用下一个锁
-                self.NextFrameRun(coroutineLock.coroutineLockType, coroutineLock.key);
+                self.RunNextCoroutine(coroutineLock.coroutineLockType, coroutineLock.key, coroutineLock.level + 1);
                 coroutineLock.coroutineLockType = CoroutineLockType.None; // 上面调用了下一个, dispose不再调用
             }
         }
@@ -103,12 +102,17 @@ namespace ET
 
     public static class CoroutineLockComponentSystem
     {
-        public static void NextFrameRun(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key)
+        public static void RunNextCoroutine(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int level)
         {
-            self.nextFrameRun.Enqueue((coroutineLockType, key));
+            // 一个协程队列一帧处理超过100个,说明比较多了,打个warning,检查一下是否够正常
+            if (level == 100)
+            {
+                Log.Warning($"too much coroutine level: {coroutineLockType} {key}");
+            }
+            self.nextFrameRun.Enqueue((coroutineLockType, key, level));
         }
 
-        public static void AddTimer(this CoroutineLockComponent self, long tillTime, CoroutineLock coroutineLock)
+        private static void AddTimer(this CoroutineLockComponent self, long tillTime, CoroutineLock coroutineLock)
         {
             self.timers.Add(tillTime, new CoroutineLockTimer(coroutineLock));
             if (tillTime < self.minTime)
@@ -133,9 +137,9 @@ namespace ET
             return await tcs;
         }
 
-        public static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time, int count)
+        private static CoroutineLock CreateCoroutineLock(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int time, int level)
         {
-            CoroutineLock coroutineLock = self.AddChildWithId<CoroutineLock, CoroutineLockType, long, int>(++self.idGenerator, coroutineLockType, key, count, true);
+            CoroutineLock coroutineLock = self.AddChildWithId<CoroutineLock, CoroutineLockType, long, int>(++self.idGenerator, coroutineLockType, key, level, true);
             if (time > 0)
             {
                 self.AddTimer(TimeHelper.ClientFrameTime() + time, coroutineLock);
@@ -143,7 +147,7 @@ namespace ET
             return coroutineLock;
         }
 
-        public static void Notify(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int count)
+        public static void Notify(this CoroutineLockComponent self, CoroutineLockType coroutineLockType, long key, int level)
         {
             CoroutineLockQueueType coroutineLockQueueType = self.list[(int) coroutineLockType];
             if (!coroutineLockQueueType.TryGetValue(key, out CoroutineLockQueue queue))
@@ -156,21 +160,9 @@ namespace ET
                 coroutineLockQueueType.Remove(key);
                 return;
             }
-            
-#if NOT_UNITY
-            const int frameCoroutineCount = 5;
-#else
-            const int frameCoroutineCount = 10;
-#endif
 
-            if (count > frameCoroutineCount)
-            {
-                self.NextFrameRun(coroutineLockType, key);
-                return;
-            }
-            
             CoroutineLockInfo coroutineLockInfo = queue.Dequeue();
-            coroutineLockInfo.Tcs.SetResult(self.CreateCoroutineLock(coroutineLockType, key, coroutineLockInfo.Time, count));
+            coroutineLockInfo.Tcs.SetResult(self.CreateCoroutineLock(coroutineLockType, key, coroutineLockInfo.Time, level));
         }
     }
 
@@ -179,7 +171,7 @@ namespace ET
         public static CoroutineLockComponent Instance;
         
         public List<CoroutineLockQueueType> list = new List<CoroutineLockQueueType>((int) CoroutineLockType.Max);
-        public Queue<(CoroutineLockType, long)> nextFrameRun = new Queue<(CoroutineLockType, long)>();
+        public Queue<(CoroutineLockType, long, int)> nextFrameRun = new Queue<(CoroutineLockType, long, int)>();
         public MultiMap<long, CoroutineLockTimer> timers = new MultiMap<long, CoroutineLockTimer>();
         public Queue<long> timeOutIds = new Queue<long>();
         public Queue<CoroutineLockTimer> timerOutTimer = new Queue<CoroutineLockTimer>();

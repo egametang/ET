@@ -43,7 +43,7 @@ namespace ET
             using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
             {
                 this.locations[key] = instanceId;
-                Log.Debug($"location add key: {key} instanceId: {instanceId}");
+                Log.Info($"location add key: {key} instanceId: {instanceId}");
             }
         }
 
@@ -52,7 +52,7 @@ namespace ET
             using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
             {
                 this.locations.Remove(key);
-                Log.Debug($"location remove key: {key}");
+                Log.Info($"location remove key: {key}");
             }
         }
 
@@ -63,7 +63,7 @@ namespace ET
             LockInfo lockInfo = this.AddChild<LockInfo, long, CoroutineLock>(instanceId, coroutineLock);
             this.lockInfos.Add(key, lockInfo);
 
-            Log.Debug($"location lock key: {key} instanceId: {instanceId}");
+            Log.Info($"location lock key: {key} instanceId: {instanceId}");
 
             if (time > 0)
             {
@@ -92,7 +92,7 @@ namespace ET
                 return;
             }
 
-            Log.Debug($"location unlock key: {key} instanceId: {oldInstanceId} newInstanceId: {newInstanceId}");
+            Log.Info($"location unlock key: {key} instanceId: {oldInstanceId} newInstanceId: {newInstanceId}");
 
             this.locations[key] = newInstanceId;
 
@@ -107,7 +107,7 @@ namespace ET
             using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Location, key))
             {
                 this.locations.TryGetValue(key, out long instanceId);
-                Log.Debug($"location get key: {key} instanceId: {instanceId}");
+                Log.Info($"location get key: {key} instanceId: {instanceId}");
                 return instanceId;
             }
         }
