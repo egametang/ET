@@ -13,6 +13,7 @@ namespace ET
             
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
+            Game.Scene.AddComponent<SessionStreamDispatcher>();
             Game.Scene.AddComponent<NetThreadComponent>();
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
