@@ -55,10 +55,13 @@ namespace ET
             {
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                var originFiles = Directory.GetFiles(excelDir, "*.xlsx");
-                foreach (string path in originFiles)
+                foreach (string path in Directory.GetFiles(excelDir))
                 {
-                    if (path.Contains("~$")) continue;
+                    string fileName = Path.GetFileName(path);
+                    if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$"))
+                    {
+                        continue;
+                    }
                     using Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     using ExcelPackage p = new ExcelPackage(stream);
                     string name = Path.GetFileNameWithoutExtension(path);

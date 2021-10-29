@@ -174,7 +174,6 @@ namespace ET
                         actorLocationSender.ActorId = 0;
                         continue;
                     }
-                    case ErrorCode.ERR_ActorNoMailBoxComponent:
                     case ErrorCode.ERR_ActorTimeout:
                     {
                         throw new RpcException(response.Error, $"{memoryStream.ToActorMessage()}");

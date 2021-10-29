@@ -22,7 +22,8 @@ namespace ET
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                FailResponse(iActorRequest, ErrorCode.ERR_ActorNoMailBoxComponent, reply);
+                Log.Warning($"actor not found mailbox: {entity.GetType().Name} {actorId} {iActorRequest}");
+                FailResponse(iActorRequest, ErrorCode.ERR_NotFoundActor, reply);
                 return;
             }
 
@@ -77,7 +78,7 @@ namespace ET
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Error($"actor not add MailBoxComponent: {entity.GetType().Name} {iActorMessage}");
+                Log.Error($"actor not found mailbox: {entity.GetType().Name} {actorId} {iActorMessage}");
                 return;
             }
 

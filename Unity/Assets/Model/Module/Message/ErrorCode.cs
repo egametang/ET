@@ -30,7 +30,6 @@ namespace ET
         public const int ERR_KcpSplitError = 100231;
         public const int ERR_KcpSplitCountError = 100232;
 
-        public const int ERR_ActorNoMailBoxComponent = 110003;
         public const int ERR_ActorLocationSenderTimeout = 110004;
         public const int ERR_PacketParserError = 110005;
         public const int ERR_KcpChannelAcceptTimeout = 110206;
