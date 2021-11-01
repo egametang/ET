@@ -26,7 +26,7 @@ namespace ET
         private const string protoPath = ".";
         private const string clientMessagePath = "../Unity/Assets/Model/Generate/Message/";
         private const string serverMessagePath = "../Server/Model/Generate/Message/";
-        private static readonly char[] splitChars = { ' ', '\t' };
+        private static readonly char[] splitChars = { ' ', '\t' ,'='};
         private static readonly List<OpcodeInfo> msgOpcode = new List<OpcodeInfo>();
 
         public static void Proto2CS()
@@ -195,7 +195,7 @@ namespace ET
                 string type = ss[1];
                 type = ConvertType(type);
                 string name = ss[2];
-                int n = int.Parse(ss[4]);
+                int n = int.Parse(ss[3]);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
                 sb.Append($"\t\tpublic List<{type}> {name} = new List<{type}>();\n\n");
@@ -252,7 +252,7 @@ namespace ET
                 string[] ss = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 string type = ss[0];
                 string name = ss[1];
-                int n = int.Parse(ss[3]);
+                int n = int.Parse(ss[2]);
                 string typeCs = ConvertType(type);
 
                 sb.Append($"\t\t[ProtoMember({n})]\n");
