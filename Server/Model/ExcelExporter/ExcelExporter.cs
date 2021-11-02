@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -58,7 +59,7 @@ namespace ET
                 foreach (string path in Directory.GetFiles(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
-                    if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$"))
+                    if (!(fileName.EndsWith(".xlsx") || fileName.EndsWith(".xlsm")) || fileName.StartsWith("~$"))
                     {
                         continue;
                     }
@@ -77,6 +78,7 @@ namespace ET
                 ExportExcelProtobuf(ConfigType.Server);
                 
                 Console.WriteLine("导表成功!");
+                Process.GetCurrentProcess().Kill();
             }
             catch (Exception e)
             {
