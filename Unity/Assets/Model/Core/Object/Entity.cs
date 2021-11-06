@@ -178,9 +178,9 @@ namespace ET
         {
             set
             {
-                if (this.parent != null)
+                if (value == null)
                 {
-                    throw new Exception($"Component parent is not null: {this.GetType().Name}");
+                    throw new Exception($"cant set parent null: {this.GetType().Name}");
                 }
                 
                 if (value == this)
