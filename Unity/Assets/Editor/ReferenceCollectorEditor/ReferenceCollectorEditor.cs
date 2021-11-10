@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 //Object并非C#基础中的Object，而是 UnityEngine.Object
 using Object = UnityEngine.Object;
+
 
 //自定义ReferenceCollector类在界面中的显示与功能
 [CustomEditor(typeof (ReferenceCollector))]
@@ -34,18 +36,48 @@ public class ReferenceCollectorEditor: Editor
 
 	private string _searchKey = "";
 
+	private static Dictionary<RCComponentType,Type> _typeDict => ReferenceCollectorExtension.TypeDict;
+
+
 	private void DelNullReference()
 	{
-		var dataProperty = serializedObject.FindProperty("data");
-		for (int i = dataProperty.arraySize - 1; i >= 0; i--)
+		List<ReferenceCollectorData> datas = referenceCollector.data;
+		List<int> delList = new List<int>();
+
+        for (int i = 0; i < datas.Count; i++)
+        {
+            if (!datas[i].isArray)
+            {
+				if(datas[i].gameObject == null)
+                {
+					delList.Add(i);
+                }
+            }
+            else
+            {
+				List<int> delList1 = new List<int>();
+                for (int j = 0; j < datas[i].gameObjects.Count; j++)
+                {
+					if(datas[i].gameObjects[j] == null)
+                    {
+						delList1.Add(j);
+                    }
+                }
+                for (int index = datas[i].gameObjects.Count -1; index >= 0; index--)
+                {
+                    if (delList1.Contains(index))
+                    {
+						datas[i].gameObjects.RemoveAt(index);
+                    }
+                }
+			}
+		}
+
+		for (int index = datas.Count - 1; index >= 0; index--)
 		{
-			var gameObjectProperty = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
-			if (gameObjectProperty.objectReferenceValue == null)
+			if (delList.Contains(index))
 			{
-				dataProperty.DeleteArrayElementAtIndex(i);
-				EditorUtility.SetDirty(referenceCollector);
-				serializedObject.ApplyModifiedProperties();
-				serializedObject.UpdateIfRequiredOrScript();
+				datas.RemoveAt(index);
 			}
 		}
 	}
@@ -60,15 +92,16 @@ public class ReferenceCollectorEditor: Editor
 	{
         //使ReferenceCollector支持撤销操作，还有Redo，不过没有在这里使用
         Undo.RecordObject(referenceCollector, "Changed Settings");
-		var dataProperty = serializedObject.FindProperty("data");
-        //开始水平布局，如果是比较新版本学习U3D的，可能不知道这东西，这个是老GUI系统的知识，除了用在编辑器里，还可以用在生成的游戏中
+		List<ReferenceCollectorData> datas = referenceCollector.data;
+		//开始水平布局，如果是比较新版本学习U3D的，可能不知道这东西，这个是老GUI系统的知识，除了用在编辑器里，还可以用在生成的游戏中
+		GUILayout.Label("选中物体再按Ctrl+E后可以点击复制按钮快速引用，支持批量选中。",GUILayout.Height(35));
 		GUILayout.BeginHorizontal();
         //下面几个if都是点击按钮就会返回true调用里面的东西
 		if (GUILayout.Button("添加引用"))
 		{
             //添加新的元素，具体的函数注释
             // Guid.NewGuid().GetHashCode().ToString() 就是新建后默认的key
-            AddReference(dataProperty, Guid.NewGuid().GetHashCode().ToString(), null);
+            AddReference(datas, Guid.NewGuid().GetHashCode().ToString(), null);
 		}
 		if (GUILayout.Button("全部删除"))
 		{
@@ -82,36 +115,99 @@ public class ReferenceCollectorEditor: Editor
 		{
 			referenceCollector.Sort();
 		}
-		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.BeginHorizontal();
-        //可以在编辑器中对searchKey进行赋值，只要输入对应的Key值，就可以点后面的删除按钮删除相对应的元素
-        searchKey = EditorGUILayout.TextField(searchKey);
-        //添加的可以用于选中Object的框，这里的object也是(UnityEngine.Object
-        //第三个参数为是否只能引用scene中的Object
-        EditorGUILayout.ObjectField(heroPrefab, typeof (Object), false);
-		if (GUILayout.Button("删除"))
+		if (GUILayout.Button("复制"))
 		{
-			referenceCollector.Remove(searchKey);
-			heroPrefab = null;
+            foreach (GameObject gameObjectToPaste in _gameObjectsToPaste)
+            {
+				AddReference(datas, gameObjectToPaste.name, gameObjectToPaste);
+            }
+			_gameObjectsToPaste.Clear();
 		}
-		GUILayout.EndHorizontal();
+		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.Space();
 
-		var delList = new List<int>();
-        SerializedProperty property;
+		var delList = new List<ReferenceCollectorData>();
         //遍历ReferenceCollector中data list的所有元素，显示在编辑器中
         for (int i = referenceCollector.data.Count - 1; i >= 0; i--)
 		{
+			GUILayout.Space(15);
+			ReferenceCollectorData data = datas[i];
 			GUILayout.BeginHorizontal();
-            //这里的知识点在ReferenceCollector中有说
-            property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("key");
-            EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
-            property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
-            property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
+
+			//这里的知识点在ReferenceCollector中有说
+			data.key = EditorGUILayout.TextField(data.key, GUILayout.Width(150));
+
+			EditorGUILayout.LabelField("数组",GUILayout.Width(30));
+			data.isArray = EditorGUILayout.ToggleLeft("", data.isArray, GUILayout.Width(20));
+            if (!data.isArray)
+			{
+				data.gameObject = EditorGUILayout.ObjectField(data.gameObject, typeof(Object), true);
+            }
+            else
+            {
+
+				if (GUILayout.Button("复制"))
+				{
+					foreach (GameObject gameObjectToPaste in _gameObjectsToPaste)
+					{
+                        if (CheckArrayItemValid(data, gameObjectToPaste))
+                        {
+							data.gameObjects.Add(gameObjectToPaste);
+                        }
+					}
+					_gameObjectsToPaste.Clear();
+				}
+				GUILayout.BeginVertical();
+				if(data.gameObjects.Count == 0)
+                {
+					data.gameObjects.Add(data.gameObject);
+                }
+				data.gameObject = data.gameObjects[0];
+                for (int j = 0; j < data.gameObjects.Count; j++)
+                {
+					GUILayout.BeginHorizontal();
+					data.gameObjects[j] = EditorGUILayout.ObjectField(data.gameObjects[j], typeof(Object), true);
+                    if (!CheckArrayItemValid(data, data.gameObjects[j]))
+                    {
+						data.gameObjects[j] = null;
+					}
+					if (GUILayout.Button("-"))
+					{
+						data.gameObjects.RemoveAt(j);
+						break;
+					}
+					if (GUILayout.Button("+"))
+					{
+						data.gameObjects.Add(null);
+						break;
+					}
+					GUILayout.EndHorizontal();
+				}
+				GUILayout.EndVertical();
+            }
+
 			if (GUILayout.Button("X"))
 			{
                 //将元素添加进删除list
-				delList.Add(i);
+				delList.Add(data);
+			}
+			GUILayout.EndHorizontal();
+			GUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("类型",GUILayout.Width(50));
+			GameObject gob = data.gameObject as GameObject;
+			string temp = data.componentTypeStr;
+			if(gob != null)
+			{
+				data.componentTypeStr = EditorGUILayout.EnumPopup(ProcessAndGetRCComponent(gob, data.componentTypeStr), GUILayout.Width(100)).ToString();
+            }
+            else
+            {
+				data.componentTypeStr = EditorGUILayout.EnumPopup((RCComponentType)Enum.Parse(typeof(RCComponentType), data.componentTypeStr), GUILayout.Width(100)).ToString();
+			}
+			if (temp != data.componentTypeStr && (data.gameObject != null || data.gameObjects.Count > 0))
+			{
+				data.gameObject = null;
+				data.gameObjects.Clear();
 			}
 			GUILayout.EndHorizontal();
 		}
@@ -127,7 +223,7 @@ public class ReferenceCollectorEditor: Editor
 				DragAndDrop.AcceptDrag();
 				foreach (var o in DragAndDrop.objectReferences)
 				{
-					AddReference(dataProperty, o.name, o);
+					AddReference(datas, o.name, o);
 				}
 			}
 
@@ -135,21 +231,79 @@ public class ReferenceCollectorEditor: Editor
 		}
 
         //遍历删除list，将其删除掉
-		foreach (var i in delList)
+		foreach (var d in delList)
 		{
-			dataProperty.DeleteArrayElementAtIndex(i);
+			datas.Remove(d);
 		}
 		serializedObject.ApplyModifiedProperties();
 		serializedObject.UpdateIfRequiredOrScript();
 	}
 
     //添加元素，具体知识点在ReferenceCollector中说了
-    private void AddReference(SerializedProperty dataProperty, string key, Object obj)
+    private void AddReference(List<ReferenceCollectorData> datas, string key, Object obj)
 	{
-		int index = dataProperty.arraySize;
-		dataProperty.InsertArrayElementAtIndex(index);
-		var element = dataProperty.GetArrayElementAtIndex(index);
-		element.FindPropertyRelative("key").stringValue = key;
-		element.FindPropertyRelative("gameObject").objectReferenceValue = obj;
+		ReferenceCollectorData data = new ReferenceCollectorData();
+		data.key = key;
+		data.gameObject = obj;
+		data.componentTypeStr = RCComponentType.Gameobject.ToString();
+		datas.Add(data);
 	}
+	private RCComponentType ProcessAndGetRCComponent(GameObject gob, string typeStr)
+    {
+		if(gob == null)
+        {
+			return RCComponentType.None;
+        }
+		RCComponentType e =  RCComponentType.None;
+		if(!Enum.TryParse(typeStr, out e))
+        {
+			return RCComponentType.Gameobject;
+        }
+        switch (e)
+        {
+            case RCComponentType.Gameobject:
+				return e;
+        }
+        if(_typeDict.TryGetValue(e,out Type type))
+		{
+			Object obj = gob.GetComponent(type);
+			if (obj != null)
+			{
+				return e;
+			}
+		}
+		return RCComponentType.Gameobject;
+    }
+	private bool CheckArrayItemValid(ReferenceCollectorData data, Object obj)
+	{
+		RCComponentType e = RCComponentType.None;
+		Enum.TryParse(data.componentTypeStr, out e);
+		if (e == RCComponentType.None || e == RCComponentType.Gameobject)
+		{
+			return true;
+		}
+		GameObject gob = obj as GameObject;
+		Type type = null;
+		_typeDict.TryGetValue(e, out type);
+		if (gob == null || type == null)
+		{
+			return false;
+		}
+		var comp = gob.GetComponent(type);
+		return comp != null;
+	}
+
+	private static List<GameObject> _gameObjectsToPaste = new List<GameObject>();
+	[MenuItem("Tools/复制选中物体 %E")]
+	public static void CopyGameObjects()
+    {
+		if(Selection.gameObjects.Length > 0)
+        {
+			_gameObjectsToPaste.Clear();
+            foreach (var gob in Selection.gameObjects)
+            {
+				_gameObjectsToPaste.Add(gob);
+            }
+        }
+    }
 }
