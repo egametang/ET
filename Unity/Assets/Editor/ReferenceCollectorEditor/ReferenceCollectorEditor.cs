@@ -159,17 +159,17 @@ public class ReferenceCollectorEditor: Editor
 					data.gameObjects.Add(data.gameObject);
                 }
 				data.gameObject = data.gameObjects[0];
-                for (int j = 0; j < data.gameObjects.Count; j++)
+                for (int i = 0; i < data.gameObjects.Count; i++)
                 {
 					GUILayout.BeginHorizontal();
-					data.gameObjects[j] = EditorGUILayout.ObjectField(data.gameObjects[j], typeof(Object), true);
-                    if (!CheckArrayItemValid(data, data.gameObjects[j]))
+					data.gameObjects[i] = EditorGUILayout.ObjectField(data.gameObjects[i], typeof(Object), true);
+                    if (!CheckArrayItemValid(data, data.gameObjects[i]))
                     {
-						data.gameObjects[j] = null;
+						data.gameObjects[i] = null;
 					}
 					if (GUILayout.Button("-"))
 					{
-						data.gameObjects.RemoveAt(j);
+						data.gameObjects.RemoveAt(i);
 						if (data.gameObjects.Count == 0)
 						{
 							data.gameObjects.Add(null);
@@ -178,7 +178,7 @@ public class ReferenceCollectorEditor: Editor
 					}
 					if (GUILayout.Button("+"))
 					{
-						data.gameObjects.Add(null);
+						data.gameObjects.Insert(i + 1, null);
 						break;
 					}
 					GUILayout.EndHorizontal();
