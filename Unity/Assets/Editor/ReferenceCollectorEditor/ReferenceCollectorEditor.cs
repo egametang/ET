@@ -195,20 +195,25 @@ public class ReferenceCollectorEditor: Editor
 			GUILayout.BeginHorizontal();
 			EditorGUILayout.LabelField("类型",GUILayout.Width(50));
 			GameObject gob = data.gameObject as GameObject;
-			string temp = data.componentTypeStr;
-			if(gob != null)
+            if (data.isArray)
 			{
-				data.componentTypeStr = EditorGUILayout.EnumPopup(ProcessAndGetRCComponent(gob, data.componentTypeStr), GUILayout.Width(100)).ToString();
+				data.componentTypeStr = EditorGUILayout.EnumPopup((RCComponentType)Enum.Parse(typeof(RCComponentType), data.componentTypeStr), GUILayout.Width(100)).ToString();
+				for (int i = 0; i < data.gameObjects.Count; i++)
+                {
+					if(data.gameObjects[i] != null)
+                    {
+                        if (!CheckArrayItemValid(data, data.gameObjects[i]))
+                        {
+							data.gameObjects[i] = null;
+                        }
+                    }
+                }
             }
             else
-            {
-				data.componentTypeStr = EditorGUILayout.EnumPopup((RCComponentType)Enum.Parse(typeof(RCComponentType), data.componentTypeStr), GUILayout.Width(100)).ToString();
-			}
-			if (temp != data.componentTypeStr && (data.gameObject != null || data.gameObjects.Count > 0))
 			{
-				data.gameObject = null;
-				data.gameObjects.Clear();
+				data.componentTypeStr = EditorGUILayout.EnumPopup(ProcessAndGetRCComponent(gob, data.componentTypeStr), GUILayout.Width(100)).ToString(); 
 			}
+            
 			GUILayout.EndHorizontal();
 		}
 		var eventType = Event.current.type;
