@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 //Object并非C#基础中的Object，而是 UnityEngine.Object
 using Object = UnityEngine.Object;
 
@@ -38,8 +38,11 @@ public class ReferenceCollectorEditor: Editor
 
 	private static Dictionary<RCComponentType,Type> _typeDict => ReferenceCollectorExtension.TypeDict;
 
-
-	private void DelNullReference()
+    private void OnEnable()
+    {
+        referenceCollector = target as ReferenceCollector;
+    }
+    private void DelNullReference()
 	{
 		List<ReferenceCollectorData> datas = referenceCollector.data;
 		List<int> delList = new List<int>();
@@ -82,13 +85,7 @@ public class ReferenceCollectorEditor: Editor
 		}
 	}
 
-	private void OnEnable()
-	{
-        //将被选中的gameobject所挂载的ReferenceCollector赋值给编辑器类中的ReferenceCollector，方便操作
-        referenceCollector = (ReferenceCollector) target;
-	}
-
-	public override void OnInspectorGUI()
+    public override void OnInspectorGUI()
 	{
         //使ReferenceCollector支持撤销操作，还有Redo，不过没有在这里使用
         Undo.RecordObject(referenceCollector, "Changed Settings");
@@ -128,10 +125,9 @@ public class ReferenceCollectorEditor: Editor
 
 		var delList = new List<ReferenceCollectorData>();
         //遍历ReferenceCollector中data list的所有元素，显示在编辑器中
-        for (int i = referenceCollector.data.Count - 1; i >= 0; i--)
+        foreach(var data in datas)
 		{
 			GUILayout.Space(15);
-			ReferenceCollectorData data = datas[i];
 			GUILayout.BeginHorizontal();
 
 			//这里的知识点在ReferenceCollector中有说
@@ -174,6 +170,10 @@ public class ReferenceCollectorEditor: Editor
 					if (GUILayout.Button("-"))
 					{
 						data.gameObjects.RemoveAt(j);
+						if (data.gameObjects.Count == 0)
+						{
+							data.gameObjects.Add(null);
+						}
 						break;
 					}
 					if (GUILayout.Button("+"))
@@ -300,10 +300,7 @@ public class ReferenceCollectorEditor: Editor
 		if(Selection.gameObjects.Length > 0)
         {
 			_gameObjectsToPaste.Clear();
-            foreach (var gob in Selection.gameObjects)
-            {
-				_gameObjectsToPaste.Add(gob);
-            }
+			_gameObjectsToPaste = Selection.gameObjects.OrderBy(gob => gob.name).ToList();
         }
-    }
+	}
 }
