@@ -262,6 +262,10 @@ namespace ETModel
 			{
 				try
 				{
+					if (this.IsDisposed)
+					{
+						break;
+					}
 					if (!this.parser.Parse())
 					{
 						break;
