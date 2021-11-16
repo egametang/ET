@@ -1,0 +1,327 @@
+--[[
+Copyright 2017 YANG Huan (sy.yanghuan@gmail.com).
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--]]
+
+local System = System
+local define = System.define
+local defStc = System.defStc
+local throw = System.throw
+local try = System.try
+local trunc = System.trunc
+local Void = System.Void
+local post = System.post
+local addTimer = System.addTimer
+local removeTimer = System.removeTimer
+local waitTask = System.Thread.waitTask
+local arrayFromTable = System.arrayFromTable
+local Exception = System.Exception
+local NullReferenceException = System.NullReferenceException
+local NotSupportedException = System.NotSupportedException
+local NotImplementedException = System.NotImplementedException
+local ArgumentException = System.ArgumentException
+local ArgumentNullException = System.ArgumentNullException
+local ArgumentOutOfRangeException = System.ArgumentOutOfRangeException
+local InvalidOperationException = System.InvalidOperationException
+local AggregateException = System.AggregateException
+local ObjectDisposedException = System.ObjectDisposedException
+
+local ccreate = System.ccreate
+local cpool = System.cpool
+local cresume = System.cresume
+local cyield = System.yield
+
+local type = type
+local table = table
+local select = select
+local assert = assert
+local getmetatable = getmetatable
+local setmetatable = setmetatable
+local tremove = table.remove
+local pack = table.pack
+local unpack = table.unpack
+local error = error
+
+local AwaiterStatusPending = 0
+local AwaiterStatusSucceeded = 1
+local AwaiterStatusFaulted = 2
+
+
+local function newTaskExceptionHolder(task, exception)
+    return setmetatable({ task = task, exception = exception }, TaskExceptionHolder)
+end
+
+local function getException(task, await)
+    local holder = task.data
+    if not holder.isHandled then
+        holder.isHandled = true
+    end
+    local e = holder.exception
+    if await then
+        return e
+    end
+    return AggregateException(e)
+end
+
+local ETTask
+local function isCompleted(this)
+    local status = this.status
+    return status ~= AwaiterStatusPending
+end
+
+
+local function createETTask(...)
+    local fromPool
+    if(select('#', ...) == 1)then
+        fromPool = ...
+    end
+    if not fromPool then
+        local this = setmetatable({}, ETTask)
+        return this, ETTask.__ctor__(this)
+    end
+    local this = setmetatable({}, ETTask)
+    return this, ETTask.__ctor__(this)
+end
+local function newTask(status, data)
+    local task= createETTask();
+    task.data=data
+    status = status or AwaiterStatusPending
+    task.status = status
+    return task
+end
+
+local function fromException(exception)
+    local data = newTaskExceptionHolder(false, exception)
+    local t = newTask(AwaiterStatusFaulted, data)
+    data.task = t
+    return t
+end
+local function trySetComplete(this, status, data)
+    if isCompleted(this) then
+        return false
+    end
+
+    this.status = status
+    this.data = data
+
+    local continueActions = this.continueActions
+    if continueActions then
+        for i = 1, #continueActions do
+            continueActions[i](this)
+        end
+        this.continueActions = nil
+    end
+    return true
+end
+
+local function trySetResult(this, result)
+    return trySetComplete(this, AwaiterStatusSucceeded, result)
+end
+
+local function trySetException(this, exception)
+    if this.data == Void then
+        throw(exception)
+    end
+    return trySetComplete(this, AwaiterStatusFaulted, newTaskExceptionHolder(this, exception))
+end
+
+local function newWaitingTask(isVoid)
+    return newTask(AwaiterStatusPending, isVoid and Void)
+end
+
+local function getContinueActions(task)
+    local continueActions = task.continueActions
+    if continueActions == nil then
+        continueActions = {}
+        task.continueActions = continueActions
+    end
+    return continueActions
+end
+
+local function addContinueAction(task, f)
+    local continueActions = getContinueActions(task)
+    continueActions[#continueActions + 1] = assert(f)
+end
+
+local waitToken = {}
+local function getResult(this, await)
+    local status = this.status
+    if status == AwaiterStatusSucceeded then
+        return this.data
+    elseif status == AwaiterStatusFaulted then
+        throw(getException(this, await))
+    else
+        throw(NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'."))
+    end
+    return waitToken
+end
+
+local function getAwaitResult(task)
+    local status = task.status
+    local ok, v
+    if status == AwaiterStatusSucceeded then
+        ok, v = true, task.data
+    elseif status == AwaiterStatusFaulted then
+        ok, v = false, getException(task, true)
+    else
+        throw(NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'."))
+    end
+    return ok, v
+end
+
+local ETTaskAwaiter
+ETTaskAwaiter = define("ET.ETTaskAwaiter", {
+    __ctor__ = function(this, t)
+        this.task = t
+    end,
+    getIsCompleted = function(this)
+        return this.task.status ~= AwaiterStatusPending
+    end,
+    GetResult = function(this)
+        local status = this.task.status
+        if status == AwaiterStatusSucceeded then
+            return this.task.data
+        elseif status == AwaiterStatusFaulted then
+            throw(getException(this.task, this))
+        else
+            throw(NotSupportedException("ETTask does not allow call GetResult directly when task not completed. Please use 'await'."))
+        end
+    end,
+    OnCompleted = function(this, f)
+        if this.task.status ~= AwaiterStatusPending then
+            if f then
+                f()
+                return
+            end
+        end
+        addContinueAction(this.task, f)
+    end
+})
+
+ETTask = define("ET.ETTask", {
+    Dispose = System.emptyFn,
+    __ctor__ = function(this)
+        this.fromPool = false
+        this.data = nil
+        this.awaiter = ETTaskAwaiter(this)
+    end,
+    getResult = function(this)
+        local result = getResult(this)
+        if result == waitToken then
+            waitTask(getContinueActions(this))
+            result = getResult(this)
+            assert(result ~= waitToken)
+        end
+        return result
+    end,
+    getIsCompleted = isCompleted,
+    GetAwaiter = function(this)
+        return this.awaiter
+    end,
+    Create = function(...)
+        local task= createETTask(...);
+        status = AwaiterStatusPending
+        task.status = status
+        return task
+    end,
+    getCompletedTask = function()
+        return newTask(AwaiterStatusSucceeded, nil)
+    end,
+    Await = function(this, t)
+        local a = t:GetAwaiter()
+        if a:getIsCompleted() then
+            return a:GetResult()
+        end
+        a:OnCompleted(function()
+            local ok, v
+            try(function()
+                ok, v = true, a:GetResult()
+            end, function(e)
+                ok, v = false, e
+            end)
+            ok, v = cresume(this.c, ok, v)
+            if not ok then
+                assert(trySetException(this, v))
+            end
+        end)
+        local ok, v = cyield()
+        if ok then
+            return v
+        else
+            error(v)
+        end
+    end,
+    SetResult = function(this, result)
+        if not trySetResult(this, result) then
+            throw(InvalidOperationException(TaskT_TransitionToFinal_AlreadyCompleted))
+        end
+    end,
+    SetException = function(this, exception)
+        if not trySetException(this, exception) then
+            throw(InvalidOperationException(TaskT_TransitionToFinal_AlreadyCompleted))
+        end
+    end,
+    Coroutine=function(this)
+    end,
+    TrySetResult = trySetResult,
+    await = function(this, task)
+        if getmetatable(task) ~= ETTask then
+            return this:Await(task)
+        end
+
+        local result = getResult(task, true)
+        if result ~= waitToken then
+            return result
+        end
+        addContinueAction(task, function(task)
+            local ok, v = getAwaitResult(task)
+            ok, v = cresume(this.c, ok, v)
+            if not ok then
+                assert(trySetException(this, v))
+            end
+        end)
+        local ok, v = cyield()
+        if ok then
+            return v
+        else
+            error(v)
+        end
+    end
+})
+ET.ETTask = ETTask
+
+local ETTask_1 = define("ET.ETTask_1", function(T)
+    return ETTask
+end)
+ET.ETTask_1 = ETTask_1
+
+local function taskCoroutineCreate(t, f)
+    local fun = function(...)
+        local r = f(t, ...)
+        assert(trySetResult(t, r))
+    end
+    local c = ccreate(fun)
+    t.c = c
+    return c
+end
+
+function System.async(f, void, ...)
+    local task = newWaitingTask(void)
+    local c = taskCoroutineCreate(task, f)
+    local ok, v = cresume(c, ...)
+    if not ok then
+        assert(trySetException(task, v))
+    end
+    return task
+end

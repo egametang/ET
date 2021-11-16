@@ -1,0 +1,57 @@
+local typeof = typeof
+local isInstanceOfType = typeof(CS.System.Type).IsInstanceOfType
+
+local function isFromCSharp(T)
+  if T then
+    return T.__name ~= nil or T.UnderlyingSystemType ~= nil
+  end
+
+  return false
+end
+
+local function isUserdataType(obj, T)
+  if isFromCSharp(T) then
+    return isInstanceOfType(typeof(T), obj)
+  end
+  return false
+end
+
+local config = {
+  customTypeCheck = function (T)
+    if isFromCSharp(T) then
+      return isUserdataType
+    end
+  end,
+
+  customTypeof = function (T)
+    if isFromCSharp(T) then
+      return typeof(T)
+    end
+    return nil
+  end,
+
+}
+
+
+if jit then
+  -- luajit table.move may causes a crash in a version, do not confirm whether the current version is fixed
+  table.move = function(a1, f, e, t, a2)
+    if a2 == nil then a2 = a1 end
+    if t > f then
+      t = e - f + t
+      while e >= f do
+        a2[t] = a1[e]
+        t = t - 1
+        e = e - 1
+      end
+    else
+      while f <= e do
+        a2[t] = a1[f]
+        t = t + 1
+        f = f + 1
+      end
+    end
+  end
+end
+
+require("CSharpLua.All")("CSharpLua", config)

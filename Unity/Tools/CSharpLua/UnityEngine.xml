@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<meta>
+  <assembly>
+    <namespace name="UnityEngine">
+      <class name="MonoBehaviour">
+        <method name="CancelInvoke" ArgCount="1" Baned="true" />
+        <method name="Invoke" Baned="true" />
+        <method name="InvokeRepeating" Baned="true" />
+        <method name="IsInvoking" ArgCount="1" Baned="true" />
+        <method name="StartCoroutine" ArgCount="2" Baned="true" />
+        <method name="StartCoroutine" Baned="true">
+          <arg type="System.String" />
+        </method>
+        <method name="StartCoroutine_Auto" Baned="true" />
+        <method name="StopCoroutine" Baned="true">
+          <arg type="System.String" />
+        </method>
+      </class>
+      <class name="Component">
+        <method name="BroadcastMessage" Baned="true" />
+        <method name="SendMessage" Baned="true" />
+        <method name="SendMessageUpwards" Baned="true" />
+      </class>
+      <class name="Object">
+        <method name="DestroyObject" Baned="true" />
+        <method name="Instantiate" GenericArgCount="1" IgnoreGeneric="true" />
+        <method name="op_Equality" Template="UnityEngine.op_Equality({0}, {1})" />
+        <method name="op_Inequality" Template="UnityEngine.op_Inequality({0}, {1})" />
+        <method name="op_Implicit" Template="UnityEngine.op_Implicit({0})" />
+      </class>
+      <class name="Vector2">
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_UnaryNegation" Template="- {0}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Division" Template="{0} / {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector3" Template="UnityEngine.ToVector3({0})" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector2"  Template="UnityEngine.ToVector2({0})" />
+      </class>
+      <class name="Vector3">
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_UnaryNegation" Template="- {0}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Division" Template="{0} / {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+      <class name="Vector4">
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_UnaryNegation" Template="- {0}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Division" Template="{0} / {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector4" Template="UnityEngine.ToVector4({0})" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector3" Template="UnityEngine.ToVector3({0})" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector2" Template="UnityEngine.ToVector2({0})" />
+      </class>
+      <class name="Color">
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Division" Template="{0} / {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Implicit" RetType="UnityEngine.Color" Template="UnityEngine.ToColorFromVector4({0})" />
+        <method name="op_Implicit" RetType="UnityEngine.Vector4" Template="UnityEngine.ToVector4FromColor({0})" />
+      </class>
+      <class name="Color32">
+        <method name="op_Implicit" RetType="UnityEngine.Color32" Template="UnityEngine.ToColor32FromColor({0})" />
+        <method name="op_Implicit" RetType="UnityEngine.Color" Template="UnityEngine.ToColorFromColor32({0})" />
+      </class>
+      <class name="Quaternion">
+        <method name="Normalize" Name="SetNormalize" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+      <class name="Bounds">
+        <property name="extents" IsField="true" />
+        <property name="center" IsField="true" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+      <class name="Plane">
+        <property name="normal" IsField="true" />
+        <property name="distance" IsField="true" />
+      </class>
+      <class name="LayerMask">
+        <method name="op_Implicit" RetType="System.Int32" Template="this.value" />
+        <method name="op_Implicit" RetType="UnityEngine.LayerMask" Template="UnityEngine.ToLayerMask({0})" />
+      </class>
+      <class name="Ray">
+        <property name="origin" IsField="true" />
+        <property name="direction" IsField="true" />
+      </class>
+      <class name="RaycastHit">
+        <property name="collider" IsField="true" />
+        <property name="distance" IsField="true" />
+        <property name="normal" IsField="true" />
+        <property name="point" IsField="true" />
+        <property name="rigidbody" IsField="true" />
+        <property name="transform" IsField="true" />
+      </class>
+    </namespace>
+    <namespace name="LuaInterface">
+      <class name="Debugger" Name="Debugger" />
+    </namespace>
+  </assembly>
+</meta>

@@ -68,5 +68,53 @@ namespace ET
 				CopyDirectory(dirs[j].FullName, Path.Combine(target.FullName, dirs[j].Name));
 			}
 		}
+		
+		public static void ReplaceExtensionName(string srcDir, string extensionName, string newExtensionName)
+		{
+			if (Directory.Exists(srcDir))
+			{
+				string[] fls = Directory.GetFiles(srcDir);
+
+				foreach (string fl in fls)
+				{
+					if (fl.EndsWith(extensionName))
+					{
+						File.Move(fl, fl.Substring(0, fl.IndexOf(extensionName)) + newExtensionName);
+						File.Delete(fl);
+					}
+				}
+
+				string[] subDirs = Directory.GetDirectories(srcDir);
+
+				foreach (string subDir in subDirs)
+				{
+					ReplaceExtensionName(subDir, extensionName, newExtensionName);
+				}
+			}
+		}
+		
+		public static bool CopyFile(string sourcePath, string targetPath, bool overwrite)
+		{
+			string sourceText = null;
+			string targetText = null;
+
+			if (File.Exists(sourcePath))
+			{
+				sourceText = File.ReadAllText(sourcePath);
+			}
+
+			if (File.Exists(targetPath))
+			{
+				targetText = File.ReadAllText(targetPath);
+			}
+
+			if (sourceText != targetText && File.Exists(sourcePath))
+			{
+				File.Copy(sourcePath, targetPath, overwrite);
+				return true;
+			}
+
+			return false;
+		}
 	}
 }

@@ -1,0 +1,763 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright 2017 YANG Huan (sy.yanghuan@gmail.com).
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+!-->
+<meta>
+  <assembly>
+    <namespace name="System">
+      <class name="Single">
+        <field name="NaN" Template="System.Single.NaN" />
+        <field name="PositiveInfinity" Template="System.Single.PositiveInfinity" />
+        <field name="NegativeInfinity" Template="System.Single.NegativeInfinity" />
+      </class>
+      <class name="Double">
+        <field name="NaN" Template="System.Double.NaN" />
+        <field name="PositiveInfinity" Template="System.Double.PositiveInfinity" />
+        <field name="NegativeInfinity" Template="System.Double.NegativeInfinity" />
+      </class>
+      <class name="Decimal" Name="System.Double" />
+      <class name="Char">
+        <method name="ToString" Template="System.Char.ToString({0})">
+          <arg type="System.Char" />
+        </method>  
+        <method name="ToString" Template="System.Char.ToString({this})" />
+      </class>
+      <class name="String">
+        <field name="Empty" Template="(&quot;&quot;)" />
+        <property name="Length">
+          <get Template="#{this}" />
+        </property>
+        <method name="Concat" GenericArgCount="1" IgnoreGeneric="true" />
+        <method name="Join" GenericArgCount="1" Name="JoinEnumerable" IgnoreGeneric="true" />
+        <method name="Join" Name="JoinEnumerable">
+          <arg type="System.String" />
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+        </method>
+        <method name="Join" ArgCount="2" Name="JoinParams" />
+        <method name="LastIndexOf" Template="{this}:LastIndexOf({0}, nil, nil, {1})">
+          <arg type="System.String" />
+          <arg type="System.StringComparison" />
+        </method>
+        <method name="LastIndexOf" Template="{this}:LastIndexOf({0}, {1}, nil, {2})">
+          <arg type="System.String" />
+          <arg type="System.Int32" />
+          <arg type="System.StringComparison" />
+        </method>
+         <method name="Split" Template="{this}:Split({0}, nil, {1})">
+          <arg type="System.Char" />
+          <arg type="System.StringSplitOptions" />
+        </method>
+        <method name="Split" Template="{this}:Split({0}, nil, {1})">
+          <arg type="System.Char[]" />
+          <arg type="System.StringSplitOptions" />
+        </method>
+        <method name="Split" Template="{this}:Split({0}, nil, {1})">
+          <arg type="System.String[]" />
+          <arg type="System.StringSplitOptions" />
+        </method>
+      </class>
+      <class name="Enum">
+        <method name="Parse" GenericArgCount="1" ArgCount="1" Template="System.Enum.Parse({`0}, {0})" />
+        <method name="Parse" GenericArgCount="1" ArgCount="2" Template="System.Enum.Parse({`0}, {0}, {1})" />
+        <method name="TryParse" GenericArgCount="1" ArgCount="2" Template="System.Enum.TryParse({`0}, {0})" />
+        <method name="TryParse" GenericArgCount="1" ArgCount="3" Template="System.Enum.TryParse({`0}, {0}, {1})" />
+      </class>
+      <class name="DateTime">
+        <method name=".ctor" ArgCount="4" Baned="true" />
+        <method name=".ctor" Baned="true">
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Globalization.Calendar" />
+        </method>
+        <method name=".ctor" Baned="true">
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Globalization.Calendar" />
+        </method>
+        <method name=".ctor" ArgCount="9" Baned="true" />
+        <method name=".ctor" Template="System.DateTime({0}, {1}, {2}, {3}, {4}, {5}, 0, {6})">
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+          <arg type="System.DateTimeKind" />
+        </method>
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_LessThan" Template="{0} &lt; {1}" />
+        <method name="op_LessThanOrEqual" Template="{0} &lt;= {1}" />
+        <method name="op_GreaterThan" Template="{0} &gt; {1}" />
+        <method name="op_GreaterThanOrEqual" Template="{0} &gt;= {1}" />
+      </class>
+      <class name="TimeSpan">
+        <method name="op_UnaryPlus" Template="{0}" />
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_UnaryNegation" Template="-{0}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_LessThan" Template="{0} &lt; {1}" />
+        <method name="op_LessThanOrEqual" Template="{0} &lt;= {1}" />
+        <method name="op_GreaterThan" Template="{0} &gt; {1}" />
+        <method name="op_GreaterThanOrEqual" Template="{0} &gt;= {1}" />
+      </class>
+      <class name="TimeZoneInfo">
+        <property name="BaseUtcOffset" >
+          <get Template="System.DateTime.BaseUtcOffset" />
+        </property>
+      </class>
+      <class name="Object">
+        <method name="Equals" Name="EqualsObj" >
+          <arg type="System.Object" />
+        </method>
+        <method name="Equals" Name="EqualsStatic" >
+          <arg type="System.Object" />
+          <arg type="System.Object" />
+        </method>
+      </class>
+      <class name="Type">
+        <method name="GetType" ArgCount ="1" Name="GetTypeFrom" />
+        <method name="GetType" ArgCount ="2" Name="GetTypeFrom" />
+        <method name="GetType" ArgCount ="3" Name="GetTypeFrom" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+      <class name="Array">
+        <property name="Length">
+          <get Template="#{this}" />
+        </property>
+        <method name="BinarySearch" IgnoreGeneric="true" />
+        <method name="Clear" Name="ClearArray" />
+        <method name="Exists" IgnoreGeneric="true" />
+        <method name="Fill" IgnoreGeneric="true" />
+        <method name="Find" IgnoreGeneric="true" />
+        <method name="FindAll" IgnoreGeneric="true" />
+        <method name="FindIndex" IgnoreGeneric="true" />
+        <method name="FindLast" IgnoreGeneric="true" />
+        <method name="FindLastIndex" IgnoreGeneric="true" />
+        <method name="ForEach" IgnoreGeneric="true" />
+        <method name="IndexOf" IgnoreGeneric="true" />
+        <method name="LastIndexOf" IgnoreGeneric="true" />
+        <method name="Reverse" IgnoreGeneric="true" />
+        <method name="Sort" IgnoreGeneric="true" />
+        <method name="TrueForAll" IgnoreGeneric="true" />
+      </class>
+      <class name="IComparable">
+        <method name="CompareTo" Name="CompareToObj" />
+      </class>
+      <class name="Console">
+        <method name="Write" Name="WriteChar" >
+          <arg type="System.Char" />
+        </method>
+        <method name="WriteLine" Name="WriteLineChar" >
+          <arg type="System.Char" />
+        </method>
+      </class>
+      <class name="Math" Name="math" >
+        <method name="Round" Template="math.Round({0}, nil, {1})">
+          <arg type="System.Double" />
+          <arg type="System.MidpointRounding" />
+        </method>
+        <method name="Round" Template="math.Round({0}, nil, {1})">
+          <arg type="System.Decimal" />
+          <arg type="System.MidpointRounding" />
+        </method>
+      </class>
+      <class name="Activator" >
+        <method name="CreateInstance" Template="System.Activator.CreateInstance({0}, {*1})">
+          <arg type="System.Type" />
+          <arg type="System.Object[]" />
+        </method>
+        <method name="CreateInstance" Name="CreateInstance1">
+          <arg type="System.Type" />
+          <arg type="System.Boolean" />
+        </method>
+        <method name="CreateInstance" ArgCount="3" Baned="true" />
+        <method name="CreateInstance" ArgCount="5" Baned="true" />
+        <method name="CreateInstance" ArgCount="6" Baned="true" />
+      </class>
+      <class name="Tuple">
+        <method name="Create" ArgCount="1" Template="System.Tuple({0})" />
+        <method name="Create" ArgCount="2" Template="System.Tuple({0}, {1})" />
+        <method name="Create" ArgCount="3" Template="System.Tuple({0}, {1}, {2})" />
+        <method name="Create" ArgCount="4" Template="System.Tuple({0}, {1}, {2}, {3})" />
+        <method name="Create" ArgCount="5" Template="System.Tuple({0}, {1}, {2}, {3}, {4})" />
+        <method name="Create" ArgCount="6" Template="System.Tuple({0}, {1}, {2}, {3}, {4}, {5})" />
+        <method name="Create" ArgCount="7" Template="System.Tuple({0}, {1}, {2}, {3}, {4}, {5}, {6})" />
+        <method name="Create" ArgCount="8" Template="System.Tuple({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})" />
+      </class>
+      <class name="Tuple`1" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property> 
+      </class>
+      <class name="Tuple`2" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+      </class>
+      <class name="Tuple`3" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+      </class>
+      <class name="Tuple`4" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+        <property name="Item4">
+          <get Template="{this}[4]" />
+        </property>
+      </class>
+      <class name="Tuple`5" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+        <property name="Item4">
+          <get Template="{this}[4]" />
+        </property>
+        <property name="Item5">
+          <get Template="{this}[5]" />
+        </property>
+      </class>
+      <class name="Tuple`6" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+        <property name="Item4">
+          <get Template="{this}[4]" />
+        </property>
+        <property name="Item5">
+          <get Template="{this}[5]" />
+        </property>
+        <property name="Item6">
+          <get Template="{this}[6]" />
+        </property>
+      </class>
+      <class name="Tuple`7" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+        <property name="Item4">
+          <get Template="{this}[4]" />
+        </property>
+        <property name="Item5">
+          <get Template="{this}[5]" />
+        </property>
+        <property name="Item6">
+          <get Template="{this}[6]" />
+        </property>
+        <property name="Item7">
+          <get Template="{this}[7]" />
+        </property>
+      </class>
+      <class name="Tuple`8" IgnoreGeneric="true">
+        <property name="Item1">
+          <get Template="{this}[1]" />
+        </property>
+        <property name="Item2">
+          <get Template="{this}[2]" />
+        </property>
+        <property name="Item3">
+          <get Template="{this}[3]" />
+        </property>
+        <property name="Item4">
+          <get Template="{this}[4]" />
+        </property>
+        <property name="Item5">
+          <get Template="{this}[5]" />
+        </property>
+        <property name="Item6">
+          <get Template="{this}[6]" />
+        </property>
+        <property name="Item7">
+          <get Template="{this}[7]" />
+        </property>
+        <property name="Item8">
+          <get Template="{this}[8]" />
+        </property>
+      </class>
+      <class name="ValueTuple">
+        <method name="Create" ArgCount="2" Template="System.ValueTuple({0}, {1})" />
+        <method name="Create" ArgCount="3" Template="System.ValueTuple({0}, {1}, {2})" />
+        <method name="Create" ArgCount="4" Template="System.ValueTuple({0}, {1}, {2}, {3})" />
+        <method name="Create" ArgCount="5" Template="System.ValueTuple({0}, {1}, {2}, {3}, {4})" />
+        <method name="Create" ArgCount="6" Template="System.ValueTuple({0}, {1}, {2}, {3}, {4}, {5})" />
+        <method name="Create" ArgCount="7" Template="System.ValueTuple({0}, {1}, {2}, {3}, {4}, {5}, {6})" />
+        <method name="Create" ArgCount="8" Template="System.ValueTuple({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})" />
+      </class>
+      <class name="Nullable`1" Name="System.Nullable">
+        <method name=".ctor" Template="{0}" />
+        <property name="HasValue">
+          <get Template="({this} ~= nil)" />
+        </property>
+        <property name="Value">
+          <get Template="System.Nullable.Value({this})" />
+        </property>
+        <method name="Equals" Template="System.Nullable.EqualsObj({this}, {0})" />
+        <method name="GetHashCode" Template="System.Nullable.GetHashCode({this})" />
+        <method name="GetValueOrDefault" ArgCount="0" Template="({this} or {`0}:default())" />
+        <method name="GetValueOrDefault" ArgCount="1" Template="({this} or {0})" />
+        <method name="ToString" Template="System.toString({this})" />
+        <method name="op_Explicit" Template="System.Nullable.Value({0})" />
+      </class>
+      <class name="MulticastDelegate" Name="System.Delegate" />
+      <class name="Index">
+        <property name="End" IsField="true" />
+        <property name="Start" IsField="true" />
+        <property name="Value">
+          <get Template="{this}" />
+        </property>
+        <property name="IsFromEnd">
+          <get Template="System.Index.IsFromEnd({this})" />
+        </property>
+        <method name="FromStart" Template="System.Index({0})" />
+        <method name="FromEnd" Template="System.Index({0}, true)" />
+        <method name="GetOffset" Template="System.Index.GetOffset({this}, {0})" />
+        <method name="ToString" Template="System.Index.ToString({this})" />
+        <method name="op_Implicit" Template="System.Index({0})" />
+      </class>
+      <class name="WeakReference`1" IgnoreGeneric="true" />
+      <class name="Lazy`1" Name="System.Lazy" />
+      <class name="Convert">
+        <method name="ToString" Name="ToStringFromChar">
+          <arg type="System.Char" />
+        </method>
+        <method name="ToString" Name="ToStringFromChar">
+          <arg type="System.Char" />
+          <arg type="System.IFormatProvider" />
+        </method>
+        <method name="ToString" Template="({0})">
+          <arg type="System.String" />
+        </method>
+        <method name="ToString" Template="({0})">
+          <arg type="System.String" />
+          <arg type="System.IFormatProvider" />
+        </method>
+        <method name="ToString" Template="System.Convert.ToString({0}, {1}, System.toUInt16)">
+          <arg type="System.Int16" />
+          <arg type="System.Int32" />
+        </method>
+        <method name="ToString" Template="System.Convert.ToString({0}, {1}, System.toUInt32)">
+          <arg type="System.Int32" />
+          <arg type="System.Int32" />
+        </method>
+      </class>
+      <class name="BitConverter">
+        <method name="GetBytes" Name="GetBytesFromBoolean">
+          <arg type="System.Boolean" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt16">
+          <arg type="System.Char" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt16">
+          <arg type="System.Int16" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt16">
+          <arg type="System.UInt16" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt32">
+          <arg type="System.Int32" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt32">
+          <arg type="System.UInt32" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt64">
+          <arg type="System.Int64" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromInt64">
+          <arg type="System.UInt64" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromFloat">
+          <arg type="System.Single" />
+        </method>
+        <method name="GetBytes" Name="GetBytesFromDouble">
+          <arg type="System.Double" />
+        </method>
+      </class>
+      <class name="ArraySegment`1" Name="System.ArraySegment" />
+      <class name="Guid" Readonly="true" />
+      <class name="ArgumentNullException">
+        <method name=".ctor" Template="System.ArgumentNullException(nil, {0}, {1})">
+          <arg type="System.String" />
+          <arg type="System.Exception" />
+        </method>
+      </class>
+      <class name="ArgumentOutOfRangeException">
+        <method name=".ctor" Template="System.ArgumentOutOfRangeException(nil, {0}, {1})">
+          <arg type="System.String" />
+          <arg type="System.Exception" />
+        </method>
+        <method name=".ctor" Template="System.ArgumentOutOfRangeException({0}, nil, nil, {1}, {2})">
+          <arg type="System.String" />
+          <arg type="System.Object" />
+          <arg type="System.String" />
+        </method>
+      </class>
+      <class name="ObjectDisposedException">
+        <method name=".ctor" Template="System.ObjectDisposedException(nil, {0}, {1})">
+          <arg type="System.String" />
+          <arg type="System.Exception" />
+        </method>
+      </class>
+    </namespace>
+    <namespace name="System.Collections" Name="System" >
+      <class name="IEqualityComparer">
+        <method name="Equals" Name="EqualsObjOf" />
+        <method name="GetHashCode" Name="GetHashCodeObjOf" />
+      </class>
+      <class name="IList">
+        <method name="Add" Name="AddObj" />
+      </class>
+      <class name="Queue" Name="queue" />
+      <class name="Stack" Name="stack" />
+    </namespace>
+    <namespace name="System.Collections.Generic" Name="System">
+      <class name="List`1" Name="System.List">
+        <property name="Count">
+          <get Template="#{this}" />
+        </property>
+      </class>
+      <class name="Dictionary`2" Name="System.Dictionary"/>
+      <class name="Queue`1" Name="System.Queue">
+        <property name="Count">
+          <get Template="#{this}" />
+        </property>
+      </class>
+      <class name="Stack`1" Name="System.Stack">
+        <property name="Count">
+          <get Template="#{this}" />
+        </property>
+      </class>
+      <class name="LinkedList`1" Name="System.LinkedList">
+        <property name="Count" IsField="true" />
+        <method name="AddAfter" Name="AddAfterNode">
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+        </method>
+        <method name="AddBefore" Name="AddBeforeNode">
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+        </method>
+        <method name="AddFirst" Name="AddFirstNode">
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+        </method>
+        <method name="AddLast" Name="AddLastNode">
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+        </method>
+        <method name="Remove" Name="RemoveNode">
+          <arg type="System.Collections.Generic.LinkedListNode`1" />
+        </method>
+      </class>
+      <class name="LinkedListNode`1" Name="System.LinkedListNode" IgnoreGeneric="true">
+        <property name="Value" IsField="true" />
+        <property name="List" IsField="true" />
+      </class>
+      <class name="HashSet`1" Name="System.HashSet" />
+      <class name="KeyValuePair`2" Name="System.KeyValuePair">
+        <property name="Key" IsField="true" />
+        <property name="Value" IsField="true" />
+      </class>
+      <class name="IDictionary`2">
+        <method name="Add" Name="AddKeyValue" />
+        <method name="Remove" Name="RemoveKey" />
+      </class>
+      <class name="IEqualityComparer`1">
+        <method name="Equals" Name="EqualsOf" />
+        <method name="GetHashCode" Name="GetHashCodeOf" />
+      </class>
+      <class name="EqualityComparer`1" Name="System.EqualityComparer" />
+    </namespace>
+    <namespace name="System.Collections.ObjectModel" Name="System" >
+      <class name="ReadOnlyCollection`1" Name="System.ReadOnlyCollection" />
+    </namespace>
+    <namespace name="System.Linq">
+      <class name="Enumerable">
+        <method name="Where" Template="Linq.Where({0}, {1})" />
+        <method name="Select" Template="Linq.Select({0}, {1}, {`1})" />
+        <method name="SelectMany" Template="Linq.SelectMany({0}, {1}, {`1})" />
+        <method name="Take" Template="Linq.Take({0}, {1})" />
+        <method name="TakeWhile" Template="Linq.TakeWhile({0}, {1})" />
+        <method name="Skip" Template="Linq.Skip({0}, {1})" />
+        <method name="SkipWhile" Template="Linq.SkipWhile({0}, {1})" />
+        <method name="Join" ArgCount="5" Template="Linq.Join({0}, {1}, {2}, {3}, {4}, {5}, nil, {`2}, {`3})" />
+        <method name="Join" ArgCount="6" Template="Linq.Join({0}, {1}, {2}, {3}, {4}, {5}, {6}, {`2}, {`3})" />
+        <method name="GroupJoin" ArgCount="5" Template="Linq.GroupJoin({0}, {1}, {2}, {3}, {4}, {5}, nil, {`2}, {`3})" />
+        <method name="GroupJoin" ArgCount="6" Template="Linq.GroupJoin({0}, {1}, {2}, {3}, {4}, {5}, {6}, {`2}, {`3})" />
+        <method name="GroupBy" ArgCount="2" Template="Linq.GroupBy({0}, {1}, {`1})" />
+        <method name="GroupBy" Template="Linq.GroupBy({0}, {1}, {2}, {`1})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBy({0}, {1}, {2}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBySelect({0}, {1}, {2}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`3" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBy({0}, {1}, {2}, {3}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBySelect({0}, {1}, {2}, {3}, {`1}, {`2}, {`3})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`3" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBySelect({0}, {1}, {2}, {3}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`3" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="GroupBy" Template="Linq.GroupBySelect({0}, {1}, {2}, {3}, {4}, {`1}, {`2}, {`3})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`3" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="Concat" Template="Linq.Concat({0}, {1})" />
+        <method name="Zip" Template="Linq.Zip({0, {1}, {2}}, {`2})" />
+        <method name="Distinct" Template="Linq.Distinct({0}, {1})" />
+        <method name="Union" Template="Linq.Union({0}, {1}, {2})" />
+        <method name="Intersect" Template="Linq.Intersect({0}, {1}, {2})" />
+        <method name="Except" Template="Linq.Except({0}, {1}, {2})" />
+        <method name="Reverse" Template="Linq.Reverse({0})" />
+        <method name="SequenceEqual" Template="Linq.SequenceEqual({0}, {1}, {2})" />
+        <method name="ToArray" Template="Linq.ToArray({0})" />
+        <method name="ToList" Template="Linq.ToList({0})" />
+        <method name="ToDictionary" ArgCount="2" Template="Linq.ToDictionary({0}, {1}, {`1})" />
+        <method name="ToDictionary" Template="Linq.ToDictionary({0}, {1}, {2}, {`1})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="ToDictionary" Template="Linq.ToDictionary({0}, {1}, {2}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+        </method>
+        <method name="ToDictionary" Template="Linq.ToDictionary({0}, {1}, {2}, {3}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="ToLookup" ArgCount="2" Template="Linq.ToLookup({0}, {1}, {`1})" />
+        <method name="ToLookup" Template="Linq.ToLookup({0}, {1}, {2}, {`1})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="ToLookup" Template="Linq.ToLookup({0}, {1}, {2}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+        </method>
+        <method name="ToLookup" Template="Linq.ToLookup({0}, {1}, {2}, {3}, {`1}, {`2})" >
+          <arg type="System.Collections.Generic.IEnumerable`1" />
+          <arg type="System.Func`2" />
+          <arg type="System.Func`2" />
+          <arg type="System.Collections.Generic.IEqualityComparer`1" />
+        </method>
+        <method name="Cast" Template="Linq.Cast({0}, {`0})" />
+        <method name="First" Template="Linq.First({0}, {1})" />
+        <method name="FirstOrDefault" Template="Linq.FirstOrDefault({0}, {1})" />
+        <method name="Last" Template="Linq.Last({0}, {1})" />
+        <method name="LastOrDefault" Template="Linq.LastOrDefault({0}, {1})" />
+        <method name="Single" Template="Linq.Single({0}, {1})" />
+        <method name="SingleOrDefault" Template="Linq.SingleOrDefault({0}, {1})" />
+        <method name="ElementAt" Template="Linq.ElementAt({0}, {1})" />
+        <method name="ElementAtOrDefault" Template="Linq.ElementAtOrDefault({0}, {1})" />
+        <method name="Any" Template="Linq.Any({0}, {1})" />
+        <method name="All" Template="Linq.All({0}, {1})" />
+        <method name="Count" Template="Linq.Count({0}, {1})" />
+        <method name="Contains" Template="Linq.Contains({0}, {1}, {2})" />
+        <method name="Aggregate" Template="Linq.Aggregate({0}, {1}, {2})" />
+        <method name="Sum" Template="Linq.Sum({0}, {1})" />
+        <method name="Min" ArgCount="1"  Template="Linq.Min({0})" />
+        <method name="Min" ArgCount="2" RetType="System.Int32" Template="Linq.Min({0}, {1}, System.Int32)" />
+        <method name="Min" ArgCount="2" RetType="System.Int64" Template="Linq.Min({0}, {1}, System.Int64)" />
+        <method name="Min" ArgCount="2" RetType="System.Single" Template="Linq.Min({0}, {1}, System.Single)" />
+        <method name="Min" ArgCount="2" RetType="System.Double" Template="Linq.Min({0}, {1}, System.Double)" />
+        <method name="Min" ArgCount="2" RetType="System.Decimal" Template="Linq.Min({0}, {1}, System.Double)" />
+        <method name="Min" ArgCount="2" GenericArgCount="2" Template="Linq.Min({0}, {1}, {`1})" />
+        <method name="Max" ArgCount="1" Template="Linq.Max({0})" />
+        <method name="Max" ArgCount="2" RetType="System.Int32" Template="Linq.Max({0}, {1}, System.Int32)" />
+        <method name="Max" ArgCount="2" RetType="System.Int64" Template="Linq.Max({0}, {1}, System.Int64)" />
+        <method name="Max" ArgCount="2" RetType="System.Single" Template="Linq.Max({0}, {1}, System.Single)" />
+        <method name="Max" ArgCount="2" RetType="System.Double" Template="Linq.Max({0}, {1}, System.Double)" />
+        <method name="Max" ArgCount="2" RetType="System.Decimal" Template="Linq.Max({0}, {1}, System.Double)" />
+        <method name="Max" ArgCount="2" GenericArgCount="2" Template="Linq.Max({0}, {1}, {`1})" />
+        <method name="OfType" Template="Linq.OfType({0}, {`0})" />
+        <method name="OrderBy" ArgCount="2" Template="Linq.OrderBy({0}, {1}, nil, {`1})" />
+        <method name="OrderBy" ArgCount="3" Template="Linq.OrderBy({0}, {1}, {2}, {`1})" />
+        <method name="OrderByDescending" ArgCount="2" Template="Linq.OrderByDescending({0}, {1}, nil, {`1})" />
+        <method name="OrderByDescending" ArgCount="3" Template="Linq.OrderByDescending({0}, {1}, {2}, {`1})" />
+        <method name="ThenBy" ArgCount="2" Template="Linq.ThenBy({0}, {1}, nil, {`1})" />
+        <method name="ThenBy" ArgCount="3" Template="Linq.ThenBy({0}, {1}, {2}, {`1})" />
+        <method name="ThenByDescending" ArgCount="2" Template="Linq.ThenByDescending({0}, {1}, nil, {`1})" />
+        <method name="ThenByDescending" ArgCount="3" Template="Linq.ThenByDescending({0}, {1}, {2}, {`1})" />
+        <method name="Average" Template="Linq.Average({0}, {1})" />
+        <method name="DefaultIfEmpty" Template="Linq.DefaultIfEmpty({0})" />
+      </class>
+    </namespace>
+    <namespace name="System.Diagnostics" Name="System">
+      <class name="Debug">
+        <method name="Assert" Template="assert({0}, {1})" />
+        <method name="Requires" GenericArgCount="0" Template="assert({0}, {1})" />
+      </class>
+    </namespace>
+    <namespace name="System.Diagnostics.Contracts" Name="System">
+      <class name="Contract">
+        <method name="Assert" Template="assert({0}, {1})" />
+        <method name="Assume" Template="assert({0}, {1})" />
+        <method name="Ensures" Template="assert({0}, {1})" />
+      </class>
+    </namespace>
+    <namespace name="System.Reflection">
+      <class name="Assembly">
+        <method name="GetExecutingAssembly" Template="System.GetExecutingAssembly(namespace)" />
+        <method name="GetType" Name="GetTypeFrom" />
+      </class>
+      <class name="MemberInfo">
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+      </class>
+      <class name="FieldInfo">
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+      </class>
+      <class name="PropertyInfo">
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+      </class>
+      <class name="MethodInfo">
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+      </class>
+      <class name="MethodBase">
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+      </class>
+    </namespace>
+    <namespace name="System.Text">
+      <class name="StringBuilder" Name="System.StringBuilder">
+        <method name="Append" Name="AppendChar" >
+          <arg type="System.Char" />
+        </method> 
+        <method name="Append" Name="AppendCharRepeat">
+          <arg type="System.Char" />
+          <arg type="System.Int32" />
+        </method>
+      </class>
+    </namespace>
+    <namespace name="System.Threading" Name="System">
+      <class name="Thread">
+        <property name="IsBackground" IsField="true" />
+        <property name="Name" IsField="true" />
+        <property name="Priority" IsField="true" />
+        <property name="ApartmentState" IsField="true" />
+        <property name="IsThreadPoolThread" IsField="true" />
+      </class>
+      <class name="CancellationToken" Readonly="true">
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+      <class name="CancellationTokenRegistration" Readonly="true">
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+      </class>
+    </namespace>
+    <namespace name="System.Threading.Tasks" Name="System">
+      <class name="Task">
+        <method name="WhenAll" GenericArgCount="0" Template="System.Task.WhenAll(nil, {*0})" />
+        <method name="WhenAll" GenericArgCount="1" Template="System.Task.WhenAll({`0}, {*0})" />
+        <method name="WhenAny" IgnoreGeneric="true" />
+      </class>
+      <class name="Task`1" IgnoreGeneric="true" />
+      <class name="TaskCompletionSource`1" IgnoreGeneric="true" />
+    </namespace>
+    <namespace name="System.Numerics">
+      <class name="Complex" Readonly="true">
+        <method name="op_Addition" Template="{0} + {1}" />
+        <method name="op_Subtraction" Template="{0} - {1}" />
+        <method name="op_Multiply" Template="{0} * {1}" />
+        <method name="op_Division" Template="{0} / {1}" />
+        <method name="op_UnaryNegation" Template="- {0}" />
+        <method name="op_Equality" Template="{0} == {1}" />
+        <method name="op_Inequality" Template="{0} ~= {1}" />
+        <method name="op_Implicit" Name="ToComplex" />
+      </class>
+    </namespace>
+    <namespace name="System.Runtime.CompilerServices" Name="System" />
+</assembly>
+</meta>

@@ -1,0 +1,21 @@
+System.defEnum("System.DateTimeKind", {
+  Unspecified = 0,
+  Utc = 1,
+  Local = 2
+})
+
+setmetatable(_G, {__index = CS})
+setmetatable(System,  {__index = CS.System})
+setmetatable(System.IO,  {__index = CS.System.IO})
+setmetatable(System.Text, {__index = CS.System.Text})
+setmetatable(System.Linq, {__index = CS.System.Linq})
+
+local ToInt32 = System.Convert.ToInt32;
+
+System.Convert.ToInt32 = function(value)
+  if type(value) == "userdata" then
+    return CS.System.Convert.ToInt32(value)
+  else
+    return ToInt32(value)
+  end
+end

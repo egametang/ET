@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
@@ -56,26 +54,18 @@ namespace ET
 					modelAssembly = assembly;
 					break;
 				}
-				
-				/*
-				byte[] log = new byte[1024];
-				Interpreter.InterpreterSetLog((buff, n) =>
-				{
-					Marshal.Copy(buff, log, 0, n);
-					UnityEngine.Debug.Log(log.Utf8ToStr(0, n));
-				});
-				Interpreter.InterpreterInit(@"E:\ET\Unity\UnityScript\", "Unity.Script.dll");
-				
-				
-				UnityEngine.Debug.Log("unity script mode!");
-				byte[] dllBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.dll");
-				byte[] pdbBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.pdb");
-				modelAssembly = Assembly.Load(dllBytes, pdbBytes);
-				*/
 			}
 
-			Type initType = modelAssembly.GetType("ET.Entry");
-			this.entry = Activator.CreateInstance(initType) as IEntry;
+			if (!Define.UseLua)
+			{
+				Type initType = modelAssembly.GetType("ET.MonoEntry");
+				this.entry = Activator.CreateInstance(initType) as IEntry;
+			}
+			else
+			{
+				Type initType = this.GetType().Assembly.GetType("ET.LuaEntry");
+				this.entry = Activator.CreateInstance(initType) as IEntry;
+			}
 		}
 
 		private void Start()

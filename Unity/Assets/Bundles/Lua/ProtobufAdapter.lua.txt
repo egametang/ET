@@ -1,0 +1,101 @@
+local protobuf = require("pb")
+local pairs = pairs
+local ipairs = ipairs
+local type = type
+local getmetatable = getmetatable
+local assert = assert
+local enums = {}
+
+local function toEnumInt(name, T, str)
+  local t = enums[T]
+  if t then
+    local v = t[str]
+    if v then
+      return v
+    end
+  else
+    t = {}
+    enums[T] = t
+  end
+  for _, cls in pairs(T) do
+    if cls.class == "E" then
+      local v = cls[str]
+      if v then
+        t[str] = v
+        return v
+      end
+    end
+  end
+  assert(false, str .. " is not in " .. name)
+end
+
+local function parse(T, t, proto, name)
+  local attrArr = System.typeof(T):GetCustomAttributes(System.typeof(ProtoBuf.ProtoAfterDeserializationAttribute), false)
+  if #attrArr > 0 then
+    local attr = attrArr:get(0)
+    attr:GetType():getDeclaringMethod():Invoke(t, nil)
+  end
+  for k, v in pairs(proto) do
+    if type(v) == "table" then
+      local value = t[k]
+      if value ~= nil then
+        local meta = getmetatable(value)
+        if meta ~= nil and meta.__genericT__ ~= nil then
+          local class = meta.__genericT__
+            for _, v1 in pairs(v) do
+              if type(v1) == "table" then
+                local instance = class()
+                parse(class, instance, v1, name)
+                value:Add(instance)
+              else
+                value:Add(v1)
+              end
+            end
+        else
+            local instance = value()
+            parse(value, instance, v, name)
+            t[k] = instance
+        end
+      else
+        t[k] = v
+      end
+    else
+       --is enum string
+      if type(v) == "string" and type(T[k]) == "number" then
+        v = toEnumInt(name, T, v)
+      end
+      t[k] = v
+    end
+  end
+  local metadata = rawget(T, "__metadata__")
+  local methodMeta =  metadata and metadata.methods
+  if methodMeta then
+    for index, value in ipairs(methodMeta) do
+      if getmetatable(value[4]).__name=="ProtoBuf.ProtoAfterDeserializationAttribute" then
+        t[value[1]](t)
+      end
+    end
+  end
+end
+
+local function decode(name, data)
+  local proto, error = protobuf.decode(name, data)
+  assert(proto, error)
+  local T = System.getClass(name)
+  local t = T()
+  parse(T, t, proto, name)
+  return t
+end
+
+function encodeProtobuf(t)
+  local name = t.__name__
+  return protobuf.encode(name, t)
+end
+
+function decodeProtobuf(data, T)
+  return decode(T.__name__, data)
+end
+
+function decodeProtobuf1(data, TName)
+  return decode(TName, data)
+end

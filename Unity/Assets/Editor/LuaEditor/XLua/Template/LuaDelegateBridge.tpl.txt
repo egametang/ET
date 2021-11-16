@@ -1,0 +1,104 @@
+#if USE_UNI_LUA
+using LuaAPI = UniLua.Lua;
+using RealStatePtr = UniLua.ILuaState;
+using LuaCSFunction = UniLua.CSharpFunctionDelegate;
+#else
+using LuaAPI = XLua.LuaDLL.Lua;
+using RealStatePtr = System.IntPtr;
+using LuaCSFunction = XLua.LuaDLL.lua_CSFunction;
+#endif
+
+using System;
+<%
+require "TemplateCommon"
+%>
+
+namespace XLua
+{
+    public partial class DelegateBridge : DelegateBridgeBase
+    {
+		<%
+		ForEachCsList(delegates_groups, function(delegates_group, group_idx)
+		local delegate = delegates_group.Key
+		local parameters = delegate:GetParameters()
+		local in_num = CalcCsList(parameters, function(p) return not (p.IsOut and p.ParameterType.IsByRef) end)
+		local out_num = CalcCsList(parameters, function(p) return p.IsOut or p.ParameterType.IsByRef end)
+		local in_pos = 0
+		local has_return = (delegate.ReturnType.FullName ~= "System.Void")
+		local return_type_name = has_return and CsFullTypeName(delegate.ReturnType) or "void"
+		local out_idx = has_return and 2 or 1
+		if has_return then out_num = out_num + 1 end
+		%>
+		public <%=return_type_name%> __Gen_Delegate_Imp<%=group_idx%>(<%ForEachCsList(parameters, function(parameter, pi) 
+			if pi ~= 0 then 
+				%>, <% 
+			end
+			if parameter.IsOut and parameter.ParameterType.IsByRef then 
+				%>out <%
+			elseif parameter.ParameterType.IsByRef then
+				%>ref <%
+			end 
+			%><%=CsFullTypeName(parameter.ParameterType)%> p<%=pi%><% 
+		end) %>)
+		{
+#if THREAD_SAFE || HOTFIX_ENABLE
+            lock (luaEnv.luaEnvLock)
+            {
+#endif
+                RealStatePtr L = luaEnv.rawL;
+                int errFunc = LuaAPI.pcall_prepare(L, errorFuncRef, luaReference);
+                <%if CallNeedTranslator(delegate, "") then %>ObjectTranslator translator = luaEnv.translator;<%end%>
+                <%
+                local param_count = parameters.Length
+                local has_v_params = param_count > 0 and parameters[param_count - 1].IsParamArray
+                ForEachCsList(parameters, function(parameter, pi) 
+                    if not (parameter.IsOut and parameter.ParameterType.IsByRef) then 
+                        %><%=GetPushStatement(parameter.ParameterType, 'p' .. pi, has_v_params and pi == param_count - 1)%>;
+                <% 
+                    end
+                end) %>
+                PCall(L, <%=has_v_params and ((in_num - 1) .. " + (p".. (param_count - 1) .. " == null ? 0 : p" .. (param_count - 1) .. ".Length)" ) or in_num%>, <%=out_num%>, errFunc);
+                
+                <%ForEachCsList(parameters, function(parameter, pi) 
+                    if parameter.IsOut or parameter.ParameterType.IsByRef then 
+                        %><%=GetCasterStatement(parameter.ParameterType, "errFunc" .. (" + "..out_idx), 'p' .. pi)%>;
+                <%
+                    out_idx = out_idx + 1
+                    end
+                end) %>
+                <%if has_return then %><%=GetCasterStatement(delegate.ReturnType, "errFunc + 1", "__gen_ret", true)%>;<% end%>
+                LuaAPI.lua_settop(L, errFunc - 1);
+                <%if has_return then %>return  __gen_ret;<% end%>
+#if THREAD_SAFE || HOTFIX_ENABLE
+            }
+#endif
+		}
+        <%end)%>
+        
+		static DelegateBridge()
+		{
+		    Gen_Flag = true;
+		}
+		
+		public override Delegate GetDelegateByType(Type type)
+		{
+		<%
+		ForEachCsList(delegates_groups, function(delegates_group, group_idx)
+		    ForEachCsList(delegates_group.Value, function(delegate)
+            if delegate.DeclaringType then
+			local delegate_type_name = CsFullTypeName(delegate.DeclaringType)
+		%>
+		    if (type == typeof(<%=delegate_type_name%>))
+			{
+			    return new <%=delegate_type_name%>(__Gen_Delegate_Imp<%=group_idx%>);
+			}
+		<%
+            end
+		    end)
+		end)
+		%>
+		    return null;
+		}
+	}
+    
+}
