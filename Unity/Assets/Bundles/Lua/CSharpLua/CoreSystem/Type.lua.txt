@@ -20,6 +20,7 @@ local Object = System.Object
 local Boolean = System.Boolean
 local Delegate = System.Delegate
 local getClass = System.getClass
+local getGenericClass = System.getGenericClass
 local arrayFromTable = System.arrayFromTable
 
 local InvalidCastException = System.InvalidCastException
@@ -54,7 +55,7 @@ local floor = math.floor
 local Type, typeof
 
 local function isGenericName(name)
-  return name:byte(#name) == 93
+  return name:find('`') ~= nil
 end
 
 local function getBaseType(this)
@@ -118,13 +119,6 @@ end
 local function implementInterface(this, ifaceType)
   local t = this
   while t ~= nil do
-    --修改
-    meta=getmetatable(t)
-    if meta then
-      if(meta.__name == "System.RuntimeType")then
-        return false
-      end
-    end
     local interfaces = getInterfaces(this)
     if interfaces ~= nil then
       for i = 1, #interfaces do
@@ -163,7 +157,12 @@ local function isAssignableFrom(this, c)
 end
 
 local function isGenericTypeDefinition(this)
-  return not rawget(this[1], "__name__")
+  local cls = this[1]
+  return getGenericClass(cls) == cls
+end
+
+local function getIsArray(this)
+  return this[1].__name__:byte(-2) == 91
 end
 
 Type = System.define("System.Type", {
@@ -176,14 +175,9 @@ Type = System.define("System.Type", {
   end,
   getIsGenericTypeDefinition = isGenericTypeDefinition,
   GetGenericTypeDefinition = function (this)
-    if isGenericTypeDefinition(this) then
-      return this
-    end
-    local name = this[1].__name__
-    local i = name:find('`')
-    if i then
-      local genericTypeName = name:sub(1, i - 1)
-      return typeof(System.getClass(genericTypeName))
+    local genericClass = getGenericClass(this[1])
+    if genericClass then
+      return typeof(genericClass)
     end
     throw(System.InvalidOperationException())
   end,
@@ -253,6 +247,13 @@ Type = System.define("System.Type", {
       return false 
     end
     return isAssignableFrom(this, obj:GetType())
+  end,
+  getIsArray = getIsArray,
+  GetElementType = function (this)
+    if getIsArray(this) then
+      return typeof(this[1].__genericT__)
+    end
+    return nil
   end,
   ToString = function (this)
     return this[1].__name__
@@ -394,7 +395,7 @@ checks[Number] = function (obj, T)
     [UInt16] = function (obj) return type(obj) == "number" and obj >= 0 and obj <= 32767 and floor(obj) == obj end,
     [Int32] = function (obj) return type(obj) == "number" and obj >= -2147483648 and obj <= 2147483647 and floor(obj) == obj end,
     [UInt32] = function (obj) return type(obj) == "number" and obj >= 0 and obj <= 4294967295 and floor(obj) == obj end,
-    [Int64] = function (obj) return type(obj) == "number" and obj >= -9223372036854775808 and obj <= 9223372036854775807 and floor(obj) == obj end,
+    [Int64] = function (obj) return type(obj) == "number" and obj >= (-9223372036854775807 - 1) and obj <= 9223372036854775807 and floor(obj) == obj end,
     [UInt64] = function (obj) return type(obj) == "number" and obj >= 0 and obj <= 18446744073709551615 and floor(obj) == obj end,
     [Single] = function (obj) return type(obj) == "number" and obj >= -3.40282347E+38 and obj <= 3.40282347E+38 end,
     [Double] = function (obj) return type(obj) == "number" end

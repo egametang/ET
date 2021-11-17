@@ -1,27 +1,30 @@
 --[[
-Copyright YANG Huan (sy.yanghuan@gmail.com).
+  Copyright 2017 YANG Huan (sy.yanghuan@gmail.com).
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+  You may obtain a copy of the License at
 
-  http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+  distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
+  See the License for the specific language governing permissions and
 limitations under the License.
 --]]
 
 local System = System
+local lengthFn = System.lengthFn
 local Array = System.Array
 local ArrayDictionary = System.ArrayDictionary
 
-local SortedDictionary = {
+local SortedList = {
   __ctor__ = Array.ctorOrderDict,
   getComparer = Array.getOrderComparer,
-  getCount = System.lengthFn,
+  getCount = lengthFn,
+  getCapacity = lengthFn,
+  setCapacity = Array.setCapacity,
   AddKeyValue = Array.addOrderDict,
   AddKeyValueObj = Array.addOrderDictObj,
   Add = Array.addPairOrderDict,
@@ -29,11 +32,13 @@ local SortedDictionary = {
   ContainsKey = Array.containsOrderDict,
   ContainsValue = ArrayDictionary.ContainsValue,
   ContainsKeyObj = Array.containsOrderDictObj,
-  CopyTo = Array.CopyTo,
   GetEnumerator = Array.GetEnumerator,
+  IndexOfKey = Array.indexKeyOrderDict,
+  IndexOfValue =  Array.indexOfValue,
   RemoveKey = Array.removeOrderDict,
   Remove =  Array.removePairOrderDict,
-  TryGetValue = Array.tryGetValueOrderDict,
+  RemoveAt = Array.removeAt,
+  TrimExcess = System.emptyFn,
   getKeys = ArrayDictionary.getKeys,
   getValues = ArrayDictionary.getValues,
   get = Array.getOrderDict,
@@ -42,16 +47,14 @@ local SortedDictionary = {
   setObj = Array.setOrderDictObj,
 }
 
-local SortedDictionaryFn = System.define("System.Collections.Generic.SortedDictionary", function(TKey, TValue) 
-  return { 
-    base = { System.IDictionary_2(TKey, TValue), System.IDictionary, System.IReadOnlyDictionary_2(TKey, TValue) },
-    __genericT__ = System.KeyValuePair(TKey, TValue),
-    __genericTKey__ = TKey,
-    __genericTValue__ = TValue,
-  }
-end, SortedDictionary, 2)
+local SortedListFn = System.define("System.Collections.Generic.SortedList", function(TKey, TValue) 
+return { 
+  base = { System.IDictionary_2(TKey, TValue), System.IDictionary, System.IReadOnlyDictionary_2(TKey, TValue) },
+  __genericT__ = System.KeyValuePair(TKey, TValue),
+  __genericTKey__ = TKey,
+  __genericTValue__ = TValue,
+}
+end, SortedList, 2)
 
-System.SortedDictionary = SortedDictionaryFn
-
-
+System.SortedList = SortedListFn
 

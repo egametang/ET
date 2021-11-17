@@ -48,7 +48,7 @@ local QueueFn = System.define("System.Collections.Generic.Queue", function(T)
     base = { System.IEnumerable_1(T), System.ICollection },
     __genericT__ = T,
   }
-end, Queue)
+end, Queue, 1)
 
 System.Queue = QueueFn
 System.queue = QueueFn(System.Object)

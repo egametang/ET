@@ -343,4 +343,4 @@ System.LinkedList = define("System.Collections.Generic.LinkedList", function(T)
   __genericT__ = T,
   __len = LinkedList.getCount
   }
-end, LinkedList)
+end, LinkedList, 1)

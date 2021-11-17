@@ -135,7 +135,7 @@ local multiKey = System.multiKey
 
 local mt = {}
 local function makeGenericTypes(...)
-  local gt, gk = multiKey(mt, ...)
+  local gt, gk = multiKey(mt, nil, ...)
   local t = gt[gk]
   if t == nil then
     t = setmetatable({ ... }, Delegate)
@@ -247,7 +247,7 @@ local binds = setmetatable({}, { __mode = "k" })
 
 function System.bind(f, n, ...)
   assert(f)
-  local gt, gk = multiKey(binds, f, ...)
+  local gt, gk = multiKey(binds, nil, f, ...)
   local fn = gt[gk]
   if fn == nil then
     local args = { ... }
@@ -276,7 +276,7 @@ end
 
 local function bind(f, create, ...)
   assert(f)
-  local gt, gk = multiKey(binds, f, create)
+  local gt, gk = multiKey(binds, nil, f, create)
   local fn = gt[gk]
   if fn == nil then
     fn = create(f, ...)

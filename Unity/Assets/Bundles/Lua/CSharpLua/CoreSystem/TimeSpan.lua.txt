@@ -52,7 +52,7 @@ end
 
 local function negate(this) 
   local ticks = this.ticks
-  if ticks == -9223372036854775808 then
+  if ticks == (-9223372036854775807 - 1) then
     throw(OverflowException("Overflow_NegateTwosCompNum"))
   end
   return TimeSpan(-ticks)
@@ -138,7 +138,9 @@ local function parse(s)
     end
   end
   if sign == '-' then
-    day, hour, minute, second, milliseconds = -day, -hour, -minute, -second, -milliseconds
+    day, hour, minute, second, milliseconds = -tonumber(day), -tonumber(hour), -tonumber(minute), -tonumber(second), -tonumber(milliseconds)
+  else
+    day, hour, minute, second, milliseconds = tonumber(day), tonumber(hour), tonumber(minute), tonumber(second), tonumber(milliseconds)
   end
   return TimeSpan(day, hour, minute, second, milliseconds)
 end
@@ -223,7 +225,7 @@ TimeSpan = System.defStc("System.TimeSpan", {
   Subtract = subtract,
   Duration = function (this) 
     local ticks = this.ticks
-    if ticks == -9223372036854775808 then
+    if ticks == (-9223372036854775807 - 1) then
       throw(OverflowException("Overflow_Duration"))
     end
     return TimeSpan(ticks >= 0 and ticks or - ticks)
@@ -297,4 +299,4 @@ TimeSpan = System.defStc("System.TimeSpan", {
 zero = TimeSpan(0)
 TimeSpan.Zero = zero
 TimeSpan.MaxValue = TimeSpan(9223372036854775807)
-TimeSpan.MinValue = TimeSpan(-9223372036854775808)
+TimeSpan.MinValue = TimeSpan((-9223372036854775807 - 1))

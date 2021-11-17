@@ -44,11 +44,12 @@ local getmetatable = getmetatable
 local setmetatable = setmetatable
 local select = select
 local type = type
+local tonumber = tonumber
 local String
 
-local function toString(t, isch)
+local function toString(t, isch, format)
   if isch then return char(t) end
-  return systemToString(t)
+  return systemToString(t, format)
 end
 
 local function checkIndex(value, startIndex, count)
@@ -218,14 +219,34 @@ local function formatBuild(format, len, select, ...)
       count = count + 1
       startPos = i
     end
-    i, j, s = find(format, "^(%d+)}", i)
+    local r, alignment, formatString
+    i, j, s, r = find(format, "^(%d+)(.-)}", i)
     if not i then throwFormatError() end
-    s = s + 1
+    s = tonumber(s) + 1
     if s > len then throwFormatError() end
+    if r ~= "" then
+      local i, j, c, d = find(r, "^,([-]?)(%d+)")
+      if i then
+        alignment = tonumber(d)
+        if c == '-' then alignment = -alignment end
+        i = j + 1
+      end
+      i, j, c = find(r, "^:(.*)$", i)
+      if i then
+        formatString = c
+      elseif not alignment then
+        throwFormatError()
+      end
+    end
     s = select(s, ...)
-    s = (s ~= nil and s ~= System.null) and toString(s)
-    t[count] = s
-    count = count + 1
+    if s ~= nil and s ~= System.null then
+      s = toString(s, false, formatString)
+      if alignment then
+        s = ("%" .. alignment .. "s"):format(s)
+      end
+      t[count] = s
+      count = count + 1
+    end
     i = j + 1
   end
 end

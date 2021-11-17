@@ -6,7 +6,7 @@ function Start()
     require("Model.manifest")("Model")
     require("ModelView.manifest")("ModelView")
     require("Hotfix.manifest")("Hotfix")
-    require("HotfixView.manifest")("HotfixView")
+    require("HotfixView.manifest")("HotfixView") 
     
     print("1111111111111111111111")
     ET.GameStart.Start()

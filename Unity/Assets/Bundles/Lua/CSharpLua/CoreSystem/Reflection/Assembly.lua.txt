@@ -39,6 +39,7 @@ local rawget = rawget
 local type = type
 local unpack = table.unpack
 local select = select
+local floor = math.floor
 
 local TargetException = define("System.Reflection.TargetException", {
   __tostring = Exception.ToString,
@@ -402,7 +403,7 @@ local function getMethodParameterCount(flags)
   if count ~= 0 then
     count = count / 256
   end
-  return count
+  return floor(count)
 end
 
 local function getMethodAttributesIndex(metadata)
@@ -438,7 +439,7 @@ local MethodInfo = define("System.Reflection.MethodInfo", {
     if band(flags, 0xC00) > 0 then
       assert(false, "not implement for generic method")
     end
-    local parameterCount = band(flags, 0x300)
+    local parameterCount = getMethodParameterCount(flags)
     return typeof(metadata[4 + parameterCount])
   end,
   Invoke = function (this, obj, parameters)
@@ -448,8 +449,8 @@ local MethodInfo = define("System.Reflection.MethodInfo", {
       if checkTarget(cls, obj, metadata) then
         isStatic = true
       end
-      local t
-      local parameterCount = band(metadata[2], 0x300)
+      local t = {}
+      local parameterCount = getMethodParameterCount(metadata[2])
       if parameterCount == 0 then
         if parameters ~= nil and #parameters > 0 then
           throw(TargetParameterCountException())
@@ -460,7 +461,11 @@ local MethodInfo = define("System.Reflection.MethodInfo", {
         end
         for i = 4, 3 + parameterCount do
           local j = #t
-          t[j + 1] = checkValue(parameters:get(j), metadata[i])
+          local paramValue, mtData = parameters:get(j), metadata[i]
+          if mtData ~= nil then
+            paramValue = checkValue(paramValue, mtData)
+          end
+          t[j + 1] = paramValue
         end
       end
       local f = metadata[3]
@@ -888,15 +893,16 @@ function Type.GetGenericArguments(this)
   local name = cls.__name__ 
   local i = name:find("%[")
   if i then
+    i = i + 1
     while true do
-      i = i + 1
       local j = name:find(",", i) or -1
       local clsName = name:sub(i, j - 1)
       t[count] = typeof(System.getClass(clsName))
-      count = count + 1
       if j == -1 then
         break
       end
+      count = count + 1
+      i = j + 1
     end
   end
   return arrayFromTable(t, Type)

@@ -190,6 +190,7 @@ local function getTimeZone()
 end
 
 local timeZoneTicks, dstTicks = getTimeZone()
+local baseUtcOffset = TimeSpan(timeZoneTicks)
 
 local time = System.config.time or ostime
 System.time = time
@@ -260,6 +261,194 @@ local function parse(s)
     return DateTime(year, month, day)
   end
   return DateTime(year, month, day, hour, minute, second, milliseconds)
+end
+
+local abbreviatedDayNames = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" }
+local dayNames = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"	 }
+local abbreviatedMonthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
+local monthNames = { "January",	"February",	"March", "April",	"May", "June", "July", "August", "September", "October", "November", "December" }
+
+local realFormats = {
+  ["d"] = "MM/dd/yyyy",
+  ["D"] = "dddd, dd MMMM yyyy",
+  ["f"] = "dddd, dd MMMM yyyy HH:mm",
+  ["F"] = "dddd, dd MMMM yyyy HH:mm:ss",
+  ["g"] = "MM/dd/yyyy HH:mm",
+  ["G"] = "MM/dd/yyyy HH:mm:ss",
+  ["m"] = "MMMM dd",
+  ["M"] = "MMMM dd",
+  ["o"] = "yyyy-MM-ddTHH:mm:ss.fffffffK",
+  ["O"] = "yyyy-MM-ddTHH:mm:ss.fffffffK",
+  ["r"] = "ddd, dd MMM yyyy HH:mm:ss GMT",
+  ["R"] = "ddd, dd MMM yyyy HH:mm:ss GMT",
+  ["s"] = "yyyy-MM-ddTHH:mm:ss",
+  ["t"] = "HH:mm",
+  ["T"] = "HH:mm:ss",
+  ["u"] = "yyyy-MM-dd HH:mm:ssZ",
+  ["U"] = "dddd, dd MMMM yyyy HH:mm:ss",
+  ["y"] = "yyyy MMMM",
+  ["Y"] = "yyyy MMMM"
+}
+
+local function parseRepeatPattern(format, n, pos, ch)
+  local index = pos + 1
+  while index <= n and format:byte(index) == ch do
+    index = index + 1
+  end
+  return index - pos
+end
+
+local function throwFormatInvalidException()
+  throw(FormatException("Input string was not in a correct format."))
+end
+
+local function formatCustomized(this, format, n)
+  local t, i, tokenLen, hour12 = {}, 1
+  while i <= n do
+    local ch = format:byte(i)
+    if ch == 104 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      hour12 = this:getHour() % 12
+      if hour12 == 0 then hour12 = 12 end
+      t[#t + 1] = sformat("%02d", hour12)
+    elseif ch == 72 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      t[#t + 1] = sformat("%02d", this:getHour())
+    elseif ch == 109 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      t[#t + 1] = sformat("%02d", this:getMinute())
+    elseif ch == 115 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      t[#t + 1] = sformat("%02d", this:getSecond())
+    elseif ch == 102 or ch == 70 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      if tokenLen <= 7 then
+        local fraction = this.ticks % 10000000
+        fraction = div(fraction, 10 ^ (7 - tokenLen))
+        if ch == 102 then
+          t[#t + 1] = sformat("%0" .. tokenLen .. 'd', fraction)
+        else
+          local effectiveDigits = tokenLen
+          while effectiveDigits > 0 do
+            if fraction % 10 == 0 then
+              fraction = div(fraction, 10)
+              effectiveDigits = effectiveDigits - 1
+            else 
+              break
+            end
+          end
+          if effectiveDigits > 0 then
+            t[#t + 1] = sformat("%0" .. effectiveDigits .. 'd', fraction)
+          end
+        end
+      else
+        throwFormatInvalidException()
+      end
+    elseif ch == 116 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      local hour = this:getHour()
+      if tokenLen == 1 then
+        t[#t + 1] = hour < 12 and "A" or "P"
+      else
+        t[#t + 1] = hour < 12 and "AM" or "PM"
+      end
+    elseif ch == 100 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      if tokenLen <= 2 then
+        local day = this:getDay()
+        t[#t + 1] = sformat("%0" .. tokenLen .. 'd', day)
+      else
+        local i = this:getDayOfWeek() + 1
+        t[#t + 1] = (tokenLen == 3 and abbreviatedDayNames or dayNames)[i]
+      end
+    elseif ch == 77 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      local month = this:getMonth()
+      if tokenLen <= 2 then
+        t[#t + 1] = sformat("%0" .. tokenLen .. 'd', month)
+      else
+        t[#t + 1] = (tokenLen == 3 and abbreviatedMonthNames or monthNames)[month]
+      end
+    elseif ch == 121 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      local year = this:getYear()
+      if tokenLen <= 2 then
+        year = year % 100
+        t[#t + 1] = tokenLen == 1 and year or sformat("%02d", year)
+      else
+        t[#t + 1] = sformat("%0" .. tokenLen .. 'd', year)
+      end
+    elseif ch == 122 then
+      tokenLen = parseRepeatPattern(format, n, i, ch)
+      local offset = this.kind == 1 and TimeSpan.Zero or baseUtcOffset
+      local sign
+      if offset.ticks >= 0 then
+        sign = "+"
+      else
+        sign = "-"
+        offset = offset:Negate()
+      end
+      local hour = offset:getHours()
+      if tokenLen <= 1 then
+        t[#t + 1] = sformat("%s%d", sign, hour)
+      elseif tokenLen < 3 then
+        t[#t + 1] = sformat("%s%02d", sign, hour)
+      else
+        t[#t + 1] = sformat("%s%02d:%02d", sign, hour, offset:getMinutes())
+      end
+    elseif ch == 75 then
+      tokenLen = 1
+      if this.kind == 2 then
+        local offset = baseUtcOffset
+        local sign
+        if offset.ticks >= 0 then
+          sign = "+"
+        else
+          sign = "-"
+          offset = offset:Negate()
+        end
+        t[#t + 1] = sformat("%s%02d:%02d", sign, offset:getHours(), offset:getMinutes())
+      elseif this.kind == 1 then
+        t[#t + 1] = "Z"
+      end
+    elseif ch == 39 or ch == 34 then
+      local a, b, c = sfind(format, "^(.*)" .. string.char(ch), i + 1)
+      if not a then throwFormatInvalidException() end
+      t[#t + 1] = c
+      tokenLen = b - a + 2
+    elseif ch == 37 then
+      local nextChar = format:byte(i + 1)
+      if nextChar and nextChar ~= 37 then
+        t[#t + 1] = formatCustomized(this, string.char(nextChar), 1)
+        tokenLen = 2
+      else
+        throwFormatInvalidException()
+      end
+    elseif ch == 92 then
+      local nextChar = format:byte(i + 1)
+      if nextChar then
+        t[#t + 1] = string.char(nextChar)
+        tokenLen = 2
+      else
+        throwFormatInvalidException()
+      end
+    else
+      t[#t + 1] = string.char(ch)
+      tokenLen = 1
+    end
+    i = i + tokenLen
+  end
+  return table.concat(t)
+end
+
+local function toStringWithFormat(this, format)
+  local n = #format
+  if n == 1 then
+    format = realFormats[format]
+    if not format then throwFormatInvalidException() end
+    return formatCustomized(this, format, #format)
+  end
+  return formatCustomized(this, format, n)
 end
 
 DateTime = System.defStc("System.DateTime", {
@@ -378,7 +567,7 @@ DateTime = System.defStc("System.DateTime", {
   getTicks = function (this)
     return this.ticks
   end,
-  BaseUtcOffset = TimeSpan(timeZoneTicks),
+  BaseUtcOffset = baseUtcOffset,
   getUtcNow = function ()
     local seconds = time()
     local ticks = seconds * 10000000 + 621355968000000000
@@ -405,7 +594,10 @@ DateTime = System.defStc("System.DateTime", {
   IsDaylightSavingTime = function(this)
     return this.kind == 2 and dstTicks > 0
   end,
-  ToString = function (this)
+  ToString = function (this, format)
+    if format then 
+      return toStringWithFormat(this, format) 
+    end
     local year, month, day = getDatePart(this.ticks)
     return sformat("%d/%d/%d %02d:%02d:%02d", year, month, day, this:getHour(), this:getMinute(), this:getSecond())
   end,

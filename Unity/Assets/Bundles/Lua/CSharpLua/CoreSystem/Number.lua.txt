@@ -218,10 +218,10 @@ setmetatable(UInt32, Int)
 
 local Int64 = define("System.Int64", {
   Parse = function (s)
-    return parseIntWithException(s, -9223372036854775808, 9223372036854775807)
+    return parseIntWithException(s, (-9223372036854775807 - 1), 9223372036854775807)
   end,
   TryParse = function (s)
-    return tryParseInt(s, -9223372036854775808, 9223372036854775807)
+    return tryParseInt(s, (-9223372036854775807 - 1), 9223372036854775807)
   end
 })
 setmetatable(Int64, Int)

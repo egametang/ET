@@ -17,17 +17,55 @@ limitations under the License.
 local System = System
 local define = System.define
 local Object = System.Object
+local toString = System.toString
 
 local tconcat = table.concat
 local type = type
 local debug = debug
+local assert = assert
+local select = select
+
+local traceback = (debug and debug.traceback) or System.config.traceback or function () return "" end
+System.traceback = traceback
+
+local resource = {
+  Arg_KeyNotFound = "The given key was not present in the dictionary.",
+  Arg_KeyNotFoundWithKey = "The given key '%s' was not present in the dictionary.",
+  Arg_WrongType = "The value '%s' is not of type '%s' and cannot be used in this generic collection.",
+  Arg_ParamName_Name = "(Parameter '%s')",
+  Argument_AddingDuplicate = "An item with the same key has already been added. Key: %s",
+  ArgumentOutOfRange_SmallCapacity = "capacity was less than the current size.",
+  InvalidOperation_EmptyQueue = "Queue empty.",
+  ArgumentOutOfRange_NeedNonNegNum = "Non-negative number required.",
+}
+
+local function getResource(t, k)
+  local s = resource[k]
+  assert(s, k)
+  return function (...)
+	local n = select("#", ...)
+    local f
+    if n == 0 then
+      f = function () return s end
+    elseif n == 1 then
+      f = function (x1) return s:format(toString(x1)) end
+    elseif n == 2 then
+      f = function (x1, x2) return s:format(toString(x1), toString(x2)) end
+    elseif n == 3 then
+      f = function (x1, x2, x3) return s:format(toString(x1), toString(x2), toString(x3)) end
+    else
+      assert(false)
+    end
+    t[k] = f
+    return f(...)
+  end
+end
+
+System.er = setmetatable({}, { __index = getResource })
 
 local function getMessage(this)
   return this.message or ("Exception of type '%s' was thrown."):format(this.__name__)
 end
-
-local traceback = (debug and debug.traceback) or System.config.traceback or function () return "" end
-System.traceback = traceback
 
 local function toString(this)
   local t = { this.__name__ }
@@ -94,7 +132,7 @@ local ArgumentException = define("System.ArgumentException", {
     ctorOfException(this, message or "Value does not fall within the expected range.", innerException)
     this.paramName = paramName
     if paramName and #paramName > 0 then
-      this.message = this.message .. "\nParameter name: " .. paramName
+      this.message = this.message .. " " .. resource.Arg_ParamName_Name:format(paramName)
     end
   end,
   getParamName = function(this) 
@@ -159,7 +197,7 @@ local KeyNotFoundException = define("System.Collections.Generic.KeyNotFoundExcep
   __tostring = toString,
   base = { SystemException },
   __ctor__ = function(this, message, innerException) 
-    ctorOfException(this, message or "The given key was not present in the dictionary.", innerException)
+    ctorOfException(this, message or resource.Arg_KeyNotFound, innerException)
   end
 })
 System.KeyNotFoundException = KeyNotFoundException
@@ -315,3 +353,4 @@ System.SwitchExpressionException = define("System.Runtime.CompilerServices", {
     ctorOfException(this, message or "Non-exhaustive switch expression failed to match its input.", innerException)
   end
 })
+

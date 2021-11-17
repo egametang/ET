@@ -51,12 +51,12 @@ local function checkUniqueAndUnfoundElements(this, other, returnIfUnfound)
   local set, uniqueCount, unfoundCount = {}, 0, 0
   for _, item in each(other) do
     item = wrap(item)
-      if this[item] ~= nil then
-        if set[item] == nil then
-          set[item] = true
-          uniqueCount = uniqueCount + 1
-        end
-      else
+    if this[item] ~= nil then
+      if set[item] == nil then
+        set[item] = true
+        uniqueCount = uniqueCount + 1
+      end
+    else
       unfoundCount = unfoundCount + 1
       if returnIfUnfound then
         break
@@ -313,4 +313,4 @@ System.HashSet = System.define("System.Collections.Generic.HashSet", function(T)
     __genericTKey__ = T,
     __len = HashSet.getCount
   }
-end, HashSet)
+end, HashSet, 1)

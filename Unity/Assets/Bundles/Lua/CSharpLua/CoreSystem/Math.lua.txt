@@ -22,6 +22,7 @@ local floor = math.floor
 local min = math.min
 local max = math.max
 local abs = math.abs
+local log = math.log
 
 local function bigMul(a, b)
   return a * b
@@ -99,11 +100,17 @@ local function truncate(d)
   return trunc(d) * 1.0
 end
 
+local log10 = math.log10
+if not log10 then
+  log10 = function (x) return log(x, 10) end
+  math.log10 = log10
+end
+
 local exp = math.exp
-local cosh = math.cosh or function(x) return (exp(x) + exp(-x)) / 2.0 end
-local pow = math.pow or function(x, y) return x ^ y end
-local sinh = math.sinh or function(x) return (exp(x) - exp(-x)) / 2.0 end
-local tanh = math.tanh or function(x) return sinh(x) / cosh(x) end
+local cosh = math.cosh or function (x) return (exp(x) + exp(-x)) / 2.0 end
+local pow = math.pow or function (x, y) return x ^ y end
+local sinh = math.sinh or function (x) return (exp(x) - exp(-x)) / 2.0 end
+local tanh = math.tanh or function (x) return sinh(x) / cosh(x) end
 
 local Math = math
 Math.Abs = abs
@@ -120,8 +127,8 @@ Math.DivRem = divRem
 Math.Exp = exp
 Math.Floor = math.floor
 Math.IEEERemainder = IEEERemainder
-Math.Log = math.log
-Math.Log10 = math.log10
+Math.Log = log
+Math.Log10 = log10
 Math.Max = math.max
 Math.Min = math.min
 Math.Pow = pow
