@@ -55,15 +55,6 @@
       },
       "url": "https://packages.unity.cn"
     },
-    "com.unity.textmeshpro": {
-      "version": "3.0.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
-      },
-      "url": "https://packages.unity.cn"
-    },
     "com.unity.timeline": {
       "version": "1.4.8",
       "depth": 0,
