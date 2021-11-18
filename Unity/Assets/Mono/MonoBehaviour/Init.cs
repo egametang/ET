@@ -56,16 +56,8 @@ namespace ET
 				}
 			}
 
-			if (!Define.UseLua)
-			{
-				Type initType = modelAssembly.GetType("ET.MonoEntry");
-				this.entry = Activator.CreateInstance(initType) as IEntry;
-			}
-			else
-			{
-				Type initType = this.GetType().Assembly.GetType("ET.LuaEntry");
-				this.entry = Activator.CreateInstance(initType) as IEntry;
-			}
+			Type initType = modelAssembly.GetType("ET.MonoEntry");
+			this.entry = Activator.CreateInstance(initType) as IEntry;
 		}
 
 		private void Start()

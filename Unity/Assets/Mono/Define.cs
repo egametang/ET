@@ -14,12 +14,6 @@
         public static bool IsEditor = false;
 #endif
 		
-#if USE_LUA
-		public static bool UseLua = true;
-#else
-        public static bool UseLua = false;
-#endif
-
 		public static UnityEngine.Object LoadAssetAtPath(string s)
 		{
 #if UNITY_EDITOR	
