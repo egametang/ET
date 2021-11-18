@@ -21,13 +21,7 @@ namespace ET
             
             scriptEnv = luaEnv.NewTable();
 
-            LuaTable meta = luaEnv.NewTable();
-            meta.Set("__index", luaEnv.Global);
-            scriptEnv.SetMetaTable(meta);
-            meta.Dispose();
-
-            scriptEnv.Set("self", this);
-            this.luaEnv.DoString("require 'Main.lua'(true)");
+            this.luaEnv.DoString("require 'Main.lua'()");
 
             scriptEnv.Get("Update", out this.update);
             scriptEnv.Get("LateUpdate", out this.lateUpdate);

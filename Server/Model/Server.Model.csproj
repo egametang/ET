@@ -26,6 +26,10 @@
       <Link>Base\MongoHelper.cs</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Assets\Editor\Helper\StructBsonSerialize.cs">
+      <Link>Base\StructBsonSerialize.cs</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
       <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
