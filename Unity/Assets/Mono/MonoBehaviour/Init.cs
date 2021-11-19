@@ -25,35 +25,17 @@ namespace ET
 
 			Assembly modelAssembly = null;
 
-			if (Define.IsEditor)
+			UnityEngine.Debug.Log("unity editor mode!");
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				UnityEngine.Debug.Log("unity editor mode!");
-				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+				string assemblyName = $"{assembly.GetName().Name}.dll";
+				if (assemblyName != "Unity.ModelView.dll")
 				{
-					string assemblyName = $"{assembly.GetName().Name}.dll";
-					if (assemblyName != "Unity.ModelView.dll")
-					{
-						continue;
-					}
-
-					modelAssembly = assembly;
-					break;
+					continue;
 				}
-			}
-			else
-			{
-				UnityEngine.Debug.Log("unity standalone mode!");
-				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-				{
-					string assemblyName = $"{assembly.GetName().Name}.dll";
-					if (assemblyName != "Unity.ModelView.dll")
-					{
-						continue;
-					}
 
-					modelAssembly = assembly;
-					break;
-				}
+				modelAssembly = assembly;
+				break;
 			}
 
 			Type initType = modelAssembly.GetType("ET.MonoEntry");

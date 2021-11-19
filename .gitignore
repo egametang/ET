@@ -56,9 +56,7 @@ Server/.DS_Store
 /Unity/Unity.Model.csproj
 /Unity/Unity.ModelView.csproj
 /Unity/Unity.ThirdParty.csproj
-/Unity/Assets/Bundles/Lua/ModelView
-/Unity/Assets/Bundles/Lua/Hotfix
-/Unity/Assets/Bundles/Lua/HotfixView
-/Unity/Assets/Bundles/Lua/Model
-/Unity/Assets/Mono/XLua/Gen
-/Unity/Assets/Res/Code
+/Unity/Assets/Bundles/Code/Code.dll.bytes
+/Unity/Assets/Bundles/Code/Code.dll.bytes.meta
+/Unity/Assets/Bundles/Code/Code.pdb.bytes
+/Unity/Assets/Bundles/Code/Code.pdb.bytes.meta
