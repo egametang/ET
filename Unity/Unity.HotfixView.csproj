@@ -57,33 +57,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Codes\HotfixView\AppStart_Init.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Config\ConfigComponent_SetConfigLoader_Awake.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Config\ConfigLoader.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Global\GlobalComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Opera\OperaComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Scene\AfterCreateZoneScene_AddComponent.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Scene\SceneChangeComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UIHelper.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILoading\LoadingBeginEvent_CreateLoadingUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILoading\LoadingFinishEvent_RemoveLoadingUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILoading\UILoadingComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILoading\UILoadingEvent.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILobby\EnterMapFinish_RemoveLobbyUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILobby\LoginFinish_CreateLobbyUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILobby\UILobbyComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILobby\UILobbyEvent.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILogin\AppStartInitFinish_CreateLoginUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILogin\LoginFinish_RemoveLoginUI.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILogin\UILoginComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\UI\UILogin\UILoginEvent.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Unit\AfterUnitCreate_CreateUnitView.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Unit\AnimatorComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Unit\ChangePosition_SyncGameObjectPos.cs" />
-    <Compile Include="Codes\HotfixView\Demo\Unit\ChangeRotation_SyncGameObjectRotation.cs" />
-    <Compile Include="Codes\HotfixView\Module\Resource\GameObjectHelper.cs" />
-    <Compile Include="Codes\HotfixView\Module\UI\UIComponentSystem.cs" />
-    <Compile Include="Codes\HotfixView\Module\UI\UIEventComponentSystem.cs" />
+    <Compile Include="Codes\HotfixView\**\*.cs" />
     <Reference Include="UnityEngine">
       <HintPath>./Temp/bin/Debug/UnityEngine.dll</HintPath>
     </Reference>
