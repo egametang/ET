@@ -22,6 +22,9 @@
       <DefineConstants>TRACECOREAPP;NOT_UNITY</DefineConstants>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="..\..\Server\Model\Base\MongoRegister.cs">
+          <Link>Base\MongoRegister.cs</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
           <Link>Base\MongoHelper.cs</Link>
         </Compile>

@@ -1,10 +1,6 @@
 {
     "name": "Unity.Editor",
     "references": [
-        "Unity.Model",
-        "Unity.ModelView",
-        "Unity.Hotfix",
-        "Unity.HotfixView",
         "Unity.Mono",
         "ILRuntime"
     ],
