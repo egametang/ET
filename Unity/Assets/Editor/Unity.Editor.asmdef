@@ -2,7 +2,6 @@
     "name": "Unity.Editor",
     "references": [
         "Unity.Model",
-        "Unity.ThirdParty",
         "Unity.ModelView",
         "Unity.Hotfix",
         "Unity.HotfixView",

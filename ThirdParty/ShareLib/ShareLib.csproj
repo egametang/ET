@@ -40,7 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\..\Unity\Assets\ThirdParty\ShareLib\Kcp\Kcp.cs">
+      <Compile Include="..\..\Unity\Assets\Mono\ThirdParty\ShareLib\Kcp\Kcp.cs">
         <Link>Kcp\Kcp.cs</Link>
       </Compile>
     </ItemGroup>

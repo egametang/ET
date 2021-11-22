@@ -1,7 +1,6 @@
 {
     "name": "Unity.Model",
     "references": [
-        "Unity.ThirdParty",
         "Unity.Mono"
     ],
     "includePlatforms": [

@@ -2,7 +2,6 @@
     "name": "Unity.Hotfix",
     "references": [
         "Unity.Model",
-        "Unity.ThirdParty",
         "Unity.Mono"
     ],
     "includePlatforms": [
