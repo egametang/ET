@@ -1,13 +1,13 @@
 {
     "name": "Unity.Editor",
-    "rootNamespace": "ET",
     "references": [
         "Unity.Model",
         "Unity.ThirdParty",
         "Unity.ModelView",
         "Unity.Hotfix",
         "Unity.HotfixView",
-        "Unity.Mono"
+        "Unity.Mono",
+        "ILRuntime"
     ],
     "includePlatforms": [
         "Editor"
