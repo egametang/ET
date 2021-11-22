@@ -39,16 +39,11 @@ namespace ET
 			
 			this.hotfixTypes = Type.EmptyTypes;
 			this.hotfixTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
+			this.start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
 #else
 
 			System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
 			hotfixTypes = assembly.GetTypes();
-#endif
-			
-
-#if ILRuntime
-			this.start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
-#else
 			this.start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 #endif
 		}
