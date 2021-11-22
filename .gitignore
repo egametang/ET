@@ -51,11 +51,6 @@ Server/.DS_Store
 /*.user
 /ToolsApp/
 /Unity/Unity.Editor.csproj
-/Unity/Unity.Hotfix.csproj
-/Unity/Unity.HotfixView.csproj
-/Unity/Unity.Model.csproj
-/Unity/Unity.ModelView.csproj
-/Unity/Unity.ThirdParty.csproj
 /Unity/Assets/Bundles/Code/Code.dll.bytes
 /Unity/Assets/Bundles/Code/Code.dll.bytes.meta
 /Unity/Assets/Bundles/Code/Code.pdb.bytes
