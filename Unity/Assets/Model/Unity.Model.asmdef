@@ -1,11 +1,12 @@
 {
     "name": "Unity.Model",
-    "rootNamespace": "ET",
     "references": [
         "Unity.ThirdParty",
         "Unity.Mono"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

@@ -1,21 +1,11 @@
-﻿using System;
-using System.Reflection;
-using System.Threading;
+﻿using System.Threading;
 using UnityEngine;
 
 namespace ET
 {
-	public interface IEntry
-	{
-		void Start();
-		void Update();
-		void LateUpdate();
-		void OnApplicationQuit();
-	}
-	
 	public class Init: MonoBehaviour
 	{
-		private IEntry entry;
+		private CodeLoader codeLoader;
 		
 		private void Awake()
 		{
@@ -23,43 +13,27 @@ namespace ET
 			
 			DontDestroyOnLoad(gameObject);
 
-			Assembly modelAssembly = null;
-
-			UnityEngine.Debug.Log("unity editor mode!");
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				string assemblyName = $"{assembly.GetName().Name}.dll";
-				if (assemblyName != "Unity.ModelView.dll")
-				{
-					continue;
-				}
-
-				modelAssembly = assembly;
-				break;
-			}
-
-			Type initType = modelAssembly.GetType("ET.MonoEntry");
-			this.entry = Activator.CreateInstance(initType) as IEntry;
+			this.codeLoader = CodeLoader.Instance;
 		}
 
 		private void Start()
 		{
-			this.entry.Start();
+			this.codeLoader.Start();
 		}
 
 		private void Update()
 		{
-			this.entry.Update();
+			this.codeLoader.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.entry.LateUpdate();
+			this.codeLoader.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.entry.OnApplicationQuit();
+			this.codeLoader.OnApplicationQuit();
 		}
 	}
 }

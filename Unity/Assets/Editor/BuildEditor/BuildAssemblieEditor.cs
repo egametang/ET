@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -11,7 +12,7 @@ namespace ET
     public static class BuildAssemblieEditor
     {
         private const string ScriptAssembliesDir = "Temp/MyAssembly/";
-        private const string CodeDir = "Assets/Res/Code/";
+        private const string CodeDir = "Assets/Bundles/Code/";
 
         [MenuItem("Tools/BuildDll")]
         public static void BuildDll()
@@ -26,13 +27,6 @@ namespace ET
             AssetDatabase.Refresh();
         }
 
-        private static void CopyDllAndPdb(string FileName)
-        {
-            Debug.Log("复制Code.dll到Bundles/Code目录");
-            Directory.CreateDirectory(CodeDir);
-            File.Copy(Path.Combine(ScriptAssembliesDir, FileName + ".dll"), Path.Combine(CodeDir, FileName + ".dll.bytes"), true);
-            File.Copy(Path.Combine(ScriptAssembliesDir, FileName + ".pdb"), Path.Combine(CodeDir, FileName + ".pdb.bytes"), true);
-        }
 
         private static void BuildMuteAssembly(string Name, string[] CodeDirectorys)
         {
@@ -87,14 +81,13 @@ namespace ET
                 "Library/ScriptAssemblies/Unity.HotfixView.dll"
             };
 
-            assemblyBuilder.buildStarted += delegate(string assemblyPath) { Debug.LogFormat("程序集开始构建：" + assemblyPath); };
+            assemblyBuilder.buildStarted += delegate(string assemblyPath) { Debug.LogFormat("build start：" + assemblyPath); };
 
             assemblyBuilder.buildFinished += delegate(string assemblyPath, CompilerMessage[] compilerMessages)
             {
                 int errorCount = compilerMessages.Count(m => m.type == CompilerMessageType.Error);
                 int warningCount = compilerMessages.Count(m => m.type == CompilerMessageType.Warning);
 
-                Debug.LogFormat("程序集构建完成：" + assemblyPath);
                 Debug.LogFormat("Warnings: {0} - Errors: {1}", warningCount, errorCount);
 
                 if (warningCount > 0)
@@ -111,18 +104,40 @@ namespace ET
                             Debug.LogError(compilerMessages[i].message);
                         }
                     }
-
-                    return;
                 }
-                
-                CopyDllAndPdb(Name);
             };
-
+            
             //开始构建
             if (!assemblyBuilder.Build())
             {
-                Debug.LogErrorFormat("构建程序集失败：" + assemblyBuilder.assemblyPath);
+                Debug.LogErrorFormat("build fail：" + assemblyBuilder.assemblyPath);
+                return;
             }
+            
+            AfterCompiling(assemblyBuilder).Coroutine();
+        }
+
+        private static async ETVoid AfterCompiling(AssemblyBuilder assemblyBuilder)
+        {
+            while (EditorApplication.isCompiling)
+            {
+                await Task.Delay(100);
+            }
+            
+            Debug.Log("copy Code.dll to Bundles/Code");
+            Directory.CreateDirectory(CodeDir);
+            File.Copy(Path.Combine(ScriptAssembliesDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
+            File.Copy(Path.Combine(ScriptAssembliesDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
+            AssetDatabase.Refresh();
+            
+            // 设置ab包
+            AssetImporter assetImporter1 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.dll.bytes");
+            assetImporter1.assetBundleName = "Code.unity3d";
+            AssetImporter assetImporter2 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.pdb.bytes");
+            assetImporter2.assetBundleName = "Code.unity3d";
+            
+            AssetDatabase.Refresh();
+            Debug.Log("build success!");
         }
     }
 }
